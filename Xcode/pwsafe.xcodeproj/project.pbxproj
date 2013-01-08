@@ -77,6 +77,22 @@
 		E6651E9D14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
 		E6651E9E14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
 		E6651E9F14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
+		E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
+		E66C16A516731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
+		E66C16A616731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
+		E66C16A716731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
+		E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
+		E66C16AC16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
+		E66C16AD16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
+		E66C16AE16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
+		E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
+		E66C16B416731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
+		E66C16B516731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
+		E66C16B616731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
+		E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
+		E66C16BC16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
+		E66C16BD16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
+		E66C16BE16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
@@ -527,6 +543,13 @@
 		E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-release.xcconfig"; sourceTree = "<group>"; };
 		E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsmenushortcuts.cpp; sourceTree = "<group>"; };
 		E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsmenushortcuts.h; sourceTree = "<group>"; };
+		E66C16A216731E2100C996B1 /* SelectionCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionCriteria.h; sourceTree = "<group>"; };
+		E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectionCriteria.cpp; sourceTree = "<group>"; };
+		E66C16AA16731ECD00C996B1 /* mainManage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mainManage.cpp; sourceTree = "<group>"; };
+		E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ManagePwdPolicies.cpp; sourceTree = "<group>"; };
+		E66C16B216731EFE00C996B1 /* ManagePwdPolicies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagePwdPolicies.h; sourceTree = "<group>"; };
+		E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordPolicy.cpp; sourceTree = "<group>"; };
+		E66C16BA16731F9400C996B1 /* PasswordPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordPolicy.h; sourceTree = "<group>"; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
@@ -1413,6 +1436,13 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */,
+				E66C16BA16731F9400C996B1 /* PasswordPolicy.h */,
+				E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */,
+				E66C16B216731EFE00C996B1 /* ManagePwdPolicies.h */,
+				E66C16AA16731ECD00C996B1 /* mainManage.cpp */,
+				E66C16A216731E2100C996B1 /* SelectionCriteria.h */,
+				E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */,
 				E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */,
 				E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */,
 				E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */,
@@ -2159,6 +2189,10 @@
 				E691FB59140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CED1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 				E6651E9D14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
+				E66C16A516731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
+				E66C16AC16731ECD00C996B1 /* mainManage.cpp in Sources */,
+				E66C16B416731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */,
+				E66C16BC16731F9400C996B1 /* PasswordPolicy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2284,6 +2318,10 @@
 				E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 				E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
+				E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
+				E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */,
+				E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */,
+				E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2334,6 +2372,10 @@
 				E691FB58140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEC1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 				E6651E9F14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
+				E66C16A716731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
+				E66C16AE16731ECD00C996B1 /* mainManage.cpp in Sources */,
+				E66C16B616731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */,
+				E66C16BE16731F9400C996B1 /* PasswordPolicy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2534,6 +2576,10 @@
 				E691FB57140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEF1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 				E6651E9E14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
+				E66C16A616731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
+				E66C16AD16731ECD00C996B1 /* mainManage.cpp in Sources */,
+				E66C16B516731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */,
+				E66C16BD16731F9400C996B1 /* PasswordPolicy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

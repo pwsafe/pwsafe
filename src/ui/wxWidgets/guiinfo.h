@@ -61,14 +61,13 @@ class GUIInfo
     void Save(PasswordSafeFrame* frame);
     void Restore(PasswordSafeFrame* frame);
 
-
-  private:
-
     void SaveTreeViewInfo(PWSTreeCtrl* tree);
     void SaveGridViewInfo(PWSGrid* grid);
 
     void RestoreTreeViewInfo(PWSTreeCtrl* tree);
     void RestoreGridViewInfo(PWSGrid* grid);
+
+  private:
 
     string_or_uuid     m_treeTop;
     string_or_uuid     m_treeSelection;

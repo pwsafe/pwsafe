@@ -23,8 +23,10 @@
 
 #include "PWSFaultHandler.h"
 
-#include "core\StringX.h"
-#include "core\PWSLog.h"
+#include "core/StringX.h"
+#include "core/PWSLog.h"
+
+#include "os/lib.h"
 
 #include "resource3.h"
 
@@ -97,24 +99,15 @@ void LocalizeFaultHandler(HINSTANCE inst) {
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
-  // (Load Library using absolute path to avoid dll poisoning attacks)
-  TCHAR szFileName[MAX_PATH];
-  memset(szFileName, 0, MAX_PATH);
-  GetSystemDirectory(szFileName, MAX_PATH);
-  size_t nLen = _tcslen( szFileName );
-  if (nLen > 0) {
-    if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s(szFileName, MAX_PATH, L"\\");
-  }
-  _tcscat_s(szFileName, MAX_PATH, L"DbgHelp.dll");
-  hDbgHelp = ::LoadLibrary(szFileName);
+  
+  hDbgHelp = HMODULE(pws_os::LoadLibrary(_T("DbgHelp.dll"), pws_os::LOAD_LIBRARY_SYS));
   if (hDbgHelp == NULL)
     return;
 
-  pfcnMiniDumpWriteDump = (PMDWD)::GetProcAddress(hDbgHelp, "MiniDumpWriteDump");
+  pfcnMiniDumpWriteDump = PMDWD(pws_os::GetFunction(hDbgHelp, "MiniDumpWriteDump"));
 
   if (pfcnMiniDumpWriteDump == NULL) {
-    ::FreeLibrary(hDbgHelp);
+    pws_os::FreeLibrary(hDbgHelp);
     hDbgHelp = NULL;
     return;
   }
@@ -399,7 +392,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
 
  exit:
   // Now we can free the library
-  ::FreeLibrary(hDbgHelp);
+  pws_os::FreeLibrary(hDbgHelp);
   hDbgHelp = NULL;
   pfcnMiniDumpWriteDump = NULL;
 
@@ -414,7 +407,7 @@ void RemoveFaultHandler(bool bFreeLibrary)
 
   // Free library if called during application normal termination
   if (bFreeLibrary && hDbgHelp != NULL) {
-    ::FreeLibrary(hDbgHelp);
+    pws_os::FreeLibrary(hDbgHelp);
     hDbgHelp = NULL;
   }
 

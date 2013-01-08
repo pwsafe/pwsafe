@@ -28,6 +28,7 @@
 #include "./DbSelectionPanel.h"
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
+#include "./SelectionCriteria.h"
 
 #include <wx/filename.h>
 #include <wx/valgen.h>
@@ -124,6 +125,21 @@ struct SyncFieldSelection {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType field) {
+    switch (field) {
+      case CItemData::GROUP:
+      case CItemData::USER:
+      case CItemData::TITLE:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -396,7 +412,7 @@ SyncFieldSelectionPage::SyncFieldSelectionPage(wxWizard* parent, SyncData* data)
 {
   wxBoxSizer* sizer = m_pageSizer;
   
-  m_panel = new SyncFieldSelectionPanel(this, data->selCriteria, false);
+  m_panel = new SyncFieldSelectionPanel(this, &data->selCriteria, false);
   m_panel->CreateControls(this);
   sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
   SetSizerAndFit(sizer);
@@ -409,7 +425,7 @@ bool SyncFieldSelectionPage::OnPageLeave(PageDirection dir)
 
 void SyncFieldSelectionPage::SaveData(SyncData* data)
 {
-  data->selCriteria = m_panel->m_criteria;
+  data->selCriteria = *m_panel->m_criteria;
 }
 
 
@@ -433,7 +449,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
 
   m_updatedFieldsGrid = new wxFlexGridSizer(0, 3, RowSeparation, ColSeparation);
   sizer->Add(m_updatedFieldsGrid, gridFlags.Proportion(1));
-  sizer->AddSpacer(RowSeparation);
+  sizer->AddSpacer(RowSeparation*2);
 
   sizer->Add(new wxStaticText(this, ID_NOT_UPDATED_TXT, wxEmptyString), flags.Proportion(0));
   sizer->AddSpacer(RowSeparation);
@@ -480,6 +496,11 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
     for( size_t idx = 0; idx < fieldsNotSelected.Count(); ++idx) {
       m_notUpdatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, wxT("* ") + fieldsNotSelected[idx]));
     }
+
+    // Set the wxSizer Proportion of the two grids of field lists to the number
+    // of rows they have now, or else they overlap each other
+    m_pageSizer->GetItem(m_updatedFieldsGrid)->SetProportion(m_updatedFieldsGrid->GetRows());
+    m_pageSizer->GetItem(m_notUpdatedFieldsGrid)->SetProportion(m_notUpdatedFieldsGrid->GetRows());
   }
   GetSizer()->Layout();
 }

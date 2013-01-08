@@ -366,6 +366,11 @@ msgstr ""
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -420,11 +425,6 @@ msgstr "%s%s%s_Rapport.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, Titel=\"%s\", Bruger=\"%s\" eksisterer allerede i din database eller i den importerede fil. Ekstra importeret adgang med titlen=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Prøv enten at gemme databasen med et andet navn eller afslut uden at gemme."
 
 #. Resource IDs: (343)
 #, c-format
@@ -2246,6 +2246,10 @@ msgstr ""
 msgid "Could not start print job."
 msgstr "Kunne ikke starte udskrivning."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Kunne ikke gemme databasen - Gem venligst manuelt"
@@ -2950,13 +2954,9 @@ msgstr "Eksporter &Til"
 msgid "Export &XML"
 msgstr ""
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Eksporter Post i XML format..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Eksporter Post til Alm. Tekst..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4044,10 +4044,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr "Minimum små tegn"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4456,6 +4452,10 @@ msgstr "Original Værdi:"
 msgid "Oriya"
 msgstr "Oriya"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "Anden:"
@@ -4617,6 +4617,10 @@ msgstr "Adgangskode er for kort"
 msgid "Password last changed on:"
 msgstr "Adgangskode sidst ændret den:"
 
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
+
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Adgangskode længden er mindre end summena af  'mindste' begrænsningen"
@@ -4661,6 +4665,10 @@ msgstr "Persian"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "Fysisk Tastatur:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6665,6 +6673,10 @@ msgstr "XML filer (*.xml)|*.xml|Alle filer (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML filer (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

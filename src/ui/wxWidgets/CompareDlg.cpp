@@ -30,6 +30,8 @@
 #include "../../core/core.h"
 #include "./addeditpropsheet.h"
 #include "./fieldselectiondlg.h"
+#include "./SelectionCriteria.h"
+
 #include <wx/statline.h>
 #include <wx/grid.h>
 #include <wx/ptr_scpd.h>
@@ -184,6 +186,26 @@ struct CompareDlgType {
     return field == CItemData::GROUP || field == CItemData::TITLE || field == CItemData::USER;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType field) {
+    switch (field) {
+      case CItemData::DCA:
+      case CItemData::SHIFTDCA:
+      case CItemData::CTIME:
+      case CItemData::PMTIME:
+      case CItemData::ATIME:
+      case CItemData::RMTIME:
+      case CItemData::XTIME:
+      case CItemData::XTIME_INT:
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -222,7 +244,7 @@ wxCollapsiblePane* CompareDlg::CreateOptionsPanel(wxSizer* dlgSizer)
   wxCollapsiblePane* optionsPane = new wxCollapsiblePane(this, wxID_ANY, _("Advanced Options..."));
   //Create the Advanced Selection Options panel with the pane's window as parent
   AdvancedSelectionPanel* advPanel = new AdvancedSelectionImpl<CompareDlgType>(optionsPane->GetPane(),
-                                                                               *m_selCriteria,
+                                                                               m_selCriteria,
                                                                                true);
   advPanel->CreateControls(optionsPane->GetPane());
   //Create a vertical box sizer
@@ -280,6 +302,8 @@ void CompareDlg::OnCompare(wxCommandEvent& )
       m_otherCore->SetCurFile(tostringx(m_dbPanel->m_filepath));
       m_otherCore->SetReadOnly(true);
 
+      // TODO: must copy the selectionCriteria from advanced options pane.  Or else
+      // the search would always be conducted on default field criteria
     m_current->data.clear();
     m_comparison->data.clear();
     m_conflicts->data.clear();

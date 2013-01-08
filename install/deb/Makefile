@@ -4,7 +4,7 @@
 # from src/ui/wxWidgets/version.in
 RELEASENAME := 0.8
 
-DISTRO := $(shell echo $(word 2,$(shell lsb_release -d))|tr [:upper:] [:lower:])
+DISTRO := $(shell echo $(word 3,$(shell lsb_release -i))|tr [:upper:] [:lower:])
 
 DEBNAME32 = $(RELEASEDIR)passwordsafe-$(DISTRO)-$(RELEASENAME).i686.deb
 DEBNAME64 = $(RELEASEDIR)passwordsafe-$(DISTRO)-$(RELEASENAME).amd64.deb
@@ -70,7 +70,7 @@ debtree:
 	@$(CP) $(PWSAFE-BIN) debian/usr/bin
 	@strip debian/usr/bin/pwsafe
 	@$(CP) $(DOCS) debian/usr/share/doc/passwordsafe
-	@$(CAT) ./copyright ../../LICENSE > \
+	@$(CAT) ../copyright ../../LICENSE > \
 		debian/usr/share/doc/passwordsafe/copyright
 	@$(CP) ./changelog.Debian debian/usr/share/doc/passwordsafe
 	@(cd debian/usr/share/doc/passwordsafe; \

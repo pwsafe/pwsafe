@@ -127,7 +127,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
-  {_T("CopyPasswordWhenBrowseToURL"), true, ptDatabase},    // database
+  {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
 };
 
 // Default value = -1 means set at runtime
@@ -1061,17 +1061,9 @@ void PWSprefs::InitializePreferences()
   } else {
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
-#ifdef UNICODE
-    CUTF8Conv conv;
-    size_t fnamelen;
-    const unsigned char *fname = NULL;
-    conv.ToUTF8(m_configfilename.c_str(), fname, fnamelen); 
-#else
-    const char *fname = m_configfilename.c_str();
-#endif
-    ofstream ofs(reinterpret_cast<const char *>(fname));
-    if (!ofs.bad()) {
-      ofs.close();
+    FILE *testfile = pws_os::FOpen(m_configfilename.c_str(), _T("w"));
+    if (testfile != NULL) {
+      fclose(testfile);
       pws_os::DeleteAFile(m_configfilename.c_str());
       m_ConfigOption = CF_FILE_RW_NEW;
       isRO = false;
@@ -1153,25 +1145,26 @@ void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
   int i;
   // Default values only
   for (i = 0; i < NumBoolPrefs; i++)
-    if (m_bool_prefs[i].ptype == ptDatabase)
+    if (m_bool_prefs[i].ptype == ptDatabase) {
       if (bUseCopy)
         m_boolCopyValues[i] = m_bool_prefs[i].defVal != 0;
       else
         m_boolValues[i] = m_bool_prefs[i].defVal != 0;
-
+    }
   for (i = 0; i < NumIntPrefs; i++)
-    if (m_int_prefs[i].ptype == ptDatabase)
+    if (m_int_prefs[i].ptype == ptDatabase) {
       if (bUseCopy)
         m_intCopyValues[i] = m_int_prefs[i].defVal;
       else
         m_intValues[i] = m_int_prefs[i].defVal;
-
+    }
   for (i = 0; i < NumStringPrefs; i++)
-    if (m_string_prefs[i].ptype == ptDatabase)
+    if (m_string_prefs[i].ptype == ptDatabase) {
       if (bUseCopy)
         m_stringCopyValues[i] = m_string_prefs[i].defVal;
       else
         m_stringValues[i] = m_string_prefs[i].defVal;
+    }
 }
 
 void PWSprefs::LoadProfileFromDefaults()

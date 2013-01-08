@@ -291,8 +291,21 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       GetLocker(lock_filename, s_locker);
       locker = s_locker.c_str();
       break;
-    default:
-      LoadAString(locker, IDSC_NOLOCKACCESS);
+    default: {
+      // Give detailed error message, if possible
+      LPTSTR lpMsgBuf = NULL;
+      if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                        NULL,
+                        error,
+                        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                        (LPTSTR)&lpMsgBuf,
+                        0, NULL) != 0) {
+        locker = lpMsgBuf;
+        LocalFree(lpMsgBuf);
+      } else { // should never happen!
+        LoadAString(locker, IDSC_NOLOCKACCESS); // berrer than nothing
+      }
+    }
       break;
     } // switch (error)
     return false;

@@ -417,6 +417,11 @@ msgstr "%s - Samengevoegd %s"
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -471,11 +476,6 @@ msgstr "%s%s%s_Rapport.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw databse of in het Importeer bestand. Vermelding geimporteerd met titel=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Probeer het bestand met een andere naam op te slaan of beeindig zonder op te slaan."
 
 #. Resource IDs: (343)
 #, c-format
@@ -2297,6 +2297,10 @@ msgstr "Kon %1 niet verwijderen want het is de huidige folder."
 msgid "Could not start print job."
 msgstr "Kon print opdracht niet starten."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Kon database niet opslaan - SVP handmatig opslaan"
@@ -3002,13 +3006,9 @@ msgstr "Exporteren &Naar"
 msgid "Export &XML"
 msgstr "Exporteer &XML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Vermelding exporteren in XML formaat..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Vermelding exporteren naar tekst zonder opmaak..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4096,10 +4096,6 @@ msgstr "Minimaal aantal cijfers"
 msgid "Minimum lowercase characters"
 msgstr "Minimum aantal kleine letters"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr "Minimale wachtwoord lengte"
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr "Minimale symbolen"
@@ -4508,6 +4504,10 @@ msgstr "Originele waarde"
 msgid "Oriya"
 msgstr "Oriya"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "Anders:"
@@ -4669,6 +4669,10 @@ msgstr "Wachtwoord is te kort"
 msgid "Password last changed on:"
 msgstr "Wachtwoord laatst gewijzigd op:"
 
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
+
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Wachtwoord lengte is minder dan de som van de \"tenminste\" randvoorwaardes"
@@ -4713,6 +4717,10 @@ msgstr "Perzisch"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "Fysiek toetsenbord"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -5257,7 +5265,7 @@ msgstr "Wijzigingen bewaren in %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr "Opslaan van de database onmidellijk na Wijzigen of Toevoegen"
+msgstr "Opslaan van de database onmiddellijk na Wijzigen of Toevoegen"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -6717,6 +6725,10 @@ msgstr "XML bestanden (*.xml)|*.xml|Alle bestanden (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML bestanden (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

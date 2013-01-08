@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-15 15:10+0400\n"
+"PO-Revision-Date: 2012-12-09 22:50+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -430,6 +430,11 @@ msgstr "%s — объединено %s"
 msgid "%s - Sync'd %s"
 msgstr "%s — синхронизовано %s"
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr "%s Сохраните контейнер под другим именем или выйдите без сохранения."
+
 # AFX_IDS_AUTOSAVE_RECOVERED
 #. Resource IDs: (3887)
 #, c-format
@@ -487,11 +492,6 @@ msgstr "%s%s%s_Report.txt"
 #, fuzzy, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, c заголовком «%s» и именем пользователя «%s» уже существует в контейнере или импортируемом файле. Импортированный элемент добавлен с заголовком «%s».\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Сохраните контейнер под другим именем или выйдите без сохранения."
 
 #. Resource IDs: (343)
 #, c-format
@@ -2145,7 +2145,7 @@ msgstr "Сравнить"
 
 #. Resource IDs: (335)
 msgid "Compare Complete"
-msgstr "Полное сравнение"
+msgstr "Сравнение завершено"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
@@ -2154,7 +2154,7 @@ msgstr "Результаты сравнения"
 #. Resource IDs: (335)
 #, c-format
 msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Полное сравнение для текущего контейнера:\n\t %s\n и:\n\t %s"
+msgstr "Завершено сравнение текущего контейнера:\n\t %s\n и:\n\t %s"
 
 #. Resource IDs: (32091)
 msgid "Compare entries..."
@@ -2377,6 +2377,10 @@ msgstr "Не удалось удалить %1, поскольку это тек�
 #. Resource IDs: (3857)
 msgid "Could not start print job."
 msgstr "Не удалось запустить задание печати."
+
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr "Невозможно найти исходный элемент. Контейнер находится в противоречивом состоянии."
 
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
@@ -3126,13 +3130,9 @@ msgstr "Экспортировать &в"
 msgid "Export &XML"
 msgstr "Экспорт в &XML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Экспортировать элемент в XML формат..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Экспортировать элемент в простой текст..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr "Экспортировать элемент в"
 
 # урезано (кнопка в мастере)
 #. Resource IDs: (365)
@@ -4261,10 +4261,6 @@ msgstr "Минимальное кол-во цифр"
 msgid "Minimum lowercase characters"
 msgstr "Минимально кол-во строчных букв"
 
-#. Resource IDs: (257)
-msgid "Minimum password length"
-msgstr "Минимальная длина пароля"
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr "Минимальное кол-во символов"
@@ -4687,6 +4683,11 @@ msgstr "Исходное значение:"
 msgid "Oriya"
 msgstr "Ория"
 
+# Статистика на вкладке дата/время
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr "Изменения в других полях:"
+
 # (Настройки->резервные копии) Имя для контейнера:
 # и
 # Импорт из TXT (разделитель) 
@@ -4859,9 +4860,13 @@ msgstr "Пароль слишком короткий"
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr "Длина пароля"
+
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr "Длина пароля меньше, чем сумма ограничении вида «не менее»"
+msgstr "Длина пароля меньше, чем сумма ограничений вида «не менее»"
 
 #. Resource IDs: (331)
 msgid "Password length must be between 4 and 1024 characters."
@@ -4905,6 +4910,10 @@ msgstr "Персидская"
 # используется на экранной клавиатуре, входит только первое слово (отображется системная раскладка по умолчанию)
 msgid "Physical Keyboard:"
 msgstr "Системная:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr "Простой текст (разделитель табуляция)..."
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -4960,7 +4969,7 @@ msgstr "Укажите имя нового файла для текущего к
 
 # "Please confirm you wish to delete the Session filter Filter1"
 #. Resource IDs: (353)
-#, fuzzy, c-format
+#, c-format
 msgid "Please confirm delete of the %s filter %s?"
 msgstr "Подтверждаете удаление %s фильтра %s?"
 
@@ -6355,7 +6364,7 @@ msgid "This program requires the file %s, which was not found on this system."
 msgstr "Программе требуется файл %s, который не был найден на компьютере."
 
 #. Resource IDs: (344)
-#, fuzzy, c-format
+#, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
 msgstr "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом либо сам является ярлыком."
 
@@ -6416,7 +6425,7 @@ msgstr "Заполните поля для добавления нового э�
 
 #. Resource IDs: (211)
 msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
-msgstr "Для замены паролей существующих элементов, следующие поля должны присутствовать: группа/заголовок, имя пользователя, пароль. Один или несколько из них отсутствуют, поэтому элементы не будут обновлены."
+msgstr "Для замены паролей существующих элементов должны присутствовать следующие поля: группа/заголовок, имя пользователя, пароль. Один или несколько из них отсутствуют, поэтому элементы не будут обновлены."
 
 #. Resource IDs: (363)
 msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
@@ -6607,7 +6616,7 @@ msgstr "США (международная)"
 # дата в истории паролей
 #. Resource IDs: (211)
 msgid "Unknown"
-msgstr "Незвестно"
+msgstr "Неизвестно"
 
 #. Resource IDs: (329)
 msgid "Unknown            "
@@ -6880,7 +6889,7 @@ msgstr "Внимание! В случае продолжения, значени
 #. Resource IDs: (363)
 #, c-format
 msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!\r\n\r\nЭто действие позволяет обойти защиту предоставляемую программой. Прололжайте только в случае, если понимаете и принимаете все возможные риски."
+msgstr "Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!\r\n\r\nЭто действие позволяет обойти защиту предоставляемую программой. Продолжайте только в случае, если понимаете и принимаете все возможные риски."
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -6984,6 +6993,10 @@ msgstr "XML-файлы (*.xml)|*.xml|Все файлы (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML-файлы (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr "XML формат..."
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
@@ -7374,17 +7387,17 @@ msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
 msgstr "\r\nСлияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)"
 
 #. Resource IDs: (214)
-#, fuzzy, c-format
+#, c-format
 msgid "\r\nSynchronize completed: %d %s updated"
 msgstr "\r\nСинхронизация завершена: %d %s обновлено"
 
 #. Resource IDs: (214)
-#, fuzzy, c-format
+#, c-format
 msgid "\r\nThe following %s %s updated:"
 msgstr "\r\nСледующие %s %s обновлены:"
 
 #. Resource IDs: (214)
-#, fuzzy, c-format
+#, c-format
 msgid "\r\nThe following new %s %s merged into this database:"
 msgstr "\r\nНовые %s %s добавлены в данный контейнер:"
 

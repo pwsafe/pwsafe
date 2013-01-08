@@ -61,6 +61,7 @@
 #include "./SystemTrayMenuId.h"
 #include "./CompareDlg.h"
 #include "../../core/core.h"
+#include "./SelectionCriteria.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -130,7 +131,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
+  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
 
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
@@ -150,6 +151,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_BROWSEURLPLUS, PasswordSafeFrame::OnBrowseUrlAndAutotype )
 
   EVT_MENU( ID_SENDEMAIL, PasswordSafeFrame::OnSendEmail )
+
+  EVT_MENU( ID_COPYRUNCOMMAND, PasswordSafeFrame::OnCopyRunCmd )
 
   EVT_MENU( ID_RUNCOMMAND, PasswordSafeFrame::OnRunCommand )
 
@@ -444,7 +447,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_OPTIONS_M, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
@@ -471,6 +474,12 @@ void PasswordSafeFrame::CreateControls()
   m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
+  Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED, 
+                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), NULL, m_tree);
+  Connect(ID_RENAME, wxEVT_COMMAND_MENU_SELECTED, 
+                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), NULL, m_tree);
+
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
@@ -650,7 +659,13 @@ void PasswordSafeFrame::ShowGrid(bool show)
          iter++) {
       m_grid->AddItem(iter->second, i++);
     }
+
+    m_guiInfo->RestoreGridViewInfo(m_grid);
   }
+  else {
+    m_guiInfo->SaveGridViewInfo(m_grid);
+  }
+
   m_grid->Show(show);
   GetSizer()->Layout();
 }
@@ -668,8 +683,20 @@ void PasswordSafeFrame::ShowTree(bool show)
          iter++) {
       m_tree->AddItem(iter->second);
     }
+
+    // Empty groups need to be added separately
+    typedef std::vector<StringX> StringVectorX;
+    const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
+    for (StringVectorX::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
+      m_tree->AddEmptyGroup(*itr);
+
     if (!m_tree->IsEmpty()) // avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
+
+    m_guiInfo->RestoreTreeViewInfo(m_tree);
+  }
+  else {
+    m_guiInfo->SaveTreeViewInfo(m_tree);
   }
 
   m_tree->Show(show);
@@ -1171,10 +1198,6 @@ int PasswordSafeFrame::Open(const wxString &fname)
 }
 
 
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
- */
-
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
   CProperties props(this, m_core);
@@ -1535,7 +1558,27 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 
 void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
 {
-  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+  /**
+   * If entry has a double-click action, use it.
+   * (Unless the entry's a shortcut, in which case we ask the base)
+   * Otherwise, use the preference.
+   */
+  
+  bool isShift = ::wxGetKeyState(WXK_SHIFT);
+  PWSprefs::IntPrefs pref = (isShift) ?
+    PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
+
+  short DCA = short(PWSprefs::GetInstance()->GetPref(pref));
+  
+  CItemData *pci = item.IsShortcut() ? m_core.GetBaseEntry(&item) : &item;
+
+  short itemDCA;
+  pci->GetDCA(itemDCA, isShift);
+
+  if (itemDCA >= PWSprefs::minDCA && itemDCA <= PWSprefs::maxDCA)
+    DCA = itemDCA;
+
+  switch (DCA) {
   case PWSprefs::DoubleClickAutoType:
     DoAutotype(item);
     break;
@@ -1626,7 +1669,6 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_AUTOTYPE,       wxT("Perform Auto &Type"));
     itemEditMenu.AppendSeparator();
     itemEditMenu.Append(ID_EDIT,           wxT("Edit/&View Entry..."));
-    itemEditMenu.Append(ID_RENAME,         wxT("Rename Entry"));
     itemEditMenu.Append(ID_DUPLICATEENTRY, wxT("&Duplicate Entry"));
     itemEditMenu.Append(wxID_DELETE,       wxT("Delete Entry"));
     itemEditMenu.Append(ID_CREATESHORTCUT, wxT("Create &Shortcut"));
@@ -1719,8 +1761,9 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
     
     case ID_RENAME:
-      // only allowed if an item is selected in tree view
-      evt.Enable(m_currentView == TREE && GetSelectedEntry() != NULL );
+      // only allowed if a GROUP item is selected in tree view
+      evt.Enable(m_currentView == TREE && m_tree->ItemIsGroup(m_tree->GetSelection()) 
+                    && m_tree->GetSelection() != m_tree->GetRootItem());
       break;
 
     case ID_BROWSEURL:
@@ -1754,7 +1797,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_COPYRUNCOMMAND:
     {
       CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && item->IsRunCommandEmpty());
+      evt.Enable(item && !item->IsRunCommandEmpty());
       break;
     }
     case ID_CREATESHORTCUT:
@@ -1983,11 +2026,11 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
   if (item.GetStatus() ==CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
-    m_tree->Remove(uuid);
-    m_grid->Remove(uuid);
+    if (m_currentView == TREE) { m_tree->Remove(uuid); }
+    else { m_grid->Remove(uuid); }
   } else {
-    m_tree->UpdateItem(item);
-    m_grid->UpdateItem(item);
+    if (m_currentView == TREE) { m_tree->UpdateItem(item); }
+    else { m_grid->UpdateItem(item); }
   }
 }
 
@@ -2813,6 +2856,14 @@ struct ExportFullText
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -2854,6 +2905,14 @@ struct ExportFullXml {
     return field == CItemData::TITLE || field == CItemData::PASSWORD;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -2892,10 +2951,10 @@ void PasswordSafeFrame::DoExportText()
   
   StringX newfile;
   if (m_core.CheckPasskey(sx_temp, et.GetPassKey()) == PWScore::SUCCESS) {
-    const CItemData::FieldBits bsExport = et.selCriteria.GetSelectedFields();
-    const std::wstring subgroup_name = tostdstring(et.selCriteria.SubgroupSearchText());
-    const int subgroup_object = et.selCriteria.SubgroupObject();
-    const int subgroup_function = et.selCriteria.SubgroupFunctionWithCase();
+    const CItemData::FieldBits bsExport = et.selCriteria->GetSelectedFields();
+    const std::wstring subgroup_name = tostdstring(et.selCriteria->SubgroupSearchText());
+    const int subgroup_object = et.selCriteria->SubgroupObject();
+    const int subgroup_function = et.selCriteria->SubgroupFunctionWithCase();
     const TCHAR delimiter = et.GetDelimiter();
 
     // Note: MakeOrderedItemList gets its members by walking the 
@@ -3037,4 +3096,3 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-

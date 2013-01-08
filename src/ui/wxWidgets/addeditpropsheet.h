@@ -44,6 +44,10 @@ class wxBoxSizer;
 ////@end forward declarations
 class UIInterFace;
 
+#ifndef wxDIALOG_MODAL
+#define wxDIALOG_MODAL 0
+#endif
+
 /*!
  * Control identifiers
  */

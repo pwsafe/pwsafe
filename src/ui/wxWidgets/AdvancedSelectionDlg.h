@@ -13,108 +13,57 @@
 #include "../../core/ItemData.h"
 #include "./wxutils.h"
 
-extern CItemData::FieldType subgroups[];
-size_t GetNumFieldsSelectable();
-CItemData::FieldType GetSelectableField(size_t idx);
 
-struct _subgroupFunctions {
-  const charT* name;
-  PWSMatch::MatchRule function;
-};
-extern struct _subgroupFunctions subgroupFunctions[];
-
-
-/*!
- * SelectionCriteria class declaration
+/*
+ *
+ * AdvancedSelectionPanel is a composite UI widget which looks like this:
+ * 
+ *    +----------------------------------------------------------------------------+
+ *    |    +------------------------------------------------------------------+    |
+ *    |    |  [x] Restrict to a subset of entries                             |    |
+ *    |    |         ___________      __________                              |    |
+ *    |    |  where [___________[v]  [__________[v]                           |    |
+ *    |    |                                                                  |    |
+ *    |    |  the following text                                              |    |
+ *    |    |  _____________________________                                   |    |
+ *    |    | [_____________________________]                                  |    |
+ *    |    |                                                                  |    |
+ *    |    |  [x] Case Sensitive                                              |    |
+ *    |    +------------------------------------------------------------------+    |
+ *    |                                                                            |
+ *    |    Available Fields                  Selected Fields                       |
+ *    |    +-----------------+               +--------------------------------+    |
+ *    |    | URL             |     [  > ]    | Group [Mandatory field]        |    |
+ *    |    | Password        |     [ >> ]    | Title [Mandatory field]        |    |
+ *    |    | Email           |     [ <  ]    | Username [Mandatory field]     |    |
+ *    |    | Notes           |     [ << ]    | Autotype                       |    |
+ *    |    |    .....        |               |    ...........                 |    |
+ *    |    +-----------------+               +--------------------------------+    |
+ *    |                                                                            |
+ *    +----------------------------------------------------------------------------+
+ *
+ * This widget is used in multiple situations where users need to select
+ * a subset of entries in their current db for some operation, while also
+ * restricting the operation to a set of fields of those entries. There
+ * are at least 5 such operations: Export to Text/XML, Compare, Merge, Synchronize
+ * and Search. In some situations though, the user cannot choose the individual fields,
+ * e.g while Merging a DB with another.  All fields of selected entries are merged.
+ *
+ * For example, the user might want to export the Group, Title, Username and Autotype
+ * fields a set of entries where the URL contains the word "gmail".
+ *
+ * Or he might want to search for some text in a set of entries where the Title contains
+ * "Bank", and also restrict the search to Email and Notes fields.
+ *
+ * The Widget is re-usable as a stand-alone dialog (Export to Text/XML), or as an embedded
+ * child element in another dialog (Compare) or wizard (Synchronize).
+ *
+ * It uses the SelectionCriteria class as the backing data structure.
+ *
  */
 
-struct SelectionCriteria 
-{
-  SelectionCriteria() : m_fCaseSensitive(false),
-                        m_fUseSubgroups(false),
-                        m_subgroupObject(0),            // index into subgroups array defined in .cpp
-                        m_subgroupFunction(0),          // index into subgroupFunctions array defined in .cpp
-                        m_fDirty(false)
-  {
-    SelectAllFields();
-  }
-  
-  SelectionCriteria(const SelectionCriteria& other):  m_fCaseSensitive(other.m_fCaseSensitive),
-                                                      m_bsFields(other.m_bsFields),
-                                                      m_subgroupText(other.m_subgroupText),
-                                                      m_fUseSubgroups(other.m_fUseSubgroups),
-                                                      m_subgroupObject(other.m_subgroupObject),
-                                                      m_subgroupFunction(other.m_subgroupFunction),
-                                                      m_fDirty(false)
-  {}
-
-private:
-  bool                  m_fCaseSensitive;
-  CItemData::FieldBits  m_bsFields;
-  wxString              m_subgroupText;
-  bool                  m_fUseSubgroups;
-  int                   m_subgroupObject;
-  int                   m_subgroupFunction;
-  bool                  m_fDirty;
-
-public:
-  bool IsDirty(void) const { return m_fDirty; }
-  void Clean(void) { m_fDirty = false; }
-  
-  bool HasSubgroupRestriction() const             { return m_fUseSubgroups; }
-  CItemData::FieldBits GetSelectedFields() const  { return m_bsFields; }
-  size_t GetNumSelectedFields() const             { return m_bsFields.count(); }
-  wxString SubgroupSearchText() const             { return m_subgroupText; }
-  bool CaseSensitive() const                      { return m_fCaseSensitive; }
-  CItemData::FieldType SubgroupObject() const     { return subgroups[m_subgroupObject];}
-  PWSMatch::MatchRule  SubgroupFunction() const   { return subgroupFunctions[m_subgroupFunction].function; }
-  int  SubgroupFunctionWithCase() const           { return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction(); }
-  void SelectAllFields()                          { for(size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx) 
-                                                      m_bsFields.set(GetSelectableField(idx));
-                                                  }
-  void SelectField(CItemData::FieldType ft)       { m_bsFields.set(ft); }
-  void ResetField(CItemData::FieldType ft)        { m_bsFields.reset(ft); }
-  size_t SelectedFieldsCount() const              { return m_bsFields.count(); }
-  size_t TotalFieldsCount() const                 { return m_bsFields.size(); }
-  bool IsFieldSelected(CItemData::FieldType ft) const { return m_bsFields.test(ft); }
-
-  bool MatchesSubgroupText(const CItemData& item) const {
-    //could be very inefficient in a loop across the entire DB
-    return !m_fUseSubgroups || item.Matches(tostdstring(m_subgroupText), SubgroupObject(), SubgroupFunction());
-  }
-  
-  wxString GetGroupSelectionDescription() const;
-  //returns true if all fields have been selected
-  bool GetFieldSelection(wxArrayString& selectedFields, wxArrayString& unselectedFields);
-
-SelectionCriteria& operator=(const SelectionCriteria& data) {
-    m_fCaseSensitive    = data.m_fCaseSensitive;
-    m_bsFields          = data.m_bsFields;
-    m_subgroupText      = data.m_subgroupText;
-    m_fUseSubgroups     = data.m_fUseSubgroups;
-    m_subgroupObject    = data.m_subgroupObject;
-    m_subgroupFunction  = data.m_subgroupFunction;
-    
-    m_fDirty = true;
-    
-    return *this;
-  }
-  friend class AdvancedSelectionPanel;
-  friend bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b);
-};
-
-inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
-{
-  return a.m_bsFields         != b.m_bsFields         || 
-         a.m_fCaseSensitive   != b.m_fCaseSensitive   ||
-         a.m_fUseSubgroups    != b.m_fUseSubgroups    ||
-         a.m_subgroupFunction != b.m_subgroupFunction ||
-         a.m_subgroupText     != b.m_subgroupText     ||
-         a.m_subgroupObject   != b.m_subgroupObject; 
-}
-
-
-
+struct SelectionCriteria;
+ 
 /*!
  * AdvancedSelectionDlg class declaration
  */
@@ -127,7 +76,7 @@ class AdvancedSelectionPanel: public wxPanel
   DECLARE_NO_COPY_CLASS(AdvancedSelectionPanel)
 
 public:
-  AdvancedSelectionPanel(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate);
+  AdvancedSelectionPanel(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate);
 
   bool Validate();               //overriden from wxWindow
   bool TransferDataToWindow();   //overriden from wxWindow
@@ -136,17 +85,20 @@ public:
   void OnSelectAll( wxCommandEvent& evt );
   void OnRemoveSome( wxCommandEvent& evt );
   void OnRemoveAll( wxCommandEvent& evt );
+  void OnRestrictSearchItems(wxCommandEvent& evt);
 
   void CreateControls(wxWindow* parentWnd);
   bool DoValidation();               //actual validator
 
 protected:
   virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
+  virtual bool IsPreselectedField(CItemData::FieldType field) const = 0;
+  virtual bool IsUsableField(CItemData::FieldType field) const = 0;
   virtual bool ShowFieldSelection() const = 0;
   virtual wxString GetTaskWord() const = 0;
   
 public:
-  SelectionCriteria m_criteria;
+  SelectionCriteria* m_criteria;
   bool m_autoValidate;
 };
 
@@ -154,7 +106,7 @@ template <class DlgType>
 class AdvancedSelectionImpl: public AdvancedSelectionPanel
 {
 public:
-  AdvancedSelectionImpl(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate):
+  AdvancedSelectionImpl(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate):
     AdvancedSelectionPanel(wnd, existingCriteria, autoValidate)
   {}
 
@@ -162,6 +114,14 @@ public:
     return DlgType::IsMandatoryField(field);
   }
   
+  virtual bool IsPreselectedField(CItemData::FieldType field) const {
+    return DlgType::IsPreselectedField(field);
+  }
+
+  virtual bool IsUsableField(CItemData::FieldType field) const {
+    return DlgType::IsUsableField(field);
+  }
+
   virtual bool ShowFieldSelection() const {
     return DlgType::ShowFieldSelection();
   }
@@ -180,7 +140,7 @@ class AdvancedSelectionDlg : public wxDialog
   PanelType* m_panel;
 
 public:
-  AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria): m_panel(0)
+  AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(0)
   {
     wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
                             wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
@@ -202,14 +162,6 @@ public:
     
     SetSizerAndFit(sizer);
   }
-
-  SelectionCriteria GetSelectionCriteria() const { return m_panel->m_criteria; }
-  
-  void GetSelectionCriteria(SelectionCriteria& other) const { 
-    if (other != m_panel->m_criteria)
-      other = m_panel->m_criteria;
-  }
-
 };
 
 

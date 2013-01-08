@@ -97,7 +97,6 @@ class PasswordSafeSearch;
 #define ID_CHANGECOMBO 10056
 #define ID_BACKUP 10057
 #define ID_RESTORE 10058
-#define ID_OPTIONS_M 10059
 #define ID_PWDPOLSM 10215
 #define ID_YUBIKEY_MNG 10010
 #define ID_MENUITEM 10012
@@ -260,6 +259,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SENDEMAIL
   void OnSendEmail(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYRUNCOMMAND
+  void OnCopyRunCmd( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RUNCOMMAND
   void OnRunCommand(wxCommandEvent& evt);
@@ -462,12 +464,13 @@ public:
   BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
   
-  // Do* member functions for dbl-click and menu-accessible actions
+  // Do* member functions for right-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);
   void DoCopyUsername(CItemData &item);
   void DoCopyURL(CItemData &item);
   void DoCopyEmail(CItemData &item);
+  void DoCopyRunCmd(CItemData &item);
   void DoEdit(CItemData item);
   void DoAutotype(CItemData &item);
   void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);

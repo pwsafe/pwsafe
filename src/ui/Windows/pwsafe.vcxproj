@@ -1636,9 +1636,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="res\PasswordSafe.exe.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\core\core.vcxproj">
       <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

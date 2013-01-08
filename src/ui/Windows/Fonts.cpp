@@ -214,3 +214,28 @@ void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
   // Create DragFix font
   pDragFixFont->CreateFontIndirect(&DragFixLogfont);
 }
+
+LONG Fonts::CalcHeight()
+{
+  //Get max height from current/modified/password font
+  TEXTMETRIC tm;
+  HDC hDC = ::GetDC(NULL);
+  
+  HFONT hFontOld = (HFONT)SelectObject(hDC, pCurrentFont->GetSafeHandle());
+  //Current
+  GetTextMetrics(hDC, &tm);
+  LONG height = tm.tmHeight + tm.tmExternalLeading;
+  //Modified
+  SelectObject(hDC, pModifiedFont->GetSafeHandle());
+  GetTextMetrics(hDC, &tm);
+  if (height < tm.tmHeight + tm.tmExternalLeading)
+      height = tm.tmHeight + tm.tmExternalLeading;
+  //Password
+  SelectObject(hDC, pPasswordFont->GetSafeHandle());
+  GetTextMetrics(hDC, &tm);
+  if (height < tm.tmHeight + tm.tmExternalLeading)
+      height = tm.tmHeight + tm.tmExternalLeading;
+  SelectObject(hDC, hFontOld);
+  ::ReleaseDC(NULL, hDC);
+  return height;
+}

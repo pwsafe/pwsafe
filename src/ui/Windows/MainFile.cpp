@@ -2265,10 +2265,12 @@ void DboxMain::OnProperties()
   }
 }
 
-void DboxMain::OnChangeMode()
+void DboxMain::ChangeMode(bool promptUser)
 {
-  PWS_LOGIT;
-
+  // We need to prompt the user for password from r-o to r/w
+  // when this is called with main window open. Arguably more
+  // secure, s.t. an untrusted user can't change things.
+  // When called as part of unlock, user just provided it.
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
 
@@ -2298,23 +2300,18 @@ void DboxMain::OnChangeMode()
 
     // Clear the Commands
     m_core.ClearCommands();
-  } else {
+  } else if (promptUser) {
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    CPasskeyEntry *dbox_pkentry = new CPasskeyEntry(this,
+    CPasskeyEntry dbox_pkentry(this,
                                    m_core.GetCurFile().c_str(),
-                                   GCP_CHANGEMODE, true,
-                                   false,
-                                   true);
+                               GCP_CHANGEMODE, true, false, true);
 
-    INT_PTR rc = dbox_pkentry->DoModal();
-    delete dbox_pkentry;
+    INT_PTR rc = dbox_pkentry.DoModal();
     if (rc != IDOK)
       return;
   }
 
-  CGeneralMsgBox gmb;
-  CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
   std::wstring locker = L"";
   int iErrorCode;
   bool brc = m_core.ChangeMode(locker, iErrorCode);
@@ -2323,6 +2320,8 @@ void DboxMain::OnChangeMode()
     UpdateToolBarROStatus(!bWasRO);
   } else {
     // Better give them the bad news!
+    CGeneralMsgBox gmb;
+    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
     bool bInUse = false;
     UINT uiMsg = 0;
     if (bWasRO) {
@@ -2387,6 +2386,14 @@ void DboxMain::OnChangeMode()
 
   // Update Minidump user streams - mode is in user stream 0
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us0);
+}
+
+
+
+void DboxMain::OnChangeMode()
+{
+  PWS_LOGIT;
+  ChangeMode(true); // true means "prompt use for password".
 }
 
 void DboxMain::OnCompare()

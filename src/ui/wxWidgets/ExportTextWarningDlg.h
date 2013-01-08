@@ -16,6 +16,7 @@
 
 class CSafeCombinationCtrl;
 class wxTimer;
+struct SelectionCriteria;
 
 class CExportTextWarningDlgBase : public wxDialog , private CYubiMixin {
 
@@ -24,7 +25,7 @@ class CExportTextWarningDlgBase : public wxDialog , private CYubiMixin {
 
 public:
   CExportTextWarningDlgBase(wxWindow* parent);
-  ~CExportTextWarningDlgBase() {delete m_pollingTimer;}
+  ~CExportTextWarningDlgBase();
 
   void OnAdvancedSelection( wxCommandEvent& evt );
   StringX GetPassKey() const { return passKey; }
@@ -33,7 +34,7 @@ public:
 
   virtual void DoAdvancedSelection() = 0;
 
-  SelectionCriteria selCriteria;
+  SelectionCriteria* selCriteria;
  private:
   void OnYubibtnClick( wxCommandEvent& event );
   void OnPollingTimer(wxTimerEvent& timerEvent);
@@ -59,8 +60,7 @@ public:
 
   virtual void DoAdvancedSelection() {
     AdvancedSelectionDlg<DlgType> dlg(this, selCriteria);
-    if (dlg.ShowModal() == wxID_OK)
-      dlg.GetSelectionCriteria(selCriteria);
+    dlg.ShowModal();
   }
 };
 

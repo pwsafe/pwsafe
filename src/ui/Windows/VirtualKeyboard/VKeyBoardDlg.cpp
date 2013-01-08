@@ -23,6 +23,7 @@
 #include "../GeneralMsgBox.h"
 
 #include "../../../os/dir.h"
+#include "../../../os/lib.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
 #include "../../../core/PWSrand.h"
 #include "../../../core/PWSprefs.h"
@@ -207,13 +208,13 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   static bool warnedAlready(false); // warn only once per process.
 
   // Try to load DLL
-  std::wstring dll_loc = pws_os::getexecdir();
 #if defined(_DEBUG) || defined(DEBUG)
-  dll_loc += L"pws_osk_D.dll";
+  TCHAR *dll_name = _T("pws_osk_D.dll");
 #else
-  dll_loc += L"pws_osk.dll";
+  TCHAR *dll_name = _T("pws_osk.dll");
 #endif
-  HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
+  HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+
   if (OSK_module == NULL) {
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
     return false;
@@ -221,12 +222,12 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
 
 
-    LP_OSK_GetKeyboardData pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module,
-                                                                                "OSK_GetKeyboardData");
-    LP_OSK_ListKeyboards pListKBs = (LP_OSK_ListKeyboards)GetProcAddress(OSK_module,
-                                                                         "OSK_ListKeyboards");
-    LP_OSK_GetVersion pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module,
-                                                                      "OSK_GetVersion");
+    LP_OSK_GetKeyboardData pGetKBData =
+      LP_OSK_GetKeyboardData(pws_os::GetFunction(OSK_module, "OSK_GetKeyboardData"));
+    LP_OSK_ListKeyboards pListKBs =
+      LP_OSK_ListKeyboards(pws_os::GetFunction(OSK_module, "OSK_ListKeyboards"));
+    LP_OSK_GetVersion pOSKVersion =
+      LP_OSK_GetVersion(pws_os::GetFunction(OSK_module, "OSK_GetVersion"));
 
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetVersion: %s\n",
                   pOSKVersion != NULL ? L"OK" : L"FAILED");
@@ -245,7 +246,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
       gmb.AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     }
 
-    BOOL brc = FreeLibrary(OSK_module);
+    BOOL brc = pws_os::FreeLibrary(OSK_module);
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n",
                   brc == TRUE ? L"OK" : L"FAILED");
   }
@@ -356,17 +357,18 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
 
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
-  std::wstring dll_loc = pws_os::getexecdir();
 #if defined(_DEBUG) || defined(DEBUG)
-  dll_loc += L"pws_osk_D.dll";
+  TCHAR *dll_name = _T("pws_osk_D.dll");
 #else
-  dll_loc += L"pws_osk.dll";
+  TCHAR *dll_name = _T("pws_osk.dll");
 #endif
-  m_OSK_module = LoadLibrary(dll_loc.c_str());
+  m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
   ASSERT(m_OSK_module != NULL);
-  m_pGetKBData = (LP_OSK_GetKeyboardData)GetProcAddress(m_OSK_module, "OSK_GetKeyboardData");
-  m_pListKBs   = (LP_OSK_ListKeyboards)GetProcAddress(m_OSK_module, "OSK_ListKeyboards");
+  m_pGetKBData = LP_OSK_GetKeyboardData(pws_os::GetFunction(m_OSK_module,
+                                                            "OSK_GetKeyboardData"));
+  m_pListKBs   = LP_OSK_ListKeyboards(pws_os::GetFunction(m_OSK_module,
+                                                          "OSK_ListKeyboards"));
 
   m_uiKLID = 0;
   if (wcKLID != NULL) {
@@ -403,7 +405,7 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 
   delete m_pToolTipCtrl;
 
-  FreeLibrary(m_OSK_module);
+  pws_os::FreeLibrary(m_OSK_module);
 
   // Reset double click mouse interval
   BOOL brc;

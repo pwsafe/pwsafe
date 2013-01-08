@@ -275,16 +275,17 @@ public:
   void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
-  void UpdateListItem(const int lindex, const int type, const StringX &sxnewText);
+  void UpdateListItemField(const int lindex, const int type, const StringX &sxnewText);
   void UpdateTreeItem(const HTREEITEM hItem, const StringX &sxnewText);
   void UpdateListItemGroup(const int lindex, const StringX &sxnewGroup)
-  {UpdateListItem(lindex, CItemData::GROUP, sxnewGroup);}
+  {UpdateListItemField(lindex, CItemData::GROUP, sxnewGroup);}
   void UpdateListItemTitle(const int lindex, const StringX &sxnewTitle)
-  {UpdateListItem(lindex, CItemData::TITLE, sxnewTitle);}
+  {UpdateListItemField(lindex, CItemData::TITLE, sxnewTitle);}
   void UpdateListItemUser(const int lindex, const StringX &sxnewUser)
-  {UpdateListItem(lindex, CItemData::USER, sxnewUser);}
+  {UpdateListItemField(lindex, CItemData::USER, sxnewUser);}
   void UpdateListItemPassword(const int lindex, const StringX &sxnewPassword)
-  {UpdateListItem(lindex, CItemData::PASSWORD, sxnewPassword);}
+  {UpdateListItemField(lindex, CItemData::PASSWORD, sxnewPassword);}
+  
   void SetHeaderInfo();
   CString GetHeaderText(int iType) const;
   int GetHeaderWidth(int iType) const;
@@ -481,6 +482,9 @@ public:
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
+
+  void ChangeMode(bool promptUser); // r-o <-> r/w
+  
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
@@ -900,6 +904,8 @@ private:
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
   void RebuildGUI(const int iView = iBothViews);
+  void UpdateEntryinGUI(CItemData &ci);
+  StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   
   static const struct UICommandTableEntry {
     UINT ID;

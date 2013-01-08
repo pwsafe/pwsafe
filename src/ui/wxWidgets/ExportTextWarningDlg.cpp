@@ -22,8 +22,7 @@
 
 #include "ExportTextWarningDlg.h"
 #include "SafeCombinationCtrl.h"
-
-#include "graphics/Yubikey-button.xpm"
+#include "./SelectionCriteria.h"
 
 #include <wx/statline.h>
 
@@ -31,22 +30,19 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER,
-       ID_ADVANCED, ID_YUBIBTN, ID_YUBISTATUS};
+enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
 IMPLEMENT_CLASS( CExportTextWarningDlgBase, wxDialog )
 
 BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
   EVT_BUTTON( ID_ADVANCED, CExportTextWarningDlgBase::OnAdvancedSelection )
-  EVT_BUTTON( ID_YUBIBTN, CExportTextWarningDlgBase::OnYubibtnClick )
-  EVT_TIMER(POLLING_TIMER_ID, CExportTextWarningDlgBase::OnPollingTimer)
 END_EVENT_TABLE()
 
 
 CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
-                                                                                  wxDefaultPosition, wxDefaultSize, 
-                                                                                  wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-  defDelim(wxT('\xbb')), delimiter(defDelim)
+                                                                      wxDefaultPosition, wxDefaultSize, 
+                                                                      wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
+                                                                      selCriteria(new SelectionCriteria)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
   
@@ -65,21 +61,11 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* pwdCtrl = new wxBoxSizer(wxHORIZONTAL);
   pwdCtrl->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")));
   pwdCtrl->AddSpacer(ColSeparation);
-  m_combinationEntry = new CSafeCombinationCtrl(this, wxID_ANY, &passKey);
-  pwdCtrl->Add(m_combinationEntry, wxSizerFlags().Expand().Proportion(1));
+  pwdCtrl->Add(new CSafeCombinationCtrl(this, wxID_ANY, &passKey), wxSizerFlags().Expand().Proportion(1));
   dlgSizer->Add(pwdCtrl, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
   dlgSizer->AddSpacer(RowSeparation);
 
-  wxBoxSizer* yubiSizer = new wxBoxSizer(wxHORIZONTAL);
-  wxBitmap yubi_bitmap(Yubikey_button_xpm);
-  m_YubiBtn = new wxBitmapButton( this, ID_YUBIBTN, yubi_bitmap, wxDefaultPosition, this->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  yubiSizer->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
-
-  m_yubiStatusCtrl = new wxStaticText( this, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  yubiSizer->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  dlgSizer->Add(yubiSizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
-  dlgSizer->AddSpacer(RowSeparation);
-
+  delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
   const wxChar* excludes[] = {_("\""), 0};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
@@ -106,34 +92,16 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   dlgSizer->AddSpacer(BottomMargin);
   
   SetSizerAndFit(dlgSizer);
-
-  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
-  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
-
 }
 
-void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent & )
+CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
 {
+  delete selCriteria;
+  delete m_pollingTimer; //?
+}
+
+void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
+{
+  UNREFERENCED_PARAMETER(evt);
   DoAdvancedSelection();
-}
-
-void CExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent & )
-{
-  m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
-
-  if (Validate() && TransferDataFromWindow()) {
-    StringX response;
-    if (PerformChallengeResponse(passKey, response)) {
-      passKey = response;
-      EndModal(wxID_OK);
-    }
-  }
-}
-
-void CExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
-{
-  if (evt.GetId() == POLLING_TIMER_ID) {
-    HandlePollingTimer(); // in CYubiMixin
-  }
 }

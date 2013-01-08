@@ -39,7 +39,7 @@
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
  */
 
-void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   const StringX sxOldDBPrefsString(prefs->Store());

@@ -88,7 +88,7 @@
     <Lib>
       <AdditionalDependencies>setupapi.lib;hid.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\win7\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <OutputFile>$(PWSLib)\YkLib22.lib</OutputFile>
+      <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Lib>
@@ -107,7 +107,7 @@
     </ClCompile>
     <Lib>
       <AdditionalDependencies>hid.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(PWSLib)\YkLib22.lib</OutputFile>
+      <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
       <AdditionalLibraryDirectories>\WinDDK\7600.16385.1\lib\win7\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Lib>

@@ -1,5 +1,5 @@
-Password Safe 3.29Y Release Notes - June 2012
-=============================================
+Password Safe 3.30Y Release Notes - December 2012
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,38 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+
+New Features for 3.30Y
+======================
+[689] It's now possible to change the r/w state of a database when
+unlocking it. Thanks to Jeff for the suggestion.
+
+Changes to Existing Features in 3.30Y
+=====================================
+None
+
+Bugs fixed in 3.30Y
+===================
+[1068] Opening a protected entry no longer causes a sound in Windows.
+[3556730] In Add/Edit dialog, clicking Apply no longer disables the OK
+button. An asterisk (*) is displayed in the title bar when the entry's
+modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
+[3539347] An empty diamond icon is now updated to a full one when an
+entry is dragged into it. Thanks to nsaipraveen for the fix.
+[3537861] An off-by-one issue with expiration dates has been fixed by
+suthakar123.
+[1066] Default changed: 'Browse to URL' does not copy password to
+clipboard by default. Although convenient, this is a security issue if
+the user isn't expecting it. Also show correct screen in Security
+Options help.
+[1065] Don't hide notes in Add/Edit dialog box when changing field
+focus if user chose not to.
+[1063] Intermediate backups also work correctly when relative path to
+database is specified on command line. Thanks to Matt for tracking
+this down.
+[353] Easy-to-read option now respected in Generate Password screen.
+[] Update ListView immediately when an entry's field has been changed.
 
 New Features for 3.29Y
 ======================

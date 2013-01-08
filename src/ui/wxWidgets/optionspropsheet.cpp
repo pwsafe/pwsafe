@@ -62,57 +62,31 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
 ////@begin COptions event table entries
   EVT_CHECKBOX( ID_CHECKBOX11, COptions::OnBackupB4SaveClick )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON4, COptions::OnBuPrefix )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON5, COptions::OnBuPrefix )
-
   EVT_COMBOBOX( ID_COMBOBOX2, COptions::OnSuffixCBSet )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON6, COptions::OnBuDirRB )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON7, COptions::OnBuDirRB )
-
   EVT_BUTTON( ID_BUTTON, COptions::OnBuDirBrowseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
-
   EVT_CHECKBOX( ID_CHECKBOX19, COptions::OnPreExpiryWarnClick )
-
   EVT_CHECKBOX( ID_CHECKBOX24, COptions::OnUseDefaultUserClick )
-
   EVT_BUTTON( ID_BUTTON8, COptions::OnBrowseLocationClick )
-
   EVT_CHECKBOX( ID_CHECKBOX3, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX4, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX5, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX6, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX7, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX8, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX9, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX26, COptions::OnPWHistSaveClick )
-
   EVT_RADIOBUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
-
   EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
-
   EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
-
   EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
-
 ////@end COptions event table entries
 
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
@@ -134,7 +108,7 @@ enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 // Following in enum order (see PWSprefs.h)
 const wxChar *DCAStrings[] = {
   _("Copy password to clipboard"),
-  _("View/Edit selected entry"),
+  _("Edit/View selected entry"),
   _("Autotype"),
   _("Browse to URL"),
   _("Copy notes to clipboard"),
@@ -221,6 +195,7 @@ void COptions::Init()
   m_preexpirywarnCB = NULL;
   m_preexpirywarndaysSB = NULL;
   m_DCACB = NULL;
+  m_SDCACB = NULL;
   m_defusernameTXT = NULL;
   m_defusernameLBL = NULL;
   m_pwMinsGSzr = NULL;
@@ -435,6 +410,14 @@ void COptions::CreateControls()
   m_DCACBStrings.Add(_("View/Edit selected entry"));
   m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
   itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  wxBoxSizer* itemBoxSizer49a = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer45->Add(itemBoxSizer49a, 0, wxGROW|wxALL, 0);
+  wxStaticText* itemStaticText50a = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer49a->Add(itemStaticText50a, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
+  itemBoxSizer49a->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer52Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   wxStaticBoxSizer* itemStaticBoxSizer52 = new wxStaticBoxSizer(itemStaticBoxSizer52Static, wxVERTICAL);
@@ -722,7 +705,7 @@ void COptions::CreateControls()
   itemBoxSizer126->Add(itemCheckBox141, 0, wxALIGN_LEFT|wxALL, 5);
 
 #if defined(__X__) || defined(__WXGTK__)
-  wxCheckBox* itemCheckBox142 = new wxCheckBox( itemPanel125, ID_CHECKBOX35, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox142 = new wxCheckBox( itemPanel125, ID_CHECKBOX39, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox142->SetValue(false);
   itemBoxSizer126->Add(itemCheckBox142, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
@@ -872,12 +855,15 @@ void COptions::PrefsToPropSheet()
   m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
   m_escexits = prefs->GetPref(PWSprefs::EscExits);
   m_doubleclickaction = prefs->GetPref(PWSprefs::DoubleClickAction);
-  wxASSERT(m_doubleclickaction >= 0 &&
-           m_doubleclickaction < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])));
   if (m_doubleclickaction < 0 ||
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
   m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
+  m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  if (m_shiftdoubleclickaction < 0 ||
+      m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+    m_shiftdoubleclickaction = 0;
+  m_SDCACB->SetValue(DCAStrings[m_shiftdoubleclickaction]);
   m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_autotypeStr.empty())
@@ -930,6 +916,16 @@ void COptions::PrefsToPropSheet()
 #endif
 }
 
+static int DCAStr2Int(const wxString &str)
+{
+  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
+    if (str == DCAStrings[i]) {
+      return i;
+    }
+  ASSERT(0);
+  return -1;
+}
+
 void COptions::PropSheetToPrefs()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -970,14 +966,10 @@ void COptions::PropSheetToPrefs()
   // Misc. preferences
   prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
   prefs->SetPref(PWSprefs::EscExits, m_escexits);
-  const wxString dcaStr = m_DCACB->GetValue();
-  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (dcaStr == DCAStrings[i]) {
-      m_doubleclickaction = i;
-      break;
-    }
-
+  m_doubleclickaction = DCAStr2Int(m_DCACB->GetValue());
   prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
+  m_shiftdoubleclickaction = DCAStr2Int(m_SDCACB->GetValue());
+  prefs->SetPref(PWSprefs::ShiftDoubleClickAction, m_shiftdoubleclickaction);
   prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
   prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
   prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_otherbrowser));
@@ -1089,10 +1081,7 @@ void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnBuPrefix( wxCommandEvent& evt )
 {
-////@begin wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions.
-  // Before editing this code, remove the block markers.
   evt.Skip();
-////@end wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions. 
 }
 
 
@@ -1303,10 +1292,7 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
   // XXX TBD - send this to someone who knows how to deal with it!
 
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions.
-  // Before editing this code, remove the block markers.
   evt.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions. 
 }
 
 

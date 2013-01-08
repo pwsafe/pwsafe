@@ -17,6 +17,7 @@
 #include "passwordsafeframe.h"
 #include "wxutils.h"
 #include "AdvancedSelectionDlg.h"
+#include "./SelectionCriteria.h"
 
 ////@begin XPM images
 #include "./graphics/findtoolbar/new/find.xpm"
@@ -66,7 +67,7 @@ enum {
 
 PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), 
                                                                     m_parentFrame(parent), 
-                                                                    m_fAdvancedSearch(false)
+                                                                    m_criteria(new SelectionCriteria)
 {
 }
 
@@ -74,6 +75,8 @@ PasswordSafeSearch::~PasswordSafeSearch(void)
 {
   delete m_toolbar;
   m_toolbar = 0;
+  delete m_criteria;
+  m_criteria = 0;
 }
 
 /*!
@@ -106,18 +109,18 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   if (searchText.IsEmpty())
     return;
     
-  if (m_criteria.IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
+  if (m_criteria->IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
       m_searchPointer.Clear();
    
-      if (!m_fAdvancedSearch)
+      if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS))
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
-                      m_criteria.GetSelectedFields(), m_criteria.HasSubgroupRestriction(), m_criteria.SubgroupSearchText(),
-                      m_criteria.SubgroupObject(), m_criteria.SubgroupFunction(), 
-                      m_criteria.CaseSensitive(), begin, end, afn);
+                      m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(), m_criteria->SubgroupSearchText(),
+                      m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(), 
+                      m_criteria->CaseSensitive(), begin, end, afn);
 
-      m_criteria.Clean();
+      m_criteria->Clean();
       txtCtrl->SetModified(false);
       m_searchPointer.InitIndex();
   }
@@ -175,6 +178,15 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
   HideSearchToolbar();
 }
 
+void PasswordSafeSearch::OnSearchClear(wxCommandEvent& evt)
+{
+  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxCHECK_RET(txtCtrl, wxT("Could not get search ctrl from toolbar"));
+  txtCtrl->Clear();
+  m_searchPointer.Clear();
+  ClearToolbarStatusArea();
+}
+
 void PasswordSafeSearch::HideSearchToolbar()
 {
   m_toolbar->Show(false);
@@ -195,6 +207,13 @@ void PasswordSafeSearch::HideSearchToolbar()
   }
 }
 
+void PasswordSafeSearch::ClearToolbarStatusArea()
+{
+  wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
+  wxCHECK_RET(statusArea, wxT("Could not retrieve status area from search bar"));
+  statusArea->SetLabel(wxEmptyString);
+}
+
 struct FindDlgType {
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced Find Options");
@@ -204,6 +223,29 @@ struct FindDlgType {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType field) {
+    switch (field) {
+      case CItemData::GROUP:
+      case CItemData::TITLE:
+      case CItemData::USER:
+      case CItemData::NOTES:
+      case CItemData::PASSWORD:
+      case CItemData::URL:
+      case CItemData::AUTOTYPE:
+      case CItemData::PWHIST:
+      case CItemData::RUNCMD:
+      case CItemData::EMAIL:
+      case CItemData::SYMBOLS:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -218,13 +260,25 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
  */
-void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
+void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
 {
-  m_criteria.Clean();
-  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
-  if (dlg.ShowModal() == wxID_OK) {
-    m_fAdvancedSearch = true;
-    dlg.GetSelectionCriteria(m_criteria);
+  if (evt.IsChecked()) {
+    m_criteria->Clean();
+    AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
+    if (dlg.ShowModal() == wxID_OK) {
+      // No check for m_criteria.IsDirty() here because we want to start a new search
+      // whether or not the group/field selection were modified because user just 
+      // toggled the "Advanced Options" on.  It was OFF before just now. 
+      m_searchPointer.Clear();
+    }
+    else {
+      // No change, but need to toggle off "Advanced Options" button manually
+      m_toolbar->ToggleTool(evt.GetId(), false);
+    }
+  }
+  else {
+    // Advanced Options were toggled off.  Start a new search next time
+    m_searchPointer.Clear();
   }
 }
 
@@ -284,7 +338,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddControl(srchCtrl);
   m_toolbar->AddTool(ID_FIND_NEXT, wxT(""), wxBitmap(find_xpm), wxBitmap(find_disabled_xpm), wxITEM_NORMAL, _("Find Next"));
   m_toolbar->AddCheckTool(ID_FIND_IGNORE_CASE, wxT(""), wxBitmap(findcase_i_xpm), wxBitmap(findcase_s_xpm), _("Case Insensitive Search"));
-  m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_NORMAL, _("Advanced Find Options"));
+  m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_CHECK, _("Advanced Find Options"));
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
@@ -325,6 +379,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
   m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
+  m_toolbar->Connect(ID_FIND_CLEAR, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClear), NULL, this);
 }
 
 void PasswordSafeSearch::OnSearchBarTextChar(wxKeyEvent& evt)
@@ -358,9 +413,10 @@ void PasswordSafeSearch::Activate(void)
     }
   }
 
-  wxASSERT(m_toolbar);
+  wxCHECK_RET(m_toolbar, wxT("Could not create or retrieve search bar"));
 
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
+  ClearToolbarStatusArea();
 }
 
 
@@ -464,10 +520,10 @@ SearchPointer& SearchPointer::operator++()
     m_currentIndex++;
     if (m_currentIndex == m_indices.end()) {
       m_currentIndex = m_indices.begin();
-      m_label = wxT("Search hit bottom, continuing at top");
+      PrintLabel(wxT("Search hit bottom, continuing at top"));
     }
     else {
-      m_label.Printf(wxT("%d matches found"), m_indices.size());
+      PrintLabel();
     }
   }
   else {
@@ -482,15 +538,30 @@ SearchPointer& SearchPointer::operator--()
   if (!m_indices.empty()) {
     if (m_currentIndex == m_indices.begin()) {
       m_currentIndex = --m_indices.end();
-      m_label = wxT("Search hit top, continuing at bottom");
+      PrintLabel(wxT("Search hit top, continuing at bottom"));
     }
     else {
       m_currentIndex--;
-      m_label.Printf(wxT("%d matches found"), m_indices.size());
+      PrintLabel();
     }
   }
   else
     m_currentIndex = m_indices.end();
 
   return *this;
+}
+
+void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
+{
+  if (m_indices.empty())
+    m_label = wxT("No matches found");
+  else if (m_indices.size() == 1)
+    m_label = wxT("1 match");
+  else {
+    // need a const object so we get both args to distance() as const iterators 
+    const SearchIndices& idx = m_indices;
+    m_label.Printf(wxT("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    if (prefix)
+      m_label = wxString(prefix) + wxT(".  ") + m_label;
+  }
 }

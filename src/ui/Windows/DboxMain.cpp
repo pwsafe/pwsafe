@@ -48,6 +48,7 @@
 #include "os/env.h"
 #include "os/dir.h"
 #include "os/logit.h"
+#include "os/lib.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -158,20 +159,11 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
-  // (Load Library using absolute path to avoid dll poisoning attacks)
-  TCHAR szFileName[ MAX_PATH ];
-  memset( szFileName, 0, MAX_PATH );
-  GetSystemDirectory( szFileName, MAX_PATH );
-  size_t nLen = _tcslen( szFileName );
-  if (nLen > 0) {
-    if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s( szFileName, MAX_PATH, L"\\" );
-  }
-  wcscat_s( szFileName, MAX_PATH, L"User32.dll" );
-  m_hUser32 = ::LoadLibrary(szFileName);
+  m_hUser32 = HMODULE(pws_os::LoadLibrary(_T("User32.dll"), pws_os::LOAD_LIBRARY_SYS));
   if (m_hUser32 != NULL) {
-    m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(m_hUser32, "ShutdownBlockReasonCreate"); 
-    m_pfcnShutdownBlockReasonDestroy = (PSBR_DESTROY)::GetProcAddress(m_hUser32, "ShutdownBlockReasonDestroy");
+    m_pfcnShutdownBlockReasonCreate = PSBR_CREATE(pws_os::GetFunction(m_hUser32,
+                                                                      "ShutdownBlockReasonCreate"));
+    m_pfcnShutdownBlockReasonDestroy = PSBR_DESTROY(pws_os::GetFunction(m_hUser32, "ShutdownBlockReasonDestroy"));
 
     // Do not free library until the end or the addresses may become invalid
     // On the other hand - if either of these addresses are NULL, why keep it?
@@ -180,7 +172,7 @@ DboxMain::DboxMain(CWnd* pParent)
       // Make both NULL in case only one was
       m_pfcnShutdownBlockReasonCreate = NULL;
       m_pfcnShutdownBlockReasonDestroy = NULL;
-      ::FreeLibrary(m_hUser32);
+      pws_os::FreeLibrary(m_hUser32);
       m_hUser32 = NULL;
     }
   }
@@ -219,8 +211,7 @@ DboxMain::~DboxMain()
   delete m_pwchTip;
   delete m_pToolTipCtrl;
 
-  if (m_hUser32 != NULL)
-    ::FreeLibrary(m_hUser32);
+  pws_os::FreeLibrary(m_hUser32);
 
   free(m_eye_catcher);
 }
@@ -242,15 +233,15 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
   m_bWTSRegistered = false;
-  HINSTANCE hWTSAPI32 = ::LoadLibrary(L"wtsapi32.dll");
+  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(_T("wtsapi32.dll"), pws_os::LOAD_LIBRARY_SYS));
   if (hWTSAPI32 == NULL)
     return;
 
   if (bRegister) {
     // Register for notifications
     PWTS_RegSN pfcnWTSRegSN = 
-               (PWTS_RegSN)::GetProcAddress(hWTSAPI32,
-                                            "WTSRegisterSessionNotification");
+      PWTS_RegSN(pws_os::GetFunction(hWTSAPI32,
+                                     "WTSRegisterSessionNotification"));
 
     if (pfcnWTSRegSN == NULL)
       goto exit;
@@ -272,16 +263,15 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   } else {
     // UnRegister for notifications
     PWTS_UnRegSN pfcnWTSUnRegSN =
-                 (PWTS_UnRegSN)::GetProcAddress(hWTSAPI32, 
-                                                "WTSUnRegisterSessionNotification"); 
+      PWTS_UnRegSN(pws_os::GetFunction(hWTSAPI32, 
+                                       "WTSUnRegisterSessionNotification"));
 
     if (pfcnWTSUnRegSN != NULL)
       pfcnWTSUnRegSN(GetSafeHwnd());
   }
 
 exit:
-  if (hWTSAPI32 != NULL)
-    ::FreeLibrary(hWTSAPI32);
+  pws_os::FreeLibrary(hWTSAPI32);
   // If successful, no need for Timer
   if (m_bWTSRegistered)
     KillTimer(TIMER_LOCKONWTSLOCK);

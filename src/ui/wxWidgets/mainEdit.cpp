@@ -40,6 +40,7 @@
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
 #include "../../os/KeySend.h"
+#include "../../os/run.h"
 #include "../../os/sleep.h"
 #include "../../os/utf8conv.h"
 
@@ -102,7 +103,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
 {
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
-  if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemHasChildren(selection)) {
+  if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemIsGroup(selection)) {
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
@@ -261,6 +262,24 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
   PWSclip::SetData(item.GetPassword());
+  UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYRUNCOMMAND
+ */
+
+void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  if (item != NULL)
+    DoCopyRunCmd(*item);
+}
+
+void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
+{
+  PWSclip::SetData(item.GetRunCommand());
   UpdateAccessTime(item);
 }
 
@@ -748,7 +767,10 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
 
 void PasswordSafeFrame::DoRun(CItemData& item)
 {
-  UpdateAccessTime(item);
+  const StringX runee = item.GetRunCommand();
+  PWSRun runner;
+  if (runner.runcmd(runee, false))
+    UpdateAccessTime(item);
 }
 
 void PasswordSafeFrame::DoEmail(CItemData& item )

@@ -49,6 +49,7 @@
 #include "os/dir.h"
 #include "os/file.h"
 #include "os/env.h"
+#include "os/lib.h"
 
 #include "Shlwapi.h"
 
@@ -259,8 +260,8 @@ void ThisMfcApp::SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserSt
 
 int ThisMfcApp::ExitInstance()
 {
-  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
-    FreeLibrary(m_hInstResDLL);
+  if (m_hInstResDLL != m_hInstance)
+    pws_os::FreeLibrary(m_hInstResDLL);
 
   CWinApp::ExitInstance();
   return 0;
@@ -369,8 +370,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   if (cs_LANG == L"EN" && cs_CTRY.IsEmpty()) {
     // This means use the embedded resources!
-    if (m_hInstResDLL)
-      FreeLibrary(m_hInstResDLL);
+    pws_os::FreeLibrary(m_hInstResDLL);
     m_hInstResDLL = NULL;
     pws_os::Trace(L"Using embedded resources\n");
 
@@ -408,14 +408,16 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   // Find reseource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
-                      L"%spwsafe%s%s.dll" : L"%spwsafe%s_%s.dll";
-  cs_ResPath.Format(format_string, cs_ExePath, cs_LANG, cs_CTRY);
-  m_hInstResDLL = LoadLibrary(cs_ResPath);
+                      _T("pwsafe%s%s.dll") : _T("pwsafe%s_%s.dll");
+  cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
+  m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
+                                              pws_os::LOAD_LIBRARY_APP));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
-    cs_ResPath.Format(L"%spwsafe%s.dll", cs_ExePath, cs_LANG);
-    m_hInstResDLL = LoadLibrary(cs_ResPath);
+    cs_ResPath.Format(_T("pwsafe%s.dll"), cs_LANG);
+    m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
+                                                pws_os::LOAD_LIBRARY_APP));
   }
 
   if (m_hInstResDLL == NULL) {
@@ -432,7 +434,7 @@ void ThisMfcApp::LoadLocalizedStuff()
                   HIWORD(dw_fileMajorMinor), LOWORD(dw_fileMajorMinor), HIWORD(dw_fileBuildRevision),
                   HIWORD(m_dwMajorMinor), LOWORD(m_dwMajorMinor), HIWORD(m_dwBuildRevision));
       gmb.AfxMessageBox(oops);
-      FreeLibrary(m_hInstResDLL);
+      pws_os::FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
       pws_os::Trace(L"Using language DLL '%s'.\n", cs_ResPath);
@@ -615,6 +617,15 @@ void ThisMfcApp::SetupMenu()
   minfo.dwMenuData = ID_EDITMENU;
   pMenu1->SetMenuInfo(&minfo);
 
+  // Do Edit Menu Export Entry submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTENTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_EXPORTENTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+
   // Do View Menu
   pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
   ASSERT(pos1 != -1);
@@ -678,7 +689,7 @@ void ThisMfcApp::SetupMenu()
 void ThisMfcApp::SetLanguage()
 {
   // Free old resource only DLL
-  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
+  if (m_hInstResDLL != m_hInstance)
     FreeLibrary(m_hInstResDLL);
 
   m_hInstResDLL = NULL;
@@ -898,7 +909,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
       } else { // arg isn't a flag, treat it as a filename
         if (CheckFile(*arg)) {
           fileGiven = true;
-          m_core.SetCurFile(arg->GetString());
+          // We send core the full path 'cause otherwise incr. backups & such get confused.
+          stringT abspath = pws_os::fullpath(arg->GetString());
+          if (abspath.empty()) // Should never happen, but try to slog on if so.
+            abspath = arg->GetString();
+          m_core.SetCurFile(abspath.c_str());
         } else {
           return false;
         }

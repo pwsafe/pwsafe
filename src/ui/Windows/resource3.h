@@ -323,6 +323,7 @@
 #define IDS_NOREPORTSEXIST              5488
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ICON                        5496
+#define IDS_ABASE_MISSING               5497
 #define IDS_ABASEINVALID                5499
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
@@ -724,3 +725,6 @@
 #define IDS_SYNCENTRY                   5932
 #define IDS_OPERATION_ABORTED           5933
 #define IDS_FORMAT_CMP_POLICY           5934
+#define IDS_EXPORTENTMENU               5935
+#define IDS_EXPORTENT2PLAINTEXT         5936
+#define IDS_EXPORTENT2XML               5937

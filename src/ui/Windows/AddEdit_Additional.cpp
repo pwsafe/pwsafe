@@ -223,6 +223,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   }
 
   m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  m_PWHistListCtrl.UpdateRowHeight(false);
   CString cs_text;
   cs_text.LoadString(IDS_SETDATETIME);
   m_PWHistListCtrl.InsertColumn(0, cs_text);

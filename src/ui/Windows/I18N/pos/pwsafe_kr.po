@@ -366,6 +366,11 @@ msgstr ""
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -420,11 +425,6 @@ msgstr "%s%s%s_보고서.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은 불러온 파일에 존재합니다. 불러온 항목에 다음과 같이 주제를 추가했습니다=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. 데이터베이스를 다른 이름으로 저장하거나, 저장하지 말고 종료해주십시오."
 
 #. Resource IDs: (343)
 #, c-format
@@ -2246,6 +2246,10 @@ msgstr "열려 있는 파일이 많아 %1을 열 수 없습니다."
 msgid "Could not start print job."
 msgstr "인쇄 작업을 시작할 수 없었습니다."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "데이터베이스를 저장하지 못했습니다 - 수동으로 저장해 주십시오"
@@ -2950,13 +2954,9 @@ msgstr "보내기(&T)"
 msgid "Export &XML"
 msgstr "XML으로 내보내기(&X)"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "항목을 XML 형식으로 보내기..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "항목을 텍스트로 보내기..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4044,10 +4044,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr "최소 소문자 개수"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4456,6 +4452,10 @@ msgstr "원본 값:"
 msgid "Oriya"
 msgstr "Oriya"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "기타:"
@@ -4617,6 +4617,10 @@ msgstr "비밀번호가 너무 짧습니다"
 msgid "Password last changed on:"
 msgstr "비밀번호가 마지막으로 변경된 때:"
 
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
+
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
@@ -4661,6 +4665,10 @@ msgstr "Persian"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "실제 키보드:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6665,6 +6673,10 @@ msgstr "XML 파일 (*.xml)|*.xml|모든 파일 (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML 파일 (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

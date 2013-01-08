@@ -3,7 +3,7 @@
 ; to a new language. To use:
 ; 1. Copy file to pwsafe_xx.lng, where xx is the ISO 3166-1 2-letter
 ; country code for the language.
-; 2. Replace LANG_NEW with LANG_NAME, where name is the name of thr
+; 2. Replace LANG_NEW with LANG_NAME, where name is the name of the
 ; language as used in the parent .nsi file
 ; 3. Replace "TRANSLATION" with the translation of the text in the
 ; preceding line.
@@ -133,6 +133,8 @@ LangString ITALIAN_SUPPORT ${LANG_NEW} "TRANSLATION"
 LangString DANISH_SUPPORT ${LANG_NEW} "TRANSLATION"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_NEW} "TRANSLATION"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_NEW} "TRANSLATION"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_NEW} "TRANSLATION"

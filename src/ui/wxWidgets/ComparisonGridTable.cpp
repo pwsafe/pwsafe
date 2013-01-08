@@ -23,9 +23,11 @@
 #include "./ComparisonGridTable.h"
 
 #include "./AdvancedSelectionDlg.h"
+#include "./SelectionCriteria.h"
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
 #include <algorithm>
+#include <functional>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -40,7 +42,6 @@ public:
   ComparisonGridCellAttr(ComparisonGridTable* table): m_table(table)
   {}
   
-
 private:
   ComparisonGridTable* m_table;
 };
@@ -66,7 +67,20 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria): m_criteri
                                 {CItemData::PWHIST,   &CItemData::IsPasswordHistorySet},
                                 {CItemData::RUNCMD,   &CItemData::IsRunCommandSet},
                                 {CItemData::EMAIL,    &CItemData::IsEmailSet},
-                                {CItemData::NOTES,    &CItemData::IsNotesSet}};
+                                {CItemData::NOTES,        &CItemData::IsNotesSet},
+                                {CItemData::POLICY,       &CItemData::IsPasswordPolicySet},
+                                {CItemData::POLICYNAME,   &CItemData::IsPolicyNameSet},
+                                {CItemData::SYMBOLS,      &CItemData::IsSymbolsSet},
+                                {CItemData::DCA,          &CItemData::IsDCASet},
+                                {CItemData::SHIFTDCA,     &CItemData::IsDCASet}, // <<=== NOTE!!
+                                {CItemData::PROTECTED,    &CItemData::IsProtectionSet},
+                                {CItemData::CTIME,        &CItemData::IsCreationTimeSet},
+                                {CItemData::ATIME,        &CItemData::IsLastAccessTimeSet},
+                                {CItemData::XTIME,        &CItemData::IsExpiryDateSet},
+                                {CItemData::XTIME_INT,    &CItemData::IsPasswordExpiryIntervalSet},
+                                {CItemData::PMTIME,       &CItemData::IsModificationTimeSet},
+                                {CItemData::RMTIME,       &CItemData::IsRecordModificationTimeSet},
+                              };
 
   const size_t ncols = size_t(GetNumberCols());
   for(size_t col = 0, idx = 0; (idx < WXSIZEOF(columns)) && (col < ncols); idx++) {
@@ -244,8 +258,6 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGri
   m_gridAttr->IncRef();
   return m_gridAttr;
 }
-
-
 
 int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
@@ -529,4 +541,3 @@ wxPen ComparisonGrid::GetRowGridLinePen(int row)
   }
   return wxGrid::GetRowGridLinePen(row);
 }
-

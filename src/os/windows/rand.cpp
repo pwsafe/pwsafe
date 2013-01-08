@@ -14,6 +14,7 @@
 #include <process.h>
 
 #include "../rand.h"
+#include "../lib.h"
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
 // and if that fails, use our own random number generator. The function
@@ -23,23 +24,12 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-  // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
-  TCHAR szFileName[ MAX_PATH ];
-  memset( szFileName, 0, MAX_PATH );
-  GetSystemDirectory( szFileName, MAX_PATH );
-  size_t nLen = _tcslen( szFileName );
-  if (nLen > 0) {
-    if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s( szFileName, MAX_PATH, _T("\\") );
-  }
-  _tcscat_s( szFileName, MAX_PATH, _T("ADVAPI32.DLL") );
-
-  HMODULE hLib = LoadLibrary( szFileName );
-  // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
+  HMODULE hLib = HMODULE(pws_os::LoadLibrary(_T("ADVAPI32.DLL"), LOAD_LIBRARY_SYS));
 
   BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
   if (hLib != NULL) {
-    pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
+    pfnGetRandomDataT =
+      (BOOLEAN (APIENTRY *)(void*,ULONG))pws_os::GetFunction(hLib, "SystemFunction036");
     if (pfnGetRandomDataT) {
       pfnGetRandomData = pfnGetRandomDataT;
     }

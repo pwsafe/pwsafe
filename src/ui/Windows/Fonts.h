@@ -34,6 +34,7 @@ public:
 
   void ExtractFont(const CString& str, LOGFONT &lf);
 
+  LONG Fonts::CalcHeight();
 private:
   Fonts();
   ~Fonts() {}

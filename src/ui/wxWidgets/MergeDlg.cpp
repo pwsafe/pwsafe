@@ -17,6 +17,7 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../os/file.h"
 #include "./DbSelectionPanel.h"
+#include "./SelectionCriteria.h"
 
 #include <wx/statline.h>
 
@@ -82,6 +83,16 @@ struct AdvancedMergeOptions {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    wxFAIL_MSG(wxT("Advanced field usability options are not available for Merge"));
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return false;
   }
@@ -95,9 +106,8 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, AdvancedMergeOptions )
 
 void MergeDlg::OnAdvancedSelection(wxCommandEvent& )
 {
-  AdvancedSelectionDlg<AdvancedMergeOptions> dlg(this, *m_selection);
-  if (dlg.ShowModal() == wxID_OK)
-    dlg.GetSelectionCriteria(*m_selection);
+  AdvancedSelectionDlg<AdvancedMergeOptions> dlg(this, m_selection);
+  dlg.ShowModal();
 }
 
 wxString MergeDlg::GetOtherSafePath() const 

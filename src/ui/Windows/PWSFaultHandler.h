@@ -13,7 +13,7 @@ enum UserStream {usAll = -2, usPrefs = -1, us0 = 0, us1 = 1, us2 = 2, us3 = 3};
 #ifndef _DEBUG
 
 #include "stdafx.h"
-#include "core\PWSprefs.h"
+#include "core/PWSprefs.h"
 
 #include <dbghelp.h>
 

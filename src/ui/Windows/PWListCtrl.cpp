@@ -43,12 +43,15 @@ BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   ON_WM_ERASEBKGND()
   ON_WM_PAINT()
   ON_WM_VSCROLL()
+  ON_MESSAGE(WM_SETFONT, OnSetFont)
+  ON_WM_MEASUREITEM_REFLECT()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CPWListCtrl::Initialize()
 {
   m_pDbx = static_cast<DboxMain *>(GetParent());
+  UpdateRowHeight(false);
 }
 
 void CPWListCtrl::ActivateND(const bool bActivate)
@@ -449,4 +452,53 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     default:
       break;
   }
+}
+
+void CPWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+  if (!Fonts::GetInstance())
+     return;
+  
+  int padding=4;
+  if (GetExtendedStyle() & LVS_EX_GRIDLINES)
+     padding+=2;
+  
+  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight()+padding;
+  //Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
+  ModifyStyle(LVS_OWNERDRAWFIXED, 0);
+}
+
+void CPWListCtrl::UpdateRowHeight(bool bInvalidate){
+  // We need to change WINDOWPOS to trigger MeasureItem 
+  // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
+  CRect rc;
+  GetWindowRect(&rc);
+  WINDOWPOS wp;
+  wp.hwnd = m_hWnd;
+  wp.cx = rc.Width();
+  wp.cy = rc.Height();
+  wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
+  
+  //Add LVS_OWNERDRAWFIXED style for generating MeasureItem event
+  ModifyStyle(0, LVS_OWNERDRAWFIXED);
+
+  SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
+  if (bInvalidate)
+  {
+    Invalidate();
+    int idx = GetTopIndex();
+    if (idx >=0)
+      EnsureVisible(idx, FALSE);
+  }
+}
+
+LRESULT CPWListCtrl::OnSetFont(WPARAM, LPARAM)
+{
+  LRESULT res = Default();
+  UpdateRowHeight(false);
+  return res;
+}
+
+void CPWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
+  //DrawItem must be overriden for LVS_OWNERDRAWFIXED style lists
 }

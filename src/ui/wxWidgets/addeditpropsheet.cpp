@@ -44,7 +44,6 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * AddEditPropSheet type definition
  */
@@ -107,7 +106,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_BUTTON( ID_BUTTON1,    AddEditPropSheet::OnClearPWHist )
 END_EVENT_TABLE()
 
-
 /*!
  * AddEditPropSheet constructors
  */
@@ -144,7 +142,6 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
   }
   Create(parent, id, dlgTitle, pos, size, style);
 }
-
 
 /*!
  * AddEditPropSheet creator
@@ -226,7 +223,6 @@ void AddEditPropSheet::Init()
 ////@end AddEditPropSheet member initialisation
 }
 
-
 class PolicyValidator : public MultiCheckboxValidator
 {
 public:
@@ -260,6 +256,8 @@ void AddEditPropSheet::CreateControls()
 {
 ////@begin AddEditPropSheet content construction
   AddEditPropSheet* itemPropertySheetDialog1 = this;
+
+  UNREFERENCED_PARAMETER(itemPropertySheetDialog1); // Remove MS Compiler warning
 
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -386,7 +384,7 @@ void AddEditPropSheet::CreateControls()
   m_DCAcomboBoxStrings.Add(_("Copy Password"));
   m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
   m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("View/Edit Entry"));
+  m_DCAcomboBoxStrings.Add(_("Edit/View Entry"));
   m_DCAcomboBoxStrings.Add(_("Execute Run command"));
   m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -402,7 +400,7 @@ void AddEditPropSheet::CreateControls()
   m_SDCAcomboBoxStrings.Add(_("Copy Password"));
   m_SDCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
   m_SDCAcomboBoxStrings.Add(_("Copy Username"));
-  m_SDCAcomboBoxStrings.Add(_("View/Edit Entry"));
+  m_SDCAcomboBoxStrings.Add(_("Edit/View Entry"));
   m_SDCAcomboBoxStrings.Add(_("Execute Run command"));
   m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -692,7 +690,6 @@ void AddEditPropSheet::CreateControls()
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(sx_symbols.c_str());
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -812,7 +809,7 @@ static struct {short pv; wxString name;}
     {PWSprefs::DoubleClickCopyPassword, _("Copy Password")},
     {PWSprefs::DoubleClickCopyPasswordMinimize, _("Copy Password + Minimize")},
     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
-    {PWSprefs::DoubleClickViewEdit, _("View/Edit Entry")},
+    {PWSprefs::DoubleClickViewEdit, _("Edit/View Entry")},
     {PWSprefs::DoubleClickRun, _("Execute Run command")},
    };
 
@@ -908,6 +905,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_runcmd = m_item.GetRunCommand().c_str();
 
   // double-click actions:
+  m_item.GetDCA(m_DCA, false);
+  m_item.GetDCA(m_ShiftDCA, true);
   SetupDCAComboBoxes(m_DCAcomboBox, m_DCA, false);
   SetupDCAComboBoxes(m_SDCAcomboBox, m_ShiftDCA, true);
 
@@ -1004,6 +1003,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     m_cbxPolicyNames->Append(sviter->c_str());
   // Does item use a named policy or item-specific policy?
   bool namedPwPolicy = !m_item.GetPolicyName().empty();
+  UNREFERENCED_PARAMETER(namedPwPolicy); // Remove MS Compiler warning
+
   bool specificPwPolicy = !m_item.GetPWPolicy().empty();
   ASSERT(!(namedPwPolicy && specificPwPolicy)); // both cannot be true!
   m_defPWPRB->SetValue(!specificPwPolicy);
@@ -1020,7 +1021,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     const wxString itemPolName = m_item.GetPolicyName().c_str();
     if (!itemPolName.IsEmpty()) {
       m_cbxPolicyNames->SetValue(itemPolName);
-      m_core.GetPolicyFromName(itemPolName.c_str(), policy);
+      m_core.GetPolicyFromName(tostringx(itemPolName), policy);
     } else {
       m_cbxPolicyNames->SetValue(_("Default Policy"));
       policy = prefs->GetDefaultPolicy();
@@ -1101,19 +1102,17 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static short GetSelectedDCA(wxComboBox *pcbox, short defval)
+static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+                           short lastval, short defval)
 {
   int sel = pcbox->GetSelection();
-  intptr_t retval = -1;
-  if (sel == wxNOT_FOUND) { // no selection - is this possible with our combobox?
-    goto done;
+  intptr_t ival = -1;
+  if (sel == wxNOT_FOUND) { // no selection
+    val = (lastval == defval) ? -1 : lastval;
   } else {
-    retval = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
+    ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
+    val = (ival == defval) ? -1 : ival;
   }
-  if (retval == defval)
-    retval = -1;
- done:
-  return retval;
 }
 
 void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
@@ -1149,14 +1148,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     case EDIT: {
       bool bIsModified, bIsPSWDModified;
       short lastDCA, lastShiftDCA;
+      const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      m_DCA = GetSelectedDCA(m_DCAcomboBox,
-			     short(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)));
+      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
+                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
       
       m_item.GetShiftDCA(lastShiftDCA);
-      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox,
-			     short(PWSprefs::GetInstance()->GetPref(PWSprefs::ShiftDoubleClickAction)));
-
+      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
+                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
@@ -1253,7 +1252,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         } else {
           m_item.SetPWPolicy(pwp);
         }
-        m_item.SetPolicyName(polName.c_str());
+        m_item.SetPolicyName(tostringx(polName));
         m_item.SetDCA(m_DCA);
         m_item.SetShiftDCA(m_ShiftDCA);
       } // bIsModified
@@ -1296,6 +1295,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.SetAutoType(tostringx(m_autotype));
       m_item.SetRunCommand(tostringx(m_runcmd));
       m_item.SetDCA(m_DCA);
+      m_item.SetShiftDCA(m_ShiftDCA);
       time(&t);
       m_item.SetCTime(t);
       if (m_keepPWHist)
@@ -1559,7 +1559,7 @@ PWPolicy AddEditPropSheet::GetSelectedPWPolicy()
   PWPolicy pwp;
   if (m_defPWPRB->GetValue()) {
     const wxString polName = m_cbxPolicyNames->GetValue();
-    m_core.GetPolicyFromName(polName.c_str(), pwp);
+    m_core.GetPolicyFromName(tostringx(polName), pwp);
   } else
     pwp = GetPWPolicyFromUI();
   return pwp;
@@ -1727,8 +1727,8 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
    *   user@example.com?subject=Message Title&body=Message Content"
    */
   if (Validate() && TransferDataFromWindow() && !m_email.IsEmpty()) {
-    StringX mail_cmd=_("mailto:");
-    mail_cmd += m_email.c_str();
+    StringX mail_cmd= tostringx(_("mailto:"));
+    mail_cmd += tostringx(m_email);
     PWSRun runner;
     runner.issuecmd(mail_cmd, wxT(""), false);
   }
@@ -1746,8 +1746,8 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   if (polName == _("Default Policy")) {
     policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
-    if (!m_core.GetPolicyFromName(polName.c_str(), policy)) {
-      pws_os::Trace(_("Couldn't find policy %s\n"), polName.c_str());
+    if (!m_core.GetPolicyFromName(tostringx(polName), policy)) {
+      pws_os::Trace(_("Couldn't find policy %s\n"), ToStr(polName));
       return;
     }
   }

@@ -992,7 +992,7 @@ int CALLBACK CWZAdvanced::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
   // 2. Text fields and fields that are displayed as text, next range 10...49
   // 3. Non-text fields (not times), next 50...
   // 4. Times last 100...
-  // 5. Invalid and so shouldn' be here -1
+  // 5. Invalid and so shouldn't be here -1
 
   const int iSortOrder[CItemData::LAST] = {
       -1 /* NAME       = 0x00 */,

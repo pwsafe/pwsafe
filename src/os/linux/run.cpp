@@ -11,19 +11,20 @@
  */
 
 #include "../run.h"
+#include <wx/process.h>
 
 // Platform-specific implementation details
 struct st_run_impl {
 };
 
+static st_run_impl *run_impl = NULL;
+
 PWSRun::PWSRun()
 {
-  pImpl = new st_run_impl;
 }
 
 PWSRun::~PWSRun()
 {
-  delete pImpl;
 }
 
 bool PWSRun::isValid() const
@@ -35,7 +36,7 @@ void PWSRun::Set(void *) const
 {
 }
 
-bool UnInit() // currently only needed in Windows pImpl.
+bool PWSRun::UnInit() // currently only needed in Windows pImpl.
 {
   return true;
 }
@@ -49,10 +50,11 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 
 bool PWSRun::runcmd(const StringX &runcommand, const bool &bAutotype) const
 {
-  UNREFERENCED_PARAMETER(runcommand);
   UNREFERENCED_PARAMETER(bAutotype);
-  // Stub!
-  return false;
+  if (runcommand.empty())
+    return false;
+  ::wxExecute(runcommand.c_str());
+  return true;
 }
 
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 

@@ -159,7 +159,7 @@ SOURCES= passwordsafeframe.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
 	yubicfg.cpp YubiMixin.cpp \
-	ManagePwdPolicies.cpp PasswordPolicy.cpp
+	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

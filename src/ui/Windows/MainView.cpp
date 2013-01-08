@@ -53,6 +53,7 @@
 using namespace std;
 using pws_os::CUUID;
 
+extern const wchar_t GROUP_SEP;
 extern const wchar_t *GROUP_SEP2;
 
 #ifdef _DEBUG
@@ -134,6 +135,8 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       RemoveFromGUI(*pci, bUpdateGUI);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+      // Only used when group, title, username or password changed via in place
+      // Edit in TreeView
       RefreshEntryFieldInGUI(*pci, ft);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
@@ -154,8 +157,13 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
         RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
-      // Rebuid the entire tree view
+      // Rebuild the entire tree view
       RebuildGUI(iTreeOnly);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRY:
+      // Refesh one entry ListView row and in the tree if the Title/Username/Password
+      // has changed and visible in the tree when entry has been edited
+      UpdateEntryinGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
       // Change any impact on the application due to a database preference change
@@ -603,7 +611,7 @@ void DboxMain::setupBars()
 #endif
 }
 
-void DboxMain::UpdateListItem(const int lindex, const int type, const StringX &newText)
+void DboxMain::UpdateListItemField(const int lindex, const int type, const StringX &newText)
 {
   int iSubItem = m_nColumnIndexByType[type];
 
@@ -627,6 +635,77 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const StringX &newText)
 
   m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
   m_ctlItemTree.InvalidateRect(&rect);
+}
+
+void DboxMain::UpdateEntryinGUI(CItemData &ci)
+{
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  ASSERT(pdi != NULL);
+
+  const int iIndex = pdi->list_index;
+  const HTREEITEM hItem =  pdi->tree_item;
+
+  const int nImage = GetEntryImage(ci);
+  StringX sx_fielddata(L""), sx_oldfielddata;
+
+  // Deal with Tree View
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  StringX sxNewText = ci.GetTitle();
+  if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
+    StringX sxUsername = ci.GetUser();
+    sxNewText += L" [";
+    sxNewText += sxUsername;
+    sxNewText += L"]";
+
+    if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
+      StringX sxPassword = ci.GetPassword();
+      sxNewText += L" {";
+      sxNewText += sxPassword;
+      sxNewText += L"}";
+    }
+  }
+  UpdateTreeItem(hItem, sxNewText);
+
+  // Deal with List View
+  // Change the first column data - it is empty (as already set)
+  if (!m_bImageInLV) {
+    sx_fielddata = GetListViewItemText(ci, 0);
+  }
+
+  sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, 0);
+  if (sx_oldfielddata != sx_fielddata)
+    m_ctlItemList.SetItemText(iIndex, 0, sx_fielddata.c_str());
+
+  if (m_bImageInLV)
+    SetEntryImage(iIndex, nImage);
+
+  // Change the data in the rest of the columns
+  // First get the 1st line of the Notes field
+  StringX sxNotes, line1(L"");
+  sxNotes = ci.GetNotes();
+  if (!sxNotes.empty()) {
+    StringX::size_type end;
+    const StringX delim = L"\r\n";
+    end = sxNotes.find(delim, 0);
+    line1 = sxNotes.substr(0, 
+                    (end == StringX::npos) ? StringX::npos : end);
+
+    // If more than one line, add '[>>>]' to end of this line
+    // Note CHeaderStrl adds the normal ellipsis '...' (without square
+    // brackets) if the text doesn't fit in the cell.  Use this to show
+    // more lines rather than more text in the first line.
+    if (end != StringX::npos)
+      line1 += L"[>>>]";
+  }
+
+  for (int i = 1; i < m_nColumns; i++) {
+    sx_fielddata = GetListViewItemText(ci, i);
+    sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, i);
+    if (sx_oldfielddata != sx_fielddata)
+      m_ctlItemList.SetItemText(iIndex, i, sx_fielddata.c_str());
+  }
+  m_ctlItemList.Update(iIndex);
 }
 
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -1525,43 +1604,12 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
   StringX group = ci.GetGroup();
   StringX title = ci.GetTitle();
   StringX username = ci.GetUser();
-  // get only the first line for display
-  StringX strNotes = ci.GetNotes();
-  StringX::size_type iEOL = strNotes.find(L'\r');
-  if (iEOL != StringX::npos) {
-    StringX strTemp = strNotes.substr(0, iEOL);
-    strNotes = strTemp;
-  }
-  StringX sx_fielddata;
+  StringX sx_fielddata(L"");
 
   if (iView & iListOnly) {
-    // Insert the first column data
-    if (m_bImageInLV)
-      sx_fielddata = L"";
-    else {
-      time_t t;
-      const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[0];
-      switch (ft) {
-        case CItemData::PMTIME:
-          ci.GetPMTime(t);
-          if ((long)t == 0)
-            sx_fielddata = ci.GetCTimeL();
-          break;
-        case CItemData::RMTIME:
-          ci.GetPMTime(t);
-          if ((long)t == 0)
-            sx_fielddata = ci.GetCTimeL();
-          break;
-        case CItemData::POLICY:
-        {
-          PWPolicy pwp;
-          ci.GetPWPolicy(pwp);
-          sx_fielddata = pwp.GetDisplayString();
-          break;
-        }
-        default:
-          sx_fielddata = ci.GetFieldValue(ft);
-      }
+    // Insert the first column data (it will be empty if an image is in 1st column)
+    if (!m_bImageInLV) {
+      sx_fielddata = GetListViewItemText(ci, 0);
     }
 
     iResult = m_ctlItemList.InsertItem(iResult, sx_fielddata.c_str());
@@ -1618,37 +1666,8 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         line1 += L"[>>>]";
     }
 
-    time_t t;
-    const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
     for (int i = 1; i < m_nColumns; i++) {
-      const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[i];
-      switch (ft) {
-        case CItemData::NOTES:
-          sx_fielddata = line1;
-          break;
-        case CItemData::CTIME:
-          ci.GetCTime(t);
-          sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
-          break;
-        case CItemData::PMTIME:
-          ci.GetPMTime(t);
-          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
-          break;
-        case CItemData::RMTIME:
-          ci.GetRMTime(t);
-          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
-          break;
-        case CItemData::POLICY:
-        {
-          PWPolicy pwp;
-          ci.GetPWPolicy(pwp);
-          sx_fielddata = pwp.GetDisplayString();
-          break;
-        }
-        default:
-          sx_fielddata = ci.GetFieldValue(ft);
-      }
-
+      sx_fielddata = GetListViewItemText(ci, i);
       m_ctlItemList.SetItemText(iResult, i, sx_fielddata.c_str());
     }
 
@@ -2247,6 +2266,9 @@ void DboxMain::OnChangePswdFont()
   if (fontdlg.DoModal() == IDOK) {
     // Transfer the new font to the passwords
     pFonts->SetPasswordFont(&lf);
+
+    // Recalculating row height
+    m_ctlItemList.UpdateRowHeight(true);
 
     LOGFONT dfltfont;
     pFonts->GetDefaultPasswordFont(dfltfont);
@@ -3868,8 +3890,12 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
         new_map.insert(make_pair(sxNewPath, ti));
         continue;
       }
-    } else if (iter->first.length() > len) {
-      // Need to add group seperator to ensure not affecting another group
+    } 
+    else if ((iter->first.length() > len+1) && (iter->first[len+1] != GROUP_SEP)) {
+      // Need to add group seperator and check that next symbol is not a dot
+      // to ensure not affecting another group
+      // (group name could contain traling dots, for example abc..def.g)
+      // subgroup name will have len > len+1 (old_name + dot + subgroup_name)
       StringX path = sxOldPath + StringX(GROUP_SEP2);
       if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {
         HTREEITEM ti = iter->second;
@@ -4034,7 +4060,7 @@ void DboxMain::RefreshEntryPasswordInGUI(CItemData &ci)
   // For when Entry's password + PW history has been updated
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
-  UpdateListItem(pdi->list_index, CItemData::PWHIST, ci.GetPWHistory());
+  UpdateListItemField(pdi->list_index, CItemData::PWHIST, ci.GetPWHistory());
   RefreshEntryFieldInGUI(ci, CItemData::PASSWORD);
 }
 
@@ -4044,7 +4070,8 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
   StringX sx_fielddata;
-  const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  const StringX &sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  StringX sxNA; LoadAString(sxNA, IDS_NA);
   time_t t;
 
   switch (ft) {
@@ -4075,11 +4102,11 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       break;
     case CItemData::PMTIME:
       ci.GetPMTime(t);
-      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
       break;
     case CItemData::RMTIME:
       ci.GetRMTime(t);
-      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
       break;
     case CItemData::POLICY:
     {
@@ -4092,7 +4119,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       sx_fielddata = ci.GetFieldValue(ft);
   }
 
-  UpdateListItem(pdi->list_index, ft, sx_fielddata);
+  UpdateListItemField(pdi->list_index, ft, sx_fielddata);
 
   if (ft == CItemData::GROUP || m_bFilterActive) {
     RefreshViews();
@@ -4556,4 +4583,39 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
   }
 
   return true;
+}
+
+StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
+{
+  StringX sx_fielddata(L"");
+  const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  StringX sxNA; LoadAString(sxNA, IDS_NA);
+  
+  time_t t;
+  const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[icolumn];
+  
+  switch (ft) {
+    case CItemData::CTIME:
+      ci.GetCTime(t);
+      sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
+      break;
+    case CItemData::PMTIME:
+      ci.GetPMTime(t);
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
+      break;
+    case CItemData::RMTIME:
+      ci.GetRMTime(t);
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
+      break;
+    case CItemData::POLICY:
+    {
+      PWPolicy pwp;
+      ci.GetPWPolicy(pwp);
+      sx_fielddata = pwp.GetDisplayString();
+      break;
+    }
+    default:
+      sx_fielddata = ci.GetFieldValue(ft);
+  }
+  return sx_fielddata;
 }

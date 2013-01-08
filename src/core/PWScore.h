@@ -533,8 +533,7 @@ private:
   unsigned char *m_passkey; // encrypted by session key
   size_t m_passkey_len; // Length of cleartext passkey
 
-  static unsigned char m_session_key[20];
-  static unsigned char m_session_salt[20];
+  static unsigned char m_session_key[32];
   static unsigned char m_session_initialized;
 
   HANDLE m_lockFileHandle;

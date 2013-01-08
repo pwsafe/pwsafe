@@ -39,6 +39,9 @@ class wxTimer;
 /*!
  * Control identifiers
  */
+#ifndef wxDIALOG_MODAL
+#define wxDIALOG_MODAL 0
+#endif
 
 ////@begin control identifiers
 #define ID_CSAFECOMBINATIONENTRY 10000
@@ -84,8 +87,6 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-  StringX GetPassword() const {return m_password;}
-  
 ////@begin CSafeCombinationEntry event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
@@ -108,6 +109,9 @@ public:
 
 ////@begin CSafeCombinationEntry member function declarations
 
+  StringX GetPassword() const { return m_password ; }
+  void SetPassword(StringX value) { m_password = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -121,13 +125,18 @@ public:
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
+<<<<<<< .working
   CSafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
+=======
+  CSafeCombinationCtrl* m_combinationEntry;
+private:
+  StringX m_password;
+>>>>>>> .merge-right.r5197
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;
-  StringX m_password;
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;

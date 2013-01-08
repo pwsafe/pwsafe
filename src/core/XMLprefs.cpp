@@ -81,7 +81,9 @@ bool CXMLprefs::Load()
     stringT locker;
     if (!Lock(locker)) {
       LoadAString(m_Reason, IDSC_XMLLOCK_CFG_FAILED);
-      m_Reason += _T("\n  "); m_Reason += locker;
+      m_Reason += _T("\n"); m_Reason += locker;
+      // Show filename for troubleshooting
+      m_Reason += _T("\n"); m_Reason += m_csConfigFile;
       return false;
     }
   }

@@ -1,14 +1,15 @@
+
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.8Y
-RELEASE_SPECIAL := -BETA
+RELEASENUM := 0.9Y
+RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
 
 .PHONY:	all clean debug-clean release-clean debug release \
-	unicodedebug unicoderelease deb tar signatures \
-	dist sha1sums upload upload-src svn-tag I18N
+	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
+	dist sha1sums upload upload-src svn-tag I18N help
 
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -19,6 +20,7 @@ MKDIR := mkdir -p
 RM := /bin/rm -rf
 SVN := svn
 TAR := tar
+ECHO := /bin/echo
 
 GPG := /usr/bin/gpg
 GPG_KEY := ronys@users.sourceforge.net
@@ -57,13 +59,26 @@ release-clean:
 	$(MAKE) CONFIG=unicoderelease -C src/core clean
 	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
 
-# dist prepares stuff for upload
-dist: release deb tar signatures sha1sums
+# dist prepares stuff for upload - deprecated for Linux, until
+# we find an elegant way to tell deb and rpm distros apart.
+dist: 
+	@$(ECHO) "Run 'make deb' or 'make rpm' to bulid the respective package"
 
-deb:
+# rpmbuild is called as part of the rpmbuild invocation from install/rpm/Makefile,
+# which we call via 'make rpm' from here.
+rpmbuild: release I18N help
+
+deb:	release tar
 	@$(MKDIR) $(RELEASEDIR)
-	$(MAKE) -C install/deb \
+	$(MAKE) -C install/$@ \
 	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
+	$(MAKE) signatures sha1sums
+
+rpm:	release I18N
+	@$(MKDIR) $(RELEASEDIR)
+	$(MAKE) -C install/$@ \
+	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
+	$(MAKE) signatures sha1sums
 
 tar:
 	@$(MKDIR) $(TMPDIR)
@@ -77,13 +92,11 @@ tar:
 	@echo "Done."
 
 sha1sums:
-	(cd $(RELEASEDIR); \
-	 $(SHA1SUM) pwsafe-$(RELEASENAME)-src.tgz \
-	 *$(RELEASENAME)*.deb)
+	(cd $(RELEASEDIR); $(SHA1SUM) *$(RELEASENAME)*)
 
 signatures:
-	$(GPG_SIGN) $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
-	$(GPG_SIGN) $(RELEASEDIR)*$(RELEASENAME)*.deb
+	CMD := $(foreach file, $(wildcard $(RELEASEDIR)/*$(RELEASENAME)*), $(GPG_SIGN) $(file); )
+	$(CMD)
 
 upload:
 	$(UPLOAD_CMD) \
@@ -103,6 +116,8 @@ svn-tag:
 I18N:
 	$(MAKE) -C src/ui/wxWidgets/I18N mos
 
+help:
+	$(MAKE) -C help
 
 # Local variables:
 # mode: makefile

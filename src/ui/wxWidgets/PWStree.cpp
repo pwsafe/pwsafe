@@ -29,10 +29,13 @@
 #include "PWStree.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include "core/PWSprefs.h"
+#include "../../core/Command.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/tokenzr.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -74,6 +77,11 @@ enum {
   SHORTCUT_II,     // 11
 };
 
+// We use/need this ID to re-post to AddPendingEvent the wxTreeEvent from END_LABEL notification.
+// We need to re-post as we cannot touch the wxTreeCtrl at all in the actual notification. So we have
+// to let that stack unwind.
+enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
+
 /*!
  * PWSTreeCtrl event table definition
  */
@@ -86,21 +94,39 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_CHAR( PWSTreeCtrl::OnChar )
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
+  EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
+  EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
 ////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
+const wchar_t GROUP_SEP = L'.';
 
 // helper class to match CItemData with wxTreeItemId
 class PWTreeItemData : public wxTreeItemData
 {
 public:
-  PWTreeItemData(const CItemData &item)
+  PWTreeItemData(): m_state(UNMODIFIED)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(bool): m_state(ADDED)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(const wxString& oldPath): m_state(EDITED), m_oldPath(oldPath)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(const CItemData &item): m_state(UNMODIFIED)
   {
     item.GetUUID(m_uuid);
   }
   const uuid_array_t &GetUUID() const {return m_uuid;}
+  bool BeingAdded() const {return m_state == ADDED; }
+  bool BeingEdited() const {return m_state == EDITED; }
+  wxString GetOldPath() const { return m_oldPath; }
 private:
+  typedef enum { UNMODIFIED, ADDED, EDITED } ItemState;
+
   uuid_array_t m_uuid;
+  ItemState    m_state;
+  wxString     m_oldPath;
 };
 
 /*!
@@ -187,30 +213,47 @@ void PWSTreeCtrl::CreateControls()
   AssignImageList(iList);
 }
 
+bool PWSTreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
+{
+  int image = GetItemImage(item);
+  return image == NODE_II || GetRootItem() == item;
+}
+
 // XXX taken from Windows PWSTreeCtrl.cpp
 // XXX move to core
-static StringX GetPathElem(StringX &path)
+static StringX GetPathElem(StringX &sxPath)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
-  const TCHAR GROUP_SEP = _T('.');
+  // path = "a..b.c.d"
+  // will return "a." and path will be "b.c.d"
+   // (assuming GROUP_SEP is '.')
 
-  StringX retval;
-  StringX::size_type N = path.find(GROUP_SEP);
-  if (N == StringX::npos) {
-    retval = path;
-    path = _T("");
+  StringX sxElement;
+  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t len=sxPath.length();
+  if (dotPos == StringX::npos){
+    sxElement = sxPath;
+    sxPath = L"";
   } else {
-    retval = path.substr(0, N);
-    path = path.substr(N + 1);
+    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+      dotPos++;
+    }
+    if (dotPos < len) {
+      sxElement = sxPath.substr(0, dotPos-1);
+      sxPath = sxPath.substr(dotPos);
+    }
+    else { // trailing dots
+      sxElement = sxPath;
+      sxPath = L"";
+    }
   }
-  return retval;
+  return sxElement;
 }
 
 bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
-                               const StringX &s, wxTreeItemId &si)
+                               const StringX &s, wxTreeItemId &si) const
 {
   // returns true iff s is a direct descendant of node
   wxTreeItemIdValue cookie;
@@ -296,7 +339,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
 {
   if (!item.IsOk() || item == GetRootItem())
     return wxEmptyString;
-  else if (ItemHasChildren(item)) {
+  else if (ItemIsGroup(item)) {
     const wxString path = GetPath(item);
     const wxString name = GetItemText(item);
     if (path.IsEmpty())//parent is root
@@ -385,8 +428,8 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
-             item1isGroup = ItemHasChildren(item1),
-             item2isGroup = ItemHasChildren(item2);
+             item1isGroup = ItemIsGroup(item1),
+             item2isGroup = ItemIsGroup(item2);
 
   if (groupsFirst) {
     if (item1isGroup && !item2isGroup)
@@ -402,11 +445,14 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
 
 void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 {
+  if (!ItemIsGroup(item) || GetChildrenCount(item) <= 0)
+    return;
+  
   SortChildren(item);
   
   wxTreeItemIdValue cookie;
   for( wxTreeItemId childId = GetFirstChild(item, cookie); childId.IsOk(); childId = GetNextChild(item, cookie)) {
-    if (ItemHasChildren(childId)) {
+    if (ItemIsGroup(childId) && GetChildrenCount(childId) > 0) { //logically redundant, but probably more efficient
       SortChildrenRecursively(childId);
     }
   }
@@ -427,6 +473,19 @@ wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
   uuid_array_t uuid;
   item.GetUUID(uuid);
   return Find(uuid);
+}
+
+wxTreeItemId PWSTreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
+{
+  wxArrayString elems(::wxStringTokenize(path, wxT('.')));
+  for( size_t idx = 0; idx < elems.Count(); ++idx) {
+    wxTreeItemId next;
+    if (ExistsInTree(subtree, tostringx(elems[idx]), next))
+      subtree = next;
+    else
+      return wxTreeItemId();
+  }
+  return subtree;
 }
 
 bool PWSTreeCtrl::Remove(const CUUID &uuid)
@@ -479,7 +538,7 @@ void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
 void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
 {
   const wxTreeItemId item = evt.GetItem();
-  if (ItemHasChildren(item) && GetChildrenCount(item) > 0){
+  if (ItemIsGroup(item) && GetChildrenCount(item) > 0){
     if (IsExpanded(item))
       Collapse(item);
     else {
@@ -551,3 +610,152 @@ void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
   if (pwsframe->IsTreeView())
     pwsframe->RefreshViews();
 }
+
+void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
+{
+  if (!id) return;
+  wxTextCtrl* edit = tree->EditLabel(id);
+  if (edit) {
+    wxTextValidator val(wxFILTER_EXCLUDE_CHAR_LIST);
+    const wxChar* dot = wxT(".");
+    val.SetExcludes(wxArrayString(1, &dot));
+    edit->SetValidator(val);
+    edit->SelectAll();
+  }
+}
+void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
+{
+  wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
+  wxTreeItemId parentId = GetSelection();
+  wxString newItemPath = (!parentId || parentId == GetRootItem())? wxT("New Group"): GetItemGroup(parentId)+wxT(".New Group");
+  wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
+  wxCHECK_RET(newItem.IsOk(), wxT("Could not add empty group item to tree"));
+  // mark it as a new group that is still under construction.  wxWidgets would delete it
+  SetItemData(newItem, new PWTreeItemData(true));
+  ::wxYield();
+  EnsureVisible(newItem);
+  ::wxYield();
+  EditTreeLabel(this, newItem);
+}
+
+void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& evt)
+{
+  wxTreeItemId sel = GetSelection();
+  if (sel.IsOk()) {
+    wxCHECK_RET(ItemIsGroup(sel), wxT("Renaming of non-Group items is not implemented"));
+    SetItemData(sel, new PWTreeItemData(GetItemGroup(sel)));
+    EditTreeLabel(this, sel);
+  }
+}
+
+void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
+{
+  switch (evt.GetId()) {
+    case ID_TREECTRL:
+    {
+      if (evt.GetLabel().Find(wxT('.')) == wxNOT_FOUND) {
+      // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
+      wxTreeEvent newEvt(evt);
+      newEvt.SetId(ID_TREECTRL_1);
+      AddPendingEvent(newEvt);
+      }
+      else {
+        evt.Veto();
+        wxMessageBox(wxT("Dots are not allowed in group names"), wxT("Invalid Character"), wxOK|wxICON_ERROR);
+      }
+      break;
+    }
+    case ID_TREECTRL_1:
+    {
+      wxTreeItemId groupItem = evt.GetItem();
+      PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
+      if (data && data->BeingAdded()) {
+        // A new group being added
+        FinishAddingGroup(evt, groupItem);
+      }
+      else if (data && data->BeingEdited()) {
+        // An existing group being renamed
+        FinishRenamingGroup(evt, groupItem, data->GetOldPath());
+      }
+      break;
+    }
+    default:
+      wxFAIL_MSG(wxString::Format(wxT("End Label Edit handler received an unexpected identifier: %d"), evt.GetId()));
+      break;
+  }
+}
+
+void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
+{
+  if (evt.IsEditCancelled()) {
+    // New item, not yet in db.  So we could just remove from the tree
+    Delete(groupItem);
+  }
+  else {
+    // Can't call GetItemGroup here since the item doesn't actually have the new label
+    wxString groupName = evt.GetLabel();
+    for (wxTreeItemId parent = GetItemParent(groupItem);
+                      parent != GetRootItem(); parent = GetItemParent(parent)) {
+      groupName = GetItemText(parent) + wxT(".") + groupName;
+    }
+    StringX sxGroup = tostringx(groupName);
+
+    // The new item we just added above will get removed once the update GUI callback from core happens.
+    DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
+                                                             sxGroup,
+                                                             DBEmptyGroupsCommand::EG_ADD);
+    if (cmd)
+      m_core.Execute(cmd);
+    
+    // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
+    // We can select it using the full path we computed earlier
+    wxTreeItemId newItem = Find(groupName, GetRootItem());
+    if (newItem.IsOk())
+      wxTreeCtrl::SelectItem(newItem);
+  }
+}
+
+void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath)
+{
+  wxCHECK_RET(ItemIsGroup(groupItem), wxT("Cannot handle renaming of non-group items"));
+
+  if (evt.IsEditCancelled())
+    return;
+
+  // We DON'T need to handle these two as they can only occur while moving items
+  //    not removing groups as they become empty
+  //    renaming of groups that have only other groups as children
+
+  MultiCommands* pmcmd = MultiCommands::Create(&m_core);
+  if (!pmcmd)
+    return;
+
+  // For some reason, Command objects can't handle const references
+  StringX sxOldPath = tostringx(oldPath);
+  StringX sxNewPath = tostringx(GetItemGroup(groupItem));
+
+  // This takes care of modifying all the actual items
+  pmcmd->Add(RenameGroupCommand::Create(&m_core, sxOldPath, sxNewPath));
+
+  // But we have to do the empty groups ourselves because EG_RENAME is not recursive
+  typedef std::vector<StringX> EmptyGroupsArray;
+  const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
+  StringX sxOldPathWithDot = sxOldPath + _T('.');
+  for( EmptyGroupsArray::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
+  {
+    if (*itr == sxOldPath || itr->find(sxOldPathWithDot) == 0) {
+      StringX sxOld = *itr;
+      StringX sxNew = sxNewPath + itr->substr(sxOldPath.size());
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxOld, sxNew));
+    }
+  }
+
+  if (pmcmd->GetSize())
+    m_core.Execute(pmcmd);
+
+  // The old treeItem is gone, since it was renamed.  We need to find the new one to select it
+  wxTreeItemId newItem = Find(towxstring(sxNewPath), GetRootItem());
+  if (newItem.IsOk())
+    wxTreeCtrl::SelectItem(newItem);
+}
+

@@ -32,6 +32,7 @@ CSCWListCtrl::~CSCWListCtrl()
 void CSCWListCtrl::Initialize()
 {
   m_pParent = reinterpret_cast<CShowCompareDlg *>(GetParent());
+  UpdateRowHeight(false);
 }
 
 BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
@@ -40,6 +41,8 @@ BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
   ON_WM_MOUSEMOVE()
   ON_WM_TIMER()
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+  ON_MESSAGE(WM_SETFONT, OnSetFont)
+  ON_WM_MEASUREITEM_REFLECT()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -197,3 +200,51 @@ void CSCWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
   CListCtrl::OnMouseMove(nFlags, point);
 }
 
+void CSCWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+  if (!Fonts::GetInstance())
+     return;
+  
+  int padding=4;
+  if (GetExtendedStyle() & LVS_EX_GRIDLINES)
+     padding+=2;
+  
+  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight()+padding;
+  //Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
+  ModifyStyle(LVS_OWNERDRAWFIXED, 0);
+}
+
+void CSCWListCtrl::UpdateRowHeight(bool bInvalidate){
+  // We need to change WINDOWPOS to trigger MeasureItem 
+  // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
+  CRect rc;
+  GetWindowRect(&rc);
+  WINDOWPOS wp;
+  wp.hwnd = m_hWnd;
+  wp.cx = rc.Width();
+  wp.cy = rc.Height();
+  wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
+  
+  //Add LVS_OWNERDRAWFIXED style for generating MeasureItem event
+  ModifyStyle(0, LVS_OWNERDRAWFIXED);
+
+  SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
+  if (bInvalidate)
+  {
+    Invalidate();
+    int idx = GetTopIndex();
+    if (idx >=0)
+      EnsureVisible(idx, FALSE);
+  }
+}
+
+LRESULT CSCWListCtrl::OnSetFont(WPARAM, LPARAM)
+{
+  LRESULT res = Default();
+  UpdateRowHeight(false);
+  return res;
+}
+
+void CSCWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
+  //DrawItem must be overriden for LVS_OWNERDRAWFIXED style lists
+}

@@ -75,9 +75,6 @@ CImportTextDlg::~CImportTextDlg()
 wxCollapsiblePane* CImportTextDlg::CreateImportOptionsPane(wxBoxSizer* dlgSizer)
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin);
-  const wxSizerFlags Right = wxSizerFlags().Proportion(0).Border(wxRIGHT, SideMargin);
-  const wxSizerFlags noResizeFlags = wxSizerFlags().Proportion(0);//.Align(wxALIGN_CENTER_VERTICAL);
-  const wxSizerFlags resizeFlags = wxSizerFlags().Proportion(1).Expand();
   
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, wxT("Import options"));
   wxWindow* paneWindow = pane->GetPane();
@@ -141,7 +138,6 @@ wxTextCtrl* CImportTextDlg::TextCtrl(wxWindow* parent, wxString* validatorTarget
 wxCollapsiblePane* CImportTextDlg::CreateParsingOptionsPane(wxBoxSizer* dlgSizer)
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin);
-  const wxSizerFlags Right = wxSizerFlags().Proportion(0).Border(wxRIGHT, SideMargin);
 
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, wxT("Delimiters"));
   wxWindow* paneWindow = pane->GetPane();

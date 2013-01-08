@@ -215,8 +215,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       break;
     case GCP_RESTORE:
     case GCP_WITHEXIT:
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      break;
     case GCP_CHANGEMODE:
-      // on Restore - user can't change status
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
       break;
@@ -445,6 +447,18 @@ void CPasskeyEntry::ProcessPhrase()
   case PWScore::SUCCESS: {
     // OnOK clears the passkey, so we save it
     const CSecString save_passkey = m_passkey;
+    // Try to change read-only state if user changed checkbox:
+    // r/w -> r-o always succeeds
+    // r-o -> r/w may fail
+    // Note that if file is read-only, m_bForceReadOnly is true -> checkbox
+    // is disabled -> don't need to worry about that.
+    if ((m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) && 
+        (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
+      DboxMain *parent = dynamic_cast<DboxMain *>(GetParent());
+      ASSERT(parent != NULL);
+      parent->ChangeMode(false); // false means
+      //                           "don't prompt use for password", as we just got it.
+    }
     CPWDialog::OnOK();
     m_passkey = save_passkey;
   }

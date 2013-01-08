@@ -89,6 +89,19 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   return retval;
 }
 
+stringT pws_os::fullpath(const stringT &relpath)
+{
+  stringT retval;
+  TCHAR full[_MAX_PATH];
+
+  wmemset(full, 0, sizeof(full)/sizeof(TCHAR));
+  if (_tfullpath(full, relpath.c_str(), _MAX_PATH))
+    retval = full;
+  return retval;
+}
+
+
+
 static bool GetLocalDir(int nFolder, stringT &sLocalPath)
 {
   /*
