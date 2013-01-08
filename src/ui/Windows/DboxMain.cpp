@@ -1525,9 +1525,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
         SetClipboardData(sx_pswd);
         UpdateLastClipboardAction(CItemData::PASSWORD);
-      } else
-        UpdateLastClipboardAction(CItemData::URL);
-
+      }
       UpdateAccessTime(uuid);
     }
   }

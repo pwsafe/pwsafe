@@ -17,6 +17,7 @@ None
 
 Bugs fixed in 3.30.1
 ====================
+[1077] Don't report URL as copied to clipboard when it isn't.
 [1068] Opening a protected entry no longer causes a sound in Windows.
 
 New Features for 3.30
