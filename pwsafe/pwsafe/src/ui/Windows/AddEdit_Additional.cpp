@@ -566,6 +566,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_username(),
                                                 M_realpassword(),
                                                 M_realnotes(),
+                                                M_URL(),
+                                                M_email(),
                                                 vactionverboffsets);
       }
       iaction = CItemData::AUTOTYPE;

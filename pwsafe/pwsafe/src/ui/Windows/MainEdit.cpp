@@ -1808,6 +1808,7 @@ void DboxMain::OnRunCommand()
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
                                  pci->GetTitle(), pci->GetUser(),
                                  sx_pswd, pci->GetNotes(),
+                                 pci->GetURL(), pci->GetEmail(),
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
