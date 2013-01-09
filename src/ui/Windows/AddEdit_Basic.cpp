@@ -1017,6 +1017,8 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_username(),
                                                        M_realpassword(),
                                                        M_realnotes(),
+                                                       M_URL(),
+                                                       M_email(),
                                                        vactionverboffsets);
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;

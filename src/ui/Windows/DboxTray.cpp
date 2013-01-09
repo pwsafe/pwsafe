@@ -178,7 +178,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
                                   ci.GetGroup(), ci.GetTitle(), 
                                   ci.GetUser(), ci.GetPassword(), 
-                                  ci.GetNotes(),
+                                  ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
                                   vactionverboffsets);
 
     LaunchBrowser(ci.GetURL().c_str(), sxAutotype, vactionverboffsets, bDoAutotype);

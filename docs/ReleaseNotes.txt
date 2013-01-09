@@ -13,7 +13,7 @@ New Features for 3.30.1
 None
 Changes to Existing Features in 3.30.1
 ======================================
-None
+[698] Autotype now supports URL and email fields with \l and \m, respectively.
 
 Bugs fixed in 3.30.1
 ====================
