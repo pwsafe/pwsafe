@@ -236,9 +236,11 @@ BOOL CAddEdit_Additional::OnInitDialog()
        iter != M_pwhistlist().end(); iter++, nIdx++) {
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
-    if (pwhentry.changedate != L"1970-01-01 00:00:00")
-      nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate.c_str());
-    else {
+    if (pwhentry.changetttdate != 0) {
+      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
+                                                               PWSUtil::TMC_LOCALE);
+      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
+    } else {
       cs_text.LoadString(IDS_UNKNOWN);
       cs_text.Trim();
       nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
