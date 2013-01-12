@@ -872,7 +872,7 @@ static UINT ParseRunCommand(const StringX &sxInputString,
         }
         sxAutoType = sx_autotype.substr(1, st_end_rb - 1);
         v_rctokens[st_idx + 1].sxname = sx_autotype.substr(st_end_rb + 1);
-        // Check if anythnig left in this text - none -> delete
+        // Check if anything left in this text - none -> delete
         if (v_rctokens[st_idx + 1].sxname.length() == 0)
           v_rctokens.erase(v_rctokens.begin() + st_idx + 1);
         // Now delete Autotype variable
