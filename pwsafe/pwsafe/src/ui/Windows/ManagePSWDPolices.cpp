@@ -203,7 +203,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
   // Load bitmap
   BOOL brc;
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        IDB_COPYTOCLIPBOARD_NEW : IDB_COPYTOCLIPBOARD_CLASSIC;
+        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
   brc = m_CopyPswdBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,

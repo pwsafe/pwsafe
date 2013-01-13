@@ -765,8 +765,7 @@ void CPasswordPolicyDlg::OnUseSymbols()
   UnselectNamedPolicy();
   UpdateData(TRUE);
 
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
-                   m_PWEasyVision == FALSE && m_PWMakePronounceable == FALSE) ? TRUE : FALSE;
+  BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
 
   GetDlgItem(IDC_MINSYMBOLLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINSYMBOLS)->EnableWindow(bChecked);
