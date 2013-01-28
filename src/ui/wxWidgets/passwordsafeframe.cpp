@@ -434,7 +434,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu65->Append(ID_REPORT_FIND, _("&Find"), _T(""), wxITEM_NORMAL);
   itemMenu65->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), _T(""), wxITEM_NORMAL);
   itemMenu65->Append(ID_REPORT_IMPORTXML, _("Import &XML"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_MERGE, _("I&Merge"), _T(""), wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_MERGE, _("&Merge"), _T(""), wxITEM_NORMAL);
   itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), _T(""), wxITEM_NORMAL);
   itemMenu47->Append(ID_REPORTSMENU, _("Reports"), itemMenu65);
   menuBar->Append(itemMenu47, _("&View"));

@@ -7,7 +7,7 @@
  */
 
 /** \file pwsafeapp.cpp
-* 
+*
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -146,15 +146,36 @@ EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
 END_EVENT_TABLE()
 
 
- 
+
 void PwsafeApp::initLanguageSupport()
 {
-  long language =  wxLANGUAGE_DEFAULT;
- 
+  long language = wxLocale::GetSystemLanguage();
+#if defined(__UNIX__) && !defined(__WXMAC__)
+  // Workaround for wx bug 15006
+  if (language == wxLANGUAGE_UNKNOWN) {
+    std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables."
+		 << endl;
+    // Undefine empty environment variables and try again
+    wxString langFull;
+    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull){
+      wxUnsetEnv(wxT("LC_ALL"));
+      std::wcerr << L"Empty LC_ALL variable was dropped" << endl;
+    }
+    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull){
+      wxUnsetEnv(wxT("LC_MESSAGES"));
+      std::wcerr << L"Empty LC_MESSAGES variable was dropped" << endl;
+    }
+    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull){
+      wxUnsetEnv(wxT("LANG"));
+      std::wcerr << L"Empty LANG variable was dropped" << endl;
+    }
+    language = wxLocale::GetSystemLanguage();
+  }
+#endif
   // load language if possible, fall back to english otherwise
   if(wxLocale::IsAvailable(language)) {
     m_locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
- 
+
     // add locale search paths
     m_locale->AddCatalogLookupPathPrefix(wxT("/usr"));
     m_locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
@@ -165,7 +186,7 @@ void PwsafeApp::initLanguageSupport()
       std::wcerr << L"Couldn't load text for "
 		 << m_locale->GetLanguageName(language).c_str() << endl;
     }
- 
+
     if(! m_locale->IsOk()) {
       std::cerr << "selected language is wrong" << std::endl;
       delete m_locale;
@@ -202,7 +223,7 @@ PwsafeApp::~PwsafeApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
-  
+
   delete m_controller;
   delete m_locale;
 }
@@ -223,7 +244,7 @@ void PwsafeApp::Init()
  */
 
 bool PwsafeApp::OnInit()
-{    
+{
   SetAppName(pwsafeAppName);
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
@@ -314,9 +335,9 @@ bool PwsafeApp::OnInit()
 #endif /* _DEBUG */
 
   static wxSingleInstanceChecker appInstance;
-  if (!prefs->GetPref(PWSprefs::MultipleInstances) && 
+  if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
         (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
-         appInstance.IsAnotherRunning())) 
+         appInstance.IsAnotherRunning()))
   {
     wxMessageBox(_("Another instance of Password Safe is already running"), _("Password Safe"),
                           wxOK|wxICON_INFORMATION);
@@ -343,7 +364,7 @@ bool PwsafeApp::OnInit()
 
   //Initialize help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
-  
+
   wxString helpfile(wxFileName(towxstring(pws_os::gethelpdir()), wxT("help.zip")).GetFullPath());
   if (!m_controller->Initialize(helpfile))
     wxMessageBox(_("Could not initialize help subsystem. Help will not be available"),
@@ -367,7 +388,7 @@ bool PwsafeApp::OnInit()
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(NULL, m_core);
     m_frame->Load(initWindow->GetPassword());
-  } 
+  }
   else {
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(NULL, m_core);
@@ -401,7 +422,7 @@ bool PwsafeApp::IsIdleTimerRunning() const
  */
 
 int PwsafeApp::OnExit()
-{    
+{
   StopIdleTimer();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -461,9 +482,9 @@ void PwsafeApp::SaveFrameCoords(void)
     PWSprefs::GetInstance()->SetPrefRect(-1, -1, -1, -1);
   }
   else if (m_frame->IsIconized() || !m_frame->IsShown()) {
-    //if we save coords when minimized/hidden, pwsafe could be hidden or off 
+    //if we save coords when minimized/hidden, pwsafe could be hidden or off
     //screen next time it runs
-    return; 
+    return;
   }
   else {
     wxRect rc = m_frame->GetScreenRect();
@@ -477,19 +498,19 @@ void PwsafeApp::RestoreFrameCoords(void)
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
   if (!(left == -1 && top == -1 && right == -1 && bottom == -1)) {
     wxRect rcApp(left, top, right - left, bottom - top);
-    
+
     int displayWidth, displayHeight;
     ::wxDisplaySize(&displayWidth, &displayHeight);
     wxRect rcDisplay(0, 0, displayWidth, displayHeight);
-    
+
     if (!rcApp.IsEmpty() && rcDisplay.Contains(rcApp))
       m_frame->SetSize(rcApp);
   }
 }
 
 int PwsafeApp::FilterEvent(wxEvent& evt) {
-  if (evt.IsCommandEvent() && evt.GetId() == wxID_HELP && 
-          (evt.GetEventType() == wxEVT_COMMAND_BUTTON_CLICKED || 
+  if (evt.IsCommandEvent() && evt.GetId() == wxID_HELP &&
+          (evt.GetEventType() == wxEVT_COMMAND_BUTTON_CLICKED ||
             evt.GetEventType() == wxEVT_COMMAND_MENU_SELECTED)) {
     OnHelp(*wxDynamicCast(&evt, wxCommandEvent));
     return int(true);
@@ -505,7 +526,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
     //we can't get to its parent
     if (win->GetId() == wxID_HELP && ((win = win->GetParent()) == NULL))
       return;
-    
+
     wxString keyName, msg;
     //Is this a property sheet?
     wxPropertySheetDialog* propSheet = wxDynamicCast(win, wxPropertySheetDialog);
@@ -514,14 +535,14 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
       const wxString pageName = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
       keyName = dlgName + wxT('#') + pageName;
       msg << wxT("Missing help definition for page \"") << pageName
-          << wxT("\" of \"") << dlgName 
+          << wxT("\" of \"") << dlgName
           << wxT("\".\n");
     } else { // !propSheet
       keyName = win->GetClassInfo()->GetClassName();
       msg << wxT("Missing help definition for window \"") << keyName
           << wxT("\".\n");
     }
-    
+
     StringToStringMap& helpmap = GetHelpMap();
     StringToStringMap::iterator itr = helpmap.find(keyName);
     if (itr != helpmap.end())
@@ -533,7 +554,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
 #endif
     } // keyName not found in map
   } else {
-    //just display the main page.  Could happen if the click came from a menu instead of 
+    //just display the main page.  Could happen if the click came from a menu instead of
     //a button, like for the top-level frame
     m_controller->DisplayContents();
   }
@@ -545,7 +566,7 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
   //I don't want to introduce yet another set of source/header files just for this
   static StringToStringMap helpMap;
   static bool initialized = false;
-  
+
   if (!initialized) {
 #define DLG_HELP(dlgname, htmlfile) helpMap[wxSTRINGIZE_T(dlgname)] = wxSTRINGIZE_T(htmlfile);
 #define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) wxT("#")) + page] = wxSTRINGIZE_T(htmlfile);
