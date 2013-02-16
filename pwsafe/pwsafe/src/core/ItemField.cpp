@@ -139,7 +139,7 @@ void CItemField::Get(StringX &value, Fish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
-         (m_Length > 0 && m_Data != NULL));
+         (m_Length > 0 && m_Data != NULL && m_Length % sizeof(TCHAR) == 0));
 
   if (m_Length == 0) {
     value = _T("");
