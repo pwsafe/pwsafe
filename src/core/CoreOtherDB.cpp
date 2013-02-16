@@ -46,14 +46,28 @@ const StringX sx_StartChevron(_T("\xab"));
 const StringX sx_MiddleChevron(_T("\xbb \xab"));
 const StringX sx_EndChevron(_T("\xbb"));
 
-inline bool FieldsNotEqual(StringX a, StringX b, const bool bTreatWhiteSpaceasEmpty)
+static void CompareField(CItemData::FieldType field,
+                         const CItemData::FieldBits &bsTest,
+                         const CItemData &first, const CItemData &second,
+                         CItemData::FieldBits &bsConflicts, bool bTreatWhiteSpaceasEmpty = false)
 {
-  if (bTreatWhiteSpaceasEmpty) { // m_treatwhitespaceasempty
-    EmptyIfOnlyWhiteSpace(a);
-    EmptyIfOnlyWhiteSpace(b);
+  if (bsTest.test(field)) {
+    bool flip;
+    if (bTreatWhiteSpaceasEmpty) {
+      StringX a(first.GetFieldValue(field)), b(second.GetFieldValue(field));
+      EmptyIfOnlyWhiteSpace(a); EmptyIfOnlyWhiteSpace(b);
+      flip = a != b;
+    } else {
+      flip = first.GetFieldValue(field) != second.GetFieldValue(field);
+    }
+    if (flip)
+      bsConflicts.flip(field);
   }
-  return a != b;
 }
+
+/*
+ * XXX Logic of comparing two entries should really be moved to CItemData
+ */
 
 void PWScore::Compare(PWScore *pothercore,
                       const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
@@ -102,7 +116,7 @@ void PWScore::Compare(PWScore *pothercore,
     }
 
     st_data.Empty();
-    CItemData currentItem = GetEntry(currentPos);
+    const CItemData &currentItem = GetEntry(currentPos);
 
     if (!subgroup_bset ||
         currentItem.Matches(std::wstring(subgroup_name), subgroup_object,
@@ -163,7 +177,7 @@ void PWScore::Compare(PWScore *pothercore,
         bsConflicts.reset();
         StringX sxCurrentPassword, sxComparisonPassword;
 
-        CItemData compItem = pothercore->GetEntry(foundPos);
+        const CItemData &compItem = pothercore->GetEntry(foundPos);
 
         if (currentItem.IsDependent()) {
           CItemData *pci_base = GetBaseEntry(&currentItem);
@@ -181,29 +195,13 @@ void PWScore::Compare(PWScore *pothercore,
             sxCurrentPassword != sxComparisonPassword)
           bsConflicts.flip(CItemData::PASSWORD);
 
-        if (bsFields.test(CItemData::NOTES) &&
-            FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), bTreatWhiteSpaceasEmpty))
-          bsConflicts.flip(CItemData::NOTES);
-
-        if (bsFields.test(CItemData::CTIME) &&
-            currentItem.GetCTime() != compItem.GetCTime())
-          bsConflicts.flip(CItemData::CTIME);
-
-        if (bsFields.test(CItemData::PMTIME) &&
-            currentItem.GetPMTime() != compItem.GetPMTime())
-          bsConflicts.flip(CItemData::PMTIME);
-
-        if (bsFields.test(CItemData::ATIME) &&
-            currentItem.GetATime() != compItem.GetATime())
-          bsConflicts.flip(CItemData::ATIME);
-
-        if (bsFields.test(CItemData::XTIME) &&
-            currentItem.GetXTime() != compItem.GetXTime())
-          bsConflicts.flip(CItemData::XTIME);
-
-        if (bsFields.test(CItemData::RMTIME) &&
-            currentItem.GetRMTime() != compItem.GetRMTime())
-          bsConflicts.flip(CItemData::RMTIME);
+        CompareField(CItemData::NOTES, bsFields, currentItem, compItem,
+                     bsConflicts, bTreatWhiteSpaceasEmpty);
+        CompareField(CItemData::CTIME, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::PMTIME, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::ATIME, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::XTIME, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::RMTIME, bsFields, currentItem, compItem, bsConflicts);
 
         if (bsFields.test(CItemData::XTIME_INT)) {
           int current_xint, comp_xint;
@@ -213,23 +211,12 @@ void PWScore::Compare(PWScore *pothercore,
             bsConflicts.flip(CItemData::XTIME_INT);
         }
 
-        if (bsFields.test(CItemData::URL) &&
-            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(),
-                           bTreatWhiteSpaceasEmpty))
-          bsConflicts.flip(CItemData::URL);
-
-        if (bsFields.test(CItemData::AUTOTYPE) &&
-            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
-                           bTreatWhiteSpaceasEmpty))
-          bsConflicts.flip(CItemData::AUTOTYPE);
-
-        if (bsFields.test(CItemData::PWHIST) &&
-            currentItem.GetPWHistory() != compItem.GetPWHistory())
-          bsConflicts.flip(CItemData::PWHIST);
-
-        if (bsFields.test(CItemData::POLICYNAME) &&
-            currentItem.GetPolicyName() != compItem.GetPolicyName())
-          bsConflicts.flip(CItemData::POLICYNAME);
+        CompareField(CItemData::URL, bsFields, currentItem, compItem,
+                     bsConflicts, bTreatWhiteSpaceasEmpty);
+        CompareField(CItemData::AUTOTYPE, bsFields, currentItem, compItem,
+                     bsConflicts, bTreatWhiteSpaceasEmpty);
+        CompareField(CItemData::PWHIST, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::POLICYNAME, bsFields, currentItem, compItem, bsConflicts);
 
         // Don't test policy or symbols if either entry is using a named policy
         // as these are meaningless to compare
@@ -247,30 +234,14 @@ void PWScore::Compare(PWScore *pothercore,
             if (cur_pwp != cmp_pwp)
               bsConflicts.flip(CItemData::POLICY);
           }
-          if (bsFields.test(CItemData::SYMBOLS) &&
-              currentItem.GetSymbols() != compItem.GetSymbols())
-            bsConflicts.flip(CItemData::SYMBOLS);
+          CompareField(CItemData::SYMBOLS, bsFields, currentItem, compItem, bsConflicts);
         }
 
-        if (bsFields.test(CItemData::RUNCMD) &&
-            currentItem.GetRunCommand() != compItem.GetRunCommand())
-          bsConflicts.flip(CItemData::RUNCMD);
-
-        if (bsFields.test(CItemData::DCA) &&
-            currentItem.GetDCA() != compItem.GetDCA())
-          bsConflicts.flip(CItemData::DCA);
-
-        if (bsFields.test(CItemData::SHIFTDCA) &&
-            currentItem.GetShiftDCA() != compItem.GetShiftDCA())
-          bsConflicts.flip(CItemData::SHIFTDCA);
-
-        if (bsFields.test(CItemData::EMAIL) &&
-            currentItem.GetEmail() != compItem.GetEmail())
-          bsConflicts.flip(CItemData::EMAIL);
-
-        if (bsFields.test(CItemData::PROTECTED) &&
-            currentItem.GetProtected() != compItem.GetProtected())
-          bsConflicts.flip(CItemData::PROTECTED);
+        CompareField(CItemData::RUNCMD, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::DCA, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::SHIFTDCA, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::EMAIL, bsFields, currentItem, compItem, bsConflicts);
+        CompareField(CItemData::PROTECTED, bsFields, currentItem, compItem, bsConflicts);
 
         st_data.uuid0 = currentPos->first;
         st_data.uuid1 = foundPos->first;
