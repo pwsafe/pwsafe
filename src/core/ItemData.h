@@ -23,6 +23,7 @@
 #include <bitset>
 #include <vector>
 #include <string>
+#include <map>
 
 typedef std::vector<CItemField> UnknownFields;
 typedef UnknownFields::const_iterator UnknownFieldsConstIter;
@@ -61,18 +62,39 @@ public:
   // field types, per formatV{2,3}.txt. Any value > 0xff is internal only!
   enum FieldType {
     START = 0x00, GROUPTITLE = 0x00 /* reusing depreciated NAME for Group.Title combination */,
-    NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
-    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
-    RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
-    EMAIL = 0x14, PROTECTED = 0x15, SYMBOLS = 0x16, SHIFTDCA = 0x17,
-    POLICYNAME = 0x18,
+    NAME = 0x00,
+    UUID = 0x01,
+    GROUP = 0x02,
+    TITLE = 0x03,
+    USER = 0x04,
+    NOTES = 0x05,
+    PASSWORD = 0x06,
+    CTIME = 0x07,  // Entry 'C'reation time
+    PMTIME = 0x08, // last 'P'assword 'M'odification time
+    ATIME = 0x09,  // last 'A'ccess time
+    XTIME = 0x0a,  // password e'X'iry time
+    RESERVED = 0x0b /* cannot use */,
+    RMTIME = 0x0c, // last 'R'ecord 'M'odification time
+    URL = 0x0d, AUTOTYPE = 0x0e,
+    PWHIST = 0x0f,
+    POLICY = 0x10, // string encoding of item-specific password policy
+    XTIME_INT = 0x11,
+    RUNCMD = 0x12,
+    DCA = 0x13,    // doubleclick action (enum)
+    EMAIL = 0x14,
+    PROTECTED = 0x15,
+    SYMBOLS = 0x16,    // string of item-specific password symbols
+    SHIFTDCA = 0x17,   // shift-doubleclick action (enum)
+    POLICYNAME = 0x18, // named non-default password policy for item
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
     // 'UNKNOWNFIELDS' should be last
     UNKNOWNFIELDS = 0x104};
+
+  // Password Policy stuff: Either PWPolicy (+ optionally symbols) is not empty
+  // or PolicyName is not empty. Both cannot be set. All can be empty.
 
   // SubGroup Object - same as FieldType
 
@@ -104,6 +126,10 @@ public:
          VF_NOT_UNIQUE_GTU  =  8,
          VF_BAD_PSWDHISTORY = 16};
 
+  typedef std::map<FieldType, CItemField> FieldMap;
+  typedef FieldMap::const_iterator FieldConstIter;
+  typedef FieldMap::iterator FieldIter;
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -128,7 +154,7 @@ public:
   StringX GetTitle() const; // V20
   StringX GetUser() const; // V20
   StringX GetPassword() const;
-  size_t GetPasswordLength() const {return GetField(m_Password).length();}
+  size_t GetPasswordLength() const {return GetField(PASSWORD).length();}
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &) const; // V20
   const pws_os::CUUID GetUUID() const; // V20 - see comment in .cpp re return type
@@ -249,7 +275,7 @@ public:
   void SetSymbols(const StringX &sx_symbols);
   void SetPolicyName(const StringX &sx_PolicyName);
 
-  void SetFieldValue(const FieldType &ft, const StringX &value);
+  void SetFieldValue(FieldType ft, const StringX &value);
 
   CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
@@ -275,36 +301,36 @@ public:
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
   bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
-  bool IsGroupEmpty() const {return m_Group.IsEmpty();}
-  bool IsUserEmpty() const {return m_User.IsEmpty();}
-  bool IsNotesEmpty() const {return m_Notes.IsEmpty();}
-  bool IsURLEmpty() const {return m_URL.IsEmpty();}
-  bool IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
-  bool IsEmailEmpty() const {return m_email.IsEmpty();}
-  bool IsPolicyEmpty() const {return m_PolicyName.IsEmpty();}
+  bool IsGroupEmpty() const {return !IsGroupSet();}
+  bool IsUserEmpty() const {return !IsUserSet();}
+  bool IsNotesEmpty() const {return !IsNotesSet();}
+  bool IsURLEmpty() const {return !IsURLSet();}
+  bool IsRunCommandEmpty() const {return !IsRunCommandSet();}
+  bool IsEmailEmpty() const {return !IsEmailSet();}
+  bool IsPolicyEmpty() const {return !IsPasswordPolicySet();}
 
-  bool IsGroupSet() const                     { return !m_Group.IsEmpty();        }
-  bool IsUserSet() const                      { return !m_User.IsEmpty();         }
-  bool IsNotesSet() const                     { return !m_Notes.IsEmpty();        }
-  bool IsURLSet() const                       { return !m_URL.IsEmpty();          }
-  bool IsRunCommandSet() const                { return !m_RunCommand.IsEmpty();   }
-  bool IsEmailSet() const                     { return !m_email.IsEmpty();        }
-  bool IsUUIDSet() const                      { return !m_UUID.IsEmpty();         }
-  bool IsTitleSet() const                     { return !m_Title.IsEmpty();        }
-  bool IsPasswordSet() const                  { return !m_Password.IsEmpty();     }
-  bool IsCreationTimeSet() const              { return !m_tttCTime.IsEmpty();     }
-  bool IsModificationTimeSet() const          { return !m_tttPMTime.IsEmpty();    }
-  bool IsLastAccessTimeSet() const            { return !m_tttATime.IsEmpty();     }
-  bool IsExpiryDateSet() const                { return !m_tttXTime.IsEmpty();     }
-  bool IsRecordModificationTimeSet() const    { return !m_tttRMTime.IsEmpty();    }
-  bool IsAutoTypeSet() const                  { return !m_AutoType.IsEmpty();     }
-  bool IsPasswordHistorySet() const           { return !m_PWHistory.IsEmpty();    }
-  bool IsPasswordPolicySet() const            { return !m_PWPolicy.IsEmpty();     }
-  bool IsPasswordExpiryIntervalSet() const    { return !m_XTimeInterval.IsEmpty();}
-  bool IsDCASet() const                       { return !m_DCA.IsEmpty();          }
-  bool IsProtectionSet() const                { return !m_protected.IsEmpty();    }
-  bool IsSymbolsSet() const                   { return !m_symbols.IsEmpty();      }
-  bool IsPolicyNameSet() const                { return !m_PolicyName.IsEmpty();   }
+  bool IsGroupSet() const                  { return IsFieldSet(GROUP);     }
+  bool IsUserSet() const                   { return IsFieldSet(USER);      }
+  bool IsNotesSet() const                  { return IsFieldSet(NOTES);     }
+  bool IsURLSet() const                    { return IsFieldSet(URL);       }
+  bool IsRunCommandSet() const             { return IsFieldSet(RUNCMD);    }
+  bool IsEmailSet() const                  { return IsFieldSet(EMAIL);     }
+  bool IsUUIDSet() const                   { return IsFieldSet(UUID);      }
+  bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
+  bool IsPasswordSet() const               { return IsFieldSet(PASSWORD);  }
+  bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
+  bool IsModificationTimeSet() const       { return IsFieldSet(PMTIME);    }
+  bool IsLastAccessTimeSet() const         { return IsFieldSet(ATIME);     }
+  bool IsExpiryDateSet() const             { return IsFieldSet(XTIME);     }
+  bool IsRecordModificationTimeSet() const { return IsFieldSet(RMTIME);    }
+  bool IsAutoTypeSet() const               { return IsFieldSet(AUTOTYPE);  }
+  bool IsPasswordHistorySet() const        { return IsFieldSet(PWHIST);    }
+  bool IsPasswordPolicySet() const         { return IsFieldSet(POLICY);    }
+  bool IsPasswordExpiryIntervalSet() const { return IsFieldSet(XTIME_INT); }
+  bool IsDCASet() const                    { return IsFieldSet(DCA);       }
+  bool IsProtectionSet() const             { return IsFieldSet(PROTECTED); }
+  bool IsSymbolsSet() const                { return IsFieldSet(SYMBOLS);   }
+  bool IsPolicyNameSet() const             { return IsFieldSet(POLICYNAME);}
     
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
@@ -328,46 +354,18 @@ public:
   void SetAlias() {m_entrytype = ET_ALIAS;}
   void SetShortcut() {m_entrytype = ET_SHORTCUT;}
 
-  EntryStatus GetStatus() const
-  {return m_entrystatus;}
-  void ClearStatus()
-  {m_entrystatus = ES_CLEAN;}
-  void SetStatus(const EntryStatus es)
-  {m_entrystatus = es;}
+  EntryStatus GetStatus() const {return m_entrystatus;}
+  void ClearStatus() {m_entrystatus = ES_CLEAN;}
+  void SetStatus(const EntryStatus es) {m_entrystatus = es;}
 
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
 
-  size_t GetSize();
-  void GetSize(size_t &isize) const;
+  size_t GetSize() const;
+  void GetSize(size_t &isize) const {isize = GetSize();}
 
 private:
-  CItemField m_Name;
-  CItemField m_Title;
-  CItemField m_User;
-  CItemField m_Password;
-  CItemField m_Notes;
-  CItemField m_UUID;
-  CItemField m_Group;
-  CItemField m_URL;
-  CItemField m_AutoType;
-  CItemField m_tttATime;  // last 'A'ccess time
-  CItemField m_tttCTime;  // 'C'reation time
-  CItemField m_tttXTime;  // password e'X'iry time
-  CItemField m_tttPMTime; // last 'P'assword 'M'odification time
-  CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
-  CItemField m_PWHistory;
-  CItemField m_XTimeInterval;
-  CItemField m_RunCommand;
-  CItemField m_DCA;
-  CItemField m_ShiftDCA;
-  CItemField m_email;
-  CItemField m_protected;
-  // Password Policy stuff: Either m_PWPolicy (+ optionally m_symbols) is not empty
-  // or m_PolicyName is not empty. Both cannot be set. All can be empty.
-  CItemField m_PWPolicy;  // string encoding of item-specific password policy
-  CItemField m_symbols;   // string of item-specific password symbols
-  CItemField m_PolicyName; // named non-default password policy for this item
+  FieldMap   m_fields;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -396,6 +394,7 @@ private:
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
+  StringX GetField(FieldType ft) const;
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
@@ -404,6 +403,8 @@ private:
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
                 size_t length);
+  bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
+
   void UpdatePasswordHistory(); // used by UpdatePassword()
 };
 
