@@ -48,40 +48,20 @@ void CItemData::SetSessionKey()
 // Constructors
 
 CItemData::CItemData()
-  : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-    m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
-    m_URL(URL), m_AutoType(AUTOTYPE),
-    m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
-    m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-    m_DCA(DCA), m_ShiftDCA(SHIFTDCA), m_email(EMAIL), m_protected(PROTECTED),
-    m_PWPolicy(POLICY), m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
-    m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
+  : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
     m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
-  m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
-  m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
-  m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
-  m_tttATime(that.m_tttATime), m_tttCTime(that.m_tttCTime),
-  m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
-  m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-  m_XTimeInterval(that.m_XTimeInterval),
-  m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_ShiftDCA(that.m_ShiftDCA),
-  m_email(that.m_email), m_protected(that.m_protected), 
-  m_PWPolicy(that.m_PWPolicy), m_symbols(that.m_symbols), m_PolicyName(that.m_PolicyName),
+  m_fields(that.m_fields),
   m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                       NULL : that.m_display_info->clone())
 {
   memcpy(m_salt, that.m_salt, SaltLength);
-  if (!that.m_URFL.empty())
-    m_URFL = that.m_URFL;
-  else
-    m_URFL.clear();
+  m_URFL = that.m_URFL;
 }
 
 CItemData::~CItemData()
@@ -93,39 +73,13 @@ CItemData& CItemData::operator=(const CItemData &that)
 {
   // Check for self-assignment
   if (this != &that) {
-    m_UUID = that.m_UUID;
-    m_Name = that.m_Name;
-    m_Title = that.m_Title;
-    m_User = that.m_User;
-    m_Password = that.m_Password;
-    m_Notes = that.m_Notes;
-    m_Group = that.m_Group;
-    m_URL = that.m_URL;
-    m_AutoType = that.m_AutoType;
-    m_RunCommand = that.m_RunCommand;
-    m_DCA = that.m_DCA;
-    m_ShiftDCA = that.m_ShiftDCA;
-    m_email = that.m_email;
-    m_symbols = that.m_symbols;
-    m_PolicyName = that.m_PolicyName;
-    m_tttCTime = that.m_tttCTime;
-    m_tttPMTime = that.m_tttPMTime;
-    m_tttATime = that.m_tttATime;
-    m_tttXTime = that.m_tttXTime;
-    m_tttRMTime = that.m_tttRMTime;
-    m_PWHistory = that.m_PWHistory;
-    m_PWPolicy = that.m_PWPolicy;
-    m_XTimeInterval = that.m_XTimeInterval;
-    m_protected = that.m_protected;
+    m_fields = that.m_fields;
 
     delete m_display_info;
     m_display_info = that.m_display_info == NULL ?
       NULL : that.m_display_info->clone();
 
-    if (!that.m_URFL.empty())
-      m_URFL = that.m_URFL;
-    else
-      m_URFL.clear();
+    m_URFL = that.m_URFL;
 
     m_entrytype = that.m_entrytype;
     m_entrystatus = that.m_entrystatus;
@@ -137,28 +91,7 @@ CItemData& CItemData::operator=(const CItemData &that)
 
 void CItemData::Clear()
 {
-  m_Group.Empty();
-  m_Title.Empty();
-  m_User.Empty();
-  m_Password.Empty();
-  m_Notes.Empty();
-  m_URL.Empty();
-  m_AutoType.Empty();
-  m_RunCommand.Empty();
-  m_DCA.Empty();
-  m_ShiftDCA.Empty();
-  m_email.Empty();
-  m_symbols.Empty();
-  m_PolicyName.Empty();
-  m_tttCTime.Empty();
-  m_tttPMTime.Empty();
-  m_tttATime.Empty();
-  m_tttXTime.Empty();
-  m_tttRMTime.Empty();
-  m_PWHistory.Empty();
-  m_PWPolicy.Empty();
-  m_XTimeInterval.Empty();
-  m_protected.Empty();
+  m_fields.clear();
   m_URFL.clear();
   m_entrytype = ET_NORMAL;
   m_entrystatus = ES_CLEAN;
@@ -166,6 +99,12 @@ void CItemData::Clear()
 
 //-----------------------------------------------------------------------------
 // Accessors
+
+StringX CItemData::GetField(const FieldType ft) const
+{
+  FieldConstIter fiter = m_fields.find(ft);
+  return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
+}
 
 StringX CItemData::GetField(const CItemField &field) const
 {
@@ -262,90 +201,39 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
   return str;
 }
 
-size_t CItemData::GetSize()
+size_t CItemData::GetSize() const
 {
   size_t length(0);
-  length += m_Name.GetLength();
-  length += m_Title.GetLength();
-  length += m_User.GetLength();
-  length += m_Password.GetLength();
-  length += m_Notes.GetLength();
-  length += m_UUID.GetLength();
-  length += m_Group.GetLength();
-  length += m_URL.GetLength();
-  length += m_AutoType.GetLength();
-  length += m_tttATime.GetLength();
-  length += m_tttCTime.GetLength();
-  length += m_tttXTime.GetLength();
-  length += m_tttPMTime.GetLength();
-  length += m_tttRMTime.GetLength();
-  length += m_PWHistory.GetLength();
-  length += m_PWPolicy.GetLength();
-  length += m_XTimeInterval.GetLength();
-  length += m_RunCommand.GetLength();
-  length += m_DCA.GetLength();
-  length += m_ShiftDCA.GetLength();
-  length += m_email.GetLength();
-  length += m_protected.GetLength();
-  length += m_symbols.GetLength();
 
-  for (unsigned int i = 0; i != m_URFL.size(); i++) {
-    CItemField &item = m_URFL.at(i);
-    length += item.GetLength();
-  }
+  for (FieldConstIter fiter = m_fields.begin(); fiter != m_fields.end(); fiter++)
+    length += fiter->second.GetLength();
 
+
+  for (UnknownFieldsConstIter ufiter = m_URFL.begin();
+       ufiter != m_URFL.end(); ufiter++)
+    length += ufiter->GetLength();
+  
   return length;
-}
-
-void CItemData::GetSize(size_t &isize) const
-{
-  isize  = m_Name.GetLength();
-  isize += m_Title.GetLength();
-  isize += m_User.GetLength();
-  isize += m_Password.GetLength();
-  isize += m_Notes.GetLength();
-  isize += m_UUID.GetLength();
-  isize += m_Group.GetLength();
-  isize += m_URL.GetLength();
-  isize += m_AutoType.GetLength();
-  isize += m_tttATime.GetLength();
-  isize += m_tttCTime.GetLength();
-  isize += m_tttXTime.GetLength();
-  isize += m_tttPMTime.GetLength();
-  isize += m_tttRMTime.GetLength();
-  isize += m_PWHistory.GetLength();
-  isize += m_PWPolicy.GetLength();
-  isize += m_XTimeInterval.GetLength();
-  isize += m_RunCommand.GetLength();
-  isize += m_DCA.GetLength();
-  isize += m_ShiftDCA.GetLength();
-  isize += m_email.GetLength();
-  isize += m_protected.GetLength();
-  isize += m_symbols.GetLength();
-
-  for (unsigned int i = 0; i != m_URFL.size(); i++) {
-    isize += m_URFL.at(i).GetLength();
-  }
 }
 
 StringX CItemData::GetName() const
 {
-  return GetField(m_Name);
+  return GetField(NAME);
 }
 
 StringX CItemData::GetTitle() const
 {
-  return GetField(m_Title);
+  return GetField(TITLE);
 }
 
 StringX CItemData::GetUser() const
 {
-  return GetField(m_User);
+  return GetField(USER);
 }
 
 StringX CItemData::GetPassword() const
 {
-  return GetField(m_Password);
+  return GetField(PASSWORD);
 }
 
 static void CleanNotes(StringX &s, TCHAR delimiter)
@@ -364,24 +252,24 @@ static void CleanNotes(StringX &s, TCHAR delimiter)
 
 StringX CItemData::GetNotes(TCHAR delimiter) const
 {
-  StringX ret = GetField(m_Notes);
+  StringX ret = GetField(NOTES);
   CleanNotes(ret, delimiter);
   return ret;
 }
 
 StringX CItemData::GetGroup() const
 {
-  return GetField(m_Group);
+  return GetField(GROUP);
 }
 
 StringX CItemData::GetURL() const
 {
-  return GetField(m_URL);
+  return GetField(URL);
 }
 
 StringX CItemData::GetAutoType() const
 {
-  return GetField(m_AutoType);
+  return GetField(AUTOTYPE);
 }
 
 StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
@@ -394,43 +282,34 @@ StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 
 void CItemData::GetTime(int whichtime, time_t &t) const
 {
-  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-  size_t tlen = sizeof(in); // ditto
+  FieldConstIter fiter = m_fields.find(FieldType(whichtime));
+  if (fiter != m_fields.end()) {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
 
-  switch (whichtime) {
-    case ATIME:
-      GetField(m_tttATime, in, tlen);
-      break;
-    case CTIME:
-      GetField(m_tttCTime, in, tlen);
-      break;
-    case XTIME:
-      GetField(m_tttXTime, in, tlen);
-      break;
-    case PMTIME:
-      GetField(m_tttPMTime, in, tlen);
-      break;
-    case RMTIME:
-      GetField(m_tttRMTime, in, tlen);
-      break;
-    default:
-      ASSERT(0);
-  }
+    GetField(fiter->second, in, tlen);
 
-  if (tlen != 0) {
-    int t32;
-    ASSERT(tlen == sizeof(t32));
-    memcpy(&t32, in, sizeof(t32));
-    t = t32;
-  } else {
+    if (tlen != 0) {
+      int t32;
+      ASSERT(tlen == sizeof(t32));
+      memcpy(&t32, in, sizeof(t32));
+      t = t32;
+    } else {
+      t = 0;
+    }
+  } else // fiter == m_fields.end()
     t = 0;
-  }
 }
 
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
   size_t length = sizeof(uuid_array_t);
-  GetField(m_UUID, static_cast<unsigned char *>(uuid_array), length);
+  FieldConstIter fiter = m_fields.find(UUID);
+  if (fiter == m_fields.end()) {
+    pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!"));
+    memset(uuid_array, 0, length);
+  } else
+    GetField(fiter->second, static_cast<unsigned char *>(uuid_array), length);
 }
 
 const CUUID CItemData::GetUUID() const
@@ -448,13 +327,13 @@ const CUUID CItemData::GetUUID() const
 
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
-  PWPolicy mypol(GetField(m_PWPolicy));
+  PWPolicy mypol(GetField(POLICY));
   pwp = mypol;
 }
 
 StringX CItemData::GetPWPolicy() const
 {
-  return GetField(m_PWPolicy);
+  return GetField(POLICY);
 }
 
 void CItemData::GetXTimeInt(int32 &xint) const
@@ -462,7 +341,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   size_t tlen = sizeof(in); // ditto
 
-  GetField(m_XTimeInterval, in, tlen);
+  GetField(XTIME_INT, in, tlen);
 
   if (tlen != 0) {
     ASSERT(tlen == sizeof(int32));
@@ -489,7 +368,7 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   size_t tlen = sizeof(in); // ditto
 
-  GetField(m_protected, in, tlen);
+  GetField(PROTECTED, in, tlen);
 
   if (tlen != 0) {
     ASSERT(tlen == sizeof(char));
@@ -516,17 +395,21 @@ bool CItemData::IsProtected() const
 
 void CItemData::GetDCA(short &iDCA, const bool bShift) const
 {
-  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-  size_t tlen = sizeof(in); // ditto
 
-  GetField(bShift ? m_ShiftDCA : m_DCA, in, tlen);
+  FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
+  if (fiter != m_fields.end()) {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
+    GetField(fiter->second, in, tlen);
 
-  if (tlen != 0) {
-    ASSERT(tlen == sizeof(short));
-    memcpy(&iDCA, in, sizeof(short));
-  } else {
+    if (tlen != 0) {
+      ASSERT(tlen == sizeof(short));
+      memcpy(&iDCA, in, sizeof(short));
+    } else {
+      iDCA = -1;
+    }
+  } else // fiter == m_fields.end()
     iDCA = -1;
-  }
 }
 
 StringX CItemData::GetDCA(const bool bShift) const
@@ -540,22 +423,22 @@ StringX CItemData::GetDCA(const bool bShift) const
 
 StringX CItemData::GetRunCommand() const
 {
-  return GetField(m_RunCommand);
+  return GetField(RUNCMD);
 }
 
 StringX CItemData::GetEmail() const
 {
-  return GetField(m_email);
+  return GetField(EMAIL);
 }
 
 StringX CItemData::GetSymbols() const
 {
-  return GetField(m_symbols);
+  return GetField(SYMBOLS);
 }
 
 StringX CItemData::GetPolicyName() const
 {
-  return GetField(m_PolicyName);
+  return GetField(POLICYNAME);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
@@ -592,7 +475,7 @@ void CItemData::GetUnknownField(unsigned char &type, size_t &length,
 
 StringX CItemData::GetPWHistory() const
 {
-  StringX ret = GetField(m_PWHistory);
+  StringX ret = GetField(PWHIST);
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
@@ -1041,17 +924,24 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
     SplitName(name, title, user);
   // In order to avoid unecessary BlowFish construction/deletion,
   // we forego SetField here...
+  CItemField nameField(NAME);
   BlowFish *bf = MakeBlowFish();
-  m_Name.Set(name, bf);
-  m_Title.Set(title, bf);
-  m_User.Set(user, bf);
+  nameField.Set(name, bf);
+  m_fields[NAME] = nameField;
+  CItemField titleField(TITLE);
+  titleField.Set(title, bf);
+  m_fields[TITLE] = titleField;
+  CItemField userField(USER);
+  userField.Set(user, bf);
+  m_fields[USER] = userField;
   delete bf;
 }
 
 void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
 {
+  CItemField titleField(TITLE);
   if (delimiter == 0)
-    SetField(m_Title, title);
+    SetField(titleField, title);
   else {
     StringX new_title(_T(""));
     StringX newstringT, tmpstringT;
@@ -1071,13 +961,14 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
     if (!newstringT.empty())
       new_title += newstringT;
 
-    SetField(m_Title, new_title);
+    SetField(titleField, new_title);
   }
+  m_fields[TITLE] = titleField;
 }
 
 void CItemData::SetUser(const StringX &user)
 {
-  SetField(m_User, user);
+  SetField(m_fields[USER], user);
 }
 
 void CItemData::UpdatePassword(const StringX &password)
@@ -1174,13 +1065,13 @@ void CItemData::UpdatePasswordHistory()
 
 void CItemData::SetPassword(const StringX &password)
 {
-  SetField(m_Password, password);
+  SetField(m_fields[PASSWORD], password);
 }
 
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(m_Notes, notes);
+    SetField(m_fields[NOTES], notes);
   else {
     const StringX CRLF = _T("\r\n");
     StringX multiline_notes(_T(""));
@@ -1204,28 +1095,28 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
     if (!newstringT.empty())
       multiline_notes += newstringT;
 
-    SetField(m_Notes, multiline_notes);
+    SetField(m_fields[NOTES], multiline_notes);
   }
 }
 
 void CItemData::SetGroup(const StringX &group)
 {
-  SetField(m_Group, group);
+  SetField(m_fields[GROUP], group);
 }
 
 void CItemData::SetUUID(const uuid_array_t &uuid)
 {
-  SetField(m_UUID, static_cast<const unsigned char *>(uuid), sizeof(uuid));
+  SetField(m_fields[UUID], static_cast<const unsigned char *>(uuid), sizeof(uuid));
 }
 
 void CItemData::SetURL(const StringX &url)
 {
-  SetField(m_URL, url);
+  SetField(m_fields[URL], url);
 }
 
 void CItemData::SetAutoType(const StringX &autotype)
 {
-  SetField(m_AutoType, autotype);
+  SetField(m_fields[AUTOTYPE], autotype);
 }
 
 void CItemData::SetTime(int whichtime)
@@ -1238,25 +1129,8 @@ void CItemData::SetTime(int whichtime)
 void CItemData::SetTime(int whichtime, time_t t)
 {
   int t32 = static_cast<int>(t);
-  switch (whichtime) {
-    case ATIME:
-      SetField(m_tttATime, reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
-      break;
-    case CTIME:
-      SetField(m_tttCTime, reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
-      break;
-    case XTIME:
-      SetField(m_tttXTime, reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
-      break;
-    case PMTIME:
-      SetField(m_tttPMTime, reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
-      break;
-    case RMTIME:
-      SetField(m_tttRMTime, reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
-      break;
-    default:
-      ASSERT(0);
-  }
+  SetField(m_fields[FieldType(whichtime)],
+           reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
 }
 
 bool CItemData::SetTime(int whichtime, const stringT &time_str)
@@ -1285,7 +1159,8 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
 
 void CItemData::SetXTimeInt(int32 &xint)
 {
-   SetField(m_XTimeInterval, reinterpret_cast<const unsigned char *>(&xint), sizeof(int32));
+   SetField(m_fields[XTIME_INT],
+            reinterpret_cast<const unsigned char *>(&xint), sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
@@ -1329,14 +1204,14 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
   StringX pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
     pwh = _T("");
-  SetField(m_PWHistory, pwh);
+  SetField(m_fields[PWHIST], pwh);
 }
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   const StringX cs_pwp(pwp);
 
-  SetField(m_PWPolicy, cs_pwp);
+  SetField(m_fields[POLICY], cs_pwp);
   if (!pwp.symbols.empty())
     SetSymbols(pwp.symbols);
 }
@@ -1345,7 +1220,7 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
   if (cs_pwp.empty()) {
-    SetField(m_PWPolicy, cs_pwp.c_str());
+    SetField(m_fields[POLICY], cs_pwp.c_str());
     return true;
   }
 
@@ -1356,34 +1231,34 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   if (pwp == emptyPol)
     return false;
 
-  SetField(m_PWPolicy, cs_pwpolicy);
+  SetField(m_fields[POLICY], cs_pwpolicy);
   return true;
 }
 
 void CItemData::SetRunCommand(const StringX &cs_RunCommand)
 {
-  SetField(m_RunCommand, cs_RunCommand);
+  SetField(m_fields[RUNCMD], cs_RunCommand);
 }
 
 void CItemData::SetEmail(const StringX &sx_email)
 {
-  SetField(m_email, sx_email);
+  SetField(m_fields[EMAIL], sx_email);
 }
 
 void CItemData::SetSymbols(const StringX &sx_symbols)
 {
-  SetField(m_symbols, sx_symbols);
+  SetField(m_fields[SYMBOLS], sx_symbols);
 }
 
 void CItemData::SetPolicyName(const StringX &sx_PolicyName)
 {
-  SetField(m_PolicyName, sx_PolicyName);
+  SetField(m_fields[POLICYNAME], sx_PolicyName);
 }
 
 void CItemData::SetDCA(const short &iDCA, const bool bShift)
 {
-   SetField(bShift ? m_ShiftDCA : m_DCA, reinterpret_cast<const unsigned char *>(&iDCA),
-            sizeof(short));
+   SetField(m_fields[bShift ? SHIFTDCA : DCA],
+            reinterpret_cast<const unsigned char *>(&iDCA), sizeof(short));
 }
 
 bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
@@ -1411,50 +1286,32 @@ bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
 void CItemData::SetProtected(const bool &bOnOff)
 {
   unsigned char ucProtected = bOnOff ? 1 : 0;
-  SetField(m_protected, &ucProtected, sizeof(char));
+  SetField(m_fields[PROTECTED], &ucProtected, sizeof(char));
 }
 
-void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
+void CItemData::SetFieldValue(FieldType ft, const StringX &value)
 {
   switch (ft) {
     case GROUP:      /* 02 */
-      SetGroup(value);
-      break;
     case TITLE:      /* 03 */
-      SetTitle(value);
-      break;
     case USER:       /* 04 */
-      SetUser(value);
-      break;
     case NOTES:      /* 05 */
-      SetNotes(value);
-      break;
     case PASSWORD:   /* 06 */
-      SetPassword(value);
+    case URL:        /* 0d */
+    case AUTOTYPE:   /* 0e */
+    case PWHIST:     /* 0f */
+    case EMAIL:      /* 14 */
+    case RUNCMD:     /* 12 */
+    case SYMBOLS:    /* 16 */
+    case POLICYNAME: /* 18 */
+      SetField(m_fields[ft], value);
       break;
     case CTIME:      /* 07 */
-      SetCTime(value.c_str());
-      break;
     case PMTIME:     /* 08 */
-      SetPMTime(value.c_str());
-      break;
     case ATIME:      /* 09 */
-      SetATime(value.c_str());
-      break;
     case XTIME:      /* 0a */
-      SetXTime(value.c_str());
-      break;
     case RMTIME:     /* 0c */
-      SetRMTime(value.c_str());
-      break;
-    case URL:        /* 0d */
-      SetURL(value);
-      break;
-    case AUTOTYPE:   /* 0e */
-      SetAutoType(value);
-      break;
-    case PWHIST:     /* 0f */
-      SetPWHistory(value);
+      SetTime(ft, value.c_str());
       break;
     case POLICY:     /* 10 */
       SetPWPolicy(value.c_str());
@@ -1462,26 +1319,14 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
     case XTIME_INT:  /* 11 */
       SetXTimeInt(value.c_str());
       break;
-    case RUNCMD:     /* 12 */
-      SetRunCommand(value);
-      break;
     case DCA:        /* 13 */
       SetDCA(value.c_str());
-      break;
-    case EMAIL:      /* 14 */
-      SetEmail(value);
       break;
     case PROTECTED:  /* 15 */
       SetProtected(value.compare(_T("1")) == 0 || value.compare(_T("Yes")) == 0);
       break;
-    case SYMBOLS:    /* 16 */
-      SetSymbols(value);
-      break;
     case SHIFTDCA:   /* 17 */
       SetShiftDCA(value.c_str());
-      break;
-    case POLICYNAME: /* 18 */
-      SetPolicyName(value);
       break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
@@ -1518,8 +1363,8 @@ bool CItemData::ValidateEntry(int &flags)
 bool CItemData::ValidatePWHistory()
 {
   // Return true if valid
-  if (m_PWHistory.IsEmpty())
-    return true;
+  if (!IsPasswordHistorySet())
+    return true; // empty is a kind of valid
 
   const StringX pwh = GetPWHistory();
   if (pwh.length() < 5) { // not empty, but too short.
@@ -1569,42 +1414,23 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
   ASSERT(iFunction != 0); // must be positive or negative!
 
   StringX sx_Object;
-  switch(iObject) {
+  FieldType ft = static_cast<FieldType>(iObject);
+  switch(ft) {
     case GROUP:
-      sx_Object = GetGroup();
-      break;
     case TITLE:
-      sx_Object = GetTitle();
-      break;
     case USER:
-      sx_Object = GetUser();
+    case URL:
+    case NOTES:
+    case PASSWORD:
+    case RUNCMD:
+    case EMAIL:
+    case SYMBOLS:
+    case POLICYNAME:
+    case AUTOTYPE:
+      sx_Object = GetField(ft);
       break;
     case GROUPTITLE:
       sx_Object = GetGroup() + TCHAR('.') + GetTitle();
-      break;
-    case URL:
-      sx_Object = GetURL();
-      break;
-    case NOTES:
-      sx_Object = GetNotes();
-      break;
-    case PASSWORD:
-      sx_Object = GetPassword();
-      break;
-    case RUNCMD:
-      sx_Object = GetRunCommand();
-      break;
-    case EMAIL:
-      sx_Object = GetEmail();
-      break;
-    case SYMBOLS:
-      sx_Object = GetSymbols();
-      break;
-    case POLICYNAME:
-      sx_Object = GetPolicyName();
-      break;
-    case AUTOTYPE:
-      sx_Object = GetAutoType();
       break;
     default:
       ASSERT(0);
@@ -1912,7 +1738,8 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
   short i16;
   unsigned char uc;
 
-  switch (type) {
+  FieldType ft = static_cast<FieldType>(type);
+  switch (ft) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format
       return false;
@@ -1926,68 +1753,32 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       break;
     }
     case GROUP:
-      if (!pull_string(str, data, len)) return false;
-      SetGroup(str);
-      break;
     case TITLE:
-      if (!pull_string(str, data, len)) return false;
-      SetTitle(str);
-      break;
     case USER:
-      if (!pull_string(str, data, len)) return false;
-      SetUser(str);
-      break;
     case NOTES:
-      if (!pull_string(str, data, len)) return false;
-      SetNotes(str);
-      break;
     case PASSWORD:
+    case POLICY:
+    case URL:
+    case AUTOTYPE:
+    case PWHIST:
+    case RUNCMD:
+    case EMAIL:
+    case SYMBOLS:
+    case POLICYNAME:
       if (!pull_string(str, data, len)) return false;
-      SetPassword(str);
+      SetField(m_fields[ft], str);
       break;
     case CTIME:
-      if (!pull_time32(t, data, len)) return false;
-      SetCTime(t);
-      break;
     case PMTIME:
-      if (!pull_time32(t, data, len)) return false;
-      SetPMTime(t);
-      break;
     case ATIME:
-      if (!pull_time32(t, data, len)) return false;
-      SetATime(t);
-      break;
     case XTIME:
+    case RMTIME:
       if (!pull_time32(t, data, len)) return false;
-      SetXTime(t);
+      SetTime(ft, t);
       break;
     case XTIME_INT:
       if (!pull_int32(i32, data, len)) return false;
       SetXTimeInt(i32);
-      break;
-    case POLICY:
-      if (!pull_string(str, data, len)) return false;
-      SetPWPolicy(str.c_str());
-      break;
-    case RMTIME:
-      if (!pull_time32(t, data, len)) return false;
-      SetRMTime(t);
-      break;
-    case URL:
-      if (!pull_string(str, data, len)) return false;
-      SetURL(str);
-      break;
-    case AUTOTYPE:
-      if (!pull_string(str, data, len)) return false;
-      SetAutoType(str);
-      break;
-    case PWHIST:
-      if (!pull_string(str, data, len)) return false;
-      SetPWHistory(str);
-      break;
-    case RUNCMD:
-      if (!pull_string(str, data, len)) return false;
-      SetRunCommand(str);
       break;
     case DCA:
       if (!pull_int16(i16, data, len)) return false;
@@ -1997,21 +1788,9 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       if (!pull_int16(i16, data, len)) return false;
       SetShiftDCA(i16);
       break;
-    case EMAIL:
-      if (!pull_string(str, data, len)) return false;
-      SetEmail(str);
-      break;
     case PROTECTED:
       if (!pull_char(uc, data, len)) return false;
       SetProtected(uc != 0);
-      break;
-    case SYMBOLS:
-      if (!pull_string(str, data, len)) return false;
-      SetSymbols(str);
-      break;
-    case POLICYNAME:
-      if (!pull_string(str, data, len)) return false;
-      SetPolicyName(str);
       break;
     case END:
       break;
