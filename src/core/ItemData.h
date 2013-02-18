@@ -72,7 +72,7 @@ public:
     CTIME = 0x07,  // Entry 'C'reation time
     PMTIME = 0x08, // last 'P'assword 'M'odification time
     ATIME = 0x09,  // last 'A'ccess time
-    XTIME = 0x0a,  // password e'X'iry time
+    XTIME = 0x0a,  // password e'X'piry time
     RESERVED = 0x0b /* cannot use */,
     RMTIME = 0x0c, // last 'R'ecord 'M'odification time
     URL = 0x0d, AUTOTYPE = 0x0e,
@@ -126,10 +126,6 @@ public:
          VF_NOT_UNIQUE_GTU  =  8,
          VF_BAD_PSWDHISTORY = 16};
 
-  typedef std::map<FieldType, CItemField> FieldMap;
-  typedef FieldMap::const_iterator FieldConstIter;
-  typedef FieldMap::iterator FieldIter;
-
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -139,7 +135,6 @@ public:
 
   //Construction
   CItemData();
-
   CItemData(const CItemData& stuffhere);
 
   ~CItemData();
@@ -301,14 +296,6 @@ public:
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
   bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
-  bool IsGroupEmpty() const {return !IsGroupSet();}
-  bool IsUserEmpty() const {return !IsUserSet();}
-  bool IsNotesEmpty() const {return !IsNotesSet();}
-  bool IsURLEmpty() const {return !IsURLSet();}
-  bool IsRunCommandEmpty() const {return !IsRunCommandSet();}
-  bool IsEmailEmpty() const {return !IsEmailSet();}
-  bool IsPolicyEmpty() const {return !IsPasswordPolicySet();}
-
   bool IsGroupSet() const                  { return IsFieldSet(GROUP);     }
   bool IsUserSet() const                   { return IsFieldSet(USER);      }
   bool IsNotesSet() const                  { return IsFieldSet(NOTES);     }
@@ -332,6 +319,14 @@ public:
   bool IsSymbolsSet() const                { return IsFieldSet(SYMBOLS);   }
   bool IsPolicyNameSet() const             { return IsFieldSet(POLICYNAME);}
     
+  bool IsGroupEmpty() const                { return !IsGroupSet();         }
+  bool IsUserEmpty() const                 { return !IsUserSet();          }
+  bool IsNotesEmpty() const                { return !IsNotesSet();         }
+  bool IsURLEmpty() const                  { return !IsURLSet();           }
+  bool IsRunCommandEmpty() const           { return !IsRunCommandSet();    }
+  bool IsEmailEmpty() const                { return !IsEmailSet();         }
+  bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
+
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeSerializePlainText(const std::vector<char> &v);
@@ -365,6 +360,10 @@ public:
   void GetSize(size_t &isize) const {isize = GetSize();}
 
 private:
+  typedef std::map<FieldType, CItemField> FieldMap;
+  typedef FieldMap::const_iterator FieldConstIter;
+  typedef FieldMap::iterator FieldIter;
+
   FieldMap   m_fields;
 
   // Save unknown record fields on read to put back on write unchanged
