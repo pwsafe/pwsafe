@@ -277,6 +277,8 @@ public:
   DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
   void Clear();
+  void ClearField(FieldType ft) {m_fields.erase(ft);}
+
 
   // check record for mandatory fields, silently fix if missing
   bool ValidateEntry(int &flags);

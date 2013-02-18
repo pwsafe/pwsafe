@@ -385,22 +385,6 @@ int PWSfileV3::ReadRecord(CItemData &item)
     }
   } while (type != CItemData::END && fieldLen > 0 && --emergencyExit > 0);
   
-  if (item.IsPasswordPolicySet() && item.IsPolicyNameSet()) {
-    // Error can't have both - clear Password Policy Name
-    item.SetPolicyName(StringX(_T("")));
-  }
-  
-  if (item.IsPolicyNameSet()) {
-    StringX sxPolicyName = item.GetPolicyName();
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
-    if (iter == m_MapPSWDPLC.end()) {
-      // Map name not present in database - clear it!
-      item.SetPolicyName(StringX(_T("")));
-    } else {
-      // Increase use count
-      iter->second.usecount++;
-    }
-  }
     
   if (numread > 0)
     return status;
@@ -673,23 +657,17 @@ int PWSfileV3::WriteHeader()
   }
 
   // Empty Groups
-  if (!m_vEmptyGroups.empty()) {
-    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
-      numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
-      if (numWritten <= 0) { status = FAILURE; goto end; }
-    }
+  for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+    numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
-  if (!m_UHFL.empty()) {
-    UnknownFieldList::iterator vi_IterUHFE;
-    for (vi_IterUHFE = m_UHFL.begin();
-         vi_IterUHFE != m_UHFL.end();
-         vi_IterUHFE++) {
-      UnknownFieldEntry &unkhfe = *vi_IterUHFE;
-      numWritten = WriteCBC(unkhfe.uc_Type,
-                            unkhfe.uc_pUField, static_cast<unsigned int>(unkhfe.st_length));
-      if (numWritten <= 0) { status = FAILURE; goto end; }
-    }
+  for (UnknownFieldList::iterator vi_IterUHFE = m_UHFL.begin();
+       vi_IterUHFE != m_UHFL.end(); vi_IterUHFE++) {
+    UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+    numWritten = WriteCBC(unkhfe.uc_Type,
+                          unkhfe.uc_pUField, static_cast<unsigned int>(unkhfe.st_length));
+    if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
   // Write zero-length end-of-record type item
