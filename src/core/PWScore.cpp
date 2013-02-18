@@ -665,9 +665,11 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL) {
-    if (!in3->GetFilters().empty())
-      m_MapFilters = in3->GetFilters();
+    m_MapFilters = in3->GetFilters();
+    m_MapPSWDPLC = in3->GetPasswordPolicies();
+    m_vEmptyGroups = in3->GetEmptyGroups();
   }
+
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -734,7 +736,23 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
            ci_temp.CreateUUID(); // replace duplicated UUID
            ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
          } // UUID duplicate
-
+         
+         if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
+           // Error can't have both - clear Password Policy Name
+           ci_temp.ClearField(CItemData::POLICYNAME);
+         }
+  
+         if (ci_temp.IsPolicyNameSet()) {
+           const StringX sxPolicyName = ci_temp.GetPolicyName();
+           PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+           if (iter == m_MapPSWDPLC.end()) {
+             // Map name not present in database - clear it!
+             ci_temp.ClearField(CItemData::POLICYNAME);
+           } else {
+             // Increase use count
+             iter->second.usecount++;
+           }
+         }
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
            m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
@@ -761,14 +779,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   ParseDependants();
 
-  if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
-    // Wait til now so that reading in the records updates the use counts
-    m_MapPSWDPLC = in3->GetPasswordPolicies();
-  }
-
-  if (in3 != NULL && !in3->GetEmptyGroups().empty()) {
-    m_vEmptyGroups = in3->GetEmptyGroups();
-  }
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
