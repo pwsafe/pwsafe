@@ -212,18 +212,13 @@ public:
                        const TCHAR &delimiter, const CItemData *pcibase) const;
   std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
                      const CItemData *pcibase, bool bforce_normal_entry) const;
+
   void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata,
-                       const unsigned int &num) const;
-  void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata,
-                       const UnknownFieldsConstIter &iter) const;
+                       unsigned char * &pdata, const CItemField &item) const;
   void SetUnknownField(const unsigned char &type, const size_t &length,
                        const unsigned char * &ufield);
-  size_t NumberUnknownFields() const
-  {return m_URFL.size();}
-  void ClearUnknownFields()
-  {return m_URFL.clear();}
+  size_t NumberUnknownFields() const {return m_URFL.size();}
+  void ClearUnknownFields() {return m_URFL.clear();}
   UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
   UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
@@ -399,8 +394,6 @@ private:
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
-  void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
                 size_t length);

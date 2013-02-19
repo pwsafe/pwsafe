@@ -329,7 +329,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     unsigned char type;
     size_t length = 0;
     unsigned char *pdata = NULL;
-    item.GetUnknownField(type, length, pdata, vi_IterURFE);
+    item.GetUnknownField(type, length, pdata, *vi_IterURFE);
     WriteCBC(type, pdata, length);
     trashMemory(pdata, length);
     delete[] pdata;
