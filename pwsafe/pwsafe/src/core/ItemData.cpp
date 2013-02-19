@@ -390,22 +390,6 @@ void CItemData::GetUnknownField(unsigned char &type, size_t &length,
   GetField(item, pdata, flength);
 }
 
-void CItemData::GetUnknownField(unsigned char &type, size_t &length,
-                                unsigned char * &pdata,
-                                const unsigned int &num) const
-{
-  const CItemField &unkrfe = m_URFL.at(num);
-  GetUnknownField(type, length, pdata, unkrfe);
-}
-
-void CItemData::GetUnknownField(unsigned char &type, size_t &length,
-                                unsigned char * &pdata,
-                                const UnknownFieldsConstIter &iter) const
-{
-  const CItemField &unkrfe = *iter;
-  GetUnknownField(type, length, pdata, unkrfe);
-}
-
 StringX CItemData::GetPWHistory() const
 {
   StringX ret = GetField(PWHIST);
@@ -1862,7 +1846,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     unsigned char type;
     size_t length = 0;
     unsigned char *pdata = NULL;
-    GetUnknownField(type, length, pdata, vi_IterURFE);
+    GetUnknownField(type, length, pdata, *vi_IterURFE);
     if (length != 0) {
       v.push_back(static_cast<char>(type));
       push_length(v, static_cast<uint32>(length));
