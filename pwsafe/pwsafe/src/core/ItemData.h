@@ -145,17 +145,17 @@ public:
   static stringT EngFieldName(FieldType ft);
 
   //Data retrieval
-  StringX GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
-  StringX GetTitle() const; // V20
-  StringX GetUser() const; // V20
-  StringX GetPassword() const;
+  StringX GetName() const {return GetField(NAME);} // V17 - deprecated: replaced by GetTitle & GetUser
+  StringX GetTitle() const {return GetField(TITLE);} // V20
+  StringX GetUser() const  {return GetField(USER);}  // V20
+  StringX GetPassword() const {return GetField(PASSWORD);}
   size_t GetPasswordLength() const {return GetField(PASSWORD).length();}
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &) const; // V20
   const pws_os::CUUID GetUUID() const; // V20 - see comment in .cpp re return type
-  StringX GetGroup() const; // V20
-  StringX GetURL() const; // V30
-  StringX GetAutoType() const; // V30
+  StringX GetGroup() const {return GetField(GROUP);} // V20
+  StringX GetURL() const {return GetField(URL);} // V30
+  StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30
   StringX GetATime() const {return GetTime(ATIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
   StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
   StringX GetXTime() const {return GetTime(XTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
@@ -191,20 +191,20 @@ public:
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;
-  StringX GetPWPolicy() const;
-  StringX GetRunCommand() const;
+  StringX GetPWPolicy() const {return GetField(POLICY);}
+  StringX GetRunCommand() const {return GetField(RUNCMD);}
   void GetDCA(short &iDCA, const bool bShift = false) const;
   StringX GetDCA(const bool bShift = false) const;
   void GetShiftDCA(short &iDCA) const {GetDCA(iDCA, true);}
   StringX GetShiftDCA() const {return GetDCA(true);}
-  StringX GetEmail() const;
+  StringX GetEmail() const {return GetField(EMAIL);}
   StringX GetProtected() const;
   void GetProtected(unsigned char &ucprotected) const;
   bool IsProtected() const;
-  StringX GetSymbols() const;
-  StringX GetPolicyName() const;
+  StringX GetSymbols() const    {return GetField(SYMBOLS);}
+  StringX GetPolicyName() const {return GetField(POLICYNAME);}
 
-  StringX GetFieldValue(const FieldType &ft) const;
+  StringX GetFieldValue(FieldType ft) const;
 
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
