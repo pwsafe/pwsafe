@@ -283,16 +283,20 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 
 void CItemData::GetXTimeInt(int32 &xint) const
 {
-  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-  size_t tlen = sizeof(in); // ditto
-
-  GetField(XTIME_INT, in, tlen);
-
-  if (tlen != 0) {
-    ASSERT(tlen == sizeof(int32));
-    memcpy(&xint, in, sizeof(int32));
-  } else {
+  FieldConstIter fiter = m_fields.find(XTIME_INT);
+  if (fiter == m_fields.end())
     xint = 0;
+  else {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
+
+    GetField(fiter->second, in, tlen);
+    if (tlen != 0) {
+      ASSERT(tlen == sizeof(int32));
+      memcpy(&xint, in, sizeof(int32));
+    } else {
+      xint = 0;
+    }
   }
 }
 
@@ -310,16 +314,20 @@ StringX CItemData::GetXTimeInt() const
 
 void CItemData::GetProtected(unsigned char &ucprotected) const
 {
-  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-  size_t tlen = sizeof(in); // ditto
-
-  GetField(PROTECTED, in, tlen);
-
-  if (tlen != 0) {
-    ASSERT(tlen == sizeof(char));
-    ucprotected = in[0];
-  } else {
+  FieldConstIter fiter = m_fields.find(PROTECTED);
+  if (fiter == m_fields.end())
     ucprotected = 0;
+  else {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
+
+    GetField(fiter->second, in, tlen);
+    if (tlen != 0) {
+      ASSERT(tlen == sizeof(char));
+      ucprotected = in[0];
+    } else {
+      ucprotected = 0;
+    }
   }
 }
 
