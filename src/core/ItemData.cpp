@@ -122,32 +122,27 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &
   delete bf;
 }
 
-StringX CItemData::GetFieldValue(const FieldType &ft) const
+StringX CItemData::GetFieldValue(FieldType ft) const
 {
-  StringX str(_T(""));
-  int xint(0);
 
-  switch (ft) {
+  if (IsTextField((unsigned char)ft) && ft != GROUPTITLE && 
+      ft != NOTES && ft != PWHIST) {
+    return GetField(ft);
+  } else {
+    StringX str(_T(""));
+    switch (ft) {
     case GROUPTITLE: /* 00 */
       str = GetGroup() + TCHAR('.') + GetTitle();
       break;
     case UUID:       /* 01 */
-    {
-      uuid_array_t uuid_array = {0};
-      GetUUID(uuid_array);
-      str = CUUID(uuid_array, true);
-      break;
-    }
-    case GROUP:      /* 02 */
-      return GetGroup();
-    case TITLE:      /* 03 */
-      return GetTitle();
-    case USER:       /* 04 */
-      return GetUser();
+      {
+        uuid_array_t uuid_array = {0};
+        GetUUID(uuid_array);
+        str = CUUID(uuid_array, true);
+        break;
+      }
     case NOTES:      /* 05 */
       return GetNotes();
-    case PASSWORD:   /* 06 */
-      return GetPassword();
     case CTIME:      /* 07 */
       return GetCTimeL();
     case PMTIME:     /* 08 */
@@ -155,50 +150,40 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
     case ATIME:      /* 09 */
       return GetATimeL();
     case XTIME:      /* 0a */
-      str = GetXTimeL();
-      GetXTimeInt(xint);
-      if (xint != 0)
-        str += _T(" *");
-      return str;
+      {
+        int xint(0);
+        str = GetXTimeL();
+        GetXTimeInt(xint);
+        if (xint != 0)
+          str += _T(" *");
+        return str;
+      }
     case RESERVED:   /* 0b */
       break;
     case RMTIME:     /* 0c */
       return GetRMTimeL();
-    case URL:        /* 0d */
-      return GetURL();
-    case AUTOTYPE:   /* 0e */
-      return GetAutoType();
     case PWHIST:     /* 0f */
       return GetPWHistory();
-    case POLICY:     /* 10 */
-      return GetPWPolicy();
     case XTIME_INT:  /* 11 */
-     return GetXTimeInt();
-    case RUNCMD:     /* 12 */
-      return GetRunCommand();
+      return GetXTimeInt();
     case DCA:        /* 13 */
       return GetDCA();
-    case EMAIL:      /* 14 */
-      return GetEmail();
     case PROTECTED:  /* 15 */
-    {
-      unsigned char uc;
-      StringX sxProtected = _T("");
-      GetProtected(uc);
-      if (uc != 0)
-        LoadAString(sxProtected, IDSC_YES);
-      return sxProtected;
-    }
-    case SYMBOLS:    /* 16 */
-      return GetSymbols();
+      {
+        unsigned char uc;
+        StringX sxProtected = _T("");
+        GetProtected(uc);
+        if (uc != 0)
+          LoadAString(sxProtected, IDSC_YES);
+        return sxProtected;
+      }
     case SHIFTDCA:   /* 17 */
       return GetShiftDCA();
-    case POLICYNAME: /* 18 */
-      return GetPolicyName();
     default:
       ASSERT(0);
+    }
+    return str;
   }
-  return str;
 }
 
 size_t CItemData::GetSize() const
@@ -214,26 +199,6 @@ size_t CItemData::GetSize() const
     length += ufiter->GetLength();
   
   return length;
-}
-
-StringX CItemData::GetName() const
-{
-  return GetField(NAME);
-}
-
-StringX CItemData::GetTitle() const
-{
-  return GetField(TITLE);
-}
-
-StringX CItemData::GetUser() const
-{
-  return GetField(USER);
-}
-
-StringX CItemData::GetPassword() const
-{
-  return GetField(PASSWORD);
 }
 
 static void CleanNotes(StringX &s, TCHAR delimiter)
@@ -255,21 +220,6 @@ StringX CItemData::GetNotes(TCHAR delimiter) const
   StringX ret = GetField(NOTES);
   CleanNotes(ret, delimiter);
   return ret;
-}
-
-StringX CItemData::GetGroup() const
-{
-  return GetField(GROUP);
-}
-
-StringX CItemData::GetURL() const
-{
-  return GetField(URL);
-}
-
-StringX CItemData::GetAutoType() const
-{
-  return GetField(AUTOTYPE);
 }
 
 StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
@@ -329,11 +279,6 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
   PWPolicy mypol(GetField(POLICY));
   pwp = mypol;
-}
-
-StringX CItemData::GetPWPolicy() const
-{
-  return GetField(POLICY);
 }
 
 void CItemData::GetXTimeInt(int32 &xint) const
@@ -419,26 +364,6 @@ StringX CItemData::GetDCA(const bool bShift) const
   oStringXStream os;
   os << dca;
   return os.str();
-}
-
-StringX CItemData::GetRunCommand() const
-{
-  return GetField(RUNCMD);
-}
-
-StringX CItemData::GetEmail() const
-{
-  return GetField(EMAIL);
-}
-
-StringX CItemData::GetSymbols() const
-{
-  return GetField(SYMBOLS);
-}
-
-StringX CItemData::GetPolicyName() const
-{
-  return GetField(POLICYNAME);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
