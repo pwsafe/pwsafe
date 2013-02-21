@@ -407,6 +407,7 @@ private:
   void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata, const CItemField &item) const;
   int WriteUnknowns(PWSfile *out) const;
+  size_t WriteIfSet(FieldType ft, PWSfile *out) const;
 };
 
 inline bool CItemData::IsTextField(unsigned char t)

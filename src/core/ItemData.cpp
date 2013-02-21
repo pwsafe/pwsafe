@@ -135,89 +135,52 @@ int CItemData::Read(PWSfile *in)
     return PWSfile::END_OF_FILE;
 }
 
+size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out) const
+{
+  FieldConstIter fiter = m_fields.find(ft);
+  return fiter != m_fields.end() ?
+    out->WriteField((unsigned char)ft, GetField(fiter->second)) : 0;
+}
+
 int CItemData::Write(PWSfile *out) const
 {
   int status = PWSfile::SUCCESS;
-  StringX tmp;
   uuid_array_t item_uuid;
-  time_t t = 0;
-  int32 i32;
   short i16;
+  int i;
 
+  const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
+                                  NOTES, URL, AUTOTYPE, POLICY,
+                                  PWHIST, RUNCMD, EMAIL, PROTECTED,
+                                  SYMBOLS, POLICYNAME,
+                                  END};
+  const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
+                                  END};
+
+  ASSERT(IsUUIDSet());
   GetUUID(item_uuid);
   out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
-  tmp = GetGroup();
-  if (!tmp.empty())
-    out->WriteField(GROUP, tmp);
-  out->WriteField(TITLE, GetTitle());
-  out->WriteField(USER, GetUser());
-  out->WriteField(PASSWORD, GetPassword());
 
-  tmp = GetNotes();
-  if (!tmp.empty())
-    out->WriteField(NOTES, tmp);
-  tmp = GetURL();
-  if (!tmp.empty())
-    out->WriteField(URL, tmp);
-  tmp = GetAutoType();
-  if (!tmp.empty())
-    out->WriteField(AUTOTYPE, tmp);
-  GetCTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    out->WriteField(CTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+
+  for (i = 0; TextFields[i] != END; i++)
+    WriteIfSet(TextFields[i], out);
+
+  for (i = 0; TimeFields[i] != END; i++) {
+    time_t t = 0;
+    GetTime(TimeFields[i], t);
+    if (t != 0) {
+      int32 i32 = static_cast<int>(t);
+      out->WriteField((unsigned char)TimeFields[i],
+                      reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+    }
   }
-  GetPMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    out->WriteField(PMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  GetATime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    out->WriteField(ATIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  GetXTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    out->WriteField(XTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  GetXTimeInt(i32);
-  if (i32 > 0 && i32 <= 3650) {
-    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  GetRMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    out->WriteField(RMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  tmp = GetPWPolicy();
-  if (!tmp.empty())
-    out->WriteField(POLICY, tmp);
-  tmp = GetPWHistory();
-  if (!tmp.empty())
-    out->WriteField(PWHIST, tmp);
-  tmp = GetRunCommand();
-  if (!tmp.empty())
-    out->WriteField(RUNCMD, tmp);
+
   GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
   GetShiftDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
-  tmp = GetEmail();
-  if (!tmp.empty())
-    out->WriteField(EMAIL, tmp);
-  tmp = GetProtected();
-  if (!tmp.empty())
-    out->WriteField(PROTECTED, tmp);
-  tmp = GetSymbols();
-  if (!tmp.empty())
-    out->WriteField(SYMBOLS, tmp);
-  tmp = GetPolicyName();
-  if (!tmp.empty())
-    out->WriteField(POLICYNAME, tmp);
 
   WriteUnknowns(out);
   // Assume that if previous write failed, last one will too for same reason
@@ -1694,7 +1657,7 @@ static bool pull_string(StringX &str, const unsigned char *data, size_t len)
   v.push_back(0); // null terminate for FromUTF8.
   bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
   if (!utf8status) {
-    pws_os::Trace(_T("CItemData::DeSerializePlainText(): FromUTF8 failed!\n"));
+    pws_os::Trace(_T("ItemData.cpp: pull_string(): FromUTF8 failed!\n"));
   }
   trashMemory(&v[0], len);
   return utf8status;
@@ -1771,7 +1734,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 
   while (iter != v.end()) {
     int type = (*iter++ & 0xff); // required since enum is an int
-    if (size_t(v.end() - iter) < sizeof(size_t)) {
+    if (distance(v.end(), iter) < sizeof(size_t)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
     }
