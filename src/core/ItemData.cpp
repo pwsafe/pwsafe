@@ -19,6 +19,7 @@
 #include "Util.h"
 #include "StringXStream.h"
 #include "core.h"
+#include "PWSfile.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
@@ -96,6 +97,152 @@ void CItemData::Clear()
   m_entrytype = ET_NORMAL;
   m_entrystatus = ES_CLEAN;
 }
+
+int CItemData::Read(PWSfile *in)
+{
+  int status = PWSfile::SUCCESS;
+
+  signed long numread = 0;
+  unsigned char type;
+
+  int emergencyExit = 255; // to avoid endless loop.
+  signed long fieldLen; // <= 0 means end of file reached
+
+  do {
+    unsigned char *utf8 = NULL;
+    size_t utf8Len = 0;
+    fieldLen = static_cast<signed long>(in->ReadField(type, utf8,
+                                                      utf8Len));
+
+    if (fieldLen > 0) {
+      numread += fieldLen;
+      if (!SetField(type, utf8, utf8Len)) {
+        status = PWSfile::FAILURE;
+        break;
+      }
+    } // if (fieldLen > 0)
+
+    if (utf8 != NULL) {
+      trashMemory(utf8, utf8Len * sizeof(utf8[0]));
+      delete[] utf8; utf8 = NULL; utf8Len = 0;
+    }
+  } while (type != END && fieldLen > 0 && --emergencyExit > 0);
+  
+    
+  if (numread > 0)
+    return status;
+  else
+    return PWSfile::END_OF_FILE;
+}
+
+int CItemData::Write(PWSfile *out) const
+{
+  int status = PWSfile::SUCCESS;
+  StringX tmp;
+  uuid_array_t item_uuid;
+  time_t t = 0;
+  int32 i32;
+  short i16;
+
+  GetUUID(item_uuid);
+  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
+  tmp = GetGroup();
+  if (!tmp.empty())
+    out->WriteField(GROUP, tmp);
+  out->WriteField(TITLE, GetTitle());
+  out->WriteField(USER, GetUser());
+  out->WriteField(PASSWORD, GetPassword());
+
+  tmp = GetNotes();
+  if (!tmp.empty())
+    out->WriteField(NOTES, tmp);
+  tmp = GetURL();
+  if (!tmp.empty())
+    out->WriteField(URL, tmp);
+  tmp = GetAutoType();
+  if (!tmp.empty())
+    out->WriteField(AUTOTYPE, tmp);
+  GetCTime(t);
+  if (t != 0) {
+    i32 = static_cast<int>(t);
+    out->WriteField(CTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  GetPMTime(t);
+  if (t != 0) {
+    i32 = static_cast<int>(t);
+    out->WriteField(PMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  GetATime(t);
+  if (t != 0) {
+    i32 = static_cast<int>(t);
+    out->WriteField(ATIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  GetXTime(t);
+  if (t != 0) {
+    i32 = static_cast<int>(t);
+    out->WriteField(XTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  GetXTimeInt(i32);
+  if (i32 > 0 && i32 <= 3650) {
+    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  GetRMTime(t);
+  if (t != 0) {
+    i32 = static_cast<int>(t);
+    out->WriteField(RMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+  tmp = GetPWPolicy();
+  if (!tmp.empty())
+    out->WriteField(POLICY, tmp);
+  tmp = GetPWHistory();
+  if (!tmp.empty())
+    out->WriteField(PWHIST, tmp);
+  tmp = GetRunCommand();
+  if (!tmp.empty())
+    out->WriteField(RUNCMD, tmp);
+  GetDCA(i16);
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
+    out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+  GetShiftDCA(i16);
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
+    out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+  tmp = GetEmail();
+  if (!tmp.empty())
+    out->WriteField(EMAIL, tmp);
+  tmp = GetProtected();
+  if (!tmp.empty())
+    out->WriteField(PROTECTED, tmp);
+  tmp = GetSymbols();
+  if (!tmp.empty())
+    out->WriteField(SYMBOLS, tmp);
+  tmp = GetPolicyName();
+  if (!tmp.empty())
+    out->WriteField(POLICYNAME, tmp);
+
+  WriteUnknowns(out);
+  // Assume that if previous write failed, last one will too for same reason
+  status = out->WriteField(END, _T(""));
+
+  return status;
+}
+
+int CItemData::WriteUnknowns(PWSfile *out) const
+{
+  for (UnknownFieldsConstIter uiter = m_URFL.begin();
+       uiter != m_URFL.end();
+       uiter++) {
+    unsigned char type;
+    size_t length = 0;
+    unsigned char *pdata = NULL;
+    GetUnknownField(type, length, pdata, *uiter);
+    out->WriteField(type, pdata, length);
+    trashMemory(pdata, length);
+    delete[] pdata;
+  }
+  return PWSfile::SUCCESS;
+}
+
+
 
 //-----------------------------------------------------------------------------
 // Accessors
@@ -1840,8 +1987,8 @@ void CItemData::SerializePlainText(vector<char> &v,
   push_string(v, POLICYNAME, GetPolicyName());
 
   UnknownFieldsConstIter vi_IterURFE;
-  for (vi_IterURFE = GetURFIterBegin();
-       vi_IterURFE != GetURFIterEnd();
+  for (vi_IterURFE = m_URFL.begin();
+       vi_IterURFE != m_URFL.end();
        vi_IterURFE++) {
     unsigned char type;
     size_t length = 0;

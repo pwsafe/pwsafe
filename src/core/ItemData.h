@@ -47,6 +47,7 @@ typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 */
 
 class BlowFish;
+class PWSfile;
 
 struct DisplayInfoBase
 {
@@ -139,6 +140,9 @@ public:
 
   ~CItemData();
 
+  int Read(PWSfile *in);
+  int Write(PWSfile *out) const;
+
   // Convenience: Get the name associated with FieldType
   static stringT FieldName(FieldType ft);
   // Convenience: Get the untranslated (English) name of a FieldType
@@ -213,14 +217,10 @@ public:
   std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
                      const CItemData *pcibase, bool bforce_normal_entry) const;
 
-  void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata, const CItemField &item) const;
   void SetUnknownField(const unsigned char &type, const size_t &length,
                        const unsigned char * &ufield);
   size_t NumberUnknownFields() const {return m_URFL.size();}
   void ClearUnknownFields() {return m_URFL.clear();}
-  UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
-  UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
   void CreateUUID(); // V20 - generate UUID for new item
   void SetName(const StringX &name,
@@ -327,7 +327,6 @@ public:
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeSerializePlainText(const std::vector<char> &v);
-  bool SetField(int type, const unsigned char *data, size_t len);
 
   EntryType GetEntryType() const {return m_entrytype;}
 
@@ -355,6 +354,7 @@ public:
 
   size_t GetSize() const;
   void GetSize(size_t &isize) const {isize = GetSize();}
+
 
 private:
   typedef std::map<FieldType, CItemField> FieldMap;
@@ -394,12 +394,19 @@ private:
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
+
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
                 size_t length);
+  bool SetField(int type, const unsigned char *data, size_t len);
+
   bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
 
   void UpdatePasswordHistory(); // used by UpdatePassword()
+
+  void GetUnknownField(unsigned char &type, size_t &length,
+                       unsigned char * &pdata, const CItemField &item) const;
+  int WriteUnknowns(PWSfile *out) const;
 };
 
 inline bool CItemData::IsTextField(unsigned char t)

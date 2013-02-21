@@ -240,104 +240,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-  int status = SUCCESS;
-  StringX tmp;
-  uuid_array_t item_uuid;
-  time_t t = 0;
-  int32 i32;
-  short i16;
-
-  item.GetUUID(item_uuid);
-  WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
-  tmp = item.GetGroup();
-  if (!tmp.empty())
-    WriteCBC(CItemData::GROUP, tmp);
-  WriteCBC(CItemData::TITLE, item.GetTitle());
-  WriteCBC(CItemData::USER, item.GetUser());
-  WriteCBC(CItemData::PASSWORD, item.GetPassword());
-
-  tmp = item.GetNotes();
-  if (!tmp.empty())
-    WriteCBC(CItemData::NOTES, tmp);
-  tmp = item.GetURL();
-  if (!tmp.empty())
-    WriteCBC(CItemData::URL, tmp);
-  tmp = item.GetAutoType();
-  if (!tmp.empty())
-    WriteCBC(CItemData::AUTOTYPE, tmp);
-  item.GetCTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::CTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetPMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::PMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetATime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::ATIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetXTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::XTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetXTimeInt(i32);
-  if (i32 > 0 && i32 <= 3650) {
-    WriteCBC(CItemData::XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetRMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::RMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  tmp = item.GetPWPolicy();
-  if (!tmp.empty())
-    WriteCBC(CItemData::POLICY, tmp);
-  tmp = item.GetPWHistory();
-  if (!tmp.empty())
-    WriteCBC(CItemData::PWHIST, tmp);
-  tmp = item.GetRunCommand();
-  if (!tmp.empty())
-    WriteCBC(CItemData::RUNCMD, tmp);
-  item.GetDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    WriteCBC(CItemData::DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
-  item.GetShiftDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    WriteCBC(CItemData::SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
-  tmp = item.GetEmail();
-  if (!tmp.empty())
-    WriteCBC(CItemData::EMAIL, tmp);
-  tmp = item.GetProtected();
-  if (!tmp.empty())
-    WriteCBC(CItemData::PROTECTED, tmp);
-  tmp = item.GetSymbols();
-  if (!tmp.empty())
-    WriteCBC(CItemData::SYMBOLS, tmp);
-  tmp = item.GetPolicyName();
-  if (!tmp.empty())
-    WriteCBC(CItemData::POLICYNAME, tmp);
-
-  UnknownFieldsConstIter vi_IterURFE;
-  for (vi_IterURFE = item.GetURFIterBegin();
-       vi_IterURFE != item.GetURFIterEnd();
-       vi_IterURFE++) {
-    unsigned char type;
-    size_t length = 0;
-    unsigned char *pdata = NULL;
-    item.GetUnknownField(type, length, pdata, *vi_IterURFE);
-    WriteCBC(type, pdata, length);
-    trashMemory(pdata, length);
-    delete[] pdata;
-  }
-
-  WriteCBC(CItemData::END, _T(""));
-
-  return status;
+  return item.Write(this);
 }
 
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
@@ -356,40 +259,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-
-  int status = SUCCESS;
-
-  signed long numread = 0;
-  unsigned char type;
-
-  int emergencyExit = 255; // to avoid endless loop.
-  signed long fieldLen; // <= 0 means end of file reached
-
-  do {
-    unsigned char *utf8 = NULL;
-    size_t utf8Len = 0;
-    fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
-                                                utf8Len));
-
-    if (fieldLen > 0) {
-      numread += fieldLen;
-      if (!item.SetField(type, utf8, utf8Len)) {
-        status = FAILURE;
-        break;
-      }
-    } // if (fieldLen > 0)
-
-    if (utf8 != NULL) {
-      trashMemory(utf8, utf8Len * sizeof(utf8[0]));
-      delete[] utf8; utf8 = NULL; utf8Len = 0;
-    }
-  } while (type != CItemData::END && fieldLen > 0 && --emergencyExit > 0);
-  
-    
-  if (numread > 0)
-    return status;
-  else
-    return END_OF_FILE;
+  return item.Read(this);
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
