@@ -146,7 +146,6 @@ int CItemData::Write(PWSfile *out) const
 {
   int status = PWSfile::SUCCESS;
   uuid_array_t item_uuid;
-  short i16;
   int i;
 
   const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
@@ -165,16 +164,23 @@ int CItemData::Write(PWSfile *out) const
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out);
 
+  int32 i32;
   for (i = 0; TimeFields[i] != END; i++) {
     time_t t = 0;
     GetTime(TimeFields[i], t);
     if (t != 0) {
-      int32 i32 = static_cast<int>(t);
+      i32 = static_cast<int>(t);
       out->WriteField((unsigned char)TimeFields[i],
                       reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
     }
   }
 
+  GetXTimeInt(i32);
+  if (i32 > 0 && i32 <= 3650) {
+    WriteCBC(CItemData::XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  }
+
+  short i16;
   GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
