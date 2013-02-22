@@ -177,7 +177,7 @@ int CItemData::Write(PWSfile *out) const
 
   GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
-    WriteCBC(CItemData::XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
   }
 
   short i16;
