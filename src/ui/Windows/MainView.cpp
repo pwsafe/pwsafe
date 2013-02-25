@@ -628,10 +628,10 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
   }
 }
 
-void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const StringX &newText)
+void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 {
   CRect rect;
-  m_ctlItemTree.SetItemText(hItem, newText.c_str());
+  m_ctlItemTree.SetItemText(hItem, m_ctlItemTree.MakeTreeDisplayString(ci));
 
   m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
   m_ctlItemTree.InvalidateRect(&rect);
@@ -649,23 +649,7 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   StringX sx_fielddata(L""), sx_oldfielddata;
 
   // Deal with Tree View
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  StringX sxNewText = ci.GetTitle();
-  if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
-    StringX sxUsername = ci.GetUser();
-    sxNewText += L" [";
-    sxNewText += sxUsername;
-    sxNewText += L"]";
-
-    if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
-      StringX sxPassword = ci.GetPassword();
-      sxNewText += L" {";
-      sxNewText += sxPassword;
-      sxNewText += L"}";
-    }
-  }
-  UpdateTreeItem(hItem, sxNewText);
+  UpdateTreeItem(hItem, ci);
 
   // Deal with List View
   // Change the first column data - it is empty (as already set)
@@ -4131,15 +4115,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
         ft == CItemData::PROTECTED) {
-      StringX treeDispString = ci.GetTitle();
-
-      if (bShowUsernameInTree)
-        treeDispString += L" [" + ci.GetUser() + L"]";
-      if (bShowPasswordInTree)
-        treeDispString += L" {" + ci.GetPassword() + L"}";
-      if (ci.IsProtected())
-        treeDispString += L" #";
-      UpdateTreeItem(pdi->tree_item, treeDispString);
+      UpdateTreeItem(pdi->tree_item, ci);
       if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
         UpdateEntryImages(ci);
       }
