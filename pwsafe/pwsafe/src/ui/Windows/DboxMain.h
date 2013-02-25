@@ -276,7 +276,7 @@ public:
 
   // when Group, Title or User edited in tree
   void UpdateListItemField(const int lindex, const int type, const StringX &sxnewText);
-  void UpdateTreeItem(const HTREEITEM hItem, const StringX &sxnewText);
+  void UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci);
   void UpdateListItemGroup(const int lindex, const StringX &sxnewGroup)
   {UpdateListItemField(lindex, CItemData::GROUP, sxnewGroup);}
   void UpdateListItemTitle(const int lindex, const StringX &sxnewTitle)
