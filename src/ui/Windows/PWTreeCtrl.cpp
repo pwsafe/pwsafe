@@ -2334,8 +2334,8 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         if (uFont != NULL) {
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
-          // Set text color only when current note isn't selected
-          if (GetItemState(hItem, TVIS_SELECTED) == 0)
+          // Set text color only when current node isn't selected
+          if ( (GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) == 0)
             pNMTVCUSTOMDRAW->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
