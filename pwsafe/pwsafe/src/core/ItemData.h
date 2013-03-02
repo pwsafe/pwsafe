@@ -217,8 +217,8 @@ public:
   std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
                      const CItemData *pcibase, bool bforce_normal_entry) const;
 
-  void SetUnknownField(const unsigned char &type, const size_t &length,
-                       const unsigned char * &ufield);
+  void SetUnknownField(unsigned char type, size_t length,
+                       const unsigned char *ufield);
   size_t NumberUnknownFields() const {return m_URFL.size();}
   void ClearUnknownFields() {return m_URFL.clear();}
 
@@ -261,7 +261,7 @@ public:
   void SetShiftDCA(const short &iDCA) {SetDCA(iDCA, true);}
   bool SetShiftDCA(const stringT &cs_DCA) {return SetDCA(cs_DCA, true);}
   void SetEmail(const StringX &sx_email);
-  void SetProtected(const bool &bOnOff);
+  void SetProtected(bool bOnOff);
   void SetSymbols(const StringX &sx_symbols);
   void SetPolicyName(const StringX &sx_PolicyName);
 
@@ -395,9 +395,8 @@ private:
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
 
-  void SetField(CItemField &field, const StringX &value);
-  void SetField(CItemField &field, const unsigned char *value,
-                size_t length);
+  void SetField(FieldType ft, const StringX &value);
+  void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(int type, const unsigned char *data, size_t len);
 
   bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
@@ -407,7 +406,7 @@ private:
   void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata, const CItemField &item) const;
   int WriteUnknowns(PWSfile *out) const;
-  size_t WriteIfSet(FieldType ft, PWSfile *out) const;
+  size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 };
 
 inline bool CItemData::IsTextField(unsigned char t)
