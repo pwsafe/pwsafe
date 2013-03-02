@@ -25,6 +25,7 @@
 #include "os/pws_tchar.h"
 #include "os/mem.h"
 #include "os/env.h"
+#include "os/utf8conv.h"
 
 #include <time.h>
 #include <sstream>
@@ -135,11 +136,34 @@ int CItemData::Read(PWSfile *in)
     return PWSfile::END_OF_FILE;
 }
 
-size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out) const
+size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 {
   FieldConstIter fiter = m_fields.find(ft);
-  return fiter != m_fields.end() ?
-    out->WriteField((unsigned char)ft, GetField(fiter->second)) : 0;
+  size_t retval = 0;
+  if (fiter != m_fields.end()) {
+    const CItemField &field = fiter->second;
+    ASSERT(!field.IsEmpty());
+    size_t flength = field.GetLength() + BlowFish::BLOCKSIZE;
+    unsigned char *pdata = new unsigned char[flength];
+    GetField(field, pdata, flength);
+    if (isUTF8) {
+      const wchar_t *wpdata = reinterpret_cast<const wchar_t *>(pdata);
+      size_t srclen = field.GetLength()/sizeof(TCHAR);
+      size_t dstlen = pws_os::wcstombs(NULL, 0, wpdata, srclen);
+      ASSERT(dstlen > 0);
+      char *dst = new char[dstlen+1];
+      dstlen = pws_os::wcstombs(dst, dstlen, wpdata, srclen);
+      ASSERT(dstlen != size_t(-1));
+      retval = out->WriteField((unsigned char)ft, (unsigned char *)dst, dstlen);
+      trashMemory(dst, dstlen);
+      delete[] dst;
+    } else {
+      retval = out->WriteField((unsigned char)ft, pdata, field.GetLength());
+    }
+    trashMemory(pdata, flength);
+    delete[] pdata;
+  } 
+  return retval;
 }
 
 int CItemData::Write(PWSfile *out) const
@@ -162,7 +186,7 @@ int CItemData::Write(PWSfile *out) const
 
 
   for (i = 0; TextFields[i] != END; i++)
-    WriteIfSet(TextFields[i], out);
+    WriteIfSet(TextFields[i], out, true);
 
   int32 i32;
   for (i = 0; TimeFields[i] != END; i++) {
@@ -496,12 +520,10 @@ void CItemData::GetUnknownField(unsigned char &type, size_t &length,
 {
   ASSERT(pdata == NULL && length == 0);
 
-  const unsigned int BLOCKSIZE = 8;
-
   type = item.GetType();
   size_t flength = item.GetLength();
   length = flength;
-  flength += BLOCKSIZE; // ensure that we've enough for at least one block
+  flength += BlowFish::BLOCKSIZE; // ensure that we've enough for at least one block
   pdata = new unsigned char[flength];
   GetField(item, pdata, flength);
 }
@@ -920,19 +942,26 @@ void CItemData::SplitName(const StringX &name,
 //-----------------------------------------------------------------------------
 // Setters
 
-void CItemData::SetField(CItemField &field, const StringX &value)
+void CItemData::SetField(FieldType ft, const StringX &value)
 {
-  BlowFish *bf = MakeBlowFish(value.empty());
-  field.Set(value, bf);
-  delete bf;
+  ASSERT(ft != END);
+  if (!value.empty()) {
+    BlowFish *bf = MakeBlowFish(false);
+    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
+    delete bf;
+  } else
+    m_fields.erase(static_cast<FieldType>(ft));
 }
 
-void CItemData::SetField(CItemField &field,
-                         const unsigned char *value, size_t length)
+void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length)
 {
-  BlowFish *bf = MakeBlowFish(length == 0);
-  field.Set(value, length, bf);
-  delete bf;
+  ASSERT(ft != END);
+  if (length != 0) {
+    BlowFish *bf = MakeBlowFish(false);
+    m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
+    delete bf;
+  } else
+    m_fields.erase(static_cast<FieldType>(ft));
 }
 
 void CItemData::CreateUUID()
@@ -972,9 +1001,8 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
 
 void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
 {
-  CItemField titleField(TITLE);
   if (delimiter == 0)
-    SetField(titleField, title);
+    SetField(TITLE, title);
   else {
     StringX new_title(_T(""));
     StringX newstringT, tmpstringT;
@@ -994,14 +1022,13 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
     if (!newstringT.empty())
       new_title += newstringT;
 
-    SetField(titleField, new_title);
+    SetField(TITLE, new_title);
   }
-  m_fields[TITLE] = titleField;
 }
 
 void CItemData::SetUser(const StringX &user)
 {
-  SetField(m_fields[USER], user);
+  SetField(USER, user);
 }
 
 void CItemData::UpdatePassword(const StringX &password)
@@ -1098,13 +1125,13 @@ void CItemData::UpdatePasswordHistory()
 
 void CItemData::SetPassword(const StringX &password)
 {
-  SetField(m_fields[PASSWORD], password);
+  SetField(PASSWORD, password);
 }
 
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(m_fields[NOTES], notes);
+    SetField(NOTES, notes);
   else {
     const StringX CRLF = _T("\r\n");
     StringX multiline_notes(_T(""));
@@ -1128,28 +1155,28 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
     if (!newstringT.empty())
       multiline_notes += newstringT;
 
-    SetField(m_fields[NOTES], multiline_notes);
+    SetField(NOTES, multiline_notes);
   }
 }
 
 void CItemData::SetGroup(const StringX &group)
 {
-  SetField(m_fields[GROUP], group);
+  SetField(GROUP, group);
 }
 
 void CItemData::SetUUID(const uuid_array_t &uuid)
 {
-  SetField(m_fields[UUID], static_cast<const unsigned char *>(uuid), sizeof(uuid));
+  SetField(UUID, static_cast<const unsigned char *>(uuid), sizeof(uuid));
 }
 
 void CItemData::SetURL(const StringX &url)
 {
-  SetField(m_fields[URL], url);
+  SetField(URL, url);
 }
 
 void CItemData::SetAutoType(const StringX &autotype)
 {
-  SetField(m_fields[AUTOTYPE], autotype);
+  SetField(AUTOTYPE, autotype);
 }
 
 void CItemData::SetTime(int whichtime)
@@ -1162,7 +1189,7 @@ void CItemData::SetTime(int whichtime)
 void CItemData::SetTime(int whichtime, time_t t)
 {
   int t32 = static_cast<int>(t);
-  SetField(m_fields[FieldType(whichtime)],
+  SetField(static_cast<FieldType>(whichtime),
            reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
 }
 
@@ -1192,8 +1219,8 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
 
 void CItemData::SetXTimeInt(int32 &xint)
 {
-   SetField(m_fields[XTIME_INT],
-            reinterpret_cast<const unsigned char *>(&xint), sizeof(int32));
+   SetField(XTIME_INT, reinterpret_cast<const unsigned char *>(&xint),
+            sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
@@ -1218,9 +1245,9 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
-void CItemData::SetUnknownField(const unsigned char &type,
-                                const size_t &length,
-                                const unsigned char * &ufield)
+void CItemData::SetUnknownField(unsigned char type,
+                                size_t length,
+                                const unsigned char *ufield)
 {
   /**
      TODO - check that this unknown field from the XML Import file is now
@@ -1228,7 +1255,9 @@ void CItemData::SetUnknownField(const unsigned char &type,
   **/
 
   CItemField unkrfe(type);
-  SetField(unkrfe, ufield, length);
+  BlowFish *bf = MakeBlowFish(false);
+  unkrfe.Set(ufield, length, bf);
+  delete bf;
   m_URFL.push_back(unkrfe);
 }
 
@@ -1237,14 +1266,14 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
   StringX pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
     pwh = _T("");
-  SetField(m_fields[PWHIST], pwh);
+  SetField(PWHIST, pwh);
 }
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   const StringX cs_pwp(pwp);
 
-  SetField(m_fields[POLICY], cs_pwp);
+  SetField(POLICY, cs_pwp);
   if (!pwp.symbols.empty())
     SetSymbols(pwp.symbols);
 }
@@ -1253,7 +1282,7 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
   if (cs_pwp.empty()) {
-    SetField(m_fields[POLICY], cs_pwp.c_str());
+    SetField(POLICY, cs_pwp.c_str());
     return true;
   }
 
@@ -1264,33 +1293,33 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   if (pwp == emptyPol)
     return false;
 
-  SetField(m_fields[POLICY], cs_pwpolicy);
+  SetField(POLICY, cs_pwpolicy);
   return true;
 }
 
 void CItemData::SetRunCommand(const StringX &cs_RunCommand)
 {
-  SetField(m_fields[RUNCMD], cs_RunCommand);
+  SetField(RUNCMD, cs_RunCommand);
 }
 
 void CItemData::SetEmail(const StringX &sx_email)
 {
-  SetField(m_fields[EMAIL], sx_email);
+  SetField(EMAIL, sx_email);
 }
 
 void CItemData::SetSymbols(const StringX &sx_symbols)
 {
-  SetField(m_fields[SYMBOLS], sx_symbols);
+  SetField(SYMBOLS, sx_symbols);
 }
 
 void CItemData::SetPolicyName(const StringX &sx_PolicyName)
 {
-  SetField(m_fields[POLICYNAME], sx_PolicyName);
+  SetField(POLICYNAME, sx_PolicyName);
 }
 
 void CItemData::SetDCA(const short &iDCA, const bool bShift)
 {
-   SetField(m_fields[bShift ? SHIFTDCA : DCA],
+   SetField(bShift ? SHIFTDCA : DCA,
             reinterpret_cast<const unsigned char *>(&iDCA), sizeof(short));
 }
 
@@ -1316,10 +1345,14 @@ bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
   return false;
 }
 
-void CItemData::SetProtected(const bool &bOnOff)
+void CItemData::SetProtected(bool bOnOff)
 {
-  unsigned char ucProtected = bOnOff ? 1 : 0;
-  SetField(m_fields[PROTECTED], &ucProtected, sizeof(char));
+  if (bOnOff) {
+    const unsigned char ucProtected = 1;
+    SetField(PROTECTED, &ucProtected, sizeof(char));
+  } else { // remove field
+    m_fields.erase(PROTECTED);
+  }
 }
 
 void CItemData::SetFieldValue(FieldType ft, const StringX &value)
@@ -1337,7 +1370,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case RUNCMD:     /* 12 */
     case SYMBOLS:    /* 16 */
     case POLICYNAME: /* 18 */
-      SetField(m_fields[ft], value);
+      SetField(ft, value);
       break;
     case CTIME:      /* 07 */
     case PMTIME:     /* 08 */
@@ -1799,7 +1832,7 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
     case SYMBOLS:
     case POLICYNAME:
       if (!pull_string(str, data, len)) return false;
-      SetField(m_fields[ft], str);
+      SetField(ft, str);
       break;
     case CTIME:
     case PMTIME:
@@ -1853,10 +1886,10 @@ static void push_string(vector<char> &v, char type,
     if (status) {
       v.push_back(type);
       push_length(v, static_cast<uint32>(utf8Len));
-      v.insert(v.end(), reinterpret_cast<const char *>(utf8), reinterpret_cast<const char *>(utf8) + utf8Len);
+      v.insert(v.end(), reinterpret_cast<const char *>(utf8),
+               reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
-      pws_os::Trace(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
-            str.c_str());
+      pws_os::Trace(_T("ItemData.cpp: push_string(%s): ToUTF8 failed!\n"), str.c_str());
   }
 }
 

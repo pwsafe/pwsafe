@@ -59,7 +59,8 @@ void CItemField::Empty()
   }
 }
 
-void CItemField::Set(const unsigned char* value, size_t length, Fish *bf)
+void CItemField::Set(const unsigned char* value, size_t length,
+                     Fish *bf, unsigned char type)
 {
   size_t BlockLength;
 
@@ -92,16 +93,19 @@ void CItemField::Set(const unsigned char* value, size_t length, Fish *bf)
     for (size_t x = 0; x < BlockLength; x += 8)
       bf->Encrypt(tempmem + x, m_Data + x);
 
+    trashMemory(tempmem, BlockLength);
     delete[] tempmem;
   }
+  if (type != 0xff)
+    m_Type = type;
 }
 
-void CItemField::Set(const StringX &value, Fish *bf)
+void CItemField::Set(const StringX &value, Fish *bf, unsigned char type)
 {
   const LPCTSTR plainstr = value.c_str();
 
   Set(reinterpret_cast<const unsigned char *>(plainstr),
-      value.length() * sizeof(*plainstr), bf);
+      value.length() * sizeof(*plainstr), bf, type);
 }
 
 void CItemField::Get(unsigned char *value, size_t &length, Fish *bf) const
