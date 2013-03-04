@@ -28,6 +28,9 @@ protected:
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool m_bLastMinus, m_bLastSeparator;
 };
 
 class CPasswordSubsetDlg : public CPWDialog
@@ -40,12 +43,14 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-protected:
   BOOL OnInitDialog();
   virtual void OnCancel();
+
   //{{AFX_MSG(CPasswordSubsetDlg)
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
+  afx_msg void OnCopy();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
 private:
@@ -57,6 +62,7 @@ private:
   CStaticExtn m_stcwarningmsg;
   CEdit m_results;
   CString m_subset, m_warningmsg;
+  int m_DialogWidth, m_WarningHeight, m_NoWarningHeight;
   bool m_bshown;
 };
 //-----------------------------------------------------------------------------

@@ -5603,6 +5603,10 @@ msgstr "'Pronunciable' y 'fácil de leer' no son compatibles"
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "No se puede especificar un número mínimo de caracteres con las opciones 'pronunciable' o 'fácil de leer'. Estos valores se han ignorado."
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Fuente"

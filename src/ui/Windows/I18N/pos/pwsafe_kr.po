@@ -5585,6 +5585,10 @@ msgstr "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속�
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "죄송합니다만, '발음할 수 있는' 속성과 '읽기 쉬운' 속성의 최소 문자열 개수를 지정할 수 없습니다. 입력된 값은 무시됩니다."
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "소스"

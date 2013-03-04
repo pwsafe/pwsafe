@@ -5585,6 +5585,10 @@ msgstr "抱歉，“可发音密码”和“易解读字符”选项不被同时
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "抱歉！不能指定一个最小数值的“可发音”字符或“易读”选项，指定的值将被忽略！"
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "来源"

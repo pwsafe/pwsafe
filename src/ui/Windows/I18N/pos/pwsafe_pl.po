@@ -5666,6 +5666,10 @@ msgstr "'łatwe do wymówienia' i 'łatwe do przeczytania' nie mogą być zaznac
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "Nie można podać minimalnej liczby znaków w trybie 'wymawialne' lub 'łatwe-do-czytania'. Podane wartości zostały zignorowane."
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Źródło"
