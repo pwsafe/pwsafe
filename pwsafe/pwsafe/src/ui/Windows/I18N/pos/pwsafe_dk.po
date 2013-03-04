@@ -5585,6 +5585,10 @@ msgstr "Beklager, 'udtalbare' og 'nemme-at-læse' er ikke understøttet sammen"
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "Beklager, kan ikke specificere et minimum antal af tegn med 'udtalbare' eller  'nemme-at-læse' optioner. Specificerede værdier ignoreret."
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Kilde"

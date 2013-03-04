@@ -458,7 +458,7 @@
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
 #define IDS_CLICKTOCOPY                 5646
-#define IDS_SUBSETINDEXZERO             5647
+
 #define IDS_SUBSETINDEXTOOBIG           5648
 #define IDS_MENUCREATESHORTCUT          5649
 #define IDS_AREYOUSURE                  5650
@@ -725,3 +725,4 @@
 #define IDS_EXPORTENT2PLAINTEXT         5936
 #define IDS_EXPORTENT2XML               5937
 #define IDS_HELP_UNAVALIABLE            5938
+#define IDS_SUBSETINDEXTOOSMALL         5939

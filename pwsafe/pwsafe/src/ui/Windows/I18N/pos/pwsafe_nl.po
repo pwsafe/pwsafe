@@ -5637,6 +5637,10 @@ msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet tergelij
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
 msgstr "Sorry, een minimum aantal tekens kan niet opgegeven worden als ook 'uitspreekbare' of 'makkelijk te lezen' opties aan staan. Opgegeven waarden worden genegeerd."
 
+#. Resource IDs: (372)
+msgid "Sorry, couldn't find help file - help unavailable."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Bron"
