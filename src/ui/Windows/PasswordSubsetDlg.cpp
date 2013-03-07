@@ -90,29 +90,38 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 //-----------------------------------------------------------------------------
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
-    m_passwd(passwd), m_bshown(false), m_warningmsg(L"")
+    m_passwd(passwd), m_bshown(false), m_warningmsg(L""),
+    m_pToolTipCtrl(NULL), m_pDbx(static_cast<DboxMain *>(pParent))
+
 {
-  m_pDbx = static_cast<DboxMain *>(pParent);
 }
+
+CPasswordSubsetDlg::~CPasswordSubsetDlg()
+{
+  delete m_pToolTipCtrl;
+  m_CopyPswdStatic.Detach();
+}
+
 
 void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
-  //{{AFX_DATA_MAP(CPasswordSubsetDlg)
-  DDX_Text(pDX, IDC_SUBSET, m_subset);
-  DDX_Text(pDX, IDC_STATICSUBSETWARNING, m_warningmsg);
-  DDX_Control(pDX, IDC_SUBSETRESULTS, m_results);
-  DDX_Control(pDX, IDC_SUBSET, m_ne_subset);
-  DDX_Control(pDX, IDC_STATICSUBSETWARNING, m_stcwarningmsg);
-  //}}AFX_DATA_MAP
+    CPWDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CPasswordSubsetDlg)
+    DDX_Text(pDX, IDC_SUBSET, m_subset);
+    DDX_Text(pDX, IDC_STATICSUBSETWARNING, m_warningmsg);
+    DDX_Control(pDX, IDC_SUBSETRESULTS, m_results);
+    DDX_Control(pDX, IDC_SUBSET, m_ne_subset);
+    DDX_Control(pDX, IDC_STATICSUBSETWARNING, m_stcwarningmsg);
+    //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CPasswordSubsetDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPasswordSubsetDlg)
   ON_WM_CTLCOLOR()
   ON_MESSAGE(WM_DISPLAYPASSWORDSUBSET, OnDisplayStatus)
-  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopy)
   //}}AFX_MSG_MAP
+  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopy) 
 END_MESSAGE_MAP()
 
 BOOL CPasswordSubsetDlg::OnInitDialog()
@@ -145,8 +154,37 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   m_NoWarningHeight = btnRect.bottom - dlgRect.top + 5;
   SetWindowPos(NULL, 0, 0, m_DialogWidth, m_NoWarningHeight, SWP_NOZORDER | SWP_NOMOVE);
 
-  ShowWindow(SW_SHOW);
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
+    pws_os::Trace(L"Unable To create CManagePSWDPolices Dialog ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  } else {
+    EnableToolTips(TRUE);
 
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * 4);
+    m_pToolTipCtrl->Activate(TRUE);
+    m_pToolTipCtrl->SetMaxTipWidth(500);
+    const CString cs_ToolTip(MAKEINTRESOURCE(IDS_CLICKTOCOPYGENPSWD));
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
+  }
+
+  // Load bitmap
+  BOOL brc;
+  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  ASSERT(brc);
+
+  // Set bitmap in Static
+  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
+
+  ShowWindow(SW_SHOW);
   return TRUE;
 }
 
@@ -215,7 +253,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
       SetWindowPos(NULL, 0, 0, m_DialogWidth, m_WarningHeight, SWP_NOZORDER | SWP_NOMOVE);
 
       // Disable Copy to Clipboard
-      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
 
       return 0L;
     }
@@ -238,7 +276,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   SetWindowPos(NULL, 0, 0, m_DialogWidth, m_NoWarningHeight, SWP_NOZORDER | SWP_NOMOVE);
 
   // Enable Copy to Clipboard
-  GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(TRUE);
+  GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(TRUE);
   return 1L;
 }
 

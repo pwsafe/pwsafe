@@ -13,6 +13,7 @@
 #include "core/PwsPlatform.h"
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "afxwin.h"
 
 class DboxMain;
 
@@ -37,6 +38,7 @@ class CPasswordSubsetDlg : public CPWDialog
 {
 public:
   CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd); // standard constructor
+  ~CPasswordSubsetDlg();
 
   enum { IDD = IDD_PASSWORDSUBSET };
 
@@ -60,10 +62,13 @@ private:
   const StringX m_passwd;
   CNumEdit m_ne_subset;
   CStaticExtn m_stcwarningmsg;
+  CToolTipCtrl *m_pToolTipCtrl;
+  CBitmap m_CopyPswdBitmap;
   CEdit m_results;
   CString m_subset, m_warningmsg;
   int m_DialogWidth, m_WarningHeight, m_NoWarningHeight;
   bool m_bshown;
+  CStatic m_CopyPswdStatic;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
