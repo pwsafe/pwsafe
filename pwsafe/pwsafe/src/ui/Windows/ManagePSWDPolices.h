@@ -32,10 +32,10 @@ public:
   
   PSWDPolicyMap &GetPasswordPolicies(PWPolicy &st_default_pp)
   {st_default_pp = m_st_default_pp; return m_MapPSWDPLC;}
-  void GetDefaultPasswordPolicies(PWPolicy &st_default_pp)
+  void GetDefaultPasswordPolicies(PWPolicy &st_default_pp) const
   {st_default_pp = m_st_default_pp;}
 
-  bool IsChanged() {return m_bChanged;}
+  bool IsChanged() const {return m_bChanged;}
 
 protected:
   CListCtrl m_PolicyNames;
