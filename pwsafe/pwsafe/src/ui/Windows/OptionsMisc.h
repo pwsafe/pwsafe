@@ -22,7 +22,6 @@ public:
 
   // Construction
   COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD);
-  ~COptionsMisc();
 
 protected:
   // Dialog Data
@@ -78,6 +77,4 @@ protected:
 
 private:
   void SetupCombo(CComboBox *pcbox);
-
-  CToolTipCtrl* m_pToolTipCtrl;
 };

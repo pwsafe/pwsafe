@@ -30,7 +30,6 @@ public:
 
   CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType = -1, WZAdvanced::AdvType iIndex = WZAdvanced::INVALID,
                 st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
-  CWZAdvanced::~CWZAdvanced();
 
   // Dialog Data
   //{{AFX_DATA(CWZAdvanced)
@@ -77,7 +76,6 @@ private:
   void Set(CItemData::FieldBits bsFields);
 
   CListCtrl *m_pLC_List, *m_pLC_Selected;
-  CToolTipCtrl* m_pToolTipCtrl;
   st_SaveAdvValues *m_pst_SADV;
   CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
 };

@@ -62,7 +62,6 @@ private:
   const StringX m_passwd;
   CNumEdit m_ne_subset;
   CStaticExtn m_stcwarningmsg;
-  CToolTipCtrl *m_pToolTipCtrl;
   CBitmap m_CopyPswdBitmap;
   CEdit m_results;
   CString m_subset, m_warningmsg;

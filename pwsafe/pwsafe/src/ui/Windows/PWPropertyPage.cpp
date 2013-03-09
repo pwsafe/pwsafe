@@ -19,7 +19,7 @@ extern const wchar_t *EYE_CATCHER;
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 CPWPropertyPage::CPWPropertyPage(UINT nID)
-: CPropertyPage(nID)
+: CPropertyPage(nID), m_pToolTipCtrl(NULL)
 {
   m_psp.dwFlags |= PSP_HASHELP;
 }

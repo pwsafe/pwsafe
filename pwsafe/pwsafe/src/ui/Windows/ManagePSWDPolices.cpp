@@ -28,7 +28,7 @@ using namespace std;
 // CManagePSWDPolices dialog
 CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPolices::IDD, pParent),
-  m_pToolTipCtrl(NULL), m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
+  m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
   m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
 {
@@ -47,7 +47,6 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
 CManagePSWDPolices::~CManagePSWDPolices()
 {
-  delete m_pToolTipCtrl;
   m_CopyPswdStatic.Detach();
 }
 

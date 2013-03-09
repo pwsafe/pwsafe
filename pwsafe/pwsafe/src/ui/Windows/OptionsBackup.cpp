@@ -48,8 +48,7 @@ IMPLEMENT_DYNAMIC(COptionsBackup, COptions_PropertyPage)
 COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
                           COptionsBackup::IDD, COptionsBackup::IDD_SHORT,
-                          pOPTMD),
-  m_pToolTipCtrl(NULL)
+                          pOPTMD)
 {
   m_currentFile = (CString)M_CurrentFile();
   m_UserBackupPrefix = M_UserBackupPrefix();
@@ -73,11 +72,6 @@ COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   path = pws_os::makepath(drive, dir, L"", L"");
   m_currentFileDir = path.c_str();
   m_currentFileBasename = base.c_str();
-}
-
-COptionsBackup::~COptionsBackup()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)

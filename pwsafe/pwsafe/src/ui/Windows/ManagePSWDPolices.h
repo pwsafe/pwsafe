@@ -83,7 +83,6 @@ private:
   int m_iundo_pos;
 
   DboxMain *m_pDbx;
-  CToolTipCtrl *m_pToolTipCtrl;
 
   PSWDPolicyMap m_MapPSWDPLC;
   PWPolicy m_st_default_pp;

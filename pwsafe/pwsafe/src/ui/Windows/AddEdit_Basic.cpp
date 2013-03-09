@@ -56,8 +56,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
                           pAEMD),
-  m_pToolTipCtrl(NULL), m_bInitdone(false), m_thread(NULL),
-  m_isNotesHidden(false)
+  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -119,7 +118,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 CAddEdit_Basic::~CAddEdit_Basic()
 {
   delete m_pex_notes;
-  delete m_pToolTipCtrl;
 }
 
 void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)

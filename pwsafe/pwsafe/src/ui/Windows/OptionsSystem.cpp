@@ -47,7 +47,6 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
 : COptions_PropertyPage(pParent,
                         COptionsSystem::IDD, COptionsSystem::IDD_SHORT,
                         pOPTMD),
-  m_pToolTipCtrl(NULL),
   m_DeleteRegistry(FALSE), m_saveDeleteRegistry(FALSE),
   m_Migrate2Appdata(FALSE), m_saveMigrate2Appdata(FALSE)
 {
@@ -64,11 +63,6 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_MaxREItems = M_MaxREItems();
   m_MaxMRUItems = M_MaxMRUItems();
   m_InitialHotkeyState = M_Hotkey_Enabled();
-}
-
-COptionsSystem::~COptionsSystem()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange *pDX)

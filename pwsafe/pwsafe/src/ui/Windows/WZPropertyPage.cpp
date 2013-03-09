@@ -19,7 +19,8 @@ extern const wchar_t *EYE_CATCHER;
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
- : CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType)
+: CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
+  m_pToolTipCtrl(NULL)
 {
 }
 
