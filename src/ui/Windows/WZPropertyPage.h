@@ -25,6 +25,7 @@ public:
 
 protected:
   CWZPropertySheet *m_pWZPSH;
+  CToolTipCtrl *m_pToolTipCtrl;
 
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);

@@ -38,8 +38,8 @@ class CPWDialog : public CDialog
 {
 public:
   CPWDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
-    : CDialog(nIDTemplate, pParentWnd) {}
-
+    : CDialog(nIDTemplate, pParentWnd), m_pToolTipCtrl(NULL) {}
+  virtual ~CPWDialog() {delete m_pToolTipCtrl;}
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
@@ -48,6 +48,8 @@ public:
   static CPWDialogTracker *GetDialogTracker();
 
   DECLARE_DYNAMIC(CPWDialog)
+protected:
+  CToolTipCtrl *m_pToolTipCtrl;
 private:
   static CPWDialogTracker *sm_tracker;
 };

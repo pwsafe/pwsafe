@@ -10,6 +10,7 @@
 #include "core/StringX.h"
 #include "core/PWScore.h"  // for st_DBProperties
 
+#include "PWDialog.h"
 #include "EBListCtrl.h"
 #include "resource.h"
 
@@ -23,14 +24,13 @@ struct st_recfile {
 
 // CDisplayFSBkupFiles dialog
 
-class CDisplayFSBkupFiles : public CDialog
+class CDisplayFSBkupFiles : public CPWDialog
 {
 public:
   CDisplayFSBkupFiles(CWnd* pParent, std::wstring &wsDBDrive,
                     std::wstring &wsDBPath, 
                     st_DBProperties &st_dbpcore,
                     std::vector<st_recfile> &vValidEBackupfiles);
-  virtual ~CDisplayFSBkupFiles();
 
   // Dialog Data
   enum { IDD = IDD_DISPLAYFSBKUPFILES };
@@ -50,8 +50,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CToolTipCtrl *m_pToolTipCtrl;
-
   int m_iSelectedItem;
   UINT m_DriveType;
   std::wstring m_wsDBPath;

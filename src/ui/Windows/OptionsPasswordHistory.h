@@ -23,7 +23,6 @@ public:
 
   // Construction
   COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD);
-  ~COptionsPasswordHistory();
 
 protected:
   // Dialog Data
@@ -60,6 +59,4 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-private:
-  CToolTipCtrl* m_pToolTipCtrl;
 };

@@ -45,7 +45,7 @@ IMPLEMENT_DYNAMIC(COptionsMisc, COptions_PropertyPage)
 COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
                           COptionsMisc::IDD, COptionsMisc::IDD_SHORT,
-                          pOPTMD), m_pToolTipCtrl(NULL)
+                          pOPTMD)
 {
   m_DefUsername = (CString)M_DefUsername();
   m_OtherBrowserLocation = M_OtherBrowserLocation();
@@ -70,11 +70,6 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   if (m_ShiftDoubleClickAction < PWSprefs::minDCA ||
       m_ShiftDoubleClickAction > PWSprefs::maxDCA)
     m_ShiftDoubleClickAction = M_ShiftDoubleClickAction() = PWSprefs::DoubleClickCopyPassword;
-}
-
-COptionsMisc::~COptionsMisc()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)

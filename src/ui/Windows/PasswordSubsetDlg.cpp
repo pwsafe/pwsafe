@@ -91,14 +91,13 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
     m_passwd(passwd), m_bshown(false), m_warningmsg(L""),
-    m_pToolTipCtrl(NULL), m_pDbx(static_cast<DboxMain *>(pParent))
+    m_pDbx(static_cast<DboxMain *>(pParent))
 
 {
 }
 
 CPasswordSubsetDlg::~CPasswordSubsetDlg()
 {
-  delete m_pToolTipCtrl;
   m_CopyPswdStatic.Detach();
 }
 

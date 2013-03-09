@@ -130,7 +130,6 @@ private:
   COLORREF m_email_cfOldColour, m_protected_cfOldColour;
   BOOL m_bOKSave, m_bOKCancel;
 
-  CToolTipCtrl *m_pToolTipCtrl;
   bool m_bInitdone;
   int m_iPointSize;
 };

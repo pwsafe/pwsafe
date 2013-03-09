@@ -35,16 +35,11 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
   m_ClearPWHistory(false), m_bSortAscending(true),
-  m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
+  m_bInitdone(false), m_iSortedColumn(-1)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
                            GetPref(PWSprefs::NumPWHistoryDefault);
-}
-
-CAddEdit_Additional::~CAddEdit_Additional()
-{
-  delete m_pToolTipCtrl;
 }
 
 void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)

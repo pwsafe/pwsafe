@@ -12,7 +12,7 @@ class CPWPropertyPage : public CPropertyPage
 {
 public:
   CPWPropertyPage(UINT nID);
-  virtual ~CPWPropertyPage() {}
+  virtual ~CPWPropertyPage() {delete m_pToolTipCtrl;}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -23,6 +23,8 @@ public:
         PP_UPDATE_TIMES};
 
   DECLARE_DYNAMIC(CPWPropertyPage)
+protected:
+  CToolTipCtrl *m_pToolTipCtrl;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

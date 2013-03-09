@@ -23,7 +23,6 @@ public:
 
   // Construction
   COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD);
-  ~COptionsBackup();
 
 protected:
   // Dialog Data
@@ -78,6 +77,5 @@ protected:
 
 private:
   void SetExample();
-  CToolTipCtrl* m_pToolTipCtrl;
 };
 
