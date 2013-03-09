@@ -175,31 +175,10 @@ BOOL COptionsSystem::OnInitDialog()
 
   OnUseSystemTray();
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return bResult;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-  // Double time to allow reading by user - there is a lot there!
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
-
-  if (m_pToolTipCtrl != NULL) {
-    CString cs_ToolTip(MAKEINTRESOURCE(IDS_REGDEL));
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_MIGRATETOAPPDATA);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MIGRATETOAPPDATA), cs_ToolTip);
-  }
-
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 2);
+  AddTool(IDC_REGDEL,           IDS_REGDEL);
+  AddTool(IDC_MIGRATETOAPPDATA, IDS_MIGRATETOAPPDATA);
+  ActivateToolTip();
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -253,8 +232,7 @@ BOOL COptionsSystem::OnApply()
 
 BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

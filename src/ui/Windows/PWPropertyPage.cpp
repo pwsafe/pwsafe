@@ -24,6 +24,44 @@ CPWPropertyPage::CPWPropertyPage(UINT nID)
   m_psp.dwFlags |= PSP_HASHELP;
 }
 
+void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
+{
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, Flags)) {
+    pws_os::Trace(L"Unable To create ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  } else {
+    EnableToolTips();
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+  }
+}
+
+void CPWPropertyPage::AddTool(int DlgItemID, int ResID)
+{
+  if (m_pToolTipCtrl != NULL) {
+    const CString cs(MAKEINTRESOURCE(ResID));
+    m_pToolTipCtrl->AddTool(GetDlgItem(DlgItemID), cs);
+  }
+}
+
+void CPWPropertyPage::ActivateToolTip()
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->Activate(TRUE);
+}
+
+void CPWPropertyPage::RelayToolTipEvent(MSG *pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+}
+
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();

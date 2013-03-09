@@ -144,30 +144,12 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return TRUE;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-
-  // Set the tooltip
+  InitToolTip();
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_MAINTAINDATETIMESTAMPS);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_OTHERBROWSERLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_OTHEREDITORLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHEREDITORLOCATION), cs_ToolTip);
+  AddTool(IDC_MAINTAINDATETIMESTAMPS, IDS_MAINTAINDATETIMESTAMPS);
+  AddTool(IDC_OTHERBROWSERLOCATION,   IDS_OTHERBROWSERLOCATION);
+  AddTool(IDC_OTHEREDITORLOCATION,    IDS_OTHEREDITORLOCATION);
+  ActivateToolTip();
 
   return TRUE;
 }
@@ -269,8 +251,7 @@ BOOL COptionsMisc::OnApply()
 
 BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

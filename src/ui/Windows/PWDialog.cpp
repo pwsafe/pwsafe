@@ -24,6 +24,44 @@ CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
+void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
+{
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, Flags)) {
+    pws_os::Trace(L"Unable To create ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  } else {
+    EnableToolTips();
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+  }
+}
+
+void CPWDialog::AddTool(int DlgItemID, int ResID)
+{
+  if (m_pToolTipCtrl != NULL) {
+    const CString cs(MAKEINTRESOURCE(ResID));
+    m_pToolTipCtrl->AddTool(GetDlgItem(DlgItemID), cs);
+  }
+}
+
+void CPWDialog::ActivateToolTip()
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->Activate(TRUE);
+}
+
+void CPWDialog::RelayToolTipEvent(MSG *pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+}
+
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();
