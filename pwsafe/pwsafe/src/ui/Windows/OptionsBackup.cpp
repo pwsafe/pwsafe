@@ -153,31 +153,11 @@ BOOL COptionsBackup::OnInitDialog()
   OnComboChanged();
   OnBackupBeforeSave();
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return TRUE;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-  // Quadruple the time to allow reading by user - there is a lot there!
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
-
-  // Set the tooltip
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_BACKUPBEFORESAVE);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BACKUPBEFORESAVE), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_USERBACKUPOTHERLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_USERBACKUPOTHERLOCATION), cs_ToolTip);
+  AddTool(IDC_BACKUPBEFORESAVE,        IDS_BACKUPBEFORESAVE);
+  AddTool(IDC_USERBACKUPOTHERLOCATION, IDS_USERBACKUPOTHERLOCATION);
+  ActivateToolTip();
 
   return TRUE;
 }
@@ -226,8 +206,7 @@ BOOL COptionsBackup::OnApply()
 
 BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

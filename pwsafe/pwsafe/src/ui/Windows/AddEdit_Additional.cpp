@@ -99,10 +99,7 @@ END_MESSAGE_MAP()
 
 BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
 {
-  // Do tooltips
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
+  RelayToolTipEvent(pMsg);
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
@@ -128,26 +125,10 @@ BOOL CAddEdit_Additional::OnInitDialog()
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    m_pToolTipCtrl = new CToolTipCtrl;
-    if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      pws_os::Trace(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
-      delete m_pToolTipCtrl;
-      m_pToolTipCtrl = NULL;
-    } else {
-      EnableToolTips();
-      // Delay initial show & reshow
-      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
-      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
-      m_pToolTipCtrl->SetMaxTipWidth(300);
-
-      CString cs_ToolTip;
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
-
-      m_pToolTipCtrl->Activate(TRUE);
-    }
+    InitToolTip();
+    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+    ActivateToolTip();
 
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);

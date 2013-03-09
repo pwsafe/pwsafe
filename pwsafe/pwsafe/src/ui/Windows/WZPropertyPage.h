@@ -16,7 +16,7 @@ public:
   DECLARE_DYNAMIC(CWZPropertyPage)
 
   CWZPropertyPage(UINT nID, UINT nIDCaption = 0, const int nType = INVALID);
-  ~CWZPropertyPage() {}
+  ~CWZPropertyPage() {delete m_pToolTipCtrl;}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
