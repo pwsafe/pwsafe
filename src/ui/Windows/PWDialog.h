@@ -17,6 +17,7 @@
 #pragma once
 
 #include <afxwin.h>
+#include <afxcmn.h> // for CToolTipCtrl
 #include <afxmt.h> // for CMutex
 #include <list>
 #if defined(POCKET_PC)
