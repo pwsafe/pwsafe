@@ -2771,8 +2771,8 @@ msgid "Enter no more than %1 characters."
 msgstr "输入一个不大于 %1 字符"
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
-msgstr "密码字符输入位置以空格、逗号或分号隔开:"
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3678,22 +3678,23 @@ msgstr "错误密码"
 msgid "Incremented Number [001-999]"
 msgstr "递增数字 [001-999]"
 
-#. Resource IDs: (354)
-#, c-format
-msgid "Index is bigger than password length (%d)."
-msgstr "指数大于密码长度 (%d)！"
-
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
 msgstr "索引无效或缺少！"
 
-#. Resource IDs: (353)
-msgid "Index must be greater than or equal to 1."
-msgstr "指数必须大于或等于 1 ！"
-
 #. Resource IDs: (210)
 msgid "Index not numeric"
 msgstr "索引没有数值！"
+
+#. Resource IDs: (354)
+#, c-format
+msgid "Index points after the end of the password (length %d)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Index points before the start of the password (length %d)."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
@@ -4836,6 +4837,14 @@ msgstr "葡萄牙语"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "葡萄牙语(巴西 ABNT)"
 
+#. Resource IDs: (65535)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Positions:"
+msgstr ""
+
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "单击删除所有已添加的字符"
@@ -5025,10 +5034,6 @@ msgstr "创建报告"
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "%s 的报告函数开始于 %s"
-
-#. Resource IDs: (65535)
-msgid "Requested Values:"
-msgstr "请求的值:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -6508,6 +6513,10 @@ msgstr ""
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "值:"
+
+#. Resource IDs: (65535)
+msgid "Values:"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"

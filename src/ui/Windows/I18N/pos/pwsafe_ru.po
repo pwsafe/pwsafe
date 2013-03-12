@@ -2946,8 +2946,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Введите не более %1 знаков."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
-msgstr "Введите номера символов пароля через пробел, запятую или точку с запятой:"
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3886,22 +3886,23 @@ msgstr "Неверный пароль"
 msgid "Incremented Number [001-999]"
 msgstr "Автонумератор [001-999]"
 
-#. Resource IDs: (354)
-#, c-format
-msgid "Index is bigger than password length (%d)."
-msgstr "Номер превосходит длину пароля (%d)."
-
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
 msgstr "Индекс не указан или недопустим"
 
-#. Resource IDs: (353)
-msgid "Index must be greater than or equal to 1."
-msgstr "Номер должен быть не меньше 1."
-
 #. Resource IDs: (210)
 msgid "Index not numeric"
 msgstr "Индекс не является числовым"
+
+#. Resource IDs: (354)
+#, c-format
+msgid "Index points after the end of the password (length %d)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Index points before the start of the password (length %d)."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
@@ -5085,6 +5086,14 @@ msgstr "Португальская"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "Португальская (бразильская ABNT)"
 
+#. Resource IDs: (65535)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Positions:"
+msgstr ""
+
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "Нажмите для удаления всех набранных символов"
@@ -5279,11 +5288,6 @@ msgstr "Отчёт создан"
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "Отчёт «%s» начат %s"
-
-#. Resource IDs: (65535)
-# ограничения длины
-msgid "Requested Values:"
-msgstr "Результат отбора:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -6819,6 +6823,10 @@ msgstr "Значение"
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "Значение:"
+
+#. Resource IDs: (65535)
+msgid "Values:"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"
