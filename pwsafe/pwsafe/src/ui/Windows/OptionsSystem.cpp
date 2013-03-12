@@ -104,7 +104,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsSystem::OnInitDialog() 
 {
-  BOOL bResult = COptions_PropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_bShowConfigFile) {
