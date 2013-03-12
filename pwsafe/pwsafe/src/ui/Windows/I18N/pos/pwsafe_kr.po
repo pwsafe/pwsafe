@@ -2771,8 +2771,8 @@ msgid "Enter no more than %1 characters."
 msgstr "%1자 이하의 문자열을 입력하세요."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
-msgstr "비밀번호 문자들의 위치를 스페이스, 쉼표, 혹은 세미콜론으로 구별하여 입력하세요:"
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3678,22 +3678,23 @@ msgstr "일치하지 않는 비밀번호"
 msgid "Incremented Number [001-999]"
 msgstr "증가수 [001-999]"
 
-#. Resource IDs: (354)
-#, c-format
-msgid "Index is bigger than password length (%d)."
-msgstr "목차 값이 비밀번호 길이 (%d) 보다 큽니다"
-
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
 msgstr "색인이 올바르지 않거나 손상되었습니다"
 
-#. Resource IDs: (353)
-msgid "Index must be greater than or equal to 1."
-msgstr "색인은 1보다 크거나 같아야 합니다."
-
 #. Resource IDs: (210)
 msgid "Index not numeric"
 msgstr "색인이 숫자가 아님"
+
+#. Resource IDs: (354)
+#, c-format
+msgid "Index points after the end of the password (length %d)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Index points before the start of the password (length %d)."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
@@ -4836,6 +4837,14 @@ msgstr "Portuguese"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "Portuguese (Brazilian ABNT)"
 
+#. Resource IDs: (65535)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Positions:"
+msgstr ""
+
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "추가된 모든 문자열을 삭제하시려면 Delete를 누르세요"
@@ -5025,10 +5034,6 @@ msgstr "보고서 생성됨"
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "%s 의 보고서 기능이 %s에 시작했습니다."
-
-#. Resource IDs: (65535)
-msgid "Requested Values:"
-msgstr "요청된 값:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -6508,6 +6513,10 @@ msgstr ""
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "값:"
+
+#. Resource IDs: (65535)
+msgid "Values:"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"

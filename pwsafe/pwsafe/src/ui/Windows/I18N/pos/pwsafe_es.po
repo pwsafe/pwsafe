@@ -2784,8 +2784,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Introduce no más de %1 caracteres."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
-msgstr "Introduzca las posiciones de los caracteres de la contraseña separadas por espacios, comas o dos puntos:"
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3693,22 +3693,23 @@ msgstr "Contraseña incorrecta"
 msgid "Incremented Number [001-999]"
 msgstr "Número Incrementado [001-999]"
 
-#. Resource IDs: (354)
-#, c-format
-msgid "Index is bigger than password length (%d)."
-msgstr "Índice es mayor que la longitud de contraseña (%d)."
-
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
 msgstr "Índice es invalido o no se encuentra"
 
-#. Resource IDs: (353)
-msgid "Index must be greater than or equal to 1."
-msgstr "Índice debe ser mayor o igual a 1."
-
 #. Resource IDs: (210)
 msgid "Index not numeric"
 msgstr "Índice no numérico"
+
+#. Resource IDs: (354)
+#, c-format
+msgid "Index points after the end of the password (length %d)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Index points before the start of the password (length %d)."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
@@ -4851,6 +4852,14 @@ msgstr "Portugués"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "Portugués (Brasileño ABNT)"
 
+#. Resource IDs: (65535)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Positions:"
+msgstr ""
+
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "Pulsa para eliminar todos los caracteres añadidos."
@@ -5041,10 +5050,6 @@ msgstr "Informe de creados"
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "Informe de %s función empezada en %s"
-
-#. Resource IDs: (65535)
-msgid "Requested Values:"
-msgstr "Valores requeridos:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -6526,6 +6531,10 @@ msgstr ""
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "Valor:"
+
+#. Resource IDs: (65535)
+msgid "Values:"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"

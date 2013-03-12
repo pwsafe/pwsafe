@@ -2807,8 +2807,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Wprowadź nie więcej niż %1 znaków."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
-msgstr "Wprowadź pozycje znaków w haśle odzdzielając je spacją, przecinkiem lub średnikiem:"
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3728,22 +3728,23 @@ msgstr "Nieprawidłowe hasło"
 msgid "Incremented Number [001-999]"
 msgstr "Liczba Przyrostowa [001-999]"
 
-#. Resource IDs: (354)
-#, c-format
-msgid "Index is bigger than password length (%d)."
-msgstr "Podana wartość jest większa od długości hasła (%d)."
-
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
 msgstr "Indeks jest nieprawidłowy"
 
-#. Resource IDs: (353)
-msgid "Index must be greater than or equal to 1."
-msgstr "Wartość musi być większa lub równa 1."
-
 #. Resource IDs: (210)
 msgid "Index not numeric"
 msgstr "Indeks nie jest numeryczny"
+
+#. Resource IDs: (354)
+#, c-format
+msgid "Index points after the end of the password (length %d)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Index points before the start of the password (length %d)."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
@@ -4910,6 +4911,14 @@ msgstr "Portugalski"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "Portugalski (brazylijski)"
 
+#. Resource IDs: (65535)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Positions:"
+msgstr ""
+
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "Naciśnij by skasować wszystkie dodane znaki."
@@ -5101,10 +5110,6 @@ msgstr "Raport utworzony"
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "Raport z wywołania funkcji %s rozpoczętej %s"
-
-#. Resource IDs: (65535)
-msgid "Requested Values:"
-msgstr "Szukane wartości:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -6598,6 +6603,10 @@ msgstr "Wartość"
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "Wartość:"
+
+#. Resource IDs: (65535)
+msgid "Values:"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"
