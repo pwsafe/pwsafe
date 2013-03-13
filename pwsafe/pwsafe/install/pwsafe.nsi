@@ -204,6 +204,8 @@
   !include ".\I18N\pwsafe_pt-br.lng"
   !insertmacro MUI_LANGUAGE "Czech"
   !include ".\I18N\pwsafe_cz.lng"
+  !insertmacro MUI_LANGUAGE "Turkish"
+  !include ".\I18N\pwsafe_tr.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -263,6 +265,7 @@ LangString DANISH_SUPPORT ${LANG_ENGLISH} "Danish"
 LangString KOREAN_SUPPORT ${LANG_ENGLISH} "Korean"
 LangString PORTUGUESEBR_SUPPORT ${LANG_ENGLISH} "Portuguese (Brazil)"
 LangString CZECH_SUPPORT ${LANG_ENGLISH} "Czech"
+LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
@@ -432,6 +435,11 @@ Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
   File /nonfatal "..\help\pwsafeCZ\pwsafeCZ.chm"
+SectionEnd
+Section /o "$(TURKISH_SUPPORT)" TurkishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeTR.dll"
+  File /nonfatal "..\help\pwsafeCZ\pwsafeTR.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -636,6 +644,8 @@ Function .onInit
   Push "Português (Brasil)"
   Push ${LANG_CZECH}
   Push "Čeština"
+  Push ${LANG_TURKISH}
+  Push "Türkçe"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)

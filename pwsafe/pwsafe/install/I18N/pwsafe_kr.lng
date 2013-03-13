@@ -109,6 +109,7 @@ LangString ITALIAN_SUPPORT ${LANG_KOREAN} "이탈리아어"
 LangString DANISH_SUPPORT ${LANG_KOREAN} "덴마크어"
 LangString KOREAN_SUPPORT ${LANG_KOREAN} "한국어"
 LangString CZECH_SUPPORT ${LANG_KOREAN} "Czech"
+LangString TURKISH_SUPPORT ${LANG_KOREAN} "Turkish"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_KOREAN} "프로그램 언어"
