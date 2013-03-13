@@ -123,6 +123,7 @@ LangString DANISH_SUPPORT ${LANG_SPANISH} "Danés"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_SPANISH} "Coreano"
 LangString CZECH_SUPPORT ${LANG_SPANISH} "Czech"
+LangString TURKISH_SUPPORT ${LANG_SPANISH} "Turco"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SPANISH} "Idioma del programa"
