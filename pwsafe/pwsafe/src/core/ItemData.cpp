@@ -147,8 +147,9 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
     unsigned char *pdata = new unsigned char[flength];
     GetField(field, pdata, flength);
     if (isUTF8) {
-      const wchar_t *wpdata = reinterpret_cast<const wchar_t *>(pdata);
+      wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
       size_t srclen = field.GetLength()/sizeof(TCHAR);
+      wpdata[srclen] = 0;
       size_t dstlen = pws_os::wcstombs(NULL, 0, wpdata, srclen);
       ASSERT(dstlen > 0);
       char *dst = new char[dstlen+1];
