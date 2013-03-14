@@ -451,7 +451,7 @@ void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 void PwsafeApp::OnActivityTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == ACTIVITY_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    if (!m_frame->GetCurrentSafe().IsEmpty())
+    if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty())
       m_frame->HideUI(true);  //true => lock
   }
 }
