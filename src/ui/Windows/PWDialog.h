@@ -50,6 +50,7 @@ public:
 
   DECLARE_DYNAMIC(CPWDialog)
 protected:
+  void FixBitmapBackground(CBitmap &bm);
   void InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
   void AddTool(int DlgItemID, int ResID);
   void ActivateToolTip();

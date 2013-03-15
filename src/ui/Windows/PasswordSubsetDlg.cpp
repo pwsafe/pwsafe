@@ -182,6 +182,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
 
   // Set bitmap in Static
   m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
+  FixBitmapBackground(m_CopyPswdBitmap);
 
   ShowWindow(SW_SHOW);
   return TRUE;
