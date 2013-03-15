@@ -106,67 +106,69 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
 
 CPasswordPolicyDlg::~CPasswordPolicyDlg()
 {
+  m_CopyPswdStatic.Detach();
 }
 
 void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+    CPWDialog::DoDataExchange(pDX);
 
-  //{{AFX_DATA_MAP(CPasswordPolicyDlg)
-  DDX_Text(pDX, IDC_DEFPWLENGTH, m_PWDefaultLength);
-  DDX_Text(pDX, IDC_MINDIGITLENGTH, m_PWDigitMinLength);
-  DDX_Text(pDX, IDC_MINLOWERLENGTH, m_PWLowerMinLength);
-  DDX_Text(pDX, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength);
-  DDX_Text(pDX, IDC_MINUPPERLENGTH, m_PWUpperMinLength);
-  DDX_Check(pDX, IDC_USELOWERCASE, m_PWUseLowercase);
-  DDX_Check(pDX, IDC_USEUPPERCASE, m_PWUseUppercase);
-  DDX_Check(pDX, IDC_USEDIGITS, m_PWUseDigits);
-  DDX_Check(pDX, IDC_USESYMBOLS, m_PWUseSymbols);
-  DDX_Check(pDX, IDC_EASYVISION, m_PWEasyVision);
-  DDX_Check(pDX, IDC_USEHEXDIGITS, m_PWUseHexdigits);
-  DDX_Check(pDX, IDC_PRONOUNCEABLE, m_PWMakePronounceable);
-  DDX_Check(pDX, IDC_USENAMED_POLICY, m_UseNamedPolicy);
+    //{{AFX_DATA_MAP(CPasswordPolicyDlg)
+    DDX_Text(pDX, IDC_DEFPWLENGTH, m_PWDefaultLength);
+    DDX_Text(pDX, IDC_MINDIGITLENGTH, m_PWDigitMinLength);
+    DDX_Text(pDX, IDC_MINLOWERLENGTH, m_PWLowerMinLength);
+    DDX_Text(pDX, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength);
+    DDX_Text(pDX, IDC_MINUPPERLENGTH, m_PWUpperMinLength);
+    DDX_Check(pDX, IDC_USELOWERCASE, m_PWUseLowercase);
+    DDX_Check(pDX, IDC_USEUPPERCASE, m_PWUseUppercase);
+    DDX_Check(pDX, IDC_USEDIGITS, m_PWUseDigits);
+    DDX_Check(pDX, IDC_USESYMBOLS, m_PWUseSymbols);
+    DDX_Check(pDX, IDC_EASYVISION, m_PWEasyVision);
+    DDX_Check(pDX, IDC_USEHEXDIGITS, m_PWUseHexdigits);
+    DDX_Check(pDX, IDC_PRONOUNCEABLE, m_PWMakePronounceable);
+    DDX_Check(pDX, IDC_USENAMED_POLICY, m_UseNamedPolicy);
 
-  DDX_Radio(pDX, IDC_USEDEFAULTSYMBOLS, m_UseOwnSymbols);
-  DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_SymbolsEdit);
+    DDX_Radio(pDX, IDC_USEDEFAULTSYMBOLS, m_UseOwnSymbols);
+    DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_SymbolsEdit);
 
-  // Because we can show the generated password when used from Mangage->Generate
-  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+    // Because we can show the generated password when used from Mangage->Generate
+    DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
 
-  DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
-  DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
-  //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
+    DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
+    //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
-  //{{AFX_MSG_MAP(CPasswordPolicyDlg)
-  ON_BN_CLICKED(IDOK, OnOK)
-  ON_BN_CLICKED(IDCANCEL, OnCancel)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
+//{{AFX_MSG_MAP(CPasswordPolicyDlg)
+ON_BN_CLICKED(IDOK, OnOK)
+ON_BN_CLICKED(IDCANCEL, OnCancel)
+ON_BN_CLICKED(ID_HELP, OnHelp)
 
-  ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
-  ON_BN_CLICKED(IDC_USELOWERCASE, OnUseLowerCase)
-  ON_BN_CLICKED(IDC_USEUPPERCASE, OnUseUpperCase)
-  ON_BN_CLICKED(IDC_USEDIGITS, OnUseDigits)
-  ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
-  ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
-  ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
+ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
+ON_BN_CLICKED(IDC_USELOWERCASE, OnUseLowerCase)
+ON_BN_CLICKED(IDC_USEUPPERCASE, OnUseUpperCase)
+ON_BN_CLICKED(IDC_USEDIGITS, OnUseDigits)
+ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
+ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
+ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
 
-  // Because we can show the generated password when used from Mangage->Generate
-  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
-  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
-  ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
+// Because we can show the generated password when used from Mangage->Generate
+ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
+ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
-  ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
-  ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
+ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
+ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
 
-  ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
+ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
 
-  ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
-  ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
+ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
+ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
 
-  ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
-  //}}AFX_MSG_MAP
+ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -197,27 +199,27 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
   CString cs_title;
   switch (m_uicaller) {
-    case IDS_OPTIONS:
-      // Set correct window title
-      cs_title.LoadString(IDS_EDIT_DEFAULT_POLICY);
-      SetWindowText(cs_title);
+  case IDS_OPTIONS:
+    // Set correct window title
+    cs_title.LoadString(IDS_EDIT_DEFAULT_POLICY);
+    SetWindowText(cs_title);
 
-      // These are only used in Manage -> Generate Password or Add/Edit Policy names
-      GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
-      GetDlgItem(IDC_POLICYNAME)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
-      GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_HIDE);
-      break;
-    case IDS_GENERATEPASSWORD:
+    // These are only used in Manage -> Generate Password or Add/Edit Policy names
+    GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_COPYPSWD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_POLICYNAME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_HIDE);
+    break;
+  case IDS_GENERATEPASSWORD:
     {
       // Set correct window title
       cs_title.LoadString(IDS_GENERATEPASSWORD);
@@ -281,37 +283,51 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
       // Remove password character so that the password is displayed
       m_ex_password.SetPasswordChar(0);
+
+      // Load bitmap
+      UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+      BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                                                     ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                                                     MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                                                     (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+      ASSERT(brc);
+
+      // Set bitmap in Static
+      m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
+      FixBitmapBackground(m_CopyPswdBitmap);
+
       break;
     }
-    case IDS_PSWDPOLICY:
-      // Set correct window title
-      cs_title.LoadString(m_policyname.IsEmpty() ? IDS_ADD_NAMED_POLICY : IDS_EDIT_NAMED_POLICY);
-      SetWindowText(cs_title);
+  case IDS_PSWDPOLICY:
+    // Set correct window title
+    cs_title.LoadString(m_policyname.IsEmpty() ? IDS_ADD_NAMED_POLICY : IDS_EDIT_NAMED_POLICY);
+    SetWindowText(cs_title);
 
-      // These are only used in Manage -> Password Policy
-      GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
-      GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
-      GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_SHOW);
+    // These are only used in Manage -> Password Policy
+    GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_COPYPSWD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_SHOW);
 
-      if (!m_policyname.IsEmpty() && m_iter->second.usecount > 0) {
-        // Cannot edit the policy 'Name' if it is present and use count > 0
-        m_PolicyNameEdit.SetReadOnly(TRUE);
-        m_PolicyNameEdit.EnableWindow(FALSE);
-      }
+    if (!m_policyname.IsEmpty() && m_iter->second.usecount > 0) {
+      // Cannot edit the policy 'Name' if it is present and use count > 0
+      m_PolicyNameEdit.SetReadOnly(TRUE);
+      m_PolicyNameEdit.EnableWindow(FALSE);
+    }
 
-      m_PolicyNameEdit.SetWindowText(m_policyname);
-      // Max. length of policy name is 255 - only 2 hex digits used for length
-      // in database header
-      m_PolicyNameEdit.SetLimitText(255);
-      break;
+    m_PolicyNameEdit.SetWindowText(m_policyname);
+    // Max. length of policy name is 255 - only 2 hex digits used for length
+    // in database header
+    m_PolicyNameEdit.SetLimitText(255);
+    break;
   }
 
   CSpinButtonCtrl *pspin  = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
@@ -373,8 +389,8 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   if (m_PWEasyVision == TRUE)
     iSet = EVPR_EV;
   else
-  if (m_PWMakePronounceable == TRUE)
-    iSet = EVPR_PR;
+    if (m_PWMakePronounceable == TRUE)
+      iSet = EVPR_PR;
   do_easyorpronounceable(iSet);
 
   m_SymbolsEdit.SetWindowText(m_Symbols);
