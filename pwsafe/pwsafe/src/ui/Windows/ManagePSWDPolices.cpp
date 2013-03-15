@@ -211,32 +211,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
 
   // Set bitmap in Static
   m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
-
-  // Get how many pixels in the bitmap
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  BITMAP bmInfo;
-  m_CopyPswdBitmap.GetBitmap(&bmInfo);
-
-  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
-
-  // get a pointer to the pixels
-  DIBSECTION ds;
-  VERIFY(m_CopyPswdBitmap.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
-
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  ASSERT(pixels != NULL);
-
-  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
-                                        GetGValue(crCOLOR_3DFACE),
-                                        GetRValue(crCOLOR_3DFACE)};
-
-  for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue  == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed   == 192) {
-      pixels[i] = newbkgrndColourRGB;
-    }
-  }
+  FixBitmapBackground(m_CopyPswdBitmap);
 
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);

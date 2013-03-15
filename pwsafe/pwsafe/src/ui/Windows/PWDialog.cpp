@@ -24,6 +24,38 @@ CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
+void CPWDialog::FixBitmapBackground(CBitmap &bm)
+{
+  // Change bitmap's {192,192,192} pixels
+  // to current flavor of the month default background
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  bm.GetBitmap(&bmInfo);
+
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  ASSERT(pixels != NULL);
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
+}
+
 void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -142,3 +174,4 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   m_mutex.Unlock();
   std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }
+
