@@ -243,20 +243,17 @@ HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
   // Database preferences - controls + associated static text
-  //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-  if (!IsThemeActive()) {
-    switch (pWnd->GetDlgCtrlID()) {
-      case IDC_DEFUNSHOWINTREE:
-      case IDC_DEFPWSHOWINTREE:
-      case IDC_DEFPWSHOWINEDIT:
-      case IDC_DEFNOTESSHOWINEDIT:
-      case IDC_TREE_DISPLAY_COLLAPSED:
-      case IDC_TREE_DISPLAY_EXPANDED:
-      case IDC_TREE_DISPLAY_LASTSAVE:
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-        break;
-    }
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_DEFUNSHOWINTREE:
+    case IDC_DEFPWSHOWINTREE:
+    case IDC_DEFPWSHOWINEDIT:
+    case IDC_DEFNOTESSHOWINEDIT:
+    case IDC_TREE_DISPLAY_COLLAPSED:
+    case IDC_TREE_DISPLAY_EXPANDED:
+    case IDC_TREE_DISPLAY_LASTSAVE:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
   }
 
   return hbr;
