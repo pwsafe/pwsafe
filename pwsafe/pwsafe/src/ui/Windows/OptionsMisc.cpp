@@ -420,11 +420,8 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       break;
     case IDC_MAINTAINDATETIMESTAMPS:
     case IDC_USEDEFUSER:
-      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-      if (!IsThemeActive()) {
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-      }
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
       break;
   }
 
