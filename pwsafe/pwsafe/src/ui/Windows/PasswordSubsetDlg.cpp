@@ -142,17 +142,6 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   // Ignore size just set position
   SetWindowPos(NULL, rect.left, rect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 
-  // Now reduce in size so that warning text box is not visible
-  CRect btnRect;
-  CWnd *pWnd = GetDlgItem(IDOK);
-	pWnd->GetWindowRect(btnRect);
-
-  // Make bottom of dialog just below these buttons
-  m_DialogWidth = dlgRect.Width();
-  m_WarningHeight = dlgRect.Height();
-  m_NoWarningHeight = btnRect.bottom - dlgRect.top + 5;
-  SetWindowPos(NULL, 0, 0, m_DialogWidth, m_NoWarningHeight, SWP_NOZORDER | SWP_NOMOVE);
-
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     pws_os::Trace(L"Unable To create CManagePSWDPolices Dialog ToolTip\n");
@@ -249,9 +238,6 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
       m_ne_subset.SetSel(lastpos, icurpos);
       m_ne_subset.SetFocus();
 
-      // Show warning
-      SetWindowPos(NULL, 0, 0, m_DialogWidth, m_WarningHeight, SWP_NOZORDER | SWP_NOMOVE);
-
       // Disable Copy to Clipboard
       GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
 
@@ -271,9 +257,6 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   }
   m_results.SetWindowText(sSubset.c_str());
   m_bshown = true;
-
-  // Reset dialog size
-  SetWindowPos(NULL, 0, 0, m_DialogWidth, m_NoWarningHeight, SWP_NOZORDER | SWP_NOMOVE);
 
   // Enable Copy to Clipboard
   GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(TRUE);

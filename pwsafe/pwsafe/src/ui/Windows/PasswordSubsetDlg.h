@@ -65,7 +65,6 @@ private:
   CBitmap m_CopyPswdBitmap;
   CEdit m_results;
   CString m_subset, m_warningmsg;
-  int m_DialogWidth, m_WarningHeight, m_NoWarningHeight;
   bool m_bshown;
   CStatic m_CopyPswdStatic;
 };
