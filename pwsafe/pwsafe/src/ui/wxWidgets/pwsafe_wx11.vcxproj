@@ -497,6 +497,7 @@
     <ClInclude Include="safecombinationentry.h" />
     <ClInclude Include="safecombinationprompt.h" />
     <ClInclude Include="safecombinationsetup.h" />
+    <ClInclude Include="SelectionCriteria.h" />
     <ClInclude Include="SizeRestrictedPanel.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="SystemTrayMenuId.h" />
@@ -550,6 +551,7 @@
     <ClCompile Include="safecombinationentry.cpp" />
     <ClCompile Include="safecombinationprompt.cpp" />
     <ClCompile Include="safecombinationsetup.cpp" />
+    <ClCompile Include="SelectionCriteria.cpp" />
     <ClCompile Include="SizeRestrictedPanel.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="version.cpp" />
