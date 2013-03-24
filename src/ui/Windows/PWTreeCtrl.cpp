@@ -434,6 +434,8 @@ void CPWTreeCtrl::OnDragLeave()
 {
   m_TickCount = 0;
   m_bWithinThisInstance = false;
+  //We leave or window, so we need to clean DropTarget selection
+  SelectDropTarget(NULL);
   // ShowCursor's semantics are VERY odd - RTFM
   pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
@@ -1441,7 +1443,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   m_pDbx->FixListIndexes();
   GetParent()->SetFocus();
 
- exit:
+exit:
+  //We need to cancel DropTarget selection, otherwise next 
+  //mouse/keybord selection will be treated as drop target selections
+  SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {
     m_pDbx->SetChanged(DboxMain::Data);
