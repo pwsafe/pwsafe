@@ -298,7 +298,7 @@ void CompareDlg::OnCompare(wxCommandEvent& )
   if ( Validate() && TransferDataFromWindow()) {
     if (wxFileName(m_dbPanel->m_filepath).SameAs(towxstring(m_otherCore->GetCurFile())) ||
             ReadCore(*m_otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination,
-                            true, this) == PWScore::SUCCESS) {
+                            true, this, true) == PWScore::SUCCESS) {
       m_otherCore->SetCurFile(tostringx(m_dbPanel->m_filepath));
       m_otherCore->SetReadOnly(true);
 

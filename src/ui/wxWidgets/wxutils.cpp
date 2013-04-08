@@ -35,7 +35,8 @@
  */
 
 int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
-                bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/)
+                bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
+				bool setupCopy /*= false*/)
 {
   othercore.ClearData();
 
@@ -45,6 +46,9 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
   StringX dbpath(tostringx(file));
   int rc = othercore.ReadFile(dbpath, combination);
+
+  if (setupCopy)
+	  PWSprefs::GetInstance()->SetupCopyPrefs();
 
   // Reset database preferences - first to defaults then add saved changes!
   PWSprefs::GetInstance()->Load(sxSavePrefString);
