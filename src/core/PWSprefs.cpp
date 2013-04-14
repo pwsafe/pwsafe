@@ -35,13 +35,8 @@
 
 using namespace std;
 
-#if defined(POCKET_PC)
-const LPCTSTR PWS_REG_POSITION = _T("Position");
-const LPCTSTR PWS_REG_OPTIONS = _T("Options");
-#else
 const LPCTSTR PWS_REG_POSITION = _T("");
 const LPCTSTR PWS_REG_OPTIONS = _T("");
-#endif
 
 // For Old registry handling:
 const stringT Software(_T("Software"));

@@ -10,10 +10,6 @@
 #include "PWPropertyPage.h"
 #include "GeneralMsgBox.h"
 
-#if defined(POCKET_PC)
-#error "TBD - define proper PropertyPage base class for PPC"
-#endif
-
 extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)

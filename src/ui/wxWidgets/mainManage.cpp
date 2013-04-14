@@ -176,13 +176,10 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
     m_core.SetCurFile(L"");    // Force a Save As...
     m_core.SetDBChanged(true); // So that the restored file will be saved
 
-#if !defined(POCKET_PC)
     SetTitle(_("Password Safe - <Untitled Restored Backup>"));
 
 #ifdef NOT_YET
     app.SetTooltipText(L"PasswordSafe");
-#endif
-
 #endif
 
 #ifdef NOT_YET

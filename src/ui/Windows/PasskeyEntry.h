@@ -51,11 +51,9 @@ protected:
   enum { IDD = IDD_PASSKEYENTRY_FIRST };
 
   //{{AFX_DATA(CPasskeyEntry)
-#if !defined(POCKET_PC)
   CSysColStatic m_ctlLogo;
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
-#endif
   CSecEditExtn *m_pctlPasskey;
   CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
@@ -88,10 +86,6 @@ protected:
   virtual void OnOK();
   afx_msg void OnHelp();
   afx_msg void OnExit();
-#if defined(POCKET_PC)
-  afx_msg void OnPasskeySetfocus();
-  afx_msg void OnPasskeyKillfocus();
-#endif
   afx_msg void OnCreateDb();
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();

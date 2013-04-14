@@ -15,13 +15,9 @@
 
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1065,11 +1061,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 // Called when right-click is invoked in the client area of the window.
 void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 {
-#if defined(POCKET_PC)
-  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
-#else
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
-#endif
 
   BOOL brc;
   CPoint client;

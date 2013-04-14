@@ -17,13 +17,9 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsSystem.h" // Must be after resource.h
 

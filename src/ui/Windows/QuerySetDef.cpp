@@ -13,11 +13,7 @@
 #include "core/PwsPlatform.h"
 
 #include "ThisMfcApp.h"
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
-#endif
 
 #include "QuerySetDef.h"
 #include "core/PWSprefs.h"

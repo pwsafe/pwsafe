@@ -15,9 +15,6 @@ and was written by Pål K. Tønder
 
 #include "stdafx.h"
 #include "SysColStatic.h"
-#if defined(POCKET_PC)
-#include "pocketpc/PocketPC.h"
-#endif
 #include "PasswordSafe.h"
 
 #ifdef _DEBUG

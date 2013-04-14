@@ -134,7 +134,6 @@ void Fonts::SetPasswordFont(LOGFONT *pLF)
 
 void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
 {
-#if !defined(POCKET_PC)
   ASSERT(pDlgItem != NULL);
   if (pDlgItem == NULL)
     return;
@@ -147,7 +146,6 @@ void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
   }
 
   pDlgItem->SetFont(pPasswordFont);
-#endif
 }
 
 static CString GetToken(CString& str, LPCWSTR c)

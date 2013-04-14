@@ -22,12 +22,8 @@
 
 #include "os/dir.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsMisc.h" // Must be after resource.h
 
@@ -273,14 +269,11 @@ void COptionsMisc::OnHelp()
 
 void COptionsMisc::OnEnableHotKey() 
 {
-  // JHF : no hotkeys on WinCE
-#if !defined(POCKET_PC)
   if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1) {
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
     GetDlgItem(IDC_HOTKEY_CTRL)->SetFocus();
   } else
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
-#endif
 }
 
 void COptionsMisc::SetupCombo(CComboBox *pcbox)

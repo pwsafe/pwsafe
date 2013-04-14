@@ -18,13 +18,9 @@
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "filter/SetFiltersDlg.h"
 #include "filter/ManageFiltersDlg.h"

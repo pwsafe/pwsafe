@@ -15,14 +15,10 @@
 #include "DboxMain.h"
 #include "RUEList.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include <errno.h>
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "core/pwsprefs.h"
 #include "core/pwscore.h"
@@ -50,7 +46,6 @@ static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemDa
 }
 
 /////////////////////////////// New System Tray Commands /////////////////////
-#ifndef POCKET_PC
 void DboxMain::OnTrayLockUnLock()
 {
   PWS_LOGIT;
@@ -411,5 +406,3 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)
 {
 }
-
-#endif /*  POCKET_PC */

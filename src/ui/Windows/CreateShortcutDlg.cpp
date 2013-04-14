@@ -128,13 +128,9 @@ void CCreateShortcutDlg::OnOK()
 
 void CCreateShortcutDlg::OnHelp() 
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
 }
 
 void CCreateShortcutDlg::OnBnClickedOk()

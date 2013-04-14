@@ -17,14 +17,9 @@
 
 #include "PasswordSafe.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/PocketPC.h"
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
@@ -89,11 +84,7 @@ extern wchar_t *wcCaption;
 #endif
 
 ThisMfcApp::ThisMfcApp() :
-#if defined(POCKET_PC)
-  m_bUseAccelerator(false),
-#else
   m_bUseAccelerator(true),
-#endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
@@ -137,29 +128,6 @@ ThisMfcApp::ThisMfcApp() :
   csRevision.ReleaseBuffer();
 #endif
 
-  // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
-#if defined(POCKET_PC)
-  // Double check that *_ENDIAN has been correctly set!
-#if defined(PWS_LITTLE_ENDIAN)
-  unsigned char buf[4] = { 1, 0, 0, 0 };
-  unsigned int ii = 1;
-#define ENDIANNESS1 0 // Little
-#define ENDIANNESS2 1 // Big
-#elif defined(PWS_BIG_ENDIAN)
-  unsigned char buf[4] = { 0, 0, 0, 1 };
-  unsigned int ii = 1;
-#define ENDIANNESS1 1 // Big
-#define ENDIANNESS2 0 // Little
-#endif
-  if (*(unsigned int*)buf != ii) {
-    CGeneralMsgBox gmb;
-    CString cs_msg, cs_e1, cs_e2;
-    cs_e1.LoadString(ENDIANNESS1 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
-    cs_e2.LoadString(ENDIANNESS2 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
-    cs_msg.Format(IDS_ENDIANERROR, cs_e1, cs_e2);
-    gmb.AfxMessageBox(cs_msg);
-  }
-#endif
   // Set this process to be one of the first to be shut down:
   SetProcessShutdownParameters(0x3ff, 0);
   PWSprefs::SetReporter(&aReporter);
@@ -202,18 +170,14 @@ ThisMfcApp::~ThisMfcApp()
 
   CoUninitialize(); // Uninitialize COM library
 
-#if !defined(POCKET_PC)
   // WinApp::HtmlHelp asserts that main windows is valid, which (1) isn't true
   // here, and (2) is irrelevant for HH_CLOSE_ALL, so we call ::HtmlHelp
   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
-#endif
-
 #ifndef _DEBUG
   RemoveFaultHandler();
 #endif
 }
 
-#if !defined(POCKET_PC)
 static void Usage()
 {
   CGeneralMsgBox gmb;
@@ -240,7 +204,6 @@ static bool CheckFile(const CString &fn)
     return false;
   }
 }
-#endif // !POCKET_PC
 
 void ThisMfcApp::SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream)
 {
@@ -722,11 +685,9 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
    * and one for personal use, and to set up a different shortcut for each.
    *
    * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-   * {kjp} ... and I've removed all of it from the Pocket PC build.
    */
 
   allDone = false;
-#if !defined(POCKET_PC)
   if (m_lpCmdLine[0] != L'\0') {
     CString args = m_lpCmdLine;
 
@@ -922,7 +883,6 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
     if (startSilent && !fileGiven)
       dbox.SetStartClosed(true);
   } // Command line not empty
-#endif
   return true;
 }
 
@@ -1045,10 +1005,6 @@ BOOL ThisMfcApp::InitInstance()
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor);
 
-#if defined(POCKET_PC)
-  SHInitExtraControls();
-#endif
-
   if (m_core.GetCurFile().empty()) {
     stringT path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
     pws_os::AddDrive(path);
@@ -1071,8 +1027,6 @@ BOOL ThisMfcApp::InitInstance()
   m_pMainDlg = &dbox;
   m_pMainWnd = m_pMainDlg;
 
-  // JHF : no tray icon and menu for PPC
-#if !defined(POCKET_PC)
   //HICON stIcon = app.LoadIcon(IDI_TRAY);
   //ASSERT(stIcon != NULL);
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
@@ -1083,7 +1037,6 @@ BOOL ThisMfcApp::InitInstance()
                                 m_LockedIcon, dbox.m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_pTrayIcon->SetTarget(&dbox);
-#endif
 
   CLWnd ListenerWnd(dbox);
   if (SysInfo::IsUnderU3()) {
@@ -1229,9 +1182,7 @@ void ThisMfcApp::SetSystemTrayState(STATE s)
   }
 }
 
-#if !defined(POCKET_PC)
 //Copied from Knowledge Base article Q100770
-//But not for WinCE {kjp}
 BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
   if (code < 0)
@@ -1245,7 +1196,6 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 
   return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
-#endif
 
 // FindMenuItem() will find a menu item string from the specified
 // popup menu and returns its position (0-based) in the specified
