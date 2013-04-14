@@ -16,12 +16,8 @@
 
 #include "core/pwsprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"
-#endif
 
 #include "OptionsDisplay.h" // Must be after resource.h
 

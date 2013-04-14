@@ -1166,11 +1166,9 @@ int PasswordSafeFrame::Open(const wxString &fname)
       return rc;
   }
   m_core.SetCurFile(pszFilename);
-#if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCTSTR(m_titlebar));
-#endif
   CheckExpiredPasswords();
   ChangeOkUpdate();
 
@@ -1299,12 +1297,10 @@ int PasswordSafeFrame::SaveAs()
 
   m_core.SetCurFile(newfile);
 #if 0
-#if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
-#endif
 #endif
   SetTitle(towxstring(m_core.GetCurFile()));
   SetChanged(Clear);

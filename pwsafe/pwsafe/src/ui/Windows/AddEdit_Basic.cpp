@@ -60,13 +60,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
-#if defined(POCKET_PC)
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
-#else
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
-#endif
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT);
   }
 
   PWSprefs *prefs = PWSprefs::GetInstance();

@@ -49,9 +49,6 @@ protected:
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnNewPasskeySetfocus();
   afx_msg void OnConfirmNewSetfocus();
-#if defined(POCKET_PC)
-  afx_msg void OnPasskeyKillfocus();
-#endif
   afx_msg void OnOldVK();
   afx_msg void OnNewVK();
   afx_msg void OnConfirmVK();

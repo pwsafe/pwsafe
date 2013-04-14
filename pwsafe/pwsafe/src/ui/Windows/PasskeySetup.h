@@ -47,9 +47,6 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnVerifykeySetfocus();
-#if defined(POCKET_PC)
-  afx_msg void OnPasskeyKillfocus();
-#endif
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG

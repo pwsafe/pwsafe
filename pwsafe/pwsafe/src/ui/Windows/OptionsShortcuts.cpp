@@ -12,13 +12,9 @@
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu   resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsShortcuts.h" // Must be after resource.h
 

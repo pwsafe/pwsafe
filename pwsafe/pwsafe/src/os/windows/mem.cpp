@@ -19,20 +19,12 @@
 
 bool pws_os::mlock(void *p, size_t size)
 {
-#ifndef POCKET_PC
   return VirtualLock(p, size) != 0;
-#else
-  return true;
-#endif
 }
 
 bool pws_os::munlock(void *p, size_t size)
 {
-#ifndef POCKET_PC
   return VirtualUnlock(p, size) != 0;
-#else
-  return true;
-#endif
 }
 
 typedef BOOL (WINAPI *LP_CryptProtectMemory)(LPVOID pDataIn, DWORD cbDataIn, DWORD dwFlags);

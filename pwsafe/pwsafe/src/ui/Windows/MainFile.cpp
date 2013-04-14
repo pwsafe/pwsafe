@@ -145,11 +145,9 @@ BOOL DboxMain::OpenOnInit()
   switch (rc) {
     case PWScore::SUCCESS:
       rc2 = m_core.ReadCurFile(passkey, true, MAXTEXTCHARS, &Rpt);
-#if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();
       UpdateSystemTray(UNLOCKED);
-#endif
       break;
     case PWScore::CANT_OPEN_FILE:
       if (m_core.GetCurFile().empty()) {
@@ -328,10 +326,8 @@ int DboxMain::New()
   }
   m_core.ClearChangedNodes();
 
-#if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
-#endif
 
   ChangeOkUpdate();
   UpdateSystemTray(UNLOCKED);
@@ -898,11 +894,9 @@ void DboxMain::PostOpenProcessing()
 {
   PWS_LOGIT;
 
-#if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
-#endif
   std::wstring drive, dir, name, ext;
   pws_os::splitpath(m_core.GetCurFile().c_str(), drive, dir, name, ext);
 
@@ -1151,12 +1145,10 @@ int DboxMain::Save(const SaveType savetype)
         return PWScore::USER_CANCEL;
 
       m_core.SetCurFile(NewName.c_str());
-#if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();
       SetWindowText(LPCWSTR(m_titlebar));
       app.SetTooltipText(m_core.GetCurFile().c_str());
-#endif
       break;
     default:
       ASSERT(0);
@@ -1371,12 +1363,10 @@ int DboxMain::SaveAs()
   m_core.MoveLock();
 
   m_core.SetCurFile(newfile);
-#if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
-#endif
   SetChanged(Clear);
   ChangeOkUpdate();
 

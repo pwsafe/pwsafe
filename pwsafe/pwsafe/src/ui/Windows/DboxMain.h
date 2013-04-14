@@ -12,14 +12,9 @@
 
 #include "PWSclipboard.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#include "pocketpc/MyListCtrl.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "PWTreeCtrl.h"
 #include "PWListCtrl.h"
@@ -70,7 +65,7 @@
 
 #endif  /* WINVER < 0x0501 */
 
-#if defined(POCKET_PC) || (_MFC_VER <= 1200)
+#if (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
 #endif
 
@@ -203,10 +198,6 @@ class CAddEdit_PropertySheet;
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {
-#if defined(POCKET_PC)
-  friend class CMyListCtrl;
-#endif
-
 public:
   DECLARE_DYNAMIC(DboxMain)
 
@@ -432,11 +423,7 @@ public:
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
-#if defined(POCKET_PC)
-  CMyListCtrl m_ctlItemList;
-#else
   CPWListCtrl m_ctlItemList;
-#endif
   CPWToolBar m_MainToolBar;   // main toolbar
   CPWTreeCtrl m_ctlItemTree;
   CImageList *m_pImageList;
@@ -502,21 +489,14 @@ public:
   bool m_bNoValidation;   // invoked with '--novalidate'?
   bool m_bCompareEntries; // invoked with '--cetreeview'?
   
-#if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar
-#endif
 
-#if defined(POCKET_PC)
-  CCeCommandBar *m_wndCommandBar;
-  CMenu *m_pwndMenu;
-#else
   CPWFindToolBar m_FindToolBar;  // Find toolbar
   CPWStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
   UINT statustext[CPWStatusBar::SB_TOTAL];
   CString m_lastclipboardaction;
-#endif
 
   bool m_bInitDone;
   bool m_bDBNeedsReading;
@@ -634,7 +614,6 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
-#if !defined(POCKET_PC)
   afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
@@ -660,7 +639,6 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
-#endif
 
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
@@ -764,11 +742,7 @@ public:
   afx_msg void OnRunCommand();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
-#if defined(POCKET_PC)
-  afx_msg void OnShowPassword();
-#else
   afx_msg void OnDropFiles(HDROP hDrop);
-#endif
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);

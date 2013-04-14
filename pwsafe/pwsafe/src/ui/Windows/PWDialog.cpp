@@ -13,10 +13,6 @@
 #include <algorithm>
 #include <functional>
 
-#if defined(POCKET_PC)
-#error "TBD - define proper Dialog base class for PPC"
-#endif
-
 extern const wchar_t *EYE_CATCHER;
 
 static CPWDialogTracker the_tracker;

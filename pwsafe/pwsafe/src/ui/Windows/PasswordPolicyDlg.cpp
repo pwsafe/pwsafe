@@ -20,12 +20,8 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

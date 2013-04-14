@@ -50,18 +50,9 @@
 #include "os/logit.h"
 #include "os/lib.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
-
-#ifdef POCKET_PC
-#include "pocketpc/PocketPC.h"
-#include "ShowPasswordDlg.h"
-#endif
 
 #include "psapi.h"    // For EnumProcesses
 #include <afxpriv.h>
@@ -191,10 +182,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
   ClearData();
 
-#if !defined(POCKET_PC)
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;
-#endif
 
   // Zero Autotype bits
   m_btAT.reset();
@@ -462,11 +451,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Double-click on filter indicator on StatusBar
   ON_COMMAND(IDB_FILTER_ACTIVE, OnCancelFilter)
 
-#if defined(POCKET_PC)
-  ON_WM_CREATE()
-#else
   ON_WM_CONTEXTMENU()
-#endif
 
   // Windows Messages
   ON_WM_DESTROY()
@@ -497,9 +482,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
 
-#if defined(POCKET_PC)
-  ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
-#else
   ON_WM_DROPFILES()
   ON_WM_SIZING()
   ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
@@ -517,11 +499,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_FINDADVANCED, OnToolBarFindAdvanced)
   ON_COMMAND(ID_TOOLBUTTON_FINDREPORT, OnToolBarFindReport)
   ON_COMMAND(ID_TOOLBUTTON_CLEARFIND, OnToolBarClearFind)
-#endif
-
-#ifndef POCKET_PC
   ON_BN_CLICKED(IDOK, OnEdit)
-#endif
 
   ON_MESSAGE(WM_WTSSESSION_CHANGE, OnSessionChange)
   ON_MESSAGE(PWS_MSG_ICON_NOTIFY, OnTrayNotification)
@@ -544,7 +522,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   //}}AFX_MSG_MAP
   ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
   ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)  // Note: can't be in OnUpdateMenuToolbar!
-#ifndef POCKET_PC
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnTrayCopyUsername)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnUpdateTrayCopyUsername)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnTrayCopyPassword)
@@ -570,7 +547,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
-#endif
 END_MESSAGE_MAP()
 
 // Command ID, OpenRW, OpenRO, Empty, Closed
@@ -731,8 +707,6 @@ void DboxMain::InitPasswordSafe()
   m_RUEList.SetMainWindow(this);
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-  // JHF : no hotkeys on WinCE
-#if !defined(POCKET_PC)
   // Set Hotkey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
     const DWORD value = DWORD(prefs->GetPref(PWSprefs::HotKey));
@@ -752,7 +726,6 @@ void DboxMain::InitPasswordSafe()
   } else {
     // No sense in unregistering at this stage, really.
   }
-#endif
 
   m_bInitDone = true;
 
@@ -924,11 +897,8 @@ void DboxMain::InitPasswordSafe()
 
   ChangeOkUpdate();
 
-#if !defined(POCKET_PC)
-  // {kjp} Can't drag and drop files onto an application in PocketPC
   DragAcceptFiles(TRUE);
 
-  // {kjp} meaningless when target is a PocketPC device.
   CRect rect;
   prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
@@ -938,7 +908,6 @@ void DboxMain::InitPasswordSafe()
   } else {
     PlaceWindow(this, &rect, SW_HIDE);
   }
-#endif
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
@@ -1415,13 +1384,6 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   *pLResult = 1L;
 
   // Continue if in ListView or Leaf in TreeView
-#if defined(POCKET_PC)
-  if (app.GetProfileInt(PWS_REG_OPTIONS, L"dcshowspassword", FALSE) == FALSE) {
-    OnCopyPassword();
-  } else {
-    OnShowPassword();
-  }
-#else
   const CItemData *pci = getSelectedItem();
   // Don't do anything if can't get the data
   if (pci == NULL)
@@ -1473,7 +1435,6 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     default:
       ASSERT(0);
   }
-#endif
 }
 
 // Called to send an email.
@@ -1589,11 +1550,7 @@ void DboxMain::ChangeOkUpdate()
   if (!m_bInitDone)
     return;
 
-#if defined(POCKET_PC)
-  CMenu *pmenu = m_wndMenu;
-#else
   CMenu *pmenu = GetMenu();
-#endif
 
   // Don't need to worry about R-O, as IsChanged can't be true in this case
   pmenu->EnableMenuItem(ID_MENUITEM_SAVE,
@@ -1918,7 +1875,6 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
   return TRUE;    // message was handled
 }
 
-#if !defined(POCKET_PC)
 void DboxMain::OnDropFiles(HDROP hDrop)
 {
   //SetActiveWindow();
@@ -1944,11 +1900,9 @@ void DboxMain::OnDropFiles(HDROP hDrop)
 
   DragFinish(hDrop);
 }
-#endif
 
 void DboxMain::UpdateAlwaysOnTop()
 {
-#if !defined(POCKET_PC)
   CMenu* sysMenu = GetSystemMenu(FALSE);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
@@ -1958,12 +1912,10 @@ void DboxMain::UpdateAlwaysOnTop()
     SetWindowPos(&wndNoTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     sysMenu->CheckMenuItem(ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_UNCHECKED);
   }
-#endif
 }
 
 void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
 {
-#if !defined(POCKET_PC)
   if (ID_SYSMENU_ALWAYSONTOP == nID) {
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool oldAlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
@@ -2016,17 +1968,10 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
   // (and MAXIMIZE) and let it then call our OnSize routine
   // to do the deed
   CDialog::OnSysCommand(nID, lParam);
-#endif
 }
 
 void DboxMain::ConfigureSystemMenu()
 {
-#if defined(POCKET_PC)
-  m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-  m_pwndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
-
-  ASSERT(m_pwndMenu != NULL);
-#else
   CMenu *pSysMenu = GetSystemMenu(FALSE);
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
@@ -2035,7 +1980,6 @@ void DboxMain::ConfigureSystemMenu()
     ASSERT(num > 2);
     pSysMenu->InsertMenu(num - 2 /* 5 */, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
   }
-#endif
 }
 
 void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
@@ -2053,31 +1997,6 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
     app.GetMRU()->UpdateMenu(pCmdUI);
   }
 }
-
-#if defined(POCKET_PC)
-void DboxMain::OnShowPassword()
-{
-  if (SelItemOk() == TRUE) {
-    CItemData item;
-    StringX password;
-    StringX name;
-    StringX title;
-    StringX username;
-    CShowPasswordDlg pwDlg(this);
-
-    item = m_pwlist.GetAt(Find(getSelectedItem()));
-
-    item.GetPassword(password);
-    item.GetName(name);
-
-    SplitName(name, title, username);
-
-    pwDlg.SetTitle(title);
-    pwDlg.SetPassword(password);
-    pwDlg.DoModal();
-  }
-}
-#endif
 
 LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 {
@@ -2186,10 +2105,8 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       case PWScore::SUCCESS:
         // Don't validate again
         rc_readdatabase = m_core.ReadCurFile(passkey);
-#if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                            m_core.GetCurFile()).c_str();
-#endif
         break;
       case PWScore::CANT_OPEN_FILE:
         cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
@@ -2754,9 +2671,7 @@ void DboxMain::UpdateStatusBar()
   This doesn't exactly belong here, but it makes sure that the
   title is fresh...
   */
-#if !defined(POCKET_PC)
   SetWindowText(LPCWSTR(m_titlebar));
-#endif
 }
 
 void DboxMain::SetDCAText(CItemData *pci)
@@ -3017,9 +2932,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDIT:
     case ID_MENUITEM_PASSWORDSUBSET:
-#if defined(POCKET_PC)
-    case ID_MENUITEM_SHOWPASSWORD:
-#endif
       if (bGroupSelected)
         iEnable = FALSE;
       break;
@@ -3166,8 +3078,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_OLD_TOOLBAR:
     case ID_MENUITEM_NEW_TOOLBAR:
     {
-#if !defined(POCKET_PC)
-      // JHF m_toolbarMode is not for WinCE (as in .h)
       CDC* pDC = this->GetDC();
       int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
       if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
@@ -3175,7 +3085,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       }
       ReleaseDC(pDC);
-#endif
       break;
     }
     // Disable Minimize if already minimized

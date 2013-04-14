@@ -20,18 +20,9 @@
 #include <afxcmn.h> // for CToolTipCtrl
 #include <afxmt.h> // for CMutex
 #include <list>
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
-
-#if defined(POCKET_PC)
-#include "pocketpc/PwsPopupDialog.h"
-typedef CPwsPopupDialog CPWDialog;
-#else
 
 class CPWDialogTracker; // forward declaration
 
@@ -77,5 +68,3 @@ private:
   // CWnd = CDialog & CPropertySheet common ancestor!
   std::list<CWnd *> m_dialogs;
 };
-
-#endif /* POCKET_PC */
