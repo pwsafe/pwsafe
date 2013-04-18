@@ -357,6 +357,9 @@ void PWScore::ReInit(bool bNewFile)
   // Clear expired password entries
   m_ExpireCandidates.clear();
 
+  // Clear any unknown preferences from previous databases
+  PWSprefs::GetInstance()->ClearUnknownPrefs();
+
   SetChanged(false, false);
 }
 

@@ -44,6 +44,25 @@ struct st_prefShortcut {
   unsigned char cModifier;
 };
 
+// Bool preferences unknown to this version
+struct st_BP {
+  int index;
+  bool bValue;
+};
+
+// Integer preferences unknown to this version
+struct st_IP {
+  int index;
+  int iValue;
+};
+
+// String preferences unknown to this version
+struct st_SP {
+  int index;
+  TCHAR delim;
+  StringX sValue;
+};
+
 class CXMLprefs;
 struct PWPolicy;
 
@@ -222,6 +241,8 @@ public:
   static void UnlockCFGFile(const stringT &filename);
   static bool IsLockedCFGFile(const stringT &filename);
 
+  void ClearUnknownPrefs(); // Clear unknown preferences vectors
+
 private:
   PWSprefs();
   ~PWSprefs();
@@ -279,5 +300,10 @@ private:
 
   stringT *m_MRUitems;
   std::vector<st_prefShortcut> m_vShortcuts;
+
+  // Preferences we don't know in this version of PWS
+  std::vector<st_BP> m_vUnknownBPrefs;
+  std::vector<st_IP> m_vUnknownIPrefs;
+  std::vector<st_SP> m_vUnknownSPrefs;
 };
 #endif /*  __PWSPREFS_H */
