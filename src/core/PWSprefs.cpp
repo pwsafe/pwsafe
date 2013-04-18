@@ -273,10 +273,10 @@ StringX PWSprefs::GetAllBoolPrefs(const bool bUseCopy)
 
   oStringXStream osxs;
   for (int i = 0; i < NumBoolPrefs; i++) {
-    osxs << setw(1) << i << _T(' ')
-         << setw(1) << m_bool_prefs[i].ptype << _T(' ')
+    osxs << setw(1) << i << TCHAR(' ')
+         << setw(1) << m_bool_prefs[i].ptype << TCHAR(' ')
          << setw(1) <<
-         ((bUseCopy ? m_boolCopyValues[i] : m_boolValues[i]) ? 1 : 0) << _T(' ');
+         ((bUseCopy ? m_boolCopyValues[i] : m_boolValues[i]) ? 1 : 0) << TCHAR(' ');
   }
   return osxs.str();
 }  
@@ -287,10 +287,10 @@ StringX PWSprefs::GetAllIntPrefs(const bool bUseCopy)
 
   oStringXStream osxs;
   for (int i = 0; i < NumIntPrefs; i++) {
-    osxs << setw(1) << i << _T(' ')
-         << setw(1) << m_int_prefs[i].ptype << _T(' ')
-         << setw(4) << setfill(_T('0')) << hex <<
-         (bUseCopy ? m_intCopyValues[i] : m_intValues[i]) << dec << _T(' ');
+    osxs << setw(1) << i << TCHAR(' ')
+         << setw(1) << m_int_prefs[i].ptype << TCHAR(' ')
+         << setw(4) << setfill(TCHAR('0')) << hex <<
+         (bUseCopy ? m_intCopyValues[i] : m_intValues[i]) << dec << TCHAR(' ');
   }
   return osxs.str();
 }  
@@ -314,7 +314,7 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
   oStringXStream osxs;
   for (size_t i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
     const int k = SafeStringPrefs[i];
-    delim = _T(' ');
+    delim = TCHAR(' ');
     for (size_t j = 0; j < NumDelimiters; j++) {
       if (bUseCopy) {
         if (m_stringCopyValues[k].find(Delimiters[j]) == StringX::npos) {
@@ -328,14 +328,14 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
         }
       }
     }
-    if (delim == _T(' '))
+    if (delim == TCHAR(' '))
       continue;  // We tried, but just can't save it!
  
-    osxs << setw(1) << k << _T(' ')
-         << setw(1) << m_string_prefs[k].ptype << _T(' ')
+    osxs << setw(1) << k << TCHAR(' ')
+         << setw(1) << m_string_prefs[k].ptype << TCHAR(' ')
          << delim <<
          (bUseCopy ? m_stringCopyValues[k].c_str() : m_stringValues[k].c_str()) <<
-         delim << _T(' ');
+         delim << TCHAR(' ');
   }
   return osxs.str();
 }  
@@ -821,21 +821,42 @@ StringX PWSprefs::Store(bool bUseCopy)
     if (*p_stringValues != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
       const StringX svalue = *p_stringValues;
-      delim = _T(' ');
+      delim = TCHAR(' ');
       for (int j = 0; j < NumDelimiters; j++) {
         if (svalue.find(Delimiters[j]) == StringX::npos) {
           delim = Delimiters[j];
           break;
         }
       }
-      if (delim == _T(' '))
+      if (delim == TCHAR(' '))
         continue;  // We tried, but just can't save it!
 
-      os << _T("S ") << i << _T(' ') << delim << *p_stringValues <<
-        delim << _T(' ');
+      os << _T("S ") << i << TCHAR(' ') << delim << *p_stringValues <<
+        delim << TCHAR(' ');
     }
   }
 
+  // Now add preferences not known to this release (current types B, I & S)
+  for (size_t i = 0; i < m_vUnknownBPrefs.size(); i++) {
+    //
+    os << _T("B ") << m_vUnknownBPrefs[i].index << TCHAR(' ') <<
+        (m_vUnknownBPrefs[i].bValue ? 1 : 0) << TCHAR(' ');
+  }
+
+  for (size_t i = 0; i < m_vUnknownIPrefs.size(); i++) {
+    //
+    os << _T("I ") << m_vUnknownIPrefs[i].index << TCHAR(' ') <<
+        m_vUnknownIPrefs[i].iValue << TCHAR(' ');
+  }
+  
+  for (size_t i = 0; i < m_vUnknownSPrefs.size(); i++) {
+    //
+    os << _T("S ") << m_vUnknownSPrefs[i].index << TCHAR(' ') <<
+        m_vUnknownSPrefs[i].delim <<
+        m_vUnknownSPrefs[i].sValue.c_str() <<
+        m_vUnknownSPrefs[i].delim << TCHAR(' ');
+  }
+ 
   return os.str();
 }
 
@@ -878,6 +899,8 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
     }
   }
 
+  ClearUnknownPrefs();
+
   if (prefString.empty())
     return;
 
@@ -895,22 +918,38 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
     is >> type >> index;
     if (is.eof())
       break;
+
     switch (type) {
       case TCHAR('B'):
         // Need to get value - even if not understood or wanted
         is >> ival;
         // forward compatibility and check whether still in DB
-        if (index < NumBoolPrefs && m_bool_prefs[index].ptype == ptDatabase) {
+        if (index < NumBoolPrefs) {
+          if (m_bool_prefs[index].ptype == ptDatabase) {
+            ASSERT(ival == 0 || ival == 1);
+            p_boolValues[index] = (ival != 0);
+          }
+        } else {
+          st_BP stxBP;
           ASSERT(ival == 0 || ival == 1);
-          p_boolValues[index] = (ival != 0);
+          stxBP.index = index;
+          stxBP.bValue = ival == 1;
+          m_vUnknownBPrefs.push_back(stxBP);
         }
         break;
       case TCHAR('I'):
         // Need to get value - even if not understood or wanted
         is >> iuval;
         // forward compatibility and check whether still in DB
-        if (index < NumIntPrefs && m_int_prefs[index].ptype == ptDatabase) {
-          p_intValues[index] = iuval;
+        if (index < NumIntPrefs) {
+          if (m_int_prefs[index].ptype == ptDatabase) {
+            p_intValues[index] = iuval;
+          }
+        } else {
+          st_IP stxIP;
+          stxIP.index = index;
+          stxIP.iValue = iuval;
+          m_vUnknownIPrefs.push_back(stxIP);
         }
         break;
       case TCHAR('S'):
@@ -920,8 +959,16 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is.get(buf, N, delim[0]); // get string value
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
-        if (index < NumStringPrefs && m_string_prefs[index].ptype == ptDatabase) {
-          p_stringValues[index] = buf;
+        if (index < NumStringPrefs) {
+          if (m_string_prefs[index].ptype == ptDatabase) {
+            p_stringValues[index] = buf;
+          }
+        } else {
+          st_SP stxSP;
+          stxSP.index = index;
+          stxSP.delim = delim[0];
+          stxSP.sValue = buf;
+          m_vUnknownSPrefs.push_back(stxSP);
         }
         break;
       default:
@@ -1818,4 +1865,11 @@ void PWSprefs::UnlockCFGFile(const stringT &filename)
 bool PWSprefs::IsLockedCFGFile(const stringT &filename)
 {
   return pws_os::IsLockedFile(filename);
+}
+
+void PWSprefs::ClearUnknownPrefs()
+{
+  m_vUnknownBPrefs.clear();
+  m_vUnknownIPrefs.clear();
+  m_vUnknownSPrefs.clear();
 }
