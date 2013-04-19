@@ -610,7 +610,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
-  {ID_MENUITEM_COMPARE_ENTRIES, true, false, false, false},
+  {ID_MENUITEM_COMPARE_ENTRIES, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -660,7 +660,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COLUMNPICKER, true, true, true, false},
   {ID_MENUITEM_RESETCOLUMNS, true, true, true, false},
   // Compare popup menu
-  {ID_MENUITEM_COMPVIEWEDIT, true, false, true, false},
+  {ID_MENUITEM_COMPVIEWEDIT, true, true, true, false},
   {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
   {ID_MENUITEM_COPYALL_TO_ORIGINAL, true, false, true, false},
   {ID_MENUITEM_SYNCHRONIZEALL, true, false, true, false},
