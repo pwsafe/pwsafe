@@ -47,7 +47,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
 CManagePSWDPolices::~CManagePSWDPolices()
 {
-  m_CopyPswdStatic.Detach();
+  m_CopyPswdBitmap.Detach();
 }
 
 void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
@@ -57,7 +57,6 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_POLICYPROPERTIES, m_PolicyDetails);
   DDX_Control(pDX, IDC_POLICYENTRIES, m_PolicyEntries);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
-  DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
@@ -70,7 +69,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_UNDO, OnUndo)
   ON_BN_CLICKED(IDC_REDO, OnRedo)
-  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword) 
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(LVN_KEYDOWN, IDC_POLICYLIST, OnPolicySelected)
@@ -130,7 +129,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
     cs_ToolTip.LoadString(IDS_TESTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
 
     if (!m_bReadOnly) {
       cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
@@ -209,9 +208,9 @@ BOOL CManagePSWDPolices::OnInitDialog()
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
 
-  // Set bitmap in Static
-  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
   FixBitmapBackground(m_CopyPswdBitmap);
+  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+  pBtn->SetBitmap(m_CopyPswdBitmap);
 
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
