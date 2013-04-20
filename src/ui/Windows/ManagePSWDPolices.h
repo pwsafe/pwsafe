@@ -44,7 +44,6 @@ protected:
 
   CSecEditExtn m_ex_password;
   CSecString m_password;
-  CStatic m_CopyPswdStatic;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
