@@ -98,7 +98,7 @@ CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd)
 
 CPasswordSubsetDlg::~CPasswordSubsetDlg()
 {
-  m_CopyPswdStatic.Detach();
+  m_CopyPswdBitmap.Detach();
 }
 
 
@@ -112,15 +112,14 @@ void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SUBSET, m_ne_subset);
     DDX_Control(pDX, IDC_STATICSUBSETWARNING, m_stcwarningmsg);
     //}}AFX_DATA_MAP
-    DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CPasswordSubsetDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPasswordSubsetDlg)
   ON_WM_CTLCOLOR()
   ON_MESSAGE(WM_DISPLAYPASSWORDSUBSET, OnDisplayStatus)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopy)
   //}}AFX_MSG_MAP
-  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopy) 
 END_MESSAGE_MAP()
 
 BOOL CPasswordSubsetDlg::OnInitDialog()
@@ -156,25 +155,32 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
     m_pToolTipCtrl->Activate(TRUE);
     m_pToolTipCtrl->SetMaxTipWidth(500);
     const CString cs_ToolTip(MAKEINTRESOURCE(IDS_CLICKTOCOPYGENPSWD));
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
   }
 
   // Load bitmap
-  BOOL brc;
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+
+  m_CopyPswdBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
 
-  // Set bitmap in Static
-  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
   FixBitmapBackground(m_CopyPswdBitmap);
+
+  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+  pBtn->SetBitmap(m_CopyPswdBitmap);
 
   ShowWindow(SW_SHOW);
   return TRUE;
+}
+
+BOOL CPasswordSubsetDlg::PreTranslateMessage(MSG* pMsg)
+{
+  RelayToolTipEvent(pMsg);
+
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 HBRUSH CPasswordSubsetDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -239,7 +245,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
       m_ne_subset.SetFocus();
 
       // Disable Copy to Clipboard
-      GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
 
       return 0L;
     }
@@ -259,7 +265,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   m_bshown = true;
 
   // Enable Copy to Clipboard
-  GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(TRUE);
+  GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(TRUE);
   return 1L;
 }
 

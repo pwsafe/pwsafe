@@ -46,6 +46,7 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual void OnCancel();
 
   //{{AFX_MSG(CPasswordSubsetDlg)
@@ -66,7 +67,6 @@ private:
   CEdit m_results;
   CString m_subset, m_warningmsg;
   bool m_bshown;
-  CStatic m_CopyPswdStatic;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
