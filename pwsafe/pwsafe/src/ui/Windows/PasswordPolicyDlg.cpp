@@ -102,7 +102,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
 
 CPasswordPolicyDlg::~CPasswordPolicyDlg()
 {
-  m_CopyPswdStatic.Detach();
+  m_CopyPswdBitmap.Detach();
 }
 
 void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
@@ -133,7 +133,6 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
     DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
     //}}AFX_DATA_MAP
-    DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
@@ -150,7 +149,7 @@ ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
 ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
 ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
 
-// Because we can show the generated password when used from Mangage->Generate
+// Because we can show the generated password when used from Manage->Generate
 ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
 ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
@@ -203,8 +202,8 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     // These are only used in Manage -> Generate Password or Add/Edit Policy names
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_COPYPSWD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
@@ -289,9 +288,9 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
                                                      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
       ASSERT(brc);
 
-      // Set bitmap in Static
-      m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
       FixBitmapBackground(m_CopyPswdBitmap);
+      CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+      pBtn->SetBitmap(m_CopyPswdBitmap);
 
       break;
     }
@@ -303,8 +302,8 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     // These are only used in Manage -> Password Policy
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_COPYPSWD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_COPYPSWD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
