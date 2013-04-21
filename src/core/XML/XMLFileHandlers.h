@@ -88,9 +88,9 @@ public:
   stringT getRenameList() const {return m_strRenameList;}
 
   vdb_entries & getVDB_Entries() {return m_ventries;}
- 
+
   TCHAR getDelimiter() const {return m_delimiter;}
- 
+
   int getNumIterations() const {return m_nITER;}
   int getNumEntries() const {return m_numEntries;}
   int getNumSkipped() const {return m_numEntriesSkipped;}
@@ -98,7 +98,7 @@ public:
   int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
   int getNumNoPolicies() const {return m_numNoPolicies;}
   int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
- 
+
   bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
 

@@ -200,7 +200,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
     unsigned char Ptag[SHA256::HASHLEN];
     if (aPtag == NULL)
       aPtag = Ptag;
-    
+
     StretchKey(salt, sizeof(salt), passkey, N, aPtag);
   }
   unsigned char HPtag[SHA256::HASHLEN];
@@ -350,14 +350,14 @@ int PWSfileV3::WriteHeader()
 
   StretchKey(salt, sizeof(salt), m_passkey, NumHashIters, Ptag);
 
-  { 
+  {
     unsigned char HPtag[SHA256::HASHLEN];
     SHA256 H;
     H.Update(Ptag, sizeof(Ptag));
     H.Final(HPtag);
     SAFE_FWRITE(HPtag, 1, sizeof(HPtag), m_fd);
   }
-  { 
+  {
     PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key));
     unsigned char B1B2[sizeof(m_key)];
     unsigned char L[32]; // for HMAC
@@ -374,7 +374,7 @@ int PWSfileV3::WriteHeader()
     SAFE_FWRITE(B3B4, 1, sizeof(B3B4), m_fd);
     m_hmac.Init(L, sizeof(L));
   }
-  { 
+  {
     // See discussion on Salt to understand why we hash
     // random data instead of writing it directly
     unsigned char ip_rand[SHA256::HASHLEN];
@@ -486,7 +486,7 @@ int PWSfileV3::WriteHeader()
       }
     }
 
-    numWritten = WriteCBC(HDR_RUE, 
+    numWritten = WriteCBC(HDR_RUE,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
     if (numWritten <= 0) { status = FAILURE; goto end; }
@@ -595,7 +595,7 @@ int PWSfileV3::ReadHeader()
     switch (fieldType) {
       case HDR_VERSION: /* version */
         // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-        // This hack keeps bwd compatability.
+        // This hack keeps bwd compatibility.
         if (utf8Len != sizeof(VersionNum) &&
             utf8Len != sizeof(int32)) {
           delete[] utf8;
@@ -720,7 +720,7 @@ int PWSfileV3::ReadHeader()
         break;
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-      // Don't support importing XML from non-Windows platforms 
+      // Don't support importing XML from non-Windows platforms
       // using Microsoft XML libraries
       // Will be treated as an 'unknown header field' by the 'default' clause below
 #else
@@ -770,7 +770,7 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         // All data is character representation of hex - i.e. 0-9a-f
         // No need to convert from char.
-        std::string temp = (char *)utf8;
+        std::string temp = reinterpret_cast<char *>(utf8);
 
         // Get number of entries
         int num(0);
@@ -785,14 +785,14 @@ int PWSfileV3::ReadHeader()
         size_t j = 2;
         for (int n = 0; n < num; n++) {
           unsigned int x(0);
-          uuid_array_t ua;
+          uuid_array_t tmp_ua;
           for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
             stringstream ss;
             ss.str(temp.substr(j, 2));
             ss >> hex >> x;
-            ua[i] = static_cast<unsigned char>(x);
+            tmp_ua[i] = static_cast<unsigned char>(x);
           }
-          const CUUID uuid(ua);
+          const CUUID uuid(tmp_ua);
           if (uuid != CUUID::NullUUID())
             m_hdr.m_RUEList.push_back(uuid);
         }
@@ -822,12 +822,12 @@ int PWSfileV3::ReadHeader()
             int namelength, symbollength;
 
             sxTemp = text.substr(j, 2) + sxBlank;
-            iStringXStream is(sxTemp);
+            iStringXStream tmp_is(sxTemp);
             j += 2;  // Skip over name length
 
-            is >> hex >> namelength;
+            tmp_is >> hex >> namelength;
             if (j + namelength > recordlength) break;  // Error
-            
+
             StringX sxPolicyName = text.substr(j, namelength);
             j += namelength;  // Skip over name
             if (j + 19 > recordlength) break;  // Error
@@ -838,10 +838,10 @@ int PWSfileV3::ReadHeader()
 
             if (j + 2 > recordlength) break;  // Error
             sxTemp = text.substr(j, 2) + sxBlank;
-            is.str(sxTemp);
+            tmp_is.str(sxTemp);
             j += 2;  // Skip over symbols length
-            is >> hex >> symbollength;
-            
+            tmp_is >> hex >> symbollength;
+
             StringX sxSymbols;
             if (symbollength != 0) {
               if (j + symbollength > recordlength) break;  // Error
@@ -880,7 +880,7 @@ int PWSfileV3::ReadHeader()
 #ifdef _DEBUG
         stringT stimestamp;
         PWSUtil::GetTimeStamp(stimestamp);
-        pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+        pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"),
                        fieldType, utf8Len, utf8Len);
         pws_os::HexDump(utf8, utf8Len, stimestamp);
 #endif

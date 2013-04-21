@@ -20,7 +20,7 @@
 */
 
 /*
-* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t 
+* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t
 * depending on platform).
 * Non-unicode builds will need convert any results from parsing the XML
 * document from UTF-16 to ASCII.
@@ -73,7 +73,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
                                   const stringT &strXSDFileName)
 {
   USES_XMLCH_STR
-  
+
   bool bErrorOccurred = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
@@ -113,9 +113,9 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
 
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                      (void *)strXSDFileName.c_str());
+                      const_cast<void*>(reinterpret_cast<const void*>(strXSDFileName.c_str())));
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
-                      (void *)XMLUni::fgSGXMLScanner);
+                      const_cast<void*>(reinterpret_cast<const void*>(XMLUni::fgSGXMLScanner)));
   pSAX2Parser->setInputBufferSize(4096);
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
@@ -144,13 +144,13 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
       const char *buffer = strXMLData.c_str();
 #endif
       MemBufInputSource* memBufIS = new MemBufInputSource(
-                    (const XMLByte*)buffer,
+                    reinterpret_cast<const XMLByte*>(buffer),
                     strXMLData.length(),
                     szID, false);
       pSAX2Parser->parse(*memBufIS);
       delete memBufIS;
 #ifdef UNICODE
-      XMLString::release((char **)&buffer);
+      XMLString::release(const_cast<char**>(&buffer));
 #endif
     }
   }
@@ -180,8 +180,8 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   if (pSAX2Handler->getIfErrors() || bErrorOccurred) {
     bErrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
-    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR, 
-           m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
+    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR,
+           m_bValidation ? cs_validation.c_str() : cs_import.c_str(),
            strResultText.c_str());
   } else {
     m_strXMLErrors = strResultText;

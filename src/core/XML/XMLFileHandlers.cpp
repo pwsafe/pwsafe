@@ -49,13 +49,13 @@ XMLFileHandlers::XMLFileHandlers()
   m_bErrors = false;
 
   m_nITER = MIN_HASH_ITERATIONS;
-  
+
   m_sxXML_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   // Set up copy of preferences to use for password policies and if we import into an
   // empty database - Note: Load of empty string sets it to all defaults
   PWSprefs::GetInstance()->Load(_T(""), true);
-  
+
   // Get current DB default policy (any import DB default policy will be set after all
   // the preferences are read in)
   currentDB_default_pwp = PWSprefs::GetInstance()->GetDefaultPolicy();
@@ -562,7 +562,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_PolicyName = m_sxElemContent.c_str();
       break;
   }
-  
+
   // If we have processed a DB preference - add it to our copy
   if (bpref != PWSprefs::NumBoolPrefs)    // boolean
     PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) == 0 ? false : true, true);
@@ -581,7 +581,7 @@ void XMLFileHandlers::AddXMLEntries()
                             DBPolicyNamesCommand::NP_ADDNEW);
     m_pmulticmds->Add(pcmd);
   }
-  
+
   // Then add any Empty Groups imported that are not already in the database
   if (!m_vEmptyGroups.empty()) {
     Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
@@ -589,13 +589,13 @@ void XMLFileHandlers::AddXMLEntries()
     m_pmulticmds->Add(pcmd);
   }
 
-  // Gte current DB default password policy and that from the XML file and
+  // Get current DB default password policy and that from the XML file and
   // check that they are the same?
   PWPolicy st_to_default_pp, st_import_default_pp;
   st_to_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
   st_import_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
   const bool bPWPDefaults_Different = st_to_default_pp != st_import_default_pp;
-        
+
   StringX sxEntriesWithNewNamedPolicies;
   vdb_entries::iterator entry_iter;
   CItemData ci_temp;
@@ -638,7 +638,7 @@ void XMLFileHandlers::AddXMLEntries()
       cs_tp.erase(new_end, cs_tp.end());
 
       LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-      Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
+      Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id,
              cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
       Format(cs_error, IDSC_IMPORTRECSKIPPED, cs_temp.c_str(), cs_tp.c_str());
       m_strSkippedList += cs_error;
@@ -647,13 +647,13 @@ void XMLFileHandlers::AddXMLEntries()
       delete cur_entry;
       continue;
     }
- 
+
     if (m_bImportPSWDsOnly) {
       ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
       if (iter == m_pXMLcore->GetEntryEndIter()) {
         stringT cs_error, cs_id, cs_temp;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-        Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
+        Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id,
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
         Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
 
@@ -728,7 +728,7 @@ void XMLFileHandlers::AddXMLEntries()
         LoadAString(cs_header, IDSC_IMPORTCONFLICTSX2);
       else
         Format(cs_header, IDSC_IMPORTCONFLICTSX1, cur_entry->group.c_str());
-      
+
       Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
       m_strRenameList += cs_error;
@@ -861,7 +861,7 @@ void XMLFileHandlers::AddXMLEntries()
       case PWH_INVALID_NUM:
       case PWH_INVALID_DATETIME:
       case PWH_PSWD_LENGTH_NOTHEX:
-      case PWH_INVALID_PSWD_LENGTH: 
+      case PWH_INVALID_PSWD_LENGTH:
       case PWH_INVALID_FIELD_LENGTH:
       {
         stringT buffer;
@@ -910,12 +910,12 @@ void XMLFileHandlers::AddXMLEntries()
     delete cur_entry;
   }
 
-  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Aliases, m_prpt, 
+  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Aliases, m_prpt,
                                                       CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   m_pmulticmds->Add(pcmdA);
-  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Shortcuts, m_prpt, 
+  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Shortcuts, m_prpt,
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
@@ -925,7 +925,7 @@ void XMLFileHandlers::AddXMLEntries()
                                             UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
-  
+
   if (!sxEntriesWithNewNamedPolicies.empty()) {
     StringX sxRenamedPolicies;
     Format(sxRenamedPolicies, IDSC_ENTRIES_POLICIES, m_sxXML_DateTime.c_str(),

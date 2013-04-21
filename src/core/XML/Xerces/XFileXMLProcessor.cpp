@@ -20,7 +20,7 @@
 */
 
 /*
-* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t 
+* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t
 * depending on platform).
 * Non-unicode builds will need convert any results from parsing the XML
 * document from UTF-16 to ASCII.
@@ -59,12 +59,12 @@
 
 #include "./XMLChConverter.h"
 
-XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
+XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore,
                                      UUIDVector *pPossible_Aliases,
                                      UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
-  : m_pXMLcore(pcore), 
+  : m_pXMLcore(pcore),
     m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
     m_pmulticmds(p_multicmds), m_prpt(prpt), m_delimiter(TCHAR('^'))
 {
@@ -80,7 +80,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                                 const bool &bImportPSWDsOnly, int &nITER)
 {
   USES_XMLCH_STR
-  
+
   bool bErrorOccurred = false;
   bool b_into_empty = false;
   stringT cs_validation;
@@ -127,15 +127,15 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setFeature(XMLUni::fgXercesSchemaFullChecking, true);
   pSAX2Parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
- 
+
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
-                          (void *)XMLUni::fgSGXMLScanner);
+                           const_cast<void*>(reinterpret_cast<const void*>(XMLUni::fgSGXMLScanner)));
   pSAX2Parser->setInputBufferSize(4096);
 
   // Set schema file name (also via property)
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                           (void *)schemafilename);
+                           const_cast<void*>(reinterpret_cast<const void*>(schemafilename)));
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
   // document and error pSAX2Handler.
@@ -143,9 +143,9 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation, 
+  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation,
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                             m_bValidation ? NULL : m_pPossible_Aliases, 
+                             m_bValidation ? NULL : m_pPossible_Aliases,
                              m_bValidation ? NULL : m_pPossible_Shortcuts,
                              m_pmulticmds, m_prpt);
   if (!m_bValidation) {
@@ -179,8 +179,8 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   if (pSAX2Handler->getIfErrors() || bErrorOccurred) {
     bErrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
-    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR, 
-           m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
+    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR,
+           m_bValidation ? cs_validation.c_str() : cs_import.c_str(),
            strResultText.c_str());
   } else {
     if (m_bValidation) {
@@ -222,7 +222,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   delete pSAX2Handler;
 
   USES_XMLCH_STR_END
-  
+
   // And call the termination method
   XMLPlatformUtils::Terminate();
 

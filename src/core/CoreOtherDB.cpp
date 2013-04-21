@@ -614,7 +614,6 @@ stringT PWScore::Merge(PWScore *pothercore,
 
         // Special processing for password policies (default & named)
         bool bUpdated; // not needed for Merge
-        StringX sxOtherPolicyName = otherItem.GetPolicyName();
 
         Command *pPolicyCmd = ProcessPolicyName(pothercore, otherItem,
                              mapRenamedPolicies, vs_PoliciesAdded,
@@ -623,7 +622,7 @@ stringT PWScore::Merge(PWScore *pothercore,
 
         if (pPolicyCmd != NULL)
           pmulticmds->Add(pPolicyCmd);
-        
+
         otherItem.SetTitle(sx_newTitle);
         otherItem.SetStatus(CItemData::ES_ADDED);
         Command *pcmd = AddEntryCommand::Create(this, otherItem);
@@ -658,7 +657,7 @@ stringT PWScore::Merge(PWScore *pothercore,
 
       if (pPolicyCmd != NULL)
         pmulticmds->Add(pPolicyCmd);
-     
+
       otherItem.SetStatus(CItemData::ES_ADDED);
       Command *pcmd = AddEntryCommand::Create(this, otherItem);
       pcmd->SetNoGUINotify();
@@ -877,7 +876,7 @@ void PWScore::Synchronize(PWScore *pothercore,
 
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
-    
+
     // Do not process Aliases and Shortcuts
     if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
       continue;
@@ -913,10 +912,10 @@ void PWScore::Synchronize(PWScore *pothercore,
       for (size_t i = 2; i < bsFields.size(); i++) {
         if (bsFields.test(i)) {
           StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
-          
+
           // Special processing for password policies (default & named)
-          if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
-            Command *pPolicyCmd = ProcessPolicyName(pothercore, updItem, 
+          if (static_cast<CItemData::FieldType>(i) == CItemData::POLICYNAME) {
+            Command *pPolicyCmd = ProcessPolicyName(pothercore, updItem,
                                    mapRenamedPolicies, vs_PoliciesAdded,
                                    sxValue, bUpdated,
                                    sxSync_DateTime, IDSC_SYNCPOLICY);
@@ -1019,7 +1018,7 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
     PWPolicy st_to_pp, st_from_pp;
     bool bInTo = this->GetPolicyFromName(sxOtherPolicyName, st_to_pp);
     bool bInFrom = pothercore->GetPolicyFromName(sxOtherPolicyName, st_from_pp);
-    
+
     if (!bInFrom) {
       ASSERT(bInFrom); // Problem if set but not there!
       return NULL;
