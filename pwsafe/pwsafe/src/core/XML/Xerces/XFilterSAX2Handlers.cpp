@@ -20,7 +20,7 @@
 */
 
 /*
-* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t 
+* NOTE: Xerces characters are ALWAYS in UTF-16 (may or may not be wchar_t
 * depending on platform).
 * Non-unicode builds will need convert any results from parsing the XML
 * document from UTF-16 to ASCII.
@@ -78,7 +78,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
                                       const Attributes& attrs)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
     if (m_pSchema_Version == NULL) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
@@ -120,7 +120,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
 
   bool bfilter = XMLString::equals(qname, _A2X("filter"));
   bool bfilter_entry = XMLString::equals(qname, _A2X("filter_entry"));
- 
+
    if (bfilter) {
     cur_filter = new st_filters;
   }
@@ -135,7 +135,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
   if (bfilter || bfilter_entry) {
     // Process the attributes we need.
     if (bfilter) {
-      XMLCh * xmlchValue = (XMLCh *)attrs.getValue(_A2X("filtername")); 
+      const XMLCh * xmlchValue = attrs.getValue(_A2X("filtername"));
       if (xmlchValue != NULL) {
 #ifdef UNICODE
         cur_filter->fname = stringT(_X2ST(xmlchValue));
@@ -148,7 +148,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
 
     if (bfilter_entry) {
-      const XMLCh * xmlchValue = attrs.getValue(_A2X("active")); 
+      const XMLCh * xmlchValue = attrs.getValue(_A2X("active"));
       if (xmlchValue != NULL && XMLString::equals(xmlchValue, _A2X("no")))
         cur_filterentry->bFilterActive = false;
     }
@@ -161,7 +161,7 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
                                     const XMLSize_t length)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation)
     return;
 
@@ -182,7 +182,7 @@ void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                              const XMLSize_t length)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation)
     return;
 
@@ -204,7 +204,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
                                     const XMLCh* const qname)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
     // Check that the XML file version is present and that
     // a. it is less than or equal to the Filter schema version
@@ -237,7 +237,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       return ;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
-      Format(m_strXMLErrors, 
+      Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
 #ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
@@ -279,8 +279,8 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     if (cur_filterentry->mtype  == PWSMatch::MT_DATE &&
         cur_filterentry->rule   != PWSMatch::MR_PRESENT &&
         cur_filterentry->rule   != PWSMatch::MR_NOTPRESENT &&
-        cur_filterentry->fdate1 == (time_t)0 &&
-        cur_filterentry->fdate2 == (time_t)0)
+        cur_filterentry->fdate1 == time_t(0) &&
+        cur_filterentry->fdate2 == time_t(0))
       cur_filterentry->fdatetype = 1; // Relative Date
     if (m_type == DFTYPE_MAIN) {
       cur_filter->num_Mactive++;
@@ -592,23 +592,23 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   else if (XMLString::equals(qname, _A2X("date1"))) {
     time_t t(0);
     if (VerifyXMLDateString(m_sxElemContent.c_str(), t) &&
-        (t != (time_t)-1))
+        (t != time_t(-1)))
       cur_filterentry->fdate1 = t;
     else
-    cur_filterentry->fdate1 = (time_t)0;
+    cur_filterentry->fdate1 = time_t(0);
   }
 
   else if (XMLString::equals(qname, _A2X("date2"))) {
     time_t t(0);
     if (VerifyXMLDateString(m_sxElemContent.c_str(), t) &&
-        (t != (time_t)-1))
+        (t != time_t(-1)))
       cur_filterentry->fdate2 = t;
     else
-      cur_filterentry->fdate1 = (time_t)0;
+      cur_filterentry->fdate1 = time_t(0);
   }
 
   else if (XMLString::equals(qname, _A2X("DCA"))) {
-    cur_filterentry->fdca = (short)_ttoi(m_sxElemContent.c_str());
+    cur_filterentry->fdca = static_cast<short>(_ttoi(m_sxElemContent.c_str()));
   }
 
   else if (XMLString::equals(qname, _A2X("type"))) {
@@ -649,12 +649,12 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
   int iLineNumber, iCharacter;
 
 #ifdef UNICODE
-  XMLCh *szErrorMessage = (XMLCh *)e.getMessage();
+  const XMLCh *szErrorMessage = e.getMessage();
 #else
   char *szErrorMessage = XMLString::transcode(e.getMessage());
 #endif
-  iLineNumber = (int)e.getLineNumber();
-  iCharacter = (int)e.getColumnNumber();
+  iLineNumber = static_cast<int>(e.getLineNumber());
+  iCharacter = static_cast<int>(e.getColumnNumber());
 
   stringT cs_format, cs_errortype;
   LoadAString(cs_format, IDSC_XERCESSAXGENERROR);

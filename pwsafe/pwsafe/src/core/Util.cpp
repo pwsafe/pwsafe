@@ -40,10 +40,10 @@ static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 
 //-----------------------------------------------------------------------------
 //Overwrite the memory
-// used to be a loop here, but this was deemed (1) overly paranoid 
-// (2) The wrong way to scrub DRAM memory 
-// see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html 
-// and http://www.cypherpunks.to/~peter/usenix01.pdf 
+// used to be a loop here, but this was deemed (1) overly paranoid
+// (2) The wrong way to scrub DRAM memory
+// see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html
+// and http://www.cypherpunks.to/~peter/usenix01.pdf
 
 #ifdef _WIN32
 #pragma optimize("",off)
@@ -83,7 +83,7 @@ void ConvertString(const StringX &text,
                    unsigned char *&txt,
                    size_t &txtlen)
 {
-  LPCTSTR txtstr = text.c_str(); 
+  LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
 #ifndef UNICODE
@@ -255,7 +255,7 @@ size_t _readcbc(FILE *fp,
   unsigned char *lengthblock = NULL;
 
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
-  
+
   // Safety check.  (Lockheed Martin) Secure Coding  11-14-2007
   if ((BS > sizeof( block1 )) || (BS == 0))
    return 0;
@@ -344,7 +344,7 @@ void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t
 #if (_MSC_VER >= 1400)
   (void) _tcsncpy_s(target, tcount, source, scount);
 #else
-  tcount = 0; // shut up warning;
+  UNREFERENCED_PARAMETER(tcount);
   (void)_tcsncpy(target, source, scount);
 #endif
 }
@@ -436,7 +436,7 @@ stringT PWSUtil::GetTimeStamp(const bool bShort)
   GetTimeStamp(sTimeStamp, bShort);
   return sTimeStamp;
 }
-  
+
 void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 {
   // Now re-entrant
@@ -475,12 +475,12 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
   stringT cs_Out;
-  static const TCHAR base64ABC[] = 
+  static const TCHAR base64ABC[] =
     _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
   for (size_t i = 0; i < len; i += 3) {
-    long l = ( static_cast<long>(strIn[i]) << 16 ) | 
-               (((i + 1) < len) ? (static_cast<long>(strIn[i + 1]) << 8) : 0) | 
+    long l = ( static_cast<long>(strIn[i]) << 16 ) |
+               (((i + 1) < len) ? (static_cast<long>(strIn[i + 1]) << 8) : 0) |
                (((i + 2) < len) ? static_cast<long>(strIn[i + 2]) : 0);
 
     cs_Out += base64ABC[(l >> 18) & 0x3F];
@@ -547,7 +547,7 @@ StringX PWSUtil::NormalizeTTT(const StringX &in, size_t maxlen)
 {
   StringX ttt;
   if (in.length() >= maxlen) {
-    ttt = in.substr(0, maxlen/2-6) + 
+    ttt = in.substr(0, maxlen/2-6) +
       _T(" ... ") + in.substr(in.length() - maxlen/2);
   } else {
     ttt = in;

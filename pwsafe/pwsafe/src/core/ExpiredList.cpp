@@ -28,7 +28,7 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
     ci.GetPMTime(tttCPMTime);
     if (tttCPMTime == time_t(0))
       ci.GetCTime(tttCPMTime);
-    tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
+    tttXTime = static_cast<time_t>(static_cast<long>(tttCPMTime) + static_cast<long>(tttXTime) * 86400);
   }
   expirytttXTime = tttXTime;
 }

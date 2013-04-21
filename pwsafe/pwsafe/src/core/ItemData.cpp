@@ -128,8 +128,8 @@ int CItemData::Read(PWSfile *in)
       delete[] utf8; utf8 = NULL; utf8Len = 0;
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
-  
-    
+
+
   if (numread > 0)
     return status;
   else
@@ -155,15 +155,15 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
       char *dst = new char[dstlen+1];
       dstlen = pws_os::wcstombs(dst, dstlen, wpdata, srclen);
       ASSERT(dstlen != size_t(-1));
-      retval = out->WriteField((unsigned char)ft, (unsigned char *)dst, dstlen);
+      retval = out->WriteField(static_cast<unsigned char>(ft), reinterpret_cast<unsigned char *>(dst), dstlen);
       trashMemory(dst, dstlen);
       delete[] dst;
     } else {
-      retval = out->WriteField((unsigned char)ft, pdata, field.GetLength());
+      retval = out->WriteField(static_cast<unsigned char>(ft), pdata, field.GetLength());
     }
     trashMemory(pdata, flength);
     delete[] pdata;
-  } 
+  }
   return retval;
 }
 
@@ -195,7 +195,7 @@ int CItemData::Write(PWSfile *out) const
     GetTime(TimeFields[i], t);
     if (t != 0) {
       i32 = static_cast<int>(t);
-      out->WriteField((unsigned char)TimeFields[i],
+      out->WriteField(static_cast<unsigned char>(TimeFields[i]),
                       reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
     }
   }
@@ -266,7 +266,7 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
 
-  if (IsTextField((unsigned char)ft) && ft != GROUPTITLE && 
+  if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&
       ft != NOTES && ft != PWHIST) {
     return GetField(ft);
   } else {
@@ -338,7 +338,7 @@ size_t CItemData::GetSize() const
   for (UnknownFieldsConstIter ufiter = m_URFL.begin();
        ufiter != m_URFL.end(); ufiter++)
     length += ufiter->GetLength();
-  
+
   return length;
 }
 
@@ -1550,8 +1550,8 @@ bool CItemData::Matches(short dca, int iFunction, const bool bShift) const
   short iDCA;
   GetDCA(iDCA, bShift);
   if (iDCA < 0)
-    iDCA = (short)PWSprefs::GetInstance()->GetPref(bShift ?
-               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
+    iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(bShift ?
+               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
 
   switch (iFunction) {
     case PWSMatch::MR_IS:

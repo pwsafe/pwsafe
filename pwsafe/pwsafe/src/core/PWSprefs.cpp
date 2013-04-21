@@ -55,7 +55,7 @@ bool PWSprefs::m_userSetCfgFile = false; // true iff user set config file (-g co
 const stringT PWSprefs::cfgFileName = _T("pwsafe.cfg");
 
 /*
- Note: to change a preference between application and database, the way 
+ Note: to change a preference between application and database, the way
  to do it is to set the current one as obsolete and define a new one.
 
  Do not change the current type.
@@ -177,7 +177,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("PasswordFont"), _T(""), ptApplication},                      // application
   {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication}, // application
   {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},     // application
-  {_T("LastUsedKeyboard"), _T(""), ptApplication},                  // application 
+  {_T("LastUsedKeyboard"), _T(""), ptApplication},                  // application
   {_T("VKeyboardFontName"), _T(""), ptApplication},                 // application
   {_T("VKSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},       // application
   {_T("AltNotesEditor"), _T(""), ptApplication},                    // application
@@ -279,7 +279,7 @@ StringX PWSprefs::GetAllBoolPrefs(const bool bUseCopy)
          ((bUseCopy ? m_boolCopyValues[i] : m_boolValues[i]) ? 1 : 0) << TCHAR(' ');
   }
   return osxs.str();
-}  
+}
 
 StringX PWSprefs::GetAllIntPrefs(const bool bUseCopy)
 {
@@ -293,7 +293,7 @@ StringX PWSprefs::GetAllIntPrefs(const bool bUseCopy)
          (bUseCopy ? m_intCopyValues[i] : m_intValues[i]) << dec << TCHAR(' ');
   }
   return osxs.str();
-}  
+}
 
 StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
 {
@@ -330,7 +330,7 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
     }
     if (delim == TCHAR(' '))
       continue;  // We tried, but just can't save it!
- 
+
     osxs << setw(1) << k << TCHAR(' ')
          << setw(1) << m_string_prefs[k].ptype << TCHAR(' ')
          << delim <<
@@ -338,8 +338,8 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
          delim << TCHAR(' ');
   }
   return osxs.str();
-}  
-  
+}
+
 // Following for case where default value is determined at runtime
 unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal,
                                const bool bUseCopy) const
@@ -405,7 +405,7 @@ int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
     }
     cnt++;
   }
-  // Remove any not in use    
+  // Remove any not in use
   for (i = cnt - 1; i < max_MRU; i++) {
     if (!m_MRUitems[i].empty()) {
       m_MRUitems[i] = _T("");
@@ -600,7 +600,7 @@ void PWSprefs::ResetPref(BoolPrefs pref_enum)
 void PWSprefs::ResetPref(IntPrefs pref_enum)
 {
   PWS_LOGIT_ARGS("IntegerPref: %s", m_int_prefs[pref_enum].name);
-  
+
   m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
   m_intChanged[pref_enum] = true;
   m_prefs_changed[m_int_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -686,7 +686,7 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 bool PWSprefs::DeletePref(const StringX &name)
 {
   PWS_LOGIT_ARGS("Name: %s", name.c_str());
-  
+
   bool bRetVal(false);
   switch (m_ConfigOption) {
     case CF_REGISTRY:
@@ -762,10 +762,10 @@ void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
   std::vector<st_prefShortcut> vSortedShortcuts(vShortcuts);
   std::sort(vSortedShortcuts.begin(), vSortedShortcuts.end(), shortcut_less());
   if (m_vShortcuts.size() == vSortedShortcuts.size() &&
-      std::equal(m_vShortcuts.begin(), m_vShortcuts.end(), 
+      std::equal(m_vShortcuts.begin(), m_vShortcuts.end(),
                  vSortedShortcuts.begin(), equal_shortcuts))
     return;
- 
+
   m_vShortcuts = vSortedShortcuts;
   m_prefs_changed[SHC_PREF] = true;
 }
@@ -795,18 +795,17 @@ StringX PWSprefs::Store(bool bUseCopy)
     p_intValues = m_intValues;
     p_stringValues = m_stringValues;
   }
- 
-  oStringXStream os;
-  int i;
 
-  for (i = 0; i < NumBoolPrefs; i++, p_boolValues++) {
+  oStringXStream os;
+
+  for (int i = 0; i < NumBoolPrefs; i++, p_boolValues++) {
     if (*p_boolValues != m_bool_prefs[i].defVal &&
         m_bool_prefs[i].ptype == ptDatabase) {
       os << _T("B ") << i << TCHAR(' ') << (*p_boolValues ? 1 : 0) << TCHAR(' ');
     }
   }
 
-  for (i = 0; i < NumIntPrefs; i++, p_intValues++) {
+  for (int i = 0; i < NumIntPrefs; i++, p_intValues++) {
     if (*p_intValues != m_int_prefs[i].defVal &&
         m_int_prefs[i].ptype == ptDatabase) {
       os << _T("I ") << i << TCHAR(' ') << *p_intValues << TCHAR(' ');
@@ -817,7 +816,7 @@ StringX PWSprefs::Store(bool bUseCopy)
   const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
   const int NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
 
-  for (i = 0; i < NumStringPrefs; i++, p_stringValues++) {
+  for (int i = 0; i < NumStringPrefs; i++, p_stringValues++) {
     if (*p_stringValues != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
       const StringX svalue = *p_stringValues;
@@ -848,7 +847,7 @@ StringX PWSprefs::Store(bool bUseCopy)
     os << _T("I ") << m_vUnknownIPrefs[i].index << TCHAR(' ') <<
         m_vUnknownIPrefs[i].iValue << TCHAR(' ');
   }
-  
+
   for (size_t i = 0; i < m_vUnknownSPrefs.size(); i++) {
     //
     os << _T("S ") << m_vUnknownSPrefs[i].index << TCHAR(' ') <<
@@ -856,7 +855,7 @@ StringX PWSprefs::Store(bool bUseCopy)
         m_vUnknownSPrefs[i].sValue.c_str() <<
         m_vUnknownSPrefs[i].delim << TCHAR(' ');
   }
- 
+
   return os.str();
 }
 
@@ -1259,14 +1258,14 @@ void PWSprefs::LoadProfileFromRegistry()
     // to correct spelling while maintain preference's value.
     bool bccom = GetPref(ClearClipboardOnMinimize);
     bool bccoe = GetPref(ClearClipboardOnExit);
-    
+
     bool bccom2 = pws_os::RegReadValue(PWS_REG_OPTIONS,
                                        _T("ClearClipoardOnMinimize"), // deliberate!
                                        bccom) != 0;
     bool bccoe2 = pws_os::RegReadValue(PWS_REG_OPTIONS,
                                        _T("ClearClipoardOneExit"), // deliberate!
                                        bccoe) != 0;
-    
+
     // If old (mis-spelt) name was there, use its value. Since the
     // default above was the new (correct) spelling, it has priority
     m_boolValues[ClearClipboardOnMinimize] = bccom2;
@@ -1368,7 +1367,7 @@ bool PWSprefs::LoadProfileFromFile()
     goto exit;
   }
 
-  // LockOnIdleTimeout is now a Database preference - 
+  // LockOnIdleTimeout is now a Database preference -
   // Silently delete it from XML file (actually doesn't delete
   // it here but marks as changed so will be deleted when saved).
   // Set updated so that the XML file is rewritten without it
@@ -1723,7 +1722,7 @@ int PWSprefs::GetConfigIndicator() const
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
       return IDSC_CONFIG_FILE_RW;
-    case CF_FILE_RO: 
+    case CF_FILE_RO:
       return IDSC_CONFIG_FILE_RO;
     default:
       ASSERT(0);
@@ -1809,7 +1808,7 @@ stringT PWSprefs::GetXMLPreferences()
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
         m_bool_prefs[i].ptype == ptDatabase)
-      os << "\t\t<" << m_bool_prefs[i].name << ">" << (m_boolValues[i] ? "1</" : "0</") << 
+      os << "\t\t<" << m_bool_prefs[i].name << ">" << (m_boolValues[i] ? "1</" : "0</") <<
       m_bool_prefs[i].name << ">" << endl;
   }
 
@@ -1841,7 +1840,7 @@ stringT PWSprefs::GetXMLPreferences()
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
       stringT sTemp = PWSUtil::GetSafeXMLString(m_stringValues[i]);
-      os << "\t\t<" << m_string_prefs[i].name << ">" << sTemp << "</" << 
+      os << "\t\t<" << m_string_prefs[i].name << ">" << sTemp << "</" <<
           m_string_prefs[i].name << ">" << endl;
     }
   }
@@ -1852,7 +1851,7 @@ stringT PWSprefs::GetXMLPreferences()
 
 bool PWSprefs::LockCFGFile(const stringT &filename, stringT &locker)
 {
-  return pws_os::LockFile(filename, locker, 
+  return pws_os::LockFile(filename, locker,
                           s_cfglockFileHandle, s_cfgLockCount);
 }
 
