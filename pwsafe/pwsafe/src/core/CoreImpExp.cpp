@@ -1844,7 +1844,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   const StringX s_hdr = KPEXPORTHEADER;
   const TCHAR pTab[] = _T("\t");
 
-  enum Fields {GROUP, PARENTGROUPS, TITLE, USER, PASSWORD, URL, NOTES, UUID, ICON,
+  // UUID_E in following to avoid collision with UUID type
+  enum Fields {GROUP, PARENTGROUPS, TITLE, USER, PASSWORD, URL, NOTES, UUID_E, ICON,
                CTIME, ATIME, PMTIME, XTIME, ATTACHMENTDESCR, ATTACHMENT, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -2069,8 +2070,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (i_Offset[UUID] >= 0 && !tokens[i_Offset[UUID]].empty()) {
-      sx_uuid = tokens[i_Offset[UUID]];
+    if (i_Offset[UUID_E] >= 0 && !tokens[i_Offset[UUID_E]].empty()) {
+      sx_uuid = tokens[i_Offset[UUID_E]];
       if (sx_uuid.length() == sizeof(uuid_array_t) * 2) {
         unsigned int x(0);
         for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
