@@ -1774,7 +1774,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 
   while (iter != v.end()) {
     int type = (*iter++ & 0xff); // required since enum is an int
-    if (distance(v.end(), iter) < sizeof(size_t)) {
+    if (distance(v.end(), iter) < sizeof(uint32)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
     }
