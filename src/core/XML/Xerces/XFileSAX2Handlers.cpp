@@ -100,12 +100,12 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
       {
         const XMLCh *szValue1 = attrs.getValue(_A2X("normal"));
         if (szValue1 != NULL) {
-          cur_entry->bforce_normal_entry =
+          m_cur_entry->bforce_normal_entry =
                XMLString::equals(szValue1, _A2X("1")) || XMLString::equals(szValue1, _A2X("true"));
         }
         const XMLCh *szValue2 = attrs.getValue(_A2X("id"));
         if (szValue2 != NULL) {
-          cur_entry->id = XMLString::parseInt(szValue2);
+          m_cur_entry->id = XMLString::parseInt(szValue2);
         }
       }
       break;

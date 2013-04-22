@@ -267,13 +267,13 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
       {
         TCHAR *lpValue1 = FileProcessAttributes(pAttributes, _T("normal"));
         if (lpValue1 != NULL) {
-          cur_entry->bforce_normal_entry =
+          m_cur_entry->bforce_normal_entry =
                _ttoi(lpValue1) == 1 || _tcscmp(lpValue1, _T("true")) == 0;
           free(lpValue1);
         }
         TCHAR *lpValue2 = FileProcessAttributes(pAttributes, _T("id"));
         if (lpValue2 != NULL) {
-          cur_entry->id = _ttoi(lpValue2);
+          m_cur_entry->id = _ttoi(lpValue2);
           free(lpValue2);
         }
       }
