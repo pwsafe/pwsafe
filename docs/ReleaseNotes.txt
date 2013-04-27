@@ -18,6 +18,8 @@ Changes to Existing Features in 3.31pre
 
 Bugs fixed in 3.31pre
 =====================
+[1095] Ampersand (&) is handled correctly in Password Policy (thanks
+to Andrey)
 [1092] Compare DB results context menu items now enabled correctly in
 Read Only (thanks to DK).
 [1085] Preferences that are stored in the database are colored blue
