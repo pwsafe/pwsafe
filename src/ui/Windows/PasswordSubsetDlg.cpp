@@ -83,7 +83,7 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   }
 
   // If a separator is pressed, update displayed password subset
-  if (bSeparator || nChar == VK_RETURN)
+  if (bSeparator || nChar == VK_RETURN || LineLength(LineIndex(0)) == 0)
     GetParent()->SendMessage(WM_DISPLAYPASSWORDSUBSET);
 }
 
