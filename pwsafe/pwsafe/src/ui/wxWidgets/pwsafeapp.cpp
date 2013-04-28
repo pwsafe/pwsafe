@@ -534,12 +534,12 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
       const wxString dlgName = win->GetClassInfo()->GetClassName();
       const wxString pageName = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
       keyName = dlgName + wxT('#') + pageName;
-      msg << wxT("Missing help definition for page \"") << pageName
-          << wxT("\" of \"") << dlgName
+      msg << _("Missing help definition for page \"") << pageName
+          << _("\" of \"") << dlgName
           << wxT("\".\n");
     } else { // !propSheet
       keyName = win->GetClassInfo()->GetClassName();
-      msg << wxT("Missing help definition for window \"") << keyName
+      msg << _("Missing help definition for window \"") << keyName
           << wxT("\".\n");
     }
 
@@ -549,7 +549,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
       m_controller->DisplaySection(itr->second);
     else {
 #ifdef __WXDEBUG__
-      msg << wxT("Please inform the developers.");
+      msg << _("Please inform the developers.");
       wxMessageBox(msg, _("Help Undefined"), wxOK | wxICON_EXCLAMATION);
 #endif
     } // keyName not found in map

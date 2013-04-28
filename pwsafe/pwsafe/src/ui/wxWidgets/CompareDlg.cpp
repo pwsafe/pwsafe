@@ -98,7 +98,7 @@ wxDEFINE_SCOPED_PTR_TYPE(MultiCommands)
 
 CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 wxID_ANY,
-                                                                wxT("Compare current database with another database"),
+                                                                _("Compare current database with another database"),
                                                                 wxDefaultPosition,
                                                                 wxDefaultSize,
                                                                 wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
@@ -472,24 +472,24 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   if (selectionCount == 1)
     strSyncSelectedItemsMenu << _("Synchronize this item...");
   else
-    strSyncSelectedItemsMenu << _("Synchronize") << selCountStr << wxT("selected ") << towxstring(itemStr) << _("...");
+    strSyncSelectedItemsMenu << _("Synchronize") << selCountStr << _("selected ") << towxstring(itemStr) << _("...");
   itemEditMenu.Append(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, strSyncSelectedItemsMenu);
 
   itemEditMenu.Append(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, _("Synchronize all items..."));
 
   wxString strCopyItemsMenu;
-  strCopyItemsMenu << _("Copy") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" to current db");
+  strCopyItemsMenu << _("Copy") << selCountStr << _("selected ") << towxstring(itemStr) << _(" to current db");
   itemEditMenu.Append(ID_COPY_ITEMS_TO_CURRENT_DB, strCopyItemsMenu);
 
   wxString strDeleteItemsMenu;
-  strDeleteItemsMenu << _("Delete") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" from current db");
+  strDeleteItemsMenu << _("Delete") << selCountStr << _("selected ") << towxstring(itemStr) << _(" from current db");
   itemEditMenu.Append(ID_DELETE_ITEMS_FROM_CURRENT_DB, strDeleteItemsMenu);
 
   if (selectionCount == 1) {
     itemEditMenu.AppendSeparator();
 
-    itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   wxT("&Edit entry in current db"));
-    itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   wxT("&View entry in comparison db"));
+    itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   _("&Edit entry in current db"));
+    itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   _("&View entry in comparison db"));
   }
 
   if (menuContext.cdata == m_conflicts) {
@@ -497,7 +497,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     ComparisonGridTable* table = wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
     menuContext.field = table->ColumnToField(evt.GetCol());
     if (selectionCount > 1)
-      strCopyFieldMenu << _("&Copy ") << selectionCount << wxT(" selected ") <<
+      strCopyFieldMenu << _("&Copy ") << selectionCount << _(" selected ") <<
                           towxstring(CItemData::FieldName(menuContext.field))
                           << _(" fields to current db");
     else

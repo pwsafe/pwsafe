@@ -469,8 +469,8 @@ msgstr "%s bestand wordt geïmporteerd: %s"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "%s has an empty %s.\r\n"
-msgstr "%s heeft een lege %s.\r\n"
+msgid "%s has an empty %s.\n"
+msgstr "%s heeft een lege %s.\n"
 
 #. Resource IDs: (326)
 #, c-format
@@ -479,8 +479,8 @@ msgstr "%s is een folder"
 
 #. Resource IDs: (211)
 #, c-format
-msgid "%s not found. Cannot update entry's password.\r\n"
-msgstr "%s niet gevonden. Kan wachtwoord van vermelding niet wijzigen.\r\n"
+msgid "%s not found. Cannot update entry's password.\n"
+msgstr "%s niet gevonden. Kan wachtwoord van vermelding niet wijzigen.\n"
 
 #. Resource IDs: (212)
 #, c-format
@@ -496,10 +496,10 @@ msgstr "%s%s%s_Rapport.txt"
 #, c-format
 msgid ""
 "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%s\".\r\n"
+"Import file. Added imported entry with title=\"%s\".\n"
 msgstr ""
 "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw database of in het "
-"Importeer bestand. Vermelding geïmporteerd met titel=\"%s\".\r\n"
+"Importeer bestand. Vermelding geïmporteerd met titel=\"%s\".\n"
 
 #. Resource IDs: (343)
 #, c-format
@@ -1440,10 +1440,10 @@ msgstr ""
 
 #. Resource IDs: (367)
 msgid ""
-"A red and white indicator means that a filter is active\r\n"
+"A red and white indicator means that a filter is active\n"
 "(if showing, double click to clear filter)"
 msgstr ""
-"Een rode en witte indicator betekent dat een filter actief is\r\n"
+"Een rode en witte indicator betekent dat een filter actief is\n"
 "(als zichtbaar, dubbel klik om filter te wissen)"
 
 #. Resource IDs: (3843)
@@ -1921,11 +1921,11 @@ msgstr ""
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
-"Directory.\r\n"
+"Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
 "Kan XML Schema Definitie bestand (%s) niet vinden in uw PasswordSafe "
-"programma folder.\r\n"
+"programma folder.\n"
 "SVP kopieer het van uw installatie folder of herinstalleer PasswordSafe."
 
 #. Resource IDs: (208)
@@ -2394,12 +2394,12 @@ msgstr "Bevestiging:"
 #. Resource IDs: (214)
 #, c-format
 msgid ""
-"Conflicting entries for «%s» «%s» «%s».\r\n"
-"  Adding merged entry as «%s» «%s» «%s».\r\n"
+"Conflicting entries for «%s» «%s» «%s».\n"
+"  Adding merged entry as «%s» «%s» «%s».\n"
 "    Differing field(s): %s"
 msgstr ""
-"Conflikterende vermeldingen voor «%s» «%s» «%s».\r\n"
-"  Voeg samengesteldevermelding toe als «%s» «%s» «%s».\r\n"
+"Conflikterende vermeldingen voor «%s» «%s» «%s».\n"
+"  Voeg samengesteldevermelding toe als «%s» «%s» «%s».\n"
 "    Verschillend(e) veld(en): %s"
 
 #. Resource IDs: (1, 347)
@@ -2409,15 +2409,15 @@ msgstr "Doorgaan"
 #. Resource IDs: (360)
 #, c-format
 msgid ""
-"Copied password\r\n"
-"\r\n"
-"\"%s\"\r\n"
-"\r\n"
+"Copied password\n"
+"\n"
+"\"%s\"\n"
+"\n"
 "to the clipboard."
 msgstr ""
-"Wachtwoord gekopieerd\r\n"
-"\r\n"
-"\"%s\"\r\n"
+"Wachtwoord gekopieerd\n"
+"\n"
+"\"%s\"\n"
 "naar het klembord."
 
 #. Resource IDs: (32060)
@@ -2608,29 +2608,29 @@ msgstr "Huidige Vermelding"
 #. Resource IDs: (343)
 #, c-format
 msgid ""
-"Current version:\t%s\r\n"
-"Latest version:\t%s\r\n"
-"\r\n"
+"Current version:\t%s\n"
+"Latest version:\t%s\n"
+"\n"
 "Please visit the PasswordSafe website to download the latest version."
 msgstr ""
-"Huidige versie:\t%s\r\n"
-"Nieuwste versie:\t%s\r\n"
-"\r\n"
+"Huidige versie:\t%s\n"
+"Nieuwste versie:\t%s\n"
+"\n"
 "Bezoek de website van Passwordsafe om de nieuwste versie te downloaden."
 
 #. Resource IDs: (343)
 #, c-format
 msgid ""
-"Current version:\t%s\r\n"
-"Latest version:\t%s\r\n"
-"\r\n"
-"Your purchase includes free upgrades for one year.\r\n"
+"Current version:\t%s\n"
+"Latest version:\t%s\n"
+"\n"
+"Your purchase includes free upgrades for one year.\n"
 "Please contact the PasswordSafe Administrator for your upgrade."
 msgstr ""
-"Huidige versie:\t%s\r\n"
-"Nieuwste versie:\t%s\r\n"
-"\r\n"
-"Uw aanschaf omvat voor een jaar gratis upgrades.\r\n"
+"Huidige versie:\t%s\n"
+"Nieuwste versie:\t%s\n"
+"\n"
+"Uw aanschaf omvat voor een jaar gratis upgrades.\n"
 "Neem svp contact op met de Passwordsafe Beheerder voor uw upgrade."
 
 #. Resource IDs: (32320)
@@ -2695,10 +2695,10 @@ msgstr ""
 
 #. Resource IDs: (367)
 msgid ""
-"Database mode: read-only (R-O) or read/write (R/W)\r\n"
+"Database mode: read-only (R-O) or read/write (R/W)\n"
 "(Doubleclick to toggle mode)"
 msgstr ""
-"Database modus: Alleen-Lezen of Lezen/Schrijven\r\n"
+"Database modus: Alleen-Lezen of Lezen/Schrijven\n"
 "(dubbel klik om de modus te veranderen)"
 
 #. Resource IDs: (1200)
@@ -2870,16 +2870,16 @@ msgstr "Wilt u het vervangen?"
 #. Resource IDs: (328)
 #, c-format
 msgid ""
-"Do you wish to save the changes made to database:\r\n"
-"\r\n"
-"%s\r\n"
-"\r\n"
+"Do you wish to save the changes made to database:\n"
+"\n"
+"%s\n"
+"\n"
 "or Cancel the shutdown\\restart\\logoff?"
 msgstr ""
-"Wilt u de wijzigingen gemaakt in deze database opslaan:\r\n"
-"\r\n"
-"%s\r\n"
-"\r\n"
+"Wilt u de wijzigingen gemaakt in deze database opslaan:\n"
+"\n"
+"%s\n"
+"\n"
 "of annuleer het afsluiten\\herstart\\uitloggen?"
 
 #. Resource IDs: (3887)
@@ -2967,13 +2967,13 @@ msgstr ""
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias."
-"\r\n"
-"\r\n"
+"\n"
+"\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
 " Het wachtwoord van de vervallen vermelding   '%s:%s:%'s verwijst naar een "
-"vermelding dat ook een alias is.\r\n"
-"\r\n"
+"vermelding dat ook een alias is.\n"
+"\n"
 "De vervallen vermelding verwijst nu naar die vermeldings basis vermelding"
 
 #. Resource IDs: (32086)
@@ -3375,10 +3375,10 @@ msgstr "Exporteer bestand:"
 #. Resource IDs: (367)
 #, c-format
 msgid ""
-"Export file: '%s' already exists.\r\n"
+"Export file: '%s' already exists.\n"
 "Do you want to replace it?"
 msgstr ""
-"Het te exporteren bestand: '%s' bestaat al.\r\n"
+"Het te exporteren bestand: '%s' bestaat al.\n"
 "Wilt u het overschrijven?"
 
 #. Resource IDs: (211)
@@ -3445,13 +3445,13 @@ msgstr "Het opslaan van het document is mislukt"
 #, c-format
 msgid ""
 "Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\r\n"
-"%s %s\r\n"
+"mode by:\n"
+"%s %s\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
 "Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt omdat de "
-"database is al geopend in Lezen/Schrijven modus door:\r\n"
-"%s %s\r\n"
+"database is al geopend in Lezen/Schrijven modus door:\n"
+"%s %s\n"
 "(slechts een Lezen/Schrijven toegang tegelijkertijd is toegestaan)"
 
 #. Resource IDs: (366)
@@ -3473,11 +3473,11 @@ msgstr ""
 
 #. Resource IDs: (366)
 msgid ""
-"Failed to switch from R/W to R-O: Could not release database lock.\r\n"
+"Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
 "Omschakelen van Lezen/Schrijven naar Alleen-Lezen is mislukt. De "
-"vergrendeling van de database kon niet verwijderd worden.\r\n"
+"vergrendeling van de database kon niet verwijderd worden.\n"
 "Probeer het programma af te sluiten en opnieuw te starten. "
 
 #. Resource IDs: (361)
@@ -3557,24 +3557,24 @@ msgstr "Bestand versie waarschuwing"
 #. Resource IDs: (335)
 #, c-format
 msgid ""
-"File: %s failed validation against XML Schema:\r\n"
-"\r\n"
+"File: %s failed validation against XML Schema:\n"
+"\n"
 "%s"
 msgstr ""
-"Bestand: %s kon niet gevalideerd worden met XML Schema:\r\n"
-"\r\n"
+"Bestand: %s kon niet gevalideerd worden met XML Schema:\n"
+"\n"
 "%s"
 
 #. Resource IDs: (335)
 #, c-format
 msgid ""
-"File: %s passed Validation but had the following errors during import:\r\n"
-"\r\n"
+"File: %s passed Validation but had the following errors during import:\n"
+"\n"
 "%s"
 msgstr ""
 "Bestand: %s is gevalideerd maar tijdens het inlezen zijn de volgende fouten "
-"opgetreden:\r\n"
-"\r\n"
+"opgetreden:\n"
+"\n"
 "%s"
 
 #. Resource IDs: (370)
@@ -3657,11 +3657,11 @@ msgstr "Font &Stijl"
 #. Resource IDs: (342)
 msgid ""
 "For security, the database must be closed before connecting to the Internet."
-"\r\n"
+"\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
 "De databse moet afgesloten worden voordat verbinding gemaakt wordt met "
-"Internet.\r\n"
+"Internet.\n"
 "Druk op OK om de databse te sluiten en verder te gaan (Wijzigingen worden "
 "bewaard)"
 
@@ -3799,8 +3799,8 @@ msgid "Group:"
 msgstr "Groep"
 
 #. Resource IDs: (328)
-msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
-msgstr "Groep\tTitel\tGebruikersnaam\tWachtwoord verval datum\r\n"
+msgid "Group\tTitle\tUsername\tPassword Expiry Date\n"
+msgstr "Groep\tTitel\tGebruikersnaam\tWachtwoord verval datum\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
@@ -4552,8 +4552,8 @@ msgstr "Samenvoegen..."
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Merging database: %s\r\n"
-msgstr "Samenvoegen van database: %s\r\n"
+msgid "Merging database: %s\n"
+msgstr "Samenvoegen van database: %s\n"
 
 #. Resource IDs: (364)
 msgid "Merging this database into current database:"
@@ -5237,11 +5237,11 @@ msgstr "Wachtwoord houdt in dat dit een alias-vermelding is, maar"
 #. Resource IDs: (342)
 msgid ""
 "Password implies this is an alias entry, but specifies a base entry with no "
-"title.\r\n"
+"title.\n"
 "Every entry must have a title."
 msgstr ""
 "Wachtwoord impliceert dat dit een alias vermelding is, maar specificieert "
-"een basis vermelding zonder titel.\r\n"
+"een basis vermelding zonder titel.\n"
 "Elke vermelding moet een titel hebben."
 
 #. Resource IDs: (188)
@@ -5519,14 +5519,14 @@ msgstr "Klik om alle toegevoegde letters te verwijderen."
 #. Resource IDs: (65535)
 msgid ""
 "Pressing OK will copy the password of the selected item to the clipboard. "
-"The clipboard will be securely cleared when Password Safe is closed.\r\n"
-"\r\n"
+"The clipboard will be securely cleared when Password Safe is closed.\n"
+"\n"
 "Pressing Cancel stops the password being copied."
 msgstr ""
 "Indrukken van OK zal het wachtwoord van de geselecteerde vermelding naar het "
 "klembord kopieren. Het klembord wordt veilig leeg gemaakt als Password Safe "
-"wordt afgesloten.\r\n"
-"\r\n"
+"wordt afgesloten.\n"
+"\n"
 "Indrukken van Annuleren zal het wachtwoord niet kopieren."
 
 #. Resource IDs: (349)
@@ -5852,10 +5852,10 @@ msgstr "S&ynchronizeren..."
 #. Resource IDs: (192)
 #, c-format
 msgid ""
-"SAX Parse Error during %s\r\n"
+"SAX Parse Error during %s\n"
 "%s."
 msgstr ""
-"SAX ontleed fout tijdens %s\r\n"
+"SAX ontleed fout tijdens %s\n"
 "%s."
 
 #. Resource IDs: (191)
@@ -6480,8 +6480,8 @@ msgstr "Synchroniseren van de huidige database met:"
 
 #. Resource IDs: (360)
 #, c-format
-msgid "Synchronizing from database: %s\r\n"
-msgstr "Synchroniseren vanaf database: %s\r\n"
+msgid "Synchronizing from database: %s\n"
+msgstr "Synchroniseren vanaf database: %s\n"
 
 #. Resource IDs: (143)
 msgid "System"
@@ -6604,13 +6604,13 @@ msgstr ""
 #. Resource IDs: (215)
 msgid ""
 "The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\r\n"
-"\r\n"
+"multiple lines in the CSV file.\n"
+"\n"
 "Import aborted."
 msgstr ""
 "Het txt of csv bestand werd niet geexporteerd als gevraagd. Enkele records "
-"beslaan meerdere regels in het csv bestand. \r\n"
-"\r\n"
+"beslaan meerdere regels in het csv bestand. \n"
+"\n"
 "Importeren afgebroken"
 
 #. Resource IDs: (330)
@@ -6630,13 +6630,13 @@ msgstr ""
 #. Resource IDs: (366)
 msgid ""
 "The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\r\n"
-"\r\n"
+"possible to switch to R/W mode.\n"
+"\n"
 "Please close the database and re-open it in R/W mode."
 msgstr ""
 "De database is verandert sinds U deze geopend heeft in R-O modus. Daarom is "
-"het omschakelen naar R/W modus niet mogelijk. \r\n"
-"\r\n"
+"het omschakelen naar R/W modus niet mogelijk. \n"
+"\n"
 "SVP sluit de database af en open deze weer in R/W modus."
 
 #. Resource IDs: (339)
@@ -6648,8 +6648,8 @@ msgid ""
 "is apparently being used by:\n"
 "%s%s.\n"
 "\n"
-"Open the database for Read-Only or Exit?\r\n"
-"\r\n"
+"Open the database for Read-Only or Exit?\n"
+"\n"
 "Note: Only one user at a time can open the database for writing."
 msgstr ""
 "De database:\n"
@@ -6658,8 +6658,8 @@ msgstr ""
 "isblijkbaar in gebruik door:\n"
 "%s%s.\n"
 "\n"
-"De database openen als Alleen-Lezen of verlaat database?\r\n"
-"\r\n"
+"De database openen als Alleen-Lezen of verlaat database?\n"
+"\n"
 "Opmerking: Slechts een gebruiker kan de database openen om te bewerken."
 
 #. Resource IDs: (328)
@@ -6671,8 +6671,8 @@ msgid ""
 "is apparently being used by:\n"
 "%s%s.\n"
 "\n"
-"Open the database for Read-Only, Read-Write, or Exit?\r\n"
-"\r\n"
+"Open the database for Read-Only, Read-Write, or Exit?\n"
+"\n"
 "Note: Choose \"Read-Write\" only if you are certain that the file isn't "
 "being used by anyone else,\n"
 "including another copy of Password Safe running on your machine."
@@ -6683,8 +6683,8 @@ msgstr ""
 "wordt blijkbaar gebruikt door:\n"
 "%s%s.\n"
 "\n"
-"Open de database in Alleen Lezen of Lezen-Schrijven, of Afsluiten?\r\n"
-"\r\n"
+"Open de database in Alleen Lezen of Lezen-Schrijven, of Afsluiten?\n"
+"\n"
 "Opm: Kies \"Lezen-Schrijven\" alleen als U zeker weet dat het bestand niet "
 "door iemand anders gebruikt wordt,\n"
 "inclusief een ander copie van Password Safe actief op uw computer."
@@ -6769,12 +6769,12 @@ msgstr "De volgende vermeldingen hadden een dubbel UUID veld. Dit is hersteld."
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
-"database but with different settings.\r\n"
+"database but with different settings.\n"
 "A new named policy has been created with the current date/time (%s) appended:"
 "%s"
 msgstr ""
 "De volgende vermeldingen hebben een beleid waarvan de naam al voorkomt in "
-"deze database maar met andere instellingen.\r\n"
+"deze database maar met andere instellingen.\n"
 "Een nieuw benoemd wachtwoordbeleid is gemaakt waarbij de huidige datum/tijd "
 "(%s) aan de naam is toegevoegd:%s"
 
@@ -6912,13 +6912,13 @@ msgstr ""
 #, c-format
 msgid ""
 "The password is in 'alias' form but the referenced entry '%s:%s:%s' is "
-"itself an alias.\r\n"
-"\r\n"
+"itself an alias.\n"
+"\n"
 "Do you wish this entry to point to the 'real' base entry?"
 msgstr ""
 "Het wachtwoord is in de vorm van een 'alias'. Maar de vermelding waar naar "
-"verwezen wordt,  '%s:%s:%s', is zelf een alias.\r\n"
-"\r\n"
+"verwezen wordt,  '%s:%s:%s', is zelf een alias.\n"
+"\n"
 "Wilt u dat deze vermelding verwijst naar de 'werkelijke' basis vermelding?"
 
 #. Resource IDs: (65535)
@@ -7006,34 +7006,34 @@ msgstr "Deze vermelding is veranderd. Weet u zeker dat u wilt annuleren?"
 #. Resource IDs: (341)
 #, c-format
 msgid ""
-"This entry has the following %d %s:\r\n"
+"This entry has the following %d %s:\n"
 "%s"
 msgstr ""
-"Deze vermelding heeft de volgende %d %s:\r\n"
+"Deze vermelding heeft de volgende %d %s:\n"
 "%s"
 
 #. Resource IDs: (213)
 #, c-format
 msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
+"This entry has the following %d %s:\n"
+"%s\n"
 "Please confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
-"Deze vermelding heeft de volgende %d %s:\r\n"
-"%s\r\n"
+"Deze vermelding heeft de volgende %d %s:\n"
+"%s\n"
 "Svp bevestigen om door te gaan (Alle verwijzingen naar deze vermeldingen "
 "worden verwijderd)?"
 
 #. Resource IDs: (213)
 #, c-format
 msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
+"This entry has the following %d %s:\n"
+"%s\n"
 "Please confirm to continue (alias entry's passwords will be replaced by this "
 "entry's password)?"
 msgstr ""
-"Deze vermelding heeft de volgende %d %s:\r\n"
-"%s\r\n"
+"Deze vermelding heeft de volgende %d %s:\n"
+"%s\n"
 "Svp bevestigen om door te gaan (wachwoorden alias vermeldingen worden "
 "vervangen door het wachtwoord van deze vermelding)?"
 
@@ -7511,10 +7511,10 @@ msgstr "Niet opgeslagen veranderingen"
 #. Resource IDs: (358)
 #, c-format
 msgid ""
-"Unsaved changes have been made to database:\r\n"
+"Unsaved changes have been made to database:\n"
 " %s."
 msgstr ""
-"Niet opgeslagen wijzigen gemaakt in de database:\r\n"
+"Niet opgeslagen wijzigen gemaakt in de database:\n"
 " %s."
 
 #. Resource IDs: (3841)
@@ -7693,12 +7693,12 @@ msgstr "Valideren"
 #. Resource IDs: (335)
 #, c-format
 msgid ""
-"Validated %d %s\r\n"
-"\r\n"
+"Validated %d %s\n"
+"\n"
 "Imported %d %s"
 msgstr ""
-"Gevalideerd %d %s\r\n"
-"\r\n"
+"Gevalideerd %d %s\n"
+"\n"
 "Geïmporteerd %d %s"
 
 #. Resource IDs: (369)
@@ -7794,14 +7794,14 @@ msgstr ""
 #, c-format
 msgid ""
 "WARNING: This operation will create an unprotected copy of %s in the "
-"database. Deleting this copy after use is NOT sufficient.\r\n"
-"\r\n"
+"database. Deleting this copy after use is NOT sufficient.\n"
+"\n"
 "Please do not use this option unless you understand and accept the risks. "
 "This option bypasses the security provided by this program."
 msgstr ""
 "WAARSCHUWING: Deze activiteit maakt een onbeschermde kopie van %s in de "
-"database. Verwijderen van deze kopie na gebruik is NIET voldoende.\r\n"
-"\r\n"
+"database. Verwijderen van deze kopie na gebruik is NIET voldoende.\n"
+"\n"
 "Gebruikt u deze optie alstublieft niet tenzij u de risico's begrijpt en "
 "accepteert. Deze optie omzeilt de veiligheden die door dit programma worden "
 "geboden."
@@ -8657,65 +8657,65 @@ msgstr ""
 #. Resource IDs: (214)
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
 msgstr ""
-"\r\n"
+"\n"
 "Samenvoegen afgerond: %d %s toegevoegd (%d %s, %d %s, %d %s)"
 
 #. Resource IDs: (360)
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "Synchronize completed: %d %s updated"
 msgstr ""
-"\r\n"
+"\n"
 "Synchronisatie volledig: %d %s bijgewerkt"
 
 #. Resource IDs: (360)
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "The following %s %s updated:"
 msgstr ""
-"\r\n"
+"\n"
 "De volgende %s %s bijgewerkt:"
 
 #. Resource IDs: (357)
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "The following new %s %s merged into this database:"
 msgstr ""
-"\r\n"
+"\n"
 "De volgende nieuwe %s %s samengevoegd in deze database:"
 
 #. Resource IDs: (341)
 msgid ""
-"\r\n"
-"This field is being edited in your\r\n"
+"\n"
+"This field is being edited in your\n"
 "default text editor."
 msgstr ""
-"\r\n"
-"Dit veld wordt bewerkt in uw\r\n"
+"\n"
+"Dit veld wordt bewerkt in uw\n"
 "standaard tekst bewerker."
 
 #. Resource IDs: (342)
 msgid ""
-"\r\n"
-"\r\n"
+"\n"
+"\n"
 "Select Yes to continue with this password or No to cancel?"
 msgstr ""
-"\r\n"
-"\r\n"
+"\n"
+"\n"
 "Kies Ja om door te gaan met dit wachtwoord of Nee om te annuleren?"
 
 #. Resource IDs: (345)
 msgid ""
-"\r\n"
+"\n"
 "email: "
 msgstr ""
-"\r\n"
+"\n"
 "e-mail: "
 
 #. Resource IDs: (346)
@@ -8726,10 +8726,10 @@ msgstr "\t%s was beperkt tot de volgende velden:"
 #. Resource IDs: (336)
 #, c-format
 msgid ""
-"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n"
+"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
 "\t\thas differences in the following fields:"
 msgstr ""
-"\t Vermelding-Groep:\"%s\";Titel:\"%s\";Gebruiker:\"%s\"\r\n"
+"\t Vermelding-Groep:\"%s\";Titel:\"%s\";Gebruiker:\"%s\"\n"
 "\t\t heeft verschillen in de volgende velden:"
 
 #. Resource IDs: (335)
@@ -8776,10 +8776,10 @@ msgstr "\tDe volgende vermeldingen bevatten de zoek tekst '%s'"
 #. Resource IDs: (346)
 #, c-format
 msgid ""
-"\tThe following restrictions were selected:\r\n"
+"\tThe following restrictions were selected:\n"
 "\t\t %s"
 msgstr ""
-"\tDe volgende beperkingen zijn geselecteerd:\r\n"
+"\tDe volgende beperkingen zijn geselecteerd:\n"
 "\t\t %s"
 
 #. Resource IDs: (205)

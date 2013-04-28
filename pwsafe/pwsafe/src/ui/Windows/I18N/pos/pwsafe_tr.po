@@ -411,8 +411,8 @@ msgstr "şu %s dosyası içe aktarılıyor: %s"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "%s has an empty %s.\r\n"
-msgstr "%s boş bir %s ye sahip.\r\n"
+msgid "%s has an empty %s.\n"
+msgstr "%s boş bir %s ye sahip.\n"
 
 #. Resource IDs: (326)
 #, c-format
@@ -421,8 +421,8 @@ msgstr "%s bir dizin."
 
 #. Resource IDs: (211)
 #, c-format
-msgid "%s not found. Cannot update entry's password.\r\n"
-msgstr "%s bulunamadı. Girdinin şifresi güncellenemiyor.\r\n"
+msgid "%s not found. Cannot update entry's password.\n"
+msgstr "%s bulunamadı. Girdinin şifresi güncellenemiyor.\n"
 
 #. Resource IDs: (212)
 #, c-format
@@ -436,8 +436,8 @@ msgstr "%s%s%s_Rapor.txt"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr "%s, Başlık=\"%s\", Kullanıcı=\"%s\" zaten veritabanınızda ya da içe aktarılanlar dosyasında var. İçe aktarılan girdi şu başlıkla kaydedildi=\"%s\".\r\n"
+msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\n"
+msgstr "%s, Başlık=\"%s\", Kullanıcı=\"%s\" zaten veritabanınızda ya da içe aktarılanlar dosyasında var. İçe aktarılan girdi şu başlıkla kaydedildi=\"%s\".\n"
 
 #. Resource IDs: (343)
 #, c-format
@@ -1280,8 +1280,8 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "Yeni bir şifre veritabanı oluşturulacak. Gireceğiniz kasa kombinasyonu şifre veritabanı dosyasını şifrelemek için kullanılacak. Kasa Kombinasyonu bütün klavye karakterlerini içerebilir ve büyük-küçük harf duyarlıdır."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(if showing, double click to clear filter)"
-msgstr "Kırmızı ve beyaz bir gösterge bir filtrenin aktif olduğuna işaret eder\r\n(görünüyorsa, filtreyi temizlemek için çift tıklayın)"
+msgid "A red and white indicator means that a filter is active\n(if showing, double click to clear filter)"
+msgstr "Kırmızı ve beyaz bir gösterge bir filtrenin aktif olduğuna işaret eder\n(görünüyorsa, filtreyi temizlemek için çift tıklayın)"
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1731,8 +1731,8 @@ msgstr "Şifre sona ermeden sadece 1-30 arası gün önce uyarabilir"
 
 #. Resource IDs: (210)
 #, c-format
-msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "XML Taslak Tanımlama dosyası (%s) PasswordSafe Uygulama Klösörünüzde bulunamıyor.\r\nLütfen dosyayı yükleme dosyanızdan kopyalayın, ya da PasswordSafe'i yeniden yükleyin."
+msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgstr "XML Taslak Tanımlama dosyası (%s) PasswordSafe Uygulama Klösörünüzde bulunamıyor.\nLütfen dosyayı yükleme dosyanızdan kopyalayın, ya da PasswordSafe'i yeniden yükleyin."
 
 #. Resource IDs: (208)
 msgid "Can't obtain the schema version."
@@ -2135,8 +2135,8 @@ msgstr "Doğrulama:"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "«%s» «%s» «%s» için çakışan girdiler.\r\n  Birleştirilmiş girdi «%s» «%s» «%s» olarak ekleniyor.\r\n    Farklılık gösteren alan(lar): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\n  Adding merged entry as «%s» «%s» «%s».\n    Differing field(s): %s"
+msgstr "«%s» «%s» «%s» için çakışan girdiler.\n  Birleştirilmiş girdi «%s» «%s» «%s» olarak ekleniyor.\n    Farklılık gösteren alan(lar): %s"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2144,8 +2144,8 @@ msgstr "Devam Et"
 
 #. Resource IDs: (360)
 #, c-format
-msgid "Copied password\r\n\r\n\"%s\"\r\n\r\nto the clipboard."
-msgstr "Şu şifre: \r\n\r\n\"%s\"\r\n\r\npanoya kopyalandı."
+msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
+msgstr "Şu şifre: \n\n\"%s\"\n\npanoya kopyalandı."
 
 #. Resource IDs: (32069)
 msgid "Copy &Notes to Clipboard"
@@ -2330,13 +2330,13 @@ msgstr "Geçerli Girdi"
 
 #. Resource IDs: (343)
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
-msgstr "Geçerli sürüm:\t%s\r\nEn son sürüm:\t%s\r\n\r\nLütfen son sürümü indirmek için PasswordSafe web sitesini ziyaret edin."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
+msgstr "Geçerli sürüm:\t%s\nEn son sürüm:\t%s\n\nLütfen son sürümü indirmek için PasswordSafe web sitesini ziyaret edin."
 
 #. Resource IDs: (343)
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nYour purchase includes free upgrades for one year.\r\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Geçerli sürüm:\t%s\r\nEn son sürüm:\t%s\r\n\r\nSatın almanız bir yıllık bedava yükseltme içerir.\r\nLütfen yükseltmeniz için PasswordSafe Yöneticisi'yle bağlantı kurun."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
+msgstr "Geçerli sürüm:\t%s\nEn son sürüm:\t%s\n\nSatın almanız bir yıllık bedava yükseltme içerir.\nLütfen yükseltmeniz için PasswordSafe Yöneticisi'yle bağlantı kurun."
 
 #. Resource IDs: (32155)
 msgid "Customize &Main Toolbar"
@@ -2395,8 +2395,8 @@ msgid "Database is read-only. Sorry, cannot save changed any database preference
 msgstr "Veritabanı salt okunur. Üzgünüz, değiştirilmiş hiçbir veritabanı tercihi kaydedilemez."
 
 #. Resource IDs: (367)
-msgid "Database mode: read-only (R-O) or read/write (R/W)\r\n(Doubleclick to toggle mode)"
-msgstr "Veritabanı modu: salt okunur (S-O) ya da oku/yaz (O/y)\r\n(Modu değiştirmek için çift tıklayın)"
+msgid "Database mode: read-only (R-O) or read/write (R/W)\n(Doubleclick to toggle mode)"
+msgstr "Veritabanı modu: salt okunur (S-O) ya da oku/yaz (O/y)\n(Modu değiştirmek için çift tıklayın)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -2548,8 +2548,8 @@ msgstr "Değiştirmek ister misiniz?"
 
 #. Resource IDs: (328)
 #, c-format
-msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
-msgstr "Aşağıdaki veritabanına yapılan değişikliklerin kaydedilmesini siter misiniz:\r\n\r\n%s\r\n\r\nyoksa kapatma\\yeniden başlatma\\oturum kapatma iptal mi edisin?"
+msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
+msgstr "Aşağıdaki veritabanına yapılan değişikliklerin kaydedilmesini siter misiniz:\n\n%s\n\nyoksa kapatma\\yeniden başlatma\\oturum kapatma iptal mi edisin?"
 
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
@@ -2626,8 +2626,8 @@ msgstr "Otomatik Doldurmanın orada başlaması için bu görüntüyü başka bi
 
 #. Resource IDs: (342)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
-msgstr "Bırakılan girdinin '%s:%s:%s' şifresi suret olan bir girdiye işaret ediyor.\r\n\r\nBırakılan girdi artık bu girdinin temel girdisine referans gösteriyor."
+msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "Bırakılan girdinin '%s:%s:%s' şifresi suret olan bir girdiye işaret ediyor.\n\nBırakılan girdi artık bu girdinin temel girdisine referans gösteriyor."
 
 #. Resource IDs: (32086)
 msgid "Duplicate Group"
@@ -2989,8 +2989,8 @@ msgstr "Çıkarılacak dosya:"
 
 #. Resource IDs: (367)
 #, c-format
-msgid "Export file: '%s' already exists.\r\nDo you want to replace it?"
-msgstr "Çıkarılacak dosya: '%s' zaten var.\r\nDosyayı değiştirmek ister misiniz?"
+msgid "Export file: '%s' already exists.\nDo you want to replace it?"
+msgstr "Çıkarılacak dosya: '%s' zaten var.\nDosyayı değiştirmek ister misiniz?"
 
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
@@ -3042,8 +3042,8 @@ msgstr "Belge kaydedilirken başarısız olundu."
 
 #. Resource IDs: (366)
 #, c-format
-msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\r\n%s %s\r\n(Only one R/W access at a time is allowed)"
-msgstr "S-O dan O/Y ye geçerken başarısız olundu, çünkü dosya şunun tarafından O/Y modunda zaten açılmış:\r\n%s %s\r\n(Aynı anda yalnızca bir O/Y erişimine izin verilir)"
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
+msgstr "S-O dan O/Y ye geçerken başarısız olundu, çünkü dosya şunun tarafından O/Y modunda zaten açılmış:\n%s %s\n(Aynı anda yalnızca bir O/Y erişimine izin verilir)"
 
 #. Resource IDs: (366)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
@@ -3054,8 +3054,8 @@ msgid "Failed to switch from R-O to R/W: The file appears to be too short to be 
 msgstr "S-O dan O/Y ye geçerken başarısız olundu: Dosya geçerli bir veritabanı olmak için çok kısa görünüyor."
 
 #. Resource IDs: (366)
-msgid "Failed to switch from R/W to R-O: Could not release database lock.\r\nTry exiting and restarting program."
-msgstr "O/Y den S-O ya geçerken başarısız olundu: Veritabanı kilidi açılamadı.\r\nProgramdan çıkıp tekrar başlatmayı deneyin."
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
+msgstr "O/Y den S-O ya geçerken başarısız olundu: Veritabanı kilidi açılamadı.\nProgramdan çıkıp tekrar başlatmayı deneyin."
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
@@ -3128,13 +3128,13 @@ msgstr "Dosya sürümü uyarısı"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "File: %s failed validation against XML Schema:\r\n\r\n%s"
-msgstr "Dosya: %s şu XML Taslağına göre doğrulanırken başarısız olundu:\r\n\r\n%s"
+msgid "File: %s failed validation against XML Schema:\n\n%s"
+msgstr "Dosya: %s şu XML Taslağına göre doğrulanırken başarısız olundu:\n\n%s"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
-msgstr "Dosya: %s doğrulamayı geçti ancak dosya içeri aktarma sırasında aşağıdaki hatalarla karşılaşıldı:\r\n\r\n%s"
+msgid "File: %s passed Validation but had the following errors during import:\n\n%s"
+msgstr "Dosya: %s doğrulamayı geçti ancak dosya içeri aktarma sırasında aşağıdaki hatalarla karşılaşıldı:\n\n%s"
 
 #. Resource IDs: (370)
 #, c-format
@@ -3204,8 +3204,8 @@ msgid "Font st&yle:"
 msgstr "Font &stili:"
 
 #. Resource IDs: (342)
-msgid "For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"
-msgstr "Güvenlik için, internete bağlanmadan önce veritabanı kapatılmalıdır.\r\nVeritabanını kapatmak ve devam etmek için Tamam'a basın.(Değişiklikler kaydedilecek)"
+msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
+msgstr "Güvenlik için, internete bağlanmadan önce veritabanı kapatılmalıdır.\nVeritabanını kapatmak ve devam etmek için Tamam'a basın.(Değişiklikler kaydedilecek)"
 
 #. Resource IDs: (203)
 #, c-format
@@ -3341,8 +3341,8 @@ msgid "Group:"
 msgstr "Grup"
 
 #. Resource IDs: (328)
-msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
-msgstr "Grup\tBaşlık\tKullanıcı Adı\tŞifre Süresi Dolma Tarihi\r\n"
+msgid "Group\tTitle\tUsername\tPassword Expiry Date\n"
+msgstr "Grup\tBaşlık\tKullanıcı Adı\tŞifre Süresi Dolma Tarihi\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
@@ -4035,8 +4035,8 @@ msgstr "Birleştir..."
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Merging database: %s\r\n"
-msgstr "Şu veritabanı birleştiriliyor: %s\r\n"
+msgid "Merging database: %s\n"
+msgstr "Şu veritabanı birleştiriliyor: %s\n"
 
 #. Resource IDs: (364)
 msgid "Merging this database into current database:"
@@ -4620,8 +4620,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "Şifre bunun bir suret girdi olduğunu gösteriyor fakat"
 
 #. Resource IDs: (342)
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nEvery entry must have a title."
-msgstr "Şifre bunun bir suret girdi olduğunu gösteriyor fakat başlıksız bir temel girdi belirtiyor.\r\nTüm girdilerin bir başlığı olmalıdır."
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
+msgstr "Şifre bunun bir suret girdi olduğunu gösteriyor fakat başlıksız bir temel girdi belirtiyor.\nTüm girdilerin bir başlığı olmalıdır."
 
 #. Resource IDs: (188)
 msgid "Password is too short"
@@ -4863,8 +4863,8 @@ msgid "Press to delete all added characters."
 msgstr "Tüm eklenen karakterleri silmek için basın."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr "Tamam'a basmak seçili ögenin şifresini panoya kopyalayacak. Pano Password Safekapatıldığında güvenli bir şekilde temizlenecek.\r\n\r\nİptal'e basmak şifrenin kopyalanmasını durdurur."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
+msgstr "Tamam'a basmak seçili ögenin şifresini panoya kopyalayacak. Pano Password Safekapatıldığında güvenli bir şekilde temizlenecek.\n\nİptal'e basmak şifrenin kopyalanmasını durdurur."
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5160,8 +5160,8 @@ msgstr "Eşle..."
 
 #. Resource IDs: (192)
 #, c-format
-msgid "SAX Parse Error during %s\r\n%s."
-msgstr "%s\r\n%s sırasında SAX Analiz Hatası."
+msgid "SAX Parse Error during %s\n%s."
+msgstr "%s\n%s sırasında SAX Analiz Hatası."
 
 #. Resource IDs: (191)
 #, c-format
@@ -5721,8 +5721,8 @@ msgstr "Geçerli veritabanı şununla eşlniyor:"
 
 #. Resource IDs: (360)
 #, c-format
-msgid "Synchronizing from database: %s\r\n"
-msgstr "Şu veritabanından eşleniyor: %s\r\n"
+msgid "Synchronizing from database: %s\n"
+msgstr "Şu veritabanından eşleniyor: %s\n"
 
 #. Resource IDs: (143, 510)
 msgid "System"
@@ -5826,8 +5826,8 @@ msgid "The ALT key is not used on any keyboard to select characters. Use the 'Al
 msgstr "ALT tuşu hiç bir klavyede karakter seçmek için kullanılmaz. Onluk değeriyle herhangi bir karakter girmek için 'Alt Num' tuşunu kullanın."
 
 #. Resource IDs: (215)
-msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
-msgstr "TXT ya da CSV dosyası istenildiği gibi dışa aktarılmadığı için girdi kayıtları CSV dosyasında birden çok satıra yayılmış durumda.\r\n\r\nİçe aktarma durduruldu."
+msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgstr "TXT ya da CSV dosyası istenildiği gibi dışa aktarılmadığı için girdi kayıtları CSV dosyasında birden çok satıra yayılmış durumda.\n\nİçe aktarma durduruldu."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -5839,18 +5839,18 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "%s veritabanı açılamadı.\nBaşka bir yerde aramak(Ara), yeni veritabanı oluşturmak(Yeni), ya da çıkmak ister misiniz?"
 
 #. Resource IDs: (366)
-msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\r\n\r\nPlease close the database and re-open it in R/W mode."
-msgstr "Veritabanı siz onu S-O modunda açtıktan sonra değiştirildi, bu yüzden O/Y moduna geçiş mümkün değil.\r\n\r\nLütfen veritabanını kapatın ve O/Y modunda tekrar açın."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode."
+msgstr "Veritabanı siz onu S-O modunda açtıktan sonra değiştirildi, bu yüzden O/Y moduna geçiş mümkün değil.\n\nLütfen veritabanını kapatın ve O/Y modunda tekrar açın."
 
 #. Resource IDs: (339)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
-msgstr "Veritabanı:\n%s\n\ngörünüşe göre şunun tarafından kullanılıyor:\n%s%s.\n\nVeritabanını sadece okumak için açılsın ya da çıkılsın mı?\r\n\r\nNot: Aynı anda yalnızca bir kullanıcı veritabanını yazma için açabilir."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\n\nNote: Only one user at a time can open the database for writing."
+msgstr "Veritabanı:\n%s\n\ngörünüşe göre şunun tarafından kullanılıyor:\n%s%s.\n\nVeritabanını sadece okumak için açılsın ya da çıkılsın mı?\n\nNot: Aynı anda yalnızca bir kullanıcı veritabanını yazma için açabilir."
 
 #. Resource IDs: (328)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "Veritabanı:\n%s\n\ngörünüşe göre şunun tarafından kullanılıyor:\n%s%s.\n\nVeritabanı sadece okumak için, okuyup yazmak için açılsın ya da çıkılsın mı?\r\n\r\nNot: \"Oku-Yaz\" 'ı yalnızca dosyanın başka biri tarafından kullanılmadığından eminseniz seçin,\nbuna Password Safe'in bilgisayarınızdaki başka bir kopyası dahil."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\n\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr "Veritabanı:\n%s\n\ngörünüşe göre şunun tarafından kullanılıyor:\n%s%s.\n\nVeritabanı sadece okumak için, okuyup yazmak için açılsın ya da çıkılsın mı?\n\nNot: \"Oku-Yaz\" 'ı yalnızca dosyanın başka biri tarafından kullanılmadığından eminseniz seçin,\nbuna Password Safe'in bilgisayarınızdaki başka bir kopyası dahil."
 
 #. Resource IDs: (361)
 #, c-format
@@ -5905,8 +5905,8 @@ msgstr "Aşağıdaki girdilerin birbirinin aynı UUID alanları vardı. Bu sorun
 
 #. Resource IDs: (215)
 #, c-format
-msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
-msgstr "Aşağıdaki girdilerin veritabanında zaten var olan ancak farklı ayarları olan bir planı vardı.\r\nYeni bir ada sahip bir plan şu anki tarih/saat (%s) eklenerek oluşturuldu: %s"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr "Aşağıdaki girdilerin veritabanında zaten var olan ancak farklı ayarları olan bir planı vardı.\nYeni bir ada sahip bir plan şu anki tarih/saat (%s) eklenerek oluşturuldu: %s"
 
 #. Resource IDs: (215)
 #, c-format
@@ -5986,8 +5986,8 @@ msgstr "Orijinal veritabanı, \"%s\", 3.0-öncesi formatta. Şu anda veri Passwo
 
 #. Resource IDs: (342)
 #, c-format
-msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
-msgstr "Şifre 'suret' formunda ancak referans gösterilen girdi '%s:%s:%s' nin kendisi de bir suret.\r\n\r\nBu girdinin 'gerçek' temel girdiye işaret etmesini ister misiniz?"
+msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n\nDo you wish this entry to point to the 'real' base entry?"
+msgstr "Şifre 'suret' formunda ancak referans gösterilen girdi '%s:%s:%s' nin kendisi de bir suret.\n\nBu girdinin 'gerçek' temel girdiye işaret etmesini ister misiniz?"
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -6040,18 +6040,18 @@ msgstr "Bu girdi değiştirildi. İptal etmek istediğinize emin misiniz ?"
 
 #. Resource IDs: (341)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s"
-msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\r\n%s"
+msgid "This entry has the following %d %s:\n%s"
+msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\n%s"
 
 #. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\r\n%s\r\nLütfen devam etmek için onay verin (Bu girdiye olan tüm kısayollar silinecek)?"
+msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\n%s\nLütfen devam etmek için onay verin (Bu girdiye olan tüm kısayollar silinecek)?"
 
 #. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\r\n%s\r\nLütfen devam etmek için onay verin (suret girdinin şifreleri bu girdinin şifresiyle değiştirilecek)?"
+msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\n%s\nLütfen devam etmek için onay verin (suret girdinin şifreleri bu girdinin şifresiyle değiştirilecek)?"
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -6386,8 +6386,8 @@ msgstr "Kaydedilmemiş değişiklikler"
 
 #. Resource IDs: (358)
 #, c-format
-msgid "Unsaved changes have been made to database:\r\n %s."
-msgstr "Şu veritabanına kaydedilmemiş değişiklikler yapıldı:\r\n %s."
+msgid "Unsaved changes have been made to database:\n %s."
+msgstr "Şu veritabanına kaydedilmemiş değişiklikler yapıldı:\n %s."
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -6516,8 +6516,8 @@ msgstr "Doğrula"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Validated %d %s\r\n\r\nImported %d %s"
-msgstr "Doğrulandı %d %s\r\n\r\nİçe aktarıldı %d %s"
+msgid "Validated %d %s\n\nImported %d %s"
+msgstr "Doğrulandı %d %s\n\nİçe aktarıldı %d %s"
 
 #. Resource IDs: (369)
 msgid "Value"
@@ -6602,8 +6602,8 @@ msgstr "UYARI: Devam ederseniz, şu anda geçerli olan veritabanınızdaki alanl
 
 #. Resource IDs: (363)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "UYARI: Bu işlem veritabanındaki %snin korumasız bir kopyasını oluşturacak. Kullanımdan sonra bu dosyayı silmek yeterli DEĞİLDİR.\r\n\r\nLütfen bu seçeneği riskleri anlayıp kabul etmediğiniz sürece kullanmayın. Bu seçenek bu program tarafından sağlanan güvenliği geçersiz kılar."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr "UYARI: Bu işlem veritabanındaki %snin korumasız bir kopyasını oluşturacak. Kullanımdan sonra bu dosyayı silmek yeterli DEĞİLDİR.\n\nLütfen bu seçeneği riskleri anlayıp kabul etmediğiniz sürece kullanmayın. Bu seçenek bu program tarafından sağlanan güvenliği geçersiz kılar."
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -7087,35 +7087,35 @@ msgstr "\nuyarılarla"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\r\nBirleştirme tamamlandı: %d %s eklendi(%d %s, %d %s, %d %s)  "
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\nBirleştirme tamamlandı: %d %s eklendi(%d %s, %d %s, %d %s)  "
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\r\nSynchronize completed: %d %s updated"
-msgstr "\r\nEşleme tamamlandı: %d %s güncellendi"
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\nEşleme tamamlandı: %d %s güncellendi"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\r\nThe following %s %s updated:"
-msgstr "\r\nAşağıdaki %s %s güncellendi:"
+msgid "\nThe following %s %s updated:"
+msgstr "\nAşağıdaki %s %s güncellendi:"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\r\nThe following new %s %s merged into this database:"
-msgstr "\r\nAşağıdaki yeni %s %s geçerli veritabanıyla birleştirildi:"
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\nAşağıdaki yeni %s %s geçerli veritabanıyla birleştirildi:"
 
 #. Resource IDs: (341)
-msgid "\r\nThis field is being edited in your\r\ndefault text editor."
-msgstr "\r\nBu alan varsayılan metin\r\neditörünüzde düzenleniyor."
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\nBu alan varsayılan metin\neditörünüzde düzenleniyor."
 
 #. Resource IDs: (342)
-msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\r\n\r\nBu şifreyle devam etmek için Evet'i ya da iptal etmek için İptal'i seçin"
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\nBu şifreyle devam etmek için Evet'i ya da iptal etmek için İptal'i seçin"
 
 #. Resource IDs: (345)
-msgid "\r\nemail: "
-msgstr "\r\ne-posta:"
+msgid "\nemail: "
+msgstr "\ne-posta:"
 
 #. Resource IDs: (346)
 #, c-format
@@ -7124,8 +7124,8 @@ msgstr "\t%s aşağıdaki alanlara kısıtlandı:"
 
 #. Resource IDs: (336)
 #, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas differences in the following fields:"
-msgstr "\tGirdi - Gup:\"%s\"; Başlık:\"%s\"; Kullanıcı:\"%s\"\r\n\t\taşağıdaki alanlarda farklılık gösteriyor:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n\t\thas differences in the following fields:"
+msgstr "\tGirdi - Gup:\"%s\"; Başlık:\"%s\"; Kullanıcı:\"%s\"\n\t\taşağıdaki alanlarda farklılık gösteriyor:"
 
 #. Resource IDs: (335)
 #, c-format
@@ -7162,8 +7162,8 @@ msgstr "\tAşağıdaki girdiler '%s' arama metnini içeriyor"
 
 #. Resource IDs: (346)
 #, c-format
-msgid "\tThe following restrictions were selected:\r\n\t\t %s"
-msgstr "\tAşağıdaki kısıtlamalar seçildi:\r\n\t\t %s"
+msgid "\tThe following restrictions were selected:\n\t\t %s"
+msgstr "\tAşağıdaki kısıtlamalar seçildi:\n\t\t %s"
 
 #. Resource IDs: (205)
 msgid "\tThis entry has been made an alias of associated base entry."

@@ -51,7 +51,7 @@ inline bool IsNotNull(const wxAcceleratorEntry& acc)
 // MenuItemData
 ///////////////
 
-MenuItemData::MenuItemData(wxMenuItem* menuItem, 
+MenuItemData::MenuItemData(wxMenuItem* menuItem,
                            const wxString& label) : m_item(menuItem),
                                                     m_menuId(menuItem->GetId()),
                                                     m_label(label)
@@ -110,7 +110,7 @@ void MenuItemData::SetUserShortcut(const wxAcceleratorEntry& userAccel, bool set
 {
   bool modified = false;
   if (IsNotNull(userAccel)) {
-    // if the user specified the original shortcut, treat it as unmodified shortcut 
+    // if the user specified the original shortcut, treat it as unmodified shortcut
     if (IsSameShortcut(userAccel, m_origShortcut)) {
       m_userShortcut = wxAcceleratorEntry();
       m_status.setorig();
@@ -143,7 +143,7 @@ bool MenuItemData::IsDirty() const {
 
 /*
  * The only realiable way to change the accelerator, atleast for 2.8.11, is to
- * set a new and complete label, with full mnemonics + accelerator.   Don't 
+ * set a new and complete label, with full mnemonics + accelerator.   Don't
  * use wxMenuItem::SetAccel(), or do * SetItemLabel(SomeManipulation(GetItemLabelText()))).
  * You will end up with underscores in place where the '&' mnemonic is, and they would multiply
  * each time you call SetItemLabel
@@ -322,7 +322,7 @@ void SetFont(wxGrid *grid, int row)
   int dummy;
   grid->CalcScrolledPosition(0, rect.y, &dummy, &rect.y);
   grid->GetGridWindow()->Refresh( false, &rect );
-  
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -529,7 +529,7 @@ MenuItemData::ShortcutStatus PWSMenuShortcuts::GetGridShortcutStatusAt(size_t in
 }
 
 /*
- * will remove the user-specified shortcut.  If there wasn't any, then it will 
+ * will remove the user-specified shortcut.  If there wasn't any, then it will
  * remove the original shortcut, if any
  */
 void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
@@ -644,7 +644,7 @@ struct GridAndIndex
 void PWSMenuShortcuts::OnShortcutRightClick( wxGridEvent& evt )
 {
   wxMenu shortcutsMenu;
-  shortcutsMenu.Append(wxID_ANY, wxT("&Reset/Remove shortcut\tDel"));
+  shortcutsMenu.Append(wxID_ANY, _("&Reset/Remove shortcut\tDel"));
 
   wxCHECK_RET(evt.GetRow() >= 0 && unsigned(evt.GetRow()) < m_midata.size(),
                 wxString::Format(wxT("Invalid index [%d] for reset/remove shortcut"),
@@ -762,9 +762,9 @@ bool ShortcutsGridValidator::Validate(wxWindow* parent)
     wxString newStr = grid->GetCellValue(row, COL_SHORTCUT_KEY);
     if (!newStr.IsEmpty()) {
       if (!wxAcceleratorEntry().FromString(wxT('\t')+newStr)) {
-        wxString msg(wxT("Shortcut # "));
-        msg << (row + 1) << wxT(" [") << newStr << wxT("] is not a valid shortcut");
-        wxMessageBox(msg, wxT("Invalid shortcut"), wxOK | wxICON_ERROR, parent);
+        wxString msg(_("Shortcut # "));
+        msg << (row + 1) << wxT(" [") << newStr << wxT("] ") << _("is not a valid shortcut");
+        wxMessageBox(msg, _("Invalid shortcut"), wxOK | wxICON_ERROR, parent);
         grid->SetGridCursor(row, COL_SHORTCUT_KEY);
         return false;
       }

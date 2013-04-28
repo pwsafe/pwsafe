@@ -178,7 +178,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
   if (m_tree->GetChildrenCount(tid) > 0) {
     wxTreeItemIdValue cookie;
     wxTreeItemId ti = m_tree->GetFirstChild(tid, cookie);
-    
+
     while (ti.IsOk()) {
       Command *delCmd = Delete(ti);
       if (delCmd != NULL)
@@ -465,10 +465,10 @@ void PasswordSafeFrame::DoCopyURL(CItemData &item)
 
 void PasswordSafeFrame::DoCopyEmail(CItemData &item)
 {
-  const StringX mailto = item.IsEmailEmpty()? 
-                      (item.IsURLEmail()? item.GetURL(): StringX()) 
+  const StringX mailto = item.IsEmailEmpty()?
+                      (item.IsURLEmail()? item.GetURL(): StringX())
                       : item.GetEmail();
-  
+
   if (!mailto.empty()) {
     PWSclip::SetData(mailto);
     UpdateAccessTime(item);
@@ -547,7 +547,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
 /*
  * The entire logic is borrowed from ui/Windows/MainEdit.cpp
  */
-void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype, 
+void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 					const std::vector<size_t>& vactionverboffsets)
 {
   // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
@@ -555,13 +555,13 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
   StringX sxtmp(L"");
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
- 
+
   const int N = static_cast<int>(sxautotype.length());
 
   CKeySend ks;
 #ifdef __WXMAC__
   if (!ks.SimulateApplicationSwitch()) {
-    wxMessageBox(wxT("Error switching to another application before autotyping. Switch manually within 5 seconds"), 
+    wxMessageBox(_("Error switching to another application before autotyping. Switch manually within 5 seconds"),
                   wxTheApp->GetAppName(), wxOK|wxICON_ERROR, this);
     pws_os::sleep_ms(5000);
   }
@@ -571,7 +571,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 #endif
   //sleep for 1 second
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
-    
+
   int gNumIts;
   for (int n = 0; n < N; n++){
     curChar = sxautotype[n];
@@ -586,7 +586,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
         case L'd':
         case L'w':
         case L'W':
-        { 
+        {
            if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
                vactionverboffsets.end()) {
              // Not in the list of found action verbs - treat as-is
@@ -628,7 +628,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
             ks.SetAndDelay(newdelay);
           }
           else
-            pws_os::sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000)); 
+            pws_os::sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000));
 
           break; // case 'd', 'w' & 'W'
         }
@@ -660,14 +660,14 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
   }
   ks.SendString(sxtmp);
 
-  pws_os::sleep_ms(1000); 
+  pws_os::sleep_ms(1000);
 
 }
 
 void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
 {
   CItemData* pci = &item;
-  
+
   StringX sx_pswd;
   if (pci->IsDependent()) {
     CItemData *pbci = m_core.GetBaseEntry(pci);
@@ -677,15 +677,15 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
       pci = pbci;
   } else
     sx_pswd = pci->GetPassword();
-  
+
   wxString cs_command = towxstring(pci->GetURL());
-  
+
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
     StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
                                                         vactionverboffsets);
     LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
-#ifdef NOT_YET    
+#ifdef NOT_YET
     SetClipboardData(sx_pswd);
     UpdateLastClipboardAction(CItemData::PASSWORD);
 #endif
@@ -703,10 +703,10 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
    */
   wxString theURL(csURL);
   theURL.Replace(wxT("\n\t\r"), wxT(""), true); //true => replace all
-  
+
   const bool isMailto = (theURL.Find(wxT("mailto:")) != wxNOT_FOUND);
   const wxString errMsg = isMailto ? _("Unable to send email") : _("Unable to display URL");
-  
+
   const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxT(""));
   const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxT("")) +
                           theURL.Replace(wxT("{alt}"), wxT("")));
@@ -717,34 +717,34 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
 
   if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
     theURL = wxT("http://") + theURL;
-  
+
   const wxString sxAltBrowser(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser)));
   const bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) && !sxAltBrowser.empty());
-  
+
   wxString sxFile, sxParameters;
   if (!useAltBrowser) {
     sxFile = theURL;
-  } 
+  }
   else { // alternate browser specified, invoke w/optional args
     sxFile = sxAltBrowser;
     wxString sxCmdLineParms(towxstring(PWSprefs::GetInstance()->
                            GetPref(PWSprefs::AltBrowserCmdLineParms)));
-    
+
     if (!sxCmdLineParms.empty())
       sxParameters = sxCmdLineParms + wxT(" ") + theURL;
     else
       sxParameters = theURL;
   }
-  
+
   sxFile.Trim(false); //false => from left
-  
+
 #ifdef NOT_YET
   // Obey user's No Autotype flag [xa]
   if (no_autotype > 0) {
     m_bDoAutoType = false;
     m_AutoType.clear();
     m_vactionverboffsets.clear();
-  } 
+  }
   else {
     // Either do it because they pressed the right menu/shortcut
     // or they had specified Do Auotype flag [autotype]
@@ -755,7 +755,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
   }
 #endif
 
-#ifdef NOT_YET 
+#ifdef NOT_YET
   bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_AutoType.empty());
 #else
   bool rc;
@@ -767,7 +767,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
     rc= ::wxLaunchDefaultBrowser(sxFile);
   }
 #endif
-  
+
   if (!rc) {
     wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, this);
   }
@@ -784,8 +784,8 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
 void PasswordSafeFrame::DoEmail(CItemData& item )
 {
-  const wxString mailto = item.IsEmailEmpty()? 
-                      (item.IsURLEmail()? towxstring(item.GetURL()): wxString()) 
+  const wxString mailto = item.IsEmailEmpty()?
+                      (item.IsURLEmail()? towxstring(item.GetURL()): wxString())
                       : towxstring(item.GetEmail());
   if (!mailto.empty()) {
     ::wxLaunchDefaultBrowser(mailto, wxBROWSER_NEW_WINDOW);
