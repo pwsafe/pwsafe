@@ -3733,7 +3733,7 @@ Entries with more than this new maximum already saved will remain unchanged.</se
         <seg>Compare Complete</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Полное сравнение</seg>
+        <seg>Сравнение завершено</seg>
       </tuv>
     </tu>
     <tu>
@@ -3752,7 +3752,7 @@ Entries with more than this new maximum already saved will remain unchanged.</se
 	 %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Полное сравнение для текущего контейнера:
+        <seg>Завершено сравнение текущего контейнера:
 	 %s
  и:
 	 %s</seg>
@@ -5184,10 +5184,10 @@ The dropped entry now references that entry's base entry.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Enter positions of password characters separated by spaces, commas or semi-colons:</seg>
+        <seg>Enter positions of password characters separated by spaces, commas or semi-colons.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите номера символов пароля через пробел, запятую или точку с запятой:</seg>
+        <seg>Введите номера символов пароля через пробел, запятую или точку с запятой.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6260,14 +6260,6 @@ Press OK to close database and continue (Changes will be saved)</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>H</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>H</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>HK</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -6936,14 +6928,6 @@ You may need to also select the Shift key to see them.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Index is bigger than password length (%d).</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Номер превосходит длину пароля (%d).</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Index is invalid or missing</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -6952,18 +6936,26 @@ You may need to also select the Shift key to see them.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Index must be greater than or equal to 1.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Номер должен быть не меньше 1.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Index not numeric</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Индекс не является числовым</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Index points after the end of the password (length %d).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Позиция указывает на символ после конца пароля (длина пароля %d)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Index points before the start of the password (length %d).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Позиция указывает на символ до начала пароля (длина пароля %d)</seg>
       </tuv>
     </tu>
     <tu>
@@ -8725,16 +8717,6 @@ Recommend that the database is now saved.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Password Safe has been compiled as %s but CPU is really %s.
-You may not be able to open files or saved files may be incompatible with other platforms.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Password Safe был собран для процессора %s но запущен на %s.
-Возможно, вы не сможете открывать файлы, или сохраняемые файлы будут несовместимы с другими платформами.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Password Safe x.xx</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8796,7 +8778,7 @@ Every entry must have a title.</seg>
         <seg>Password length is less than sum of 'at least' constraints</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Длина пароля меньше, чем сумма ограничении вида «не менее»</seg>
+        <seg>Длина пароля меньше, чем сумма ограничений вида «не менее»</seg>
       </tuv>
     </tu>
     <tu>
@@ -9213,6 +9195,22 @@ Every entry must have a title.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Номер 1 соответствует первому символу, 2 — второму и т.д. до N (где N — количество символов в пароле). -1 указывает на последний символ, -2 — на второй с конца, и т.д. (-N соответствует первому символу).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Positions:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Номера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Press to delete all added characters.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -9587,14 +9585,6 @@ Open the auto-saved versions instead of the explicitly saved versions</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Requested Values:</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Результат отбора:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Requested mode change failed</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -9787,14 +9777,6 @@ Unable to provide Virtual Keyboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Русская (машинопись)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>S</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>S</seg>
       </tuv>
     </tu>
     <tu>
@@ -10682,6 +10664,14 @@ Minimal diagnostic information has been written to file:
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>При выборе параметров «произносимые» или «удобочитаемые» невозможно задание минимального количества символов. Указанные значения проигнорированы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Sorry, couldn't find help file - help unavailable.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Помощь недоступна: не найден файл справки</seg>
       </tuv>
     </tu>
     <tu>
@@ -11814,7 +11804,7 @@ Note: Saving this database will result in the removal of unread entries!</seg>
         <seg>To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Для замены паролей существующих элементов, следующие поля должны присутствовать: группа/заголовок, имя пользователя, пароль. Один или несколько из них отсутствуют, поэтому элементы не будут обновлены.</seg>
+        <seg>Для замены паролей существующих элементов должны присутствовать следующие поля: группа/заголовок, имя пользователя, пароль. Один или несколько из них отсутствуют, поэтому элементы не будут обновлены.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12182,7 +12172,7 @@ Database related settings will be stored in the open database when it is closed,
         <seg>Unknown</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Незвестно</seg>
+        <seg>Неизвестно</seg>
       </tuv>
     </tu>
     <tu>
@@ -12589,6 +12579,14 @@ Imported %d %s</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Values:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Значения:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Variable name is empty</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -12732,7 +12730,7 @@ Please do not use this option unless you understand and accept the risks. This o
       <tuv xml:lang="RU-RU">
         <seg>Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!&#13;
 &#13;
-Это действие позволяет обойти защиту предоставляемую программой. Прололжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
+Это действие позволяет обойти защиту предоставляемую программой. Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14114,14 +14112,6 @@ E-mail: </seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>big endian</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>big endian</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>bottom</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -14478,14 +14468,6 @@ E-mail: </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>меньше либо равно</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>little endian</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>little endian</seg>
       </tuv>
     </tu>
     <tu>

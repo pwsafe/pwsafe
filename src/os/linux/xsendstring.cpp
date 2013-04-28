@@ -158,7 +158,7 @@ public:
     if (display)
       XCloseDisplay(display);
   }
-  
+
   bool operator !() const { return display == NULL; }
 };
 
@@ -206,16 +206,16 @@ int CalcModifiersForKeysym(KeyCode code, KeySym sym, Display* disp)
       0,                  //none
       ShiftMask,
       ModeSwitchMask,
-      ShiftMask | ModeSwitchMask,  
+      ShiftMask | ModeSwitchMask,
       // beyond this, its all guesswork since there's no documentation, but see this:
       //
       //     http://superuser.com/questions/189869/xmodmap-six-characters-to-one-key
       //
-      // Also, if you install mulitple keyboard layouts the number of keysyms-per-keycode 
-      // will keep increasing to a max of 16 (up to 4 layouts can be installed together 
+      // Also, if you install mulitple keyboard layouts the number of keysyms-per-keycode
+      // will keep increasing to a max of 16 (up to 4 layouts can be installed together
       // in Ubuntu 11.04).  For some keycodes, you will actually have non-NoSymbol
       // keysyms beyond the first four
-      // 
+      //
       // We probably shouldn't go here if Mode_switch and ISO_Level3_Shift are assigned to
       // the same modifier mask
       Level3ShiftMask,
@@ -267,7 +267,8 @@ private:
   char* bytes;
 public:
   wchar2bytes(wchar_t wc):  bytes(new char[MB_CUR_MAX*2 + sizeof(wchar_t)*2 + 2 + 1]) {
-    mbstate_t ps = {0};
+    mbstate_t ps;
+    memset(&ps, 0, sizeof(ps));//initialize mbstate
     size_t n;
     if ((n = wcrtomb(bytes, wc, &ps)) == size_t(-1))
       snprintf(bytes, NumberOf(bytes), "U+%04X", int(wc));
@@ -293,7 +294,7 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
 {
   atGlobals.error_detected = false;
   atGlobals.errorString[0] = 0;
-  
+
   AutotypeEvent event;
   if (!event) {
     if (!atGlobals.error_detected)
@@ -311,7 +312,7 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
   for (StringX::const_iterator srcIter = str.begin(); srcIter != str.end(); ++srcIter) {
 
     //throw away 'vertical tab' chars which are only used on Windows to send a shift+tab
-    //as a workaround for some issues with IE 
+    //as a workaround for some issues with IE
     if (*srcIter == _T('\v'))
       continue;
 
