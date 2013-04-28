@@ -259,9 +259,7 @@ BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
 
 void COptionsMisc::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/misc_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/misc_tab.html");
 }
 
 /////////////////////////////////////////////////////////////////////////////

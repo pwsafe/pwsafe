@@ -203,9 +203,7 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
 
 void COptionsShortcuts::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/shortcuts_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/shortcuts_tab.html");
 }
 
 void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)

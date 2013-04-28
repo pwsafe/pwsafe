@@ -116,8 +116,7 @@ END_MESSAGE_MAP()
 
 void CWZAdvanced::OnHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/advanced.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/advanced.html");
 }
 
 BOOL CWZAdvanced::OnInitDialog()

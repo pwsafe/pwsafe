@@ -286,9 +286,7 @@ exit:
 
 void CManagePSWDPolices::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/named_password_policies.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/named_password_policies.html");
 }
 
 void CManagePSWDPolices::OnOK()

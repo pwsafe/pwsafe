@@ -28,6 +28,7 @@ protected:
   void AddTool(int DlgItemID, int ResID);
   void ActivateToolTip();
   void RelayToolTipEvent(MSG *pMsg);
+  void ShowHelp(const CString &topicFile);
 
   CToolTipCtrl *m_pToolTipCtrl;
 };

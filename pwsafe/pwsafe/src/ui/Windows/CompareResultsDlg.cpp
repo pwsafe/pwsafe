@@ -388,8 +388,7 @@ void CCompareResultsDlg::OnOK()
 
 void CCompareResultsDlg::OnHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/compare_results.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/compare_results.html");
 }
 
 void CCompareResultsDlg::UpdateStatusBar()

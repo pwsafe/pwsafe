@@ -376,9 +376,7 @@ void CAddEdit_DateTimes::OnDaysChanged()
 
 void CAddEdit_DateTimes::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_date.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd_date.html");
 }
 
 void CAddEdit_DateTimes::OnHowChanged()

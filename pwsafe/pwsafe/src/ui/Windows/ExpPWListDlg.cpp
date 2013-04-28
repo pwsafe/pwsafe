@@ -395,6 +395,5 @@ int CExpPWListDlg::GetEntryImage(const st_ExpLocalListEntry &elle)
 
 void CExpPWListDlg::OnIconHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/images.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/images.html");
 }

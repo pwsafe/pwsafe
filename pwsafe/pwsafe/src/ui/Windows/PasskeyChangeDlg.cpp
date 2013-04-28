@@ -162,9 +162,7 @@ void CPasskeyChangeDlg::OnCancel()
 
 void CPasskeyChangeDlg::OnHelp() 
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/change_combo.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/change_combo.html");
 }
 
 void CPasskeyChangeDlg::OnPasskeySetfocus()

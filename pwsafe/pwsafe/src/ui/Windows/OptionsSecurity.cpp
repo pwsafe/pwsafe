@@ -202,9 +202,7 @@ BOOL COptionsSecurity::OnKillActive()
 
 void COptionsSecurity::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/security_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/security_tab.html");
 }
 
 void COptionsSecurity::OnLockOnIdleTimeout() 

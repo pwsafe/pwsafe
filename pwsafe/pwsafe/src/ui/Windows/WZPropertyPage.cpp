@@ -7,7 +7,7 @@
 */
 
 #include "stdafx.h"
-#include "passwordsafe.h"
+#include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 
@@ -80,6 +80,17 @@ BOOL CWZPropertyPage::OnSetActive()
   m_pWZPSH->GetDlgItem(ID_WIZBACK)->ShowWindow(bBackButton ? SW_SHOW : SW_HIDE);
 
   return CPropertyPage::OnSetActive();
+}
+
+void CWZPropertyPage::ShowHelp(const CString &topicFile)
+{
+  if (!app.GetHelpFileName().IsEmpty()) {
+    const CString cs_HelpTopic = app.GetHelpFileName() + topicFile;
+    HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  } else {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
+  }
 }
 
 LRESULT CWZPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)

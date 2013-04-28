@@ -261,16 +261,12 @@ BOOL COptionsBackup::OnKillActive()
 
 void COptionsBackup::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/backups_tab.html");
 }
 
 void COptionsBackup::OnPreferencesHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/preferences.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/preferences.html");
 }
 
 /////////////////////////////////////////////////////////////////////////////

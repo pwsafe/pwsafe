@@ -305,9 +305,7 @@ void CAddEdit_Additional::OnChanged()
 
 void CAddEdit_Additional::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_add.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd_add.html");
 }
 
 HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)

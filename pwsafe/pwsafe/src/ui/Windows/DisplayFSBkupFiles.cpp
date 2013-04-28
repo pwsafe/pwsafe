@@ -197,9 +197,7 @@ BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)
 
 void CDisplayFSBkupFiles::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/failsafebackups.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/failsafebackups.html");
 }
 
 void CDisplayFSBkupFiles::OnContinue()

@@ -171,9 +171,7 @@ BOOL COptionsPasswordHistory::OnKillActive()
 
 void COptionsPasswordHistory::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_history_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/password_history_tab.html");
 }
 
 void COptionsPasswordHistory::OnSavePWHistory() 
