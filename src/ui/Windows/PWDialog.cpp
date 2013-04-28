@@ -9,6 +9,7 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWDialog.h"
+#include "GeneralMsgBox.h"
 
 #include <algorithm>
 #include <functional>
@@ -89,6 +90,18 @@ void CPWDialog::RelayToolTipEvent(MSG *pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 }
+
+void CPWDialog::ShowHelp(const CString &topicFile)
+{
+  if (!app.GetHelpFileName().IsEmpty()) {
+    const CString cs_HelpTopic = app.GetHelpFileName() + topicFile;
+    HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  } else {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
+  }
+}
+
 
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {

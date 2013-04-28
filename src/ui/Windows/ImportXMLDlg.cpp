@@ -82,9 +82,7 @@ void CImportXMLDlg::OnImportPSWDsOnly()
 
 void CImportXMLDlg::OnHelp() 
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/importxml.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/importxml.html");
 }
 
 void CImportXMLDlg::OnOK() 

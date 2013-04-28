@@ -472,9 +472,7 @@ exit:
 
 void CPasswordPolicyDlg::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_policies.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/password_policies.html");
 }
 
 void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,

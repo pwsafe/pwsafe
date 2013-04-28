@@ -139,9 +139,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
 
 void CEditShortcutDlg::OnHelp() 
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd.html");
 }
 
 void CEditShortcutDlg::OnOK() 

@@ -30,6 +30,7 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);
   virtual BOOL OnSetActive();
+  void ShowHelp(const CString &topicFile);
 
   // Generated message map functions
   //{{AFX_MSG(CWZPropertyPage)

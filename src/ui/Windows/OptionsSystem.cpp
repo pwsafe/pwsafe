@@ -246,9 +246,7 @@ BOOL COptionsSystem::OnKillActive()
 
 void COptionsSystem::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/system_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/system_tab.html");
 }
 
 void COptionsSystem::OnUseSystemTray() 
