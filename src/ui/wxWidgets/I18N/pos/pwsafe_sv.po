@@ -2270,18 +2270,6 @@ msgstr "Vill du ersätta det?"
 msgid "Import XML failed"
 msgstr "XML-import misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2656
-#, fuzzy, c-format
-msgid ""
-"Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
-"Directory.\n"
-"Please copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
-"Kan inte hitta XML schemats defentitionsfil (%s) i din PasswordSafe's "
-"programmapp.\n"
-"Vänligen, kopiera den från din installationsmapp eller ominstallera "
-"PasswordSafe."
-
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2657
 #, fuzzy
 msgid "Missing XSD File - "
@@ -2795,24 +2783,6 @@ msgstr "var"
 #: ../../../ui/wxWidgets/PwsSync.cpp:746 ../../../core/core_st.cpp:290
 msgid "were"
 msgstr "var"
-
-#: ../../../ui/wxWidgets/PwsSync.cpp:747
-#, fuzzy, c-format
-msgid ""
-"\n"
-"The following %s %s updated:"
-msgstr ""
-"\n"
-"Följande %s %s uppdaterades:"
-
-#: ../../../ui/wxWidgets/PwsSync.cpp:763
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Synchronize completed: %d %s updated"
-msgstr ""
-"\n"
-"Synkroniseringen är färdig: %d %s uppdaterad"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:773
 #, fuzzy
@@ -4444,23 +4414,6 @@ msgstr "Måste vara åtminstonde %d"
 #, fuzzy
 #~ msgid "Minimum password length"
 #~ msgstr "Lösenordets längd:"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Do you wish to see a detailed report?"
-#~ msgstr "Vill du ersätta det?"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Could not open file for writing!"
-#~ msgstr ""
-#~ "%s\n"
-#~ "\n"
-#~ "Kunde inte öppna filen för skrivning!"
 
 #~ msgid "Password Expires on:"
 #~ msgstr "Lösenordet upphör den:"
@@ -6836,7 +6789,7 @@ msgstr "Måste vara åtminstonde %d"
 #~ msgstr "Lösenordshistorikens filter"
 
 #~ msgid "Password Length"
-#~ msgstr "\vLösenordslängd"
+#~ msgstr "Lösenordslängd"
 
 #~ msgid "Password Modified"
 #~ msgstr "Lösenordet har ändrats"
