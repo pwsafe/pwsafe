@@ -36,7 +36,7 @@
 #include "./graphics/findtoolbar/classic/findcase_s.xpm"
 #include "./graphics/findtoolbar/classic/findclear.xpm"
 ////@end XPM images
-#include <wx/statline.h> 
+#include <wx/statline.h>
 #include <wx/valgen.h>
 #include <wx/srchctrl.h>
 
@@ -65,8 +65,8 @@ enum {
 
 
 
-PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), 
-                                                                    m_parentFrame(parent), 
+PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0),
+                                                                    m_parentFrame(parent),
                                                                     m_criteria(new SelectionCriteria)
 {
 }
@@ -105,19 +105,19 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxASSERT(txtCtrl);
 
   const wxString searchText = txtCtrl->GetLineText(0);
-  
+
   if (searchText.IsEmpty())
     return;
-    
+
   if (m_criteria->IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
       m_searchPointer.Clear();
-   
+
       if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS))
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
-        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
+        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer,
                       m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(), m_criteria->SubgroupSearchText(),
-                      m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(), 
+                      m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(),
                       m_criteria->CaseSensitive(), begin, end, afn);
 
       m_criteria->Clean();
@@ -178,7 +178,7 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
   HideSearchToolbar();
 }
 
-void PasswordSafeSearch::OnSearchClear(wxCommandEvent& evt)
+void PasswordSafeSearch::OnSearchClear(wxCommandEvent& /* evt */)
 {
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search ctrl from toolbar"));
@@ -192,7 +192,7 @@ void PasswordSafeSearch::HideSearchToolbar()
   m_toolbar->Show(false);
   m_parentFrame->GetSizer()->Layout();
   m_parentFrame->SetFocus();
-  
+
   wxMenu* editMenu = 0; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
   if (editMenu) { //the menu might not have been modified if nothing was actually searched for
@@ -218,11 +218,11 @@ struct FindDlgType {
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced Find Options");
   }
-  
+
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
     return false;
   }
-  
+
   static bool IsPreselectedField(CItemData::FieldType /*field*/) {
     return true;
   }
@@ -267,8 +267,8 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
     AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
     if (dlg.ShowModal() == wxID_OK) {
       // No check for m_criteria.IsDirty() here because we want to start a new search
-      // whether or not the group/field selection were modified because user just 
-      // toggled the "Advanced Options" on.  It was OFF before just now. 
+      // whether or not the group/field selection were modified because user just
+      // toggled the "Advanced Options" on.  It was OFF before just now.
       m_searchPointer.Clear();
     }
     else {
@@ -286,7 +286,7 @@ void PasswordSafeSearch::RefreshButtons(void)
 {
   if (!m_toolbar)
     return;
-    
+
   static struct _SearchBarInfo{
     int id;
     const char** bitmap_normal;
@@ -303,16 +303,16 @@ void PasswordSafeSearch::RefreshButtons(void)
 
   const char** _SearchBarInfo::* bitmap_normal;
   const char** _SearchBarInfo::* bitmap_disabled;
-  
+
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
     bitmap_normal = &_SearchBarInfo::bitmap_normal;
     bitmap_disabled = &_SearchBarInfo::bitmap_normal;
-  } 
+  }
   else {
     bitmap_normal = &_SearchBarInfo::bitmap_classic;
     bitmap_disabled = &_SearchBarInfo::bitmap_classic_disabled;
   }
-  
+
   for (size_t idx = 0; idx < NumberOf(SearchBarButtons); ++idx) {
     m_toolbar->SetToolNormalBitmap(SearchBarButtons[idx].id, wxBitmap(SearchBarButtons[idx].*bitmap_normal));
     if (SearchBarButtons[idx].*bitmap_disabled)
@@ -342,9 +342,9 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
-  
+
   RefreshButtons();
-  
+
   if (!m_toolbar->Realize())
     wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
 
@@ -356,7 +356,7 @@ void PasswordSafeSearch::CreateSearchBar()
   origSizer->Layout();
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(wxT("Could not display searchbar"));
- 
+
   //This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
   if (wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)) {
     //searchCtrl is a wxTextCtrl derivative, like on Mac OS X 10.3+
@@ -445,12 +445,12 @@ bool FindNoCase( const StringX& src, const StringX& dest)
 template <class Iter, class Accessor>
 void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                                        const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, 
+                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction,
                                        bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn)
 {
   if (searchText.empty())
       return;
-  
+
   searchPtr.Clear();
 
   typedef StringX (CItemData::*ItemDataFuncT)() const;
@@ -468,11 +468,11 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
                           {CItemData::RUNCMD,    &CItemData::GetRunCommand},
                           {CItemData::AUTOTYPE,  &CItemData::GetAutoType},
                           {CItemData::XTIME_INT, &CItemData::GetXTimeInt},
- 
+
                       };
 
   for ( Iter itr = begin; itr != end; ++itr) {
-    
+
     const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
     if (fUseSubgroups && !afn(itr).Matches(static_cast<const charT *>(subgroupText), subgroupObject, fn))
         continue;
@@ -558,7 +558,7 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
   else if (m_indices.size() == 1)
     m_label = wxT("1 match");
   else {
-    // need a const object so we get both args to distance() as const iterators 
+    // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
     m_label.Printf(wxT("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
     if (prefix)

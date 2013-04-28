@@ -8,7 +8,7 @@
 // UUID.cpp
 // Wrapper class for UUIDs, generating and converting them to/from
 // various representations.
-// Each instance has its own unique value, 
+// Each instance has its own unique value,
 // which can be accessed as an array of bytes or as a human-readable
 // ASCII string.
 //
@@ -91,7 +91,7 @@ void pws_os::CUUID::GetARep(uuid_array_t &uuid_array) const
 const uuid_array_t *pws_os::CUUID::GetARep() const
 {
   if (m_ua == NULL) {
-    m_ua = (uuid_array_t *)(new uuid_array_t);
+    m_ua = reinterpret_cast<uuid_array_t *>(new uuid_array_t);
     GetARep(*m_ua);
   }
   return m_ua;
@@ -155,9 +155,9 @@ int main()
     printf("%s\n",str);
     uuid.GetARep(uuid_array);
     printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
-              uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
-              uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
-              uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11], 
+              uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3],
+              uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7],
+              uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11],
               uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
   }
   return 0;
