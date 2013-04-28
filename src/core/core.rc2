@@ -63,18 +63,18 @@ BEGIN
   IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
   IDSC_IMPORTNOHEADER     "No records in import file!"
   IDSC_IMPORTLINESKIPPED  "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
-  IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
+  IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
   IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
   IDSC_IMPORTNOPASSWORD   "Line %d skipped: Empty mandatory Password field."
   IDSC_IMPORTNOTITLE      "Line %d skipped: Empty mandatory Title field."
   IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
   IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
-  IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\r\n"
-  IDSC_IMPORTRECSKIPPED   "%s has an empty %s.\r\n"
+  IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\n"
+  IDSC_IMPORTRECSKIPPED   "%s has an empty %s.\n"
   IDSC_IMPORT_ON_LINE     "on line "
   IDSC_IMPORT_ENTRY_ID    "id="
-  IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s"".\r\n"
+  IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s"".\n"
   IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"""
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
   IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%s"""
@@ -127,7 +127,7 @@ BEGIN
   IDSC_MSXMLPARSEERROR    "SAX Parse60 Error 0x%08X during %s."
   IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache60 Error 0x%08X during %s."
   IDSC_NOMSXMLREADER      "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-  IDSC_XERCESPARSEERROR   "SAX Parse Error during %s\r\n%s."
+  IDSC_XERCESPARSEERROR   "SAX Parse Error during %s\n%s."
   IDCS_XERCESEXCEPTION    "\nUnexpected exception during parsing."
   IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
   IDSC_XMLVALIDATION      "validation"
@@ -270,7 +270,7 @@ BEGIN
   IDSC_AND                 "And"
   IDSC_OR                  "Or"
 END
- 
+
 STRINGTABLE
 BEGIN
   IDSC_CASE_INSENSITIVE    "(case insensitive)"
@@ -292,7 +292,7 @@ STRINGTABLE
 BEGIN
   IDSC_FILTEREXISTS        "Filter %s already exists in the database, do you wish to replace it with this?"
   IDSC_CANTVALIDATEXML     "Missing XSD File"
-  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
+  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
 END
 
 STRINGTABLE
@@ -350,14 +350,14 @@ BEGIN
   IDSC_MERGEPOLICY         "%s - Merged %s"
   IDSC_SYNCPOLICY          "%s - Sync'd %s"
   IDSC_COPYPOLICY          "%s - Copied %s"
-  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
 END
 
 STRINGTABLE
 BEGIN
   IDSC_DELETEBASET         "Delete Base Entry Confirmation"
-  IDSC_DELETEABASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-  IDSC_DELETESBASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+  IDSC_DELETEABASE         "This entry has the following %d %s:\n%s\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+  IDSC_DELETESBASE         "This entry has the following %d %s:\n%s\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
 END
 
 STRINGTABLE
@@ -369,14 +369,14 @@ BEGIN
   IDSC_UNKNOWNFIELDS       "In Headers(%s)/In Entries("
   IDSC_WAS                 "was"
   IDSC_WERE                "were"
-  IDSC_SYNCHUPDATED        "\r\nThe following %s %s updated:"
-  IDSC_SYNCHCOMPLETED      "\r\nSynchronize completed: %d %s updated"
-  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n  Adding merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n    Differing field(s): %s"
-  IDSC_MERGECOMPLETED      "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+  IDSC_SYNCHUPDATED        "\nThe following %s %s updated:"
+  IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %s updated"
+  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\n  Adding merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\n    Differing field(s): %s"
+  IDSC_MERGECOMPLETED      "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
   IDSC_MERGED              "-merged-"
-  IDSC_MERGEADDED          "\r\nThe following new %s %s merged into this database:"
+  IDSC_MERGEADDED          "\nThe following new %s %s merged into this database:"
 END
 
 STRINGTABLE

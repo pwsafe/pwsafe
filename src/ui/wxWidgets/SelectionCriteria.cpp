@@ -7,7 +7,7 @@
  */
 
 /** \file SelectionCriteria.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -33,15 +33,15 @@ CItemData::FieldType subgroups[] = {  CItemData::GROUP,
 struct _subgroupFunctions {
   const charT* name;
   PWSMatch::MatchRule function;
-  
-} subgroupFunctions[] = {                         {wxT("equals"),              PWSMatch::MR_EQUALS},
-                                                  {wxT("does not equal"),      PWSMatch::MR_NOTEQUAL},
-                                                  {wxT("begins with"),         PWSMatch::MR_BEGINS},
-                                                  {wxT("does not begin with"), PWSMatch::MR_NOTBEGIN},
-                                                  {wxT("ends with"),           PWSMatch::MR_ENDS},
-                                                  {wxT("does not end with"),   PWSMatch::MR_NOTEND},
-                                                  {wxT("contains"),            PWSMatch::MR_CONTAINS},
-                                                  {wxT("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
+
+} subgroupFunctions[] = {                         {_("equals"),              PWSMatch::MR_EQUALS},
+                                                  {_("does not equal"),      PWSMatch::MR_NOTEQUAL},
+                                                  {_("begins with"),         PWSMatch::MR_BEGINS},
+                                                  {_("does not begin with"), PWSMatch::MR_NOTBEGIN},
+                                                  {_("ends with"),           PWSMatch::MR_ENDS},
+                                                  {_("does not end with"),   PWSMatch::MR_NOTEND},
+                                                  {_("contains"),            PWSMatch::MR_CONTAINS},
+                                                  {_("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
 
 CItemData::FieldType selectableFields[] = { CItemData::GROUP,
                                             CItemData::TITLE,

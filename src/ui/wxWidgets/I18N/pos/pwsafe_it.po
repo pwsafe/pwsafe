@@ -98,9 +98,9 @@ msgid ""
 "\n"
 "Please visit the PasswordSafe website to download the latest version."
 msgstr ""
-"Versione corrente:\t%s\r\n"
-"Ultima versione:\t%s\r\n"
-"\r\n"
+"Versione corrente:\t%s\n"
+"Ultima versione:\t%s\n"
+"\n"
 "Per favore visitate il sito di PasswordSafe per scaricare la versione più "
 "recente."
 
@@ -2112,7 +2112,7 @@ msgid ""
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
 "Impossibile trovare lo schema di definizione file XML (%s) nella cartella "
-"del tuo programma Password Safe.\r\n"
+"del tuo programma Password Safe.\n"
 "Si prega di copiarlo dal file di'installazione, o di reinstallare Password "
 "Safe."
 
@@ -3030,8 +3030,8 @@ msgstr "Nome utente di default"
 #: ../../../core/core_st.cpp:77
 #, c-format
 msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
+"This entry has the following %d %s:\n"
+"%s\n"
 "Please confirm to continue (alias entry's passwords will be replaced by this "
 "entry's password)?"
 msgstr ""
@@ -3044,8 +3044,8 @@ msgstr "Conferma della cancellazione di una scheda?"
 #: ../../../core/core_st.cpp:79
 #, c-format
 msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
+"This entry has the following %d %s:\n"
+"%s\n"
 "Please confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
 
@@ -3101,7 +3101,7 @@ msgstr ""
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
-"database but with different settings.\r\n"
+"database but with different settings.\n"
 "A new named policy has been created with the current date/time (%s) appended:"
 "%s"
 msgstr ""
@@ -3368,8 +3368,8 @@ msgstr ""
 #: ../../../core/core_st.cpp:156
 msgid ""
 "The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\r\n"
-"\r\n"
+"multiple lines in the CSV file.\n"
+"\n"
 "Import aborted."
 msgstr ""
 
@@ -3377,7 +3377,7 @@ msgstr ""
 #, c-format
 msgid ""
 "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%s\".\r\n"
+"Import file. Added imported entry with title=\"%s\".\n"
 msgstr ""
 
 #: ../../../core/core_st.cpp:158
@@ -3506,12 +3506,12 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:181
 #, c-format
-msgid "%s not found. Cannot update entry's password.\r\n"
+msgid "%s not found. Cannot update entry's password.\n"
 msgstr ""
 
 #: ../../../core/core_st.cpp:182
 #, c-format
-msgid "%s has an empty %s.\r\n"
+msgid "%s has an empty %s.\n"
 msgstr ""
 
 #: ../../../core/core_st.cpp:183
@@ -3666,22 +3666,22 @@ msgstr "%1 non trovato."
 #: ../../../core/core_st.cpp:213
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "The following new %s %s merged into this database:"
 msgstr ""
 
 #: ../../../core/core_st.cpp:214
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
 msgstr ""
 
 #: ../../../core/core_st.cpp:215
 #, c-format
 msgid ""
-"Conflicting entries for \"%s\" \"%s\" \"%s\".\r\n"
-"  Adding merged entry as \"%s\" \"%s\" \"%s\".\r\n"
+"Conflicting entries for \"%s\" \"%s\" \"%s\".\n"
+"  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
 "    Differing field(s): %s"
 msgstr ""
 
@@ -3727,11 +3727,11 @@ msgstr ""
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
-"Directory.\r\n"
+"Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
 "Impossibile trovare lo schema di definizione file XML (%s) nella cartella "
-"del tuo programma Password Safe.\r\n"
+"del tuo programma Password Safe.\n"
 "Si prega di copiarlo dal file di'installazione, o di reinstallare Password "
 "Safe."
 
@@ -3934,14 +3934,14 @@ msgstr "Fine del Report"
 #: ../../../core/core_st.cpp:267
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "Synchronize completed: %d %s updated"
 msgstr ""
 
 #: ../../../core/core_st.cpp:268
 #, c-format
 msgid ""
-"\r\n"
+"\n"
 "The following %s %s updated:"
 msgstr ""
 
@@ -4044,7 +4044,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:292
 #, fuzzy, c-format
 msgid ""
-"SAX Parse Error during %s\r\n"
+"SAX Parse Error during %s\n"
 "%s."
 msgstr "Crea SchemaCache%2d Errore 0x%08X mentre %s."
 
@@ -4160,15 +4160,15 @@ msgstr "(almeno"
 
 #, fuzzy
 #~ msgid ""
-#~ "\r\n"
-#~ "\r\n"
+#~ "\n"
+#~ "\n"
 #~ "Do you wish to see a detailed report?"
 #~ msgstr "Vuoi rimpiazzarlo?"
 
 #, fuzzy
 #~ msgid ""
-#~ "\r\n"
-#~ "\r\n"
+#~ "\n"
+#~ "\n"
 #~ "Could not open file for writing!"
 #~ msgstr ""
 #~ "%s\n"
@@ -4561,16 +4561,16 @@ msgstr "(almeno"
 #~ msgstr "Criteri"
 
 #~ msgid ""
-#~ "Current version:\t%s\r\n"
-#~ "Latest version:\t%s\r\n"
-#~ "\r\n"
-#~ "Your purchase includes free upgrades for one year.\r\n"
+#~ "Current version:\t%s\n"
+#~ "Latest version:\t%s\n"
+#~ "\n"
+#~ "Your purchase includes free upgrades for one year.\n"
 #~ "Please contact the PasswordSafe Administrator for your upgrade."
 #~ msgstr ""
-#~ "Versione corrente:\t%s\r\n"
-#~ "Ultima versione:\t%s\r\n"
-#~ "\r\n"
-#~ "L'acquisto include aggiornamenti gratuiti per un anno.\r\n"
+#~ "Versione corrente:\t%s\n"
+#~ "Ultima versione:\t%s\n"
+#~ "\n"
+#~ "L'acquisto include aggiornamenti gratuiti per un anno.\n"
 #~ "Per favore contattate l'Amministratore di PasswordSafe per "
 #~ "l'aggiornamento."
 
@@ -4625,16 +4625,16 @@ msgstr "(almeno"
 #~ msgstr "Vuoi salvare i cambiamenti nella lista delle password?"
 
 #~ msgid ""
-#~ "Do you wish to save the changes made to database:\r\n"
-#~ "\r\n"
-#~ "%s\r\n"
-#~ "\r\n"
+#~ "Do you wish to save the changes made to database:\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
 #~ "or Cancel the shutdown\\restart\\logoff?"
 #~ msgstr ""
-#~ "Vuoi salvare i cambiamenti fatti al database:\r\n"
-#~ "\r\n"
-#~ "%s\r\n"
-#~ "\r\n"
+#~ "Vuoi salvare i cambiamenti fatti al database:\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
 #~ "o Cancellare lo spegnimento\\riavvio\\scollegamento?"
 
 #~ msgid "Double-Click on entry to Autotype"
@@ -4661,13 +4661,13 @@ msgstr "(almeno"
 
 #~ msgid ""
 #~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
-#~ "alias.\r\n"
-#~ "\r\n"
+#~ "alias.\n"
+#~ "\n"
 #~ "The dropped entry now references that entry's base entry."
 #~ msgstr ""
 #~ "Scheda eliminata '%s:%s:%s' la password punta ad una scheda che è anche "
-#~ "un secondo nome.\r\n"
-#~ "\r\n"
+#~ "un secondo nome.\n"
+#~ "\n"
 #~ "La scheda eliminata ora fa riferimento alla scheda delle schede di base."
 
 #~ msgid "E&xit\tCtrl+Q\\Alt+F4"

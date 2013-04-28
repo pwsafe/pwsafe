@@ -53,7 +53,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
         if (pcmd) {
             //I don't know why notifications should ever be suspended, but that's how
             //things were before I messed with them, so I want to limit the damage by
-            //enabling notifications only as long as required and no more 
+            //enabling notifications only as long as required and no more
             m_core.ResumeOnDBNotification();
             Execute(pcmd);  //deleted automatically
             m_core.SuspendOnDBNotification();
@@ -96,15 +96,15 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   code in 2.8.10.  And doing it ourselves after the dialog has returned is
   risky because we might silenty overwrite an existing file
   */
-  
+
   //create a copy to avoid multiple conversions to StringX
   const StringX backupfile(tostringx(wxbf));
-  
+
 #ifdef NOT_YET
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return PWScore::USER_CANCEL;
   }
@@ -112,7 +112,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
 
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
     if (m_core.WriteFile(backupfile) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox( wxbf << _("\n\nCould not open file for writing!"),
+      wxMessageBox( wxbf << wxT("\n\n") << _("Could not open file for writing!"),
                     _("Write Error"), wxOK|wxICON_ERROR, this);
     }
 
@@ -150,7 +150,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return PWScore::USER_CANCEL;
   }
@@ -168,7 +168,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
     ClearData();
 
     if (m_core.ReadFile(tostringx(wxbf), passkey, true, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox(wxbf << _("\n\nCould not open file for reading!"), 
+      wxMessageBox(wxbf << wxT("\n\n") << _("Could not open file for reading!"),
                       _("File Read Error"), wxOK | wxICON_ERROR, this);
       return /*PWScore::CANT_OPEN_FILE*/;
     }

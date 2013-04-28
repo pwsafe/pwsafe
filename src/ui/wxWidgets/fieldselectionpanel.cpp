@@ -7,7 +7,7 @@
  */
 
 /** \file fieldselectionpanel.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -66,24 +66,24 @@ FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
                                                             m_lbAvailable(0)
 {
   wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
-  
+
   //first and third columns are growable
-  grid->AddGrowableCol(0, 1);  
+  grid->AddGrowableCol(0, 1);
   grid->AddGrowableCol(2, 1);
   grid->AddGrowableRow(1, 1);
   grid->SetFlexibleDirection(wxBOTH);
-  
+
   //first row is labels, with a spacer in between
-  grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Available Fields:")));
+  grid->Add(new wxStaticText(this, wxID_ANY, _("&Available Fields:")));
   grid->AddSpacer(0);
-  grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Selected Fields:")));
-  
+  grid->Add(new wxStaticText(this, wxID_ANY, _("&Selected Fields:")));
+
   //second row is the listboxes, with buttons in between
 
-  m_lbAvailable = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
+  m_lbAvailable = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition,
                                          wxDefaultSize, 0, NULL, wxLB_EXTENDED);
   grid->Add(m_lbAvailable, wxSizerFlags().Expand());
-  
+
   wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
   buttonBox->AddStretchSpacer();
   buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
@@ -94,10 +94,10 @@ FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
   buttonBox->AddSpacer(RowSeparation);
   buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
   buttonBox->AddStretchSpacer();
-  
+
   grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
 
-  m_lbSelected = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
+  m_lbSelected = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition,
                                         wxDefaultSize, 0, NULL, wxLB_EXTENDED);
   grid->Add(m_lbSelected, wxSizerFlags().Expand());
 
@@ -178,7 +178,7 @@ CItemData::FieldType FieldSelectionPanel::GetSelectedFieldAt(size_t index) const
 
 void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
 {
-  
+
   FieldData* oldData = dynamic_cast<FieldData*>(from->GetClientObject(index));
   FieldData* newData = oldData? new FieldData(*oldData): 0;
   to->Append(from->GetString(index), newData);

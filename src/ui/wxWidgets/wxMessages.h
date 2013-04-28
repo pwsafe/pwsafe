@@ -14,13 +14,14 @@
 
 class wxAsker : public Asker
 {
+  // asker get untranslated messages when called from core, so it should translate them
   bool operator()(const std::wstring &question) {
-    wxMessageDialog dlg(NULL, question.c_str(), _("PasswordSafe"),
+    wxMessageDialog dlg(NULL, wxGetTranslation(question.c_str()), _("PasswordSafe"),
                         wxYES_NO | wxICON_QUESTION | wxNO_DEFAULT);
     return dlg.ShowModal() == wxID_YES;
   }
   bool operator()(const std::wstring &title, const std::wstring &question) {
-    wxMessageDialog dlg(NULL, question.c_str(), title.c_str(),
+    wxMessageDialog dlg(NULL, wxGetTranslation(question.c_str()), wxGetTranslation(title.c_str()),
                         wxYES_NO | wxICON_QUESTION | wxNO_DEFAULT);
     return dlg.ShowModal() == wxID_YES;
   }
@@ -28,13 +29,14 @@ class wxAsker : public Asker
 
 class wxReporter : public Reporter
 {
+  // reporter get untranslated messages when called from core, so it should translate them
   void operator()(const std::wstring &message) {
-    wxMessageDialog dlg(NULL, message.c_str(), _("PasswordSafe"),
+    wxMessageDialog dlg(NULL, wxGetTranslation(message.c_str()), _("PasswordSafe"),
                         wxOK | wxICON_EXCLAMATION);
     dlg.ShowModal();
   }
   void operator()(const std::wstring &title, const std::wstring &message) {
-    wxMessageDialog dlg(NULL, message.c_str(), title.c_str(),
+    wxMessageDialog dlg(NULL, wxGetTranslation(message.c_str()), wxGetTranslation(title.c_str()),
                         wxOK | wxICON_EXCLAMATION);
     dlg.ShowModal();
   }

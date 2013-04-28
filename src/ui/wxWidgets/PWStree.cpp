@@ -627,9 +627,9 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
   wxTreeItemId parentId = GetSelection();
-  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxT("New Group"): GetItemGroup(parentId)+wxT(".New Group");
+  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId)+_(".New Group");
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
-  wxCHECK_RET(newItem.IsOk(), wxT("Could not add empty group item to tree"));
+  wxCHECK_RET(newItem.IsOk(), _("Could not add empty group item to tree"));
   // mark it as a new group that is still under construction.  wxWidgets would delete it
   SetItemData(newItem, new PWTreeItemData(true));
   ::wxYield();
@@ -642,7 +642,7 @@ void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& /* evt */)
 {
   wxTreeItemId sel = GetSelection();
   if (sel.IsOk()) {
-    wxCHECK_RET(ItemIsGroup(sel), wxT("Renaming of non-Group items is not implemented"));
+    wxCHECK_RET(ItemIsGroup(sel), _("Renaming of non-Group items is not implemented"));
     SetItemData(sel, new PWTreeItemData(GetItemGroup(sel)));
     EditTreeLabel(this, sel);
   }
@@ -661,7 +661,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       }
       else {
         evt.Veto();
-        wxMessageBox(wxT("Dots are not allowed in group names"), wxT("Invalid Character"), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Dots are not allowed in group names"), _("Invalid Character"), wxOK|wxICON_ERROR);
       }
       break;
     }

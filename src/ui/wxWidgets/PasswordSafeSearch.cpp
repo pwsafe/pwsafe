@@ -346,7 +346,7 @@ void PasswordSafeSearch::CreateSearchBar()
   RefreshButtons();
 
   if (!m_toolbar->Realize())
-    wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
+    wxMessageBox(_("Could not create Search Bar"), _("Password Safe"));
 
   wxSizer* origSizer = m_parentFrame->GetSizer();
   wxASSERT(origSizer);
@@ -355,7 +355,7 @@ void PasswordSafeSearch::CreateSearchBar()
   origSizer->Add(m_toolbar, 0, wxEXPAND | wxALIGN_CENTER);
   origSizer->Layout();
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
-    wxMessageBox(wxT("Could not display searchbar"));
+    wxMessageBox(_("Could not display searchbar"));
 
   //This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
   if (wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)) {
@@ -408,8 +408,8 @@ void PasswordSafeSearch::Activate(void)
     else {
       const wxPoint pt = m_toolbar->GetPosition();
       const wxSize sz = m_toolbar->GetSize();
-      wxMessageBox(wxString() << wxT("Could not re-display searchbar at ") << pt << wxT(" of size ") << sz
-                              << wxT(" because ") << (m_toolbar->IsShownOnScreen()? wxT("its already visible"): wxT(" of an error")));
+      wxMessageBox(wxString() << _("Could not re-display searchbar at ") << pt << _(" of size ") << sz
+                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("its already visible"): _(" of an error")));
     }
   }
 
@@ -520,7 +520,7 @@ SearchPointer& SearchPointer::operator++()
     m_currentIndex++;
     if (m_currentIndex == m_indices.end()) {
       m_currentIndex = m_indices.begin();
-      PrintLabel(wxT("Search hit bottom, continuing at top"));
+      PrintLabel(_("Search hit bottom, continuing at top"));
     }
     else {
       PrintLabel();
@@ -538,7 +538,7 @@ SearchPointer& SearchPointer::operator--()
   if (!m_indices.empty()) {
     if (m_currentIndex == m_indices.begin()) {
       m_currentIndex = --m_indices.end();
-      PrintLabel(wxT("Search hit top, continuing at bottom"));
+      PrintLabel(_("Search hit top, continuing at bottom"));
     }
     else {
       m_currentIndex--;
@@ -554,13 +554,13 @@ SearchPointer& SearchPointer::operator--()
 void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
 {
   if (m_indices.empty())
-    m_label = wxT("No matches found");
+    m_label = _("No matches found");
   else if (m_indices.size() == 1)
-    m_label = wxT("1 match");
+    m_label = _("1 match");
   else {
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
-    m_label.Printf(wxT("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    m_label.Printf(_("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
     if (prefix)
       m_label = wxString(prefix) + wxT(".  ") + m_label;
   }
