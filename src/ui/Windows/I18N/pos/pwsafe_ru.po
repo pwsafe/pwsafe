@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-04-27 21:53+0400\n"
+"PO-Revision-Date: 2013-04-28 19:30+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,6 +67,7 @@ msgstr ""
 # Failsafe Backup - Аварийная резервная копия
 # Original - исходный
 # Configuration file - файл настроек
+
 #. Resource IDs: (315, 8016, 8017)
 msgid " "
 msgstr " "
@@ -7246,6 +7247,11 @@ msgstr "\nСоздать новый контейнер"
 msgid "\nManage Filters"
 msgstr "\nУправление фильтрами"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\nСлияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)"
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\nСлияние контейнеров"
@@ -7337,6 +7343,25 @@ msgstr "\nПропущено %d %s"
 msgid "\nSynchronize Databases"
 msgstr "\nСинхронизировать контейнеры"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\nСинхронизация завершена: %d %s обновлено"
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\nСледующие %s %s обновлены:"
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\nНовые %s %s добавлены в данный контейнер:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\nПоле будет отредактировано\nв редакторе по умолчанию."
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\nВернуть"
@@ -7369,6 +7394,10 @@ msgstr "\n\nОшибка при открытии контейнера. Возм�
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\nИгнорировать и сохранить в любом случае — Да/нет?"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\nВыберите «Да» для использования этого пароля или «Нет» для отмены."
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\nСодержимое контейнеров совпадает (сравнивались только указанные поля или поля по умолчанию)!"
@@ -7376,6 +7405,10 @@ msgstr "\n\nСодержимое контейнеров совпадает (ср
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nНеизвестные поля будут скопированы вместе с элементом."
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\nE-mail: "
 
 #. Resource IDs: (362)
 #, c-format
@@ -7385,38 +7418,6 @@ msgstr "\nс ошибками в истории паролей %d"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr "\nс предупреждениями"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\nСлияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\nСинхронизация завершена: %d %s обновлено"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\nСледующие %s %s обновлены:"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\nНовые %s %s добавлены в данный контейнер:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nПоле будет отредактировано\nв редакторе по умолчанию."
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\nВыберите «Да» для использования этого пароля или «Нет» для отмены."
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\nE-mail: "
 
 #. Resource IDs: (346)
 #, c-format
