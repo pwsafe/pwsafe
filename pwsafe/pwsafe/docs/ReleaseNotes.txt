@@ -18,6 +18,7 @@ Changes to Existing Features in 3.31pre
 
 Bugs fixed in 3.31pre
 =====================
+[1096] Correct suffix appended to proposed filename when exporting to XML.
 [1095] Ampersand (&) is handled correctly in Password Policy (thanks
 to Andrey)
 [1092] Compare DB results context menu items now enabled correctly in
