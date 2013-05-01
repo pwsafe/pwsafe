@@ -27,7 +27,6 @@ SED := /usr/bin/sed
 ZIP := /usr/bin/zip
 SVN := /usr/bin/svn
 GPG := /usr/bin/gpg
-GPG_KEY := ronys@users.sourceforge.net
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
