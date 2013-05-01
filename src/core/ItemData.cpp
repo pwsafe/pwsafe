@@ -175,7 +175,7 @@ int CItemData::Write(PWSfile *out) const
 
   const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
                                   NOTES, URL, AUTOTYPE, POLICY,
-                                  PWHIST, RUNCMD, EMAIL, PROTECTED,
+                                  PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
@@ -184,7 +184,6 @@ int CItemData::Write(PWSfile *out) const
   ASSERT(IsUUIDSet());
   GetUUID(item_uuid);
   out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
-
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -212,6 +211,8 @@ int CItemData::Write(PWSfile *out) const
   GetShiftDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+
+  WriteIfSet(PROTECTED, out, false);
 
   WriteUnknowns(out);
   // Assume that if previous write failed, last one will too for same reason
