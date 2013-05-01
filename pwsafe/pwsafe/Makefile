@@ -1,4 +1,5 @@
 OS:= $(findstring Linux, $(shell uname -s))
+GPG_KEY := 5CCF8BB3
 
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 include Makefile.linux
