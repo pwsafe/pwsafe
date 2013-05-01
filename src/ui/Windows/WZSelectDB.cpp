@@ -502,7 +502,8 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   CString cs_text(MAKEINTRESOURCE(uimsgid));
 
-  std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(), L"txt");
+  std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
+                                                        CString::PCXSTR(cs_suffix));
   CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL, 
                    dwflags, cs_filter, this);
 
