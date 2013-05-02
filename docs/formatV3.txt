@@ -49,7 +49,7 @@ version 3 file. This tag has no cryptographic value.
 2.2 SALT is a 256 bit random value, generated at file creation time.
 
 2.3 P' is the "stretched key" generated from the user's passphrase and
-the SALT, as defined in by the hash-function-based key stretching
+the SALT, as defined by the hash-function-based key stretching
 algorithm in [KEYSTRETCH] (Section 4.1), with SHA-256 [SHA256] as the
 hash function, and ITER iterations (at least 2048, i.e., t = 11).
 
@@ -249,7 +249,7 @@ since XML processing does not require this. This field was introduced in
 format version 0x0305.
 
 [13] Values marked 'Reserved' are know to have been used by customized
-versions of PasswordSafe. To ensure compatability beweeen versions,
+versions of PasswordSafe. To ensure compatability between versions,
 use of these values should be avoided.
 
 [14] A list of the UUIDs (32 hex character representation of the 16 byte field)
@@ -260,7 +260,7 @@ however the GUI may impose further restrictions e.g. Windows MFC UI limits this
 to 25. The first entry is the most recent entry accessed. This field was
 introduced in format version 0x0307.
 
-[15] This field allows a multiple Password Policies per database.  The format is:
+[15] This field allows multiple Password Policies per database.  The format is:
     "NN{LLxxx...xxxffffnnnllluuudddsssMMSSS...SSS}"
 where:
      NN = 2 hexadecimal digits giving number of password policies in
@@ -473,7 +473,7 @@ without breaking backwards compatability.
 
 4.1 Forward compatability: Implementations of this format SHOULD NOT
 discard or report an error when encountering a field of an unknown
-type. Rather, the field(s) type and data should be read, and perserved
+type. Rather, the field(s) type and data should be read, and preserved
 when the database is saved.
 
 4.2 Field type identifiers: This document specifies the field type
