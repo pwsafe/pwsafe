@@ -194,8 +194,8 @@
   !include ".\I18N\pwsafe_ru.lng"
   !insertmacro MUI_LANGUAGE "Polish"
   !include ".\I18N\pwsafe_pl.lng"
-;  !insertmacro MUI_LANGUAGE "Italian"
-;  !include ".\I18N\pwsafe_it.lng"
+  !insertmacro MUI_LANGUAGE "Italian"
+  !include ".\I18N\pwsafe_it.lng"
   !insertmacro MUI_LANGUAGE "Danish"
   !include ".\I18N\pwsafe_dk.lng"
   !insertmacro MUI_LANGUAGE "Korean"
@@ -634,8 +634,8 @@ Function .onInit
   Push Russian
   Push ${LANG_POLISH}
   Push Polski
-;  Push ${LANG_ITALIAN}
-;  Push Italiano
+  Push ${LANG_ITALIAN}
+  Push Italiano
   Push ${LANG_DANISH}
   Push Dansk
   Push ${LANG_KOREAN}
