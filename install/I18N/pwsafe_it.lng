@@ -8,6 +8,7 @@
 ; Copyright 2005-2007 Rony Shapiro <ronys@users.sourceforge.net>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
+; 2013 extended by Giorgio Ghielmini Italian language
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at
 ; http://www.opensource.org/licenses/artistic-license-2.0.php
@@ -19,125 +20,128 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_ITALIAN} "en:Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_ITALIAN} "Scegli il tipo di istallazione"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_ITALIAN} "en:Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_ITALIAN} "Classica (utilizza le Registry, adatta per casa o PC con un solo utente)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_ITALIAN} "en:Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_ITALIAN} "Verde (per chiavetta USB; non utilizza le Registry)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_ITALIAN} "en:Program Files"
+LangString PROGRAM_FILES ${LANG_ITALIAN} "Programmi"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_ITALIAN} "en:Start automatically"
+LangString START_AUTO ${LANG_ITALIAN} "Avvio automatico"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_ITALIAN} "en:Show in start menu"
+LangString START_SHOW ${LANG_ITALIAN} "Mostra nel menu Avvio"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_ITALIAN} "en:Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_ITALIAN} "Istalla collegamento sul desktop"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "en:Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Disistalla collegamento"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_ITALIAN} "en:Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_ITALIAN} "Istalla i files base necessari per eseguire Password Safe."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_ITALIAN} "en:Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_ITALIAN} "Seleziona la o le lingue che utilizzerà Password Safe."
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_ITALIAN} "en:Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_ITALIAN} "Lancia Password Safe all'avvio di Windows."
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_ITALIAN} "en:Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_ITALIAN} "Crea una voce per Password Safe nel menu di Avvio."
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_ITALIAN} "en:Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_ITALIAN} "Crea un collegamento a Password Safe sul desktop."
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_ITALIAN} "en:Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_ITALIAN} "Crea un collegamento nel menu di Avvio per disistallare Password Safe."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_ITALIAN} "en:Installation Type"
+LangString TEXT_GC_TITLE ${LANG_ITALIAN} "Tipo di istallazione"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "en:Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Seleziona Classica per un utilizzo su un solo PC, Verde per istallazioni mobili. In caso di dubbio, scegli 'Classica'."
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_ITALIAN} "en:Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_ITALIAN} "Seleziona il tipo di istallazione"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_ITALIAN} "en:Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_ITALIAN} "Classica (utilizza le Registry, adatta per casa o PC con un solo utente)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_ITALIAN} "en:Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Verde (per chiavetta USB; non utilizza le Registry)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_ITALIAN} "en:The installer is already running."
+LangString RUNNING_INSTALL ${LANG_ITALIAN} "L'istallazione è già in corso."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_ITALIAN} "en:Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Chiudere tutte le istanze di Password Safe in esecuzione prima di istallare una nuova versione"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_ITALIAN} "en:Installation Language"
+LangString LANG_INSTALL ${LANG_ITALIAN} "Lingua dell'istallazione"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_ITALIAN} "en:Please select the language for the installation"
+LangString LANG_SELECT ${LANG_ITALIAN} "Selezionare una lingua per l'istallazione"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_ITALIAN} "en:Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_ITALIAN} "Lingue supportate"
 ; ENGLISH_SUPPORT "English"
-LangString ENGLISH_SUPPORT ${LANG_ITALIAN} "en:English"
+LangString ENGLISH_SUPPORT ${LANG_ITALIAN} "Inglese"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_ITALIAN} "en:Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_ITALIAN} "Chinese (semplificato)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_ITALIAN} "en:Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_ITALIAN} "Chinese (tradizionale)"
 ; GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_ITALIAN} "en:German"
+LangString GERMAN_SUPPORT ${LANG_ITALIAN} "Tedesco"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_ITALIAN} "en:Spanish"
+LangString SPANISH_SUPPORT ${LANG_ITALIAN} "Spagnolo"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_ITALIAN} "en:Swedish"
+LangString SWEDISH_SUPPORT ${LANG_ITALIAN} "Svedese"
 ; DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_ITALIAN} "en:Dutch"
+LangString DUTCH_SUPPORT ${LANG_ITALIAN} "Olandese"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_ITALIAN} "en:French"
+LangString FRENCH_SUPPORT ${LANG_ITALIAN} "Francese"
 ; RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_ITALIAN} "en:Russian"
+LangString RUSSIAN_SUPPORT ${LANG_ITALIAN} "Russo"
 ; POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_ITALIAN} "en:Polish"
+LangString POLISH_SUPPORT ${LANG_ITALIAN} "Polacco"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_ITALIAN} "en:Italian"
+LangString ITALIAN_SUPPORT ${LANG_ITALIAN} "Italiano"
 ; DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_ITALIAN} "en:Danish"
+LangString DANISH_SUPPORT ${LANG_ITALIAN} "Danese"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_ITALIAN} "en:Korean"
+LangString KOREAN_SUPPORT ${LANG_ITALIAN} "Coreano"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_ITALIAN} "Czecho"
+; TURKISH_SUPPORT "Turkish"
 LangString TURKISH_SUPPORT ${LANG_ITALIAN} "Turco"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_ITALIAN} "Program Language"
+LangString LANG_PROGRAM ${LANG_ITALIAN} "Lingua dell'applicazione"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_ITALIAN} "en:Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_ITALIAN} "Spiacenti, Windows 95 non è più supportato. Provare PasswordSafe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ITALIAN} "en:Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_ITALIAN} "Spiacenti, Windows 98 non è più supportato. Provare PasswordSafe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ITALIAN} "en:Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_ITALIAN} "Spiacenti, Windows ME non è più supportato. Provare PasswordSafe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_ITALIAN} "en:Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_ITALIAN} "Spiacenti, Windows 2000 non è più supportato. Provare PasswordSafe 3.18"
 
 ;=================================================================
 ; End of pwsafe_it.lng
