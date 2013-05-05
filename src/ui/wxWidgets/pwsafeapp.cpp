@@ -199,6 +199,8 @@ void PwsafeApp::initLanguageSupport()
     m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
     language = wxLANGUAGE_ENGLISH;
   }
+  // add translation for standard resources
+  m_locale->AddCatalog(wxT("wxstd"));
 }
 
 /*!
