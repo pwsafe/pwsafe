@@ -43,9 +43,8 @@ public:
       _exit(2);
     }
     if (strcmp(nl_langinfo(CODESET), "UTF-8")){
-      char errmess[] = "Current locale doesn't support UTF-8 - exiting\n";
+      char errmess[] = "Current locale doesn't support UTF-8\n";
       write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
-      _exit(2);
     }
   }
 };
