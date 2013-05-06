@@ -38,7 +38,7 @@ msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:142
 msgid "Delimiters"
-msgstr ""
+msgstr "Separatory"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:146
 msgid "Comma"
@@ -46,11 +46,11 @@ msgstr "Przecinek"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:147
 msgid "Space"
-msgstr ""
+msgstr "Spacja"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:148
 msgid "Semicolon"
-msgstr ""
+msgstr "Średnik"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:150
 msgid "Tab"
@@ -306,15 +306,15 @@ msgstr "Nie można uruchomić systemu pomocy."
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:537
 msgid "Missing help definition for page \""
-msgstr ""
+msgstr "Brak pomocy dla strony \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:538
 msgid "\" of \""
-msgstr ""
+msgstr "\" z \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:542
 msgid "Missing help definition for window \""
-msgstr ""
+msgstr "Brak pomocy dla okna \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:552
 #, fuzzy
@@ -559,7 +559,7 @@ msgstr "Musisz wybrać kilka z pól by "
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:50
 msgid "You haven't selected any files"
-msgstr ""
+msgstr "Nie wybrałeś żadnego pliku"
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:57
 #, fuzzy
@@ -755,7 +755,7 @@ msgstr "Z serwera nie można odczytać informacji o wersji."
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:358
 msgid "Could not display searchbar"
-msgstr ""
+msgstr "Nie można wyświetlić paska wyszukiwania"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:411
 #, fuzzy
@@ -764,15 +764,15 @@ msgstr "Z serwera nie można odczytać informacji o wersji."
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:411
 msgid " of size "
-msgstr ""
+msgstr " o rozmiarze "
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:412
 msgid " because "
-msgstr ""
+msgstr " ponieważ "
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:412
 msgid "its already visible"
-msgstr ""
+msgstr "jest już widoczny"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:412
 #, fuzzy
@@ -909,15 +909,15 @@ msgstr "Nowa Grupa"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:632
 msgid "Could not add empty group item to tree"
-msgstr ""
+msgstr "Nie można dodać pustej grupy do drzewa"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:645
 msgid "Renaming of non-Group items is not implemented"
-msgstr ""
+msgstr "Zmiana nazwy wpisów nie należących do grupy nie jest zaimplementowana"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:664
 msgid "Dots are not allowed in group names"
-msgstr ""
+msgstr "Kropki nie są dozwolone w nazwach grup"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:664
 #, fuzzy
@@ -1610,7 +1610,7 @@ msgstr "Tylko w aktualnej bazie danych: "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2254
 msgid "Error re-loading last database"
-msgstr ""
+msgstr "Błąd podczas ponownego ładowania ostatniej bazy danych"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2422
 #, fuzzy
@@ -1626,7 +1626,7 @@ msgstr "Wybierz bazę danych"
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
-msgstr ""
+msgstr "Aktualna baza danych jest otwarta w trybie tylko do odczytu. Nie można do niej importować."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2437
 #, fuzzy
@@ -1651,7 +1651,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2447
 msgid "  Please fix by validating database."
-msgstr ""
+msgstr "  Proszę napraw przez sprawdzenie bazy danych."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2448
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2494
@@ -2271,7 +2271,7 @@ msgstr "Błąd podczas automatycznego wypełniania.  "
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
-msgstr ""
+msgstr "Błąd w czasie przełączania do innej aplikacji podczas automatycznego wypełniana. Przełącz ręcznie w czasie 5 sekund"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:708
 msgid "Unable to send email"
@@ -2593,7 +2593,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1654
 msgid "Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"
-msgstr ""
+msgstr "Niestety, \"łatwe do przczytania\" i \"łatwe do wymówienia\" nei mogą być zaznaczone jednocześnie"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1680
 #, fuzzy
@@ -3410,7 +3410,7 @@ msgstr ""
 msgid ""
 "4. You can undo the operation once it is complete, but won't be\n"
 "able to abort it mid-way."
-msgstr ""
+msgstr "4. Można cofnąć operację jak tylko się zakończy, ale nie można anulować jej w trakcie."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:385
 #, fuzzy
@@ -4542,17 +4542,17 @@ msgstr "BRAK HASŁA"
 #: ../../../core/core_st.cpp:219
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
-msgstr ""
+msgstr "\tPolityki haseł '%s' nie ma w bazie danych."
 
 #: ../../../core/core_st.cpp:220
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
-msgstr ""
+msgstr "\tJedna lub więcej nazw polityk haseł nie została znaleziona w bazie danych. Wpisom z tymi politykamia zamieniono polityki na domyślne."
 
 #: ../../../core/core_st.cpp:221
 msgid "Can't obtain the schema version."
-msgstr "Niwe udało się uzyskać wersji schematu."
+msgstr "Nie udało się uzyskać wersji schematu."
 
 #: ../../../core/core_st.cpp:222
 #, c-format
@@ -4868,7 +4868,7 @@ msgstr ""
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
-msgstr ""
+msgstr "Następujące OSTRZEŻENIA zostały wykryte - należy je przejrzeć i naprawić ręcznie"
 
 #: ../../../core/core_st.cpp:291
 #, fuzzy
