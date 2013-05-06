@@ -1752,8 +1752,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(m_currentView == TREE && m_tree->ItemIsGroup(m_tree->GetSelection())
-                    && m_tree->GetSelection() != m_tree->GetRootItem());
+      evt.Enable(m_currentView == TREE && m_tree->GetSelection() != m_tree->GetRootItem() &&
+                 m_tree->ItemIsGroup(m_tree->GetSelection()));
       break;
 
     case ID_BROWSEURL:
