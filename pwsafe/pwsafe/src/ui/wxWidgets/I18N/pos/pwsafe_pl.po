@@ -139,7 +139,7 @@ msgstr "Nie znaleziono pliku lub ścieżki."
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:237
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:328
 msgid "Three strikes - yer out!"
-msgstr ""
+msgstr "Hasło nieprawidłowe - trzeci raz z rzędu!"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:240
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:112
@@ -4710,7 +4710,7 @@ msgstr "Błąd odczytu"
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
-msgstr ""
+msgstr "\tJedna lub więcej z nazw polityk haseł była już w bazie danych, ale miała inne ustawienia. Zmieniono im nazwy."
 
 #: ../../../core/core_st.cpp:252
 #, c-format
@@ -4910,7 +4910,7 @@ msgstr "Eksport danych jest zawężony przez użytkownika do wskazanych pól."
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
-msgstr ""
+msgstr "Uwaga: te polityki haseł nie zastąpią istniejących polityk z takimi samymi nazwami w aktualnej bazie danych."
 
 #: ../../../core/core_st.cpp:298
 msgid ""
