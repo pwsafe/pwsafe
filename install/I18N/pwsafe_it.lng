@@ -38,10 +38,10 @@ LangString START_AUTO ${LANG_ITALIAN} "Avvio automatico"
 LangString START_SHOW ${LANG_ITALIAN} "Mostra nel menu Avvio"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_ITALIAN} "Istalla collegamento sul desktop"
+LangString START_SHORTCUT ${LANG_ITALIAN} "Crea collegamento sul desktop"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Disistalla collegamento"
+LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Collegamento per la disinstallazione"
 
 ;--------------------------------
 ; Descriptions

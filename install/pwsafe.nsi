@@ -623,12 +623,14 @@ Function .onInit
   Push ${LANG_TRADCHINESE}
   Push "Chinese (Traditional)"
   Push ${LANG_SPANISH}
+;  Push Español - encoding problem - displays as gibberish
   Push Espanol
   Push ${LANG_SWEDISH}
   Push Svenska
   Push ${LANG_DUTCH}
   Push Dutch
   Push ${LANG_FRENCH}
+;  Push Français - encoding problem - displays as gibberish
   Push Francais
   Push ${LANG_RUSSIAN}
   Push Russian
@@ -641,11 +643,14 @@ Function .onInit
   Push ${LANG_KOREAN}
   Push Korean
   Push ${LANG_PORTUGUESEBR}
-  Push "Português (Brasil)"
+;  Push "Português (Brasil)" - encoding problem - displays as gibberish
+  Push "Portuguese (Brasil)"
   Push ${LANG_CZECH}
-  Push "Čeština"
+;  Push "Čeština" - encoding problem - displays as gibberish
+  Push "Czech"
   Push ${LANG_TURKISH}
-  Push "Türkçe"
+;  Push "Türkçe" - encoding problem - displays as gibberish
+  Push "Turkish"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
