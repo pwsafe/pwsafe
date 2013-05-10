@@ -1,5 +1,5 @@
-Password Safe 3.31pre Release Notes - April 2013
-================================================
+Password Safe 3.31pre Release Notes - May 2013
+==============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,20 +8,20 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.31pre
-========================
+New Features for 3.31
+=====================
 Turkish translation added, thanks to Yusuf.
 
-Changes to Existing Features in 3.31pre
-=======================================
+Changes to Existing Features in 3.31
+====================================
 [698] Autotype now supports URL and email fields with \l and \m,
 respectively.
 [673] Improved selection of subset of password: characters can be
 specified from the end of the password as well as from the beginning
 (thanks to DK).
 
-Bugs fixed in 3.31pre
-=====================
+Bugs fixed in 3.31
+==================
 [1097, 1098] Fixed typos in format description text and in English online help (thanks to PeterHB)
 [1096] Correct suffix appended to proposed filename when exporting to XML.
 [1095] Ampersand (&) is handled correctly in Password Policy (thanks
