@@ -1687,14 +1687,21 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <MASM Include="xpsupportvc11upd2v102\xpatlwrap.asm" />
-    <MASM Include="xpsupportvc11upd2v102\xpatlwrap64.asm" />
+  <ItemGroup Condition=" '$(Platform)' == 'Win32' ">
+    <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap.asm">
+      <Message>Assembling...</Message>
+      <Command>ml.exe /c /nologo /Zi /Fo ..\$(PWSObj)\$(ProjectName)\%(FileName).obj /W3 /errorReport:prompt /Ta.\xpsupportvc11upd2v102\%(FileName).asm"</Command>
+      <Outputs>..\$(PWSObj)\$(ProjectName)\%(FileName).obj;</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
+    <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap64.asm">
+      <Message>Assembling...</Message>
+      <Command>ml64.exe /c /nologo /Zi /Fo ..\$(PWSObj)\$(ProjectName)\%(FileName).obj /W3 /errorReport:prompt /Ta.\xpsupportvc11upd2v102\%(FileName).asm"</Command>
+      <Outputs>..\$(PWSObj)\$(ProjectName)\%(FileName).obj;</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
-  </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties RESOURCE_FILE="PasswordSafe.rc" />

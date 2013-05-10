@@ -1615,8 +1615,14 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <MASM Include="xpsupportvc11upd2v102\xpatlwrap.asm" />
-    <MASM Include="xpsupportvc11upd2v102\xpatlwrap64.asm" />
+  <ItemGroup Condition=" '$(Platform)' == 'Win32' ">
+    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
+    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap64.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
