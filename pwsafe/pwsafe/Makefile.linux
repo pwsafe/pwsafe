@@ -80,7 +80,7 @@ rpm:	release I18N
 	$(MAKE) signatures sha1sums
 
 tar:
-	@$(MKDIR) $(TMPDIR)
+	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
 	@echo -n "Exporting source tree..."
 	@$(SVN) export --quiet . $(TMPDIR)/pwsafe-$(RELEASENAME)
 # Prune windows-only code (not for now - provide as a reference?)
