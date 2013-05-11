@@ -37,7 +37,7 @@ TARBALL := ../../Releases/pwsafe-$(RELEASENAME)-src.tgz
 all : build
 
 build:	tarball
-	@$(MKDIR) -p $(RPMBUILDDIR)/SPECS $(RPMBUILDDIR)/SOURCES
+	@$(MKDIR) $(RPMBUILDDIR)/SPECS $(RPMBUILDDIR)/SOURCES
 	@$(SED) s/@VERSION@/$(RELEASENAME)/g < pwsafe.spec.tmpl > $(RPMBUILDDIR)/SPECS/pwsafe.spec
 	@$(CP) $(TARBALL) $(RPMBUILDDIR)/SOURCES
 	@(cd $(RPMBUILDDIR); rpmbuild -ba -v SPECS/pwsafe.spec)
