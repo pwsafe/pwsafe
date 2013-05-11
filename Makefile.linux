@@ -26,10 +26,7 @@ GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
-UPLOAD_DST :=  ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe/Linux-BETA/$(RELEASENUM)
-SVN_REPO := https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe
-SVN_TRUNK := $(SVN_REPO)/trunk/pwsafe/pwsafe
-SVN_TAG := $(SVN_REPO)/tags
+UPLOAD_DST := $(UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
 all: I18N unicodedebug unicoderelease
