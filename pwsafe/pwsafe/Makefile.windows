@@ -30,7 +30,7 @@ GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
-UPLOAD_DST :=  ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe/passwordsafe/$(RELEASENUM)
+UPLOAD_DST :=  $(UPLOAD_ROOT)/passwordsafe/$(RELEASENUM)
 PYTHON := /usr/bin/python
 SVN2LOG := ../../python/svn2log.py
 MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
@@ -38,11 +38,7 @@ WIXDIR := /cygdrive/c/local/WIX
 CANDLE := $(WIXDIR)/candle.exe
 LIGHT := $(WIXDIR)/light.exe
 
-SVN_REPO := https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe
-SVN_TRUNK := $(SVN_REPO)/trunk/pwsafe/pwsafe
-SVN_TAG := $(SVN_REPO)/tags
 RELTAG = V$(subst .,_,$(RELEASENAME))
-
 
 I18N_DIR := ./src/ui/Windows/I18N
 I18N_DLL_DIR := ./build/bin/pwsafe/I18N
