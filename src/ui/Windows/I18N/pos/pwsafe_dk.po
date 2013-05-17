@@ -3335,10 +3335,6 @@ msgstr "Gruppe\tTitel\tBrugernavn\tAdgangskode Udløbs Dato\n"
 msgid "Gujarati"
 msgstr "Gujarati"
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr "H"
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
@@ -4589,11 +4585,6 @@ msgstr "Password Safe Databaser (*.psafe3; *.dat)|*.psafe3; *.dat|Alle filer (*.
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Password Safe Databaser (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe sikkerhedskopier (*.bak)|*.bak|Password Safe Mellemliggende Sikkerhedskopier (*.ibak)|*.ibak|Alle filer (*.*)|*.*||"
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe er blevet udarbejdet som %s men CPU er faktisk %s.\nDu kan være ude af stand til at åbne eller gemte filer kan være inkompatible med andre platforme."
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
@@ -5136,10 +5127,6 @@ msgstr "Russian"
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
 msgstr "Russian (Typewriter)"
-
-#. Resource IDs: (328)
-msgid "S"
-msgstr "S"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6933,6 +6920,11 @@ msgstr "\nLav Ny Database"
 msgid "\nManage Filters"
 msgstr "\nHåndter Filtre"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr ""
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\nFlet ind i Database"
@@ -7023,6 +7015,25 @@ msgstr "\nSprunget over %d %s"
 msgid "\nSynchronize Databases"
 msgstr ""
 
+#. Resource IDs: (360)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\nSynkronisering udført: %d %s opdateret"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\nDe følgende %s %s er opdateret:"
+
+#. Resource IDs: (357)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\nDe følgende nye %s %s er flettet ind i denne database:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\nDette felt bliver redigeret i dit\nstandart tekst redigerings prog."
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\nOphæv"
@@ -7055,6 +7066,10 @@ msgstr "\n\nKan ikke åbne databasen. Den eksisterer sandsynligvis ikket.\nVælg
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\nIgnorer dette og gemme alligevel - Ja/nej?"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\nVælg Ja for at fortsætte med denne adgangskode eller Nej for at afbryde?"
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\nDatabaserne er identiske ved sammenligning af valgte eller standart felter!"
@@ -7062,6 +7077,10 @@ msgstr "\n\nDatabaserne er identiske ved sammenligning af valgte eller standart 
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nUkendte felter vil også blive kopieret med posten."
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\nemail: "
 
 #. Resource IDs: (362)
 #, c-format
@@ -7071,38 +7090,6 @@ msgstr "\nmed Adgangskode Historik fejl %d"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr ""
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\nSynkronisering udført: %d %s opdateret"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\nDe følgende %s %s er opdateret:"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\nDe følgende nye %s %s er flettet ind i denne database:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nDette felt bliver redigeret i dit\nstandart tekst redigerings prog."
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\nVælg Ja for at fortsætte med denne adgangskode eller Nej for at afbryde?"
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\nemail: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -7223,10 +7210,6 @@ msgstr "begynder med"
 #. Resource IDs: (207)
 msgid "between"
 msgstr "mellem"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "stor endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7423,10 +7406,6 @@ msgstr "mindre end"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "mindre end eller lig med"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr "lille endian"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

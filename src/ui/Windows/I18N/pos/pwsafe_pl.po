@@ -3383,10 +3383,6 @@ msgstr "Grupa\tNazwa\tNazwa użytkownika\tData wygaśnięcia Hasła\n"
 msgid "Gujarati"
 msgstr "Gudźarati"
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr "H"
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
@@ -4660,11 +4656,6 @@ msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Wszystkie pl
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe został skompilowany jako %s ale CPU jest %s.\nPliki mogą się nie otwierać lub zapisane pliku mogą być niekompatybilne z innymi platformami."
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
@@ -5212,10 +5203,6 @@ msgstr "Rosyjski"
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
 msgstr "Rosyjski (maszyna do pisania)"
-
-#. Resource IDs: (328)
-msgid "S"
-msgstr "S"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -7029,6 +7016,11 @@ msgstr "\nUtwórz nową bazę danych"
 msgid "\nManage Filters"
 msgstr "\nZarządzaj filtrami"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\nScalanie zakończone: %d %s dodano (%d %s, %d %s, %d %s)"
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\nScal z bazą danych"
@@ -7121,6 +7113,25 @@ msgstr "\nOminięto %d %s"
 msgid "\nSynchronize Databases"
 msgstr "\nSynchronizuj bazy danych"
 
+#. Resource IDs: (360)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\nSynchronizacja zakończona: %d %s uaktualniono"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\nNastępujące %s %s zostały uaktualnione:"
+
+#. Resource IDs: (357)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\nNastępujące nowe %s %s scalone z tą bazą danych:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\nTo pole jest edytowane w\ndomyślnym edytorze tekstu."
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\nCofnij zmiany"
@@ -7154,6 +7165,10 @@ msgstr "\n\nNie można otworzyć bazy danych. Prawdopobnie nie istnieje.\nProsz�
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\nZignorowac to i zachować mimo wszystko - Tak/Nie?"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\nWybierz Tak by kontynuować z tym hasłwm lub Nie by anulować."
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\nBazy danych są identyczne, gdy porównamy wybrane lub domyślne pola!"
@@ -7161,6 +7176,10 @@ msgstr "\n\nBazy danych są identyczne, gdy porównamy wybrane lub domyślne pol
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nNieznane pola zostaną skopiowane razem z wpisem."
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\nemail: "
 
 #. Resource IDs: (362)
 #, c-format
@@ -7170,38 +7189,6 @@ msgstr "\nz %d błędami historii hasła"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr "\nz ostrzeżeniami"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\nScalanie zakończone: %d %s dodano (%d %s, %d %s, %d %s)"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\nSynchronizacja zakończona: %d %s uaktualniono"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\nNastępujące %s %s zostały uaktualnione:"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\nNastępujące nowe %s %s scalone z tą bazą danych:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nTo pole jest edytowane w\ndomyślnym edytorze tekstu."
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\nWybierz Tak by kontynuować z tym hasłwm lub Nie by anulować."
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\nemail: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -7324,10 +7311,6 @@ msgstr "zaczyna się na"
 #. Resource IDs: (207)
 msgid "between"
 msgstr "między"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "big endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7532,10 +7515,6 @@ msgstr "mniejsze niż"
 #, fuzzy
 msgid "less than or equal to"
 msgstr "mniejszy lub równy"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr "little endian"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

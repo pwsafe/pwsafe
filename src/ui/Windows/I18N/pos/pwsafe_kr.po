@@ -3335,10 +3335,6 @@ msgstr "그룹\t제목\t사용자 이름\t비밀번호 만료 일자\n"
 msgid "Gujarati"
 msgstr "Gujarati"
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr "H"
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
@@ -4589,11 +4585,6 @@ msgstr "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|모�
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.ibak)|*.ibak|모든 파일 (*.*)|*.*||"
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe가 %s로 컴파일되었지만 CPU는 %s 입니다.\n파일을 열수 없을 수 있고, 저장된 파일이 다른 플랫폼과 호환되지 않을 수 있습니다."
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
@@ -5136,10 +5127,6 @@ msgstr "Russian"
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
 msgstr "Russian (Typewriter)"
-
-#. Resource IDs: (328)
-msgid "S"
-msgstr "S"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6933,6 +6920,11 @@ msgstr "\n새 데이터베이스 생성"
 msgid "\nManage Filters"
 msgstr "\n필터 관리"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\n병합 완료: %d %s 추가됨 (%d %s, %d %s, %d %s)"
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\n데이터베이스로 병합"
@@ -7023,6 +7015,25 @@ msgstr "\n%d %s 생략됨"
 msgid "\nSynchronize Databases"
 msgstr "\n데이터베이스 동기화"
 
+#. Resource IDs: (360)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\n동기화 완료: %d %s 갱신됨"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\n다음 %s %s 가 갱신됨:"
+
+#. Resource IDs: (357)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "다음 새 데이터베이스 %s %s 가 이 데이터베이스로 병합됩니다:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\n이 필드는 외부 편집기로\n편집되었습니다."
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\n되돌리기"
@@ -7055,6 +7066,10 @@ msgstr "\n\n데이터베이스를 열 수 없습니다. 파일이 존재하지 �
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\n이것을 무시하고 저장하시겠습니까? - 예/아니오"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\n예를 눌러 계속 진행하시겠습니까, 아니면 아니오를 눌러 취소하시겠습니까?"
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\n기본 필드 혹은 선택된 필드로 비교한 결과 동일한 데이터베이스입니다!"
@@ -7062,6 +7077,10 @@ msgstr "\n\n기본 필드 혹은 선택된 필드로 비교한 결과 동일한 
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\n알려지지 않은 필드 또한 항목들과 함께 복사되었습니다."
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\n전자우편: "
 
 #. Resource IDs: (362)
 #, c-format
@@ -7071,38 +7090,6 @@ msgstr "\n와 %d 비밀번호 내역 오류"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\n병합 완료: %d %s 추가됨 (%d %s, %d %s, %d %s)"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\n동기화 완료: %d %s 갱신됨"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\n다음 %s %s 가 갱신됨:"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "다음 새 데이터베이스 %s %s 가 이 데이터베이스로 병합됩니다:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\n이 필드는 외부 편집기로\n편집되었습니다."
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\n예를 눌러 계속 진행하시겠습니까, 아니면 아니오를 눌러 취소하시겠습니까?"
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\n전자우편: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -7223,10 +7210,6 @@ msgstr "begins with"
 #. Resource IDs: (207)
 msgid "between"
 msgstr "between"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "big endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7423,10 +7406,6 @@ msgstr "less than"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "less than or equal to"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr "little endian"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"
