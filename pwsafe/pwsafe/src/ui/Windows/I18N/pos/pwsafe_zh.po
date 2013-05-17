@@ -3335,10 +3335,6 @@ msgstr "组\t标题\t用户名\t密码失效日期\n"
 msgid "Gujarati"
 msgstr "古吉拉特语"
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr "H"
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
@@ -4589,11 +4585,6 @@ msgstr "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe 备份 (*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*.ibak|所有文件 (*.*)|*.*||"
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe 已被编译为 %s 但 CPU 实际上 %s！\n你也许不能打开文件或保存文件可能不兼容其它平台！"
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
@@ -5136,10 +5127,6 @@ msgstr "俄语"
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
 msgstr "俄语(打字机)"
-
-#. Resource IDs: (328)
-msgid "S"
-msgstr "S"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6933,6 +6920,11 @@ msgstr "\n新建数据库"
 msgid "\nManage Filters"
 msgstr "\n管理筛选器"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\n合并完成: 已增加 %d 个 %s (%d %s, %d %s, %d %s)"
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\n合并数据库"
@@ -7023,6 +7015,25 @@ msgstr "\n跳过 %d %s"
 msgid "\nSynchronize Databases"
 msgstr "\n同步数据库"
 
+#. Resource IDs: (360)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\n同步完成: %d %s 被更新！"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\n下列 %s %s 已更新:"
+
+#. Resource IDs: (357)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\n新建 %s %s 合并到下面数据库中:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\n该字段正在你的默认文本编辑器中编辑！"
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\n撤销"
@@ -7055,6 +7066,10 @@ msgstr "\n\n未能打开数据库，该数据库可能不存在！\n请选择打
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\n忽略该项并总是保存 - 是/否？"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\n选定“是”继续使用该密码或“否”取消？"
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\n经过比较所选及默认字段，数据库内容均相同！"
@@ -7062,6 +7077,10 @@ msgstr "\n\n经过比较所选及默认字段，数据库内容均相同！"
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\n未知字段将同样被复制在项目中！"
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\n电子邮箱:"
 
 #. Resource IDs: (362)
 #, c-format
@@ -7071,38 +7090,6 @@ msgstr "\n密码历史错误%d"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\n合并完成: 已增加 %d 个 %s (%d %s, %d %s, %d %s)"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\n同步完成: %d %s 被更新！"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\n下列 %s %s 已更新:"
-
-#. Resource IDs: (357)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\n新建 %s %s 合并到下面数据库中:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\n该字段正在你的默认文本编辑器中编辑！"
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\n选定“是”继续使用该密码或“否”取消？"
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\n电子邮箱:"
 
 #. Resource IDs: (346)
 #, c-format
@@ -7223,10 +7210,6 @@ msgstr "开始"
 #. Resource IDs: (207)
 msgid "between"
 msgstr "之间"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "大端"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7423,10 +7406,6 @@ msgstr "小于"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "小于或等于"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr "小端"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

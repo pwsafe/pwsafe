@@ -3375,10 +3375,6 @@ msgstr ""
 msgid "Gujarati"
 msgstr ""
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr ""
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr ""
@@ -4629,11 +4625,6 @@ msgstr ""
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr ""
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr ""
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr ""
@@ -5177,10 +5168,6 @@ msgstr ""
 
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
-msgstr ""
-
-#. Resource IDs: (328)
-msgid "S"
 msgstr ""
 
 #. Resource IDs: (32022)
@@ -6976,6 +6963,11 @@ msgstr ""
 msgid "\nManage Filters"
 msgstr ""
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr ""
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr ""
@@ -7066,6 +7058,25 @@ msgstr ""
 msgid "\nSynchronize Databases"
 msgstr ""
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr ""
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr ""
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr ""
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr ""
@@ -7098,12 +7109,20 @@ msgstr ""
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr ""
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr ""
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr ""
 
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "\nemail: "
 msgstr ""
 
 #. Resource IDs: (362)
@@ -7113,38 +7132,6 @@ msgstr ""
 
 #. Resource IDs: (367)
 msgid "\nwith warnings"
-msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr ""
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr ""
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr ""
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr ""
-
-#. Resource IDs: (345)
-msgid "\nemail: "
 msgstr ""
 
 #. Resource IDs: (346)
@@ -7266,10 +7253,6 @@ msgstr "začíná "
 #. Resource IDs: (207)
 msgid "between"
 msgstr "mezi"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "big endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7466,10 +7449,6 @@ msgstr "menší než"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "menší nebo roven než"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr ""
 
 #. Resource IDs: (1445)
 msgid "minutes idle"

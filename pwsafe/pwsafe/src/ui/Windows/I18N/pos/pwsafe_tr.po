@@ -3348,10 +3348,6 @@ msgstr "Grup\tBaşlık\tKullanıcı Adı\tŞifre Süresi Dolma Tarihi\n"
 msgid "Gujarati"
 msgstr "Gucerat Dili"
 
-#. Resource IDs: (328)
-msgid "H"
-msgstr "H"
-
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
@@ -4602,11 +4598,6 @@ msgstr "Password Safe Veritabanları (*.psafe3; *.dat)|*.psafe3; *.dat|Tüm dosy
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Password SafeVeritabanları (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Yedekleri (*.bak)|*.bak|Password Safe Ara Yedekleri (*.ibak)|*.ibak|Tüm dosyalar (*.*)|*.*||"
 
-#. Resource IDs: (326)
-#, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe %s olarak derlendi ancak CPU aslında %s.\nDosyaları açamayabilirsiniz ya da kaydedilmiş dosyalar başka platformlarla uyumlu olmayabilir."
-
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
@@ -5149,10 +5140,6 @@ msgstr "Rusça"
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
 msgstr "Rusça (Daktilo)"
-
-#. Resource IDs: (328)
-msgid "S"
-msgstr "S"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6946,6 +6933,11 @@ msgstr "\nYeni Veritabanı Yap"
 msgid "\nManage Filters"
 msgstr "\nFiltreleri Yönet"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\nBirleştirme tamamlandı: %d %s eklendi(%d %s, %d %s, %d %s)  "
+
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
 msgstr "\nVeritabanıyla Birleştir"
@@ -7036,6 +7028,25 @@ msgstr "\n%d %s atlandı"
 msgid "\nSynchronize Databases"
 msgstr "\nVeritabanlarını Eşle"
 
+#. Resource IDs: (214)
+#, c-format
+msgid "\nSynchronize completed: %d %s updated"
+msgstr "\nEşleme tamamlandı: %d %s güncellendi"
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following %s %s updated:"
+msgstr "\nAşağıdaki %s %s güncellendi:"
+
+#. Resource IDs: (214)
+#, c-format
+msgid "\nThe following new %s %s merged into this database:"
+msgstr "\nAşağıdaki yeni %s %s geçerli veritabanıyla birleştirildi:"
+
+#. Resource IDs: (341)
+msgid "\nThis field is being edited in your\ndefault text editor."
+msgstr "\nBu alan varsayılan metin\neditörünüzde düzenleniyor."
+
 #. Resource IDs: (2006)
 msgid "\nUndo"
 msgstr "\nGeri Al"
@@ -7068,6 +7079,10 @@ msgstr "\n\nVeritabanı açılamıyor. Muhtemelen mevcut değil.\nLütfen açmak
 msgid "\n\nIgnore this and save anyway - Yes/no?"
 msgstr "\n\nBunu yoksay ve kaydet? - Evet/hayır?"
 
+#. Resource IDs: (342)
+msgid "\n\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\n\nBu şifreyle devam etmek için Evet'i ya da iptal etmek için İptal'i seçin"
+
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
 msgstr "\n\nVeritabanları seçilmiş ya da varsayılan alanlara göre karşılaştırıldığında birbiriyle özdeş!"
@@ -7075,6 +7090,10 @@ msgstr "\n\nVeritabanları seçilmiş ya da varsayılan alanlara göre karşıla
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nGirdiyle beraber bilinmeyen alanlar da kopyalanacak."
+
+#. Resource IDs: (345)
+msgid "\nemail: "
+msgstr "\ne-posta:"
 
 #. Resource IDs: (362)
 #, c-format
@@ -7084,38 +7103,6 @@ msgstr "\n%d şifre geçmişi hatası ile"
 #. Resource IDs: (367)
 msgid "\nwith warnings"
 msgstr "\nuyarılarla"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\nBirleştirme tamamlandı: %d %s eklendi(%d %s, %d %s, %d %s)  "
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\nEşleme tamamlandı: %d %s güncellendi"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\nAşağıdaki %s %s güncellendi:"
-
-#. Resource IDs: (214)
-#, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\nAşağıdaki yeni %s %s geçerli veritabanıyla birleştirildi:"
-
-#. Resource IDs: (341)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nBu alan varsayılan metin\neditörünüzde düzenleniyor."
-
-#. Resource IDs: (342)
-msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\nBu şifreyle devam etmek için Evet'i ya da iptal etmek için İptal'i seçin"
-
-#. Resource IDs: (345)
-msgid "\nemail: "
-msgstr "\ne-posta:"
 
 #. Resource IDs: (346)
 #, c-format
@@ -7236,10 +7223,6 @@ msgstr "ile başlayan"
 #. Resource IDs: (207)
 msgid "between"
 msgstr "arasında"
-
-#. Resource IDs: (326)
-msgid "big endian"
-msgstr "big endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
@@ -7436,10 +7419,6 @@ msgstr "küçük"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "küçük ya da eşit"
-
-#. Resource IDs: (326)
-msgid "little endian"
-msgstr "little endian"
 
 #. Resource IDs: (1445)
 msgid "minutes idle"
