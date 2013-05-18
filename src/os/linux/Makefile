@@ -33,6 +33,7 @@ LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
 CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) -I/usr/local/include/ykpers-1
+
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -DDEBUG
 CFLAGS += -g
