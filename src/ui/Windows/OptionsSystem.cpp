@@ -17,13 +17,9 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsSystem.h" // Must be after resource.h
 
@@ -47,7 +43,6 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
 : COptions_PropertyPage(pParent,
                         COptionsSystem::IDD, COptionsSystem::IDD_SHORT,
                         pOPTMD),
-  m_pToolTipCtrl(NULL),
   m_DeleteRegistry(FALSE), m_saveDeleteRegistry(FALSE),
   m_Migrate2Appdata(FALSE), m_saveMigrate2Appdata(FALSE)
 {
@@ -64,11 +59,6 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_MaxREItems = M_MaxREItems();
   m_MaxMRUItems = M_MaxMRUItems();
   m_InitialHotkeyState = M_Hotkey_Enabled();
-}
-
-COptionsSystem::~COptionsSystem()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange *pDX)
@@ -110,7 +100,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsSystem::OnInitDialog() 
 {
-  BOOL bResult = COptions_PropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_bShowConfigFile) {
@@ -181,31 +171,10 @@ BOOL COptionsSystem::OnInitDialog()
 
   OnUseSystemTray();
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return bResult;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-  // Double time to allow reading by user - there is a lot there!
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
-
-  if (m_pToolTipCtrl != NULL) {
-    CString cs_ToolTip(MAKEINTRESOURCE(IDS_REGDEL));
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_MIGRATETOAPPDATA);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MIGRATETOAPPDATA), cs_ToolTip);
-  }
-
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 2);
+  AddTool(IDC_REGDEL,           IDS_REGDEL);
+  AddTool(IDC_MIGRATETOAPPDATA, IDS_MIGRATETOAPPDATA);
+  ActivateToolTip();
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -259,8 +228,7 @@ BOOL COptionsSystem::OnApply()
 
 BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -278,9 +246,7 @@ BOOL COptionsSystem::OnKillActive()
 
 void COptionsSystem::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/system_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/system_tab.html");
 }
 
 void COptionsSystem::OnUseSystemTray() 

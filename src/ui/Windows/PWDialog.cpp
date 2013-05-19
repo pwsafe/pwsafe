@@ -9,13 +9,10 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWDialog.h"
+#include "GeneralMsgBox.h"
 
 #include <algorithm>
 #include <functional>
-
-#if defined(POCKET_PC)
-#error "TBD - define proper Dialog base class for PPC"
-#endif
 
 extern const wchar_t *EYE_CATCHER;
 
@@ -23,6 +20,88 @@ static CPWDialogTracker the_tracker;
 CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
+
+void CPWDialog::FixBitmapBackground(CBitmap &bm)
+{
+  // Change bitmap's {192,192,192} pixels
+  // to current flavor of the month default background
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  bm.GetBitmap(&bmInfo);
+
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  ASSERT(pixels != NULL);
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
+}
+
+void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
+{
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, Flags)) {
+    pws_os::Trace(L"Unable To create ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  } else {
+    EnableToolTips();
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+  }
+}
+
+void CPWDialog::AddTool(int DlgItemID, int ResID)
+{
+  if (m_pToolTipCtrl != NULL) {
+    const CString cs(MAKEINTRESOURCE(ResID));
+    m_pToolTipCtrl->AddTool(GetDlgItem(DlgItemID), cs);
+  }
+}
+
+void CPWDialog::ActivateToolTip()
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->Activate(TRUE);
+}
+
+void CPWDialog::RelayToolTipEvent(MSG *pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+}
+
+void CPWDialog::ShowHelp(const CString &topicFile)
+{
+  if (!app.GetHelpFileName().IsEmpty()) {
+    const CString cs_HelpTopic = app.GetHelpFileName() + topicFile;
+    HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  } else {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
+  }
+}
+
 
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -104,3 +183,4 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   m_mutex.Unlock();
   std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }
+

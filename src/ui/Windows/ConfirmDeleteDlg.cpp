@@ -15,10 +15,6 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/PocketPC.h"
-#endif
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

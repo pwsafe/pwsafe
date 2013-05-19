@@ -26,13 +26,8 @@
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#include "pocketpc/PocketPC.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "core/util.h"
 
@@ -94,10 +89,6 @@ BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-#if defined(POCKET_PC)
-  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-  ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
-#endif
   ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -171,50 +162,18 @@ void CPasskeySetup::OnOK()
 
 void CPasskeySetup::OnHelp() 
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#newdatabase", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
+  ShowHelp(L"::/html/create_new_db.html");
 }
 
-#if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
-void CPasskeySetup::OnPasskeyKillfocus()
-{
-  EnableWordCompletion(m_hWnd);
-}
-#endif
 
 void CPasskeySetup::OnPasskeySetfocus()
 {
   m_LastFocus = IDC_PASSKEY;
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-  DisableWordCompletion(m_hWnd);
-#endif
 }
 
 void CPasskeySetup::OnVerifykeySetfocus()
 {
   m_LastFocus = IDC_VERIFY;
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-  DisableWordCompletion(m_hWnd);
-#endif
 }
 
 void CPasskeySetup::OnVirtualKeyboard()

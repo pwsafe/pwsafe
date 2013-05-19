@@ -7,7 +7,7 @@
  */
 
 /** \file about.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -127,7 +127,7 @@ void CAbout::Init()
  */
 
 void CAbout::CreateControls()
-{    
+{
 ////@begin CAbout content construction
   CAbout* itemDialog1 = this;
 
@@ -233,7 +233,7 @@ void CAbout::OnCloseClick( wxCommandEvent& /* evt */ )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CLOSE);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
 }
 
 
@@ -322,9 +322,10 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
     case CheckVersion::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
-      newer += pwsafeVersionString;
-      newer += _("\nLatest version:\t"); newer += latest.c_str();
-      newer += _("\n\nPlease visit the PasswordSafe website to download the latest version.");
+      newer += pwsafeVersionString + wxT("\n");
+      newer += _("Latest version:\t"); newer += latest.c_str();
+      newer += wxT("\n\n");
+      newer += _("Please visit the PasswordSafe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
       *m_newVerStatus << cs_title;
       wxMessageDialog dlg(this, newer, cs_title, wxOK);

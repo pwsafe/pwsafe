@@ -8,10 +8,6 @@
 
 #include "FilterBaseDlg.h"
 
-#if defined(POCKET_PC)
-#error "TBD - define proper Filter Dialog base class for PPC"
-#endif
-
 IMPLEMENT_DYNAMIC(CFilterBaseDlg, CPWDialog)
 
 CFilterBaseDlg::CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd)

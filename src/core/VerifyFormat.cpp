@@ -180,7 +180,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   //                    or  "yyyy-mm-ddThh:mm:ss+hh:mm"
   //                    or  "yyyy-mm-ddThh:mm:ss-hh:mm"
   //                        "0123456789012345678901234"
-  
+
   // e.g.,                  "2008-10-06T21:20:56"
   //                        "2008-10-06T21:20:56Z"
   //                        "2008-10-06T21:20:56+01:00"
@@ -239,7 +239,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
 
     if (tz_mm > 59 || abs(tz_hh) > 14 ||
         (abs(tz_hh) == 14 && tz_mm != 0))
-      tz_hh = tz_mm = 0; 
+      tz_hh = tz_mm = 0;
   }
 
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
@@ -498,16 +498,16 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   // Note:
   //   For Plain text input the <time field> is fixed as "yyyy/mm/dd!hh:mm:ss"
   //   For XML input the <time field> is defined by the W3C xs:dateTime specification
-  //   of: "yyyy-mm-ddThh:mm:ss", "yyyy-mm-ddThh:mm:ssZ", 
+  //   of: "yyyy-mm-ddThh:mm:ss", "yyyy-mm-ddThh:mm:ssZ",
   //       "yyyy-mm-ddThh:mm:ss+hh:mm" or "yyyy-mm-ddThh:mm:ss-hh:mm"
   //
-  // A date value of '1970-01-01' (irrespective of the time value) is interpreted 
+  // A date value of '1970-01-01' (irrespective of the time value) is interpreted
   // as 'unknown'.
 
   StringX sxBuffer, tmp;
   std::vector<StringX> in_tokens, out_entries;
-  size_t ipwlen;
-  int s = -1, m = -1, n = -1, nerror(-1);
+  int s = -1, nerror(-1);
+  unsigned int ipwlen, m = 0, n = 0; // using uint instead of size_t to use 'x' format spec instead of complier-dependent z/I
   int rc = PWH_OK;
   time_t t;
 
@@ -576,11 +576,11 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   }
 
   // We need to handle these in 3s or 4s depending on whether we are doing it for
-  // plain text input (4 - date, time, length, password) or 
+  // plain text input (4 - date, time, length, password) or
   // XML input (3 - datetime, length, password).
 
   // Check we have enough
-  if ((int)in_tokens.size() != n * 3) {
+  if (in_tokens.size() != n * 3) {
     // too few or too many - set number to number of complete entries
     n = (in_tokens.size() % 3);
   }
@@ -589,7 +589,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   size_t it;
   it = 0;  // token counter
   size_t ie;      // entry counter
-  for (ie = 0; ie < (size_t)n; ie++) {
+  for (ie = 0; ie < n; ie++) {
     StringX sxDatetime, sxPWLen, sxPassword;
     // Check datetime and password length fields
     size_t idtlen = in_tokens[it].length();
@@ -602,7 +602,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     sxDatetime = in_tokens[it];
     sxPWLen = in_tokens[it + 1];
     sxPassword = in_tokens[it + 2];
-      
+
     // Get password length
     if (sxPWLen.find_first_not_of(sHex) != StringX::npos) {
       // Password length not hex!
@@ -627,7 +627,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
       break;
     }
 
-    Format(sxBuffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, 
+    Format(sxBuffer, _T("%08lx%04x%s"), static_cast<long>(t), ipwlen,
                  sxPassword.c_str());
     out_entries.push_back(sxBuffer);
     sxBuffer = _T("");

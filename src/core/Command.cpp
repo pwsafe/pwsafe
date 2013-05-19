@@ -34,7 +34,7 @@ All other derived classes are aptly named to indicate their function.
 There are 2 special derived classes:
 1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
 after any change.  For MultiCommands, it is normal to turn off GUI notification
-during the execution of the individual commands and only notify the GUI at the 
+during the execution of the individual commands and only notify the GUI at the
 end (e.g. after importing a lot of entries or after undoing the importing of these
 entries).  Flags can be set on when to do this notification.
 
@@ -199,7 +199,7 @@ UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
 
 int UpdateGUICommand::Execute()
 {
-  if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
+  if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO ||
       m_When == WN_REDO || m_When == WN_ALL) {
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
   }
@@ -294,6 +294,10 @@ int DBPolicyNamesCommand::Execute()
         }
         case NP_REPLACEALL:
           m_pcomInt->SetPasswordPolicies(m_NewMapPSWDPLC);
+          break;
+        default:
+          // Unknown function
+          ASSERT(0);
           break;
       }
     }
@@ -498,7 +502,7 @@ int AddEntryCommand::Execute()
   m_ci.GetXTime(tttXTime);
   if (tttXTime != time_t(0)) {
     m_pcomInt->AddExpiryEntry(m_ci);
-  } 
+  }
 
   m_bState = true;
   return 0;
@@ -549,7 +553,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
        * dependents, to change their passwords back upon undo
        * To save code, we just keep the entire entry, same as shortcuts
       */
-      const ItemMMap &immap = 
+      const ItemMMap &immap =
         ci.IsShortcutBase() ? pcomInt->GetBase2ShortcutsMmap() : pcomInt->GetBase2AliasesMmap();
       ItemMMapConstIter iter;
       for (iter = immap.lower_bound(uuid);
@@ -618,7 +622,7 @@ void DeleteEntryCommand::Undo()
       }
     }
   }
-  
+
   RestoreState();
   m_bState = false;
 }

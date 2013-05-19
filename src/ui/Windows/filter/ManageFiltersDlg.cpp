@@ -1274,8 +1274,6 @@ BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
 
 void CManageFiltersDlg::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/filters.html#ManagingFilters";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/filters.html#ManagingFilters");
 }
 

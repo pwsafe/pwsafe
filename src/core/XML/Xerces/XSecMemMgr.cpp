@@ -38,8 +38,8 @@ using namespace std;
 
 XERCES_CPP_NAMESPACE_BEGIN
 
-static const int header = (int)max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
-static const int offset = max((header / (int)sizeof(XMLSize_t *)), 1);
+static const XMLSize_t header = max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
+static const XMLSize_t offset = max(header / sizeof(XMLSize_t *), XMLSize_t(1));
 
 #if XERCES_VERSION_MAJOR > 2
 void* XSecMemMgr::allocate(XMLSize_t size)
@@ -59,11 +59,11 @@ void* XSecMemMgr::allocate(size_t size)
   }
   if (preal_mem != NULL) {
     // Put user size in header
-    XMLSize_t *puser_mem = (XMLSize_t*)preal_mem;
+    XMLSize_t *puser_mem = reinterpret_cast<XMLSize_t*>(preal_mem);
     *puser_mem = size;
     // Get pointer to start of user memory and return it to user
     puser_mem += offset;
-    return (void *)puser_mem;
+    return reinterpret_cast<void *>(puser_mem);
   }
   throw OutOfMemoryException();
 }
@@ -72,16 +72,16 @@ void XSecMemMgr::deallocate(void * puser_mem)
 {
   if (puser_mem) {
     // Back off to the start of the header
-    XMLSize_t* preal_mem = (XMLSize_t*)puser_mem - offset;
+    XMLSize_t* preal_mem = reinterpret_cast<XMLSize_t*>(puser_mem) - offset;
     // Get the size of 'user' memory
-    XMLSize_t size = (XMLSize_t)*preal_mem;
+    XMLSize_t size = *preal_mem;
     // Trash it!
     if (size > 0) {
       std::memset(puser_mem, 0x55, size);
       std::memset(puser_mem, 0xAA, size);
       std::memset(puser_mem,    0, size);
     }
-    ::operator delete((void *)preal_mem);
+    ::operator delete(reinterpret_cast<void *>(preal_mem));
   }
 }
 

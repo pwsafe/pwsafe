@@ -236,10 +236,8 @@ int DboxMain::RestoreSafe()
 
   m_core.SetCurFile(L"");    // Force a Save As...
   m_core.SetDBChanged(true); // So that the restored file will be saved
-#if !defined(POCKET_PC)
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
-#endif
   ChangeOkUpdate();
   RefreshViews();
 

@@ -56,18 +56,12 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
                           pAEMD),
-  m_pToolTipCtrl(NULL), m_bInitdone(false), m_thread(NULL),
-  m_isNotesHidden(false)
+  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
-#if defined(POCKET_PC)
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
-#else
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
-#endif
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT);
   }
 
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -119,7 +113,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 CAddEdit_Basic::~CAddEdit_Basic()
 {
   delete m_pex_notes;
-  delete m_pToolTipCtrl;
 }
 
 void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
@@ -227,39 +220,23 @@ BOOL CAddEdit_Basic::OnInitDialog()
   }
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    m_pToolTipCtrl = new CToolTipCtrl;
-    if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      pws_os::Trace(L"Unable To create CAddEdit_Basic Dialog ToolTip\n");
-      delete m_pToolTipCtrl;
-      m_pToolTipCtrl = NULL;
-    } else {
-      EnableToolTips();
+    InitToolTip();
 
-      m_pToolTipCtrl->SetMaxTipWidth(300);
+    AddTool(IDC_STATIC_GROUP,    IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_TITLE,    IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_NOTES,    IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_URL,      IDS_CLICKTOCOPY);
+    AddTool(IDC_STATIC_EMAIL,    IDS_CLICKTOCOPYPLUS1);
+    AddTool(IDC_LAUNCH,          IDS_CLICKTOGOPLUS);
+    AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
 
-      CString cs_ToolTip;
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS1);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_EMAIL), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOSEND);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SENDEMAIL), cs_ToolTip);
-
-      if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-        cs_ToolTip.LoadString(IDS_UNPROTECT);
-        m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PROTECTED), cs_ToolTip);
-      }
-
-      m_pToolTipCtrl->Activate(TRUE);
+    if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+      AddTool(IDC_STATIC_PROTECTED, IDS_UNPROTECT);
     }
+
+    ActivateToolTip();
 
     m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
@@ -392,9 +369,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
 void CAddEdit_Basic::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd.html");
 }
 
 HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -516,9 +491,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
     return TRUE;
   }
 
-  // Do tooltips
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   // Ctrl + 'key' in Notes
   if (pMsg->message == WM_KEYDOWN &&
@@ -1017,6 +990,8 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_username(),
                                                        M_realpassword(),
                                                        M_realnotes(),
+                                                       M_URL(),
+                                                       M_email(),
                                                        vactionverboffsets);
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;

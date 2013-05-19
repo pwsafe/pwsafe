@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef __PASSWORDSAFESEARCH_H__
@@ -30,7 +30,7 @@ struct SelectionCriteria;
 
 #if 0
 /*!
- * PasswordSafeSearchContext class declaration.  This class tracks whether a  
+ * PasswordSafeSearchContext class declaration.  This class tracks whether a
  * contained PasswordSafeSearchData object has been modified
  */
 
@@ -82,13 +82,13 @@ public:
 
     void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
     bool IsEmpty() const { return m_indices.empty(); }
-    const pws_os::CUUID& operator*() const { 
+    const pws_os::CUUID& operator*() const {
       wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
       return *m_currentIndex;
     }
     size_t Size() const { return m_indices.size(); }
 
-    void InitIndex(void) { 
+    void InitIndex(void) {
         m_currentIndex = m_indices.begin();
     }
 
@@ -118,7 +118,7 @@ class PasswordSafeSearch : public wxEvtHandler
 {
   DECLARE_CLASS( PasswordSafeSearch )
 
-  DECLARE_NO_COPY_CLASS(PasswordSafeSearch);
+  DECLARE_NO_COPY_CLASS(PasswordSafeSearch)
 
 public:
   /// Constructors
@@ -136,7 +136,7 @@ public:
   void FindPrevious(void);
   void UpdateView();
   void OnSearchBarTextChar(wxKeyEvent& evt);
-  
+
   void Activate(void);
   void RefreshButtons(void);
   void Invalidate(void) { m_searchPointer.Clear(); }
@@ -144,19 +144,19 @@ public:
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
-  
+
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                      const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, 
+                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction,
                      bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn);
 
   void CreateSearchBar(void);
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
-  
+
   template <class Iter, class Accessor>
-  void OnDoSearchT( Iter begin, Iter end, Accessor afn); 
+  void OnDoSearchT( Iter begin, Iter end, Accessor afn);
 
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;

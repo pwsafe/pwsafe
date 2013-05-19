@@ -7,7 +7,7 @@
  */
 
 /** \file safecombinationchange.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -142,7 +142,7 @@ void CSafeCombinationChange::Init()
  */
 
 void CSafeCombinationChange::CreateControls()
-{    
+{
 ////@begin CSafeCombinationChange content construction
   CSafeCombinationChange* itemDialog1 = this;
 
@@ -272,10 +272,12 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
     // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
     // (also used in CPasskeySetup)
     } else if (!CPasswordCharPool::CheckPassword(m_newpasswd, errmess)) {
-      wxString msg = _("Weak passphrase:\n\n");
+      wxString msg = _("Weak passphrase:");
+      msg += wxT("\n\n");
       msg += errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      msg += _("\nUse it anyway?");
+      msg += wxT("\n");
+      msg += _("Use it anyway?");
       wxMessageDialog err(this, msg,
                           _("Error"), wxYES_NO | wxICON_HAND);
       int rc1 = err.ShowModal();
@@ -302,7 +304,7 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CANCEL);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
 }
 
 

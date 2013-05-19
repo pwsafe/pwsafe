@@ -134,9 +134,7 @@ void CImportTextDlg::OnImportPSWDsOnly()
 
 void CImportTextDlg::OnHelp() 
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/import.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp("::/html/import.html");
 }
 
 void CImportTextDlg::OnOK() 

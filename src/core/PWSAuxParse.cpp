@@ -222,6 +222,8 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_user,
                                        const StringX &sx_pwd,
                                        const StringX &sx_notes,
+                                       const StringX &sx_url,
+                                       const StringX &sx_email,
                                        std::vector<size_t> &vactionverboffsets)
 {
   StringX sxtmp(_T(""));
@@ -333,6 +335,13 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('p'):
           sxtmp += sx_pwd;
           break;
+        case TCHAR('l'):
+          sxtmp += sx_url;
+          break;
+        case TCHAR('m'):
+          sxtmp += sx_email;
+          break;
+
         case TCHAR('o'):
         {
           if (n == (N - 1)) {
@@ -419,15 +428,15 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
-
-  // Set up all the data (shortcut entry will change all of them!)
-  sxgroup = ci.GetGroup();
-  sxtitle = ci.GetTitle();
-  sxuser = ci.GetUser();
-  sxpwd = ci.GetPassword();
-  sxnotes = ci.GetNotes();
-  sxautotype = ci.GetAutoType();
+  // Set up all the data (a shortcut entry will change all of them!)
+  StringX sxgroup = ci.GetGroup();
+  StringX sxtitle = ci.GetTitle();
+  StringX sxuser = ci.GetUser();
+  StringX sxpwd = ci.GetPassword();
+  StringX sxnotes = ci.GetNotes();
+  StringX sxurl = ci.GetURL();
+  StringX sxemail = ci.GetEmail();
+  StringX sxautotype = ci.GetAutoType();
 
   if (ci.IsAlias()) {
     const CItemData *pbci = core.GetBaseEntry(&ci);
@@ -444,6 +453,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
       sxuser = pbci->GetUser();
       sxpwd = pbci->GetPassword();
       sxnotes = pbci->GetNotes();
+      sxurl = ci.GetURL();
+      sxemail = ci.GetEmail();
       sxautotype = pbci->GetAutoType();
     } else { // Problem - shortcut entry without a base!
       ASSERT(0);
@@ -467,8 +478,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
     }
   }
   return PWSAuxParse::GetAutoTypeString(sxautotype, sxgroup,
-                                        sxtitle, sxuser,
-                                        sxpwd, sxnotes,
+                                        sxtitle, sxuser, sxpwd,
+                                        sxnotes, sxurl, sxemail,
                                         vactionverboffsets);
 }
 
@@ -861,7 +872,7 @@ static UINT ParseRunCommand(const StringX &sxInputString,
         }
         sxAutoType = sx_autotype.substr(1, st_end_rb - 1);
         v_rctokens[st_idx + 1].sxname = sx_autotype.substr(st_end_rb + 1);
-        // Check if anythnig left in this text - none -> delete
+        // Check if anything left in this text - none -> delete
         if (v_rctokens[st_idx + 1].sxname.length() == 0)
           v_rctokens.erase(v_rctokens.begin() + st_idx + 1);
         // Now delete Autotype variable

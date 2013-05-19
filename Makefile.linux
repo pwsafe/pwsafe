@@ -2,7 +2,7 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.9Y
+RELEASENUM := 0.91Y
 RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
@@ -23,14 +23,10 @@ TAR := tar
 ECHO := /bin/echo
 
 GPG := /usr/bin/gpg
-GPG_KEY := ronys@users.sourceforge.net
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
-UPLOAD_DST :=  ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe/Linux-BETA/$(RELEASENUM)
-SVN_REPO := https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe
-SVN_TRUNK := $(SVN_REPO)/trunk/pwsafe/pwsafe
-SVN_TAG := $(SVN_REPO)/tags
+UPLOAD_DST := $(UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
 all: I18N unicodedebug unicoderelease
@@ -81,7 +77,7 @@ rpm:	release I18N
 	$(MAKE) signatures sha1sums
 
 tar:
-	@$(MKDIR) $(TMPDIR)
+	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
 	@echo -n "Exporting source tree..."
 	@$(SVN) export --quiet . $(TMPDIR)/pwsafe-$(RELEASENAME)
 # Prune windows-only code (not for now - provide as a reference?)

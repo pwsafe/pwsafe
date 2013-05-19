@@ -26,15 +26,15 @@ class Fish;
 class CItemField
 {
 public:
-  CItemField(unsigned char type): m_Type(type), m_Length(0), m_Data(NULL)
+  explicit CItemField(unsigned char type = 0xff): m_Type(type), m_Length(0), m_Data(NULL)
   {}
   CItemField(const CItemField &that); // copy ctor
   ~CItemField() {if (m_Length > 0) delete[] m_Data;}
 
   CItemField &operator=(const CItemField &that);
 
-  void Set(const StringX &value, Fish *bf);
-  void Set(const unsigned char* value, size_t length, Fish *bf);
+  void Set(const StringX &value, Fish *bf, unsigned char type = 0xff);
+  void Set(const unsigned char* value, size_t length, Fish *bf, unsigned char type = 0xff);
 
   void Get(StringX &value, Fish *bf) const;
   void Get(unsigned char *value, size_t &length, Fish *bf) const;
@@ -47,7 +47,7 @@ private:
   //Number of 8 byte blocks needed for size
   size_t GetBlockSize(size_t size) const;
 
-  unsigned char m_Type; // const except for assignment operator
+  unsigned char m_Type; // almost const
   size_t m_Length;
   unsigned char *m_Data;
 };

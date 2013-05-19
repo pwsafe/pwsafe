@@ -7,7 +7,7 @@
  */
 
 /** \file optionspropsheet.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -230,7 +230,7 @@ void COptions::Init()
  */
 
 void COptions::CreateControls()
-{    
+{
 
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -724,7 +724,7 @@ void COptions::CreateControls()
 
   wxBoxSizer* shortcutSizer = new wxBoxSizer(wxVERTICAL);
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
-  wxButton* resetAllShortcuts = new wxButton(itemPanel142, wxID_ANY, wxT("&Reset All"));
+  wxButton* resetAllShortcuts = new wxButton(itemPanel142, wxID_ANY, _("&Reset All"));
   shortcutSizer->Add(resetAllShortcuts, wxSizerFlags().Center().Border());
   itemPanel142->SetSizer(shortcutSizer);
 
@@ -1023,7 +1023,7 @@ void COptions::PropSheetToPrefs()
 
   if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString, L"", true);
-  else 
+  else
     prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
 
   const bool usehex = m_pwpHexCtrl->GetValue();
@@ -1345,7 +1345,7 @@ void COptions::OnPageChanging(wxBookCtrlEvent& evt)
  * "at least" lengths.  This is not comprehensive & foolproof
  * since there are far too many ways to make the password length
  * smaller than the sum of "at least" lengths, to even think of.
- * 
+ *
  * In OnOk(), we just ensure the password length is greater than
  * the sum of all enabled "at least" lengths.  We have to do this in the
  * UI, or else password generation crashes

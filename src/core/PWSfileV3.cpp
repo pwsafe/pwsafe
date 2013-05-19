@@ -240,105 +240,8 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-  int status = SUCCESS;
-  StringX tmp;
-  uuid_array_t item_uuid;
-  time_t t = 0;
-  int32 i32;
-  short i16;
-
-  item.GetUUID(item_uuid);
-  WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
-  tmp = item.GetGroup();
-  if (!tmp.empty())
-    WriteCBC(CItemData::GROUP, tmp);
-  WriteCBC(CItemData::TITLE, item.GetTitle());
-  WriteCBC(CItemData::USER, item.GetUser());
-  WriteCBC(CItemData::PASSWORD, item.GetPassword());
-
-  tmp = item.GetNotes();
-  if (!tmp.empty())
-    WriteCBC(CItemData::NOTES, tmp);
-  tmp = item.GetURL();
-  if (!tmp.empty())
-    WriteCBC(CItemData::URL, tmp);
-  tmp = item.GetAutoType();
-  if (!tmp.empty())
-    WriteCBC(CItemData::AUTOTYPE, tmp);
-  item.GetCTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::CTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+  return item.Write(this);
   }
-  item.GetPMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::PMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetATime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::ATIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetXTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::XTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetXTimeInt(i32);
-  if (i32 > 0 && i32 <= 3650) {
-    WriteCBC(CItemData::XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  item.GetRMTime(t);
-  if (t != 0) {
-    i32 = static_cast<int>(t);
-    WriteCBC(CItemData::RMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
-  }
-  tmp = item.GetPWPolicy();
-  if (!tmp.empty())
-    WriteCBC(CItemData::POLICY, tmp);
-  tmp = item.GetPWHistory();
-  if (!tmp.empty())
-    WriteCBC(CItemData::PWHIST, tmp);
-  tmp = item.GetRunCommand();
-  if (!tmp.empty())
-    WriteCBC(CItemData::RUNCMD, tmp);
-  item.GetDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    WriteCBC(CItemData::DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
-  item.GetShiftDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    WriteCBC(CItemData::SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
-  tmp = item.GetEmail();
-  if (!tmp.empty())
-    WriteCBC(CItemData::EMAIL, tmp);
-  tmp = item.GetProtected();
-  if (!tmp.empty())
-    WriteCBC(CItemData::PROTECTED, tmp);
-  tmp = item.GetSymbols();
-  if (!tmp.empty())
-    WriteCBC(CItemData::SYMBOLS, tmp);
-  tmp = item.GetPolicyName();
-  if (!tmp.empty())
-    WriteCBC(CItemData::POLICYNAME, tmp);
-
-  UnknownFieldsConstIter vi_IterURFE;
-  for (vi_IterURFE = item.GetURFIterBegin();
-       vi_IterURFE != item.GetURFIterEnd();
-       vi_IterURFE++) {
-    unsigned char type;
-    size_t length = 0;
-    unsigned char *pdata = NULL;
-    item.GetUnknownField(type, length, pdata, vi_IterURFE);
-    WriteCBC(type, pdata, length);
-    trashMemory(pdata, length);
-    delete[] pdata;
-  }
-
-  WriteCBC(CItemData::END, _T(""));
-
-  return status;
-}
 
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
@@ -356,57 +259,8 @@ int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-
-  int status = SUCCESS;
-
-  signed long numread = 0;
-  unsigned char type;
-
-  int emergencyExit = 255; // to avoid endless loop.
-  signed long fieldLen; // <= 0 means end of file reached
-
-  do {
-    unsigned char *utf8 = NULL;
-    size_t utf8Len = 0;
-    fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
-                                                utf8Len));
-
-    if (fieldLen > 0) {
-      numread += fieldLen;
-      if (!item.SetField(type, utf8, utf8Len)) {
-        status = FAILURE;
-        break;
+  return item.Read(this);
       }
-    } // if (fieldLen > 0)
-
-    if (utf8 != NULL) {
-      trashMemory(utf8, utf8Len * sizeof(utf8[0]));
-      delete[] utf8; utf8 = NULL; utf8Len = 0;
-    }
-  } while (type != CItemData::END && fieldLen > 0 && --emergencyExit > 0);
-  
-  if (item.IsPasswordPolicySet() && item.IsPolicyNameSet()) {
-    // Error can't have both - clear Password Policy Name
-    item.SetPolicyName(StringX(_T("")));
-  }
-  
-  if (item.IsPolicyNameSet()) {
-    StringX sxPolicyName = item.GetPolicyName();
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
-    if (iter == m_MapPSWDPLC.end()) {
-      // Map name not present in database - clear it!
-      item.SetPolicyName(StringX(_T("")));
-    } else {
-      // Increase use count
-      iter->second.usecount++;
-    }
-  }
-    
-  if (numread > 0)
-    return status;
-  else
-    return END_OF_FILE;
-}
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
                            const StringX &passkey,
@@ -673,24 +527,18 @@ int PWSfileV3::WriteHeader()
   }
 
   // Empty Groups
-  if (!m_vEmptyGroups.empty()) {
     for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
       numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
       if (numWritten <= 0) { status = FAILURE; goto end; }
     }
-  }
 
-  if (!m_UHFL.empty()) {
-    UnknownFieldList::iterator vi_IterUHFE;
-    for (vi_IterUHFE = m_UHFL.begin();
-         vi_IterUHFE != m_UHFL.end();
-         vi_IterUHFE++) {
+  for (UnknownFieldList::iterator vi_IterUHFE = m_UHFL.begin();
+       vi_IterUHFE != m_UHFL.end(); vi_IterUHFE++) {
       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
       numWritten = WriteCBC(unkhfe.uc_Type,
                             unkhfe.uc_pUField, static_cast<unsigned int>(unkhfe.st_length));
       if (numWritten <= 0) { status = FAILURE; goto end; }
     }
-  }
   
   if (m_hdr.m_yubi_sk != NULL) {
     numWritten = WriteCBC(HDR_YUBI_SK, m_hdr.m_yubi_sk, HeaderRecord::YUBI_SK_LEN);
@@ -753,7 +601,7 @@ int PWSfileV3::ReadHeader()
     switch (fieldType) {
     case HDR_VERSION: /* version */
       // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-      // This hack keeps bwd compatability.
+      // This hack keeps bwd compatibility.
       if (utf8Len != sizeof(VersionNum) &&
           utf8Len != sizeof(int32)) {
         delete[] utf8;
@@ -836,7 +684,7 @@ int PWSfileV3::ReadHeader()
           int ulen = 0;
           is >> hex >> ulen;
           StringX uh = text.substr(4);
-            m_hdr.m_lastsavedby = uh.substr(0, ulen);
+          m_hdr.m_lastsavedby = uh.substr(0, ulen);
           m_hdr.m_lastsavedon = uh.substr(ulen);
         } else
           pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
@@ -891,18 +739,18 @@ int PWSfileV3::ReadHeader()
         if (!pws_os::FileExists(XSDFilename)) {
           // No filter schema => user won't be able to access stored filters
           // Inform her of the fact (probably an installation problem).
-            stringT message, message2;
-            Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
-            LoadAString(message2, IDSC_FILTERSKEPT);
-            message += stringT(_T("\n\n")) + message2;
-            if (m_pReporter != NULL)
-              (*m_pReporter)(message);
+          stringT message, message2;
+          Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+          LoadAString(message2, IDSC_FILTERSKEPT);
+          message += stringT(_T("\n\n")) + message2;
+          if (m_pReporter != NULL)
+            (*m_pReporter)(message);
 
-            // Treat it as an Unknown field!
-            // Maybe user used a later version of PWS
-            // and we don't want to lose anything
-            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-            m_UHFL.push_back(unkhfe);
+          // Treat it as an Unknown field!
+          // Maybe user used a later version of PWS
+          // and we don't want to lose anything
+          UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+          m_UHFL.push_back(unkhfe);
           break;
         }
         int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
@@ -928,7 +776,7 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         // All data is character representation of hex - i.e. 0-9a-f
         // No need to convert from char.
-        std::string temp = (char *)utf8;
+        std::string temp = reinterpret_cast<char *>(utf8);
 
         // Get number of entries
         int num(0);
@@ -943,14 +791,14 @@ int PWSfileV3::ReadHeader()
         size_t j = 2;
         for (int n = 0; n < num; n++) {
           unsigned int x(0);
-          uuid_array_t ua;
+          uuid_array_t tmp_ua;
           for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
             stringstream ss;
             ss.str(temp.substr(j, 2));
             ss >> hex >> x;
-            ua[i] = static_cast<unsigned char>(x);
+            tmp_ua[i] = static_cast<unsigned char>(x);
           }
-          const CUUID uuid(ua);
+          const CUUID uuid(tmp_ua);
           if (uuid != CUUID::NullUUID())
             m_hdr.m_RUEList.push_back(uuid);
         }
@@ -967,81 +815,81 @@ int PWSfileV3::ReadHeader()
       memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
       break;
 
-      case HDR_PSWDPOLICIES:
-        /**
-         * Very sad situation here: this field code was also assigned to
-         * YUBI_SK in 3.27Y. Here we try to infer the actual type based
-         * on the actual value stored in the field.
-         * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
-         * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
-         * digits.
-         */
-        if (utf8Len != HeaderRecord::YUBI_SK_LEN ||
-            (utf8Len >= 4 &&
-             isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
-             isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
-          if (utf8 != NULL) utf8[utf8Len] = '\0';
-          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-          if (utf8status) {
-            const size_t recordlength = text.length();
-            StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
-            StringX sxTemp;
+    case HDR_PSWDPOLICIES:
+      /**
+       * Very sad situation here: this field code was also assigned to
+       * YUBI_SK in 3.27Y. Here we try to infer the actual type based
+       * on the actual value stored in the field.
+       * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
+       * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
+       * digits.
+       */
+      if (utf8Len != HeaderRecord::YUBI_SK_LEN ||
+          (utf8Len >= 4 &&
+           isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
+           isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8status) {
+          const size_t recordlength = text.length();
+          StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
+          StringX sxTemp;
             
-            // Get number of polices
-            sxTemp = text.substr(0, 2) + sxBlank;
-            size_t j = 2;  // Skip over # name entries
-            iStringXStream is(sxTemp);
-            int num(0);
-            is >> hex >> num;
+          // Get number of polices
+          sxTemp = text.substr(0, 2) + sxBlank;
+          size_t j = 2;  // Skip over # name entries
+          iStringXStream is(sxTemp);
+          int num(0);
+          is >> hex >> num;
 
-            // Get the policies and save them
-            for (int n = 0; n < num; n++) {
-              if (j > recordlength) break;  // Error
+          // Get the policies and save them
+          for (int n = 0; n < num; n++) {
+            if (j > recordlength) break;  // Error
 
-              int namelength, symbollength;
+            int namelength, symbollength;
               
-              sxTemp = text.substr(j, 2) + sxBlank;
-              iStringXStream is(sxTemp);
-              j += 2;  // Skip over name length
+            sxTemp = text.substr(j, 2) + sxBlank;
+            iStringXStream tmp_is(sxTemp);
+            j += 2;  // Skip over name length
 
-              is >> hex >> namelength;
-              if (j + namelength > recordlength) break;  // Error
+            tmp_is >> hex >> namelength;
+            if (j + namelength > recordlength) break;  // Error
             
-              StringX sxPolicyName = text.substr(j, namelength);
-              j += namelength;  // Skip over name
-              if (j + 19 > recordlength) break;  // Error
+            StringX sxPolicyName = text.substr(j, namelength);
+            j += namelength;  // Skip over name
+            if (j + 19 > recordlength) break;  // Error
               
-              StringX cs_pwp(text.substr(j, 19));
-              PWPolicy pwp(cs_pwp);
-              j += 19;  // Skip over pwp
+            StringX cs_pwp(text.substr(j, 19));
+            PWPolicy pwp(cs_pwp);
+            j += 19;  // Skip over pwp
               
-              if (j + 2 > recordlength) break;  // Error
-              sxTemp = text.substr(j, 2) + sxBlank;
-              is.str(sxTemp);
-              j += 2;  // Skip over symbols length
-              is >> hex >> symbollength;
+            if (j + 2 > recordlength) break;  // Error
+            sxTemp = text.substr(j, 2) + sxBlank;
+            tmp_is.str(sxTemp);
+            j += 2;  // Skip over symbols length
+            tmp_is >> hex >> symbollength;
             
-              StringX sxSymbols;
-              if (symbollength != 0) {
-                if (j + symbollength > recordlength) break;  // Error
-                sxSymbols = text.substr(j, symbollength);
-                j += symbollength;  // Skip over symbols
+            StringX sxSymbols;
+            if (symbollength != 0) {
+              if (j + symbollength > recordlength) break;  // Error
+              sxSymbols = text.substr(j, symbollength);
+              j += symbollength;  // Skip over symbols
             }
-              pwp.symbols = sxSymbols;
+            pwp.symbols = sxSymbols;
 
-              pair< map<StringX, PWPolicy>::iterator, bool > pr;
-              pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-              if (pr.second == false) break; // Error
-            }
+            pair< map<StringX, PWPolicy>::iterator, bool > pr;
+            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
+            if (pr.second == false) break; // Error
           }
-        } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
-          //        and at least one non-hex character in first 4 of field.
-          m_hdr.m_yubi_sk = new unsigned char[HeaderRecord::YUBI_SK_LEN];
-          memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
         }
-        break;
+      } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
+        //        and at least one non-hex character in first 4 of field.
+        m_hdr.m_yubi_sk = new unsigned char[HeaderRecord::YUBI_SK_LEN];
+        memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
+      }
+      break;
 
-      case HDR_EMPTYGROUP:
+    case HDR_EMPTYGROUP:
       {
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
@@ -1063,7 +911,7 @@ int PWSfileV3::ReadHeader()
 #ifdef _DEBUG
       stringT stimestamp;
       PWSUtil::GetTimeStamp(stimestamp);
-      pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+      pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"),
                     fieldType, utf8Len, utf8Len);
       pws_os::HexDump(utf8, utf8Len, stimestamp);
 #endif

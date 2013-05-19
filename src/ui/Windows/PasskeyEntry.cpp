@@ -30,13 +30,8 @@ down the streetsky.  [Groucho Marx]
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#include "pocketpc/PocketPC.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "SecString.h"
 
@@ -121,16 +116,12 @@ CPasskeyEntry::~CPasskeyEntry()
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
   CPKBaseDlg::DoDataExchange(pDX);
-#if !defined(POCKET_PC)
   if (m_index == GCP_FIRST)
     DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
-#endif
 
   //{{AFX_DATA_MAP(CPasskeyEntry)
-#if !defined(POCKET_PC)
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
   DDX_Control(pDX, IDOK, m_ctlOK);
-#endif
   DDX_Text(pDX, IDC_MESSAGE, m_message);
   DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 
@@ -153,10 +144,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-#if defined(POCKET_PC)
-  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
-  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-#endif
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -175,18 +162,7 @@ static CString NarrowPathText(const CString &text)
 
 BOOL CPasskeyEntry::OnInitDialog(void)
 {
-#if defined(POCKET_PC)
-  // If displaying IDD_PASSKEYENTRY_FIRST then bypass superclass and go
-  // directly to CDialog::OnInitDialog() and display the dialog fullscreen
-  // otherwise display as a centred dialogue.
-  if (m_nIDHelp == IDD) {
-    CDialog::OnInitDialog();
-  } else {
-    CPWDialog::OnInitDialog();
-  }
-#else
   CPKBaseDlg::OnInitDialog();
-#endif
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
@@ -234,9 +210,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   if (m_message.IsEmpty() && m_index == GCP_FIRST) {
     m_pctlPasskey->EnableWindow(FALSE);
-#if !defined(POCKET_PC)
     m_ctlOK.EnableWindow(FALSE);
-#endif
     m_message.LoadString(IDS_NOCURRENTSAFE);
   }
 
@@ -277,14 +251,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
    * the bitmaps
    */
 
-#if !defined(POCKET_PC)
   if (m_index == GCP_FIRST) {
     m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
     m_ctlLogo.ReloadBitmap(IDB_CLOGO);
   } else {
     m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
   }
-#endif
 
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
@@ -317,26 +289,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   return TRUE;
 }
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
-void CPasskeyEntry::OnPasskeyKillfocus()
-{
-  EnableWordCompletion(m_hWnd);
-}
-
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-void CPasskeyEntry::OnPasskeySetfocus()
-{
-  DisableWordCompletion(m_hWnd);
-}
-#endif
 
 void CPasskeyEntry::OnCreateDb()
 {
@@ -503,13 +455,7 @@ void CPasskeyEntry::ProcessPhrase()
 
 void CPasskeyEntry::OnHelp()
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#comboentry", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
+  ShowHelp(L"::/html/create_new_db.html");
 }
 
 //-----------------------------------------------------------------------------

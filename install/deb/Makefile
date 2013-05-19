@@ -66,8 +66,8 @@ debtree:
 	@$(MKDIR) debian/usr/share/doc/passwordsafe/help
 	@$(MKDIR) debian/usr/share/man/man1
 	@$(MKDIR) debian/usr/share/locale
-	@$(MKDIR) debian/tmp
 	@$(CP) $(PWSAFE-BIN) debian/usr/bin
+	@$(CHMOD) 0755 debian/usr/bin/pwsafe
 	@strip debian/usr/bin/pwsafe
 	@$(CP) $(DOCS) debian/usr/share/doc/passwordsafe
 	@$(CAT) ../copyright ../../LICENSE > \
@@ -81,12 +81,16 @@ debtree:
 	@$(CP) $(HELPFILES) debian/usr/share/doc/passwordsafe/help
 	@$(CP) -r $(MODIR)/* debian/usr/share/locale
 	@$(MKDIR) debian/DEBIAN
-	@$(FIND) debian -type d -exec $(CHMOD) 755 {} \;
 	@$(SED) s/VERSION/$(RELEASENAME)/ < control > debian/DEBIAN/control
-	@$(CP) ../desktop/pwsafe.desktop debian/tmp
-	@$(CP) ../graphics/pwsafe.png debian/tmp
+	@$(CP) ../desktop/pwsafe.desktop debian/usr/share/pwsafe
+	@$(CP) ../graphics/pwsafe.png debian/usr/share/pwsafe
+	@$(FIND) debian -type d -exec $(CHMOD) 755 {} \;
+	@$(CHMOD) -R g-w debian/usr/share/pwsafe
+	@$(CHMOD) -R g-w debian/usr/share/doc/passwordsafe/*
+	@$(CHMOD) g-w debian/usr/share/man/man1/pwsafe.1.gz
 	@$(CP) postinst debian/DEBIAN
 	@$(CP) prerm debian/DEBIAN
+	@$(CHMOD) 0755 debian/DEBIAN/postinst debian/DEBIAN/prerm
 
 $(HELPFILES):
 	$(MAKE) -C $(HELPDIR)

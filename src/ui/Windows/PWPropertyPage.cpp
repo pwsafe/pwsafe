@@ -6,23 +6,70 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWPropertyPage.h"
 #include "GeneralMsgBox.h"
-
-#if defined(POCKET_PC)
-#error "TBD - define proper PropertyPage base class for PPC"
-#endif
 
 extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 CPWPropertyPage::CPWPropertyPage(UINT nID)
-: CPropertyPage(nID)
+: CPropertyPage(nID), m_pToolTipCtrl(NULL)
 {
   m_psp.dwFlags |= PSP_HASHELP;
 }
+
+void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
+{
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, Flags)) {
+    pws_os::Trace(L"Unable To create ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  } else {
+    EnableToolTips();
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+  }
+}
+
+void CPWPropertyPage::AddTool(int DlgItemID, int ResID)
+{
+  if (m_pToolTipCtrl != NULL) {
+    const CString cs(MAKEINTRESOURCE(ResID));
+    m_pToolTipCtrl->AddTool(GetDlgItem(DlgItemID), cs);
+  }
+}
+
+void CPWPropertyPage::ActivateToolTip()
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->Activate(TRUE);
+}
+
+void CPWPropertyPage::RelayToolTipEvent(MSG *pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+}
+
+void CPWPropertyPage::ShowHelp(const CString &topicFile)
+{
+  if (!app.GetHelpFileName().IsEmpty()) {
+    const CString cs_HelpTopic = app.GetHelpFileName() + topicFile;
+    HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  } else {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
+  }
+}
+
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {

@@ -17,13 +17,8 @@
 
 #include "core/util.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#include "pocketpc/PocketPC.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,12 +42,6 @@ void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-#if defined(POCKET_PC)
-  ON_EN_SETFOCUS(IDC_CRYPTKEY1, OnPasskeySetfocus)
-  ON_EN_SETFOCUS(IDC_CRYPTKEY2, OnPasskeySetfocus)
-  ON_EN_KILLFOCUS(IDC_CRYPTKEY1, OnPasskeyKillfocus)
-  ON_EN_KILLFOCUS(IDC_CRYPTKEY2, OnPasskeyKillfocus)
-#endif
 END_MESSAGE_MAP()
 
 void CCryptKeyEntry::OnCancel() 
@@ -81,34 +70,8 @@ void CCryptKeyEntry::OnOK()
 
 void CCryptKeyEntry::OnHelp() 
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#comboentry", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
+  ShowHelp(L"::/html/create_new_db.html");
 }
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
-void CCryptKeyEntry::OnPasskeyKillfocus()
-{
-  EnableWordCompletion(m_hWnd);
-}
-
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-void CCryptKeyEntry::OnPasskeySetfocus()
-{
-  DisableWordCompletion(m_hWnd);
-}
-#endif
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

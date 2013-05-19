@@ -16,9 +16,9 @@ Schneier - 'nuff said.
 3. Open Source: The source code for the project is available for
 inspection. For more information, see http://passwordsafe.sourceforge.net
 
-The current version of Password Safe currently runs on Windows 2000,
-XP and Vista. Older versions are still available supporting Windows
-95, 98, ME, NT, as well as PocketPC. Support for additional platforms
+The current version of Password Safe currently runs on Windows XP and
+later. Older versions are still available supporting Windows 95, 98,
+ME, NT, 2000, as well as PocketPC. Support for additional platforms 
 is planned for future releases. 
 
 Downloading:
@@ -30,12 +30,18 @@ Non-English Support:
 ====================
 Thanks to the help of volunteers from all over the world, PasswordSafe
 now has built-in support for the following languages:
+- Czech
 - Chinese
+- Danish
+- Dutch
+- French
 - German
+- Italian
 - Polish
 - Russian
 - Spanish
 - Swedish
+- Turkish
 Older versions have translations to other languages as well, see
 http://pwsafe.org/nonenglish.shtml for the complete list.
 

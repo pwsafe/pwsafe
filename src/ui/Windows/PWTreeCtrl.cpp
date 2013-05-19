@@ -434,6 +434,8 @@ void CPWTreeCtrl::OnDragLeave()
 {
   m_TickCount = 0;
   m_bWithinThisInstance = false;
+  //We leave or window, so we need to clean DropTarget selection
+  SelectDropTarget(NULL);
   // ShowCursor's semantics are VERY odd - RTFM
   pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
@@ -1441,7 +1443,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   m_pDbx->FixListIndexes();
   GetParent()->SetFocus();
 
- exit:
+exit:
+  //We need to cancel DropTarget selection, otherwise next 
+  //mouse/keybord selection will be treated as drop target selections
+  SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {
     m_pDbx->SetChanged(DboxMain::Data);
@@ -2306,7 +2311,7 @@ CFont *CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLOR
 
 void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNotifyStruct;
+  NMTVCUSTOMDRAW *pNMTVCUSTOMDRAW = (NMTVCUSTOMDRAW *)pNotifyStruct;
 
   *pLResult = CDRF_DODEFAULT;
 
@@ -2314,13 +2319,13 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static CFont *pcurrentfont;
   static CDC *pDC = NULL;
   
-  HTREEITEM hItem = (HTREEITEM)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
-  CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
+  HTREEITEM hItem = (HTREEITEM)pNMTVCUSTOMDRAW->nmcd.dwItemSpec;
+  CItemData *pci = (CItemData *)pNMTVCUSTOMDRAW->nmcd.lItemlParam;
 
-  switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
+  switch (pNMTVCUSTOMDRAW->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
-      pDC = CDC::FromHandle(pNMLVCUSTOMDRAW->nmcd.hdc);
+      pDC = CDC::FromHandle(pNMTVCUSTOMDRAW->nmcd.hdc);
       bchanged_item_font = false;
       pcurrentfont = Fonts::GetInstance()->GetCurrentFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -2334,8 +2339,9 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         if (uFont != NULL) {
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
-          if (pci == NULL || GetItemState(hItem, TVIS_SELECTED) == 0)
-            pNMLVCUSTOMDRAW->clrText = cf;
+          // Set text color only when current node isn't selected
+          if ( (GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) == 0)
+            pNMTVCUSTOMDRAW->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
@@ -2345,7 +2351,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)pcurrentfont);
+        SelectObject(pNMTVCUSTOMDRAW->nmcd.hdc, (HFONT)pcurrentfont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

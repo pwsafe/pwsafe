@@ -393,6 +393,9 @@
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xpsupportvc11upd2v102\xpatl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -1611,5 +1614,15 @@
     <ResourceCompile Include="PasswordSafe.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'Win32' ">
+    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
+    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap64.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

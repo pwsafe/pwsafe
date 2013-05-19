@@ -1805,9 +1805,14 @@ void DboxMain::OnRunCommand()
     return;
   }
 
+  // if no autotype value in run command's $a(value), start with item's (bug #1078)
+  if (m_sxAutoType.empty())
+    m_sxAutoType = pci->GetAutoType();
+
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
                                  pci->GetTitle(), pci->GetUser(),
                                  sx_pswd, pci->GetNotes(),
+                                 pci->GetURL(), pci->GetEmail(),
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);

@@ -36,13 +36,9 @@
 #include "os/run.h"
 #include "os/logit.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "commctrl.h"
 #include <shlwapi.h>
@@ -467,7 +463,6 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
 
 void DboxMain::setupBars()
 {
-#if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
 
   // Add the status bar
@@ -608,7 +603,6 @@ void DboxMain::setupBars()
   m_DDemail.ShowWindow(SW_SHOW);
   m_DDAutotype.EnableWindow(TRUE);
   m_DDAutotype.ShowWindow(SW_SHOW);
-#endif
 }
 
 void DboxMain::UpdateListItemField(const int lindex, const int type, const StringX &newText)
@@ -628,10 +622,10 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
   }
 }
 
-void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const StringX &newText)
+void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 {
   CRect rect;
-  m_ctlItemTree.SetItemText(hItem, newText.c_str());
+  m_ctlItemTree.SetItemText(hItem, m_ctlItemTree.MakeTreeDisplayString(ci));
 
   m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
   m_ctlItemTree.InvalidateRect(&rect);
@@ -649,23 +643,7 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   StringX sx_fielddata(L""), sx_oldfielddata;
 
   // Deal with Tree View
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  StringX sxNewText = ci.GetTitle();
-  if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
-    StringX sxUsername = ci.GetUser();
-    sxNewText += L" [";
-    sxNewText += sxUsername;
-    sxNewText += L"]";
-
-    if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
-      StringX sxPassword = ci.GetPassword();
-      sxNewText += L" {";
-      sxNewText += sxPassword;
-      sxNewText += L"}";
-    }
-  }
-  UpdateTreeItem(hItem, sxNewText);
+  UpdateTreeItem(hItem, ci);
 
   // Deal with List View
   // Change the first column data - it is empty (as already set)
@@ -1037,10 +1015,6 @@ void DboxMain::RefreshViews(const int iView)
   if (!m_bInitDone)
     return;
 
-#if defined(POCKET_PC)
-  HCURSOR waitCursor = app.LoadStandardCursor(IDC_WAIT);
-#endif
-
   if (m_core.GetNumEntries() == 0) {
     if (iView & iListOnly) {
       if (m_ctlItemList.GetItemCount() > 0) {
@@ -1078,9 +1052,6 @@ void DboxMain::RefreshViews(const int iView)
 
   if (m_core.GetNumEntries() != 0) {
     ItemListIter listPos;
-#if defined(POCKET_PC)
-    SetCursor(waitCursor);
-#endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
          listPos++) {
       CItemData &ci = m_core.GetEntry(listPos);
@@ -1100,9 +1071,6 @@ void DboxMain::RefreshViews(const int iView)
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
 
-#if defined(POCKET_PC)
-    SetCursor(NULL);
-#endif
   } // we have entries
 
   if (m_bImageInLV) {
@@ -1164,11 +1132,8 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 {
   PWS_LOGIT;
 
-#if !defined(POCKET_PC)
   CDialog::OnSizing(fwSide, pRect);
-
   m_bSizing = true;
-#endif
 }
 
 void DboxMain::OnMove(int x, int y)
@@ -1248,8 +1213,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
-#if !defined(POCKET_PC)
   switch (nType) {
     case SIZE_MINIMIZED:
       //pws_os::Trace(L"OnSize:SIZE_MINIMIZED\n");
@@ -1300,7 +1263,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     case SIZE_MAXIMIZED:
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
-#endif
         /*
         if (nType == SIZE_MAXIMIZED)
           pws_os::Trace(L"OnSize:SIZE_MAXIMIZED\n");
@@ -1341,7 +1303,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         m_core.ResumeOnDBNotification();
         if (m_FindToolBar.IsVisible())
           SetFindToolBar(true);
-#if !defined(POCKET_PC)
       } else { // m_bSizing == true: here if size changed
         WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
         GetWindowPlacement(&wp);
@@ -1368,7 +1329,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       //pws_os::Trace(L"OnSize:SIZE_MAXSHOW\n");
       break;
   } // nType switch statement
-#endif
   m_bSizing = false;
 }
 
@@ -1800,11 +1760,7 @@ void DboxMain::SortListView()
 
 void DboxMain::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
 {
-#if defined(POCKET_PC)
-  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
-#else
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
-#endif
   CMenu menu;
   CPoint ptMousePos;
   GetCursorPos(&ptMousePos);
@@ -4131,15 +4087,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
         ft == CItemData::PROTECTED) {
-      StringX treeDispString = ci.GetTitle();
-
-      if (bShowUsernameInTree)
-        treeDispString += L" [" + ci.GetUser() + L"]";
-      if (bShowPasswordInTree)
-        treeDispString += L" {" + ci.GetPassword() + L"}";
-      if (ci.IsProtected())
-        treeDispString += L" #";
-      UpdateTreeItem(pdi->tree_item, treeDispString);
+      UpdateTreeItem(pdi->tree_item, ci);
       if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
         UpdateEntryImages(ci);
       }

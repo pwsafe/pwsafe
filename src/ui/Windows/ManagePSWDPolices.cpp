@@ -28,7 +28,7 @@ using namespace std;
 // CManagePSWDPolices dialog
 CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPolices::IDD, pParent),
-  m_pToolTipCtrl(NULL), m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
+  m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
   m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
 {
@@ -47,8 +47,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
 CManagePSWDPolices::~CManagePSWDPolices()
 {
-  delete m_pToolTipCtrl;
-  m_CopyPswdStatic.Detach();
+  m_CopyPswdBitmap.Detach();
 }
 
 void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
@@ -58,7 +57,6 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_POLICYPROPERTIES, m_PolicyDetails);
   DDX_Control(pDX, IDC_POLICYENTRIES, m_PolicyEntries);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
-  DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
@@ -71,7 +69,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_UNDO, OnUndo)
   ON_BN_CLICKED(IDC_REDO, OnRedo)
-  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword) 
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(LVN_KEYDOWN, IDC_POLICYLIST, OnPolicySelected)
@@ -131,7 +129,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
     cs_ToolTip.LoadString(IDS_TESTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
 
     if (!m_bReadOnly) {
       cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
@@ -203,41 +201,16 @@ BOOL CManagePSWDPolices::OnInitDialog()
   // Load bitmap
   BOOL brc;
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        IDB_COPYTOCLIPBOARD_NEW : IDB_COPYTOCLIPBOARD_CLASSIC;
+        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
   brc = m_CopyPswdBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
 
-  // Set bitmap in Static
-  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
-
-  // Get how many pixels in the bitmap
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  BITMAP bmInfo;
-  m_CopyPswdBitmap.GetBitmap(&bmInfo);
-
-  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
-
-  // get a pointer to the pixels
-  DIBSECTION ds;
-  VERIFY(m_CopyPswdBitmap.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
-
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  ASSERT(pixels != NULL);
-
-  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
-                                        GetGValue(crCOLOR_3DFACE),
-                                        GetRValue(crCOLOR_3DFACE)};
-
-  for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue  == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed   == 192) {
-      pixels[i] = newbkgrndColourRGB;
-    }
-  }
+  FixBitmapBackground(m_CopyPswdBitmap);
+  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+  pBtn->SetBitmap(m_CopyPswdBitmap);
 
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
@@ -313,9 +286,7 @@ exit:
 
 void CManagePSWDPolices::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/named_password_policies.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/named_password_policies.html");
 }
 
 void CManagePSWDPolices::OnOK()

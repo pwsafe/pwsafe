@@ -7,7 +7,7 @@
  */
 
 /** \file wxutils.cpp
-* 
+*
 * Contains generic utility functions that should be global and don't fit anywhere else
 */
 
@@ -34,8 +34,9 @@
  * in case of failure.  Returns PWScore::SUCCESS on success
  */
 
-int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
-                bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/)
+int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
+                bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
+				bool setupCopy /*= false*/)
 {
   othercore.ClearData();
 
@@ -45,6 +46,9 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
   StringX dbpath(tostringx(file));
   int rc = othercore.ReadFile(dbpath, combination);
+
+  if (setupCopy)
+	  PWSprefs::GetInstance()->SetupCopyPrefs();
 
   // Reset database preferences - first to defaults then add saved changes!
   PWSprefs::GetInstance()->Load(sxSavePrefString);
@@ -57,12 +61,12 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
     case PWScore::CANT_OPEN_FILE:
       if (showMsgbox)
-        wxMessageBox(wxString(file) << _("\n\nCould not open file for reading!"),
+        wxMessageBox(wxString(file) << wxT("\n\n") << _("Could not open file for reading!"),
                     _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent );
       break;
 
     case PWScore::BAD_DIGEST:
-      if (showMsgbox && wxMessageBox(wxString(file) << _("\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"), 
+      if (showMsgbox && wxMessageBox(wxString(file) << wxT("\n\n") << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
             _("File Read Error"), wxYES_NO | wxICON_QUESTION, msgboxParent) == wxYES) {
         rc = PWScore::SUCCESS;
       }
@@ -78,10 +82,10 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
     default:
       if (showMsgbox)
-        wxMessageBox( wxString(file) << _("\n\nUnknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
+        wxMessageBox( wxString(file) << wxT("\n\n") << _("Unknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
       break;
   }
-  
+
   return rc;
 }
 
@@ -97,7 +101,7 @@ void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
       HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), hiddenWindows);
     }
   }
-  //Don't call Hide() here, which just calls Show(false), which is overriden in 
+  //Don't call Hide() here, which just calls Show(false), which is overriden in
   //derived classes, and wxDialog actually cancels the modal loop and closes the window
   win->wxWindow::Show(false);
   //push_front ensures we Show() in the reverse order of Hide()'ing
@@ -133,6 +137,8 @@ MultiCheckboxValidator::MultiCheckboxValidator(int ids[],
 }
 
 MultiCheckboxValidator::MultiCheckboxValidator(const MultiCheckboxValidator& other):
+  /*Copy constructor for wxValidator is banned in 2.8.x, so explicitly call constructor, to prevent warning */
+                                                                        wxValidator(),
                                                                         m_ids(new int[other.m_count]),
                                                                         m_count(other.m_count),
                                                                         m_msg(other.m_msg),

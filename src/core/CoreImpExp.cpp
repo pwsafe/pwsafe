@@ -103,8 +103,8 @@ int PWScore::TestSelection(const bool bAdvanced,
         bAnyMatch = true;
     } else {
       if (find_if(m_pwlist.begin(), m_pwlist.end(),
-                  ExportTester(subgroup_name, 
-                               subgroup_object, 
+                  ExportTester(subgroup_name,
+                               subgroup_object,
                                subgroup_function)) != m_pwlist.end())
         bAnyMatch = true;
     }
@@ -134,7 +134,7 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   // See CItemData::GetPlaintext for TextExport
   stringT hdr(_T(""));
   const stringT TAB(_T("\t"));
-  if (bittest(bsFields, CItemData::GROUP, bIncluded) && 
+  if (bittest(bsFields, CItemData::GROUP, bIncluded) &&
       bittest(bsFields, CItemData::TITLE, bIncluded)) {
     hdr = CItemData::FieldName(CItemData::GROUPTITLE) + TAB;
   } else if (bittest(bsFields, CItemData::GROUP, bIncluded)) {
@@ -233,15 +233,15 @@ struct TextRecordWriter {
 
   // operator for OrderedItemList
   void operator()(const CItemData &item) {
-    if (m_subgroup_name.empty() || 
+    if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
       const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
       const StringX line = item.GetPlaintext(TCHAR('\t'),
                                              m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
-        StringX sx_exported = StringX(_T("\xab")) + 
-                             item.GetGroup() + StringX(_T("\xbb \xab")) + 
+        StringX sx_exported = StringX(_T("\xab")) +
+                             item.GetGroup() + StringX(_T("\xbb \xab")) +
                              item.GetTitle() + StringX(_T("\xbb \xab")) +
                              item.GetUser()  + StringX(_T("\xbb"));
 
@@ -290,12 +290,12 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const stringT &subgroup_name,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
-                                const TCHAR &delimiter, int &numExported, 
+                                const TCHAR &delimiter, int &numExported,
                                 const OrderedItemList *il, CReport *pRpt)
 {
   numExported = 0;
 
-  // Check if anything to do! 
+  // Check if anything to do!
   if (bsFields.count() == 0)
     return NO_ENTRIES_EXPORTED;
 
@@ -304,7 +304,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   if ((il != NULL && il->empty()) ||
       (il == NULL && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
- 
+
   FILE *txtfile = pws_os::FOpen(filename.c_str(), _T("wt"));
   if (txtfile == NULL)
     return CANT_OPEN_FILE;
@@ -370,8 +370,8 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      StringX sx_exported = StringX(_T("\xab")) + 
-                             item.GetGroup() + StringX(_T("\xbb \xab")) + 
+      StringX sx_exported = StringX(_T("\xab")) +
+                             item.GetGroup() + StringX(_T("\xbb \xab")) +
                              item.GetTitle() + StringX(_T("\xbb \xab")) +
                              item.GetUser()  + StringX(_T("\xbb"));
       bool bforce_normal_entry(false);
@@ -453,7 +453,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   CUTF8Conv conv;
   const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
-  
+
   coStringXStream ofs;
   oStringXStream oss_xml;
 
@@ -817,7 +817,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (bError)
     return FAILURE;
 
-  // The following's a stream of chars.  We need to process the header row 
+  // The following's a stream of chars.  We need to process the header row
   // as straight ASCII, and we need to handle rest as utf-8
   numImported = numSkipped = numRenamed = numPWHErrors = 0;
   int numlines = 0;
@@ -838,7 +838,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
                POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
-               PROTECTED, SYMBOLS, NOTES, 
+               PROTECTED, SYMBOLS, NOTES,
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -985,7 +985,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     itoken = 0;
     vector<stringT> tokens;
     for (size_t startpos = 0;
-         startpos < slinebuf.size(); 
+         startpos < slinebuf.size();
          /* startpos advanced in body */) {
       size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == StringX::npos)
@@ -994,7 +994,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         if (itoken != i_Offset[NOTES]) {
           const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
           tokens.push_back(tsx.c_str());
-        } else { 
+        } else {
           // Notes field which may be double-quoted, and
           // if they are, they may span more than one line.
           stringT note(slinebuf.substr(startpos).c_str());
@@ -1101,13 +1101,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         numSkipped++;
         continue;
       }
- 
+
       sxuser = tokens[i_Offset[USER]].c_str();
       ItemListIter iter = Find(sxgroup, sxtitle, sxuser);
       if (iter == m_pwlist.end()) {
         stringT cs_online, cs_temp;
         LoadAString(cs_online, IDSC_IMPORT_ON_LINE);
-        Format(cs_temp, IDSC_IMPORTENTRY, cs_online.c_str(), numlines, 
+        Format(cs_temp, IDSC_IMPORTENTRY, cs_online.c_str(), numlines,
                sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
         Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
         rpt.WriteLine(cs_error);
@@ -1233,7 +1233,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         case PWH_INVALID_NUM:
         case PWH_INVALID_DATETIME:
         case PWH_PSWD_LENGTH_NOTHEX:
-        case PWH_INVALID_PSWD_LENGTH: 
+        case PWH_INVALID_PSWD_LENGTH:
         case PWH_INVALID_FIELD_LENGTH:
         default:
           rpt.WriteLine(cs_error);
@@ -1324,13 +1324,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   }
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
-                                                      Possible_Aliases, &rpt, 
+                                                      Possible_Aliases, &rpt,
                                                       CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
   Command *pcmdS = AddDependentEntriesCommand::Create(this,
-                                                      Possible_Shortcuts, &rpt, 
+                                                      Possible_Shortcuts, &rpt,
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
@@ -1436,7 +1436,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     // Clear out old stuff!
     StringX sx_group, sx_title, sx_user, sx_password, sx_URL, sx_notes, sx_Parent_Groups;
     string str_uuid, temp;
-    ctime = atime = mtime = xtime = (time_t)0;
+    ctime = atime = mtime = xtime = time_t(0);
     memset(ua, 0, sizeof(ua));
 
     // read a single line.
@@ -1471,7 +1471,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
     // set the title: line pattern: [<title>]
     temp = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
-    conv.FromUTF8((unsigned char *)temp.c_str(),  temp.length(), sx_title);
+    conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()),  temp.length(), sx_title);
 
     bool bTitleFound(false);
     for (;;) {
@@ -1496,7 +1496,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
       if (linebuf.substr(0, 7) == "Group: ") {
         // set the initial group: line pattern: Group: <group>
         temp = linebuf.substr(7);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_group);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_group);
 
         // Replace any '.' by a '/'
         size_t pos = 0;
@@ -1514,7 +1514,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         // Group names can have dots in them and these will be replaced by a '/'
 
         temp = linebuf.substr(12);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_Parent_Groups);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_Parent_Groups);
         // Replace and '.' by a '/'
         size_t pos = 0;
         while((pos = sx_Parent_Groups.find(dot, pos)) != StringX::npos) {
@@ -1539,19 +1539,19 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
       else if (linebuf.substr(0, 11) == "User Name: ") {
         // set the user: line pattern: UserName: <user>
         temp = linebuf.substr(11);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_user);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_user);
       }
 
       else if (linebuf.substr(0, 5) == "URL: ") {
         // set the url: line pattern: URL: <url>
         temp = linebuf.substr(5);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_URL);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_URL);
       }
-      
+
       else if (linebuf.substr(0, 10) == "Password: ") {
         // set the password: line pattern: Password: <passwd>
         temp = linebuf.substr(10);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_password);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_password);
       }
 
       else if (linebuf.substr(0, 6) == "UUID: ") {
@@ -1575,12 +1575,12 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           continue;
         str_ctime.replace(10, 1, "T");
 #ifdef UNICODE
-        std::wstring temp(str_ctime.length(),L' ');
-        std::copy(str_ctime.begin(), str_ctime.end(), temp.begin());
+        std::wstring time_temp(str_ctime.length(), L' ');
+        std::copy(str_ctime.begin(), str_ctime.end(), time_temp.begin());
 #else
-        std::string temp = str_ctime;
+        std::string time_temp = str_ctime;
 #endif
-        VerifyXMLDateTimeString(temp, ctime);
+        VerifyXMLDateTimeString(time_temp, ctime);
       }
 
       else if (linebuf.substr(0, 13) == "Last Access: ") {
@@ -1589,12 +1589,12 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           continue;
         str_atime.replace(10, 1, "T");
 #ifdef UNICODE
-        std::wstring temp(str_atime.length(),L' ');
-        std::copy(str_atime.begin(), str_atime.end(), temp.begin());
+        std::wstring time_temp(str_atime.length(), L' ');
+        std::copy(str_atime.begin(), str_atime.end(), time_temp.begin());
 #else
-        std::string temp = str_ctime;
+        std::string time_temp = str_atime;
 #endif
-        VerifyXMLDateTimeString(temp, atime);
+        VerifyXMLDateTimeString(time_temp, atime);
       }
 
       else if (linebuf.substr(0, 19) == "Last Modification: ") {
@@ -1603,12 +1603,12 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           continue;
         str_mtime.replace(10, 1, "T");
 #ifdef UNICODE
-        std::wstring temp(str_mtime.length(),L' ');
-        std::copy(str_mtime.begin(), str_mtime.end(), temp.begin());
+        std::wstring time_temp(str_mtime.length(), L' ');
+        std::copy(str_mtime.begin(), str_mtime.end(), time_temp.begin());
 #else
-        std::string temp = str_ctime;
+        std::string time_temp = str_mtime;
 #endif
-        VerifyXMLDateTimeString(temp, mtime);
+        VerifyXMLDateTimeString(time_temp, mtime);
       }
 
       else if (linebuf.substr(0, 9) == "Expires: ") {
@@ -1617,18 +1617,18 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           continue;
         str_xtime.replace(10, 1, "T");
 #ifdef UNICODE
-        std::wstring temp(str_xtime.length(),L' ');
-        std::copy(str_xtime.begin(), str_xtime.end(), temp.begin());
+        std::wstring time_temp(str_xtime.length(), L' ');
+        std::copy(str_xtime.begin(), str_xtime.end(), time_temp.begin());
 #else
-        std::string temp = str_ctime;
+        std::string time_temp = str_xtime;
 #endif
-        VerifyXMLDateTimeString(temp, xtime);
+        VerifyXMLDateTimeString(time_temp, xtime);
       }
 
       // set the first line of notes: line pattern: Notes: <notes>
       else if (linebuf.substr(0, 7) == "Notes: ") {
         temp = linebuf.substr(7);
-        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_notes);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(temp.c_str()), temp.length(), sx_notes);
         size_t pos = 0;
         while((pos = sx_notes.find(txtCRLF, pos)) != StringX::npos) {
           sx_notes.replace(pos, txtCRLF.length(), CRLF);
@@ -1636,7 +1636,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         }
       }
 
-      // Ignore any other text lines e.g. GroupTree & Icon, 
+      // Ignore any other text lines e.g. GroupTree & Icon,
       else
       if (linebuf.substr(0, 24) == "Attachment Description: " ||
           linebuf.substr(0, 12) == "Attachment: " ||
@@ -1740,7 +1740,7 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
 
   string item;
   StringX sxdata;
-  
+
   for(size_t i = 0; i < linebuf.length(); i++ ) {
     ch = linebuf[i];
 
@@ -1751,7 +1751,7 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
       i++; // Skip escape character
       if (linebuf[i + 1] == 'r')
         item += '\r'; // Write escaped symbol
-      else 
+      else
       if (linebuf[i + 1] == 'n')
         item += '\n'; // Write escaped symbol
       else
@@ -1759,23 +1759,23 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == ',') {
-      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      conv.FromUTF8(reinterpret_cast<const unsigned char *>(item.c_str()), item.length(), sxdata);
       tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\r') {
-      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      conv.FromUTF8(reinterpret_cast<const unsigned char *>(item.c_str()), item.length(), sxdata);
       tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\n') {
-      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      conv.FromUTF8(reinterpret_cast<const unsigned char *>(item.c_str()), item.length(), sxdata);
       tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (ch == '\"') {
       if (bInField) {
-        conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(item.c_str()), item.length(), sxdata);
         tokens.push_back(sxdata); item.clear(); sxdata = _T("");
         bInField = false;
       }
@@ -1834,18 +1834,18 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     return FAILURE;
   }
 
-  // The following's a stream of chars.  We need to process the header row 
+  // The following's a stream of chars.  We need to process the header row
   // as straight ASCII, and we need to handle rest as utf-8
   int numlines = 0;
 
-  CItemData ci_temp;
   vector<StringX> vs_Header;
 
   // Parse the header
   const StringX s_hdr = KPEXPORTHEADER;
   const TCHAR pTab[] = _T("\t");
 
-  enum Fields {GROUP, PARENTGROUPS, TITLE, USER, PASSWORD, URL, NOTES, UUID, ICON,
+  // UUID_E in following to avoid collision with UUID type
+  enum Fields {GROUP, PARENTGROUPS, TITLE, USER, PASSWORD, URL, NOTES, UUID_E, ICON,
                CTIME, ATIME, PMTIME, XTIME, ATTACHMENTDESCR, ATTACHMENT, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -1891,7 +1891,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   // Parse the header line
   std::vector<StringX> hdr_tokens;
   ProcessKeePassCSVLine(s_header, hdr_tokens);
-  
+
   // Capture individual column titles from s_header:
   // Set i_Offset[field] to column in which field is found in text file,
   // or leave at -1 if absent from text.
@@ -1961,12 +1961,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   for (;;) {
     // Clear out old stuff!
     sx_group = sx_title = sx_user = sx_parent_groups = sx_notes = sx_uuid = _T("");
-    ctime = atime = mtime = xtime = (time_t)0;
+    ctime = atime = mtime = xtime = time_t(0);
     memset(ua, 0, sizeof(ua));
 
     // read a single line.
     if (!getline(iss, linebuf, '\n')) break;
-    
+
     // Check if end of file
     if (iss.eof())
       break;
@@ -1983,8 +1983,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     ProcessKeePassCSVLine(linebuf, tokens);
     numlines++;
 
-    // Sanity check - if ot enough fields, user may not have done as instructed
-    //   Please note, you MUST check the box "Encode/replace newline characters by '\n'" 
+    // Sanity check - if not enough fields, user may not have done as instructed
+    //   Please note, you MUST check the box "Encode/replace newline characters by '\n'"
     //   during the export from Keepass V1 or the import may fail or give unexpected results.
     // Also, the last character must have been a double quote as all items are quoted strings
     if (tokens.size() < num_found || linebuf[linebuf.length() -1] != '"') {
@@ -2011,7 +2011,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       numSkipped++;
       continue;
     }
-    
+
     if (i_Offset[GROUP] >= 0 && !tokens[i_Offset[GROUP]].empty()) {
       sx_group = tokens[i_Offset[GROUP]];
       // Replace any '.' by a '/'
@@ -2070,8 +2070,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (i_Offset[UUID] >= 0 && !tokens[i_Offset[UUID]].empty()) {
-      sx_uuid = tokens[i_Offset[UUID]];
+    if (i_Offset[UUID_E] >= 0 && !tokens[i_Offset[UUID_E]].empty()) {
+      sx_uuid = tokens[i_Offset[UUID_E]];
       if (sx_uuid.length() == sizeof(uuid_array_t) * 2) {
         unsigned int x(0);
         for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
@@ -2090,12 +2090,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         continue;
       sx_ctime.replace(10, 1, _T("T"));
 #ifdef UNICODE
-      std::wstring temp(sx_ctime.length(), L' ');
-      std::copy(sx_ctime.begin(), sx_ctime.end(), temp.begin());
+      std::wstring time_temp(sx_ctime.length(), L' ');
+      std::copy(sx_ctime.begin(), sx_ctime.end(), time_temp.begin());
 #else
-      std::string temp = sx_ctime;
+      std::string time_temp = sx_ctime;
 #endif
-      VerifyXMLDateTimeString(temp, ctime);
+      VerifyXMLDateTimeString(time_temp, ctime);
     }
 
     if (i_Offset[ATIME] >= 0 && !tokens[i_Offset[ATIME]].empty()) {
@@ -2104,12 +2104,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         continue;
       sx_atime.replace(10, 1, _T("T"));
 #ifdef UNICODE
-      std::wstring temp(sx_atime.length(), L' ');
-      std::copy(sx_atime.begin(), sx_atime.end(), temp.begin());
+      std::wstring time_temp(sx_atime.length(), L' ');
+      std::copy(sx_atime.begin(), sx_atime.end(), time_temp.begin());
 #else
-      std::string temp = sx_ctime;
+      std::string time_temp = sx_atime;
 #endif
-      VerifyXMLDateTimeString(temp, atime);
+      VerifyXMLDateTimeString(time_temp, atime);
     }
 
     if (i_Offset[PMTIME] >= 0 && !tokens[i_Offset[PMTIME]].empty()) {
@@ -2118,12 +2118,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         continue;
       sx_mtime.replace(10, 1, _T("T"));
 #ifdef UNICODE
-      std::wstring temp(sx_mtime.length(), L' ');
-      std::copy(sx_mtime.begin(), sx_mtime.end(), temp.begin());
+      std::wstring time_temp(sx_mtime.length(), L' ');
+      std::copy(sx_mtime.begin(), sx_mtime.end(), time_temp.begin());
 #else
-      std::string temp = sx_ctime;
+      std::string time_temp = sx_mtime;
 #endif
-      VerifyXMLDateTimeString(temp, mtime);
+      VerifyXMLDateTimeString(time_temp, mtime);
     }
 
     if (i_Offset[XTIME] >= 0 && !tokens[i_Offset[XTIME]].empty()) {
@@ -2132,12 +2132,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         continue;
       sx_xtime.replace(10, 1, _T("T"));
 #ifdef UNICODE
-      std::wstring temp(sx_xtime.length(), L' ');
-      std::copy(sx_xtime.begin(), sx_xtime.end(), temp.begin());
+      std::wstring time_temp(sx_xtime.length(), L' ');
+      std::copy(sx_xtime.begin(), sx_xtime.end(), time_temp.begin());
 #else
-      std::string temp = sx_ctime;
+      std::string time_temp = sx_xtime;
 #endif
-      VerifyXMLDateTimeString(temp, xtime);
+      VerifyXMLDateTimeString(time_temp, xtime);
     }
 
     if (i_Offset[NOTES] >= 0 && !tokens[i_Offset[NOTES]].empty()) {
@@ -2234,7 +2234,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
   return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
-  
+
 stringT PWScore::GetXMLPWPolicies()
 {
   stringT retval(_T(""));

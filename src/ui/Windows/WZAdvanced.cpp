@@ -51,7 +51,7 @@ IMPLEMENT_DYNAMIC(CWZAdvanced, CWZPropertyPage)
 CWZAdvanced::CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType, WZAdvanced::AdvType iIndex,
                              st_SaveAdvValues *pst_SADV)
   : CWZPropertyPage(dialog_lookup[iIndex], nIDCaption, nType), m_iIndex(iIndex), 
-  m_pst_SADV(pst_SADV), m_pToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
+  m_pst_SADV(pst_SADV), m_treatwhitespaceasempty(BST_CHECKED)
 {
   ASSERT(sizeof(dialog_lookup) / sizeof(int) == WZAdvanced::LAST);
 
@@ -86,12 +86,6 @@ CWZAdvanced::CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType, WZAdva
     m_bsFields.set();
 }
 
-CWZAdvanced::~CWZAdvanced()
-{
-  if (m_iIndex != WZAdvanced::MERGE)
-    delete m_pToolTipCtrl;
-}
-
 void CWZAdvanced::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
@@ -122,8 +116,7 @@ END_MESSAGE_MAP()
 
 void CWZAdvanced::OnHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/advanced.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/advanced.html");
 }
 
 BOOL CWZAdvanced::OnInitDialog()

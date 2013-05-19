@@ -24,10 +24,6 @@
 #include <fstream>
 using namespace std;
 
-#if defined(POCKET_PC)
-#include "pocketpc/PocketPC.h"
-#endif
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -143,14 +139,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
 
 void CEditShortcutDlg::OnHelp() 
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#editview", 
-                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
+  ShowHelp(L"::/html/entering_pwd.html");
 }
 
 void CEditShortcutDlg::OnOK() 

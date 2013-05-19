@@ -17,20 +17,12 @@
 #pragma once
 
 #include <afxwin.h>
+#include <afxcmn.h> // for CToolTipCtrl
 #include <afxmt.h> // for CMutex
 #include <list>
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
-
-#if defined(POCKET_PC)
-#include "pocketpc/PwsPopupDialog.h"
-typedef CPwsPopupDialog CPWDialog;
-#else
 
 class CPWDialogTracker; // forward declaration
 
@@ -38,8 +30,8 @@ class CPWDialog : public CDialog
 {
 public:
   CPWDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
-    : CDialog(nIDTemplate, pParentWnd) {}
-
+    : CDialog(nIDTemplate, pParentWnd), m_pToolTipCtrl(NULL) {}
+  virtual ~CPWDialog() {delete m_pToolTipCtrl;}
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
@@ -48,6 +40,15 @@ public:
   static CPWDialogTracker *GetDialogTracker();
 
   DECLARE_DYNAMIC(CPWDialog)
+protected:
+  void FixBitmapBackground(CBitmap &bm);
+  void InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
+  void AddTool(int DlgItemID, int ResID);
+  void ActivateToolTip();
+  void RelayToolTipEvent(MSG *pMsg);
+  void ShowHelp(const CString &topicFile);
+
+  CToolTipCtrl *m_pToolTipCtrl;
 private:
   static CPWDialogTracker *sm_tracker;
 };
@@ -68,5 +69,3 @@ private:
   // CWnd = CDialog & CPropertySheet common ancestor!
   std::list<CWnd *> m_dialogs;
 };
-
-#endif /* POCKET_PC */

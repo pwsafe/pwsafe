@@ -1,4 +1,4 @@
-# Toplevel Makefile for Linux build of PasswordSafe
+# Toplevel Makefile for Mac OS X build of PasswordSafe
 
 all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/os/mac $@
@@ -15,10 +15,10 @@ reallyclean:
 	$(MAKE) clean CONFIG=unicodebug
 	$(MAKE) clean CONFIG=unicorelease
 
-deb:
-	$(MAKE) -C install/deb
+dist:
+	$(MAKE) -C install/macosx
 
-.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease deb
+.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease dist
 # Local variables:
 # mode: makefile
 # End:

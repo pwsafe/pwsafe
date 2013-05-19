@@ -31,7 +31,7 @@
 #include "core/PWHistory.h"
 #include "core/UIinterface.h"
 #include "os/run.h"
- 
+
 #include "addeditpropsheet.h"
 #include "pwsclip.h"
 #include "./wxutils.h"
@@ -833,13 +833,13 @@ static struct {short pv; wxString name;}
   // - Adds " (default)" to default string
   // - Selects current value
   for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++) {
-    pcbox->SetClientData(i, (void *)dcaMapping[i].pv);
+    pcbox->SetClientData(i, reinterpret_cast<void *>(dcaMapping[i].pv));
     if (dcaMapping[i].pv == defDCA) {
       wxString dv = dcaMapping[i].name;
       dv += _(" ("); dv += _("default"); dv += _(")");
       pcbox->SetString(i, dv);
     }
-    if (iDCA == dcaMapping[i].pv) 
+    if (iDCA == dcaMapping[i].pv)
       pcbox->SetValue(dcaMapping[i].name);
   }
 }
@@ -889,7 +889,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   wxWindow *sendBtn = FindWindow(ID_SEND_BTN);
 #ifdef NOTYET
   sendBtn->Enable(!m_email.empty());
-#endif 
+#endif
   // XXX since PWSRun not yet implemented in Linux, Send button's always disabled:
   sendBtn->Enable(false);
   m_notes = (m_type != ADD && m_isNotesHidden) ?
@@ -931,7 +931,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
         m_PWHgrid->AppendRows(pwhl.size() - m_PWHgrid->GetNumberRows());
       }
       m_maxPWHist = int(pwh_max);
-      //reverse-sort the history entries so that we list the newest first 
+      //reverse-sort the history entries so that we list the newest first
       std::sort(pwhl.begin(), pwhl.end(), newer());
       int row = 0;
       for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end();
@@ -1152,7 +1152,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.GetDCA(lastDCA);
       GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
                      short(prefs->GetPref(PWSprefs::DoubleClickAction)));
-      
+
       m_item.GetShiftDCA(lastShiftDCA);
       GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
                      short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
@@ -1171,7 +1171,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       // Create a new PWHistory string based on settings in this dialog, and compare it
       // with the PWHistory string from the item being edited, to see if the user modified it.
       // Note that we are not erasing the history here, even if the user has chosen to not
-      // track PWHistory.  So there could be some password entries in the history 
+      // track PWHistory.  So there could be some password entries in the history
       // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
       // Clearing the history is something the user must do himself with the "Clear History" button
 
@@ -1515,7 +1515,7 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
   Validate(); TransferDataFromWindow();
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
-  
+
   PWPolicy pwp;
 
   pwp.length = m_pwpLenCtrl->GetValue();
@@ -1548,8 +1548,8 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
   if (m_pwpHexCtrl->GetValue())
     pwp.flags = PWPolicy::UseHexDigits; //yes, its '=' and not '|='
 
-  if (m_useownsymbols) 
-    pwp.symbols = m_symbols.c_str(); 
+  if (m_useownsymbols)
+    pwp.symbols = m_symbols.c_str();
 
   return pwp;
 }
@@ -1576,7 +1576,7 @@ void AddEditPropSheet::OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt)
  * "at least" lengths.  This is not comprehensive & foolproof
  * since there are far too many ways to make the password length
  * smaller than the sum of "at least" lengths, to even think of.
- * 
+ *
  * In OnOk(), we just ensure the password length is greater than
  * the sum of all enabled "at least" lengths.  We have to do this in the
  * UI, or else password generation crashes
@@ -1623,7 +1623,7 @@ void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& evt)
       m_pwpEasyCtrl->SetValue(false);
       wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
-      return;      
+      return;
 }
     CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
   } else { // not checked - restore default symbols to appropriate value
@@ -1631,7 +1631,7 @@ void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& evt)
       CPasswordCharPool::GetPronounceableSymbols(st_symbols);
     else
       CPasswordCharPool::GetDefaultSymbols(st_symbols);
-  }    
+  }
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
 
@@ -1649,7 +1649,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
       m_pwpPronounceCtrl->SetValue(false);
       wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
-      return;      
+      return;
 }
     CPasswordCharPool::GetPronounceableSymbols(st_symbols);
   } else { // not checked - restore default symbols to appropriate value
@@ -1657,7 +1657,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
       CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
     else
       CPasswordCharPool::GetDefaultSymbols(st_symbols);
-  }    
+  }
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
 
@@ -1704,11 +1704,11 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
    * sAddress[sHeaders]
    *
    * sAddress
-   *  One or more valid email addresses separated by a semicolon. 
+   *  One or more valid email addresses separated by a semicolon.
    *  You must use Internet-safe characters. Use %20 for the space character.
    *
    * sHeaders
-   *  Optional. One or more name-value pairs. The first pair should be 
+   *  Optional. One or more name-value pairs. The first pair should be
    *  prefixed by a "?" and any additional pairs should be prefixed by a "&".
    *
    *  The name can be one of the following strings:
@@ -1717,7 +1717,7 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
    *    body
    *       Text to appear in the body of the message.
    *    CC
-   *       Addresses to be included in the "cc" (carbon copy) section of the 
+   *       Addresses to be included in the "cc" (carbon copy) section of the
    *       message.
    *    BCC
    *       Addresses to be included in the "bcc" (blind carbon copy) section

@@ -22,12 +22,8 @@
 #include "core/PWSprefs.h"
 #include "core/PWCharPool.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 using pws_os::CUUID;
 
@@ -306,9 +302,7 @@ void CAddEdit_PasswordPolicy::OnChanged()
 
 void CAddEdit_PasswordPolicy::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_pp.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd_pp.html");
 }
 
 bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)

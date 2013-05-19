@@ -110,6 +110,15 @@ public:
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
   
+  size_t WriteField(unsigned char type,
+                    const StringX &data) {return WriteCBC(type, data);}
+  size_t WriteField(unsigned char type,
+                    const unsigned char *data,
+                    size_t length) {return WriteCBC(type, data, length);}
+  size_t ReadField(unsigned char &type,
+                   unsigned char* &data,
+                   size_t &length) {return ReadCBC(type, data, length);}
+  
 protected:
   PWSfile(const StringX &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);

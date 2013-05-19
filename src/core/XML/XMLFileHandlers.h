@@ -88,9 +88,9 @@ public:
   stringT getRenameList() const {return m_strRenameList;}
 
   vdb_entries & getVDB_Entries() {return m_ventries;}
- 
+
   TCHAR getDelimiter() const {return m_delimiter;}
- 
+
   int getNumIterations() const {return m_nITER;}
   int getNumEntries() const {return m_numEntries;}
   int getNumSkipped() const {return m_numEntriesSkipped;}
@@ -98,7 +98,7 @@ public:
   int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
   int getNumNoPolicies() const {return m_numNoPolicies;}
   int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
- 
+
   bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
 
@@ -111,8 +111,7 @@ protected:
   PWPolicy currentDB_default_pwp, importDB_default_pwp;
 
   vdb_entries m_ventries;
-  pw_entry *cur_entry;
-  pwhistory_entry *cur_pwhistory_entry;
+  pw_entry *m_cur_entry;
 
   StringX m_sxElemContent;
   stringT m_strErrorMessage;
@@ -163,6 +162,7 @@ private:
   std::map<StringX, StringX> m_mapRenamedPolicies;
   std::vector<StringX> m_vEmptyGroups;
   StringX m_sxXML_DateTime;
+  pwhistory_entry *m_cur_pwhistory_entry;
 };
 
 #endif /* __XMLFILEHANDLERS_H */

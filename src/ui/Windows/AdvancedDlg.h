@@ -26,7 +26,6 @@ public:
 
   CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = INVALID,
                st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
-  virtual ~CAdvancedDlg();
 
   // Dialog Data
   //{{AFX_DATA(CAdvancedDlg)
@@ -73,7 +72,6 @@ private:
   void Set(CItemData::FieldBits bsFields);
 
   CListCtrl *m_pLC_List, *m_pLC_Selected;
-  CToolTipCtrl* m_pToolTipCtrl;
   st_SaveAdvValues *m_pst_SADV;
   CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
 };

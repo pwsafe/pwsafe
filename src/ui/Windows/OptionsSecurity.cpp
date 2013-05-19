@@ -17,12 +17,8 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsSecurity.h" // Must be after resource.h
 
@@ -206,9 +202,7 @@ BOOL COptionsSecurity::OnKillActive()
 
 void COptionsSecurity::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/security_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/security_tab.html");
 }
 
 void COptionsSecurity::OnLockOnIdleTimeout() 
@@ -231,11 +225,8 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       break;
     case IDC_COPYPSWDURL:
     case IDC_LOCK_TIMER:
-      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-      if (!IsThemeActive()) {
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-  }
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
       break;
   }
 

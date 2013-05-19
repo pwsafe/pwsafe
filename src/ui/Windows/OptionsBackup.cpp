@@ -20,12 +20,8 @@
 
 #include "os/dir.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsBackup.h" // Must be after resource.h
 
@@ -48,8 +44,7 @@ IMPLEMENT_DYNAMIC(COptionsBackup, COptions_PropertyPage)
 COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
                           COptionsBackup::IDD, COptionsBackup::IDD_SHORT,
-                          pOPTMD),
-  m_pToolTipCtrl(NULL)
+                          pOPTMD)
 {
   m_currentFile = (CString)M_CurrentFile();
   m_UserBackupPrefix = M_UserBackupPrefix();
@@ -73,11 +68,6 @@ COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   path = pws_os::makepath(drive, dir, L"", L"");
   m_currentFileDir = path.c_str();
   m_currentFileBasename = base.c_str();
-}
-
-COptionsBackup::~COptionsBackup()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
@@ -159,31 +149,11 @@ BOOL COptionsBackup::OnInitDialog()
   OnComboChanged();
   OnBackupBeforeSave();
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return TRUE;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-  // Quadruple the time to allow reading by user - there is a lot there!
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
-
-  // Set the tooltip
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_BACKUPBEFORESAVE);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BACKUPBEFORESAVE), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_USERBACKUPOTHERLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_USERBACKUPOTHERLOCATION), cs_ToolTip);
+  AddTool(IDC_BACKUPBEFORESAVE,        IDS_BACKUPBEFORESAVE);
+  AddTool(IDC_USERBACKUPOTHERLOCATION, IDS_USERBACKUPOTHERLOCATION);
+  ActivateToolTip();
 
   return TRUE;
 }
@@ -232,8 +202,7 @@ BOOL COptionsBackup::OnApply()
 
 BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -292,16 +261,12 @@ BOOL COptionsBackup::OnKillActive()
 
 void COptionsBackup::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/backups_tab.html");
 }
 
 void COptionsBackup::OnPreferencesHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/preferences.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/preferences.html");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -488,11 +453,8 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_SAVEIMMEDIATELY:
-      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-      if (!IsThemeActive()) {
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-      }
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
       break;
     case IDC_STATIC_PREFERENCES:
       pDC->SetTextColor(RGB(0, 0, 255));

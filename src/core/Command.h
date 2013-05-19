@@ -95,7 +95,7 @@ public:
     GUI_REFRESH_TREE,
     GUI_REFRESH_ENTRY,
     GUI_DB_PREFERENCES_CHANGED,
-    GUI_PWH_CHANGED_IN_DB,
+    GUI_PWH_CHANGED_IN_DB
   };
 
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
@@ -212,7 +212,7 @@ public:
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, const Command *pcmd = NULL);
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, 
+  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                   const pws_os::CUUID &base_uuid, const Command *pcmd = NULL);
   const CItemData m_ci;
   pws_os::CUUID m_base_uuid;

@@ -7,7 +7,7 @@
  */
 
 /** \file PWSTreeCtrl.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -188,7 +188,7 @@ void PWSTreeCtrl::Init()
  */
 
 void PWSTreeCtrl::CreateControls()
-{    
+{
 ////@begin PWSTreeCtrl content construction
 ////@end PWSTreeCtrl content construction
   const char **xpmList[] = {
@@ -348,7 +348,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
       return path + _(".") + name; //sub-group of some (non-root) group
   }
   else
-    return GetPath(item); 
+    return GetPath(item);
 }
 
 void PWSTreeCtrl::UpdateItem(const CItemData &item)
@@ -447,9 +447,9 @@ void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 {
   if (!ItemIsGroup(item) || GetChildrenCount(item) <= 0)
     return;
-  
+
   SortChildren(item);
-  
+
   wxTreeItemIdValue cookie;
   for( wxTreeItemId childId = GetFirstChild(item, cookie); childId.IsOk(); childId = GetNextChild(item, cookie)) {
     if (ItemIsGroup(childId) && GetChildrenCount(childId) > 0) { //logically redundant, but probably more efficient
@@ -548,7 +548,7 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
       //but if that scrolled the parent out of the view, bring it back
       EnsureVisible(item);
     }
-  }    
+  }
   else {
     CItemData *ci = GetItem(item);
     if (ci != NULL)
@@ -627,9 +627,9 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
   wxTreeItemId parentId = GetSelection();
-  wxString newItemPath = (!parentId || parentId == GetRootItem())? wxT("New Group"): GetItemGroup(parentId)+wxT(".New Group");
+  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + wxT(".") + _("New Group");
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
-  wxCHECK_RET(newItem.IsOk(), wxT("Could not add empty group item to tree"));
+  wxCHECK_RET(newItem.IsOk(), _("Could not add empty group item to tree"));
   // mark it as a new group that is still under construction.  wxWidgets would delete it
   SetItemData(newItem, new PWTreeItemData(true));
   ::wxYield();
@@ -638,11 +638,11 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
   EditTreeLabel(this, newItem);
 }
 
-void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& evt)
+void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& /* evt */)
 {
   wxTreeItemId sel = GetSelection();
   if (sel.IsOk()) {
-    wxCHECK_RET(ItemIsGroup(sel), wxT("Renaming of non-Group items is not implemented"));
+    wxCHECK_RET(ItemIsGroup(sel), _("Renaming of non-Group items is not implemented"));
     SetItemData(sel, new PWTreeItemData(GetItemGroup(sel)));
     EditTreeLabel(this, sel);
   }
@@ -661,7 +661,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       }
       else {
         evt.Veto();
-        wxMessageBox(wxT("Dots are not allowed in group names"), wxT("Invalid Character"), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Dots are not allowed in group names"), _("Invalid Character"), wxOK|wxICON_ERROR);
       }
       break;
     }
@@ -706,7 +706,7 @@ void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
                                                              DBEmptyGroupsCommand::EG_ADD);
     if (cmd)
       m_core.Execute(cmd);
-    
+
     // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
     // We can select it using the full path we computed earlier
     wxTreeItemId newItem = Find(groupName, GetRootItem());

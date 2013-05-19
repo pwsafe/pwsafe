@@ -17,7 +17,7 @@
 namespace PWSclip {
   bool SetData(const StringX &text);
   bool ClearData(); // clears clipboard iff last set by us
-};
+}
 
 #endif /* _PWSCLIP_H_ */
 

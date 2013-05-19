@@ -244,7 +244,7 @@ const char *PWSMatch::GetRuleString(const MatchRule rule)
   return pszrule;
 }
 
-const UINT PWSMatch::GetRule(MatchRule rule)
+UINT PWSMatch::GetRule(MatchRule rule)
 {
   UINT id(0);
   if (rule < 0)
@@ -287,7 +287,7 @@ const UINT PWSMatch::GetRule(MatchRule rule)
   return id;
 }
 
-const PWSMatch::MatchRule PWSMatch::GetRule(const StringX &sx_mnemonic)
+PWSMatch::MatchRule PWSMatch::GetRule(const StringX &sx_mnemonic)
 {
   static const struct {
     const charT *mnemonic; PWSMatch::MatchRule mr;

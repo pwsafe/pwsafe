@@ -28,7 +28,7 @@ pos: $(POS)
 mos: $(MOS)
 
 $(POT) : $(SRCS)
-	@xgettext --default-domain=$(DOMAIN) --language=C++ --keyword=_ --output=$@ $^
+	@xgettext --default-domain=$(DOMAIN) --from-code=UTF-8 --language=C++ --keyword=_ --output=$@ $^
 
 $(POS) : $(POT)
 	@msgmerge --update --backup=off $@ $^

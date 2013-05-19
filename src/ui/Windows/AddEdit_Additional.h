@@ -22,7 +22,6 @@ public:
   DECLARE_DYNAMIC(CAddEdit_Additional)
 
   CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD);
-  ~CAddEdit_Additional();
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_Additional)
@@ -81,7 +80,6 @@ private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                         LPARAM lParamSort);
   void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
-  CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
   bool m_bInitdone;

@@ -357,6 +357,9 @@ void PWScore::ReInit(bool bNewFile)
   // Clear expired password entries
   m_ExpireCandidates.clear();
 
+  // Clear any unknown preferences from previous databases
+  PWSprefs::GetInstance()->ClearUnknownPrefs();
+
   SetChanged(false, false);
 }
 
@@ -665,9 +668,11 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL) {
-    if (!in3->GetFilters().empty())
     m_MapFilters = in3->GetFilters();
+    m_MapPSWDPLC = in3->GetPasswordPolicies();
+    m_vEmptyGroups = in3->GetEmptyGroups();
   }
+
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -735,6 +740,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
            ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
          } // UUID duplicate
 
+         if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
+           // Error can't have both - clear Password Policy Name
+           ci_temp.ClearField(CItemData::POLICYNAME);
+         }
+
+         if (ci_temp.IsPolicyNameSet()) {
+           const StringX sxPolicyName = ci_temp.GetPolicyName();
+           PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+           if (iter == m_MapPSWDPLC.end()) {
+             // Map name not present in database - clear it!
+             ci_temp.ClearField(CItemData::POLICYNAME);
+           } else {
+             // Increase use count
+             iter->second.usecount++;
+           }
+         }
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
            m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
@@ -761,14 +782,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   ParseDependants();
 
-  if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
-    // Wait til now so that reading in the records updates the use counts
-    m_MapPSWDPLC = in3->GetPasswordPolicies();
-  }
-
-  if (in3 != NULL && !in3->GetEmptyGroups().empty()) {
-    m_vEmptyGroups = in3->GetEmptyGroups();
-  }
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
@@ -2651,37 +2664,37 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   HistoryUpdateSetMax(int &num_altered, int new_default_max,
                       SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
     : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected),
-    m_new_default_max(new_default_max)
+      m_new_default_max(new_default_max)
   {Format(m_text, _T("1%02x"), new_default_max);}
 
   void operator()(CItemData &ci) {
     if (!ci.IsProtected() ||
         (!m_bExcludeProtected && ci.IsProtected())) {
-    StringX cs_tmp = ci.GetPWHistory();
+      StringX cs_tmp = ci.GetPWHistory();
 
-    size_t len = cs_tmp.length();
-    if (len >= 5) {
+      size_t len = cs_tmp.length();
+      if (len >= 5) {
         st_PWH_status st_pwhs;
         st_pwhs.pwh = cs_tmp;
         st_pwhs.es = ci.GetStatus();
         m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
-      int status, old_max, num_saved;
-      const wchar_t *lpszPWHistory = cs_tmp.c_str();
+        int status, old_max, num_saved;
+        const wchar_t *lpszPWHistory = cs_tmp.c_str();
 #if (_MSC_VER >= 1400)
-      int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
-                             &status, &old_max, &num_saved);
+        int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"),
+                              &status, &old_max, &num_saved);
 #else
-      int iread = swscanf(lpszPWHistory, _T("%01d%02x%02x"),
-                           &status, &old_max, &num_saved);
+        int iread = swscanf(lpszPWHistory, _T("%01d%02x%02x"),
+                            &status, &old_max, &num_saved);
 #endif
-      if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = m_text + cs_tmp.substr(3);
-        ci.SetPWHistory(cs_tmp);
+        if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
+          cs_tmp = m_text + cs_tmp.substr(3);
+          ci.SetPWHistory(cs_tmp);
           ci.SetStatus(CItemData::ES_MODIFIED);
-        m_num_altered++;
+          m_num_altered++;
+        }
       }
     }
-  }
   }
 
 private:
@@ -2990,8 +3003,8 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
     // If successful - should be invalid handle and lock count is zero
     if (m_lockFileHandle != INVALID_HANDLE_VALUE || m_LockCount != 0) {
       // Try to put lock back
-      stringT locker = _T("");
-      bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
+      stringT tmp_locker = _T("");
+      bool brc = pws_os::LockFile(m_currfile.c_str(), tmp_locker,
                                   m_lockFileHandle, m_LockCount);
 
       // No idea what to do if we can't put it back :-(

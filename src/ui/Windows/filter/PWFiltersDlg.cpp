@@ -246,9 +246,7 @@ bool CPWFiltersDlg::VerifyFilters()
 
 void CPWFiltersDlg::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/filters.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/filters.html");
 }
 
 void CPWFiltersDlg::OnFNameKillFocus()

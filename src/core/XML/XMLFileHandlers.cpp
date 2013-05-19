@@ -34,8 +34,8 @@ using pws_os::CUUID;
 
 XMLFileHandlers::XMLFileHandlers()
 {
-  cur_entry = NULL;
-  cur_pwhistory_entry = NULL;
+  m_cur_entry = NULL;
+  m_cur_pwhistory_entry = NULL;
   m_sxElemContent = _T("");
 
   m_delimiter = _T('\0');
@@ -49,13 +49,13 @@ XMLFileHandlers::XMLFileHandlers()
   m_bErrors = false;
 
   m_nITER = MIN_HASH_ITERATIONS;
-  
+
   m_sxXML_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   // Set up copy of preferences to use for password policies and if we import into an
   // empty database - Note: Load of empty string sets it to all defaults
   PWSprefs::GetInstance()->Load(_T(""), true);
-  
+
   // Get current DB default policy (any import DB default policy will be set after all
   // the preferences are read in)
   currentDB_default_pwp = PWSprefs::GetInstance()->GetDefaultPolicy();
@@ -100,43 +100,43 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       if (m_bValidation)
         return false;
 
-      cur_entry = new pw_entry;
-      // Clear all fields
-      cur_entry->id = 0;
-      cur_entry->group = _T("");
-      cur_entry->title = _T("");
-      cur_entry->username = _T("");
-      cur_entry->password = _T("");
-      cur_entry->url = _T("");
-      cur_entry->autotype = _T("");
-      cur_entry->ctime = _T("");
-      cur_entry->atime = _T("");
-      cur_entry->xtime = _T("");
-      cur_entry->xtime_interval = _T("");
-      cur_entry->pmtime = _T("");
-      cur_entry->rmtime = _T("");
-      cur_entry->pwhistory = _T("");
-      cur_entry->notes = _T("");
-      cur_entry->uuid = _T("");
-      cur_entry->pwp.Empty();
-      cur_entry->run_command = _T("");
-      cur_entry->dca = _T("");
-      cur_entry->shiftdca = _T("");
-      cur_entry->email = _T("");
-      cur_entry->symbols = _T("");
-      cur_entry->policyname = _T("");
-      cur_entry->ucprotected = 0;
-      cur_entry->entrytype = NORMAL;
-      cur_entry->bforce_normal_entry = false;
+      m_cur_entry = new pw_entry;
+      // Clear all fields XXX Do we need this? The default c'tor should handle this for us
+      m_cur_entry->id = 0;
+      m_cur_entry->group = _T("");
+      m_cur_entry->title = _T("");
+      m_cur_entry->username = _T("");
+      m_cur_entry->password = _T("");
+      m_cur_entry->url = _T("");
+      m_cur_entry->autotype = _T("");
+      m_cur_entry->ctime = _T("");
+      m_cur_entry->atime = _T("");
+      m_cur_entry->xtime = _T("");
+      m_cur_entry->xtime_interval = _T("");
+      m_cur_entry->pmtime = _T("");
+      m_cur_entry->rmtime = _T("");
+      m_cur_entry->pwhistory = _T("");
+      m_cur_entry->notes = _T("");
+      m_cur_entry->uuid = _T("");
+      m_cur_entry->pwp.Empty();
+      m_cur_entry->run_command = _T("");
+      m_cur_entry->dca = _T("");
+      m_cur_entry->shiftdca = _T("");
+      m_cur_entry->email = _T("");
+      m_cur_entry->symbols = _T("");
+      m_cur_entry->policyname = _T("");
+      m_cur_entry->ucprotected = 0;
+      m_cur_entry->entrytype = NORMAL;
+      m_cur_entry->bforce_normal_entry = false;
       break;
     case XLE_HISTORY_ENTRY:
       if (m_bValidation)
         return false;
 
-      ASSERT(cur_pwhistory_entry == NULL);
-      cur_pwhistory_entry = new pwhistory_entry;
-      cur_pwhistory_entry->changed = _T("");
-      cur_pwhistory_entry->oldpassword = _T("");
+      ASSERT(m_cur_pwhistory_entry == NULL);
+      m_cur_pwhistory_entry = new pwhistory_entry;
+      m_cur_pwhistory_entry->changed = _T("");
+      m_cur_pwhistory_entry->oldpassword = _T("");
       break;
     case XLE_CTIMEX:
     case XLE_ATIMEX:
@@ -185,7 +185,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       }
       break;
     case XLE_ENTRY:
-      m_ventries.push_back(cur_entry);
+      m_ventries.push_back(m_cur_entry);
       m_numEntries++;
       break;
 
@@ -364,170 +364,170 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
 
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
-      cur_entry->group = m_sxElemContent;
+      m_cur_entry->group = m_sxElemContent;
       break;
     case XLE_TITLE:
-      cur_entry->title = m_sxElemContent;
+      m_cur_entry->title = m_sxElemContent;
       break;
     case XLE_USERNAME:
-      cur_entry->username = m_sxElemContent;
+      m_cur_entry->username = m_sxElemContent;
       break;
     case XLE_URL:
-      cur_entry->url = m_sxElemContent;
+      m_cur_entry->url = m_sxElemContent;
       break;
     case XLE_AUTOTYPE:
-      cur_entry->autotype = m_sxElemContent;
+      m_cur_entry->autotype = m_sxElemContent;
       break;
     case XLE_NOTES:
-      cur_entry->notes = m_sxElemContent;
+      m_cur_entry->notes = m_sxElemContent;
       break;
     case XLE_UUID:
-      cur_entry->uuid = m_sxElemContent;
+      m_cur_entry->uuid = m_sxElemContent;
       break;
     case XLE_PASSWORD:
-      cur_entry->password = m_sxElemContent;
+      m_cur_entry->password = m_sxElemContent;
       if (Replace(m_sxElemContent, _T(':'), _T(';')) <= 2) {
         if (m_sxElemContent.substr(0, 2) == _T("[[") &&
             m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("]]")) {
-            cur_entry->entrytype = ALIAS;
+            m_cur_entry->entrytype = ALIAS;
         }
         if (m_sxElemContent.substr(0, 2) == _T("[~") &&
             m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("~]")) {
-            cur_entry->entrytype = SHORTCUT;
+            m_cur_entry->entrytype = SHORTCUT;
         }
       }
       break;
     case XLE_CTIMEX:
-      cur_entry->ctime = m_sxElemContent;
+      m_cur_entry->ctime = m_sxElemContent;
       break;
     case XLE_ATIMEX:
-      cur_entry->atime = m_sxElemContent;
+      m_cur_entry->atime = m_sxElemContent;
       break;
     case XLE_XTIMEX:
-      cur_entry->xtime = m_sxElemContent;
+      m_cur_entry->xtime = m_sxElemContent;
       break;
     case XLE_PMTIMEX:
-      cur_entry->pmtime = m_sxElemContent;
+      m_cur_entry->pmtime = m_sxElemContent;
       break;
     case XLE_RMTIMEX:
-      cur_entry->rmtime = m_sxElemContent;
+      m_cur_entry->rmtime = m_sxElemContent;
       break;
     case XLE_XTIME_INTERVAL:
-      cur_entry->xtime_interval = Trim(m_sxElemContent);
+      m_cur_entry->xtime_interval = Trim(m_sxElemContent);
       break;
     case XLE_RUNCOMMAND:
-      cur_entry->run_command = m_sxElemContent;
+      m_cur_entry->run_command = m_sxElemContent;
       break;
     case XLE_DCA:
-      cur_entry->dca = Trim(m_sxElemContent);
+      m_cur_entry->dca = Trim(m_sxElemContent);
       break;
     case XLE_SHIFTDCA:
-      cur_entry->shiftdca = Trim(m_sxElemContent);
+      m_cur_entry->shiftdca = Trim(m_sxElemContent);
       break;
     case XLE_EMAIL:
-      cur_entry->email = m_sxElemContent;
+      m_cur_entry->email = m_sxElemContent;
       break;
     case XLE_PROTECTED:
       if (m_sxElemContent == _T("1"))
-        cur_entry->ucprotected = 1;
+        m_cur_entry->ucprotected = 1;
       break;
     case XLE_SYMBOLS:
       if (m_bPolicyBeingProcessed)
         m_Named_pwp.symbols = m_sxElemContent;
       else
-        cur_entry->symbols = m_sxElemContent;
+        m_cur_entry->symbols = m_sxElemContent;
       break;
     case XLE_ENTRY_PASSWORDPOLICYNAME:
-      cur_entry->policyname = m_sxElemContent;
+      m_cur_entry->policyname = m_sxElemContent;
       break;
     case XLE_STATUS:
       i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%01x"), i);
-      cur_entry->pwhistory = buffer;
+      m_cur_entry->pwhistory = buffer;
       break;
     case XLE_MAX:
       i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
-      cur_entry->pwhistory += buffer;
+      m_cur_entry->pwhistory += buffer;
       break;
     case XLE_NUM:
       i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
-      cur_entry->pwhistory += buffer;
+      m_cur_entry->pwhistory += buffer;
       break;
     case XLE_HISTORY_ENTRY:
-      ASSERT(cur_pwhistory_entry != NULL);
+      ASSERT(m_cur_pwhistory_entry != NULL);
       Format(buffer, _T("\xff%s\xff%04x\xff%s"),
-             cur_pwhistory_entry->changed.c_str(),
-             cur_pwhistory_entry->oldpassword.length(),
-             cur_pwhistory_entry->oldpassword.c_str());
-      cur_entry->pwhistory += buffer;
-      delete cur_pwhistory_entry;
-      cur_pwhistory_entry = NULL;
+             m_cur_pwhistory_entry->changed.c_str(),
+             m_cur_pwhistory_entry->oldpassword.length(),
+             m_cur_pwhistory_entry->oldpassword.c_str());
+      m_cur_entry->pwhistory += buffer;
+      delete m_cur_pwhistory_entry;
+      m_cur_pwhistory_entry = NULL;
       break;
     case XLE_CHANGEDX:
-      cur_pwhistory_entry->changed = m_sxElemContent;
+      m_cur_pwhistory_entry->changed = m_sxElemContent;
       break;
     case XLE_OLDPASSWORD:
-      ASSERT(cur_pwhistory_entry != NULL);
-      cur_pwhistory_entry->oldpassword = m_sxElemContent;
+      ASSERT(m_cur_pwhistory_entry != NULL);
+      m_cur_pwhistory_entry->oldpassword = m_sxElemContent;
       break;
     case XLE_ENTRY_PWLENGTH:
-      cur_entry->pwp.length = _ttoi(m_sxElemContent.c_str());
+      m_cur_entry->pwp.length = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUSEDIGITS:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseDigits;
+        m_cur_entry->pwp.flags |= PWPolicy::UseDigits;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseDigits;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseDigits;
       break;
     case XLE_ENTRY_PWUSEEASYVISION:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseEasyVision;
+        m_cur_entry->pwp.flags |= PWPolicy::UseEasyVision;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseEasyVision;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseEasyVision;
       break;
     case XLE_ENTRY_PWUSEHEXDIGITS:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseHexDigits;
+        m_cur_entry->pwp.flags |= PWPolicy::UseHexDigits;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseHexDigits;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseHexDigits;
       break;
     case XLE_ENTRY_PWUSELOWERCASE:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseLowercase;
+        m_cur_entry->pwp.flags |= PWPolicy::UseLowercase;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseLowercase;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseLowercase;
       break;
     case XLE_ENTRY_PWUSESYMBOLS:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseSymbols;
+        m_cur_entry->pwp.flags |= PWPolicy::UseSymbols;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseSymbols;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseSymbols;
       break;
     case XLE_ENTRY_PWUSEUPPERCASE:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::UseUppercase;
+        m_cur_entry->pwp.flags |= PWPolicy::UseUppercase;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::UseUppercase;
+        m_cur_entry->pwp.flags &= ~PWPolicy::UseUppercase;
       break;
     case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
       if (m_sxElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWPolicy::MakePronounceable;
+        m_cur_entry->pwp.flags |= PWPolicy::MakePronounceable;
       else
-        cur_entry->pwp.flags &= ~PWPolicy::MakePronounceable;
+        m_cur_entry->pwp.flags &= ~PWPolicy::MakePronounceable;
       break;
     case XLE_ENTRY_PWDIGITMINLENGTH:
-      cur_entry->pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
+      m_cur_entry->pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWLOWERCASEMINLENGTH:
-      cur_entry->pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
+      m_cur_entry->pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWSYMBOLMINLENGTH:
-      cur_entry->pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
+      m_cur_entry->pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUPPERCASEMINLENGTH:
-      cur_entry->pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
+      m_cur_entry->pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_PASSWORDSAFE:
     case XLE_PWHISTORY:
@@ -562,7 +562,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_PolicyName = m_sxElemContent.c_str();
       break;
   }
-  
+
   // If we have processed a DB preference - add it to our copy
   if (bpref != PWSprefs::NumBoolPrefs)    // boolean
     PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) == 0 ? false : true, true);
@@ -581,7 +581,7 @@ void XMLFileHandlers::AddXMLEntries()
                             DBPolicyNamesCommand::NP_ADDNEW);
     m_pmulticmds->Add(pcmd);
   }
-  
+
   // Then add any Empty Groups imported that are not already in the database
   if (!m_vEmptyGroups.empty()) {
     Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
@@ -589,13 +589,13 @@ void XMLFileHandlers::AddXMLEntries()
     m_pmulticmds->Add(pcmd);
   }
 
-  // Gte current DB default password policy and that from the XML file and
+  // Get current DB default password policy and that from the XML file and
   // check that they are the same?
   PWPolicy st_to_default_pp, st_import_default_pp;
   st_to_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
   st_import_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
   const bool bPWPDefaults_Different = st_to_default_pp != st_import_default_pp;
-        
+
   StringX sxEntriesWithNewNamedPolicies;
   vdb_entries::iterator entry_iter;
   CItemData ci_temp;
@@ -638,7 +638,7 @@ void XMLFileHandlers::AddXMLEntries()
       cs_tp.erase(new_end, cs_tp.end());
 
       LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-      Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
+      Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id,
              cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
       Format(cs_error, IDSC_IMPORTRECSKIPPED, cs_temp.c_str(), cs_tp.c_str());
       m_strSkippedList += cs_error;
@@ -647,13 +647,13 @@ void XMLFileHandlers::AddXMLEntries()
       delete cur_entry;
       continue;
     }
- 
+
     if (m_bImportPSWDsOnly) {
       ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
       if (iter == m_pXMLcore->GetEntryEndIter()) {
         stringT cs_error, cs_id, cs_temp;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-        Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
+        Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id,
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
         Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
 
@@ -728,7 +728,7 @@ void XMLFileHandlers::AddXMLEntries()
         LoadAString(cs_header, IDSC_IMPORTCONFLICTSX2);
       else
         Format(cs_header, IDSC_IMPORTCONFLICTSX1, cur_entry->group.c_str());
-      
+
       Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
       m_strRenameList += cs_error;
@@ -861,7 +861,7 @@ void XMLFileHandlers::AddXMLEntries()
       case PWH_INVALID_NUM:
       case PWH_INVALID_DATETIME:
       case PWH_PSWD_LENGTH_NOTHEX:
-      case PWH_INVALID_PSWD_LENGTH: 
+      case PWH_INVALID_PSWD_LENGTH:
       case PWH_INVALID_FIELD_LENGTH:
       {
         stringT buffer;
@@ -910,12 +910,12 @@ void XMLFileHandlers::AddXMLEntries()
     delete cur_entry;
   }
 
-  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Aliases, m_prpt, 
+  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Aliases, m_prpt,
                                                       CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   m_pmulticmds->Add(pcmdA);
-  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Shortcuts, m_prpt, 
+  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Shortcuts, m_prpt,
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
@@ -925,7 +925,7 @@ void XMLFileHandlers::AddXMLEntries()
                                             UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
-  
+
   if (!sxEntriesWithNewNamedPolicies.empty()) {
     StringX sxRenamedPolicies;
     Format(sxRenamedPolicies, IDSC_ENTRIES_POLICIES, m_sxXML_DateTime.c_str(),

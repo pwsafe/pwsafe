@@ -69,12 +69,12 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
                                      const Attributes& attrs)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation) {
     const XMLCh* pwsafe = _A2X("passwordsafe");
     if (XMLString::equals(qname, pwsafe)) {
       // Only interested in the delimiter attribute
-      XMLCh *szValue = (XMLCh *)attrs.getValue(_A2X("delimiter"));
+      const XMLCh *szValue = attrs.getValue(_A2X("delimiter"));
       if (szValue != NULL) {
 #ifdef UNICODE
         m_delimiter = szValue[0];
@@ -94,18 +94,18 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
   const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   if (!XMLFileHandlers::ProcessStartElement(icurrent_element))
     return;
-    
+
   switch (icurrent_element) {
     case XLE_ENTRY:
       {
-        XMLCh *szValue1 = (XMLCh *)attrs.getValue(_A2X("normal"));
+        const XMLCh *szValue1 = attrs.getValue(_A2X("normal"));
         if (szValue1 != NULL) {
-          cur_entry->bforce_normal_entry =
+          m_cur_entry->bforce_normal_entry =
                XMLString::equals(szValue1, _A2X("1")) || XMLString::equals(szValue1, _A2X("true"));
         }
-        XMLCh *szValue2 = (XMLCh *)attrs.getValue(_A2X("id"));
+        const XMLCh *szValue2 = attrs.getValue(_A2X("id"));
         if (szValue2 != NULL) {
-          cur_entry->id = XMLString::parseInt(szValue2);
+          m_cur_entry->id = XMLString::parseInt(szValue2);
         }
       }
       break;
@@ -118,7 +118,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
 void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t length)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation)
     return;
 
@@ -139,7 +139,7 @@ void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                            const XMLSize_t length)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation)
     return;
 
@@ -161,7 +161,7 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
                                    const XMLCh* const qname)
 {
   USES_XMLCH_STR
-  
+
   if (m_bValidation) {
     if (XMLString::equals(qname, _A2X("entry")))
       m_numEntries++;
@@ -184,12 +184,12 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   int iLineNumber, iCharacter;
 
 #ifdef UNICODE
-  XMLCh *szErrorMessage = (XMLCh *)e.getMessage();
+  const XMLCh *szErrorMessage = e.getMessage();
 #else
   char *szErrorMessage = XMLString::transcode(e.getMessage());
 #endif
-  iLineNumber = (int)e.getLineNumber();
-  iCharacter = (int)e.getColumnNumber();
+  iLineNumber = static_cast<int>(e.getLineNumber());
+  iCharacter = static_cast<int>(e.getColumnNumber());
 
   stringT cs_format, cs_errortype;
   LoadAString(cs_format, IDSC_XERCESSAXGENERROR);

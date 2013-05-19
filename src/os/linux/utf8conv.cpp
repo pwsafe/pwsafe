@@ -14,6 +14,7 @@
 #include "../utf8conv.h"
 #include <cstdlib>
 #include <clocale>
+#include <langinfo.h>
 #include <cassert>
 #include <cstring>
 #include <string>
@@ -24,8 +25,8 @@ using namespace std;
 class Startup {
 public:
   Startup() {
-    // Sice this can fail before main(), we can't rely on cerr etc.
-    // being intialized. At least give the user a clue...
+    // Since this can fail before main(), we can't rely on cerr etc.
+    // being initialized. At least give the user a clue...
     char *gl = setlocale(LC_ALL, NULL);
     char *sl = setlocale(LC_ALL, "");
     if (sl == NULL) {
@@ -36,10 +37,14 @@ public:
       sl = setlocale(LC_ALL, gl);
     }
     if (sl == NULL) {
-      // If we can't get the default,we're really FUBARed
+      // If we can't get the default, we're really FUBARed
       char errmess[] = "Couldn't initialize locale - bailing out\n";
       write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
       _exit(2);
+    }
+    if (strcmp(nl_langinfo(CODESET), "UTF-8")){
+      char errmess[] = "Current locale doesn't support UTF-8\n";
+      write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
     }
   }
 };

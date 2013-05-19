@@ -40,7 +40,7 @@ int CAdvancedDlg::dialog_lookup[LAST] = {
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
                            st_SaveAdvValues *pst_SADV)
   : CPWDialog(dialog_lookup[iIndex], pParent), m_iIndex(iIndex), m_pst_SADV(pst_SADV),
-  m_pToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
+  m_treatwhitespaceasempty(BST_CHECKED)
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;
@@ -70,11 +70,6 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
 
   if (m_bsFields.count() == 0)
     m_bsFields.set();
-}
-
-CAdvancedDlg::~CAdvancedDlg()
-{
-  delete m_pToolTipCtrl;
 }
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -391,8 +386,7 @@ END_MESSAGE_MAP()
 
 void CAdvancedDlg::OnHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/advanced.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/advanced.html");
 }
 
 void CAdvancedDlg::OnReset()

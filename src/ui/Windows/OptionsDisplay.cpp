@@ -16,12 +16,8 @@
 
 #include "core/pwsprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"
-#endif
 
 #include "OptionsDisplay.h" // Must be after resource.h
 
@@ -216,9 +212,7 @@ BOOL COptionsDisplay::OnKillActive()
 
 void COptionsDisplay::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/display_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/display_tab.html");
 }
 
 void COptionsDisplay::OnPreWarn() 
@@ -243,20 +237,17 @@ HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
   // Database preferences - controls + associated static text
-  //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-  if (!IsThemeActive()) {
-    switch (pWnd->GetDlgCtrlID()) {
-      case IDC_DEFUNSHOWINTREE:
-      case IDC_DEFPWSHOWINTREE:
-      case IDC_DEFPWSHOWINEDIT:
-      case IDC_DEFNOTESSHOWINEDIT:
-      case IDC_TREE_DISPLAY_COLLAPSED:
-      case IDC_TREE_DISPLAY_EXPANDED:
-      case IDC_TREE_DISPLAY_LASTSAVE:
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-        break;
-    }
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_DEFUNSHOWINTREE:
+    case IDC_DEFPWSHOWINTREE:
+    case IDC_DEFPWSHOWINEDIT:
+    case IDC_DEFNOTESSHOWINEDIT:
+    case IDC_TREE_DISPLAY_COLLAPSED:
+    case IDC_TREE_DISPLAY_EXPANDED:
+    case IDC_TREE_DISPLAY_LASTSAVE:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
   }
 
   return hbr;

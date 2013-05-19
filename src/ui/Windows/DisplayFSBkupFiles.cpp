@@ -24,16 +24,11 @@ CDisplayFSBkupFiles::CDisplayFSBkupFiles(CWnd* pParent,
                                      std::wstring &wsDBPath,
                                      st_DBProperties &st_dbpcore,
                                      std::vector<st_recfile> &vValidEBackupfiles)
-  : CDialog(CDisplayFSBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
+  : CPWDialog(CDisplayFSBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
   m_st_dbpcore(st_dbpcore), m_vValidEBackupfiles(vValidEBackupfiles),
-  m_pToolTipCtrl(NULL), m_iSelectedItem(-1)
+  m_iSelectedItem(-1)
 {
   m_DriveType = GetDriveType(wsDBDrive.c_str());
-}
-
-CDisplayFSBkupFiles::~CDisplayFSBkupFiles()
-{
-  delete m_pToolTipCtrl;
 }
 
 void CDisplayFSBkupFiles::DoDataExchange(CDataExchange* pDX)
@@ -202,9 +197,7 @@ BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)
 
 void CDisplayFSBkupFiles::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/failsafebackups.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/failsafebackups.html");
 }
 
 void CDisplayFSBkupFiles::OnContinue()

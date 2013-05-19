@@ -143,8 +143,7 @@ END_MESSAGE_MAP()
 
 void CWZSelectDB::OnHelp()
 {
-  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/wzselectdb.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  ShowHelp(L"::/html/wzselectdb.html");
 }
 
 
@@ -528,7 +527,8 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   CString cs_text(MAKEINTRESOURCE(uimsgid));
 
-  std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(), L"txt");
+  std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
+                                                        CString::PCXSTR(cs_suffix));
   CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL, 
                    dwflags, cs_filter, this);
 

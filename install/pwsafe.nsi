@@ -199,8 +199,8 @@
   !include ".\I18N\pwsafe_ru.lng"
   !insertmacro MUI_LANGUAGE "Polish"
   !include ".\I18N\pwsafe_pl.lng"
-;  !insertmacro MUI_LANGUAGE "Italian"
-;  !include ".\I18N\pwsafe_it.lng"
+  !insertmacro MUI_LANGUAGE "Italian"
+  !include ".\I18N\pwsafe_it.lng"
   !insertmacro MUI_LANGUAGE "Danish"
   !include ".\I18N\pwsafe_dk.lng"
   !insertmacro MUI_LANGUAGE "Korean"
@@ -209,6 +209,8 @@
   !include ".\I18N\pwsafe_pt-br.lng"
   !insertmacro MUI_LANGUAGE "Czech"
   !include ".\I18N\pwsafe_cz.lng"
+  !insertmacro MUI_LANGUAGE "Turkish"
+  !include ".\I18N\pwsafe_tr.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -282,6 +284,7 @@ LangString DANISH_SUPPORT ${LANG_ENGLISH} "Danish"
 LangString KOREAN_SUPPORT ${LANG_ENGLISH} "Korean"
 LangString PORTUGUESEBR_SUPPORT ${LANG_ENGLISH} "Portuguese (Brazil)"
 LangString CZECH_SUPPORT ${LANG_ENGLISH} "Czech"
+LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
@@ -451,6 +454,11 @@ Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
   File /nonfatal "..\help\pwsafeCZ\pwsafeCZ.chm"
+SectionEnd
+Section /o "$(TURKISH_SUPPORT)" TurkishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeTR.dll"
+  File /nonfatal "..\help\pwsafeCZ\pwsafeTR.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -634,27 +642,34 @@ Function .onInit
   Push ${LANG_TRADCHINESE}
   Push "Chinese (Traditional)"
   Push ${LANG_SPANISH}
+;  Push Español - encoding problem - displays as gibberish
   Push Espanol
   Push ${LANG_SWEDISH}
   Push Svenska
   Push ${LANG_DUTCH}
   Push Dutch
   Push ${LANG_FRENCH}
+;  Push Français - encoding problem - displays as gibberish
   Push Francais
   Push ${LANG_RUSSIAN}
   Push Russian
   Push ${LANG_POLISH}
   Push Polski
-;  Push ${LANG_ITALIAN}
-;  Push Italiano
+  Push ${LANG_ITALIAN}
+  Push Italiano
   Push ${LANG_DANISH}
   Push Dansk
   Push ${LANG_KOREAN}
   Push Korean
   Push ${LANG_PORTUGUESEBR}
-  Push "Português (Brasil)"
+;  Push "Português (Brasil)" - encoding problem - displays as gibberish
+  Push "Portuguese (Brasil)"
   Push ${LANG_CZECH}
-  Push "Čeština"
+;  Push "Čeština" - encoding problem - displays as gibberish
+  Push "Czech"
+  Push ${LANG_TURKISH}
+;  Push "Türkçe" - encoding problem - displays as gibberish
+  Push "Turkish"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)

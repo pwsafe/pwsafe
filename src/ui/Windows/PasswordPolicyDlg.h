@@ -137,4 +137,5 @@ private:
 
   DboxMain *m_pDbx;
   bool m_bLongPPs;
+  CBitmap m_CopyPswdBitmap;
 };

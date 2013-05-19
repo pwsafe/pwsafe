@@ -22,12 +22,8 @@
 
 #include "os/dir.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsMisc.h" // Must be after resource.h
 
@@ -45,7 +41,7 @@ IMPLEMENT_DYNAMIC(COptionsMisc, COptions_PropertyPage)
 COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
                           COptionsMisc::IDD, COptionsMisc::IDD_SHORT,
-                          pOPTMD), m_pToolTipCtrl(NULL)
+                          pOPTMD)
 {
   m_DefUsername = (CString)M_DefUsername();
   m_OtherBrowserLocation = M_OtherBrowserLocation();
@@ -70,11 +66,6 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   if (m_ShiftDoubleClickAction < PWSprefs::minDCA ||
       m_ShiftDoubleClickAction > PWSprefs::maxDCA)
     m_ShiftDoubleClickAction = M_ShiftDoubleClickAction() = PWSprefs::DoubleClickCopyPassword;
-}
-
-COptionsMisc::~COptionsMisc()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
@@ -149,30 +140,12 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return TRUE;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-
-  // Set the tooltip
+  InitToolTip();
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_MAINTAINDATETIMESTAMPS);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_OTHERBROWSERLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_OTHEREDITORLOCATION);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHEREDITORLOCATION), cs_ToolTip);
+  AddTool(IDC_MAINTAINDATETIMESTAMPS, IDS_MAINTAINDATETIMESTAMPS);
+  AddTool(IDC_OTHERBROWSERLOCATION,   IDS_OTHERBROWSERLOCATION);
+  AddTool(IDC_OTHEREDITORLOCATION,    IDS_OTHEREDITORLOCATION);
+  ActivateToolTip();
 
   return TRUE;
 }
@@ -274,8 +247,7 @@ BOOL COptionsMisc::OnApply()
 
 BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -287,9 +259,7 @@ BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
 
 void COptionsMisc::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/misc_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/misc_tab.html");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -297,14 +267,11 @@ void COptionsMisc::OnHelp()
 
 void COptionsMisc::OnEnableHotKey() 
 {
-  // JHF : no hotkeys on WinCE
-#if !defined(POCKET_PC)
   if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1) {
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
     GetDlgItem(IDC_HOTKEY_CTRL)->SetFocus();
   } else
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
-#endif
 }
 
 void COptionsMisc::SetupCombo(CComboBox *pcbox)
@@ -436,20 +403,17 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_USERNAME:
-    case IDC_STATIC_USERNAME:
-    case IDC_STATIC_DEFAUTOTYPE:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
-    case IDC_MAINTAINDATETIMESTAMPS:
-    case IDC_USEDEFUSER:
-      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-      if (!IsThemeActive()) {
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-  }
-      break;
+  case IDC_USERNAME:
+  case IDC_STATIC_USERNAME:
+  case IDC_STATIC_DEFAUTOTYPE:
+    pDC->SetTextColor(CR_DATABASE_OPTIONS);
+    pDC->SetBkMode(TRANSPARENT);
+    break;
+  case IDC_MAINTAINDATETIMESTAMPS:
+  case IDC_USEDEFUSER:
+    pDC->SetTextColor(CR_DATABASE_OPTIONS);
+    pDC->SetBkMode(TRANSPARENT);
+    break;
   }
 
   return hbr;

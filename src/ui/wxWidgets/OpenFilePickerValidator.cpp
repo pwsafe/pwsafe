@@ -46,16 +46,16 @@ bool COpenFilePickerValidator::Validate(wxWindow * parent) {
     wxASSERT(ctrl);
     wxString path = ctrl->GetPath();
     if (path.IsEmpty()) {
-      wxMessageBox(wxString() << wxT("You must select a valid file to continue.\n\n") << path,
-                              wxT("You haven't selected any files"), wxOK | wxICON_EXCLAMATION, parent);
+      wxMessageBox(wxString() << _("You must select a valid file to continue.") << wxT("\n\n") << path,
+                              _("You haven't selected any files"), wxOK | wxICON_EXCLAMATION, parent);
     }
     else if (pws_os::FileExists(tostdstring(path))) {
       return true;
     }
     else {
       //path is blank on Linux/gtk. May be its not so on other platforms
-      wxMessageBox(wxString() << wxT("Selected file doesn't exist.\n\n") << path,
-                              wxT("Please select a valid file"), wxOK | wxICON_EXCLAMATION, parent);
+      wxMessageBox(wxString() << _("Selected file doesn't exist.") << wxT("\n\n") << path,
+                              _("Please select a valid file"), wxOK | wxICON_EXCLAMATION, parent);
       return false;
     }
   }

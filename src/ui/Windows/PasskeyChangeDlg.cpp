@@ -24,13 +24,8 @@
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#include "pocketpc/PocketPC.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include <iomanip>  // For setbase and setw
 
@@ -90,11 +85,6 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
-#if defined(POCKET_PC)
-  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-  ON_EN_KILLFOCUS(IDC_NEWPASSKEY, OnPasskeyKillfocus)
-  ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
-#endif
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_BN_CLICKED(IDC_YUBIKEY2_BTN, &CPasskeyChangeDlg::OnYubikey2Btn)
@@ -193,63 +183,22 @@ void CPasskeyChangeDlg::OnCancel()
 
 void CPasskeyChangeDlg::OnHelp() 
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#changecombo", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/change_combo.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
+  ShowHelp(L"::/html/change_combo.html");
 }
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
-void CPasskeyChangeDlg::OnPasskeyKillfocus()
-{
-  EnableWordCompletion(m_hWnd);
-}
-#endif
 
 void CPasskeyChangeDlg::OnPasskeySetfocus()
 {
   m_LastFocus = IDC_PASSKEY;
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-  DisableWordCompletion(m_hWnd);
-#endif
 }
 
 void CPasskeyChangeDlg::OnNewPasskeySetfocus()
 {
   m_LastFocus = IDC_NEWPASSKEY;
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-  DisableWordCompletion(m_hWnd);
-#endif
 }
 
 void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 {
   m_LastFocus = IDC_CONFIRMNEW;
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-  DisableWordCompletion(m_hWnd);
-#endif
 }
 
 void CPasskeyChangeDlg::OnVirtualKeyboard()

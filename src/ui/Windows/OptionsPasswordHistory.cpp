@@ -17,12 +17,8 @@
 
 #include "core/PwsPlatform.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsPasswordHistory.h" // Must be after resource.h
 
@@ -39,16 +35,11 @@ IMPLEMENT_DYNAMIC(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent, COptionsPasswordHistory::IDD, pOPTMD),
-  m_pToolTipCtrl(NULL), m_PWHAction(0), mApplyToProtected(BST_UNCHECKED)
+  m_PWHAction(0), mApplyToProtected(BST_UNCHECKED)
 {
   m_SavePWHistory = M_SavePWHistory();
   m_PWHistoryNumDefault = M_PWHistoryNumDefault();
   m_PWHAction = M_PWHAction();
-}
-
-COptionsPasswordHistory::~COptionsPasswordHistory()
-{
-  delete m_pToolTipCtrl;
 }
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
@@ -105,35 +96,13 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
   GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
 
-  m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
-    delete m_pToolTipCtrl;
-    m_pToolTipCtrl = NULL;
-    return TRUE;
-  }
-
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
-  m_pToolTipCtrl->SetMaxTipWidth(300);
-  // Quadruple the time to allow reading by user - there is a lot there!
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
-
-  // Set the tooltip
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_RESETPWHISTORYOFF);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYOFF), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_RESETPWHISTORYON);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYON), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_SETMAXPWHISTORY);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SETMAXPWHISTORY), cs_ToolTip);
-  cs_ToolTip.LoadString(IDS_CLEARPWHISTORY);
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_CLEARPWHISTORY), cs_ToolTip);
+  AddTool(IDC_RESETPWHISTORYOFF, IDS_RESETPWHISTORYOFF);
+  AddTool(IDC_RESETPWHISTORYON,  IDS_RESETPWHISTORYON);
+  AddTool(IDC_SETMAXPWHISTORY,   IDS_SETMAXPWHISTORY);
+  AddTool(IDC_CLEARPWHISTORY,    IDS_CLEARPWHISTORY);
+  ActivateToolTip();
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -176,8 +145,7 @@ BOOL COptionsPasswordHistory::OnApply()
 
 BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -203,9 +171,7 @@ BOOL COptionsPasswordHistory::OnKillActive()
 
 void COptionsPasswordHistory::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_history_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/password_history_tab.html");
 }
 
 void COptionsPasswordHistory::OnSavePWHistory() 
@@ -241,11 +207,8 @@ HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       pDC->SetBkMode(TRANSPARENT);
       break;
     case IDC_SAVEPWHISTORY:
-      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
-      if (!IsThemeActive()) {
-        pDC->SetTextColor(CR_DATABASE_OPTIONS);
-        pDC->SetBkMode(TRANSPARENT);
-  }
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
       break;
   }
 

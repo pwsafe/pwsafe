@@ -13,6 +13,7 @@
 #include "core/PwsPlatform.h"
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "afxwin.h"
 
 class DboxMain;
 
@@ -28,24 +29,31 @@ protected:
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool m_bLastMinus, m_bLastSeparator;
 };
 
 class CPasswordSubsetDlg : public CPWDialog
 {
 public:
   CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd); // standard constructor
+  ~CPasswordSubsetDlg();
 
   enum { IDD = IDD_PASSWORDSUBSET };
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-protected:
   BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual void OnCancel();
+
   //{{AFX_MSG(CPasswordSubsetDlg)
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
+  afx_msg void OnCopy();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
 private:
@@ -55,6 +63,7 @@ private:
   const StringX m_passwd;
   CNumEdit m_ne_subset;
   CStaticExtn m_stcwarningmsg;
+  CBitmap m_CopyPswdBitmap;
   CEdit m_results;
   CString m_subset, m_warningmsg;
   bool m_bshown;

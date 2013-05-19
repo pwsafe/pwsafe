@@ -16,7 +16,7 @@ public:
   DECLARE_DYNAMIC(CWZPropertyPage)
 
   CWZPropertyPage(UINT nID, UINT nIDCaption = 0, const int nType = INVALID);
-  ~CWZPropertyPage() {}
+  ~CWZPropertyPage() {delete m_pToolTipCtrl;}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -25,10 +25,12 @@ public:
 
 protected:
   CWZPropertySheet *m_pWZPSH;
+  CToolTipCtrl *m_pToolTipCtrl;
 
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);
   virtual BOOL OnSetActive();
+  void ShowHelp(const CString &topicFile);
 
   // Generated message map functions
   //{{AFX_MSG(CWZPropertyPage)

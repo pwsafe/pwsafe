@@ -15,13 +15,9 @@
 
 #include "core/PWSprefs.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -884,7 +880,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
 exit:
     SetUpMenuStrings(pPopupMenu);
-    return;
 }
 
 // Helps with MRU by allowing ON_UPDATE_COMMAND_UI
@@ -936,22 +931,17 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
       minfo.dwMenuData == ID_VIEWMENU)
     CustomiseMenu(pPopupMenu, (UINT)minfo.dwMenuData, bDoShortcuts);
 
-  static int iLangPos = -1;
   if (minfo.dwMenuData == ID_MANAGEMENU) {
     // Process the Change Language sub-menu
     // First get its position and then build it
     // If no entries added (no language DLLs or back level language DLLs),
     // disable the menu item.
-    if (iLangPos == -1)
-      iLangPos = app.FindMenuItem(pPopupMenu, ID_LANGUAGEMENU);
-
+    int iLangPos = app.FindMenuItem(pPopupMenu, ID_LANGUAGEMENU);
     if (iLangPos >= 0) {
       CMenu *pSubMenu = pPopupMenu->GetSubMenu(iLangPos);
       const bool brc = ProcessLanguageMenu(pSubMenu);
       pPopupMenu->EnableMenuItem(iLangPos, MF_BYPOSITION | (brc ? MF_ENABLED : MF_GRAYED));
     }
-
-    return;
   }
 
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
@@ -1071,11 +1061,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 // Called when right-click is invoked in the client area of the window.
 void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 {
-#if defined(POCKET_PC)
-  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
-#else
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
-#endif
 
   BOOL brc;
   CPoint client;

@@ -35,16 +35,11 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
   m_ClearPWHistory(false), m_bSortAscending(true),
-  m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
+  m_bInitdone(false), m_iSortedColumn(-1)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
                            GetPref(PWSprefs::NumPWHistoryDefault);
-}
-
-CAddEdit_Additional::~CAddEdit_Additional()
-{
-  delete m_pToolTipCtrl;
 }
 
 void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
@@ -104,10 +99,7 @@ END_MESSAGE_MAP()
 
 BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
 {
-  // Do tooltips
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
+  RelayToolTipEvent(pMsg);
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
@@ -133,26 +125,10 @@ BOOL CAddEdit_Additional::OnInitDialog()
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    m_pToolTipCtrl = new CToolTipCtrl;
-    if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      pws_os::Trace(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
-      delete m_pToolTipCtrl;
-      m_pToolTipCtrl = NULL;
-    } else {
-      EnableToolTips();
-      // Delay initial show & reshow
-      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
-      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
-      m_pToolTipCtrl->SetMaxTipWidth(300);
-
-      CString cs_ToolTip;
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
-
-      m_pToolTipCtrl->Activate(TRUE);
-    }
+    InitToolTip();
+    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+    ActivateToolTip();
 
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
@@ -236,9 +212,11 @@ BOOL CAddEdit_Additional::OnInitDialog()
        iter != M_pwhistlist().end(); iter++, nIdx++) {
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
-    if (pwhentry.changedate != L"1970-01-01 00:00:00")
-      nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate.c_str());
-    else {
+    if (pwhentry.changetttdate != 0) {
+      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
+                                                               PWSUtil::TMC_LOCALE);
+      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
+    } else {
       cs_text.LoadString(IDS_UNKNOWN);
       cs_text.Trim();
       nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
@@ -327,9 +305,7 @@ void CAddEdit_Additional::OnChanged()
 
 void CAddEdit_Additional::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_add.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/entering_pwd_add.html");
 }
 
 HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -566,6 +542,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_username(),
                                                 M_realpassword(),
                                                 M_realnotes(),
+                                                M_URL(),
+                                                M_email(),
                                                 vactionverboffsets);
       }
       iaction = CItemData::AUTOTYPE;

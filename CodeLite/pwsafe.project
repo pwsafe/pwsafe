@@ -105,6 +105,8 @@
     <File Name="../src/ui/wxWidgets/ManagePwdPolicies.cpp"/>
     <File Name="../src/ui/wxWidgets/ManagePwdPolicies.h"/>
     <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
+    <File Name="../src/ui/wxWidgets/SelectionCriteria.h"/>
+    <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
@@ -141,7 +143,7 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -154,7 +156,11 @@
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands>dir ../wx/src</StartupCommands>
@@ -179,9 +185,15 @@
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
@@ -196,7 +208,11 @@
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands>dir ../wx/src
@@ -224,9 +240,15 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" C_Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" C_Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -239,7 +261,11 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -264,9 +290,15 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);-ggdb" C_Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);;-ggdb" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);-ggdb" C_Options="-O;-Wall;$(shell wx-config --cflags --unicode=yes --debug=no --inplace);;-ggdb" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
@@ -282,7 +314,11 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      ]]>
+      </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands>set follow-fork-mode child
@@ -309,6 +345,12 @@ dir ../wx/src</StartupCommands>
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
 </CustomPreBuild>
       </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
     </Configuration>
   </Settings>
 </CodeLite_Project>

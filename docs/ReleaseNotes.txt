@@ -1,5 +1,5 @@
-Password Safe 3.30Y Release Notes - December 2012
-=================================================
+Password Safe 3.31Y Release Notes - May 2013
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,6 +8,38 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.31Y
+======================
+Turkish translation added, thanks to Yusuf.
+
+New Features for 3.30Y
+======================
+
+Changes to Existing Features in 3.31Y
+=====================================
+[698] Autotype now supports URL and email fields with \l and \m,
+respectively.
+[673] Improved selection of subset of password: characters can be
+specified from the end of the password as well as from the beginning
+(thanks to DK).
+
+Bugs fixed in 3.31Y
+===================
+[1097, 1098] Fixed typos in format description text and in English online help (thanks to PeterHB)
+[1096] Correct suffix appended to proposed filename when exporting to XML.
+[1095] Ampersand (&) is handled correctly in Password Policy (thanks
+to Andrey)
+[1092] Compare DB results context menu items now enabled correctly in
+Read Only (thanks to DK).
+[1085] Preferences that are stored in the database are colored blue
+again (thanks to DK).
+[1086] Unknown database preferences are preserved (thanks to DK).
+[1081] Minor issues related to password policy options.
+[1079] Password history date is now displayed in locale's format in
+entry's Additional tab.
+[1078] Expand entry's autotype value in Run Command's $a parsing.
+[1077] Don't report URL as copied to clipboard when it isn't.
+[1068] Opening a protected entry no longer causes a sound in Windows.
 
 New Features for 3.30Y
 ======================

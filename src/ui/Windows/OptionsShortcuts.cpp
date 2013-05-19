@@ -12,13 +12,9 @@
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
 #include "resource.h"
 #include "resource2.h"  // Menu   resources
 #include "resource3.h"  // String resources
-#endif
 
 #include "OptionsShortcuts.h" // Must be after resource.h
 
@@ -207,9 +203,7 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
 
 void COptionsShortcuts::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/shortcuts_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  ShowHelp(L"::/html/shortcuts_tab.html");
 }
 
 void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)

@@ -53,9 +53,6 @@
 #define IDS_CLEARPWHISTORY              5111
 
 // Program strings
-#define IDS_LITTLEENDIAN                5207
-#define IDS_BIGENDIAN                   5208
-#define IDS_ENDIANERROR                 5209
 #define IDS_FILEERROR1                  5210
 #define IDS_FILEERROR2                  5211
 #define IDS_ERRORMESSAGE                5212
@@ -88,10 +85,8 @@
 #define IDS_NUMITEMS                    5240
 #define IDS_NEVER                       5241
 #define IDS_HIDDENNOTES                 5242
-#define IDS_SHOWPASSWORDTXT1            5243
-#define IDS_HIDEPASSWORDTXT1            5244
-#define IDS_SHOWPASSWORDTXT2            5245
-#define IDS_HIDEPASSWORDTXT2            5246
+#define IDS_SHOWPASSWORDTXT             5245
+#define IDS_HIDEPASSWORDTXT             5246
 #define IDS_MUSTHAVETITLE               5247
 #define IDS_MUSTHAVEPASSWORD            5248
 #define IDS_DOTINVALID                  5249
@@ -458,7 +453,7 @@
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
 #define IDS_CLICKTOCOPY                 5646
-#define IDS_SUBSETINDEXZERO             5647
+
 #define IDS_SUBSETINDEXTOOBIG           5648
 #define IDS_MENUCREATESHORTCUT          5649
 #define IDS_AREYOUSURE                  5650
@@ -728,3 +723,5 @@
 #define IDS_EXPORTENTMENU               5935
 #define IDS_EXPORTENT2PLAINTEXT         5936
 #define IDS_EXPORTENT2XML               5937
+#define IDS_HELP_UNAVALIABLE            5938
+#define IDS_SUBSETINDEXTOOSMALL         5939

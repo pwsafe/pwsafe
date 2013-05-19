@@ -257,7 +257,7 @@ void CYubiCfgDlg::ShowSK()
 {
   m_isSKHidden = false;
   GetDlgItem(IDC_YUBI_SHOW_HIDE)->
-    SetWindowText(CString(MAKEINTRESOURCE(IDS_HIDEPASSWORDTXT2)));
+    SetWindowText(CString(MAKEINTRESOURCE(IDS_HIDEPASSWORDTXT)));
   m_ex_YubiSK.SetSecure(false);
 
   // Remove password character so that the password is displayed
@@ -269,7 +269,7 @@ void CYubiCfgDlg::HideSK()
 {
   m_isSKHidden = true;
   GetDlgItem(IDC_YUBI_SHOW_HIDE)->
-    SetWindowText(CString(MAKEINTRESOURCE(IDS_SHOWPASSWORDTXT2)));
+    SetWindowText(CString(MAKEINTRESOURCE(IDS_SHOWPASSWORDTXT)));
   m_ex_YubiSK.SetSecure(true);
 
   // Set password character so that the password is not displayed

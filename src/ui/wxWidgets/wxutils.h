@@ -109,7 +109,7 @@ public:
 
 class PWScore;
 int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
-                bool showMsgbox = true, wxWindow* msgboxParent = NULL);
+                bool showMsgbox = true, wxWindow* msgboxParent = NULL, bool setupCopy = false);
 
 inline const wxChar* ToStr(const wxString& s) {
   if (s == wxEmptyString) {
