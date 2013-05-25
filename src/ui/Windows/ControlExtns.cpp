@@ -929,7 +929,14 @@ struct CSecEditExtn::Impl {
     SecureZeroMemory(key, sizeof(key));
   }
 
-  ~Impl() {delete m_bf;}
+  ~Impl() {
+    delete m_bf;
+    // Following to clear the keyboard buffer
+    BYTE bytKeyBoardState[256] = {0};
+    
+    BOOL brc = ::SetKeyboardState(bytKeyBoardState);
+    ASSERT(brc);
+  }
   CItemField m_field;
   BlowFish *m_bf;
 };
