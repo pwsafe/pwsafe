@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: V3.30_nederlands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-05-17 09:50+0100\n"
+"PO-Revision-Date: 2013-05-24 11:38+0100\n"
 "Last-Translator: De Nederlanders <Samen@example.org>\n"
 "Language-Team: NL <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -614,7 +614,7 @@ msgstr "&Over Password Safe..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
-msgstr "&Voeg vermelding to..."
+msgstr "&Nieuwe Vermelding"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -1784,15 +1784,15 @@ msgstr "Azerbeidzjaans Latijns"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory"
-msgstr "Folder voor Backup"
+msgstr "Folder voor Back-up"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
-msgstr "Backup Naam"
+msgstr "Back-up Naam"
 
 #. Resource IDs: (137)
 msgid "Backups"
-msgstr "Backups"
+msgstr "Back-ups"
 
 #. Resource IDs: (65535)
 msgid "Base entry:"
@@ -2565,7 +2565,7 @@ msgstr "Creeer een nieuw Wachtwoordbeleid"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr "Maak tussentijdse backup (.ibak) alvorens het bewaren "
+msgstr "Maak tussentijdse back-up (.ibak) alvorens het bewaren "
 
 #. Resource IDs: (32308)
 msgid "Create report of previous Find search"
@@ -2681,7 +2681,7 @@ msgstr "Unieke Database ID:"
 
 #. Resource IDs: (65535)
 msgid "Database format:"
-msgstr "Database opmaak:"
+msgstr "Database versie:"
 
 #. Resource IDs: (1454)
 msgid ""
@@ -3329,7 +3329,7 @@ msgstr "Afsluiten"
 
 #. Resource IDs: (32109)
 msgid "Expand All"
-msgstr "Alles uitvouwen"
+msgstr "Alles Uitvouwen"
 
 #. Resource IDs: (32054)
 msgid "Expand/Collapse Group"
@@ -3530,7 +3530,7 @@ msgstr ""
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
-"Bestand is afgekort of op andere wijze beschadigd. SVP een backup database "
+"Bestand is afgekort of op andere wijze beschadigd. SVP een back-up database "
 "gebruiken."
 
 #. Resource IDs: (334)
@@ -3595,8 +3595,8 @@ msgid ""
 "File: %s was imported (entries validated %d / imported %d%s%s%s). See report "
 "for details."
 msgstr ""
-"Bestand: %s is geïmporteerd (%d Elementen gevalideerd / ingelezen %d%s%s%s). "
-"Zie rapportage voor details."
+"Bestand: %s is geïmporteerd (%d Vermeldingen gevalideerd / ingelezen %d%s%s"
+"%s). Zie rapportage voor details."
 
 #. Resource IDs: (209)
 #, c-format
@@ -3847,7 +3847,7 @@ msgstr "Verberg het taakbalk pictogram (Sneltoets moet actief zijn)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
-msgstr "Markeer gewijzigde Elementen"
+msgstr "Markeer gewijzigde Vermeldingen"
 
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
@@ -4124,7 +4124,8 @@ msgstr "Importeren mislukt"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
-msgstr "Importeren om ALLEEN wachtwoorden van bestaande Elementen"
+msgstr ""
+"Importeren om ALLEEN wachtwoorden te vervangen van bestaande vermeldingen"
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
@@ -4158,7 +4159,7 @@ msgstr "Geïmporteerd %d %s"
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
-msgstr "In Titels (%s)/In Elementen("
+msgstr "In Titels (%s)/In Vermeldingen("
 
 #. Resource IDs: (350)
 msgid "Inactive"
@@ -4232,7 +4233,7 @@ msgstr "Interne programma fout."
 
 #. Resource IDs: (203)
 msgid "Internal error. Import failed. No records imported."
-msgstr "Interne programma fout. Inlezen mislukt. Geen Elementen ingelezen."
+msgstr "Interne programma fout. Inlezen mislukt. Geen Vermeldingen ingelezen."
 
 #. Resource IDs: (204)
 msgid "Internal error: An invalid flag was specified"
@@ -4715,7 +4716,7 @@ msgstr ""
 
 #. Resource IDs: (359)
 msgid "No entries selected"
-msgstr "Geen elementen geselecteerd"
+msgstr "Geen vermeldingen geselecteerd"
 
 #. Resource IDs: (345)
 msgid "No entry exists within this database matching your specifications."
@@ -4756,7 +4757,7 @@ msgstr "Geen functie geselecteerd om de beperkingen op te baseren."
 
 #. Resource IDs: (351)
 msgid "No items matched your filter"
-msgstr "Geen elementen voldoen aan uw filter"
+msgstr "Geen vermeldingen voldoen aan uw filter"
 
 #. Resource IDs: (330)
 msgid "No matches found."
@@ -4864,11 +4865,11 @@ msgstr "Getal is gezet op de minimum waarde. 'Kleiner dan' is niet toegestaan."
 
 #. Resource IDs: (361)
 msgid "Number of Entries"
-msgstr "Aantal elementen"
+msgstr "Aantal Vermeldingen"
 
 #. Resource IDs: (65535)
 msgid "Number of Entries:"
-msgstr "Aantal elementen:"
+msgstr "Aantal Vermeldingen:"
 
 #. Resource IDs: (360)
 msgid "Number of Groups"
@@ -4931,7 +4932,7 @@ msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
 "new default was %d"
 msgstr ""
-"Aantal elementen waarbij het \"maximum aantal bewaarde wachtwoorden' "
+"Aantal vermeldingen waarbij het \"maximum aantal bewaarde wachtwoorden' "
 "gewijzigd is naar de nieuwe standaard waarde was %d"
 
 #. Resource IDs: (371)
@@ -4946,8 +4947,8 @@ msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr ""
-"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord "
-"geschiedenis niet bewaard wordt was %d"
+"Aantal vermeldingen waarbij de instellling gewijzigd is om de wachtwoord "
+"geschiedenis niet te bewaren was %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4955,8 +4956,8 @@ msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr ""
-"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord "
-"geschiedenis bewaard wordt was %d"
+"Aantal vermeldingen waarbij de instellling gewijzigd is om de wachtwoord "
+"geschiedenis te bewaren was %d"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
@@ -5096,8 +5097,8 @@ msgstr "Wachtwoordsleutel is onjuist"
 #. Resource IDs: (363)
 msgid "Passkey needed to save. Please unlock database and try again"
 msgstr ""
-"Wachtwoordsleutel is vereist om op te kunnen slaan. De database ontgrendelen "
-"alstublieft en opnieuw proberen"
+"Wachtwoordsleutel is vereist om op te kunnen slaan. SVP de database "
+"ontgrendelen en probeer opnieuw"
 
 #. Resource IDs: (360)
 msgid "Passphrase"
@@ -5129,7 +5130,7 @@ msgstr "Interval van wachtwoord verloop"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
-msgstr "Wachtwoord gegenereerop basis van de getoonde regels"
+msgstr "Wachtwoord gegenereerd op basis van de getoonde regels"
 
 #. Resource IDs: (120, 140, 340, 350)
 msgid "Password History"
@@ -5177,7 +5178,7 @@ msgstr "Password Safe"
 
 #. Resource IDs: (337)
 msgid "Password Safe - <Untitled Restored Backup>"
-msgstr "Password Safe - <Titelloze herstelde backup>"
+msgstr "Password Safe - <Titelloze herstelde back-up>"
 
 #. Resource IDs: (317)
 msgid ""
@@ -5316,7 +5317,7 @@ msgstr "Gewone Tekst (tab gescheiden)"
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
-msgstr "Kies alstublieft een back-up om te hetstellen:"
+msgstr "Kies alstublieft een back-up om te herstellen:"
 
 #. Resource IDs: (335)
 msgid "Please Choose a Database to Compare with current open database"
@@ -5418,7 +5419,7 @@ msgstr "Geef alstublieft de kluis combinatie van deze wachtwoord database."
 
 #. Resource IDs: (337)
 msgid "Please enter your backup database prefix."
-msgstr "Geef uw backup database voorvoegsel op."
+msgstr "Geef uw back-up database voorvoegsel op."
 
 #. Resource IDs: (334)
 msgid "Please name the XML file"
@@ -5446,7 +5447,7 @@ msgstr "SVP text opgeven"
 
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
-msgstr "Geef alstublieft de plaats waar alle backups worden bewaard."
+msgstr "Geef alstublieft de plaats waar alle back-ups worden bewaard."
 
 #. Resource IDs: (345)
 #, c-format
@@ -5702,7 +5703,7 @@ msgstr "Naam wijzigen"
 
 #. Resource IDs: (32054)
 msgid "Rename Entry"
-msgstr "Vermelding naam wijzigen"
+msgstr "Wijzig Naam Vermelding"
 
 #. Resource IDs: (32054)
 msgid "Rename Group"
@@ -5762,7 +5763,7 @@ msgstr "Deze snelkoppeling opnieuw instellen"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr "Terugzetten vanaf Back-up..."
+msgstr "Terugzetten Back-up..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -6642,7 +6643,7 @@ msgstr ""
 "De database:\n"
 "%s\n"
 "\n"
-"isblijkbaar in gebruik door:\n"
+"is blijkbaar in gebruik door:\n"
 "%s%s.\n"
 "\n"
 "De database openen als Alleen-Lezen of verlaat database?\r\n"
@@ -6955,8 +6956,8 @@ msgid ""
 "Failsafe Backup file. You will not be able to undo deletes. Do you wish to "
 "continue?"
 msgstr ""
-"Er lijkt geen Prullenbak te bestaan op het medium waarop deze Veilige Backup "
-"bestand staat. U kunt verwijderingen niet ongedaan maken. Wilt u doorgaan?"
+"Er lijkt geen Prullenbak te bestaan op het medium waarop deze Veilige Back-"
+"up bestand staat. U kunt verwijderingen niet ongedaan maken. Wilt u doorgaan?"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -7166,7 +7167,7 @@ msgid ""
 "has a Recycle Bin, it will be moved there. If not, it will be permanently "
 "deleted."
 msgstr ""
-"Dit verwijdert de gekozen Veilige Backup bestand. Als de huidige schijf een "
+"Dit verwijdert de gekozen Veilige Back-up bestand. Als de huidige schijf een "
 "Prullenbak heeft, zal het bestand daarheen verplaatst worden. Zo niet, dan "
 "wordt het bestand permanent verwijderd."
 
@@ -7318,7 +7319,7 @@ msgstr ""
 
 #. Resource IDs: (337)
 msgid "Unable to create intermediate backup."
-msgstr "Niet mogelijk om tussentijdse backup te creëeren"
+msgstr "Niet mogelijk om tussentijdse back-up te creëeren"
 
 #. Resource IDs: (332)
 msgid "Unable to display URL"
@@ -7763,7 +7764,7 @@ msgstr "Bekijk/Bewerk geselecteerd vermelding"
 
 #. Resource IDs: (32201)
 msgid "Visit Password Safe &website..."
-msgstr "Bezoek &website van Password Safe....."
+msgstr "Bezoek Password Safe &website"
 
 #. Resource IDs: (363)
 msgid ""
@@ -7973,9 +7974,9 @@ msgid ""
 "you aren't sure, continue with the current database and use the database "
 "Compare function to view the differences between the versions."
 msgstr ""
-"Uw huidige geopende database zal in de eerste rij staan. Veilige Backup "
+"Uw huidige geopende database zal in de eerste rij staan. Veilige Back-up "
 "bestanden zullen daaronder getoond worden. Als het wachtwoord hetzelfde is "
-"als bij de huidige database zullen de eigenschappen van deze backups ook "
+"als bij de huidige database zullen de eigenschappen van deze back-ups ook "
 "getoond worden. Als u het niet zeker weet, ga dan door met de huidige "
 "database en gebruik de database Vergelijk functie om de verschillen tussen "
 "de versies te zien."
