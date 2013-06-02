@@ -2377,7 +2377,9 @@ void PasswordSafeFrame::HideUI(bool lock)
 #ifndef __WXMAC__
   if (!IsIconized()) {
     Iconize();
-    while (!IsIconized()) {
+    //don't loop here while IsIconized
+    //"The window manager may choose to ignore the [gdk_window_iconify] request, but normally will honor it."
+    if (!IsIconized()) {
       wxSafeYield();
     }
   }

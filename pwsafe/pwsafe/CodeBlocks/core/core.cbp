@@ -28,6 +28,8 @@
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
@@ -47,6 +49,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
+					<Add option="-fsanitize=address" />
 				</Linker>
 				<ExtraCommands>
 					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
@@ -75,6 +78,8 @@
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m32" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
@@ -94,6 +99,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
+					<Add option="-fsanitize=address" />
 				</Linker>
 				<ExtraCommands>
 					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
