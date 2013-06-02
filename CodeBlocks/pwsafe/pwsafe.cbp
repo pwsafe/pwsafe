@@ -27,6 +27,8 @@
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
@@ -45,6 +47,7 @@
 				<Linker>
 					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-m64" />
+					<Add option="-fsanitize=address" />
 					<Add library="core64d" />
 					<Add library="os64d" />
 					<Add library="uuid" />
@@ -76,6 +79,8 @@
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m32" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
@@ -94,6 +99,7 @@
 				<Linker>
 					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-m32" />
+					<Add option="-fsanitize=address" />
 					<Add library="core32d" />
 					<Add library="os32d" />
 					<Add library="uuid" />

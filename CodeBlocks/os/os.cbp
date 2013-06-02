@@ -30,6 +30,8 @@
 					<Add option="-g" />
 					<Add option="`wx-config --unicode=yes --debug=yes --inplace --cxxflags`" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
@@ -47,6 +49,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
+					<Add option="-fsanitize=address" />
 				</Linker>
 			</Target>
 			<Target title="Debug_L32">
@@ -71,6 +74,8 @@
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-m32" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
@@ -88,6 +93,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
+					<Add option="-fsanitize=address" />
 				</Linker>
 			</Target>
 			<Target title="Release_L64">
