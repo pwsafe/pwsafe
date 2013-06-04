@@ -1625,4 +1625,7 @@
       <Filter>Source Files</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap.asm" />
+  </ItemGroup>
 </Project>
