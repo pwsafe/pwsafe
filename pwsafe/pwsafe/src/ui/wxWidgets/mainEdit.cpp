@@ -504,9 +504,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   if (bMinOnAuto) {
     // Need to save display status for when we return from minimize
     //m_vGroupDisplayState = GetGroupDisplayState();
-    Iconize(true);
-    while (!IsIconized())
-      wxSafeYield();
+    TryIconize();
   } else {
     m_guiInfo->Save(this);
     Hide();
