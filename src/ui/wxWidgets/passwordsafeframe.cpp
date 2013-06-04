@@ -2363,6 +2363,16 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
   }
 }
 
+void PasswordSafeFrame::TryIconize(int attempts)
+{
+  while ( !IsIconized() && attempts-- ) {
+    //don't loop here infinitely while IsIconized
+    //"The window manager may choose to ignore the [gdk_window_iconify] request, but normally will honor it."
+    Iconize();
+    wxSafeYield();
+  }
+}
+
 void PasswordSafeFrame::HideUI(bool lock)
 {
   m_guiInfo->Save(this);
@@ -2375,14 +2385,7 @@ void PasswordSafeFrame::HideUI(bool lock)
   wxClipboard().Clear();
 
 #ifndef __WXMAC__
-  if (!IsIconized()) {
-    Iconize();
-    //don't loop here while IsIconized
-    //"The window manager may choose to ignore the [gdk_window_iconify] request, but normally will honor it."
-    if (!IsIconized()) {
-      wxSafeYield();
-    }
-  }
+  TryIconize();
 #endif
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
