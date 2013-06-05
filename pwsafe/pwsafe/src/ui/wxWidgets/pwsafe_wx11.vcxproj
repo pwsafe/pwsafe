@@ -181,6 +181,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -218,6 +219,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -257,6 +259,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -294,6 +297,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -331,6 +335,7 @@
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -366,6 +371,7 @@
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -402,6 +408,7 @@
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -437,6 +444,7 @@
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

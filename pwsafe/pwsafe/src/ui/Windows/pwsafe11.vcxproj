@@ -375,6 +375,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -384,6 +385,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -424,6 +426,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -433,6 +436,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -475,6 +479,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -484,6 +489,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -530,6 +536,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -539,6 +546,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -583,6 +591,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -592,7 +601,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -637,6 +646,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -646,7 +656,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -694,6 +704,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -703,6 +714,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -753,6 +765,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <ShowIncludes>false</ShowIncludes>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -762,6 +775,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -811,6 +825,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -820,6 +835,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -869,6 +885,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -878,6 +895,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
+      <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
@@ -936,7 +954,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -984,6 +1002,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -993,7 +1012,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -1040,6 +1059,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1049,7 +1069,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -1094,6 +1114,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
