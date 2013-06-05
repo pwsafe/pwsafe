@@ -70,6 +70,7 @@
 #define IDSC_INVALIDPWLENGTHX           3070
 #define IDSC_FLDNMSHIFTDCA              3071
 #define IDSC_FLDNMPWPOLICYNAME          3072
+#define IDSC_FLDNMKBSHORTCUT            3073
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -264,6 +265,12 @@
 #define IDSC_VALIDATE_WARNINGS          3443
 #define IDSC_SYNCPOLICY                 3444
 #define IDSC_COPYPOLICY                 3445
+#define IDSC_IMPORTED                   3446
+#define IDSC_COPIED                     3447
+#define IDSC_KBSHORTCUT_REMOVED         3448
+#define IDSC_KBSHORTCUT_USEBYAPP        3449
+#define IDSC_REMOVEDKBSHORTCUTS         3450
+#define IDSC_XMLCHARACTERERRORS         3451
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

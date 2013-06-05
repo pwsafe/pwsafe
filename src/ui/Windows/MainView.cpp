@@ -23,6 +23,9 @@
 #include "InfoDisplay.h"
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
+#include "MenuShortcuts.h"
+
+#include "HKModifiers.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -340,6 +343,12 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (pLHS_PCI->IsProtected() != pRHS_PCI->IsProtected())
         iResult = pLHS_PCI->IsProtected() ? 1 : -1;
       break;
+    case CItemData::KBSHORTCUT:
+      pLHS_PCI->GetKBShortcut(xint1);
+      pRHS_PCI->GetKBShortcut(xint2);
+      if (xint1 != xint2)
+        iResult = (xint1 < xint2) ? -1 : 1;
+      break;
     default:
       ASSERT(FALSE);
   }
@@ -535,7 +544,7 @@ void DboxMain::setupBars()
   CDC* pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
-  m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND,
+  m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND,
                      &m_SaveAdvValues[CAdvancedDlg::FIND]);
   ReleaseDC(pDC);
 
@@ -725,6 +734,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
+  StringX curKBS;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -771,6 +781,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curSymbols = curitem.GetSymbols();
     curPolicyName = curitem.GetPolicyName();
     curRunCommand = curitem.GetRunCommand();
+    curKBS = curitem.GetKBShortcut();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
 
@@ -832,6 +843,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::AUTOTYPE) && ::wcsstr(curAT.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::KBSHORTCUT) && ::wcsstr(curKBS.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -904,6 +919,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     return false;
 
   if (m_ctlItemList.IsWindowVisible()) {
+    TRACE(L"DboxMain::SelectEntry - ListView\n");
     retval = m_ctlItemList.SetItemState(i,
                                         LVIS_FOCUSED | LVIS_SELECTED,
                                         LVIS_FOCUSED | LVIS_SELECTED);
@@ -912,6 +928,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     }
     m_ctlItemList.Invalidate();
   } else { //Tree view active
+    TRACE(L"DboxMain::SelectEntry - TreeView\n");
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -924,11 +941,12 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     if (hti != NULL) {
       // Time to remove the old "fake selection" (a.k.a. drop-hilite)
       // Make sure to undo "MakeVisible" on the previous selection.
-      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED | TVIS_SELECTED);
     }
 
     retval = m_ctlItemTree.SelectItem(pdi->tree_item);
     if (MakeVisible) {
+      m_ctlItemTree.EnsureVisible(pdi->tree_item);
       // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(pdi->tree_item,
                                  TVIS_DROPHILITED | TVIS_SELECTED,
@@ -1391,6 +1409,7 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
     {
       LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
       iItem = pLVItemActivate->iItem;
+      TRACE(L"DboxMain::OnListItemSelected - NM_CLICK\n");
       break;
     }
     case LVN_KEYDOWN:
@@ -1402,6 +1421,7 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
         iItem = (iItem + 1) % nCount;
       if (pLVKeyDown->wVKey == VK_UP)
         iItem = (iItem - 1 + nCount) % nCount;
+      TRACE(L"DboxMain::OnListItemSelected - LVN_KEYDOWN\n");
       break;
     }
     default:
@@ -1447,13 +1467,15 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       m_ctlItemTree.HitTest(&htinfo);
       hItem = htinfo.hItem;
 
-        // Ignore any clicks not on an item (group or entry)
-        if (hItem == NULL ||
-            htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
-                            TVHT_ABOVE   | TVHT_BELOW | 
-                            TVHT_TORIGHT | TVHT_TOLEFT))
-            return;
+      // Ignore any clicks not on an item (group or entry)
+      if (hItem == NULL ||
+          htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
+                          TVHT_ABOVE   | TVHT_BELOW | 
+                          TVHT_TORIGHT | TVHT_TOLEFT))
+        return;
 
+      TRACE(L"DboxMain::OnTreeItemSelected - NM_CLICK\n");
+      
       // If a group
       if (!m_ctlItemTree.IsLeaf(hItem)) {
         // If on indent or button
@@ -1466,6 +1488,7 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       break;
     }
     case TVN_SELCHANGED:
+      TRACE(L"DboxMain::OnTreeItemSelected - TVN_SELCHANGED\n");
       // Keyboard - We are given the new selected entry
       hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
       break;
@@ -1482,7 +1505,7 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
   if (hti != NULL)
     m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
-
+  
   UpdateToolBarForSelectedItem(pci);
   SetDCAText(pci);
 
@@ -1499,18 +1522,22 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   switch (pLVKeyDown->wVKey) {
     case VK_DELETE:
+      TRACE(L"DboxMain::OnKeydownItemlist - VK_DELETE\n");
       OnDelete();
       return;
     case VK_INSERT:
+      TRACE(L"DboxMain::OnKeydownItemlist - VK_INSERT\n");
       OnAdd();
       return;
     case VK_ADD:
+      TRACE(L"DboxMain::OnKeydownItemlist - VK_ADD\n");
       if ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) {
         SetHeaderInfo();
         return;
       }
       break;
     default:
+      TRACE(L"DboxMain::OnKeydownItemlist - other\n");
       break;    
   }
 
@@ -1520,7 +1547,7 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
-// itemData must be the actual item in the item list.  if the item is removed
+// CItemData must be the actual item in the item list.  If the item is removed
 // from the list, it must be removed from the display as well and vice versa.
 // A pointer is associated with the item in the display that is used for
 // sorting.
@@ -2908,6 +2935,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::PROTECTED:        
       cs_header.LoadString(IDS_PROTECTED);
       break;
+    case CItemData::KBSHORTCUT:        
+      cs_header.LoadString(IDS_KBSHORTCUT);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2932,6 +2962,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::POLICY:
     case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
+    case CItemData::KBSHORTCUT:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -3475,6 +3506,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (bsFFields.test(CItemData::POLICYNAME))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
+    if (bsFFields.test(CItemData::KBSHORTCUT))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4560,6 +4593,21 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       PWPolicy pwp;
       ci.GetPWPolicy(pwp);
       sx_fielddata = pwp.GetDisplayString();
+      break;
+    }
+    case CItemData::KBSHORTCUT:
+    {
+      int32 iKBShortcut;
+      ci.GetKBShortcut(iKBShortcut);
+      if (iKBShortcut != 0) {
+        WORD wVirtualKeyCode = iKBShortcut & 0xff;
+        WORD wPWSModifiers = iKBShortcut >> 16;
+        
+        // Translate from PWS modifiers to HotKey
+        WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
+
+        sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+      }
       break;
     }
     default:

@@ -10,9 +10,10 @@
 //
 
 #include "stdafx.h"
+#include "ThisMfcApp.h" // for online help
+
 #include "DisplayFSBkupFiles.h"
 #include "GeneralMsgBox.h"
-#include "ThisMfcApp.h" // for online help
 
 #include "resource3.h"  // String resources
 

@@ -10,11 +10,13 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
 #include "ThisMfcApp.h"    // For Help
-#include "GeneralMsgBox.h"
 #include "DboxMain.h"
+
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PropertySheet.h"
+#include "GeneralMsgBox.h"
 
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"

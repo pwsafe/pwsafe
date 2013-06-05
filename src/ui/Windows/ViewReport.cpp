@@ -14,6 +14,7 @@
 #include "core/report.h"
 #include "core/util.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"
 
 // CViewReport dialog
 
@@ -165,9 +166,7 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  DboxMain *pDbx = dynamic_cast<DboxMain *>(GetParent());
-  if (pDbx != NULL)
-    pDbx->SetClipboardData(m_pString);
+  app.GetMainDlg()->SetClipboardData(m_pString);
 }
 
 void CViewReport::Finish()

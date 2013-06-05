@@ -10,9 +10,11 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "GeneralMsgBox.h"
 #include "ThisMfcApp.h"    // For Help
+
 #include "Options_PropertySheet.h"
+
+#include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -58,7 +60,7 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_MultipleInstances = M_MultipleInstances();
   m_MaxREItems = M_MaxREItems();
   m_MaxMRUItems = M_MaxMRUItems();
-  m_InitialHotkeyState = M_Hotkey_Enabled();
+  m_InitialHotkeyState = M_AppHotKeyEnabled();
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange *pDX)
@@ -221,7 +223,7 @@ BOOL COptionsSystem::OnApply()
   M_MultipleInstances() = m_MultipleInstances;
   M_MaxREItems() = m_MaxREItems;
   M_MaxMRUItems() = m_MaxMRUItems;
-  M_Hotkey_Enabled() = m_InitialHotkeyState;
+  M_AppHotKeyEnabled() = m_InitialHotkeyState;
 
   return COptions_PropertyPage::OnApply();
 }

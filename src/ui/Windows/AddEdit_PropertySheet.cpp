@@ -34,7 +34,6 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   ASSERT(pcore != NULL);
   ASSERT(pci != NULL);
 
-  m_AEMD.pDbx = static_cast<DboxMain *>(pParent);
   m_AEMD.pcore = pcore;
   m_AEMD.pci_original = pci_original;
   m_AEMD.pci = pci;
@@ -89,6 +88,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
     // Protected
     m_AEMD.ucprotected = 0;
+    
+    // Entry Keyboard shortcut
+    m_AEMD.oldKBShortcut = m_AEMD.KBShortcut = 0;
   } else {
     SetupInitialValues();
   }
@@ -278,7 +280,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                         (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
                          m_AEMD.pwp         != m_AEMD.oldpwp)              ||
                         (m_AEMD.ipolicy     == NAMED_POLICY &&
-                         m_AEMD.policyname  != m_AEMD.oldpolicyname));
+                         m_AEMD.policyname  != m_AEMD.oldpolicyname)       ||
+                         m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut);
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -326,6 +329,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetEmail(m_AEMD.email);
           m_AEMD.pci->SetSymbols(m_AEMD.symbols);
           m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
+
+          m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
+          m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
         }
 
         m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
@@ -376,6 +382,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_AEMD.pci->SetEmail(m_AEMD.email);
         m_AEMD.pci->SetSymbols(m_AEMD.symbols);
         m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
+        m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
 
         time(&t);
         m_AEMD.pci->SetCTime(t);
@@ -393,8 +400,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
-          if (iter != m_AEMD.pDbx->End())
-            m_AEMD.pDbx->UpdateEntryImages(iter->second);
+          if (iter != app.GetMainDlg()->End())
+            app.GetMainDlg()->UpdateEntryImages(iter->second);
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);
           m_AEMD.pci->SetNormal();
@@ -442,7 +449,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       CPWPropertySheet::EndDialog(IDOK);
     } else {
       // Send message to DboxMain to update entry
-      m_AEMD.pDbx->SendMessage(PWS_MSG_EDIT_APPLY, (WPARAM)this, NULL);
+      app.GetMainDlg()->SendMessage(PWS_MSG_EDIT_APPLY, (WPARAM)this, NULL);
 
       // Now make the original equal to new intermediate state
       *(m_AEMD.pci_original) = *(m_AEMD.pci);
@@ -534,6 +541,9 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldDCA = m_AEMD.DCA;
   m_AEMD.pci->GetShiftDCA(m_AEMD.ShiftDCA);
   m_AEMD.oldShiftDCA = m_AEMD.ShiftDCA;
+  
+  m_AEMD.pci->GetKBShortcut(m_AEMD.KBShortcut);
+  m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
 
   // Date Time fields
   m_AEMD.locCTime = m_AEMD.pci->GetCTimeL();

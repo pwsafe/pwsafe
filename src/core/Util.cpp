@@ -555,12 +555,59 @@ StringX PWSUtil::NormalizeTTT(const StringX &in, size_t maxlen)
   return ttt;
 }
 
-void PWSUtil::WriteXMLField(ostream &os, const char *fname,
+bool ValidateXMLCharacters(const StringX &value, ostringstream &ostInvalidPositions)
+{
+  // From: http://www.w3.org/TR/REC-xml/#sec-cdata-sect 
+  // CDATA Sections
+  // [18]    CDSect   ::=    CDStart CData CDEnd  
+  // [19]    CDStart  ::=    '<![CDATA[' 
+  // [20]    CData    ::=    (Char* - (Char* ']]>' Char*))  
+  // [21]    CDEnd    ::=    ']]>' 
+  
+  // From: http://www.w3.org/TR/REC-xml/#NT-Char
+  //  Char    ::=    #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | 
+  //                 [#x10000-#x10FFFF]
+  // any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+
+  // Easy to check low values (0x00-0x1f excluding 3 above) and the 2 special values
+  // Not so easy for the range 0xD800 to 0xDFFF (Unicode only) - could use regex
+  // but expected to be slower than this!
+
+  ostInvalidPositions.str("");
+  bool bInvalidFound(false);
+  for (size_t i = 0; i < value.length(); i++) {
+    TCHAR current = value[i];
+    if (!((current == 0x09) ||
+          (current == 0x0A) ||
+          (current == 0x0D) ||
+          ((current >=    0x20) && (current <=   0xD7FF)) ||
+          ((current >=  0xE000) && (current <=   0xFFFD)) ||
+          ((current >= 0x10000) && (current <= 0x10FFFF)))) {
+      if (bInvalidFound) {
+        // Already 1 position, add a comma
+        ostInvalidPositions << ", ";
+      }
+      bInvalidFound = true;
+      ostInvalidPositions << (i + 1);
+    }
+  }
+  return !bInvalidFound;
+}
+
+bool PWSUtil::WriteXMLField(ostream &os, const char *fname,
                             const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
   const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
+  ostringstream ostInvalidPositions;
+  if (!ValidateXMLCharacters(value, ostInvalidPositions)) {
+    os << tabs << "<!-- Field '<" << fname << ">' contains invalid XML character(s)" << endl;
+    os << tabs << "   at position(s): " << ostInvalidPositions.str().c_str() << endl;
+    os << tabs << "   and has been skipped -->" << endl;
+    return false;
+  }
+
   StringX::size_type p = value.find(_T("]]>")); // special handling required
   if (p == StringX::npos) {
     // common case
@@ -603,6 +650,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
     } while (p != StringX::npos);
     os << "</" << fname << ">" << endl;
   } // special handling of "]]>" in value.
+  return true;
 }
 
 string PWSUtil::GetXMLTime(int indent, const char *name,

@@ -47,25 +47,21 @@ public:
   ThisMfcApp();
   ~ThisMfcApp();
 
-  HACCEL m_ghAccelTable;
-
   CPWSRecentFileList* GetMRU() { return m_pMRU; }
   void ClearMRU();
   void AddToMRU(const CString &pszFilename);
 
-  DboxMain *m_pMainDlg;
-  PWScore m_core;
-  CMenu *m_pMainMenu, *m_pMRUMenu;
-  BOOL m_mruonfilemenu;
-  HINSTANCE m_hInstResDLL;
+  DboxMain * &GetMainDlg() {return m_pDbx;}
+  PWScore *GetCore() {return &m_core;}
+  CMenu *GetMainMenu() {return m_pMainMenu;}
+
+  BOOL IsMRUOnFileMenu() {return m_mruonfilemenu;}
+
   std::vector<LANGHELPFILE> m_vlanguagefiles;
 
+  HACCEL m_ghAccelTable;
   static const UINT m_uiRegMsg;
   static const UINT m_uiWH_SHELL;
-
-  virtual BOOL InitInstance();
-  virtual int ExitInstance();
-  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   void EnableAccelerator() { m_bUseAccelerator = true; }
   void DisableAccelerator() { m_bUseAccelerator = false; }
@@ -104,11 +100,12 @@ public:
 
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 
-  DECLARE_MESSAGE_MAP()
-
 protected:
-  CPWSRecentFileList* m_pMRU;
-  bool m_bUseAccelerator;
+  virtual BOOL InitInstance();
+  virtual int ExitInstance();
+  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+
+  DECLARE_MESSAGE_MAP()
 
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
@@ -116,7 +113,15 @@ private:
   void SetupMenu();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
 
+  DboxMain *m_pDbx;
+  PWScore m_core;
+
+  CMenu *m_pMainMenu, *m_pMRUMenu;
+  CPWSRecentFileList *m_pMRU;
+  bool m_bUseAccelerator;
+
   HANDLE m_hMutexOneInstance;
+  HINSTANCE m_hInstResDLL;
 
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
@@ -130,6 +135,8 @@ private:
   CString m_csCopyrightString;
   CString m_csHelpFile;
   int m_AppLangID, m_ResLangID;
+
+  BOOL m_mruonfilemenu;
 
   // Following set by command line arguments
   bool m_noSysEnvWarnings; // '-q'

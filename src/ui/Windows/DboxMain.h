@@ -155,8 +155,8 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // DragBar time interval 
 #define TIMER_DRAGBAR_TIME 100
 
-// Hotkey value ID
-#define PWS_HOTKEY_ID      5767
+// Hotkey value ID to maximum value allowed by Windows for an app.
+#define PWS_HOTKEY_ID      0xBFFF
 
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
@@ -372,6 +372,9 @@ public:
   bool IsEmptyGroup(const StringX &sxEmptyGroup)
   {return m_core.IsEmptyGroup(sxEmptyGroup);}
   
+  // Entry keyboard shortcuts
+  const KBShortcutMap &GetAllKBShortcuts() {return m_core.GetAllKBShortcuts();}
+
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
 
@@ -466,11 +469,16 @@ public:
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
+  const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
+                                     const unsigned char &cModifier, StringX &sxMenuItemName);
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 
   void ChangeMode(bool promptUser); // r-o <-> r/w
+
+  // If we have processed it returns 0 else 1
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   
  protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support

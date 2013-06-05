@@ -75,6 +75,7 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -82,7 +83,6 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Basic)
   afx_msg void OnHelp();
-  afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 

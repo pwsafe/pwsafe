@@ -17,11 +17,11 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
+
 #include "AboutDlg.h"
 #include "Fonts.h"
 #include "MFCMessages.h"
-
-#include "DboxMain.h"
 #include "TryAgainDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
@@ -31,6 +31,8 @@
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
+
+#include "HKModifiers.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -116,7 +118,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-  m_core(app.m_core),
+  m_core(*app.GetCore()),
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
@@ -704,24 +706,22 @@ void DboxMain::InitPasswordSafe()
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
-  m_RUEList.SetMainWindow(this);
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
+
+  const int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  WORD wVirtualKeyCode =  iPWSHotKeyValue & 0xff;
+  WORD wHKModifiers = iPWSHotKeyValue >> 16;
+    
+  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
+  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
+  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+  int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+  m_core.SetAppHotKey(iAppShortcut);
 
   // Set Hotkey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
-    const DWORD value = DWORD(prefs->GetPref(PWSprefs::HotKey));
-    WORD wVirtualKeyCode = WORD(value & 0xffff);
-    WORD mod = WORD(value >> 16);
-    WORD wModifiers = 0;
-    // Translate between CWnd & CHotKeyCtrl modifiers
-    if (mod & HOTKEYF_ALT)
-      wModifiers |= MOD_ALT;
-    if (mod & HOTKEYF_CONTROL)
-      wModifiers |= MOD_CONTROL;
-    if (mod & HOTKEYF_SHIFT)
-      wModifiers |= MOD_SHIFT;
     RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
-    // registration might fail if combination already registered elsewhere,
+    // Registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
   } else {
     // No sense in unregistering at this stage, really.
@@ -882,6 +882,7 @@ void DboxMain::InitPasswordSafe()
     case CItemData::AUTOTYPE:
     case CItemData::POLICY:
     case CItemData::PROTECTED:
+    case CItemData::KBSHORTCUT:
       break;
     case CItemData::PWHIST:  // Not displayed in ListView
     default:
@@ -972,23 +973,23 @@ void DboxMain::InitPasswordSafe()
 #endif
 }
 
-LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
+LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
 {
-  // since we only have a single HotKey, the value assigned
-  // to it is meaningless & unused, hence params ignored
-  // The hotkey is used to invoke the app window, prompting
+  // The main hotkey is used to invoke the app window, prompting
   // for passphrase if needed.
+  if (wParam == PWS_HOTKEY_ID) {
+    app.SetHotKeyPressed(true);
 
-  app.SetHotKeyPressed(true);
+    // Because LockDataBase actually doesn't minimize the window,
+    // have to also use the current state i.e. Locked
+    if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
+      SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
+    }
 
-  // Because LockDataBase actually doesn't minimize the window,
-  // have to also use the current state i.e. Locked
-  if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
-    SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
+    SetActiveWindow();
+    SetForegroundWindow();
   }
 
-  SetActiveWindow();
-  SetForegroundWindow();
   return 0L;
 }
 
@@ -1070,7 +1071,7 @@ BOOL DboxMain::OnInitDialog()
   SetUpInitialMenuStrings();
   SetLocalStrings();
   ConfigureSystemMenu();
-  SetMenu(app.m_pMainMenu);  // Now show menu...
+  SetMenu(app.GetMainMenu());  // Now show menu...
 
   InitPasswordSafe();
 
@@ -1987,7 +1988,7 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   if (app.GetMRU() == NULL)
     return;
 
-  if (!app.m_mruonfilemenu) {
+  if (!app.IsMRUOnFileMenu()) {
     if (pCmdUI->m_nIndex == 0) { // Add to popup menu
       app.GetMRU()->UpdateMenu(pCmdUI);
     } else {
@@ -2196,23 +2197,122 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
-    return TRUE;
+  if (pMsg->message == WM_KEYDOWN) {
+    switch (pMsg->wParam) {
+      case VK_F1:
+      {
+        OnHelp();
+        return TRUE;
+      }
+
+      case VK_ESCAPE:
+      {
+        // If Find Toolbar visible, close it and do not pass the ESC along.
+        if (m_FindToolBar.IsVisible()) {
+          OnHideFindToolBar();
+          return TRUE;
+        }
+        // Do NOT pass the ESC along if preference EscExits is false.
+        if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+          return TRUE;
+        }
+      }
+      default:
+        break;
+    }
+
+    // This should be an entry keyboard shortcut!
+    CWnd *pWnd = FromHandle(pMsg->hwnd);
+    if (pWnd == NULL)
+      goto exit;
+
+    UINT nID = pWnd->GetDlgCtrlID();
+    // But only if we have Focus (Tree or List View) of FindToolBar edit box
+    if (nID != IDC_ITEMTREE && nID != IDC_ITEMLIST && nID != ID_TOOLBUTTON_FINDEDITCTRL)
+      goto exit;
+
+    // Need base character excluding special keys
+    short siKeyStateVirtualKeyCode = VkKeyScan(pMsg->wParam & 0xff);
+    WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
+
+    if (wVirtualKeyCode != 0) {
+      WORD wModifiers(0);
+      if (GetKeyState(VK_CONTROL) & 0x8000)
+        wModifiers |= MOD_CONTROL;
+
+      if (GetKeyState(VK_MENU) & 0x8000)
+        wModifiers |= MOD_ALT;
+
+      if (GetKeyState(VK_SHIFT) & 0x8000)
+        wModifiers |= MOD_SHIFT;
+
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+        return TRUE;
+    }
   }
 
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
-    // If Find Toolbar visible, close it and do not pass the ESC along.
-    if (m_FindToolBar.IsVisible()) {
-      OnHideFindToolBar();
-      return TRUE;
-    }
-    // Do NOT pass the ESC along if preference EscExits is false.
-    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-      return TRUE;
+exit:
+  return CDialog::PreTranslateMessage(pMsg);
+}
+
+BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
+{
+  static const TCHAR *tcValidKeys = 
+          _T("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+  // Convert ASCII letters to Upper case
+  if (wVirtualKeyCode >= 'a' && wVirtualKeyCode <= 'z')
+    wVirtualKeyCode -= 0x20;
+
+  if (wVirtualKeyCode == 0 || wcschr(tcValidKeys, wVirtualKeyCode) == NULL)
+    return 1L;
+
+  // Get PWS modifiers
+  WORD wPWSModifiers = ConvertModifersWindows2PWS(wModifiers);
+
+  // If non-zero - see if it is an entry keyboard shortcut
+  if (wPWSModifiers != 0) {
+    int32 iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+    pws_os::CUUID uuid = m_core.GetKBShortcut(iKBShortcut);
+
+    if (uuid != pws_os::CUUID::NullUUID()) {
+      // Yes - find the entry  and deselect any already selected
+      ItemListIter iter = m_core.Find(uuid);
+      DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      if (m_ctlItemList.IsWindowVisible()) {
+        // Unselect all others first
+        POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+        while (pos) {
+          int iIndex = m_ctlItemList.GetNextSelectedItem(pos);
+          m_ctlItemList.SetItemState(iIndex, 0, LVIS_FOCUSED | LVIS_SELECTED);
+          m_ctlItemList.Update(iIndex);
+        }
+        
+        // Get CListCtrl to do our work for us - LVN_ITEMCHANGED
+        m_ctlItemList.SetItemState(pdi->list_index,
+                                            LVIS_FOCUSED | LVIS_SELECTED,
+                                            LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.EnsureVisible(pdi->list_index, FALSE);
+      } else {
+        // Get CTreeCtrl to do our work for us - TVN_SELCHANGED
+        m_ctlItemTree.Select(pdi->tree_item, TVGN_CARET);
+        m_ctlItemTree.EnsureVisible(pdi->tree_item);
+      }
+
+      // In case FindToolBar has the focus
+      if (m_ctlItemList.IsWindowVisible())
+        m_ctlItemList.SetFocus();
+      else
+        m_ctlItemTree.SetFocus();
+
+      // We have processed it
+      return 0L;
     }
   }
-  return CDialog::PreTranslateMessage(pMsg);
+
+  // We haven't processed it
+  return 1L;
 }
 
 void DboxMain::ResetIdleLockCounter(UINT event)
@@ -2300,6 +2400,38 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     }
   }
 
+  if (message == WM_SYSCOMMAND && wParam == SC_KEYMENU) {
+    // This should be an entry keyboard shortcut!
+    CWnd *pWnd = GetFocus();
+    if (pWnd == NULL)
+      return 0L;
+
+    UINT nID = pWnd->GetDlgCtrlID();
+    // But only if we have Focus (Tree or List View) of FindToolBar edit box
+    if (nID != IDC_ITEMTREE && nID != IDC_ITEMLIST && nID != ID_TOOLBUTTON_FINDEDITCTRL)
+      goto exit;
+
+    // Need base character excluding special keys
+    short siKeyStateVirtualKeyCode = VkKeyScan(lParam & 0xff);
+    WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
+
+    if (wVirtualKeyCode != 0) {
+      WORD wModifiers(0);
+      if (GetKeyState(VK_CONTROL) & 0x8000)
+        wModifiers |= MOD_CONTROL;
+
+      if (GetKeyState(VK_MENU) & 0x8000)
+        wModifiers |= MOD_ALT;
+
+      if (GetKeyState(VK_SHIFT) & 0x8000)
+        wModifiers |= MOD_SHIFT;
+
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+        return 0;
+    }
+  }
+
+exit:
   return CDialog::WindowProc(message, wParam, lParam);
 }
 
@@ -2324,7 +2456,7 @@ void DboxMain::SetLanguage(LCID lcid)
   SetLocalStrings();
 
   // Now show menu...
-  SetMenu(app.m_pMainMenu);
+  SetMenu(app.GetMainMenu());
 
   // Make sure shortcuts updated
   for (int i = 0; i < NUMPOPUPMENUS; i++) {
@@ -3374,4 +3506,3 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   }
   return false;
 }
-

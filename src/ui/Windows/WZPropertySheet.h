@@ -9,6 +9,7 @@
 #pragma once
 
 #include "AdvancedValues.h"
+#include "ThisMfcApp.h"
 #include "DboxMain.h"
 
 #include "core/StringX.h"
@@ -43,66 +44,66 @@ public:
   void SetCompleted(const bool &bCompleted) {m_bCompleted = bCompleted;}
 
   void WZPSHMakeOrderedItemList(OrderedItemList &ol)
-  {m_pDbx->MakeOrderedItemList(ol);}
+  {app.GetMainDlg()->MakeOrderedItemList(ol);}
 
   CItemData *WZPSHgetSelectedItem()
-  {return m_pDbx->getSelectedItem();}
+  {return app.GetMainDlg()->getSelectedItem();}
 
   int WZPSHTestSelection(const bool bAdvanced,
                          const stringT &subgroup_name,
                          const int &subgroup_object,
                          const int &subgroup_function,
                          const OrderedItemList *il)
-  {return m_pDbx->TestSelection(bAdvanced, subgroup_name,
+  {return app.GetMainDlg()->TestSelection(bAdvanced, subgroup_name,
                                 subgroup_object, subgroup_function, il);}
 
   void WZPSHSetUpdateWizardWindow(CWnd *pWnd)
-  {m_pDbx->SetUpdateWizardWindow(pWnd);}
+  {app.GetMainDlg()->SetUpdateWizardWindow(pWnd);}
 
   bool WZPSHDoCompare(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
                       bool *pbCancel)
-  {return m_pDbx->DoCompare(pothercore, bAdvanced, prpt, pbCancel);}
+  {return app.GetMainDlg()->DoCompare(pothercore, bAdvanced, prpt, pbCancel);}
 
   stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
                        bool *pbCancel)
-  {return m_pDbx->DoMerge(pothercore, bAdvanced, prpt, pbCancel);}
+  {return app.GetMainDlg()->DoMerge(pothercore, bAdvanced, prpt, pbCancel);}
 
   void WZPSHDoSynchronize(PWScore *pothercore,
                           const bool bAdvanced, int &numExported, CReport *prpt,
                           bool *pbCancel)
-  {m_pDbx->DoSynchronize(pothercore, bAdvanced, numExported, prpt, pbCancel);}
+  {app.GetMainDlg()->DoSynchronize(pothercore, bAdvanced, numExported, prpt, pbCancel);}
 
   int WZPSHDoExportText(const StringX &sx_Filename, const bool bAll,
                         const wchar_t &delimiter, const bool bAdvanced, 
                         int &numExported, CReport *prpt)
-  {return m_pDbx->DoExportText(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+  {return app.GetMainDlg()->DoExportText(sx_Filename, bAll, delimiter, bAdvanced, numExported,
                                prpt);}
 
   int WZPSHDoExportXML(const StringX &sx_Filename, const bool bAll,
                        const wchar_t &delimiter, const bool bAdvanced, 
                        int &numExported, CReport *prpt)
-  {return m_pDbx->DoExportXML(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+  {return app.GetMainDlg()->DoExportXML(sx_Filename, bAll, delimiter, bAdvanced, numExported,
                               prpt);}
 
   void WZPSHViewReport(CReport &prpt)
-  {m_pDbx->ViewReport(prpt);}
+  {app.GetMainDlg()->ViewReport(prpt);}
 
   StringX WZPSHGetCurFile()
-  {return m_pDbx->GetCurFile();}
+  {return app.GetMainDlg()->GetCurFile();}
 
   bool WZPSHExitRequested() const
-  {return m_pDbx->ExitRequested();}
+  {return app.GetMainDlg()->ExitRequested();}
 
   int WZPSHCheckPasskey(const StringX &filename, const StringX &passkey,
                         PWScore *pcore)
-  {return m_pDbx->CheckPasskey(filename, passkey, pcore);}
+  {return app.GetMainDlg()->CheckPasskey(filename, passkey, pcore);}
 
   void WZPSHUpdateGUIDisplay()
-  {m_pDbx->UpdateGUIDisplay();}
+  {app.GetMainDlg()->UpdateGUIDisplay();}
 
   CString WZPSHShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
                                   PWScore *pothercore, CReport *prpt)
-  {return m_pDbx->ShowCompareResults(sx_Filename1, sx_Filename2, pothercore, prpt);}
+  {return app.GetMainDlg()->ShowCompareResults(sx_Filename1, sx_Filename2, pothercore, prpt);}
 
   void SetNumProcessed(const int numProcessed) {m_numProcessed = numProcessed;}
   int GetNumProcessed() {return m_numProcessed;}
@@ -118,7 +119,6 @@ public:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
   CWZAdvanced *m_pp_advanced;
   CWZSelectDB *m_pp_selectdb;
   CWZFinish   *m_pp_finish;

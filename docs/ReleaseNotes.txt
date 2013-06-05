@@ -42,6 +42,8 @@ New Features for 3.30
 =====================
 [689] It's now possible to change the r/w state of a database when
 unlocking it. Thanks to Jeff for the suggestion.
+[695] Allow a keyboard shortcut to be associated with selecting an entry.
+Please see Help entry for more details.
 
 Changes to Existing Features in 3.30
 ====================================

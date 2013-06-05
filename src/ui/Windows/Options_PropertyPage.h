@@ -13,7 +13,6 @@
 #include "ControlExtns.h"
 
 class COptions_PropertySheet;
-class DboxMain;
 class PWScore;
 
 // Database option text colour (COLORREF) - equivalent to RGB(0, 0, 128)
@@ -21,8 +20,6 @@ class PWScore;
 
 struct st_Opt_master_data {
   bool bLongPPs;   // Long or Wide PropertyPages
-
-  DboxMain *pDbx;
 
   CSecString CurrentFile;
   CSecString UserBackupPrefix;
@@ -56,9 +53,6 @@ struct st_Opt_master_data {
   BOOL EscExits;
   int DoubleClickAction, ShiftDoubleClickAction;
 
-  DWORD Hotkey_Value;
-  BOOL Hotkey_Enabled;
-
   CSecString DefUsername;
   CSecString OtherBrowserLocation;
   CSecString BrowserCmdLineParms;
@@ -84,6 +78,8 @@ struct st_Opt_master_data {
   int IdleTimeOut;
 
   // Shortcut Data
+  int32 AppHotKeyValue;
+  BOOL AppHotKeyEnabled;
   int ColWidth;
   int DefColWidth;
 
@@ -113,8 +109,6 @@ public:
   enum {PPOPT_GET_DCA = 10, PPOPT_GET_CCOM, PPOPT_HOTKEY_SET};
 
   DECLARE_DYNAMIC(COptions_PropertyPage)
-
-  inline DboxMain * &M_pDbx() {return m_OPTMD.pDbx;}
 
   // Backup Data
   inline CSecString &M_CurrentFile() {return m_OPTMD.CurrentFile;}
@@ -150,9 +144,6 @@ public:
   inline int &M_DoubleClickAction() {return m_OPTMD.DoubleClickAction;}
   inline int &M_ShiftDoubleClickAction() {return m_OPTMD.ShiftDoubleClickAction;}
 
-  inline DWORD &M_Hotkey_Value() {return m_OPTMD.Hotkey_Value;}
-  inline BOOL &M_Hotkey_Enabled() {return m_OPTMD.Hotkey_Enabled;}
-
   inline CSecString &M_DefUsername() {return m_OPTMD.DefUsername;}
   inline CString &M_OtherBrowserLocation() {return m_OPTMD.OtherBrowserLocation;}
   inline CString &M_BrowserCmdLineParms() {return m_OPTMD.BrowserCmdLineParms;}
@@ -178,6 +169,8 @@ public:
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
 
   // Shortcut Data
+  inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
+  inline BOOL &M_AppHotKeyEnabled() {return m_OPTMD.AppHotKeyEnabled;}
   inline int &M_ColWidth() {return m_OPTMD.ColWidth;}
   inline int &M_DefColWidth() {return m_OPTMD.DefColWidth;}
 

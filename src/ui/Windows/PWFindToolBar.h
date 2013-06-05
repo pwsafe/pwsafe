@@ -14,7 +14,15 @@
 #include "AdvancedDlg.h"
 #include <vector>
 
-class DboxMain;
+class CFindEditCtrl : public CEditExtn
+{
+    // Construction
+public:
+
+protected:
+  // Needed to trap Entry Keyboard Shortcuts if we are incontrol
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+};
 
 class CPWFindToolBar : public CToolBar
 {
@@ -24,8 +32,7 @@ public:
   CPWFindToolBar();
   virtual ~CPWFindToolBar();
 
-  void Init(const int NumBits, CWnd *pMessageWindow, int iWMSGID,
-            st_SaveAdvValues *pst_SADV);
+  void Init(const int NumBits, int iWMSGID, st_SaveAdvValues *pst_SADV);
   void LoadDefaultToolBar(const int toolbarMode);
   void AddExtraControls();
   void ChangeImages(const int toolbarMode);
@@ -54,7 +61,7 @@ public:
   std::vector<int> * GetSearchResults() {return &m_indices;}
   void SetStatus(CString cs_status) {m_findresults.SetWindowText(cs_status);}
 
-  CEditExtn m_findedit;
+  CFindEditCtrl m_findedit;
   CStaticExtn m_findresults;
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
 
@@ -75,7 +82,6 @@ private:
 
   CImageList m_ImageLists[3];  // 1st = Classic; 2nd = New 8; 3rd = New 32;
   TBBUTTON *m_pOriginalTBinfo;
-  DboxMain *m_pDbx;
   CFont m_FindTextFont;
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_NumBits;
   int m_iWMSGID;

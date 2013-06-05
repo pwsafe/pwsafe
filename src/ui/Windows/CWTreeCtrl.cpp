@@ -160,7 +160,7 @@ void CCWTreeCtrl::OnExpandAll()
   SetRedraw(FALSE);
   do {
     Expand(hItem,TVE_EXPAND);
-    hItem = GetNextItem(hItem,TVGN_NEXTVISIBLE);
+    hItem = GetNextItem(hItem, TVGN_NEXTVISIBLE);
   } while (hItem);
   EnsureVisible(GetSelectedItem());
   SetRedraw(TRUE);

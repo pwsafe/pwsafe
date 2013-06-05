@@ -10,10 +10,12 @@
 //
 
 #include "stdafx.h"
+#include "ThisMfcApp.h" // for disable/enable accel.
 #include "DboxMain.h"
+
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
-#include "ThisMfcApp.h" // for disable/enable accel.
+
 #include "resource.h"
 #include "resource2.h"
 #include "resource3.h"
@@ -80,6 +82,42 @@ const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
   IDB_FINDCASE_S_NEW,           // m_iCase_Sensitive_BM_offset is this offset
   IDB_FINDADVANCEDON_NEW,       // m_iAdvancedOn_BM_offset is this offset
 };
+
+LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+  if (message == WM_SYSCOMMAND && wParam == SC_KEYMENU) {
+    // This should be an entry keyboard shortcut!
+    CWnd *pWnd = GetFocus();
+    if (pWnd == NULL)
+      return 0L;
+
+    // But only if we have Focus
+    if (pWnd->GetDlgCtrlID() != ID_TOOLBUTTON_FINDEDITCTRL)
+      goto exit;
+
+    // Need base character excluding special keys
+    short siKeyStateVirtualKeyCode = VkKeyScan(lParam & 0xff);
+    WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
+
+    if (wVirtualKeyCode != 0) {
+      WORD wModifiers(0);
+      if (GetKeyState(VK_CONTROL) & 0x8000)
+        wModifiers |= MOD_CONTROL;
+
+      if (GetKeyState(VK_MENU) & 0x8000)
+        wModifiers |= MOD_ALT;
+
+      if (GetKeyState(VK_SHIFT) & 0x8000)
+        wModifiers |= MOD_SHIFT;
+
+      if (!app.GetMainDlg()->ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+        return 0;
+    }
+  }
+
+exit:
+  return CEditExtn::WindowProc(message, wParam, lParam);
+}
 
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
@@ -164,7 +202,7 @@ void CPWFindToolBar::RefreshImages()
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
 
-  Init(m_NumBits, m_pDbx, m_iWMSGID, m_pst_SADV);
+  Init(m_NumBits, m_iWMSGID, m_pst_SADV);
 
   ChangeImages(m_toolbarMode);
 }
@@ -174,13 +212,13 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
   CWnd *pWnd = FromHandle(pMsg->hwnd);
 
   // Process User's AutoType shortcut
-  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateAutoType(pMsg))
+  if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))
     return TRUE;
 
   if (pWnd->GetDlgCtrlID() == ID_TOOLBUTTON_FINDEDITCTRL) {
     if (pMsg->message == WM_KEYDOWN) {
       if (pMsg->wParam == VK_RETURN) {
-        m_pDbx->SendMessage(m_iWMSGID);
+        app.GetMainDlg()->SendMessage(m_iWMSGID);
         return TRUE;
       }
       if (pMsg->wParam == VK_DELETE) {
@@ -205,13 +243,12 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
       }
     }
   }
-
   return CToolBar::PreTranslateMessage(pMsg);
 }
 
 //  Other routines
 
-void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID,
+void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
                           st_SaveAdvValues *pst_SADV)
 {
   ASSERT(pst_SADV != NULL);
@@ -279,7 +316,6 @@ void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID,
       j++;
   }
 
-  m_pDbx = m_pDbx = static_cast<DboxMain *>(pDbx);
   m_iWMSGID = iWMSGID;
 }
 
@@ -453,9 +489,6 @@ void CPWFindToolBar::Find()
   if (this->GetSafeHwnd() == NULL)
     return;
 
-  DboxMain* pDbx = static_cast<DboxMain *>(m_pDbx);
-  ASSERT(pDbx != NULL);
-
   CString cs_status, cs_temp;
   m_findedit.GetWindowText(m_search_text);
   if (m_search_text.IsEmpty()) {
@@ -489,12 +522,12 @@ void CPWFindToolBar::Find()
     m_indices.clear();
 
     if (m_bAdvanced)
-      m_numFound = pDbx->FindAll(m_search_text, m_cs_search, m_indices,
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices,
                                  m_pst_SADV->bsFields, m_pst_SADV->subgroup_bset,
                                  m_pst_SADV->subgroup_name, m_pst_SADV->subgroup_object, 
                                  m_pst_SADV->subgroup_function);
     else
-      m_numFound = pDbx->FindAll(m_search_text, m_cs_search, m_indices);
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices);
 
     switch (m_numFound) {
       case 0:
@@ -507,13 +540,13 @@ void CPWFindToolBar::Find()
         cs_status.Format(IDS_FOUNDMATCHES, 1, m_numFound);
         break;
     }
-    pDbx->ResumeOnDBNotification();
+    app.GetMainDlg()->ResumeOnDBNotification();
   } // m_lastshown == size_t(-1)
 
   // OK, so now we have a (possibly empty) list of items to select.
   if (m_numFound > 0) {
     if (m_numFound == 1) {
-      pDbx->SelectFindEntry(m_indices[0], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_indices[0], TRUE);
     } else { // m_numFound > 1
       if (m_iFindDirection == FIND_DOWN) {
         m_lastshown++;
@@ -532,7 +565,7 @@ void CPWFindToolBar::Find()
         m_lastshown = m_numFound - 1;
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
-      pDbx->SelectFindEntry(m_indices[m_lastshown], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_indices[m_lastshown], TRUE);
     }
   }
   if (m_numFound == 0)

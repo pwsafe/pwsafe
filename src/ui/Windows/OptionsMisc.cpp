@@ -10,11 +10,13 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "GeneralMsgBox.h"
 #include "ThisMfcApp.h"    // For Help
-#include "PWFileDialog.h"
+
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
+
+#include "GeneralMsgBox.h"
+#include "PWFileDialog.h"
 
 #include "core/core.h"
 #include "core/PwsPlatform.h"
@@ -48,11 +50,9 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_OtherEditorLocation = M_OtherEditorLocation();
   m_BrowserCmdLineParms = M_BrowserCmdLineParms();
   m_Autotype = M_Autotype();
-  m_HotkeyValue = M_Hotkey_Value();
   m_ConfirmDelete = M_ConfirmDelete();
   m_MaintainDatetimeStamps = M_MaintainDatetimeStamps();
   m_EscExits = M_EscExits();
-  m_HotkeyEnabled = M_Hotkey_Enabled();
   m_UseDefUsername = M_UseDefUsername();
   m_QuerySetDefUsername = M_QuerySetDefUsername();
   m_AutotypeMinimize = M_AutotypeMinimize();
@@ -81,8 +81,6 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_ESC_EXITS, m_EscExits);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
   DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
-  DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_HotkeyEnabled);
-  DDX_Control(pDX, IDC_HOTKEY_CTRL, m_HotkeyCtrl);
   DDX_Check(pDX, IDC_QUERYSETDEF, m_QuerySetDefUsername);
   DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_OtherBrowserLocation);
   DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_OtherEditorLocation);
@@ -99,7 +97,6 @@ BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
-  ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUseDefUser)
   ON_COMMAND_RANGE(IDC_BROWSEFORLOCATION_BROWSER, 
                    IDC_BROWSEFORLOCATION_EDITOR, OnBrowseForLocation)
@@ -133,10 +130,6 @@ BOOL COptionsMisc::OnInitDialog()
   m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_DoubleClickAction]);
   m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[m_ShiftDoubleClickAction]);
 
-  m_HotkeyCtrl.SetHotKey(LOWORD(m_HotkeyValue),HIWORD(m_HotkeyValue));
-  if (m_HotkeyEnabled == FALSE)
-    m_HotkeyCtrl.EnableWindow(FALSE);
-
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
@@ -167,12 +160,10 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       if (M_ConfirmDelete()          != m_ConfirmDelete            || 
           M_MaintainDatetimeStamps() != m_MaintainDatetimeStamps   ||
           M_EscExits()               != m_EscExits                 ||
-          M_Hotkey_Enabled()         != m_HotkeyEnabled            ||
           M_UseDefUsername()         != m_UseDefUsername           ||
           (M_UseDefUsername()        == TRUE &&
            M_DefUsername()           != CSecString(m_DefUsername)) ||
           M_QuerySetDefUsername()    != m_QuerySetDefUsername      ||
-          M_Hotkey_Value()           != m_HotkeyValue              ||
           M_DoubleClickAction()      != m_DoubleClickAction        ||
           M_ShiftDoubleClickAction() != m_ShiftDoubleClickAction   ||
           M_OtherBrowserLocation()   != m_OtherBrowserLocation     ||
@@ -182,8 +173,6 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_AutotypeMinimize()       != m_AutotypeMinimize)
         return 1L;
       break;
-    case PPOPT_HOTKEY_SET:
-      return (m_HotkeyEnabled == TRUE) ? 1L : 0L;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
       // copy data into the entry - we do it ourselfs here first
@@ -198,11 +187,6 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
 BOOL COptionsMisc::OnApply() 
 {
   UpdateData(TRUE);
-
-  WORD wVirtualKeyCode, wModifiers;
-  m_HotkeyCtrl.GetHotKey(wVirtualKeyCode, wModifiers);
-  DWORD v = wVirtualKeyCode | (wModifiers << 16);
-  m_HotkeyValue = v;
 
   // Go ask Security for ClearClipboardOnMinimize value
   BOOL bClearClipboardOnMinimize;
@@ -231,11 +215,9 @@ BOOL COptionsMisc::OnApply()
   M_OtherEditorLocation() = m_OtherEditorLocation;
   M_BrowserCmdLineParms() = m_BrowserCmdLineParms;
   M_Autotype() = m_Autotype;
-  M_Hotkey_Value() = m_HotkeyValue;
   M_ConfirmDelete() = m_ConfirmDelete;
   M_MaintainDatetimeStamps() = m_MaintainDatetimeStamps;
   M_EscExits() = m_EscExits;
-  M_Hotkey_Enabled() = m_HotkeyEnabled;
   M_UseDefUsername() = m_UseDefUsername;
   M_QuerySetDefUsername() = m_QuerySetDefUsername;
   M_AutotypeMinimize() = m_AutotypeMinimize;
@@ -264,15 +246,6 @@ void COptionsMisc::OnHelp()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc message handlers
-
-void COptionsMisc::OnEnableHotKey() 
-{
-  if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1) {
-    GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
-    GetDlgItem(IDC_HOTKEY_CTRL)->SetFocus();
-  } else
-    GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
-}
 
 void COptionsMisc::SetupCombo(CComboBox *pcbox)
 {

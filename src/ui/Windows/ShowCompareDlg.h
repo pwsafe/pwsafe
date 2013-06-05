@@ -19,7 +19,6 @@
 
 #include <vector>
 
-class DboxMain;
 class PWScore;
 class CInfoDisplay;
 
@@ -53,7 +52,6 @@ private:
   CString GetEntryTypeString(CItemData::EntryType et);
 
   CSCWListCtrl m_ListCtrl;
-  DboxMain *m_pDbx;
   CItemData *m_pci, *m_pci_other;
   CInfoDisplay *m_pNotesDisplay;
 

@@ -87,6 +87,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("pwhistory"), {0, XLE_PWHISTORY}},
   {_T("PasswordPolicy"), {0, XLE_ENTRY_PASSWORDPOLICY}},
   {_T("symbols"), {0, XLE_SYMBOLS}},
+  {_T("kbshortcut"), {0, XLE_KBSHORTCUT}},
   {_T("status"), {0, XLE_STATUS}},
   {_T("max"), {0, XLE_MAX}},
   {_T("num"), {0, XLE_NUM}},

@@ -28,7 +28,6 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
                              const CString& a_filespec)
   : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
-  m_pDbx = reinterpret_cast<DboxMain *>(pParent);
   m_message = a_filespec; // Path Ellipsis=true, no length woes
   m_iSortedColumn = 4;
   m_bSortAscending = FALSE;
@@ -39,8 +38,8 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     st_ExpLocalListEntry elle;
  
     // Find entry
-    ItemListIter iter = m_pDbx->Find(m_expPWList[i].uuid);
-    ASSERT(iter != m_pDbx->End());
+    ItemListIter iter = app.GetMainDlg()->Find(m_expPWList[i].uuid);
+    ASSERT(iter != app.GetMainDlg()->End());
     CItemData *pci = &iter->second;
     ASSERT(pci != NULL);
     

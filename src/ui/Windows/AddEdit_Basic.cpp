@@ -10,14 +10,16 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
 #include "ThisMfcApp.h"    // For Help
-#include "GeneralMsgBox.h"
 #include "DboxMain.h"
-#include "Fonts.h"
 
 #include "AddEdit_Basic.h"
 #include "AddEdit_PropertySheet.h"
 #include "ChangeAliasPswd.h"
+
+#include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "core/PWCharPool.h"
 #include "core/PWSprefs.h"
@@ -283,7 +285,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // groups.  However, we already maintain this list in the UI to save the
   // display status, so use this instead.
   std::vector<std::wstring> vGroups;
-  M_pDbx()->GetAllGroups(vGroups);
+  app.GetMainDlg()->GetAllGroups(vGroups);
 
   for (std::vector<std::wstring>::iterator iter = vGroups.begin();
        iter != vGroups.end(); ++iter) {
@@ -587,10 +589,10 @@ BOOL CAddEdit_Basic::OnApply()
   }
 
   // If there is a matching entry in our list, tell the user to try again.
-  listindex = M_pDbx()->Find(M_group(), M_title(), M_username());
+  listindex = app.GetMainDlg()->Find(M_group(), M_title(), M_username());
   if (M_uicaller() == IDS_ADDENTRY) {
     // Add entry
-    if (listindex != M_pDbx()->End()) {
+    if (listindex != app.GetMainDlg()->End()) {
       CSecString temp;
       if (M_group().IsEmpty())
         if (M_username().IsEmpty())
@@ -609,8 +611,8 @@ BOOL CAddEdit_Basic::OnApply()
     }
   } else {
     // Edit entry
-    if (listindex != M_pDbx()->End()) {
-      const CItemData &listItem = M_pDbx()->GetEntryAt(listindex);
+    if (listindex != app.GetMainDlg()->End()) {
+      const CItemData &listItem = app.GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         CSecString temp;
         temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
@@ -815,23 +817,23 @@ void CAddEdit_Basic::OnGeneratePassword()
   StringX passwd;
   if (M_ipolicy() == NAMED_POLICY) {
     PWPolicy st_pp;
-    M_pDbx()->GetPolicyFromName(M_policyname(), st_pp);
-    M_pDbx()->MakeRandomPassword(passwd, st_pp);
+    app.GetMainDlg()->GetPolicyFromName(M_policyname(), st_pp);
+    app.GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   } else {
     // XXX temp - to be cleaned up
     PWPolicy policy(M_pwp());
     policy.symbols = LPCWSTR(M_symbols());
-    M_pDbx()->MakeRandomPassword(passwd, policy);
+    app.GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
 
   if (rc == CChangeAliasPswd::CHANGEBASE) {
     // Change Base
-    ItemListIter iter = M_pDbx()->Find(M_base_uuid());
+    ItemListIter iter = app.GetMainDlg()->Find(M_base_uuid());
     ASSERT(iter != M_pcore()->GetEntryEndIter());
     CItemData *pci = &iter->second;
     Command *pcmd = UpdatePasswordCommand::Create(M_pcore(), *pci,
                                                   passwd);
-    M_pDbx()->Execute(pcmd);
+    app.GetMainDlg()->Execute(pcmd);
   } else {
     M_realpassword() = m_password = passwd.c_str();
     if (m_isPWHidden) {
@@ -941,8 +943,8 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
     default:
       ASSERT(0);
   }
-  M_pDbx()->SetClipboardData(cs_data);
-  M_pDbx()->UpdateLastClipboardAction(iaction);
+  app.GetMainDlg()->SetClipboardData(cs_data);
+  app.GetMainDlg()->UpdateLastClipboardAction(iaction);
 }
 
 void CAddEdit_Basic::SelectAllNotes()
@@ -996,8 +998,8 @@ void CAddEdit_Basic::OnLaunch()
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
-  M_pDbx()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutoType);
-  M_pDbx()->UpdateLastClipboardAction(CItemData::URL);
+  app.GetMainDlg()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutoType);
+  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::URL);
 
   if (bDoAutoType) {
     // Reset button
@@ -1015,8 +1017,8 @@ void CAddEdit_Basic::OnSendEmail()
 {
   UpdateData(TRUE);
 
-  M_pDbx()->SendEmail(M_email());
-  M_pDbx()->UpdateLastClipboardAction(CItemData::EMAIL);
+  app.GetMainDlg()->SendEmail(M_email());
+  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::EMAIL);
 }
 
 LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)

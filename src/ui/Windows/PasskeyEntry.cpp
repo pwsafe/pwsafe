@@ -79,9 +79,6 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
 
-  m_pDbx = dynamic_cast<DboxMain *>(pParent);
-  ASSERT(m_pDbx != NULL);
-
   m_pctlPasskey = new CSecEditExtn;
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
@@ -401,7 +398,7 @@ void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
 
-  switch (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
+  switch (app.GetMainDlg()->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
   case PWScore::SUCCESS:
     // Try to change read-only state if user changed checkbox:
     // r/w -> r-o always succeeds
@@ -410,9 +407,7 @@ void CPasskeyEntry::ProcessPhrase()
     // is disabled -> don't need to worry about that.
     if ((m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) && 
         (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
-      DboxMain *parent = dynamic_cast<DboxMain *>(GetParent());
-      ASSERT(parent != NULL);
-      parent->ChangeMode(false); // false means
+      app.GetMainDlg()->ChangeMode(false); // false means
       //                           "don't prompt use for password", as we just got it.
     }
     CPWDialog::OnOK();
@@ -532,12 +527,11 @@ void CPasskeyEntry::OnOpenFileBrowser()
       fd.m_ofn.Flags &= ~OFN_READONLY;
 
   std::wstring dir;
-  DboxMain *pDbx = (DboxMain*)GetParent();
-  if (pDbx->GetCurFile().empty())
+  if (app.GetMainDlg()->GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
-    pws_os::splitpath(pDbx->GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    pws_os::splitpath(app.GetMainDlg()->GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
     dir = cdrive + cdir;
   }
 

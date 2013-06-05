@@ -87,6 +87,7 @@ public:
     SYMBOLS = 0x16,    // string of item-specific password symbols
     SHIFTDCA = 0x17,   // shift-doubleclick action (enum)
     POLICYNAME = 0x18, // named non-default password policy for item
+    KBSHORTCUT = 0x19, // Keyboard shortcuts
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -207,6 +208,8 @@ public:
   bool IsProtected() const;
   StringX GetSymbols() const    {return GetField(SYMBOLS);}
   StringX GetPolicyName() const {return GetField(POLICYNAME);}
+  void GetKBShortcut(int32 &iKBShortcut) const;
+  StringX GetKBShortcut() const;
 
   StringX GetFieldValue(FieldType ft) const;
 
@@ -215,7 +218,8 @@ public:
   StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
                        const TCHAR &delimiter, const CItemData *pcibase) const;
   std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
-                     const CItemData *pcibase, bool bforce_normal_entry) const;
+                     const CItemData *pcibase, bool bforce_normal_entry,
+                     bool &bXMLErrorsFound) const;
 
   void SetUnknownField(unsigned char type, size_t length,
                        const unsigned char *ufield);
@@ -264,6 +268,8 @@ public:
   void SetProtected(bool bOnOff);
   void SetSymbols(const StringX &sx_symbols);
   void SetPolicyName(const StringX &sx_PolicyName);
+  void SetKBShortcut(const StringX &sx_KBShortcut);
+  void SetKBShortcut(const int32 &iKBShortcut);
 
   void SetFieldValue(FieldType ft, const StringX &value);
 
@@ -274,9 +280,7 @@ public:
   void Clear();
   void ClearField(FieldType ft) {m_fields.erase(ft);}
 
-
-  // check record for mandatory fields, silently fix if missing
-  bool ValidateEntry(int &flags);
+  // Check record for correct password history
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
 
   bool IsExpired() const;
@@ -315,6 +319,7 @@ public:
   bool IsProtectionSet() const             { return IsFieldSet(PROTECTED); }
   bool IsSymbolsSet() const                { return IsFieldSet(SYMBOLS);   }
   bool IsPolicyNameSet() const             { return IsFieldSet(POLICYNAME);}
+  bool IsKBShortcutSet() const             { return IsFieldSet(KBSHORTCUT);}
     
   bool IsGroupEmpty() const                { return !IsGroupSet();         }
   bool IsUserEmpty() const                 { return !IsUserSet();          }
@@ -411,10 +416,12 @@ private:
 
 inline bool CItemData::IsTextField(unsigned char t)
 {
-  return !(t == UUID ||
-    t == CTIME     || t == PMTIME || t == ATIME || t == XTIME || t == RMTIME ||
-    t == XTIME_INT ||
-    t == RESERVED  || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
+  return !(
+    t == UUID       ||
+    t == CTIME      || t == PMTIME || t == ATIME    || t == XTIME     || t == RMTIME ||
+    t == XTIME_INT  ||
+    t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
+    t == KBSHORTCUT ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */

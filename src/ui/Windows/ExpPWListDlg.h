@@ -15,7 +15,6 @@
 // CExpPWListDlg dialog
 
 class ExpiredList;
-class DboxMain;
 
 // Local vector - has the group/title/user and locale version of expiry date
 // Generated from similar vector in core, which doesn't need these.
@@ -85,7 +84,6 @@ protected:
 private:
   int GetEntryImage(const st_ExpLocalListEntry &elle);
   ExpiredList &m_expPWList;
-  DboxMain *m_pDbx;
 
   std::vector<st_ExpLocalListEntry> m_vExpLocalListEntries;
   int m_idays;

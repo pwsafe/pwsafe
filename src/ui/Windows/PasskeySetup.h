@@ -15,7 +15,6 @@
 #include "ControlExtns.h"
 
 class CVKeyBoardDlg;
-class DboxMain;
 
 class CPasskeySetup : public CPWDialog
 {
@@ -54,7 +53,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
   CSecEditExtn *m_pctlPasskey;
   CSecEditExtn *m_pctlVerify;
   CVKeyBoardDlg *m_pVKeyBoardDlg;

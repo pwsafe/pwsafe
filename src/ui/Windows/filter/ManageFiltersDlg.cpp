@@ -44,8 +44,6 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   m_pCheckImageList(NULL), m_pImageList(NULL),
   m_iSortColumn(-1), m_bSortAscending(-1)
 {
-  m_pDbx = static_cast<DboxMain *>(pParent);
-
   PWSFilters::iterator mf_iter;
 
   for (mf_iter = m_MapFilters.begin();
@@ -347,7 +345,7 @@ void CManageFiltersDlg::OnFilterNew()
   flt_key.fpool = FPOOL_SESSION;
 
 do_edit:
-  bCreated = m_pDbx->EditFilter(&filters, false);
+  bCreated = app.GetMainDlg()->EditFilter(&filters, false);
 
   flt_key.cs_filtername = filters.fname;
 
@@ -378,9 +376,9 @@ do_edit:
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
-    m_pDbx->SetFilter(FPOOL_SESSION, filters.fname.c_str());
+    app.GetMainDlg()->SetFilter(FPOOL_SESSION, filters.fname.c_str());
     if (bJustDoIt)
-      m_pDbx->ApplyFilter(true);
+      app.GetMainDlg()->ApplyFilter(true);
 
     m_selectedfiltername = flt_key.cs_filtername.c_str();
     m_selectedfilterpool = flt_key.fpool;
@@ -408,7 +406,7 @@ void CManageFiltersDlg::OnFilterEdit()
   st_filters filters = mf_iter->second;
 
 do_edit:
-  bChanged = m_pDbx->EditFilter(&filters, false);
+  bChanged = app.GetMainDlg()->EditFilter(&filters, false);
   if (bChanged) {
     // Has user changed the filter's name?
     // If so, check for conflict.
@@ -453,9 +451,9 @@ do_edit:
     m_selectedfiltername = flt_key.cs_filtername.c_str();
 
     // Update DboxMain's current filter
-    m_pDbx->SetFilter(flt_key.fpool, filters.fname.c_str());
+    app.GetMainDlg()->SetFilter(flt_key.fpool, filters.fname.c_str());
     if (bJustDoIt)
-      m_pDbx->ApplyFilter(true);
+      app.GetMainDlg()->ApplyFilter(true);
 
     UpdateFilterList();
     DisplayFilterProperties(&filters);
@@ -507,8 +505,8 @@ void CManageFiltersDlg::OnFilterCopy()
   }
   if (bCopied) {
     m_bDBFiltersChanged = true;
-    m_pDbx->SetChanged(DboxMain::Data);
-    m_pDbx->ChangeOkUpdate();
+    app.GetMainDlg()->SetChanged(DboxMain::Data);
+    app.GetMainDlg()->ChangeOkUpdate();
   }
 
   UpdateFilterList();
@@ -543,8 +541,8 @@ void CManageFiltersDlg::OnFilterDelete()
   m_MapFilters.erase(flt_key);
   if (m_selectedfilterpool == FPOOL_DATABASE) {
     m_bDBFiltersChanged = true;
-    m_pDbx->SetChanged(DboxMain::Data);
-    m_pDbx->ChangeOkUpdate();
+    app.GetMainDlg()->SetChanged(DboxMain::Data);
+    app.GetMainDlg()->ChangeOkUpdate();
   }
 
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
@@ -560,7 +558,7 @@ void CManageFiltersDlg::OnFilterDelete()
     m_activefilter = -1;
     m_activefilterpool = FPOOL_LAST;
     m_activefiltername = L"";
-    m_pDbx->ClearFilter();
+    app.GetMainDlg()->ClearFilter();
   }
 
   m_selectedfilter = -1;
@@ -578,7 +576,7 @@ void CManageFiltersDlg::OnFilterDelete()
 
 void CManageFiltersDlg::OnFilterImport()
 {
-  m_pDbx->ImportFilters();
+  app.GetMainDlg()->ImportFilters();
 
   UpdateFilterList();
 }
@@ -601,15 +599,15 @@ void CManageFiltersDlg::OnFilterExport()
     Filters.insert(PWSFilters::Pair(pflt_idata->flt_key, mf_iter->second));
   }
   if (!Filters.empty()) {
-    m_pDbx->ExportFilters(Filters);
+    app.GetMainDlg()->ExportFilters(Filters);
     Filters.clear();
   }
 }
 
 void CManageFiltersDlg::SetFilter()
 {
-  m_pDbx->SetFilter(m_selectedfilterpool, m_selectedfiltername);
-  if (!m_pDbx->ApplyFilter(true))
+  app.GetMainDlg()->SetFilter(m_selectedfilterpool, m_selectedfiltername);
+  if (!app.GetMainDlg()->ApplyFilter(true))
     return;
 
   m_activefilterpool = m_selectedfilterpool;
@@ -633,7 +631,7 @@ void CManageFiltersDlg::SetFilter()
 
 void CManageFiltersDlg::ClearFilter()
 {
-  m_pDbx->ClearFilter();
+  app.GetMainDlg()->ClearFilter();
 
   m_activefilterpool = FPOOL_LAST;
   m_activefiltername = L"";
@@ -1097,6 +1095,7 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case FT_PWHIST:       return CItemData::FieldName(CItemData::PWHIST).c_str();
   case FT_POLICY:       return CItemData::FieldName(CItemData::POLICY).c_str();
   case FT_POLICYNAME:   return CItemData::FieldName(CItemData::POLICYNAME).c_str();
+  case FT_KBSHORTCUT:   return CItemData::FieldName(CItemData::KBSHORTCUT).c_str();
 
   case FT_PASSWORDLEN:   nID = IDS_PASSWORDLEN; break;
   case FT_ENTRYSIZE:     nID = IDS_ENTRYSIZE; break;

@@ -20,15 +20,12 @@ IMPLEMENT_DYNAMIC(CWZPropertySheet, CPropertySheet)
 
 extern const wchar_t *EYE_CATCHER;
 
-CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pDbx, WZAdvanced::AdvType iadv_type,
+CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType iadv_type,
                                    st_SaveAdvValues *pst_SADV)
-  : CPropertySheet(nID, pDbx), m_nID(nID), m_passkey(L""), m_filespec(L""),
+  : CPropertySheet(nID, pParent), m_nID(nID), m_passkey(L""), m_filespec(L""),
   m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
   m_numProcessed(-1)
 {
-  m_pDbx = dynamic_cast<DboxMain *>(pDbx);
-  ASSERT(m_pDbx != NULL);
-
   // common 'other' file processing for Compare, Merge & Synchronize
   UINT uimsgid_select(0), uimsgid_advanced(0), uimsgid_finish(0);
   switch (nID) {
@@ -112,17 +109,10 @@ void CWZPropertySheet::PreSubclassWindow()
 
 LRESULT CWZPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  CWnd *pParent = GetParent();
-  while (pParent != NULL) {
-    DboxMain *pDbx = dynamic_cast<DboxMain *>(pParent);
-    if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
-        wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
-      pDbx->ResetIdleLockCounter(message);
-      break;
-    } else
-      pParent = pParent->GetParent();
-  }
-  if (pParent == NULL)
+  if (app.GetMainDlg()->m_eye_catcher != NULL &&
+      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
+    app.GetMainDlg()->ResetIdleLockCounter(message);
+  } else
     pws_os::Trace(L"CWZPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
 
   return CPropertySheet::WindowProc(message, wParam, lParam);

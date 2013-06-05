@@ -35,14 +35,14 @@ public:
   DECLARE_DYNAMIC(COptions_PropertySheet)
 
   const MapMenuShortcuts GetMaps() {return m_pp_shortcuts->GetMaps();}
-  const DWORD GetHotKeyValue() {return m_OPTMD.Hotkey_Value;}
+  const int32 GetHotKeyValue() {return m_OPTMD.AppHotKeyValue;}
   const int GetDCA() {return m_OPTMD.DoubleClickAction;}
   const int GetMaxMRUItems() {return m_OPTMD.MaxMRUItems;}
   const int GetMaxREItems() {return m_OPTMD.MaxREItems;}
   const int GetTrayIconColour() {return m_OPTMD.TrayIconColour;}
   const int GetPWHAction() {return m_OPTMD.PWHAction;}
   const int GetPWHistoryMax() {return m_OPTMD.PWHistoryNumDefault;}
-  const bool GetHotKeyState() {return m_OPTMD.Hotkey_Enabled == TRUE;}
+  const bool GetHotKeyState() {return m_OPTMD.AppHotKeyEnabled == TRUE;}
   const bool GetEnableGrid() {return m_OPTMD.EnableGrid == TRUE;}
   const bool GetNotesAsTips() { return m_OPTMD.ShowNotesAsTipsInViews == TRUE;}
   const bool RefreshViews() {return m_bRefreshViews;}

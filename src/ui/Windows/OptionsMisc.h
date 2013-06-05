@@ -29,18 +29,16 @@ protected:
   enum { IDD = IDD_PS_MISC, IDD_SHORT = IDD_PS_MISC_SHORT };
 
   CComboBox m_dblclk_cbox, m_shiftdblclk_cbox;
-  CHotKeyCtrl m_HotkeyCtrl;
 
   CString m_DefUsername;
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
   CString m_BrowserCmdLineParms;
   CString m_Autotype;
-  DWORD m_HotkeyValue;
+
   BOOL m_ConfirmDelete;
   BOOL m_MaintainDatetimeStamps;
   BOOL m_EscExits;
-  BOOL m_HotkeyEnabled;
   BOOL m_UseDefUsername;
   BOOL m_QuerySetDefUsername;
   BOOL m_AutotypeMinimize;
@@ -65,7 +63,6 @@ protected:
   //{{AFX_MSG(COptionsMisc)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
   afx_msg void OnHelp();
-  afx_msg void OnEnableHotKey();
   afx_msg void OnUseDefUser();
   afx_msg void OnBrowseForLocation(UINT nID);
   afx_msg void OnDCAComboChanged();

@@ -19,7 +19,6 @@
 #include "SecString.h"
 #include "Fonts.h"
 
-class DboxMain;
 class CItemData;
 
 class CPWListCtrl : public CListCtrl
@@ -44,7 +43,8 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnPaint();
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
@@ -61,7 +61,6 @@ protected:
 private:
   bool FindNext(const CString &cs_find, const int iSubItem);
 
-  DboxMain *m_pDbx;
   CString m_csFind;
   UINT_PTR m_FindTimerID;
 

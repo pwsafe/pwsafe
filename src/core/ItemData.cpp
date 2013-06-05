@@ -129,7 +129,6 @@ int CItemData::Read(PWSfile *in)
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
-
   if (numread > 0)
     return status;
   else
@@ -204,6 +203,12 @@ int CItemData::Write(PWSfile *out) const
     out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
   }
 
+  GetKBShortcut(i32);
+  if (i32 != 0) {
+    out->WriteField(KBSHORTCUT, reinterpret_cast<unsigned char *>(&i32),
+                    sizeof(int32));
+  }
+
   short i16;
   GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
@@ -266,7 +271,6 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &
 
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
-
   if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&
       ft != NOTES && ft != PWHIST) {
     return GetField(ft);
@@ -321,6 +325,8 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       }
     case SHIFTDCA:   /* 17 */
       return GetShiftDCA();
+    case KBSHORTCUT: /* 19 */
+      return GetKBShortcut();
     default:
       ASSERT(0);
     }
@@ -444,7 +450,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
 
 StringX CItemData::GetXTimeInt() const
 {
-  int xint;
+  int32 xint;
   GetXTimeInt(xint);
   if (xint == 0)
     return _T("");
@@ -462,7 +468,6 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   else {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-
     GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(char));
@@ -490,7 +495,6 @@ bool CItemData::IsProtected() const
 
 void CItemData::GetDCA(short &iDCA, const bool bShift) const
 {
-
   FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
@@ -514,6 +518,61 @@ StringX CItemData::GetDCA(const bool bShift) const
   oStringXStream os;
   os << dca;
   return os.str();
+}
+
+void CItemData::GetKBShortcut(int32 &iKBShortcut) const
+{
+  FieldConstIter fiter = m_fields.find(KBSHORTCUT);
+  if (fiter != m_fields.end()) {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
+    GetField(fiter->second, in, tlen);
+
+    if (tlen != 0) {
+      ASSERT(tlen == sizeof(int32));
+      memcpy(&iKBShortcut, in, sizeof(int32));
+    } else {
+      iKBShortcut = 0;
+    }
+  } else // fiter == m_fields.end()
+    iKBShortcut = 0;
+}
+
+StringX CItemData::GetKBShortcut() const
+{
+  int32 iKBShortcut;
+  GetKBShortcut(iKBShortcut);
+
+  if (iKBShortcut != 0) {
+    StringX kbs(_T(""));
+
+    WORD wVirtualKeyCode = iKBShortcut & 0xff;
+    WORD wPWSModifiers = iKBShortcut >> 16;
+
+    if (iKBShortcut != 0) {
+      if (wPWSModifiers & PWS_HOTKEYF_ALT)
+        kbs += _T("A");
+      if (wPWSModifiers & PWS_HOTKEYF_CONTROL)
+        kbs += _T("C");
+      if (wPWSModifiers & PWS_HOTKEYF_SHIFT)
+        kbs += _T("S");
+      if (wPWSModifiers & PWS_HOTKEYF_EXT)
+        kbs += _T("E");
+      if (wPWSModifiers & PWS_HOTKEYF_META)
+        kbs += _T("M");
+      if (wPWSModifiers & PWS_HOTKEYF_WIN)
+        kbs += _T("W");
+      if (wPWSModifiers & PWS_HOTKEYF_CMD)
+        kbs += _T("D");
+
+      kbs += _T(":");
+      ostringstreamT os1;
+      os1 << hex << setfill(charT('0')) << setw(4) << wVirtualKeyCode;
+      kbs += os1.str().c_str();
+      return kbs;
+    }
+  }
+  return _T("");
 }
 
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
@@ -637,6 +696,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            GetEmail() + separator +
            sxProtected + separator +
            GetSymbols() + separator +
+           GetKBShortcut() + separator +
            _T("\"") + notes + _T("\""));
   } else {
     // Not everything
@@ -695,6 +755,11 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     }
     if (bsFields.test(CItemData::SYMBOLS))
       ret += GetSymbols() + separator;
+
+    if (bsFields.test(CItemData::KBSHORTCUT)) {
+      ret += GetKBShortcut() + separator;
+    }
+
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -709,8 +774,10 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          TCHAR delimiter, const CItemData *pcibase,
-                         bool bforce_normal_entry) const
+                         bool bforce_normal_entry,
+                         bool &bXMLErrorsFound) const
 {
+  bXMLErrorsFound = false;
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << dec << id << "\"";
   if (bforce_normal_entry)
@@ -721,17 +788,23 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   StringX tmp;
   CUTF8Conv utf8conv;
   unsigned char uc;
+  bool brc;
 
   tmp = GetGroup();
-  if (bsExport.test(CItemData::GROUP) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
+  if (bsExport.test(CItemData::GROUP) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   // Title mandatory (see pwsafe.xsd)
-  PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
+  brc = PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
+  if (!brc) bXMLErrorsFound = true;
 
   tmp = GetUser();
-  if (bsExport.test(CItemData::USER) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
+  if (bsExport.test(CItemData::USER) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
@@ -749,20 +822,27 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           pcibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
-  PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
+
+  brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
 
   tmp = GetURL();
-  if (bsExport.test(CItemData::URL) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
+  if (bsExport.test(CItemData::URL) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   tmp = GetAutoType();
-  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
+  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.empty()) {
     CleanNotes(tmp, delimiter);
-    PWSUtil::WriteXMLField(oss, "notes", tmp, utf8conv);
+    brc = PWSUtil::WriteXMLField(oss, "notes", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
   }
 
   oss << "\t\t<uuid><![CDATA[" << GetUUID() << "]]></uuid>" << endl;
@@ -833,9 +913,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       oss << "\t\t</PasswordPolicy>" << endl;
     }
   } else {
-    if (bsExport.test(CItemData::POLICY) || bsExport.test(CItemData::POLICYNAME))
-      PWSUtil::WriteXMLField(oss, "PasswordPolicyName", sxPolicyName,
+    if (bsExport.test(CItemData::POLICY) || bsExport.test(CItemData::POLICYNAME)) {
+      brc = PWSUtil::WriteXMLField(oss, "PasswordPolicyName", sxPolicyName,
                         utf8conv, "\t\t");
+      if (!brc) bXMLErrorsFound = true;
+    }
   }
 
   if (bsExport.test(CItemData::PWHIST)) {
@@ -865,15 +947,19 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
           else
             oss << "1970-01-01";
+
           oss << "T";
           if (utf8conv.ToUTF8(pwshe.changedate.substr(pwshe.changedate.length() - 8),
                               utf8, utf8Len))
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
           else
             oss << "00:00";
+
           oss << "</changedx>" << endl;
-          PWSUtil::WriteXMLField(oss, "oldpassword", pwshe.password,
+          brc = PWSUtil::WriteXMLField(oss, "oldpassword", pwshe.password,
                         utf8conv, "\t\t\t\t\t");
+          if (!brc) bXMLErrorsFound = true;
+
           oss << "\t\t\t\t</history_entry>" << endl;
 
           num++;
@@ -885,8 +971,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   }
 
   tmp = GetRunCommand();
-  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
+  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   GetDCA(i16);
   if (bsExport.test(CItemData::DCA) &&
@@ -900,16 +988,26 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
 
   tmp = GetEmail();
-  if (bsExport.test(CItemData::EMAIL) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
+  if (bsExport.test(CItemData::EMAIL) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   GetProtected(uc);
   if (bsExport.test(CItemData::PROTECTED) && uc != 0)
     oss << "\t\t<protected>1</protected>" << endl;
 
   tmp = GetSymbols();
-  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
+  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
+
+  tmp = GetKBShortcut();
+  if (bsExport.test(CItemData::KBSHORTCUT) && !tmp.empty()) {
+    brc = PWSUtil::WriteXMLField(oss, "kbshortcut", tmp, utf8conv);
+    if (!brc) bXMLErrorsFound = true;
+  }
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1357,6 +1455,52 @@ void CItemData::SetProtected(bool bOnOff)
   }
 }
 
+void CItemData::SetKBShortcut(const int32 &iKBShortcut)
+{
+  SetField(KBSHORTCUT, reinterpret_cast<const unsigned char *>(&iKBShortcut),
+           sizeof(int32));
+}
+
+void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
+{
+  int32 iKBShortcut(0);
+  WORD wVirtualKeyCode(0);
+  WORD wPWSModifiers(0);
+  size_t len = sx_KBShortcut.length();
+  size_t i(0);
+  if (!sx_KBShortcut.empty()) {
+    for (i = 0; i < len; i++) {
+      if (sx_KBShortcut.substr(i, 1) == _T(":")) {
+        // 4 hex digits should follow the colon
+        ASSERT(i + 5 == len);
+        istringstreamT iss(sx_KBShortcut.substr(i + 1, 4).c_str());
+        iss >> hex >> wVirtualKeyCode;
+        break;
+      }
+      if (sx_KBShortcut.substr(i, 1) == _T("A"))
+        wPWSModifiers |= PWS_HOTKEYF_ALT;
+      if (sx_KBShortcut.substr(i, 1) == _T("C"))
+        wPWSModifiers |= PWS_HOTKEYF_CONTROL;
+      if (sx_KBShortcut.substr(i, 1) == _T("S"))
+        wPWSModifiers |= PWS_HOTKEYF_SHIFT;
+      if (sx_KBShortcut.substr(i, 1) == _T("E"))
+        wPWSModifiers |= PWS_HOTKEYF_EXT;
+      if (sx_KBShortcut.substr(i, 1) == _T("M"))
+        wPWSModifiers |= PWS_HOTKEYF_META;
+      if (sx_KBShortcut.substr(i, 1) == _T("W"))
+        wPWSModifiers |= PWS_HOTKEYF_WIN;
+      if (sx_KBShortcut.substr(i, 1) == _T("D"))
+        wPWSModifiers |= PWS_HOTKEYF_CMD;
+    }
+  }
+
+  if (wPWSModifiers != 0 && wVirtualKeyCode != 0) {
+    iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+  }
+
+  SetKBShortcut(iKBShortcut);
+}
+
 void CItemData::SetFieldValue(FieldType ft, const StringX &value)
 {
   switch (ft) {
@@ -1396,6 +1540,9 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case SHIFTDCA:   /* 17 */
       SetShiftDCA(value.c_str());
       break;
+    case KBSHORTCUT: /* 19 */
+      SetKBShortcut(value);
+      break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
     case RESERVED:   /* 0b */
@@ -1414,18 +1561,6 @@ BlowFish *CItemData::MakeBlowFish(bool noData) const
   else
     return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
                                   m_salt, SaltLength);
-}
-
-bool CItemData::ValidateEntry(int &flags)
-{
-  // Validate possible issues with an entry
-  // Add more internal functions as necessary
-  flags = VF_OK;
-
-  if (!ValidatePWHistory())
-    flags |= VF_BAD_PSWDHISTORY;
-
-  return (flags != VF_OK);
 }
 
 bool CItemData::ValidatePWHistory()
@@ -1530,6 +1665,9 @@ bool CItemData::Matches(int num1, int num2, int iObject,
       break;
     case PASSWORDLEN:
       iValue = GetPasswordLength();
+      break;
+    case KBSHORTCUT:
+      GetKBShortcut(iValue);
       break;
     default:
       ASSERT(0);
@@ -1860,6 +1998,10 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       if (!pull_char(uc, data, len)) return false;
       SetProtected(uc != 0);
       break;
+    case KBSHORTCUT:
+      if (!pull_int32(i32, data, sizeof(int32))) return false;
+      SetKBShortcut(i32);
+      break;
     case END:
       break;
     default:
@@ -1989,6 +2131,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   GetProtected(uc); push_uchar(v, PROTECTED, uc);
   push_string(v, SYMBOLS, GetSymbols());
   push_string(v, POLICYNAME, GetPolicyName());
+  GetKBShortcut(i32); push_int32(v, KBSHORTCUT, i32);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = m_URFL.begin();
@@ -2041,6 +2184,7 @@ stringT CItemData::FieldName(FieldType ft)
   case PROTECTED:    LoadAString(retval, IDSC_FLDNMPROTECTED); break;
   case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
+  case KBSHORTCUT:   LoadAString(retval, IDSC_FLDNMKBSHORTCUT); break;
   default:
     ASSERT(0);
   };
@@ -2074,6 +2218,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case PROTECTED:  return _T("Protected");
   case SYMBOLS:    return _T("Symbols");
   case POLICYNAME: return _T("Password Policy Name");
+  case KBSHORTCUT: return _T("Keyboard Shortcut");
   default:
     ASSERT(0);
     return _T("");

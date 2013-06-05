@@ -240,6 +240,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
+  
   return item.Write(this);
 }
 
@@ -259,6 +260,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
+
   return item.Read(this);
 }
 
@@ -299,7 +301,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x030B;
+const short VersionNum = 0x030D;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \

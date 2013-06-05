@@ -42,9 +42,7 @@ typedef std::ofstream ofstreamT;
 #endif
 typedef std::vector<stringT>::iterator viter;
 
-const StringX sx_StartChevron(_T("\xab"));
-const StringX sx_MiddleChevron(_T("\xbb \xab"));
-const StringX sx_EndChevron(_T("\xbb"));
+extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
 static void CompareField(CItemData::FieldType field,
                          const CItemData::FieldBits &bsTest,
@@ -125,10 +123,9 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
 
-      StringX sx_original = sx_StartChevron +
-                             st_data.group + sx_MiddleChevron +
-                             st_data.title + sx_MiddleChevron +
-                             st_data.user  + sx_EndChevron;
+      StringX sx_original;
+      Format(sx_original, GROUPTITLEUSERINCHEVRONS,
+                st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
       UpdateWizard(sx_original.c_str());
@@ -171,6 +168,7 @@ void PWScore::Compare(PWScore *pothercore,
 
          Fourth byte
          1... ....  POLICYNAME [0x18] - not checked by default
+         .1.. ....  KBSHORTCUT [0x19] - not checked by default
 
 
         */
@@ -243,6 +241,10 @@ void PWScore::Compare(PWScore *pothercore,
         CompareField(CItemData::EMAIL, bsFields, currentItem, compItem, bsConflicts);
         CompareField(CItemData::PROTECTED, bsFields, currentItem, compItem, bsConflicts);
 
+        if (bsFields.test(CItemData::KBSHORTCUT) &&
+            currentItem.GetKBShortcut() != compItem.GetKBShortcut())
+          bsConflicts.flip(CItemData::KBSHORTCUT);
+
         st_data.uuid0 = currentPos->first;
         st_data.uuid1 = foundPos->first;
         st_data.bsDiffs = bsConflicts;
@@ -294,10 +296,9 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.title = compItem.GetTitle();
       st_data.user = compItem.GetUser();
 
-      StringX sx_compare = sx_StartChevron +
-                             st_data.group + sx_MiddleChevron +
-                             st_data.title + sx_MiddleChevron +
-                             st_data.user  + sx_EndChevron;
+      StringX sx_compare;
+      Format(sx_compare, GROUPTITLEUSERINCHEVRONS,
+                st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
       UpdateWizard(sx_compare.c_str());
@@ -437,6 +438,12 @@ stringT PWScore::Merge(PWScore *pothercore,
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
+    // Need to check that entry keyboard shortcut not already in use!
+    int32 iKBShortcut;
+    otherItem.GetKBShortcut(iKBShortcut);
+    CUUID kbshortcut_uuid = GetKBShortcut(iKBShortcut);
+    bool bKBShortcutInUse = (iKBShortcut != 0&& kbshortcut_uuid != CUUID::NullUUID());
+
     // Handle Aliases and Shortcuts when processing their base entries
     if (otherItem.IsDependent())
       continue;
@@ -448,6 +455,10 @@ stringT PWScore::Merge(PWScore *pothercore,
     const StringX sx_otherGroup = otherItem.GetGroup();
     const StringX sx_otherTitle = otherItem.GetTitle();
     const StringX sx_otherUser = otherItem.GetUser();
+
+    StringX sxMergedEntry;
+    Format(sxMergedEntry, GROUPTITLEUSERINCHEVRONS,
+                sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
 
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
 
@@ -592,7 +603,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         // have a match on group/title/user, but not on other fields
         // add an entry suffixed with -merged-YYYYMMDD-HHMMSS
         StringX sx_newTitle;
-        Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(), sx_merged.c_str(),
+        Format(sx_newTitle, _T("%s-%s-%s"), sx_otherTitle.c_str(), sx_merged.c_str(),
                             str_timestring.c_str());
 
         // note it as an issue for the user
@@ -623,18 +634,31 @@ stringT PWScore::Merge(PWScore *pothercore,
         if (pPolicyCmd != NULL)
           pmulticmds->Add(pPolicyCmd);
 
+        // About to add entry - check keyboard shortcut
+        if (bKBShortcutInUse) {
+          // Remove it
+          otherItem.SetKBShortcut(0);
+          //  Tell user via the report
+          ItemListIter iter = Find(kbshortcut_uuid);
+          if (iter != m_pwlist.end()) {
+            StringX sxTemp, sxExistingEntry;
+            Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+                iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                iter->second.GetUser().c_str());
+            Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
+                          sxExistingEntry.c_str(), sx_merged.c_str());
+            pRpt->WriteLine(sxTemp.c_str());
+          }
+        }
+        
         otherItem.SetTitle(sx_newTitle);
         otherItem.SetStatus(CItemData::ES_ADDED);
         Command *pcmd = AddEntryCommand::Create(this, otherItem);
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
 
-        StringX sx_merged1 = sx_StartChevron +
-                              sx_otherGroup + sx_MiddleChevron +
-                              sx_otherTitle + sx_MiddleChevron +
-                              sx_otherUser  + sx_EndChevron;
         // Update the Wizard page
-        UpdateWizard(sx_merged1.c_str());
+        UpdateWizard(sxMergedEntry.c_str());
 
         numConflicts++;
       }
@@ -658,15 +682,31 @@ stringT PWScore::Merge(PWScore *pothercore,
       if (pPolicyCmd != NULL)
         pmulticmds->Add(pPolicyCmd);
 
+      // About to add entry - check keyboard shortcut
+      if (bKBShortcutInUse) {
+        // Remove it
+        otherItem.SetKBShortcut(0);
+        //  Tell user via the report
+        ItemListIter iter = Find(kbshortcut_uuid);
+        if (iter != m_pwlist.end()) {
+          StringX sxTemp, sxExistingEntry;
+          Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+                iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                iter->second.GetUser().c_str());
+          Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
+                        sxExistingEntry.c_str(), sx_merged.c_str());
+          pRpt->WriteLine(sxTemp.c_str());
+        }
+      }
+      
       otherItem.SetStatus(CItemData::ES_ADDED);
       Command *pcmd = AddEntryCommand::Create(this, otherItem);
       pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
-      StringX sx_added = sx_StartChevron +
-                           sx_otherGroup + sx_MiddleChevron +
-                           sx_otherTitle + sx_MiddleChevron +
-                           sx_otherUser  + sx_EndChevron;
+      StringX sx_added;
+      Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+                sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_added.push_back(sx_added);
 
       // Update the Wizard page
@@ -823,10 +863,10 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     } else
       ASSERT(0);
 
-    StringX sx_added = sx_StartChevron +
-                         ci_temp.GetGroup() + sx_MiddleChevron +
-                         ci_temp.GetTitle() + sx_MiddleChevron +
-                         ci_temp.GetUser()  + sx_EndChevron;
+    StringX sx_added;
+    Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+                ci_temp.GetGroup().c_str(), ci_temp.GetTitle().c_str(),
+                ci_temp.GetUser().c_str());
     vs_added.push_back(sx_added);
     numadded++;
   }
@@ -889,6 +929,10 @@ void PWScore::Synchronize(PWScore *pothercore,
     const StringX sx_otherTitle = otherItem.GetTitle();
     const StringX sx_otherUser = otherItem.GetUser();
 
+    StringX sx_mergedentry;
+    Format(sx_mergedentry, GROUPTITLEUSERINCHEVRONS,
+                sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
+
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
 
     if (foundPos != GetEntryEndIter()) {
@@ -936,10 +980,9 @@ void PWScore::Synchronize(PWScore *pothercore,
       GUISetupDisplayInfo(updItem);
       updItem.SetStatus(CItemData::ES_MODIFIED);
 
-      StringX sx_updated = sx_StartChevron +
-                             sx_otherGroup + sx_MiddleChevron +
-                             sx_otherTitle + sx_MiddleChevron +
-                             sx_otherUser  + sx_EndChevron;
+      StringX sx_updated;
+      Format(sx_updated, GROUPTITLEUSERINCHEVRONS,
+                sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_updated.push_back(sx_updated);
 
       Command *pcmd = EditEntryCommand::Create(this, curItem, updItem);

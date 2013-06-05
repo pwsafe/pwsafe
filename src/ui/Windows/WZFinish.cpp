@@ -22,6 +22,7 @@
 #include "core/Util.h"
 
 #include "resource3.h"
+#include "core/core.h"
 
 #define PWS_MSG_WIZARD_EXECUTE_THREAD_ENDED (WM_APP + 65)
 
@@ -354,9 +355,16 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
         break;
       case ID_MENUITEM_EXPORT2PLAINTEXT:
       case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+        cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
+        break;
       case ID_MENUITEM_EXPORT2XML:
       case ID_MENUITEM_EXPORTENT2XML:
         cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
+        if (m_thdpms.status == PWScore::OK_WITH_ERRORS) {
+          CString cs_errors(MAKEINTRESOURCE(IDSC_XMLCHARACTERERRORS));
+          cs_results += L"\n\n";
+          cs_results += cs_errors;
+        }
         break;
       default:
         ASSERT(0);

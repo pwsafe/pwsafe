@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "SHCTHotKey.h"
-
 class CSHCTListCtrl;
 
 // SHCTHotKey
@@ -26,8 +24,8 @@ public:
   {m_pParent = pParent;}
 
 protected:
-  afx_msg void OnKillFocus(CWnd *pWnd);
   BOOL PreTranslateMessage(MSG* pMsg);
+  afx_msg void OnKillFocus(CWnd *pWnd);
 
   DECLARE_MESSAGE_MAP()
 

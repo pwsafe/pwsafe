@@ -48,6 +48,7 @@ BEGIN
   IDSC_FLDNMPROTECTED    "Protected"
   IDSC_FLDNMSYMBOLS      "Symbols"
   IDSC_FLDNMPWPOLICYNAME "Password Policy Name"
+  IDSC_FLDNMKBSHORTCUT   "Keyboard Shortcut"
 END
 
 STRINGTABLE
@@ -138,6 +139,7 @@ BEGIN
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"
   IDSC_XMLCREATE_CFG_FAILED "Internal error: Couldn't initialize config file XML structure"
   IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
+  IDSC_XMLCHARACTERERRORS "*** Invalid XML characters found - see exported XML file for more details ***"
 END
 
 STRINGTABLE
@@ -351,6 +353,9 @@ BEGIN
   IDSC_SYNCPOLICY          "%s - Sync'd %s"
   IDSC_COPYPOLICY          "%s - Copied %s"
   IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
+  IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+  IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+  IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
 END
 
 STRINGTABLE
@@ -375,7 +380,9 @@ BEGIN
   IDSC_MERGECOMPLETED      "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
-  IDSC_MERGED              "-merged-"
+  IDSC_MERGED              "merged"
+  IDSC_IMPORTED            "imported"
+  IDSC_COPIED              "copied"
   IDSC_MERGEADDED          "\nThe following new %s %s merged into this database:"
 END
 

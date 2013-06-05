@@ -120,7 +120,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
     // Populate the groups combo box
     m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
     std::vector<std::wstring> aryGroups;
-    app.m_core.GetUniqueGroups(aryGroups);
+    app.GetCore()->GetUniqueGroups(aryGroups);
     for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
          iter != aryGroups.end(); ++iter) {
       m_ex_group.AddString(iter->c_str());
@@ -175,17 +175,14 @@ void CEditShortcutDlg::OnOK()
     goto dont_close;
   }
 
-  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(pDbx != NULL);
-
-  listindex = pDbx->Find(m_group, m_title, m_username);
+  listindex = app.GetMainDlg()->Find(m_group, m_title, m_username);
   /*
   *  If there is a matching entry in our list, and that
   *  entry is not the same one we started editing, tell the
   *  user to try again.
   */
-  if (listindex != pDbx->End()) {
-    const CItemData &listItem = pDbx->GetEntryAt(listindex);
+  if (listindex != app.GetMainDlg()->End()) {
+    const CItemData &listItem = app.GetMainDlg()->GetEntryAt(listindex);
     bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
       CGeneralMsgBox gmb;

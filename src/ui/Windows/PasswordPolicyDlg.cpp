@@ -10,10 +10,11 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "PasswordPolicyDlg.h"
-#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"    // For Help
+
+#include "PasswordPolicyDlg.h"
+#include "GeneralMsgBox.h"
 
 #include "core/core.h"
 #include "core/PWCharPool.h"
@@ -59,7 +60,7 @@ IMPLEMENT_DYNAMIC(CPasswordPolicyDlg, CPWDialog)
 CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
                                        bool bReadOnly, PWPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
-  m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_pDbx(NULL), m_password(L""),
+  m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_password(L""),
   m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp), m_bLongPPs(bLongPPs)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
@@ -173,11 +174,9 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  // Verify ptr to DboxMain has been set up (call to SetPolicyData)
-  ASSERT(m_pDbx != NULL);
-  
+ 
   // If started with Tall and won't fit - return to be called again with Wide
-  if (m_bLongPPs && !m_pDbx->LongPPs(this)) {
+  if (m_bLongPPs && !app.GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
     return FALSE;
   }
@@ -235,7 +234,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
       // Get all password policy names
       std::vector<std::wstring> vNames;
-      m_pDbx->GetPolicyNames(vNames);
+      app.GetMainDlg()->GetPolicyNames(vNames);
 
       // Add Default
       CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
@@ -476,15 +475,10 @@ void CPasswordPolicyDlg::OnHelp()
 }
 
 void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
-                                       PSWDPolicyMap &MapPSWDPLC,
-                                       DboxMain *pDbx)
+                                       PSWDPolicyMap &MapPSWDPLC)
 {
   m_MapPSWDPLC = MapPSWDPLC;
   m_policyname = m_oldpolicyname = cs_policyname;
-
-  // Save ptr to DboxMain
-  ASSERT(pDbx != NULL);
-  m_pDbx = pDbx;
 
   // Only called for Password Policies
   if (m_uicaller != IDS_PSWDPOLICY)
@@ -967,11 +961,11 @@ void CPasswordPolicyDlg::OnGeneratePassword()
       m_cbxPolicyNames.GetLBText(index, m_policyname);
     }
     StringX sxPolicyName(m_policyname);
-    m_pDbx->GetPolicyFromName(sxPolicyName, st_pp);
+    app.GetMainDlg()->GetPolicyFromName(sxPolicyName, st_pp);
   }
 
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, st_pp);
+  app.GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -983,8 +977,8 @@ void CPasswordPolicyDlg::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  m_pDbx->SetClipboardData(m_password);
-  m_pDbx->UpdateLastClipboardAction(CItemData::PASSWORD);
+  app.GetMainDlg()->SetClipboardData(m_password);
+  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 void CPasswordPolicyDlg::OnENChangePassword()

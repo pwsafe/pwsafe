@@ -1168,6 +1168,7 @@
     <ClCompile Include="DumpSelect.cpp" />
     <ClCompile Include="EBListCtrl.cpp" />
     <ClCompile Include="EditShortcutDlg.cpp" />
+    <ClCompile Include="EntryKBHotKey.cpp" />
     <ClCompile Include="ExpPswdLC.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
@@ -1298,6 +1299,7 @@
     <ClInclude Include="DumpSelect.h" />
     <ClInclude Include="EBListCtrl.h" />
     <ClInclude Include="EditShortcutDlg.h" />
+    <ClInclude Include="EntryKBHotKey.h" />
     <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
@@ -1313,6 +1315,7 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FontsDialog.h" />
     <ClInclude Include="GeneralMsgBox.h" />
+    <ClInclude Include="HKModifiers.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
     <ClInclude Include="InfoDisplay.h" />
