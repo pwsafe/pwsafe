@@ -211,7 +211,6 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
 			 m_frame(0), m_recentDatabases(0),
 			 m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
-    Init();
 }
 
 /*!
@@ -248,6 +247,7 @@ void PwsafeApp::Init()
 bool PwsafeApp::OnInit()
 {
   SetAppName(pwsafeAppName);
+  Init();
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);
