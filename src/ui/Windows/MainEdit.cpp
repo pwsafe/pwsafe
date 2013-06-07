@@ -444,7 +444,6 @@ void DboxMain::OnDuplicateGroup()
           continue;
         }
 
-        TRACE(L"Copying %s.%s\n", pci->GetGroup().c_str(), pci->GetTitle().c_str());
         // Set up copy
         CItemData ci2(*pci);
         ci2.SetDisplayInfo(NULL);

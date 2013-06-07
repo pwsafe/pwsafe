@@ -41,8 +41,6 @@ BOOL CEntryKBHotKey::PreTranslateMessage(MSG* pMsg)
 
   // Verify valid Entry Keyboard shortcut character (alphanumeric only)
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
-    TRACE(L"CEntryKBHotKey::PreTranslateMessage %s, character: 0x%02x", 
-          pMsg->message == WM_KEYDOWN ? L"WM_KEYDOWN" : L"WM_KEYUP", pMsg->wParam);
     switch (pMsg->wParam) {
       case VK_SHIFT:
       case VK_CONTROL:
@@ -57,8 +55,6 @@ BOOL CEntryKBHotKey::PreTranslateMessage(MSG* pMsg)
   // If "context code" [bit 29] set with a system key
   if ((pMsg->lParam & 0x20000000) &&
       (pMsg->message == WM_SYSKEYDOWN || pMsg->message == WM_SYSKEYUP)) {
-    TRACE(L"CEntryKBHotKey::PreTranslateMessage %s, character: 0x%02x", 
-          pMsg->message == WM_SYSKEYDOWN ? L"WM_SYSKEYDOWN" : L"WM_KEYUP", pMsg->wParam);
     switch (pMsg->wParam) {
       case VK_SHIFT:
       case VK_CONTROL:

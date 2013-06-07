@@ -639,7 +639,7 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
 {
   *pLResult = 0;
 
-  NM_LISTVIEW *pNMListView = (NM_LISTVIEW*)pNotifyStruct; 
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct; 
   int iItem = pNMListView->iItem; 
 
   if (iItem == -1)

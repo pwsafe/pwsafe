@@ -71,7 +71,7 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.31 Release Notes - May 2013</h1>
+<h1 align="center">Password Safe 3.32 Release Notes - ??? 2013</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -86,6 +86,56 @@ are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
 <br>
 <hr>
+<h3><a name="V3.32"></a>Version V3.32</h3>
+
+<h4><a name="V3.32New"></a>New Features for V3.32</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(695);return false;">695</a></td>
+<td>Allow a keyboard shortcut to be associated with selecting an entry.
+Please see Help entry for more details.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h4><a name="V3.32Changes"></a>Changes to Existing Features in V3.32</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>[] Add validation of entry field XML characters to ensure resulting file
+can be imported.  Note: any field containing an invalid character will not
+be exported and a comment added to the export file and the report.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h4><a name="V3.32BugsFixed"></a>Bugs fixed in V3.32</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>Prevent Alt+Enter or Ctrl+Enter when setting the Application Hotkey in
+PasswordSafe options dialog closing the dialog and saving an invalid Hotkey.</td>
+</tr>
+<tr>
+<td align="center" width="100">-</td>
+<td>Support wrap scrolling in the ListView using up and down arrow keys.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+
+<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
+
 <h3><a name="V3.31"></a>Version V3.31</h3>
 
 <h4><a name="V3.31New"></a>New Features for V3.31</h4>
@@ -175,86 +225,14 @@ Read Only (thanks to DK).</td>
 <br>
 <hr>
 
-
-<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
-
-
-<h3><a name="V3.30"></a>Version V3.30</h3>
-
-<h4><a name="V3.30New"></a>New Features for V3.30</h4>
-
-<table>
-<tbody>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="FR(689);return false;">689</a></td>
-<td>It's now possible to change the r/w state of a database when
-unlocking it. Thanks to Jeff for the suggestion.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="FR(695);return false;">695</a></td>
-Allow a keyboard shortcut to be associated with selecting an entry.
-Please see Help entry for more details.</td>
-</tr>
-</tbody>
-</table>
-<br>
-<hr>
-
-<h4><a name="V3.30Changes"></a>Changes to Existing Features in V3.30</h4>
-
-<p>None</p>
-
-<h4><a name="V3.30BugsFixed"></a>Bugs fixed in V3.30</h4>
-
-<table>
-<tbody>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="BR(1066);return false;">1066</a></td>
-<td>Default changed: 'Browse to URL' does not copy password to
-clipboard by default. Although convenient, this is a security issue if
-the user isn't expecting it. Also show correct screen in Security
-Options help.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="BR(1065);return false;">1065</a></td>
-<td>Don't hide notes in Add/Edit dialog box when changing field focus
-if user chose not to.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="BR(1063);return false;">1063</a></td>
-<td>Intermediate backups also work correctly when relative path to
-database is specified on command line. Thanks to Matt for tracking
-this down.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3556730);return false;">3556730</a></td>
-<td>In Add/Edit dialog, clicking Apply no longer disables the OK
-button. An asterisk (*) is displayed in the title bar when the entry's
-modified and Apply's not clicked upon. Thanks to shivak7 for the fix.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3539347);return false;">3539347</a></td>
-<td>An empty diamond icon is now updated to a full one when an
-entry is dragged into it. Thanks to nsaipraveen for the fix.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3537861);return false;">3537861</a></td>
-<td>An off-by-one issue with expiration dates has been fixed by
-suthakar123.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="SR(353);return false;">353</a></td>
-<td>Easy-to-read option now respected in Generate Password screen.</td>
-</tr>
-<tr>
-<td align="center" width="100">n/a</td>
-<td>Update ListView immediately when an entry's field has been changed.</td>
-</tr>
-</tbody>
-</table>
-<br>
-<hr>
-
+<ul>
+<li><a href="ReleaseNotes.html#V3.30">V3.30</a> Released 2013-05-11</li>
+<ul>
+<li><a href="ReleaseNotes.html#V3.30New">New Features</a></li>
+<li><a href="ReleaseNotes.html#V3.30Changes">Changes to Existing Features</a></li>
+<li><a href="ReleaseNotes.html#V3.30BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
 <ul>
 <li><a href="ReleaseNotes.html#V3.29">V3.29</a> Released 2012-06-21</li>
 <ul>
@@ -346,6 +324,76 @@ suthakar123.</td>
 <br>
 <hr>
 
+<h3><a name="V3.30"></a>Version V3.30</h3>
+
+<h4><a name="V3.30New"></a>New Features for V3.30</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(689);return false;">689</a></td>
+<td>It's now possible to change the r/w state of a database when
+unlocking it. Thanks to Jeff for the suggestion.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h4><a name="V3.30Changes"></a>Changes to Existing Features in V3.30</h4>
+
+<p>None</p>
+
+<h4><a name="V3.30BugsFixed"></a>Bugs fixed in V3.30</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1066);return false;">1066</a></td>
+<td>Default changed: 'Browse to URL' does not copy password to
+clipboard by default. Although convenient, this is a security issue if
+the user isn't expecting it. Also show correct screen in Security
+Options help.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1065);return false;">1065</a></td>
+<td>Don't hide notes in Add/Edit dialog box when changing field focus
+if user chose not to.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1063);return false;">1063</a></td>
+<td>Intermediate backups also work correctly when relative path to
+database is specified on command line. Thanks to Matt for tracking
+this down.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3556730);return false;">3556730</a></td>
+<td>In Add/Edit dialog, clicking Apply no longer disables the OK
+button. An asterisk (*) is displayed in the title bar when the entry's
+modified and Apply's not clicked upon. Thanks to shivak7 for the fix.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3539347);return false;">3539347</a></td>
+<td>An empty diamond icon is now updated to a full one when an
+entry is dragged into it. Thanks to nsaipraveen for the fix.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="OldBR(3537861);return false;">3537861</a></td>
+<td>An off-by-one issue with expiration dates has been fixed by
+suthakar123.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="SR(353);return false;">353</a></td>
+<td>Easy-to-read option now respected in Generate Password screen.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Update ListView immediately when an entry's field has been changed.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
 
 <h3><a name="V3.29"></a>Version V3.29</h3>
 

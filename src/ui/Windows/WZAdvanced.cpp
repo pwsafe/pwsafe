@@ -968,7 +968,7 @@ void CWZAdvanced::OnDeselectAll()
 void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
+  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
   if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {

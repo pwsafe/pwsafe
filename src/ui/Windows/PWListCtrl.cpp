@@ -337,6 +337,8 @@ void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
 
 void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
+  *pLResult = 0;
+
   // Ignore if empty
   if (GetItemCount() == 0)
     return;
@@ -346,12 +348,21 @@ void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
     case VK_DOWN:
-      TRACE(L"CPWListCtrl::OnKeyDown - VK_UP/VK_DOWN\n");
+    {
+      *pLResult = 1L;
       // Process page up/down - to wrap around when at top/bottom
-      app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, false);
+      int iItem = GetNextItem(-1, LVNI_SELECTED);
+      // Unselect current item
+      SetItemState(iItem,0, LVIS_FOCUSED | LVIS_SELECTED);
+      const int nCount = GetItemCount();
+      if (pLVKeyDown->wVKey == VK_DOWN)
+        iItem = (iItem + 1) % nCount;
+      if (pLVKeyDown->wVKey == VK_UP)
+        iItem = (iItem - 1 + nCount) % nCount;
+      app.GetMainDlg()->ItemSelected(NULL, iItem);
       break;
+    }
     default:
-      TRACE(L"CPWListCtrl::OnKeyDown - other key\n");
       break;
   }
 }
@@ -359,19 +370,17 @@ void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
 void CPWListCtrl::OnItemChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
-  NM_LISTVIEW *pNMListView = (NM_LISTVIEW *)pNotifyStruct;
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
   // Don't bother if no entries
-  // Note: Selection via mouse handled in DboxMain via NM_CLICK notification.
   if (GetItemCount() == 0)
     return;
  
-  TRACE(L"CPWListCtrl::OnItemChanged\n");
   if ((pNMListView->uChanged & LVIF_STATE) == LVIF_STATE) {
     if ((pNMListView->uOldState & LVIS_SELECTED) == 0 &&
         (pNMListView->uNewState & LVIS_SELECTED) != 0) {
       // Item has been selected
-      app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, false);
+      app.GetMainDlg()->ItemSelected(NULL, pNMListView->iItem);
     }
   }
 }

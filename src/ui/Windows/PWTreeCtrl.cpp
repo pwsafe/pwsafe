@@ -614,16 +614,15 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
   
-  TRACE(L"CPWTreeCtrl::OnSelectionChanged\n");
+  NMTREEVIEW *pNMTreeView = (NMTREEVIEW *)pNotifyStruct;
   
-  // Don't bother if no entries or not via the keyboard (check this first
+  // Don't bother if no entries or not via the keyboard/mouse (check this first
   // as more likely than no entries).
-  // Note: Selection via mouse handled in DboxMain via NM_CLICK notification.
-  if (((NMTREEVIEW *)pNotifyStruct)->action != TVC_BYKEYBOARD || GetCount() == 0)
-    return;
+   if ((pNMTreeView->action != TVC_BYKEYBOARD && pNMTreeView->action != TVC_BYMOUSE) || 
+       GetCount() == 0)
+     return;
 
-  TRACE(L"CPWTreeCtrl::OnSelectionChanged - TVC_BYKEYBOARD\n");
-  app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, true);
+  app.GetMainDlg()->ItemSelected(pNMTreeView->itemNew.hItem, -1);
 }
 
 void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)

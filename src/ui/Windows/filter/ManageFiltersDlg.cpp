@@ -1213,7 +1213,7 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
 
 void CManageFiltersDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult) 
 {
-  NM_LISTVIEW* pNMLV = reinterpret_cast<NM_LISTVIEW *>(pNotifyStruct);
+  NMLISTVIEW* pNMLV = reinterpret_cast<NMLISTVIEW *>(pNotifyStruct);
 
   // Get column index to CItemData value
   int iIndex = pNMLV->iSubItem;

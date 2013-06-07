@@ -919,7 +919,6 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     return false;
 
   if (m_ctlItemList.IsWindowVisible()) {
-    TRACE(L"DboxMain::SelectEntry - ListView\n");
     retval = m_ctlItemList.SetItemState(i,
                                         LVIS_FOCUSED | LVIS_SELECTED,
                                         LVIS_FOCUSED | LVIS_SELECTED);
@@ -928,7 +927,6 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     }
     m_ctlItemList.Invalidate();
   } else { //Tree view active
-    TRACE(L"DboxMain::SelectEntry - TreeView\n");
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -1381,124 +1379,26 @@ void DboxMain::OnRestore()
   TellUserAboutExpiredPasswords();
 }
 
-void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView)
+void DboxMain::ItemSelected(HTREEITEM hItem, int iItem)
 {
-  // Needed as need public function called by CPWTreeCtrl and CPWListCtrl
-  if (bTreeView)
-    OnTreeItemSelected(pNotifyStruct, pLResult);
-  else
-    OnListItemSelected(pNotifyStruct, pLResult);
-
-}
-
-void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  // ListView
-  *pLResult = 0L;
+  // Called by both List and Tree Controls
   CItemData *pci(NULL);
 
-  // More than 2 selected is meaningless in List view
-  //if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
-  //  *pLResult = 1L;
-  //  return;
-  //}
-
-  int iItem(-1);
-  switch (pNotifyStruct->code) {
-    case NM_CLICK:
-    {
-      LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
-      iItem = pLVItemActivate->iItem;
-      TRACE(L"DboxMain::OnListItemSelected - NM_CLICK\n");
-      break;
-    }
-    case LVN_KEYDOWN:
-    {
-      LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
-      iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
-      int nCount = m_ctlItemList.GetItemCount();
-      if (pLVKeyDown->wVKey == VK_DOWN)
-        iItem = (iItem + 1) % nCount;
-      if (pLVKeyDown->wVKey == VK_UP)
-        iItem = (iItem - 1 + nCount) % nCount;
-      TRACE(L"DboxMain::OnListItemSelected - LVN_KEYDOWN\n");
-      break;
-    }
-    default:
-      // No idea how we got here!
+  // ListCtrl and not reselecting the currently selected item
+  if (hItem == NULL && iItem != -1) { 
+    if (iItem == m_ctlItemList.GetNextItem(-1, LVNI_SELECTED))
       return;
-  }
 
-  if (iItem != -1) {
-    // -1 if nothing selected, e.g., empty list
+    // iItem = -1 if nothing selected, e.g., empty list
     pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+    SelectEntry(iItem, TRUE);
   }
-
-  UpdateToolBarForSelectedItem(pci);
-  SetDCAText(pci);
-
-  m_LastFoundTreeItem = NULL;
-  m_LastFoundListItem = -1;
-}
-
-void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  // TreeView
-  *pLResult = 0L;
-  CItemData *pci(NULL);
-
-  // Seems that under Vista with Windows Common Controls V6, it is ignoring
-  // the single click on the button (+/-) of a node and only processing the 
-  // double click, which generates a copy of whatever the user selected
-  // for a double click (except that it invalid for a node!) and then does
-  // the expand/collapse as appropriate.
-  // This codes attempts to fix this.
-  HTREEITEM hItem(NULL);
-
-  UnFindItem();
-  switch (pNotifyStruct->code) {
-    case NM_CLICK:
-    {
-      // Mouseclick - Need to find the item clicked via HitTest
-      TVHITTESTINFO htinfo = {0};
-      CPoint local = ::GetMessagePos();
-      m_ctlItemTree.ScreenToClient(&local);
-      htinfo.pt = local;
-      m_ctlItemTree.HitTest(&htinfo);
-      hItem = htinfo.hItem;
-
-      // Ignore any clicks not on an item (group or entry)
-      if (hItem == NULL ||
-          htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
-                          TVHT_ABOVE   | TVHT_BELOW | 
-                          TVHT_TORIGHT | TVHT_TOLEFT))
-        return;
-
-      TRACE(L"DboxMain::OnTreeItemSelected - NM_CLICK\n");
-      
-      // If a group
-      if (!m_ctlItemTree.IsLeaf(hItem)) {
-        // If on indent or button
-        if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-          m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-          *pLResult = 1L; // We have toggled the group
-          return;
-        }
-      }
-      break;
-    }
-    case TVN_SELCHANGED:
-      TRACE(L"DboxMain::OnTreeItemSelected - TVN_SELCHANGED\n");
-      // Keyboard - We are given the new selected entry
-      hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
-      break;
-    default:
-      // No idea how we got here!
+  
+  // TreeCtrl and not reselecting the currently selected item
+  if (hItem != NULL && iItem == -1 && m_ctlItemTree.IsLeaf(hItem)) {
+    if (hItem == m_ctlItemTree.GetSelectedItem())
       return;
-  }    
 
-  // Check it was on an item
-  if (hItem != NULL && m_ctlItemTree.IsLeaf(hItem)) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
   }
 
@@ -1513,6 +1413,46 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   m_LastFoundListItem = -1;
 }
 
+void DboxMain::OnTreeClicked(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
+{
+  // TreeView
+  *pLResult = 0L;
+
+  // Seems that under Vista with Windows Common Controls V6, it is ignoring
+  // the single click on the button (+/-) of a node and only processing the 
+  // double click, which generates a copy of whatever the user selected
+  // for a double click (except that it invalid for a node!) and then does
+  // the expand/collapse as appropriate.
+  // This codes attempts to fix this.
+  HTREEITEM hItem(NULL);
+
+  UnFindItem();
+
+  // Mouseclick - Need to find the item clicked via HitTest
+  TVHITTESTINFO htinfo = {0};
+  CPoint local = ::GetMessagePos();
+  m_ctlItemTree.ScreenToClient(&local);
+  htinfo.pt = local;
+  m_ctlItemTree.HitTest(&htinfo);
+  hItem = htinfo.hItem;
+
+  // Ignore any clicks not on an item (group or entry)
+  if (hItem == NULL ||
+      htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
+                      TVHT_ABOVE   | TVHT_BELOW | 
+                      TVHT_TORIGHT | TVHT_TOLEFT))
+    return;
+
+  // If a group
+  if (!m_ctlItemTree.IsLeaf(hItem)) {
+    // If on indent or button
+    if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+      m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+      *pLResult = 1L; // We have toggled the group
+    }
+  }
+}
+
 void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
@@ -1522,22 +1462,18 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   switch (pLVKeyDown->wVKey) {
     case VK_DELETE:
-      TRACE(L"DboxMain::OnKeydownItemlist - VK_DELETE\n");
       OnDelete();
       return;
     case VK_INSERT:
-      TRACE(L"DboxMain::OnKeydownItemlist - VK_INSERT\n");
       OnAdd();
       return;
     case VK_ADD:
-      TRACE(L"DboxMain::OnKeydownItemlist - VK_ADD\n");
       if ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) {
         SetHeaderInfo();
         return;
       }
       break;
     default:
-      TRACE(L"DboxMain::OnKeydownItemlist - other\n");
       break;    
   }
 
@@ -1724,7 +1660,7 @@ void DboxMain::ClearData(const bool clearMRE)
 
 void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult) 
 {
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
+  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
