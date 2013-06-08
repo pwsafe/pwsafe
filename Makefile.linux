@@ -9,7 +9,7 @@ RELEASE_SPECIAL := BETA
 
 .PHONY:	all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
-	dist sha1sums upload upload-src svn-tag I18N help
+	dist sha1sums upload upload-src git-tag I18N help
 
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -18,7 +18,7 @@ RELEASEDIR := ./Releases/
 TMPDIR := /tmp/pwsrc-$(shell echo $$$$)
 MKDIR := mkdir -p
 RM := /bin/rm -rf
-SVN := svn
+GIT := git
 TAR := tar
 ECHO := /bin/echo
 
@@ -79,7 +79,8 @@ rpm:	release I18N
 tar:
 	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
 	@echo -n "Exporting source tree..."
-	@$(SVN) export --quiet . $(TMPDIR)/pwsafe-$(RELEASENAME)
+	@$(GIT) clone . $(TMPDIR)/pwsafe-$(RELEASENAME)
+	@$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/.git
 # Prune windows-only code (not for now - provide as a reference?)
 #	@$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/src/{ui/Windows,Tools/Windows}
 	@echo -n "Creating tarball..."
@@ -106,8 +107,8 @@ upload-src:
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
 	$(UPLOAD_DST)
 
-svn-tag:
-	$(SVN) cp $(SVN_TRUNK) $(SVN_TAG)/$(RELTAG) -m "tag wx $(RELEASENAME) release"
+git-tag:
+	$(GIT) tag -u $(GPG_KEY) -m "tag wx $(RELEASENAME) release" $(RELEASENAME)
 
 I18N:
 	$(MAKE) -C src/ui/wxWidgets/I18N mos

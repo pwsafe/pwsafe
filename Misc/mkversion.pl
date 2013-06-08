@@ -24,15 +24,19 @@ sub usage {
     exit 1;
 }
 
-my $SVNVERSION = "/usr/bin/svnversion";
-die "Couldn't find $SVNVERSION" unless (-x $SVNVERSION);
+my $GIT = "/usr/bin/git";
+die "Couldn't find $GIT" unless (-x $GIT);
 
-my $ROOT = "../../.."; # should really be passed as arg
 &usage unless ($#ARGV == 1);
 my $TEMPLATE = $ARGV[0];
 my $OUTFILE = $ARGV[1];
 
-my $SVNVERSTRING = `$SVNVERSION -n $ROOT`;
+my $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
+chomp $VERSTRING;
+# If string is of the form heads/master-0-g5f69087, drop everything
+# to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
+# info
+$VERSTRING =~ s,^heads/master-0-,,;
 
 #Now that we're done with the formalities, let's get to work:
 my $TMPFILE = "/tmp/v$$";
@@ -50,10 +54,10 @@ while (<TH>) {
     } elsif (m/^#define\s+REVISION\s+(.+)$/) {
         $REVISION=$1;
     }
-    if (m/^\#define\s+SVN_VERSION/) {
-        print VH "#define SVN_VERSION \"$SVNVERSTRING\"\n";
+    if (m/^\#define\s+VCS_VERSION/) {
+        print VH "#define VCS_VERSION \"$VERSTRING\"\n";
     } elsif (m/^\#define\s+LINUXPRODVER/) {
-        print VH "#define LINUXPRODVER $MAJOR, $MINOR, $REVISION, $SVNVERSTRING\n";
+        print VH "#define LINUXPRODVER $MAJOR, $MINOR, $REVISION, $VERSTRING\n";
     } else {
         print VH;
     }
