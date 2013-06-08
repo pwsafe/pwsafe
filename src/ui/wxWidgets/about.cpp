@@ -35,7 +35,7 @@
 #endif
 
 ////@begin XPM images
-#include "./graphics/cpane.xpm"
+#include "graphics/cpane.xpm"
 ////@end XPM images
 
 
@@ -54,9 +54,7 @@ BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
 ////@begin CAbout event table entries
   EVT_HYPERLINK( ID_HYPERLINKCTRL1, CAbout::OnHyperlinkctrl1HyperlinkClicked )
-
   EVT_BUTTON( wxID_CLOSE, CAbout::OnCloseClick )
-
 ////@end CAbout event table entries
 
 END_EVENT_TABLE()
@@ -134,7 +132,7 @@ void CAbout::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("./graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("./graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 37)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -143,43 +141,49 @@ void CAbout::CreateControls()
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_VERSIONSTR, _("Password Safe vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer6, 0, wxALIGN_LEFT|wxALL, 0);
+  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Build date: "), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer4->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer6->Add(itemStaticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* itemBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemBoxSizer7, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxHyperlinkCtrl* itemHyperlinkCtrl8 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL1, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-  itemBoxSizer6->Add(itemHyperlinkCtrl8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer6->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxHyperlinkCtrl* itemHyperlinkCtrl9 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL1, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+  itemBoxSizer7->Add(itemHyperlinkCtrl9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer10, 0, wxALIGN_LEFT|wxALL, 0);
+  wxStaticText* itemStaticText10 = new wxStaticText( itemDialog1, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer7->Add(itemStaticText10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer10->Add(itemStaticText11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemBoxSizer11, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxHyperlinkCtrl* itemHyperlinkCtrl12 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL, _("PasswordSafe website"), _T("http://pwsafe.org/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-  itemBoxSizer10->Add(itemHyperlinkCtrl12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer11->Add(itemStaticText12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("See LICENSE for open souce details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
-  itemBoxSizer4->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
+  wxHyperlinkCtrl* itemHyperlinkCtrl13 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL, _("PasswordSafe website"), _T("http://pwsafe.org/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+  itemBoxSizer11->Add(itemHyperlinkCtrl13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2013 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("See LICENSE for open souce details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2009 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+  itemBoxSizer4->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
   m_newVerStatus->SetBackgroundColour(wxColour(230, 231, 232));
   itemBoxSizer4->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxButton* itemButton16 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemButton16, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxButton* itemButton17 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer4->Add(itemButton17, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
 ////@end CAbout content construction
   const wxString vstring = pwsafeAppName + _T(" ") + pwsafeVersionString;
   itemStaticText5->SetLabel(vstring);
+  const wxString d(_T(__DATE__)), t(_T(__TIME__));
+  const wxString dstring = _("Build date: ") + d + _T(" ") + t;
+  itemStaticText6->SetLabel(dstring);
 }
 
 
@@ -201,7 +205,7 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CAbout bitmap retrieval
   wxUnusedVar(name);
-  if (name == _T("./graphics/cpane.xpm"))
+  if (name == _T("graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;

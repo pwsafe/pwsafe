@@ -1,10 +1,6 @@
 OS:= $(findstring Linux, $(shell uname -s))
 GPG_KEY := 5CCF8BB3
 
-SVN_REPO := svn+ssh://ronys@svn.code.sf.net/p/passwordsafe/code
-SVN_TRUNK := $(SVN_REPO)/trunk/pwsafe/pwsafe
-SVN_TAG := $(SVN_REPO)/tags
-
 UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)

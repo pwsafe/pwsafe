@@ -19,7 +19,6 @@
  */
 
 ////@begin includes
-#include <wx/dialog.h>
 #include "wx/hyperlink.h"
 ////@end includes
 
@@ -40,11 +39,7 @@
 #define ID_HYPERLINKCTRL1 10081
 #define ID_HYPERLINKCTRL 10080
 #define ID_TEXTCTRL 10082
-#if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_CABOUT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#else
-#define SYMBOL_CABOUT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#endif
 #define SYMBOL_CABOUT_TITLE _("About Password Safe")
 #define SYMBOL_CABOUT_IDNAME ID_CABOUT
 #define SYMBOL_CABOUT_SIZE wxSize(400, 300)
