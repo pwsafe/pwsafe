@@ -3,4 +3,6 @@ Releases
 deps
 lib
 obj
-
+*.sdf
+*.opensdf
+*.suo

@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strXercesDir, strXerces64Dir, strWXDir
+Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -30,7 +30,6 @@ CRLF = Chr(13) & Chr(10)
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
-' The 64-bit version of TortoiseSVN should *always* be installed on a 64-bit OS.
 
 const HLM = &H80000002
 strComputer = "."
@@ -50,7 +49,7 @@ End If
 Set oReg = Nothing
 
 ' Set defaults
-strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
+strGitDir = "C:\Program Files (x86)\Git"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-10.0"
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-10.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
@@ -72,9 +71,9 @@ If (objFileSystem.FileExists(strOutputFile)) Then
 
   ' If already exists, set the defaults to be current value so user doesn't have to
   ' remember what they set last time
-  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/TortoiseSVNDir") 
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/GitDir") 
   If Not Node Is Nothing Then
-    strTortoiseSVNDir = Node.text
+    strGitDir = Node.text
   End If
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/XercesDir") 
   If Not Node Is Nothing Then
@@ -102,8 +101,8 @@ Else
     Set UserMacros = objXMLDoc.getElementsByTagName(XML_XPATH)
     If UserMacros.length > 0 Then
       For each CurrentUserMacro in UserMacros
-        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
-          strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "GitDir" Then
+          strGitDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
         End If
         If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
           strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -140,10 +139,10 @@ objOutputFile.WriteLine("<Project DefaultTargets=""Build"" ToolsVersion=""4.0"" 
 objOutputFile.WriteLine("  <PropertyGroup Label=""UserMacros"">")
 objOutputFile.WriteLine("    <ConfigurationName>$(Configuration)</ConfigurationName>")
 
-strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
+strFileLocation = InputBox(str1 & "GitDir" & str2 & strGitDir & str3, "Git Location", strGitDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strGitDir
 
-objOutputFile.WriteLine("    <TortoiseSVNDir>" & strFileLocation & "</TortoiseSVNDir>")
+objOutputFile.WriteLine("    <GitDir>" & strFileLocation & "</GitDir>")
 
 strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
@@ -192,8 +191,8 @@ objOutputFile.WriteLine("    <BuildMacro Include=""OutDir"">")
 objOutputFile.WriteLine("      <Value>$(OutDir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
-objOutputFile.WriteLine("    <BuildMacro Include=""TortoiseSVNDir"">")
-objOutputFile.WriteLine("      <Value>$(TortoiseSVNDir)</Value>")
+objOutputFile.WriteLine("    <BuildMacro Include=""GitDir"">")
+objOutputFile.WriteLine("      <Value>$(GitDir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""XercesDir"">")

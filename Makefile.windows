@@ -25,14 +25,13 @@ CP := /usr/bin/cp
 MV := /usr/bin/mv
 SED := /usr/bin/sed
 ZIP := /usr/bin/zip
-SVN := /usr/bin/svn
+GIT := "/cygdrive/c/Program Files (x86)/Git/bin/git"
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 UPLOAD_DST :=  $(UPLOAD_ROOT)/passwordsafe/$(RELEASENUM)
 PYTHON := /usr/bin/python
-SVN2LOG := ../../python/svn2log.py
 MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
 WIXDIR := /cygdrive/c/local/WIX
 CANDLE := $(WIXDIR)/candle.exe
@@ -69,7 +68,7 @@ I18N_MANIFEST := $(I18N_HELPS) $(I18N_DLLS)
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload sha1sums msi nsis upload-latest update-pos i18n save-map help \
-	svn-tag
+	git-tag
 
 all: help release installables signatures sha1sums
 
@@ -144,7 +143,9 @@ save-map:
    $(BIN_DIR)/pws_*.pdb		
 
 src-release: ChangeLog $(POT_FILE)
-	$(SVN) export --non-interactive . $(TMPDIR)/$(SRCRELNAME)
+	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
+	$(GIT) clone . $(TMPDIR)/$(SRCRELNAME)
+	$(RM) $(TMPDIR)/$(SRCRELNAME)/.git
 	$(MV) $(TMPDIR)/$(SRCRELNAME) $(RELEASEDIR)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) src/ui/Windows/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
@@ -154,7 +155,7 @@ src-release: ChangeLog $(POT_FILE)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 ChangeLog:
-	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
+	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@
 
 $(POT_FILE): $(BIN_DIR)/../release/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
@@ -168,8 +169,8 @@ i18n:
 help:
 	$(MAKE) -C $(HELP_DIR)
 
-svn-tag:
-	$(SVN) cp $(SVN_TRUNK) $(SVN_TAG)/$(RELTAG) -m "tag $(RELEASENAME) release"
+git-tag:
+	$(GIT) tag -u $(GPG_KEY) -m "tag $(RELEASENAME) release" $(RELEASENAME)
 
 # Local variables:
 # mode: Makefile

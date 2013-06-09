@@ -7,7 +7,7 @@
 '
 
 ' This section does "Update Revision Number in Resources"
-' Requires environment variables ProjectDir & TortoiseSVNDir
+' Requires environment variables ProjectDir & GitDir
 ' set in UserVariables.vsprops
 
 ' For the stdout.WriteLine to work, this Post-Build Event script
@@ -32,36 +32,36 @@ Dim objShell, objFSO, cmd, rc
 Set objShell = WScript.CreateObject("WScript.Shell")
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
-' Update SVN revision number
-Dim strTSVN, strProjectDir, strTSVNPGM, strVersionHeader
-strTSVN = objShell.ExpandEnvironmentStrings("%TortoiseSVNDir%")
+' Update Git revision info
+Dim strGit, strProjectDir, strGitPGM, strVersionHeader
+strGit = objShell.ExpandEnvironmentStrings("%GitDir%")
 strProjectDir = objShell.ExpandEnvironmentStrings("%ProjectDir%")
 
 ' Remove double quotes
-strTSVN = Replace(strTSVN, Chr(34), "", 1, -1, vbTextCompare)
+strGit = Replace(strGit, Chr(34), "", 1, -1, vbTextCompare)
 strProjectDir = Replace(strProjectDir, Chr(34), "", 1, -1, vbTextCompare)
 
 ' Ensure ends with a back slash
-If Right(strTSVN, 1) <> "\" Then
-  strTSVN = strTSVN & "\"
+If Right(strGit, 1) <> "\" Then
+  strGit = strGit & "\"
 End If
 If Right(strProjectDir, 1) <> "\" Then
   strProjectDir = strProjectDir & "\"
 End If
 
-strTSVNPGM = strTSVN + "bin\SubWCRev.exe"
+strGitPGM = strGit + "bin\git.exe"
 strVersionHeader = strProjectDir + "version.h"
 
 stdout.WriteLine " "
-If Not objFSO.FileExists(strTSVNPGM) Then
-  stdout.WriteLine " *** Can't find TortoiseSVN's SubWCRev.exe" & vbCRLF & _
+If Not objFSO.FileExists(strGitPGM) Then
+  stdout.WriteLine " *** Can't find git.exe" & vbCRLF & _
          " *** Please install it or create version.h from version.in manually"
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
   End if
   rc = 99
 Else
-  cmd = Chr(34) & strTSVNPGM  & Chr(34) & " ..\..\.. version.in version.h"
+  cmd = Chr(34) & strGitPGM  & Chr(34) & " describe --all --always --dirty=+ --long"
   stdout.WriteLine "  Executing: " & cmd
 
   Dim objWshScriptExec, objStdOut, strLine
@@ -79,7 +79,7 @@ Else
     stdout.WriteLine "  " & strLine
   Wend
 
-  stdout.WriteLine "  SubWCRev ended with return code: " & objWshScriptExec.ExitCode
+  stdout.WriteLine "  git ended with return code: " & objWshScriptExec.ExitCode
   rc = 0
 End if
 stdout.WriteLine " "
