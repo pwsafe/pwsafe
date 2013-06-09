@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strXercesDir, strXerces64Dir, strWXDir
+Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -30,7 +30,6 @@ CRLF = Chr(13) & Chr(10)
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
-' The 64-bit version of TortoiseSVN should *always* be installed on a 64-bit OS.
 
 const HLM = &H80000002
 strComputer = "."
@@ -50,7 +49,7 @@ End If
 Set oReg = Nothing
 
 ' Set defaults
-strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
+strGitDir = "C:\Program Files (x86)\Git"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-8.0"
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-8.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.10"
@@ -71,8 +70,8 @@ objXMLDoc.load(strOutputFile)
 Set UserMacros = objXMLDoc.getElementsByTagName(XML_XPATH)
 If UserMacros.length > 0 Then
   For each CurrentUserMacro in UserMacros
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
-      strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "GitDir" Then
+      strGitDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
     End If
     If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
       strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -140,9 +139,9 @@ objOutputFile.WriteLine("		Value=""..\..\build8\lib\pwsafe\$(ConfigurationName)"
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
-strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
+objOutputFile.WriteLine("		Name=""GitDir""")
+strFileLocation = InputBox(str1 & "Git" & str2 & strGitDir & str3, "Git Location", strGitDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strGitDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")

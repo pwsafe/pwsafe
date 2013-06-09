@@ -18,7 +18,7 @@ libwxgtk2.8-dbg
 libxerces-c-dev
 libxt-dev
 libxtst-dev
-subversion
+git
 uuid-dev
 zip
 

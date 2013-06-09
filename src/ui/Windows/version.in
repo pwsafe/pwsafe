@@ -10,16 +10,16 @@
 #define _VERSION_H_
 
 // version.h is automatically generated from version.in by a custom
-// pre-build step using Tortoise SVN's program SubWCRev.exe, which
-// replaces "(dollar)WCREV(dollar)" with latest subversion revision number.
+// pre-build step that uses git's 'describe' function and
+// replaces "GITREV" with current git commit info.
 
 // Format: Major, Minor, Build, Revision
 //   Build  = 0 for all Formally Released versions
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 31, 0, $WCREV$
-#define STRPRODUCTVER  "3, 31, 0, $WCREV$$WCMODS?+:$\0"
+#define PRODUCTVER     3, 31, 0, GITREV
+#define STRPRODUCTVER  "3, 31, 0, GITREV\0"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 

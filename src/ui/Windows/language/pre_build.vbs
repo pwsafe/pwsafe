@@ -7,7 +7,7 @@
 '
 
 ' This section does "Update Revision Number in Resources"
-' Requires environment variables ProjectDir & TortoiseSVNDir
+' Requires environment variables ProjectDir & GitDir
 ' set in UserVariables.vsprops
 
 ' For the stdout.WriteLine to work, this Post-Build Event script
@@ -34,7 +34,7 @@ Set objFSO = CreateObject("Scripting.FileSystemObject")
 
 ' Update SVN revision number
 Dim strTSVN, strProjectDir, strTSVNPGM, strVersionHeader
-strTSVN = objShell.ExpandEnvironmentStrings("%TortoiseSVNDir%")
+strTSVN = objShell.ExpandEnvironmentStrings("%GitDir%")
 strProjectDir = objShell.ExpandEnvironmentStrings("%ProjectDir%")
 
 ' Remove double quotes
@@ -54,7 +54,7 @@ strVersionHeader = strProjectDir + "..\version.h"
 
 stdout.WriteLine " "
 If Not objFSO.FileExists(strTSVNPGM) Then
-  stdout.WriteLine " *** Can't find TortoiseSVN's SubWCRev.exe" & vbCRLF & _
+  stdout.WriteLine " *** Can't find Git's SubWCRev.exe" & vbCRLF & _
          " *** Please install it or create version.h from version.in manually"
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
