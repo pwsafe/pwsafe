@@ -18,10 +18,10 @@ public:
   static PWSversion *GetInstance(); // singleton
   static void DeleteInstance();
 
-  int GetMajor() {return m_nMajor;}
-  int GetMinor() {return m_nMinor;}
-  int GetBuild() {return m_nBuild;}
-  int GetRevision() {return m_nRevision;}
+  int GetMajor() const {return m_nMajor;}
+  int GetMinor() const {return m_nMinor;}
+  int GetBuild() const {return m_nBuild;}
+  const CString &GetRevision() const {return m_Revision;}
 
   CString GetSpecialBuild() {return m_SpecialBuild;}
   CString GetAppVersion() {return m_AppVersion;}
@@ -31,6 +31,7 @@ private:
   static PWSversion *self; // singleton
 
   CString m_AppVersion, m_SpecialBuild;
-  int m_nMajor, m_nMinor, m_nBuild, m_nRevision;
+  int m_nMajor, m_nMinor, m_nBuild;
+  CString m_Revision;
   bool m_bModified;
 };
