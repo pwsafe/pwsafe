@@ -4,6 +4,7 @@ deps
 lib
 obj
 build
+ipch
 *.sdf
 *.opensdf
 *.suo
