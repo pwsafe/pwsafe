@@ -16,7 +16,6 @@
 // Format: Major, Minor, Build, Revision
 //   Build  = 0 for all Formally Released versions
 //   Build != 0 for all Intermediate versions
-// Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
 #define FILEVER          1, 1, 0
 #define PRODUCTVER       1, 1, 0
