@@ -39,7 +39,7 @@ void PWSversion::DeleteInstance()
 }
 
 PWSversion::PWSversion()
-  : m_nMajor(0), m_nMinor(0), m_nBuild(0), m_nRevision(0), m_bModified(false)
+  : m_nMajor(0), m_nMinor(0), m_nBuild(0), m_bModified(false)
 {
   CString csFileVersion = WIDEN(STRFILEVER);
   m_SpecialBuild = SPECIAL_BUILD;
@@ -69,11 +69,9 @@ PWSversion::PWSversion()
         m_nBuild = _wtoi(resToken);
         break;
       case 3:
-        if (resToken.Right(1) == L"+") {
+        if (resToken.Right(1) == L"+")
           m_bModified = true;
-          resToken = resToken.Left(resToken.GetLength() - 1);
-        }
-        m_nRevision = _wtoi(resToken);
+        m_Revision = resToken;
         break;
       default:
         ASSERT(0);
