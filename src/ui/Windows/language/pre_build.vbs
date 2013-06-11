@@ -15,6 +15,10 @@
 
 Option Explicit
 
+Const ForReading = 1, ForWriting = 2, ForAppending = 8 
+Const TristateUseDefault = -2, TristateTrue = -1, TristateFalse = 0
+ 
+
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
   MsgBox " Host: " & WScript.FullName & vbCRLF & _
          "This script must be executed by cscript.exe", _
@@ -32,39 +36,51 @@ Dim objShell, objFSO, cmd, rc
 Set objShell = WScript.CreateObject("WScript.Shell")
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
-' Update SVN revision number
-Dim strTSVN, strProjectDir, strTSVNPGM, strVersionHeader
-strTSVN = objShell.ExpandEnvironmentStrings("%GitDir%")
+' Update Git revision info
+Dim strGit, strProjectDir, strGitPGM, strVersionIn, strVersionHeader
+Dim objVerInFile, objVerHFile
+Dim strLine, strGitRev
+
+strGit = objShell.ExpandEnvironmentStrings("%GitDir%")
 strProjectDir = objShell.ExpandEnvironmentStrings("%ProjectDir%")
 
 ' Remove double quotes
-strTSVN = Replace(strTSVN, Chr(34), "", 1, -1, vbTextCompare)
+strGit = Replace(strGit, Chr(34), "", 1, -1, vbTextCompare)
 strProjectDir = Replace(strProjectDir, Chr(34), "", 1, -1, vbTextCompare)
 
 ' Ensure ends with a back slash
-If Right(strTSVN, 1) <> "\" Then
-  strTSVN = strTSVN & "\"
+If Right(strGit, 1) <> "\" Then
+  strGit = strGit & "\"
 End If
 If Right(strProjectDir, 1) <> "\" Then
   strProjectDir = strProjectDir & "\"
 End If
 
-strTSVNPGM = strTSVN + "bin\SubWCRev.exe"
+strGitPGM = strGit + "bin\git.exe"
+strVersionIn = strProjectDir + "..\version.in"
 strVersionHeader = strProjectDir + "..\version.h"
 
 stdout.WriteLine " "
-If Not objFSO.FileExists(strTSVNPGM) Then
-  stdout.WriteLine " *** Can't find Git's SubWCRev.exe" & vbCRLF & _
+If Not objFSO.FileExists(strVersionIn) Then
+  stdout.WriteLine " *** Can't find " & strVersionIn & vbCRLF & _
+         " *** Please check source tree"
+  WScript.Quit(98)
+End if
+
+
+
+If Not objFSO.FileExists(strGitPGM) Then
+  stdout.WriteLine " *** Can't find git.exe" & vbCRLF & _
          " *** Please install it or create version.h from version.in manually"
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
   End if
   rc = 99
 Else
-  cmd = Chr(34) & strTSVNPGM  & Chr(34) & " ..\..\.. ..\version.in ..\version.h"
+  cmd = Chr(34) & strGitPGM  & Chr(34) & " describe --all --always --dirty=+ --long"
   stdout.WriteLine "  Executing: " & cmd
 
-  Dim objWshScriptExec, objStdOut, strLine
+  Dim objWshScriptExec, objStdOut
 
   Set objShell = CreateObject("WScript.Shell")
   Set objWshScriptExec = objShell.Exec(cmd)
@@ -78,11 +94,47 @@ Else
     strLine = objStdOut.ReadLine
     stdout.WriteLine "  " & strLine
   Wend
-
-  stdout.WriteLine "  SubWCRev ended with return code: " & objWshScriptExec.ExitCode
+  strGitRev = strLine
+  stdout.WriteLine "  git ended with return code: " & objWshScriptExec.ExitCode
+  If objWshScriptExec.ExitCode <> 0 Then
+    WScript.Quit(objWshScriptExec.ExitCode)
+  End If
   rc = 0
 End if
 stdout.WriteLine " "
+
+' If strGitRev is of the form heads/master-0-g5f69087, drop everything
+' to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
+' info
+
+Dim result
+
+result = InStr(strGitRev, "heads/master-0-")
+
+If result <> 0 Then
+   strGitRev = Replace(strGitRev, "heads/master-0-", "")
+End if
+
+stdout.WriteLine "strGitRev=" & strGitRev & vbCRLF
+
+' Read version.in, write version.h, substitute GITREV with strGitRev
+
+Set objVerInFile = objFSO.OpenTextFile(strVersionIn, ForReading)
+Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, TristateTrue, TristateFalse)
+
+do while not objVerInFile.AtEndOfStream
+     strLine = objVerInFile.ReadLine()
+     result = InStr(strLine, "GITREV")
+     If result <> 0 Then
+        strLine = Replace(strLine, "GITREV", strGitRev)
+     End if
+     objVerHFile.WriteLine(strLine)
+loop
+
+objVerInFile.Close
+objVerHFile.Close
+Set objVerInFile = Nothing
+Set objVerHFile = Nothing
 
 Set objWshScriptExec = Nothing
 Set objStdOut = Nothing
