@@ -67,21 +67,18 @@ BOOL CAboutDlg::OnInitDialog()
   m_nMajor = pPWSver->GetMajor();
   m_nMinor = pPWSver->GetMinor();
   m_nBuild = pPWSver->GetBuild();
-  int nRevision = pPWSver->GetRevision();
-  bool bModified = pPWSver->IsModified();
+  CString Revision = pPWSver->GetRevision();
   CString SpecialBuild = pPWSver->GetSpecialBuild();
   
   m_appversion = pPWSver->GetAppVersion();
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%02d (%d%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, nRevision,
-                        bModified ? L"+" : L"", SpecialBuild);
+    m_appversion.Format(L"%s%sV%d.%02d (%s)%s", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, Revision, SpecialBuild);
   } else {
-    m_appversion.Format(L"%s%sV%d.%02d.%02d (%d%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, m_nBuild, nRevision,
-                        bModified ? L"+" : L"", SpecialBuild);
+    m_appversion.Format(L"%s%sV%d.%02d.%02d (%s)%s", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, m_nBuild, Revision, SpecialBuild);
   }
 
 #ifdef _DEBUG
