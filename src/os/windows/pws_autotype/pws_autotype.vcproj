@@ -20,7 +20,7 @@
 			OutputDirectory="..\..\$(PWSBin)"
 			IntermediateDirectory="..\..\$(PWSObj)\$(ProjectName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\AT_UserVariables.vsprops"
+			InheritedPropertySheets=".\..\..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -28,7 +28,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript $(SolutionDir)\src\ui\Windows\pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -107,7 +107,7 @@
 			OutputDirectory="..\..\$(PWSBin)"
 			IntermediateDirectory="..\..\$(PWSObj)\$(ProjectName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\AT_UserVariables.vsprops"
+			InheritedPropertySheets=".\..\..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -116,7 +116,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript $(SolutionDir)\src\ui\Windows\pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
