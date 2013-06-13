@@ -23,8 +23,9 @@ public:
   int GetBuild() const {return m_nBuild;}
   const CString &GetRevision() const {return m_Revision;}
 
-  CString GetSpecialBuild() {return m_SpecialBuild;}
-  CString GetAppVersion() {return m_AppVersion;}
+  const CString &GetSpecialBuild() const {return m_SpecialBuild;}
+  const CString &GetAppVersion() const {return m_AppVersion;}
+  const CString &GetBuiltOn() const {return m_builtOn;}
   bool IsModified() {return m_bModified;}
 
 private:
@@ -33,5 +34,6 @@ private:
   CString m_AppVersion, m_SpecialBuild;
   int m_nMajor, m_nMinor, m_nBuild;
   CString m_Revision;
+  CString m_builtOn;
   bool m_bModified;
 };

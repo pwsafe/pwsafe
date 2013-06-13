@@ -364,6 +364,8 @@
 #define IDB_EMPTY_GROUP                 524
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
+#define IDC_APPVERSION2                 1001
+#define IDC_APPBUILTON                  1001
 #define IDC_CREATE_DB                   1003
 #define IDC_EXIT                        1004
 #define IDC_PASSWORD                    1005
