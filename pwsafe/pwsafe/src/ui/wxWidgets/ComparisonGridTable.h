@@ -30,6 +30,13 @@ public:
   ComparisonGrid(wxWindow* parent, wxWindowID id);
   wxPen GetRowGridLinePen(int row);
   bool IsRowSelected(int row) const;
+
+  // Make sure the two rows holding corresponding items from current and comparison db are
+  // always selected together
+  void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
+  void OnAutoSelectGridRow(wxCommandEvent& evt);
+
+  DECLARE_EVENT_TABLE()
 };
 
 

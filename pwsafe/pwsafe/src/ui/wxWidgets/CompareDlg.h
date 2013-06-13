@@ -39,8 +39,6 @@ class CompareDlg: public wxDialog
   void OnCopyItemsToCurrentDB(wxCommandEvent& evt);
   void OnDeleteItemsFromCurrentDB(wxCommandEvent& evt);
   void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
-  void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
-  void OnAutoSelectGridRow(wxCommandEvent& evt);
   void OnSyncItemsWithCurrentDB(wxCommandEvent& evt);
 
 public:

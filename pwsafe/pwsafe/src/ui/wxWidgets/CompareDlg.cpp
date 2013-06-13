@@ -68,7 +68,6 @@ BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
   EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
   EVT_COMMAND(wxID_ANY, EVT_EXPAND_DATA_PANELS, CompareDlg::OnExpandDataPanels)
-  EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, CompareDlg::OnAutoSelectGridRow)
   EVT_COMMAND(wxID_ANY, EVT_START_COMPARISON, CompareDlg::DoCompare)
   EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
   EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
@@ -145,10 +144,6 @@ void CompareDlg::CreateControls()
   m_conflicts->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
   m_conflicts->sizerBelow->Show(false);
 
-  m_conflicts->grid->Connect(wxEVT_GRID_RANGE_SELECT,
-                             wxGridRangeSelectEventHandler(CompareDlg::OnGridRangeSelect),
-                             NULL,
-                             this);
   CreateDataPanel(dlgSizer, wxString() << _("Only in current database: ") << m_currentCore->GetCurFile(),
                         m_current)->Hide();
   m_current->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
@@ -391,29 +386,6 @@ void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
   }
   wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
   GetEventHandler()->AddPendingEvent(cmdEvent);
-}
-
-void CompareDlg::OnGridRangeSelect(wxGridRangeSelectEvent& evt)
-{
-  wxCHECK_RET(evt.GetId() == m_conflicts->grid->GetId(), wxT("OnGridRangeSelect should be plugged-in only with conflicts grid"));
-  //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
-  if (evt.GetTopRow()%2 != 0) {
-    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
-    cmdEvent.SetEventObject(evt.GetEventObject());
-    cmdEvent.SetInt(evt.GetTopRow()-1);
-    GetEventHandler()->AddPendingEvent(cmdEvent);
-  }
-  if (evt.GetBottomRow()%2 == 0) {
-    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
-    cmdEvent.SetEventObject(evt.GetEventObject());
-    cmdEvent.SetInt(evt.GetBottomRow()+1);
-    GetEventHandler()->AddPendingEvent(cmdEvent);
-  }
-}
-
-void CompareDlg::OnAutoSelectGridRow(wxCommandEvent& evt)
-{
-  m_conflicts->grid->SelectRow(evt.GetInt(), true);
 }
 
 void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)

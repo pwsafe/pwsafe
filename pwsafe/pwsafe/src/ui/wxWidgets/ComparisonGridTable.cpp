@@ -517,6 +517,14 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
 
 //////////////////////////////////////////////////////////////////
 //ComparisonGrid
+
+DEFINE_EVENT_TYPE(EVT_SELECT_GRID_ROW)
+
+BEGIN_EVENT_TABLE( ComparisonGrid, wxGrid )
+  EVT_GRID_RANGE_SELECT(ComparisonGrid::OnGridRangeSelect)
+  EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, ComparisonGrid::OnAutoSelectGridRow)
+END_EVENT_TABLE()
+
 ComparisonGrid::ComparisonGrid(wxWindow* parent, wxWindowID id): wxGrid(parent, id)
 {
   int horiz, vert;
@@ -549,3 +557,26 @@ wxPen ComparisonGrid::GetRowGridLinePen(int row)
   }
   return wxGrid::GetRowGridLinePen(row);
 }
+
+void ComparisonGrid::OnGridRangeSelect(wxGridRangeSelectEvent& evt)
+{
+  //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
+  if (evt.GetTopRow()%2 != 0) {
+    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
+    cmdEvent.SetEventObject(evt.GetEventObject());
+    cmdEvent.SetInt(evt.GetTopRow()-1);
+    GetEventHandler()->AddPendingEvent(cmdEvent);
+  }
+  if (evt.GetBottomRow()%2 == 0) {
+    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
+    cmdEvent.SetEventObject(evt.GetEventObject());
+    cmdEvent.SetInt(evt.GetBottomRow()+1);
+    GetEventHandler()->AddPendingEvent(cmdEvent);
+  }
+}
+
+void ComparisonGrid::OnAutoSelectGridRow(wxCommandEvent& evt)
+{
+  SelectRow(evt.GetInt(), true);
+}
+
