@@ -43,7 +43,6 @@ private:
   int m_nMinor;
   int m_nBuild;
   CString m_appversion;
-  CString m_appcopyright;
   CString m_newVerStatus;
   CRichEditCtrlExtn m_RECExNewVerStatus;
   CRichEditCtrlExtn m_RECExWebSite;
