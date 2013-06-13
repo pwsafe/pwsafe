@@ -430,12 +430,20 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
 {
   //wxLogDebug(wxT("MultiSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );
-  attr->IncRef();
-  return attr;
+  int idx = row/2;
+  if (m_compData->at(idx).bsDiffs.test(ColumnToField(col))) {
+	  wxGridCellAttr* diffAttr = attr->Clone();
+	  diffAttr->SetTextColour(*wxRED);
+	  return diffAttr;
+  }
+  else {
+	  attr->IncRef();
+	  return attr;
+  }
 }
 
 wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
