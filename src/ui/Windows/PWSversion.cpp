@@ -44,6 +44,8 @@ PWSversion::PWSversion()
   CString csFileVersion = WIDEN(STRFILEVER);
   m_SpecialBuild = SPECIAL_BUILD;
 
+  m_builtOn = CString(__DATE__) + CString(L" ") + CString(__TIME__);
+
   CString resToken;
   int curPos = 0, index = 0;
   

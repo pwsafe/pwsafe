@@ -63,7 +63,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  PWSversion *pPWSver = PWSversion::GetInstance();
+  const PWSversion *pPWSver = PWSversion::GetInstance();
   m_nMajor = pPWSver->GetMajor();
   m_nMinor = pPWSver->GetMinor();
   m_nBuild = pPWSver->GetBuild();
@@ -86,13 +86,16 @@ BOOL CAboutDlg::OnInitDialog()
 #endif
 
 #ifdef DEMO
-  m_AppVersion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
+  m_appversion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif
 
-  m_appcopyright = app.GetCopyrightString();
+  CString builtOnPrefix;
+  GetDlgItem(IDC_APPBUILTON)->GetWindowText(builtOnPrefix);
+  const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn();
 
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
-  GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(m_appcopyright);
+  GetDlgItem(IDC_APPBUILTON)->SetWindowText(builtOn);
+  GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(app.GetCopyrightString());
 
   m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
   m_RECExNewVerStatus.RegisterOnLink(OnCheckVersion, (LPARAM)this);
