@@ -74,11 +74,11 @@ BOOL CAboutDlg::OnInitDialog()
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%02d (%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, Revision, SpecialBuild);
+    m_appversion.Format(L"%s%sV%d.%02d%s (%s)", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, SpecialBuild, Revision);
   } else {
-    m_appversion.Format(L"%s%sV%d.%02d.%02d (%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, m_nBuild, Revision, SpecialBuild);
+    m_appversion.Format(L"%s%sV%d.%02d.%02d%s (%s)", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, m_nBuild, SpecialBuild, Revision);
   }
 
 #ifdef _DEBUG
