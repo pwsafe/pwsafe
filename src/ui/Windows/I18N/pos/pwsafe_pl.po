@@ -1676,6 +1676,10 @@ msgstr "Idź do URL + Autouzupełnianie"
 msgid "Browser Command Line parameters:"
 msgstr "Linia parametrów przeglądarki:"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Bułgarski"

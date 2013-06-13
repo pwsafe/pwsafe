@@ -1686,6 +1686,10 @@ msgstr "Ir a URL + Autoescritura"
 msgid "Browser Command Line parameters:"
 msgstr "Parámetros de la línea de comandos del navegador"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Búlgaro"

@@ -1673,6 +1673,10 @@ msgstr "URL'ye git + Otomatik Doldur"
 msgid "Browser Command Line parameters:"
 msgstr "Tarayıcı Komut Satırı parametreleri:"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Bulgarca"
