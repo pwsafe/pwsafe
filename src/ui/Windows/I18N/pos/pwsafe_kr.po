@@ -1660,6 +1660,10 @@ msgstr "URL으로 탐색하고 자동입력"
 msgid "Browser Command Line parameters:"
 msgstr ""
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Bulgarian"

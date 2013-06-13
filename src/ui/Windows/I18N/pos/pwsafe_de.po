@@ -1778,6 +1778,10 @@ msgstr "Gehe zu URL + Autom.Eingabe "
 msgid "Browser Command Line parameters:"
 msgstr "Browser Kommandozeileparameter"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Bulgarisch"

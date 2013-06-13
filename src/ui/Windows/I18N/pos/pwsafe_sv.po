@@ -1751,6 +1751,10 @@ msgstr "Gå till URL + Autoskriv"
 msgid "Browser Command Line parameters:"
 msgstr "Utforskarens kommandorads parametrar:"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Bulgariskt"

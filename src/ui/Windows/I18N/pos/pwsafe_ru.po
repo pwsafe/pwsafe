@@ -1732,6 +1732,10 @@ msgstr "Перейти по ссылке и выполнить автонабо�
 msgid "Browser Command Line parameters:"
 msgstr "параметры командной строки"
 
+#. Resource IDs: (1001)
+msgid "Built on "
+msgstr ""
+
 #. Resource IDs: (520)
 msgid "Bulgarian"
 msgstr "Болгарская"
