@@ -15,11 +15,11 @@ RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
 
-TMPDIR := /tmp/pwsrc-$(shell echo $$$$)
 MKDIR := mkdir -p
 RM := /bin/rm -rf
 GIT := git
 TAR := tar
+GZIP := gzip
 ECHO := /bin/echo
 
 GPG := /usr/bin/gpg
@@ -77,15 +77,8 @@ rpm:	release I18N
 	$(MAKE) signatures sha1sums
 
 tar:
-	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
-	@echo -n "Exporting source tree..."
-	@$(GIT) clone . $(TMPDIR)/pwsafe-$(RELEASENAME)
-	@$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/.git
-# Prune windows-only code (not for now - provide as a reference?)
-#    @$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/src/{ui/Windows,Tools/Windows}
-	@echo -n "Creating tarball..."
-	@$(TAR) czf $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz  -C $(TMPDIR) .
-	@$(RM) $(TMPDIR)
+	@$(MKDIR)  $(RELEASEDIR)
+	@$(GIT) archive HEAD --prefix=pwsafe-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
 	@echo "Done."
 
 sha1sums:
