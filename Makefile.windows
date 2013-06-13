@@ -9,7 +9,7 @@
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
 RELEASENUM := 3.31
-RELEASE_SPECIAL := 
+RELEASE_SPECIAL := git
 
 RELEASE_SPECIAL := Y
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
@@ -24,6 +24,8 @@ SRCRELNAME := pwsafe-$(RELEASENAME)-src
 RM := /usr/bin/rm
 CP := /usr/bin/cp
 MV := /usr/bin/mv
+MKDIR := /usr/bin/mkdir -p
+TAR := /usr/bin/tar
 SED := /usr/bin/sed
 ZIP := /usr/bin/zip
 GIT := "/cygdrive/c/Program Files (x86)/Git/bin/git"
@@ -144,10 +146,8 @@ save-map:
    $(BIN_DIR)/pws_*.pdb		
 
 src-release: ChangeLog $(POT_FILE)
-	@$(MKDIR) $(TMPDIR) $(RELEASEDIR)
-	$(GIT) clone . $(TMPDIR)/$(SRCRELNAME)
-	$(RM) $(TMPDIR)/$(SRCRELNAME)/.git
-	$(MV) $(TMPDIR)/$(SRCRELNAME) $(RELEASEDIR)
+	@$(MKDIR) $(RELEASEDIR)/$(SRCRELNAME)
+	$(GIT) archive HEAD | $(TAR) -x -C $(RELEASEDIR)/$(SRCRELNAME)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) src/ui/Windows/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
 	$(CP) $(POT_FILE) $(RELEASEDIR)/$(SRCRELNAME)

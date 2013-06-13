@@ -25,7 +25,7 @@
 
 #define SPECIAL_BUILD L"Y"
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
-// #define SPECIAL_BUILD L"pre"
+#define SPECIAL_BUILD L"git"
 
 #ifndef SPECIAL_BUILD
 #define SPECIAL_BUILD L""

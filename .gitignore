@@ -8,3 +8,5 @@ ipch
 *.sdf
 *.opensdf
 *.suo
+*.wixpdb
+
