@@ -45,6 +45,7 @@ struct pw_entry {
   StringX email;
   StringX symbols;
   StringX policyname;
+  StringX kbshortcut;
   unsigned char ucprotected;
   PWPolicy pwp;
   int entrytype;
@@ -98,7 +99,7 @@ public:
   int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
   int getNumNoPolicies() const {return m_numNoPolicies;}
   int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
-
+  int getNumShortcutsRemoved() const {return m_numShortcutsRemoved;}
   bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
 
@@ -127,6 +128,7 @@ protected:
   int m_numEntriesPWHErrors;
   int m_numNoPolicies;
   int m_numRenamedPolicies;
+  int m_numShortcutsRemoved;
   int m_iErrorCode;
   TCHAR m_delimiter;
 
