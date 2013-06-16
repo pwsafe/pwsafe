@@ -175,14 +175,14 @@ void CEditShortcutDlg::OnOK()
     goto dont_close;
   }
 
-  listindex = app.GetMainDlg()->Find(m_group, m_title, m_username);
+  listindex = GetMainDlg()->Find(m_group, m_title, m_username);
   /*
   *  If there is a matching entry in our list, and that
   *  entry is not the same one we started editing, tell the
   *  user to try again.
   */
-  if (listindex != app.GetMainDlg()->End()) {
-    const CItemData &listItem = app.GetMainDlg()->GetEntryAt(listindex);
+  if (listindex != GetMainDlg()->End()) {
+    const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
     bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
       CGeneralMsgBox gmb;

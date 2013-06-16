@@ -11,7 +11,6 @@
 #include "stdafx.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"
 #include "SecString.h"
 #include "PWTreeCtrl.h"
 
@@ -38,8 +37,8 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     st_ExpLocalListEntry elle;
  
     // Find entry
-    ItemListIter iter = app.GetMainDlg()->Find(m_expPWList[i].uuid);
-    ASSERT(iter != app.GetMainDlg()->End());
+    ItemListIter iter = GetMainDlg()->Find(m_expPWList[i].uuid);
+    ASSERT(iter != GetMainDlg()->End());
     CItemData *pci = &iter->second;
     ASSERT(pci != NULL);
     

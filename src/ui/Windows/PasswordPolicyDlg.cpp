@@ -11,7 +11,6 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"    // For Help
 
 #include "PasswordPolicyDlg.h"
 #include "GeneralMsgBox.h"
@@ -176,7 +175,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
  
   // If started with Tall and won't fit - return to be called again with Wide
-  if (m_bLongPPs && !app.GetMainDlg()->LongPPs(this)) {
+  if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
     return FALSE;
   }
@@ -234,7 +233,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
       // Get all password policy names
       std::vector<std::wstring> vNames;
-      app.GetMainDlg()->GetPolicyNames(vNames);
+      GetMainDlg()->GetPolicyNames(vNames);
 
       // Add Default
       CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
@@ -961,11 +960,11 @@ void CPasswordPolicyDlg::OnGeneratePassword()
       m_cbxPolicyNames.GetLBText(index, m_policyname);
     }
     StringX sxPolicyName(m_policyname);
-    app.GetMainDlg()->GetPolicyFromName(sxPolicyName, st_pp);
+    GetMainDlg()->GetPolicyFromName(sxPolicyName, st_pp);
   }
 
   StringX passwd;
-  app.GetMainDlg()->MakeRandomPassword(passwd, st_pp);
+  GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -977,8 +976,8 @@ void CPasswordPolicyDlg::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  app.GetMainDlg()->SetClipboardData(m_password);
-  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+  GetMainDlg()->SetClipboardData(m_password);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 void CPasswordPolicyDlg::OnENChangePassword()

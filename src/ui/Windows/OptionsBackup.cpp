@@ -11,8 +11,6 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 
-#include "ThisMfcApp.h"    // For Help
-
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
@@ -115,7 +113,7 @@ BOOL COptionsBackup::OnInitDialog()
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
   m_chkbox.ResetBkgColour(); //Use current window's background
 
-  if (!app.GetMainDlg()->IsDBReadOnly())
+  if (!GetMainDlg()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
 
   if (m_backupsuffix_cbox.GetCount() == 0) {

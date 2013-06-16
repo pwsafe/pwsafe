@@ -12,7 +12,6 @@
 
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"
 
 #include "Fonts.h"
 #include "core/StringX.h"
@@ -279,6 +278,6 @@ void CPasswordSubsetDlg::OnCopy()
 
   // Remove blanks from between the characters
   cs_data.Remove(_T(' '));
-  app.GetMainDlg()->SetClipboardData(cs_data);
-  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+  GetMainDlg()->SetClipboardData(cs_data);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

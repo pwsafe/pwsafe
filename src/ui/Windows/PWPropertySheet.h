@@ -8,6 +8,8 @@
 
 #pragma once
 
+class DboxMain; // for GetMainDlg()
+
 class CPWPropertySheet : public CPropertySheet
 {
 public:
@@ -23,6 +25,8 @@ public:
 
 protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
+
+  DboxMain *GetMainDlg() const;
 
   afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);

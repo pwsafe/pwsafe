@@ -14,7 +14,6 @@
 #include "core/report.h"
 #include "core/util.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"
 
 // CViewReport dialog
 
@@ -166,7 +165,7 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  app.GetMainDlg()->SetClipboardData(m_pString);
+  GetMainDlg()->SetClipboardData(m_pString);
 }
 
 void CViewReport::Finish()

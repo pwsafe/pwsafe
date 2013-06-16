@@ -107,7 +107,7 @@ void CCreateShortcutDlg::OnOK()
   }
 
   // If there is a matching entry in our list, tell the user to try again.
-  if (app.GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
+  if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
     CSecString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);

@@ -7,7 +7,6 @@
 */
 
 #include "PasswordSafe.h"
-#include "ThisMfcApp.h"
 
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
@@ -50,9 +49,9 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
   m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
-  m_pp_shortcuts->InitialSetup(app.GetMainDlg()->GetMapMenuShortcuts(),
-                               app.GetMainDlg()->GetExcludedMenuItems(),
-                               app.GetMainDlg()->GetReservedShortcuts());
+  m_pp_shortcuts->InitialSetup(GetMainDlg()->GetMapMenuShortcuts(),
+                               GetMainDlg()->GetExcludedMenuItems(),
+                               GetMainDlg()->GetReservedShortcuts());
 
   AddPage(m_pp_backup);
   AddPage(m_pp_display);
@@ -126,7 +125,7 @@ void COptions_PropertySheet::SetupInitialValues()
 
   // Backup Data
   CString cs_backupPrefix, cs_backupDir;
-  m_OPTMD.CurrentFile = app.GetMainDlg()->GetCurFile().c_str();
+  m_OPTMD.CurrentFile = GetMainDlg()->GetCurFile().c_str();
   m_OPTMD.SaveImmediately =
       prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   m_OPTMD.BackupBeforeSave =

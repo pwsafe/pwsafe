@@ -129,7 +129,7 @@ void CAboutDlg::CheckNewVer()
   // open socket makes me uneasy...
   CGeneralMsgBox gmb;
 
-  if (app.GetMainDlg()->GetNumEntries() != 0) {
+  if (GetMainDlg()->GetNumEntries() != 0) {
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
     INT_PTR rc = gmb.MessageBox(cs_txt, cs_title,
@@ -137,13 +137,13 @@ void CAboutDlg::CheckNewVer()
     if (rc == IDCANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
-    app.GetMainDlg()->SendMessage(WM_COMMAND, ID_MENUITEM_CLOSE);
+    GetMainDlg()->SendMessage(WM_COMMAND, ID_MENUITEM_CLOSE);
     // User could have cancelled save, need to check if really closed:
-    if (app.GetMainDlg()->GetNumEntries() != 0)
+    if (GetMainDlg()->GetNumEntries() != 0)
       return;
   }
-  app.GetMainDlg()->UpdateWindow(); // show user that we closed database
-  ASSERT(app.GetMainDlg()->GetNumEntries() == 0);
+  GetMainDlg()->UpdateWindow(); // show user that we closed database
+  ASSERT(GetMainDlg()->GetNumEntries() == 0);
   // safe to open external connection
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);

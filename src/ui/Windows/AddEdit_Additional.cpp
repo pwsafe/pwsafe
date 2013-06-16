@@ -446,7 +446,7 @@ void CAddEdit_Additional::OnEntryHotKeyKillFocus()
   if (m_bPWSHotKeyEnabled)
     return;
 
-  BOOL brc = RegisterHotKey(app.GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
+  BOOL brc = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
                             UINT(m_wModifiers), UINT(m_wVirtualKeyCode));
   ASSERT(brc);
 
@@ -458,7 +458,7 @@ void CAddEdit_Additional::OnEntryHotKeySetFocus()
   if (!m_bPWSHotKeyEnabled)
     return;
   
-  BOOL brc = UnregisterHotKey(app.GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
+  BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
   ASSERT(brc);
   
   m_bPWSHotKeyEnabled = false;
@@ -590,8 +590,8 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
     
     StringX sxMenuItemName;
     unsigned char ucModifiers = wHKModifiers & 0xff;
-    unsigned int nCID = app.GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
-                                                  ucModifiers, sxMenuItemName);
+    unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
+                                                      ucModifiers, sxMenuItemName);
     if (nCID != 0) {
       // Save this value
       m_iOldHotKey = iKBShortcut;
@@ -827,8 +827,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                  M_currentDB(),
                                                  M_pci(),
-                                                 app.GetMainDlg()->m_bDoAutoType,
-                                                 app.GetMainDlg()->m_sxAutoType,
+                                                 GetMainDlg()->m_bDoAutoType,
+                                                 GetMainDlg()->m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
@@ -843,8 +843,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
     default:
       ASSERT(0);
   }
-  app.GetMainDlg()->SetClipboardData(sxData);
-  app.GetMainDlg()->UpdateLastClipboardAction(iaction);
+  GetMainDlg()->SetClipboardData(sxData);
+  GetMainDlg()->UpdateLastClipboardAction(iaction);
 }
 
 void CAddEdit_Additional::OnCheckedSavePasswordHistory()
@@ -873,7 +873,7 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNotifyStruct, LRESULT *)
 
   size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
   const PWHistEntry pwhentry = M_pwhistlist()[itempos];
-  app.GetMainDlg()->SetClipboardData(pwhentry.password);
+  GetMainDlg()->SetClipboardData(pwhentry.password);
 }
 
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -963,6 +963,6 @@ void CAddEdit_Additional::OnPWHCopyAll()
     HistStr += L"\r\n";
   }
 
-  app.GetMainDlg()->SetClipboardData(HistStr);
+  GetMainDlg()->SetClipboardData(HistStr);
 }
 

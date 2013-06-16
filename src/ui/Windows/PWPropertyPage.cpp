@@ -21,6 +21,11 @@ CPWPropertyPage::CPWPropertyPage(UINT nID)
   m_psp.dwFlags |= PSP_HASHELP;
 }
 
+DboxMain *CPWPropertyPage::GetMainDlg() const
+{
+  return app.GetMainDlg();
+}
+
 void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -73,9 +78,9 @@ void CPWPropertyPage::ShowHelp(const CString &topicFile)
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
+  if (GetMainDlg()->m_eye_catcher != NULL &&
+      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
+    GetMainDlg()->ResetIdleLockCounter(message);
   } else
     pws_os::Trace(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
 

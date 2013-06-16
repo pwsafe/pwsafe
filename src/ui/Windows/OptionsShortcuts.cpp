@@ -184,7 +184,7 @@ BOOL COptionsShortcuts::OnInitDialog()
 
   KBShortcutMapConstIter kbiter;
 
-  m_KBShortcutMap = app.GetMainDlg()->GetAllKBShortcuts();
+  m_KBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
 
   for (kbiter = m_KBShortcutMap.begin(); kbiter != m_KBShortcutMap.end();
        kbiter++) {
@@ -617,7 +617,7 @@ bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcuts
 
 void COptionsShortcuts::RefreshKBShortcuts()
 {
-  m_KBShortcutMap = app.GetMainDlg()->GetAllKBShortcuts();
+  m_KBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
 }
 
 HBRUSH COptionsShortcuts::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -653,8 +653,8 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
   DWORD lParam = m_EntryShortcutLC.GetItemData(iItem);
   pws_os::CUUID &EntryUUID = GetKBShortcutUUID(lParam);
   iter = app.GetCore()->Find(EntryUUID);
-  bool bEdited = app.GetMainDlg()->EditItem(&iter->second, NULL);
-  if (!app.GetMainDlg()->IsDBReadOnly() && bEdited) {
+  bool bEdited = GetMainDlg()->EditItem(&iter->second, NULL);
+  if (!GetMainDlg()->IsDBReadOnly() && bEdited) {
     // User may have changed shortcut, group, title and/or user fields.
     int32 iKBShortcut;
     iter->second.GetKBShortcut(iKBShortcut);
@@ -783,7 +783,7 @@ int COptionsShortcuts::CheckAppHotKey()
     
     StringX sxMenuItemName;
     unsigned char ucModifiers = wHKModifiers & 0xff;
-    unsigned int nCID = app.GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
+    unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
                                                   ucModifiers, sxMenuItemName);
     if (nCID != 0) {
       // Save this value
