@@ -13,6 +13,7 @@
 #include "PasswordSafe.h"
 #include "resource.h"
 #include "resource3.h"  // String resources
+#include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWHistDlg.h"
 #include "core/ItemData.h"
@@ -198,8 +199,7 @@ void CPWHistDlg::OnHistListClick(NMHDR *pNotifyStruct, LRESULT *)
 
   size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
   const PWHistEntry pwhentry = m_pwhistlist[itempos];
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()->GetParent());
-  pDbx->SetClipboardData(pwhentry.password);
+  app.GetMainDlg()->SetClipboardData(pwhentry.password);
 }
 
 void CPWHistDlg::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -289,6 +289,5 @@ void CPWHistDlg::OnBnClickedPwhCopyAll()
     HistStr += L"\r\n";
   }
 
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()->GetParent());
-  pDbx->SetClipboardData(HistStr);
+  app.GetMainDlg()->SetClipboardData(HistStr);
 }

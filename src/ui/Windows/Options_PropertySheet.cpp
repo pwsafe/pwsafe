@@ -7,6 +7,8 @@
 */
 
 #include "PasswordSafe.h"
+#include "ThisMfcApp.h"
+
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
 #include "Shortcut.h"
@@ -33,8 +35,6 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
 {
   ASSERT(pParent != NULL);
 
-  m_OPTMD.pDbx = static_cast<DboxMain *>(pParent);
-
   // Set up initial values
   SetupInitialValues();
 
@@ -50,9 +50,9 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
   m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
-  m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
-                               m_OPTMD.pDbx->GetExcludedMenuItems(),
-                               m_OPTMD.pDbx->GetReservedShortcuts());
+  m_pp_shortcuts->InitialSetup(app.GetMainDlg()->GetMapMenuShortcuts(),
+                               app.GetMainDlg()->GetExcludedMenuItems(),
+                               app.GetMainDlg()->GetReservedShortcuts());
 
   AddPage(m_pp_backup);
   AddPage(m_pp_display);
@@ -126,7 +126,7 @@ void COptions_PropertySheet::SetupInitialValues()
 
   // Backup Data
   CString cs_backupPrefix, cs_backupDir;
-  m_OPTMD.CurrentFile = m_OPTMD.pDbx->GetCurFile().c_str();
+  m_OPTMD.CurrentFile = app.GetMainDlg()->GetCurFile().c_str();
   m_OPTMD.SaveImmediately =
       prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   m_OPTMD.BackupBeforeSave =
@@ -186,14 +186,6 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.ShiftDoubleClickAction =
       prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
 
-  m_OPTMD.Hotkey_Value = DWORD(prefs->GetPref(PWSprefs::HotKey));
-  // Can't be enabled if not set!
-  if (m_OPTMD.Hotkey_Value == 0)
-    m_OPTMD.Hotkey_Enabled = FALSE;
-  else
-    m_OPTMD.Hotkey_Enabled =
-      prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
-
   m_OPTMD.UseDefuser =
       prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
   m_OPTMD.DefUsername =
@@ -240,6 +232,14 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
   
   // Shortcut Data
+  m_OPTMD.AppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  // Can't be enabled if not set!
+  if (m_OPTMD.AppHotKeyValue == 0)
+    m_OPTMD.AppHotKeyEnabled = FALSE;
+  else
+    m_OPTMD.AppHotKeyEnabled =
+      prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+
   m_OPTMD.ColWidth =
       prefs->GetPref(PWSprefs::OptShortcutColumnWidth);
   m_OPTMD.DefColWidth =
@@ -325,10 +325,6 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::ShiftDoubleClickAction,
                  (unsigned int)m_OPTMD.ShiftDoubleClickAction, true);
 
-  prefs->SetPref(PWSprefs::HotKey,
-                 m_OPTMD.Hotkey_Value, true);
-  prefs->SetPref(PWSprefs::HotKeyEnabled,
-                 m_OPTMD.Hotkey_Enabled == TRUE, true);
   prefs->SetPref(PWSprefs::QuerySetDef,
                  m_OPTMD.QuerySetDef == TRUE, true);
   prefs->SetPref(PWSprefs::AltBrowser,
@@ -428,6 +424,11 @@ void COptions_PropertySheet::UpdateCopyPreferences()
     m_bCheckExpired = m_bRefreshViews = true;
 
   // Deal with shortcuts
+  prefs->SetPref(PWSprefs::HotKey,
+                 m_OPTMD.AppHotKeyValue, true);
+  prefs->SetPref(PWSprefs::HotKeyEnabled,
+                 m_OPTMD.AppHotKeyEnabled == TRUE, true);
+
   if (m_pp_shortcuts->HaveShortcutsChanged())
     m_bUpdateShortcuts = true;
 

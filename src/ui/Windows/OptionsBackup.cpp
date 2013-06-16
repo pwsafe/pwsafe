@@ -10,9 +10,11 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "GeneralMsgBox.h"
+
 #include "ThisMfcApp.h"    // For Help
+
 #include "Options_PropertySheet.h"
+#include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h" // for DoubleClickAction enums
@@ -111,9 +113,9 @@ BOOL COptionsBackup::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
-  m_chkbox.ResetBkgColour();//Use current window's background
+  m_chkbox.ResetBkgColour(); //Use current window's background
 
-  if (!M_pDbx()->IsDBReadOnly())
+  if (!app.GetMainDlg()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
 
   if (m_backupsuffix_cbox.GetCount() == 0) {

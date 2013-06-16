@@ -45,8 +45,6 @@ struct st_FilterItemData {
   UINT flt_flags;
 };
 
-class DboxMain;
-
 class CManageFiltersDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CManageFiltersDlg)
@@ -88,8 +86,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
-
   PWSFilters &m_MapFilters;
   std::vector<st_Filterkey> m_vcs_filters;
 

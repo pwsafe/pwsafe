@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "PWListCtrl.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"
 #include "InfoDisplay.h"
 
 using namespace std;
@@ -33,7 +34,8 @@ CPWListCtrl::~CPWListCtrl()
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CPWListCtrl)
   ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, OnItemChanging)
-  ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnSelectionChanged)
+  ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
+  ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnKeyDown)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_MESSAGE(WM_CHAR, OnCharItemlist)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
@@ -50,7 +52,6 @@ END_MESSAGE_MAP()
 
 void CPWListCtrl::Initialize()
 {
-  m_pDbx = static_cast<DboxMain *>(GetParent());
   UpdateRowHeight(false);
 }
 
@@ -69,7 +70,7 @@ void CPWListCtrl::SetUpFont()
 
 LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
-  const int iSubItem = m_pDbx->IsImageVisible() ? 1 : 0;
+  const int iSubItem = app.GetMainDlg()->IsImageVisible() ? 1 : 0;
   bool bFirst;
 
   if (m_FindTimerID != 0) {
@@ -96,34 +97,32 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 void CPWListCtrl::OnDestroy()
 {
   // Remove dummy ImageList. PWTreeCtrl removes the real one!
-  m_pDbx->m_pImageList0->DeleteImageList();
-  delete m_pDbx->m_pImageList0;
+  app.GetMainDlg()->m_pImageList0->DeleteImageList();
+  delete app.GetMainDlg()->m_pImageList0;
 }
 
 void CPWListCtrl::OnPaint()
 {
   CListCtrl::OnPaint();
 
-  if (m_pDbx != NULL)
-    m_pDbx->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
 }
 
 void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  if (m_pDbx != NULL)
-    m_pDbx->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
 }
 
 BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // Process User's AutoType shortcut
-  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateAutoType(pMsg))
+  if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))
     return TRUE;
 
   // Process User's Delete shortcut
-  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateDelete(pMsg))
+  if (app.GetMainDlg()->CheckPreTranslateDelete(pMsg))
     return TRUE;
 
   // Let the parent class do its thing
@@ -140,7 +139,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
     case TIMER_ND_HOVER:
       KillTimer(m_nHoverNDTimerID);
       m_nHoverNDTimerID = 0;
-      if (m_pDbx->SetNotesWindow(m_HoverNDPoint)) {
+      if (app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint)) {
         if (m_nShowNDTimerID) {
           KillTimer(m_nShowNDTimerID);
           m_nShowNDTimerID = 0;
@@ -152,7 +151,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
       KillTimer(m_nShowNDTimerID);
       m_nShowNDTimerID = 0;
       m_HoverNDPoint = CPoint(0, 0);
-      m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+      app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
       break;
     default:
       CListCtrl::OnTimer(nIDEvent);
@@ -162,7 +161,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
 
 void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
-  m_pDbx->ResetIdleLockCounter();
+  app.GetMainDlg()->ResetIdleLockCounter();
   if (!m_bShowNotes)
     return;
 
@@ -178,7 +177,7 @@ void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
       return;
     KillTimer(m_nShowNDTimerID);
     m_nShowNDTimerID = 0;
-    m_pDbx->SetNotesWindow(CPoint(0, 0), false);
+    app.GetMainDlg()->SetNotesWindow(CPoint(0, 0), false);
   }
 
   if (!m_bMouseInWindow) {
@@ -199,7 +198,7 @@ LRESULT CPWListCtrl::OnMouseLeave(WPARAM, LPARAM)
   KillTimer(m_nShowNDTimerID);
   m_nHoverNDTimerID = m_nShowNDTimerID = 0;
   m_HoverNDPoint = CPoint(0, 0);
-  m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+  app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
   m_bMouseInWindow = false;
   return 0L;
 }
@@ -251,7 +250,7 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
     EnsureVisible(iItem, FALSE);
     Invalidate();
     CItemData *pci = (CItemData *)GetItemData(iItem);
-    m_pDbx->UpdateToolBarForSelectedItem(pci);
+    app.GetMainDlg()->UpdateToolBarForSelectedItem(pci);
   }
 
   return bFound;
@@ -267,7 +266,7 @@ void CPWListCtrl::SetFilterState(bool bState)
 
 BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
 {
-  if (m_bFilterActive && m_pDbx->GetNumPassedFiltering() == 0) {
+  if (m_bFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
 
     // Set up variables
@@ -324,19 +323,23 @@ void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
     return;
 
   // Has the selected state changed?  Only care if not selected and now is
-  if (!(pNMLV->uOldState & LVIS_SELECTED) == 0 && (pNMLV->uNewState & LVIS_SELECTED) != 0) {
+  if (!((pNMLV->uOldState & LVIS_SELECTED) == 0 &&
+        (pNMLV->uNewState & LVIS_SELECTED) != 0)) {
     return;
   }
 
   if ((GetKeyState(VK_CONTROL) & 0x8000) && GetSelectedCount() == 2) {
-    // Control key pressed - multi-select
-      *pLResult = TRUE; // Deny change - no more than 2 allowed to be selected
-      return;
+    // Control key pressed - multi-select but limited to 2
+    *pLResult = TRUE; // Deny change - no more than 2 allowed to be selected
+    return;
   }
 }
 
-void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
+  *pLResult = 0;
+
+  // Ignore if empty
   if (GetItemCount() == 0)
     return;
 
@@ -345,10 +348,40 @@ void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
     case VK_DOWN:
-      m_pDbx->OnItemSelected(pNotifyStruct, pLResult, false);
+    {
+      *pLResult = 1L;
+      // Process page up/down - to wrap around when at top/bottom
+      int iItem = GetNextItem(-1, LVNI_SELECTED);
+      // Unselect current item
+      SetItemState(iItem,0, LVIS_FOCUSED | LVIS_SELECTED);
+      const int nCount = GetItemCount();
+      if (pLVKeyDown->wVKey == VK_DOWN)
+        iItem = (iItem + 1) % nCount;
+      if (pLVKeyDown->wVKey == VK_UP)
+        iItem = (iItem - 1 + nCount) % nCount;
+      app.GetMainDlg()->ItemSelected(NULL, iItem);
       break;
+    }
     default:
       break;
+  }
+}
+
+void CPWListCtrl::OnItemChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  *pLResult = 0;
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct;
+
+  // Don't bother if no entries
+  if (GetItemCount() == 0)
+    return;
+ 
+  if ((pNMListView->uChanged & LVIF_STATE) == LVIF_STATE) {
+    if ((pNMListView->uOldState & LVIS_SELECTED) == 0 &&
+        (pNMListView->uNewState & LVIS_SELECTED) != 0) {
+      // Item has been selected
+      app.GetMainDlg()->ItemSelected(NULL, pNMListView->iItem);
+    }
   }
 }
 

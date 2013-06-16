@@ -402,8 +402,7 @@ void CSystemTray::OnTimer(UINT_PTR )
 }
 
 // Helper function to set up recent entry submenu based on entry's attributes
-static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci,
-                                 const DboxMain *pDbx)
+static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci)
 {
   BOOL brc;
   CString cs_text, cs_select;
@@ -431,10 +430,10 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
   if (brc == 0) goto exit;
   ipos++;
 
-  if (pci->IsShortcut() && pDbx != NULL) {
+  if (pci->IsShortcut()) {
     // Shortcut has no data of itself - for all other menu items
     // use base entry's fields
-    const CItemData *pBase = pDbx->GetBaseEntry(pci);
+    const CItemData *pBase = app.GetMainDlg()->GetBaseEntry(pci);
     if (pBase != NULL)
       pci = pBase;
   }
@@ -630,13 +629,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
       // No point in doing Recent Entries if database is locked
       if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED) {
-        DboxMain *pDbx = dynamic_cast<DboxMain *>(m_pParent);
-        ASSERT(pDbx != NULL); // fail safely in release build later
         // Build extra popup menus (1 per entry in list)
         typedef CMenu* CMenuPtr;
         ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-        const bool bGUIEmpty = pDbx == NULL || pDbx->IsGUIEmpty();
+        const bool bGUIEmpty = app.GetMainDlg()->IsGUIEmpty();
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           ppNewRecentEntryMenu[i] = NULL;  // Ensure empty
@@ -648,7 +645,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci, pDbx);
+          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci);
           if (brc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
             continue;

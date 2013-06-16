@@ -14,6 +14,7 @@
 
 #include "DDStatic.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -156,9 +157,6 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   // Save resource IDs (Static and required image)
   m_nID = GetDlgCtrlID();
 
-  // Save pointer to DboxMain
-  m_pDbx = static_cast<DboxMain *>(GetParent());
-
   // Load bitmap
   BOOL brc;
   brc = m_OKbitmap.Attach(::LoadImage(
@@ -284,7 +282,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
   if (!m_bMouseInClient) {
     m_bMouseInClient = true;
 
-    m_pci = m_pDbx->GetLastSelected();
+    m_pci = app.GetMainDlg()->GetLastSelected();
     TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, CStatic::GetSafeHwnd(), 0};
     TrackMouseEvent(&tme);
   }
@@ -296,9 +294,9 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
   int iX = m_StartPoint.x - point.x;
   int iY = m_StartPoint.y - point.y;
   if ((iX * iX + iY * iY) > MINIMUM_MOVE_SQUARE) {
-    m_pci = m_pDbx->GetLastSelected();
+    m_pci = app.GetMainDlg()->GetLastSelected();
     if (m_pci == NULL) {
-      m_groupname = m_pDbx->GetGroupName();
+      m_groupname = app.GetMainDlg()->GetGroupName();
     } else {
       m_groupname = L"";
     }
@@ -388,13 +386,13 @@ void CDDStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
 
 void CDDStatic::SendToClipboard()
 {
-  if (m_pDbx == NULL || m_nID == IDC_STATIC_DRAGAUTO)
+  if (m_nID == IDC_STATIC_DRAGAUTO)
     return;
 
   if (m_pci == NULL) {
     if (!m_groupname.empty()) {
-      m_pDbx->SetClipboardData(m_groupname);
-      m_pDbx->UpdateLastClipboardAction(CItemData::GROUP);
+      app.GetMainDlg()->SetClipboardData(m_groupname);
+      app.GetMainDlg()->UpdateLastClipboardAction(CItemData::GROUP);
     }
     return;
   }
@@ -406,11 +404,11 @@ void CDDStatic::SendToClipboard()
       (pci->IsShortcut() && (m_nID != IDC_STATIC_DRAGGROUP &&
                              m_nID != IDC_STATIC_DRAGTITLE &&
                              m_nID != IDC_STATIC_DRAGUSER))) {
-    pci = m_pDbx->GetBaseEntry(pci);
+    pci = app.GetMainDlg()->GetBaseEntry(pci);
   }
 
   StringX cs_dragdata = GetData(pci);
-  m_pDbx->SetClipboardData(cs_dragdata);
+  app.GetMainDlg()->SetClipboardData(cs_dragdata);
 }
 
 BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
@@ -453,7 +451,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
         (pci->IsShortcut() && (m_nID != IDC_STATIC_DRAGGROUP &&
                                m_nID != IDC_STATIC_DRAGTITLE &&
                                m_nID != IDC_STATIC_DRAGUSER))) {
-      pci = m_pDbx->GetBaseEntry(pci);
+      pci = app.GetMainDlg()->GetBaseEntry(pci);
     }
     cs_dragdata = GetData(pci);
     if (cs_dragdata.empty() && m_nID != IDC_STATIC_DRAGAUTO)
@@ -642,7 +640,7 @@ void CDDStatic::EndDrop()
   m_bDropped = true;
 
   if (m_nID == IDC_STATIC_DRAGAUTO) {
-    if (m_pDbx != NULL && m_pci != NULL) {
+    if (m_pci != NULL) {
       // Get handle of window where the user wants Autotype to start
       // Then make it the foreground window
       POINT screenpoint;
@@ -652,8 +650,8 @@ void CDDStatic::EndDrop()
         ::SetForegroundWindow(hwndFoundWindow);
       }
 
-      m_pDbx->ClearClipboardData();
-      m_pDbx->PostMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
+      app.GetMainDlg()->ClearClipboardData();
+      app.GetMainDlg()->PostMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
     }
   }
 }

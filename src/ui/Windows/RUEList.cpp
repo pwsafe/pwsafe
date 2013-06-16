@@ -31,7 +31,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 
-CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0), m_pDbx(NULL)
+CRUEList::CRUEList() : m_core(*app.GetCore()), m_maxentries(0)
 {
 }
 
@@ -79,7 +79,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       ruentrydata.string = L"\xab" + group + L"\xbb " + 
                            L"\xab" + title + L"\xbb " + 
                            L"\xab" + user  + L"\xbb";
-      ruentrydata.image = m_pDbx->GetEntryImage(ci);
+      ruentrydata.image = app.GetMainDlg()->GetEntryImage(ci);
       ruentrydata.pci = (CItemData *)&ci;
     }
     ListofAllMenuStrings.push_back(ruentrydata);

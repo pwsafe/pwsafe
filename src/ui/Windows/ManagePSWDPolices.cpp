@@ -10,10 +10,12 @@
 //
 
 #include "stdafx.h"
+#include "ThisMfcApp.h" // for online help
+#include "DboxMain.h"
+
 #include "ManagePSWDPolices.h"
 #include "PasswordPolicyDlg.h"
-#include "DboxMain.h"
-#include "ThisMfcApp.h" // for online help
+
 #include "GeneralMsgBox.h"
 
 #include "core/core.h"
@@ -34,13 +36,12 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 {
   ASSERT(pParent != NULL);
 
-  m_pDbx = static_cast<DboxMain *>(pParent);
-  m_bReadOnly = m_pDbx->IsDBReadOnly();
+  m_bReadOnly = app.GetMainDlg()->IsDBReadOnly();
   
-  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
-  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
+  m_bUndoShortcut = app.GetMainDlg()->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
+  m_bRedoShortcut = app.GetMainDlg()->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
 
-  m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
+  m_MapPSWDPLC = app.GetMainDlg()->GetPasswordPolicies();
 
   m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
@@ -320,7 +321,7 @@ void CManagePSWDPolices::OnNew()
 
   // Pass default values, PolicyName map and indicate New (Blank policy name)
   CString cs_policyname(L"");
-  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC);
 
   INT_PTR rc = pDlg->DoModal();
   
@@ -330,7 +331,7 @@ void CManagePSWDPolices::OnNew()
     pDlg = new CPasswordPolicyDlg(IDS_PSWDPOLICY, this, false, m_bReadOnly, m_st_default_pp);
 
     // Pass default values, PolicyName map and indicate New (Blank policy name)
-    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC);
 
     rc = pDlg->DoModal(); 
   }
@@ -399,7 +400,7 @@ void CManagePSWDPolices::OnEdit()
                                 this, true, m_bReadOnly, m_st_default_pp);
 
   // Pass default values and PolicyName map
-  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC);
 
   INT_PTR rc = pDlg->DoModal();
   
@@ -410,7 +411,7 @@ void CManagePSWDPolices::OnEdit()
                                   this, false, m_bReadOnly, m_st_default_pp);
 
     // Pass default values, PolicyName map and indicate New (Blank policy name)
-    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC);
 
     rc = pDlg->DoModal(); 
   }
@@ -558,7 +559,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   }
   
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, st_pp);
+  app.GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -568,8 +569,8 @@ void CManagePSWDPolices::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  m_pDbx->SetClipboardData(m_password);
-  m_pDbx->UpdateLastClipboardAction(CItemData::PASSWORD);
+  app.GetMainDlg()->SetClipboardData(m_password);
+  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -670,18 +671,18 @@ void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
   StringX sxUser  = m_PolicyEntries.GetItemText(nIndex, 2);
 
   // Go and find it
-  ItemListIter iter = m_pDbx->Find(sxGroup, sxTitle, sxUser);
+  ItemListIter iter = app.GetMainDlg()->Find(sxGroup, sxTitle, sxUser);
 
   // Not there (weird!) - exit
-  if (iter == m_pDbx->End())
+  if (iter == app.GetMainDlg()->End())
     return;
   
   // Let user Edit/View entry
-  CItemData ci = m_pDbx->GetEntryAt(iter);
-  if (m_pDbx->EditItem(&ci)) {
+  CItemData ci = app.GetMainDlg()->GetEntryAt(iter);
+  if (app.GetMainDlg()->EditItem(&ci)) {
     // User has edited the entry - need to refresh this list and the main list
     // Get updated Password Policies
-    m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
+    m_MapPSWDPLC = app.GetMainDlg()->GetPasswordPolicies();
     // Update names
     UpdateNames();
     // Update entry list
@@ -876,7 +877,7 @@ void CManagePSWDPolices::UpdateEntryList()
   CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
   // Get all entries that reference it
-  if (!m_pDbx->MakeMatchingGTUSet(m_setGTU, StringX(cs_policyname)))
+  if (!app.GetMainDlg()->MakeMatchingGTUSet(m_setGTU, StringX(cs_policyname)))
     return;
 
   // Update the ListCtrl

@@ -176,7 +176,7 @@ struct FilterValidator
     if ((st_fldata.mtype != PWSMatch::MT_PWHIST &&
          st_fldata.mtype != PWSMatch::MT_POLICY) &&
         (st_fldata.mtype == PWSMatch::MT_INVALID ||
-         st_fldata.rule == PWSMatch::MR_INVALID)) {
+         st_fldata.rule  == PWSMatch::MR_INVALID)) {
       text.Format(IDS_FILTERINCOMPLETE, i + 1);
       return true;
     }
