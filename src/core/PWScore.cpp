@@ -3195,7 +3195,7 @@ bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
 
 bool PWScore::DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid)
 {
-  KBShortcutMapConstIter iter = m_KBShortcutMap.find(iKBShortcut);
+  KBShortcutMapIter iter = m_KBShortcutMap.find(iKBShortcut);
 
   if (iter == m_KBShortcutMap.end())
     return false;
