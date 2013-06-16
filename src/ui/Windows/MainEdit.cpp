@@ -444,7 +444,6 @@ void DboxMain::OnDuplicateGroup()
           continue;
         }
 
-        TRACE(L"Copying %s.%s\n", pci->GetGroup().c_str(), pci->GetTitle().c_str());
         // Set up copy
         CItemData ci2(*pci);
         ci2.SetDisplayInfo(NULL);
@@ -457,6 +456,9 @@ void DboxMain::OnDuplicateGroup()
         subPath =  subPath.substr(grplen);
         const StringX sxThisEntryNewGroup = sxNewPath + subPath;
         ci2.SetGroup(sxThisEntryNewGroup);
+
+        // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+        ci2.SetKBShortcut(0);
 
         if (pci->IsBase()) {
           mapOldToNewBaseUUIDs.insert(std::make_pair(pci->GetUUID(),
@@ -493,6 +495,10 @@ void DboxMain::OnDuplicateGroup()
           ci2.CreateUUID();
           ci2.SetStatus(CItemData::ES_ADDED);
           ci2.SetProtected(false);
+
+          // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+          ci2.SetKBShortcut(0);
+
           // Set new group
           StringX subPath =  pci->GetGroup();
           ASSERT(subPath.length() >= grplen);
@@ -1043,6 +1049,17 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     prefs->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
   }
   
+  // Need to unregister all entry keyboard shortcuts due to the weird way that
+  // CHotKeyCtrl won't allow you to select one that already exists and just changes it
+  // to 'None' with neither a by nor leave
+  // KBShortcutMapConstIter kbiter;
+  // KBShortcutMap mapKBShortcutMap = GetAllKBShortcuts();
+
+  // for (kbiter = mapKBShortcutMap.begin(); kbiter != mapKBShortcutMap.end();
+       // kbiter++) {
+    // UnRegisterGUIKeyboardShortcut(kbiter->first);
+  // }
+  
   CAddEdit_PropertySheet *pEditEntryPSH(NULL);
   
   // Try Tall version
@@ -1226,6 +1243,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   SetChanged(Data);
 
   ChangeOkUpdate();
+  
   // Order may have changed as a result of edit
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
@@ -1354,6 +1372,9 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetUser(ci2_user);
     ci2.SetStatus(CItemData::ES_ADDED);
     ci2.SetProtected(false);
+
+    // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+    ci2.SetKBShortcut(0);
 
     Command *pcmd = NULL;
     if (pci->IsDependent()) {
@@ -2032,6 +2053,17 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
       }
     }
     ci_temp.SetStatus(CItemData::ES_ADDED);
+    
+    // Need to check that entry keyboard shortcut not already in use!
+    int32 iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0 && 
+      m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
+      // Remove it but no mechanism to tell user!
+      ci_temp.SetKBShortcut(0);
+    }
+
     // Add to pwlist
     Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
     if (!bAddToViews) {

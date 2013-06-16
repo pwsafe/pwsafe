@@ -155,8 +155,8 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // DragBar time interval 
 #define TIMER_DRAGBAR_TIME 100
 
-// Hotkey value ID
-#define PWS_HOTKEY_ID      5767
+// Hotkey value ID to maximum value allowed by Windows for an app.
+#define PWS_HOTKEY_ID      0xBFFF
 
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
@@ -259,6 +259,7 @@ public:
   BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(const int i, BOOL MakeVisible = FALSE);
   void SelectFirstEntry();
+  void ItemSelected(HTREEITEM hItem, int iItem);
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
@@ -356,7 +357,6 @@ public:
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData *pci = NULL);
-  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
   bool IsNodeModified(StringX &path) const
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
@@ -372,6 +372,9 @@ public:
   bool IsEmptyGroup(const StringX &sxEmptyGroup)
   {return m_core.IsEmptyGroup(sxEmptyGroup);}
   
+  // Entry keyboard shortcuts
+  const KBShortcutMap &GetAllKBShortcuts() const {return m_core.GetAllKBShortcuts();}
+
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
 
@@ -466,11 +469,16 @@ public:
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
+  const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
+                                     const unsigned char &cModifier, StringX &sxMenuItemName);
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 
   void ChangeMode(bool promptUser); // r-o <-> r/w
+
+  // If we have processed it returns 0 else 1
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   
  protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
@@ -665,8 +673,7 @@ public:
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTreeClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);

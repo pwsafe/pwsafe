@@ -43,6 +43,7 @@ protected:
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -50,7 +51,6 @@ protected:
   //{{AFX_MSG(COptionsPasswordHistory)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnHelp();
-  afx_msg BOOL OnKillActive();
   afx_msg void OnSavePWHistory();
   afx_msg void OnPWHistoryNoAction();
   afx_msg void OnPWHistoryDoAction();

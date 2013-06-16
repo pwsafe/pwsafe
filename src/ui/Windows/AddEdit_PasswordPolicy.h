@@ -57,8 +57,9 @@ public:
   //{{AFX_VIRTUAL(CAddEdit_PasswordPolicy)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  virtual BOOL OnApply();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -67,7 +68,6 @@ protected:
   //{{AFX_MSG(CAddEdit_PasswordPolicy)
   virtual BOOL OnInitDialog();
   afx_msg void OnHelp();
-  afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM );
 
   afx_msg void OnChanged();

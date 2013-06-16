@@ -29,7 +29,7 @@ public:
   void SaveHotKey();
   bool IsHotKeyActive() {return m_bHotKeyActive;}
 
-  void OnHotKeyKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
+  void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
 
 protected:
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;

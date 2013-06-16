@@ -55,6 +55,7 @@ protected:
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -62,7 +63,6 @@ protected:
   //{{AFX_MSG(COptionsBackup)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnHelp();
-  afx_msg BOOL OnKillActive();
   afx_msg void OnBackupPrefix();
   afx_msg void OnBackupDirectory();
   afx_msg void OnBackupBeforeSave();

@@ -17,7 +17,6 @@
 
 class CAddEdit_PropertySheet;
 
-class DboxMain;
 class PWScore;
 class CItemData;
 
@@ -26,7 +25,6 @@ struct st_AE_master_data {
   UINT uicaller;   // Add, Edit or View
 
   PWScore *pcore;
-  DboxMain *pDbx;
   CItemData *pci_original;
   CItemData *pci;  // The entry being edited
 
@@ -81,6 +79,9 @@ struct st_AE_master_data {
   CSecString oldsymbols;
   CSecString policyname;
   CSecString oldpolicyname;
+
+  // Keyboard shortcut
+  int KBShortcut, oldKBShortcut;
   
   // Attributes
   unsigned char ucprotected;
@@ -105,7 +106,6 @@ public:
   inline UINT &M_uicaller() {return m_AEMD.uicaller;}
 
   inline PWScore * &M_pcore() {return m_AEMD.pcore;}
-  inline DboxMain * &M_pDbx() {return m_AEMD.pDbx;}
   inline CItemData * &M_pci() {return m_AEMD.pci;}
 
   inline StringX &M_currentDB() {return m_AEMD.currentDB;}
@@ -174,6 +174,10 @@ public:
   inline int &M_ioldownsymbols() {return m_AEMD.ioldownsymbols;}
   inline CSecString &M_policyname() {return m_AEMD.policyname;}
   inline CSecString &M_oldpolicyname() {return m_AEMD.oldpolicyname;}
+
+  // Keyboard shortcut
+  inline int &M_KBShortcut() {return m_AEMD.KBShortcut;}
+  inline int &M_oldKBShortcut() {return m_AEMD.oldKBShortcut;}
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}

@@ -188,21 +188,21 @@ exit:
 void CSHCTListCtrl::SaveHotKey()
 {
   if (m_bHotKeyActive) {
-    WORD wVK, wMod;
-    m_pHotKey->GetHotKey(wVK, wMod);
-    OnHotKeyKillFocus(wVK, wMod);
+    WORD wVirtualKeyCode, wHKModifiers;
+    m_pHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
+    OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
 
-void CSHCTListCtrl::OnHotKeyKillFocus(const WORD wVirtualKeyCode, 
-                                      const WORD wModifiers)
+void CSHCTListCtrl::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, 
+                                          const WORD wHKModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
   m_pHotKey->ShowWindow(SW_HIDE);
 
   if (m_pParent != NULL) {
-    m_pParent->OnHotKeyKillFocus(m_item, m_id, 
-                                 wVirtualKeyCode, wModifiers);
+    m_pParent->OnMenuShortcutKillFocus(m_item, m_id, 
+                                 wVirtualKeyCode, wHKModifiers);
   }
 
   m_bHotKeyActive = false;

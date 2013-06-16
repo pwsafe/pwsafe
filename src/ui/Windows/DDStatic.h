@@ -12,8 +12,6 @@
 #include "ControlExtns.h"
 #include "core/ItemData.h"
 
-class DboxMain;
-
 class CStaticDropTarget;
 class CStaticDropSource;
 class CStaticDataSource;
@@ -56,7 +54,6 @@ private:
   CStaticDataSource *m_pDataSource;
   friend class CStaticDataSource;
 
-  DboxMain *m_pDbx;
   CItemData *m_pci;
   HGLOBAL m_hgDataUTXT, m_hgDataTXT;
   StringX m_groupname;

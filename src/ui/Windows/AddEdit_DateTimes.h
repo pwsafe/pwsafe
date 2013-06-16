@@ -54,16 +54,16 @@ public:
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_DateTimes)
 protected:
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_DateTimes)
   afx_msg void OnHelp();
-  afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
 
   afx_msg void OnDaysChanged();

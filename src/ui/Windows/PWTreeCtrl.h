@@ -17,7 +17,6 @@
 
 #include <vector>
 
-class DboxMain;
 class CItemData;
 class MultiCommands;
 
@@ -113,7 +112,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
   HTREEITEM m_hitemDrag;
   HTREEITEM m_hitemDrop;
 

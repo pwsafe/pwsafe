@@ -19,8 +19,6 @@
 
 // CManagePSWDPolices dialog
 
-class DboxMain;
-
 class CManagePSWDPolices : public CPWDialog
 {
 public:
@@ -80,8 +78,6 @@ private:
   // of saved changes, then there are changes that can be redone.
   std::vector<st_PSWDPolicyChange> m_vchanges;
   int m_iundo_pos;
-
-  DboxMain *m_pDbx;
 
   PSWDPolicyMap m_MapPSWDPLC;
   PWPolicy m_st_default_pp;

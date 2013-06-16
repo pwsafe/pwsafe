@@ -13,6 +13,8 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 
+#include "HKModifiers.h"
+
 #include "core/PWSprefs.h"
 
 #include "resource.h"
@@ -135,7 +137,6 @@ void DboxMain::SetUpInitialMenuStrings()
   int isubmenu_pos;
   UINT uiCount;
 
-  CHotKeyCtrl cHKC;
   CString sKeyName;
   BOOL brc;
 
@@ -204,6 +205,7 @@ void DboxMain::SetUpInitialMenuStrings()
       CString csMainMenuItem = tcMenuString;
       int iamp = csMainMenuItem.Find(L'&');
       if (iamp >= 0 && iamp < csMainMenuItem.GetLength() - 1) {
+        st_mst.nControlID = miteminfo.wID;
         st_mst.siVirtKey = csMainMenuItem[iamp + 1];
         m_ReservedShortcuts.push_back(st_mst);
       }
@@ -211,14 +213,17 @@ void DboxMain::SetUpInitialMenuStrings()
   }
 
   // Add 3 special keys F1 (for Help), Ctrl+Q/Alt+F4 (Exit)
+  st_mst.nControlID = ID_MENUITEM_HELP;
   st_mst.siVirtKey = VK_F1;
   st_mst.cModifier = 0;
   m_ReservedShortcuts.push_back(st_mst);
 
+  st_mst.nControlID = ID_MENUITEM_EXIT;
   st_mst.siVirtKey = 'Q';
   st_mst.cModifier = HOTKEYF_CONTROL;
   m_ReservedShortcuts.push_back(st_mst);
 
+  st_mst.nControlID = ID_MENUITEM_EXIT;
   st_mst.siVirtKey = VK_F4;
   st_mst.cModifier = HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
@@ -346,20 +351,14 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  // We need to convert from PWS shortcut modifiers to MFC modifiers
+  // We need to convert from PWS to Hotkey modifiers
   for (size_t i = 0; i < vShortcuts.size(); i++) {
-    unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
-    if ((cWindowsMod & PWS_HOTKEYF_ALT    ) == PWS_HOTKEYF_ALT)
-      cModifier |= HOTKEYF_ALT;
-    if ((cWindowsMod & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL)
-      cModifier |= HOTKEYF_CONTROL;
-    if ((cWindowsMod & PWS_HOTKEYF_SHIFT  ) == PWS_HOTKEYF_SHIFT)
-      cModifier |= HOTKEYF_SHIFT;
-    if ((cWindowsMod & PWS_HOTKEYF_EXT    ) == PWS_HOTKEYF_EXT)
-      cModifier |= HOTKEYF_EXT;
-    vShortcuts[i].cModifier = cModifier;
+    WORD wPWSModifiers = vShortcuts[i].cModifier;
+    // Translate from CHotKeyCtrl to PWS modifiers
+    WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
+    vShortcuts[i].cModifier = (unsigned char)wHKModifiers;
   }
-
+      
   size_t N = vShortcuts.size();
   for (size_t i = 0; i < N; i++) {
     const st_prefShortcut &stxst = vShortcuts[i];
@@ -1425,4 +1424,48 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
   }
 
   return true;
+}
+
+const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
+                                             const unsigned char &cModifier,
+                                             StringX &sxMenuItemName)
+{
+  unsigned int nControlID(0);
+  sxMenuItemName.empty();
+  MapMenuShortcutsIter inuse_iter;
+
+  st_MenuShortcut st_mst;
+  st_mst.siVirtKey = siVirtKey;
+  st_mst.cModifier = cModifier;
+  
+  inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
+                            m_MapMenuShortcuts.end(),
+                            already_inuse(st_mst));
+
+  if (inuse_iter != m_MapMenuShortcuts.end()) {
+    nControlID = inuse_iter->first;
+    sxMenuItemName = inuse_iter->second.name.c_str();
+  }
+
+  // std::vector<st_MenuShortcut> m_ReservedShortcuts
+  if (nControlID == 0) {
+    std::vector<st_MenuShortcut>::iterator iter;
+    iter = std::find_if(m_ReservedShortcuts.begin(), m_ReservedShortcuts.end(),
+                        reserved(st_mst));
+
+    if (iter != m_ReservedShortcuts.end()) {
+      nControlID = iter->nControlID;
+      LoadAString(sxMenuItemName, nControlID);
+    }
+  }
+
+  if (!sxMenuItemName.empty()) {
+    // These may have the shortcut hardcoded after a tab character e.g. "\tF1" for Help
+    // Remove the tab and shortcut
+    size_t found = sxMenuItemName.find_first_of(_T("\t"));
+    if (found != StringX::npos)
+      sxMenuItemName.erase(found);
+  }
+
+  return nControlID;
 }

@@ -122,7 +122,7 @@ void CPasskeyChangeDlg::OnOK()
 
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
-  int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_oldpasskey);
+  int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), m_oldpasskey);
   if (rc == PWScore::WRONG_PASSWORD)
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
