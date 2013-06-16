@@ -10,7 +10,6 @@
 //
 
 #include "stdafx.h"
-#include "ThisMfcApp.h" // for online help
 #include "DboxMain.h"
 
 #include "ManagePSWDPolices.h"
@@ -36,12 +35,12 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 {
   ASSERT(pParent != NULL);
 
-  m_bReadOnly = app.GetMainDlg()->IsDBReadOnly();
+  m_bReadOnly = GetMainDlg()->IsDBReadOnly();
   
-  m_bUndoShortcut = app.GetMainDlg()->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
-  m_bRedoShortcut = app.GetMainDlg()->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
+  m_bUndoShortcut = GetMainDlg()->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
+  m_bRedoShortcut = GetMainDlg()->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
 
-  m_MapPSWDPLC = app.GetMainDlg()->GetPasswordPolicies();
+  m_MapPSWDPLC = GetMainDlg()->GetPasswordPolicies();
 
   m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
@@ -559,7 +558,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   }
   
   StringX passwd;
-  app.GetMainDlg()->MakeRandomPassword(passwd, st_pp);
+  GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -569,8 +568,8 @@ void CManagePSWDPolices::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  app.GetMainDlg()->SetClipboardData(m_password);
-  app.GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+  GetMainDlg()->SetClipboardData(m_password);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -671,18 +670,18 @@ void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
   StringX sxUser  = m_PolicyEntries.GetItemText(nIndex, 2);
 
   // Go and find it
-  ItemListIter iter = app.GetMainDlg()->Find(sxGroup, sxTitle, sxUser);
+  ItemListIter iter = GetMainDlg()->Find(sxGroup, sxTitle, sxUser);
 
   // Not there (weird!) - exit
-  if (iter == app.GetMainDlg()->End())
+  if (iter == GetMainDlg()->End())
     return;
   
   // Let user Edit/View entry
-  CItemData ci = app.GetMainDlg()->GetEntryAt(iter);
-  if (app.GetMainDlg()->EditItem(&ci)) {
+  CItemData ci = GetMainDlg()->GetEntryAt(iter);
+  if (GetMainDlg()->EditItem(&ci)) {
     // User has edited the entry - need to refresh this list and the main list
     // Get updated Password Policies
-    m_MapPSWDPLC = app.GetMainDlg()->GetPasswordPolicies();
+    m_MapPSWDPLC = GetMainDlg()->GetPasswordPolicies();
     // Update names
     UpdateNames();
     // Update entry list
@@ -877,7 +876,7 @@ void CManagePSWDPolices::UpdateEntryList()
   CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
   // Get all entries that reference it
-  if (!app.GetMainDlg()->MakeMatchingGTUSet(m_setGTU, StringX(cs_policyname)))
+  if (!GetMainDlg()->MakeMatchingGTUSet(m_setGTU, StringX(cs_policyname)))
     return;
 
   // Update the ListCtrl

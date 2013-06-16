@@ -8,7 +8,6 @@
 
 #include "PasswordSafe.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"
 #include "AddEdit_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
@@ -400,8 +399,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
-          if (iter != app.GetMainDlg()->End())
-            app.GetMainDlg()->UpdateEntryImages(iter->second);
+          if (iter != GetMainDlg()->End())
+            GetMainDlg()->UpdateEntryImages(iter->second);
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);
           m_AEMD.pci->SetNormal();
@@ -449,7 +448,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       CPWPropertySheet::EndDialog(IDOK);
     } else {
       // Send message to DboxMain to update entry
-      app.GetMainDlg()->SendMessage(PWS_MSG_EDIT_APPLY, (WPARAM)this, NULL);
+      GetMainDlg()->SendMessage(PWS_MSG_EDIT_APPLY, (WPARAM)this, NULL);
 
       // Now make the original equal to new intermediate state
       *(m_AEMD.pci_original) = *(m_AEMD.pci);

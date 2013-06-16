@@ -13,7 +13,6 @@
 #include "ShowCompareDlg.h"
 #include "PWHistDlg.h"
 #include "DboxMain.h"
-#include "ThisMfcApp.h"
 #include "InfoDisplay.h"
 
 #include "core/ItemData.h"
@@ -139,7 +138,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
              m_pci_other->GetUser() + sxCloseBracket;
 
   if (m_pci->IsAlias() || m_pci->IsShortcut()) {
-    pci_base = app.GetMainDlg()->GetBaseEntry(m_pci);
+    pci_base = GetMainDlg()->GetBaseEntry(m_pci);
     sxGTUBase1 = sxOpenBracket +
                pci_base->GetGroup() + sxColon + 
                pci_base->GetTitle() + sxColon +
@@ -149,7 +148,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
       pci = pci_base;
   }
   if (m_pci_other->IsAlias() || m_pci_other->IsShortcut()) {
-    pci_other_base = app.GetMainDlg()->GetBaseEntry(m_pci_other);
+    pci_other_base = GetMainDlg()->GetBaseEntry(m_pci_other);
     sxGTUBase2 = sxOpenBracket +
                pci_other_base->GetGroup() + sxColon + 
                pci_other_base->GetTitle() + sxColon +

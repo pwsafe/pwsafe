@@ -25,7 +25,6 @@ CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
 CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs)
   : CPropertySheet(pszCaption, pParent), m_bKeepHidden(false)
 {
-  app.GetMainDlg() =  static_cast<DboxMain *>(pParent);
   m_bLongPPs = bLongPPs;
 
   m_psh.dwFlags |= PSH_HASHELP;
@@ -37,11 +36,16 @@ BEGIN_MESSAGE_MAP(CPWPropertySheet, CPropertySheet)
   ON_WM_MENUCHAR()
 END_MESSAGE_MAP()
 
+DboxMain *CPWPropertySheet::GetMainDlg() const
+{
+  return app.GetMainDlg();
+}
+
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
+  if (GetMainDlg()->m_eye_catcher != NULL &&
+      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
+    GetMainDlg()->ResetIdleLockCounter(message);
   } else
     pws_os::Trace(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
 
@@ -69,7 +73,7 @@ BOOL CPWPropertySheet::OnInitDialog()
   CPropertySheet::OnInitDialog();
 
   // If started with Tall and won't fit - return to be called again with Wide
-  if (m_bLongPPs && !app.GetMainDlg()->LongPPs(this)) {
+  if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
     return TRUE;
   }

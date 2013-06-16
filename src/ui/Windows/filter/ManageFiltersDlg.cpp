@@ -10,7 +10,6 @@
 //
 
 #include "../stdafx.h"
-#include "../ThisMfcApp.h" // for online help
 #include "../GeneralMsgBox.h"
 #include "../DboxMain.h"
 #include "../PWResizeDialog.h"
@@ -345,7 +344,7 @@ void CManageFiltersDlg::OnFilterNew()
   flt_key.fpool = FPOOL_SESSION;
 
 do_edit:
-  bCreated = app.GetMainDlg()->EditFilter(&filters, false);
+  bCreated = GetMainDlg()->EditFilter(&filters, false);
 
   flt_key.cs_filtername = filters.fname;
 
@@ -376,9 +375,9 @@ do_edit:
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
-    app.GetMainDlg()->SetFilter(FPOOL_SESSION, filters.fname.c_str());
+    GetMainDlg()->SetFilter(FPOOL_SESSION, filters.fname.c_str());
     if (bJustDoIt)
-      app.GetMainDlg()->ApplyFilter(true);
+      GetMainDlg()->ApplyFilter(true);
 
     m_selectedfiltername = flt_key.cs_filtername.c_str();
     m_selectedfilterpool = flt_key.fpool;
@@ -406,7 +405,7 @@ void CManageFiltersDlg::OnFilterEdit()
   st_filters filters = mf_iter->second;
 
 do_edit:
-  bChanged = app.GetMainDlg()->EditFilter(&filters, false);
+  bChanged = GetMainDlg()->EditFilter(&filters, false);
   if (bChanged) {
     // Has user changed the filter's name?
     // If so, check for conflict.
@@ -451,9 +450,9 @@ do_edit:
     m_selectedfiltername = flt_key.cs_filtername.c_str();
 
     // Update DboxMain's current filter
-    app.GetMainDlg()->SetFilter(flt_key.fpool, filters.fname.c_str());
+    GetMainDlg()->SetFilter(flt_key.fpool, filters.fname.c_str());
     if (bJustDoIt)
-      app.GetMainDlg()->ApplyFilter(true);
+      GetMainDlg()->ApplyFilter(true);
 
     UpdateFilterList();
     DisplayFilterProperties(&filters);
@@ -505,8 +504,8 @@ void CManageFiltersDlg::OnFilterCopy()
   }
   if (bCopied) {
     m_bDBFiltersChanged = true;
-    app.GetMainDlg()->SetChanged(DboxMain::Data);
-    app.GetMainDlg()->ChangeOkUpdate();
+    GetMainDlg()->SetChanged(DboxMain::Data);
+    GetMainDlg()->ChangeOkUpdate();
   }
 
   UpdateFilterList();
@@ -541,8 +540,8 @@ void CManageFiltersDlg::OnFilterDelete()
   m_MapFilters.erase(flt_key);
   if (m_selectedfilterpool == FPOOL_DATABASE) {
     m_bDBFiltersChanged = true;
-    app.GetMainDlg()->SetChanged(DboxMain::Data);
-    app.GetMainDlg()->ChangeOkUpdate();
+    GetMainDlg()->SetChanged(DboxMain::Data);
+    GetMainDlg()->ChangeOkUpdate();
   }
 
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
@@ -558,7 +557,7 @@ void CManageFiltersDlg::OnFilterDelete()
     m_activefilter = -1;
     m_activefilterpool = FPOOL_LAST;
     m_activefiltername = L"";
-    app.GetMainDlg()->ClearFilter();
+    GetMainDlg()->ClearFilter();
   }
 
   m_selectedfilter = -1;
@@ -576,7 +575,7 @@ void CManageFiltersDlg::OnFilterDelete()
 
 void CManageFiltersDlg::OnFilterImport()
 {
-  app.GetMainDlg()->ImportFilters();
+  GetMainDlg()->ImportFilters();
 
   UpdateFilterList();
 }
@@ -599,15 +598,15 @@ void CManageFiltersDlg::OnFilterExport()
     Filters.insert(PWSFilters::Pair(pflt_idata->flt_key, mf_iter->second));
   }
   if (!Filters.empty()) {
-    app.GetMainDlg()->ExportFilters(Filters);
+    GetMainDlg()->ExportFilters(Filters);
     Filters.clear();
   }
 }
 
 void CManageFiltersDlg::SetFilter()
 {
-  app.GetMainDlg()->SetFilter(m_selectedfilterpool, m_selectedfiltername);
-  if (!app.GetMainDlg()->ApplyFilter(true))
+  GetMainDlg()->SetFilter(m_selectedfilterpool, m_selectedfiltername);
+  if (!GetMainDlg()->ApplyFilter(true))
     return;
 
   m_activefilterpool = m_selectedfilterpool;
@@ -631,7 +630,7 @@ void CManageFiltersDlg::SetFilter()
 
 void CManageFiltersDlg::ClearFilter()
 {
-  app.GetMainDlg()->ClearFilter();
+  GetMainDlg()->ClearFilter();
 
   m_activefilterpool = FPOOL_LAST;
   m_activefiltername = L"";

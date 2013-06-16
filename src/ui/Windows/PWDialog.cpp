@@ -21,6 +21,11 @@ CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
+DboxMain *CPWDialog::GetMainDlg() const
+{
+  return app.GetMainDlg();
+}
+
 void CPWDialog::FixBitmapBackground(CBitmap &bm)
 {
   // Change bitmap's {192,192,192} pixels
@@ -105,9 +110,9 @@ void CPWDialog::ShowHelp(const CString &topicFile)
 
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
+  if (GetMainDlg()->m_eye_catcher != NULL &&
+      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
+    GetMainDlg()->ResetIdleLockCounter(message);
   } else
     pws_os::Trace(L"CPWDialog::WindowProc - couldn't find DboxMain ancestor\n");
 

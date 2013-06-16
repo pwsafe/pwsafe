@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 
-#include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
@@ -138,8 +137,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   CPWResizeDialog::OnInitDialog();
 
   m_menuManager.Install(this);
-  m_menuManager.SetImageList(&app.GetMainDlg()->m_MainToolBar);
-  m_menuManager.SetMapping(&app.GetMainDlg()->m_MainToolBar);
+  m_menuManager.SetImageList(&GetMainDlg()->m_MainToolBar);
+  m_menuManager.SetMapping(&GetMainDlg()->m_MainToolBar);
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -219,7 +218,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
 void CCompareResultsDlg::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 {
   // Add pretty pictures to our menu
-  app.GetMainDlg()->CPRInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
+  GetMainDlg()->CPRInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 }
 
 void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)

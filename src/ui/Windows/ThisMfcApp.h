@@ -51,7 +51,7 @@ public:
   void ClearMRU();
   void AddToMRU(const CString &pszFilename);
 
-  DboxMain * &GetMainDlg() {return m_pDbx;}
+  DboxMain *GetMainDlg() {return m_pDbx;}
   PWScore *GetCore() {return &m_core;}
   CMenu *GetMainMenu() {return m_pMainMenu;}
 
