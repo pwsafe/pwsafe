@@ -9,8 +9,6 @@
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
 RELEASENUM := 3.31
-RELEASE_SPECIAL := git
-
 RELEASE_SPECIAL := Y
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 
