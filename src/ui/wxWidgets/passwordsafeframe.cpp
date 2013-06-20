@@ -2464,7 +2464,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   std::wstring strError;
   wxString TxtFileName = dlg.filepath;
   int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numNoPolicyNames(0);
-  wchar_t delimiter = dlg.FieldSeparator();
+  wchar_t delimiter = dlg.strDelimiterLine[0];
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   /* Create report as we go */
