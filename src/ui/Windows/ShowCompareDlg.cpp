@@ -11,13 +11,13 @@
 #include "stdafx.h"
 
 #include "ShowCompareDlg.h"
-#include "PWHistDlg.h"
 #include "DboxMain.h"
 #include "InfoDisplay.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
 #include "core/core.h"
+#include "core/PWHistory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1224,7 +1224,6 @@
     <ClCompile Include="filter\PWFiltersDlg.cpp" />
     <ClCompile Include="PWFindToolBar.cpp" />
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
-    <ClCompile Include="PWHistDlg.cpp" />
     <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
@@ -1350,7 +1349,6 @@
     <ClInclude Include="filter\PWFiltersDlg.h" />
     <ClInclude Include="PWFindToolBar.h" />
     <ClInclude Include="PWHdrCtrlNoChng.h" />
-    <ClInclude Include="PWHistDlg.h" />
     <ClInclude Include="PWHistListCtrl.h" />
     <ClInclude Include="PWListCtrl.h" />
     <ClInclude Include="PWPropertyPage.h" />

@@ -252,9 +252,6 @@
     <ClCompile Include="PWHdrCtrlNoChng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWHistDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -621,9 +618,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWHdrCtrlNoChng.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWHistDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWListCtrl.h">
