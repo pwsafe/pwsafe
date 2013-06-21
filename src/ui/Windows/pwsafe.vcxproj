@@ -1104,6 +1104,7 @@
     <ClCompile Include="DumpSelect.cpp" />
     <ClCompile Include="EBListCtrl.cpp" />
     <ClCompile Include="EditShortcutDlg.cpp" />
+    <ClCompile Include="EntryKBHotKey.cpp" />
     <ClCompile Include="ExpPswdLC.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
@@ -1159,7 +1160,6 @@
     <ClCompile Include="filter\PWFiltersDlg.cpp" />
     <ClCompile Include="PWFindToolBar.cpp" />
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
-    <ClCompile Include="PWHistDlg.cpp" />
     <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
@@ -1233,6 +1233,7 @@
     <ClInclude Include="DumpSelect.h" />
     <ClInclude Include="EBListCtrl.h" />
     <ClInclude Include="EditShortcutDlg.h" />
+    <ClInclude Include="EntryKBHotKey.h" />
     <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
