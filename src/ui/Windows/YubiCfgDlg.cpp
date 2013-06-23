@@ -201,7 +201,7 @@ void CYubiCfgDlg::OnBnClickedOk()
   // Was OK button, now "Set Yubikey" so we don't close
   // after processing.
   UpdateData(TRUE);  
-  StringX skStr = m_YubiSK;
+  StringX skStr = LPCWSTR(m_YubiSK);
   
   GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
   if (!skStr.empty()) {

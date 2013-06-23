@@ -703,11 +703,11 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -936,10 +936,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
@@ -1193,6 +1193,7 @@
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
     <ClCompile Include="PWDialog.cpp" />
@@ -1243,6 +1244,7 @@
     <ClCompile Include="WZPropertySheet.cpp" />
     <ClCompile Include="WZSelectDB.cpp" />
     <ClCompile Include="xpsupportvc11upd2v102\xpatl.cpp" />
+    <ClCompile Include="YubiCfgDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -1317,6 +1319,7 @@
     <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
     <ClInclude Include="PWDialog.h" />
@@ -1375,6 +1378,7 @@
     <ClInclude Include="WZPropertyPage.h" />
     <ClInclude Include="WZPropertySheet.h" />
     <ClInclude Include="WZSelectDB.h" />
+    <ClInclude Include="YubiCfgDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />
