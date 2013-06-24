@@ -171,6 +171,9 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...);
 template<class T> void Format(T &s, int fmt, ...);
 template<class T> void LoadAString(T &s, int id);
 
+inline stringT stringx2std(const StringX &str) { return stringT(str.data(), str.size()); }
+inline StringX std2stringx(const stringT& str)   { return StringX(str.data(), str.size()); }
+
 #endif /* __STRINGX_H */
 //-----------------------------------------------------------------------------
 // Local variables:

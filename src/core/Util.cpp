@@ -773,3 +773,12 @@ stringT PWSUtil::GetSafeXMLString(const StringX &sxInString)
   retval = os.str().c_str();
   return retval;
 }
+
+bool operator==(const std::string& str1, const stringT& str2)
+{
+    CUTF8Conv conv;
+    StringX xstr;
+    VERIFY( conv.FromUTF8( reinterpret_cast<const unsigned char*>(str1.data()), str1.size(), xstr) );
+    return stringx2std(xstr) == str2;
+}
+
