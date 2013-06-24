@@ -72,7 +72,7 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria): m_criteri
                                 {CItemData::POLICYNAME,   &CItemData::IsPolicyNameSet},
                                 {CItemData::SYMBOLS,      &CItemData::IsSymbolsSet},
                                 {CItemData::DCA,          &CItemData::IsDCASet},
-                                {CItemData::SHIFTDCA,     &CItemData::IsDCASet}, // <<=== NOTE!!
+                                {CItemData::SHIFTDCA,     &CItemData::IsShiftDCASet},
                                 {CItemData::PROTECTED,    &CItemData::IsProtectionSet},
                                 {CItemData::CTIME,        &CItemData::IsCreationTimeSet},
                                 {CItemData::ATIME,        &CItemData::IsLastAccessTimeSet},
