@@ -190,9 +190,6 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   if (bittest(bsFields, CItemData::SHIFTDCA, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::SHIFTDCA) + TAB;
   }
-  if (bittest(bsFields, CItemData::SHIFTDCA, bIncluded)) {
-    hdr += CItemData::FieldName(CItemData::SHIFTDCA) + TAB;
-  }
   if (bittest(bsFields, CItemData::EMAIL, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::EMAIL) + TAB;
   }
@@ -908,8 +905,35 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   unsigned num_found = 0;
   int itoken = 0;
 
+  // This makes things compatible with older versions where column tiles in EXPORTHEADER
+  // didn't match with CItemData::FieldName
+  struct HeaderFieldMap {
+        Fields                hdrField;
+        CItemData::FieldType  itemField;
+  } fieldMap[] = {
+#define HDR_MAP_ENTRY(e) {e, CItemData::e},
+#define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
+    
+        // These must be defined in the same order as Fields enum above, or it will assesrt below
+      
+        HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)               HDR_MAP_ENTRY(PASSWORD)  HDR_MAP_ENTRY(URL)
+        HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)              HDR_MAP_ENTRY(PMTIME)    HDR_MAP_ENTRY(ATIME)
+        HDR_MAP_ENTRY(XTIME)      HDR_MAP_ENTRY(XTIME_INT)          HDR_MAP_ENTRY(RMTIME)    HDR_MAP_ENTRY(POLICY)
+        HDR_MAP_ENTRY(POLICYNAME) HDR_MAP_ENTRY2(HISTORY, PWHIST)   HDR_MAP_ENTRY(RUNCMD)    HDR_MAP_ENTRY(DCA)
+        HDR_MAP_ENTRY(SHIFTDCA)   HDR_MAP_ENTRY(EMAIL)              HDR_MAP_ENTRY(PROTECTED) HDR_MAP_ENTRY(SYMBOLS)
+        HDR_MAP_ENTRY(NOTES)
+
+#undef HDR_MAP_ENTRY
+#undef HDR_MAP_ENTRY2
+    };
+    
+    // make sure all elements are there
+    ASSERT( NumberOf(fieldMap) == NUMFIELDS );
+
   to = 0;
   do {
+    // make sure EXPORTHEADER has correct field names, though we have some resiliency below
+    ASSERT( vs_Header[itoken] == CItemData::FieldName(fieldMap[itoken].itemField));  
     from = s_header.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
@@ -920,6 +944,16 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
       i_Offset[it - vs_Header.begin()] = itoken;
+      num_found++;
+    }
+    else if ( token == CItemData::FieldName(fieldMap[itoken].itemField) ) {
+      // Column header might not match if it was exported from a version where EXPORTHEADER didn't
+      // name the column titles correctly.  So compare directly with the corresponding field name.
+      // Note that we are not searching here, unlike the above if block. The incorrect title has to
+      // be in the correct column for this to work.  This is only a compatibility fix, not an 
+      // alternative to searching, as in above if block.
+      ASSERT( itoken == fieldMap[itoken].hdrField );
+      i_Offset[ fieldMap[itoken].hdrField ] = itoken;
       num_found++;
     }
     itoken++;
