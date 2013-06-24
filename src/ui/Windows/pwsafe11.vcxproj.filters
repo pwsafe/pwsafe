@@ -1640,4 +1640,9 @@
   <ItemGroup>
     <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap.asm" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="graphics\Yubikey-button.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

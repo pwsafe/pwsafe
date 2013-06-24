@@ -1705,6 +1705,9 @@
       <Outputs>..\$(PWSObj)\$(ProjectName)\%(FileName).obj;</Outputs>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="graphics\Yubikey-button.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
     <VisualStudio>
