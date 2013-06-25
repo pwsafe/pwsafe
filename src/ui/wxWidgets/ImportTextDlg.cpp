@@ -59,6 +59,7 @@ CImportTextDlg::CImportTextDlg(wxWindow* parent) :  wxDialog(parent,
                                                     delimiterTab(true), //this is the pwsafe's default for export
                                                     delimiterSemicolon(false),
                                                     delimiterOther(false),
+                                                    strDelimiterLine(wxT("\xbb")),
                                                     importUnderGroup(false),
                                                     importPasswordsOnly(false)
 {

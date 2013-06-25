@@ -2464,7 +2464,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   std::wstring strError;
   wxString TxtFileName = dlg.filepath;
   int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numNoPolicyNames(0);
-  wchar_t delimiter = dlg.FieldSeparator();
+  wchar_t delimiter = dlg.strDelimiterLine[0];
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   /* Create report as we go */
@@ -2841,10 +2841,10 @@ struct ExportFullText
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object,
                           int subgroup_function, TCHAR delimiter, int &numExported,
-                          const OrderedItemList *il)
+                          const OrderedItemList *il, CReport *rpt)
   {
     return core.WritePlaintextFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, numExported, il);
+                          delimiter, numExported, il, rpt);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced Text Export Options");
@@ -2889,11 +2889,11 @@ struct ExportFullXml {
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object,
                           int subgroup_function, TCHAR delimiter, int &numExported,
-                          const OrderedItemList *il)
+                          const OrderedItemList *il, CReport *rpt)
   {
     bool bFilterActive = false;
     return core.WriteXMLFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, numExported, il, bFilterActive);
+                          delimiter, numExported, il, bFilterActive, rpt);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced XML Export Options");
@@ -2982,14 +2982,27 @@ void PasswordSafeFrame::DoExportText()
 
         if (fd.ShowModal() == wxID_OK) {
           newfile = fd.GetPath();
+          CReport rpt;
+          
+          rpt.StartReport(ExportType::GetTitle(), sx_temp.c_str());
+          rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
+          
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
-                                      subgroup_function, delimiter, numExported, &orderedItemList);
+                                      subgroup_function, delimiter, numExported, &orderedItemList, &rpt);
+
+          rpt.EndReport();
 
           orderedItemList.clear(); // cleanup soonest
 
           if (rc != PWScore::SUCCESS) {
             DisplayFileWriteError(rc, newfile);
           }
+          else {
+            if ( wxMessageBox(_T("Export complete.  Do you wish to see a detailed report?"), ExportType::GetTitle(), 
+                              wxYES_NO|wxICON_QUESTION, this) == wxYES )
+              ViewReport(rpt);
+          }
+
         }
         break;
       }
