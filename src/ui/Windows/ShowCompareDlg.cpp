@@ -11,13 +11,13 @@
 #include "stdafx.h"
 
 #include "ShowCompareDlg.h"
-#include "PWHistDlg.h"
 #include "DboxMain.h"
 #include "InfoDisplay.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
 #include "core/core.h"
+#include "core/PWHistory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,8 +32,6 @@ CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pPa
   m_pNotesDisplay(NULL), m_bDifferentDB(bDifferentDB)
 {
   ASSERT(m_pci != NULL && m_pci_other != NULL && pParent != NULL);
-  
-  m_pDbx = (DboxMain *)pParent;
 
   // Set up DCA to string values
   m_DCA.resize(PWSprefs::maxDCA + 1);
@@ -108,7 +106,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
     CItemData::RUNCMD, CItemData::EMAIL,
     CItemData::DCA, CItemData::SHIFTDCA,
     CItemData::PROTECTED, CItemData::SYMBOLS,
-    CItemData::POLICY, CItemData::POLICYNAME,
+    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT,
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
   };
@@ -140,7 +138,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
              m_pci_other->GetUser() + sxCloseBracket;
 
   if (m_pci->IsAlias() || m_pci->IsShortcut()) {
-    pci_base = m_pDbx->GetBaseEntry(m_pci);
+    pci_base = GetMainDlg()->GetBaseEntry(m_pci);
     sxGTUBase1 = sxOpenBracket +
                pci_base->GetGroup() + sxColon + 
                pci_base->GetTitle() + sxColon +
@@ -150,7 +148,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
       pci = pci_base;
   }
   if (m_pci_other->IsAlias() || m_pci_other->IsShortcut()) {
-    pci_other_base = m_pDbx->GetBaseEntry(m_pci_other);
+    pci_other_base = GetMainDlg()->GetBaseEntry(m_pci_other);
     sxGTUBase2 = sxOpenBracket +
                pci_other_base->GetGroup() + sxColon + 
                pci_other_base->GetTitle() + sxColon +

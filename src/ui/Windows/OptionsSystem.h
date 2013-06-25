@@ -47,6 +47,7 @@ protected:
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -60,7 +61,6 @@ protected:
   afx_msg void OnSetMigrate2Appdata();
   afx_msg void OnApplyConfigChanges();
   afx_msg void OnNeverSaveDBNames();
-  afx_msg BOOL OnKillActive();
   afx_msg BOOL OnSetActive();
   //}}AFX_MSG
 

@@ -252,9 +252,6 @@
     <ClCompile Include="PWHdrCtrlNoChng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWHistDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -391,6 +388,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SCWListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EntryKBHotKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -783,6 +783,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SCWListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntryKBHotKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

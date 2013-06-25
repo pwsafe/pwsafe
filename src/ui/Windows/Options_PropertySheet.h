@@ -34,32 +34,32 @@ public:
 
   DECLARE_DYNAMIC(COptions_PropertySheet)
 
-  const MapMenuShortcuts GetMaps() {return m_pp_shortcuts->GetMaps();}
-  const DWORD GetHotKeyValue() {return m_OPTMD.Hotkey_Value;}
-  const int GetDCA() {return m_OPTMD.DoubleClickAction;}
-  const int GetMaxMRUItems() {return m_OPTMD.MaxMRUItems;}
-  const int GetMaxREItems() {return m_OPTMD.MaxREItems;}
-  const int GetTrayIconColour() {return m_OPTMD.TrayIconColour;}
-  const int GetPWHAction() {return m_OPTMD.PWHAction;}
-  const int GetPWHistoryMax() {return m_OPTMD.PWHistoryNumDefault;}
-  const bool GetHotKeyState() {return m_OPTMD.Hotkey_Enabled == TRUE;}
-  const bool GetEnableGrid() {return m_OPTMD.EnableGrid == TRUE;}
-  const bool GetNotesAsTips() { return m_OPTMD.ShowNotesAsTipsInViews == TRUE;}
-  const bool RefreshViews() {return m_bRefreshViews;}
-  const bool SaveGroupDisplayState() {return m_bSaveGroupDisplayState;}
-  const bool UpdateShortcuts() {return m_bUpdateShortcuts;}
-  const bool CheckExpired() {return m_bCheckExpired;}
-  const bool UserDisplayChanged() {return m_save_bShowUsernameInTree != 
+  MapMenuShortcuts GetMaps() const {return m_pp_shortcuts->GetMaps();}
+  int32 GetHotKeyValue() const {return m_OPTMD.AppHotKeyValue;}
+  int GetDCA() const {return m_OPTMD.DoubleClickAction;}
+  int GetMaxMRUItems() const {return m_OPTMD.MaxMRUItems;}
+  int GetMaxREItems() const {return m_OPTMD.MaxREItems;}
+  int GetTrayIconColour() const {return m_OPTMD.TrayIconColour;}
+  int GetPWHAction() const {return m_OPTMD.PWHAction;}
+  int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
+  bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
+  bool GetEnableGrid() const {return m_OPTMD.EnableGrid == TRUE;}
+  bool GetNotesAsTips() const {return m_OPTMD.ShowNotesAsTipsInViews == TRUE;}
+  bool RefreshViews() {return m_bRefreshViews;}
+  bool SaveGroupDisplayState() const {return m_bSaveGroupDisplayState;}
+  bool UpdateShortcuts() const {return m_bUpdateShortcuts;}
+  bool CheckExpired() const {return m_bCheckExpired;}
+  bool UserDisplayChanged() const {return m_save_bShowUsernameInTree != 
                                           m_OPTMD.ShowUsernameInTree;}
-  const bool PswdDisplayChanged() {return m_save_bShowPasswordInTree != 
+  bool PswdDisplayChanged() const {return m_save_bShowPasswordInTree != 
                                         m_OPTMD.ShowPasswordInTree;}
-  const bool ShowUsernameInTree() {return m_OPTMD.ShowUsernameInTree == TRUE;}
-  const bool HighlightChanges() {return m_OPTMD.HighlightChanges == TRUE;}
-  const bool LockOnWindowLock() {return m_OPTMD.LockOnWindowLock == TRUE;}
-  const bool LockOnWindowLockChanged() {return m_OPTMD.LockOnWindowLock !=
+  bool ShowUsernameInTree() const {return m_OPTMD.ShowUsernameInTree == TRUE;}
+  bool HighlightChanges() const {return m_OPTMD.HighlightChanges == TRUE;}
+  bool LockOnWindowLock() const {return m_OPTMD.LockOnWindowLock == TRUE;}
+  bool LockOnWindowLockChanged() const {return m_OPTMD.LockOnWindowLock !=
                                                m_save_bLockOnWindowLock;}
-  const bool StartupShortcut() {return m_OPTMD.Startup == TRUE;}
-  const bool StartupShortcutChanged() {return m_OPTMD.Startup !=
+  bool StartupShortcut() const {return m_OPTMD.Startup == TRUE;}
+  bool StartupShortcutChanged() const {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
   
 protected:

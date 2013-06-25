@@ -233,6 +233,12 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
     m_bsAllowedFields.set(CItemData::PROTECTED);
     m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
+
+    cs_text.LoadString(IDS_KBSHORTCUT);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::KBSHORTCUT | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::KBSHORTCUT);
+    m_bsDefaultSelectedFields.set(CItemData::KBSHORTCUT);
   }
 
   // Deal with text fields - all selected by default
@@ -647,7 +653,7 @@ void CAdvancedDlg::OnDeselectAll()
 void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct; 
+  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct; 
 
   if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {

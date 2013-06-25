@@ -12,6 +12,7 @@
 
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
+
 #include "Fonts.h"
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
@@ -90,9 +91,7 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 //-----------------------------------------------------------------------------
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
-    m_passwd(passwd), m_bshown(false), m_warningmsg(L""),
-    m_pDbx(static_cast<DboxMain *>(pParent))
-
+    m_passwd(passwd), m_bshown(false), m_warningmsg(L"")
 {
 }
 
@@ -279,6 +278,6 @@ void CPasswordSubsetDlg::OnCopy()
 
   // Remove blanks from between the characters
   cs_data.Remove(_T(' '));
-  m_pDbx->SetClipboardData(cs_data);
-  m_pDbx->UpdateLastClipboardAction(CItemData::PASSWORD);
+  GetMainDlg()->SetClipboardData(cs_data);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

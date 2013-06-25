@@ -377,6 +377,12 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::PROTECTED);
       m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
+
+      cs_text.LoadString(IDS_KBSHORTCUT);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::KBSHORTCUT | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::KBSHORTCUT);
+      m_bsDefaultSelectedFields.set(CItemData::KBSHORTCUT);
       break;
 
     default:
@@ -497,6 +503,12 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::POLICYNAME);
       m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
+
+      cs_text.LoadString(IDS_KBSHORTCUT);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::KBSHORTCUT | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::KBSHORTCUT);
+      m_bsDefaultSelectedFields.set(CItemData::KBSHORTCUT);
       break;
 
     case WZAdvanced::SYNCH:
@@ -956,7 +968,7 @@ void CWZAdvanced::OnDeselectAll()
 void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
+  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
   if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
@@ -1012,7 +1024,8 @@ int CALLBACK CWZAdvanced::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
       80 /* PROTECTED  = 0x15 */,
       60 /* SYMBOLS    = 0x16 */,
       82 /* SHIFTDCA   = 0x17 */,
-      62 /* POLICYNAME = 0x18 */
+      62 /* POLICYNAME = 0x18 */,
+      63 /* KBSHORTCUT = 0x19 */,
   };
 
   const int i1 = iSortOrder[lParam1 & 0xff];

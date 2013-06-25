@@ -31,6 +31,8 @@
 #include "PasswordPolicyDlg.h"
 #include "ManagePSWDPolices.h"
 
+#include "HKModifiers.h"
+
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
 #include "core/PWSAuxParse.h"
@@ -253,15 +255,13 @@ void DboxMain::OnOptions()
   const StringX sxOldDBPrefsString(prefs->Store());
 
   // Save Hotkey info
-  DWORD hotkey_value;
-  BOOL hotkey_enabled;
-  
-  hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
+  BOOL bAppHotKeyEnabled;
+  int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
   // Can't be enabled if not set!
-  if (hotkey_value == 0)
-    hotkey_enabled = FALSE;
+  if (iPWSHotKeyValue == 0)
+    bAppHotKeyEnabled = FALSE;
   else
-    hotkey_enabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+    bAppHotKeyEnabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
   // Disable Hotkey around this as the user may press the current key when 
   // selecting the new key!
@@ -293,8 +293,8 @@ void DboxMain::OnOptions()
 
     // Get updated Hotkey information as we will either re-instate the original or
     // set these new values
-    hotkey_enabled = pOptionsPS->GetHotKeyState();
-    hotkey_value = pOptionsPS->GetHotKeyValue();
+    bAppHotKeyEnabled = pOptionsPS->GetHotKeyState();
+    iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
     UINT uiMessage(IDS_STATCOMPANY);
@@ -419,18 +419,12 @@ void DboxMain::OnOptions()
         }
       }
 
-      // We need to convert from MFC shortcut modifiers to PWS modifiers
+      // We need to convert from MFC HotKey modifiers to PWS modifiers
       for (size_t i = 0; i < vShortcuts.size(); i++) {
-        unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
-        if ((cWindowsMod & HOTKEYF_ALT    ) == HOTKEYF_ALT)
-          cModifier |= PWS_HOTKEYF_ALT;
-        if ((cWindowsMod & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
-          cModifier |= PWS_HOTKEYF_CONTROL;
-        if ((cWindowsMod & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT)
-          cModifier |= PWS_HOTKEYF_SHIFT;
-        if ((cWindowsMod & HOTKEYF_EXT    ) == HOTKEYF_EXT)
-          cModifier |= PWS_HOTKEYF_EXT;
-        vShortcuts[i].cModifier = cModifier;
+        WORD wHKModifiers = vShortcuts[i].cModifier;
+        // Translate from CHotKeyCtrl to PWS modifiers
+        WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+        vShortcuts[i].cModifier = (unsigned char)wPWSModifiers;
       }
 
       prefs->SetPrefShortcuts(vShortcuts);
@@ -582,24 +576,31 @@ void DboxMain::OnOptions()
   }
 
   // Restore hotkey as it was or as user changed it - if user pressed OK
-  if (hotkey_enabled == TRUE) {
-    WORD wVirtualKeyCode = WORD(hotkey_value & 0xffff);
-    WORD mod = WORD(hotkey_value >> 16);
-    WORD wModifiers = 0;
-    // Translate between CHotKeyCtrl & CWnd modifiers
-    if (mod & HOTKEYF_ALT) 
-      wModifiers |= MOD_ALT; 
-    if (mod & HOTKEYF_CONTROL) 
-      wModifiers |= MOD_CONTROL; 
-    if (mod & HOTKEYF_SHIFT) 
-      wModifiers |= MOD_SHIFT; 
-    BOOL brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                              UINT(wModifiers), UINT(wVirtualKeyCode));
-    if (brc == FALSE) {
-      CGeneralMsgBox gmb;
-      gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+  WORD wVirtualKeyCode = iPWSHotKeyValue & 0xff;
+  WORD wHKModifiers = iPWSHotKeyValue >> 16;
+    
+  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
+  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
+  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+  int32 iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+  m_core.SetAppHotKey(iAppShortcut);
+
+  if (bAppHotKeyEnabled == TRUE) {
+    // Only set if valid i.e. a character plus at least Alt or Ctrl
+    if (wVirtualKeyCode != 0 && (wModifiers & (MOD_ALT | MOD_CONTROL)) != 0) {
+      BOOL brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                                UINT(wModifiers), UINT(wVirtualKeyCode));
+      if (brc == FALSE) {
+        CGeneralMsgBox gmb;
+        gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+        bAppHotKeyEnabled = FALSE;
+      }
+    } else {
+      bAppHotKeyEnabled = FALSE;
     }
   }
+  // Just in case we reset this being enabled
+  prefs->SetPref(PWSprefs::HotKeyEnabled, bAppHotKeyEnabled == TRUE);
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
@@ -619,7 +620,7 @@ void DboxMain::OnGeneratePassword()
 
   // Pass default values, PolicyName map
   CString cs_poliyname(L"");
-  pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC);
 
   INT_PTR rc = pDlg->DoModal();
   
@@ -629,7 +630,7 @@ void DboxMain::OnGeneratePassword()
     pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, false, IsDBReadOnly(), st_default_pp);
 
     // Pass default values, PolicyName map
-    pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+    pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC);
   
     pDlg->DoModal(); 
   }

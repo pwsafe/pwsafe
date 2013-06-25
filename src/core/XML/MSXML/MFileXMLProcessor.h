@@ -45,6 +45,7 @@ public:
   int getNumEntriesPWHErrors() {return m_numEntriesPWHErrors;}
   int getNumNoPolicies() {return m_numNoPolicies;}
   int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
+  int getNumShortcutsRemoved() const {return m_numShortcutsRemoved;}
 
 private:
   PWScore *m_pXMLcore;
@@ -57,6 +58,7 @@ private:
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
   int m_numRenamedPolicies, m_numNoPolicies;
+  int m_numShortcutsRemoved;
   TCHAR m_delimiter;
   bool m_bValidation;
 };

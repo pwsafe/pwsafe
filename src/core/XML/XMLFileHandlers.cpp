@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-extern const TCHAR *FORMATIMPORTED;
+extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
 using namespace std;
 using pws_os::CUUID;
@@ -93,6 +93,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numEntriesPWHErrors = 0;
       m_numNoPolicies = 0;
       m_numRenamedPolicies = 0;
+      m_numShortcutsRemoved = 0;
       m_bEntryBeingProcessed = false;
       break;
     case XLE_ENTRY:
@@ -125,6 +126,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_cur_entry->email = _T("");
       m_cur_entry->symbols = _T("");
       m_cur_entry->policyname = _T("");
+      m_cur_entry->kbshortcut = _T("");
       m_cur_entry->ucprotected = 0;
       m_cur_entry->entrytype = NORMAL;
       m_cur_entry->bforce_normal_entry = false;
@@ -439,6 +441,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_ENTRY_PASSWORDPOLICYNAME:
       m_cur_entry->policyname = m_sxElemContent;
+      break;
+    case XLE_KBSHORTCUT:
+      m_cur_entry->kbshortcut = m_sxElemContent;
       break;
     case XLE_STATUS:
       i = _ttoi(m_sxElemContent.c_str());
@@ -846,6 +851,10 @@ void XMLFileHandlers::AddXMLEntries()
       ci_temp.SetPolicyName(cur_entry->policyname);
     }
 
+    if (!cur_entry->kbshortcut.empty()) {
+      ci_temp.SetKBShortcut(cur_entry->kbshortcut);
+    }
+
     StringX newPWHistory;
     stringT strPWHErrorList;
 
@@ -893,16 +902,58 @@ void XMLFileHandlers::AddXMLEntries()
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
-    StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
-                        cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-    m_prpt->WriteLine(sx_imported.c_str());
+    StringX sxImportedEntry;
+    // Use new group if the entries have been imported under a new level.
+    Format(sxImportedEntry, GROUPTITLEUSERINCHEVRONS,
+                        sxnewgroup.c_str(), cur_entry->title.c_str(),
+                        cur_entry->username.c_str());
+    m_prpt->WriteLine(sxImportedEntry.c_str());
 
     if (bNoPolicy) {
-      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxMissingPolicyName.c_str());
-      m_prpt->WriteLine(sx_imported.c_str());
+      Format(sxImportedEntry, IDSC_MISSINGPOLICYNAME, sxMissingPolicyName.c_str());
+      m_prpt->WriteLine(sxImportedEntry.c_str());
     }
 
+    // Need to check that entry keyboard shortcut not already in use!
+    int32 iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0) {
+      // Check if already in use as an Entry Keyboard Shortcut
+      CUUID existingUUID = m_pXMLcore->GetKBShortcut(iKBShortcut);
+      if (existingUUID != CUUID::NullUUID()) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+        ItemListIter iter = m_pXMLcore->Find(existingUUID);
+        if (iter == m_pXMLcore->GetEntryEndIter())
+          break;
+
+        // Tell the user via the report
+        StringX sxExistingEntry;
+        Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+                           iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                           iter->second.GetUser().c_str());
+
+        StringX sxTemp, sxImported;
+        LoadAString(sxImported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_REMOVED,
+               sxImported.c_str(), sxImportedEntry.c_str(), sxExistingEntry.c_str(), sxImported.c_str());
+        m_prpt->WriteLine(sxTemp.c_str());
+        m_numShortcutsRemoved++;
+      }
+      // Check if already in use as an the PaswordSafe Application HotKey
+      if (m_pXMLcore->GetAppHotKey() == iKBShortcut) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+
+        // Tell the user via the report
+        StringX sxTemp, sxImported;
+        LoadAString(sxImported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_USEBYAPP, sxImported.c_str(), sxImportedEntry.c_str());
+        m_prpt->WriteLine(sxTemp.c_str());
+        m_numShortcutsRemoved++;
+      }
+    }
     m_pXMLcore->GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();

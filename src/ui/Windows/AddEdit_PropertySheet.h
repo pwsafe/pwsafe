@@ -9,7 +9,6 @@
 #pragma once
 
 class PWScore;
-class DboxMain;
 class ItemData;
 
 #include "PWPropertySheet.h"

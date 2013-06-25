@@ -37,7 +37,7 @@ BOOL CCreateShortcutDlg::OnInitDialog()
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
   std::vector<std::wstring> aryGroups;
-  app.m_core.GetUniqueGroups(aryGroups);
+  app.GetCore()->GetUniqueGroups(aryGroups);
   for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
        iter != aryGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
@@ -106,11 +106,8 @@ void CCreateShortcutDlg::OnOK()
     return;
   }
 
-  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(pDbx != NULL);
-
   // If there is a matching entry in our list, tell the user to try again.
-  if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
+  if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
     CSecString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);

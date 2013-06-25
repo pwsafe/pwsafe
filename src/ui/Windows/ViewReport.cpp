@@ -165,9 +165,7 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  DboxMain *pDbx = dynamic_cast<DboxMain *>(GetParent());
-  if (pDbx != NULL)
-    pDbx->SetClipboardData(m_pString);
+  GetMainDlg()->SetClipboardData(m_pString);
 }
 
 void CViewReport::Finish()

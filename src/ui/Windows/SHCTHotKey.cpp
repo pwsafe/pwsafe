@@ -33,18 +33,19 @@ END_MESSAGE_MAP()
 
 // SHCTHotKey message handlers
 
-void CSHCTHotKey::OnKillFocus(CWnd *pWnd)
+void CSHCTHotKey::OnKillFocus(CWnd *)
 {
-  UNREFERENCED_PARAMETER(pWnd);
   if (m_pParent != NULL) {
-    WORD wVK, wMod;
-    GetHotKey(wVK, wMod);
-    m_pParent->OnHotKeyKillFocus(wVK, wMod);
+    WORD wVirtualKeyCode, wHKModifiers;
+    GetHotKey(wVirtualKeyCode, wHKModifiers);
+    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
 
 BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
+  // This is all to allow user to add special characters like ENTER, DELETE into
+  // their assigned Hotkey
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
     const UINT_PTR nChar = pMsg->wParam;
     if ((nChar == VK_RETURN && 
@@ -60,31 +61,32 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
         (nChar == VK_DELETE) ||
         (nChar == VK_SPACE)  ||
         (nChar == VK_BACK)) {
-    if (pMsg->message == WM_KEYUP)
-      return TRUE;
+      if (pMsg->message == WM_KEYUP)
+        return TRUE;
 
-      WORD wVK, wMod;
-      GetHotKey(wVK, wMod);
+      WORD wVirtualKeyCode, wHKModifiers;
+      GetHotKey(wVirtualKeyCode, wHKModifiers);
 
       // Enter sets the Hotkey unless user did Ctrl+Enter, or
       // Alt+Enter or Ctrl+Alt+Enter, in which is taken as a HotKey
       if (nChar == VK_RETURN && 
-          ((wMod & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
-           (wMod & HOTKEYF_ALT    ) != HOTKEYF_ALT    )) {
+          ((wHKModifiers & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
+           (wHKModifiers & HOTKEYF_ALT    ) != HOTKEYF_ALT    )) {
         CHotKeyCtrl::PreTranslateMessage(pMsg);
       }
 
       // No current key means don't want to use the current modifiers.
-      if (wVK != 0)
-        wMod = 0;
+      if (wVirtualKeyCode != 0)
+        wHKModifiers = 0;
 
       // Set extended to make sure we get DEL and not NUM DECIMAL
       if (nChar == VK_DELETE)
-        wMod |= HOTKEYF_EXT;
+        wHKModifiers |= HOTKEYF_EXT;
 
-      wVK = (WORD)nChar;
-      SetHotKey(wVK, wMod);
+      wVirtualKeyCode = (WORD)nChar;
+      SetHotKey(wVirtualKeyCode, wHKModifiers);
 
+      // Just in case parent requires notification of a change
       m_pParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_SHORTCUTHOTKEY, EN_CHANGE), 0);
       return TRUE;
     }

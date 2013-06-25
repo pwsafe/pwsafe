@@ -23,6 +23,9 @@
 #include "InfoDisplay.h"
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
+#include "MenuShortcuts.h"
+
+#include "HKModifiers.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -340,6 +343,12 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (pLHS_PCI->IsProtected() != pRHS_PCI->IsProtected())
         iResult = pLHS_PCI->IsProtected() ? 1 : -1;
       break;
+    case CItemData::KBSHORTCUT:
+      pLHS_PCI->GetKBShortcut(xint1);
+      pRHS_PCI->GetKBShortcut(xint2);
+      if (xint1 != xint2)
+        iResult = (xint1 < xint2) ? -1 : 1;
+      break;
     default:
       ASSERT(FALSE);
   }
@@ -535,7 +544,7 @@ void DboxMain::setupBars()
   CDC* pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
-  m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND,
+  m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND,
                      &m_SaveAdvValues[CAdvancedDlg::FIND]);
   ReleaseDC(pDC);
 
@@ -725,6 +734,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
+  StringX curKBS;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -771,6 +781,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curSymbols = curitem.GetSymbols();
     curPolicyName = curitem.GetPolicyName();
     curRunCommand = curitem.GetRunCommand();
+    curKBS = curitem.GetKBShortcut();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
 
@@ -832,6 +843,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::AUTOTYPE) && ::wcsstr(curAT.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::KBSHORTCUT) && ::wcsstr(curKBS.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -924,11 +939,12 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     if (hti != NULL) {
       // Time to remove the old "fake selection" (a.k.a. drop-hilite)
       // Make sure to undo "MakeVisible" on the previous selection.
-      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED | TVIS_SELECTED);
     }
 
     retval = m_ctlItemTree.SelectItem(pdi->tree_item);
     if (MakeVisible) {
+      m_ctlItemTree.EnsureVisible(pdi->tree_item);
       // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(pdi->tree_item,
                                  TVIS_DROPHILITED | TVIS_SELECTED,
@@ -1363,57 +1379,33 @@ void DboxMain::OnRestore()
   TellUserAboutExpiredPasswords();
 }
 
-void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView)
+void DboxMain::ItemSelected(HTREEITEM hItem, int iItem)
 {
-  // Needed as need public function called by CPWTreeCtrl and CPWListCtrl
-  if (bTreeView)
-    OnTreeItemSelected(pNotifyStruct, pLResult);
-  else
-    OnListItemSelected(pNotifyStruct, pLResult);
-
-}
-
-void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  // ListView
-  *pLResult = 0L;
+  // Called by both List and Tree Controls
   CItemData *pci(NULL);
 
-  // More than 2 selected is meaningless in List view
-  //if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
-  //  *pLResult = 1L;
-  //  return;
-  //}
-
-  int iItem(-1);
-  switch (pNotifyStruct->code) {
-    case NM_CLICK:
-    {
-      LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
-      iItem = pLVItemActivate->iItem;
-      break;
-    }
-    case LVN_KEYDOWN:
-    {
-      LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
-      iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
-      int nCount = m_ctlItemList.GetItemCount();
-      if (pLVKeyDown->wVKey == VK_DOWN)
-        iItem = (iItem + 1) % nCount;
-      if (pLVKeyDown->wVKey == VK_UP)
-        iItem = (iItem - 1 + nCount) % nCount;
-      break;
-    }
-    default:
-      // No idea how we got here!
+  // ListCtrl and not reselecting the currently selected item
+  if (hItem == NULL && iItem != -1) { 
+    if (iItem == m_ctlItemList.GetNextItem(-1, LVNI_SELECTED))
       return;
-  }
 
-  if (iItem != -1) {
-    // -1 if nothing selected, e.g., empty list
+    // iItem = -1 if nothing selected, e.g., empty list
     pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+    SelectEntry(iItem, TRUE);
+  }
+  
+  // TreeCtrl and not reselecting the currently selected item
+  if (hItem != NULL && iItem == -1 && m_ctlItemTree.IsLeaf(hItem)) {
+    if (hItem == m_ctlItemTree.GetSelectedItem())
+      return;
+
+    pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
   }
 
+  HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
+  if (hti != NULL)
+    m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+  
   UpdateToolBarForSelectedItem(pci);
   SetDCAText(pci);
 
@@ -1421,11 +1413,10 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   m_LastFoundListItem = -1;
 }
 
-void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void DboxMain::OnTreeClicked(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 {
   // TreeView
   *pLResult = 0L;
-  CItemData *pci(NULL);
 
   // Seems that under Vista with Windows Common Controls V6, it is ignoring
   // the single click on the button (+/-) of a node and only processing the 
@@ -1436,58 +1427,30 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   HTREEITEM hItem(NULL);
 
   UnFindItem();
-  switch (pNotifyStruct->code) {
-    case NM_CLICK:
-    {
-      // Mouseclick - Need to find the item clicked via HitTest
-      TVHITTESTINFO htinfo = {0};
-      CPoint local = ::GetMessagePos();
-      m_ctlItemTree.ScreenToClient(&local);
-      htinfo.pt = local;
-      m_ctlItemTree.HitTest(&htinfo);
-      hItem = htinfo.hItem;
 
-        // Ignore any clicks not on an item (group or entry)
-        if (hItem == NULL ||
-            htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
-                            TVHT_ABOVE   | TVHT_BELOW | 
-                            TVHT_TORIGHT | TVHT_TOLEFT))
-            return;
+  // Mouseclick - Need to find the item clicked via HitTest
+  TVHITTESTINFO htinfo = {0};
+  CPoint local = ::GetMessagePos();
+  m_ctlItemTree.ScreenToClient(&local);
+  htinfo.pt = local;
+  m_ctlItemTree.HitTest(&htinfo);
+  hItem = htinfo.hItem;
 
-      // If a group
-      if (!m_ctlItemTree.IsLeaf(hItem)) {
-        // If on indent or button
-        if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-          m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-          *pLResult = 1L; // We have toggled the group
-          return;
-        }
-      }
-      break;
+  // Ignore any clicks not on an item (group or entry)
+  if (hItem == NULL ||
+      htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
+                      TVHT_ABOVE   | TVHT_BELOW | 
+                      TVHT_TORIGHT | TVHT_TOLEFT))
+    return;
+
+  // If a group
+  if (!m_ctlItemTree.IsLeaf(hItem)) {
+    // If on indent or button
+    if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+      m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+      *pLResult = 1L; // We have toggled the group
     }
-    case TVN_SELCHANGED:
-      // Keyboard - We are given the new selected entry
-      hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
-      break;
-    default:
-      // No idea how we got here!
-      return;
-  }    
-
-  // Check it was on an item
-  if (hItem != NULL && m_ctlItemTree.IsLeaf(hItem)) {
-    pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
   }
-
-  HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
-  if (hti != NULL)
-    m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
-
-  UpdateToolBarForSelectedItem(pci);
-  SetDCAText(pci);
-
-  m_LastFoundTreeItem = NULL;
-  m_LastFoundListItem = -1;
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1520,7 +1483,7 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
-// itemData must be the actual item in the item list.  if the item is removed
+// CItemData must be the actual item in the item list.  If the item is removed
 // from the list, it must be removed from the display as well and vice versa.
 // A pointer is associated with the item in the display that is used for
 // sorting.
@@ -1697,7 +1660,7 @@ void DboxMain::ClearData(const bool clearMRE)
 
 void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult) 
 {
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
+  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
@@ -2908,6 +2871,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::PROTECTED:        
       cs_header.LoadString(IDS_PROTECTED);
       break;
+    case CItemData::KBSHORTCUT:        
+      cs_header.LoadString(IDS_KBSHORTCUT);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2932,6 +2898,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::POLICY:
     case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
+    case CItemData::KBSHORTCUT:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -3475,6 +3442,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (bsFFields.test(CItemData::POLICYNAME))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
+    if (bsFFields.test(CItemData::KBSHORTCUT))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4560,6 +4529,21 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       PWPolicy pwp;
       ci.GetPWPolicy(pwp);
       sx_fielddata = pwp.GetDisplayString();
+      break;
+    }
+    case CItemData::KBSHORTCUT:
+    {
+      int32 iKBShortcut;
+      ci.GetKBShortcut(iKBShortcut);
+      if (iKBShortcut != 0) {
+        WORD wVirtualKeyCode = iKBShortcut & 0xff;
+        WORD wPWSModifiers = iKBShortcut >> 16;
+        
+        // Translate from PWS modifiers to HotKey
+        WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
+
+        sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+      }
       break;
     }
     default:

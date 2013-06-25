@@ -44,8 +44,6 @@ typedef std::deque<pws_os::CUUID> RUEList;
 typedef RUEList::iterator RUEListIter;
 typedef RUEList::const_iterator RUEListConstIter;
 
-class DboxMain;
-
 class CRUEList
 {
 public:
@@ -54,9 +52,6 @@ public:
   ~CRUEList() {}
 
   CRUEList& operator=(const CRUEList& second);
-
-  void SetMainWindow(DboxMain *pDbx)
-  {m_pDbx = pDbx;}
 
   // Data retrieval
   size_t GetCount() const {return m_RUEList.size();}
@@ -77,7 +72,6 @@ private:
   PWScore &m_core;    // Dboxmain's m_core (which = app.m_core!)
   size_t m_maxentries;
   RUEList m_RUEList;  // Recently Used Entry History List
-  DboxMain *m_pDbx;
 };
 
 //-----------------------------------------------------------------------------

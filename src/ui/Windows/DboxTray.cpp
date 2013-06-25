@@ -32,11 +32,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemData &base)
+static bool SafeGetBaseEntry(const CItemData &dep, CItemData &base)
 {
   // Asserts in debug build if GetBaseEntry(dependent) fails
   // returns false in release build
-  const CItemData *pBase = pDbx->GetBaseEntry(&dep);
+  const CItemData *pBase = app.GetMainDlg()->GetBaseEntry(&dep);
   ASSERT(pBase != NULL);
   if (pBase != NULL) {
     base = *pBase;
@@ -89,7 +89,7 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 
@@ -112,7 +112,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
     return;
 
   if (ci.IsDependent()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 
@@ -135,7 +135,7 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
     return;
 
   if (ci.IsShortcut())
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return;
 
   SetClipboardData(ci.GetNotes());
@@ -164,7 +164,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return;
   }
 
@@ -205,7 +205,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   }
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return;
   }
 
@@ -241,7 +241,7 @@ void DboxMain::OnTrayCopyEmail(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 
@@ -264,7 +264,7 @@ void DboxMain::OnTraySendEmail(UINT nID)
       return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 
@@ -348,7 +348,7 @@ void DboxMain::OnTrayCopyURL(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 
@@ -382,7 +382,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(this, ci, ci))
+    if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
 

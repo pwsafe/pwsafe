@@ -17,7 +17,6 @@ IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
   : CPropertySheet(nID, pParent), m_bKeepHidden(true)
 {
-  m_pDbx =  static_cast<DboxMain *>(pParent);
   m_bLongPPs = bLongPPs;
 
   m_psh.dwFlags |= PSH_HASHELP;
@@ -26,7 +25,6 @@ CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
 CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs)
   : CPropertySheet(pszCaption, pParent), m_bKeepHidden(false)
 {
-  m_pDbx =  static_cast<DboxMain *>(pParent);
   m_bLongPPs = bLongPPs;
 
   m_psh.dwFlags |= PSH_HASHELP;
@@ -35,21 +33,20 @@ CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool
 BEGIN_MESSAGE_MAP(CPWPropertySheet, CPropertySheet)
   ON_WM_WINDOWPOSCHANGING()
   ON_WM_SHOWWINDOW()
+  ON_WM_MENUCHAR()
 END_MESSAGE_MAP()
+
+DboxMain *CPWPropertySheet::GetMainDlg() const
+{
+  return app.GetMainDlg();
+}
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  CWnd *pParent = GetParent();
-  while (pParent != NULL) {
-    DboxMain *pDbx = dynamic_cast<DboxMain *>(pParent);
-    if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
-        wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
-      pDbx->ResetIdleLockCounter(message);
-      break;
-    } else
-      pParent = pParent->GetParent();
-  }
-  if (pParent == NULL)
+  if (GetMainDlg()->m_eye_catcher != NULL &&
+      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
+    GetMainDlg()->ResetIdleLockCounter(message);
+  } else
     pws_os::Trace(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
 
   return CPropertySheet::WindowProc(message, wParam, lParam);
@@ -76,7 +73,7 @@ BOOL CPWPropertySheet::OnInitDialog()
   CPropertySheet::OnInitDialog();
 
   // If started with Tall and won't fit - return to be called again with Wide
-  if (m_bLongPPs && !m_pDbx->LongPPs(this)) {
+  if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
     return TRUE;
   }
@@ -101,4 +98,17 @@ INT_PTR CPWPropertySheet::DoModal()
     if (bAccEn)app.EnableAccelerator();
 
   return rc;
+}
+
+LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
+{
+  // Stop beeps when presing Allt+<key> in the HotKeyCtrls
+  const int nID = GetFocus()->GetDlgCtrlID();
+
+  // IDs correspond to AddEdit_Additional Entry Keyboard Shortcut Hotkey and
+  // OptionsShortcuts PWS shortcut HotKeys
+  if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_SHORTCUTHOTKEY)
+    return MNC_CLOSE << 16;
+
+ return CPropertySheet::OnMenuChar(nChar, nFlags, pMenu);
 }

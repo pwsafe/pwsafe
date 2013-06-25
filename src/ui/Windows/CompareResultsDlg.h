@@ -47,8 +47,6 @@ private:
   int m_row, m_column;
 };
 
-class DboxMain;
-
 // The following structure is needed for compare to send back data
 // to allow copying, viewing, editing and synching of entries
 struct st_CompareInfo {
@@ -92,7 +90,7 @@ public:
     // Optional columns - do NOT have to be in same order as OptCols member variable data
     PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
-    DCA, SHIFTDCA, PROTECTED,
+    DCA, SHIFTDCA, PROTECTED, KBSHORTCUT,
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME,
     LAST};
 
@@ -165,7 +163,6 @@ private:
 
   PWScore *m_pcore0, *m_pcore1;
   CReport *m_pRpt;
-  DboxMain *m_pDbx;
   CCoolMenuManager m_menuManager;
 
   CString m_results;

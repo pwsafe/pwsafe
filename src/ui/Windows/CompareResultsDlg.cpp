@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 
-#include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
@@ -56,6 +55,7 @@ CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD]
     {CItemData::DCA,        IDS_DCA},
     {CItemData::SHIFTDCA,   IDS_SHIFTDCA},
     {CItemData::PROTECTED,  IDS_PROTECTED},
+    {CItemData::KBSHORTCUT, IDS_KBSHORTCUT},
     {CItemData::CTIME,      IDS_CREATED},
     {CItemData::ATIME,      IDS_LASTACCESSED},
     {CItemData::XTIME,      IDS_PASSWORDEXPIRYDATE},
@@ -80,7 +80,6 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_bTreatWhiteSpaceasEmpty(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
-  m_pDbx = static_cast<DboxMain *>(pParent);
 }
 
 CCompareResultsDlg::~CCompareResultsDlg()
@@ -138,8 +137,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   CPWResizeDialog::OnInitDialog();
 
   m_menuManager.Install(this);
-  m_menuManager.SetImageList(&m_pDbx->m_MainToolBar);
-  m_menuManager.SetMapping(&m_pDbx->m_MainToolBar);
+  m_menuManager.SetImageList(&GetMainDlg()->m_MainToolBar);
+  m_menuManager.SetMapping(&GetMainDlg()->m_MainToolBar);
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -219,7 +218,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
 void CCompareResultsDlg::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 {
   // Add pretty pictures to our menu
-  m_pDbx->CPRInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
+  GetMainDlg()->CPRInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 }
 
 void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
@@ -1209,6 +1208,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_protected(MAKEINTRESOURCE(IDS_COMPPROTECTED));
     const CString csx_symbols(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
     const CString csx_policyname(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
+    const CString csx_kbshortcut(MAKEINTRESOURCE(IDS_KBSHORTCUT));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -1232,6 +1232,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::PROTECTED)) buffer += csx_protected;
       if (st_data.bsDiffs.test(CItemData::SYMBOLS)) buffer += csx_symbols;
       if (st_data.bsDiffs.test(CItemData::POLICYNAME)) buffer += csx_policyname;
+      if (st_data.bsDiffs.test(CItemData::KBSHORTCUT)) buffer += csx_kbshortcut;
 
       // Time fields
       if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
@@ -1390,6 +1391,9 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
   if (m_bsFields.test(CItemData::SYMBOLS) &&
       currentItem.GetSymbols() != compItem.GetSymbols())
     bsConflicts.flip(CItemData::SYMBOLS);
+  if (m_bsFields.test(CItemData::KBSHORTCUT) &&
+      currentItem.GetKBShortcut() != compItem.GetKBShortcut())
+    bsConflicts.flip(CItemData::KBSHORTCUT);
 
   return bsConflicts.none();
 }

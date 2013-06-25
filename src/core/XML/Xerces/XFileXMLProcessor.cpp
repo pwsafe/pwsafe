@@ -197,6 +197,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_numEntriesPWHErrors = pSAX2Handler->getNumPWHErrors();
       m_numNoPolicies = pSAX2Handler->getNumNoPolicies();
       m_numRenamedPolicies = pSAX2Handler->getNumRenamedPolicies();
+      m_numShortcutsRemoved = pSAX2Handler->getNumShortcutsRemoved();
 
       // Get lists
       m_strXMLErrors = pSAX2Handler->getXMLErrors();

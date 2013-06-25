@@ -25,7 +25,6 @@
 * mumble sigh)...
 */
 
-class DboxMain;
 class CVKeyBoardDlg;
 
 class CPasskeyEntry : public CPWDialog
@@ -97,8 +96,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
-
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();

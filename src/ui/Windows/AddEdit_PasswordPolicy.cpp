@@ -10,11 +10,12 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "ThisMfcApp.h"    // For Help
-#include "GeneralMsgBox.h"
+
 #include "DboxMain.h"
+
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
+#include "GeneralMsgBox.h"
 
 #include "core/core.h"
 #include "core/PwsPlatform.h"
@@ -174,7 +175,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   // Get all password policy names
   std::vector<std::wstring> vNames;
-  M_pDbx()->GetPolicyNames(vNames);
+  GetMainDlg()->GetPolicyNames(vNames);
 
   // Add Default
   CString cs_text(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
@@ -213,7 +214,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   if (M_ipolicy() == NAMED_POLICY) {
     if (index != 0) {
       PWPolicy st_pp;
-      M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
+      GetMainDlg()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
       M_pwp() = st_pp;
       M_symbols() = st_pp.symbols;
     } else {
@@ -740,7 +741,7 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
     M_policyname() = (LPCWSTR)cs_text;
 
     PWPolicy st_pp;
-    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
+    GetMainDlg()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
     M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 
@@ -976,7 +977,7 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
   if (index != 0) {
     PWPolicy st_pp;
-    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
+    GetMainDlg()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
     M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 

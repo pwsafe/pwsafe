@@ -10,10 +10,13 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "GeneralMsgBox.h"
-#include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
 #include "ThisMfcApp.h"    // For Help
+
+#include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
+
 #include "Options_PropertySheet.h"
+
+#include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
 

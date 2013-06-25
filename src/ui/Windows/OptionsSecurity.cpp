@@ -10,9 +10,11 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "GeneralMsgBox.h"
 #include "ThisMfcApp.h"    // For Help
+
 #include "Options_PropertySheet.h"
+
+#include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"

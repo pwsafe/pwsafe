@@ -19,8 +19,6 @@
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
 
-class DboxMain;
-
 class CPasswordPolicyDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CPasswordPolicyDlg)
@@ -31,8 +29,7 @@ public:
                      PWPolicy &st_pp);
   ~CPasswordPolicyDlg();
 
-  void SetPolicyData(CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC,
-                     DboxMain *pDbx);
+  void SetPolicyData(CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC);
   void GetPolicyData(PWPolicy &st_pp, CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
   {st_pp = m_st_default_pp; cs_policyname = m_policyname; MapPSWDPLC = m_MapPSWDPLC;}
  
@@ -135,7 +132,6 @@ private:
   stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
   bool m_bReadOnly;
 
-  DboxMain *m_pDbx;
   bool m_bLongPPs;
   CBitmap m_CopyPswdBitmap;
 };

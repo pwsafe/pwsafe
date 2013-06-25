@@ -66,7 +66,8 @@ PWScore::PWScore() :
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_bUniqueGTUValidated(false),
                      m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL)
+                     m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
+                     m_iAppHotKey(0)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -176,6 +177,12 @@ void PWScore::DoAddEntry(const CItemData &item)
     IncrementPasswordPolicy(item.GetPolicyName());
   }
 
+  int32 iKBShortcut;
+  item.GetKBShortcut(iKBShortcut);
+
+  if (iKBShortcut != 0)
+    VERIFY(AddKBShortcut(iKBShortcut, item.GetUUID()));
+
   m_bDBChanged = true;
 }
 
@@ -251,6 +258,12 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       }
     }
 
+    int32 iKBShortcut;
+    item.GetKBShortcut(iKBShortcut);
+
+    if (iKBShortcut != 0)
+      VERIFY(DelKBShortcut(iKBShortcut, item.GetUUID()));
+
     m_bDBChanged = true;
     m_pwlist.erase(pos); // at last!
 
@@ -291,6 +304,17 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 
   if (new_ci.IsNormal() && new_ci.IsPolicyNameSet()) {
     IncrementPasswordPolicy(new_ci.GetPolicyName());
+  }
+
+  int ioldKBShortcut, inewKBShortcut;
+  old_ci.GetKBShortcut(ioldKBShortcut);
+  new_ci.GetKBShortcut(inewKBShortcut);
+
+  if (ioldKBShortcut != inewKBShortcut) {
+    if (ioldKBShortcut != 0)
+      VERIFY(DelKBShortcut(ioldKBShortcut, old_ci.GetUUID()));
+    if (inewKBShortcut != 0)
+      VERIFY(AddKBShortcut(inewKBShortcut, new_ci.GetUUID()));
   }
 
   m_bDBChanged = true;
@@ -356,6 +380,9 @@ void PWScore::ReInit(bool bNewFile)
 
   // Clear expired password entries
   m_ExpireCandidates.clear();
+
+  // Clear entry keyboard shortcuts
+  m_KBShortcutMap.clear();
 
   // Clear any unknown preferences from previous databases
   PWSprefs::GetInstance()->ClearUnknownPrefs();
@@ -601,6 +628,9 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Clear any old expired password entries
   m_ExpireCandidates.clear();
 
+  // Clear any old entry keyboard shortcuts
+  m_KBShortcutMap.clear();
+
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
@@ -756,6 +786,24 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
              iter->second.usecount++;
            }
          }
+
+         if (in3 != NULL) {
+           int32 iKBShortcut;
+           ci_temp.GetKBShortcut(iKBShortcut);
+
+           // Entry can't have same HotKey as the Application
+           if (m_iAppHotKey == iKBShortcut) {
+             ci_temp.SetKBShortcut(0);
+           } else
+           if (iKBShortcut != 0) {
+             if (!ValidateKBShortcut(iKBShortcut)) {
+               m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
+             } else {
+               ci_temp.SetKBShortcut(0);
+             }
+           }
+         }
+
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
            m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
@@ -765,6 +813,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 #else
          m_pwlist.insert(make_pair(ci_temp.GetUUID(), ci_temp));
 #endif
+
          time_t tttXTime;
          ci_temp.GetXTime(tttXTime);
          if (!limited && tttXTime != time_t(0)) {
@@ -781,7 +830,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   } while (go);
 
   ParseDependants();
-
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
@@ -1748,6 +1796,38 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
   }
 }
 
+bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
+{
+  // Verify Entry Keyboard shortcut is valid
+  // Note: to support cross-platforms, can't use "Virtual Key Codes" 
+  // as they differ between Windows, Linux & Mac.
+  // However, the alphanumeric ASCII values are common
+  // and so entry keyboard shortcuts are restricted to these values.
+
+  if (iKBShortcut != 0) {
+    static const TCHAR *tcValidKeys = 
+            _T("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    static const WORD wValidModifiers = 0xffff ^ (
+                            PWS_HOTKEYF_ALT   | PWS_HOTKEYF_CONTROL |
+                            PWS_HOTKEYF_SHIFT | PWS_HOTKEYF_EXT |
+                            PWS_HOTKEYF_META  | PWS_HOTKEYF_WIN |
+                            PWS_HOTKEYF_CMD);
+
+    WORD wVirtualKeyCode = iKBShortcut & 0xff;
+    WORD wPWSModifiers = iKBShortcut >> 16;
+
+    // If there are too many bits in the Modifiers or
+    // Not a valid ASCII character (0-9, A-Z) - remove
+    if ((wValidModifiers & wPWSModifiers) || 
+          _tcschr(tcValidKeys, wVirtualKeyCode) == NULL) {
+      // Remove Entry Keyboard Shortcut
+      iKBShortcut = 0;
+      return true;  // Changed
+    }
+  }
+  return false;  // Unchanged
+}
+
 StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
                                 const StringX &user, const int IDS_MESSAGE)
 {
@@ -2477,7 +2557,7 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
 }
 
 /*
- *  UI Interface feedback routines
+ *  Start UI Interface feedback routines
  */
 
 void PWScore::NotifyDBModified()
@@ -2531,6 +2611,10 @@ void PWScore::UpdateWizard(const stringT &s)
       m_bsSupportedFunctions.test(UIInterFace::UPDATEWIZARD))
     m_pUIIF->UpdateWizard(s);
 }
+
+/*
+ *  End UI Interface feedback routines
+ */
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)
 {
@@ -3099,4 +3183,37 @@ void PWScore::RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPat
 
   m_vEmptyGroups.erase(iter);
   m_vEmptyGroups.push_back(sxNewPath);
+}
+
+bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
+{
+  pair< map<int, pws_os::CUUID>::iterator, bool > pr;
+  pr = m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, uuid));
+
+  return pr.second;
+}
+
+bool PWScore::DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid)
+{
+  KBShortcutMapIter iter = m_KBShortcutMap.find(iKBShortcut);
+
+  if (iter == m_KBShortcutMap.end())
+    return false;
+  else {
+    ASSERT(uuid == iter->second);
+    if (uuid == iter->second) {
+      m_KBShortcutMap.erase(iter);
+    }
+    return true;
+  }
+}
+
+const pws_os::CUUID & PWScore::GetKBShortcut(const int32 &iKBShortcut)
+{
+  KBShortcutMapConstIter iter = m_KBShortcutMap.find(iKBShortcut);
+
+  if (iter == m_KBShortcutMap.end())
+    return CUUID::NullUUID();
+  else
+    return iter->second;
 }

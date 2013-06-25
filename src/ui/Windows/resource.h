@@ -439,8 +439,8 @@
 #define IDC_YES_GROUP                   1084
 #define IDC_GROUP_NAME                  1085
 #define IDC_READONLY                    1086
-#define IDC_HOTKEY_CTRL                 1087
-#define IDC_HOTKEY_ENABLE               1088
+#define IDC_APPHOTKEY_CTRL              1087
+#define IDC_APPHOTKEY_ENABLE            1088
 #define IDC_DEFIMPDELIM                 1090
 #define IDC_QUERYSETEXPDELIM            1091
 #define IDC_WZDEFEXPDELIM               1092
@@ -763,6 +763,9 @@
 #define IDC_UPDATEPROTECTEDPWH          1478
 #define IDC_SHOW_IDENTICAL_FIELDS       1479
 #define IDC_ABORT                       1480
+#define IDC_ENTKBSHCTHOTKEY             1481
+#define IDC_ENTSHORTCUTLIST             1482
+#define IDC_ENTLIST_HEADER              1483
 
 // Next default values for new objects
 // 
@@ -770,7 +773,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        525
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1481
+#define _APS_NEXT_CONTROL_VALUE         1484
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

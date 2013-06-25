@@ -46,8 +46,6 @@ CPasskeySetup::CPasskeySetup(CWnd *pParent)
   : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
   m_LastFocus(IDC_PASSKEY)
 {
-  m_pDbx = static_cast<DboxMain *>(pParent);
-
   m_passkey = L"";
   m_verify = L"";
 

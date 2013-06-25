@@ -8,7 +8,7 @@
 
 #pragma once
 
-class DboxMain;
+class DboxMain; // for GetMainDlg()
 
 class CPWPropertySheet : public CPropertySheet
 {
@@ -26,14 +26,16 @@ public:
 protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
 
+  DboxMain *GetMainDlg() const;
+
   afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+  afx_msg LRESULT OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu);
 
   DECLARE_MESSAGE_MAP()
   
 private:
   // Used to determine if Tall will fit in OnInitDialog
-  DboxMain *m_pDbx;
   bool m_bLongPPs;
   bool m_bKeepHidden;
 };

@@ -10,7 +10,7 @@
 ' Requires environment variables ProjectDir & GitDir
 ' set in UserVariables.vsprops
 
-' For the stdout.WriteLine to work, this Post-Build Event script
+' For the stdout.WriteLine to work, this Pre-Build Event script
 ' MUST be executed via cscript command.
 
 Option Explicit
@@ -18,7 +18,6 @@ Option Explicit
 Const ForReading = 1, ForWriting = 2, ForAppending = 8 
 Const TristateUseDefault = -2, TristateTrue = -1, TristateFalse = 0
  
-
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
   MsgBox " Host: " & WScript.FullName & vbCRLF & _
          "This script must be executed by cscript.exe", _
@@ -65,16 +64,14 @@ If Not objFSO.FileExists(strVersionIn) Then
   stdout.WriteLine " *** Can't find " & strVersionIn & vbCRLF & _
          " *** Please check source tree"
   WScript.Quit(98)
-End if
-
-
+End If
 
 If Not objFSO.FileExists(strGitPGM) Then
   stdout.WriteLine " *** Can't find git.exe" & vbCRLF & _
          " *** Please install it or create version.h from version.in manually"
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
-  End if
+  End If
   rc = 99
 Else
   cmd = Chr(34) & strGitPGM  & Chr(34) & " describe --all --always --dirty=+ --long"
@@ -86,8 +83,8 @@ Else
   Set objWshScriptExec = objShell.Exec(cmd)
   Set objStdOut = objWshScriptExec.StdOut
 
-   Do While objWshScriptExec.Status = 0
-     WScript.Sleep 100
+  Do While objWshScriptExec.Status = 0
+    WScript.Sleep 100
   Loop
 
   While Not objStdOut.AtEndOfStream
@@ -95,12 +92,22 @@ Else
     stdout.WriteLine "  " & strLine
   Wend
   strGitRev = strLine
-  stdout.WriteLine "  git ended with return code: " & objWshScriptExec.ExitCode
-  If objWshScriptExec.ExitCode <> 0 Then
-    WScript.Quit(objWshScriptExec.ExitCode)
+  rc = objWshScriptExec.ExitCode
+  stdout.WriteLine "  git ended with return code: " & rc
+
+  ' Don't need these any more
+  Set objWshScriptExec = Nothing
+  Set objStdOut = Nothing
+
+  If rc <> 0 Then
+    ' Tidy up objects before exiting
+    Set objShell = Nothing
+    Set objFSO = Nothing
+    Set stdout = Nothing
+    Set stdFSO = Nothing
+    WScript.Quit(rc)
   End If
-  rc = 0
-End if
+End If
 stdout.WriteLine " "
 
 ' If strGitRev is of the form heads/master-0-g5f69087, drop everything
@@ -112,32 +119,31 @@ Dim result
 result = InStr(strGitRev, "heads/master-0-")
 
 If result <> 0 Then
-   strGitRev = Replace(strGitRev, "heads/master-0-", "")
-End if
+  strGitRev = Replace(strGitRev, "heads/master-0-", "")
+End If
 
 stdout.WriteLine "strGitRev=" & strGitRev & vbCRLF
 
 ' Read version.in, write version.h, substitute GITREV with strGitRev
-
 Set objVerInFile = objFSO.OpenTextFile(strVersionIn, ForReading)
-Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, TristateTrue, TristateFalse)
+Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, True, TristateFalse)
 
-do while not objVerInFile.AtEndOfStream
-     strLine = objVerInFile.ReadLine()
-     result = InStr(strLine, "GITREV")
-     If result <> 0 Then
-        strLine = Replace(strLine, "GITREV", strGitRev)
-     End if
-     objVerHFile.WriteLine(strLine)
-loop
+Do While Not objVerInFile.AtEndOfStream
+  strLine = objVerInFile.ReadLine()
+  result = InStr(strLine, "GITREV")
+  If result <> 0 Then
+    strLine = Replace(strLine, "GITREV", strGitRev)
+  End If
+  objVerHFile.WriteLine(strLine)
+Loop
 
 objVerInFile.Close
 objVerHFile.Close
+
+' Tidy up objects before exiting
 Set objVerInFile = Nothing
 Set objVerHFile = Nothing
 
-Set objWshScriptExec = Nothing
-Set objStdOut = Nothing
 Set objShell = Nothing
 Set objFSO = Nothing
 Set stdout = Nothing

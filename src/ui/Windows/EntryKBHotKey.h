@@ -8,28 +8,30 @@
 
 #pragma once
 
-class CSHCTListCtrl;
+class CAddEdit_Additional;
 
-// SHCTHotKey
+// EntryKBHotKey
 
-class CSHCTHotKey : public CHotKeyCtrl
+class CEntryKBHotKey : public CHotKeyCtrl
 {
-  DECLARE_DYNAMIC(CSHCTHotKey)
+  DECLARE_DYNAMIC(CEntryKBHotKey)
 
 public:
-  CSHCTHotKey();
-  virtual ~CSHCTHotKey();
+  CEntryKBHotKey();
+  virtual ~CEntryKBHotKey();
 
-  void SetMyParent(CSHCTListCtrl *pParent)
+  void SetMyParent(CAddEdit_Additional *pParent)
   {m_pParent = pParent;}
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
+
+  // Needed to Add/Remove application HotKey
   afx_msg void OnKillFocus(CWnd *pWnd);
+  afx_msg void OnSetFocus(CWnd *pWnd);
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  CSHCTListCtrl *m_pParent;
-  bool m_bHandled;
+  CAddEdit_Additional *m_pParent;
 };

@@ -24,7 +24,12 @@ sub usage {
     exit 1;
 }
 
-my $GIT = "/usr/bin/git";
+my %git_loc  = (
+	darwin => '/usr/local/git/bin/git',
+	linux  => '/usr/bin/git',
+);
+
+my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
 die "Couldn't find $GIT" unless (-x $GIT);
 
 &usage unless ($#ARGV == 1);

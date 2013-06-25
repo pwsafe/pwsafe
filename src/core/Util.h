@@ -141,7 +141,7 @@ namespace PWSUtil {
   stringT Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in, size_t maxlen = 64);
-  void WriteXMLField(std::ostream &os, const char *fname,
+  bool WriteXMLField(std::ostream &os, const char *fname,
                      const StringX &value, CUTF8Conv &utf8conv,
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,

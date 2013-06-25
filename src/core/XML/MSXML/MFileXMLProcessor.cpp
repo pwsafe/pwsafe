@@ -165,6 +165,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_numEntriesPWHErrors = pCH->getNumPWHErrors();
           m_numNoPolicies = pCH->getNumNoPolicies();
           m_numRenamedPolicies = pCH->getNumRenamedPolicies();
+          m_numShortcutsRemoved = pCH->getNumShortcutsRemoved();
 
           // Get lists
           m_strXMLErrors = pCH->getXMLErrors();

@@ -586,7 +586,6 @@ void ThisMfcApp::SetupMenu()
   minfo.dwMenuData = ID_EXPORTENTMENU;
   pMenu2->SetMenuInfo(&minfo);
 
-
   // Do View Menu
   pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
   ASSERT(pos1 != -1);
@@ -1024,8 +1023,8 @@ BOOL ThisMfcApp::InitInstance()
   The app object (here) should instead do the initial PasskeyEntry,
   and, if successful, move on to DboxMain.  I think. {jpr}
   */
-  m_pMainDlg = &dbox;
-  m_pMainWnd = m_pMainDlg;
+  m_pDbx = &dbox;
+  m_pMainWnd = m_pDbx;
 
   //HICON stIcon = app.LoadIcon(IDI_TRAY);
   //ASSERT(stIcon != NULL);
@@ -1033,7 +1032,7 @@ BOOL ThisMfcApp::InitInstance()
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
-  m_pTrayIcon = new CSystemTray(m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+  m_pTrayIcon = new CSystemTray(m_pDbx, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
                                 m_LockedIcon, dbox.m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_pTrayIcon->SetTarget(&dbox);
@@ -1188,9 +1187,9 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
   if (code < 0)
     CWinApp::ProcessMessageFilter(code, lpMsg);
 
-  if (m_bUseAccelerator && m_pMainDlg != NULL && m_ghAccelTable != NULL &&
+  if (m_bUseAccelerator && m_pDbx != NULL && m_ghAccelTable != NULL &&
       code != MSGF_MENU) {
-    if (::TranslateAccelerator(m_pMainDlg->m_hWnd, m_ghAccelTable, lpMsg))
+    if (::TranslateAccelerator(m_pDbx->m_hWnd, m_ghAccelTable, lpMsg))
       return TRUE;
   }
 

@@ -44,10 +44,10 @@
 #include <algorithm>
 #include <set>
 
-const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tNotes");
+const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
-const TCHAR *FORMATIMPORTED = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
+const TCHAR *GROUPTITLEUSERINCHEVRONS = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
 
 using namespace std;
 using pws_os::CUUID;
@@ -202,6 +202,9 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   if (bittest(bsFields, CItemData::SYMBOLS, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::SYMBOLS) + TAB;
   }
+  if (bittest(bsFields, CItemData::KBSHORTCUT, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::KBSHORTCUT) + TAB;
+  }
   if (bittest(bsFields, CItemData::NOTES, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::NOTES);
   }
@@ -353,12 +356,15 @@ struct XMLRecordWriter {
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
                   TCHAR delimiter, coStringXStream &ofs, FILE * &xmlfile,
-                  int &numExported, CReport *pRpt, PWScore *pcore) :
+                  int &numExported, int &numXMLErrors,
+                  CReport *pRpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_xmlfile(xmlfile), m_id(0), m_pcore(pcore),
-  m_numExported(numExported), m_pRpt(pRpt)
-  {}
+  m_numExported(numExported), m_numXMLErrors(numXMLErrors), m_pRpt(pRpt)
+  {
+    LoadAString(strXMLErrors, IDSC_XMLCHARACTERERRORS);
+  }
 
   // operator for ItemList
   void operator()(pair<CUUID, CItemData> p)
@@ -370,11 +376,11 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      StringX sx_exported = StringX(_T("\xab")) +
-                             item.GetGroup() + StringX(_T("\xbb \xab")) +
-                             item.GetTitle() + StringX(_T("\xbb \xab")) +
-                             item.GetUser()  + StringX(_T("\xbb"));
+      StringX sx_exported;
+      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+                        item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
       bool bforce_normal_entry(false);
+
       if (item.IsNormal()) {
         //  Check password doesn't incorrectly imply alias or shortcut entry
         StringX pswd;
@@ -395,12 +401,22 @@ struct XMLRecordWriter {
       }
 
       if (m_pRpt != NULL)
-        m_pRpt->WriteLine(sx_exported.c_str());
+        m_pRpt->WriteLine(sx_exported.c_str(), false);
+
       m_pcore->UpdateWizard(sx_exported.c_str());
 
       const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
+      bool bXMLErrorsFound(false);
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase,
-                               bforce_normal_entry);
+                               bforce_normal_entry, bXMLErrorsFound);
+
+      if (bXMLErrorsFound) {
+        m_pRpt->WriteLine(_T("\t"), false);
+        m_pRpt->WriteLine(strXMLErrors.c_str());
+        m_numXMLErrors++;
+      } else
+        m_pRpt->WriteLine();
+
       m_ofs.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
       m_numExported++;
@@ -427,6 +443,8 @@ private:
   unsigned int m_id;
   PWScore *m_pcore;
   int &m_numExported;
+  int &m_numXMLErrors;
+  stringT strXMLErrors;
   CReport *m_pRpt;
 };
 
@@ -668,8 +686,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
   ofs.str("");
 
+  int numXMLErrors(0);
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
-                          bsFields, delimiter, ofs, xmlfile, numExported, pRpt, this);
+                          bsFields, delimiter, ofs, xmlfile, numExported, 
+                          numXMLErrors, pRpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_xml);
@@ -684,16 +704,22 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs.str("");
   fclose(xmlfile);
 
- return SUCCESS;
+ return numXMLErrors == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
-int PWScore::ImportXMLFile(const stringT &, const stringT &,
-                           const stringT &, const bool &,
-                           stringT &, stringT &, stringT &, stringT &,
-                           int &, int &, int &, int &, int &, int &, int &,
-                           CReport &, Command *&)
+int PWScore::ImportXMLFile(const stringT &ImportedPrefix,
+                           const stringT &strXMLFileName,
+                           const stringT &strXSDFileName,
+                           const bool &bImportPSWDsOnly,
+                           stringT &strXMLErrors, stringT &strSkippedList,
+                           stringT &strPWHErrorList, stringT &strRenameList,
+                           int &numValidated, int &numImported, int &numSkipped,
+                           int &numPWHErrors, int &numRenamed,
+                           int &numNoPolicy,  int &numRenamedPolicies,
+                           int &numShortcutsRemoved,
+                           CReport &rpt, Command *&pcommand)
 {
   return UNIMPLEMENTED;
 }
@@ -705,6 +731,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            int &numValidated, int &numImported, int &numSkipped,
                            int &numPWHErrors, int &numRenamed,
                            int &numNoPolicy, int &numRenamedPolicies,
+                           int &numShortcutsRemoved,
                            CReport &rpt, Command *&pcommand)
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
@@ -741,6 +768,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numPWHErrors = iXML.getNumEntriesPWHErrors();
   numNoPolicy = iXML.getNumNoPolicies();
   numRenamedPolicies = iXML.getNumRenamedPolicies();
+  numShortcutsRemoved = iXML.getNumShortcutsRemoved();
 
   strXMLErrors = iXML.getXMLErrors();
   strSkippedList = iXML.getSkippedList();
@@ -820,7 +848,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // The following's a stream of chars.  We need to process the header row
   // as straight ASCII, and we need to handle rest as utf-8
   numImported = numSkipped = numRenamed = numPWHErrors = 0;
-  int numlines = 0;
+  int numlines(0), numshortcutsremoved(0);
+  StringX sxTemp;
 
   CItemData ci_temp;
   vector<string> vs_Header;
@@ -838,7 +867,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
                POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
-               PROTECTED, SYMBOLS, NOTES,
+               PROTECTED, SYMBOLS, KBSHORTCUT, NOTES, 
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -950,6 +979,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Initialize set
   GTUSet setGTU;
   InitialiseGTU(setGTU);
+  StringX sxImportedEntry;
 
   for (;;) {
     bool bNoPolicy(false);
@@ -1181,6 +1211,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       numRenamed++;
     }
 
+    // Use new group if the entries have been imported under a new level.
+    Format(sxImportedEntry, GROUPTITLEUSERINCHEVRONS,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+                           
     if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
       ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
@@ -1257,6 +1291,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         ci_temp.SetProtected(true);
     if (i_Offset[SYMBOLS] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[SYMBOLS]))
       ci_temp.SetSymbols(tokens[i_Offset[SYMBOLS]].c_str());
+    if (i_Offset[KBSHORTCUT] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[KBSHORTCUT]))
+      ci_temp.SetKBShortcut(tokens[i_Offset[KBSHORTCUT]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
@@ -1297,29 +1333,70 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     // Get GUI to populate its field
     GUISetupDisplayInfo(ci_temp);
 
+    // Need to check that entry keyboard shortcut not already in use!
+    int32 iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0) {
+      CUUID existingUUID = GetKBShortcut(iKBShortcut);
+      if (existingUUID != CUUID::NullUUID()) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+        ItemListIter iter = Find(existingUUID);
+        if (iter == m_pwlist.end())
+          break;
+
+        // Tell the user via the report
+        StringX sxExistingEntry, sx_imported;
+        LoadAString(sx_imported, IDSC_IMPORTED);
+        Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+                           iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                           iter->second.GetUser().c_str());
+        Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_imported.c_str(), sxImportedEntry.c_str(),
+                       sxExistingEntry.c_str(), sx_imported.c_str());
+        rpt.WriteLine(sxTemp.c_str());
+        numshortcutsremoved++;
+      }
+      if (m_iAppHotKey == iKBShortcut) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+
+        // Tell the user via the report
+        StringX sx_imported;
+        LoadAString(sx_imported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_USEBYAPP, sx_imported.c_str(), sxImportedEntry.c_str());
+        rpt.WriteLine(sxTemp.c_str());
+        numshortcutsremoved++;
+      }
+    }
+    
     // Add to commands to execute
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
 
-    StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
-                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-
-    rpt.WriteLine(sx_imported.c_str());
+    rpt.WriteLine(sxImportedEntry.c_str());
 
     if (bNoPolicy) {
-      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxPolicyName.c_str());
-      rpt.WriteLine(sx_imported.c_str());
+      Format(sxTemp, IDSC_MISSINGPOLICYNAME, sxPolicyName.c_str());
+      rpt.WriteLine(sxTemp.c_str());
     }
   } // file processing for (;;) loop
 
   if (numNoPolicy != 0) {
     rpt.WriteLine();
 
-    StringX sxTemp;
     LoadAString(sxTemp, IDSC_MISSINGPOLICYNAMES);
+    rpt.WriteLine(sxTemp.c_str());
+  }// 
+
+  if (numshortcutsremoved != 0) {
+    rpt.WriteLine();
+
+    StringX sx_imported;
+    LoadAString(sx_imported, IDSC_IMPORTED);
+    Format(sxTemp, IDSC_REMOVEDKBSHORTCUTS, sx_imported.c_str());
     rpt.WriteLine(sxTemp.c_str());
   }
 
@@ -1342,7 +1419,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (numImported > 0)
     SetDBChanged(true);
 
-  return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? SUCCESS : OK_WITH_ERRORS;
+  return ((numSkipped + numRenamed + numPWHErrors + numshortcutsremoved)) == 0 ?
+             SUCCESS : OK_WITH_ERRORS;
 }
 
 int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
@@ -1722,8 +1800,9 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     pmulticmds->Add(pcmd);
     numImported++;
 
+    // Use new group if the entries have been imported under a new level.
     StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
+    Format(sx_imported, GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   }
@@ -2223,8 +2302,10 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
+    
+    // Use new group if the entries have been imported under a new level.
     StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
+    Format(sx_imported, GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop

@@ -38,7 +38,6 @@ typedef char charT;
 
 #include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 
-
 // Hotkey values. Internal PWS values - need to convert to either MFC or wxWidgets
 // values in the GUI when retrieving these from the preferences and aso back to PWS
 // internal values before giving them to PWSPrefs for saving in the XML config file.
@@ -48,7 +47,7 @@ typedef char charT;
 #define PWS_HOTKEYF_EXT     0x08
  
 // wxWidgets Only - Not used in Windows MFC
-#define PWS_HOTKEYF_ALTGR   HOTKEYF_ALT | HOTKEYF_CONTROL
+#define PWS_HOTKEYF_ALTGR   PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL
 #define PWS_HOTKEYF_META    0x10
 #define PWS_HOTKEYF_WIN     0x20
 #define PWS_HOTKEYF_CMD     0x40
