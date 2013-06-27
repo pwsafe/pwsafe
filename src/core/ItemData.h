@@ -316,6 +316,7 @@ public:
   bool IsPasswordPolicySet() const         { return IsFieldSet(POLICY);    }
   bool IsPasswordExpiryIntervalSet() const { return IsFieldSet(XTIME_INT); }
   bool IsDCASet() const                    { return IsFieldSet(DCA);       }
+  bool IsShiftDCASet() const               { return IsFieldSet(SHIFTDCA);  }
   bool IsProtectionSet() const             { return IsFieldSet(PROTECTED); }
   bool IsSymbolsSet() const                { return IsFieldSet(SYMBOLS);   }
   bool IsPolicyNameSet() const             { return IsFieldSet(POLICYNAME);}

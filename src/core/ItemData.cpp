@@ -730,10 +730,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 
     StringX sxPolicyName = GetPolicyName();
     if (sxPolicyName.empty()) {
+      // print policy only if policy name is not available
       if (bsFields.test(CItemData::POLICY))
         ret += GetPWPolicy() + separator;
+      if (bsFields.test(CItemData::POLICYNAME))
+        ret += separator;
     } else {
-      if (bsFields.test(CItemData::POLICY) || bsFields.test(CItemData::POLICYNAME))
+      // if policy name is available, ignore the policy
+      if (bsFields.test(CItemData::POLICY))
+        ret += separator;
+      if (bsFields.test(CItemData::POLICYNAME))
         ret += sxPolicyName + separator;
     }
 

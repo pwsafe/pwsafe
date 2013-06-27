@@ -123,6 +123,11 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
+#if defined(_UNICODE) || defined(UNICODE)
+bool operator==(const std::string& str1, const stringT& str2);
+inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
+#endif
+
 namespace PWSUtil {
   // namespace of common utility functions
 
