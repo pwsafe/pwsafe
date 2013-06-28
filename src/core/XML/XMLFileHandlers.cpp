@@ -48,8 +48,6 @@ XMLFileHandlers::XMLFileHandlers()
   m_bRecordHeaderErrors = false;
   m_bErrors = false;
 
-  m_nITER = MIN_HASH_ITERATIONS;
-
   m_sxXML_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   // Set up copy of preferences to use for password policies and if we import into an
@@ -180,12 +178,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
   PWSprefs::StringPrefs spref(PWSprefs::NumStringPrefs);
 
   switch (icurrent_element) {
-    case XLE_NUMBERHASHITERATIONS:
-      i = _ttoi(m_sxElemContent.c_str());
-      if (i > MIN_HASH_ITERATIONS) {
-        m_nITER = i;
-      }
-      break;
     case XLE_ENTRY:
       m_ventries.push_back(m_cur_entry);
       m_numEntries++;

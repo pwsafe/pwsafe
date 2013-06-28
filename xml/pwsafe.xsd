@@ -56,12 +56,6 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
   </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="numhashType">
-  <xs:restriction base="xs:int">
-    <xs:minInclusive value="2048" />
-  </xs:restriction>
-</xs:simpleType>
-
 <xs:simpleType name="fileuuidType">
   <xs:restriction base="xs:string">
     <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
@@ -172,7 +166,6 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
     <xs:complexType>
       <xs:sequence>
         <!-- Start Database Preferences -->
-        <xs:element name="NumberHashIterations" type="numhashType" minOccurs="0" maxOccurs="1" />
         <xs:element name="Preferences" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:all>

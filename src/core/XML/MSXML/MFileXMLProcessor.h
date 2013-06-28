@@ -31,7 +31,7 @@ public:
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix,
     const stringT &strXMLFileName, const stringT &strXSDFileName,
-    const bool &bImportPSWDsOnly, int &nITER);
+    const bool &bImportPSWDsOnly);
 
   stringT getXMLErrors() {return m_strXMLErrors;}
   stringT getSkippedList() {return m_strSkippedList;}

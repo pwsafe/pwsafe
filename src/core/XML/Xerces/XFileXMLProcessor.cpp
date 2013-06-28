@@ -77,7 +77,7 @@ XFileXMLProcessor::~XFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
-                                const bool &bImportPSWDsOnly, int &nITER)
+                                const bool &bImportPSWDsOnly)
 {
   USES_XMLCH_STR
 
@@ -207,7 +207,6 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
 
       if (b_into_empty) {
-        nITER = pSAX2Handler->getNumIterations();
         pSAX2Handler->AddDBPreferences();
       }
     }

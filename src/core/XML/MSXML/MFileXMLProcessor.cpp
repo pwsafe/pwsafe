@@ -44,8 +44,7 @@ MFileXMLProcessor::~MFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
-                                const bool &bImportPSWDsOnly,
-                                int &nITER)
+                                const bool &bImportPSWDsOnly)
 {
   HRESULT hr, hr0, hr60;
   bool b_ok = false;
@@ -174,7 +173,6 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_strRenameList = pCH->getRenameList();
 
           if (b_into_empty) {
-            nITER = pCH->m_nITER;
             pCH->AddDBPreferences();
           }
         }
