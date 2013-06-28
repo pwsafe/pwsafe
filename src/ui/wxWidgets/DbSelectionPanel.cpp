@@ -63,6 +63,9 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
                                           validator);
   panelSizer->Add(m_filepicker, borderFlags.Expand());
   panelSizer->AddSpacer(RowSeparation*rowsep);
+  m_filepicker->Connect( m_filepicker->GetEventType(), 
+						 wxFileDirPickerEventHandler(DbSelectionPanel::OnFilePicked),
+						 NULL, this);
 
   panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
@@ -121,4 +124,11 @@ bool DbSelectionPanel::DoValidation()
   else {
     return false;
   }
+}
+
+void DbSelectionPanel::OnFilePicked(wxFileDirPickerEvent &evt)
+{
+	// Don't shift focus if we are in the text ctrl
+	if ( !wxDynamicCast(FindFocus(), wxTextCtrl) )
+		m_sc->SelectCombinationText();
 }
