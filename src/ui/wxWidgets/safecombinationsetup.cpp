@@ -155,6 +155,8 @@ void CSafeCombinationSetup::CreateControls()
 
   SetSizerAndFit(itemBoxSizer2);
 
+  FindWindowById(ID_PASSWORD)->SetFocus();
+  
   // Set validators
   itemTextCtrl6->SetValidator( wxGenericValidator(& m_password) );
   itemTextCtrl8->SetValidator( wxGenericValidator(& m_verify) );
