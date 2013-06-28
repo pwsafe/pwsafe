@@ -1035,6 +1035,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     ClearData();
     SetTitle(_T(""));
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+    m_core.SetReadOnly(false);
   }
 }
 
