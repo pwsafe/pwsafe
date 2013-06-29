@@ -48,7 +48,7 @@ public:
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
                           FILE *a_fd = NULL,
-                          unsigned char *aPtag = NULL, int *nIter = NULL);
+                          unsigned char *aPtag = NULL, uint32 *nIter = NULL);
   static bool IsV3x(const StringX &filename, VERSION &v);
 
   PWSfileV3(const StringX &filename, RWmode mode, VERSION version);
@@ -60,6 +60,9 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
+  uint32 GetNHashIters() const {return m_nHashIters;}
+  void SetNHashIters(uint32 N) {m_nHashIters = N;}
+  
   void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
   const PWSFilters &GetFilters() const {return m_MapFilters;}
 
@@ -70,6 +73,7 @@ public:
   const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
 
 private:
+  uint32 m_nHashIters;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
   HMAC_SHA256 m_hmac;
@@ -90,7 +94,7 @@ private:
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
-    const StringX &passkey,
-    unsigned int N, unsigned char *Ptag);
+                         const StringX &passkey,
+                         uint32 N, unsigned char *Ptag);
 };
 #endif /* __PWSFILEV3_H */

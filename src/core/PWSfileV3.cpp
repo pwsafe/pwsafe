@@ -38,7 +38,7 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const StringX &filename, RWmode mode, VERSION version)
-  : PWSfile(filename, mode)
+: PWSfile(filename, mode), m_nHashIters(0)
 {
   m_curversion = version;
   m_IV = m_ipthing;
@@ -162,7 +162,7 @@ err:
 
 int PWSfileV3::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
-                            unsigned char *aPtag, int *nITER)
+                            unsigned char *aPtag, uint32 *nITER)
 {
   PWS_LOGIT;
 
@@ -322,11 +322,11 @@ int PWSfileV3::WriteHeader()
   unsigned char salt[SaltLengthV3];
 
   // See formatV3.txt for explanation of what's written here and why
-  unsigned int NumHashIters;
-  if (m_hdr.m_nITER < MIN_HASH_ITERATIONS)
+  uint32 NumHashIters;
+  if (m_nHashIters < MIN_HASH_ITERATIONS)
     NumHashIters = MIN_HASH_ITERATIONS;
   else
-    NumHashIters = m_hdr.m_nITER;
+    NumHashIters = m_nHashIters;
 
   SAFE_FWRITE(V3TAG, 1, sizeof(V3TAG), m_fd);
 
@@ -556,7 +556,7 @@ int PWSfileV3::ReadHeader()
 
   unsigned char Ptag[SHA256::HASHLEN];
   int status = CheckPasskey(m_filename, m_passkey, m_fd,
-    Ptag, &m_hdr.m_nITER);
+                            Ptag, &m_nHashIters);
 
   if (status != SUCCESS) {
     Close();

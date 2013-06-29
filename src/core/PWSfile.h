@@ -67,7 +67,6 @@ public:
 
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     pws_os::CUUID m_file_uuid;         // Unique DB ID
-    int m_nITER;                       // Formally not part of the header.
     std::vector<bool> m_displaystatus; // Tree expansion state vector
     StringX m_prefString;              // Prefererences stored in the file
     time_t m_whenlastsaved;            // When last saved
