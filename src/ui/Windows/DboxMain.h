@@ -259,7 +259,6 @@ public:
   BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(const int i, BOOL MakeVisible = FALSE);
   void SelectFirstEntry();
-  void ItemSelected(HTREEITEM hItem, int iItem);
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
@@ -357,6 +356,7 @@ public:
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData *pci = NULL);
+  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
   bool IsNodeModified(StringX &path) const
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
@@ -673,7 +673,8 @@ public:
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-  afx_msg void OnTreeClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);

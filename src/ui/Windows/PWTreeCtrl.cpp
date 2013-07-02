@@ -618,11 +618,10 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   
   // Don't bother if no entries or not via the keyboard/mouse (check this first
   // as more likely than no entries).
-   if ((pNMTreeView->action != TVC_BYKEYBOARD && pNMTreeView->action != TVC_BYMOUSE) || 
-       GetCount() == 0)
+   if (pNMTreeView->action != TVC_BYKEYBOARD || GetCount() == 0)
      return;
 
-  app.GetMainDlg()->ItemSelected(pNMTreeView->itemNew.hItem, -1);
+  app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, true);
 }
 
 void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)

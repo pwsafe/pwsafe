@@ -20,7 +20,7 @@ class CFindEditCtrl : public CEditExtn
 public:
 
 protected:
-  // Needed to trap Entry Keyboard Shortcuts if we are incontrol
+  // Needed to trap Entry Keyboard Shortcuts if we are in control
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 };
 

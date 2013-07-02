@@ -43,8 +43,7 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnItemChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnPaint();
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
