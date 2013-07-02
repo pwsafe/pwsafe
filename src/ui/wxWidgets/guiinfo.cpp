@@ -41,6 +41,9 @@ void GUIInfo::Restore(PasswordSafeFrame* frame)
 
 void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& expanded)
 {
+  if ( !tree || tree->GetCount() == 0 )
+    return;
+  
   wxTreeItemIdValue cookie;
   for( wxTreeItemId id = tree->GetFirstChild(root, cookie); id.IsOk(); id = tree->GetNextChild(root, cookie))
   {

@@ -15,6 +15,7 @@
 class wxFilePickerCtrl;
 class CSafeCombinationCtrl;
 class PWScore;
+class wxFileDirPickerEvent;
 
 /*
  * This is a re-usable class for having the user select a db and
@@ -53,6 +54,8 @@ public:
   }
 
   bool DoValidation();
+
+  void OnFilePicked(wxFileDirPickerEvent &evt);
 
   wxString m_filepath;
   StringX m_combination;
