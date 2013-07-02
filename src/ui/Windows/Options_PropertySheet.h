@@ -20,9 +20,6 @@
 
 #include "core/coredefs.h"
 
-class DboxMain;
-class PWScore;
-
 class COptions_PropertySheet : public CPWPropertySheet
 {
 public:

@@ -473,6 +473,9 @@ public:
   void SetAppHotKey(const int32 &iAppHotKey) {m_iAppHotKey = iAppHotKey;}
   int32 GetAppHotKey() const {return m_iAppHotKey;}
 
+  uint32 GetHashIters() const;
+  void SetHashIters(uint32 value);
+
 private:
   // Database update routines
 
@@ -537,6 +540,8 @@ private:
 
   unsigned char *m_passkey; // encrypted by session key
   size_t m_passkey_len; // Length of cleartext passkey
+
+  uint32 m_hashIters; // for new or currently open db.
 
   static unsigned char m_session_key[32];
   static unsigned char m_session_initialized;

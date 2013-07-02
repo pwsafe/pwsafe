@@ -59,6 +59,7 @@ static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser 
 PWScore::PWScore() :
                      m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
+                     m_hashIters(MIN_HASH_ITERATIONS),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
@@ -3216,4 +3217,14 @@ const pws_os::CUUID & PWScore::GetKBShortcut(const int32 &iKBShortcut)
     return CUUID::NullUUID();
   else
     return iter->second;
+}
+
+uint32 PWScore::GetHashIters() const
+{
+  return m_hashIters;
+}
+
+void PWScore::SetHashIters(uint32 value)
+{
+  m_hashIters = value;
 }

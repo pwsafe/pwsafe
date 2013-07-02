@@ -23,6 +23,10 @@ public:
   COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsSecurity();
 
+  // These log map between slider values and MIN_HASH_ITERATIONS..2^32-1
+  uint32 GetHashIter(); // can't be const as calls UpdateData()
+  void SetHashIter(uint32 value);
+  
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
@@ -37,6 +41,7 @@ protected:
   BOOL m_CopyPswdBrowseURL;
   int m_IdleTimeOut;
   //}}AFX_DATA
+  int m_HashIterSliderValue;
 
   CButtonExtn m_chkbox[2];
 

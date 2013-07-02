@@ -76,6 +76,7 @@ struct st_Opt_master_data {
   BOOL LockOnIdleTimeout;
   BOOL CopyPswdBrowseURL;
   int IdleTimeOut;
+  uint32 HashIters;
 
   // Shortcut Data
   int32 AppHotKeyValue;
@@ -167,6 +168,7 @@ public:
   inline BOOL &M_LockOnIdleTimeout() {return m_OPTMD.LockOnIdleTimeout;}
   inline BOOL &M_CopyPswdBrowseURL() {return m_OPTMD.CopyPswdBrowseURL;}
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
+  inline uint32 &M_HashIters() {return m_OPTMD.HashIters;}
 
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}

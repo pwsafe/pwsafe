@@ -37,6 +37,7 @@ IMPLEMENT_DYNAMIC(COptionsSecurity, COptions_PropertyPage)
 
 COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD)
+  , m_HashIterSliderValue(0)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
@@ -46,6 +47,7 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_LockOnIdleTimeout = M_LockOnIdleTimeout();
   m_CopyPswdBrowseURL = M_CopyPswdBrowseURL();
   m_IdleTimeOut = M_IdleTimeOut();
+  SetHashIter(M_HashIters());
 }
 
 COptionsSecurity::~COptionsSecurity()
@@ -54,21 +56,22 @@ COptionsSecurity::~COptionsSecurity()
 
 void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
-  COptions_PropertyPage::DoDataExchange(pDX);
+    COptions_PropertyPage::DoDataExchange(pDX);
 
-  //{{AFX_DATA_MAP(COptionsSecurity)
-  DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
-  DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-  DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
-  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
-  DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
-  DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
-  DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
-  DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+    //{{AFX_DATA_MAP(COptionsSecurity)
+    DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
+    DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+    DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
+    DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
+    DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
+    DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
+    DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
+    DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 
-  DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
-  DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
-  //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
+    DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
+    //}}AFX_DATA_MAP
+    DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
@@ -101,8 +104,36 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
+  CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
+  // Range maps logarithmically to MIN_HASH_ITERATIONS..2^32-1.
+  pslider->SetRange(1,32);
+  
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+uint32 COptionsSecurity::GetHashIter()
+{
+  UpdateData();
+  uint32 retval = 1<<32 -1;
+  int pow = 32 - m_HashIterSliderValue;
+  for (int i = 0; i < pow; i++) {
+    retval /= 2;
+  }
+  if (retval < MIN_HASH_ITERATIONS)
+    retval = MIN_HASH_ITERATIONS;
+  return retval;
+}
+
+void COptionsSecurity::SetHashIter(uint32 value)
+{
+  int i = 1, v = 1;
+  while (v < value) {
+    v *= 2;
+    i++;
+  }
+  m_HashIterSliderValue = i;
 }
 
 LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)

@@ -227,6 +227,7 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
   m_OPTMD.IdleTimeOut =
       prefs->GetPref(PWSprefs::IdleTimeout);
+  m_OPTMD.HashIters = MIN_HASH_ITERATIONS; // XXX replace with core access!
   m_OPTMD.CopyPswdBrowseURL =
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
   
@@ -410,6 +411,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
+
+  // XXX update core's HashIter value with m_OPTMD.HashIter
 
   // Changing ExplorerTypeTree changes order of items,
   // which DisplayStatus implicitly depends upon
