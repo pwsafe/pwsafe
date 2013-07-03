@@ -116,7 +116,7 @@ BOOL COptionsSecurity::OnInitDialog()
 uint32 COptionsSecurity::GetHashIter()
 {
   UpdateData();
-  uint32 retval = 1<<32 -1;
+  uint32 retval = ~1U;
   int pow = 32 - m_HashIterSliderValue;
   for (int i = 0; i < pow; i++) {
     retval /= 2;
@@ -128,7 +128,8 @@ uint32 COptionsSecurity::GetHashIter()
 
 void COptionsSecurity::SetHashIter(uint32 value)
 {
-  int i = 1, v = 1;
+  int i = 1;
+  uint32 v = 1;
   while (v < value) {
     v *= 2;
     i++;
