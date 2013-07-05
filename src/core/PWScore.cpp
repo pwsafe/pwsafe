@@ -463,6 +463,7 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   // XXX cleanup gross dynamic_cast
   PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
   if (out3 != NULL) {
+    out3->SetNHashIters(GetHashIters());
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
     out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
@@ -699,6 +700,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL) {
+    SetHashIters(in3->GetNHashIters());
     m_MapFilters = in3->GetFilters();
     m_MapPSWDPLC = in3->GetPasswordPolicies();
     m_vEmptyGroups = in3->GetEmptyGroups();

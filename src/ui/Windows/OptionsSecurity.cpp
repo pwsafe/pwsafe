@@ -36,8 +36,8 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(COptionsSecurity, COptions_PropertyPage)
 
 COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
-  : COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD)
-  , m_HashIterSliderValue(0)
+: COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD),
+  m_HashIterSliderValue(0), m_HashIter(0)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
@@ -113,23 +113,23 @@ BOOL COptionsSecurity::OnInitDialog()
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-uint32 COptionsSecurity::GetHashIter()
+void COptionsSecurity::UpdateHashIter()
 {
-  UpdateData();
-  uint32 retval = ~1U;
+  uint32 value = ~1U;
   int pow = 32 - m_HashIterSliderValue;
   for (int i = 0; i < pow; i++) {
-    retval /= 2;
+    value /= 2;
   }
-  if (retval < MIN_HASH_ITERATIONS)
-    retval = MIN_HASH_ITERATIONS;
-  return retval;
+  if (value < MIN_HASH_ITERATIONS)
+    value = MIN_HASH_ITERATIONS;
+  m_HashIter = value + 1;
 }
 
 void COptionsSecurity::SetHashIter(uint32 value)
 {
-  int i = 1;
+  int i = 0;
   uint32 v = 1;
+  m_HashIter = value;
   while (v < value) {
     v *= 2;
     i++;
@@ -207,6 +207,8 @@ BOOL COptionsSecurity::OnApply()
   M_LockOnIdleTimeout() = m_LockOnIdleTimeout;
   M_CopyPswdBrowseURL() = m_CopyPswdBrowseURL;
   M_IdleTimeOut() = m_IdleTimeOut;
+  UpdateHashIter();
+  M_HashIters() = m_HashIter;
 
   return COptions_PropertyPage::OnApply();
 }

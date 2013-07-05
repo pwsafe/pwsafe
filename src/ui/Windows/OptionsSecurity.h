@@ -24,8 +24,9 @@ public:
   ~COptionsSecurity();
 
   // These log map between slider values and MIN_HASH_ITERATIONS..2^32-1
-  uint32 GetHashIter(); // can't be const as calls UpdateData()
+  uint32 GetHashIter() const {return m_HashIter;}
   void SetHashIter(uint32 value);
+  void UpdateHashIter(); // slider to value
   
 protected:
   // Dialog Data
@@ -42,6 +43,7 @@ protected:
   int m_IdleTimeOut;
   //}}AFX_DATA
   int m_HashIterSliderValue;
+  uint32 m_HashIter;
 
   CButtonExtn m_chkbox[2];
 
@@ -66,5 +68,7 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+public:
+    afx_msg void OnTRBNThumbPosChangingHashiterslider(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
