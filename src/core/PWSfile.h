@@ -25,7 +25,14 @@
 
 #include "coredefs.h"
 
+// HASH_ITERATIONS is used by the key stretching algorithm.
+// MIN_HASH_ITERATIONS is a lower limit - anything lower than this
+// is considered inherently insecure.
 #define MIN_HASH_ITERATIONS 2048
+// MAX_USABLE_HASH_ITERS is a guesstimate on what's acceptable to a user
+// with a reasonably powerful CPU. Real limit's 2^32-1.
+#define MAX_USABLE_HASH_ITERS (1 << 20)
+
 #define DEFAULT_SUFFIX      _T("psafe3")
 
 class Fish;

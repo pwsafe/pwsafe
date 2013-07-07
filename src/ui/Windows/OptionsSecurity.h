@@ -23,7 +23,8 @@ public:
   COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsSecurity();
 
-  // These log map between slider values and MIN_HASH_ITERATIONS..2^32-1
+  // These map between slider values and
+  // MIN_HASH_ITERATIONS..MAX_USABLE_HASH_ITERS
   uint32 GetHashIter() const {return m_HashIter;}
   void SetHashIter(uint32 value);
   void UpdateHashIter(); // slider to value
@@ -42,6 +43,8 @@ protected:
   BOOL m_CopyPswdBrowseURL;
   int m_IdleTimeOut;
   //}}AFX_DATA
+
+  enum {MinHIslider = 0, MaxHIslider = 31};
   int m_HashIterSliderValue;
   uint32 m_HashIter;
 
@@ -68,7 +71,5 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-public:
-    afx_msg void OnTRBNThumbPosChangingHashiterslider(NMHDR *pNMHDR, LRESULT *pResult);
 };
 

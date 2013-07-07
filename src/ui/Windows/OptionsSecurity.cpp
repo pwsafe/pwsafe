@@ -105,9 +105,7 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetPos(m_IdleTimeOut);
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
-  // Range maps logarithmically to MIN_HASH_ITERATIONS..2^32-1.
-  pslider->SetRange(1,32);
-  
+  pslider->SetRange(MinHIslider, MaxHIslider);
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -115,26 +113,22 @@ BOOL COptionsSecurity::OnInitDialog()
 
 void COptionsSecurity::UpdateHashIter()
 {
-  uint32 value = ~1U;
-  int pow = 32 - m_HashIterSliderValue;
-  for (int i = 0; i < pow; i++) {
-    value /= 2;
+  if (m_HashIterSliderValue == 0) {
+    m_HashIter = MIN_HASH_ITERATIONS;
+  } else {
+    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
+    m_HashIter = uint32(m_HashIterSliderValue * step);
   }
-  if (value < MIN_HASH_ITERATIONS)
-    value = MIN_HASH_ITERATIONS;
-  m_HashIter = value + 1;
 }
 
 void COptionsSecurity::SetHashIter(uint32 value)
 {
-  int i = 0;
-  uint32 v = 1;
-  m_HashIter = value;
-  while (v < value) {
-    v *= 2;
-    i++;
+  if (value <= MIN_HASH_ITERATIONS) {
+    m_HashIterSliderValue = MinHIslider;
+  } else {
+    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
+    m_HashIterSliderValue = int(value) / step;
   }
-  m_HashIterSliderValue = i;
 }
 
 LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
@@ -256,11 +250,11 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_IDLEMINS:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_COPYPSWDURL:
     case IDC_LOCK_TIMER:
+    case IDC_STATIC_HASHITER:
+    case IDC_STATIC_HASHITER_MIN:
+    case IDC_STATIC_HASHITER_MAX:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

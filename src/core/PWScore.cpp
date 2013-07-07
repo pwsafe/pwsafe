@@ -700,7 +700,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL) {
-    SetHashIters(in3->GetNHashIters());
+    m_hashIters = in3->GetNHashIters();
     m_MapFilters = in3->GetFilters();
     m_MapPSWDPLC = in3->GetPasswordPolicies();
     m_vEmptyGroups = in3->GetEmptyGroups();
@@ -3228,5 +3228,8 @@ uint32 PWScore::GetHashIters() const
 
 void PWScore::SetHashIters(uint32 value)
 {
-  m_hashIters = value;
+  if (value != m_hashIters) {
+    m_hashIters = value;
+    SetDBPrefsChanged(true);
+  }
 }
