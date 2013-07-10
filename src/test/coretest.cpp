@@ -16,6 +16,7 @@ using namespace std;
 
 #define TEST_BLOWFISH
 #define TEST_TWOFISH
+#define TEST_AES
 #define TEST_SHA256
 #define TEST_HMAC_SHA256
 #define TEST_STRINGX
@@ -26,6 +27,9 @@ using namespace std;
 #endif
 #ifdef TEST_TWOFISH
 #include "TwoFishTest.h"
+#endif
+#ifdef TEST_AES
+#include "AESTest.h"
 #endif
 #ifdef TEST_SHA256
 #include "SHA256Test.h"
@@ -63,29 +67,35 @@ int main()
   t2.run();
   t2.report();
 #endif
-#ifdef TEST_SHA256
-  CSHA256Test t3;
+#ifdef TEST_AES
+  CAESTest t3;
   t3.setStream(&cout);
   t3.run();
   t3.report();
 #endif
-#ifdef TEST_HMAC_SHA256
-  CHMAC_SHA256Test t4;
+#ifdef TEST_SHA256
+  CSHA256Test t4;
   t4.setStream(&cout);
   t4.run();
   t4.report();
 #endif
-#ifdef TEST_STRINGX
-  StringXTest t5;
+#ifdef TEST_HMAC_SHA256
+  CHMAC_SHA256Test t5;
   t5.setStream(&cout);
   t5.run();
   t5.report();
 #endif
-#ifdef TEST_ITEMFIELD
-  ItemFieldTest t6;
+#ifdef TEST_STRINGX
+  StringXTest t6;
   t6.setStream(&cout);
   t6.run();
   t6.report();
+#endif
+#ifdef TEST_ITEMFIELD
+  ItemFieldTest t7;
+  t7.setStream(&cout);
+  t7.run();
+  t7.report();
 #endif
   return 0;
 }
