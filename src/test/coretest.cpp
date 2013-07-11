@@ -21,6 +21,7 @@ using namespace std;
 #define TEST_HMAC_SHA256
 #define TEST_STRINGX
 #define TEST_ITEMFIELD
+#define TEST_KEYWRAP
 
 #ifdef TEST_BLOWFISH
 #include "BlowFishTest.h"
@@ -42,6 +43,9 @@ using namespace std;
 #endif
 #ifdef TEST_ITEMFIELD
 #include "ItemFieldTest.h"
+#endif
+#ifdef TEST_KEYWRAP
+#include "KeyWrapTest.h"
 #endif
 
 #include <iostream>
@@ -96,6 +100,12 @@ int main()
   t7.setStream(&cout);
   t7.run();
   t7.report();
+#endif
+#ifdef TEST_KEYWRAP
+  CKeyWrapTest t8;
+  t8.setStream(&cout);
+  t8.run();
+  t8.report();
 #endif
   return 0;
 }
