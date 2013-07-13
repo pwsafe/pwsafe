@@ -13,7 +13,7 @@ DEPDIR= ./deps
 # Following not used in Linux build
 NOTSRC          = PWSclipboard.cpp
 
-LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
+LIBSRC          = BlowFish.cpp CheckVersion.cpp \
                   ItemData.cpp ItemField.cpp  PWPolicy.cpp \
                   Match.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
