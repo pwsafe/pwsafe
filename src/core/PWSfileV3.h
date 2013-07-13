@@ -76,7 +76,7 @@ private:
   uint32 m_nHashIters;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
-  HMAC_SHA256 m_hmac;
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac;
   CUTF8Conv m_utf8conv;
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,

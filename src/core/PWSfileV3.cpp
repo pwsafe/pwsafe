@@ -85,7 +85,7 @@ int PWSfileV3::Close()
   if (m_fd == NULL)
     return SUCCESS; // idempotent
 
-  unsigned char digest[HMAC_SHA256::HASHLEN];
+  unsigned char digest[SHA256::HASHLEN];
   m_hmac.Final(digest);
 
   // Write or verify HMAC, depending on RWmode.
@@ -105,9 +105,9 @@ int PWSfileV3::Close()
   } else { // Read
     // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
-    unsigned char d[HMAC_SHA256::HASHLEN];
+    unsigned char d[SHA256::HASHLEN];
     fread(d, sizeof(d), 1, m_fd);
-    if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
+    if (memcmp(d, digest, SHA256::HASHLEN) == 0)
       return PWSfile::Close();
     else {
       PWSfile::Close();
@@ -143,7 +143,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
 
   // Does file have a valid EOF block?
   unsigned char eof_block[sizeof(TERMINAL_BLOCK)];
-  if (fseek(stream, -int(sizeof(TERMINAL_BLOCK) + HMAC_SHA256::HASHLEN), SEEK_END) != 0) {
+  if (fseek(stream, -int(sizeof(TERMINAL_BLOCK) + SHA256::HASHLEN), SEEK_END) != 0) {
     retval = READ_FAIL; // actually, seek error, but that's too nuanced
     goto err;
   }
