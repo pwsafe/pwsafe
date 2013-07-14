@@ -35,6 +35,9 @@ public:
 
   ~HMAC(){/* cleaned up in Final */}
 
+  int GetBlockSize() const {return BLOCKSIZE;}
+  int GetHashLen() const {return HASHLEN;}
+
   void Init(const unsigned char *key, unsigned long keylen)
   {
     ASSERT(key != NULL);
@@ -78,6 +81,11 @@ public:
     memset(d, 0, HASHLEN);
     H1.Final(digest);
   }
+
+  void Doit(const unsigned char *key, unsigned long keylen,
+            const unsigned char *in, unsigned long inlen,
+            unsigned char digest[HASHLEN])
+  {Init(key, keylen); Update(in, inlen); Final(digest);}
 
 private:
   H Hash;
