@@ -82,11 +82,6 @@ public:
     H1.Final(digest);
   }
 
-  void Doit(const unsigned char *key, unsigned long keylen,
-            const unsigned char *in, unsigned long inlen,
-            unsigned char digest[HASHLEN])
-  {Init(key, keylen); Update(in, inlen); Final(digest);}
-
 private:
   H Hash;
   unsigned char K[BLOCKSIZE];
