@@ -41,5 +41,8 @@
     <ClInclude Include="BlowFishTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PBKDF2SHA1Test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
