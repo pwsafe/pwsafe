@@ -19,6 +19,7 @@
 
 #include "PwsPlatform.h"
 #include "hmac.h"
+
 #include <cstring>
 
 #ifdef TEST_HMAC_SHA1
@@ -73,6 +74,8 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
   left   = *outlen;
   blkno  = 1;
   stored = 0;
+  x = hmac->GetHashLen();
+
   while (left != 0) {
     /* process block number blkno */
     memset(buf[0], 0, hmac.GetBlockSize() * 2);
