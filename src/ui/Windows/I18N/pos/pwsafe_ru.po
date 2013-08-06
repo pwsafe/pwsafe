@@ -102,6 +102,10 @@ msgstr " 'По дв. клику'"
 msgid " 'Group'"
 msgstr " 'Группа'"
 
+#. Resource IDs: (372)
+msgid " 'Keyboard Shortcut'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
 msgstr " 'Время последнего доступа'"
@@ -984,6 +988,10 @@ msgstr ")"
 msgid "* means that the database has been modified since last save"
 msgstr "* значит, что с момента последнего сохранения контейнер был изменён"
 
+#. Resource IDs: (216)
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
 msgstr "*** Действие прервано пользователем ***"
@@ -1001,11 +1009,6 @@ msgstr "— Системная —"
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
-
-#. Resource IDs: (214)
-#, fuzzy
-msgid "-merged-"
-msgstr "—объединено—"
 
 #. Resource IDs: (1009, 1010, 1067, 1223, 1432, 1435, 1457, 1458)
 msgid "..."
@@ -1553,6 +1556,10 @@ msgstr "И / Или"
 #. Resource IDs: (1116)
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
+
+#. Resource IDs: (65535)
+msgid "Application Hotkey"
+msgstr ""
 
 #. Resource IDs: (353, 1216)
 msgid "Apply"
@@ -2467,6 +2474,10 @@ msgstr "Датская"
 msgid "Database"
 msgstr "Контейнер"
 
+#. Resource IDs: (65535)
+msgid "Database Entry Shortcuts"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Database Unique ID"
 msgstr "UID контейнера"
@@ -2665,6 +2676,10 @@ msgstr "Не восстанавливать автоматически сохр�
 msgid "Double Click Action"
 msgstr "Действие по двойному клику"
 
+#. Resource IDs: (373)
+msgid "Double click to Edit/View this entry."
+msgstr ""
+
 #. Resource IDs: (65535)
 # урезано
 msgid "Double-Click Action:"
@@ -2761,6 +2776,10 @@ msgstr "Экспортировать элемент &в"
 msgid "Easyvision characters"
 msgstr "Легкоотличимые символы"
 
+#. Resource IDs: (2004)
+msgid "Edit"
+msgstr ""
+
 #. Resource IDs: (32220)
 msgid "Edit Entry"
 msgstr "Редактировать элемент"
@@ -2790,6 +2809,10 @@ msgstr "Столбец с группой/заголовком и/или паро
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Пустые строки %d пропущены"
+
+#. Resource IDs: (1088)
+msgid "Enable"
+msgstr ""
 
 #. Resource IDs: (3867)
 # AFX_IDP_FILE_HARD_IO
@@ -2950,6 +2973,10 @@ msgstr "Элемент %s%d с группой «%s», заголовком «%s�
 msgid "Entry Comparison"
 msgstr "Сравнение элементов"
 
+#. Resource IDs: (373)
+msgid "Entry Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
 msgstr "Изменения в политике создания паролей"
@@ -2971,6 +2998,25 @@ msgstr "Пароль для элемента «%s, %s, %s» имеет вид п
 #. Resource IDs: (205)
 msgid "Entry import warnings"
 msgstr "Предупреждения при импорте элементов"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -3228,6 +3274,10 @@ msgstr "Поле активно"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "Поле присутствует"
+
+#. Resource IDs: (2001)
+msgid "File"
+msgstr ""
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3544,15 +3594,14 @@ msgstr "История"
 msgid "History entry"
 msgstr "Элемент истории"
 
-#. Resource IDs: (1088)
-# урезано
-msgid "Hot Key"
-msgstr "Вызов по"
-
 #. Resource IDs: (1087)
 # No need to translate these
 msgid "HotKey1"
 msgstr "HotKey1"
+
+#. Resource IDs: (372)
+msgid "However, we can't add either as all combinations are in use."
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3982,6 +4031,10 @@ msgstr "TXT-файл KeePass V1..."
 msgid "Keep"
 msgstr "Хранить"
 
+#. Resource IDs: (193, 372, 65535)
+msgid "Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
 msgstr "Тип клавиатуры:"
@@ -4141,6 +4194,10 @@ msgstr "Неправильная библиотека DLL почтовой си�
 msgid "Make Backup"
 msgstr "Создать резервную копию"
 
+#. Resource IDs: (2010)
+msgid "Manage"
+msgstr ""
+
 #. Resource IDs: (158)
 msgid "Manage Filters"
 msgstr "Управление фильтрами"
@@ -4164,6 +4221,10 @@ msgstr "Маратхская"
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Макс."
+
+#. Resource IDs: (1487)
+msgid "Maximum"
+msgstr ""
 
 #. Resource IDs: (338)
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
@@ -4777,6 +4838,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe — <Восстановлено из резервной копии>"
 
+#. Resource IDs: (373)
+msgid "Password Safe Application HotKey"
+msgstr ""
+
 #. Resource IDs: (317)
 # урезано
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
@@ -5073,6 +5138,10 @@ msgstr "Предыдущие пароли"
 msgid "Processing entry:"
 msgstr "Обрабатываемый элемент:"
 
+#. Resource IDs: (65535)
+msgid "Program Shortcuts"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Приложения (*.exe)|*.exe|Все файлы (*.*)|*.*||"
@@ -5270,8 +5339,8 @@ msgid "Reset"
 msgstr "Сбросить"
 
 #. Resource IDs: (1368)
-msgid "Reset All"
-msgstr "Сбросить все"
+msgid "Reset All Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5841,6 +5910,10 @@ msgstr "Испанская (изменённая)"
 msgid "Special set"
 msgstr "Особый набор"
 
+#. Resource IDs: (1486)
+msgid "Standard"
+msgstr ""
+
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
 msgstr "Запускать Password Safe при входе в систему"
@@ -6048,6 +6121,30 @@ msgstr "Элемент %s «%s, %s, %s» не указывает на норма
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "Кнопка Alt не используется для выбора букв. Используйте «Alt Num» для ввода символа по десятичному коду."
 
+#. Resource IDs: (372)
+msgid "The Alt and Ctrl keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt key has been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt, Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl key has been added."
+msgstr ""
+
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr "При экспорте TXT- или CSV-файла не были соблюдены все требования, так как данные элемента разбиты на несколько строк.\n\nИмпорт прерван."
@@ -6189,6 +6286,16 @@ msgstr "Указанные записи были переименованы, т.
 msgid "The following records were skipped:"
 msgstr "Следующие записи были пропущены:"
 
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
+msgstr ""
+
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
@@ -6246,6 +6353,10 @@ msgstr "На носителе с аварийной резервной копи�
 # AFX_IDS_AUTOSAVE_RECOVERY_ASK_2
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr "Эти документы были сохранены позднее по сравнению с документами, открытыми в настоящий момент, и содержат изменения, внесённые до закрытия приложения."
+
+#. Resource IDs: (373)
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6611,6 +6722,10 @@ msgstr "Неизвестный объект"
 msgid "Unlock"
 msgstr "Разблокировать"
 
+#. Resource IDs: (1485)
+msgid "Unlock Difficulty:"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Разблокировать контейнер"
@@ -6882,6 +6997,10 @@ msgstr "Предупреждение"
 #, fuzzy
 msgid "Warning - excessive field contents"
 msgstr "Внимание: поле содержит слишком много данных"
+
+#. Resource IDs: (1370)
+msgid "Warning goes here if generated"
+msgstr ""
 
 #. Resource IDs: (331)
 #, c-format
@@ -7420,6 +7539,11 @@ msgstr "\tОдна или несколько политик создания п�
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
 msgstr "\tВ контейнере отсутствуют одна или несколько политик создания паролей. В связанных с ними элементах была настроена политика контейнера по умолчанию."
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgstr ""
+
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
@@ -7548,6 +7672,10 @@ msgstr "содержит все из"
 msgid "contains any of"
 msgstr "содержит любой из"
 
+#. Resource IDs: (216)
+msgid "copied"
+msgstr ""
+
 #. Resource IDs: (1093)
 # Хранить n контейнеров
 msgid "databases."
@@ -7663,6 +7791,10 @@ msgstr "id="
 msgid "import"
 msgstr "импорт"
 
+#. Resource IDs: (216)
+msgid "imported"
+msgstr ""
+
 #. Resource IDs: (1320)
 # в фильтре (in 5 days)
 msgid "in"
@@ -7724,6 +7856,10 @@ msgstr "меньше чем"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "меньше либо равно"
+
+#. Resource IDs: (214)
+msgid "merged"
+msgstr ""
 
 #. Resource IDs: (1445)
 # Ex.: "Lock password database after 5 minutes idle"

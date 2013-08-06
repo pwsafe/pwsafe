@@ -100,6 +100,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr "'그룹'"
 
+#. Resource IDs: (372)
+msgid " 'Keyboard Shortcut'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
 msgstr "'최종 접근 시간'"
@@ -933,6 +937,10 @@ msgstr ")"
 msgid "* means that the database has been modified since last save"
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
 msgstr ""
@@ -949,10 +957,6 @@ msgstr "- 물리적 -"
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
-
-#. Resource IDs: (214)
-msgid "-merged-"
-msgstr "-통합됨-"
 
 #. Resource IDs: (1223)
 msgid "..."
@@ -1488,6 +1492,10 @@ msgstr "And / Or"
 #. Resource IDs: (1116)
 msgid "Any field last changed on:"
 msgstr "마지막으로 변경된 날짜:"
+
+#. Resource IDs: (65535)
+msgid "Application Hotkey"
+msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -2365,6 +2373,10 @@ msgstr "Danish"
 msgid "Database"
 msgstr "데이터베이스"
 
+#. Resource IDs: (65535)
+msgid "Database Entry Shortcuts"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Database Unique ID"
 msgstr "데이터베이스 고유 번호"
@@ -2550,6 +2562,10 @@ msgstr "자동으로 저장된 문서를 열지 마십시오.\n정확히 마지�
 msgid "Double Click Action"
 msgstr "더블클릭 행동"
 
+#. Resource IDs: (373)
+msgid "Double click to Edit/View this entry."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "더블클릭 행동:"
@@ -2644,6 +2660,10 @@ msgstr "항목을 이 곳으로 내보내기(&X):"
 msgid "Easyvision characters"
 msgstr "읽기 쉬운 문자들"
 
+#. Resource IDs: (2004)
+msgid "Edit"
+msgstr ""
+
 #. Resource IDs: (121, 32220)
 msgid "Edit Entry"
 msgstr "항목 편집"
@@ -2673,6 +2693,10 @@ msgstr "그룹/제목 항목과 비밀번호 항목 중 적어도 하나 이상�
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "비어있는 %d째 줄이 생략됨"
+
+#. Resource IDs: (1088)
+msgid "Enable"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2813,6 +2837,10 @@ msgstr "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgid "Entry Comparison"
 msgstr ""
 
+#. Resource IDs: (373)
+msgid "Entry Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
 msgstr ""
@@ -2834,6 +2862,25 @@ msgstr "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호�
 #. Resource IDs: (205)
 msgid "Entry import warnings"
 msgstr "항목 불러오기 경고"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -3075,6 +3122,10 @@ msgstr "필드 활성화"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "필드 존재함"
+
+#. Resource IDs: (2001)
+msgid "File"
+msgstr ""
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3387,13 +3438,13 @@ msgstr "내역"
 msgid "History entry"
 msgstr ""
 
-#. Resource IDs: (1088)
-msgid "Hot Key"
-msgstr "단축키"
-
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "단축키1"
+
+#. Resource IDs: (372)
+msgid "However, we can't add either as all combinations are in use."
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3805,6 +3856,10 @@ msgstr ""
 msgid "Keep"
 msgstr "유지"
 
+#. Resource IDs: (193, 372, 65535)
+msgid "Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
 msgstr "키보드 종류:"
@@ -3959,6 +4014,10 @@ msgstr "메일 시스템 DLL 파일이 잘못되었습니다."
 msgid "Make Backup"
 msgstr "백업본 생성"
 
+#. Resource IDs: (2010)
+msgid "Manage"
+msgstr ""
+
 #. Resource IDs: (158)
 msgid "Manage Filters"
 msgstr "필터 관리"
@@ -3982,6 +4041,10 @@ msgstr "Marathi"
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "최대"
+
+#. Resource IDs: (1487)
+msgid "Maximum"
+msgstr ""
 
 #. Resource IDs: (338)
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
@@ -4569,6 +4632,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <복원된 이름없는 백업본>"
 
+#. Resource IDs: (373)
+msgid "Password Safe Application HotKey"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
 msgstr "Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.ibak)|*.ibak||"
@@ -4856,6 +4923,10 @@ msgstr "이전 비밀번호"
 msgid "Processing entry:"
 msgstr "처리중인 항목:"
 
+#. Resource IDs: (65535)
+msgid "Program Shortcuts"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "응용 프로그램 (*.exe)|*.exe|모든 파일 (*.*)|*.*||"
@@ -5048,8 +5119,8 @@ msgid "Reset"
 msgstr "초기화"
 
 #. Resource IDs: (1368)
-msgid "Reset All"
-msgstr "모두 초기화"
+msgid "Reset All Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5601,6 +5672,10 @@ msgstr "Spanish Variation"
 msgid "Special set"
 msgstr ""
 
+#. Resource IDs: (1486)
+msgid "Standard"
+msgstr ""
+
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
 msgstr "로그인 때 Password Safe 시작"
@@ -5803,6 +5878,30 @@ msgstr "%s \"%s, %s, %s\" 항목이 일반항목 혹은 존재하는 기본항�
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "ALT 키는 문자열을 선택하는 데에 사용되지 않습니다. 10진수를 입력하시려면 'Alt Num' 키를 대신 사용하십시오."
 
+#. Resource IDs: (372)
+msgid "The Alt and Ctrl keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt key has been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt, Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl key has been added."
+msgstr ""
+
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr ""
@@ -5943,6 +6042,16 @@ msgstr "다음 레코드는 이미 당신의 데이터베이스에 존재하거�
 msgid "The following records were skipped:"
 msgstr "다음 레코드가 무시되었습니다:"
 
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
+msgstr ""
+
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
@@ -5998,6 +6107,10 @@ msgstr ""
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr "이들은 현재 열려있는 데이터베이스 이전에 최근에 저장되었으며, 프로그램이 종료되기 전의 변경사항들을 포함하고 있습니다."
+
+#. Resource IDs: (373)
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6346,6 +6459,10 @@ msgstr "알 수 없는 객체"
 msgid "Unlock"
 msgstr "잠금 해제"
 
+#. Resource IDs: (1485)
+msgid "Unlock Difficulty:"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Safe 해제"
@@ -6598,6 +6715,10 @@ msgstr "경고"
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
 msgstr "경고 - 필드에 내용이 너무 많습니다"
+
+#. Resource IDs: (1370)
+msgid "Warning goes here if generated"
+msgstr ""
 
 #. Resource IDs: (331)
 #, c-format
@@ -7128,6 +7249,11 @@ msgstr ""
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
 msgstr ""
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgstr ""
+
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
@@ -7247,6 +7373,10 @@ msgstr ""
 msgid "contains any of"
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "copied"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "databases."
@@ -7355,6 +7485,10 @@ msgstr "id="
 msgid "import"
 msgstr "import"
 
+#. Resource IDs: (216)
+msgid "imported"
+msgstr ""
+
 #. Resource IDs: (1320)
 msgid "in"
 msgstr "in"
@@ -7410,6 +7544,10 @@ msgstr "less than"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "less than or equal to"
+
+#. Resource IDs: (214)
+msgid "merged"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

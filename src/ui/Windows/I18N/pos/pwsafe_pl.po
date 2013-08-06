@@ -101,6 +101,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " 'Grupa'"
 
+#. Resource IDs: (372)
+msgid " 'Keyboard Shortcut'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
 msgstr " 'Ostatnio otwarty'"
@@ -941,6 +945,10 @@ msgstr ")"
 msgid "* means that the database has been modified since last save"
 msgstr "* oznacza, że baza danych została zmieniona"
 
+#. Resource IDs: (216)
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
 msgstr "*** Operacja przerwana przez użytkownika ***"
@@ -957,10 +965,6 @@ msgstr "- Fizyczny -"
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
-
-#. Resource IDs: (214)
-msgid "-merged-"
-msgstr "-scalone-"
 
 #. Resource IDs: (1223)
 msgid "..."
@@ -1501,6 +1505,10 @@ msgstr "I / Lub"
 #. Resource IDs: (1116)
 msgid "Any field last changed on:"
 msgstr "Ostatnia zmiana w którymkolwiek z pól:"
+
+#. Resource IDs: (65535)
+msgid "Application Hotkey"
+msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -2393,6 +2401,10 @@ msgstr "Duński"
 msgid "Database"
 msgstr "Baza Danych"
 
+#. Resource IDs: (65535)
+msgid "Database Entry Shortcuts"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Database Unique ID"
 msgstr "Unikalny identyfikator w bazie"
@@ -2582,6 +2594,10 @@ msgstr "Nie odzyskuj automatycznie zachowanych dokumentów\nUżywaj ostatnio sam
 msgid "Double Click Action"
 msgstr "Akcja na podwójne klinknięcie"
 
+#. Resource IDs: (373)
+msgid "Double click to Edit/View this entry."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "Akcja na podwójne klinknięcie:"
@@ -2677,6 +2693,10 @@ msgstr "Eksportuj wpis do"
 msgid "Easyvision characters"
 msgstr "Znaki łatwo wyróżnialne"
 
+#. Resource IDs: (2004)
+msgid "Edit"
+msgstr ""
+
 #. Resource IDs: (121, 32220)
 #, fuzzy
 msgid "Edit Entry"
@@ -2707,6 +2727,10 @@ msgstr "Brak obydwu lub jednej z kolumn grupa/nazwa i hasło. Nie zaimportowano 
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Opuszczono pustą linię %d"
+
+#. Resource IDs: (1088)
+msgid "Enable"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2850,6 +2874,10 @@ msgstr "Wpis %s%d z grupą=\"%s\", nazwą=\"%s\", użytkownikiem=\"%s\""
 msgid "Entry Comparison"
 msgstr "Porównanie wpisów"
 
+#. Resource IDs: (373)
+msgid "Entry Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
 msgstr "Zmiany polityki wpisu"
@@ -2871,6 +2899,25 @@ msgstr "Wpis \"%s, %s, %s\" ma hasło w poprawnej formie dla aliasu, ale wpis ba
 #. Resource IDs: (205)
 msgid "Entry import warnings"
 msgstr "Ostrzeżenia przy importowaniu wpisu"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -3115,6 +3162,10 @@ msgstr "Pole aktywne"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "Pole istnieje"
+
+#. Resource IDs: (2001)
+msgid "File"
+msgstr ""
 
 #. Resource IDs: (328)
 #, fuzzy
@@ -3435,15 +3486,14 @@ msgstr "Historia"
 msgid "History entry"
 msgstr "Historia wpisu"
 
-#. Resource IDs: (1088)
-#, fuzzy
-msgid "Hot Key"
-msgstr "Hot Key"
-
 #. Resource IDs: (1087)
 #, fuzzy
 msgid "HotKey1"
 msgstr "HotKey1"
+
+#. Resource IDs: (372)
+msgid "However, we can't add either as all combinations are in use."
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3855,6 +3905,10 @@ msgstr "KeePass V1 TXT plik..."
 msgid "Keep"
 msgstr "Zachowaj"
 
+#. Resource IDs: (193, 372, 65535)
+msgid "Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
 msgstr "Typ klawiatury:"
@@ -4011,6 +4065,10 @@ msgstr "Mail system DLL is invalid."
 msgid "Make Backup"
 msgstr "Wykonaj kopię zapasową"
 
+#. Resource IDs: (2010)
+msgid "Manage"
+msgstr ""
+
 #. Resource IDs: (158)
 msgid "Manage Filters"
 msgstr "Zarządzaj Filtrami"
@@ -4034,6 +4092,10 @@ msgstr "Maratki"
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Maks."
+
+#. Resource IDs: (1487)
+msgid "Maximum"
+msgstr ""
 
 #. Resource IDs: (338)
 #, fuzzy
@@ -4640,6 +4702,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Przywrócona kopia zapasowa bez nazwy>"
 
+#. Resource IDs: (373)
+msgid "Password Safe Application HotKey"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
 msgstr "Kopie zapasowe Password Safe(*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak||"
@@ -4930,6 +4996,10 @@ msgstr "Poprzednie hasła"
 msgid "Processing entry:"
 msgstr "Przetwarzanie wpisu:"
 
+#. Resource IDs: (65535)
+msgid "Program Shortcuts"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programy (*.exe)|*.exe|Wszystkie pliki (*.*)|*.*||"
@@ -5124,8 +5194,8 @@ msgid "Reset"
 msgstr "Reset"
 
 #. Resource IDs: (1368)
-msgid "Reset All"
-msgstr "Resetuj wszystko"
+msgid "Reset All Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5682,6 +5752,10 @@ msgstr "Odmiana hiszpańskiego"
 msgid "Special set"
 msgstr "Ustawienia specjane"
 
+#. Resource IDs: (1486)
+msgid "Standard"
+msgstr ""
+
 #. Resource IDs: (1220)
 #, fuzzy
 msgid "Start PasswordSafe at Login"
@@ -5887,6 +5961,30 @@ msgstr "Wpis %s \"%s, %s, %s\" nie wskazuje na normalny lub istniejący wpis baz
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. Użyj 'Aln Num' by wprowadzić znak poprzez jego wartość numeryczną."
 
+#. Resource IDs: (372)
+msgid "The Alt and Ctrl keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt key has been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt, Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl key has been added."
+msgstr ""
+
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr "Plik TXT lub CSV nie został wyeksportowany jak należy, gdyż rekordy wpisów są wieloliniowe w pliku CSV.\n\nImport przerwany."
@@ -6028,6 +6126,16 @@ msgstr "Następującym rekordom zostały zmienione nazwy ponieważ wpisy już is
 msgid "The following records were skipped:"
 msgstr "Następujące rekordy zostały ominięte:"
 
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
+msgstr ""
+
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
@@ -6083,6 +6191,10 @@ msgstr "Wygląda na to, że nie dysk zawierający kopię zapasową Failsafe nie 
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr "Są nowsze dokumenty niż aktualnie otwarte i zawierają zmiany dokonane przed zamknięciem aplikacji."
+
+#. Resource IDs: (373)
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6434,6 +6546,10 @@ msgstr "Nieznany obiekt"
 msgid "Unlock"
 msgstr "Odblokuj"
 
+#. Resource IDs: (1485)
+msgid "Unlock Difficulty:"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Odblokuj"
@@ -6689,6 +6805,10 @@ msgstr "Ostrzeżenie"
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
 msgstr "Uwaga - nadmierna zawartość pola"
+
+#. Resource IDs: (1370)
+msgid "Warning goes here if generated"
+msgstr ""
 
 #. Resource IDs: (331)
 #, fuzzy, c-format
@@ -7227,6 +7347,11 @@ msgstr "\tJedna lub więcej z nazw polityk haseł już była w bazie danych, ale
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
 msgstr "\tJedna lub więcej z nazw polityk haseł nie została znaleziona w bazie danych. Wpisom któych to dotyczyło zmieniono politykę na domyślną."
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgstr ""
+
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
@@ -7350,6 +7475,10 @@ msgstr "zawierający wszystko z"
 msgid "contains any of"
 msgstr "zawierający dowolny z"
 
+#. Resource IDs: (216)
+msgid "copied"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "bazy danych."
@@ -7461,6 +7590,10 @@ msgstr "id="
 msgid "import"
 msgstr "import"
 
+#. Resource IDs: (216)
+msgid "imported"
+msgstr ""
+
 #. Resource IDs: (1320)
 msgid "in"
 msgstr "w"
@@ -7519,6 +7652,10 @@ msgstr "mniejsze niż"
 #, fuzzy
 msgid "less than or equal to"
 msgstr "mniejszy lub równy"
+
+#. Resource IDs: (214)
+msgid "merged"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "minutes idle"
