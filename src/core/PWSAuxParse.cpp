@@ -453,8 +453,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
       sxuser = pbci->GetUser();
       sxpwd = pbci->GetPassword();
       sxnotes = pbci->GetNotes();
-      sxurl = ci.GetURL();
-      sxemail = ci.GetEmail();
+      sxurl = pbci->GetURL();
+      sxemail = pbci->GetEmail();
       sxautotype = pbci->GetAutoType();
     } else { // Problem - shortcut entry without a base!
       ASSERT(0);

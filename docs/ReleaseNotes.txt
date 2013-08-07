@@ -1,5 +1,5 @@
-Password Safe 3.32 Release Notes - May 2013
-===========================================
+Password Safe 3.32pre Release Notes - August 2013
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,19 +8,20 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.32
-=====================
+New Features for 3.32pre
+========================
 [695] Allow a keyboard shortcut to be associated with selecting an entry.
 Please see Help entry for more details.
 
-Changes to Existing Features in 3.32
-====================================
+Changes to Existing Features in 3.32pre
+=======================================
 [] Add validation of entry field XML characters to ensure resulting file
 can be imported.  Note: any field containing an invalid character will not
 be exported and a comment added to the export file and the report.
 
-Bugs fixed in 3.32
-==================
+Bugs fixed in 3.32pre
+=====================
+[1101] Autotype email and url now works with shortcut.
 [] Prevent Alt+Enter or Ctrl+Enter when setting the Application Hotkey in
 PasswordSafe options dialog closing the dialog and saving an invalid Hotkey.
 [] Support wrap scrolling in the ListView using up and down arrow keys.
