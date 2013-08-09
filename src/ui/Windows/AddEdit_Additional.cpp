@@ -535,9 +535,9 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
       for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
-        iNewKBShortcut = wValidModifierCombos[iChange];
+        iNewKBShortcut = ((wPWSModifiers | wValidModifierCombos[iChange]) << 16) + wVirtualKeyCode;
         chk_uuid = M_pcore()->GetKBShortcut(iNewKBShortcut);
-        if (chk_uuid == CUUID::NullUUID()) {
+        if (chk_uuid == CUUID::NullUUID() || chk_uuid == M_entry_uuid()) {
           ierror = iActions[iChange];
           break;
         }
