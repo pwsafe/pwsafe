@@ -112,12 +112,9 @@ public:
     
  public:
     CRecentDBList &recentDatabases();
-<<<<<<< HEAD
     uint32 GetHashIters() const {return m_core.GetHashIters();}
     void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
-=======
->>>>>>> yubico-3.31
 };
 
 /*!
