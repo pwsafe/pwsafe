@@ -96,7 +96,6 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
 
-  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 

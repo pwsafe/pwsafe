@@ -374,7 +374,6 @@
 #define IDC_CREATE_DB                   1003
 #define IDC_EXIT                        1004
 #define IDC_PASSWORD                    1005
-#define IDC_OLDPASSKEY                  1006
 #define IDC_NEWPASSKEY                  1007
 #define IDC_CONFIRMNEW                  1008
 #define IDC_TITLE                       1009
