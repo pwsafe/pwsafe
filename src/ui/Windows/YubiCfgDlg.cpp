@@ -34,7 +34,7 @@ static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
 	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
+    m_YubiSN(_T("")), m_YubiSK(_T("")), m_exists(false), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
@@ -89,7 +89,6 @@ BOOL CYubiCfgDlg::OnInitDialog()
 {
   if (CPWDialog::OnInitDialog() == TRUE) {
     SetTimer(1, 250, 0); // Setup a timer to poll the key every 250 ms
-    GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
     HideSK();
     return TRUE;
   } else
@@ -239,10 +238,13 @@ void CYubiCfgDlg::OnTimer(UINT_PTR)
   // call relevant callback if something's changed
   if (inserted != m_present) {
     m_present = inserted;
-    if (m_present)
+    if (m_present) {
+      GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
+      m_exists = true;
       yubiInserted();
-    else
+    } else {
       yubiRemoved();
+    }
   }
 }
 

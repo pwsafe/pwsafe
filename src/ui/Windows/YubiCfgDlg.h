@@ -49,6 +49,7 @@ public:
   void HideSK();
 
   bool m_present; // key present?
+  bool m_exists; // was key ever present?
   bool m_isSKHidden;
   mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
   PWScore &m_core;

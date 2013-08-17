@@ -1631,5 +1631,8 @@
     <Image Include="graphics\Yubikey-button.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\Yubikey-button-disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
