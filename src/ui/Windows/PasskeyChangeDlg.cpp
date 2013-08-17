@@ -107,8 +107,8 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   // 2nd on our lonely.
   CWnd *ybn2 = GetDlgItem(IDC_YUBIKEY2_BTN);
   ((CButton*)ybn2)->SetBitmap(m_yubiLogo);
-  // Hide 2nd Yubi btn if Yubi API not detected
-  ybn2->ShowWindow(IsYubiEnabled() ? SW_SHOW : SW_HIDE);
+  // Hide 2nd Yubi btn if Yubikey never detected
+  ybn2->ShowWindow(YubiExists() ? SW_SHOW : SW_HIDE);
   // Enable 2nd Yubi btn iff Yubi's connected
   ybn2->EnableWindow(IsYubiInserted() ? TRUE : FALSE);
  

@@ -17,6 +17,7 @@
 using namespace std;
 
 const wchar_t CPKBaseDlg::PSSWDCHAR = L'*';
+bool CPKBaseDlg::s_yubiDetected = false;
 
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
 : CPWDialog(id, pParent), m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
@@ -48,11 +49,6 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
 }
 
-bool CPKBaseDlg::IsYubiEnabled() const
-{
-  return true;
-}
-
 bool CPKBaseDlg::IsYubiInserted() const
 {
   if (m_pending)
@@ -73,17 +69,21 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
-  bool yubiEnabled = IsYubiEnabled();
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
   CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-  ybn->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  if (YubiExists()) {
+    ybn->ShowWindow(SW_SHOW);
+    m_yubi_status.ShowWindow(SW_SHOW);
+  } else {
+    ybn->ShowWindow(SW_HIDE);
+    m_yubi_status.ShowWindow(SW_HIDE);
+  }
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = IsYubiInserted();
-  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // MFC has ancient bug: can't render disabled version of bitmap,
   // so instead of showing drek, we roll our own, and leave enabled.
   ybn->EnableWindow(TRUE);
 
@@ -100,8 +100,11 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 
 void CPKBaseDlg::yubiInserted(void)
 {
-  ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogo);
+  CButton *ybn = (CButton*)GetDlgItem(IDC_YUBIKEY_BTN);
+  ybn->SetBitmap(m_yubiLogo);
+  ybn->ShowWindow(SW_SHOW);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+  m_yubi_status.ShowWindow(SW_SHOW);
 }
 
 void CPKBaseDlg::yubiRemoved(void)
@@ -223,9 +226,10 @@ void CPKBaseDlg::OnTimer(UINT_PTR )
     // call relevant callback if something's changed
     if (inserted != m_present) {
       m_present = inserted;
-      if (m_present)
+      if (m_present) {
+        s_yubiDetected = true; // proof that user has a yubikey!
         yubiInserted();
-      else
+      } else
         yubiRemoved();
     }
   }

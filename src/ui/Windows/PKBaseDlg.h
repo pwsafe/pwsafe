@@ -36,7 +36,7 @@ class CPKBaseDlg : public CPWDialog {
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   // Yubico-related:
-  bool IsYubiEnabled() const;
+  bool YubiExists() const {return s_yubiDetected;}
   bool IsYubiInserted() const;
   // Callbacks:
 	virtual void yubiInserted(void); // called when Yubikey's inserted
@@ -51,6 +51,7 @@ class CPKBaseDlg : public CPWDialog {
   CBitmap m_yubiLogo;
   CBitmap m_yubiLogoDisabled;
  private:
+  static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
   mutable CYkLib m_yk;
   bool m_pending; // request pending?
   bool m_present; // key present?
