@@ -11,9 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ThisMfcApp.h"    // For Help
-
 #include "Options_PropertySheet.h"
-
 #include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"

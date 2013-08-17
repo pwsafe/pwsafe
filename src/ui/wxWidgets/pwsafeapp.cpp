@@ -247,7 +247,6 @@ void PwsafeApp::Init()
 bool PwsafeApp::OnInit()
 {
   SetAppName(pwsafeAppName);
-  Init();
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);

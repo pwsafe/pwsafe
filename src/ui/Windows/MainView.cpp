@@ -24,7 +24,6 @@
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
 #include "MenuShortcuts.h"
-
 #include "HKModifiers.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"

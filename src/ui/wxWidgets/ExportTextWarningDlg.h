@@ -29,8 +29,17 @@ public:
   virtual void DoAdvancedSelection() = 0;
 
   SelectionCriteria* selCriteria;
-  StringX           passKey;
+private:
+  void OnYubibtnClick( wxCommandEvent& event );
+  void OnPollingTimer(wxTimerEvent& timerEvent);
+
+  const wxString defDelim;
   wxString          delimiter;
+  StringX           passKey;
+  CSafeCombinationCtrl* m_combinationEntry;
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 };
 
 template <class DlgType>

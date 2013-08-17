@@ -11,9 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ThisMfcApp.h"    // For Help
-
 #include "Options_PropertySheet.h"
-
 #include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
@@ -56,22 +54,22 @@ COptionsSecurity::~COptionsSecurity()
 
 void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
-    COptions_PropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
-    //{{AFX_DATA_MAP(COptionsSecurity)
-    DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
-    DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-    DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
-    DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
-    DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
-    DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
-    DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
-    DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+  //{{AFX_DATA_MAP(COptionsSecurity)
+  DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
+  DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+  DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
+  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
+  DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
+  DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
+  DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
+  DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 
-    DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
-    DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
-    //}}AFX_DATA_MAP
-    DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
+  DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
+  DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
+  //}}AFX_DATA_MAP
+  DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)

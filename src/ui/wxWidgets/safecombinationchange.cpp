@@ -21,6 +21,7 @@
 #endif
 
 ////@begin includes
+#include "SafeCombinationCtrl.h"
 ////@end includes
 
 #include "safecombinationchange.h"
@@ -33,6 +34,7 @@
 #endif
 
 ////@begin XPM images
+#include "graphics/Yubikey-button.xpm"
 ////@end XPM images
 
 
@@ -50,12 +52,16 @@ IMPLEMENT_CLASS( CSafeCombinationChange, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
 
 ////@begin CSafeCombinationChange event table entries
+  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationChange::OnYubibtnClick )
+
+  EVT_BUTTON( ID_YUBIBTN2, CSafeCombinationChange::OnYubibtn2Click )
+
   EVT_BUTTON( wxID_OK, CSafeCombinationChange::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationChange::OnCancelClick )
 
 ////@end CSafeCombinationChange event table entries
-
+EVT_TIMER(CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -92,6 +98,12 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   }
   Centre();
 ////@end CSafeCombinationChange creation
+  m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
+  m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
+  m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
+  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
   return true;
 }
 
@@ -104,6 +116,7 @@ CSafeCombinationChange::~CSafeCombinationChange()
 {
 ////@begin CSafeCombinationChange destruction
 ////@end CSafeCombinationChange destruction
+  delete m_pollingTimer;
 }
 
 
@@ -114,6 +127,12 @@ CSafeCombinationChange::~CSafeCombinationChange()
 void CSafeCombinationChange::Init()
 {
 ////@begin CSafeCombinationChange member initialisation
+  m_oldPasswdEntry = NULL;
+  m_YubiBtn = NULL;
+  m_newPasswdEntry = NULL;
+  m_YubiBtn2 = NULL;
+  m_confirmEntry = NULL;
+  m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationChange member initialisation
 }
 
@@ -133,52 +152,53 @@ void CSafeCombinationChange::CreateControls()
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the current combination, followed by a new combination.\nType the new combination once again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(3, 2, 0, 0);
+  wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(4, 3, 0, 0);
   itemBoxSizer2->Add(itemFlexGridSizer4, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_OLDPASSWD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
-  ApplyPasswordFont(itemTextCtrl6);
-  itemFlexGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  itemTextCtrl6->SetFocus();
+  m_oldPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
+  itemFlexGridSizer4->Add(m_oldPasswdEntry, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-  itemFlexGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_NEWPASSWD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
-  ApplyPasswordFont(itemTextCtrl8);
-  itemFlexGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-  itemFlexGridSizer4->Add(itemStaticText9, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_newPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_CONFIRM, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
-  ApplyPasswordFont(itemTextCtrl10);
-  itemFlexGridSizer4->Add(itemTextCtrl10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+  wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxGROW|wxALL, 5);
-  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton12->SetDefault();
-  itemStdDialogButtonSizer11->AddButton(itemButton12);
+  m_confirmEntry = new CSafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
+  itemFlexGridSizer4->Add(m_confirmEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton13);
+  itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton14);
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxGROW|wxALL, 5);
 
-  itemStdDialogButtonSizer11->Realize();
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
 
-  itemStdDialogButtonSizer11->Add(new ExternalKeyboardButton(itemDialog1), wxSizerFlags().Border(wxLEFT));
+  itemBoxSizer2->Add(itemStdDialogButtonSizer15, 0, wxGROW|wxALL, 5);
+  wxButton* itemButton16 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton16->SetDefault();
+  itemStdDialogButtonSizer15->AddButton(itemButton16);
 
-  // Set validators
-  itemTextCtrl6->SetValidator( wxGenericValidator(& m_oldpasswd) );
-  itemTextCtrl8->SetValidator( wxGenericValidator(& m_newpasswd) );
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_confirm) );
+  wxButton* itemButton17 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer15->AddButton(itemButton17);
+
+  wxButton* itemButton18 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer15->AddButton(itemButton18);
+
+  itemStdDialogButtonSizer15->Realize();
+
 ////@end CSafeCombinationChange content construction
 }
 
@@ -201,6 +221,11 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CSafeCombinationChange bitmap retrieval
   wxUnusedVar(name);
+  if (name == _T("graphics/Yubikey-button.xpm"))
+  {
+    wxBitmap bitmap(Yubikey_button_xpm);
+    return bitmap;
+  }
   return wxNullBitmap;
 ////@end CSafeCombinationChange bitmap retrieval
 }
@@ -238,10 +263,6 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
       err.ShowModal();
     } else if (m_confirm != m_newpasswd) {
       wxMessageDialog err(this, _("New safe combination and confirmation do not match"),
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
-      err.ShowModal();
-    } else if (m_newpasswd.empty()) {
-      wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
     // Vox populi vox dei - folks want the ability to use a weak
@@ -286,3 +307,87 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
 }
 
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
+{
+  // Here we just need to get the existing c/r. We verify it as a curtesy to the user,
+  // that is, to indicate asap that it's incorrect.
+  m_oldresponse.clear();
+  // Allow blank password when Yubi's used
+  m_oldPasswdEntry->AllowEmptyCombinationOnce();
+  m_newPasswdEntry->AllowEmptyCombinationOnce();
+  m_confirmEntry->AllowEmptyCombinationOnce();
+
+  if (Validate() && TransferDataFromWindow()) {
+    if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, m_oldresponse)) {
+      // Verify the response - a convenience, as we double check in OnYubibtn2Click().
+      int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_oldresponse.clear();
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+      } else {
+        m_yubiMixin2.SetPrompt1(_("Enter new safe combination (if any) and click on bottom Yubikey button"));
+        m_yubiMixin2.UpdateStatus();
+      }
+    }
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
+ */
+
+void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& event )
+{
+  // Allow blank password when Yubi's used:
+  m_oldPasswdEntry->AllowEmptyCombinationOnce();
+  m_newPasswdEntry->AllowEmptyCombinationOnce();
+  m_confirmEntry->AllowEmptyCombinationOnce();
+  if (Validate() && TransferDataFromWindow()) {
+    int rc;
+    // First check existing password/response:
+    // 1. Both old password and old response can't be blank
+    if (m_oldpasswd.empty() && m_oldresponse.empty()) {
+      m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+      m_yubiStatusCtrl->SetLabel(_("Please confirm existing combination"));
+      return;
+    }
+    // 2. If there's an old response, it should already have been checked, but JIC:
+    if (!m_oldresponse.empty()) {
+      rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_oldresponse.clear();
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+        return;
+      }
+    } else {
+      // 3. No old response, we can only check the old password
+      rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("Current safe combination incorrect"));
+        return;
+      }
+    }
+    StringX response;
+    if (m_yubiMixin2.PerformChallengeResponse(m_newpasswd, response)) {
+      m_newpasswd = response;
+      EndModal(wxID_OK);
+    }
+  }
+}
+
+void CSafeCombinationChange::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == CYubiMixin::POLLING_TIMER_ID) {
+    m_yubiMixin1.HandlePollingTimer();
+    m_yubiMixin2.HandlePollingTimer();
+  }
+}

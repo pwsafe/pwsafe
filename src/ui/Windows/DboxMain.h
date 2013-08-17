@@ -379,7 +379,6 @@ public:
   uint32 GetHashIters() const {return m_core.GetHashIters();}
   void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
-
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
 
@@ -717,6 +716,7 @@ public:
   afx_msg void OnOptions();
   afx_msg void OnManagePasswordPolicies();
   afx_msg void OnGeneratePassword();
+  afx_msg void OnYubikey();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();

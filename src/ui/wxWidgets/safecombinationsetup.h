@@ -24,6 +24,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
+#include "YubiMixin.h"
 
 /*!
  * Forward declarations
@@ -31,6 +32,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -45,6 +47,8 @@
 #else
 #define SYMBOL_CSAFECOMBINATIONSETUP_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #endif
+#define ID_YUBIBTN 10229
+#define ID_YUBISTATUS 10230
 #define SYMBOL_CSAFECOMBINATIONSETUP_TITLE _("Safe Combination Setup")
 #define SYMBOL_CSAFECOMBINATIONSETUP_IDNAME ID_SAFECOMBINATIONSETUP
 #define SYMBOL_CSAFECOMBINATIONSETUP_SIZE wxSize(400, 300)
@@ -56,7 +60,7 @@
  * CSafeCombinationSetup class declaration
  */
 
-class CSafeCombinationSetup: public wxDialog
+class CSafeCombinationSetup: public wxDialog, private CYubiMixin
 {    
   DECLARE_DYNAMIC_CLASS( CSafeCombinationSetup )
   DECLARE_EVENT_TABLE()
@@ -82,6 +86,9 @@ public:
 
   ////@begin CSafeCombinationSetup event handler declarations
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
@@ -89,6 +96,7 @@ public:
   void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationSetup event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationSetup member function declarations
 
@@ -103,8 +111,11 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationSetup member variables
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationSetup member variables
  private:
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
   wxString m_password;
   wxString m_verify;
 };

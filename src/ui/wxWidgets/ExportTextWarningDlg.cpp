@@ -97,6 +97,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
 {
   delete selCriteria;
+  delete m_pollingTimer;
 }
 
 void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )

@@ -13,13 +13,16 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "GeneralMsgBox.h"
-#include "Options_PropertySheet.H"
+#include "Options_PropertySheet.h"
+#include "YubiCfgDlg.h"
 
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "core/PwsPlatform.h"
 #include "core/pwsprefs.h"
+#include "core/PWScore.h"
 
 #include "os/dir.h"
+#include "os/rand.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -39,23 +42,18 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static wchar_t PSSWDCHAR = L'*';
 
 //-----------------------------------------------------------------------------
-CPasskeySetup::CPasskeySetup(CWnd *pParent)
-  : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_PASSKEY)
+CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
+  : CPKBaseDlg(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
+    m_LastFocus(IDC_PASSKEY), m_core(core)
 {
-  m_passkey = L"";
   m_verify = L"";
-
-  m_pctlPasskey = new CSecEditExtn;
   m_pctlVerify = new CSecEditExtn;
 }
 
 CPasskeySetup::~CPasskeySetup()
 {
-  delete m_pctlPasskey;
   delete m_pctlVerify;
 
   if (m_pVKeyBoardDlg != NULL) {
@@ -74,31 +72,30 @@ CPasskeySetup::~CPasskeySetup()
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CPKBaseDlg::DoDataExchange(pDX);
   
   // Can't use DDX_Text for CSecEditExtn
-  m_pctlPasskey->DoDDX(pDX, m_passkey);
   m_pctlVerify->DoDDX(pDX, m_verify);
 
-  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 
 {
-  CPWDialog::OnInitDialog();
+  CPKBaseDlg::OnInitDialog();
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
-  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);
 
   // Only show virtual Keyboard menu if we can load DLL
@@ -112,7 +109,7 @@ BOOL CPasskeySetup::OnInitDialog()
 
 void CPasskeySetup::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CPKBaseDlg::OnCancel();
 }
 
 void CPasskeySetup::OnOK()
@@ -158,7 +155,7 @@ void CPasskeySetup::OnOK()
   }
 #endif // _DEBUG
 
-  CPWDialog::OnOK();
+  CPKBaseDlg::OnOK();
 }
 
 void CPasskeySetup::OnHelp() 
@@ -249,4 +246,59 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
                     nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+void CPasskeySetup::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+  // Check that password and verification are same.
+  // unlike non-Yubi usage, here we accept empty passwords,
+  // which will give token-based authentication.
+  // A non-empty password with Yubikey is 2-factor auth.
+  CGeneralMsgBox gmb;
+  if (m_passkey != m_verify) {
+    gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+    ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
+    return;
+  }
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CPasskeySetup::ProcessPhrase()
+{
+  // OnOK clears the passkey, so we save it
+  const CSecString save_passkey = m_passkey;
+  TRACE(_T("CPasskeySetup::ProcessPhrase(%s)\n"), m_passkey);
+  CPKBaseDlg::OnOK();
+  m_passkey = save_passkey;
+}
+
+void CPasskeySetup::YubiFailed()
+{
+    CGeneralMsgBox gmb;
+    INT_PTR rc = gmb.MessageBox(_T("The YubiKey appears uninitialized. Initialize it?"),
+                                AfxGetAppName(),
+                                MB_YESNO | MB_ICONQUESTION);
+    if (rc == IDYES) {
+      YubiInitialize();
+    }
+}
+
+void CPasskeySetup::YubiInitialize()
+{
+  CGeneralMsgBox gmb;
+  CYubiCfgDlg ycd(this, m_core);
+  unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
+  pws_os::GetRandomData(sk, CYubiCfgDlg::YUBI_SK_LEN);
+  if (ycd.WriteYubiSK(sk) == YKLIB_OK) {
+      m_core.SetYubiSK(sk);
+      gmb.MessageBox(_T("YubiKey initialized sucessfully, close this message box and activate it."),
+                     AfxGetAppName(),
+                     MB_OK | MB_ICONINFORMATION);
+      PostMessage(WM_COMMAND, IDC_YUBIKEY_BTN);
+  } else {
+    gmb.MessageBox(_T("Failed to initialize YubiKey. Please try again."),
+                     AfxGetAppName(),
+                     MB_OK | MB_ICONERROR);
+  }
 }

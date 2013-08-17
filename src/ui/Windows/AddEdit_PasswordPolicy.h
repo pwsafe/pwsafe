@@ -63,7 +63,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_PasswordPolicy)
   virtual BOOL OnInitDialog();

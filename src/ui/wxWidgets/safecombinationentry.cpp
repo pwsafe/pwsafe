@@ -26,24 +26,28 @@
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
+#include <wx/timer.h>
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
 #include "version.h"
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "os/file.h"
+
 ////@begin XPM images
-#include "graphics/cpane.xpm"
-#include "graphics/psafetxt.xpm"
+#include "graphics/Yubikey-button.xpm"
 ////@end XPM images
+#include "./graphics/cpane.xpm"
+#include "./graphics/psafetxt.xpm"
 #include "pwsafeapp.h"
-#include "SafeCombinationCtrl.h"
 #include <wx/filename.h>
-#include "./SafeCombinationCtrl.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <iostream> // for debugging
+#include <iomanip>
 
 /*!
  * CSafeCombinationEntry type definition
@@ -63,12 +67,14 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
   EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
 
+  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationEntry::OnYubibtnClick )
+
   EVT_BUTTON( wxID_OK, CSafeCombinationEntry::OnOk )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
 
 ////@end CSafeCombinationEntry event table entries
-
+EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -111,6 +117,9 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   }
   Centre();
 ////@end CSafeCombinationEntry creation
+  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
   return true;
 }
 
@@ -123,6 +132,7 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
 {
 ////@begin CSafeCombinationEntry destruction
 ////@end CSafeCombinationEntry destruction
+  delete m_pollingTimer;
 }
 
 
@@ -138,6 +148,8 @@ void CSafeCombinationEntry::Init()
   m_version = NULL;
   m_filenameCB = NULL;
   m_combinationEntry = NULL;
+  m_YubiBtn = NULL;
+  m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationEntry member initialisation
 }
 
@@ -154,7 +166,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -163,7 +175,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_version = new wxStaticText( itemDialog1, wxID_STATIC, _("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -200,20 +212,29 @@ void CSafeCombinationEntry::CreateControls()
   wxButton* itemButton17 = new wxButton( itemDialog1, ID_NEWDB, _("New..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer18 = new wxStdDialogButtonSizer;
+  wxBoxSizer* itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
 
-  itemBoxSizer4->Add(itemStdDialogButtonSizer18, 0, wxGROW|wxALL, 0);
-  wxButton* itemButton19 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton19->SetDefault();
-  itemStdDialogButtonSizer18->AddButton(itemButton19);
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  itemBoxSizer18->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  wxButton* itemButton20 = new wxButton( itemDialog1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer18->AddButton(itemButton20);
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton21 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer18->AddButton(itemButton21);
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
-  itemStdDialogButtonSizer18->Realize();
+  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 0);
+  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton22->SetDefault();
+  itemStdDialogButtonSizer21->AddButton(itemButton22);
+
+  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer21->AddButton(itemButton23);
+
+  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer21->AddButton(itemButton24);
+
+  itemStdDialogButtonSizer21->Realize();
 
   // Set validators
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
@@ -270,6 +291,11 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
     wxBitmap bitmap(psafetxt_xpm);
     return bitmap;
   }
+  else if (name == _T("graphics/Yubikey-button.xpm"))
+  {
+    wxBitmap bitmap(Yubikey_button_xpm);
+    return bitmap;
+  }
   return wxNullBitmap;
 ////@end CSafeCombinationEntry bitmap retrieval
 }
@@ -299,49 +325,55 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      FindWindow(ID_COMBINATION)->SetFocus();
       return;
     }
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      m_filenameCB->SetFocus();
       return;
     }
-    int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
-    wxString errmess;
-    switch (status) {
-    case PWScore::SUCCESS:
-      m_core.SetReadOnly(m_readOnly);
-      m_core.SetCurFile(tostringx(m_filename));
-      wxGetApp().recentDatabases().AddFileToHistory(m_filename);
-      EndModal(wxID_OK);
-      return;
-    case PWScore::CANT_OPEN_FILE:
-      { stringT str;
-        LoadAString(str, IDSC_FILE_UNREADABLE);
-        errmess = str.c_str();
-      }
-      break;
-    case PWScore::WRONG_PASSWORD:
-    default:
-      if (m_tries >= 2) {
-        errmess = _("Three strikes - yer out!");
-      } else {
-        m_tries++;
-        errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
-      }
-      break;
-    } // switch (status)
-    // here iff CheckPasskey failed.
-    wxMessageDialog err(this, errmess,
-                        _("Error"), wxOK | wxICON_EXCLAMATION);
-    err.ShowModal();
-    wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
-    txt->SetSelection(-1,-1);
-    txt->SetFocus();
+    ProcessPhrase();
   } // Validate && TransferDataFromWindow
 }
 
+void CSafeCombinationEntry::ProcessPhrase()
+{
+  int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
+  wxString errmess;
+  switch (status) {
+  case PWScore::SUCCESS:
+    m_core.SetReadOnly(m_readOnly);
+    m_core.SetCurFile(tostringx(m_filename));
+    wxGetApp().recentDatabases().AddFileToHistory(m_filename);
+    EndModal(wxID_OK);
+    return;
+  case PWScore::CANT_OPEN_FILE:
+    { stringT str;
+      LoadAString(str, IDSC_FILE_UNREADABLE);
+      errmess = str.c_str();
+    }
+    break;
+  case PWScore::WRONG_PASSWORD:
+  default:
+    if (m_tries >= 2) {
+      errmess = _("Three strikes - yer out!");
+    } else {
+      m_tries++;
+      errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
+    }
+    break;
+  } // switch (status)
+    // here iff CheckPasskey failed.
+  wxMessageDialog err(this, errmess,
+                      _("Error"), wxOK | wxICON_EXCLAMATION);
+  err.ShowModal();
+  wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
+  txt->SetSelection(-1,-1);
+  txt->SetFocus();
+}
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
@@ -433,3 +465,36 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   }
 }
 
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
+{
+  m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
+  if (Validate() && TransferDataFromWindow()) {
+    if (!pws_os::FileExists(tostdstring(m_filename))) {
+      wxMessageDialog err(this, _("File or path not found."),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      m_filenameCB->SetFocus();
+      return;
+    }
+
+    StringX response;
+    if (PerformChallengeResponse(m_password, response)) {
+      m_password = response;
+      ProcessPhrase();
+      UpdateStatus();
+    }
+  }
+}
+
+void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == POLLING_TIMER_ID) {
+    HandlePollingTimer(); // in CYubiMixin
+  }
+}

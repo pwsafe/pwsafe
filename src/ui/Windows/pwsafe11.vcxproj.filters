@@ -393,6 +393,12 @@
     <ClCompile Include="EntryKBHotKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="YubiCfgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKBaseDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -786,6 +792,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntryKBHotKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YubiCfgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKBaseDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1614,5 +1626,10 @@
     <ResourceCompile Include="PasswordSafe.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="graphics\Yubikey-button.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

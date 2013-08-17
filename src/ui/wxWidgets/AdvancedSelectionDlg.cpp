@@ -178,7 +178,7 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
         if (IsUsableField(ft)) {
           if ( (criteriaChanged && m_criteria->IsFieldSelected(ft)) ||
                               (!criteriaChanged && IsPreselectedField(ft)) ) {
-            const wxString title = SelectionCriteria::GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): _(""));
+            const wxString title = SelectionCriteria::GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxEmptyString);
             lbSelected->Append(title, reinterpret_cast<void *>(idx));
           }
           else {
@@ -242,7 +242,7 @@ void AdvancedSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
 
   wxArrayInt aSelected;
   if (lbAvailable->GetSelections(aSelected)) {
-	aSelected.Sort(pless);
+    aSelected.Sort(pless);
     for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
       size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(static_cast<unsigned int>(aSelected[idx] - idx)));
       wxASSERT(which < SelectionCriteria::GetNumFieldsSelectable());
@@ -277,7 +277,7 @@ void AdvancedSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
 
   wxArrayInt aSelected;
   if (lbSelected->GetSelections(aSelected)) {
-	aSelected.Sort(pless);
+    aSelected.Sort(pless);
     for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
       size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(aSelected[idx] - nRemoved)));
       wxASSERT(which < SelectionCriteria::GetNumFieldsSelectable());

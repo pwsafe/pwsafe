@@ -447,6 +447,10 @@ public:
   size_t GetExpirySize() {return m_ExpireCandidates.size();}
   ExpiredList GetExpired(int idays) {return m_ExpireCandidates.GetExpired(idays);}
 
+  // Yubi support:
+  const unsigned char *GetYubiSK() const;
+  void SetYubiSK(const unsigned char *);
+  
   // Password Policies
   bool IncrementPasswordPolicy(const StringX &sxPolicyName);
   bool DecrementPasswordPolicy(const StringX &sxPolicyName);

@@ -39,6 +39,7 @@ protected:
   BOOL OnInitDialog();
   void DoDataExchange(CDataExchange* pDX);
   LRESULT OnWizardNext();
+  afx_msg void OnYubikeyBtn();
 
   // Generated message map functions
   //{{AFX_MSG(CWZSelectDB)
@@ -68,6 +69,28 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   st_SaveAdvValues *m_pst_SADV;
   CFont m_WarningFont;
+
+  // Following should be private inheritance of CPKBaseDlg,
+  // but MFC doesn't allow us to do this. So much for OOD.
+  static const wchar_t PSSWDCHAR;
+
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  // Yubico-related:
+  bool IsYubiInserted() const;
+  // Callbacks:
+  void yubiInserted(void); // called when Yubikey's inserted
+  void yubiRemoved(void);  // called when Yubikey's removed
+  void yubiCheckCompleted(); // called when request pending and timer fired
+
+  void yubiRequestHMACSha1(); // request HMAC of m_passkey
+  // Indicate that we're waiting for user to activate YubiKey:
+  CProgressCtrl m_yubi_timeout;
+  // Show user what's going on / what we're waiting for:
+  CEdit m_yubi_status;
+  CBitmap m_yubiLogo;
+  bool m_pending; // request pending?
+  bool m_present; // key present?
+  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };
 //-----------------------------------------------------------------------------
 // Local variables:

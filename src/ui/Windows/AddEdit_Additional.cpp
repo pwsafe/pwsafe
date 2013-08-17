@@ -967,4 +967,3 @@ void CAddEdit_Additional::OnPWHCopyAll()
 
   GetMainDlg()->SetClipboardData(HistStr);
 }
-

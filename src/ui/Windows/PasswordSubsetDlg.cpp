@@ -12,7 +12,6 @@
 
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
-
 #include "Fonts.h"
 #include "core/StringX.h"
 #include "core/PWSprefs.h"

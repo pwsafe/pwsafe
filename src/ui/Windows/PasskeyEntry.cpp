@@ -22,10 +22,10 @@ down the streetsky.  [Groucho Marx]
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
+#include "core/PWScore.h"
 #include "core/core.h"
 
 #include "os/file.h"
-#include "os/env.h"
 #include "os/dir.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
@@ -47,8 +47,6 @@ down the streetsky.  [Groucho Marx]
 
 #include <iomanip>  // For setbase and setw
 
-static wchar_t PSSWDCHAR = L'*';
-
 // See DboxMain.h for the relevant enum
 int CPasskeyEntry::dialog_lookup[5] = {
   IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
@@ -60,7 +58,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
                              bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
-  : CPWDialog(dialog_lookup[index], pParent),
+  : CPKBaseDlg(dialog_lookup[index], pParent),
   m_index(index),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
@@ -68,20 +66,15 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
-  m_pVKeyBoardDlg(NULL)
+    m_pVKeyBoardDlg(NULL), m_yubi_sk(NULL)
 {
   DBGMSG("CPasskeyEntry()\n");
   if (m_index == GCP_FIRST) {
     DBGMSG("** FIRST **\n");
   }
 
-  m_passkey = L"";
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
-
-  m_pctlPasskey = new CSecEditExtn;
-  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
-    m_pctlPasskey->SetSecure(false);
 
   PWSversion *pPWSver = PWSversion::GetInstance();
   int nMajor = pPWSver->GetMajor();
@@ -98,8 +91,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
 CPasskeyEntry::~CPasskeyEntry()
 {
   ::DestroyIcon(m_hIcon);
-  delete m_pctlPasskey;
-  
+
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard
     UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
@@ -112,22 +104,21 @@ CPasskeyEntry::~CPasskeyEntry()
     m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;
   }
+  if (m_yubi_sk != NULL) {
+    trashMemory(m_yubi_sk, 20);
+    delete[] m_yubi_sk;
+  }
 }
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
-
-  // Can't use DDX_Text for CSecEditExtn
-  m_pctlPasskey->DoDDX(pDX, m_passkey);
-
+  CPKBaseDlg::DoDataExchange(pDX);
   if (m_index == GCP_FIRST)
     DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 
   //{{AFX_DATA_MAP(CPasskeyEntry)
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
   DDX_Control(pDX, IDOK, m_ctlOK);
-  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Text(pDX, IDC_MESSAGE, m_message);
   DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 
@@ -137,8 +128,10 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
+  ON_WM_DESTROY()
+  ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
@@ -147,6 +140,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -165,7 +159,7 @@ static CString NarrowPathText(const CString &text)
 
 BOOL CPasskeyEntry::OnInitDialog(void)
 {
-  CPWDialog::OnInitDialog();
+  CPKBaseDlg::OnInitDialog();
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
@@ -347,7 +341,7 @@ void CPasskeyEntry::OnCreateDb()
   }
 
   // 2. Get a password
-  CPasskeySetup pksetup(this);
+  CPasskeySetup pksetup(this, *app.GetCore());
   rc = pksetup.DoModal();
 
   if (rc != IDOK)
@@ -399,7 +393,9 @@ void CPasskeyEntry::ProcessPhrase()
   CGeneralMsgBox gmb;
 
   switch (GetMainDlg()->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
-  case PWScore::SUCCESS:
+  case PWScore::SUCCESS: {
+    // OnOK clears the passkey, so we save it
+    const CSecString save_passkey = m_passkey;
     // Try to change read-only state if user changed checkbox:
     // r/w -> r-o always succeeds
     // r-o -> r/w may fail
@@ -411,6 +407,8 @@ void CPasskeyEntry::ProcessPhrase()
       //                           "don't prompt use for password", as we just got it.
     }
     CPWDialog::OnOK();
+    m_passkey = save_passkey;
+  }
     break;
   case PWScore::WRONG_PASSWORD:
     if (m_tries >= 2) { // too many tries
@@ -611,8 +609,6 @@ void CPasskeyEntry::OnVirtualKeyboard()
 
   // Now show it and make it top
   m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
-  return;
 }
 
 LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
@@ -642,4 +638,17 @@ LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
                         nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+void CPasskeyEntry::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+  if (!pws_os::FileExists(m_filespec.GetString())) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
+    if (m_MRU_combo.IsWindowVisible())
+      m_MRU_combo.SetFocus();
+    return;
+  }
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
 }

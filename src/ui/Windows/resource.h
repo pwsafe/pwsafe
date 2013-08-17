@@ -362,10 +362,14 @@
 #define IDD_SHOW_COMPARE                522
 #define IDD_COMPARE_WITH                523
 #define IDB_EMPTY_GROUP                 524
+
+#define IDB_YUBI_LOGO                   525
+#define IDD_YUBIKEY                     526
+
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
-#define IDC_APPVERSION2                 1001
-#define IDC_APPBUILTON                  1001
+#define IDC_APPVERSION2                 1002
+#define IDC_APPBUILTON                  1020
 #define IDC_CREATE_DB                   1003
 #define IDC_EXIT                        1004
 #define IDC_PASSWORD                    1005
@@ -509,7 +513,7 @@
 #define IDC_SETMAXPWHISTORY             1186
 #define IDC_STATIC_UPDATEPWHISTORY      1187
 #define IDC_REGDEL                      1188
-#define IDC_SETMAXPWHISTORY2            1188
+#define IDC_SETMAXPWHISTORY2            1189
 #define IDC_DEFNOTESSHOWINEDIT          1190
 #define IDC_DATABASENAME                1191
 #define IDC_DATABASEFORMAT              1192
@@ -735,49 +739,63 @@
 #define IDC_STATIC_DEFAUTOTYPE          1447
 #define IDC_STATIC_PSWDLENGTH           1448
 #define IDC_SHIFT_DOUBLE_CLICK_ACTION   1449
-#define IDC_STATIC_PREFERENCES          1453
-#define IDC_STATIC_DB_PREFS_RO_WARNING  1454
-#define IDC_DATABASE_NAME               1455
-#define IDC_DATABASE_DESCRIPTION        1456
-#define IDC_CHANGE_DESCRIPTION          1457
-#define IDC_CHANGE_NAME                 1458
-#define IDC_INPUTBOX_TEXT               1459
-#define IDC_INPUTBOX_CHAR_COUNT         1460
-#define IDC_EDIT                        1461
-#define IDC_LIST_POLICYENTRIES          1462
-#define IDC_POLICYLIST                  1463
-#define IDC_POLICYNAME                  1464
-#define IDC_USEPWPOLICYNAME             1465
-#define IDC_POLICYPROPERTIES            1466
-#define IDC_POLICYENTRIES               1467
-#define IDC_STATIC_POLICYDETAILS        1468
-#define IDC_STATIC_POLICYENTRIES        1469
-#define IDC_USENAMED_POLICY             1470
-#define IDC_STATIC_NAMEDPOLICY          1471
-#define IDC_POLICYNAMES_HEADER          1472
-#define IDC_POLICYENTRIES_HEADER        1473
-#define IDC_STATIC_COPYPSWD             1474
-#define IDC_UNDO                        1475
-#define IDC_REDO                        1476
-#define IDC_CLEARPWHISTORY              1477
-#define IDC_UPDATEPROTECTEDPWH          1478
-#define IDC_SHOW_IDENTICAL_FIELDS       1479
-#define IDC_ABORT                       1480
-#define IDC_ENTKBSHCTHOTKEY             1481
-#define IDC_ENTSHORTCUTLIST             1482
-#define IDC_ENTLIST_HEADER              1483
-#define IDC_HASHITERSLIDER              1484
-#define IDC_STATIC_HASHITER             1485
-#define IDC_STATIC_HASHITER_MIN         1486
-#define IDC_STATIC_HASHITER_MAX         1487
+#define IDC_STATIC_PREFERENCES          1451
+#define IDC_YUBIKEY_BTN                 1452
+#define IDC_YUBIKEY_STATUS              1453
+#define IDC_YUBIKEY_BTN2                1454
+#define IDC_YUBIKEY2_BTN                1455
+#define IDC_YUBI_PROGRESS               1456
+#define IDC_YUBI_STATUS                 1457
+#define IDC_STATIC_DB_PREFS_RO_WARNING  1458
+#define IDC_DATABASE_NAME               1459
+#define IDC_DATABASE_DESCRIPTION        1460
+#define IDC_CHANGE_DESCRIPTION          1461
+#define IDC_CHANGE_NAME                 1462
+#define IDC_INPUTBOX_TEXT               1463
+#define IDC_INPUTBOX_CHAR_COUNT         1464
+#define IDC_YUBI_SN                     1465
+#define IDC_YUBI_SK                     1466
+#define IDC_YUBI_GEN_BN                 1467
+#define IDC_BUTTON2                     1468
+#define IDC_YUBI_API                    1469
+#define IDC_BUTTON1                     1470
+#define IDC_YUBI_SHOW_HIDE              1471
+#define IDC_EDIT                        1472
+#define IDC_LIST_POLICYENTRIES          1473
+#define IDC_POLICYLIST                  1474
+#define IDC_POLICYNAME                  1475
+#define IDC_USEPWPOLICYNAME             1476
+#define IDC_POLICYPROPERTIES            1477
+#define IDC_POLICYENTRIES               1478
+#define IDC_STATIC_POLICYDETAILS        1479
+#define IDC_STATIC_POLICYENTRIES        1480
+#define IDC_USENAMED_POLICY             1481
+#define IDC_STATIC_NAMEDPOLICY          1482
+#define IDC_POLICYNAMES_HEADER          1483
+#define IDC_POLICYENTRIES_HEADER        1484
+#define IDC_STATIC_COPYPSWD             1485
+#define IDC_UNDO                        1486
+#define IDC_REDO                        1487
+#define IDC_CLEARPWHISTORY              1488
+#define IDC_UPDATEPROTECTEDPWH          1489
+#define IDC_SHOW_IDENTICAL_FIELDS       1490
+#define IDC_ABORT                       1491
+#define IDC_ENTKBSHCTHOTKEY             1492
+#define IDC_ENTSHORTCUTLIST             1493
+#define IDC_ENTLIST_HEADER              1494
+#define IDC_HASHITERSLIDER              1495
+#define IDC_STATIC_HASHITER             1496
+#define IDC_STATIC_HASHITER_MIN         1497
+#define IDC_STATIC_HASHITER_MAX         1498
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        525
+
+#define _APS_NEXT_RESOURCE_VALUE        527
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1488
+#define _APS_NEXT_CONTROL_VALUE         1499
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

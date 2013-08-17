@@ -30,8 +30,8 @@
 #include "AddEdit_DateTimes.h"
 #include "PasswordPolicyDlg.h"
 #include "ManagePSWDPolices.h"
-
 #include "HKModifiers.h"
+#include "YubiCfgDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
@@ -637,6 +637,12 @@ void DboxMain::OnGeneratePassword()
 
   // Delete generate password dialog
   delete pDlg;
+}
+
+void DboxMain::OnYubikey()
+{
+  CYubiCfgDlg dlg(this, m_core);
+  dlg.DoModal();
 }
 
 void DboxMain::OnManagePasswordPolicies()

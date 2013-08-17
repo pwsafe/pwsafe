@@ -435,6 +435,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
+  ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -652,6 +653,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
+  {ID_MENUITEM_YUBIKEY, true, false, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
@@ -990,7 +992,6 @@ LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
     SetActiveWindow();
     SetForegroundWindow();
   }
-
   return 0L;
 }
 
@@ -1101,7 +1102,7 @@ BOOL DboxMain::OnInitDialog()
       if (pws_os::FileExists(fname)) 
         bOOI = OpenOnInit();
       else { // really first install!
-        CPasskeySetup dbox_pksetup(this);
+        CPasskeySetup dbox_pksetup(this, m_core);
         INT_PTR rc = dbox_pksetup.DoModal();
         if (rc == IDCANCEL) {
           PostQuitMessage(0);

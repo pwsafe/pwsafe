@@ -1231,7 +1231,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   SetChanged(Data);
 
   ChangeOkUpdate();
-  
+
   // Order may have changed as a result of edit
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();

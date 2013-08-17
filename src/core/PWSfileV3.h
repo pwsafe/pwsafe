@@ -39,9 +39,10 @@ public:
     HDR_RESERVED2             = 0x0d,     // added in format 0x030?
     HDR_RESERVED3             = 0x0e,     // added in format 0x030?
     HDR_RUE                   = 0x0f,     // added in format 0x0307
+    HDR_YUBI_OLD_SK           = 0x10,     // Yubi-specific: format 0x030a
     HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
     HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
-    HDR_RESERVED4             = 0x12,     // added in format 0x030C
+    HDR_YUBI_SK               = 0x12,     // Yubi-specific: format 0x030c
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 

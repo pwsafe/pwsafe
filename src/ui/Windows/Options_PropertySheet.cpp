@@ -7,7 +7,6 @@
 */
 
 #include "PasswordSafe.h"
-
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
 #include "Shortcut.h"

@@ -25,6 +25,7 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#include "YubiMixin.h"
 
 /*!
  * Forward declarations
@@ -33,6 +34,7 @@
 ////@begin forward declarations
 class CSafeCombinationCtrl;
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -48,6 +50,8 @@ class CSafeCombinationCtrl;
 #define ID_COMBINATION 10004
 #define ID_READONLY 10005
 #define ID_NEWDB 10006
+#define ID_YUBIBTN 10229
+#define ID_YUBISTATUS 10230
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
 #define SYMBOL_CSAFECOMBINATIONENTRY_IDNAME ID_CSAFECOMBINATIONENTRY
@@ -60,7 +64,7 @@ class CSafeCombinationCtrl;
  * CSafeCombinationEntry class declaration
  */
 
-class CSafeCombinationEntry: public wxDialog
+class CSafeCombinationEntry: public wxDialog, private CYubiMixin
 {    
   DECLARE_CLASS( CSafeCombinationEntry )
   DECLARE_EVENT_TABLE()
@@ -91,6 +95,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
   void OnNewDbClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk( wxCommandEvent& event );
 
@@ -98,6 +105,7 @@ public:
   void OnCancel( wxCommandEvent& event );
 
 ////@end CSafeCombinationEntry event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationEntry member function declarations
 
@@ -118,6 +126,9 @@ public:
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
   CSafeCombinationCtrl* m_combinationEntry;
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
+  CSafeCombinationCtrl* m_combinationEntry;
 private:
   StringX m_password;
 ////@end CSafeCombinationEntry member variables
@@ -126,6 +137,10 @@ private:
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
+
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+  // Not strictly yubi, but refactored to work with it:
+  void ProcessPhrase();
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_

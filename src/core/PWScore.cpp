@@ -834,6 +834,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   ParseDependants();
 
+
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
   int closeStatus = in->Close(); // in V3 this checks integrity
@@ -2565,7 +2566,7 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
 
 void PWScore::NotifyDBModified()
 {
-  // his allows the core to provide feedback to the UI that the Database
+  // This allows the core to provide feedback to the UI that the Database
   // has changed particularly to invalidate any current Find results and
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
@@ -3108,6 +3109,24 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   m_IsReadOnly = !m_IsReadOnly;
 
   return true;
+}
+
+// Yubi support:
+const unsigned char *PWScore::GetYubiSK() const
+{
+  return m_hdr.m_yubi_sk;
+}
+
+void PWScore::SetYubiSK(const unsigned char *sk)
+{
+  if (m_hdr.m_yubi_sk)
+    trashMemory(m_hdr.m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+  delete[] m_hdr.m_yubi_sk;
+  m_hdr.m_yubi_sk = NULL;
+  if (sk != NULL) {
+    m_hdr.m_yubi_sk = new unsigned char[PWSfile::HeaderRecord::YUBI_SK_LEN];
+    memcpy(m_hdr.m_yubi_sk, sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+  }
 }
 
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)

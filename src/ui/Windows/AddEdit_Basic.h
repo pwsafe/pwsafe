@@ -79,7 +79,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Basic)
   afx_msg void OnHelp();

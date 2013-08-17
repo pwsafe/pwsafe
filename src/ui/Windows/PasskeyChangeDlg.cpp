@@ -35,25 +35,21 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static wchar_t PSSWDCHAR = L'*';
-
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-  : CPWDialog(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_OLDPASSKEY)
+  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
+    m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
+    m_oldpasskeyConfirmed(false)
 {
-  m_oldpasskey = L"";
   m_newpasskey = L"";
   m_confirmnew = L"";
 
   m_pctlNewPasskey = new CSecEditExtn;
-  m_pctlOldPasskey = new CSecEditExtn;
   m_pctlConfirmNew = new CSecEditExtn;
 }
 
 CPasskeyChangeDlg::~CPasskeyChangeDlg()
 {
-  delete m_pctlOldPasskey;
   delete m_pctlNewPasskey;
   delete m_pctlConfirmNew;
 
@@ -73,39 +69,49 @@ CPasskeyChangeDlg::~CPasskeyChangeDlg()
 
 void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CPKBaseDlg::DoDataExchange(pDX);
 
   // Can't use DDX_Text for CSecEditExtn
-  m_pctlOldPasskey->DoDDX(pDX, m_oldpasskey);
   m_pctlNewPasskey->DoDDX(pDX, m_newpasskey);
   m_pctlConfirmNew->DoDDX(pDX, m_confirmnew);
 
   DDX_Control(pDX, IDC_CONFIRMNEW, *m_pctlConfirmNew);
   DDX_Control(pDX, IDC_NEWPASSKEY, *m_pctlNewPasskey);
-  DDX_Control(pDX, IDC_OLDPASSKEY, *m_pctlOldPasskey);
+  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, &CPasskeyChangeDlg::OnYubikey2Btn)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, &CPasskeyChangeDlg::OnYubikeyBtn)
+  ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CPKBaseDlg::OnInitDialog();
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 
-  m_pctlOldPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlConfirmNew->SetPasswordChar(PSSWDCHAR);
 
+  // Base class handles 1 Yubi btn, here we have 2, so we have to manage the
+  // 2nd on our lonely.
+  CWnd *ybn2 = GetDlgItem(IDC_YUBIKEY2_BTN);
+  ((CButton*)ybn2)->SetBitmap(m_yubiLogo);
+  // Hide 2nd Yubi btn if Yubi API not detected
+  ybn2->ShowWindow(IsYubiEnabled() ? SW_SHOW : SW_HIDE);
+  // Enable 2nd Yubi btn iff Yubi's connected
+  ybn2->EnableWindow(IsYubiInserted() ? TRUE : FALSE);
+ 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
@@ -115,14 +121,29 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   return TRUE;
 }
 
+void CPasskeyChangeDlg::yubiInserted(void)
+{
+  CPKBaseDlg::yubiInserted();
+  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(TRUE);
+}
+
+void CPasskeyChangeDlg::yubiRemoved(void)
+{
+  CPKBaseDlg::yubiRemoved();
+  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(FALSE);
+}
+
 void CPasskeyChangeDlg::OnOK() 
 {
   StringX errmess;
   CString cs_msg, cs_text;
 
   UpdateData(TRUE);
+  if (!m_oldpasskey.IsEmpty()) {
+    m_passkey = m_oldpasskey; // old passkey is from Yubikey
+  }
   CGeneralMsgBox gmb;
-  int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), m_oldpasskey);
+  int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), m_passkey);
   if (rc == PWScore::WRONG_PASSWORD)
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
@@ -157,7 +178,7 @@ void CPasskeyChangeDlg::OnOK()
 
 void CPasskeyChangeDlg::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CPKBaseDlg::OnCancel();
 }
 
 void CPasskeyChangeDlg::OnHelp() 
@@ -167,7 +188,7 @@ void CPasskeyChangeDlg::OnHelp()
 
 void CPasskeyChangeDlg::OnPasskeySetfocus()
 {
-  m_LastFocus = IDC_OLDPASSKEY;
+  m_LastFocus = IDC_PASSKEY;
 }
 
 void CPasskeyChangeDlg::OnNewPasskeySetfocus()
@@ -219,9 +240,9 @@ LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
   CSecString *m_pSecString;
 
   switch (m_LastFocus) {
-    case IDC_OLDPASSKEY:
-      m_pSecCtl = m_pctlOldPasskey;
-      m_pSecString = &m_oldpasskey;
+    case IDC_PASSKEY:
+      m_pSecCtl = m_pctlPasskey;
+      m_pSecString = &m_passkey;
       break;
     case IDC_NEWPASSKEY:
       m_pSecCtl = m_pctlNewPasskey;
@@ -256,4 +277,63 @@ LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
                     nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+void CPasskeyChangeDlg::OnYubikeyBtn()
+{
+  // This is for existing password verification
+  UpdateData(TRUE);
+  m_Yubi1pressed = true;
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CPasskeyChangeDlg::OnYubikey2Btn()
+{
+  UpdateData(TRUE);
+  if (m_confirmnew != m_newpasskey) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
+  } else {
+    m_Yubi2pressed = true;
+    m_oldpasskey = m_passkey; // might need for confirmation
+    m_passkey = m_newpasskey;
+    yubiRequestHMACSha1(); // request HMAC of m_passkey
+  }
+}
+
+
+void CPasskeyChangeDlg::ProcessPhrase()
+{
+  if (m_Yubi1pressed) { // verify existing password
+    m_Yubi1pressed = false;
+    CGeneralMsgBox gmb;
+    int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(),
+                                         m_passkey);
+    if (rc == PWScore::WRONG_PASSWORD)
+      gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
+    else if (rc == PWScore::CANT_OPEN_FILE)
+      gmb.AfxMessageBox(IDS_CANTVERIFY);
+    else {
+      m_oldpasskey = m_passkey;
+      m_oldpasskeyConfirmed = true;
+    }
+  } else if (m_Yubi2pressed) { // set new yubi-passwd
+    m_Yubi2pressed = false;
+    if (!m_oldpasskeyConfirmed) {
+      // perhaps old passkey's w/o yubikey - check it that way
+      int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(),
+                                           m_oldpasskey);
+      m_oldpasskeyConfirmed = rc == PWScore::SUCCESS;
+    }
+    if (m_oldpasskeyConfirmed) {
+      // OnOK clears the passkey, so we save it
+      const CSecString save_passkey = m_passkey;
+      CPKBaseDlg::OnOK(); // skip our OnOK(), irrelevant
+      m_newpasskey = save_passkey;
+    } else {
+      m_yubi_status.SetWindowText(_T("Please confirm old passphrase"));
+    }
+  } else {
+    ASSERT(0);
+  }
 }
