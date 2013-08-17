@@ -49,6 +49,7 @@ class CPKBaseDlg : public CPWDialog {
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
+  CBitmap m_yubiLogoDisabled;
  private:
   mutable CYkLib m_yk;
   bool m_pending; // request pending?

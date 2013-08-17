@@ -364,7 +364,8 @@
 #define IDB_EMPTY_GROUP                 524
 
 #define IDB_YUBI_LOGO                   525
-#define IDD_YUBIKEY                     526
+#define IDB_YUBI_LOGO_DIS               526
+#define IDD_YUBIKEY                     527
 
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
@@ -793,7 +794,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 
-#define _APS_NEXT_RESOURCE_VALUE        527
+#define _APS_NEXT_RESOURCE_VALUE        528
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1499
 #define _APS_NEXT_SYMED_VALUE           166

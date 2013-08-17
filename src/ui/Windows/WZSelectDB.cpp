@@ -244,19 +244,25 @@ BOOL CWZSelectDB::OnInitDialog()
   // Yubi-related initializations:
   bool yubiEnabled = true;
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
+  m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
   CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-  ((CButton*)ybn)->SetBitmap(m_yubiLogo);
   ybn->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = IsYubiInserted();
-  ybn->EnableWindow(yubiInserted ? TRUE : FALSE);
-  if (yubiInserted)
+  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // so instead of showing drek, we roll our own, and leave enabled.
+  ybn->EnableWindow(TRUE);
+
+  if (yubiInserted) {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogo);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-  else
+  } else {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
+  }
 
   return FALSE;
 }
@@ -645,13 +651,13 @@ bool CWZSelectDB::IsYubiInserted() const
 
 void CWZSelectDB::yubiInserted(void)
 {
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
+  ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogo);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
 }
 
 void CWZSelectDB::yubiRemoved(void)
 {
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
+((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 }
 
