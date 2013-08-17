@@ -35,6 +35,17 @@ xerces-c-devel
 wxGTK-devel
 make
 
+The YubiKey support requires the following libraries be built and
+installed. Currently this should be done outside the project's source
+tree. Perhaps a future version will add these as git submodules:
+
+yubico-c: https://github.com/Yubico/yubico-c.git - or use 'apt-get
+install libyubikey-dev' 
+yubico-c-client:          https://github.com/Yubico/yubico-c-client.git
+yubico-pam:               https://github.com/Yubico/yubico-pam.git
+yubikey-personalization:  https://github.com/Yubico/yubikey-personalization.git
+
+
 With these installed, running 'make' at the top of the source tree
 will result in the debug version of pwsafe being built under
 src/ui/wxWidgets/GCCUnicodeDebug (*)
