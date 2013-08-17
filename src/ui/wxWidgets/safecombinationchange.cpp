@@ -252,7 +252,7 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
-    int rc = m_core.CheckPasskey(m_core.GetCurFile(), tostringx(m_oldpasswd));
+    int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd);
     if (rc == PWScore::WRONG_PASSWORD) {
       wxMessageDialog err(this, _("The old safe combination is not correct"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
@@ -271,7 +271,7 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
     // passphrases, then just define the preprocessor macro
     // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
     // (also used in CPasskeySetup)
-    } else if (!CPasswordCharPool::CheckPassword(tostringx(m_newpasswd), errmess)) {
+    } else if (!CPasswordCharPool::CheckPassword(m_newpasswd, errmess)) {
       wxString msg = _("Weak passphrase:");
       msg += wxT("\n\n");
       msg += errmess.c_str();

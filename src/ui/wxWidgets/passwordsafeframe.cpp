@@ -1213,7 +1213,7 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
   CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
-    m_core.ChangePasskey(tostringx(window->GetNewpasswd()));
+    m_core.ChangePasskey(window->GetNewpasswd());
   }
   window->Destroy();
 }

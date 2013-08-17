@@ -128,7 +128,6 @@ public:
   CSafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
-  CSafeCombinationCtrl* m_combinationEntry;
 private:
   StringX m_password;
 ////@end CSafeCombinationEntry member variables

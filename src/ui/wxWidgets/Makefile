@@ -119,11 +119,7 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-<<<<<<< HEAD
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11
-=======
 LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
->>>>>>> yubico-3.31
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
@@ -227,8 +223,8 @@ $(DEPDIR)/%.d: %.cpp version.h
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
-version.h: always
-	@../../../Misc/mkversion.pl version.in $@
+#version.h: always
+#	@../../../Misc/mkversion.pl version.in $@
 
 -include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 

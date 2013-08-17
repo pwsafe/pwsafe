@@ -20,8 +20,8 @@
 #include "wx/wx.h"
 #endif
 
-#include "ExportTextWarningDlg.h"
 #include "SafeCombinationCtrl.h"
+#include "ExportTextWarningDlg.h"
 #include "./SelectionCriteria.h"
 
 #include <wx/statline.h>

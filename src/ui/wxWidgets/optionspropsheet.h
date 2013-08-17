@@ -320,9 +320,6 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
-  int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
-  void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
-
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 

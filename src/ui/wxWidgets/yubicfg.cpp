@@ -367,7 +367,7 @@ void YubiCfgDlg::yubiInserted(void)
     HideSK();
     m_yksk = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
   } else 
-    m_yksk = _("");
+    m_yksk = wxEmptyString;
   ReadYubiSN();
   FindWindow(ID_YK_SERNUM)->SetLabel(m_yksernum);
   Validate(); TransferDataToWindow();

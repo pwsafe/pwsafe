@@ -29,13 +29,13 @@ public:
   virtual void DoAdvancedSelection() = 0;
 
   SelectionCriteria* selCriteria;
+  StringX           passKey;
+  wxString          delimiter;
 private:
   void OnYubibtnClick( wxCommandEvent& event );
   void OnPollingTimer(wxTimerEvent& timerEvent);
 
   const wxString defDelim;
-  wxString          delimiter;
-  StringX           passKey;
   CSafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
