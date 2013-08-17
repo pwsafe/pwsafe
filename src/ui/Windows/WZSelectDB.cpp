@@ -18,6 +18,7 @@
 #include "SecString.h"
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
+#include "PKBaseDlg.h" // for *YubiExists
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "core/Util.h"
@@ -242,13 +243,17 @@ BOOL CWZSelectDB::OnInitDialog()
   GetDlgItem(IDC_DATABASE)->SetFocus();
 
   // Yubi-related initializations:
-  bool yubiEnabled = true;
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
   CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-  ybn->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  if (CPKBaseDlg::YubiExists()) {
+    ybn->ShowWindow(SW_SHOW);
+    m_yubi_status.ShowWindow(SW_SHOW);
+  } else {
+    ybn->ShowWindow(SW_HIDE);
+    m_yubi_status.ShowWindow(SW_HIDE);
+  }
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = IsYubiInserted();
@@ -636,7 +641,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
   return 0L;
 }
 
-// Yubi-related stuff, copied from PKBaseDlg because MFC broke multiple-inheritance
+// Yubi-related stuff, copied from CPKBaseDlg because MFC broke multiple-inheritance
 bool CWZSelectDB::IsYubiInserted() const
 {
   if (m_pending)
@@ -651,8 +656,12 @@ bool CWZSelectDB::IsYubiInserted() const
 
 void CWZSelectDB::yubiInserted(void)
 {
-  ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogo);
+  CButton *ybn = (CButton *)GetDlgItem(IDC_YUBIKEY_BTN);
+  ybn->SetBitmap(m_yubiLogo);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+  // In case this is the first time:
+  ybn->ShowWindow(SW_SHOW);
+  m_yubi_status.ShowWindow(SW_SHOW);
 }
 
 void CWZSelectDB::yubiRemoved(void)
@@ -785,9 +794,10 @@ void CWZSelectDB::OnTimer(UINT_PTR)
     // call relevant callback if something's changed
     if (inserted != m_present) {
       m_present = inserted;
-      if (m_present)
+      if (m_present) {
+        CPKBaseDlg::SetYubiExists();
         yubiInserted();
-      else
+      } else
         yubiRemoved();
     }
   }

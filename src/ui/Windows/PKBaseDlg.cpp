@@ -227,7 +227,7 @@ void CPKBaseDlg::OnTimer(UINT_PTR )
     if (inserted != m_present) {
       m_present = inserted;
       if (m_present) {
-        s_yubiDetected = true; // proof that user has a yubikey!
+        SetYubiExists(); // proof that user has a yubikey!
         yubiInserted();
       } else
         yubiRemoved();

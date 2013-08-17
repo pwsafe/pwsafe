@@ -19,6 +19,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "YubiCfgDlg.h"
+#include "PKBaseDlg.h" // for *YubiExists
 
 #include "os/windows/yubi/YkLib.h"
 #include "core/StringX.h"
@@ -34,7 +35,7 @@ static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
 	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(_T("")), m_YubiSK(_T("")), m_exists(false), m_isSKHidden(true)
+    m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
@@ -240,7 +241,7 @@ void CYubiCfgDlg::OnTimer(UINT_PTR)
     m_present = inserted;
     if (m_present) {
       GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
-      m_exists = true;
+      CPKBaseDlg::SetYubiExists();
       yubiInserted();
     } else {
       yubiRemoved();

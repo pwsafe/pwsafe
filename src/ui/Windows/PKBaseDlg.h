@@ -17,6 +17,15 @@
 #include "ControlExtns.h"
 #include "os/windows/yubi/YkLib.h"
 
+/**
+ * Base class for all dialog boxes that handle master passwords.
+ *
+ * For Yubikey support, the principle is that yubi-specific controls are
+ * totally hidden unless/unitl user inserts a Yubikey for the 1st time
+ * in the app's lifetime, after which controls are visible, but enabled/disabled
+ * to reflect inserterd/removed state of the device.
+ */
+
 class CPKBaseDlg : public CPWDialog {
  public:
   CPKBaseDlg(int id, CWnd *pParent);
@@ -24,6 +33,11 @@ class CPKBaseDlg : public CPWDialog {
   BOOL OnInitDialog(void);
 
   CSecString GetPassKey() const {return m_passkey;}
+
+  // Following help us assure that if a YubiKey's
+  // inserted in *any* dbox that uses it, others will reflect this.
+  static bool YubiExists() {return s_yubiDetected;}
+  static void SetYubiExists() {s_yubiDetected = true;}
 
  protected:
   CSecString m_passkey;
@@ -36,7 +50,6 @@ class CPKBaseDlg : public CPWDialog {
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   // Yubico-related:
-  bool YubiExists() const {return s_yubiDetected;}
   bool IsYubiInserted() const;
   // Callbacks:
 	virtual void yubiInserted(void); // called when Yubikey's inserted
