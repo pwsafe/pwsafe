@@ -1650,10 +1650,7 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
     return PWSMatch::Match(bValue, iFunction);
   }
 
-  if (!bValue) // String empty - always return false for other comparisons
-    return false;
-  else
-    return PWSMatch::Match(stValue.c_str(), sx_Object, iFunction);
+  return PWSMatch::Match(stValue.c_str(), sx_Object, iFunction);
 }
 
 bool CItemData::Matches(int num1, int num2, int iObject,
