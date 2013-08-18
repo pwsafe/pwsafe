@@ -23,6 +23,7 @@ be exported and a comment added to the export file and the report.
 
 Bugs fixed in 3.32pre
 =====================
+[1113] Filters now handle empty fields correctly.
 [1101] Autotype email and url now works with shortcut.
 [] Prevent Alt+Enter or Ctrl+Enter when setting the Application Hotkey in
 PasswordSafe options dialog closing the dialog and saving an invalid Hotkey.
