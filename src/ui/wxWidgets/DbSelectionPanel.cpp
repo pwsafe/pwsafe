@@ -126,7 +126,7 @@ bool DbSelectionPanel::DoValidation()
   }
 }
 
-void DbSelectionPanel::OnFilePicked(wxFileDirPickerEvent &evt)
+void DbSelectionPanel::OnFilePicked(wxFileDirPickerEvent& /* event */)
 {
 	// Don't shift focus if we are in the text ctrl
 	if ( !wxDynamicCast(FindFocus(), wxTextCtrl) )

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debugwx64|x64">
@@ -110,7 +110,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx64|x64'">..\$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\$(PWSBin)\</OutDir>
@@ -187,8 +186,8 @@
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -227,8 +226,8 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -265,8 +264,8 @@
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -305,8 +304,8 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -341,8 +340,8 @@
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -379,8 +378,8 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -414,8 +413,8 @@
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -452,8 +451,8 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -513,6 +512,8 @@
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="wxMessages.h" />
     <ClInclude Include="wxutils.h" />
+    <ClInclude Include="yubicfg.h" />
+    <ClInclude Include="YubiMixin.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc" />
@@ -565,6 +566,8 @@
     <ClCompile Include="version.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="wxutils.cpp" />
+    <ClCompile Include="yubicfg.cpp" />
+    <ClCompile Include="YubiMixin.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

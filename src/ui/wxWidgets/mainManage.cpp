@@ -206,7 +206,7 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_YUBIKEY_MNG
  */
 
-void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& /* event */ )
 {
   YubiCfgDlg ykCfg(this, m_core);
   ykCfg.ShowModal();

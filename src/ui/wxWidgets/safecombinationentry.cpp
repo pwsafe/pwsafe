@@ -470,7 +470,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
+void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 

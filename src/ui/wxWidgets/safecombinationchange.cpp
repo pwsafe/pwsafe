@@ -312,7 +312,7 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
+void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   // Here we just need to get the existing c/r. We verify it as a curtesy to the user,
   // that is, to indicate asap that it's incorrect.
@@ -343,7 +343,7 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
  */
 
-void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& event )
+void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& /* event */ )
 {
   // Allow blank password when Yubi's used:
   m_oldPasswdEntry->AllowEmptyCombinationOnce();

@@ -165,6 +165,12 @@
     <ClInclude Include="SelectionCriteria.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="yubicfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YubiMixin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -311,6 +317,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionCriteria.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="yubicfg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="YubiMixin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

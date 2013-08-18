@@ -312,7 +312,7 @@ void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& event )
+void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
   if (Validate() && TransferDataFromWindow()) {

@@ -305,7 +305,7 @@ void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& event )
+void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
