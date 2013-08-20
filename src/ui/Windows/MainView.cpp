@@ -2133,6 +2133,11 @@ bool DboxMain::LockDataBase()
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
     ClearClipboardData();
   }
+  
+  // If DB is currently in R/W and it was opened in R-O mode, now make it R-O
+  if (!IsDBReadOnly() && m_bDBInitiallyRO) {
+    ChangeMode(false);
+  }
   return true;
 }
 
