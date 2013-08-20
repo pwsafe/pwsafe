@@ -15,9 +15,9 @@
 
 Option Explicit
 
-Const ForReading = 1, ForWriting = 2, ForAppending = 8 
+Const ForReading = 1, ForWriting = 2, ForAppending = 8
 Const TristateUseDefault = -2, TristateTrue = -1, TristateFalse = 0
- 
+
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
   MsgBox " Host: " & WScript.FullName & vbCRLF & _
          "This script must be executed by cscript.exe", _
