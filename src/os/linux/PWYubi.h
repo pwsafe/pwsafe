@@ -8,7 +8,7 @@
 
 #ifndef __PWYUBI_H
 
-#include <pthread.h> // for wxMutex et. al.
+#include <pthread.h> // for pthread_mutex_*
 #include <string>
 
 class PWYubi {
