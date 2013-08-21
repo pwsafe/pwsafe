@@ -56,7 +56,7 @@ CPasskeySetup::~CPasskeySetup()
 {
   delete m_pctlVerify;
 
-  if (m_pVKeyBoardDlg != NULL) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->SaveKLID()) {
     // Save Last Used Keyboard
     UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
     std::wostringstream os;

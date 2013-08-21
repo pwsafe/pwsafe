@@ -98,3 +98,5 @@
 #define IDC_VK106                      8083
 #define IDC_VKCANCEL                   8084
 #define IDC_VKINSERT                   8085
+
+#define IDC_SAVEKLID                   8100

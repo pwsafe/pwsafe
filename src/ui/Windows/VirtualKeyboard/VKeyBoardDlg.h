@@ -85,6 +85,7 @@ public:
 
   const CSecString &GetPassphrase() const {return m_phrase;}
   const UINT &GetKLID() const {return m_uiKLID;}
+  const bool SaveKLID() const {return m_bSaveKLID == BST_CHECKED;}
 
   void ResetKeyboard();
 
@@ -121,6 +122,7 @@ protected:
   afx_msg void OnKeys(UINT nID);
   afx_msg void OnChangeKeyboard();
   afx_msg void OnChangeKeyboardType();
+  afx_msg void OnSaveKLID();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
@@ -180,6 +182,7 @@ private:
   static bool m_bUserSpecifiedFont;
 
   UINT m_uiKLID, m_uiPhysKLID;
+  BOOL m_bSaveKLID;
   vKeyboard_Layouts m_KBL;
   BYTE m_State, m_SaveState;
   CBrush m_pBkBrush;

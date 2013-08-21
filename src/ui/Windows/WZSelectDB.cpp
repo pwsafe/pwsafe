@@ -61,7 +61,7 @@ CWZSelectDB::~CWZSelectDB()
   delete m_pctlDB;
   delete m_pctlPasskey;
 
-  if (m_pVKeyBoardDlg != NULL) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->SaveKLID()) {
     // Save Last Used Keyboard
     UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
     std::wostringstream os;
@@ -109,7 +109,7 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX, 
+void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX,
                                                const CString &delimiter)
 {
   if (pDX->m_bSaveAndValidate) {
@@ -118,7 +118,7 @@ void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX,
       gmb.AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
-    }   
+    }
     if (delimiter[0] == '"') {
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_INVALIDDELIMITER);
@@ -410,7 +410,7 @@ LRESULT CWZSelectDB::OnWizardNext()
         std::wstring dir, cdrive, cdir, cfile, cextn;
         pws_os::splitpath(m_filespec.GetString(), cdrive, cdir, cfile, cextn);
         //  If root directory - nothing to create
-        if (cdir == L"\\")          
+        if (cdir == L"\\")
           break;
 
         // Try and create necessary directories
@@ -539,7 +539,7 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
                                                         CString::PCXSTR(cs_suffix));
-  CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL, 
+  CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL,
                    dwflags, cs_filter, this);
 
   fd.m_ofn.lpstrTitle = cs_text;
@@ -705,7 +705,7 @@ void CWZSelectDB::yubiCheckCompleted()
     m_pending = false;
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     // The returned hash is the passkey
-    m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable 
+    m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable
     m_yubi_status.SetWindowText(_T("YubiKey data received")); // shouldn't really show
     // This will check the password, etc.:
     UpdateData(FALSE); // passwd -> control
@@ -713,7 +713,7 @@ void CWZSelectDB::yubiCheckCompleted()
     break;
   case YKLIB_PROCESSING:  // Still processing or waiting for the result
     break;
-  case YKLIB_TIMER_WAIT:  // A given number of seconds remain 
+  case YKLIB_TIMER_WAIT:  // A given number of seconds remain
     m_yubi_timeout.SetPos(timer);
     break;
 

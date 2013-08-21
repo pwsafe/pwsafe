@@ -179,7 +179,7 @@ const int state2index [] = { 0,  //  0 - b
 
 // Callback Routine to find Unicode font for Virtual Keyboard
 // The following code IS used by the correct method.
-static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
+static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
                                            DWORD , LPARAM lParam)
 {
   // Found one
@@ -264,7 +264,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // First check user's font (if any)
   StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
                                  GetPref(PWSprefs::VKeyboardFontName);
-  if (cs_VKeyboardFont.length() != 0 && 
+  if (cs_VKeyboardFont.length() != 0 &&
       cs_VKeyboardFont.length() <= LF_FACESIZE) {
     m_bUserSpecifiedFont = true;
     memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
@@ -282,7 +282,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   // Next check for Arial Unicode MS
   memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
-           ARIALUMS, wcslen(ARIALUMS) * sizeof(wchar_t)); 
+           ARIALUMS, wcslen(ARIALUMS) * sizeof(wchar_t));
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -295,7 +295,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // Next check for Arial Unicode (commercial version of MS font)
   SecureZeroMemory(lf.lfFaceName, sizeof(lf.lfFaceName));
   memcpy_s(lf.lfFaceName, sizeof(lf.lfFaceName),
-           ARIALU, wcslen(ARIALU) * sizeof(wchar_t)); 
+           ARIALU, wcslen(ARIALU) * sizeof(wchar_t));
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -308,7 +308,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // Lastly check for Lucida Sans Unicode
   SecureZeroMemory(lf.lfFaceName, sizeof(lf.lfFaceName));
   memcpy_s(lf.lfFaceName, sizeof(lf.lfFaceName),
-           LUCIDAUS, wcslen(LUCIDAUS) * sizeof(wchar_t)); 
+           LUCIDAUS, wcslen(LUCIDAUS) * sizeof(wchar_t));
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -340,7 +340,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
-    m_uiMouseDblClkTime(0)
+    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);
@@ -449,6 +449,9 @@ void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_VKBBTN_SMALLSPACEBAR, m_vkbb_SmallSpaceBar);
   DDX_Control(pDX, IDC_VKBBTN_SIZE, m_vkbb_Size);
   DDX_Control(pDX, IDC_VKBBTN_HIRAGANA, m_vkbb_Hiragana);
+
+  // Save last used keyboard
+  DDX_Check(pDX, IDC_SAVEKLID, m_bSaveKLID);
   //}}AFX_DATA_MAP
 }
 
@@ -479,6 +482,7 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_BN_CLICKED(IDC_VKRANDOMIZE, OnRandomize)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_N0, IDC_VKBBTN_N9, OnNumerics)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
+  ON_BN_CLICKED(IDC_SAVEKLID, OnSaveKLID)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -577,7 +581,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
         cbx_index = i;
         break;
       }
-    }      
+    }
   } else {
     m_uiKLID = m_uiPhysKLID;
   }
@@ -1276,9 +1280,9 @@ void CVKeyBoardDlg::SetNormalButtons()
     for (int i = 0; i < NUM_KEYS; i++) {
       bDeadKey = false;
       cs_temp.Empty();
-      if (m_scancodes[i] == 0 || 
+      if (m_scancodes[i] == 0 ||
           m_map_stSC2Char.find(m_scancodes[i]) == m_map_stSC2Char.end()) {
-        // Zero scancode or not in our map to a character 
+        // Zero scancode or not in our map to a character
         //     == unused key - disable/don't show
         m_vkbb_Keys[i].SetWindowText(cs_temp);
         m_vkbb_Keys[i].EnableWindow(FALSE);
@@ -1938,4 +1942,10 @@ void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
   CPWDialog::OnLButtonDown(nFlags, point);
 
   PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x,point.y));
+}
+
+
+void CVKeyBoardDlg::OnSaveKLID()
+{
+  m_bSaveKLID = ((CButton *)GetDlgItem(IDC_SAVEKLID))->GetCheck();
 }
