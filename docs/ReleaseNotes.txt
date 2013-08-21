@@ -12,8 +12,8 @@ New Features for 3.32pre
 ========================
 [] Support Yubico's YubiKey authentication token. Previouly this
 product was supported in a separate branch.
-[703] Changing a database from r-o to r/w will revert when the
-database is locked.
+[703] Changing a database opened in read-only mode to read/write will
+revert when the database is locked.
 [695] Allow a keyboard shortcut to be associated with selecting an entry.
 Please see Help entry for more details.
 
