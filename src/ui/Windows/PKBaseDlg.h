@@ -21,7 +21,7 @@
  * Base class for all dialog boxes that handle master passwords.
  *
  * For Yubikey support, the principle is that yubi-specific controls are
- * totally hidden unless/unitl user inserts a Yubikey for the 1st time
+ * totally hidden unless/until user inserts a Yubikey for the 1st time
  * in the app's lifetime, after which controls are visible, but enabled/disabled
  * to reflect inserterd/removed state of the device.
  */
