@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
+  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
     m_oldpasskeyConfirmed(false)
 {
@@ -52,19 +52,6 @@ CPasskeyChangeDlg::~CPasskeyChangeDlg()
 {
   delete m_pctlNewPasskey;
   delete m_pctlConfirmNew;
-
-  if (m_pVKeyBoardDlg != NULL) {
-    // Save Last Used Keyboard
-    UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
-    std::wostringstream os;
-    os.fill(L'0');
-    os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
-    StringX cs_KLID = os.str().c_str();
-    PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
-
-    m_pVKeyBoardDlg->DestroyWindow();
-    delete m_pVKeyBoardDlg;
-  }
 }
 
 void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)

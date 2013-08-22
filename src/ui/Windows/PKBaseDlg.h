@@ -17,6 +17,8 @@
 #include "ControlExtns.h"
 #include "os/windows/yubi/YkLib.h"
 
+class CVKeyBoardDlg;
+
 /**
  * Base class for all dialog boxes that handle master passwords.
  *
@@ -42,6 +44,7 @@ class CPKBaseDlg : public CPWDialog {
  protected:
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
+  CVKeyBoardDlg *m_pVKeyBoardDlg;
   static const wchar_t PSSWDCHAR;
 
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return

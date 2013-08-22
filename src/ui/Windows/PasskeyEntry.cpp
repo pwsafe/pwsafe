@@ -65,8 +65,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_status(TAR_INVALID),
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
   m_bForceReadOnly(bForceReadOnly),
-  m_bHideReadOnly(bHideReadOnly),
-    m_pVKeyBoardDlg(NULL), m_yubi_sk(NULL)
+    m_bHideReadOnly(bHideReadOnly),
+  m_yubi_sk(NULL)
 {
   DBGMSG("CPasskeyEntry()\n");
   if (m_index == GCP_FIRST) {
@@ -92,18 +92,6 @@ CPasskeyEntry::~CPasskeyEntry()
 {
   ::DestroyIcon(m_hIcon);
 
-  if (m_pVKeyBoardDlg != NULL) {
-    // Save Last Used Keyboard
-    UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
-    std::wostringstream os;
-    os.fill(L'0');
-    os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
-    StringX cs_KLID = os.str().c_str();
-    PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
-
-    m_pVKeyBoardDlg->DestroyWindow();
-    delete m_pVKeyBoardDlg;
-  }
   if (m_yubi_sk != NULL) {
     trashMemory(m_yubi_sk, 20);
     delete[] m_yubi_sk;

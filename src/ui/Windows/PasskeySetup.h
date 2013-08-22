@@ -57,7 +57,6 @@ protected:
 private:
   DboxMain *m_pDbx;
   CSecEditExtn *m_pctlVerify;
-  CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;
   PWScore &m_core;

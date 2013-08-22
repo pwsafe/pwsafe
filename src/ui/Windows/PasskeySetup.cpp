@@ -45,7 +45,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
-  : CPKBaseDlg(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
+  : CPKBaseDlg(CPasskeySetup::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_verify = L"";
@@ -55,19 +55,6 @@ CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
 CPasskeySetup::~CPasskeySetup()
 {
   delete m_pctlVerify;
-
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->SaveKLID()) {
-    // Save Last Used Keyboard
-    UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
-    std::wostringstream os;
-    os.fill(L'0');
-    os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
-    StringX cs_KLID = os.str().c_str();
-    PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
-
-    m_pVKeyBoardDlg->DestroyWindow();
-    delete m_pVKeyBoardDlg;
-  }
 }
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)

@@ -64,7 +64,6 @@ protected:
 private:
   CSecEditExtn *m_pctlNewPasskey;
   CSecEditExtn *m_pctlConfirmNew;
-  CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;
   bool m_Yubi1pressed; // implies old password was Yubi-based
