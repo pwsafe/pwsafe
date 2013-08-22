@@ -12,6 +12,8 @@ New Features for 3.32pre
 ========================
 [] Support Yubico's YubiKey authentication token. Previouly this
 product was supported in a separate branch.
+[705] User can choose not to let PasswordSafe record which virtual
+keyboard was used.
 [703] Changing a database opened in read-only mode to read/write will
 revert when the database is locked.
 [695] Allow a keyboard shortcut to be associated with selecting an entry.
