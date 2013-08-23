@@ -236,9 +236,6 @@ public:
   bool GetEscexits() const { return m_escexits ; }
   void SetEscexits(bool value) { m_escexits = value ; }
 
-  int GetHashIterSlider() const { return m_hashIterSlider ; }
-  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
-
   int GetInittreeview() const { return m_inittreeview ; }
   void SetInittreeview(int value) { m_inittreeview = value ; }
 
@@ -320,6 +317,9 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
+  int GetHashIterSlider() const { return m_hashIterSlider ; }
+  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -379,7 +379,6 @@ private:
   bool m_confirmdelete;
   int m_doubleclickaction;
   bool m_escexits;
-  int m_hashIterSlider;
   int m_inittreeview;
   bool m_maintaindatetimestamps;
   bool m_minauto;
@@ -406,6 +405,7 @@ private:
   bool m_sysstartup;
   bool m_usedefuser;
   bool m_wordwrapnotes;
+  int m_hashIterSlider;
 ////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
