@@ -139,7 +139,7 @@ void CSafeCombinationPrompt::CreateControls()
   CSafeCombinationPrompt* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-//  itemDialog1->SetSizer(itemBoxSizer2);
+  itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
