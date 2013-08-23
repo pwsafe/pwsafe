@@ -34,8 +34,16 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   m_btn = btn;
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
+  // Hide Yubi controls if user doesn't have one:
+  if (m_btn != NULL) m_btn->Show(yubiExists());
+  if (m_status != NULL) m_status->Show(yubiExists());
 }
 
+
+bool CYubiMixin::yubiExists() const
+{
+  return PWYubi::YubiExists();
+}
 
 void CYubiMixin::yubiInserted(void)
 {
@@ -59,6 +67,14 @@ bool CYubiMixin::IsYubiInserted() const
 
 void CYubiMixin::HandlePollingTimer()
 {
+  // Show Yubi controls when inserted first time:
+  if (yubiExists()) {
+    wxWindow *parent = NULL; // assume both have same parent
+    if (m_btn != NULL) {m_btn->Show(true); parent = m_btn->GetParent();}
+    if (m_status != NULL) {m_status->Show(true); parent = m_btn->GetParent();}
+    if (parent != NULL) parent->Layout();
+  }
+
   // Currently hmac check is blocking (ugh), so no need to check here
   // if a request is in-progress.
   bool inserted = IsYubiInserted();

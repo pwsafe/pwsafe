@@ -19,6 +19,11 @@ public:
   bool GetSerial(unsigned int &serial) const;
   bool WriteSK(const unsigned char *sk, size_t sklen);
 
+  // This will return true iff user inserts a YubiKey in the lifetime
+  // of the process.
+  // We use it to show the YubiKey controls in the UI.
+  static bool YubiExists() {return s_yubiDetected;}
+
   // request is non-blocking
   // GetResponse returns pending until done or timeout. If ERROR returned,
   // call GetErrStr for details.
@@ -33,6 +38,7 @@ public:
 private:
   void report_error() const;
   mutable bool m_isInited;
+  static bool s_yubiDetected;
   static pthread_mutex_t s_mutex;
   mutable std::wstring m_ykerrstr;
   RequestStatus m_reqstat;

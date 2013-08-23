@@ -24,6 +24,7 @@
 
 using namespace std;
 
+bool PWYubi::s_yubiDetected = false;
 pthread_mutex_t PWYubi::s_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 PWYubi::PWYubi() : m_isInited(false), m_reqstat(ERROR)
@@ -59,6 +60,8 @@ bool PWYubi::IsYubiInserted() const
     m_isInited = yk_init() != 0;
   }
   pthread_mutex_unlock(&s_mutex);
+  if (retval)
+    s_yubiDetected = true;
   return retval;
 }
 

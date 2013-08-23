@@ -27,6 +27,7 @@ class CYubiMixin {
   ~CYubiMixin() {}
 
   void SetupMixin(wxWindow *btn, wxWindow *status);
+  bool yubiExists() const;
   void yubiInserted(void);
   void yubiRemoved(void);
   bool IsYubiInserted() const;
