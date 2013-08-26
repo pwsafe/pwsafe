@@ -58,7 +58,7 @@ release-clean:
 # dist prepares stuff for upload - deprecated for Linux, until
 # we find an elegant way to tell deb and rpm distros apart.
 dist: 
-	@$(ECHO) "Run 'make deb' or 'make rpm' to bulid the respective package"
+	@$(ECHO) "Run 'make deb' or 'make rpm' to build the respective package"
 
 # rpmbuild is called as part of the rpmbuild invocation from install/rpm/Makefile,
 # which we call via 'make rpm' from here.
