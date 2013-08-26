@@ -22,7 +22,7 @@
 #endif
 
 #define MAJORVERSION 0
-#define MINORVERSION 91
+#define MINORVERSION 92
 #define REVISION     0
 
 // LINUXPRODVER and VCS_VERSION set by mkversion.pl
