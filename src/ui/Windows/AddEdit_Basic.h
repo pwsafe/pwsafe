@@ -26,7 +26,6 @@ public:
   DECLARE_DYNAMIC(CAddEdit_Basic)
 
   CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD);
-  ~CAddEdit_Basic();
 
   static CString CS_SHOW, CS_HIDE;
   static CSecString HIDDEN_NOTES;
@@ -42,7 +41,7 @@ public:
 
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
-  CRichEditExtn *m_pex_notes;
+  CRichEditExtn m_ex_notes;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_email;
 
