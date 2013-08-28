@@ -14,14 +14,14 @@ class Fonts
 {
 public:
   static Fonts *GetInstance(); // singleton
-  static void DeleteInstance();
+  void DeleteInstance();
 
   void SetUpFont(CWnd *pWnd, CFont *pfont);
 
-  CFont *GetCurrentFont() {return pCurrentFont;}
-  CFont *GetDragFixFont() {return pDragFixFont;}
-  CFont *GetPasswordFont() {return pPasswordFont;}
-  CFont *GetModifiedFont() {return pModifiedFont;}
+  CFont *GetCurrentFont() const {return m_pCurrentFont;}
+  CFont *GetDragFixFont() const {return m_pDragFixFont;}
+  CFont *GetPasswordFont() const {return m_pPasswordFont;}
+  CFont *GetModifiedFont() const {return m_pModifiedFont;}
 
   COLORREF GetModified_Color() {return MODIFIED_COLOR;}
 
@@ -34,17 +34,17 @@ public:
 
   void ExtractFont(const CString& str, LOGFONT &lf);
 
-  LONG Fonts::CalcHeight();
+  LONG Fonts::CalcHeight() const;
 private:
   Fonts();
   ~Fonts() {}
   static Fonts *self; // singleton
 
-  static CFont *pCurrentFont;
-  static CFont *pModifiedFont;
-  static CFont *pDragFixFont;  // Fix for lack of text during drag!
-  static CFont *pPasswordFont;
-  static const COLORREF MODIFIED_COLOR;
+  CFont *m_pCurrentFont;
+  CFont *m_pModifiedFont;
+  CFont *m_pDragFixFont;  // Fix for lack of text during drag!
+  CFont *m_pPasswordFont;
+  const COLORREF MODIFIED_COLOR;
 };
 
 //-----------------------------------------------------------------------------

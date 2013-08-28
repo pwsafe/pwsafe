@@ -167,7 +167,7 @@ ThisMfcApp::~ThisMfcApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSversion::DeleteInstance();
-  Fonts::DeleteInstance();
+  Fonts::GetInstance()->DeleteInstance();
   PWSLog::DeleteLog();
 
   CoUninitialize(); // Uninitialize COM library
