@@ -16,6 +16,7 @@
 #include "PasswordPolicyDlg.h"
 
 #include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "core/core.h"
 #include "core/PWCharPool.h"
@@ -150,6 +151,11 @@ BOOL CManagePSWDPolices::OnInitDialog()
   // Override default HeaderCtrl ID of 0
   m_PolicyNames.GetHeaderCtrl()->SetDlgCtrlID(IDC_POLICYNAMES_HEADER);
   m_PolicyEntries.GetHeaderCtrl()->SetDlgCtrlID(IDC_POLICYENTRIES_HEADER);
+
+  // BR1108 - Allow user to config these fonts as well
+  // Currently use same font as specified for list/tree view
+  m_PolicyNames.SetFont(Fonts::GetInstance()->GetCurrentFont());
+  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetCurrentFont());
 
   CString cs_text;
 

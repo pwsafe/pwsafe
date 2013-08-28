@@ -215,6 +215,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Set plain text - not that it seems to do much!
   m_pex_notes->SetTextMode(TM_PLAINTEXT);
 
+  m_pex_notes->SetFont(Fonts::GetInstance()->GetCurrentFont());
+
   if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
     GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
     m_stc_protected.SetColour(RGB(255,0,0));
