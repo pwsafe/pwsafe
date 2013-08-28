@@ -1134,7 +1134,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainView.cpp" />
     <ClCompile Include="filter\ManageFiltersDlg.cpp" />
-    <ClCompile Include="ManagePSWDPolices.cpp" />
+    <ClCompile Include="ManagePSWDPols.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
@@ -1258,7 +1258,7 @@
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
-    <ClInclude Include="ManagePSWDPolices.h" />
+    <ClInclude Include="ManagePSWDPols.h" />
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />

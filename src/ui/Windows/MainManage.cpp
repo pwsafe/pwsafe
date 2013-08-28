@@ -29,7 +29,7 @@
 #include "OptionsShortcuts.h"
 #include "AddEdit_DateTimes.h"
 #include "PasswordPolicyDlg.h"
-#include "ManagePSWDPolices.h"
+#include "ManagePSWDPols.h"
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
 
@@ -652,10 +652,10 @@ void DboxMain::OnManagePasswordPolicies()
   // Set up copy of preferences
   prefs->SetupCopyPrefs();
   
-  CManagePSWDPolices *pDlg(NULL);
+  CManagePSWDPols *pDlg(NULL);
   
   // Try Tall version
-  pDlg = new CManagePSWDPolices(this, true);
+  pDlg = new CManagePSWDPols(this, true);
   
   PWPolicy st_old_default_pp;
 
@@ -667,7 +667,7 @@ void DboxMain::OnManagePasswordPolicies()
   if (rc < 0) {
     // Try again with Wide version
     delete pDlg;
-    pDlg = new CManagePSWDPolices(this, false);
+    pDlg = new CManagePSWDPols(this, false);
 
     pDlg->DoModal(); 
   }

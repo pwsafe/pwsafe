@@ -366,7 +366,7 @@
     <ClCompile Include="InputBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManagePSWDPolices.cpp">
+    <ClCompile Include="ManagePSWDPols.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordPolicyDlg.cpp">
@@ -767,7 +767,7 @@
     <ClInclude Include="InputBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ManagePSWDPolices.h">
+    <ClInclude Include="ManagePSWDPols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordPolicyDlg.h">

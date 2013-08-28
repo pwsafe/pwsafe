@@ -17,13 +17,13 @@
 
 #include "resource.h"
 
-// CManagePSWDPolices dialog
+// CManagePSWDPols dialog
 
-class CManagePSWDPolices : public CPWDialog
+class CManagePSWDPols : public CPWDialog
 {
 public:
-  CManagePSWDPolices(CWnd* pParent = NULL, const bool bLongPPs = true);
-  virtual ~CManagePSWDPolices();
+  CManagePSWDPols(CWnd* pParent = NULL, const bool bLongPPs = true);
+  virtual ~CManagePSWDPols();
 
   // Dialog Data
   enum { IDD = IDD_MANAGEPASSWORDPOLICIES };

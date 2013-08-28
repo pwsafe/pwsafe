@@ -6,13 +6,13 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// CManagePSWDPolices.cpp : implementation file
+// CManagePSWDPols.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "DboxMain.h"
 
-#include "ManagePSWDPolices.h"
+#include "ManagePSWDPols.h"
 #include "PasswordPolicyDlg.h"
 
 #include "GeneralMsgBox.h"
@@ -27,9 +27,9 @@
 
 using namespace std;
 
-// CManagePSWDPolices dialog
-CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
-  : CPWDialog(CManagePSWDPolices::IDD, pParent),
+// CManagePSWDPols dialog
+CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
+  : CPWDialog(CManagePSWDPols::IDD, pParent),
   m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
   m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
@@ -46,12 +46,12 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
 
-CManagePSWDPolices::~CManagePSWDPolices()
+CManagePSWDPols::~CManagePSWDPols()
 {
   m_CopyPswdBitmap.Detach();
 }
 
-void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
+void CManagePSWDPols::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_POLICYLIST, m_PolicyNames);
@@ -60,7 +60,7 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
 }
 
-BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
+BEGIN_MESSAGE_MAP(CManagePSWDPols, CPWDialog)
   ON_BN_CLICKED(IDHELP, OnHelp)
   ON_BN_CLICKED(IDCANCEL, OnCancel)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)
@@ -80,9 +80,9 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYENTRIES_HEADER, OnColumnEntryClick)
 END_MESSAGE_MAP()
 
-// CManagePSWDPolices message handlers
+// CManagePSWDPols message handlers
 
-BOOL CManagePSWDPolices::OnInitDialog()
+BOOL CManagePSWDPols::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
@@ -103,7 +103,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create CManagePSWDPolices Dialog ToolTip\n");
+    pws_os::Trace(L"Unable To create CManagePSWDPols Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
   } else {
@@ -227,7 +227,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
   return FALSE;
 }
 
-BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
+BOOL CManagePSWDPols::PreTranslateMessage(MSG* pMsg)
 {
   // Do tooltips
   if (pMsg->message == WM_MOUSEMOVE) {
@@ -290,12 +290,12 @@ exit:
   return CPWDialog::PreTranslateMessage(pMsg);
 }
 
-void CManagePSWDPolices::OnHelp()
+void CManagePSWDPols::OnHelp()
 {
   ShowHelp(L"::/html/named_password_policies.html");
 }
 
-void CManagePSWDPolices::OnOK()
+void CManagePSWDPols::OnOK()
 {
   if (m_bReadOnly)
     CPWDialog::OnCancel();
@@ -303,7 +303,7 @@ void CManagePSWDPolices::OnOK()
     CPWDialog::OnOK();
 }
 
-void CManagePSWDPolices::OnCancel()
+void CManagePSWDPols::OnCancel()
 {
   // There may be no more left if the user has undone them all (if any)
   if (m_iundo_pos >= 0 && m_bChanged) {
@@ -317,7 +317,7 @@ void CManagePSWDPolices::OnCancel()
   CPWDialog::OnCancel();
 }
 
-void CManagePSWDPolices::OnNew()
+void CManagePSWDPols::OnNew()
 {
   CPasswordPolicyDlg *pDlg(NULL);
 
@@ -390,7 +390,7 @@ void CManagePSWDPolices::OnNew()
   delete pDlg;
 }
 
-void CManagePSWDPolices::OnEdit()
+void CManagePSWDPols::OnEdit()
 {
   CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
@@ -475,7 +475,7 @@ void CManagePSWDPolices::OnEdit()
   delete pDlg;
 }
 
-void CManagePSWDPolices::OnList()
+void CManagePSWDPols::OnList()
 {
   // Must not list first entry (current database password policy)
   // Use "Manage -> Options" instead
@@ -494,7 +494,7 @@ void CManagePSWDPolices::OnList()
   GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
 }
 
-void CManagePSWDPolices::OnDelete()
+void CManagePSWDPols::OnDelete()
 {
   // Must not delete first entry (current database password policy)
   // Use Manage -> Options
@@ -546,7 +546,7 @@ void CManagePSWDPolices::OnDelete()
   m_bChanged = true;
 }
 
-void CManagePSWDPolices::OnGeneratePassword()
+void CManagePSWDPols::OnGeneratePassword()
 {
   PWPolicy st_pp;
   CString cs_policyname(L"");
@@ -570,7 +570,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   m_ex_password.Invalidate();
 }
 
-void CManagePSWDPolices::OnCopyPassword()
+void CManagePSWDPols::OnCopyPassword()
 {
   UpdateData(TRUE);
 
@@ -578,7 +578,7 @@ void CManagePSWDPolices::OnCopyPassword()
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
-void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
 
@@ -656,7 +656,7 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
   UpdateDetails(); 
 }
 
-void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
+void CManagePSWDPols::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
 {
   // Set we have processed the event
   *pLResult = 1L;
@@ -698,7 +698,7 @@ void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
   }
 }
 
-void CManagePSWDPolices::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CManagePSWDPols::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 1L;
 
@@ -733,10 +733,10 @@ void CManagePSWDPolices::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResu
   hdi.fmt |= (m_bSortNamesAscending ? HDF_SORTUP : HDF_SORTDOWN);
   pHdrCtrl->SetItem(iIndex, &hdi);
 
-  m_PolicyNames.SortItems(&CManagePSWDPolices::SortNames, (DWORD_PTR)this);
+  m_PolicyNames.SortItems(&CManagePSWDPols::SortNames, (DWORD_PTR)this);
 }
 
-void CManagePSWDPolices::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CManagePSWDPols::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 1L;
 
@@ -771,10 +771,10 @@ void CManagePSWDPolices::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLRes
   hdi.fmt |= (m_bSortEntriesAscending ? HDF_SORTUP : HDF_SORTDOWN);
   pHdrCtrl->SetItem(iIndex, &hdi);
 
-  m_PolicyEntries.SortItems(&CManagePSWDPolices::SortEntries, (DWORD_PTR)this);
+  m_PolicyEntries.SortItems(&CManagePSWDPols::SortEntries, (DWORD_PTR)this);
 }
 
-void CManagePSWDPolices::UpdateNames()
+void CManagePSWDPols::UpdateNames()
 {
   m_PolicyNames.DeleteAllItems();
   int nPos = 0;
@@ -815,7 +815,7 @@ static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
   tableControl->SetItemText(row, 1, value.c_str());
 }
 
-void CManagePSWDPolices::UpdateDetails()
+void CManagePSWDPols::UpdateDetails()
 {
   // Make sure correct ListCtrl and title are visible
   m_PolicyDetails.ShowWindow(SW_SHOW);
@@ -857,7 +857,7 @@ void CManagePSWDPolices::UpdateDetails()
   m_PolicyDetails.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-void CManagePSWDPolices::UpdateEntryList()
+void CManagePSWDPols::UpdateEntryList()
 {
   // When list of policy entries is selected,
   // make sure correct ListCtrl and title are visible
@@ -896,14 +896,14 @@ void CManagePSWDPolices::UpdateEntryList()
     nPos++;
   }
 
-  m_PolicyEntries.SortItems(&CManagePSWDPolices::SortEntries, (DWORD_PTR)this);
+  m_PolicyEntries.SortItems(&CManagePSWDPols::SortEntries, (DWORD_PTR)this);
 
   m_PolicyEntries.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-void CManagePSWDPolices::OnUndo()
+void CManagePSWDPols::OnUndo()
 {
   // Nothing to undo if no changes saved or already at first entry
   if (m_vchanges.size() == 0 && m_iundo_pos < 0)
@@ -969,7 +969,7 @@ void CManagePSWDPolices::OnUndo()
   UpdateDetails();
 }
 
-void CManagePSWDPolices::OnRedo()
+void CManagePSWDPols::OnRedo()
 {
   // Nothing to redo if no changes saved or already at last entry
   if (m_vchanges.size() == 0 || m_iundo_pos == (int)m_vchanges.size() - 1)
@@ -1035,10 +1035,10 @@ void CManagePSWDPolices::OnRedo()
   UpdateDetails();
 }
 
-int CALLBACK CManagePSWDPolices::SortNames(LPARAM lParam1, LPARAM lParam2,
+int CALLBACK CManagePSWDPols::SortNames(LPARAM lParam1, LPARAM lParam2,
                                            LPARAM lParamSort)
 {
-  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
+  CManagePSWDPols *self = (CManagePSWDPols *)lParamSort;
   ASSERT(self != NULL);
 
   // Default password policy always first!
@@ -1076,10 +1076,10 @@ int CALLBACK CManagePSWDPolices::SortNames(LPARAM lParam1, LPARAM lParam2,
   return iretval;
 }
 
-int CALLBACK CManagePSWDPolices::SortEntries(LPARAM lParam1, LPARAM lParam2,
+int CALLBACK CManagePSWDPols::SortEntries(LPARAM lParam1, LPARAM lParam2,
                                              LPARAM lParamSort)
 {
-  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
+  CManagePSWDPols *self = (CManagePSWDPols *)lParamSort;
   ASSERT(self != NULL);
 
   int iretval(0);
