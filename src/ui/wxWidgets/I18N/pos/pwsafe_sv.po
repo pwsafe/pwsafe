@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-17 23:19+0300\n"
+"POT-Creation-Date: 2013-09-02 20:26+0300\n"
 "PO-Revision-Date: 2011-10-04 21:44+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -230,8 +230,8 @@ msgstr "Autoskriv"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:806
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:318
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:479
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:320
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:481
 msgid "Browse"
 msgstr "Bläddra"
 
@@ -292,7 +292,7 @@ msgid ""
 msgstr "Skift + dubbelklicksval:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:408
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:626
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:628
 msgid "Password History"
 msgstr "Lösenordshistorik"
 
@@ -389,7 +389,7 @@ msgid "Dates and Times"
 msgstr "Datum och tider"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:525
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:493
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:495
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:172
 msgid "Random password generation rules"
 msgstr "Regler för slumpmässigt lösenord"
@@ -405,14 +405,14 @@ msgid "Use the policy below:"
 msgstr "Använd p&olycin nedan:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:499
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:501
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:179
 #, fuzzy
 msgid "Password length: "
 msgstr "Lösenordets längd:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:558
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:507
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:509
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:188
 #, fuzzy
 msgid "Use lowercase letters"
@@ -422,10 +422,10 @@ msgstr "Använd &gemener"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:579
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:594
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:609
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:513
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:528
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:543
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:558
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:515
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:530
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:545
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:560
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:195
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:211
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:227
@@ -439,10 +439,10 @@ msgstr "(minst"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:600
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:615
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:519
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:534
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:549
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:564
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:521
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:536
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:551
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:566
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:201
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:217
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:233
@@ -451,21 +451,21 @@ msgid ")"
 msgstr ")"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:573
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:522
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:524
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:204
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "Använd &VERSALER"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:588
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:537
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:539
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:220 ../../../core/core_st.cpp:248
 #, fuzzy
 msgid "Use digits"
 msgstr "Använd &siffror"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:603
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:552
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:554
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:236
 #, fuzzy
 msgid "Use symbols (i.e., ., %, $, etc.)"
@@ -482,7 +482,7 @@ msgid "Special set"
 msgstr "Speciellt set"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:632
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:567
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:569
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:266
 #, fuzzy
 msgid ""
@@ -491,20 +491,20 @@ msgid ""
 msgstr "Använd bara &lättlästa tecken (m.a.o. inte 'l', '1' etc.)"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:638
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:573
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:575
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:272
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "Generera &uttalbara lösenord"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:644
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:579
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:581
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:278 ../../../core/core_st.cpp:241
 msgid "Or"
 msgstr "eller"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:647
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:582
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:584
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:281
 #, fuzzy
 msgid "Use hexadecimal digits only (0-9, a-f)"
@@ -512,7 +512,7 @@ msgstr "Använd bara &hexadecimala tal (0-9, a-f)"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:586
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:588
 #: ../../../core/core_st.cpp:134
 msgid "Password Policy"
 msgstr "Lösenordspolicy"
@@ -1389,320 +1389,323 @@ msgid "Please select a valid file"
 msgstr "Vänligen, välj rapport att visa."
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:102
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:281
 #: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:238
 msgid "None"
 msgstr "Inga"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:103
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:282
 #, fuzzy
 msgid "YYYYMMMDD_HHMMSS"
 msgstr "ÅÅMMDD_TTMMSS"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:104
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:283
 msgid "Incremented Number [001-999]"
 msgstr "Ökande tal [001-999]"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:111
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:409
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:69
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:411
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:69
 msgid "Copy password to clipboard"
 msgstr "Kopiera lösenordet till Urklipp"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:112
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:414
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:433
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:416
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:435
 #, fuzzy
 msgid "Edit/View selected entry"
 msgstr "Visa/redigera vald post"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:113
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:405
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:424
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:437 ../../../core/core_st.cpp:65
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:407
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:426
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:65
 msgid "Autotype"
 msgstr "Autoskriv"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:114
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:406
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:425 ../../../core/core_st.cpp:66
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:408
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:66
 msgid "Browse to URL"
 msgstr "Gå till URL"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:115
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:408
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:68
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:410
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:68
 msgid "Copy notes to clipboard"
 msgstr "Kopiera noteringar till Urklipp"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:116
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:411
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:71
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:413
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:71
 msgid "Copy username to clipboard"
 msgstr "Kopiera användarnamnet till Urklipp"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:117
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:410
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:412
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:70
 msgid "Copy password to clipboard, minimize"
 msgstr "Kopiera lösenordet till Urklipp, minimera"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:118
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:407
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:426 ../../../core/core_st.cpp:67
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:409
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:67
 msgid "Browse to URL + Autotype"
 msgstr "Gå till URL + Autoskriv"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:119
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:412
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:72
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:414
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:72
 #: ../../../core/core_st.cpp:137
 msgid "Run Command"
 msgstr "Kör kommando"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:120
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:413
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:73
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:415
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:73
 msgid "Send email"
 msgstr "Skicka e-post"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:241
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:242
 msgid "Save database immediately after Edit or Add"
 msgstr "Spara databasen direkt efter en ändring eller tillägg"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:245
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:246
 msgid "Intermediate Backups"
 msgstr "Mellanlagrade säkerhetskopior"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:248
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:249
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Skapa mellanlagrade säkerhetskopior (.ibak) innan Spara"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:252
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:253
 msgid "Backup Name"
 msgstr "Säkerhetskopians namn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:255
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:256
 msgid "Base:"
 msgstr "Bas:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:258
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:259
 msgid "Database name"
 msgstr "Databasnamn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:264
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:311
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:265
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:313
 msgid "Other:"
 msgstr "Övrigt:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:274
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:275
 msgid "Suffix:"
 msgstr "Suffix:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:285
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:287
 msgid "Max."
 msgstr "Max."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:293
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:295
 msgid "Example:"
 msgstr "Exempel:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:302
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:304
 #, fuzzy
 msgid "Backup directory:"
 msgstr "Säkerhetskopians mapp:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:305
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:307
 msgid "Same as database's"
 msgstr "Samma som databasens"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:321
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:323
 msgid "Backups"
 msgstr "Säkerhetskopior"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:327
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:329
 msgid "Always keep Password Safe on top"
 msgstr "Visa alltid Password Safe överst"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:331
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:333
 msgid "Show Username in Tree View"
 msgstr "Visa användarnamn i Trädvyn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:335
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:337
 msgid "Show Password in Tree View"
 msgstr "Visa lösenord i Trädvyn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:339
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:341
 msgid "Show Notes as ToolTips in Tree && List views"
 msgstr "Visa noteringar som verktygstips i Träd- && Tabellvyer"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:343
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:345
 msgid "Show Password in Add && Edit"
 msgstr "Visa lösenord i Lägg till && Redigera post"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:347
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:349
 msgid "Show Notes in Edit"
 msgstr "Visa noteringar i Redigera post"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:351
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:353
 msgid "Word Wrap Notes in Add && Edit"
 msgstr "Radbryt noteringar i Lägg till && Redigera"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:355
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:357
 msgid "Put Groups first in Tree View"
 msgstr "Samla grupper first i Trädvyn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:361
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:363
 msgid "Warn"
 msgstr "Varna"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:368
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:370
 msgid "days before passwords expire"
 msgstr "dagar innan lösenordet går ut"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:372
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:374
 #, fuzzy
 msgid "&Fully collapsed"
 msgstr "Helt minimerad"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:373
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:375
 #, fuzzy
 msgid "&Fully expanded"
 msgstr "Helt expanderad"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:374
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:376
 #, fuzzy
 msgid "&Same as when last saved"
 msgstr "Samma som senast sparad"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:375
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:377
 msgid "Initial Tree View"
 msgstr "Initial trädvy"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:379
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:381
 msgid "Display"
 msgstr "Visa"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:385
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:387
 msgid "Confirm deletion of items"
 msgstr "Bekräfta radering av objekt"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:389
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:391
 msgid "Record last access times"
 msgstr "Registrera tidpunkter för senaste använd"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:393
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:395
 msgid "Escape key closes application"
 msgstr "Esc-tangenten stänger programmet"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:399
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:401
 msgid "Double-click action"
 msgstr "Dubbelklicksval"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:420
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:422
 #, fuzzy
 msgid "Shift double-click action"
 msgstr "Skift dubbelklicksval"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:440
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:442
 msgid "Minimize after Autotype"
 msgstr "Minimera efter autoskrivning"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:446
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:448
 msgid "Default Autotype string:"
 msgstr "Förvald autoskriftrad:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:452
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:454
 msgid "Default Username"
 msgstr "Förvalt användarnamn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:457
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:459
 msgid "Use"
 msgstr "Välj"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:464
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:466
 msgid "as default username"
 msgstr "som förvalt användarnamn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:467
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:469
 msgid "Query user to set default username"
 msgstr "Be användaren ange ett förvalt användarnamn"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:471
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:473
 #, fuzzy
 msgid "Alternate Browser"
 msgstr "Alternativ Browser"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:487
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:489
 msgid "Browser Command Line parameters"
 msgstr "Browserns kommandoparametrar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:490
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:492
 msgid "Misc."
 msgstr "Övrigt"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:594
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:596
 msgid "Save"
 msgstr "Spara"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:601
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:603
 msgid "previous passwords per entry"
 msgstr "tidigare lösenord per post"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:604
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:606
 msgid "Manage password history of current entries"
 msgstr "Administrera lösenordshistoriken till nuvarande poster"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:607
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:609
 msgid "No change"
 msgstr "Ändra inget"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:611
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:613
 msgid "Stop saving previous passwords"
 msgstr "Sluta spara nuvarande lösenord"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:615
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:617
 msgid "Start saving previous passwords"
 msgstr "Börja spara tidigare lösenord"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:619
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 #, fuzzy
 msgid "Set maximum number of paswords saved to above value"
 msgstr "Välj ett antal ovan för ett maximalt antal lösenord som sparas"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:623
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:625
 msgid "Apply"
 msgstr "Använd"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:632
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:634
 msgid "Clear clipboard upon minimize"
 msgstr "Rensa Urklipp vid minimera"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:636
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:638
 msgid "Clear clipboard upon exit"
 msgstr "Rensa Urklipp vid avslut"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:640
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:642
 msgid "Confirm item copy to clipboard"
 msgstr "Bekräfta kopiering till Urklipp"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:644
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:646
 msgid "Lock password database on minimize"
 msgstr "Lås lösenordsdatabasen vid minimering"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:648
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:650
 msgid "Lock password database on workstation lock"
 msgstr "Lås lösenordsdatabasen då datorn stängs"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:654
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:656
 #, fuzzy
 msgid "Lock password database after"
 msgstr "Lås lösenordsdatabasen efter"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:661
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:663
 msgid "minutes idle"
 msgstr "minuters inaktivitet"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:666
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:668
 msgid "Unlock Difficulty:"
 msgstr ""
 
@@ -3364,7 +3367,7 @@ msgstr "Bekräftelse:"
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:176
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:165
 #: ../../../ui/wxWidgets/yubicfg.cpp:378
-#: ../../../ui/wxWidgets/YubiMixin.cpp:51
+#: ../../../ui/wxWidgets/YubiMixin.cpp:59
 msgid "Please insert your YubiKey"
 msgstr ""
 
@@ -3739,15 +3742,15 @@ msgstr ""
 msgid "Now touch your YubiKey's button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/YubiMixin.cpp:116
+#: ../../../ui/wxWidgets/YubiMixin.cpp:132
 msgid "Timeout - please try again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/YubiMixin.cpp:119
+#: ../../../ui/wxWidgets/YubiMixin.cpp:135
 msgid "Error: Bad response from YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/YubiMixin.cpp:124
+#: ../../../ui/wxWidgets/YubiMixin.cpp:140
 msgid "Error: Unconfigured YubiKey?"
 msgstr ""
 
