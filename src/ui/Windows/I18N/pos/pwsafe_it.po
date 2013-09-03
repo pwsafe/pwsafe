@@ -885,6 +885,10 @@ msgstr "&Formato XML..."
 msgid "&Yes"
 msgstr "&Si"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr ""
@@ -1997,6 +2001,10 @@ msgstr ""
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Clicca per attivare la relazione and/or con la riga precedente"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4826,6 +4834,10 @@ msgstr ""
 msgid "Please enter your backup database prefix."
 msgstr ""
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr ""
@@ -5066,6 +5078,10 @@ msgstr ""
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
+msgstr ""
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
 msgstr ""
 
 #. Resource IDs: (1188)
@@ -5471,6 +5487,10 @@ msgstr ""
 msgid "Set Virtual Keyboard font"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr ""
@@ -5530,6 +5550,10 @@ msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
+msgstr ""
+
+#. Resource IDs: (1471)
+msgid "Show"
 msgstr ""
 
 #. Resource IDs: (32108)
@@ -6854,6 +6878,26 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr ""
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
 msgstr ""
 
 #. Resource IDs: (371)

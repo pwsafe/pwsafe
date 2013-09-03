@@ -885,6 +885,10 @@ msgstr "XML 형식...(&X)"
 msgid "&Yes"
 msgstr "네(&Y)"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "전자우편(&E)"
@@ -1997,6 +2001,10 @@ msgstr "Caps Lock 키를 호출하려면 클릭하십시오"
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "이전 항목과의 그리고/혹은 관계 고정"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4826,6 +4834,10 @@ msgstr "이 데이터베이스의 보안 비밀번호를 입력해 주십시오.
 msgid "Please enter your backup database prefix."
 msgstr ""
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "XML 파일의 이름을 지정해주세요"
@@ -5067,6 +5079,10 @@ msgstr "관련된 날짜는 오늘을 기준으로 합니다. 예) '-1'은 어�
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "마지막에 사용한 항목 불러오기"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5471,6 +5487,10 @@ msgstr "트리/리스트 보기 글꼴 설정"
 msgid "Set Virtual Keyboard font"
 msgstr "가상 키보드 글꼴 설정"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "최대 저장가능한 비밀번호의 수량 설정"
@@ -5531,6 +5551,10 @@ msgstr "단축키"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "바로가기"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6854,6 +6878,26 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr ""
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
 msgstr ""
 
 #. Resource IDs: (371)

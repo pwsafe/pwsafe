@@ -963,6 +963,10 @@ msgstr "&Format XML..."
 msgid "&Yes"
 msgstr "Oui"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&courriel:"
@@ -2075,6 +2079,10 @@ msgstr "Cliquez pour changer la touche Verr. Maj."
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Cliquer pour basculer et/ou la relation dans le rang précédent"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4904,6 +4912,10 @@ msgstr "Veuillez entrer le mot de passe de ce fichier"
 msgid "Please enter your backup database prefix."
 msgstr "Entrez le préfixe du fichier de copie de sauvegarde."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Veuillez nommer le fichier XML"
@@ -5145,6 +5157,10 @@ msgstr "Les dates relatives sont relatives à aujourd'hui. ex. '-1' égal à hie
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Mémoriser les"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5549,6 +5565,10 @@ msgstr "Définir la police d'affichache d'arborescence/de liste"
 msgid "Set Virtual Keyboard font"
 msgstr "Définir la police du clavier virtuel"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Définir le nombre maximum de mots de passe enregistrés à la valeur ci-dessus"
@@ -5609,6 +5629,10 @@ msgstr "Touche de raccourci"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "Raccourcis"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6933,6 +6957,26 @@ msgstr "Le fichier présentement ouvert sera dans la première rangée. Les copi
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "La police demandée, '%s', n'a pas été trouvée (pas installée?). '%s' sera utilisé."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"

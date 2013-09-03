@@ -976,6 +976,10 @@ msgstr "&XML-format..."
 msgid "&Yes"
 msgstr "&Ja"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&e-post:"
@@ -2088,6 +2092,10 @@ msgstr "Klicka för att växla Caps Lock-tangenten."
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klicka för att växla och/eller anknyta till föregående rad"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4917,6 +4925,10 @@ msgstr "Vänligen, skriv in nyckelkombinationen till denna lösenordsdatabas."
 msgid "Please enter your backup database prefix."
 msgstr "Skriv in prefixet till din databasbackup."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Vänligen, namnge XML-filen"
@@ -5158,6 +5170,10 @@ msgstr "Relativa data uttrycks som dagar relativt idag dvs.  '-1' är igår och 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Kom ihåg senaste"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5562,6 +5578,10 @@ msgstr "Välj font för Träd/Tabell"
 msgid "Set Virtual Keyboard font"
 msgstr "Välj virtuell tangentbordsfont"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Välj ett antal ovan för ett maximalt antal lösenord som sparas"
@@ -5622,6 +5642,10 @@ msgstr "Genvägstangent"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "Genvägar"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6946,6 +6970,26 @@ msgstr "Din nuvarande öppna databas kommer att vara på första raden. Felsäkr
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "Din begärda font, '%s', kunde inte hittas (inte installerad?), använd '%s' istället."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"

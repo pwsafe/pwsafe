@@ -898,6 +898,10 @@ msgstr "&XMLFormatı..."
 msgid "&Yes"
 msgstr "&Evet"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&e-posta:"
@@ -2010,6 +2014,10 @@ msgstr "Caps Lock tuşunu açıp kapatmak için tıklayın."
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Önceki sıraya göre ve/veya ilişkisini değiştirmek için tıklayın"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1, 358)
 msgid "Close"
@@ -4839,6 +4847,10 @@ msgstr "Lütfen bu şifre veritabanı işin kasa şifresini girin."
 msgid "Please enter your backup database prefix."
 msgstr "Lütfen yedekleme veritabanınızın önekini giriniz."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Lürfen XML dosyasını adlandırın"
@@ -5080,6 +5092,10 @@ msgstr "Göreceli tarihler bugüne göre gün biriminde görecelidir örn '-1' d
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Hatırla son"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5484,6 +5500,10 @@ msgstr "Ağaç/Liste görünümü fontunu ayarla"
 msgid "Set Virtual Keyboard font"
 msgstr "Sanal Klavye fontunu ayarla"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Kaydedilecek en yüksek şifre sayısını en üst değere ayrla"
@@ -5544,6 +5564,10 @@ msgstr "Kısayol Tuşu"
 #. Resource IDs: (452, 509)
 msgid "Shortcuts"
 msgstr "Kısayollar"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6868,6 +6892,26 @@ msgstr "Şu anda açık veritabanınız ilk sırada olacak. Hatasız Yedek dosya
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "İstediğiniz font, '%s', bulunamadı (yüklü değil mi?), onun yerine '%s' kullanılıyor."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"

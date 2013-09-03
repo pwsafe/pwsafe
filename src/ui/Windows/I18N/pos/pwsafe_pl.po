@@ -893,6 +893,10 @@ msgstr "Format &XML..."
 msgid "&Yes"
 msgstr "Tak"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&email:"
@@ -2018,6 +2022,10 @@ msgstr "Kliknij by zmienić stan Caps Lock."
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Kliknij by przełączyć relację i/lub w poprzednim wierszu"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4897,6 +4905,10 @@ msgstr "Wprowadź hasło dla tej bazy danych."
 msgid "Please enter your backup database prefix."
 msgstr "Proszę podać prefiks kopii zapasowej."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 #, fuzzy
 msgid "Please name the XML file"
@@ -5142,6 +5154,10 @@ msgstr "Daty względne są datami zależnymi od dzisiejszego dnia, np. '-1' to w
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Pamiętaj ostatnie"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5551,6 +5567,10 @@ msgstr "Ustaw font drzew/list"
 msgid "Set Virtual Keyboard font"
 msgstr "Ustaw font klawiatury wirtualnej"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Ustaw maksymalną liczbę zapisywanych haseł do powyższej wartości"
@@ -5611,6 +5631,10 @@ msgstr "Klawisz skrótu"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "Skróty"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6946,6 +6970,26 @@ msgstr "Twoja aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "Zażądany font '%s' nie został znaleziony (brak instalacji?), zatąpiono go '%s'."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"

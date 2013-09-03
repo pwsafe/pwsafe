@@ -949,6 +949,10 @@ msgstr "&XML Opmaak...."
 msgid "&Yes"
 msgstr "&Ja"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&e-mail:"
@@ -2061,6 +2065,10 @@ msgstr "Klik om de Caps Lock toets aan/uit te zetten"
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klik om te wisselen tussen en/of relatie naar vorige regel"
+
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -4891,6 +4899,10 @@ msgstr "Geef alstublieft de kluis combinatie van deze wachtwoord database."
 msgid "Please enter your backup database prefix."
 msgstr "Geef uw back-up database voorvoegsel op."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "SVP het XML bestand een naam geven"
@@ -5132,6 +5144,10 @@ msgstr "Relatieve datums zijn dagen ten opzichte van vandaag. Bijvoorbeeld  '-1'
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Onthoud laatste"
+
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5536,6 +5552,10 @@ msgstr "Zet Boom/Lijst lettertype"
 msgid "Set Virtual Keyboard font"
 msgstr "Zet Virtueel toetsenbord lettertype"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Zet het maximum aantal wachtwoorden dat bewaard wordt op bovnestaande waarde"
@@ -5596,6 +5616,10 @@ msgstr "Snelkoppeling toets"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "Snelkoppelingen"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -6920,6 +6944,26 @@ msgstr "Uw huidige geopende database zal in de eerste rij staan. Veilige Back-up
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "Uw gevraagde font, '%s', kan niet gevonden worden (niet geinstalleerd?). Gebruik  '%s' in plaats daarvan."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
