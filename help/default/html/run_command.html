@@ -11,9 +11,7 @@
 <h1>Run Command</h1>
 
 <p>An entry's 'Run Command' field can contain a command that will
-be run when the Run Command action is selected. The command can be anything
-that can be executed by typing it in the "Start&nbsp;&rarr;&nbsp;Run" box
-of your computer.</p>
+be run when the Run Command action is selected. Anything that you can do in Windows' "Start&nbsp;&rarr;&nbsp;Run" can be used here.</p>
 
 <p>In addition, <b>Password Safe</b> is able to pass arguments to the command
 such as the entry's username, password, etc., as described below. This
@@ -34,7 +32,7 @@ terminated either by encountering a non-alphanumeric character (such as a space)
 <li>To use a variable immediately followed by an alphanumeric character in the Run Command, enclose the variable's name in curly brackets e.g., '${varname}string'.</li>
 
 <li>To use a '$' in the string as normal text (not indicating that the following text is a variable
-name), escape it using a back-slash ('\') e.g. '\$text' becomes '$text' and is
+name), escape it using a back-slash ('\') e.g., '\$text' becomes '$text' and is
 not treated as a variable called 'text'.</li>
 
 <li>To use a back-slash before a '$' as a back-slash, escape it with a back-slash e.g. '\\$name'
@@ -51,6 +49,7 @@ that equates to zero as meaning the entire field.
 
 <li>The following variables are currently recognised:</li>
 
+
 <ul>
 <li>Application related:</li>
 
@@ -65,7 +64,7 @@ that equates to zero as meaning the entire field.
 </tbody>
 </table>
 
-<li>Current database related:</li>
+<li>Database related:</li>
 
 <table border="0" cellpadding="10" cellspacing="0" width="90%">
 <colgroup><col width="15%"><col width="85%"></colgroup>
@@ -101,7 +100,7 @@ note <a href="#n2">2</a> below.</td>
 </tr>
 <tr>
 <td style="font-weight: bold;">G <span style="font-weight: normal;">or</span> GROUP</td>
-<td>The group containing this entry only.</td>
+<td>The group containing this entry.</td>
 </tr>
 <tr>
 <td style="font-weight: bold;">t <span style="font-weight: normal;">or</span> title</td>
@@ -130,16 +129,17 @@ below.</td>
 </tr>
 <tr>
 <td><b>n[i]</b> or <b>notes[i]</b></td>
-<td>i<sup>th</sup> line of the Notes field counting from the start, i.e. i=1
+<td>i<sup>th</sup> line of the Notes field counting from the start, i.e., i=1
 is the first line, i=2 means the second line etc. See note <a href="#n4">4</a> below.</td>
 </tr>
 <tr>
 <td><b>n[-i]</b> or <b>notes[-i]</b></td>
-<td>i<sup>th</sup> line of the Notes field counting from the end, i.e. i=1 is
+<td>i<sup>th</sup> line of the Notes field counting from the end, i.e., i=1 is
 the last line, i=2 means the penultimate line etc. See note <a href="#n4">4</a> below.</td>
 </tr>
 </tbody>
 </table>
+
 
 <table border="0" cellpadding="10" cellspacing="0" width="90%">
 <colgroup><col width="5%"><col width="95%"></colgroup>
@@ -230,13 +230,22 @@ case sensitive.</p>
 
 <hr style="width: 100%; height: 2px;">
 
-<h3>Example</h3>The following Run Command will cause the
+<h3>Examples</h3>
+<ul>
+<li>The following Run Command will cause the
 <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a>
-program to connect to myHost giving the entry's username and password:<br>
+program to connect to myHost giving the entry's username and password:
 <pre>
 "C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
 </pre>
-
+</li>
+<li>This will open a new instance of <b>Password Safe</b> with the specified database (Thanks to Dave for this one):
+<pre> ${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\path\to\database.psafe3</pre></li>
+<ul>
+<li>Make sure Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System "Allow multiple instances" is checked for this to work</li>
+<li>You might also want to set the Double-Click Action for this entry to "Run Command"</li>
+</ul> 
+</ul> 
 <hr>
 
 <!-- Added some white space at the bottom for natural scrolling -->
