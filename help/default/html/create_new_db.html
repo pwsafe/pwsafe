@@ -56,7 +56,7 @@
       clicking <b>New Database</b>
       from the <b>Safe Combination Entry</b> dialog when the program is
       started, or from the
-      <b>"File&nbsp;→&nbsp;New Database"</b> menu once <b>Password Safe</b>
+      <b>"File&nbsp;?&nbsp;New Database"</b> menu once <b>Password Safe</b>
       has been opened.
       Using either method causes the <b>Safe Combination Set Up</b>
       dialog to appear.</p>
@@ -79,24 +79,26 @@
       <br>
       <img alt="new safe combination prompt" src="images/new_safe.jpg">
     </center>
-    <h3>Using YubiKey with PasswordSafe<br>
-    </h3>
-    If the YubiKey Client API has been installed (see <a href="about_pws_yubi.html">Password
-      Safe and YubiKey</a>), then a "Yubikey" button and text area will
+    <h3>Using YubiKey with PasswordSafe</h3>
+	<p><strong>Password Safe</strong> can work with a <a href="about_pws_yubi.html">YubiKey</a> device 
+    to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase),
+	and tsomething you have (the YubiKey device). If you do not have a YubiKey device, then the YubiKey-specific
+	buttons and texts will not be displayed by <strong>Password Safe</strong>, and the YubiKey-specific instructions
+	below do not apply.</p>
+	<p>If your YubiKey is connected to your PC, then a "Yubikey" button and text area will
     appear in the Safe Combination Entry and Setup windows, as show
     above. This allows you to use your YubiKey to access your Password
     Safe database, either in addition to, or instead of a "Safe
     Combination". For maximum security, we recommend that your database
     be protected <strong>both </strong>by your YubiKey and a Safe
-    Combination (this is known as "two factor authentication").<br>
+    Combination (this is known as ).</p>
     <h4>Setting up a Safe Combination with YubiKey</h4>
     To use your <a href="about_pws_yubi.html">configured</a> YubiKey to
     protect your database:<br>
     <ol>
-      <li>Insert it into a USB slot on your PC. The Yubikey button on
+      <li>If you haven't already done so, insert your YubiKey into a USB slot on your PC. The Yubikey button on
         the Safe Combination window will now become active, and the text
-        to the right of will change to "Click, then activate your
-        YubiKey"</li>
+        to the right of will change to "Click, then activate your YubiKey"</li>
       <li>Set up the Safe Combination as follows:<br>
       </li>
       <ol>
@@ -123,7 +125,7 @@
       <li>Once the YubiKey has been activated, your Password Safe
         database will be created.</li>
     </ol>
-    Opening a database with YubiKey<br>
+    <h3>Opening a database with YubiKey</h3>
     To open a Password Safe database protected with your Yubikey:<br>
     <ol>
       <li>Make sure the desired database is selected in the "Open
@@ -149,7 +151,7 @@
     <h3>Virtual keyboard</h3>
     <p>To setup a master password in a secure way, you could use
       accented characters (e.g. on a German keyboard)
-      such as <b>ä</b>, <b>ö</b> or similar. To realize the input of such
+      such as <b>?</b>, <b>?</b> or similar. To realize the input of such
       characters, you would
       need a foreign keyboard. Such a keyboard is available as a virtual
       keyboard. This keyboard
@@ -175,6 +177,7 @@
       <param name="Keyword" value="Combination">
       <param name="Keyword" value="Virtual Keyboard">
       <param name="Keyword" value="Opening a Safe">
+      <param name="Keyword" value="YubiKey">
     </object>
   </body>
 </html>
