@@ -58,11 +58,7 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-<<<<<<< HEAD
-LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11
-=======
 LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
->>>>>>> yubico-3.31
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
