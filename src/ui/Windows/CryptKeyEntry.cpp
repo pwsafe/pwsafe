@@ -28,25 +28,25 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
-  : CPWDialog(CCryptKeyEntry::IDD, pParent),
+  : CDialog(CCryptKeyEntry::IDD, pParent),
   m_cryptkey1(L""), m_cryptkey2(L"")
 {
 }
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
   DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
 }
 
-BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
+BEGIN_MESSAGE_MAP(CCryptKeyEntry, CDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 void CCryptKeyEntry::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CDialog::OnCancel();
 }
 
 void CCryptKeyEntry::OnOK()
@@ -65,12 +65,12 @@ void CCryptKeyEntry::OnOK()
     return;
   }
 
-  CPWDialog::OnOK();
+  CDialog::OnOK();
 }
 
 void CCryptKeyEntry::OnHelp() 
 {
-  ShowHelp(L"::/html/create_new_db.html");
+  //  ShowHelp(L"::/html/create_new_db.html");
 }
 
 //-----------------------------------------------------------------------------

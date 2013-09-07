@@ -12,9 +12,16 @@
 
 #include "SecString.h"
 #include "core/PwsPlatform.h"
-#include "PWDialog.h"
+#include <afxwin.h>
 
-class CCryptKeyEntry : public CPWDialog
+/**
+ * This dialog box is used for the "undocumented" file encryption/decryption mode.
+ * This means that it's invoked instead of DboxMain, and specifically before our
+ * framework is fully initialized. This is why this MUST be a CDialog, and NOT
+ * CPWDialog derived class.
+ */
+
+class CCryptKeyEntry : public CDialog
 {
   // Construction
 public:
