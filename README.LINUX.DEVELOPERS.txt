@@ -7,11 +7,11 @@ another distro, please update this document with the corresponding
 package names (e.g., rpm).
 
 Here are the packages/tools required for building the Linux version
-under Debian:
+under Debian/Ubuntu:
 fakeroot
 g++
 gettext
-gmake (version 3.81 or newer.  Makefiles are not compatible with lower versions)
+make (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
 libwxgtk2.8-dev
 libwxgtk2.8-dbg
@@ -21,9 +21,6 @@ libxtst-dev
 git
 uuid-dev
 zip
-
-For Ubuntu:
-- 'make' replaces 'gmake'
 
 For Fedora:
 gcc-c++
