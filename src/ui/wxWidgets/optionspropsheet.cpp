@@ -866,7 +866,7 @@ void COptions::PrefsToPropSheet()
   m_inittreeview = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
 
   // Misc. preferences
-  m_confirmdelete = prefs->GetPref(PWSprefs::DeleteQuestion);
+  m_confirmdelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
   m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
   m_escexits = prefs->GetPref(PWSprefs::EscExits);
   m_doubleclickaction = prefs->GetPref(PWSprefs::DoubleClickAction);
@@ -987,7 +987,7 @@ void COptions::PropSheetToPrefs()
                    m_preexpirywarndaysSB->GetValue());
 
   // Misc. preferences
-  prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
+  prefs->SetPref(PWSprefs::DeleteQuestion, !m_confirmdelete);
   prefs->SetPref(PWSprefs::EscExits, m_escexits);
   m_doubleclickaction = DCAStr2Int(m_DCACB->GetValue());
   prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
