@@ -134,7 +134,7 @@ void CImportTextDlg::OnImportPSWDsOnly()
 
 void CImportTextDlg::OnHelp() 
 {
-  ShowHelp("::/html/import.html");
+  ShowHelp("::/html/import.html#text");
 }
 
 void CImportTextDlg::OnOK() 
