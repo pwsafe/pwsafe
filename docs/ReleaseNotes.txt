@@ -27,6 +27,7 @@ be exported and a comment added to the export file and the report.
 
 Bugs fixed in 3.32pre
 =====================
+[1122] -d dialog no longer needs password verification.
 [1121] Help now displays correctly for Import XML settings.
 [1113] Filters now handle empty fields correctly.
 [1108] Manage Password Policy lists and Edit Entry's Notes fonts are

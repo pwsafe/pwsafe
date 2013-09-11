@@ -27,11 +27,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //-----------------------------------------------------------------------------
-CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
+CCryptKeyEntry::CCryptKeyEntry(bool isEncrypt, CWnd* pParent)
   : CDialog(CCryptKeyEntry::IDD, pParent),
-  m_cryptkey1(L""), m_cryptkey2(L"")
+    m_cryptkey1(L""), m_cryptkey2(L""), m_encrypt(isEncrypt)
 {
 }
+
+BOOL CCryptKeyEntry::OnInitDialog()
+{
+  CDialog::OnInitDialog();
+  GetDlgItem(IDC_VERIFY)->ShowWindow(m_encrypt);
+  GetDlgItem(IDC_CRYPTKEY2)->ShowWindow(m_encrypt);
+  return TRUE;
+}
+
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
@@ -54,7 +63,7 @@ void CCryptKeyEntry::OnOK()
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
 
-  if (m_cryptkey1 != m_cryptkey2) {
+  if (m_encrypt && (m_cryptkey1 != m_cryptkey2)) {
     gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
     return;

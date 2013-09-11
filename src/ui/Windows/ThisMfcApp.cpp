@@ -770,7 +770,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           }
           // get password from user
           StringX passkey;
-          CCryptKeyEntry dlg(NULL);
+          CCryptKeyEntry dlg(isEncrypt);
           INT_PTR nResponse = dlg.DoModal();
 
           if (nResponse == IDOK) {

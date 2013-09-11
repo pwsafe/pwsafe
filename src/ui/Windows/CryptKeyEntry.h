@@ -25,7 +25,7 @@ class CCryptKeyEntry : public CDialog
 {
   // Construction
 public:
-  CCryptKeyEntry(CWnd* pParent = NULL);   // standard constructor
+  CCryptKeyEntry(bool isEncrypt, CWnd* pParent = NULL);
 
   // Dialog Data
   //{{AFX_DATA(CCryptKeyEntry)
@@ -44,6 +44,7 @@ protected:
 
   // Implementation
 protected:
+  virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CCryptKeyEntry)
   virtual void OnCancel();
@@ -51,6 +52,9 @@ protected:
   afx_msg void OnHelp();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+private:
+  bool m_encrypt; // from c'tor. False == decrypt, don't confirm password
+  
 };
 
 //-----------------------------------------------------------------------------
