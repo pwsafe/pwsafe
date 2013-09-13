@@ -14,13 +14,18 @@ DEPDIR= ./deps
 
 NAME=os
 
+ifndef NO_YUBI
+YUBI_SRC=PWYubi.cpp
+YBPERS_INC?=/usr/local/include/ykpers-1
+endif
+
 LIBSRC          = debug.cpp dir.cpp env.cpp \
                   file.cpp logit.cpp mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
                   sleep.cpp xsendstring.cpp\
                   registry.cpp UUID.cpp\
-                  unicode2keysym.cpp PWYubi.cpp
+                  unicode2keysym.cpp $(YUBI_SRC)
 
 SRC             = $(LIBSRC)
 
@@ -32,7 +37,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) -I/usr/local/include/ykpers-1
+CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) -I$(YBPERS_INC)
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -DDEBUG

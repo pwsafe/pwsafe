@@ -21,7 +21,10 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+
+#ifndef NO_YUBI
 #include "YubiMixin.h"
+#endif
 
 /*!
  * Forward declarations
@@ -57,7 +60,11 @@ class wxTimer;
  * CSafeCombinationPrompt class declaration
  */
 
+#ifndef NO_YUBI
 class CSafeCombinationPrompt: public wxDialog, private CYubiMixin
+#else
+class CSafeCombinationPrompt: public wxDialog
+#endif
 {    
   DECLARE_CLASS( CSafeCombinationPrompt )
   DECLARE_EVENT_TABLE()
@@ -83,17 +90,19 @@ public:
   
 ////@begin CSafeCombinationPrompt event handler declarations
 
+#ifndef NO_YUBI
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
   void OnYubibtnClick( wxCommandEvent& event );
+
+////@end CSafeCombinationPrompt event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
+#endif
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancelClick( wxCommandEvent& event );
-
-////@end CSafeCombinationPrompt event handler declarations
-  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationPrompt member function declarations
 
@@ -109,15 +118,18 @@ public:
 
 ////@begin CSafeCombinationPrompt member variables
   CSafeCombinationCtrl* m_scctrl;
-  wxBitmapButton* m_YubiBtn;
-  wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationPrompt member variables
   PWScore &m_core;
   wxString m_filename;
   StringX  m_password;
   unsigned m_tries;
 
+#ifndef NO_YUBI
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+#endif
+  
   void ProcessPhrase();
 };
 

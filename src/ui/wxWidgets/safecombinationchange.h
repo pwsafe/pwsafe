@@ -22,7 +22,9 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#ifndef NO_YUBI
 #include "YubiMixin.h"
+#endif
 
 /*!
  * Forward declarations
@@ -85,11 +87,13 @@ public:
 
 ////@begin CSafeCombinationChange event handler declarations
 
+#ifndef NO_YUBI
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
   void OnYubibtnClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
   void OnYubibtn2Click( wxCommandEvent& event );
+#endif
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
@@ -123,11 +127,13 @@ public:
 
 ////@begin CSafeCombinationChange member variables
   CSafeCombinationCtrl* m_oldPasswdEntry;
-  wxBitmapButton* m_YubiBtn;
   CSafeCombinationCtrl* m_newPasswdEntry;
+#ifndef NO_YUBI
+  wxBitmapButton* m_YubiBtn;
   wxBitmapButton* m_YubiBtn2;
-  CSafeCombinationCtrl* m_confirmEntry;
   wxStaticText* m_yubiStatusCtrl;
+#endif
+  CSafeCombinationCtrl* m_confirmEntry;
 private:
   StringX m_confirm;
   StringX m_newpasswd;
@@ -136,9 +142,11 @@ private:
   StringX m_oldresponse;
   PWScore &m_core;
 
+#ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
   CYubiMixin m_yubiMixin1, m_yubiMixin2;
   wxTimer* m_pollingTimer; // for Yubi
+#endif
 };
 
 #endif
