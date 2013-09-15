@@ -211,6 +211,7 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
 			 m_frame(0), m_recentDatabases(0),
 			 m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
+  Init();
 }
 
 /*!
@@ -239,6 +240,19 @@ void PwsafeApp::Init()
 ////@begin PwsafeApp member initialisation
 ////@end PwsafeApp member initialisation
 }
+
+#ifdef __WXDEBUG__
+void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func, 
+								const wxChar *cond, const wxChar *msg)
+{
+  if (m_locale)
+	  wxApp::OnAssertFailure(file, line, func, cond, msg);
+  else
+      std::wcerr << file << L'(' << line << L"):"
+                 << L" assert \"" << cond << L"\" failed in " << (func? func: L"") << L"(): "
+                 << (msg? msg: L"") << endl;
+}
+#endif
 
 /*!
  * Initialisation for PwsafeApp

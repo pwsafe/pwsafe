@@ -63,6 +63,10 @@ public:
     /// Initialises the application
     virtual bool OnInit();
 
+	/// Handle asserts without showing the assert dialog until locale is initialized.
+#ifdef __WXDEBUG__
+	virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
+#endif
     /// Called on exit
     virtual int OnExit();
 
