@@ -41,6 +41,7 @@
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-I/usr/include/ykpers-1" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -85,6 +86,7 @@
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-I/usr/include/ykpers-1" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -119,6 +121,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-I/usr/include/ykpers-1" />
 					<Add option="-DNDEBUG" />
 					<Add directory="../../src" />
 					<Add directory="../../src/core" />
@@ -150,6 +153,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-I/usr/include/ykpers-1" />
 					<Add option="-DNDEBUG" />
 					<Add directory="../../src" />
 					<Add directory="../../src/core" />
@@ -191,6 +195,7 @@
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-I/usr/include/ykpers-1" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -213,6 +218,8 @@
 		<Unit filename="../../src/os/file.h" />
 		<Unit filename="../../src/os/lib.h" />
 		<Unit filename="../../src/os/linux/KeySend.cpp" />
+		<Unit filename="../../src/os/linux/PWYubi.cpp" />
+		<Unit filename="../../src/os/linux/PWYubi.h" />
 		<Unit filename="../../src/os/linux/UUID.cpp" />
 		<Unit filename="../../src/os/linux/debug.cpp" />
 		<Unit filename="../../src/os/linux/dir.cpp" />
