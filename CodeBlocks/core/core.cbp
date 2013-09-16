@@ -316,7 +316,6 @@
 		<Unit filename="../../src/core/core_st.cpp" />
 		<Unit filename="../../src/core/core_st.h" />
 		<Unit filename="../../src/core/coredefs.h" />
-		<Unit filename="../../src/core/hmac.cpp" />
 		<Unit filename="../../src/core/hmac.h" />
 		<Unit filename="../../src/core/pugixml/pugiconfig.hpp" />
 		<Unit filename="../../src/core/pugixml/pugixml.cpp" />
