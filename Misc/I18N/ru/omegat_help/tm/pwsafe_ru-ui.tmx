@@ -125,6 +125,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg> 'Keyboard Shortcut'</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg> 'Горячая клавиша'</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg> 'Last Access Time'</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -599,11 +607,11 @@ Can't open file. Please choose another.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>%s not found. Cannot update entry's password.&#13;
+        <seg>%s not found. Cannot update entry's password.
 </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%s не найден. Невозможно обновить пароль для элемента.&#13;
+        <seg>%s не найден. Невозможно обновить пароль для элемента.
 </seg>
       </tuv>
     </tu>
@@ -1513,6 +1521,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>&amp;Yubikey...</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>&amp;YubiKey...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>&amp;email:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -1629,6 +1645,14 @@ Thank you for your help to improve PasswordSafe.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>* значит, что с момента последнего сохранения контейнер был изменён</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>*** Invalid XML characters found - see exported XML file for more details ***</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>*** В XML-файле обнаружен недопустимый символ (подробности в экспортированном XML-файле ***</seg>
       </tuv>
     </tu>
     <tu>
@@ -2297,11 +2321,11 @@ in your temporary directory:
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>A red and white indicator means that a filter is active&#13;
+        <seg>A red and white indicator means that a filter is active
 (if showing, double click to clear filter)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Белый квадрат с красной штриховкой означает, что активен фильтр&#13;
+        <seg>Белый квадрат с красной штриховкой означает, что активен фильтр
 (чтобы отключить фильтр, щёлкните дважды по квадрату)</seg>
       </tuv>
     </tu>
@@ -2723,6 +2747,14 @@ in your temporary directory:
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Application Hotkey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячая клавиша для вызова программы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Apply</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -3044,18 +3076,18 @@ symbols, hexadecimal) must be permitted.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Browse to URL + Autotype</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Перейти по ссылке и выполнить автонабор</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Browser Command Line parameters:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>параметры командной строки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Built on </seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Дата сборки </seg>
       </tuv>
     </tu>
     <tu>
@@ -3172,11 +3204,11 @@ symbols, hexadecimal) must be permitted.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.&#13;
+        <seg>Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.
 Please copy it from your installation file, or re-install PasswordSafe.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно найти файл с определением XML-схемы (%s) в каталоге Password Safe.&#13;
+        <seg>Невозможно найти файл с определением XML-схемы (%s) в каталоге Password Safe.
 Скопируйте этот файл из дистрибутива или переустановите Password Safe.</seg>
       </tuv>
     </tu>
@@ -3666,6 +3698,14 @@ Entries with more than this new maximum already saved will remain unchanged.</se
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Click, then touch your YubiKey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Нажмите на кнопку и коснитесь YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Close</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -3946,13 +3986,13 @@ Selected fields will be replaced in all entries!</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Conflicting entries for «%s» «%s» «%s».&#13;
-  Adding merged entry as «%s» «%s» «%s».&#13;
+        <seg>Conflicting entries for «%s» «%s» «%s».
+  Adding merged entry as «%s» «%s» «%s».
     Differing field(s): %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Конфликт элементов для «%s» «%s» «%s».&#13;
-  При слиянии элемент был добавлен как «%s» «%s» «%s».&#13;
+        <seg>Конфликт элементов для «%s» «%s» «%s».
+  При слиянии элемент был добавлен как «%s» «%s» «%s».
     Различающиеся поля: %s</seg>
       </tuv>
     </tu>
@@ -3966,17 +4006,17 @@ Selected fields will be replaced in all entries!</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Copied password&#13;
-&#13;
-"%s"&#13;
-&#13;
+        <seg>Copied password
+
+"%s"
+
 to the clipboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Копировать пароль&#13;
-&#13;
-«%s»&#13;
-&#13;
+        <seg>Копировать пароль
+
+«%s»
+
 в буфер обмена.</seg>
       </tuv>
     </tu>
@@ -4326,31 +4366,31 @@ to the clipboard.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Current version:	%s&#13;
-Latest version:	%s&#13;
-&#13;
+        <seg>Current version:	%s
+Latest version:	%s
+
 Please visit the PasswordSafe website to download the latest version.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Текущая версия:	%s&#13;
-Новая версия:	%s&#13;
-&#13;
+        <seg>Текущая версия:	%s
+Новая версия:	%s
+
 Пожалуйста, посетите сайт Password Safe для загрузки новой версии.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Current version:	%s&#13;
-Latest version:	%s&#13;
-&#13;
-Your purchase includes free upgrades for one year.&#13;
+        <seg>Current version:	%s
+Latest version:	%s
+
+Your purchase includes free upgrades for one year.
 Please contact the PasswordSafe Administrator for your upgrade.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Текущая версия:	%s&#13;
-Новая версия:	%s&#13;
-&#13;
-В стоимость включена возможность бесплатных обновлений в течение года.&#13;
+        <seg>Текущая версия:	%s
+Новая версия:	%s
+
+В стоимость включена возможность бесплатных обновлений в течение года.
 Пожалуйста, свяжитесь с администратором Password Safe для обновления.</seg>
       </tuv>
     </tu>
@@ -4420,6 +4460,14 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Database Entry Shortcuts</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячие клавиши для элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Database Unique ID</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -4460,11 +4508,11 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Database mode: read-only (R-O) or read/write (R/W)&#13;
+        <seg>Database mode: read-only (R-O) or read/write (R/W)
 (Doubleclick to toggle mode)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Режим контейнера: «только чтение» (R-O) или «чтение/запись» (R/W)&#13;
+        <seg>Режим контейнера: «только чтение» (R-O) или «чтение/запись» (R/W)
 (Щёлкните дважды для переключения режима)</seg>
       </tuv>
     </tu>
@@ -4722,17 +4770,17 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Do you wish to save the changes made to database:&#13;
-&#13;
-%s&#13;
-&#13;
+        <seg>Do you wish to save the changes made to database:
+
+%s
+
 or Cancel the shutdown\restart\logoff?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Сохранить изменения в контейнере:&#13;
-&#13;
-%s&#13;
-&#13;
+        <seg>Сохранить изменения в контейнере:
+
+%s
+
 или отменить выключение\перезапуск\завершение сеанса?</seg>
       </tuv>
     </tu>
@@ -4752,6 +4800,14 @@ Use the last explicitly saved versions of the documents</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Действие по двойному клику</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Double click to Edit/View this entry.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Щёлкните дважды для просмотра/редактирования</seg>
       </tuv>
     </tu>
     <tu>
@@ -4884,13 +4940,13 @@ Use the last explicitly saved versions of the documents</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Dropped entry '%s:%s:%s' password points to an entry that is also an alias.&#13;
-&#13;
+        <seg>Dropped entry '%s:%s:%s' password points to an entry that is also an alias.
+
 The dropped entry now references that entry's base entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.&#13;
-&#13;
+        <seg>Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.
+
 Скопированный элемент теперь ссылается на исходный элемент.</seg>
       </tuv>
     </tu>
@@ -4940,6 +4996,14 @@ The dropped entry now references that entry's base entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Легкоотличимые символы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Edit</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Редактировать</seg>
       </tuv>
     </tu>
     <tu>
@@ -4996,6 +5060,14 @@ The dropped entry now references that entry's base entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Пустые строки %d пропущены</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Enable</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Включить</seg>
       </tuv>
     </tu>
     <tu>
@@ -5256,6 +5328,14 @@ The dropped entry now references that entry's base entry.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Entry Keyboard Shortcut</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячая клавиша для элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Entry Password Policy Changes</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -5292,6 +5372,42 @@ The dropped entry now references that entry's base entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Предупреждения при импорте элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячая клавиша для %s элемента %s уже назначена элементу %s. Она была отвязана от %s элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячая клавиша для %s элемента %s уже назначена для вызова Password Safe. Она была отвязана от элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Комбинация клавиш для элемента должна состоять из буквы или числа (0-9, A-Z) и хотя бы одного из модификаторов Alt и Ctrl.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.
+
+%s</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Комбинация клавиш для элемента должна содержать хотя бы один из модификаторов Alt и Ctrl.
+
+%s</seg>
       </tuv>
     </tu>
     <tu>
@@ -5564,11 +5680,11 @@ Database related settings will be stored in the open database when it is closed,
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Export file: '%s' already exists.&#13;
+        <seg>Export file: '%s' already exists.
 Do you want to replace it?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Указанный файл для экспорта «%s» уже существует.&#13;
+        <seg>Указанный файл для экспорта «%s» уже существует.
 Заменить?</seg>
       </tuv>
     </tu>
@@ -5666,13 +5782,13 @@ Autotype for Launch of a Browser or Running a command is disabled.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Failed to switch from R-O to R/W because database is already open in R/W mode by:&#13;
-%s %s&#13;
+        <seg>Failed to switch from R-O to R/W because database is already open in R/W mode by:
+%s %s
 (Only one R/W access at a time is allowed)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при переключении в режим чтения/записи: контейнер уже открыт для записи:&#13;
-%s %s&#13;
+        <seg>Ошибка при переключении в режим чтения/записи: контейнер уже открыт для записи:
+%s %s
 (Файл не может быть одновременно открыт для записи несколькими пользователями)</seg>
       </tuv>
     </tu>
@@ -5694,11 +5810,11 @@ Autotype for Launch of a Browser or Running a command is disabled.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Failed to switch from R/W to R-O: Could not release database lock.&#13;
+        <seg>Failed to switch from R/W to R-O: Could not release database lock.
 Try exiting and restarting program.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при переключении в режим «только чтение»: ошибка при освобождении файла блокировок.&#13;
+        <seg>Ошибка при переключении в режим «только чтение»: ошибка при освобождении файла блокировок.
 Попробуйте выйти из программы и запустить её заново.</seg>
       </tuv>
     </tu>
@@ -5740,6 +5856,14 @@ Try exiting and restarting program.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Поле присутствует</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>File</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Файл</seg>
       </tuv>
     </tu>
     <tu>
@@ -5824,25 +5948,25 @@ Try exiting and restarting program.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>File: %s failed validation against XML Schema:&#13;
-&#13;
+        <seg>File: %s failed validation against XML Schema:
+
 %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Файл %s не соответствует XML-схеме:&#13;
-&#13;
+        <seg>Файл %s не соответствует XML-схеме:
+
 %s</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>File: %s passed Validation but had the following errors during import:&#13;
-&#13;
+        <seg>File: %s passed Validation but had the following errors during import:
+
 %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Файл %s прошёл проверку, но при импорте произошли следующие ошибки:&#13;
-&#13;
+        <seg>Файл %s прошёл проверку, но при импорте произошли следующие ошибки:
+
 %s</seg>
       </tuv>
     </tu>
@@ -5976,11 +6100,11 @@ Try exiting and restarting program.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>For security, the database must be closed before connecting to the Internet.&#13;
+        <seg>For security, the database must be closed before connecting to the Internet.
 Press OK to close database and continue (Changes will be saved)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.&#13;
+        <seg>Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.
 Нажмите OK для закрытия контейнера и продолжения (изменения будут сохранены)</seg>
       </tuv>
     </tu>
@@ -6242,11 +6366,11 @@ Press OK to close database and continue (Changes will be saved)</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Group	Title	Username	Password Expiry Date&#13;
+        <seg>Group	Title	Username	Password Expiry Date
 </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Группа	Заголовок	Имя пользователя	Дата истечения пароля&#13;
+        <seg>Группа	Заголовок	Имя пользователя	Дата истечения пароля
 </seg>
       </tuv>
     </tu>
@@ -6348,18 +6472,18 @@ Press OK to close database and continue (Changes will be saved)</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Hot Key</seg>
+        <seg>HotKey1</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Вызов по</seg>
+        <seg>HotKey1</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>HotKey1</seg>
+        <seg>However, we can't add either as all combinations are in use.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>HotKey1</seg>
+        <seg>Модификаторы не могут быть добавлены, т. к. все комбинации заняты.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7168,6 +7292,14 @@ You may need to also select the Shift key to see them.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Keyboard Shortcut</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячая клавиша</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Keyboard type:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -7466,6 +7598,14 @@ as each byte is two hexadecimal digits.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Manage</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Управление</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Manage Filters</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -7510,6 +7650,14 @@ as each byte is two hexadecimal digits.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Макс.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Maximum</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>максимальная</seg>
       </tuv>
     </tu>
     <tu>
@@ -7587,11 +7735,11 @@ must be between 1 and 999.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Merging database: %s&#13;
+        <seg>Merging database: %s
 </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Слияние с контейнером: %s&#13;
+        <seg>Слияние с контейнером: %s
 </seg>
       </tuv>
     </tu>
@@ -8677,6 +8825,14 @@ Recommend that the database is now saved.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Password Safe Application HotKey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Комбинация вызова Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8741,11 +8897,11 @@ Recommend that the database is now saved.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Password implies this is an alias entry, but specifies a base entry with no title.&#13;
+        <seg>Password implies this is an alias entry, but specifies a base entry with no title.
 Every entry must have a title.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Подразумевается, что это псевдоним, но ссылка указывает на безымянный элемент.&#13;
+        <seg>Подразумевается, что это псевдоним, но ссылка указывает на безымянный элемент.
 У каждого элемента должен быть заголовок.</seg>
       </tuv>
     </tu>
@@ -9059,6 +9215,14 @@ Every entry must have a title.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Please insert your YubiKey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Вставьте ваш YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Please name the XML file</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -9219,13 +9383,13 @@ Every entry must have a title.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.&#13;
-&#13;
+        <seg>Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.
+
 Pressing Cancel stops the password being copied.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>После нажатия OK пароль для выделенного элемента будет скопирован в буфер обмена. Буфер обмена будет надёжно очищен при закрытии Password Safe&#13;
-&#13;
+        <seg>После нажатия OK пароль для выделенного элемента будет скопирован в буфер обмена. Буфер обмена будет надёжно очищен при закрытии Password Safe
+
 При нажатии «Отмена», пароль не копируется в буфер.</seg>
       </tuv>
     </tu>
@@ -9243,6 +9407,14 @@ Pressing Cancel stops the password being copied.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Обрабатываемый элемент:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Program Shortcuts</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Горячие клавиши пунктов меню</seg>
       </tuv>
     </tu>
     <tu>
@@ -9521,6 +9693,14 @@ Open the auto-saved versions instead of the explicitly saved versions</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Remember this keyboard</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Запомнить раскладку</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Remove PasswordSafe configuration from Registry</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -9621,10 +9801,10 @@ Unable to provide Virtual Keyboard.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Reset All</seg>
+        <seg>Reset All Program Shortcuts</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Сбросить все</seg>
+        <seg>Сброс гор. клав. меню</seg>
       </tuv>
     </tu>
     <tu>
@@ -9789,11 +9969,11 @@ Unable to provide Virtual Keyboard.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>SAX Parse Error during %s&#13;
+        <seg>SAX Parse Error during %s
 %s.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка разбора SAX при выполнении %s&#13;
+        <seg>Ошибка разбора SAX при выполнении %s
 %s.</seg>
       </tuv>
     </tu>
@@ -10304,6 +10484,14 @@ Unable to provide Virtual Keyboard.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Set Yubikey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Сохранить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Set maximum number of passwords saved to above value</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -10412,6 +10600,14 @@ Unable to provide Virtual Keyboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Комбинации клавиш</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Show</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Показать</seg>
       </tuv>
     </tu>
     <tu>
@@ -10708,6 +10904,14 @@ Minimal diagnostic information has been written to file:
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Standard</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>обычная</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Start PasswordSafe at Login</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -10904,11 +11108,11 @@ Saved histories will not be touched, but password changes will no longer be stor
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Synchronizing from database: %s&#13;
+        <seg>Synchronizing from database: %s
 </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Синхронизация с контейнером: %s&#13;
+        <seg>Синхронизация с контейнером: %s
 </seg>
       </tuv>
     </tu>
@@ -11106,13 +11310,61 @@ Saved histories will not be touched, but password changes will no longer be stor
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.&#13;
-&#13;
+        <seg>The Alt and Ctrl keys have been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Были добавлены модификаторы Alt и Ctrl.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The Alt and Shift keys have been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Были добавлены модификаторы Alt и Shift.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The Alt key has been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Был добавлен модификатор Alt.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The Alt, Ctrl and Shift keys have been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Были добавлены модификаторы Alt, Ctrl и Shift.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The Ctrl and Shift keys have been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Были добавлены модификаторы Ctrl и Shift.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The Ctrl key has been added.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Был добавлен модификатор Ctrl.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.
+
 Import aborted.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При экспорте TXT- или CSV-файла не были соблюдены все требования, так как данные элемента разбиты на несколько строк.&#13;
-&#13;
+        <seg>При экспорте TXT- или CSV-файла не были соблюдены все требования, так как данные элемента разбиты на несколько строк.
+
 Импорт прерван.</seg>
       </tuv>
     </tu>
@@ -11136,13 +11388,13 @@ Do you wish to look for it elsewhere (Search), create a new database (New), or E
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.&#13;
-&#13;
+        <seg>The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.
+
 Please close the database and re-open it in R/W mode.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Переключение в режим «чтение/запись» невозможно: со времени открытия в режиме «только чтение» контейнер был изменён.&#13;
-&#13;
+        <seg>Переключение в режим «чтение/запись» невозможно: со времени открытия в режиме «только чтение» контейнер был изменён.
+
 Закройте контейнер и откройте его заново в режиме «чтение/запись».</seg>
       </tuv>
     </tu>
@@ -11154,8 +11406,8 @@ Please close the database and re-open it in R/W mode.</seg>
 is apparently being used by:
 %s%s.
 
-Open the database for Read-Only or Exit?&#13;
-&#13;
+Open the database for Read-Only or Exit?
+
 Note: Only one user at a time can open the database for writing.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -11165,8 +11417,8 @@ Note: Only one user at a time can open the database for writing.</seg>
 уже используется:
 %s%s.
 
-Открыть контейнер в режиме «только чтение» или выйти?&#13;
-&#13;
+Открыть контейнер в режиме «только чтение» или выйти?
+
 При совместном доступе только один пользователь может редактировать данные.</seg>
       </tuv>
     </tu>
@@ -11178,8 +11430,8 @@ Note: Only one user at a time can open the database for writing.</seg>
 is apparently being used by:
 %s%s.
 
-Open the database for Read-Only, Read-Write, or Exit?&#13;
-&#13;
+Open the database for Read-Only, Read-Write, or Exit?
+
 Note: Choose "Read-Write" only if you are certain that the file isn't being used by anyone else,
 including another copy of Password Safe running on your machine.</seg>
       </tuv>
@@ -11190,8 +11442,8 @@ including another copy of Password Safe running on your machine.</seg>
 уже используется:
 %s%s.
 
-Открыть контейнер в режиме «только чтение»/для редактирования/выйти?&#13;
-&#13;
+Открыть контейнер в режиме «только чтение»/для редактирования/выйти?
+
 Выбирайте режим редактирования только в том случае, если вы уверены, что никто больше не использует этот контейнер (включая другие копии программы на этом компьютере).</seg>
       </tuv>
     </tu>
@@ -11301,11 +11553,11 @@ has duplicate entries with the same group/title/user combination. Please fix by 
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The following entries had a policy name that already existed in this database but with different settings.&#13;
+        <seg>The following entries had a policy name that already existed in this database but with different settings.
 A new named policy has been created with the current date/time (%s) appended:%s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Указанные элементы были связаны с политиками, которые уже есть в данном контейнере, но имеют другие настройки.&#13;
+        <seg>Указанные элементы были связаны с политиками, которые уже есть в данном контейнере, но имеют другие настройки.
 Для них были созданы новые политики, к имени которых добавлены текущие дата и время (%s) :%s</seg>
       </tuv>
     </tu>
@@ -11415,6 +11667,30 @@ A new named policy has been created with the current date/time (%s) appended:%s<
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>The keyboard shortcut '%s' has already been assigned to the menu item:	'%s'
+The %s will override this menu item shortcut.
+Press OK/Apply to accept or change your selection.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Комбинация клавиш '%s' уже назначена пункту меню:	'%s'
+%s будет иметь приоритет над вызовом пункта меню.
+Нажмите OK/Применить для сохранения или измените комбинацию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The keyboard shortcut '%s' is already in use by:
+	«%s» «%s» «%s»
+Please select another shortcut (it has been reset).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Комбинация клавиш '%s' уже используется для:
+	«%s» «%s» «%s»
+Выберите другую комбинацию (текущая была сброшена).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -11449,13 +11725,13 @@ Your changes will be written as "%s" in the new format, which is unusable by old
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.&#13;
-&#13;
+        <seg>The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.
+
 Do you wish this entry to point to the 'real' base entry?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Пароль имеет вид псевдонима, но исходный элемент «%s:%s:%s» тоже является псевдонимом.&#13;
-&#13;
+        <seg>Пароль имеет вид псевдонима, но исходный элемент «%s:%s:%s» тоже является псевдонимом.
+
 Привязать этот элемент к «настоящему» исходному элементу?</seg>
       </tuv>
     </tu>
@@ -11525,6 +11801,14 @@ Do you wish this entry to point to the 'real' base entry?</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage-&gt;Options-&gt;Shortcuts).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Выбранная комбинация недоступна, т. к. уже назначена для вызова Password Safe («Управление-&gt;Настройки...-&gt;Комбинации клавиш»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>This alias' target [%s:%s:%s] is not a normal entry or already an alias base.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -11557,35 +11841,35 @@ Do you wish this entry to point to the 'real' base entry?</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This entry has the following %d %s:&#13;
+        <seg>This entry has the following %d %s:
 %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>У данного элемента есть %d %s:&#13;
+        <seg>У данного элемента есть %d %s:
 %s</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This entry has the following %d %s:&#13;
-%s&#13;
+        <seg>This entry has the following %d %s:
+%s
 Please confirm to continue (All shortcuts to this entry will be deleted)?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>У данного элемента есть %d подчинённых типа «%s»:&#13;
-%s&#13;
+        <seg>У данного элемента есть %d подчинённых типа «%s»:
+%s
 Продолжить выполнение (все ярлыки для этого элемента будут удалены)?</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This entry has the following %d %s:&#13;
-%s&#13;
+        <seg>This entry has the following %d %s:
+%s
 Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>У данного элемента есть %d %s:&#13;
-%s&#13;
+        <seg>У данного элемента есть %d %s:
+%s
 Продолжить выполнение (пароли для псевдонимов будут заменены на пароль этого элемента)?</seg>
       </tuv>
     </tu>
@@ -12225,6 +12509,14 @@ Database related settings will be stored in the open database when it is closed,
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Unlock Difficulty:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Стойкость к перебору</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Unlock Safe</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -12257,11 +12549,11 @@ Database related settings will be stored in the open database when it is closed,
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Unsaved changes have been made to database:&#13;
+        <seg>Unsaved changes have been made to database:
  %s.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Несохранённые изменения:&#13;
+        <seg>Несохранённые изменения:
  %s.</seg>
       </tuv>
     </tu>
@@ -12551,13 +12843,13 @@ In addition, the following flags may be used:
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Validated %d %s&#13;
-&#13;
+        <seg>Validated %d %s
+
 Imported %d %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Проверено %d %s&#13;
-&#13;
+        <seg>Проверено %d %s
+
 Импортировано %d %s</seg>
       </tuv>
     </tu>
@@ -12723,13 +13015,13 @@ Imported %d %s</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.&#13;
-&#13;
+        <seg>WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.
+
 Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!&#13;
-&#13;
+        <seg>Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!
+
 Это действие позволяет обойти защиту предоставляемую программой. Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
       </tuv>
     </tu>
@@ -12759,6 +13051,14 @@ Do you wish to continue?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Предупреждение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Warning goes here if generated</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Здесь будет текст предупреждения</seg>
       </tuv>
     </tu>
     <tu>
@@ -13003,6 +13303,46 @@ Try saving in a different location</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Указанный шрифт «%s» не найден (не установлен?). Вместо него будет использован шрифт «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>YubiKey Configuration</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Настройки YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>YubiKey Secret Key (20 bytes Hex)</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Закрытый ключ YubiKey (20 байт в шестн. формате)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>YubiKey Serial Number:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Серийный номер YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>YubiKey для Password Safe может быть приобретён на сайте http://www.yubico.com/PasswordSafe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Yubikey</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -13470,6 +13810,16 @@ Manage Filters</seg>
     <tu>
       <tuv xml:lang="EN-US">
         <seg>
+Merge completed: %d %s added (%d %s, %d %s, %d %s)</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+Слияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
 Merge into Database</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -13689,6 +14039,48 @@ Synchronize Databases</seg>
     <tu>
       <tuv xml:lang="EN-US">
         <seg>
+Synchronize completed: %d %s updated</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+Синхронизация завершена: %d %s обновлено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
+The following %s %s updated:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+Следующие %s %s обновлены:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
+The following new %s %s merged into this database:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+Новые %s %s добавлены в данный контейнер:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
+This field is being edited in your
+default text editor.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+Поле будет отредактировано
+в редакторе по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
 Undo</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -13776,6 +14168,18 @@ Ignore this and save anyway - Yes/no?</seg>
       <tuv xml:lang="EN-US">
         <seg>
 
+Select Yes to continue with this password or No to cancel?</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+
+Выберите «Да» для использования этого пароля или «Нет» для отмены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
+
 The databases are identical when comparing the selected or default fields!</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -13794,6 +14198,16 @@ Unknown fields will also be copied with the entry.</seg>
         <seg>
 
 Неизвестные поля будут скопированы вместе с элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>
+email: </seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>
+E-mail: </seg>
       </tuv>
     </tu>
     <tu>
@@ -13818,80 +14232,6 @@ with warnings</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>&#13;
-Merge completed: %d %s added (%d %s, %d %s, %d %s)</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-Слияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-Synchronize completed: %d %s updated</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-Синхронизация завершена: %d %s обновлено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-The following %s %s updated:</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-Следующие %s %s обновлены:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-The following new %s %s merged into this database:</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-Новые %s %s добавлены в данный контейнер:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-This field is being edited in your&#13;
-default text editor.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-Поле будет отредактировано&#13;
-в редакторе по умолчанию.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-&#13;
-Select Yes to continue with this password or No to cancel?</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-&#13;
-Выберите «Да» для использования этого пароля или «Нет» для отмены.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>&#13;
-email: </seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>&#13;
-E-mail: </seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>	%s was restricted to the following fields:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -13900,11 +14240,11 @@ E-mail: </seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>	Entry - Group:"%s"; Title:"%s"; User:"%s"&#13;
+        <seg>	Entry - Group:"%s"; Title:"%s"; User:"%s"
 		has differences in the following fields:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>	Элемент — Группа: «%s»; Заголовок: «%s»; Имя пользователя: «%s»&#13;
+        <seg>	Элемент — Группа: «%s»; Заголовок: «%s»; Имя пользователя: «%s»
 		содержит следующие отличающиеся поля:</seg>
       </tuv>
     </tu>
@@ -13966,11 +14306,11 @@ E-mail: </seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>	The following restrictions were selected:&#13;
+        <seg>	The following restrictions were selected:
 		 %s</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>	Были выбраны следующие ограничения:&#13;
+        <seg>	Были выбраны следующие ограничения:
 		 %s</seg>
       </tuv>
     </tu>
@@ -13979,7 +14319,7 @@ E-mail: </seg>
         <seg>	This entry has been made an alias of associated base entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>	Этот элемент является псевдонимом соответствующего исходного элемента.</seg>
+        <seg>	Этот элемент был сделан псевдонимом соответствующего исходного элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14176,6 +14516,14 @@ E-mail: </seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>copied</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>скопированного</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>databases.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -14368,6 +14716,14 @@ E-mail: </seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>imported</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>импортированного</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>in</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -14468,6 +14824,14 @@ E-mail: </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>меньше либо равно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>merged</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>объединяемого</seg>
       </tuv>
     </tu>
     <tu>
