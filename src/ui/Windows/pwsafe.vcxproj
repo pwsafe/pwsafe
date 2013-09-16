@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug64|x64">
@@ -1533,6 +1533,7 @@
     <None Include="graphics\toolbar\new\passwordchars_disabled.bmp" />
     <None Include="graphics\yubico-icon-small.bmp" />
     <None Include="graphics\yubico-icon-small.ico" />
+    <None Include="graphics\Yubikey-button-disabled.bmp" />
     <None Include="graphics\Yubikey-button.bmp" />
     <None Include="graphics\toolbar\new\passwordpolicy.bmp" />
     <None Include="graphics\toolbar\new\passwordpolicy_disabled.bmp" />
