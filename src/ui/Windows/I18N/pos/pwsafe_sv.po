@@ -7600,12 +7600,10 @@ msgstr "Okänt objekt"
 msgid "Unlock"
 msgstr "Lås upp"
 
-# What Difficulty? Difficulty is used only once in this text.
-# Does unlock mean that you need to enter a key combination to open "Difficulty" or is it a statement like"Do solve the problem"?
 #. Resource IDs: (1485)
 #, fuzzy
-msgid "Unlock Difficulty:"
-msgstr "Lös problemet:"
+msgid "Unlock Difficulty"
+msgstr "Lös problemet"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"

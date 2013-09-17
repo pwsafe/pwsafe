@@ -7719,8 +7719,8 @@ msgid "Unlock"
 msgstr "Entsperren"
 
 #. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
-msgstr "Entsperrschwierigkeitsgrad:"
+msgid "Unlock Difficulty"
+msgstr "Entsperrschwierigkeitsgrad"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"

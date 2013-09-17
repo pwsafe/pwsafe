@@ -7686,8 +7686,8 @@ msgid "Unlock"
 msgstr "Déverrouiller"
 
 #. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
-msgstr "Difficulté de débarrage:"
+msgid "Unlock Difficulty"
+msgstr "Difficulté de débarrage"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
