@@ -4332,6 +4332,10 @@ msgstr "¡No se han importado registros!"
 msgid "No reports exist in the same directory as the current database."
 msgstr "No existen informes en el directorio de la base de datos actual."
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "No hay filas activadas"
@@ -6510,8 +6514,8 @@ msgstr "Objeto desconocido"
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)

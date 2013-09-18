@@ -4319,6 +4319,10 @@ msgstr "İç aktarma dosyasında kayıt yok!"
 msgid "No reports exist in the same directory as the current database."
 msgstr "Geçerli veritabanıyla aynı dizinde rapor yok."
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "Hiçbir satır etkinleştirilmedi"
@@ -6496,8 +6500,8 @@ msgstr "Bilinmeyen nesne"
 msgid "Unlock"
 msgstr "Kilidi Aç"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)
