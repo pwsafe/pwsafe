@@ -24,7 +24,10 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
+
+#ifndef NO_YUBI
 #include "YubiMixin.h"
+#endif
 
 /*!
  * Forward declarations
@@ -60,8 +63,12 @@ class wxTimer;
  * CSafeCombinationSetup class declaration
  */
 
+#ifndef NO_YUBI
 class CSafeCombinationSetup: public wxDialog, private CYubiMixin
-{    
+#else
+class CSafeCombinationSetup: public wxDialog
+#endif
+{
   DECLARE_DYNAMIC_CLASS( CSafeCombinationSetup )
   DECLARE_EVENT_TABLE()
 
@@ -111,11 +118,16 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationSetup member variables
+#ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
+#endif
 ////@end CSafeCombinationSetup member variables
  private:
+
+#ifndef NO_YUBI
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+#endif
   wxString m_password;
   wxString m_verify;
 };

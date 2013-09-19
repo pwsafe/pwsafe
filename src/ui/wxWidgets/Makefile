@@ -13,6 +13,15 @@ CONFIG?=unicodedebug
 
 WX_CONFIG?=/usr/bin/wx-config
 
+ifndef NO_YUBI
+YUBI_SRC=yubicfg.cpp YubiMixin.cpp
+YBPERS_LIBS=ykpers-1
+else
+YUBIFLAGS=-DNO_YUBI
+# we have to define this to something real, unlike CPPINC etc
+YBPERS_LIBS=core
+endif
+
 # debug
 ifeq ($(CONFIG),debug)
 #Override - debug isn't standard
@@ -30,7 +39,7 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -58,7 +67,7 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
+LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
@@ -86,7 +95,7 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -115,7 +124,7 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lykpers-1
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
@@ -137,7 +146,7 @@ DEPDIR= ./deps
 CPPINC += -I../..
 
 LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS)
-CPPFLAGS=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS)
+CPPFLAGS=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -158,7 +167,7 @@ SOURCES= passwordsafeframe.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
-	yubicfg.cpp YubiMixin.cpp \
+	$(YUBI_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp
 
 

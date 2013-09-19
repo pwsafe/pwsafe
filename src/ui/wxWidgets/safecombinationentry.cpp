@@ -34,9 +34,12 @@
 #include "core/PWSdirs.h"
 #include "os/file.h"
 
+#ifndef NO_YUBI
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
 ////@end XPM images
+#endif
+
 #include "./graphics/cpane.xpm"
 #include "./graphics/psafetxt.xpm"
 #include "pwsafeapp.h"
@@ -67,14 +70,17 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
   EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
 
+#ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN, CSafeCombinationEntry::OnYubibtnClick )
+
+  EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
+#endif
 
   EVT_BUTTON( wxID_OK, CSafeCombinationEntry::OnOk )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
 
 ////@end CSafeCombinationEntry event table entries
-EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -117,9 +123,11 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   }
   Centre();
 ////@end CSafeCombinationEntry creation
+#ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_pollingTimer->Start(250); // check for Yubikey every 250ms.
+#endif
   return true;
 }
 
@@ -132,7 +140,9 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
 {
 ////@begin CSafeCombinationEntry destruction
 ////@end CSafeCombinationEntry destruction
+#ifndef NO_YUBI
   delete m_pollingTimer;
+#endif
 }
 
 
@@ -148,8 +158,10 @@ void CSafeCombinationEntry::Init()
   m_version = NULL;
   m_filenameCB = NULL;
   m_combinationEntry = NULL;
+#ifndef NO_YUBI
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
+#endif
 ////@end CSafeCombinationEntry member initialisation
 }
 
@@ -215,11 +227,13 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
 
+#ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemBoxSizer18->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+#endif
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
@@ -291,11 +305,13 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
     wxBitmap bitmap(psafetxt_xpm);
     return bitmap;
   }
+#ifndef NO_YUBI
   else if (name == _T("graphics/Yubikey-button.xpm"))
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
   }
+#endif
   return wxNullBitmap;
 ////@end CSafeCombinationEntry bitmap retrieval
 }
@@ -466,6 +482,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 }
 
 
+#ifndef NO_YUBI
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
@@ -498,3 +515,4 @@ void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
     HandlePollingTimer(); // in CYubiMixin
   }
 }
+#endif

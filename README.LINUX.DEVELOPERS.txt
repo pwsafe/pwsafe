@@ -40,15 +40,17 @@ yubico-c: https://github.com/Yubico/yubico-c.git - or use 'apt-get
 install libyubikey-dev' 
 yubikey-personalization:  https://github.com/Yubico/yubikey-personalization.git
 
+Alternately, to compile without Yubikey support, set the NO_YUBI flag
+for make, e.g.,
+$ NO_YUBI=1 make
 
-With these installed, running 'make' at the top of the source tree
-will result in the debug version of pwsafe being built under
-src/ui/wxWidgets/GCCUnicodeDebug (*)
+Running 'make' at the top of the source tree will result in the debug
+version of pwsafe being built under src/ui/wxWidgets/GCCUnicodeDebug
 
-(*) Note that under Fedora and RHEL5, wxGTK-devel doesn't support
+(Note that under Fedora and RHEL5, wxGTK-devel doesn't support
 "wx-config --debug=yes --unicode=yes" so just "make" fails. The
 workaround is to use "make release". The release binary will be found
-under src/ui/wxWidgets/GCCUnicodeRelease.
+under src/ui/wxWidgets/GCCUnicodeRelease.)
 
 Create a Debian Package
 =======================
