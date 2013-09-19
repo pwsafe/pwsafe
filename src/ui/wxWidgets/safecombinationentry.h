@@ -71,7 +71,7 @@ class CSafeCombinationEntry: public wxDialog, private CYubiMixin
 #else
 class CSafeCombinationEntry: public wxDialog
 #endif
-{    
+{
   DECLARE_CLASS( CSafeCombinationEntry )
   DECLARE_EVENT_TABLE()
 
@@ -139,7 +139,7 @@ public:
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
 #endif
-  
+
 private:
   StringX m_password;
 ////@end CSafeCombinationEntry member variables

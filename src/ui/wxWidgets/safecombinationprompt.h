@@ -65,7 +65,7 @@ class CSafeCombinationPrompt: public wxDialog, private CYubiMixin
 #else
 class CSafeCombinationPrompt: public wxDialog
 #endif
-{    
+{
   DECLARE_CLASS( CSafeCombinationPrompt )
   DECLARE_EVENT_TABLE()
 
@@ -87,7 +87,7 @@ public:
   void CreateControls();
 
   StringX GetPassword() const {return m_password;}
-  
+
 ////@begin CSafeCombinationPrompt event handler declarations
 
 #ifndef NO_YUBI
@@ -129,7 +129,7 @@ public:
   wxStaticText* m_yubiStatusCtrl;
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 #endif
-  
+
   void ProcessPhrase();
 };
 

@@ -68,7 +68,7 @@ class CSafeCombinationSetup: public wxDialog, private CYubiMixin
 #else
 class CSafeCombinationSetup: public wxDialog
 #endif
-{    
+{
   DECLARE_DYNAMIC_CLASS( CSafeCombinationSetup )
   DECLARE_EVENT_TABLE()
 
@@ -124,7 +124,7 @@ public:
 #endif
 ////@end CSafeCombinationSetup member variables
  private:
- 
+
 #ifndef NO_YUBI
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 #endif

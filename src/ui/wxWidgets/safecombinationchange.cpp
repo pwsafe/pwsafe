@@ -167,7 +167,7 @@ void CSafeCombinationChange::CreateControls()
 #else
   enum { DLGITEM_COLS = 2 };
 #endif
-  
+
   wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
   itemBoxSizer2->Add(itemFlexGridSizer4, 0, wxALIGN_LEFT|wxALL, 5);
 
