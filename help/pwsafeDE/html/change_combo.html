@@ -11,14 +11,67 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Master-Passw&ouml;rter &auml;ndern</h2>
+<p>Um ein Master-Passwort ("Safe Combination") zu &auml;ndern, muss zuerst die Datenbank, deren Passwort ge&auml;ndert werden soll, ge&ouml;ffnet werden. 
+Einmal ge&ouml;ffnet, gehen Sie zum Men&uuml; <b>Verwalten</b> und w&auml;hlen Sie <b>Master-Passwort &auml;ndern</b> aus. 
+Folgender Dialog wird dann angezeigt:</p>
 <img alt="Key Change dialog box" src="images/combo_change.jpg">
-<p>Um ein Master-Passwort ("Safe Combination") zu &auml;ndern, muss zuerst die Datenbank, deren Passwort ge&auml;ndert werden soll, ge&ouml;ffnet werden. Einmal ge&ouml;ffnet, gehen Sie zum Men&uuml; <b>Verwalten</b> und w&auml;hlen Sie <b>Master-Passwort &auml;ndern</b> aus. Sie sollten das derzeitige und dann zweimal das neue Master-Passwort zur Best&auml;tigung eingeben. Zur Eingabe kann auch die virtuelle Tastatur verwendet werden.</p>
-<p><b>Password Safe</b> hat eine eingebaute Pr&uuml;fung auf vermeintlich schwache Passw&ouml;rter. Im Allgemeinen sollte ein Master-Passwort (wie jedes andere Passwort auch) aus einem Mix von Buchstaben und mindestens einer Ziffer oder einem <a href="JavaScript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">Speziellen Zeichen</a> (wie die Zeichen, die sich &uuml;ber Ziffern auf der Tastatur befinden) bestehen. Wenn das Programm ein eingegebenes Master-Passwort als schwach einstuft, wird eine Best&auml;tigung angefordert. Sie haben dann die Wahl das original eingegebene (schwache) Master-Passwort anzunehmen, oder ein Neues einzugeben.
+	<p><b>Hinweis:</b> Wenn Sie kein <a href="about_pws_yubi.html">YubiKey</a> haben, werden die YubiKey Tasten nicht angezeigt,
+	und Sie k&ouml;nnen die untenstehende Beschreibung &uuml;berspringen.</p>
+<p>Um ein Master-Passwort ("Safe Combination") zu &auml;ndern, muss zuerst die Datenbank, deren Passwort ge&auml;ndert werden soll, ge&ouml;ffnet werden. 
+Einmal ge&ouml;ffnet, gehen Sie zum Men&uuml; <b>Verwalten</b> und w&auml;hlen Sie <b>Master-Passwort &auml;ndern</b> aus. 
+Sie sollten das derzeitige und dann zweimal das neue Master-Passwort zur Best&auml;tigung eingeben. Zur Eingabe kann auch die virtuelle Tastatur verwendet werden.</p>
+<p><b>Password Safe</b> hat eine eingebaute Pr&uuml;fung auf vermeintlich schwache Passw&ouml;rter. Im Allgemeinen sollte ein Master-Passwort 
+(wie jedes andere Passwort auch) aus einem Mix von Buchstaben und mindestens einer Ziffer oder einem 
+<a href="JavaScript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">Speziellen Zeichen</a> (wie die Zeichen, die sich &uuml;ber Ziffern 
+auf der Tastatur befinden) bestehen. Wenn das Programm ein eingegebenes Master-Passwort als schwach einstuft, wird eine Best&auml;tigung angefordert. 
+Sie haben dann die Wahl das original eingegebene (schwache) Master-Passwort anzunehmen, oder ein Neues einzugeben.
 </p>
-<hr> <small><b>Notes:<br>
-</b></small>
+    <p ><i>F&uuml;r YubiKey Anwender</i>:<br><br>Zus&auml;tzlich zum &Auml;ndern des Master-Passwortes wie oben beschrieben, 
+    k&ouml;nnen Sie in diesem Dialog die YubiKey Authentifizierung hinzuf&uuml;gen oder entfernen,
+    eine zus&auml;tzliche Authentifizierung hinzuf&uuml;gen oder entfernen, als auch den YubiKey umschalten
+    der f&uuml;r den Zugang zur Datenbank eingesetzt wird. Hiernach werden die einzelnen Aktionen detailliert beschrieben:</p>
+
+    <h3>YubiKey Authentifizierung hinzuf&uuml;gen</h3>
+    Der Zugang zur PasswordSafe Datenbank &auml;ndern vom Einsatz eines Master-Passwortes zu YubiKey:<br>
+    <ol>
+      <li>Geben Sie das laufende Master-Passwort im Feld 'Altes Master-Passwort' ein.</li>
+      <li>YubiKey einstecken.</li>
+      <li>Wenn Sie w&uuml;nschen, geben Sie ein Passwort im Feld 'Neues Master-Passwort' ein und best&auml;tigen dies in Feld 'Best&auml;tigung'.</li>
+      <li>Dr&uuml;cken Sie die <strong>untere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.</li>
+    </ol>
+    <h3>YubiKey Authentifizierung entfernen</h3>
+    Der Zugang zur PasswordSafe Datenbank so &auml;ndern dass nur ein Master-Passwort ben&ouml;tigt wird:<br>
+    <ol>
+      <li>YubiKey einstecken.</li>
+      <li>Wenn Sie momentan ein Master-Passwort im Einsatz haben, geben Sie es im Feld 'Altes Master-Passwort' ein.</li>
+      <li>Dr&uuml;cken Sie die <strong>obere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.</li>
+      <li>Geben Sie im Feld 'Neues Master-Passwort' das neue Master-Passwort ein und best&auml;tigen dies in Feld 'Best&auml;tigung'.</li>
+      <li>Dr&uuml;cken Sie <strong>OK</strong>.</li>
+    </ol>
+    <h3>Passwort Authentifizierung hinzuf&uuml;gen / entfernen / bearbeiten</h3>
+    Password Safe kann YubiKey als einziger Zuganng benutzen, oder zusammen mit einem konventionellen Passwort. Zum Wechseln von einem zum anderen:<br>
+    <ol>
+      <li>YubiKey einstecken.</li>
+      <li>Wenn Sie momentan ein Master-Passwort benutzen, geben Sie es im Feld 'Altes Master-Passwort' ein.</li>
+      <li>Dr&uuml;cken Sie die <strong>obere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.</li>
+      <li>Setzen Sie das 'Neue Master-Passwort' (und die Best&auml;tigung) auf den gew&uuml;nschten Wert: Leer um das Passwort zu entfernen, oder ein neues Master-Passwort zum hinzuf&uuml;gen oder &auml;ndern.</li>
+      <li>Dr&uuml;cken Sie die <strong>untere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.</li>
+    </ol>
+    <h3>YubiKey &Auml;ndern</h3>
+    <p>Um von einem YubiKey auf einem anderen zu wechseln:
+    <ol>
+      <li>Den alten YubiKey einstecken.</li>
+      <li>Wenn Sie auch ein Master-Passwort einsetzen, geben Sie es im Feld 'Altes Master-Passwort' ein.</li>
+      <li>Dr&uuml;cken Sie die <strong>obere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.</li>
+      <li>Entfernen Sie den alten YubiKey, und setzen den neuen ein.</li>
+      <li>Wenn Sie es wollen, geben Sie im Feld 'Neues Master-Passwort' ein Master-Passwort ein und best&auml;tigen dies in Feld 'Best&auml;tigung'.</li>
+      <li>Dr&uuml;cken Sie die <strong>untere</strong> Yubikey Taste, und aktivieren Sie dann Ihr YubiKey.<br>
+      </li>
+    </ol>
+    </p>
+<hr> <small><b>Hinweise:<br></b></small>
 <ul>
-		<li><small><b>Bemerkung:&nbsp;<span style="color: rgb(255, 0, 0);">Es besteht keine M&ouml;glichkeit in <b>Password Safe</b> verlorene oder vergessene Passw&ouml;rter wieder aufzufinden</span></b><span style="color: rgb(255, 0, 0);">.</span> <br>
+	<li><small><b>Bemerkung:&nbsp;<span style="color: rgb(255, 0, 0);">Es besteht keine M&ouml;glichkeit in <b>Password Safe</b> verlorene oder vergessene Passw&ouml;rter wieder aufzufinden</span></b><span style="color: rgb(255, 0, 0);">.</span> <br>
 Dies wurde im Konzept bewusst so entschieden, weil jede Art Passwortwiederherzustellung auch eine Sicherheitsl&uuml;cke darstellt.</small></li>
   <li><small>W&auml;hlen Sie bitte ein schwer zu erratendes Passwort. Ein triviales Passwort wie "passwort" oder Ihr Name w&auml;re einfach zu erraten und w&uuml;rde damit die Sicherheit, die <b>Password Safe</b> bietet, zuwiderlaufen.<br>
     </small></li>

@@ -59,6 +59,46 @@
  Das Passwort in der Zwischenablage kann dann von anderen Anwendungen verwendet werden. Dazu k&ouml;nnen Sie die standardm&auml;&szlig;ige Passwortrichtlinie, 
  eine benannte Passwortrichtlinie oder eine spezifische Richtlinie (mit dem Dialog eingegeben) ausw&auml;hlen.</p>
  
+<h3><a name="#yubikey"></a>Yubikey</h3>
+<p>Hiermit k&ouml;nnen Sie Ihr optionales Ger&auml;t <a href="about_pws_yubi.html">YubiKey</a> einstellen, um es als Zugang zu Ihrer <b>Password Safe</b> Datenbank einzusetzen, 
+oder auch um ein Sicherungs-YubiKey zu erzeugen, wenn es mal verloren oder kaputt gehen sollte.</p>
+<img alt="YubiKey Configuration" src="images/yubi_config.jpg">
+<h4>Einstellen des YubiKey</h4>
+<ol>
+  <li>Stecken Sie den YubiKey in einen USB-Anschlu&szlig; Ihres Komputers.</li>
+  <li>W&auml;hlen Sie den Men&uuml;punkt <i>Verwalten-&gt;Yubikey...</i> aus. 
+  Der Dialog <i>YubiKey Konfiguration</i> erscheint.</li>
+  <li>Die Seriennummer des YubiKey sollte angezeigt werden. Wenn dieses Feld
+  leer ist, m&uuml;ssen Sie nachpr&uuml;fen ob der YubiKey richtig angesteckt ist.</li>
+  <li>Dr&uuml;cken Sie die Taste <i>Generiere</i>. Dies erzeugt einen 20 Byte langen geheimem 
+  Schl&uuml;ssel der auf den YubiKey geschrieben wird. Anschlie&szlig;end wird dieser Schl&uuml;ssel
+  verwendet um den Zugang zu Ihrer Datenbank zu realisieren.</li>
+  <li>Dr&uuml;cken Sie die Taste <i>Setze YubiKey</i>. Der generierte Schl&uuml;ssel wird auf 
+  den YubiKey abgelegt, und gleichzeitig in verschl&uuml;sselter Form in die <b>Password Safe</b>
+  Datenbank, um damit ein Sicherungs-YubiKey zu konfigurieren.</li>
+  <li>Wenn die Konfiguration erfolgreich war, schlie&szlig;t der Dialog. Wenn nicht, erscheint eine
+  Fehlermeldung mit der Beschreibung des Fehlers.</li>
+  <li>Dr&uuml;cken Sie die Taste <i>Schlie&szlig;en</i> um das Dialogfenster zu verlassen.</li>
+</ol>
+<b>Hinweis:</b> Nach der Konfiguration des YubiKey, m&uuml;ssen Sie das Passwort der Datenbank ab&auml;ndern
+um YubiKey einsetzen zu k&ouml;nnen. Dies ist in  <a href="change_combo.html">Master-Passw&ouml;rter &auml;ndern</a> beschrieben.
+<h4>Sicherungs-YubiKey erstellen</h4>
+<ol>
+  <li>Stecken Sie den YubiKey in einen USB-Anschlu&szlig; Ihres Komputers.</li>
+  <li>W&auml;hlen Sie den Men&uuml;punkt <i>Verwalten-&gt;Yubikey...</i> aus.
+  Der Dialog <i>YubiKey Konfiguration</i> erscheint.</li>
+  <li>Die Seriennummer des YubiKey sollte angezeigt werden. Wenn dieses Feld
+  leer ist, m&uuml;ssen Sie nachpr&uuml;fen ob der YubiKey richtig angesteckt ist.</li>
+  <li>Dr&uuml;cken Sie <b>NICHT</b> auf die Taste <i>Generiere</i>. Der angezeigte Schl&uuml;ssel
+  im Feld "Geheimer YubiKey Schl&uuml;ssel" ist der in dieser Datenbank abgelegter Schl&uuml;ssel.
+  Dieser Sch&uuml;ssel wird dann auf dem Sicherungs-YubiKey geschrieben.</li>
+  <li>Dr&uuml;cken Sie die Taste <i>Setze YubiKey</i>. Der Schl&uuml;ssel wird auf 
+  den Sicherungs-YubiKey abgelegt.</li>
+  <li>Wenn die Konfiguration erfolgreich war, schlie&szlig;t der Dialog. Wenn nicht, erscheint eine
+  Fehlermeldung mit der Beschreibung des Fehlers.</li>
+  <li>Dr&uuml;cken Sie die Taste <i>Schlie&szlig;en</i> um das Dialogfenster zu verlassen.</li>
+</ol>
+
 <h3>Sprache &auml;ndern</h3>
 
 <img alt="Change Language" src="images/change_language.jpg">
