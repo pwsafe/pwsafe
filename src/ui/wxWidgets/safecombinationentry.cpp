@@ -34,7 +34,7 @@
 #include "core/PWSdirs.h"
 #include "os/file.h"
 
-#ifdef NO_YUBI
+#ifndef NO_YUBI
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
 ////@end XPM images
