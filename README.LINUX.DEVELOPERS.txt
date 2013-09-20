@@ -44,6 +44,15 @@ Alternately, to compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,
 $ NO_YUBI=1 make
 
+In case you want to specify a non-standard location from which yubikey-personalization
+headers/libs are to be used, invoke "make" like this:
+$ YBPERS_LIBPATH=<dir with libykpers-1.a or .so> YBPERS_INC=<yubikey-pers dir/ykcore/> make unicode{release,debug}
+
+If your build linked with libykpers-1.so in a non-standard location, you might 
+need to invoke pwsafe as
+
+$ LD_LIBRARY_PATH=<libykpers-1.a or libykpers-1.so dir> pwsafe 
+
 Running 'make' at the top of the source tree will result in the debug
 version of pwsafe being built under src/ui/wxWidgets/GCCUnicodeDebug
 
