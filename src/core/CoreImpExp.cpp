@@ -702,17 +702,17 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
-int PWScore::ImportXMLFile(const stringT &ImportedPrefix,
-                           const stringT &strXMLFileName,
-                           const stringT &strXSDFileName,
-                           const bool &bImportPSWDsOnly,
-                           stringT &strXMLErrors, stringT &strSkippedList,
-                           stringT &strPWHErrorList, stringT &strRenameList,
-                           int &numValidated, int &numImported, int &numSkipped,
-                           int &numPWHErrors, int &numRenamed,
-                           int &numNoPolicy,  int &numRenamedPolicies,
-                           int &numShortcutsRemoved,
-                           CReport &rpt, Command *&pcommand)
+int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
+                           const stringT & /*strXMLFileName*/,
+                           const stringT & /*strXSDFileName*/,
+                           const bool & /*bImportPSWDsOnly*/,
+                           stringT & /*strXMLErrors*/, stringT & /*strSkippedList*/,
+                           stringT & /*strPWHErrorList*/, stringT & /*strRenameList*/,
+                           int & /*numValidated*/, int & /*numImported*/, int & /*numSkipped*/,
+                           int & /*numPWHErrors*/, int & /*numRenamed*/,
+                           int & /*numNoPolicy*/,  int & /*numRenamedPolicies*/,
+                           int & /*numShortcutsRemoved*/,
+                           CReport & /*rpt*/, Command *& /*pcommand*/)
 {
   return UNIMPLEMENTED;
 }
