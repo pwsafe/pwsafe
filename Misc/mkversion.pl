@@ -8,7 +8,7 @@
 #
 # A simple utility to generate a version.h file from a template,
 # with keyword substitution.
-# The named file is replaced iff the newley generated one's
+# The named file is replaced iff the newly generated one's
 # different, to avoid spurious recompilations.
 #
 # Usage: $0 template outfile
@@ -80,13 +80,13 @@ close(VH);
 # Replace $OUTFILE with $TMPFILE iff:
 # 1. Former doesn't exist
 # OR
-# 2. The two differ
+# 2. The two differ AND the version isn't "local" (otherwise we clobber the rpm build)
 
 if (!-e $OUTFILE) {
     move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
 } else {
     `/usr/bin/diff -q $TMPFILE $OUTFILE > /dev/null`;
-    if ($? != 0) {
+    if ($VERSTRING ne "local" && $? != 0) {
         unlink $OUTFILE || die "Couldn't remove old $OUTFILE\n";
         move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
     } else { # no changes, cleanup
