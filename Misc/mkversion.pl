@@ -29,19 +29,25 @@ my %git_loc  = (
 	linux  => '/usr/bin/git',
 );
 
-my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
-die "Couldn't find $GIT" unless (-x $GIT);
-
 &usage unless ($#ARGV == 1);
 my $TEMPLATE = $ARGV[0];
 my $OUTFILE = $ARGV[1];
 
-my $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
-chomp $VERSTRING;
-# If string is of the form heads/master-0-g5f69087, drop everything
-# to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
-# info
-$VERSTRING =~ s,^heads/master-0-,,;
+my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
+my $VERSTRING;
+
+if (-x $GIT && -d ".git") {
+    $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
+    chomp $VERSTRING;
+    # If string is of the form heads/master-0-g5f69087, drop everything
+    # to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
+    # info
+    $VERSTRING =~ s,^heads/master-0-,,;
+} else {
+    # No git, building from tarball, srpm, etc.
+    $VERSTRING = "local";
+}
+
 
 #Now that we're done with the formalities, let's get to work:
 my $TMPFILE = "/tmp/v$$";
