@@ -24,6 +24,8 @@ Changes to Existing Features in 3.32
 [] Add validation of entry field XML characters to ensure resulting file
 can be imported.  Note: any field containing an invalid character will not
 be exported and a comment added to the export file and the report.
+[718] Run command can now accept $e or $email andd will expand this to
+the entry's e-mail.
 
 Bugs fixed in 3.32
 ==================
