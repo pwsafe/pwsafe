@@ -18,6 +18,7 @@ libwxgtk2.8-dbg
 libxerces-c-dev
 libxt-dev
 libxtst-dev
+libyubikey-dev
 git
 uuid-dev
 zip
@@ -28,16 +29,15 @@ git
 libXt-devel
 libXtst-devel
 libuuid-devel
+libyubikey-devel
 xerces-c-devel
 wxGTK-devel
 make
 
-The YubiKey support requires the following libraries be built and
+The YubiKey support requires the following library be built and
 installed. Currently this should be done outside the project's source
 tree. Perhaps a future version will add these as git submodules:
 
-yubico-c: https://github.com/Yubico/yubico-c.git - or use 'apt-get
-install libyubikey-dev' 
 yubikey-personalization:  https://github.com/Yubico/yubikey-personalization.git
 
 Alternately, to compile without Yubikey support, set the NO_YUBI flag
