@@ -1,4 +1,4 @@
-Password Safe 3.32pre Release Notes - August 2013
+Password Safe 3.32 Release Notes - September 2013
 =================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.32pre
-========================
+New Features for 3.32
+=====================
 [] Support Yubico's YubiKey authentication token. Previouly this
 product was supported in a separate branch.
 [705] User can choose not to let PasswordSafe record which virtual
@@ -19,14 +19,15 @@ revert when the database is locked.
 [695] Allow a keyboard shortcut to be associated with selecting an entry.
 Please see Help entry for more details.
 
-Changes to Existing Features in 3.32pre
-=======================================
+Changes to Existing Features in 3.32
+====================================
 [] Add validation of entry field XML characters to ensure resulting file
 can be imported.  Note: any field containing an invalid character will not
 be exported and a comment added to the export file and the report.
 
-Bugs fixed in 3.32pre
-=====================
+Bugs fixed in 3.32
+==================
+[1124] Copying the username of a shortcut entry now works correctly.
 [1122] -d dialog no longer needs password verification.
 [1121] Help now displays correctly for Import XML settings.
 [1113] Filters now handle empty fields correctly.
