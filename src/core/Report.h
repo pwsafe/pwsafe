@@ -22,8 +22,9 @@ public:
 
   void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
   void EndReport();
-  void WriteLine(const stringT &cs_line, bool bCRLF = true);
-  void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
+  void WriteLine(const stringT &cs_line, bool bCRLF = true)
+  {WriteLine(cs_line.c_str(), bCRLF);}
+  void WriteLine(LPCTSTR tc_line, bool bCRLF = true);
   void WriteLine();
   bool SaveToDisk();
   StringX GetString() {return m_osxs.rdbuf()->str();}

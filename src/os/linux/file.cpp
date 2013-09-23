@@ -288,7 +288,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
                     lockStr.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
     close(fh);
-    retval = true;
+    retval = (numWrit > 0);
   }
 #ifdef UNICODE
   delete[] lfn;
