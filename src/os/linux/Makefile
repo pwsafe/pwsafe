@@ -16,7 +16,13 @@ NAME=os
 
 ifndef NO_YUBI
 YUBI_SRC=PWYubi.cpp
-YBPERS_INC?=/usr/local/include/ykpers-1
+# Use the following if you've installed ykpers-1 manually
+# from https://github.com/Yubico/yubikey-personalization.git
+# YBPERS_INC?=/usr/local/include/ykpers-1
+
+# If you've installed it from your distro's package repo, you
+# should use this instead:
+YBPERS_INC?=/usr/include/ykpers-1
 endif
 
 LIBSRC          = debug.cpp dir.cpp env.cpp \
