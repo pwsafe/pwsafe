@@ -27,10 +27,6 @@
 
 #include <iostream> // currently for debugging
 
-#if !defined(_WIN32)
-#include <unistd.h> // for fork()
-#endif
-
 using namespace std;
 
 #include "pwsafeapp.h"
@@ -335,19 +331,6 @@ bool PwsafeApp::OnInit()
   m_core.SetCurFile(tostringx(filename));
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
                                       MAKEWORD(MINORVERSION, MAJORVERSION));
-
-#if !defined(__WXDEBUG__) && !defined(__WXMAC__) && !defined(_WIN32)
-  // Now's a good time to fork
-  // and exit the parent process, returning the command prompt to the user
-  // (but not for debug builds - just make debugging harder)
-  pid_t pid = fork();
-  if (pid == -1) {
-    perror("fork"); // should never happen!
-    exit(1);
-  } else if (pid != 0) { // parent
-    exit(0);
-  }
-#endif /* _DEBUG */
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
