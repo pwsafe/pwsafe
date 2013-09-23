@@ -6,6 +6,7 @@
 **                                                                      **
 **      Date   / Sig / Rev  / History                                   **
 **      110329 / J E / 0.00 / Main                                      **
+**		111111 / J E / 0.90 / Added HOTP helper functions + release		**
 **                                                                      **
 *************************************************************************/
 
@@ -69,6 +70,7 @@ public:
     virtual ~CYkLib(void);
 
     unsigned short enumPorts(void);
+    wchar_t *getPortName(unsigned short portIndex);
     bool getPortName(unsigned short portIndex, wchar_t *dst, size_t dstSize);
 
     YKLIB_RC openKey(wchar_t *portName = 0);

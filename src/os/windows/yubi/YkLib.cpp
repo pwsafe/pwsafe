@@ -8,6 +8,8 @@
 **      110329 / J E / 0.00 / Main                                      **
 **      111011 / J E / 0.00 / Fixed memory leak flushPortNames			**
 **		111111 / J E / 0.90 / Added HOTP helper functions + release		**
+**		111121 / J E / 0.91 / Fixed bug with helper functions           **
+**		130205 / J E / 0.92 / Added support for NEO                     **
 **                                                                      **
 *************************************************************************/
 
@@ -22,9 +24,6 @@ extern "C" {
 #include <hidsdi.h>
 #include <ntddkbd.h>
 };
-
-#define	YUBICO_VID	            0x1050
-#define	YUBIKEY_PID		        0x0010
 
 #define	FEATURE_RPT_SIZE	    9
 #define FEATURE_PAYLOAD_SIZE    7
@@ -97,7 +96,7 @@ YKLIB_RC CYkLib::rawWrite(BYTE cmd, BYTE *dt, size_t bcnt)
     // Check that command is supported by current firmware
 
     if (cmd > SLOT_CONFIG2)
-        if (status.versionMajor < 2 || status.versionMinor < 2) return YKLIB_UNSUPPORTED_FEATURE;
+        if (status.versionMajor < 2 || (status.versionMajor == 2 && status.versionMinor < 2)) return YKLIB_UNSUPPORTED_FEATURE;
 
     // Keep last sent command and sequence number 
 
@@ -206,7 +205,7 @@ unsigned short CYkLib::enumPorts(void)
 
     HDEVINFO hi;
     SP_DEVICE_INTERFACE_DATA di;
-    PSP_DEVICE_INTERFACE_DETAIL_DATA pi;
+    PSP_DEVICE_INTERFACE_DETAIL_DATA_W pi;
     HIDD_ATTRIBUTES devInfo;
     int i;
     DWORD len, rc;
@@ -235,12 +234,12 @@ unsigned short CYkLib::enumPorts(void)
 
 		// Allocate a buffer of appropriate size
 
-		pi = (PSP_DEVICE_INTERFACE_DETAIL_DATA) new BYTE[len];
+		pi = (PSP_DEVICE_INTERFACE_DETAIL_DATA_W) new BYTE[len];
 		pi->cbSize = sizeof (SP_DEVICE_INTERFACE_DETAIL_DATA);
 
 		// Make the "real" call and get the path to the device
 
-		rc = SetupDiGetDeviceInterfaceDetail(hi, &di, pi, len, &len, 0);
+		rc = SetupDiGetDeviceInterfaceDetailW(hi, &di, pi, len, &len, 0);
 
 		// Success ?
 
@@ -248,7 +247,7 @@ unsigned short CYkLib::enumPorts(void)
 
 			// Try to open device
 
-			m_handle = CreateFile(pi->DevicePath, GENERIC_WRITE,
+			m_handle = CreateFileW(pi->DevicePath, GENERIC_WRITE,
                   FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);	
 
 			// Success
@@ -258,14 +257,15 @@ unsigned short CYkLib::enumPorts(void)
 				// Get HID attributes
 
 				if (HidD_GetAttributes(m_handle, &devInfo)) {
-					if (devInfo.VendorID == YUBICO_VID && devInfo.ProductID == YUBIKEY_PID) {
+					if (devInfo.VendorID == YUBICO_VID && (devInfo.ProductID == YUBIKEY_PID || 
+                        devInfo.ProductID == NEO_OTP_PID || devInfo.ProductID == NEO_OTP_CCID_PID)) {
 
                         // Keep full path of device found
 
                         tmp = new tagPORT_LIST;
 
-                        tmp->name = new wchar_t[lstrlen(pi->DevicePath) + 1];
-                        lstrcpy(tmp->name, pi->DevicePath);
+                        tmp->name = new wchar_t[lstrlenW(pi->DevicePath) + 1];
+                        lstrcpyW(tmp->name, pi->DevicePath);
                         tmp->next = m_portList;
                         m_portList = tmp;
 
@@ -298,6 +298,32 @@ unsigned short CYkLib::enumPorts(void)
 **  function getPortName                                                **
 **  Returns port name from a prior enumPorts call                       **
 **                                                                      **
+**  wchar_t *getPortName(unsigned short index)                          **
+**                                                                      **
+**  Where:                                                              **
+**  "portIndex" is index in list 0..                                    **
+**                                                                      **
+**  Returns: Pointer to port name if found, NULL otherwise              **
+**                                                                      **
+*************************************************************************/
+
+wchar_t *CYkLib::getPortName(unsigned short portIndex)
+{
+    struct tagPORT_LIST *tmp = m_portList;
+
+    while (tmp) {
+        if (!portIndex) return tmp->name;
+        tmp = tmp->next;
+        portIndex--;
+    }
+ 
+    return 0;
+}
+
+/*************************************************************************
+**  function getPortName                                                **
+**  Returns port name from a prior enumPorts call                       **
+**                                                                      **
 **  bool getPortName(unsigned short index, wchar_t *dst,                **
 **                           size_t dstSize)                            **
 **                                                                      **
@@ -312,17 +338,13 @@ unsigned short CYkLib::enumPorts(void)
 
 bool CYkLib::getPortName(unsigned short portIndex, wchar_t *dst, size_t dstSize)
 {
-    struct tagPORT_LIST *tmp = m_portList;
+    wchar_t *tmp = getPortName(portIndex);
 
-    while (tmp) {
-        if (!portIndex) {
-            lstrcpyn(dst, tmp->name, (int) dstSize);
-            return true;
-        }
-        tmp = tmp->next;
-        portIndex--;
+    if (tmp) {
+        lstrcpynW(dst, tmp, (int) dstSize);
+        return true;
     }
- 
+
     return false;
 }
 
@@ -358,7 +380,7 @@ YKLIB_RC CYkLib::openKey(wchar_t *portName)
 
     // Open port
 
-	m_handle = CreateFile(portName, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);	
+	m_handle = CreateFileW(portName, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);	
 
     return (m_handle == INVALID_HANDLE_VALUE) ? YKLIB_FAILURE : YKLIB_OK;
 }
@@ -755,7 +777,7 @@ YKLIB_RC CYkLib::setKey160(CONFIG *cfg, const unsigned char *key)
 **                                                                      **
 *************************************************************************/
 
-YKLIB_RC setMovingFactor(CONFIG *cfg, unsigned long seed)
+YKLIB_RC CYkLib::setMovingFactor(CONFIG *cfg, unsigned long seed)
 {
     if (seed & 0xf) return YKLIB_INVALID_PARAMETER;
 
