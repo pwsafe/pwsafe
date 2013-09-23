@@ -217,17 +217,8 @@ bool CReport::SaveToDisk()
   return true;
 }
 
-// Write a record with(default) or without a CRLF
-void CReport::WriteLine(const stringT &cs_line, bool bCRLF)
-{
-  m_osxs << cs_line.c_str();
-  if (bCRLF) {
-    m_osxs << CRLF;
-  }
-}
-
 // Write a record with (default) or without a CRLF
-void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
+void CReport::WriteLine(LPCTSTR tc_line, bool bCRLF)
 {
   m_osxs << tc_line;
   if (bCRLF) {
