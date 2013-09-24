@@ -974,10 +974,7 @@ int PasswordSafeFrame::SaveIfChanged()
       case wxID_YES:
         rc = Save();
         // Make sure that file was successfully written
-        if (rc == PWScore::SUCCESS) {
-          m_core.UnlockFile(m_core.GetCurFile().c_str());
-          break;
-        } else
+        if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
       case wxID_NO:
         // Reset changed flag
@@ -1041,6 +1038,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(_T(""));
     ClearData();
     SetTitle(_T(""));
@@ -1362,6 +1360,11 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
         return;
       }
     }
+
+    // Don't leave dangling locks!
+    if (!m_core.GetCurFile().empty())
+      m_core.UnlockFile(m_core.GetCurFile().c_str());
+
     SaveSettings();
     Destroy();
   }
