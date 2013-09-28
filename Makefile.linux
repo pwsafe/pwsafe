@@ -2,8 +2,8 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.97
-RELEASE_SPECIAL := BETA
+RELEASENUM := 4.0
+RELEASE_SPECIAL := ALPHA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
