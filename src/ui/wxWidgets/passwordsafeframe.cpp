@@ -142,6 +142,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
+  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
+
   EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
 
   EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext )
