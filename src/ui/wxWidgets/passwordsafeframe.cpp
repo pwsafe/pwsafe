@@ -1200,8 +1200,8 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 {
   stringT dir = PWSdirs::GetSafeDir();
   //Open-type dialog box
-  wxFileDialog fd(this, title, dir.c_str(), wxT("pwsafe.psafe3"),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
+  wxFileDialog fd(this, title, dir.c_str(), _("pwsafe.psafe4"),
+                  _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
   while (1) {

@@ -167,6 +167,9 @@
     <ClCompile Include="pbkdf2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWSfileV4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlowFish.h">
@@ -353,6 +356,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pbkdf2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWSfileV4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
