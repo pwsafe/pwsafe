@@ -33,7 +33,9 @@
 // with a reasonably powerful CPU. Real limit's 2^32-1.
 #define MAX_USABLE_HASH_ITERS (1 << 22)
 
-#define DEFAULT_SUFFIX      _T("psafe3")
+#define V3_SUFFIX      _T("psafe3")
+#define V4_SUFFIX      _T("psafe4")
+#define DEFAULT_SUFFIX      V4_SUFFIX
 
 class Fish;
 class Asker;
@@ -41,7 +43,7 @@ class Asker;
 class PWSfile
 {
 public:
-  enum VERSION {V17, V20, V30, VCURRENT = V30,
+  enum VERSION {V17, V20, V30, V40, VCURRENT = V40,
     NEWFILE = 98,
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
 
@@ -50,7 +52,7 @@ public:
   enum {SUCCESS = 0, FAILURE = 1, 
     UNSUPPORTED_VERSION,                     //  2
     WRONG_VERSION,                           //  3
-    NOT_PWS3_FILE,                           //  4
+    NOT_PWS_FILE,                            //  4
     WRONG_PASSWORD,                          //  5 - see PWScore.h
     BAD_DIGEST,                              //  6 - see PWScore.h
     END_OF_FILE,                             //  7

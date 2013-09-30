@@ -57,7 +57,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   COpenFilePickerValidator validator(m_filepath);
   m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           filePickerCtrlTitle,
-                                          _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
+                                          _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 
                                           validator);

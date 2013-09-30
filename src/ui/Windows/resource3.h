@@ -1,9 +1,5 @@
 //{{NO_DEPENDENCIES}}
 
-// Strings
-#define SUFFIX_FILTERS  L"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
-#define SUFFIX3_FILTERS L"Password Safe Databases (*.psafe3)|*.psafe3|"
-
 //  Usage
 #define IDS_USAGE                       5000
 
@@ -27,7 +23,7 @@
 #define IDS_READ_WRITE                  5033
 
 // File Dailog filters
-#define IDS_FDF_V3_ALL                  5050
+#define IDS_FDF_VCURR_ALL               5050
 #define IDS_FDF_DB_ALL                  5051
 #define IDS_FDF_DB_BU_ALL               5052
 #define IDS_FDF_T_C_ALL                 5053
