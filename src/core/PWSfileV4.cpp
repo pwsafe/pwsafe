@@ -1,11 +1,14 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#include "PWSfileV3.h"
+
+// XXX Stub implementation of V4, started as a copy of V3.
+
+#include "PWSfileV4.h"
 #include "PWSrand.h"
 #include "Util.h"
 #include "SysInfo.h"
@@ -33,23 +36,19 @@
 using namespace std;
 using pws_os::CUUID;
 
-static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
-  'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
-  'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
-
-PWSfileV3::PWSfileV3(const StringX &filename, RWmode mode, VERSION version)
+PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
 : PWSfile(filename, mode), m_nHashIters(0)
 {
   m_curversion = version;
   m_IV = m_ipthing;
-  m_terminal = TERMINAL_BLOCK;
+  m_terminal = NULL;
 }
 
-PWSfileV3::~PWSfileV3()
+PWSfileV4::~PWSfileV4()
 {
 }
 
-int PWSfileV3::Open(const StringX &passkey)
+int PWSfileV4::Open(const StringX &passkey)
 {
   PWS_LOGIT;
 
@@ -57,7 +56,7 @@ int PWSfileV3::Open(const StringX &passkey)
 
   ASSERT(m_curversion == V30);
   if (passkey.empty()) { // Can happen if db 'locked'
-    pws_os::Trace(_T("PWSfileV3::Open(empty_passkey)\n"));
+    pws_os::Trace(_T("PWSfileV4::Open(empty_passkey)\n"));
     return WRONG_PASSWORD;
   }
   m_passkey = passkey;
@@ -78,7 +77,7 @@ int PWSfileV3::Open(const StringX &passkey)
   return status;
 }
 
-int PWSfileV3::Close()
+int PWSfileV4::Close()
 {
   PWS_LOGIT;
 
@@ -91,11 +90,6 @@ int PWSfileV3::Close()
   // Write or verify HMAC, depending on RWmode.
   if (m_rw == Write) {
     size_t fret;
-    fret = fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
-    if (fret != 1) {
-      PWSfile::Close();
-      return FAILURE;
-    }
     fret = fwrite(digest, sizeof(digest), 1, m_fd);
     if (fret != 1) {
       PWSfile::Close();
@@ -103,7 +97,6 @@ int PWSfileV3::Close()
     }
     return PWSfile::Close();
   } else { // Read
-    // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
     unsigned char d[SHA256::HASHLEN];
     fread(d, sizeof(d), 1, m_fd);
@@ -118,25 +111,20 @@ int PWSfileV3::Close()
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
-int PWSfileV3::SanityCheck(FILE *stream)
+int PWSfileV4::SanityCheck(FILE *stream)
 {
   int retval = SUCCESS;
-  size_t nread = 0;
-
   ASSERT(stream != NULL);
-  const long pos = ftell(stream); // restore when we're done
 
   // Is file too small?
-  const auto file_length = pws_os::fileLength(stream);
-  const unsigned long min_v3file_length = 232; // pre + post, no hdr or records
+  const long min_file_length = 232; // pre + post, no hdr or records
+  if (pws_os::fileLength(stream) < min_file_length)
+    return TRUNCATED_FILE;
 
+  long pos = ftell(stream); // restore when we're done
   // Does file have a valid header?
-  if (file_length < sizeof(V3TAG)) {
-    retval = NOT_PWS3_FILE;
-    goto err;
-  }
   char tag[sizeof(V3TAG)];
-  nread = fread(tag, sizeof(tag), 1, stream);
+  size_t nread = fread(tag, sizeof(tag), 1, stream);
   if (nread != 1) {
     retval = READ_FAIL;
     goto err;
@@ -146,28 +134,12 @@ int PWSfileV3::SanityCheck(FILE *stream)
     goto err;
   }
 
-  if (file_length < min_v3file_length)
-    return TRUNCATED_FILE;
-  // Does file have a valid EOF block?
-  unsigned char eof_block[sizeof(TERMINAL_BLOCK)];
-  if (fseek(stream, -int(sizeof(TERMINAL_BLOCK) + SHA256::HASHLEN), SEEK_END) != 0) {
-    retval = READ_FAIL; // actually, seek error, but that's too nuanced
-    goto err;
-  }
-  nread = fread(eof_block, sizeof(eof_block), 1, stream);
-  if (nread != 1) {
-    retval = READ_FAIL;
-    goto err;
-  }
-  if (memcmp(eof_block, TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK)) != 0)
-    retval = TRUNCATED_FILE;
-
 err:
   fseek(stream, pos, SEEK_SET);
   return retval;
 }
 
-int PWSfileV3::CheckPasskey(const StringX &filename,
+int PWSfileV4::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
                             unsigned char *aPtag, uint32 *nITER)
 {
@@ -225,32 +197,32 @@ err:
   return retval;
 }
 
-size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
+size_t PWSfileV4::WriteCBC(unsigned char type, const StringX &data)
 {
   bool status;
   const unsigned char *utf8;
   size_t utf8Len;
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
-    pws_os::Trace(_T("ToUTF8(%ls) failed\n"), data.c_str());
+    pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
   return WriteCBC(type, utf8, utf8Len);
 }
 
-size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
+size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
   m_hmac.Update(data, reinterpret_cast<int &>(length));
   return PWSfile::WriteCBC(type, data, length);
 }
 
-int PWSfileV3::WriteRecord(const CItemData &item)
+int PWSfileV4::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
   return item.Write(this);
 }
 
-size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
+size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
 {
   size_t numRead = PWSfile::ReadCBC(type, data, length);
@@ -262,14 +234,14 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
   return numRead;
 }
 
-int PWSfileV3::ReadRecord(CItemData &item)
+int PWSfileV4::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
   return item.Read(this);
 }
 
-void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
+void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
                            const StringX &passkey,
                            unsigned int N, unsigned char *Ptag)
 {
@@ -289,8 +261,10 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   H0.Update(salt, saltLen);
   H0.Final(X);
 
+#ifdef UNICODE
   trashMemory(pstr, passLen);
   delete[] pstr;
+#endif
 
   ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
@@ -306,14 +280,14 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
 const short VersionNum = 0x030D;
 
-// Following specific for PWSfileV3::WriteHeader
+// Following specific for PWSfileV4::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
     if (_ret != cnt) { status = FAILURE; goto end;} \
   }
 
-int PWSfileV3::WriteHeader()
+int PWSfileV4::WriteHeader()
 {
   PWS_LOGIT;
 
@@ -551,16 +525,14 @@ int PWSfileV3::WriteHeader()
   }
 
   // Write zero-length end-of-record type item
-  numWritten = WriteCBC(HDR_END, NULL, 0);
-  if (numWritten <= 0) { status = FAILURE; goto end; }
-
+  WriteCBC(HDR_END, NULL, 0);
  end:
   if (status != SUCCESS)
     Close();
   return status;
 }
 
-int PWSfileV3::ReadHeader()
+int PWSfileV4::ReadHeader()
 {
   PWS_LOGIT;
 
@@ -595,14 +567,14 @@ int PWSfileV3::ReadHeader()
 
   unsigned char fieldType;
   StringX text;
+  size_t numRead;
   bool utf8status;
   unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
   bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
-    if (ReadCBC(fieldType, utf8, utf8Len) == 0)
-      continue;
+    numRead = ReadCBC(fieldType, utf8, utf8Len);
 
     switch (fieldType) {
     case HDR_VERSION: /* version */
@@ -662,35 +634,20 @@ int PWSfileV3::ReadHeader()
       break;
 
     case HDR_LASTUPDATETIME: /* When last saved */
-      m_hdr.m_whenlastsaved = 0;
       if (utf8Len == 8) {
         // Handle pre-3.09 implementations that mistakenly
         // stored this as a hex value
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (!utf8status){
+        if (!utf8status)
           pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) failed\n"));
-        }
-        else{
-          iStringXStream is(text);
-          is >> hex >> m_hdr.m_whenlastsaved;
-          if (is.fail()) {
-            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) invalid hex string\n"));
-            m_hdr.m_whenlastsaved = 0;
-          }
-        }
-        if (m_hdr.m_whenlastsaved == 0) {
-          // can't read time as hex string, maybe it's 64-bit time (saved on 64-bit *nix)
-          // additional casting to prevent warning when sizeof(time_t)==32
-          m_hdr.m_whenlastsaved = static_cast<time_t>(*reinterpret_cast<int64*>(utf8));
-          if (m_hdr.m_whenlastsaved < 0)
-            m_hdr.m_whenlastsaved = 0;
-          else
-            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) time parsed as 64-bit\n"));
-        }
+        iStringXStream is(text);
+        is >> hex >> m_hdr.m_whenlastsaved;
       } else if (utf8Len == 4) {
-        // retrieve time_t (casting to int32 because time_t may be 64-bit)
-        m_hdr.m_whenlastsaved = *reinterpret_cast<int32*>(utf8);
+        // retrieve time_t
+        m_hdr.m_whenlastsaved = *reinterpret_cast< time_t*>(utf8);
+      } else {
+        m_hdr.m_whenlastsaved = 0;
       }
       break;
 
@@ -761,7 +718,7 @@ int PWSfileV3::ReadHeader()
           // No filter schema => user won't be able to access stored filters
           // Inform her of the fact (probably an installation problem).
           stringT message, message2;
-          Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+          Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
           LoadAString(message2, IDSC_FILTERSKEPT);
           message += stringT(_T("\n\n")) + message2;
           if (m_pReporter != NULL)
@@ -784,8 +741,7 @@ int PWSfileV3::ReadHeader()
           LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
           if (m_pReporter != NULL)
             (*m_pReporter)(message);
-          pws_os::Trace(L"Error while parsing header filters.\n\tData: %ls\n\tErrors: %ls\n",
-                        text.c_str(), strErrors.c_str());
+
           UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
           m_UHFL.push_back(unkhfe);
         }
@@ -946,23 +902,13 @@ int PWSfileV3::ReadHeader()
   return SUCCESS;
 }
 
-bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
+bool PWSfileV4::IsV4x(const StringX &filename , VERSION &v)
 {
-  // This is written so as to support V30, V31, V3x...
-
+  // XXX Certainly has to change, if can be at all supported!
+  v = V40;
   ASSERT(pws_os::FileExists(filename.c_str()));
   FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
 
   ASSERT(fd != NULL);
-  char tag[sizeof(V3TAG)];
-  fread(tag, 1, sizeof(tag), fd);
-  fclose(fd);
-
-  if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
-    v = V30;
-    return true;
-  } else {
-    v = UNKNOWN_VERSION;
-    return false;
-  }
+  return true;
 }

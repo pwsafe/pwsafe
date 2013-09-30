@@ -306,7 +306,7 @@ void CPasskeyEntry::OnCreateDb()
                      v3FileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
+                     CString(MAKEINTRESOURCE(IDS_FDF_VCURR_ALL)),
                      this);
 
     fd.m_ofn.lpstrTitle = cs_text;

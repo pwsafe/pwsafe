@@ -18,7 +18,7 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   Match.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp \
-                  PWSfileV1V2.cpp PWSfileV3.cpp \
+                  PWSfileV1V2.cpp PWSfileV3.cpp PWSfileV4.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\

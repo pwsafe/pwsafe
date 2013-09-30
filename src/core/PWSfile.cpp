@@ -224,7 +224,7 @@ int PWSfile::CheckPasskey(const StringX &filename,
   status = PWSfileV3::CheckPasskey(filename, passkey);
   if (status == SUCCESS)
     version = V30;
-  if (status == NOT_PWS3_FILE) {
+  if (status == NOT_PWS_FILE) {
     status = PWSfileV1V2::CheckPasskey(filename, passkey);
     if (status == SUCCESS)
       version = V20; // or V17?
