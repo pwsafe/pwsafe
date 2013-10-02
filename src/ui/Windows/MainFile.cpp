@@ -1438,10 +1438,13 @@ void DboxMain::OnExportVx(UINT nID)
 
   switch (nID) {
     case ID_MENUITEM_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteV17File(newfile);
+      rc = m_core.WriteFile(newfile, PWSfile::V17);
       break;
     case ID_MENUITEM_EXPORT2V2FORMAT:
-      rc = m_core.WriteV2File(newfile);
+      rc = m_core.WriteFile(newfile, PWSfile::V20);
+      break;
+    case ID_MENUITEM_EXPORT2V3FORMAT:
+      rc = m_core.WriteFile(newfile, PWSfile::V30);
       break;
     default:
       ASSERT(0);
