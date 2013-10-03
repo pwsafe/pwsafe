@@ -891,6 +891,27 @@
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                 </document>
                 <document>
+                  <string name="title">"v&amp;3 format...: ID_EXPORT2V3FORMAT"</string>
+                  <string name="type">"dialog-control-document"</string>
+                  <string name="filename">""</string>
+                  <string name="icon-name">"menuitem"</string>
+                  <long name="is-transient">0</long>
+                  <long name="owns-file">1</long>
+                  <long name="title-mode">0</long>
+                  <long name="locked">0</long>
+                  <string name="proxy-type">"wbMenuItemProxy"</string>
+                  <string name="proxy-Id name">"ID_EXPORT2V3FORMAT"</string>
+                  <long name="proxy-Id value">10015</long>
+                  <string name="proxy-Label">"v&amp;3 format..."</string>
+                  <string name="proxy-Kind">"Normal"</string>
+                  <bool name="proxy-Checked">0</bool>
+                  <bool name="proxy-Enabled">1</bool>
+                  <string name="proxy-Help text">""</string>
+                  <string name="proxy-Bitmap">""</string>
+                  <string name="proxy-Bitmap unchecked">""</string>
+                  <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
+                </document>
+                <document>
                   <string name="title">"&amp;Plain Text (tab separated)...: ID_EXPORT2PLAINTEXT"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
@@ -901,7 +922,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_EXPORT2PLAINTEXT"</string>
-                  <long name="proxy-Id value">10015</long>
+                  <long name="proxy-Id value">10016</long>
                   <string name="proxy-Label">"&amp;Plain Text (tab separated)..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -922,7 +943,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_EXPORT2XML"</string>
-                  <long name="proxy-Id value">10016</long>
+                  <long name="proxy-Id value">10017</long>
                   <string name="proxy-Label">"&amp;XML format..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -944,7 +965,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbSubmenuProxy"</string>
                 <string name="proxy-Id name">"ID_IMPORTMENU"</string>
-                <long name="proxy-Id value">10017</long>
+                <long name="proxy-Id value">10018</long>
                 <string name="proxy-Label">"Import &amp;From"</string>
                 <string name="proxy-Help text">""</string>
                 <bool name="proxy-Enabled">1</bool>
@@ -960,7 +981,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_IMPORT_PLAINTEXT"</string>
-                  <long name="proxy-Id value">10018</long>
+                  <long name="proxy-Id value">10019</long>
                   <string name="proxy-Label">"&amp;Plain Text..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -981,7 +1002,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_IMPORT_XML"</string>
-                  <long name="proxy-Id value">10019</long>
+                  <long name="proxy-Id value">10020</long>
                   <string name="proxy-Label">"&amp;XML format..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1002,7 +1023,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_IMPORT_KEEPASS"</string>
-                  <long name="proxy-Id value">10020</long>
+                  <long name="proxy-Id value">10021</long>
                   <string name="proxy-Label">"&amp;KeePass..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1024,7 +1045,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_MERGE"</string>
-                <long name="proxy-Id value">10021</long>
+                <long name="proxy-Id value">10022</long>
                 <string name="proxy-Label">"Merge..."</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1045,7 +1066,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_COMPARE"</string>
-                <long name="proxy-Id value">10022</long>
+                <long name="proxy-Id value">10023</long>
                 <string name="proxy-Label">"Compare..."</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1172,7 +1193,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnEditClick|SHOWMESSAGE|Edit Entry placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_EDIT"</string>
-                <long name="proxy-Id value">10023</long>
+                <long name="proxy-Id value">10024</long>
                 <string name="proxy-Label">"Edit/&amp;View Entry...\tCtrl+Enter"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1215,7 +1236,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_RENAME"</string>
-                <long name="proxy-Id value">10024</long>
+                <long name="proxy-Id value">10025</long>
                 <string name="proxy-Label">"Rename Entry\tF2"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1257,7 +1278,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_DUPLICATEENTRY"</string>
-                <long name="proxy-Id value">10025</long>
+                <long name="proxy-Id value">10026</long>
                 <string name="proxy-Label">"&amp;Duplicate Entry\tCtrl+D"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1290,7 +1311,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_ADDGROUP"</string>
-                <long name="proxy-Id value">10026</long>
+                <long name="proxy-Id value">10027</long>
                 <string name="proxy-Label">"Add Group"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1324,7 +1345,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnClearclipboardClick|SHOWMESSAGE|Clear Clipboard placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_CLEARCLIPBOARD"</string>
-                <long name="proxy-Id value">10027</long>
+                <long name="proxy-Id value">10028</long>
                 <string name="proxy-Label">"C&amp;lear Clipboard\tCtrl+Del"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1358,7 +1379,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopypasswordClick|SHOWMESSAGE|copy password placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYPASSWORD"</string>
-                <long name="proxy-Id value">10028</long>
+                <long name="proxy-Id value">10029</long>
                 <string name="proxy-Label">"&amp;Copy Password to Clipboard\tCtrl+C"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1380,7 +1401,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopyusernameClick|SHOWMESSAGE|copy username placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYUSERNAME"</string>
-                <long name="proxy-Id value">10029</long>
+                <long name="proxy-Id value">10030</long>
                 <string name="proxy-Label">"Copy &amp;Username to Clipboard\tCtrl+U"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1402,7 +1423,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopynotesfldClick|SHOWMESSAGE|copy notes placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYNOTESFLD"</string>
-                <long name="proxy-Id value">10030</long>
+                <long name="proxy-Id value">10031</long>
                 <string name="proxy-Label">"Copy &amp;Notes to Clipboard\tCtrl+G"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1424,7 +1445,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopyurlClick|SHOWMESSAGE|copy url placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYURL"</string>
-                <long name="proxy-Id value">10031</long>
+                <long name="proxy-Id value">10032</long>
                 <string name="proxy-Label">"Copy URL to Clipboard\tCtrl+Alt+L"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1445,7 +1466,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_BROWSEURL"</string>
-                <long name="proxy-Id value">10032</long>
+                <long name="proxy-Id value">10033</long>
                 <string name="proxy-Label">"&amp;Browse to URL\tCtrl+L"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1466,7 +1487,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_AUTOTYPE"</string>
-                <long name="proxy-Id value">10033</long>
+                <long name="proxy-Id value">10034</long>
                 <string name="proxy-Label">"Perform Auto&amp;type\tCtrl+T"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1487,7 +1508,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_GOTOBASEENTRY"</string>
-                <long name="proxy-Id value">10034</long>
+                <long name="proxy-Id value">10035</long>
                 <string name="proxy-Label">"Go to Base entry"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1524,7 +1545,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnListViewClick|NONE||PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_LIST_VIEW"</string>
-                <long name="proxy-Id value">10035</long>
+                <long name="proxy-Id value">10036</long>
                 <string name="proxy-Label">"Flattened &amp;List"</string>
                 <string name="proxy-Kind">"Radio"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1546,7 +1567,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnTreeViewClick|NONE||PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_TREE_VIEW"</string>
-                <long name="proxy-Id value">10036</long>
+                <long name="proxy-Id value">10037</long>
                 <string name="proxy-Label">"Nested &amp;Tree"</string>
                 <string name="proxy-Kind">"Radio"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1579,7 +1600,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_SHOWHIDE_TOOLBAR"</string>
-                <long name="proxy-Id value">10037</long>
+                <long name="proxy-Id value">10038</long>
                 <string name="proxy-Label">"Tooolbar &amp;visible"</string>
                 <string name="proxy-Kind">"Check"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1600,7 +1621,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_SHOWHIDE_DRAGBAR"</string>
-                <long name="proxy-Id value">10038</long>
+                <long name="proxy-Id value">10039</long>
                 <string name="proxy-Label">"&amp;Dragbar visible"</string>
                 <string name="proxy-Kind">"Check"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1633,7 +1654,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_EXPANDALL"</string>
-                <long name="proxy-Id value">10039</long>
+                <long name="proxy-Id value">10040</long>
                 <string name="proxy-Label">"Expand All"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1654,7 +1675,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_COLLAPSEALL"</string>
-                <long name="proxy-Id value">10040</long>
+                <long name="proxy-Id value">10041</long>
                 <string name="proxy-Label">"Collapse All"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1675,7 +1696,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbSubmenuProxy"</string>
                 <string name="proxy-Id name">"ID_FILTERMENU"</string>
-                <long name="proxy-Id value">10041</long>
+                <long name="proxy-Id value">10042</long>
                 <string name="proxy-Label">"&amp;Filters"</string>
                 <string name="proxy-Help text">""</string>
                 <bool name="proxy-Enabled">1</bool>
@@ -1691,7 +1712,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_EDITFILTER"</string>
-                  <long name="proxy-Id value">10042</long>
+                  <long name="proxy-Id value">10043</long>
                   <string name="proxy-Label">"&amp;New/Edit Filter..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1712,7 +1733,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_APPLYFILTER"</string>
-                  <long name="proxy-Id value">10043</long>
+                  <long name="proxy-Id value">10044</long>
                   <string name="proxy-Label">"&amp;Apply current"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1733,7 +1754,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_MANAGEFILTERS"</string>
-                  <long name="proxy-Id value">10044</long>
+                  <long name="proxy-Id value">10045</long>
                   <string name="proxy-Label">"&amp;Manage..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1767,7 +1788,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_CUSTOMIZETOOLBAR"</string>
-                <long name="proxy-Id value">10045</long>
+                <long name="proxy-Id value">10046</long>
                 <string name="proxy-Label">"Customize &amp;Main Toolbar..."</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -1788,7 +1809,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbSubmenuProxy"</string>
                 <string name="proxy-Id name">"ID_CHANGEFONTMENU"</string>
-                <long name="proxy-Id value">10046</long>
+                <long name="proxy-Id value">10047</long>
                 <string name="proxy-Label">"Change &amp;Font"</string>
                 <string name="proxy-Help text">""</string>
                 <bool name="proxy-Enabled">1</bool>
@@ -1804,7 +1825,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_CHANGETREEFONT"</string>
-                  <long name="proxy-Id value">10047</long>
+                  <long name="proxy-Id value">10048</long>
                   <string name="proxy-Label">"&amp;Tree/List Font"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1825,7 +1846,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_CHANGEPSWDFONT"</string>
-                  <long name="proxy-Id value">10048</long>
+                  <long name="proxy-Id value">10049</long>
                   <string name="proxy-Label">"&amp;Password Font"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1847,7 +1868,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbSubmenuProxy"</string>
                 <string name="proxy-Id name">"ID_REPORTSMENU"</string>
-                <long name="proxy-Id value">10049</long>
+                <long name="proxy-Id value">10050</long>
                 <string name="proxy-Label">"Reports"</string>
                 <string name="proxy-Help text">""</string>
                 <bool name="proxy-Enabled">1</bool>
@@ -1863,7 +1884,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_COMPARE"</string>
-                  <long name="proxy-Id value">10050</long>
+                  <long name="proxy-Id value">10051</long>
                   <string name="proxy-Label">"&amp;Compare"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1884,7 +1905,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_FIND"</string>
-                  <long name="proxy-Id value">10051</long>
+                  <long name="proxy-Id value">10052</long>
                   <string name="proxy-Label">"&amp;Find"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1905,7 +1926,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_IMPORTTEXT"</string>
-                  <long name="proxy-Id value">10052</long>
+                  <long name="proxy-Id value">10053</long>
                   <string name="proxy-Label">"Import &amp;Text"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1926,7 +1947,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_IMPORTXML"</string>
-                  <long name="proxy-Id value">10053</long>
+                  <long name="proxy-Id value">10054</long>
                   <string name="proxy-Label">"Import &amp;XML"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1947,7 +1968,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_MERGE"</string>
-                  <long name="proxy-Id value">10054</long>
+                  <long name="proxy-Id value">10055</long>
                   <string name="proxy-Label">"I&amp;Merge"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -1968,7 +1989,7 @@
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
                   <string name="proxy-Id name">"ID_REPORT_VALIDATE"</string>
-                  <long name="proxy-Id value">10055</long>
+                  <long name="proxy-Id value">10056</long>
                   <string name="proxy-Label">"&amp;Validate"</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
@@ -2006,7 +2027,7 @@
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnChangePasswdClick|SHOWWINDOW|ID_CSAFECOMBINATIONCHANGE|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_CHANGECOMBO"</string>
-                <long name="proxy-Id value">10056</long>
+                <long name="proxy-Id value">10057</long>
                 <string name="proxy-Label">"&amp;Change Safe Combination..."</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -2039,7 +2060,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_BACKUP"</string>
-                <long name="proxy-Id value">10057</long>
+                <long name="proxy-Id value">10058</long>
                 <string name="proxy-Label">"Make &amp;Backup\tCtrl+B"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
@@ -2060,7 +2081,7 @@
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
                 <string name="proxy-Id name">"ID_RESTORE"</string>
-                <long name="proxy-Id value">10058</long>
+                <long name="proxy-Id value">10059</long>
                 <string name="proxy-Label">"&amp;Restore from Backup...\tCtrl+R"</string>
                 <string name="proxy-Kind">"Normal"</string>
                 <bool name="proxy-Checked">0</bool>
