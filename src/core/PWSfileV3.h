@@ -38,16 +38,16 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
-  uint32 GetNHashIters() const {return m_nHashIters;}
-  void SetNHashIters(uint32 N) {m_nHashIters = N;}
+  virtual uint32 GetNHashIters() const {return m_nHashIters;}
+  virtual void SetNHashIters(uint32 N) {m_nHashIters = N;}
   
-  void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
+  virtual void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
   const PWSFilters &GetFilters() const {return m_MapFilters;}
 
-  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
+  virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
   const PSWDPolicyMap &GetPasswordPolicies() const {return m_MapPSWDPLC;}
 
-  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
+  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
   const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
 
 private:
