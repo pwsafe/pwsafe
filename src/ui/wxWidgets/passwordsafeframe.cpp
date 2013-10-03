@@ -186,6 +186,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
 
+  EVT_MENU( ID_EXPORT2V3FORMAT, PasswordSafeFrame::OnExportVx )
+
   EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
 
   EVT_MENU( ID_EXPORT2XML, PasswordSafeFrame::OnExportXml )
@@ -425,6 +427,7 @@ void PasswordSafeFrame::CreateMenubar()
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), _T(""), wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V3FORMAT, _("v&3 format..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
@@ -3037,10 +3040,13 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 
   switch (evt.GetId()) {
     case ID_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteV17File(newfile);
+      rc = m_core.WriteFile(newfile, PWSfile::V17);
       break;
     case ID_EXPORT2V2FORMAT:
-      rc = m_core.WriteV2File(newfile);
+      rc = m_core.WriteFile(newfile, PWSfile::V20);
+      break;
+    case ID_EXPORT2V3FORMAT:
+      rc = m_core.WriteFile(newfile, PWSfile::V30);
       break;
     default:
       wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
