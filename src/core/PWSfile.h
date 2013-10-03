@@ -40,6 +40,8 @@
 class Fish;
 class Asker;
 
+class PWSFilters;
+
 class PWSfile
 {
 public:
@@ -140,6 +142,13 @@ public:
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
+
+  // Following implemented in V3 and later
+  virtual uint32 GetNHashIters() const {return 0;}
+  virtual void SetNHashIters(uint32 ) {}
+  virtual void SetFilters(const PWSFilters &) {}
+  virtual void SetPasswordPolicies(const PSWDPolicyMap &) {}
+  virtual void SetEmptyGroups(const std::vector<StringX> &) {}
   
   size_t WriteField(unsigned char type,
                     const StringX &data) {return WriteCBC(type, data);}

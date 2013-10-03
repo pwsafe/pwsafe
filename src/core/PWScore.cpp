@@ -480,17 +480,12 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   m_hdr.m_RUEList = m_RUEList;
 
   out->SetHeader(m_hdr);
+  out->SetUnknownHeaderFields(m_UHFL);
+  out->SetNHashIters(GetHashIters());
+  out->SetFilters(m_MapFilters);
+  out->SetPasswordPolicies(m_MapPSWDPLC);
+  out->SetEmptyGroups(m_vEmptyGroups);
 
-  // Give PWSfileV3 the unknown headers to write out
-  // XXX cleanup gross dynamic_cast
-  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
-  if (out3 != NULL) {
-    out3->SetNHashIters(GetHashIters());
-    out3->SetUnknownHeaderFields(m_UHFL);
-    out3->SetFilters(m_MapFilters); // Give it the filters to write out
-    out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
-    out3->SetEmptyGroups(m_vEmptyGroups); // Give it the Empty Groups to write out
-  }
 
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
