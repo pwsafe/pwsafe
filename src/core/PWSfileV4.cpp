@@ -54,7 +54,7 @@ int PWSfileV4::Open(const StringX &passkey)
 
   int status = SUCCESS;
 
-  ASSERT(m_curversion == V30);
+  ASSERT(m_curversion == V40);
   if (passkey.empty()) { // Can happen if db 'locked'
     pws_os::Trace(_T("PWSfileV4::Open(empty_passkey)\n"));
     return WRONG_PASSWORD;
@@ -160,7 +160,7 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
     goto err;
 
   fseek(fd, sizeof(V3TAG), SEEK_SET); // skip over tag
-  unsigned char salt[SaltLengthV3];
+  unsigned char salt[PWSaltLength];
   fread(salt, 1, sizeof(salt), fd);
 
   unsigned char Nb[sizeof(uint32)];
@@ -296,7 +296,7 @@ int PWSfileV4::WriteHeader()
   // goto for error handling
   int status = SUCCESS;
   size_t numWritten;
-  unsigned char salt[SaltLengthV3];
+  unsigned char salt[PWSaltLength];
 
   // See formatV3.txt for explanation of what's written here and why
   uint32 NumHashIters;
@@ -311,8 +311,8 @@ int PWSfileV4::WriteHeader()
   // that it's good practice to directly expose the generated randomness
   // to the attacker. Therefore, we'll hash the salt.
   // The following takes shameless advantage of the fact that
-  // SaltLengthV3 == SHA256::HASHLEN
-  ASSERT(SaltLengthV3 == SHA256::HASHLEN); // if false, have to recode
+  // PWSaltLength == SHA256::HASHLEN
+  ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
   { // in a block to protect against goto
     PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
     SHA256 salter;
