@@ -22,10 +22,13 @@
 #include "hmac.h"
 #include "UTF8Conv.h"
 
+#include <vector>
+
 class PWSfileV4 : public PWSfile
 {
 public:
-
+  enum Cipher {PWTwoFish, PWAES};
+  
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
                           FILE *a_fd = NULL,
@@ -41,8 +44,8 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
-  uint32 GetNHashIters() const {return m_nHashIters;}
-  void SetNHashIters(uint32 N) {m_nHashIters = N;}
+  uint32 GetNHashIters() const; // for current keyblock
+  void SetNHashIters(uint32 N); // for current keyblock
   
   void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
   const PWSFilters &GetFilters() const {return m_MapFilters;}
@@ -54,11 +57,22 @@ public:
   const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
 
 private:
-  enum {PWSaltLength = 32}; // per format spec
-  uint32 m_nHashIters;
+  // Format constants:
+  enum {PWSaltLength = 32, KWLEN = 40};
+  struct KeyBlock { // See formatV4.txt
+  KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
+    unsigned char m_salt[PWSaltLength];
+    uint32 m_nHashIters;
+    unsigned char m_kw_k[KWLEN];
+    unsigned char m_kw_l[KWLEN];
+  };
+  std::vector<KeyBlock> m_keyblocks;
+  unsigned m_current_keyblock; // index
+  Cipher m_cipher;
+  friend struct KeyBlockWriter;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
-  unsigned char m_key[32];
-  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac;
+  unsigned char m_key[32]; // K
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
   CUTF8Conv m_utf8conv;
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
@@ -66,6 +80,8 @@ private:
 
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          size_t &length);
+  void SetupKeyBlocksForWrite();
+  size_t WriteKeyBlocks();
   int WriteHeader();
   int ReadHeader();
   PWSFilters m_MapFilters;
@@ -76,7 +92,7 @@ private:
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
-                         const StringX &passkey,
-                         uint32 N, unsigned char *Ptag);
+                         const StringX &passkey, uint32 N,
+                         unsigned char *Ptag, unsigned long PtagLen);
 };
 #endif /* __PWSFILEV4_H */

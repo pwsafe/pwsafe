@@ -160,7 +160,7 @@ public:
                    size_t &length) {return ReadCBC(type, data, length);}
   
 protected:
-  PWSfile(const StringX &filename, RWmode mode);
+  PWSfile(const StringX &filename, RWmode mode, VERSION v = UNKNOWN_VERSION);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,

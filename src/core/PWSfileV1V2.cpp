@@ -20,9 +20,8 @@
 #include <algorithm>
 
 PWSfileV1V2::PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version)
-  : PWSfile(filename, mode)
+: PWSfile(filename, mode, version)
 {
-  m_curversion = version;
   m_IV = m_ipthing;
 }
 
