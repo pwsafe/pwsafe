@@ -81,9 +81,9 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
     return UNKNOWN_VERSION;
 }
 
-PWSfile::PWSfile(const StringX &filename, RWmode mode)
+PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
   : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
-  m_curversion(UNKNOWN_VERSION), m_rw(mode), m_defusername(_T("")),
+  m_curversion(v), m_rw(mode), m_defusername(_T("")),
   m_fish(NULL), m_terminal(NULL),
   m_nRecordsWithUnknownFields(0)
 {

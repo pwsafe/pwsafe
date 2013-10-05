@@ -38,9 +38,8 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const StringX &filename, RWmode mode, VERSION version)
-: PWSfile(filename, mode), m_nHashIters(0)
+: PWSfile(filename, mode, version), m_nHashIters(0)
 {
-  m_curversion = version;
   m_IV = m_ipthing;
   m_terminal = TERMINAL_BLOCK;
 }
