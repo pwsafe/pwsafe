@@ -17,6 +17,8 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "core.h"
+#include "pbkdf2.h"
+#include "KeyWrap.h"
 
 #include "os/debug.h"
 #include "os/file.h"
@@ -32,14 +34,14 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 using pws_os::CUUID;
 
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
-: PWSfile(filename, mode), m_nHashIters(0)
+: PWSfile(filename, mode, version), m_keyblocks(1), m_current_keyblock(0)
 {
-  m_curversion = version;
   m_IV = m_ipthing;
   m_terminal = NULL;
 }
@@ -59,20 +61,25 @@ int PWSfileV4::Open(const StringX &passkey)
     pws_os::Trace(_T("PWSfileV4::Open(empty_passkey)\n"));
     return WRONG_PASSWORD;
   }
-  m_passkey = passkey;
 
   FOpen();
   if (m_fd == NULL)
     return CANT_OPEN_FILE;
 
+  m_passkey = passkey;
   if (m_rw == Write) {
-    status = WriteHeader();
+    SetupKeyBlocksForWrite();
+    size_t numWritten = WriteKeyBlocks();
+    if (numWritten != (PWSaltLength + sizeof(uint32) + 2 * KWLEN) * m_keyblocks.size()) {
+      status = WRITE_FAIL;
+    } else {
+      status = WriteHeader();
+    }
   } else { // open for read
     status = ReadHeader();
-    if (status != SUCCESS) {
-      Close();
-      return status;
-    }
+  }
+  if (status != SUCCESS) {
+    Close();
   }
   return status;
 }
@@ -109,11 +116,8 @@ int PWSfileV4::Close()
   }
 }
 
-const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
-
 int PWSfileV4::SanityCheck(FILE *stream)
 {
-  int retval = SUCCESS;
   ASSERT(stream != NULL);
 
   // Is file too small?
@@ -121,22 +125,7 @@ int PWSfileV4::SanityCheck(FILE *stream)
   if (pws_os::fileLength(stream) < min_file_length)
     return TRUNCATED_FILE;
 
-  long pos = ftell(stream); // restore when we're done
-  // Does file have a valid header?
-  char tag[sizeof(V3TAG)];
-  size_t nread = fread(tag, sizeof(tag), 1, stream);
-  if (nread != 1) {
-    retval = READ_FAIL;
-    goto err;
-  }
-  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    retval = NOT_PWS_FILE;
-    goto err;
-  }
-
-err:
-  fseek(stream, pos, SEEK_SET);
-  return retval;
+  return SUCCESS;
 }
 
 int PWSfileV4::CheckPasskey(const StringX &filename,
@@ -159,7 +148,6 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
   if (retval != SUCCESS)
     goto err;
 
-  fseek(fd, sizeof(V3TAG), SEEK_SET); // skip over tag
   unsigned char salt[PWSaltLength];
   fread(salt, 1, sizeof(salt), fd);
 
@@ -180,7 +168,7 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
     if (aPtag == NULL)
       aPtag = Ptag;
 
-    StretchKey(salt, sizeof(salt), passkey, N, aPtag);
+    StretchKey(salt, sizeof(salt), passkey, N, aPtag, SHA256::HASHLEN);
   }
   unsigned char HPtag[SHA256::HASHLEN];
   H.Update(aPtag, SHA256::HASHLEN);
@@ -218,7 +206,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 int PWSfileV4::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
-  ASSERT(m_curversion == V30);
+  ASSERT(m_curversion == V40);
   return item.Write(this);
 }
 
@@ -237,55 +225,139 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
 int PWSfileV4::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
-  ASSERT(m_curversion == V30);
+  ASSERT(m_curversion == V40);
   return item.Read(this);
 }
 
 void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
                            const StringX &passkey,
-                           unsigned int N, unsigned char *Ptag)
+                           unsigned int N, unsigned char *Ptag, unsigned long PtagLen)
 {
   /*
   * P' is the "stretched key" of the user's passphrase and the SALT, as defined
-  * by the hash-function-based key stretching algorithm in
-  * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
+  * by the hash-function-based key stretching algorithm PBKDF2, with SHA-256
   * as the hash function, and N iterations.
   */
+  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   size_t passLen = 0;
   unsigned char *pstr = NULL;
 
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
   ConvertString(passkey, pstr, passLen);
-  unsigned char *X = Ptag;
-  SHA256 H0;
-  H0.Update(pstr, passLen);
-  H0.Update(salt, saltLen);
-  H0.Final(X);
+  pbkdf2(pstr, passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
 
 #ifdef UNICODE
   trashMemory(pstr, passLen);
   delete[] pstr;
 #endif
+}
 
-  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
-  for (unsigned int i = 0; i < N; i++) {
-    SHA256 H;
-    // The 2nd param in next line was sizeof(X) in Beta-1
-    // (bug #1451422). This change broke the ability to read beta-1
-    // generated databases. If this is really needed, we should
-    // hack the read functionality to try both variants (ugh).
-    H.Update(X, SHA256::HASHLEN);
-    H.Final(X);
+const short VersionNum = 0x0400;
+
+uint32 PWSfileV4::GetNHashIters() const
+{
+  // Using "at" to check bounds
+  return m_keyblocks.at(m_current_keyblock).m_nHashIters;
+}
+
+void PWSfileV4::SetNHashIters(uint32 N)
+{
+  // Using "at" to check bounds
+  m_keyblocks.at(m_current_keyblock).m_nHashIters = N;
+}
+
+
+void PWSfileV4::SetupKeyBlocksForWrite()
+{
+  /*
+   * There's a big difference if we've one or > 1 key block.
+   * If we've only one (most common, I assume), then we can
+   * regenerate Salt, K, L and wrapped keys at will.
+   * If we've > 1, then we must leave these unchanged,
+   * and only setup K and L from the current key block.
+   *
+   */
+
+  ASSERT(!m_keyblocks.empty()); // PWSfileV4's c'tor assures us that we'll have at least one.
+
+  if (m_keyblocks.size() == 1) {
+    KeyBlock &kb = m_keyblocks[0];
+    // According to the spec, salt is just random data. I don't think though,
+    // that it's good practice to directly expose the generated randomness
+    // to the attacker. Therefore, we'll hash the salt.
+    // The following takes shameless advantage of the fact that
+    // PWSaltLength == SHA256::HASHLEN
+    ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
+    PWSrand::GetInstance()->GetRandomData(kb.m_salt, sizeof(kb.m_salt));
+    SHA256 salter;
+    salter.Update(kb.m_salt, sizeof(kb.m_salt));
+    salter.Final(kb.m_salt);
+
+    unsigned char Ptag[SHA256::HASHLEN];
+
+    StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
+               Ptag, sizeof(Ptag));
+    
+    PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key)); // K
+    // Wrap K
+    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+    KeyWrap kwK(&Fish);
+
+    kwK.Wrap(m_key, kb.m_kw_k, sizeof(m_key));
+      
+    unsigned char L[32]; // for HMAC
+    PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
+    KeyWrap kwL(&Fish);
+    kwL.Wrap(L, kb.m_kw_l, sizeof(L));
+    m_hmac.Init(L, sizeof(L));
+  } else { // > 1 key block
+    // XXX TBD
   }
 }
 
-const short VersionNum = 0x030D;
-
-// Following specific for PWSfileV4::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
     if (_ret != cnt) { status = FAILURE; goto end;} \
   }
+
+struct KeyBlockWriter
+{
+  KeyBlockWriter(FILE *fd, size_t &numWritten)
+    : m_fd(fd), m_numWritten(numWritten), m_ok(true)
+  {}
+  void operator()(const PWSfileV4::KeyBlock &kb)
+  {
+    write(kb.m_salt, sizeof(kb.m_salt));
+    unsigned char Nb[sizeof(kb.m_nHashIters)];
+    putInt32(Nb, kb.m_nHashIters);
+    write(Nb, sizeof(Nb));
+    write(kb.m_kw_k, sizeof(kb.m_kw_k));
+    write(kb.m_kw_l, sizeof(kb.m_kw_l));
+  }
+  size_t &m_numWritten;
+  bool m_ok;
+private:
+  FILE *m_fd;
+  void write(const void *p, size_t size)
+  {
+    if (m_ok) {
+      size_t nw = fwrite(p, size, 1, m_fd);
+      if (nw == 1)
+        m_numWritten += size;
+      else
+        m_ok = false; // first time this is false, we stop writing!
+    }
+  }
+};
+
+size_t PWSfileV4::WriteKeyBlocks()
+{
+  size_t numWritten = 0;
+  KeyBlockWriter kbw(m_fd, numWritten);
+  for_each(m_keyblocks.begin(), m_keyblocks.end(), kbw);
+  return numWritten;
+}
 
 int PWSfileV4::WriteHeader()
 {
@@ -295,64 +367,7 @@ int PWSfileV4::WriteHeader()
   // prevent "uninitialized" compile errors, as we use
   // goto for error handling
   int status = SUCCESS;
-  size_t numWritten;
-  unsigned char salt[PWSaltLength];
-
-  // See formatV3.txt for explanation of what's written here and why
-  uint32 NumHashIters;
-  if (m_nHashIters < MIN_HASH_ITERATIONS)
-    NumHashIters = MIN_HASH_ITERATIONS;
-  else
-    NumHashIters = m_nHashIters;
-
-  SAFE_FWRITE(V3TAG, 1, sizeof(V3TAG), m_fd);
-
-  // According to the spec, salt is just random data. I don't think though,
-  // that it's good practice to directly expose the generated randomness
-  // to the attacker. Therefore, we'll hash the salt.
-  // The following takes shameless advantage of the fact that
-  // PWSaltLength == SHA256::HASHLEN
-  ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
-  { // in a block to protect against goto
-    PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
-    SHA256 salter;
-    salter.Update(salt, sizeof(salt));
-    salter.Final(salt);
-    SAFE_FWRITE(salt, 1, sizeof(salt), m_fd);
-  }
-
-  unsigned char Nb[sizeof(NumHashIters)];
-  putInt32(Nb, NumHashIters);
-  SAFE_FWRITE(Nb, 1, sizeof(Nb), m_fd);
-
-  unsigned char Ptag[SHA256::HASHLEN];
-
-  StretchKey(salt, sizeof(salt), m_passkey, NumHashIters, Ptag);
-
-  {
-    unsigned char HPtag[SHA256::HASHLEN];
-    SHA256 H;
-    H.Update(Ptag, sizeof(Ptag));
-    H.Final(HPtag);
-    SAFE_FWRITE(HPtag, 1, sizeof(HPtag), m_fd);
-  }
-  {
-    PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key));
-    unsigned char B1B2[sizeof(m_key)];
-    unsigned char L[32]; // for HMAC
-    ASSERT(sizeof(B1B2) == 32); // Generalize later
-    TwoFish TF(Ptag, sizeof(Ptag));
-    TF.Encrypt(m_key, B1B2);
-    TF.Encrypt(m_key + 16, B1B2 + 16);
-    SAFE_FWRITE(B1B2, 1, sizeof(B1B2), m_fd);
-    PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
-    unsigned char B3B4[sizeof(L)];
-    ASSERT(sizeof(B3B4) == 32); // Generalize later
-    TF.Encrypt(L, B3B4);
-    TF.Encrypt(L + 16, B3B4 + 16);
-    SAFE_FWRITE(B3B4, 1, sizeof(B3B4), m_fd);
-    m_hmac.Init(L, sizeof(L));
-  }
+  size_t numWritten = 0;
   {
     // See discussion on Salt to understand why we hash
     // random data instead of writing it directly
@@ -537,8 +552,9 @@ int PWSfileV4::ReadHeader()
   PWS_LOGIT;
 
   unsigned char Ptag[SHA256::HASHLEN];
+  uint32 nHashIters; // XXX from current KB?
   int status = CheckPasskey(m_filename, m_passkey, m_fd,
-                            Ptag, &m_nHashIters);
+                            Ptag, &nHashIters);
 
   if (status != SUCCESS) {
     Close();
