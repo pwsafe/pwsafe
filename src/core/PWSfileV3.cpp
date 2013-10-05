@@ -188,7 +188,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
     goto err;
 
   fseek(fd, sizeof(V3TAG), SEEK_SET); // skip over tag
-  unsigned char salt[SaltLengthV3];
+  unsigned char salt[PWSaltLength];
   fread(salt, 1, sizeof(salt), fd);
 
   unsigned char Nb[sizeof(uint32)];
@@ -322,7 +322,7 @@ int PWSfileV3::WriteHeader()
   // goto for error handling
   int status = SUCCESS;
   size_t numWritten;
-  unsigned char salt[SaltLengthV3];
+  unsigned char salt[PWSaltLength];
 
   // See formatV3.txt for explanation of what's written here and why
   uint32 NumHashIters;
@@ -337,8 +337,8 @@ int PWSfileV3::WriteHeader()
   // that it's good practice to directly expose the generated randomness
   // to the attacker. Therefore, we'll hash the salt.
   // The following takes shameless advantage of the fact that
-  // SaltLengthV3 == SHA256::HASHLEN
-  ASSERT(SaltLengthV3 == SHA256::HASHLEN); // if false, have to recode
+  // PWSaltLength == SHA256::HASHLEN
+  ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
   { // in a block to protect against goto
     PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
     SHA256 salter;

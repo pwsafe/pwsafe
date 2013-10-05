@@ -8,6 +8,7 @@
 #include "PWSfile.h"
 #include "PWSfileV1V2.h"
 #include "PWSfileV3.h"
+#include "PWSfileV4.h"
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
@@ -40,8 +41,14 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
       status = SUCCESS;
       retval = new PWSfileV3(a_filename, mode, version);
       break;
+    case V40:
+      status = SUCCESS;
+      retval = new PWSfileV4(a_filename, mode, version);
+      break;
     case UNKNOWN_VERSION:
       ASSERT(mode == Read);
+      // XXX Need to rethink this now that V40 doesn't have
+      // XXX a cleartext header/footer
       if (PWSfile::ReadVersion(a_filename) == V30) {
         version = V30;
         status = SUCCESS;

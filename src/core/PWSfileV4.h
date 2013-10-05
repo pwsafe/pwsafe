@@ -54,6 +54,7 @@ public:
   const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
 
 private:
+  enum {PWSaltLength = 32}; // per format spec
   uint32 m_nHashIters;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
