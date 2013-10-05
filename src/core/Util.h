@@ -24,10 +24,9 @@
 #include <sstream>
 #include <stdarg.h>
 
+// For V1V2 and file encryption, NOT for V3 and later:
 #define SaltLength 20
 #define StuffSize 10
-
-#define SaltLengthV3 32
 
 //Use non-standard dash (ANSI decimal 173) for separation
 #define SPLTCHR _T('\xAD')
