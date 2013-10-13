@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-09-18 21:10+0400\n"
+"PO-Revision-Date: 2013-10-13 18:30+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2232,9 +2232,10 @@ msgstr "Повто&рите пароль:"
 msgid "Configuration File:"
 msgstr "Файл настроек:"
 
+# группа на вкладке настроек "система"
 #. Resource IDs: (1221)
 msgid "Configuration Information"
-msgstr "Информация о настройках"
+msgstr "Расположение настроек"
 
 #. Resource IDs: (191)
 #, c-format
@@ -3230,10 +3231,11 @@ msgstr "Экспорт"
 msgid "Export file:"
 msgstr "Файл экспорта:"
 
+# Для уменьшения ширины диалога имя файла вынесено в отдельную строку
 #. Resource IDs: (367)
 #, c-format
 msgid "Export file: '%s' already exists.\nDo you want to replace it?"
-msgstr "Указанный файл для экспорта «%s» уже существует.\nЗаменить?"
+msgstr "Указанный файл для экспорта\n%s\nуже существует.\nЗаменить?"
 
 #. Resource IDs: (211)
 #, fuzzy
@@ -3550,7 +3552,7 @@ msgstr "Перейти "
 #. Resource IDs: (355)
 #, fuzzy
 msgid "Go+"
-msgstr "Перейти и"
+msgstr "Перейти+"
 
 #. Resource IDs: (513)
 msgid "Greek"
@@ -4948,11 +4950,11 @@ msgstr "Пароль [Обязательное поле]"
 
 #. Resource IDs: (341)
 msgid "Password implies this is an alias entry, but "
-msgstr "Подразумевается, что это псевдоним, но "
+msgstr "Предполагается, что это псевдоним, но "
 
 #. Resource IDs: (342)
 msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
-msgstr "Подразумевается, что это псевдоним, но ссылка указывает на безымянный элемент.\nУ каждого элемента должен быть заголовок."
+msgstr "Предполагается, что это псевдоним, но ссылка указывает на безымянный элемент.\nУ каждого элемента должен быть заголовок."
 
 #. Resource IDs: (188)
 msgid "Password is too short"
@@ -7075,7 +7077,7 @@ msgstr "Внимание! В случае продолжения, значени
 #. Resource IDs: (363)
 #, c-format
 msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!\n\nЭто действие позволяет обойти защиту предоставляемую программой. Продолжайте только в случае, если понимаете и принимаете все возможные риски."
+msgstr "Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей ВСЕ пароли из этого контейнера. Для обеспечения безопасности простого удаления этой копии НЕДОСТАТОЧНО!\n\nТак как это действие позволяет обойти предоставляемую программой защиту, продолжайте только если вы понимаете и принимаете все возможные риски."
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -7249,7 +7251,7 @@ msgstr "Настройки YubiKey"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Secret Key (20 bytes Hex)"
-msgstr "Закрытый ключ YubiKey (20 байт в шестн. формате)"
+msgstr "Секретный ключ YubiKey (20 байт в шестн. формате)"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Serial Number:"
