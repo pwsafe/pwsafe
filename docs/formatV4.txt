@@ -56,14 +56,14 @@ described here.
 
 2. Format: A V4 format PasswordSafe is structured as follows:
 
-    KB1|...|KBn|IV|HDR|R1|R2|...|Rn|HMAC
+    KB1|...|KBn|endKB|IV|HDR|R1|R2|...|Rn|HMAC
 
 Where:
 
 2.1 KB1..KBn represent Key Blocks, where each key block contains the
 encryption and integrity verification keys, wrapped as follows:
 
-    SALT|ITER|H(P')|KW(P',K)|KW(P',L)
+    SALT|ITER|KW(P',K)|KW(P',L)
 
 Where:
 2.1.1 SALT is a 256 bit random value, generated at file creation time.
@@ -78,41 +78,42 @@ and the SALT, as defined by the hash-function-based key stretching
 algorithm in [PBKDF2], with SHA-256 [SHA256] as the hash function, and
 ITER iterations (at least 2048).
 
-2.1.4 H(P') is SHA-256(P'), and is used to verify that the user has
-the correct passphrase.
-
-2.1.5 KW is the Key Wrap algorithm defined in [RFC3349], using the
+2.1.4 KW is the Key Wrap algorithm defined in [RFC3349], using the
 user-specified encryption algorithm (TwoFish, AES,...).
 
-2.1.6 KW(P',K) is the wrapped random encryption key K that is used to
+2.1.5 KW(P',K) is the wrapped random encryption key K that is used to
 encrypt header HDR and records R1..Rn. As K is 256 bits, KW(P',K) is
 320 bits (40 bytes).
 
-2.1.7 KW(P',L)  is the wrapped random key L that is used to
+2.1.6 KW(P',L)  is the wrapped random key L that is used to
 calculate the HMAC (keyed-hash message authentication code) of the
 encrypted data. See description of EOF field below for more details.
 As L is 256 bits, KW(P',K) is 320 bits (40 bytes).
 Implementation Note: K and L must NOT be related. 
 
-2.2 IV is the 128-bit random Initial Value for CBC mode.
+2.2 endKB is a 256 bit indicator of the end of the Key Blocks. So as
+not to give an attacker a clear indication, this is HMAC(SHA256, L,
+KB1..KBn). This doubles as an integrity check on the Key Blocks.
 
-2.3 All following records are encrypted using the user-selected block
+2.3 IV is the 128-bit random Initial Value for CBC mode.
+
+2.4 All following records are encrypted using the user-selected block
 cipher in CBC mode, with K as the encryption key.
 
-2.3.1 HDR: The database header. The header consists of one or more typed
+2.4.1 HDR: The database header. The header consists of one or more typed
 fields (as defined in section 3.2), beginning with the Version type
 field, and terminated by the 'END' type field. The version number
 and END fields are mandatory. Aside from these two fields, no order is
 assumed on the field types.
 
-2.3.2 R1..Rn: The actual database records. Each record consists of one or
+2.4.2 R1..Rn: The actual database records. Each record consists of one or
 more typed fields (as defined in Section 3.2), terminated by the 'END' type
 field. The UUID, Title, and Password fields are mandatory. All non-
 mandatory fields may either be absent or have zero length. When a field is
 absent or zero-length, its default value shall be used. Aside from the
 'END' field, no order is assumed on the field types.
 
-2.11 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
+2.5 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
 256 as the underlying hash function. The value is calculated over all
 of the protected fields, including the field type, the field length
 and the data stored in the field, over all fields (starting from the
