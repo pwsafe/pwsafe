@@ -58,7 +58,7 @@ public:
 
 private:
   // Format constants:
-  enum {PWSaltLength = 32, KWLEN = 40};
+  enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8)};
   struct KeyBlock { // See formatV4.txt
   KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
     unsigned char m_salt[PWSaltLength];
@@ -71,9 +71,12 @@ private:
   Cipher m_cipher;
   friend struct KeyBlockWriter;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
-  unsigned char m_key[32]; // K
+  unsigned char m_key[KLEN]; // K
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
   CUTF8Conv m_utf8conv;
+  int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
+  int TryKeyBlock(unsigned index, const StringX &passkey,
+                  unsigned char K[KLEN], unsigned char L[KLEN]);
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           size_t length);
