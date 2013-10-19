@@ -48,13 +48,13 @@ public:
   void SetNHashIters(uint32 N); // for current keyblock
   
   void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
-  const PWSFilters &GetFilters() const {return m_MapFilters;}
+  const PWSFilters *GetFilters() const {return &m_MapFilters;}
 
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
-  const PSWDPolicyMap &GetPasswordPolicies() const {return m_MapPSWDPLC;}
+  const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
 
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
-  const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
+  const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
 
 private:
   // Format constants:
