@@ -18,7 +18,6 @@
 #include "UTF8Conv.h"
 #include "Report.h"
 #include "VerifyFormat.h"
-#include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
 #include "os/pws_tchar.h"
@@ -841,14 +840,10 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   bool go = true;
   bool limited = false;
 
-  PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
-  if (in3 != NULL) {
-    m_hashIters = in3->GetNHashIters();
-    m_MapFilters = in3->GetFilters();
-    m_MapPSWDPLC = in3->GetPasswordPolicies();
-    m_vEmptyGroups = in3->GetEmptyGroups();
-  }
-
+  m_hashIters = in->GetNHashIters();
+  if (in->GetFilters() != NULL) m_MapFilters = *in->GetFilters();
+  if (in->GetPasswordPolicies() != NULL) m_MapPSWDPLC = *in->GetPasswordPolicies();
+  if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -933,20 +928,17 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
            }
          }
 
-         if (in3 != NULL) {
-           int32 iKBShortcut;
-           ci_temp.GetKBShortcut(iKBShortcut);
+         int32 iKBShortcut;
+         ci_temp.GetKBShortcut(iKBShortcut);
 
-           // Entry can't have same HotKey as the Application
-           if (m_iAppHotKey == iKBShortcut) {
+         // Entry can't have same HotKey as the Application
+         if (m_iAppHotKey == iKBShortcut) {
+           ci_temp.SetKBShortcut(0);
+         } else if (iKBShortcut != 0) {
+           if (!ValidateKBShortcut(iKBShortcut)) {
+             m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
+           } else {
              ci_temp.SetKBShortcut(0);
-           } else
-           if (iKBShortcut != 0) {
-             if (!ValidateKBShortcut(iKBShortcut)) {
-               m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
-             } else {
-               ci_temp.SetKBShortcut(0);
-             }
            }
          }
          m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));

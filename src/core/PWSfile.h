@@ -146,8 +146,11 @@ public:
   // Following implemented in V3 and later
   virtual uint32 GetNHashIters() const {return 0;}
   virtual void SetNHashIters(uint32 ) {}
+  virtual const PWSFilters *GetFilters() const {return NULL;}
   virtual void SetFilters(const PWSFilters &) {}
+  virtual const PSWDPolicyMap *GetPasswordPolicies() const {return NULL;}
   virtual void SetPasswordPolicies(const PSWDPolicyMap &) {}
+  virtual const std::vector<StringX> *GetEmptyGroups() const {return NULL;}
   virtual void SetEmptyGroups(const std::vector<StringX> &) {}
   
   size_t WriteField(unsigned char type,
