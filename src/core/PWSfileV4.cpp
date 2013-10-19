@@ -547,37 +547,94 @@ int PWSfileV4::WriteHeader()
   return status;
 }
 
+int PWSfileV4::ReadKeyBlock()
+{
+  /*
+   * Reads a keyblock, pushes it on m_keyblocks.
+   * If couldn't read anything, returns END_OF_FILE
+   * without pushing.
+   */
+  KeyBlock kb;
+  size_t nRead;
+  nRead = fread(kb.m_salt, sizeof(kb.m_salt), 1, m_fd);
+  if (nRead == 0) return END_OF_FILE;
+  unsigned char Nb[sizeof(uint32)];
+
+  nRead = fread(Nb, sizeof(Nb), 1, m_fd);
+  if (nRead == 0) return END_OF_FILE;
+  kb.m_nHashIters = getInt32(Nb);
+
+  nRead = fread(kb.m_kw_k, KWLEN, 1, m_fd);
+  if (nRead == 0) return END_OF_FILE;
+
+  nRead = fread(kb.m_kw_l, KWLEN, 1, m_fd);
+  if (nRead == 0) return END_OF_FILE;
+  
+  // m_keyblocks created size(1), push back iff > 1 keyblocks
+  if (m_keyblocks.size() == 1)
+    m_keyblocks[0] = kb;
+  else
+    m_keyblocks.push_back(kb);
+
+  return SUCCESS;
+}
+
+int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
+                           unsigned char K[KLEN], unsigned char L[KLEN])
+{
+  ASSERT(index < m_keyblocks.size());
+  KeyBlock &kb = m_keyblocks[index];
+  unsigned char Ptag[SHA256::HASHLEN];
+
+  StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
+             Ptag, sizeof(Ptag));
+  // Try to unwrap K
+  TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+  KeyWrap kwK(&Fish);
+
+  if (!kwK.Unwrap(kb.m_kw_k, K, sizeof(kb.m_kw_k)))
+    return WRONG_PASSWORD;
+      
+  KeyWrap kwL(&Fish);
+  if (!kwL.Unwrap(kb.m_kw_l, L, sizeof(kb.m_kw_l))) {
+    ASSERT(0); // Shouln't happen if K unwrapped OK
+    return WRONG_PASSWORD;
+  }
+  return SUCCESS;
+}
+
+
 int PWSfileV4::ReadHeader()
 {
   PWS_LOGIT;
 
-  unsigned char Ptag[SHA256::HASHLEN];
-  uint32 nHashIters; // XXX from current KB?
-  int status = CheckPasskey(m_filename, m_passkey, m_fd,
-                            Ptag, &nHashIters);
+  int status;
+
+  // XXX Start off with a single KeyBlock, needs expansion to N
+  status = ReadKeyBlock();
 
   if (status != SUCCESS) {
     Close();
     return status;
   }
 
-  unsigned char B1B2[sizeof(m_key)];
-  ASSERT(sizeof(B1B2) == 32); // Generalize later
-  fread(B1B2, 1, sizeof(B1B2), m_fd);
-  TwoFish TF(Ptag, sizeof(Ptag));
-  TF.Decrypt(B1B2, m_key);
-  TF.Decrypt(B1B2 + 16, m_key + 16);
+  unsigned char L[KLEN];
+  status = TryKeyBlock(m_current_keyblock, m_passkey, m_key, L);
 
-  unsigned char L[32]; // for HMAC
-  unsigned char B3B4[sizeof(L)];
-  ASSERT(sizeof(B3B4) == 32); // Generalize later
-  fread(B3B4, 1, sizeof(B3B4), m_fd);
-  TF.Decrypt(B3B4, L);
-  TF.Decrypt(B3B4 + 16, L + 16);
+  if (status != SUCCESS) {
+    Close();
+    return status;
+  }
 
   m_hmac.Init(L, sizeof(L));
 
-  fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+  // XXX Read and check endKB
+
+  size_t nIPread = fread(m_ipthing, sizeof(m_ipthing), 1, m_fd);
+  if (nIPread != 1) {
+    Close();
+    return TRUNCATED_FILE;
+  }
 
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
