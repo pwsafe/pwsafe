@@ -72,6 +72,7 @@ private:
   friend struct KeyBlockWriter;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[KLEN]; // K
+  unsigned char m_ell[KLEN]; // L
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
   CUTF8Conv m_utf8conv;
   int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
