@@ -70,7 +70,7 @@ int PWSfileV4::Open(const StringX &passkey)
   if (m_rw == Write) {
     SetupKeyBlocksForWrite();
     size_t numWritten = WriteKeyBlocks();
-    if (numWritten != (PWSaltLength + sizeof(uint32) + 2 * KWLEN) * m_keyblocks.size()) {
+    if (numWritten != (PWSaltLength + sizeof(uint32) + 2 * KWLEN) * m_keyblocks.size() + SHA256::HASHLEN) {
       status = WRITE_FAIL;
     } else {
       status = WriteHeader();
@@ -270,18 +270,23 @@ void PWSfileV4::SetNHashIters(uint32 N)
 void PWSfileV4::SetupKeyBlocksForWrite()
 {
   /*
-   * There's a big difference if we've one or > 1 key block.
-   * If we've only one (most common, I assume), then we can
-   * regenerate Salt, K, L and wrapped keys at will.
-   * If we've > 1, then we must leave these unchanged,
-   * and only setup K and L from the current key block.
+   * We only need to deal with the current KeyBlock, as
+   * the rest are read in and written out verbatim.
+   * 
+   * If we have exactly one KeyBlock, we can regenerate Salt, K, L and wrapped keys.
+   * If we have > 1, we get K and L from the current KeyBlock.
    *
+   * Once we have these, we iterate over all 
+   * KeyBlocks and calculate endKB.
    */
 
   ASSERT(!m_keyblocks.empty()); // PWSfileV4's c'tor assures us that we'll have at least one.
+  ASSERT(m_current_keyblock < m_keyblocks.size());
+
+  KeyBlock &kb = m_keyblocks[m_current_keyblock];
+  unsigned char Ptag[SHA256::HASHLEN];
 
   if (m_keyblocks.size() == 1) {
-    KeyBlock &kb = m_keyblocks[0];
     // According to the spec, salt is just random data. I don't think though,
     // that it's good practice to directly expose the generated randomness
     // to the attacker. Therefore, we'll hash the salt.
@@ -293,8 +298,6 @@ void PWSfileV4::SetupKeyBlocksForWrite()
     salter.Update(kb.m_salt, sizeof(kb.m_salt));
     salter.Final(kb.m_salt);
 
-    unsigned char Ptag[SHA256::HASHLEN];
-
     StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
                Ptag, sizeof(Ptag));
     
@@ -305,14 +308,32 @@ void PWSfileV4::SetupKeyBlocksForWrite()
 
     kwK.Wrap(m_key, kb.m_kw_k, sizeof(m_key));
       
-    unsigned char L[32]; // for HMAC
-    PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
+    PWSrand::GetInstance()->GetRandomData(m_ell, sizeof(m_ell));
     KeyWrap kwL(&Fish);
-    kwL.Wrap(L, kb.m_kw_l, sizeof(L));
-    m_hmac.Init(L, sizeof(L));
-  } else { // > 1 key block
-    // XXX TBD
+    kwL.Wrap(m_ell, kb.m_kw_l, sizeof(m_ell));
+  } else { // we've more than one KeyBlock, get current values
+    StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
+               Ptag, sizeof(Ptag));
+    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+    KeyWrap kwK(&Fish);
+    if (!kwK.Unwrap(kb.m_kw_k, m_key, sizeof(kb.m_kw_k)))
+      ASSERT(0);
+    KeyWrap kwL(&Fish);
+    if (!kwL.Unwrap(kb.m_kw_l, m_ell, sizeof(kb.m_kw_l)))
+      ASSERT(0);
   }
+  m_hmac.Init(m_ell, sizeof(m_ell));
+  // Now iterate over all KeyBlocks, calculate endKB
+  vector<KeyBlock>::iterator iter;
+  for (iter = m_keyblocks.begin(); iter != m_keyblocks.end(); iter++) {
+    m_hmac.Update(iter->m_salt, PWSaltLength);
+    unsigned char Nb[sizeof(iter->m_nHashIters)];
+    putInt32(Nb, iter->m_nHashIters);
+    m_hmac.Update(Nb, sizeof(Nb));
+    m_hmac.Update(iter->m_kw_k, KWLEN);
+    m_hmac.Update(iter->m_kw_l, KWLEN);
+  }
+  // All that's left to do is m_hmac.Final(), just before writing.
 }
 
 #define SAFE_FWRITE(p, sz, cnt, stream) \
@@ -356,6 +377,11 @@ size_t PWSfileV4::WriteKeyBlocks()
   size_t numWritten = 0;
   KeyBlockWriter kbw(m_fd, numWritten);
   for_each(m_keyblocks.begin(), m_keyblocks.end(), kbw);
+  unsigned char digest[SHA256::HASHLEN];
+  m_hmac.Final(digest);
+  size_t fret = fwrite(digest, sizeof(digest), 1, m_fd);
+  if (fret == 1)
+    numWritten += SHA256::HASHLEN;
   return numWritten;
 }
 
@@ -368,6 +394,7 @@ int PWSfileV4::WriteHeader()
   // goto for error handling
   int status = SUCCESS;
   size_t numWritten = 0;
+  m_hmac.Init(m_ell, sizeof(m_ell)); // re-init for header & data integrity
   {
     // See discussion on Salt to understand why we hash
     // random data instead of writing it directly
