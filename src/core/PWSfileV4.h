@@ -68,6 +68,7 @@ private:
   };
   std::vector<KeyBlock> m_keyblocks;
   unsigned m_current_keyblock; // index
+  long m_effectiveFileLength; // for read = fileLength - |HMAC|
   Cipher m_cipher;
   friend struct KeyBlockWriter;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC

@@ -40,7 +40,8 @@ using namespace std;
 using pws_os::CUUID;
 
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
-: PWSfile(filename, mode, version), m_keyblocks(1), m_current_keyblock(0)
+: PWSfile(filename, mode, version), m_keyblocks(1), m_current_keyblock(0),
+  m_effectiveFileLength(0)
 {
   m_IV = m_ipthing;
   m_terminal = NULL;
@@ -80,6 +81,8 @@ int PWSfileV4::Open(const StringX &passkey)
   }
   if (status != SUCCESS) {
     Close();
+  } else {
+    m_effectiveFileLength = pws_os::fileLength(m_fd) - SHA256::HASHLEN;
   }
   return status;
 }
@@ -95,8 +98,8 @@ int PWSfileV4::Close()
   m_hmac.Final(digest);
 
   // Write or verify HMAC, depending on RWmode.
+  size_t fret;
   if (m_rw == Write) {
-    size_t fret;
     fret = fwrite(digest, sizeof(digest), 1, m_fd);
     if (fret != 1) {
       PWSfile::Close();
@@ -106,7 +109,11 @@ int PWSfileV4::Close()
   } else { // Read
     // and detected (by _readcbc) - just read hmac & verify
     unsigned char d[SHA256::HASHLEN];
-    fread(d, sizeof(d), 1, m_fd);
+    fret = fread(d, sizeof(d), 1, m_fd);
+    if (fret != 1) {
+      PWSfile::Close();
+      return TRUNCATED_FILE;
+    }
     if (memcmp(d, digest, SHA256::HASHLEN) == 0)
       return PWSfile::Close();
     else {
@@ -226,7 +233,10 @@ int PWSfileV4::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  return item.Read(this);
+  if (ftell(m_fd) < m_effectiveFileLength)
+    return item.Read(this);
+  else
+    return END_OF_FILE;
 }
 
 void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
@@ -649,7 +659,7 @@ bool PWSfileV4::VerifyKeyBlocks()
   if (memcmp(CalcEndKB, ReadEndKB, SHA256::HASHLEN) == 0)
     return true;
   else {
-    fseek(m_fd, -sizeof(ReadEndKB), SEEK_CUR);
+    fseek(m_fd, -long(sizeof(ReadEndKB)), SEEK_CUR);
     return false;
   }
 }
