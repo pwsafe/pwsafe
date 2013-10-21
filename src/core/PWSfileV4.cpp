@@ -322,8 +322,12 @@ void PWSfileV4::SetupKeyBlocksForWrite()
     if (!kwL.Unwrap(kb.m_kw_l, m_ell, sizeof(kb.m_kw_l)))
       ASSERT(0);
   }
+}
+
+void PWSfileV4::ComputeEndKB(unsigned char digest[SHA256::HASHLEN])
+{
   m_hmac.Init(m_ell, sizeof(m_ell));
-  // Now iterate over all KeyBlocks, calculate endKB
+  // Iterate over all KeyBlocks, calculate endKB
   vector<KeyBlock>::iterator iter;
   for (iter = m_keyblocks.begin(); iter != m_keyblocks.end(); iter++) {
     m_hmac.Update(iter->m_salt, PWSaltLength);
@@ -333,8 +337,9 @@ void PWSfileV4::SetupKeyBlocksForWrite()
     m_hmac.Update(iter->m_kw_k, KWLEN);
     m_hmac.Update(iter->m_kw_l, KWLEN);
   }
-  // All that's left to do is m_hmac.Final(), just before writing.
+  m_hmac.Final(digest);
 }
+
 
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
@@ -377,8 +382,9 @@ size_t PWSfileV4::WriteKeyBlocks()
   size_t numWritten = 0;
   KeyBlockWriter kbw(m_fd, numWritten);
   for_each(m_keyblocks.begin(), m_keyblocks.end(), kbw);
+
   unsigned char digest[SHA256::HASHLEN];
-  m_hmac.Final(digest);
+  ComputeEndKB(digest);
   size_t fret = fwrite(digest, sizeof(digest), 1, m_fd);
   if (fret == 1)
     numWritten += SHA256::HASHLEN;
@@ -630,33 +636,54 @@ int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
   return SUCCESS;
 }
 
+bool PWSfileV4::VerifyKeyBlocks()
+{
+  unsigned char ReadEndKB[SHA256::HASHLEN];
+  unsigned char CalcEndKB[SHA256::HASHLEN];
+
+  int nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  if (nRead != 1)
+    return false; // will catch EOF later
+  ComputeEndKB(CalcEndKB);
+
+  if (memcmp(CalcEndKB, ReadEndKB, SHA256::HASHLEN) == 0)
+    return true;
+  else {
+    fseek(m_fd, -sizeof(ReadEndKB), SEEK_CUR);
+    return false;
+  }
+}
 
 int PWSfileV4::ReadHeader()
 {
   PWS_LOGIT;
-
   int status;
+  do {
+    status = ReadKeyBlock();
+    // status is either SUCESS or END_OF_FILE
+    if (status != SUCCESS) {
+      Close();
+      return status;
+    }
 
-  // XXX Start off with a single KeyBlock, needs expansion to N
-  status = ReadKeyBlock();
+    status = TryKeyBlock(m_keyblocks.size() - 1, m_passkey, m_key, m_ell);
+    // status is either SUCCESS or WRONG_PASSWORD
+  } while (status != SUCCESS);
 
-  if (status != SUCCESS) {
-    Close();
-    return status;
+  // here iff we found a good keyblock
+  m_current_keyblock = m_keyblocks.size() - 1;
+
+  // Question is, is the the last keyblock?
+  while (!VerifyKeyBlocks()) {
+    status = ReadKeyBlock();
+    // status is either SUCESS or END_OF_FILE
+    if (status != SUCCESS) {
+      Close();
+      return status;
+    }
   }
 
-  unsigned char L[KLEN];
-  status = TryKeyBlock(m_current_keyblock, m_passkey, m_key, L);
-
-  if (status != SUCCESS) {
-    Close();
-    return status;
-  }
-
-  m_hmac.Init(L, sizeof(L));
-
-  // XXX Read and check endKB
-
+  m_hmac.Init(m_ell, sizeof(m_ell));
   size_t nIPread = fread(m_ipthing, sizeof(m_ipthing), 1, m_fd);
   if (nIPread != 1) {
     Close();
