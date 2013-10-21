@@ -965,7 +965,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
-  int closeStatus = in->Close(); // in V3 this checks integrity
+  int closeStatus = in->Close(); // in V3 & later this checks integrity
   delete in;
 
   // Write out error heading
