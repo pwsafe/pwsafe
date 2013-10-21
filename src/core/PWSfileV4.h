@@ -78,6 +78,8 @@ private:
   int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
   int TryKeyBlock(unsigned index, const StringX &passkey,
                   unsigned char K[KLEN], unsigned char L[KLEN]);
+  void ComputeEndKB(unsigned char digest[SHA256::HASHLEN]);
+  bool VerifyKeyBlocks();
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           size_t length);
