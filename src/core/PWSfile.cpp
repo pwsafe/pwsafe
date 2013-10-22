@@ -228,13 +228,18 @@ int PWSfile::CheckPasskey(const StringX &filename,
 
   int status;
   version = UNKNOWN_VERSION;
-  status = PWSfileV3::CheckPasskey(filename, passkey);
-  if (status == SUCCESS)
-    version = V30;
-  if (status == NOT_PWS_FILE) {
-    status = PWSfileV1V2::CheckPasskey(filename, passkey);
+  status = PWSfileV4::CheckPasskey(filename, passkey);
+  if (status == SUCCESS) {
+    version = V40;
+  } else {
+    status = PWSfileV3::CheckPasskey(filename, passkey);
     if (status == SUCCESS)
-      version = V20; // or V17?
+      version = V30;
+    if (status == NOT_PWS_FILE) {
+      status = PWSfileV1V2::CheckPasskey(filename, passkey);
+      if (status == SUCCESS)
+        version = V20; // or V17?
+    }
   }
   return status;
 }

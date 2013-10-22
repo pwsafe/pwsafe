@@ -38,6 +38,7 @@ public:
 
   int GetBlockSize() const {return BLOCKSIZE;}
   int GetHashLen() const {return HASHLEN;}
+  bool IsInited() const {return Hash != NULL;}
 
   void Init(const unsigned char *key, unsigned long keylen)
   {

@@ -76,6 +76,7 @@ private:
   unsigned char m_ell[KLEN]; // L
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
   CUTF8Conv m_utf8conv;
+  int ParseKeyBlocks(const StringX &passkey);
   int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
   int TryKeyBlock(unsigned index, const StringX &passkey,
                   unsigned char K[KLEN], unsigned char L[KLEN]);

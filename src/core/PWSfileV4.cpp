@@ -6,8 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// XXX Stub implementation of V4, started as a copy of V3.
-
 #include "PWSfileV4.h"
 #include "PWSrand.h"
 #include "Util.h"
@@ -77,12 +75,15 @@ int PWSfileV4::Open(const StringX &passkey)
       status = WriteHeader();
     }
   } else { // open for read
-    status = ReadHeader();
+    status = ParseKeyBlocks(passkey);
+    if (status == SUCCESS)
+      status = ReadHeader();
   }
   if (status != SUCCESS) {
     Close();
   } else {
-    m_effectiveFileLength = pws_os::fileLength(m_fd) - SHA256::HASHLEN;
+    if (m_rw == Read)
+      m_effectiveFileLength = pws_os::fileLength(m_fd) - SHA256::HASHLEN;
   }
   return status;
 }
@@ -93,6 +94,12 @@ int PWSfileV4::Close()
 
   if (m_fd == NULL)
     return SUCCESS; // idempotent
+
+  if (!m_hmac.IsInited()) {
+    // Here if we're closing before starting to work on hmac
+    // e.g., wrong password
+    return PWSfile::Close();
+  }
 
   unsigned char digest[SHA256::HASHLEN];
   m_hmac.Final(digest);
@@ -152,41 +159,11 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
     return CANT_OPEN_FILE;
 
   retval = SanityCheck(fd);
-  if (retval != SUCCESS)
-    goto err;
-
-  unsigned char salt[PWSaltLength];
-  fread(salt, 1, sizeof(salt), fd);
-
-  unsigned char Nb[sizeof(uint32)];
-  fread(Nb, 1, sizeof(Nb), fd);
-  { // block to shut up compiler warning w.r.t. goto
-    const uint32 N = getInt32(Nb);
-
-    ASSERT(N >= MIN_HASH_ITERATIONS);
-    if (N < MIN_HASH_ITERATIONS) {
-      retval = FAILURE;
-      goto err;
-    }
-
-    if (nITER != NULL)
-      *nITER = N;
-    unsigned char Ptag[SHA256::HASHLEN];
-    if (aPtag == NULL)
-      aPtag = Ptag;
-
-    StretchKey(salt, sizeof(salt), passkey, N, aPtag, SHA256::HASHLEN);
+  if (retval == SUCCESS) {
+    PWSfileV4 pv4(filename, Read, V40);
+    pv4.m_fd = fd;
+    retval = pv4.ParseKeyBlocks(passkey);
   }
-  unsigned char HPtag[SHA256::HASHLEN];
-  H.Update(aPtag, SHA256::HASHLEN);
-  H.Final(HPtag);
-  unsigned char readHPtag[SHA256::HASHLEN];
-  fread(readHPtag, 1, sizeof(readHPtag), fd);
-  if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
-    retval = WRONG_PASSWORD;
-    goto err;
-  }
-err:
   if (a_fd == NULL) // if we opened the file, we close it...
     fclose(fd);
   return retval;
@@ -664,7 +641,7 @@ bool PWSfileV4::VerifyKeyBlocks()
   }
 }
 
-int PWSfileV4::ReadHeader()
+int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
 {
   PWS_LOGIT;
   int status;
@@ -676,7 +653,7 @@ int PWSfileV4::ReadHeader()
       return status;
     }
 
-    status = TryKeyBlock(m_keyblocks.size() - 1, m_passkey, m_key, m_ell);
+    status = TryKeyBlock(m_keyblocks.size() - 1, passkey, m_key, m_ell);
     // status is either SUCCESS or WRONG_PASSWORD
   } while (status != SUCCESS);
 
@@ -689,10 +666,13 @@ int PWSfileV4::ReadHeader()
     // status is either SUCESS or END_OF_FILE
     if (status != SUCCESS) {
       Close();
-      return status;
     }
   }
+  return status;
+}
 
+int PWSfileV4::ReadHeader()
+{
   m_hmac.Init(m_ell, sizeof(m_ell));
   size_t nIPread = fread(m_ipthing, sizeof(m_ipthing), 1, m_fd);
   if (nIPread != 1) {
