@@ -279,7 +279,7 @@ void PWSfileV4::SetupKeyBlocksForWrite()
     // to the attacker. Therefore, we'll hash the salt.
     // The following takes shameless advantage of the fact that
     // PWSaltLength == SHA256::HASHLEN
-    ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
+    ASSERT(int(PWSaltLength) == int(SHA256::HASHLEN)); // if false, have to recode
     PWSrand::GetInstance()->GetRandomData(kb.m_salt, sizeof(kb.m_salt));
     SHA256 salter;
     salter.Update(kb.m_salt, sizeof(kb.m_salt));
@@ -337,7 +337,7 @@ void PWSfileV4::ComputeEndKB(unsigned char digest[SHA256::HASHLEN])
 struct KeyBlockWriter
 {
   KeyBlockWriter(FILE *fd, size_t &numWritten)
-    : m_fd(fd), m_numWritten(numWritten), m_ok(true)
+    : m_numWritten(numWritten), m_ok(true), m_fd(fd)
   {}
   void operator()(const PWSfileV4::KeyBlock &kb)
   {
