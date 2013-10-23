@@ -337,7 +337,7 @@ int PWSfileV3::WriteHeader()
   // to the attacker. Therefore, we'll hash the salt.
   // The following takes shameless advantage of the fact that
   // PWSaltLength == SHA256::HASHLEN
-  ASSERT(PWSaltLength == SHA256::HASHLEN); // if false, have to recode
+  ASSERT(int(PWSaltLength) == int(SHA256::HASHLEN)); // if false, have to recode
   { // in a block to protect against goto
     PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
     SHA256 salter;
