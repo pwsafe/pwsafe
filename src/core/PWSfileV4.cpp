@@ -183,7 +183,14 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const StringX &data)
 size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
-  m_hmac.Update(data, reinterpret_cast<int &>(length));
+  int32 len32 = reinterpret_cast<int &>(length);
+  unsigned char buf[4];
+  putInt32(buf, len32);
+
+  m_hmac.Update(&type, 1);
+  m_hmac.Update(buf, sizeof(buf));
+  m_hmac.Update(data, len32);
+
   return PWSfile::WriteCBC(type, data, length);
 }
 
@@ -200,7 +207,13 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
-    m_hmac.Update(data, reinterpret_cast<unsigned long &>(length));
+    int32 len32 = reinterpret_cast<int &>(length);
+    unsigned char buf[4];
+    putInt32(buf, len32);
+
+    m_hmac.Update(&type, 1);
+    m_hmac.Update(buf, sizeof(buf));
+    m_hmac.Update(data, len32);
   }
 
   return numRead;
