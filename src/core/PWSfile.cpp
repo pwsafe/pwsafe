@@ -222,20 +222,25 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 int PWSfile::CheckPasskey(const StringX &filename,
                           const StringX &passkey, VERSION &version)
 {
-
+  /**
+   * We start with V3 because it's the quickest to rule out
+   * due to header/footer.
+   * V4 can take a looong time if the iter value's too big.
+   * XXX Need to address this later with a popup prompting the user.
+   */
   if (passkey.empty())
     return WRONG_PASSWORD;
 
   int status;
   version = UNKNOWN_VERSION;
-  status = PWSfileV4::CheckPasskey(filename, passkey);
+  status = PWSfileV3::CheckPasskey(filename, passkey);
   if (status == SUCCESS) {
-    version = V40;
+    version = V30;
   } else {
-    status = PWSfileV3::CheckPasskey(filename, passkey);
+    status = PWSfileV4::CheckPasskey(filename, passkey);
     if (status == SUCCESS)
-      version = V30;
-    if (status == NOT_PWS_FILE) {
+      version = V40;
+    else {
       status = PWSfileV1V2::CheckPasskey(filename, passkey);
       if (status == SUCCESS)
         version = V20; // or V17?
