@@ -64,7 +64,7 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
 /*
 * Get an integer that is stored in little-endian format
 */
-inline int getInt32(const unsigned char buf[4])
+inline int32 getInt32(const unsigned char buf[4])
 {
   ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
@@ -93,7 +93,7 @@ inline int getInt32(const unsigned char buf[4])
 /*
 * Store an integer that is stored in little-endian format
 */
-inline void putInt32(unsigned char buf[4], const int val )
+inline void putInt32(unsigned char buf[4], const int32 val )
 {
   ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
