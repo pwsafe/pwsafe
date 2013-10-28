@@ -1843,11 +1843,17 @@ static bool pull_string(StringX &str, const unsigned char *data, size_t len)
   return utf8status;
 }
 
-static bool pull_time32(time_t &t, const unsigned char *data, size_t len)
+static bool pull_time(time_t &t, const unsigned char *data, size_t len)
 {
-  if (len == sizeof(__time32_t)) {
+  // len can be either 4 or 8, as can be sizeof(time_t)...
+  ASSERT(len == 4 || len == 8);
+  if (!(len == 4 || len == 8))
+    return false;
+  if (len == sizeof(time_t)) {
     t = *reinterpret_cast<const time_t *>(data);
-  } else if (len == sizeof(__time64_t)) {
+  } else if (len < sizeof(time_t)) {
+    t = *reinterpret_cast<const time_t *>(data);
+  } else {
     // convert from 64 bit time to currently supported 32 bit
     struct tm ts;
     const __time64_t *t64 = reinterpret_cast<const __time64_t *>(data);
@@ -1858,18 +1864,6 @@ static bool pull_time32(time_t &t, const unsigned char *data, size_t len)
     if (t == time_t(-1)) { // time is past 2038!
       t = 0; return false;
     }
-#if (!defined(WIN64) && !defined(_WIN64)) /* ugly, but necessary */
-  } else if (len < sizeof(__time32_t)) {
-    // Turns out that __time32_t is 8 bytes under 64bits...
-    __time32_t t8 = t;
-    if (pull_time32(t8, data, sizeof(t8))) {
-      t = time_t(t8);
-    } else {
-      ASSERT(0); return false;
-    }
-#endif
-  } else {
-    ASSERT(0); return false;
   }
   return true;
 }
@@ -1980,7 +1974,7 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
     case ATIME:
     case XTIME:
     case RMTIME:
-      if (!pull_time32(t, data, len)) return false;
+      if (!pull_time(t, data, len)) return false;
       SetTime(ft, t);
       break;
     case XTIME_INT:
@@ -2041,11 +2035,10 @@ static void push_string(vector<char> &v, char type,
 static void push_time(vector<char> &v, char type, time_t t)
 {
   if (t != 0) {
-   time_t t32 = static_cast<time_t>(t);
     v.push_back(type);
-    push_length(v, sizeof(t32));
+    push_length(v, sizeof(t));
     v.insert(v.end(),
-      reinterpret_cast<char *>(&t32), reinterpret_cast<char *>(&t32) + sizeof(t32));
+      reinterpret_cast<char *>(&t), reinterpret_cast<char *>(&t) + sizeof(t));
   }
 }
 
