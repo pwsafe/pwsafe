@@ -1046,6 +1046,13 @@ void DboxMain::OnSave()
 
 int DboxMain::Save(const SaveType savetype)
 {
+  /*
+   * We're treating both V3 and V4 as 'current'
+   * versions, doing incremental backups for both.
+   * For older versions, we offer to convert.
+   * This means explicit V3 -> V4 conversion
+   * Is done via SaveAs()
+   */
   PWS_LOGIT_ARGS("savetype=%d", savetype);
 
   int rc;
@@ -1067,7 +1074,8 @@ int DboxMain::Save(const SaveType savetype)
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
-    case PWSfile::VCURRENT:
+    case PWSfile::V30:
+    case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
