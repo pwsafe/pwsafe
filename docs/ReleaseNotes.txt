@@ -1,4 +1,4 @@
-Password Safe 3.32 Release Notes - September 2013
+Password Safe 3.32.1 Release Notes - ??? 2013
 =================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,32 +8,20 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.32
-=====================
-[] Support Yubico's YubiKey authentication token. Previously this
-product was supported in a separate branch.
-[705] User can choose not to let PasswordSafe record which virtual
-keyboard was used.
-[703] Changing a database opened in read-only mode to read/write will
-revert when the database is locked.
-[695] Allow a keyboard shortcut to be associated with selecting an entry.
-Please see Help entry for more details.
-[] Add setting to configure the amount of processing required to save and 
-open a database.
-
-Changes to Existing Features in 3.33
-====================================
+New Features for 3.32.1
+=======================
 None
 
-Bugs fixed in 3.33
-==================
+Changes to Existing Features in 3.32.1
+======================================
+None
+
+Bugs fixed in 3.32.1
+====================
 [1134] Filtering by type now works correctly for shortcuts & shortcut bases.
 
-New Features for 3.33
-=====================
-None
 
-New Features for 3.33
+New Features for 3.32
 =====================
 [705] User can choose not to let PasswordSafe record which virtual
 keyboard was used.
