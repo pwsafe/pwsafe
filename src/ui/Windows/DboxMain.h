@@ -912,7 +912,7 @@ private:
   CInfoDisplay *m_pNotesDisplay;
 
   // Filters
-  bool m_bFilterActive, m_bFilterForStatus, m_bUnsavedDisplayed, m_bExpireDisplayed;
+  bool m_bFilterActive, m_bFilterForStatus, m_bFilterForType, m_bUnsavedDisplayed, m_bExpireDisplayed;
   // Current filter
   st_filters m_currentfilter;
   // Special Show Unsaved Changes filter

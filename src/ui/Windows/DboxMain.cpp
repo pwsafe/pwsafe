@@ -134,7 +134,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bFilterForStatus(false),
+  m_bFilterForStatus(false), m_bFilterForType(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),

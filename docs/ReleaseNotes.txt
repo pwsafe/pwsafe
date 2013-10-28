@@ -21,13 +21,38 @@ Please see Help entry for more details.
 [] Add setting to configure the amount of processing required to save and 
 open a database.
 
+Changes to Existing Features in 3.33
+====================================
+None
+
+Bugs fixed in 3.33
+==================
+[1134] Filtering by type now works correctly for shortcuts & shortcut bases.
+
+New Features for 3.33
+=====================
+None
+
+New Features for 3.33
+=====================
+[705] User can choose not to let PasswordSafe record which virtual
+keyboard was used.
+[703] Changing a database opened in read-only mode to read/write will
+revert when the database is locked.
+[695] Allow a keyboard shortcut to be associated with selecting an entry.
+Please see Help entry for more details.
+[] Add setting to configure the amount of processing required to save and
+open a database.
+[] Support Yubico's YubiKey authentication token. Previously this
+product was supported in a separate branch.
+
 Changes to Existing Features in 3.32
 ====================================
+[718] Run command can now accept $e or $email and will expand this to
+the entry's e-mail.
 [] Add validation of entry field XML characters to ensure resulting file
 can be imported.  Note: any field containing an invalid character will not
 be exported and a comment added to the export file and the report.
-[718] Run command can now accept $e or $email and will expand this to
-the entry's e-mail.
 
 Bugs fixed in 3.32
 ==================
