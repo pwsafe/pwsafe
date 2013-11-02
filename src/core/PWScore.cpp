@@ -946,7 +946,17 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   int nnn = file_nums.back();
   nnn++;
-  if (nnn > 999) nnn = 1;
+  if (nnn > 999) {
+    nnn = 1;
+    size_t x = file_nums.size() - maxnumincbackups;
+    while (file_nums[x++] == nnn)
+      nnn++;
+    int next = 999 - (maxnumincbackups - nnn);
+    int m = 1;
+    for (x = 0; x < file_nums.size(); x++)
+      if (file_nums[x] < next)
+        file_nums[x] = next <= 999 ? next++ : m++;
+  }
 
   Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
 
