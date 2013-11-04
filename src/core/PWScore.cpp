@@ -944,13 +944,16 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   sort(file_nums.begin(), file_nums.end());
 
+  // nnn is the number of the file in the returned value: cs_filebasename_nnn
   int nnn = file_nums.back();
   nnn++;
   if (nnn > 999) {
+    // as long as there's a _999 file, we set n starting from 001
     nnn = 1;
     size_t x = file_nums.size() - maxnumincbackups;
-    while (file_nums[x++] == nnn)
+    while (file_nums[x++] == nnn && x < file_nums.size())
       nnn++;
+    // Now we need to determine who to delete.
     int next = 999 - (maxnumincbackups - nnn);
     int m = 1;
     for (x = 0; x < file_nums.size(); x++)
