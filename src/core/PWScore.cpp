@@ -913,9 +913,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 static void ManageIncBackupFiles(const stringT &cs_filenamebase,
                                  size_t maxnumincbackups, stringT &cs_newname)
 {
-  // make sure we've no more than maxnumincbackups backup files,
-  // and return the base name of the next backup file
-  // (sans the suffix, which will be added by caller)
+  /**
+   * make sure we've no more than maxnumincbackups backup files,
+   * and return the base name of the next backup file
+   * (sans the suffix, which will be added by caller)
+   *
+   * The current solution breaks when maxnumincbackups >= 999.
+   * Best solution is to delete by modification time,
+   * but that requires a bit too much for the cost/benefit.
+   * So for now we're "good enough" - limiting maxnumincbackups to <= 998
+   */
+
+  if (maxnumincbackups >= 999) {
+    pws_os::Trace(_T("Maxnumincbackups: truncating maxnumincbackups to 998"));
+    maxnumincbackups = 998;
+  }
+
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
