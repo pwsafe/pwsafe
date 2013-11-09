@@ -62,7 +62,7 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char *cbcbuffer);
 
 
-// XXX TODO templatize the following, bonus for getting unsigned versions too XXX
+// The following can be used directly or via template functions getInt<> / putInt<>
 
 /*
 * Get an integer that is stored in little-endian format
@@ -158,6 +158,35 @@ inline void putInt32(unsigned char buf[4], const int32 val )
 #error Is the target CPU big or little endian?
 #endif
 }
+
+inline void putInt64(unsigned char buf[8], const int64 val )
+{
+#if defined(PWS_LITTLE_ENDIAN)
+  *reinterpret_cast<int64 *>(buf) = val;
+#elif defined(PWS_BIG_ENDIAN)
+  buf[0] = val & 0xFF;
+  buf[1] = (val >> 8) & 0xFF;
+  buf[2] = (val >> 16) & 0xFF;
+  buf[3] = (val >> 24) & 0xFF;
+  buf[4] = (val >> 32) & 0xFF;
+  buf[5] = (val >> 40) & 0xFF;
+  buf[6] = (val >> 48) & 0xFF;
+  buf[7] = (val >> 56) & 0xFF;
+#else
+#error Is the target CPU big or little endian?
+#endif
+}
+
+// And now let's wrap some template functions around the above:
+template<typename T> T getInt(const unsigned char *buf) {}
+template<> inline int16 getInt<int16>(const unsigned char *buf) {return getInt16(buf);}
+template<> inline int32 getInt<int32>(const unsigned char *buf) {return getInt32(buf);}
+template<> inline int64 getInt<int64>(const unsigned char *buf) {return getInt64(buf);}
+
+template<typename T> void putInt(unsigned char *buf, const T val) {}
+template<> inline void putInt<int16>(unsigned char *buf, const int16 val) {putInt16(buf, val);}
+template<> inline void putInt<int32>(unsigned char *buf, const int32 val) {putInt32(buf, val);}
+template<> inline void putInt<int64>(unsigned char *buf, const int64 val) {putInt64(buf, val);}
 
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
