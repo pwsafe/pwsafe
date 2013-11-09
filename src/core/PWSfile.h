@@ -152,6 +152,9 @@ public:
   virtual void SetPasswordPolicies(const PSWDPolicyMap &) {}
   virtual const std::vector<StringX> *GetEmptyGroups() const {return NULL;}
   virtual void SetEmptyGroups(const std::vector<StringX> &) {}
+
+  // Following for low-level details that changed between format versions
+  virtual size_t timeFieldLen() const {return 4;} // changed in V4
   
   size_t WriteField(unsigned char type,
                     const StringX &data) {return WriteCBC(type, data);}

@@ -56,7 +56,10 @@ public:
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
   const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
 
-private:
+  // Following for low-level details that changed between format versions
+  virtual size_t timeFieldLen() const {return 5;} // Experimental
+
+ private:
   // Format constants:
   enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8)};
   struct KeyBlock { // See formatV4.txt
