@@ -8,6 +8,8 @@
 #ifndef _TYPEDEFS_H
 #define _TYPEDEFS_H
 
+#include <type_traits> // for static_assert
+
 /**
 * Silly wrapper to abstract away the difference between a Unicode
 * (wchar_t) and non-Unicode (char) std::string, as well as
@@ -153,5 +155,15 @@ typedef int HANDLE;
 #include "debug.h"
 #include "linux/pws_time.h"
 #endif /* _WIN32 */
+
+// Compile-time check that our sized types are correct:
+static_assert(sizeof(int8) == 1, "int8 misdefined");
+static_assert(sizeof(uint8) == 1, "uint8 misdefined");
+static_assert(sizeof(int16) == 2, "int16 misdefined");
+static_assert(sizeof(uint16) == 2, "uint16 misdefined");
+static_assert(sizeof(int32) == 4, "int32 misdefined");
+static_assert(sizeof(uint32) == 4, "uint32 misdefined");
+static_assert(sizeof(int64) == 8, "int64 misdefined");
+static_assert(sizeof(uint64) == 8, "uint64 misdefined");
 
 #endif /* _TYPEDEFS_H */
