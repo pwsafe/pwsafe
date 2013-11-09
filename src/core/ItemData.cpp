@@ -190,18 +190,23 @@ int CItemData::Write(PWSfile *out) const
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
 
-  int32 i32;
-  
   for (i = 0; TimeFields[i] != END; i++) {
     time_t t = 0;
     GetTime(TimeFields[i], t);
     if (t != 0) {
-      i32 = static_cast<int32>(t);
-      out->WriteField(static_cast<unsigned char>(TimeFields[i]),
-                      reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
-    }
+      if (out->timeFieldLen() == 4) {
+        unsigned char buf[4];
+        putInt32(buf, static_cast<int32>(t));
+        out->WriteField(static_cast<unsigned char>(TimeFields[i]), buf, out->timeFieldLen());
+      } else if (out->timeFieldLen() == 5) { // Experimental
+        unsigned char buf[8] = {0};
+        putInt<time_t>(buf, t);
+        out->WriteField(static_cast<unsigned char>(TimeFields[i]), buf, out->timeFieldLen());
+      } else ASSERT(0);
+    } // t != 0
   }
 
+  int32 i32;
   GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
     out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
@@ -1845,18 +1850,24 @@ static bool pull_string(StringX &str, const unsigned char *data, size_t len)
 
 static bool pull_time(time_t &t, const unsigned char *data, size_t len)
 {
-  // len can be either 4 or 8, as can be sizeof(time_t)...
-  ASSERT(len == 4 || len == 8);
-  if (!(len == 4 || len == 8))
+  // len can be either 4, 5 or 8...
+  // len == 5 is new for V4
+  ASSERT(len == 4 || len == 5 || len == 8);
+  if (!(len == 4 || len == 5 || len == 8))
     return false;
-  if (len == sizeof(time_t)) {
-    t = *reinterpret_cast<const time_t *>(data);
-  } else if (len < sizeof(time_t)) {
-    t = *reinterpret_cast<const time_t *>(data);
+  // sizeof(time_t) is either 4 or 8
+  if (len == sizeof(time_t)) { // 4 == 4 or 8 == 8
+    t = getInt<time_t>(data);
+  } else if (len < sizeof(time_t)) { // 4 < 8 or 5 < 8
+    unsigned char buf[sizeof(time_t)] = {0};
+    memcpy(buf, data, len);
+    t = getInt<time_t>(buf);
   } else {
-    // convert from 64 bit time to currently supported 32 bit
+    // convert from 40 or 64 bit time to 32 bit
+    unsigned char buf[sizeof(time_t)] = {0};
+    memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
-    const __time64_t *t64 = reinterpret_cast<const __time64_t *>(data);
+    const __time64_t *t64 = reinterpret_cast<const __time64_t *>(buf); // XXX assumes little_endian
     if (_gmtime64_s(&ts, t64) != 0) {
       ASSERT(0); return false;
     }
@@ -1871,7 +1882,7 @@ static bool pull_time(time_t &t, const unsigned char *data, size_t len)
 static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int32)) {
-    i = *reinterpret_cast<const int32 *>(data);
+    i = getInt32(data);
   } else {
     ASSERT(0);
     return false;
@@ -1882,7 +1893,7 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
 static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int16)) {
-    i16 = *reinterpret_cast<const int16 *>(data);
+    i16 = getInt16(data);
   } else {
     ASSERT(0);
     return false;
