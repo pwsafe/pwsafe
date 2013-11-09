@@ -61,25 +61,39 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char *cbcbuffer);
 
+
+// XXX TODO templatize the following, bonus for getting unsigned versions too XXX
+
 /*
 * Get an integer that is stored in little-endian format
 */
+
+inline int16 getInt16(const unsigned char buf[2])
+{
+#if defined(PWS_LITTLE_ENDIAN)
+  return *reinterpret_cast<const int16 *>(buf);
+#elif defined(PWS_BIG_ENDIAN)
+  return (buf[0] | (buf[1] << 8) );
+#else
+#error Is the target CPU big or little endian?
+#endif
+}
+
 inline int32 getInt32(const unsigned char buf[4])
 {
-  ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
 #if defined(_DEBUG)
-  if ( *reinterpret_cast<const int *>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *reinterpret_cast<const int32 *>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n"));
   }
 #endif
-  return *reinterpret_cast<const int *>(buf);
+  return *reinterpret_cast<const int32 *>(buf);
 #elif defined(PWS_BIG_ENDIAN)
 #if defined(_DEBUG)
   // Folowing code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
-  if ( *reinterpret_cast<const int *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *reinterpret_cast<const int32 *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
@@ -90,16 +104,39 @@ inline int32 getInt32(const unsigned char buf[4])
 #endif
 }
 
+inline int64 getInt64(const unsigned char buf[8])
+{
+#if defined(PWS_LITTLE_ENDIAN)
+  return *reinterpret_cast<const int64 *>(buf);
+#elif defined(PWS_BIG_ENDIAN)
+  return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) |
+          ((int64)buf[4] << 32) | ((int64)buf[5] << 40) | ((int64)buf[6] << 48) | ((int64)buf[7] << 56));
+#else
+#error Is the target CPU big or little endian?
+#endif
+}
+
 /*
 * Store an integer that is stored in little-endian format
 */
+inline void putInt16(unsigned char buf[2], const int16 val )
+{
+#if defined(PWS_LITTLE_ENDIAN)
+  *reinterpret_cast<int16 *>(buf) = val;
+#elif defined(PWS_BIG_ENDIAN)
+  buf[0] = val & 0xFF;
+  buf[1] = (val >> 8) & 0xFF;
+#else
+#error Is the target CPU big or little endian?
+#endif
+}
+
 inline void putInt32(unsigned char buf[4], const int32 val )
 {
-  ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
   *reinterpret_cast<int32 *>(buf) = val;
 #if defined(_DEBUG)
-  if ( *reinterpret_cast<int*>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *reinterpret_cast<int32*>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n"));
   }
@@ -112,7 +149,7 @@ inline void putInt32(unsigned char buf[4], const int32 val )
 #if defined(_DEBUG)
   // Above code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
-  if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *(int32*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
