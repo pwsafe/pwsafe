@@ -178,7 +178,7 @@ inline void putInt64(unsigned char buf[8], const int64 val )
 }
 
 // And now let's wrap some template functions around the above:
-template<typename T> T getInt(const unsigned char *buf) {}
+template<typename T> T getInt(const unsigned char *) {return 0;}
 template<> inline int16 getInt<int16>(const unsigned char *buf) {return getInt16(buf);}
 template<> inline int32 getInt<int32>(const unsigned char *buf) {return getInt32(buf);}
 template<> inline int64 getInt<int64>(const unsigned char *buf) {return getInt64(buf);}
