@@ -163,6 +163,7 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
     PWSfileV4 pv4(filename, Read, V40);
     pv4.m_fd = fd;
     retval = pv4.ParseKeyBlocks(passkey);
+    pv4.m_fd = NULL; // s.t. d'tor doesn't fclose()
   }
   if (a_fd == NULL) // if we opened the file, we close it...
     fclose(fd);
