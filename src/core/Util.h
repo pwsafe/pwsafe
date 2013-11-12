@@ -177,16 +177,48 @@ inline void putInt64(unsigned char buf[8], const int64 val )
 #endif
 }
 
-// And now let's wrap some template functions around the above:
-template<typename T> T getInt(const unsigned char *) {return 0;}
-template<> inline int16 getInt<int16>(const unsigned char *buf) {return getInt16(buf);}
-template<> inline int32 getInt<int32>(const unsigned char *buf) {return getInt32(buf);}
-template<> inline int64 getInt<int64>(const unsigned char *buf) {return getInt64(buf);}
+/**
+ * And now let's wrap some template functions around the above:
+ * The idea is to templatize on the size of the datatype, s.t. calling
+ * one of these for a time_t, for example, will work regardless of the
+ * sizeof(time_t) (which can be 4 or 8).
+ * The only trick is that we cannot partially specialize a template function,
+ * so we use a template class to map from the sizeof(type) to the right get/put,
+ * and template functions as wrappers.
+ */
 
-template<typename T> void putInt(unsigned char *buf, const T val) {}
-template<> inline void putInt<int16>(unsigned char *buf, const int16 val) {putInt16(buf, val);}
-template<> inline void putInt<int32>(unsigned char *buf, const int32 val) {putInt32(buf, val);}
-template<> inline void putInt<int64>(unsigned char *buf, const int64 val) {putInt64(buf, val);}
+// Template for partial specialization
+template<typename T, std::size_t Size>
+struct GetPutImpl {
+  static T GetInt(const unsigned char *);
+  static void PutInt(unsigned char *, const T);
+};
+
+// and here are the partial specializations, on the sizeof(T):
+template<typename T>
+struct GetPutImpl<T, 2> {
+  static T GetInt(const unsigned char *buf) {return T(getInt16(buf));}
+  static void PutInt(unsigned char *buf, const T val) { putInt16(buf, int16(val)); }
+};
+
+template<typename T>
+struct GetPutImpl<T, 4> {
+  static T GetInt(const unsigned char *buf) {return T(getInt32(buf));}
+  static void PutInt(unsigned char *buf, const T val) { putInt32(buf, int32(val)); }
+};
+
+template<typename T>
+struct GetPutImpl<T, 8> {
+  static T GetInt(const unsigned char *buf) {return T(getInt64(buf));}
+  static void PutInt(unsigned char *buf, const T val) { putInt64(buf, int64(val)); }
+};
+
+// And here are the wrapper template functions. Simple, no?
+template<typename T>
+T inline getInt(const unsigned char *buf) { return GetPutImpl<T, sizeof(T)>::GetInt(buf); }
+template<typename T>
+void inline putInt(unsigned char *buf, const T val) { GetPutImpl<T, sizeof(T)>::PutInt(buf, val); }
+
 
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
