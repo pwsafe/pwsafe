@@ -1864,11 +1864,11 @@ static bool pull_time(time_t &t, const unsigned char *data, size_t len)
     t = getInt<time_t>(buf);
   } else {
     // convert from 40 or 64 bit time to 32 bit
-    unsigned char buf[sizeof(time_t)] = {0};
+    unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
     const __time64_t *t64 = reinterpret_cast<const __time64_t *>(buf); // XXX assumes little_endian
-    if (_gmtime64_s(&ts, t64) != 0) {
+    if (_gmtime64_s(&ts, t64) == 0) {
       ASSERT(0); return false;
     }
     t = _mkgmtime32(&ts);
