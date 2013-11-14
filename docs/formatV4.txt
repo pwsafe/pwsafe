@@ -338,7 +338,7 @@ URL                         0x0d        Text          Y              [10]
 Autotype                    0x0e        Text          Y              [11]
 Password History            0x0f        Text          Y              [12]
 Password Policy             0x10        Text          Y              [13]
-Password Expiry Interval    0x11        2 bytes       Y              [14]
+Password Expiry Interval    0x11        4 bytes       Y              [14]
 Run Command                 0x12        Text          Y
 Double-Click Action         0x13        2 bytes       Y              [15]
 EMail address               0x14        Text          Y              [16]
@@ -449,7 +449,7 @@ where:
 this value is used when the password is first generated and thereafter whenever
 the password is changed, until this value is unset.  Valid values are 1-3650
 corresponding to up to approximately 10 years.  A value of zero is equivalent to
-this field not being set.
+this field not being set. Value is stored in little-endian format.
 
 [15] A two byte field contain the value of the Double-Click Action and Shift
 Double-Click Action'preference value' (0xff means use the current
