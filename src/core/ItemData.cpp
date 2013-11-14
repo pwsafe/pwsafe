@@ -206,26 +206,34 @@ int CItemData::Write(PWSfile *out) const
     } // t != 0
   }
 
-  int32 i32;
+  int32 i32 = 0;
+  unsigned char buf32[sizeof(i32)];
   GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
-    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
+    putInt(buf32, i32);
+    out->WriteField(XTIME_INT, buf32, sizeof(int32));
   }
 
+  i32 = 0;
   GetKBShortcut(i32);
   if (i32 != 0) {
-    out->WriteField(KBSHORTCUT, reinterpret_cast<unsigned char *>(&i32),
-                    sizeof(i32));
+    putInt(buf32, i32);
+    out->WriteField(KBSHORTCUT, buf32, sizeof(int32));
   }
 
-  int16 i16;
+  int16 i16 = 0;
+  unsigned char buf16[sizeof(i16)];
   GetDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA) {
+    putInt(buf16, i16);
+    out->WriteField(DCA, buf16, sizeof(int16));
+  }
+  i16 = 0;
   GetShiftDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
-
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA) {
+    putInt(buf16, i16);
+    out->WriteField(SHIFTDCA, buf16, sizeof(int16));
+  }
   WriteIfSet(PROTECTED, out, false);
 
   WriteUnknowns(out);
@@ -1303,9 +1311,9 @@ void CItemData::SetTime(int whichtime)
 
 void CItemData::SetTime(int whichtime, time_t t)
 {
-  int t32 = static_cast<int32>(t);
-  SetField(static_cast<FieldType>(whichtime),
-           reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
+  unsigned char buf[sizeof(time_t)];
+  putInt(buf, t);
+  SetField(static_cast<FieldType>(whichtime), buf, sizeof(time_t));
 }
 
 bool CItemData::SetTime(int whichtime, const stringT &time_str)
@@ -1332,10 +1340,11 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
   return false;
 }
 
-void CItemData::SetXTimeInt(int32 &xint)
+void CItemData::SetXTimeInt(int32 xint)
 {
-   SetField(XTIME_INT, reinterpret_cast<const unsigned char *>(&xint),
-            sizeof(int32));
+  unsigned char buf[sizeof(int32)];
+  putInt(buf, xint);
+  SetField(XTIME_INT, buf, sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
@@ -1432,10 +1441,11 @@ void CItemData::SetPolicyName(const StringX &sx_PolicyName)
   SetField(POLICYNAME, sx_PolicyName);
 }
 
-void CItemData::SetDCA(const int16 &iDCA, const bool bShift)
+void CItemData::SetDCA(int16 iDCA, const bool bShift)
 {
-   SetField(bShift ? SHIFTDCA : DCA,
-            reinterpret_cast<const unsigned char *>(&iDCA), sizeof(int16));
+  unsigned char buf[sizeof(int16)];
+  putInt(buf, iDCA);
+  SetField(bShift ? SHIFTDCA : DCA, buf, sizeof(int16));
 }
 
 bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
@@ -1470,10 +1480,11 @@ void CItemData::SetProtected(bool bOnOff)
   }
 }
 
-void CItemData::SetKBShortcut(const int32 &iKBShortcut)
+void CItemData::SetKBShortcut(int32 iKBShortcut)
 {
-  SetField(KBSHORTCUT, reinterpret_cast<const unsigned char *>(&iKBShortcut),
-           sizeof(int32));
+  unsigned char buf[sizeof(int32)];
+  putInt(buf, iKBShortcut);
+  SetField(KBSHORTCUT, buf, sizeof(int32));
 }
 
 void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
@@ -1700,7 +1711,7 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
   int16 iDCA;
   GetDCA(iDCA, bShift);
   if (iDCA < 0)
-    iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(bShift ?
+    iDCA = static_cast<int16>(PWSprefs::GetInstance()->GetPref(bShift ?
                PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
 
   switch (iFunction) {
@@ -1862,8 +1873,8 @@ static bool pull_time(time_t &t, const unsigned char *data, size_t len)
     unsigned char buf[sizeof(time_t)] = {0};
     memcpy(buf, data, len);
     t = getInt<time_t>(buf);
-  } else {
-    // convert from 40 or 64 bit time to 32 bit
+  } else { // convert from 40 or 64 bit time to 32 bit
+    // XXX Change to use localtime, not GMT
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
@@ -2049,7 +2060,7 @@ static void push_time(vector<char> &v, char type, time_t t)
     v.push_back(type);
     push_length(v, sizeof(t));
     v.insert(v.end(),
-      reinterpret_cast<char *>(&t), reinterpret_cast<char *>(&t) + sizeof(t));
+             reinterpret_cast<char *>(&t), reinterpret_cast<char *>(&t) + sizeof(t));
   }
 }
 
@@ -2059,7 +2070,7 @@ static void push_int32(vector<char> &v, char type, int32 i)
     v.push_back(type);
     push_length(v, sizeof(int32));
     v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
+             reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
   }
 }
 
