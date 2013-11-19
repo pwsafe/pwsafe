@@ -9,12 +9,12 @@ you use.
 What makes Password Safe different? Three things:
 1. Simplicity: Password Safe is designed to do one thing, and to do it
 well. Start the application, enter your "combination", double-click on
-the right entry - presto - the password is now on your clipboard,ready
-for pasting.
-2. Security: The original version was designed and written by Bruce
-Schneier - 'nuff said.
+the right entry - presto - the password is now on your clipboard,
+ready for pasting.
+2. Security: The original version was designed by Bruce Schneier -
+'nuff said.
 3. Open Source: The source code for the project is available for
-inspection. For more information, see http://passwordsafe.sourceforge.net
+inspection. For more information, see http://pwsafe.org.
 
 The current version of Password Safe currently runs on Windows XP and
 later. Older versions are still available supporting Windows 95, 98,
@@ -24,7 +24,7 @@ is planned for future releases.
 Downloading:
 ============
 The latest & greatest version of Password Safe may be downloaded from
-https://sourceforge.net/project/showfiles.php?group_id=41019
+https://sourceforge.net/projects/passwordsafe/files/latest/download
 
 Non-English Support:
 ====================
@@ -73,17 +73,16 @@ Password Safe 3.29 and later makes use of the pugixml project
 Helping Out:
 ============
 Please report bugs via the project's bug tracking form, at
-https://sourceforge.net/tracker/?group_id=41019&atid=429579 (you might
-want to browse the list, to see if the issue hasn't been reported
-already).
+https://sourceforge.net/p/passwordsafe/bugs/ (you might want to browse
+the list, to see if the issue hasn't been reported already).
 
-Requests for features and enhancements should be submitted to the RFE
-(Request For Enhancements) page, at
-https://sourceforge.net/tracker/?group_id=41019&atid=429582
+Requests for features and enhancements should be submitted to the
+Feature Requests page, at
+https://sourceforge.net/p/passwordsafe/feature-requests/
 
 You can also post questions, suggestions, rants, raves, etc. to the
 Help or Open Discussion forums, at
-https://sourceforge.net/forum/?group_id=41019
+https://sourceforge.net/p/passwordsafe/discussion/
 
 If you wish to contribute to the project by writing code and/or
 documentation, please drop a note to the developer's mailing list:
@@ -100,7 +99,7 @@ project will help me justify the time and effort I spend in
 maintaining and improving this utility. In addtion, donations to the
 project help maintain SourceForge, the hosting site. If you wish to
 donate, please follow this link:
-https://sourceforge.net/donate/index.php?group_id=41019
+https://sourceforge.net/p/passwordsafe/donate/
 
 Release Notes:
 ==============
@@ -109,11 +108,12 @@ see the ReleaseNotes.txt file that comes with the package.
 
 Credits:
 ========
-- The original version of Password Safe was written by Mark Rosen,
-and was freely downloadable from Conterpane Lab's website. Thanks to
-Mark for writing a great little application! Following Mark, it was
-maintained by "AYB", at Counterpane. Thanks to Counterpane for
-deciding to open source the project.
+- The original version of Password Safe was designed by Bruce
+Schneier, written by Mark Rosen, and was freely downloadable from
+Conterpane Lab's website. Thanks to Mark for writing a great little
+application! Following Mark, it was maintained by "AYB", at
+Counterpane. Thanks to Counterpane for deciding to open source the
+project.
 - Jim Russell first brought the code to SourceForge, did some major
 cleaning up of the code, set up a nice project and added some minor
 features in release 1.9.0
@@ -122,7 +122,7 @@ Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony
 Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
 password policy code and some GUI improvements for 1.92.
 - Emilijan Mirceski did the new graphics for 2.0.
-- Maxim Tikhonov translated the online help to Russian.
+- Maxim Tikhonov translated the first online help to Russian.
 - Thanks to the PasswordSafe developer's mailing list for help in
 nailing down the new 3.x file format.
 - Many, many new features in 3.0 have been implemented by DK.
