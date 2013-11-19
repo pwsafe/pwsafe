@@ -74,9 +74,9 @@ stored here in order to future-proof the file format against increases
 in processing power.
 
 2.1.3 P' is the "stretched key" generated from the user's passphrase
-and the SALT, as defined by the hash-function-based key stretching
-algorithm in [PBKDF2], with SHA-256 [SHA256] as the hash function, and
-ITER iterations (at least 2048).
+(UTF-8 encoded) and the SALT, as defined by the hash-function-based
+key stretching algorithm in [PBKDF2], with SHA-256 [SHA256] as the
+hash function, and ITER iterations (at least 2048).
 
 2.1.4 KW is the Key Wrap algorithm defined in [RFC3349], using the
 user-specified encryption algorithm (TwoFish, AES,...).
