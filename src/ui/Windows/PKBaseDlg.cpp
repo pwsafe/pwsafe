@@ -15,6 +15,7 @@
 #include "os/env.h"
 
 #include "core/pwsprefs.h"
+#include "core/core.h" // for IDSC_UNKNOWN_ERROR
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 using namespace std;
@@ -172,7 +173,7 @@ void CPKBaseDlg::yubiCheckCompleted()
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
-    m_yubi_status.SetWindowText(_T("YubiKey timed out"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yk.closeKey();
     YubiFailed(); // allow subclass to do something useful
@@ -185,7 +186,7 @@ void CPKBaseDlg::yubiCheckCompleted()
     m_yk.closeKey();
     // Generic error message
     TRACE(_T("yubiCompleted(%d)\n"), rc);
-    m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }
 }

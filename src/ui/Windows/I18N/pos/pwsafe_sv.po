@@ -125,6 +125,19 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 msgid " "
 msgstr " "
 
@@ -193,7 +206,7 @@ msgstr " 'Grupp'"
 
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
-msgstr ""
+msgstr " 'Tangentbordsgenväg'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
@@ -978,7 +991,7 @@ msgstr "&Ja"
 
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
-msgstr ""
+msgstr "&Yubikey..."
 
 #. Resource IDs: (1356)
 msgid "&email:"
@@ -1034,7 +1047,7 @@ msgstr "* betyder att databasen har ändrats sedan senaste spara"
 
 #. Resource IDs: (216)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr ""
+msgstr "*** Ogiltiga XML tecken har hittats - se exporterad XML fil för mer detaljer ***"
 
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
@@ -1590,7 +1603,7 @@ msgstr "Fält som senast ändrats:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
-msgstr ""
+msgstr "Applikationsgenväg"
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -1765,7 +1778,7 @@ msgstr "Utforskarens kommandorads parametrar:"
 
 #. Resource IDs: (1001)
 msgid "Built on "
-msgstr ""
+msgstr "Byggd på"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2095,7 +2108,7 @@ msgstr "Klicka för att växla och/eller anknyta till föregående rad"
 
 #. Resource IDs: (376)
 msgid "Click, then touch your YubiKey"
-msgstr ""
+msgstr "Klicka och ta sedan Din YubiKey"
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -2474,7 +2487,7 @@ msgstr "Databas"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr ""
+msgstr "Databasposters genvägar"
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2663,7 +2676,7 @@ msgstr "Dubbelklicksval"
 
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
-msgstr ""
+msgstr "Dubbelklicka för att Editera/se denna post"
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2761,7 +2774,7 @@ msgstr "Lättydda tecken"
 
 #. Resource IDs: (2004)
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 #. Resource IDs: (121, 32220)
 msgid "Edit Entry"
@@ -2795,7 +2808,7 @@ msgstr "Tom rad %d överhoppad"
 
 #. Resource IDs: (1088)
 msgid "Enable"
-msgstr ""
+msgstr "Tillåt"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2938,7 +2951,7 @@ msgstr "Postjämförelse"
 
 #. Resource IDs: (373)
 msgid "Entry Keyboard Shortcut"
-msgstr ""
+msgstr "Posters tangentbordsgenväg"
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
@@ -2965,21 +2978,21 @@ msgstr "Postimportvarningar"
 #. Resource IDs: (216)
 #, c-format
 msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
-msgstr ""
+msgstr "Posts tangentbordsgenväg %s post %s är redan använd för post %s. Den har tagits bort från %s post."
 
 #. Resource IDs: (216)
 #, c-format
 msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr ""
+msgstr "Posts tangentbordsgenväg %s post %s är redan använd för PasswordSafe applikationen. Den har tagits bort från posten."
 
 #. Resource IDs: (373)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr ""
+msgstr "Posts tangentbordsgenväg måste ha med antingen en av eller båda Alt- och Ctrl-tangenterna samt ett alfanumeriskt tecken (0-9, A-Z)."
 
 #. Resource IDs: (372)
 #, c-format
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
-msgstr ""
+msgstr "Posts tangentbordsgenväg måste ha med antingen en av eller båda Alt- och Ctrl-tangenterna.\n\n%s"
 
 #. Resource IDs: (205)
 #, c-format
@@ -3224,7 +3237,7 @@ msgstr "Fält finns"
 
 #. Resource IDs: (2001)
 msgid "File"
-msgstr ""
+msgstr "Fil"
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3543,7 +3556,7 @@ msgstr "HotKey1"
 
 #. Resource IDs: (372)
 msgid "However, we can't add either as all combinations are in use."
-msgstr ""
+msgstr "Emellertid kan vi inte lägga till endera, då alla kombinationer används."
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3957,7 +3970,7 @@ msgstr "Behåll"
 
 #. Resource IDs: (193, 372, 65535)
 msgid "Keyboard Shortcut"
-msgstr ""
+msgstr "Tangentbordsgenväg"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
@@ -4115,7 +4128,7 @@ msgstr "Säkerhetskopiera"
 
 #. Resource IDs: (2010)
 msgid "Manage"
-msgstr ""
+msgstr "Hantera"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -4143,7 +4156,7 @@ msgstr "Max."
 
 #. Resource IDs: (1487)
 msgid "Maximum"
-msgstr ""
+msgstr "Max"
 
 #. Resource IDs: (338)
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
@@ -4396,6 +4409,10 @@ msgstr "Inga värden i importerad fil!"
 #. Resource IDs: (344)
 msgid "No reports exist in the same directory as the current database."
 msgstr "Inga rapporter finns i samma mapp som den aktuella databasen."
+
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
@@ -4713,15 +4730,15 @@ msgstr "Lösenordspolicy"
 
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
-msgstr "Lösenordspolicyns filter"
+msgstr "Lösenordspolicys filter"
 
 #. Resource IDs: (193)
 msgid "Password Policy Name"
-msgstr "Lösenordspolicyns namn"
+msgstr "Lösenordspolicys namn"
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
-msgstr "Lösenordspolicyn åsidosatt"
+msgstr "Lösenordspolicys ersättning"
 
 #. Resource IDs: (134, 3585)
 msgid "Password Safe"
@@ -4733,7 +4750,7 @@ msgstr "Password Safe - <Icke namngiven återställd säkerhetskopia>"
 
 #. Resource IDs: (373)
 msgid "Password Safe Application HotKey"
-msgstr ""
+msgstr "Passeord Safe applikations HotKey"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
@@ -4891,7 +4908,7 @@ msgstr "Bekräfta radering av %s filter %s?"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "Vänligen, bekräfta att du önskar radera nuvarande användares PasswordSafe-konfigurering från Windows Register.\n\n"
+msgstr "Vänligen, bekräfta att du önskar radera nuvarande användares PasswordSafe-konfiguration från Windows register.\n\n"
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
@@ -4927,7 +4944,7 @@ msgstr "Skriv in prefixet till din databasbackup."
 
 #. Resource IDs: (376)
 msgid "Please insert your YubiKey"
-msgstr ""
+msgstr "Sätt in Din YubiKey"
 
 #. Resource IDs: (334)
 msgid "Please name the XML file"
@@ -5028,7 +5045,7 @@ msgstr "Bearbetad post:"
 
 #. Resource IDs: (65535)
 msgid "Program Shortcuts"
-msgstr ""
+msgstr "Programs genvägar"
 
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -5173,7 +5190,7 @@ msgstr "Kom ihåg senaste"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
-msgstr ""
+msgstr "Kom ihåg detta tangentbord"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5227,7 +5244,7 @@ msgstr "Återställ"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr ""
+msgstr "Återställ alla programs genvägar"
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5580,7 +5597,7 @@ msgstr "Välj virtuell tangentbordsfont"
 
 #. Resource IDs: (1)
 msgid "Set Yubikey"
-msgstr ""
+msgstr "Ange Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5645,7 +5662,7 @@ msgstr "Genvägar"
 
 #. Resource IDs: (1471)
 msgid "Show"
-msgstr ""
+msgstr "Visa"
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -5789,7 +5806,7 @@ msgstr "Speciellt set"
 
 #. Resource IDs: (1486)
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -5995,27 +6012,27 @@ msgstr "Alt-tangenten används inte på något tangentbord för att välja tecke
 
 #. Resource IDs: (372)
 msgid "The Alt and Ctrl keys have been added."
-msgstr ""
+msgstr "Alt- och Ctrl-tangenterna har lagts till."
 
 #. Resource IDs: (372)
 msgid "The Alt and Shift keys have been added."
-msgstr ""
+msgstr "Alt- och Shift-tangenterna har lagts till."
 
 #. Resource IDs: (372)
 msgid "The Alt key has been added."
-msgstr ""
+msgstr "Alt-tangenten har lagts till."
 
 #. Resource IDs: (372)
 msgid "The Alt, Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Alt-, Ctrl- och Shift-tangenterna har lagts till."
 
 #. Resource IDs: (372)
 msgid "The Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Ctrl- och Shift-tangenterna har lagts till."
 
 #. Resource IDs: (372)
 msgid "The Ctrl key has been added."
-msgstr ""
+msgstr "Ctrl-tangenten har lagts till."
 
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
@@ -6160,12 +6177,12 @@ msgstr "Följande registreringar hoppades över:"
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr ""
+msgstr "Tangentbordsgenvägen '%s' har redan använts för menyvalet:\t'%s'\n%s kommer att ersätta menyvalets genväg.\nTryck OK/Apply för att acceptera eller ändra Ditt val."
 
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr ""
+msgstr "Tangentbordsgenvägen '%s' används redan av:\n\t«%s» «%s» «%s»\nVälj en annan genväg (den har blivit återställd)."
 
 #. Resource IDs: (363)
 #, c-format
@@ -6225,7 +6242,7 @@ msgstr "Dessa har sparats senare än de nu öppna dokumenten och har förändrin
 
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
-msgstr ""
+msgstr "Detta HotKey-värde är inte tillgängligt då det redan har tilldelats PasswordSafe applikationen (Hantera->Alternativ->Genvägar)."
 
 #. Resource IDs: (344)
 #, c-format
@@ -6575,8 +6592,8 @@ msgid "Unlock"
 msgstr "Lås upp"
 
 #. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
-msgstr ""
+msgid "Unlock Difficulty"
+msgstr "Svårt att låsa upp"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
@@ -6833,7 +6850,7 @@ msgstr "Varning - överflödande postinnehåll"
 
 #. Resource IDs: (1370)
 msgid "Warning goes here if generated"
-msgstr ""
+msgstr "En varning utlöses om genererat"
 
 #. Resource IDs: (331)
 #, c-format
@@ -6973,23 +6990,23 @@ msgstr "Din begärda font, '%s', kunde inte hittas (inte installerad?), använd 
 
 #. Resource IDs: (527)
 msgid "YubiKey Configuration"
-msgstr ""
+msgstr "YubiKey konfiguration"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Secret Key (20 bytes Hex)"
-msgstr ""
+msgstr "YubiKey Säkerhetsnyckel (20 bytes Hex)"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Serial Number:"
-msgstr ""
+msgstr "YubiKey serienummer:"
 
 #. Resource IDs: (1469)
 msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
-msgstr ""
+msgstr "YubiKey för PasswordSafe kan köpas på http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
-msgstr ""
+msgstr "Yubikey"
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
@@ -7387,7 +7404,7 @@ msgstr "\tEtt eller flera namn på lösenordspolicyer hittades inte i databasen.
 #. Resource IDs: (216)
 #, c-format
 msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
-msgstr ""
+msgstr "\tEn eller flera tangentbordsgenvägar har redan använts för poster i denna databas. De har tagits bort från %s poster."
 
 #. Resource IDs: (215)
 #, c-format
@@ -7510,7 +7527,7 @@ msgstr "innehåller något av"
 
 #. Resource IDs: (216)
 msgid "copied"
-msgstr ""
+msgstr "kopierat"
 
 #. Resource IDs: (1093)
 msgid "databases."
@@ -7622,7 +7639,7 @@ msgstr "import"
 
 #. Resource IDs: (216)
 msgid "imported"
-msgstr ""
+msgstr "importerad"
 
 #. Resource IDs: (1320)
 msgid "in"
@@ -7682,7 +7699,7 @@ msgstr "mindre än eller lika med"
 
 #. Resource IDs: (214)
 msgid "merged"
-msgstr ""
+msgstr "sammanslagen"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

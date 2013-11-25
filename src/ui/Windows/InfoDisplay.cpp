@@ -25,7 +25,7 @@ extern HRGN GetWorkAreaRegion();
 
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
-CInfoDisplay::CInfoDisplay()
+CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor)
 {
 }
 
@@ -95,25 +95,67 @@ void CInfoDisplay::OnPaint()
     bool bMoveWindow(false);
     int x = 0, y = 0;
     // Get area of potentially multiple monitors! - defined in  DboxMain.cpp as extern
-    HRGN hrgn = GetWorkAreaRegion();
+    // if use_current_monitor was set in constructor, we'll check only screen where mouse is located
+    HRGN hrgn;
+    POINT mouse_pt;
+    GetCursorPos(&mouse_pt);
+    if (m_use_current_monitor){
+       MONITORINFO mi;
+       mi.cbSize = sizeof(mi);
+       GetMonitorInfo(MonitorFromPoint(mouse_pt, MONITOR_DEFAULTTONEAREST), &mi);
+       hrgn = CreateRectRgn(mi.rcWork.left, mi.rcWork.top, mi.rcWork.right, mi.rcWork.bottom);
+    }
+    else
+      hrgn = GetWorkAreaRegion();
 
     if (hrgn != NULL) {
       // Test that all tip window is visible in the desktop rectangle.
       CRect rs(rc);
       // Convert to screen co-ordinates
       ClientToScreen(rs);
-      if (!PtInRegion(hrgn, rs.right, rs.bottom)) {
+      if (!PtInRegion(hrgn, rs.right, rs.bottom) || !PtInRegion(hrgn, rs.left, rs.top)) {
         // Not in region - move Window
-        x = rs.left - rc.Width();
-        y = rs.top;
-        bMoveWindow = true;
+        RECT hr;
+        if (GetRgnBox(hrgn, &hr)){
+          if (rs.right > hr.right) {
+             if (mouse_pt.x - rs.Width() - 1 >= hr.left) // can flip left?
+               x = mouse_pt.x - rs.Width() - 1;
+             else if (hr.right - rs.Width() >= hr.left) // can shift left and fit width?
+               x = hr.right - rs.Width();
+             else // press to left border
+               x = hr.left;
+          }
+          else // no need to move
+             x = rs.left; 
+
+          if (rs.bottom > hr.bottom) {
+             if (mouse_pt.y - rs.Height() - 1 >= hr.top)  // can flip up?
+               y = mouse_pt.y - rs.Height() - 1;
+             else if (hr.bottom - rs.Height() >= hr.top) // can shift up and fit height?
+               y = hr.bottom - rs.Height();
+             else // press to top border
+               y = hr.top;
+          }
+          else // no need to move
+             y = rs.top; 
+
+          bMoveWindow = true;
+          // Check that mouse pointer isn't on infowindow: when it is, window isn't displayed (treated somwhere as focus/mouse move?)
+          if ((mouse_pt.x >= x) && (mouse_pt.x <= x + rs.Width()) && (mouse_pt.y >= y) && (mouse_pt.y <= y + rs.Height())) {
+             if (mouse_pt.y == y)
+                y++;
+             else if (mouse_pt.y == y + rs.Height())
+                y--;
+             else if (mouse_pt.x == x)
+                x++;
+             else if (mouse_pt.x == x + rs.Width())
+                x--;
+             else if ((mouse_pt.y >= y) && (mouse_pt.y <= y + rs.Height())) // show top part of the message and trim/split bottom 
+                y = mouse_pt.y + 1;
+          }
+        }
       }
 
-      // Better check we haven't lost the start - if we have put it back and
-      // the user will just have to put up with a truncated window!
-      if (bMoveWindow && !PtInRegion(hrgn, x, y)) {
-        bMoveWindow = false;
-      }
       DeleteObject(hrgn);
     }
 

@@ -1486,7 +1486,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
   const pws_os::CUUID uuid = pci->GetUUID();
 
-  if (pci->IsShortcut() ||
+  if ((pci->IsShortcut() && ft != CItemData::USER) ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
     CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);

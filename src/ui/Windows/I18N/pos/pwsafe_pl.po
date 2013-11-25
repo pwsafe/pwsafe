@@ -4367,6 +4367,10 @@ msgstr "Brak wpisów w importowanym pliku!"
 msgid "No reports exist in the same directory as the current database."
 msgstr "Nie ma raportów w tym samym katalogu co bieżąca baza danych."
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "Nie wybrano żadnego wiersza."
@@ -6570,8 +6574,8 @@ msgstr "Nieznany obiekt"
 msgid "Unlock"
 msgstr "Odblokuj"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-09-14 12:11+0100\n"
+"PO-Revision-Date: 2013-09-19 08:43+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -222,7 +222,7 @@ msgstr " 'Gruppe'"
 
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
-msgstr "'Tastaturverknüpfung'"
+msgstr "'Tastaturkürzel'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
@@ -2316,7 +2316,7 @@ msgstr "Klicken Sie zum Schalten und/oder Verbinden zur vorherigen Zeile"
 
 #. Resource IDs: (376)
 msgid "Click, then touch your YubiKey"
-msgstr "Klicke und drücke die YubiKey Taste"
+msgstr "Hier klicken, dann die YubiKey Taste drücken"
 
 #. Resource IDs: (1, 358)
 msgid "Close"
@@ -2772,7 +2772,7 @@ msgstr "Datenbank"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr "Datenbank Eintrag Verknüpfung"
+msgstr "Kürzel der Datenbankeinträge "
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -3296,7 +3296,7 @@ msgstr "Eintrag Vergleich"
 
 #. Resource IDs: (373)
 msgid "Entry Keyboard Shortcut"
-msgstr "Tastatur-Verknüpfung zum Eintrag"
+msgstr "Tastaturkürzel zum Eintrag"
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
@@ -3334,8 +3334,8 @@ msgid ""
 "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has "
 "been removed from the %s entry."
 msgstr ""
-"Die Tastatur-Verknüpfung %s zum Eintrag %s ist schon dem Eintrag %s "
-"zugeordnet. Er wurde vom Eintrag %s entfernt."
+"Das Tastaturkürzel %s zum Eintrag %s ist schon dem Eintrag %s zugeordnet. Er "
+"wurde vom Eintrag %s entfernt."
 
 #. Resource IDs: (216)
 #, c-format
@@ -3343,16 +3343,16 @@ msgid ""
 "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe "
 "application. It has been removed from the entry."
 msgstr ""
-"Die Tastatur-Verknüpfung %s zum Eintrag %s ist schon der PasswordSafe "
-"Anwendung zugeordnet. Er wurde vom Eintrag entfernt."
+"Das Tastaturkürzel %s zum Eintrag %s ist schon der PasswordSafe Anwendung "
+"zugeordnet. Er wurde vom Eintrag entfernt."
 
 #. Resource IDs: (373)
 msgid ""
 "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys "
 "and an alphanumeric character (0-9, A-Z)."
 msgstr ""
-"Die Tastatur-Verknüpfung zum Eintrag muss einer oder beide der Tasten Alt "
-"oder Strg und eine alphanumerische Taste (0-9, A-Z) enthalten."
+"Das Tastaturkürzel zum Eintrag muss einer oder beide der Tasten Alt oder "
+"Strg und eine alphanumerische Taste (0-9, A-Z) enthalten."
 
 #. Resource IDs: (372)
 #, c-format
@@ -3361,8 +3361,8 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Die Tastatur-Verknüpfung zum Eintrag muss einer oder beide der Tasten Alt "
-"oder Strg enthalten..\n"
+"Das Tastaturkürzel zum Eintrag muss einer oder beide der Tasten Alt oder "
+"Strg enthalten..\n"
 "\n"
 "%s"
 
@@ -4475,7 +4475,7 @@ msgstr "die"
 
 #. Resource IDs: (193, 372, 65535)
 msgid "Keyboard Shortcut"
-msgstr "Tastaturverknüpfung"
+msgstr "Tastaturkürzel"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
@@ -5919,7 +5919,7 @@ msgstr "Reset"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr "Alle Programmverknüpfungen zurücksetzen"
+msgstr "Alle Programmkürzel zurücksetzen"
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -7069,7 +7069,7 @@ msgid ""
 "Press OK/Apply to accept or change your selection."
 msgstr ""
 "Das Tastaturkürzel  '%s' wurde schon zugewiesen an Menuüpunkt:\t'%s'\n"
-"%s wird die Verknüpfung zu diesem Menupunkt überschreiben.\n"
+"%s wird das Kürzel zu diesem Menupunkt überschreiben.\n"
 "Drücke OK um die Änderung anzunehmen."
 
 #. Resource IDs: (372)
@@ -7079,9 +7079,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Please select another shortcut (it has been reset)."
 msgstr ""
-"Die Tastatur-Verknüpfung zum Eintrag '%s' wird bereits verwendet von:\n"
+"Das Tastaturkürzel zum Eintrag '%s' wird bereits verwendet von:\n"
 "\t«%s» «%s» «%s»\n"
-"Bitte wählen Sie eine andere Verknüpfung (sie wurde zurückgesetzt)."
+"Bitte wählen Sie eine anderes Kürzel (es wurde zurückgesetzt)."
 
 #. Resource IDs: (363)
 #, c-format
@@ -7719,8 +7719,8 @@ msgid "Unlock"
 msgstr "Entsperren"
 
 #. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
-msgstr "Entsperrschwierigkeitsgrad:"
+msgid "Unlock Difficulty"
+msgstr "Entsperrschwierigkeitsgrad"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
@@ -8031,7 +8031,6 @@ msgid ""
 msgstr ""
 "ACHTUNG: Dieser Vorgang wird eine ungeschützte Kopie von %s in der Datenbank "
 "anlegen. Es reicht NICHT aus, diese Kopie nach dem Gebrauch zu löschen.\n"
-"\n"
 "Bitte verwenden Sie diese Option nur dann wenn Sie die Risiken verstehen und "
 "akzeptieren. Diese Option umgeht die Sicherheit die dieses Program bietet."
 
@@ -8247,7 +8246,7 @@ msgstr "YubiKey Konfiguration"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Secret Key (20 bytes Hex)"
-msgstr "Geheimer YubiKey Key (20 Byte Hex)"
+msgstr "Geheimer YubiKey Schlüssel (20 Byte Hex)"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Serial Number:"
@@ -9029,8 +9028,8 @@ msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %s entries."
 msgstr ""
-"\tEin oder mehrere Tastatur-Verknüpfungen zu Einträge sind schon zugewiesen "
-"zu Einträge in der Datenbank. Sie wurden entfernt von den %s Einträge."
+"\tEin oder mehrere Tastaturkürzel zu Einträge sind schon zugewiesen zu "
+"Einträge in der Datenbank. Sie wurden entfernt von den %s Einträge."
 
 #. Resource IDs: (215)
 #, c-format

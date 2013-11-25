@@ -4306,6 +4306,10 @@ msgstr "导入文件没有记录！"
 msgid "No reports exist in the same directory as the current database."
 msgstr "无报告存在与当前数据库相同的目录！"
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "未激活行！"
@@ -6483,8 +6487,8 @@ msgstr "未知对象"
 msgid "Unlock"
 msgstr "解锁"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)

@@ -913,9 +913,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 static void ManageIncBackupFiles(const stringT &cs_filenamebase,
                                  size_t maxnumincbackups, stringT &cs_newname)
 {
-  // make sure we've no more than maxnumincbackups backup files,
-  // and return the base name of the next backup file
-  // (sans the suffix, which will be added by caller)
+  /**
+   * make sure we've no more than maxnumincbackups backup files,
+   * and return the base name of the next backup file
+   * (sans the suffix, which will be added by caller)
+   *
+   * The current solution breaks when maxnumincbackups >= 999.
+   * Best solution is to delete by modification time,
+   * but that requires a bit too much for the cost/benefit.
+   * So for now we're "good enough" - limiting maxnumincbackups to <= 998
+   */
+
+  if (maxnumincbackups >= 999) {
+    pws_os::Trace(_T("Maxnumincbackups: truncating maxnumincbackups to 998"));
+    maxnumincbackups = 998;
+  }
+
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
@@ -944,9 +957,22 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   sort(file_nums.begin(), file_nums.end());
 
+  // nnn is the number of the file in the returned value: cs_filebasename_nnn
   int nnn = file_nums.back();
   nnn++;
-  if (nnn > 999) nnn = 1;
+  if (nnn > 999) {
+    // as long as there's a _999 file, we set n starting from 001
+    nnn = 1;
+    size_t x = file_nums.size() - maxnumincbackups;
+    while (file_nums[x++] == nnn && x < file_nums.size())
+      nnn++;
+    // Now we need to determine who to delete.
+    int next = 999 - (maxnumincbackups - nnn);
+    int m = 1;
+    for (x = 0; x < file_nums.size(); x++)
+      if (file_nums[x] < next)
+        file_nums[x] = next <= 999 ? next++ : m++;
+  }
 
   Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
 

@@ -546,7 +546,9 @@ int PWSfileV3::WriteHeader()
   }
 
   // Write zero-length end-of-record type item
-  WriteCBC(HDR_END, NULL, 0);
+  numWritten = WriteCBC(HDR_END, NULL, 0);
+  if (numWritten <= 0) { status = FAILURE; goto end; }
+
  end:
   if (status != SUCCESS)
     Close();

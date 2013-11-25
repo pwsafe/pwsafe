@@ -9,6 +9,11 @@
 **		09-06-02	/ 2.0.0		/ J E	/ Added version 2 flags                         **
 **		09-09-23	/ 2.1.0		/ J E	/ Added version 2.1 flags (OATH-HOTP)           **
 **      10-05-01    / 2.2.0     / J E   / Added support for 2.2 extensions + frame      **
+**      11-04-15    / 2.3.0     / J E   / Added support for 2.3 extensions              **
+**      11-12-05    / 2.4.0     / J E   / Added support for NFC and NDEF                **
+**      12-10-28    / 3.0.0     / J E   / NEO changes                                   **
+**      13-03-05    / 3.1.0     / J E   / Added EXTFLAG_LED_INV flag                    **         
+**      13-03-06    / 3.1.0     / J E   / Added NEO startup busy flag                   **
 **																						**
 *****************************************************************************************/
 
@@ -20,7 +25,16 @@
 #define	SLOT_CONFIG					1       // First (default / V1) configuration
 #define SLOT_CONFIG2                3       // Second (V2) configuration
 
+#define SLOT_UPDATE1                4       // Update slot 1
+#define SLOT_UPDATE2                5       // Update slot 2
+#define SLOT_SWAP                   6       // Swap slot 1 and 2
+
+#define SLOT_NDEF                   8       // Write NDEF record
+#define SLOT_NDEF2                  9       // Write NDEF record for slot 2
+
 #define SLOT_DEVICE_SERIAL          0x10    // Device serial number
+#define SLOT_DEVICE_CONFIG          0x11    // Write device configuration record 
+#define SLOT_SCAN_MAP               0x12    // Write scancode map
 
 #define SLOT_CHAL_OTP1              0x20    // Write 6 byte challenge to slot 1, get Yubico OTP response
 #define SLOT_CHAL_OTP2              0x28    // Write 6 byte challenge to slot 2, get Yubico OTP response
@@ -36,6 +50,7 @@
 #define SLOT_WRITE_FLAG             0x80    // Write flag - set by app - cleared by device
 
 #define DUMMY_REPORT_WRITE          0x8f    // Write a dummy report to force update or abort
+#define NEO_STARTUP_BUSY            0x9f    // Status during startup (writes blocked)
 
 #define SHA1_MAX_BLOCK_SIZE         64      // Max size of input SHA1 block
 #define SHA1_DIGEST_SIZE            20      // Size of SHA1 digest = 160 bits
@@ -134,13 +149,64 @@ typedef struct {
 
 #define TKTFLAG_CHAL_RESP           0x40        // Challenge-response enabled (both must be set)
 #define CFGFLAG_CHAL_YUBICO         0x20        // Challenge-response enabled - Yubico OTP mode
+#define CFGFLAG_CHAL_MASK           0x22        // Mask to get out challenge type
 #define CFGFLAG_CHAL_HMAC           0x22        // Challenge-response enabled - HMAC-SHA1
 #define CFGFLAG_HMAC_LT64           0x04        // Set when HMAC message is less than 64 bytes
-#define CFGFLAG_CHAL_BTN_TRIG       0x08        // Challenge-respoonse operation requires button press
+#define CFGFLAG_CHAL_BTN_TRIG       0x08        // Challenge-response operation requires button press
 
 #define EXTFLAG_SERIAL_BTN_VISIBLE  0x01        // Serial number visible at startup (button press)
 #define EXTFLAG_SERIAL_USB_VISIBLE  0x02        // Serial number visible in USB iSerial field
 #define EXTFLAG_SERIAL_API_VISIBLE  0x04        // Serial number visible via API call
+
+// V2.3 flags only
+
+#define EXTFLAG_USE_NUMERIC_KEYPAD  0x08        // Use numeric keypad for digits
+#define EXTFLAG_FAST_TRIG           0x10        // Use fast trig if only cfg1 set
+#define EXTFLAG_ALLOW_UPDATE        0x20        // Allow update of existing configuration (selected flags + access code)
+#define EXTFLAG_DORMANT             0x40        // Dormant configuration (can be woken up and flag removed = requires update flag)
+
+// V2.4/3.1 flags only
+
+#define EXTFLAG_LED_INV             0x80        // LED idle state is off rather than on
+
+// Flags valid for update
+
+#define TKTFLAG_UPDATE_MASK         (TKTFLAG_TAB_FIRST | TKTFLAG_APPEND_TAB1 | TKTFLAG_APPEND_TAB2 | TKTFLAG_APPEND_DELAY1 | TKTFLAG_APPEND_DELAY2 | TKTFLAG_APPEND_CR)
+#define CFGFLAG_UPDATE_MASK         (CFGFLAG_PACING_10MS | CFGFLAG_PACING_20MS)
+#define EXTFLAG_UPDATE_MASK         (EXTFLAG_SERIAL_BTN_VISIBLE | EXTFLAG_SERIAL_USB_VISIBLE |  EXTFLAG_SERIAL_API_VISIBLE | EXTFLAG_USE_NUMERIC_KEYPAD | EXTFLAG_FAST_TRIG | EXTFLAG_ALLOW_UPDATE | EXTFLAG_DORMANT | EXTFLAG_LED_INV)
+
+// NDEF structure
+
+#define	NDEF_DATA_SIZE		        54
+
+typedef struct {
+    unsigned char len;                          // Payload length
+    unsigned char type;                         // NDEF type specifier
+    unsigned char data[NDEF_DATA_SIZE];         // Payload size
+    unsigned char curAccCode[ACC_CODE_SIZE];    // Access code
+} YKNDEF;
+        
+// Device configuration block (version 3.0)
+
+typedef struct {
+    unsigned char mode;                         // Device mode
+    unsigned char crTimeout;                    // Challenge-response timeout in seconds
+    unsigned short autoEjectTime;               // Auto eject time in seconds    
+} DEVICE_CONFIG;
+
+#define MODE_OTP                    0x00        // OTP only
+#define MODE_CCID                   0x01        // CCID only, no eject    
+#define MODE_OTP_CCID               0x02        // OTP + CCID composite 
+#define MODE_MASK                   0x03        // Mask for mode bits
+
+#define MODE_FLAG_EJECT             0x80        // CCID device supports eject (CCID) / OTP force eject (OTP_CCID)
+
+#define DEFAULT_CHAL_TIMEOUT        15          // Default challenge timeout in seconds
+
+// Scancode mapping (version 3.0)
+
+#define SCAN_MAP    "cbdefghijklnrtuvCBDEFGHIJKLNRTUV0123456789\t\r"
+#define SHIFT_FLAG                  0x80        // Flag for shifted scan codes
 
 // Status block
 
@@ -153,10 +219,22 @@ typedef struct {
 } STATUS;
 
 #define CONFIG1_VALID               0x01        // Bit in touchLevel indicating that configuration 1 is valid (from firmware 2.1)
-#define CONFIG2_VALID               0x02        // Bit in touchLevel indicating that configuration 1 is valid (from firmware 2.1)
+#define CONFIG2_VALID               0x02        // Bit in touchLevel indicating that configuration 2 is valid (from firmware 2.1)
+#define CONFIG1_TOUCH               0x04        // Bit in touchLevel indicating that configuration 1 requires touch (from firmware 3.0)
+#define CONFIG2_TOUCH               0x08        // Bit in touchLevel indicating that configuration 2 requires touch (from firmware 3.0)
+#define CONFIG_LED_INV              0x10        // Bit in touchLevel indicating that LED behavior is inverted (EXTFLAG_LED_INV mirror)
+#define CONFIG_STATUS_MASK          0x1f        // Mask for status bits
 
 // Modified hex string mapping
 
 #define	MODHEX_MAP					"cbdefghijklnrtuv"
+
+// USB vendor ID (VID) and product ID (PID) mapping
+
+#define	YUBICO_VID	                0x1050      // Global vendor ID
+#define	YUBIKEY_PID		            0x0010      // Yubikey (version 1 and 2)
+#define	NEO_OTP_PID                 0x0110      // Yubikey NEO - OTP only
+#define	NEO_OTP_CCID_PID            0x0111      // Yubikey NEO - OTP and CCID
+#define	NEO_CCID_PID                0x0112      // Yubikey NEO - CCID only
 
 #endif		// __YKDEF_H_INCLUDED__

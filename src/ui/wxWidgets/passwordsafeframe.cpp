@@ -135,11 +135,15 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
+#ifndef NO_YUBI
   EVT_MENU( ID_YUBIKEY_MNG, PasswordSafeFrame::OnYubikeyMngClick )
+#endif
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
+  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
+
   EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
 
   EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext )
@@ -449,8 +453,10 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->AppendSeparator();
   itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
+#ifndef NO_YUBI
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
+#endif
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
@@ -970,10 +976,7 @@ int PasswordSafeFrame::SaveIfChanged()
       case wxID_YES:
         rc = Save();
         // Make sure that file was successfully written
-        if (rc == PWScore::SUCCESS) {
-          m_core.UnlockFile(m_core.GetCurFile().c_str());
-          break;
-        } else
+        if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
       case wxID_NO:
         // Reset changed flag
@@ -1037,6 +1040,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(_T(""));
     ClearData();
     SetTitle(_T(""));
@@ -1358,6 +1362,11 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
         return;
       }
     }
+
+    // Don't leave dangling locks!
+    if (!m_core.GetCurFile().empty())
+      m_core.UnlockFile(m_core.GetCurFile().c_str());
+
     SaveSettings();
     Destroy();
   }

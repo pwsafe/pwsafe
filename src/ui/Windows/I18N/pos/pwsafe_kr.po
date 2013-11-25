@@ -4306,6 +4306,10 @@ msgstr "불러온 파일에 레코드가 없습니다!"
 msgid "No reports exist in the same directory as the current database."
 msgstr "현재 디렉토리에 현재 데이터베이스에 대한 보고서 파일이 없습니다."
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "어떠한 줄도 사용할 수 없습니다"
@@ -6483,8 +6487,8 @@ msgstr "알 수 없는 객체"
 msgid "Unlock"
 msgstr "잠금 해제"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)

@@ -33,10 +33,12 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#ifndef NO_YUBI
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
 ////@end XPM images
 
+#endif
 
 /*!
  * CSafeCombinationChange type definition
@@ -52,16 +54,18 @@ IMPLEMENT_CLASS( CSafeCombinationChange, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
 
 ////@begin CSafeCombinationChange event table entries
+#ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN, CSafeCombinationChange::OnYubibtnClick )
 
   EVT_BUTTON( ID_YUBIBTN2, CSafeCombinationChange::OnYubibtn2Click )
+  EVT_TIMER(CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer)
+#endif
 
   EVT_BUTTON( wxID_OK, CSafeCombinationChange::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationChange::OnCancelClick )
 
 ////@end CSafeCombinationChange event table entries
-EVT_TIMER(CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -98,12 +102,14 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   }
   Centre();
 ////@end CSafeCombinationChange creation
+#ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
   m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
   m_pollingTimer->Start(250); // check for Yubikey every 250ms.
+#endif
   return true;
 }
 
@@ -116,7 +122,9 @@ CSafeCombinationChange::~CSafeCombinationChange()
 {
 ////@begin CSafeCombinationChange destruction
 ////@end CSafeCombinationChange destruction
+#ifndef NO_YUBI
   delete m_pollingTimer;
+#endif
 }
 
 
@@ -128,11 +136,13 @@ void CSafeCombinationChange::Init()
 {
 ////@begin CSafeCombinationChange member initialisation
   m_oldPasswdEntry = NULL;
-  m_YubiBtn = NULL;
   m_newPasswdEntry = NULL;
-  m_YubiBtn2 = NULL;
   m_confirmEntry = NULL;
+#ifndef NO_YUBI
+  m_YubiBtn = NULL;
+  m_YubiBtn2 = NULL;
   m_yubiStatusCtrl = NULL;
+#endif
 ////@end CSafeCombinationChange member initialisation
 }
 
@@ -152,7 +162,13 @@ void CSafeCombinationChange::CreateControls()
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the current combination, followed by a new combination.\nType the new combination once again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(4, 3, 0, 0);
+#ifndef NO_YUBI
+  enum { DLGITEM_COLS = 3 };
+#else
+  enum { DLGITEM_COLS = 2 };
+#endif
+
+  wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
   itemBoxSizer2->Add(itemFlexGridSizer4, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
@@ -161,8 +177,10 @@ void CSafeCombinationChange::CreateControls()
   m_oldPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
   itemFlexGridSizer4->Add(m_oldPasswdEntry, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+#ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
+#endif
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -170,8 +188,10 @@ void CSafeCombinationChange::CreateControls()
   m_newPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
   itemFlexGridSizer4->Add(m_newPasswdEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+#ifndef NO_YUBI
   m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
+#endif
 
   wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -181,8 +201,10 @@ void CSafeCombinationChange::CreateControls()
 
   itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+#ifndef NO_YUBI
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxGROW|wxALL, 5);
+#endif
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
 
@@ -216,6 +238,7 @@ bool CSafeCombinationChange::ShowToolTips()
  * Get bitmap resources
  */
 
+#ifndef NO_YUBI
 wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
@@ -229,6 +252,7 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
   return wxNullBitmap;
 ////@end CSafeCombinationChange bitmap retrieval
 }
+#endif
 
 /*!
  * Get icon resources
@@ -308,6 +332,7 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 }
 
 
+#ifndef NO_YUBI
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
@@ -391,3 +416,4 @@ void CSafeCombinationChange::OnPollingTimer(wxTimerEvent &evt)
     m_yubiMixin2.HandlePollingTimer();
   }
 }
+#endif

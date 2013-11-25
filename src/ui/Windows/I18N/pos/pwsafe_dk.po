@@ -4306,6 +4306,10 @@ msgstr "Ingen optegnelser i den importerede fil!"
 msgid "No reports exist in the same directory as the current database."
 msgstr "Ingen rapporter eksisterer i det samme bibliotek som den nuværende database."
 
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
+
 #. Resource IDs: (349)
 msgid "No rows are enabled"
 msgstr "Ingen rækker er aktiveret"
@@ -6483,8 +6487,8 @@ msgstr "Ukendt object"
 msgid "Unlock"
 msgstr "Lås op"
 
-#. Resource IDs: (1485)
-msgid "Unlock Difficulty:"
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
 msgstr ""
 
 #. Resource IDs: (329)

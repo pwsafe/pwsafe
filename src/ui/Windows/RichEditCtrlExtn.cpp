@@ -184,6 +184,15 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
 
   CString cs_formatstring(lpszString);
   CString cs_plaintext = GetTextFormatting(cs_formatstring, iError);
+
+  // Disable Font Bindingin Rich Edit (http://msdn.microsoft.com/en-us/library/windows/desktop/hh298436%28v=vs.85%29.aspx)
+  // When it enabled, control tries to change font for chars, that it think aren't present in default font
+  // For example, for non-English messages it can chnage font from MS Sans to Calibri when it found "french quotes" ('«', '»')
+  // the worst in this case that it also may change font size and then not return all back, 
+  // so the last part of the message will be printed using different font type/size
+  // Example of code taken from http://blogs.msdn.com/b/michkap/archive/2006/02/13/531110.aspx
+  CRichEditCtrl::SendMessage(EM_SETLANGOPTIONS, 0, (LPARAM)(CRichEditCtrl::SendMessage(EM_GETLANGOPTIONS, 0, 0) & ~IMF_AUTOFONT));
+
   if (iError != 0) {
     // Had an error - show unchanged text
     CRichEditCtrl::SetWindowText(cs_formatstring);
