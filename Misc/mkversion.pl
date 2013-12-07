@@ -8,7 +8,7 @@
 #
 # A simple utility to generate a version.h file from a template,
 # with keyword substitution.
-# The named file is replaced iff the newley generated one's
+# The named file is replaced iff the newly generated one's
 # different, to avoid spurious recompilations.
 #
 # Usage: $0 template outfile
@@ -29,19 +29,25 @@ my %git_loc  = (
 	linux  => '/usr/bin/git',
 );
 
-my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
-die "Couldn't find $GIT" unless (-x $GIT);
-
 &usage unless ($#ARGV == 1);
 my $TEMPLATE = $ARGV[0];
 my $OUTFILE = $ARGV[1];
 
-my $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
-chomp $VERSTRING;
-# If string is of the form heads/master-0-g5f69087, drop everything
-# to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
-# info
-$VERSTRING =~ s,^heads/master-0-,,;
+my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
+my $VERSTRING;
+
+if (-x $GIT && -d ".git") {
+    $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
+    chomp $VERSTRING;
+    # If string is of the form heads/master-0-g5f69087, drop everything
+    # to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
+    # info
+    $VERSTRING =~ s,^heads/master-0-,,;
+} else {
+    # No git, building from tarball, srpm, etc.
+    $VERSTRING = "local";
+}
+
 
 #Now that we're done with the formalities, let's get to work:
 my $TMPFILE = "/tmp/v$$";
@@ -74,13 +80,13 @@ close(VH);
 # Replace $OUTFILE with $TMPFILE iff:
 # 1. Former doesn't exist
 # OR
-# 2. The two differ
+# 2. The two differ AND the version isn't "local" (otherwise we clobber the rpm build)
 
 if (!-e $OUTFILE) {
     move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
 } else {
     `/usr/bin/diff -q $TMPFILE $OUTFILE > /dev/null`;
-    if ($? != 0) {
+    if ($VERSTRING ne "local" && $? != 0) {
         unlink $OUTFILE || die "Couldn't remove old $OUTFILE\n";
         move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
     } else { # no changes, cleanup

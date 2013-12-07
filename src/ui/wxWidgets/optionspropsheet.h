@@ -112,6 +112,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX28 10003
 #define ID_CHECKBOX29 10180
 #define ID_SPINCTRL12 10181
+#define ID_SLIDER 10059
 #define ID_PANEL6 10137
 #define ID_CHECKBOX30 10182
 #define ID_SPINCTRL13 10183
@@ -286,6 +287,9 @@ public:
   bool GetSeclockonwinlock() const { return m_seclockonwinlock ; }
   void SetSeclockonwinlock(bool value) { m_seclockonwinlock = value ; }
 
+  int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
+  void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
+
   bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
   void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
 
@@ -313,8 +317,8 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
-  int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
-  void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
+  int GetHashIterSlider() const { return m_hashIterSlider ; }
+  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -391,6 +395,7 @@ private:
   bool m_secconfrmcpy;
   bool m_seclockonmin;
   bool m_seclockonwinlock;
+  int m_shiftdoubleclickaction;
   bool m_shownotesastipsinviews;
   bool m_showusernameintree;
   bool m_sysdefopenro;
@@ -400,7 +405,7 @@ private:
   bool m_sysstartup;
   bool m_usedefuser;
   bool m_wordwrapnotes;
-  int m_shiftdoubleclickaction;
+  int m_hashIterSlider;
 ////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;

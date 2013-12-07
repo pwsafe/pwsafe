@@ -1,10 +1,10 @@
 #!/bin/sh
-REV=5191
+REV=ee3022
 CDIR=`pwd`/../html/images
 DDIR=`pwd`/../../default/html/images
 
 #check for updated files
-svn diff -r${REV}:HEAD --summarize  ../../default/html/images
+git diff --name-only $REV HEAD | grep help/default/html/images
 
 #check for new files
 cd $DDIR

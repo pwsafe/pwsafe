@@ -11,7 +11,6 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "DboxMain.h"
-
 #include "PasswordPolicyDlg.h"
 #include "GeneralMsgBox.h"
 
@@ -173,7 +172,6 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
- 
   // If started with Tall and won't fit - return to be called again with Wide
   if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);

@@ -5,11 +5,12 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// HMAC_SHA256Test.h: Unit test for HMAC_SHA256 implementation
+// HMAC_SHA256Test.h: Unit test for HMAC implementation with SHA256
 // Test vectors from RFC4231
 
 #include "test.h"
 #include "core/hmac.h"
+#include "core/sha256.h"
 
 class CHMAC_SHA256Test : public Test
 {
@@ -186,7 +187,7 @@ public:
     size_t i;
     unsigned char tmp[32];
     for (i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
-      HMAC_SHA256 md(tests[i].key, tests[i].keylen);
+      HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> md(tests[i].key, tests[i].keylen);
       md.Update(tests[i].data, tests[i].datalen);
       md.Final(tmp);
       _test(memcmp(tmp, tests[i].hash, 32) == 0);

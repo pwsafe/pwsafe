@@ -11,9 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ThisMfcApp.h"    // For Help
-
 #include "Options_PropertySheet.h"
-
 #include "GeneralMsgBox.h"
 
 #include "core/PwsPlatform.h"
@@ -36,7 +34,8 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(COptionsSecurity, COptions_PropertyPage)
 
 COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
-  : COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD)
+: COptions_PropertyPage(pParent, COptionsSecurity::IDD, pOPTMD),
+  m_HashIterSliderValue(0), m_HashIter(0)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
@@ -46,6 +45,7 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_LockOnIdleTimeout = M_LockOnIdleTimeout();
   m_CopyPswdBrowseURL = M_CopyPswdBrowseURL();
   m_IdleTimeOut = M_IdleTimeOut();
+  SetHashIter(M_HashIters());
 }
 
 COptionsSecurity::~COptionsSecurity()
@@ -69,6 +69,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
   //}}AFX_DATA_MAP
+  DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
@@ -101,8 +102,31 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
+  CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
+  pslider->SetRange(MinHIslider, MaxHIslider);
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void COptionsSecurity::UpdateHashIter()
+{
+  if (m_HashIterSliderValue == 0) {
+    m_HashIter = MIN_HASH_ITERATIONS;
+  } else {
+    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
+    m_HashIter = uint32(m_HashIterSliderValue * step);
+  }
+}
+
+void COptionsSecurity::SetHashIter(uint32 value)
+{
+  if (value <= MIN_HASH_ITERATIONS) {
+    m_HashIterSliderValue = MinHIslider;
+  } else {
+    const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
+    m_HashIterSliderValue = int(value) / step;
+  }
 }
 
 LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
@@ -175,6 +199,8 @@ BOOL COptionsSecurity::OnApply()
   M_LockOnIdleTimeout() = m_LockOnIdleTimeout;
   M_CopyPswdBrowseURL() = m_CopyPswdBrowseURL;
   M_IdleTimeOut() = m_IdleTimeOut;
+  UpdateHashIter();
+  M_HashIters() = m_HashIter;
 
   return COptions_PropertyPage::OnApply();
 }
@@ -222,11 +248,11 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_IDLEMINS:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_COPYPSWDURL:
     case IDC_LOCK_TIMER:
+    case IDC_STATIC_HASHITER:
+    case IDC_STATIC_HASHITER_MIN:
+    case IDC_STATIC_HASHITER_MAX:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

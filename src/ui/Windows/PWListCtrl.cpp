@@ -34,8 +34,7 @@ CPWListCtrl::~CPWListCtrl()
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CPWListCtrl)
   ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, OnItemChanging)
-  ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
-  ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnKeyDown)
+  ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnSelectionChanged)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_MESSAGE(WM_CHAR, OnCharItemlist)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
@@ -335,11 +334,8 @@ void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
   }
 }
 
-void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  *pLResult = 0;
-
-  // Ignore if empty
   if (GetItemCount() == 0)
     return;
 
@@ -348,40 +344,10 @@ void CPWListCtrl::OnKeyDown(NMHDR *pNotifyStruct, LRESULT *pLResult)
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
     case VK_DOWN:
-    {
-      *pLResult = 1L;
-      // Process page up/down - to wrap around when at top/bottom
-      int iItem = GetNextItem(-1, LVNI_SELECTED);
-      // Unselect current item
-      SetItemState(iItem,0, LVIS_FOCUSED | LVIS_SELECTED);
-      const int nCount = GetItemCount();
-      if (pLVKeyDown->wVKey == VK_DOWN)
-        iItem = (iItem + 1) % nCount;
-      if (pLVKeyDown->wVKey == VK_UP)
-        iItem = (iItem - 1 + nCount) % nCount;
-      app.GetMainDlg()->ItemSelected(NULL, iItem);
+      app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, false);
       break;
-    }
     default:
       break;
-  }
-}
-
-void CPWListCtrl::OnItemChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  *pLResult = 0;
-  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct;
-
-  // Don't bother if no entries
-  if (GetItemCount() == 0)
-    return;
- 
-  if ((pNMListView->uChanged & LVIF_STATE) == LVIF_STATE) {
-    if ((pNMListView->uOldState & LVIS_SELECTED) == 0 &&
-        (pNMListView->uNewState & LVIS_SELECTED) != 0) {
-      // Item has been selected
-      app.GetMainDlg()->ItemSelected(NULL, pNMListView->iItem);
-    }
   }
 }
 

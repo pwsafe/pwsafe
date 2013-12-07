@@ -535,9 +535,9 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
       for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
-        iNewKBShortcut = wValidModifierCombos[iChange];
+        iNewKBShortcut = ((wPWSModifiers | wValidModifierCombos[iChange]) << 16) + wVirtualKeyCode;
         chk_uuid = M_pcore()->GetKBShortcut(iNewKBShortcut);
-        if (chk_uuid == CUUID::NullUUID()) {
+        if (chk_uuid == CUUID::NullUUID() || chk_uuid == M_entry_uuid()) {
           ierror = iActions[iChange];
           break;
         }
@@ -603,11 +603,13 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
-
       // We have warned them - so now accept
       m_bWarnUserKBShortcut = !m_bWarnUserKBShortcut;
       return KBSHORTCUT_IN_USE_BY_MENU;
     }
+    // We have warned them - so now accept (we are here, if hotkey was made unique by adding modifier)
+    if (m_bWarnUserKBShortcut)
+      m_bWarnUserKBShortcut = false;
   }
   return KBSHORTCUT_UNIQUE;
 }
@@ -965,4 +967,3 @@ void CAddEdit_Additional::OnPWHCopyAll()
 
   GetMainDlg()->SetClipboardData(HistStr);
 }
-

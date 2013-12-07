@@ -56,7 +56,7 @@
       clicking <b>New Database</b>
       from the <b>Safe Combination Entry</b> dialog when the program is
       started, or from the
-      <b>"File&nbsp;→&nbsp;New Database"</b> menu once <b>Password Safe</b>
+      <b>"File&nbsp;?&nbsp;New Database"</b> menu once <b>Password Safe</b>
       has been opened.
       Using either method causes the <b>Safe Combination Set Up</b>
       dialog to appear.</p>
@@ -79,16 +79,86 @@
       <br>
       <img alt="new safe combination prompt" src="images/new_safe.jpg">
     </center>
+    <h3>Using YubiKey with PasswordSafe</h3>
+	<p><strong>Password Safe</strong> can work with a <a href="about_pws_yubi.html">YubiKey</a> device 
+    to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase),
+	and tsomething you have (the YubiKey device). If you do not have a YubiKey device, then the YubiKey-specific
+	buttons and texts will not be displayed by <strong>Password Safe</strong>, and the YubiKey-specific instructions
+	below do not apply.</p>
+	<p>If your YubiKey is connected to your PC, then a "Yubikey" button and text area will
+    appear in the Safe Combination Entry and Setup windows, as show
+    above. This allows you to use your YubiKey to access your Password
+    Safe database, either in addition to, or instead of a "Safe
+    Combination". For maximum security, we recommend that your database
+    be protected <strong>both </strong>by your YubiKey and a Safe
+    Combination (this is known as ).</p>
+    <h4>Setting up a Safe Combination with YubiKey</h4>
+    To use your <a href="about_pws_yubi.html">configured</a> YubiKey to
+    protect your database:<br>
+    <ol>
+      <li>If you haven't already done so, insert your YubiKey into a USB slot on your PC. The Yubikey button on
+        the Safe Combination window will now become active, and the text
+        to the right of will change to "Click, then activate your YubiKey"</li>
+      <li>Set up the Safe Combination as follows:<br>
+      </li>
+      <ol>
+        <li>If you wish to protect your database using <strong>both </strong>your
+          YubiKey and a Safe Combination ("two factor authentication"),
+          then <strong>first </strong>enter the Safe Combination in
+          the "Safe Combination" and "Verify" fields, <strong>then </strong>click
+          on the Yubikey button.</li>
+        <li>If you <strong></strong>wish to protect your database using
+          your YubiKey <strong>only</strong>,<strong> </strong>then
+          leave the "Safe Combination" and "Verify" fields <strong>empty</strong>,
+          and <strong></strong>click on the Yubikey button.</li>
+        <li>Of course, you can also choose to protect the database by a
+          Safe Combination alone, just enter the Safe Combination in the
+          "Safe Combination" and "Verify" fields and then click on OK.</li>
+      </ol>
+      <li>Click on the Yubikey button. The "Click, then activate your
+        YubiKey" will be replaced by a progress bar indicating the
+        remaining time you have to activate your YubiKey (by touching
+        the flashing green light on the device). If you do not activate
+        your YubiKey in the allotted time (about 15 seconds), then an
+        error message will be displayed, and you can try again or
+        cancel.</li>
+      <li>Once the YubiKey has been activated, your Password Safe
+        database will be created.</li>
+    </ol>
+    <h3>Opening a database with YubiKey</h3>
+    To open a Password Safe database protected with your Yubikey:<br>
+    <ol>
+      <li>Make sure the desired database is selected in the "Open
+        Password Safe" field. If it's not there, click on the ellipsis
+        (...) and choose it.</li>
+      <li>If you've chosen to protect your database using <strong>both
+        </strong>your YubiKey and a Safe Combination, <strong>first </strong>enter
+        the Safe Combination in the "Open Password Safe" field, <strong>then
+        </strong>click on the Yubikey button. If you've chosen to
+        protect your database using your YubiKey <strong>only</strong>,<strong>
+        </strong>then leave the "Open Password Safe" field <strong>empty</strong>,
+        and <strong></strong>click on the Yubikey button.</li>
+      <li>When you clisk on the Yubikey button, hhe "Click, then
+        activate your YubiKey" will be replaced by a progress bar
+        indicating the remaining time you have to activate your YubiKey
+        (by touching the flashing green light on the device). If you do
+        not activate your YubiKey in the allotted time (about 15
+        seconds), then an error message will be displayed, and you can
+        try again or cancel.</li>
+      <li>Once the YubiKey has been activated, your Password Safe
+        database will be opened.</li>
+    </ol>
     <h3>Virtual keyboard</h3>
     <p>To setup a master password in a secure way, you could use
       accented characters (e.g. on a German keyboard)
-      such as <b>ä</b>, <b>ö</b> or similar. To realize the input of such
+      such as <b>?</b>, <b>?</b> or similar. To realize the input of such
       characters, you would
       need a foreign keyboard. Such a keyboard is available as a virtual
       keyboard. This keyboard
       is then used to simulate all available foreign characters. The
       virtual keyboard can be shown
-      by pushing the symbol <span><img alt="Symbol virtual keyboard" src="images/vk_small.jpg"></span>.
+      by clicking on the <span><img alt="Symbol virtual keyboard" src="images/vk_small.jpg">
+      </span>symbol<span></span>.
       Foreign characters, that are not available at the physical
       keyboard, can be put in in this way.
       So you can build your desired master password. Even pieces of the
@@ -107,6 +177,7 @@
       <param name="Keyword" value="Combination">
       <param name="Keyword" value="Virtual Keyboard">
       <param name="Keyword" value="Opening a Safe">
+      <param name="Keyword" value="YubiKey">
     </object>
   </body>
 </html>

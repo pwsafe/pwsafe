@@ -366,7 +366,7 @@
     <ClCompile Include="InputBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManagePSWDPolices.cpp">
+    <ClCompile Include="ManagePSWDPols.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordPolicyDlg.cpp">
@@ -390,10 +390,13 @@
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="xpsupportvc11upd2v102\xpatl.cpp">
+    <ClCompile Include="EntryKBHotKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EntryKBHotKey.cpp">
+    <ClCompile Include="YubiCfgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -764,7 +767,7 @@
     <ClInclude Include="InputBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ManagePSWDPolices.h">
+    <ClInclude Include="ManagePSWDPols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordPolicyDlg.h">
@@ -789,6 +792,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntryKBHotKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YubiCfgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKBaseDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1618,14 +1627,12 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'Win32' ">
-    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
-    <CustomBuild Include="mxpsupportvc11upd2v102\xpatlwrap64.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
+  <ItemGroup>
+    <Image Include="graphics\Yubikey-button.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\Yubikey-button-disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

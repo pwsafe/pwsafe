@@ -92,7 +92,6 @@ public:
 
   TCHAR getDelimiter() const {return m_delimiter;}
 
-  int getNumIterations() const {return m_nITER;}
   int getNumEntries() const {return m_numEntries;}
   int getNumSkipped() const {return m_numEntriesSkipped;}
   int getNumRenamed() const {return m_numEntriesRenamed;}
@@ -121,7 +120,6 @@ protected:
   stringT m_strRenameList;
   stringT m_strSkippedList;
 
-  int m_nITER;
   int m_numEntries;
   int m_numEntriesSkipped;
   int m_numEntriesRenamed;

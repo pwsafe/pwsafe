@@ -28,6 +28,9 @@
 #include "safecombinationprompt.h"
 #include "optionspropsheet.h"
 #include "ManagePwdPolicies.h"
+#ifndef NO_YUBI
+#include "yubicfg.h"
+#endif
 #include "core/PWSdirs.h"
 
 #ifdef __WXMSW__
@@ -200,3 +203,15 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
   CManagePasswordPolicies ppols(this, m_core);
   ppols.ShowModal();
 }
+
+#ifndef NO_YUBI
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_YUBIKEY_MNG
+ */
+
+void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& /* event */ )
+{
+  YubiCfgDlg ykCfg(this, m_core);
+  ykCfg.ShowModal();
+}
+#endif

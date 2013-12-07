@@ -412,7 +412,7 @@ int DboxMain::NewFile(StringX &newfilename)
       return PWScore::USER_CANCEL;
   }
 
-  CPasskeySetup pksetup(this);
+  CPasskeySetup pksetup(this, m_core);
   rc = pksetup.DoModal();
 
   if (rc == IDCANCEL)
@@ -728,7 +728,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
-  const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY :0);
+  const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0);
   rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, flags);  // OK, CANCEL, HELP
 
   // Just need file extension
@@ -940,6 +940,9 @@ void DboxMain::PostOpenProcessing()
   // Set up notification of desktop state, one way or another
   startLockCheckTimer();
   RegisterSessionNotification(true);
+  
+  // Save initial R-O or R/W state for when locking
+  m_bDBInitiallyRO = m_core.IsReadOnly();
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
@@ -2382,8 +2385,6 @@ void DboxMain::ChangeMode(bool promptUser)
   // Update Minidump user streams - mode is in user stream 0
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us0);
 }
-
-
 
 void DboxMain::OnChangeMode()
 {

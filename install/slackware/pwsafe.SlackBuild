@@ -2,7 +2,7 @@
 
 # Password Safe build script 
 #--
-# Last edited: 23.12.2012
+# Last edited: 15.09.2013
 #--
 
 if [ $UID = 0 ]; then
@@ -15,7 +15,7 @@ if [ $UID = 0 ]; then
 fi
 
 PRGNAM=pwsafe
-VERSION=${VERSION:-0.91beta}
+VERSION=${VERSION:-0.92beta}
 ARCH=${ARCH:-x86_64} # i[345]6 or x86_64
 BUILD_ID=${BUILD_ID:-1}
 BUILDER_ID=${BUILDER_ID:-kan}
@@ -78,8 +78,8 @@ rm -rf $PKG/*
 ## Package building
 echo Building ...
 export LDFLAGS="$SLKLDFLAGS"
-export CXXFLAGS="$SLKCFLAGS"
-export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS -I/usr/include/ykpers-1"
+export CFLAGS="$SLKCFLAGS -I/usr/include/ykpers-1"
 
 #make binaries
 cd $MAKEDIR

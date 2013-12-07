@@ -281,7 +281,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">..\$(PWSBin)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
@@ -386,10 +385,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -437,10 +436,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -490,11 +489,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -547,11 +546,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -602,10 +601,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -657,10 +656,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -715,11 +714,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -776,11 +775,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -836,11 +835,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -896,11 +895,11 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);$(Xerces64Dir)\lib;..\..\..\build\bin\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);$(Xerces64Dir)\lib;..\..\..\build\lib\pwsafe\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -955,10 +954,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
@@ -1013,10 +1012,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
@@ -1070,10 +1069,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -1125,10 +1124,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;UxTheme.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);$(Xerces64Dir)\lib;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);$(Xerces64Dir)\lib;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -1198,7 +1197,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainView.cpp" />
     <ClCompile Include="filter\ManageFiltersDlg.cpp" />
-    <ClCompile Include="ManagePSWDPolices.cpp" />
+    <ClCompile Include="ManagePSWDPols.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
@@ -1216,6 +1215,7 @@
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
     <ClCompile Include="PWDialog.cpp" />
@@ -1264,7 +1264,7 @@
     <ClCompile Include="WZPropertyPage.cpp" />
     <ClCompile Include="WZPropertySheet.cpp" />
     <ClCompile Include="WZSelectDB.cpp" />
-    <ClCompile Include="xpsupportvc11upd2v102\xpatl.cpp" />
+    <ClCompile Include="YubiCfgDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -1322,7 +1322,7 @@
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
-    <ClInclude Include="ManagePSWDPolices.h" />
+    <ClInclude Include="ManagePSWDPols.h" />
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
@@ -1341,6 +1341,7 @@
     <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
     <ClInclude Include="PWDialog.h" />
@@ -1398,6 +1399,7 @@
     <ClInclude Include="WZPropertyPage.h" />
     <ClInclude Include="WZPropertySheet.h" />
     <ClInclude Include="WZSelectDB.h" />
+    <ClInclude Include="YubiCfgDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />
@@ -1710,19 +1712,9 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'Win32' ">
-    <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap.asm">
-      <Message>Assembling...</Message>
-      <Command>ml.exe /c /nologo /Zi /Fo ..\$(PWSObj)\$(ProjectName)\%(FileName).obj /W3 /errorReport:prompt /Ta.\xpsupportvc11upd2v102\%(FileName).asm"</Command>
-      <Outputs>..\$(PWSObj)\$(ProjectName)\%(FileName).obj;</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
-    <CustomBuild Include="xpsupportvc11upd2v102\xpatlwrap64.asm">
-      <Message>Assembling...</Message>
-      <Command>ml64.exe /c /nologo /Zi /Fo ..\$(PWSObj)\$(ProjectName)\%(FileName).obj /W3 /errorReport:prompt /Ta.\xpsupportvc11upd2v102\%(FileName).asm"</Command>
-      <Outputs>..\$(PWSObj)\$(ProjectName)\%(FileName).obj;</Outputs>
-    </CustomBuild>
+  <ItemGroup>
+    <Image Include="graphics\Yubikey-button-disabled.bmp" />
+    <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

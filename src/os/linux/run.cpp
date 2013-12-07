@@ -13,11 +13,14 @@
 #include "../run.h"
 #include <wx/process.h>
 
+#if 0
 // Platform-specific implementation details
+// Currently unused
 struct st_run_impl {
 };
 
 static st_run_impl *run_impl = NULL;
+#endif /* 0 */
 
 PWSRun::PWSRun()
 {

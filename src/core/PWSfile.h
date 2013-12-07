@@ -25,7 +25,14 @@
 
 #include "coredefs.h"
 
+// HASH_ITERATIONS is used by the key stretching algorithm.
+// MIN_HASH_ITERATIONS is a lower limit - anything lower than this
+// is considered inherently insecure.
 #define MIN_HASH_ITERATIONS 2048
+// MAX_USABLE_HASH_ITERS is a guesstimate on what's acceptable to a user
+// with a reasonably powerful CPU. Real limit's 2^32-1.
+#define MAX_USABLE_HASH_ITERS (1 << 20)
+
 #define DEFAULT_SUFFIX      _T("psafe3")
 
 class Fish;
@@ -64,18 +71,19 @@ public:
     HeaderRecord();
     HeaderRecord(const HeaderRecord &hdr);
     HeaderRecord &operator =(const HeaderRecord &hdr);
-
+    ~HeaderRecord();
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     pws_os::CUUID m_file_uuid;         // Unique DB ID
-    int m_nITER;                       // Formally not part of the header.
     std::vector<bool> m_displaystatus; // Tree expansion state vector
     StringX m_prefString;              // Prefererences stored in the file
-    time_t m_whenlastsaved;            // When last saved
-    StringX m_lastsavedby;             //   and by whom
-    StringX m_lastsavedon;             //   and by which machine
-    StringX m_whatlastsaved;           //   and by what application
+    time_t m_whenlastsaved; // When last saved
+    StringX m_lastsavedby; // and by whom
+    StringX m_lastsavedon; // and by which machine
+    StringX m_whatlastsaved; // and by what application
     StringX m_dbname, m_dbdesc;        // Descriptive name, Description
     UUIDList m_RUEList;
+    unsigned char *m_yubi_sk;  // YubiKey HMAC key, added in 0x030a / 3.27Y
+    enum {YUBI_SK_LEN = 20};
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,

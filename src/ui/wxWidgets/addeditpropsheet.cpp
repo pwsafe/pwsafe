@@ -1655,6 +1655,7 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
+
     CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
   } else { // not checked - restore default symbols to appropriate value
     if (m_pwpPronounceCtrl->GetValue())

@@ -790,10 +790,6 @@ void DboxMain::OnDelete()
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
-  // Ignore if more than one selected - List view only
-  if (m_ctlItemList.GetSelectedCount() > 1)
-    return;
-
   bool bAskForDeleteConfirmation = !(PWSprefs::GetInstance()->
                                      GetPref(PWSprefs::DeleteQuestion));
   bool dodelete = true;
@@ -814,6 +810,9 @@ void DboxMain::OnDelete()
       }
     }
   } else {
+    // Ignore if more than one selected - List view only
+    if (m_ctlItemList.GetSelectedCount() > 1)
+      return;
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
       pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
@@ -1049,17 +1048,6 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     prefs->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
   }
   
-  // Need to unregister all entry keyboard shortcuts due to the weird way that
-  // CHotKeyCtrl won't allow you to select one that already exists and just changes it
-  // to 'None' with neither a by nor leave
-  // KBShortcutMapConstIter kbiter;
-  // KBShortcutMap mapKBShortcutMap = GetAllKBShortcuts();
-
-  // for (kbiter = mapKBShortcutMap.begin(); kbiter != mapKBShortcutMap.end();
-       // kbiter++) {
-    // UnRegisterGUIKeyboardShortcut(kbiter->first);
-  // }
-  
   CAddEdit_PropertySheet *pEditEntryPSH(NULL);
   
   // Try Tall version
@@ -1243,7 +1231,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   SetChanged(Data);
 
   ChangeOkUpdate();
-  
+
   // Order may have changed as a result of edit
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
@@ -1498,7 +1486,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
   const pws_os::CUUID uuid = pci->GetUUID();
 
-  if (pci->IsShortcut() ||
+  if ((pci->IsShortcut() && ft != CItemData::USER) ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
     CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);

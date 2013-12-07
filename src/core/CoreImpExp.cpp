@@ -538,11 +538,6 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
   ofs << endl;
 
-  if (m_hdr.m_nITER > MIN_HASH_ITERATIONS) {
-    ofs << "\t<NumberHashIterations>" << m_hdr.m_nITER << "</NumberHashIterations>";
-    ofs << endl;
-  }
-
   // Write what we have and reset the buffer
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
   ofs.str("");
@@ -707,17 +702,17 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
-int PWScore::ImportXMLFile(const stringT &ImportedPrefix,
-                           const stringT &strXMLFileName,
-                           const stringT &strXSDFileName,
-                           const bool &bImportPSWDsOnly,
-                           stringT &strXMLErrors, stringT &strSkippedList,
-                           stringT &strPWHErrorList, stringT &strRenameList,
-                           int &numValidated, int &numImported, int &numSkipped,
-                           int &numPWHErrors, int &numRenamed,
-                           int &numNoPolicy,  int &numRenamedPolicies,
-                           int &numShortcutsRemoved,
-                           CReport &rpt, Command *&pcommand)
+int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
+                           const stringT & /*strXMLFileName*/,
+                           const stringT & /*strXSDFileName*/,
+                           const bool & /*bImportPSWDsOnly*/,
+                           stringT & /*strXMLErrors*/, stringT & /*strSkippedList*/,
+                           stringT & /*strPWHErrorList*/, stringT & /*strRenameList*/,
+                           int & /*numValidated*/, int & /*numImported*/, int & /*numSkipped*/,
+                           int & /*numPWHErrors*/, int & /*numRenamed*/,
+                           int & /*numNoPolicy*/,  int & /*numRenamedPolicies*/,
+                           int & /*numShortcutsRemoved*/,
+                           CReport & /*rpt*/, Command *& /*pcommand*/)
 {
   return UNIMPLEMENTED;
 }
@@ -743,13 +738,12 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 #endif
 
   bool status, validation;
-  int nITER(0);
 
   strXMLErrors = strPWHErrorList = strRenameList = _T("");
 
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
-                        strXSDFileName, bImportPSWDsOnly, nITER);
+                        strXSDFileName, bImportPSWDsOnly);
   strXMLErrors = iXML.getXMLErrors();
   if (!status) {
     return XML_FAILED_VALIDATION;
@@ -758,7 +752,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   validation = false;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
-                        strXSDFileName, bImportPSWDsOnly, nITER);
+                        strXSDFileName, bImportPSWDsOnly);
 
   numImported = iXML.getNumEntriesImported();
   numSkipped = iXML.getNumEntriesSkipped();

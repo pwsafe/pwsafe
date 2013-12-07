@@ -259,7 +259,6 @@ public:
   BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(const int i, BOOL MakeVisible = FALSE);
   void SelectFirstEntry();
-  void ItemSelected(HTREEITEM hItem, int iItem);
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
@@ -357,6 +356,7 @@ public:
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData *pci = NULL);
+  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
   bool IsNodeModified(StringX &path) const
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
@@ -374,6 +374,10 @@ public:
   
   // Entry keyboard shortcuts
   const KBShortcutMap &GetAllKBShortcuts() const {return m_core.GetAllKBShortcuts();}
+
+  // HashIters relaying
+  uint32 GetHashIters() const {return m_core.GetHashIters();}
+  void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
@@ -673,7 +677,8 @@ public:
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-  afx_msg void OnTreeClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -711,6 +716,7 @@ public:
   afx_msg void OnOptions();
   afx_msg void OnManagePasswordPolicies();
   afx_msg void OnGeneratePassword();
+  afx_msg void OnYubikey();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
@@ -816,6 +822,7 @@ private:
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
   bool m_bInRefresh, m_bInRestoreWindows;
+  bool m_bDBInitiallyRO;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItemData::LAST];
@@ -905,7 +912,7 @@ private:
   CInfoDisplay *m_pNotesDisplay;
 
   // Filters
-  bool m_bFilterActive, m_bFilterForStatus, m_bUnsavedDisplayed, m_bExpireDisplayed;
+  bool m_bFilterActive, m_bFilterForStatus, m_bFilterForType, m_bUnsavedDisplayed, m_bExpireDisplayed;
   // Current filter
   st_filters m_currentfilter;
   // Special Show Unsaved Changes filter

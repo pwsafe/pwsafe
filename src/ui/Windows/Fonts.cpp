@@ -21,11 +21,6 @@ static char THIS_FILE[] = __FILE__;
 
 Fonts *Fonts::self = NULL;
 
-CFont *Fonts::pPasswordFont = NULL;
-CFont *Fonts::pCurrentFont = NULL;  // Do NOT delete - done in DboxMain
-CFont *Fonts::pModifiedFont = NULL;
-CFont *Fonts::pDragFixFont = NULL;  // Fix for lack of text during drag!
-
 /*
   Only the following set:
     lf.lfHeight = -16;
@@ -53,45 +48,45 @@ Fonts *Fonts::GetInstance()
 
 void Fonts::DeleteInstance()
 {
-  if (pCurrentFont != NULL) {
-    pCurrentFont->DeleteObject();
-    delete pCurrentFont;
-    pCurrentFont = NULL;
+  if (m_pCurrentFont != NULL) {
+    m_pCurrentFont->DeleteObject();
+    delete m_pCurrentFont;
+    m_pCurrentFont = NULL;
   }
-  if (pModifiedFont != NULL) {
-    pModifiedFont->DeleteObject();
-    delete pModifiedFont;
-    pModifiedFont = NULL;
+  if (m_pModifiedFont != NULL) {
+    m_pModifiedFont->DeleteObject();
+    delete m_pModifiedFont;
+    m_pModifiedFont = NULL;
   }
-  if (pDragFixFont != NULL) {
-    pDragFixFont->DeleteObject();
-    delete pDragFixFont;
-    pDragFixFont = NULL;
+  if (m_pDragFixFont != NULL) {
+    m_pDragFixFont->DeleteObject();
+    delete m_pDragFixFont;
+    m_pDragFixFont = NULL;
   }
-  if (pPasswordFont != NULL) {
-    pPasswordFont->DeleteObject();
-    delete pPasswordFont;
-    pPasswordFont = NULL;
+  if (m_pPasswordFont != NULL) {
+    m_pPasswordFont->DeleteObject();
+    delete m_pPasswordFont;
+    m_pPasswordFont = NULL;
   }
   delete self;
   self = NULL;
 }
 
-Fonts::Fonts()
+Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
 {
-  pCurrentFont = new CFont;
-  pModifiedFont = new CFont;
-  pDragFixFont = new CFont;
-  pPasswordFont = new CFont;
+  m_pCurrentFont = new CFont;
+  m_pModifiedFont = new CFont;
+  m_pDragFixFont = new CFont;
+  m_pPasswordFont = new CFont;
 }
 
 void Fonts::GetCurrentFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL || pCurrentFont != NULL);
-  if (pLF == NULL|| pCurrentFont == NULL)
+  ASSERT(pLF != NULL && m_pCurrentFont != NULL);
+  if (pLF == NULL || m_pCurrentFont == NULL)
     return;
 
-  pCurrentFont->GetLogFont(pLF);
+  m_pCurrentFont->GetLogFont(pLF);
 }
 
 void Fonts::SetCurrentFont(LOGFONT *pLF)
@@ -100,21 +95,21 @@ void Fonts::SetCurrentFont(LOGFONT *pLF)
   if (pLF == NULL)
     return;
 
-  if (pCurrentFont == NULL) {
-    pCurrentFont = new CFont;
+  if (m_pCurrentFont == NULL) {
+    m_pCurrentFont = new CFont;
   } else {
-    pCurrentFont->DeleteObject();
+    m_pCurrentFont->DeleteObject();
   }
-  pCurrentFont->CreateFontIndirect(pLF);
+  m_pCurrentFont->CreateFontIndirect(pLF);
 }
 
 void Fonts::GetPasswordFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL || pPasswordFont != NULL);
-  if (pLF == NULL|| pPasswordFont == NULL)
+  ASSERT(pLF != NULL && m_pPasswordFont != NULL);
+  if (pLF == NULL || m_pPasswordFont == NULL)
     return;
 
-  pPasswordFont->GetLogFont(pLF);
+  m_pPasswordFont->GetLogFont(pLF);
 }
 
 void Fonts::GetDefaultPasswordFont(LOGFONT &lf)
@@ -124,12 +119,12 @@ void Fonts::GetDefaultPasswordFont(LOGFONT &lf)
 
 void Fonts::SetPasswordFont(LOGFONT *pLF)
 {
-  if (pPasswordFont == NULL) {
-    pPasswordFont = new CFont;
+  if (m_pPasswordFont == NULL) {
+    m_pPasswordFont = new CFont;
   } else {
-    pPasswordFont->DeleteObject();
+    m_pPasswordFont->DeleteObject();
   }
-  pPasswordFont->CreateFontIndirect(pLF == NULL ? &dfltPasswordLogfont : pLF);
+  m_pPasswordFont->CreateFontIndirect(pLF == NULL ? &dfltPasswordLogfont : pLF);
 }
 
 void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
@@ -138,14 +133,14 @@ void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
   if (pDlgItem == NULL)
     return;
 
-  if (pPasswordFont == NULL) {
-    pPasswordFont = new CFont;
+  if (m_pPasswordFont == NULL) {
+    m_pPasswordFont = new CFont;
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
-    pPasswordFont->CreateFontIndirect(&dfltPasswordLogfont);
+    m_pPasswordFont->CreateFontIndirect(&dfltPasswordLogfont);
   }
 
-  pDlgItem->SetFont(pPasswordFont);
+  pDlgItem->SetFont(m_pPasswordFont);
 }
 
 static CString GetToken(CString& str, LPCWSTR c)
@@ -186,18 +181,17 @@ void Fonts::ExtractFont(const CString &str, LOGFONT &lf)
 #endif  
 }
 
-const COLORREF Fonts::MODIFIED_COLOR = RGB(0, 0, 128);
 
 void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {
   // Set main font
-  pCurrentFont = pfont;
+  m_pCurrentFont = pfont;
   pWnd->SetFont(pfont);
 
   // Set up special fonts
   // Remove old fonts
-  pModifiedFont->DeleteObject();
-  pDragFixFont->DeleteObject();
+  m_pModifiedFont->DeleteObject();
+  m_pDragFixFont->DeleteObject();
   
   // Get current font
   LOGFONT lf;
@@ -205,31 +199,31 @@ void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 
   // Make it italic and create "modified" font
   lf.lfItalic = TRUE;
-  pModifiedFont->CreateFontIndirect(&lf);
+  m_pModifiedFont->CreateFontIndirect(&lf);
   
   // Make DragFix font same height as user selected font
   DragFixLogfont.lfHeight = lf.lfHeight;
   // Create DragFix font
-  pDragFixFont->CreateFontIndirect(&DragFixLogfont);
+  m_pDragFixFont->CreateFontIndirect(&DragFixLogfont);
 }
 
-LONG Fonts::CalcHeight()
+LONG Fonts::CalcHeight() const
 {
   //Get max height from current/modified/password font
   TEXTMETRIC tm;
   HDC hDC = ::GetDC(NULL);
   
-  HFONT hFontOld = (HFONT)SelectObject(hDC, pCurrentFont->GetSafeHandle());
+  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pCurrentFont->GetSafeHandle());
   //Current
   GetTextMetrics(hDC, &tm);
   LONG height = tm.tmHeight + tm.tmExternalLeading;
   //Modified
-  SelectObject(hDC, pModifiedFont->GetSafeHandle());
+  SelectObject(hDC, m_pModifiedFont->GetSafeHandle());
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
       height = tm.tmHeight + tm.tmExternalLeading;
   //Password
-  SelectObject(hDC, pPasswordFont->GetSafeHandle());
+  SelectObject(hDC, m_pPasswordFont->GetSafeHandle());
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
       height = tm.tmHeight + tm.tmExternalLeading;

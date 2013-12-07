@@ -18,6 +18,7 @@
 #include "SecString.h"
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
+#include "PKBaseDlg.h" // for *YubiExists
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "core/Util.h"
@@ -25,31 +26,34 @@
 #include "os/env.h"
 #include "os/file.h"
 #include "os/dir.h"
+#include "os/windows/yubi/YkLib.h"
 
 #include "resource3.h"
 
+#include <sstream>
 #include <iomanip>
 #include <shlobj.h>
 
-static wchar_t PSSWDCHAR = L'*';
+
+using namespace std;
+
+const wchar_t CWZSelectDB::PSSWDCHAR = L'*';
 
 IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
+
 CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
- : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0), m_pVKeyBoardDlg(NULL),
- m_bAdvanced(BST_UNCHECKED), m_bFileExistsUserAsked(false)
+ : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0),
+  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
+  m_bFileExistsUserAsked(false),
+  m_filespec(L""), m_passkey(L""),
+  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn), m_pending(false),
+  m_pctlPasskey(new CSecEditExtn)
 {
-  // Save pointer to my PropertySheet
   m_pWZPSH = (CWZPropertySheet *)pParent;
-
-  m_filespec = L"";
-  m_passkey = L"";
-  m_defexpdelim = L"\xbb";
-  m_pctlDB = new CEditExtn;
-  m_pctlPasskey = new CSecEditExtn;
-
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
+  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
 
 CWZSelectDB::~CWZSelectDB()
@@ -57,7 +61,7 @@ CWZSelectDB::~CWZSelectDB()
   delete m_pctlDB;
   delete m_pctlPasskey;
 
-  if (m_pVKeyBoardDlg != NULL) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->SaveKLID()) {
     // Save Last Used Keyboard
     UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
     std::wostringstream os;
@@ -84,6 +88,8 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
+  DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+  DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
 
   const UINT nID = m_pWZPSH->GetID();
 
@@ -103,7 +109,7 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX, 
+void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX,
                                                const CString &delimiter)
 {
   if (pDX->m_bSaveAndValidate) {
@@ -112,7 +118,7 @@ void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX,
       gmb.AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
-    }   
+    }
     if (delimiter[0] == '"') {
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_INVALIDDELIMITER);
@@ -132,6 +138,8 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   //}}AFX_MSG_MAP
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 void CWZSelectDB::OnHelp()
@@ -142,9 +150,8 @@ void CWZSelectDB::OnHelp()
 BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
-
+  SetTimer(1, 250, 0); // Setup a timer to poll YubiKey every 250 ms
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   const UINT nID = m_pWZPSH->GetID();
@@ -234,6 +241,34 @@ BOOL CWZSelectDB::OnInitDialog()
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
 
   GetDlgItem(IDC_DATABASE)->SetFocus();
+
+  // Yubi-related initializations:
+  m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
+  m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
+  CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
+
+  if (CPKBaseDlg::YubiExists()) {
+    ybn->ShowWindow(SW_SHOW);
+    m_yubi_status.ShowWindow(SW_SHOW);
+  } else {
+    ybn->ShowWindow(SW_HIDE);
+    m_yubi_status.ShowWindow(SW_HIDE);
+  }
+  m_yubi_timeout.ShowWindow(SW_HIDE);
+  m_yubi_timeout.SetRange(0, 15);
+  bool yubiInserted = IsYubiInserted();
+  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // so instead of showing drek, we roll our own, and leave enabled.
+  ybn->EnableWindow(TRUE);
+
+  if (yubiInserted) {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogo);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+  } else {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
+  }
+
   return FALSE;
 }
 
@@ -375,7 +410,7 @@ LRESULT CWZSelectDB::OnWizardNext()
         std::wstring dir, cdrive, cdir, cfile, cextn;
         pws_os::splitpath(m_filespec.GetString(), cdrive, cdir, cfile, cextn);
         //  If root directory - nothing to create
-        if (cdir == L"\\")          
+        if (cdir == L"\\")
           break;
 
         // Try and create necessary directories
@@ -504,7 +539,7 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   std::wstring ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
                                                         CString::PCXSTR(cs_suffix));
-  CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL, 
+  CPWFileDialog fd(bTYPE_OPEN, cs_suffix, uimsgid != IDS_CHOOSEDATABASE ? ExportFileName.c_str() : NULL,
                    dwflags, cs_filter, this);
 
   fd.m_ofn.lpstrTitle = cs_text;
@@ -604,4 +639,166 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
                         nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+// Yubi-related stuff, copied from CPKBaseDlg because MFC broke multiple-inheritance
+bool CWZSelectDB::IsYubiInserted() const
+{
+  if (m_pending)
+    return true; // can't check in the middle of a request
+  else {
+    CYkLib yk;
+    CSingleLock singeLock(&m_mutex);
+    singeLock.Lock();
+    return (yk.enumPorts() == 1);
+  }
+}
+
+void CWZSelectDB::yubiInserted(void)
+{
+  CButton *ybn = (CButton *)GetDlgItem(IDC_YUBIKEY_BTN);
+  ybn->SetBitmap(m_yubiLogo);
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+  // In case this is the first time:
+  ybn->ShowWindow(SW_SHOW);
+  m_yubi_status.ShowWindow(SW_SHOW);
+}
+
+void CWZSelectDB::yubiRemoved(void)
+{
+((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
+}
+
+static StringX Bin2Hex(const unsigned char *buf, int len)
+{
+  wostringstream os;
+  os << setw(2);
+  os << setfill(L'0');
+  for (int i = 0; i < len; i++) {
+    os << hex << setw(2) << int(buf[i]);
+  }
+  return StringX(os.str().c_str());
+}
+
+void CWZSelectDB::yubiCheckCompleted()
+{
+  // We now wait for a response with the HMAC-SHA1 digest
+  BYTE respBuf[SHA1_DIGEST_SIZE];
+  unsigned short timer;
+  CSingleLock singeLock(&m_mutex);
+  CYkLib yk;
+  singeLock.Lock();
+  if (yk.openKey() != YKLIB_OK) {
+    m_yubi_status.SetWindowText(_T("Failed to access YubiKey"));
+      return;
+  }
+  YKLIB_RC rc = yk.waitForCompletion(YKLIB_NO_WAIT,
+                                     respBuf, sizeof(respBuf), &timer);
+  switch (rc) {
+  case YKLIB_OK:
+    m_yubi_status.ShowWindow(SW_SHOW);
+    m_yubi_timeout.ShowWindow(SW_HIDE);
+    m_yubi_timeout.SetPos(0);
+    m_yubi_status.SetWindowText(_T(""));
+    TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
+    m_pending = false;
+    m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
+    // The returned hash is the passkey
+    m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable
+    m_yubi_status.SetWindowText(_T("YubiKey data received")); // shouldn't really show
+    // This will check the password, etc.:
+    UpdateData(FALSE); // passwd -> control
+    m_pWZPSH->PostMessage(WM_COMMAND, MAKELONG(ID_WIZNEXT, BN_CLICKED), 0);
+    break;
+  case YKLIB_PROCESSING:  // Still processing or waiting for the result
+    break;
+  case YKLIB_TIMER_WAIT:  // A given number of seconds remain
+    m_yubi_timeout.SetPos(timer);
+    break;
+
+  case YKLIB_INVALID_RESPONSE:  // Invalid or no response
+    m_pending = false;
+    m_yubi_timeout.ShowWindow(SW_HIDE);
+    m_yubi_status.SetWindowText(_T("YubiKey timed out"));
+    m_yubi_status.ShowWindow(SW_SHOW);
+    break;
+
+  default:                // A non-recoverable error has occured
+    m_pending = false;
+    m_yubi_timeout.ShowWindow(SW_HIDE);
+    m_yubi_status.ShowWindow(SW_SHOW);
+    yk.closeKey();
+    // Generic error message
+    TRACE(_T("yubiCompleted(%d)\n"), rc);
+    m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
+    break;
+  }
+}
+
+void CWZSelectDB::yubiRequestHMACSha1()
+{
+  if (m_pending) {
+    // no-op if a request's already in the air
+  } else {
+    CYkLib yk;
+    CSingleLock singeLock(&m_mutex);
+    singeLock.Lock();
+    // open key
+    // if zero or >1 key, we'll fail
+    if (yk.openKey() != YKLIB_OK) {
+      return;
+    }
+
+    // Prepare the HMAC-SHA1 challenge here
+
+    BYTE chalBuf[SHA1_MAX_BLOCK_SIZE];
+    BYTE chalLength = BYTE(m_passkey.GetLength()*sizeof(TCHAR));
+    memset(chalBuf, 0, SHA1_MAX_BLOCK_SIZE);
+    if (chalLength > SHA1_MAX_BLOCK_SIZE)
+      chalLength = SHA1_MAX_BLOCK_SIZE;
+
+    memcpy(chalBuf, m_passkey, chalLength);
+
+    // Initiate HMAC-SHA1 operation now
+
+    if (yk.writeChallengeBegin(YKLIB_SECOND_SLOT, YKLIB_CHAL_HMAC,
+                                 chalBuf, chalLength) != YKLIB_OK) {
+      TRACE(_T("yk.writeChallengeBegin() failed"));
+      return;
+    }
+    // request's in the air, setup GUI to wait for reply
+    m_pending = true;
+    m_yubi_status.ShowWindow(SW_HIDE);
+    m_yubi_status.SetWindowText(_T(""));
+    m_yubi_timeout.ShowWindow(SW_SHOW);
+    m_yubi_timeout.SetPos(15);
+  }
+}
+
+void CWZSelectDB::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CWZSelectDB::OnTimer(UINT_PTR)
+{
+  // If an operation is pending, check if it has completed
+
+  if (m_pending) {
+    yubiCheckCompleted();
+  } else {
+    // No HMAC operation is pending - check if one and only one key is present
+    bool inserted = IsYubiInserted();
+    // call relevant callback if something's changed
+    if (inserted != m_present) {
+      m_present = inserted;
+      if (m_present) {
+        CPKBaseDlg::SetYubiExists();
+        yubiInserted();
+      } else
+        yubiRemoved();
+    }
+  }
 }

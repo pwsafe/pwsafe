@@ -10,9 +10,7 @@
 
 #include "stdafx.h"
 #include "ThisMfcApp.h"    // For Help
-
 #include "Options_PropertySheet.h"
-
 #include "HKModifiers.h"
 
 #include "resource.h"
@@ -613,7 +611,6 @@ bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcuts
   iter = m_MapMenuShortcuts.find(id);
   return iter != m_MapMenuShortcuts.end();
 }
-
 
 void COptionsShortcuts::RefreshKBShortcuts()
 {

@@ -164,6 +164,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " 'Groep'"
 
+#. Resource IDs: (372)
+msgid " 'Keyboard Shortcut'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
 msgstr " 'Tijdstip van Laatste Gebruik'"
@@ -945,6 +949,10 @@ msgstr "&XML Opmaak...."
 msgid "&Yes"
 msgstr "&Ja"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&e-mail:"
@@ -997,6 +1005,10 @@ msgstr ")"
 msgid "* means that the database has been modified since last save"
 msgstr "* betekent dat de database verandert is sinds de laatste keer opslaan"
 
+#. Resource IDs: (216)
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
 msgstr "*** Handeling afgebroken door Gebruiker ***"
@@ -1013,10 +1025,6 @@ msgstr "- Fysiek - "
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
-
-#. Resource IDs: (214)
-msgid "-merged-"
-msgstr "-samengevoegd-"
 
 #. Resource IDs: (1223)
 msgid "..."
@@ -1553,6 +1561,10 @@ msgstr "En / Of"
 msgid "Any field last changed on:"
 msgstr "Willekeurig veld laatst gewijzigd op:"
 
+#. Resource IDs: (65535)
+msgid "Application Hotkey"
+msgstr ""
+
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
 msgstr "Toepassen"
@@ -2054,6 +2066,10 @@ msgstr "Klik om de Caps Lock toets aan/uit te zetten"
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klik om te wisselen tussen en/of relatie naar vorige regel"
 
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1)
 msgid "Close"
 msgstr "Sluiten"
@@ -2429,6 +2445,10 @@ msgstr "Deens"
 msgid "Database"
 msgstr "Database"
 
+#. Resource IDs: (65535)
+msgid "Database Entry Shortcuts"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Database Unique ID"
 msgstr "Unieke Database ID"
@@ -2614,6 +2634,10 @@ msgstr "Niet de automatisch opgeslagen documenten herstellen\nGebruik de laatste
 msgid "Double Click Action"
 msgstr "Dubbel Klik Actie"
 
+#. Resource IDs: (373)
+msgid "Double click to Edit/View this entry."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "Dubbel-Klik Actie:"
@@ -2708,6 +2732,10 @@ msgstr "Exporteer vermelding naar"
 msgid "Easyvision characters"
 msgstr "Easyvision tekens"
 
+#. Resource IDs: (2004)
+msgid "Edit"
+msgstr ""
+
 #. Resource IDs: (121, 32220)
 msgid "Edit Entry"
 msgstr "Bewerk Vermelding"
@@ -2737,6 +2765,10 @@ msgstr "Groep/Titel en/of Wachtwoord kolommen ontbreken. Geen regels geïmportee
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Lege regel %d overgeslagen"
+
+#. Resource IDs: (1088)
+msgid "Enable"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2877,6 +2909,10 @@ msgstr "Vermelding %s%d met Groep=\"%s\", Titel=\"%s\", Gebruiker=\"%s\""
 msgid "Entry Comparison"
 msgstr "Vergelijking van Vermeldingen"
 
+#. Resource IDs: (373)
+msgid "Entry Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
 msgstr "Wijzigingen Wachtwoordbeleid Vermelding"
@@ -2898,6 +2934,25 @@ msgstr "Vermelding \"%s, %s, %s\" heeft een wachtwoord met de correcte opmaak vo
 #. Resource IDs: (205)
 msgid "Entry import warnings"
 msgstr "Vermeldings importeringswaarschuwingen "
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -3140,6 +3195,10 @@ msgstr "Actief veld"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "Veld is aanwezig"
+
+#. Resource IDs: (2001)
+msgid "File"
+msgstr ""
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3452,13 +3511,13 @@ msgstr "Geschiedenis"
 msgid "History entry"
 msgstr "Geschiedenis Vermelding"
 
-#. Resource IDs: (1088)
-msgid "Hot Key"
-msgstr "Sneltoets"
-
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "Sneltoets1"
+
+#. Resource IDs: (372)
+msgid "However, we can't add either as all combinations are in use."
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3870,6 +3929,10 @@ msgstr "KeePass V1 TXT Bestand..."
 msgid "Keep"
 msgstr "Bewaren"
 
+#. Resource IDs: (193, 372, 65535)
+msgid "Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
 msgstr "Soort toetsenbord:"
@@ -4024,6 +4087,10 @@ msgstr "E-mail systeem-DLL is ongeldig"
 msgid "Make Backup"
 msgstr "Back-up maken"
 
+#. Resource IDs: (2010)
+msgid "Manage"
+msgstr ""
+
 #. Resource IDs: (158)
 msgid "Manage Filters"
 msgstr "Beheren van Filters"
@@ -4047,6 +4114,10 @@ msgstr "Marathi"
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
+
+#. Resource IDs: (1487)
+msgid "Maximum"
+msgstr ""
 
 #. Resource IDs: (338)
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
@@ -4299,6 +4370,10 @@ msgstr "Geen regels in het import bestand!"
 #. Resource IDs: (344)
 msgid "No reports exist in the same directory as the current database."
 msgstr "Er is geen rapport in dezelfde map al de huidige database"
+
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
@@ -4634,6 +4709,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Titelloze herstelde back-up>"
 
+#. Resource IDs: (373)
+msgid "Password Safe Application HotKey"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
 msgstr "Password Safe back-ups (*.bak)|*.bak|Password Safe tussentijdse back-ups(*.ibak)|*.ibak||"
@@ -4824,6 +4903,10 @@ msgstr "Geef alstublieft de kluis combinatie van deze wachtwoord database."
 msgid "Please enter your backup database prefix."
 msgstr "Geef uw back-up database voorvoegsel op."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "SVP het XML bestand een naam geven"
@@ -4920,6 +5003,10 @@ msgstr "Vorige wachtwoorden"
 #. Resource IDs: (1436)
 msgid "Processing entry:"
 msgstr "Verwerken vermelding:"
+
+#. Resource IDs: (65535)
+msgid "Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -5062,6 +5149,10 @@ msgstr "Relatieve datums zijn dagen ten opzichte van vandaag. Bijvoorbeeld  '-1'
 msgid "Remember last"
 msgstr "Onthoud laatste"
 
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
+
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
 msgstr "Verwijder PasswordSafe configuratie uit het Register"
@@ -5113,8 +5204,8 @@ msgid "Reset"
 msgstr "Opnieuw instellen"
 
 #. Resource IDs: (1368)
-msgid "Reset All"
-msgstr "Alles opnieuw instellen"
+msgid "Reset All Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5465,6 +5556,10 @@ msgstr "Zet Boom/Lijst lettertype"
 msgid "Set Virtual Keyboard font"
 msgstr "Zet Virtueel toetsenbord lettertype"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Zet het maximum aantal wachtwoorden dat bewaard wordt op bovnestaande waarde"
@@ -5525,6 +5620,10 @@ msgstr "Snelkoppeling toets"
 #. Resource IDs: (452)
 msgid "Shortcuts"
 msgstr "Snelkoppelingen"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -5665,6 +5764,10 @@ msgstr "Spaanse variatie"
 #. Resource IDs: (1439)
 msgid "Special set"
 msgstr "Speciale set"
+
+#. Resource IDs: (1486)
+msgid "Standard"
+msgstr ""
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -5868,6 +5971,30 @@ msgstr "De %s vermelding \"%s, %s, %s\" wijst niet naar een gewone of bestaande 
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "De ALT toest wordt bij geen enkele toetsenbord gebruikt om tekens te selecteren. Gebruik de \"ALT NUM\" toets om een teken via de decimale waarde in te voeren."
 
+#. Resource IDs: (372)
+msgid "The Alt and Ctrl keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt key has been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt, Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl key has been added."
+msgstr ""
+
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr ""
@@ -6008,6 +6135,16 @@ msgstr "De volgende records hebben een andere naam gekregen. De vermelding besta
 msgid "The following records were skipped:"
 msgstr "De volgende records zijn overgeslagen:"
 
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
+msgstr ""
+
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
@@ -6063,6 +6200,10 @@ msgstr "Er lijkt geen Prullenbak te bestaan op het medium waarop deze Veilige Ba
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr "Deze zijn recenter opgeslagen dan de huidige open documenten en ze bevatten veranderingen die gemaakt zijn voordat de applicatie afgesloten werd."
+
+#. Resource IDs: (373)
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6411,6 +6552,10 @@ msgstr "Onbekend object"
 msgid "Unlock"
 msgstr "Ontsluit"
 
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Ontsluit Kluis"
@@ -6664,6 +6809,10 @@ msgstr "Waarschuwing"
 msgid "Warning - excessive field contents"
 msgstr "Waarschuwing -  extreme veld waardes"
 
+#. Resource IDs: (1370)
+msgid "Warning goes here if generated"
+msgstr ""
+
 #. Resource IDs: (331)
 #, c-format
 msgid "Weak passphrase:\n\n %s"
@@ -6799,6 +6948,26 @@ msgstr "Uw huidige geopende database zal in de eerste rij staan. Veilige Back-up
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "Uw gevraagde font, '%s', kan niet gevonden worden (niet geinstalleerd?). Gebruik  '%s' in plaats daarvan."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
@@ -7193,6 +7362,11 @@ msgstr "\tEen of meer Wachtwoord Beleid Namen waren al in de database maar met a
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
 msgstr "\tEen of meer Wachtwoord Beleid Namen zijn niet gevonden in de database. The betreffende vermeldingen zijn aangepast om het standaard beleid van de database te gebruiken"
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgstr ""
+
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
@@ -7312,6 +7486,10 @@ msgstr "bevat alle"
 msgid "contains any of"
 msgstr "bevat een van"
 
+#. Resource IDs: (216)
+msgid "copied"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "databases."
@@ -7420,6 +7598,10 @@ msgstr "id="
 msgid "import"
 msgstr "importeer"
 
+#. Resource IDs: (216)
+msgid "imported"
+msgstr ""
+
 #. Resource IDs: (1320)
 msgid "in"
 msgstr "in"
@@ -7475,6 +7657,10 @@ msgstr "minder dan"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "minder dan of gelijk aan"
+
+#. Resource IDs: (214)
+msgid "merged"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

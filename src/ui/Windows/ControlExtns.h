@@ -155,10 +155,9 @@ class CRichEditExtn : public CRichEditCtrl
   // Construction
 public:
   CRichEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  CRichEditExtn(std::vector<st_context_menu> vmenu_items, 
-            COLORREF focusColor = (RGB(222, 255, 222))); //light green
   virtual ~CRichEditExtn();
 
+  void SetContextMenu(const std::vector<st_context_menu> &vmenu_items);
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const bool new_state);
 

@@ -291,3 +291,4 @@ int CCWTreeCtrl::GetEntryImage(const CItemData &ci) const
   }
   return nImage;
 }
+

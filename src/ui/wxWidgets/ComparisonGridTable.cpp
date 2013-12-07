@@ -579,4 +579,3 @@ void ComparisonGrid::OnAutoSelectGridRow(wxCommandEvent& evt)
 {
   SelectRow(evt.GetInt(), true);
 }
-

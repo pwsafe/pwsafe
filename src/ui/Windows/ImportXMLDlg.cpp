@@ -82,7 +82,7 @@ void CImportXMLDlg::OnImportPSWDsOnly()
 
 void CImportXMLDlg::OnHelp() 
 {
-  ShowHelp(L"::/html/importxml.html");
+  ShowHelp(L"::/html/import.html#XML");
 }
 
 void CImportXMLDlg::OnOK() 

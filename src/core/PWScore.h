@@ -447,6 +447,10 @@ public:
   size_t GetExpirySize() {return m_ExpireCandidates.size();}
   ExpiredList GetExpired(int idays) {return m_ExpireCandidates.GetExpired(idays);}
 
+  // Yubi support:
+  const unsigned char *GetYubiSK() const;
+  void SetYubiSK(const unsigned char *);
+  
   // Password Policies
   bool IncrementPasswordPolicy(const StringX &sxPolicyName);
   bool DecrementPasswordPolicy(const StringX &sxPolicyName);
@@ -472,6 +476,9 @@ public:
   const KBShortcutMap &GetAllKBShortcuts() {return m_KBShortcutMap;}
   void SetAppHotKey(const int32 &iAppHotKey) {m_iAppHotKey = iAppHotKey;}
   int32 GetAppHotKey() const {return m_iAppHotKey;}
+
+  uint32 GetHashIters() const;
+  void SetHashIters(uint32 value);
 
 private:
   // Database update routines
@@ -537,6 +544,8 @@ private:
 
   unsigned char *m_passkey; // encrypted by session key
   size_t m_passkey_len; // Length of cleartext passkey
+
+  uint32 m_hashIters; // for new or currently open db.
 
   static unsigned char m_session_key[32];
   static unsigned char m_session_initialized;

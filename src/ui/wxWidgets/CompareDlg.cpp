@@ -287,8 +287,8 @@ void CompareDlg::OnCompare(wxCommandEvent& )
 {
   if ( Validate() && TransferDataFromWindow()) {
     if (wxFileName(m_dbPanel->m_filepath).SameAs(towxstring(m_otherCore->GetCurFile())) ||
-            ReadCore(*m_otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination,
-                            true, this, true) == PWScore::SUCCESS) {
+        ReadCore(*m_otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination,
+                 true, this, true) == PWScore::SUCCESS) {
       m_otherCore->SetCurFile(tostringx(m_dbPanel->m_filepath));
       m_otherCore->SetReadOnly(true);
 
@@ -337,7 +337,7 @@ void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
                    {m_current,    true,  false, false},
                    {m_comparison, true,  false, true},
                    {m_identical,  false, false, false}
-              };
+  };
   wxSizerItem* prevSizer = 0;
   for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
     ComparisonGridTable* table;
@@ -465,8 +465,8 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     menuContext.field = table->ColumnToField(evt.GetCol());
     if (selectionCount > 1)
       strCopyFieldMenu << _("&Copy ") << selectionCount << _(" selected ") <<
-                          towxstring(CItemData::FieldName(menuContext.field))
-                          << _(" fields to current db");
+        towxstring(CItemData::FieldName(menuContext.field))
+                       << _(" fields to current db");
     else
       strCopyFieldMenu << _("&Copy this ") << towxstring(CItemData::FieldName(menuContext.field)) << _(" to current db");
 

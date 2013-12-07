@@ -704,6 +704,11 @@
 #define IDS_ENTRIESCLEARALL             5920
 #define IDS_NOTESZOOMIN                 5921
 #define IDS_NOTESZOOMOUT                5922
+
+#define IDS_YUBI_CLICK_PROMPT           6000
+#define IDS_YUBI_INSERT_PROMPT          6001
+#define IDS_YUBI_TIMEOUT                6002
+
 #define IDS_VALIDATE_ISSUES             5923
 #define IDS_CURRENT_ENTRY               5924
 #define IDS_COMPARISON_ENTRY            5925

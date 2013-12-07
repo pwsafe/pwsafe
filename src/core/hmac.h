@@ -12,12 +12,77 @@
 #ifndef __HMAC_H
 #define __HMAC_H
 
-// Currently implemented only for sha256, as required by version 3
-// of the database format.
 // HMAC algorithm as per RFC2104
-// Generalizing this to other hashes is left as an exercise to the reader...
 
-#include "sha256.h" 
+#include "Util.h" // for ASSERT
+
+template<class H, int HASHLEN, int BLOCKSIZE>
+class HMAC
+{
+public:
+  HMAC(const unsigned char *key, unsigned long keylen)
+  {
+    ASSERT(key != NULL);
+    
+    memset(K, 0, sizeof(K));
+    Init(key, keylen);
+  }
+
+  HMAC()
+  { // Init needs to be called separately
+    memset(K, 0, sizeof(K));
+  }
+
+  ~HMAC(){/* cleaned up in Final */}
+
+  void Init(const unsigned char *key, unsigned long keylen)
+  {
+    ASSERT(key != NULL);
+
+    if (keylen > BLOCKSIZE) {
+      H H0;
+      H0.Update(key, keylen);
+      H0.Final(K);
+    } else {
+      ASSERT(keylen <= sizeof(K));
+      memcpy(K, key, keylen);
+    }
+
+    unsigned char k_ipad[BLOCKSIZE];
+    for (int i = 0; i < BLOCKSIZE; i++)
+      k_ipad[i] = K[i] ^ 0x36;
+    Hash.Update(k_ipad, BLOCKSIZE);
+    memset(k_ipad, 0, BLOCKSIZE);
+  }
+
+  void Update(const unsigned char *in, unsigned long inlen)
+  {
+    Hash.Update(in, inlen);
+  }
+
+  void Final(unsigned char digest[HASHLEN])
+  {
+    unsigned char d[HASHLEN];
+
+    Hash.Final(d);
+    unsigned char k_opad[BLOCKSIZE];
+    for (int i = 0; i < BLOCKSIZE; i++)
+      k_opad[i] = K[i] ^ 0x5c;
+
+    memset(K, 0, BLOCKSIZE);
+
+    H H1;
+    H1.Update(k_opad, BLOCKSIZE);
+    memset(k_opad, 0, BLOCKSIZE);
+    H1.Update(d, HASHLEN);
+    memset(d, 0, HASHLEN);
+    H1.Final(digest);
+  }
+
+private:
+  H Hash;
+  unsigned char K[BLOCKSIZE];
+};
 
 class HMAC_SHA256
 {

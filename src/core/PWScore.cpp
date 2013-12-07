@@ -59,6 +59,7 @@ static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser 
 PWScore::PWScore() :
                      m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
+                     m_hashIters(MIN_HASH_ITERATIONS),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
@@ -462,6 +463,7 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   // XXX cleanup gross dynamic_cast
   PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
   if (out3 != NULL) {
+    out3->SetNHashIters(GetHashIters());
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
     out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
@@ -698,6 +700,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL) {
+    m_hashIters = in3->GetNHashIters();
     m_MapFilters = in3->GetFilters();
     m_MapPSWDPLC = in3->GetPasswordPolicies();
     m_vEmptyGroups = in3->GetEmptyGroups();
@@ -831,6 +834,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   ParseDependants();
 
+
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
   int closeStatus = in->Close(); // in V3 this checks integrity
@@ -909,9 +913,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 static void ManageIncBackupFiles(const stringT &cs_filenamebase,
                                  size_t maxnumincbackups, stringT &cs_newname)
 {
-  // make sure we've no more than maxnumincbackups backup files,
-  // and return the base name of the next backup file
-  // (sans the suffix, which will be added by caller)
+  /**
+   * make sure we've no more than maxnumincbackups backup files,
+   * and return the base name of the next backup file
+   * (sans the suffix, which will be added by caller)
+   *
+   * The current solution breaks when maxnumincbackups >= 999.
+   * Best solution is to delete by modification time,
+   * but that requires a bit too much for the cost/benefit.
+   * So for now we're "good enough" - limiting maxnumincbackups to <= 998
+   */
+
+  if (maxnumincbackups >= 999) {
+    pws_os::Trace(_T("Maxnumincbackups: truncating maxnumincbackups to 998"));
+    maxnumincbackups = 998;
+  }
+
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
@@ -940,9 +957,22 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   sort(file_nums.begin(), file_nums.end());
 
+  // nnn is the number of the file in the returned value: cs_filebasename_nnn
   int nnn = file_nums.back();
   nnn++;
-  if (nnn > 999) nnn = 1;
+  if (nnn > 999) {
+    // as long as there's a _999 file, we set n starting from 001
+    nnn = 1;
+    size_t x = file_nums.size() - maxnumincbackups;
+    while (file_nums[x++] == nnn && x < file_nums.size())
+      nnn++;
+    // Now we need to determine who to delete.
+    int next = 999 - (maxnumincbackups - nnn);
+    int m = 1;
+    for (x = 0; x < file_nums.size(); x++)
+      if (file_nums[x] < next)
+        file_nums[x] = next <= 999 ? next++ : m++;
+  }
 
   Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
 
@@ -2562,7 +2592,7 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
 
 void PWScore::NotifyDBModified()
 {
-  // his allows the core to provide feedback to the UI that the Database
+  // This allows the core to provide feedback to the UI that the Database
   // has changed particularly to invalidate any current Find results and
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
@@ -3107,6 +3137,24 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   return true;
 }
 
+// Yubi support:
+const unsigned char *PWScore::GetYubiSK() const
+{
+  return m_hdr.m_yubi_sk;
+}
+
+void PWScore::SetYubiSK(const unsigned char *sk)
+{
+  if (m_hdr.m_yubi_sk)
+    trashMemory(m_hdr.m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+  delete[] m_hdr.m_yubi_sk;
+  m_hdr.m_yubi_sk = NULL;
+  if (sk != NULL) {
+    m_hdr.m_yubi_sk = new unsigned char[PWSfile::HeaderRecord::YUBI_SK_LEN];
+    memcpy(m_hdr.m_yubi_sk, sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+  }
+}
+
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 {
   PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
@@ -3216,4 +3264,17 @@ const pws_os::CUUID & PWScore::GetKBShortcut(const int32 &iKBShortcut)
     return CUUID::NullUUID();
   else
     return iter->second;
+}
+
+uint32 PWScore::GetHashIters() const
+{
+  return m_hashIters;
+}
+
+void PWScore::SetHashIters(uint32 value)
+{
+  if (value != m_hashIters) {
+    m_hashIters = value;
+    SetDBPrefsChanged(true);
+  }
 }

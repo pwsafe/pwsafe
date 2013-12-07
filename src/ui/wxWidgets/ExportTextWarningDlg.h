@@ -31,6 +31,15 @@ public:
   SelectionCriteria* selCriteria;
   StringX           passKey;
   wxString          delimiter;
+private:
+  void OnYubibtnClick( wxCommandEvent& event );
+  void OnPollingTimer(wxTimerEvent& timerEvent);
+
+  const wxString defDelim;
+  CSafeCombinationCtrl* m_combinationEntry;
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 };
 
 template <class DlgType>

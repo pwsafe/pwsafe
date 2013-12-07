@@ -57,31 +57,29 @@ keystrokes.<br><br>
 <blockquote>
 <i>Additional notes on entry keyboard shortcuts:</i>
 <ul>
-<li>The new Entry Keyboard Shortcuts are implemented as a new field in each entry in the database.
-However, the <b>Password Safe</b> application also has keyboard shortcuts defined that correspond
+<li>Entry Keyboard Shortcuts are stored as part of the entry's record in the database.
+However, <b>Password Safe</b> also has keyboard shortcuts defined that correspond
 to its menu items.  The scope of the menu item shortcuts is for all databases opened by
-that user on a particular PC and can be customised by the user
-(Manage&nbsp;&rarr;&nbsp;Options) and may change according to the user selected
+a given user on a particular PC and can be customised by that user
+(Manage&nbsp;&rarr;&nbsp;Options, <a href="shortcuts_tab.html">Shortcuts tab</a>) and may change according to the user selected
 application language e.g. English, German etc.</li>
 
-<li>Therefore, although the user will be warned if they select an entry keyboard shortcut that
-is currently allocated to a menu item, there may not be a conflict if the user then
-customises the menu shortcuts or changes the application display language.  Similarly,
-an entry keyboard shortcut may not be in use when added to an entry but could become a
-conflict if the user later customises the menu shortcuts or changes the language.</li>
+<li>Therefore, although a warning is shown if you select an entry keyboard shortcut that
+is currently assigned to a menu item, there may not be a conflict if you later
+customise the menu shortcuts or change the application display language.  Similarly,
+an entry keyboard shortcut may not be in use when added to an entry but could become
+conflicted if you later customises the menu shortcuts or changes the language.</li>
 
 <li>As entry keyboard shortcuts cannot change the database when used, unlike say a menu item
-shortcut that could delete an entry, to ensure that no damage is inadvertently caused,
-entry keyboard shortcuts will take precedence over menu item shortcuts.</li>
+shortcut that could delete an entry, as a safety measure, entry keyboard shortcuts take precedence over menu item shortcuts.</li>
 
 <li>An entry keyboard shortcut must include the Alt or Ctrl key (with or without the Shift key).
 If one of these is not included when entering a value, all combinations of the Alt, Ctrl and Shift
 keys are tried in the order (Alt; Alt+Shift; Ctrl; Ctrl+Shift, Alt+Ctrl; Alt+Ctrl+Shift) to achieve a
 unique combination. For example, if the user specifies "Shift + 6", the shortcut could be changed to
-"Alt + Shift + 6".
-If the user specifies, for example, "Ctrl + 6" it will not be altered.</li>
+"Alt + Shift + 6". However, if you specify, for example, "Ctrl + 6" it will not be altered.</li>
 
-<li>The keyboard shortcut will be removed from an entry, if it is already
+<li>The keyboard shortcut will be removed from an entry if it is already
 assigned to another entry in the database, in the following cases:
 <ul>
 <li>If an entry is imported (via text or XML). Note: This will also be noted in the Import
@@ -102,7 +100,7 @@ not be the case if an entry is dragged within the same database.</li>
 <p>A list of currently in use entry keyboard shortcuts will be displayed below the <b>Password Safe</b>
 program related menu shortcuts on the OptionsShortcuts tab via
 <a href="shortcuts_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Shortcuts"</a>.
-You may right click on the keyboard shortcut in this list to Edit/View the corresponding entry.
+You may double click on the keyboard shortcut in this list to Edit/View the corresponding entry.
 You may also add the entry keyboard shortcut column to the Flattened List view and/or create a
 filter to just show those entries with or without keyboard shortcuts.</p>
 </blockquote>

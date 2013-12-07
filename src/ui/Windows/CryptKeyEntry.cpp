@@ -27,26 +27,35 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //-----------------------------------------------------------------------------
-CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
-  : CPWDialog(CCryptKeyEntry::IDD, pParent),
-  m_cryptkey1(L""), m_cryptkey2(L"")
+CCryptKeyEntry::CCryptKeyEntry(bool isEncrypt, CWnd* pParent)
+  : CDialog(CCryptKeyEntry::IDD, pParent),
+    m_cryptkey1(L""), m_cryptkey2(L""), m_encrypt(isEncrypt)
 {
 }
 
+BOOL CCryptKeyEntry::OnInitDialog()
+{
+  CDialog::OnInitDialog();
+  GetDlgItem(IDC_VERIFY)->ShowWindow(m_encrypt);
+  GetDlgItem(IDC_CRYPTKEY2)->ShowWindow(m_encrypt);
+  return TRUE;
+}
+
+
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
   DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
 }
 
-BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
+BEGIN_MESSAGE_MAP(CCryptKeyEntry, CDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 void CCryptKeyEntry::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CDialog::OnCancel();
 }
 
 void CCryptKeyEntry::OnOK()
@@ -54,7 +63,7 @@ void CCryptKeyEntry::OnOK()
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
 
-  if (m_cryptkey1 != m_cryptkey2) {
+  if (m_encrypt && (m_cryptkey1 != m_cryptkey2)) {
     gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
     return;
@@ -65,12 +74,12 @@ void CCryptKeyEntry::OnOK()
     return;
   }
 
-  CPWDialog::OnOK();
+  CDialog::OnOK();
 }
 
 void CCryptKeyEntry::OnHelp() 
 {
-  ShowHelp(L"::/html/create_new_db.html");
+  //  ShowHelp(L"::/html/create_new_db.html");
 }
 
 //-----------------------------------------------------------------------------

@@ -425,10 +425,8 @@ CRichEditExtn::CRichEditExtn(COLORREF focusColor)
   m_vmenu_items.clear();
 }
 
-CRichEditExtn::CRichEditExtn(std::vector<st_context_menu> vmenu_items,
-                     COLORREF focusColor)
-  : m_bIsFocused(FALSE), m_lastposition(-1), m_crefInFocus(focusColor),
-  m_bContextMenu(false)
+
+void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
 {
   // Don't allow if menu string is empty.
   if (vmenu_items.empty()) {

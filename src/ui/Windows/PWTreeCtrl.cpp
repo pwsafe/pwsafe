@@ -618,11 +618,10 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   
   // Don't bother if no entries or not via the keyboard/mouse (check this first
   // as more likely than no entries).
-   if ((pNMTreeView->action != TVC_BYKEYBOARD && pNMTreeView->action != TVC_BYMOUSE) || 
-       GetCount() == 0)
+   if (pNMTreeView->action != TVC_BYKEYBOARD || GetCount() == 0)
      return;
 
-  app.GetMainDlg()->ItemSelected(pNMTreeView->itemNew.hItem, -1);
+  app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, true);
 }
 
 void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1237,9 +1236,15 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
+  // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
+  // before every return, otherwise next mouse/keybord selection 
+  // will be treated as drop target selections
+
   // Is it ours?
-  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) {
+    SelectDropTarget(NULL);
     return FALSE;
+  }
 
   m_TickCount = 0;
   pws_os::Trace(L"CPWTreeCtrl::OnDrop() show cursor\n");
@@ -1255,11 +1260,15 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
     pil->DeleteImageList();
   }
 
-  if (app.GetMainDlg()->IsDBReadOnly())
+  if (app.GetMainDlg()->IsDBReadOnly()) {
+    SelectDropTarget(NULL);
     return FALSE; // don't drop in read-only mode
+  }
 
-  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) {
+    SelectDropTarget(NULL);
     return FALSE;
+  }
 
   UINT uFlags;
   HTREEITEM hitemDrop = HitTest(point, &uFlags);
@@ -1267,22 +1276,29 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   bool bForceRoot(false);
   switch (uFlags) {
   case TVHT_ABOVE: case TVHT_BELOW: case TVHT_TOLEFT: case TVHT_TORIGHT:
+    SelectDropTarget(NULL);
     return FALSE;
   case TVHT_NOWHERE:
     if (hitemDrop == NULL) {
       // Treat as drop in root
       hitemDrop = GetRootItem();
       bForceRoot = true;
-    } else
+    }
+    else {
+      SelectDropTarget(NULL); 
       return FALSE;
+    }
     break;
   case TVHT_ONITEM: case TVHT_ONITEMBUTTON: case TVHT_ONITEMICON:
   case TVHT_ONITEMINDENT: case TVHT_ONITEMLABEL: case TVHT_ONITEMRIGHT:
   case TVHT_ONITEMSTATEICON:
-    if (hitemDrop == NULL)
+    if (hitemDrop == NULL){
+      SelectDropTarget(NULL);
       return FALSE;
+    }
     break;
   default:
+    SelectDropTarget(NULL);
     return FALSE;
   }
 
@@ -1444,8 +1460,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   GetParent()->SetFocus();
 
 exit:
-  //We need to cancel DropTarget selection, otherwise next 
-  //mouse/keybord selection will be treated as drop target selections
   SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {

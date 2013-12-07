@@ -46,13 +46,21 @@ endif
 
 all : $(DEFAULT)
 
+ifndef NO_YUBI
+SPCL := 
+else
+SPCL := -noyubi
+endif
+CONTROL32 := control-$(DISTRO)$(SPCL).i686
+CONTROL64 := control-$(DISTRO)$(SPCL).amd64
+
 $(DEBNAME32): $(INFILES)
-	@ln -sf control-$(DISTRO).i686 control
+	@ln -sf $(CONTROL32) control
 	$(MAKE) deb DEBNAME=$@
 	@$(RM) control
 
 $(DEBNAME64): $(INFILES)
-	@ln -sf control-$(DISTRO).amd64 control
+	@ln -sf $(CONTROL64) control
 	$(MAKE) deb DEBNAME=$@
 	@$(RM) control
 

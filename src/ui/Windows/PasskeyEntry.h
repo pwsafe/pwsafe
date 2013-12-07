@@ -11,11 +11,11 @@
 //-----------------------------------------------------------------------------
 
 #include "SysColStatic.h"
-#include "ControlExtns.h"
 #include "SecString.h"
 #include "core/PwsPlatform.h"
-#include "PWDialog.h"
+#include "afxcmn.h"
 
+#include "PKBaseDlg.h"
 //-----------------------------------------------------------------------------
 /**
 * This class is a bit schizophrenic - it has multiple personalities,
@@ -25,9 +25,10 @@
 * mumble sigh)...
 */
 
+class DboxMain;
 class CVKeyBoardDlg;
 
-class CPasskeyEntry : public CPWDialog
+class CPasskeyEntry : public CPKBaseDlg
 {
   // Construction
 public:
@@ -53,8 +54,6 @@ protected:
   CSysColStatic m_ctlLogo;
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
-  CSecEditExtn *m_pctlPasskey;
-  CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
@@ -90,6 +89,7 @@ protected:
   afx_msg void OnComboSelChange();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
+  afx_msg void OnYubikeyBtn();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -99,7 +99,7 @@ private:
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();
-  CVKeyBoardDlg *m_pVKeyBoardDlg;
+  unsigned char *m_yubi_sk;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

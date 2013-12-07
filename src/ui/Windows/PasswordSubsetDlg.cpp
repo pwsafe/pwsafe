@@ -12,7 +12,6 @@
 
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
-
 #include "Fonts.h"
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
@@ -142,7 +141,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create CManagePSWDPolices Dialog ToolTip\n");
+    pws_os::Trace(L"Unable To create CManagePSWDPols Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
   } else {

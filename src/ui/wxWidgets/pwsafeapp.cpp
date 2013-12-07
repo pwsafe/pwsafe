@@ -27,10 +27,6 @@
 
 #include <iostream> // currently for debugging
 
-#if !defined(_WIN32)
-#include <unistd.h> // for fork()
-#endif
-
 using namespace std;
 
 #include "pwsafeapp.h"
@@ -211,6 +207,7 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
 			 m_frame(0), m_recentDatabases(0),
 			 m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
+  Init();
 }
 
 /*!
@@ -240,6 +237,19 @@ void PwsafeApp::Init()
 ////@end PwsafeApp member initialisation
 }
 
+#ifdef __WXDEBUG__
+void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func, 
+								const wxChar *cond, const wxChar *msg)
+{
+  if (m_locale)
+	  wxApp::OnAssertFailure(file, line, func, cond, msg);
+  else
+      std::wcerr << file << L'(' << line << L"):"
+                 << L" assert \"" << cond << L"\" failed in " << (func? func: L"") << L"(): "
+                 << (msg? msg: L"") << endl;
+}
+#endif
+
 /*!
  * Initialisation for PwsafeApp
  */
@@ -247,7 +257,6 @@ void PwsafeApp::Init()
 bool PwsafeApp::OnInit()
 {
   SetAppName(pwsafeAppName);
-  Init();
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);
@@ -322,19 +331,6 @@ bool PwsafeApp::OnInit()
   m_core.SetCurFile(tostringx(filename));
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
                                       MAKEWORD(MINORVERSION, MAJORVERSION));
-
-#if !defined(__WXDEBUG__) && !defined(__WXMAC__) && !defined(_WIN32)
-  // Now's a good time to fork
-  // and exit the parent process, returning the command prompt to the user
-  // (but not for debug builds - just make debugging harder)
-  pid_t pid = fork();
-  if (pid == -1) {
-    perror("fork"); // should never happen!
-    exit(1);
-  } else if (pid != 0) { // parent
-    exit(0);
-  }
-#endif /* _DEBUG */
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&

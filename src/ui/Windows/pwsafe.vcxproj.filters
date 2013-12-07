@@ -366,7 +366,13 @@
     <ClCompile Include="InputBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManagePSWDPolices.cpp">
+    <ClCompile Include="PKBaseDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="YubiCfgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagePSWDPols.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordPolicyDlg.cpp">
@@ -758,10 +764,19 @@
     <ClInclude Include="PWSFaultHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Yubi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKBaseDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="InputBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ManagePSWDPolices.h">
+    <ClInclude Include="YubiCfgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagePSWDPols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordPolicyDlg.h">
@@ -1582,6 +1597,15 @@
     <None Include="graphics\dragbar\new\AutotypeX.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="graphics\yubico-icon-small.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\yubico-icon-small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\Yubikey-button.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="graphics\toolbar\classic\clearfilter.bmp">
       <Filter>Resource Files</Filter>
     </None>
@@ -1607,6 +1631,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="graphics\empty_node.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\Yubikey-button-disabled.bmp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

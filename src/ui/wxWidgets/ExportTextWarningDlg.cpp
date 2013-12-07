@@ -20,8 +20,8 @@
 #include "wx/wx.h"
 #endif
 
-#include "ExportTextWarningDlg.h"
 #include "SafeCombinationCtrl.h"
+#include "ExportTextWarningDlg.h"
 #include "./SelectionCriteria.h"
 
 #include <wx/statline.h>
@@ -40,9 +40,9 @@ END_EVENT_TABLE()
 
 
 CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
-                                                                      wxDefaultPosition, wxDefaultSize,
-                                                                      wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-                                                                      selCriteria(new SelectionCriteria)
+										  wxDefaultPosition, wxDefaultSize,
+										  wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
+  selCriteria(new SelectionCriteria), m_combinationEntry(NULL), m_YubiBtn(NULL), m_yubiStatusCtrl(NULL), m_pollingTimer(NULL)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
 
@@ -97,6 +97,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
 {
   delete selCriteria;
+  delete m_pollingTimer;
 }
 
 void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )

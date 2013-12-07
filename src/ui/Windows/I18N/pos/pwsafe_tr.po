@@ -113,6 +113,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " 'Grup'"
 
+#. Resource IDs: (372)
+msgid " 'Keyboard Shortcut'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
 msgstr " 'Son Erişim Tarihi'"
@@ -894,6 +898,10 @@ msgstr "&XMLFormatı..."
 msgid "&Yes"
 msgstr "&Evet"
 
+#. Resource IDs: (32160)
+msgid "&Yubikey..."
+msgstr ""
+
 #. Resource IDs: (1356)
 msgid "&email:"
 msgstr "&e-posta:"
@@ -946,6 +954,10 @@ msgstr ")"
 msgid "* means that the database has been modified since last save"
 msgstr "*veritabanının son kayıttan sonra değiştirildiğini gösterir."
 
+#. Resource IDs: (216)
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
 msgstr "***İşlem Kullanıcı tarafından Durduruldu***"
@@ -962,10 +974,6 @@ msgstr "- Fiziksel -"
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
-
-#. Resource IDs: (214)
-msgid "-merged-"
-msgstr "-birleştirildi-"
 
 #. Resource IDs: (1009, 1010, 1067, 1223, 1432, 1435, 1457, 1458)
 msgid "..."
@@ -1502,6 +1510,10 @@ msgstr "Ve / Veya"
 msgid "Any field last changed on:"
 msgstr "Şu tarihte değişen herhangi bir alan:"
 
+#. Resource IDs: (65535)
+msgid "Application Hotkey"
+msgstr ""
+
 #. Resource IDs: (353, 1216)
 msgid "Apply"
 msgstr "Uygula"
@@ -2003,6 +2015,10 @@ msgstr "Caps Lock tuşunu açıp kapatmak için tıklayın."
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Önceki sıraya göre ve/veya ilişkisini değiştirmek için tıklayın"
 
+#. Resource IDs: (376)
+msgid "Click, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1, 358)
 msgid "Close"
 msgstr "Kapat"
@@ -2378,6 +2394,10 @@ msgstr "Danca"
 msgid "Database"
 msgstr "Veritabanı"
 
+#. Resource IDs: (65535)
+msgid "Database Entry Shortcuts"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Database Unique ID"
 msgstr "Benzersiz Veritabanı ID'si"
@@ -2563,6 +2583,10 @@ msgstr "Otomatik kaydedilmiş belgeleri geri getirme\nBelgerlerin son doğrudan 
 msgid "Double Click Action"
 msgstr "Çift Tıklama Eylemi"
 
+#. Resource IDs: (373)
+msgid "Double click to Edit/View this entry."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "Çift Tıklama Eylemi:"
@@ -2657,6 +2681,10 @@ msgstr "Girdiyi Dışa A&ktar"
 msgid "Easyvision characters"
 msgstr "Kolay görünür karakterler"
 
+#. Resource IDs: (2004)
+msgid "Edit"
+msgstr ""
+
 #. Resource IDs: (32220)
 msgid "Edit Entry"
 msgstr "Girdi Düzenle"
@@ -2686,6 +2714,10 @@ msgstr "Grup/Başlık ve Şifre sütunlarından biri ya da her ikisi kayıp. Hi�
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Boş satır %d atlandı."
+
+#. Resource IDs: (1088)
+msgid "Enable"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2826,6 +2858,10 @@ msgstr "Girdi %s%d şunlar ile Grup=\"%s\", Başlık=\"%s\", Kullanıcı=\"%s\""
 msgid "Entry Comparison"
 msgstr "Girdi Karşılaştırması"
 
+#. Resource IDs: (373)
+msgid "Entry Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
 msgstr "Girdi Şifre Planı Değişiklikleri"
@@ -2847,6 +2883,25 @@ msgstr "Girdi \"%s, %s, %s\" bir suret için doğru biçimde bir şifreye sahip,
 #. Resource IDs: (205)
 msgid "Entry import warnings"
 msgstr "Girdi içe aktarma uyarıları"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -3088,6 +3143,10 @@ msgstr "Alan aktif"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "Alan var"
+
+#. Resource IDs: (2001)
+msgid "File"
+msgstr ""
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3400,13 +3459,13 @@ msgstr "Geçmiş"
 msgid "History entry"
 msgstr "Geçmiş girdisi"
 
-#. Resource IDs: (1088)
-msgid "Hot Key"
-msgstr "Geçiş Tuşu"
-
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "GeçişTuşu1"
+
+#. Resource IDs: (372)
+msgid "However, we can't add either as all combinations are in use."
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3818,6 +3877,10 @@ msgstr "KeePass V1 TXT Dosyası..."
 msgid "Keep"
 msgstr "Tut"
 
+#. Resource IDs: (193, 372, 65535)
+msgid "Keyboard Shortcut"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
 msgstr "Klavye tipi:"
@@ -3972,6 +4035,10 @@ msgstr "Posta sistem DLL'si geçersiz."
 msgid "Make Backup"
 msgstr "Yedek Al"
 
+#. Resource IDs: (2010)
+msgid "Manage"
+msgstr ""
+
 #. Resource IDs: (158)
 msgid "Manage Filters"
 msgstr "Filtreleri Yönet"
@@ -3995,6 +4062,10 @@ msgstr "Marathi"
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Maks."
+
+#. Resource IDs: (1487)
+msgid "Maximum"
+msgstr ""
 
 #. Resource IDs: (338)
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
@@ -4247,6 +4318,10 @@ msgstr "İç aktarma dosyasında kayıt yok!"
 #. Resource IDs: (344)
 msgid "No reports exist in the same directory as the current database."
 msgstr "Geçerli veritabanıyla aynı dizinde rapor yok."
+
+#. Resource IDs: (376)
+msgid "No response from YubiKey"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
@@ -4582,6 +4657,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Başlıksız Geri Yüklenmiş Yedek>"
 
+#. Resource IDs: (373)
+msgid "Password Safe Application HotKey"
+msgstr ""
+
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
 msgstr "Password Safe Yedekleri  (*.bak)|*.bak|Password Safe Ara Yedekleri (*.ibak)|*.ibak||"
@@ -4772,6 +4851,10 @@ msgstr "Lütfen bu şifre veritabanı işin kasa şifresini girin."
 msgid "Please enter your backup database prefix."
 msgstr "Lütfen yedekleme veritabanınızın önekini giriniz."
 
+#. Resource IDs: (376)
+msgid "Please insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Lürfen XML dosyasını adlandırın"
@@ -4868,6 +4951,10 @@ msgstr "Önceki Şifreler"
 #. Resource IDs: (1436)
 msgid "Processing entry:"
 msgstr "İşlenen girdi:"
+
+#. Resource IDs: (65535)
+msgid "Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -5010,6 +5097,10 @@ msgstr "Göreceli tarihler bugüne göre gün biriminde görecelidir örn '-1' d
 msgid "Remember last"
 msgstr "Hatırla son"
 
+#. Resource IDs: (8100)
+msgid "Remember this keyboard"
+msgstr ""
+
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
 msgstr "Kayıt defterinden PasswordSafe yapılandırmasını kaldır"
@@ -5061,8 +5152,8 @@ msgid "Reset"
 msgstr "Sıfırla"
 
 #. Resource IDs: (1368)
-msgid "Reset All"
-msgstr "Tümünü Sıfırla"
+msgid "Reset All Program Shortcuts"
+msgstr ""
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5413,6 +5504,10 @@ msgstr "Ağaç/Liste görünümü fontunu ayarla"
 msgid "Set Virtual Keyboard font"
 msgstr "Sanal Klavye fontunu ayarla"
 
+#. Resource IDs: (1)
+msgid "Set Yubikey"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Kaydedilecek en yüksek şifre sayısını en üst değere ayrla"
@@ -5473,6 +5568,10 @@ msgstr "Kısayol Tuşu"
 #. Resource IDs: (452, 509)
 msgid "Shortcuts"
 msgstr "Kısayollar"
+
+#. Resource IDs: (1471)
+msgid "Show"
+msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -5613,6 +5712,10 @@ msgstr "İspanyolca Çeşit"
 #. Resource IDs: (1439)
 msgid "Special set"
 msgstr "Özel set"
+
+#. Resource IDs: (1486)
+msgid "Standard"
+msgstr ""
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -5816,6 +5919,30 @@ msgstr "%s girdisi \"%s, %s, %s\" normal ya da var olan bir %s temel girdisine i
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "ALT tuşu hiç bir klavyede karakter seçmek için kullanılmaz. Onluk değeriyle herhangi bir karakter girmek için 'Alt Num' tuşunu kullanın."
 
+#. Resource IDs: (372)
+msgid "The Alt and Ctrl keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt key has been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Alt, Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl and Shift keys have been added."
+msgstr ""
+
+#. Resource IDs: (372)
+msgid "The Ctrl key has been added."
+msgstr ""
+
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr "TXT ya da CSV dosyası istenildiği gibi dışa aktarılmadığı için girdi kayıtları CSV dosyasında birden çok satıra yayılmış durumda.\n\nİçe aktarma durduruldu."
@@ -5956,6 +6083,16 @@ msgstr "Bir girdi veritabanınızda ya da içe aktarma dosyasında zaten var old
 msgid "The following records were skipped:"
 msgstr "Aşağıdaki kayıtlar atlandı:"
 
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr ""
+
+#. Resource IDs: (372)
+#, c-format
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
+msgstr ""
+
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
@@ -6011,6 +6148,10 @@ msgstr "Hatasız yedek dosyasını barındıran aygıtta bir Geri Dönüşüm Ku
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr "Bunlar şu anda açık olan belgelerden daha yakın bir zamanda keydedilmiş ve uygulama kapatılmadan önce yapılmış değişiklikler içeriyor."
+
+#. Resource IDs: (373)
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6359,6 +6500,10 @@ msgstr "Bilinmeyen nesne"
 msgid "Unlock"
 msgstr "Kilidi Aç"
 
+#. Resource IDs: (65535)
+msgid "Unlock Difficulty"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Kasa Kilidini Aç"
@@ -6612,6 +6757,10 @@ msgstr "Uyarı"
 msgid "Warning - excessive field contents"
 msgstr "Uyarı - haddinden fazla alan içerikleri"
 
+#. Resource IDs: (1370)
+msgid "Warning goes here if generated"
+msgstr ""
+
 #. Resource IDs: (331)
 #, c-format
 msgid "Weak passphrase:\n\n %s"
@@ -6747,6 +6896,26 @@ msgstr "Şu anda açık veritabanınız ilk sırada olacak. Hatasız Yedek dosya
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr "İstediğiniz font, '%s', bulunamadı (yüklü değil mi?), onun yerine '%s' kullanılıyor."
+
+#. Resource IDs: (527)
+msgid "YubiKey Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Secret Key (20 bytes Hex)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey Serial Number:"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (1452, 1455)
+msgid "Yubikey"
+msgstr ""
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
@@ -7141,6 +7310,11 @@ msgstr "\tBir ya da daha fazla şifre planı adı zaten bu veritabanında vardı
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
 msgstr "\tBir ya da daha fazla şifre planı adı veritabanında bulunamadı. Etkilenen girdiler veritabanının varsayılan şifre planını kullanmak üzere değiştirildi."
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgstr ""
+
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
@@ -7260,6 +7434,10 @@ msgstr "hepsini içeren"
 msgid "contains any of"
 msgstr "herhangi birini içeren"
 
+#. Resource IDs: (216)
+msgid "copied"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "veritabanını."
@@ -7368,6 +7546,10 @@ msgstr "id="
 msgid "import"
 msgstr "içe aktar"
 
+#. Resource IDs: (216)
+msgid "imported"
+msgstr ""
+
 #. Resource IDs: (1320)
 msgid "in"
 msgstr "içeri"
@@ -7423,6 +7605,10 @@ msgstr "küçük"
 #. Resource IDs: (207)
 msgid "less than or equal to"
 msgstr "küçük ya da eşit"
+
+#. Resource IDs: (214)
+msgid "merged"
+msgstr ""
 
 #. Resource IDs: (1445)
 msgid "minutes idle"

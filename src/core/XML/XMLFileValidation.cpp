@@ -34,7 +34,6 @@
 
 const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE_ELEMENTS] = {
   {_T("passwordsafe"), {XLE_PASSWORDSAFE, 0}},
-  {_T("NumberHashIterations"), {XLE_NUMBERHASHITERATIONS, 0}},
   {_T("Preferences"), {XLE_PREFERENCES, 0}},
   {_T("entry"), {XLE_ENTRY, XLE_ENTRY}},                          // Note: entry must be in both!
   {_T("MaintainDateTimeStamps"), {XLE_PREF_MAINTAINDATETIMESTAMPS, 0}},

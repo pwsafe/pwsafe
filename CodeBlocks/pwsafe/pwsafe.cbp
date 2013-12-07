@@ -54,6 +54,7 @@
 					<Add library="Xtst" />
 					<Add library="X11" />
 					<Add library="xerces-c" />
+					<Add library="ykpers-1" />
 					<Add directory="../core" />
 					<Add directory="../os" />
 				</Linker>
@@ -106,6 +107,7 @@
 					<Add library="Xtst" />
 					<Add library="X11" />
 					<Add library="xerces-c" />
+					<Add library="ykpers-1" />
 					<Add directory="../core" />
 					<Add directory="../os" />
 				</Linker>
@@ -144,6 +146,7 @@
 					<Add library="Xtst" />
 					<Add library="X11" />
 					<Add library="xerces-c" />
+					<Add library="ykpers-1" />
 					<Add directory="../core" />
 					<Add directory="../os" />
 				</Linker>
@@ -182,6 +185,7 @@
 					<Add library="Xtst" />
 					<Add library="X11" />
 					<Add library="xerces-c" />
+					<Add library="ykpers-1" />
 					<Add directory="../core" />
 					<Add directory="../os" />
 				</Linker>
@@ -231,6 +235,7 @@
 					<Add library="Xtst" />
 					<Add library="X11" />
 					<Add library="xerces-c" />
+					<Add library="ykpers-1" />
 					<Add directory="../core" />
 					<Add directory="../os" />
 				</Linker>
@@ -297,6 +302,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
 		<Unit filename="../../src/ui/wxWidgets/ViewReport.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ViewReport.h" />
+		<Unit filename="../../src/ui/wxWidgets/YubiMixin.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/YubiMixin.h" />
 		<Unit filename="../../src/ui/wxWidgets/about.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/about.h" />
 		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.cpp" />
@@ -344,6 +351,8 @@
 		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
 		<Unit filename="../../src/ui/wxWidgets/wxutils.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/wxutils.h" />
+		<Unit filename="../../src/ui/wxWidgets/yubicfg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/yubicfg.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />

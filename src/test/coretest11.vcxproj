@@ -73,7 +73,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug64|x64'">$(PWSBin)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSObj)\$(ProjectName)\</IntDir>

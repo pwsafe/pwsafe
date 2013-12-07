@@ -653,7 +653,7 @@ void CAdvancedDlg::OnDeselectAll()
 void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NMLISTVIEW* pNMListView = (NMLISTVIEW *)pNotifyStruct; 
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct; 
 
   if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {

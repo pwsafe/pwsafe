@@ -41,7 +41,7 @@ open('https://sourceforge.net/p/passwordsafe/support-requests/'+ ID +'/',
 '_blank',
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
-// Following are for the 'old' tracking system, whch was replace in
+// Following are for the 'old' tracking system, which was replace in
 // Sept. 2012 with project-specific URL & ticket numbers
 // Feature Request Tracker
 function OldFR(ID) {
@@ -71,7 +71,7 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.32 Release Notes - ??? 2013</h1>
+<h1 align="center">Password Safe 3.32.1 Release Notes - ??? 2013</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -86,15 +86,80 @@ are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
 <br>
 <hr>
+<h3><a name="V3.32.1"></a>Version V3.32.1</h3>
+
+<h4><a name="V3.32.1New"></a>New Features for V3.32.1</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h4><a name="V3.32.1Changes"></a>Changes to Existing Features in V3.32.1</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+<h4><a name="V3.32.1BugsFixed"></a>Bugs fixed in V3.32.1</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1139);return false;">1139</a></td>
+<td>Backup file numbers now rollover 999 correctly.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1134);return false;">1134</a></td>
+<td>Filtering by type now works correctly for shortcuts & shortcut bases.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+
+<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
+
 <h3><a name="V3.32"></a>Version V3.32</h3>
 
 <h4><a name="V3.32New"></a>New Features for V3.32</h4>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(705);return false;">705</a></td>
+<td>User can choose not to let PasswordSafe record which virtual
+keyboard was used.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(703);return false;">703</a></td>
+<td>Changing a database opened in read-only mode to read/write will
+revert when the database is locked.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(695);return false;">695</a></td>
 <td>Allow a keyboard shortcut to be associated with selecting an entry.
 Please see Help entry for more details.</td>
+</tr>
+<tr>
+<td align="center" width="100">-</td>
+<td>Add setting to configure the amount of processing required to save and 
+open a database.</td>
+</tr>
+<tr>
+<td align="center" width="100">-</td>
+<td>Support Yubico's YubiKey authentication token. Previously this
+  product was supported in a separate branch.</td>
 </tr>
 </tbody>
 </table>
@@ -106,19 +171,48 @@ Please see Help entry for more details.</td>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(718);return false;">718</a></td>
+<td>Run command can now accept $e or $email and will expand this to the entry's e-mail.
+</td>
+</tr>
+<tr>
 <td align="center" width="100">-</td>
-<td>[] Add validation of entry field XML characters to ensure resulting file
+<td>Add validation of entry field XML characters to ensure resulting file
 can be imported.  Note: any field containing an invalid character will not
 be exported and a comment added to the export file and the report.</td>
 </tr>
 </tbody>
 </table>
 
-
 <h4><a name="V3.32BugsFixed"></a>Bugs fixed in V3.32</h4>
 
 <table>
 <tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1124);return false;">1124</a></td>
+<td>Copying the username of a shortcut entry now works correctly.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1122);return false;">1122</a></td>
+<td>-d dialog no longer needs password verification.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1121);return false;">1121</a></td>
+<td>Help now displays correctly for Import XML settings.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1113);return false;">1113</a></td>
+<td>Filters now handle empty fields correctly.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1108);return false;">1108</a></td>
+<td>Manage Password Policy lists and Edit Entry's Notes fonts are set
+  to same as for main list/tree, user-configurable.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1101);return false;">1101</a></td>
+<td>Autotype email and url now works with shortcut.</td>
+</tr>
 <tr>
 <td align="center" width="100">-</td>
 <td>Prevent Alt+Enter or Ctrl+Enter when setting the Application Hotkey in
@@ -131,10 +225,6 @@ PasswordSafe options dialog closing the dialog and saving an invalid Hotkey.</td
 </tbody>
 </table>
 <br>
-<hr>
-
-
-<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
 
 <h3><a name="V3.31"></a>Version V3.31</h3>
 
@@ -600,7 +690,7 @@ the status bar. Also, Filter Menu correctly changed when a filter is active.</td
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldBR(3435869);return false;">3435869</a></td>
-<td>'-g config_file' option now accepts a non-existing file, creating it after notfying the user.</td>
+<td>'-g config_file' option now accepts a non-existing file, creating it after notifying the user.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldBR(3430196);return false;">3430196</a></td>
@@ -628,7 +718,7 @@ dialog.</td>
 <tbody>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldFR(3367590);return false;">3367590</a></td>
-<td>User can now add a database name and description via the Properties diaolg.</td>
+<td>User can now add a database name and description via the Properties dialog.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldFR(3349458);return false;">3349458</a></td>
@@ -681,7 +771,7 @@ opened.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldBR(3380714);return false;">3380714</a></td>
-<td>User can now save database after manually taking a bakup.</td>
+<td>User can now save database after manually taking a backup.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldBR(3380424);return false;">3380424</a></td>
@@ -839,7 +929,7 @@ and displayed in the Manage Filters dialog.</td>
 <td>Export XML, export Text and the export of filters functions
 now process file names and paths containing non-Latin characters.  In
 addition, missing directories in the specified path are created as
-neeeded.</td>
+needed.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="OldBR(3234204);return false;">3234204</a></td>

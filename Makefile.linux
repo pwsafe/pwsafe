@@ -2,7 +2,7 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.91
+RELEASENUM := 0.92
 RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
@@ -24,6 +24,8 @@ ECHO := /bin/echo
 
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
+SIGN_CMD := $(foreach file, $(wildcard $(RELEASEDIR)/*$(RELEASENAME)*), $(GPG_SIGN) $(file); )
+
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 UPLOAD_DST := $(UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
@@ -58,7 +60,7 @@ release-clean:
 # dist prepares stuff for upload - deprecated for Linux, until
 # we find an elegant way to tell deb and rpm distros apart.
 dist: 
-	@$(ECHO) "Run 'make deb' or 'make rpm' to bulid the respective package"
+	@$(ECHO) "Run 'make deb' or 'make rpm' to build the respective package"
 
 # rpmbuild is called as part of the rpmbuild invocation from install/rpm/Makefile,
 # which we call via 'make rpm' from here.
@@ -85,8 +87,7 @@ sha1sums:
 	(cd $(RELEASEDIR); $(SHA1SUM) *$(RELEASENAME)*)
 
 signatures:
-	CMD := $(foreach file, $(wildcard $(RELEASEDIR)/*$(RELEASENAME)*), $(GPG_SIGN) $(file); )
-	$(CMD)
+	$(SIGN_CMD)
 
 upload:
 	$(UPLOAD_CMD) \

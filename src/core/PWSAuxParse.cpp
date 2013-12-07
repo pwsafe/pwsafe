@@ -149,6 +149,9 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
       sxretval += pci->GetPassword();
     } else
+      if (st_rctoken.sxname == _T("e") || st_rctoken.sxname == _T("email")) {
+      sxretval += pci->GetEmail();
+    } else
     if (st_rctoken.sxname == _T("a") || st_rctoken.sxname == _T("autotype")) {
       // Do nothing - autotype variable handled elsewhere
     } else
@@ -453,8 +456,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
       sxuser = pbci->GetUser();
       sxpwd = pbci->GetPassword();
       sxnotes = pbci->GetNotes();
-      sxurl = ci.GetURL();
-      sxemail = ci.GetEmail();
+      sxurl = pbci->GetURL();
+      sxemail = pbci->GetEmail();
       sxautotype = pbci->GetAutoType();
     } else { // Problem - shortcut entry without a base!
       ASSERT(0);

@@ -134,7 +134,9 @@ ThisMfcApp::ThisMfcApp() :
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
   EnableHtmlHelp();
-  CoInitialize(NULL); // Initializes the COM library (for XML processing)
+  CoInitializeEx(NULL, COINIT_APARTMENTTHREADED); // Initializes the COM library
+  //                                                 (for XML and Yubikeyprocessing)
+  AfxEnableControlContainer();
   AfxOleInit();
 }
 
@@ -165,7 +167,7 @@ ThisMfcApp::~ThisMfcApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSversion::DeleteInstance();
-  Fonts::DeleteInstance();
+  Fonts::GetInstance()->DeleteInstance();
   PWSLog::DeleteLog();
 
   CoUninitialize(); // Uninitialize COM library
@@ -768,7 +770,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           }
           // get password from user
           StringX passkey;
-          CCryptKeyEntry dlg(NULL);
+          CCryptKeyEntry dlg(isEncrypt);
           INT_PTR nResponse = dlg.DoModal();
 
           if (nResponse == IDOK) {

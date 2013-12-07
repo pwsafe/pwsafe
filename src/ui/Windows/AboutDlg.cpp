@@ -15,7 +15,6 @@
 // the current version details
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
-
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
 #include "PWSversion.h"
@@ -83,7 +82,7 @@ BOOL CAboutDlg::OnInitDialog()
   }
 
 #ifdef _DEBUG
-  m_appversion += L" [Debug]";
+  m_appversion += L" [D]";
 #endif
 
 #ifdef DEMO

@@ -29,7 +29,7 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
   m_pString = m_pRpt->GetString(); 
   Replace(m_pString, sxCRLF, sxLF);
   Replace(m_pString, sxLF, sxCRLF);
-  
+
   m_dwDatasize = (DWORD)(m_pString.length() * sizeof(wchar_t));
 
   m_backgroundcolour = RGB(255, 255, 255);

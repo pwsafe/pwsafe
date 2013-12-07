@@ -22,13 +22,18 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#ifndef NO_YUBI
+#include "YubiMixin.h"
+#endif
 
 /*!
  * Forward declarations
  */
 
 ////@begin forward declarations
+class CSafeCombinationCtrl;
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -37,13 +42,16 @@
 ////@begin control identifiers
 #define ID_CSAFECOMBINATIONCHANGE 10074
 #define ID_OLDPASSWD 10075
-#define ID_NEWPASSWD 10076
-#define ID_CONFIRM 10077
 #if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
 #define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #endif
+#define ID_YUBIBTN 10229
+#define ID_NEWPASSWD 10076
+#define ID_YUBIBTN2 10000
+#define ID_CONFIRM 10077
+#define ID_YUBISTATUS 10230
 #define SYMBOL_CSAFECOMBINATIONCHANGE_TITLE _("Change Safe Combination")
 #define SYMBOL_CSAFECOMBINATIONCHANGE_IDNAME ID_CSAFECOMBINATIONCHANGE
 #define SYMBOL_CSAFECOMBINATIONCHANGE_SIZE wxSize(400, 300)
@@ -79,24 +87,33 @@ public:
 
 ////@begin CSafeCombinationChange event handler declarations
 
+#ifndef NO_YUBI
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
+  void OnYubibtn2Click( wxCommandEvent& event );
+#endif
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
+  void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& evt);
+  void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationChange event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationChange member function declarations
 
-  wxString GetOldpasswd() const { return m_oldpasswd ; }
-  void SetOldpasswd(wxString value) { m_oldpasswd = value ; }
+  StringX GetConfirm() const { return m_confirm ; }
+  void SetConfirm(StringX value) { m_confirm = value ; }
 
-  wxString GetNewpasswd() const { return m_newpasswd ; }
-  void SetNewpasswd(wxString value) { m_newpasswd = value ; }
+  StringX GetNewpasswd() const { return m_newpasswd ; }
+  void SetNewpasswd(StringX value) { m_newpasswd = value ; }
 
-  wxString GetConfirm() const { return m_confirm ; }
-  void SetConfirm(wxString value) { m_confirm = value ; }
+  StringX GetOldpasswd() const { return m_oldpasswd ; }
+  void SetOldpasswd(StringX value) { m_oldpasswd = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -109,12 +126,27 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationChange member variables
+  CSafeCombinationCtrl* m_oldPasswdEntry;
+  CSafeCombinationCtrl* m_newPasswdEntry;
+#ifndef NO_YUBI
+  wxBitmapButton* m_YubiBtn;
+  wxBitmapButton* m_YubiBtn2;
+  wxStaticText* m_yubiStatusCtrl;
+#endif
+  CSafeCombinationCtrl* m_confirmEntry;
 private:
-  wxString m_oldpasswd;
-  wxString m_newpasswd;
-  wxString m_confirm;
+  StringX m_confirm;
+  StringX m_newpasswd;
+  StringX m_oldpasswd;
 ////@end CSafeCombinationChange member variables
+  StringX m_oldresponse;
   PWScore &m_core;
+
+#ifndef NO_YUBI
+  // try having 2 mixin objects to handle things:
+  CYubiMixin m_yubiMixin1, m_yubiMixin2;
+  wxTimer* m_pollingTimer; // for Yubi
+#endif
 };
 
 #endif

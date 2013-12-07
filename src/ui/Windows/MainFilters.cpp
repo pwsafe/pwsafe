@@ -144,6 +144,7 @@ void DboxMain::ClearFilter()
   m_currentfilter.Empty();
   m_bFilterActive = false;
   m_bFilterForStatus = false;
+  m_bFilterForType = false;
 
   ApplyFilters();
 }
@@ -211,6 +212,7 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
   const CItemData::EntryType entrytype = ci.GetEntryType();
 
   m_bFilterForStatus = false;
+  m_bFilterForType = false;
 
   vfiltergroups::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vMflgroups.begin();
@@ -304,13 +306,17 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
         m_bFilterForStatus = true;
       }
 
+      if (ft == FT_ENTRYTYPE) {
+        m_bFilterForType = true;
+      }
+
       pci = &ci;
 
       if (ft == FT_PASSWORD && entrytype == CItemData::ET_ALIAS) {
         pci = GetBaseEntry(pci); // This is an alias
       }
 
-      if (entrytype == CItemData::ET_SHORTCUT && !m_bFilterForStatus) {
+      if (entrytype == CItemData::ET_SHORTCUT && !m_bFilterForStatus && !m_bFilterForType) {
         // Only include shortcuts if the filter is on the group, title or user fields
         // Note: "GROUPTITLE = 0x00", "GROUP = 0x02", "TITLE = 0x03", "USER = 0x04"
         //   "UUID = 0x01" but no filter is implemented against this field
