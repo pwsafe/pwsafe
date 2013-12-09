@@ -34,25 +34,17 @@
  * in case of failure.  Returns PWScore::SUCCESS on success
  */
 
-int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
-                bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
+int ReadCore(PWSAuxCore& othercore, const wxString& file, const StringX& combination,
+             bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
 				bool setupCopy /*= false*/)
 {
   othercore.ClearData();
-
-  // Reading a new file changes the preferences!
-  const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-  const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
 
   StringX dbpath(tostringx(file));
   int rc = othercore.ReadFile(dbpath, combination);
 
   if (setupCopy)
 	  PWSprefs::GetInstance()->SetupCopyPrefs();
-
-  // Reset database preferences - first to defaults then add saved changes!
-  PWSprefs::GetInstance()->Load(sxSavePrefString);
-  PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
 
   switch (rc) {
     case PWScore::SUCCESS:

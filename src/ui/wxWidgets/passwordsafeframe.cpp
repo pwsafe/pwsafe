@@ -3051,7 +3051,7 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
   UNREFERENCED_PARAMETER(evt);
   MergeDlg dlg(this, &m_core);
   if (dlg.ShowModal() == wxID_OK) {
-    PWScore othercore;
+    PWSAuxCore othercore;
     if (ReadCore(othercore,
                  dlg.GetOtherSafePath(),
                  dlg.GetOtherSafeCombination(),

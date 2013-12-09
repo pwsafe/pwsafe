@@ -204,7 +204,7 @@ int CWZFinish::ExecuteAction()
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
     case ID_MENUITEM_SYNCHRONIZE:
-      m_pothercore = new PWScore;
+      m_pothercore = new PWScore; // NOT PWSAuxCore, as we handle db prefs explicitly
       bOtherIsDB = true;
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:

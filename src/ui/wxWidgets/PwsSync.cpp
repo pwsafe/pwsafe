@@ -559,7 +559,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
     FindWindow(ID_SHOW_REPORT)->Hide();
 
-    PWScore* othercore = new PWScore;
+    PWSAuxCore* othercore = new PWSAuxCore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
     const int rc = ReadCore(*othercore, otherDBPath, m_syncData->combination,
                                     false, this);
