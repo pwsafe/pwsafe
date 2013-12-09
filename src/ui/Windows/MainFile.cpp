@@ -990,7 +990,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
     return IDOK;
 
   std::vector<st_recfile> vValidEBackupfiles;
-  PWScore othercore;
+  PWSAuxCore othercore; // Leaves DB prefs untouched!
 
   // Get currently selected database's information
   // No Report or MAXCHARS vaue, implies no validation of the file
@@ -999,10 +999,6 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   othercore.ReadFile(sx_Filename, passkey);
   othercore.GetDBProperties(st_dbpcore);
   st_dbpcore.database = wsDBName.c_str();
-
-  // Reading a new file changes the preferences!
-  const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-  const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
 
   for (size_t i = 0; i < vrecoveryfiles.size(); i++) {
     st_recfile st_rf;
@@ -1029,10 +1025,6 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
     vValidEBackupfiles.push_back(st_rf);
   }
   othercore.ReInit();
-
-  // Reset database preferences - first to defaults then add saved changes!
-  PWSprefs::GetInstance()->Load(sxSavePrefString);
-  PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
 
   vrecoveryfiles.clear();
   if (vValidEBackupfiles.empty())

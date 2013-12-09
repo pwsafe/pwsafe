@@ -47,7 +47,7 @@ public:
 
 private:
   PWScore*            m_currentCore;
-  PWScore*            m_otherCore;
+  PWSAuxCore*         m_otherCore;
   SelectionCriteria*  m_selCriteria;
   DbSelectionPanel*   m_dbPanel;
   wxCollapsiblePane*  m_dbSelectionPane;

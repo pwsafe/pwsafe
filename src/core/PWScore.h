@@ -479,7 +479,8 @@ public:
 
   uint32 GetHashIters() const;
   void SetHashIters(uint32 value);
-
+protected:
+  bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
 private:
   // Database update routines
 
@@ -647,6 +648,17 @@ private:
 
   // ValidateKBShortcut() returns true if data modified, false if all OK
   bool ValidateKBShortcut(int32 &iKBShortcut);
+};
+
+/**
+ * Use this for "other" cores that we want concurrently.
+ * This class does not update the database preferences
+ * when reading a database, so there's no need to save/restore
+ * the "main" db prefs.
+ */
+class PWSAuxCore : public PWScore {
+ public:
+ PWSAuxCore() : PWScore() {m_isAuxCore = true;}
 };
 
 #endif /* __PWSCORE_H */

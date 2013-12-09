@@ -39,14 +39,15 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     // Find entry
     ItemListIter iter = GetMainDlg()->Find(m_expPWList[i].uuid);
     ASSERT(iter != GetMainDlg()->End());
-    CItemData *pci = &iter->second;
-    ASSERT(pci != NULL);
+    if (iter == GetMainDlg()->End())
+      continue; // should not happen, but better than crashing as in Bug 1148
+    const CItemData &ci = iter->second;
     
     // Get group/title/user values
-    elle.sx_group = pci->GetGroup();
-    elle.sx_title = pci->GetTitle();
-    elle.sx_user  = pci->GetUser();
-    if (pci->IsProtected())
+    elle.sx_group = ci.GetGroup();
+    elle.sx_title = ci.GetTitle();
+    elle.sx_user  = ci.GetUser();
+    if (ci.IsProtected())
       elle.sx_title += L" #";
 
     // Get XTime and string versions
@@ -54,7 +55,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, PWSUtil::TMC_LOCALE);
     
     // Get entrytype (used for selecting image)
-    elle.et = pci->GetEntryType();
+    elle.et = ci.GetEntryType();
     
     elle.uuid = m_expPWList[i].uuid;
     
