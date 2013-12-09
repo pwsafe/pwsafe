@@ -113,7 +113,7 @@ bool TestApp::OnInit()
 	return false;
 }
 
-TestDialog::TestDialog( bool use_testgrid ) : wxDialog(static_cast<wxWindow*>(0), wxID_ANY, wxT("Pane-in-the-Grid Test Application")), m_collapsedSize(wxDefaultSize)
+TestDialog::TestDialog( bool use_testgrid ) : wxDialog(static_cast<wxWindow*>(0), wxID_ANY, wxString(wxT("Pane-in-the-Grid Test Application"))), m_collapsedSize(wxDefaultSize)
 {
 	wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 

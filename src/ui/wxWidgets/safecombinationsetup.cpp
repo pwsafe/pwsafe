@@ -331,7 +331,7 @@ void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& /* event */ )
       return;
     }
     StringX response;
-    if (PerformChallengeResponse(m_password.c_str(), response)) {
+    if (PerformChallengeResponse(tostringx(m_password), response)) {
       m_password = response.c_str();
       EndModal(wxID_OK);
     }
