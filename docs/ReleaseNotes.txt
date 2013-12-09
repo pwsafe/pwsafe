@@ -21,7 +21,9 @@ Bugs fixed in 3.32.1
 [1148] No longer crashes when canceling unlock with expired password entries.
 [1146] Edit button now enabled correctly in Manage->Password Policies.
 [1139] Backup file numbers now rollover 999 correctly.
-[1134] Filtering by type now works correctly for shortcuts & shortcut bases.
+[1134] Filtering by type now works correctly for shortcuts & shortcut
+bases.
+[1130] Database field isn't highlighted when it doesn't have the focus.
 
 
 New Features for 3.32
