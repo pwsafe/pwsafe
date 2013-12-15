@@ -17,6 +17,7 @@
 #include "../../core/DBCompareData.h"
 
 class PWScore;
+class PWSAuxCore;
 struct SelectionCriteria;
 class DbSelectionPanel;
 class wxGrid;
