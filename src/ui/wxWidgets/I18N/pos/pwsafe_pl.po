@@ -33,7 +33,7 @@ msgstr "Najnowsza wersja? Kliknij"
 #: ../../../ui/wxWidgets/about.cpp:153
 #, fuzzy
 msgid "here"
-msgstr ""
+msgstr "tutaj"
 
 #: ../../../ui/wxWidgets/about.cpp:156
 #, fuzzy
@@ -82,7 +82,7 @@ msgstr "Próba połączenia z serwerem..."
 #: ../../../ui/wxWidgets/about.cpp:287
 #, fuzzy
 msgid "http://pwsafe.org/latest.xml"
-msgstr ""
+msgstr "http://pwsafe.org/latest.xml"
 
 #: ../../../ui/wxWidgets/about.cpp:321
 #, fuzzy
@@ -101,12 +101,12 @@ msgstr "Aktualna wersja: "
 #: ../../../ui/wxWidgets/about.cpp:330
 #, fuzzy
 msgid "Latest version:\t"
-msgstr ""
+msgstr "Ostatnia wersja:\t"
 
 #: ../../../ui/wxWidgets/about.cpp:332
 #, fuzzy
 msgid "Please visit the PasswordSafe website to download the latest version."
-msgstr ""
+msgstr "Proszę odwiedzić stronę PassworsSafe w celu pobrania najnowszej wersji."
 
 #: ../../../ui/wxWidgets/about.cpp:333
 #, fuzzy
@@ -174,7 +174,7 @@ msgstr "Przejdź"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:335
 #, fuzzy
 msgid "email:"
-msgstr ""
+msgstr "email:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:345
 msgid "Send"
@@ -183,7 +183,7 @@ msgstr "Wyślij"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:350
 #, fuzzy
 msgid "Notes:"
-msgstr ""
+msgstr "Notes:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:356
 msgid "Basic"
@@ -192,7 +192,7 @@ msgstr "Podstawowy"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:364
 #, fuzzy
 msgid "Autotype:"
-msgstr ""
+msgstr "Autouzupełnianie:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
 msgid "Run Cmd:"
@@ -201,7 +201,7 @@ msgstr "Komenda Run:"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:376
 #, fuzzy
 msgid "Double-Click\nAction:"
-msgstr ""
+msgstr "Akcja\nprzy dwukliku:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:380
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:396
@@ -231,14 +231,14 @@ msgstr "Idź do URL + Autouzupełnianie"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
 #, fuzzy
 msgid "Copy Notes"
-msgstr ""
+msgstr "Kopiuj notatki"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
 #, fuzzy
 msgid "Copy Password"
-msgstr ""
+msgstr "Kopiuj hasło"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
@@ -252,7 +252,7 @@ msgstr "Kopiuj hasło do schowka i zminimalizuj"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
 #, fuzzy
 msgid "Copy Username"
-msgstr ""
+msgstr "Kopiuj nazwę użytkownika"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
@@ -266,12 +266,12 @@ msgstr "Przeglądaj wpis"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
 #, fuzzy
 msgid "Execute Run command"
-msgstr ""
+msgstr "Wykonaj komendę Run"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:392
 #, fuzzy
 msgid "Shift-Double-Click\nAction:"
-msgstr ""
+msgstr "Akcja na\nShift-dwuklik:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:408
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:628
@@ -350,7 +350,7 @@ msgstr "Ostatnia zmiana hasła:"
 #: ../../../ui/wxWidgets/properties.cpp:188
 #, fuzzy
 msgid "Static text"
-msgstr ""
+msgstr "Tekst statyczny"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:510
 #: ../../../ui/wxWidgets/editshortcut.cpp:207
@@ -385,7 +385,7 @@ msgstr "Użyj polityki"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:541
 #, fuzzy
 msgid "Use the policy below:"
-msgstr ""
+msgstr "Użyj poniższej polityki:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:501
@@ -509,7 +509,7 @@ msgstr "Hasło"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
 msgid " ("
-msgstr ""
+msgstr " ("
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:839 ../../../core/core_st.cpp:75
 #, fuzzy
@@ -588,7 +588,7 @@ msgstr "hasło"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1170
 #, fuzzy
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Hasła się nie zgadzają"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1436
 #, fuzzy, c-format
@@ -612,7 +612,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1761
 #, fuzzy
 msgid "mailto:"
-msgstr ""
+msgstr "mailto:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1781
 #, c-format
@@ -627,7 +627,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:77
 #, fuzzy
 msgid "&Where"
-msgstr ""
+msgstr "Gdzie"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:94
 #, fuzzy
@@ -668,7 +668,7 @@ msgstr "Musisz wybrać kilka z pól by "
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:202
 #, fuzzy
 msgid "No fields selected"
-msgstr ""
+msgstr "Nie wybrano żadnego pola"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:95
 #, fuzzy
@@ -741,7 +741,7 @@ msgstr "Synchronizuj"
 #: ../../../ui/wxWidgets/CompareDlg.cpp:452
 #, fuzzy
 msgid "selected "
-msgstr ""
+msgstr "wybrane "
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:442
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:194
@@ -1052,7 +1052,7 @@ msgstr "Tab"
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:153
 #, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Inny"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:179
 #, fuzzy
@@ -1134,7 +1134,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:463
 #, fuzzy
 msgid "Could not open file for writing!"
-msgstr ""
+msgstr "Nie można otworzyć pliku do zapisu!"
 
 #: ../../../ui/wxWidgets/mainManage.cpp:117
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:857
@@ -1154,7 +1154,7 @@ msgstr "Wybierz kopie zapasową do przywrócenia:"
 #: ../../../ui/wxWidgets/wxutils.cpp:64
 #, fuzzy
 msgid "Could not open file for reading!"
-msgstr ""
+msgstr "Nie można otworzyć pliku do odczytu!"
 
 #: ../../../ui/wxWidgets/mainManage.cpp:173
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2496
@@ -1198,7 +1198,7 @@ msgstr "Cofnij"
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:196
 #, fuzzy
 msgid "&Redo"
-msgstr ""
+msgstr "P&rzywróć"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:199
 msgid "Test Selected Policy"
@@ -1213,7 +1213,7 @@ msgstr "Twórz"
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:216
 #, fuzzy
 msgid "Copy Password to clipboard"
-msgstr ""
+msgstr "Kopiuj hasło do schowka"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:368
@@ -1241,7 +1241,7 @@ msgstr "Liczba użyć"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:286
 msgid "Policy Field"
-msgstr ""
+msgstr "Pole z polityką"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:287
 #, fuzzy
@@ -1279,17 +1279,17 @@ msgstr "Nie użyty"
 #: ../../../ui/wxWidgets/MergeDlg.cpp:38
 #, fuzzy
 msgid "Merge Another Database"
-msgstr ""
+msgstr "Połącz inną bazę danych"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:41
 #, fuzzy
 msgid "Choose Database to Merge into \""
-msgstr ""
+msgstr "Wybierz bazę doanych do włączenia do \""
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:43
 #, fuzzy
 msgid "Please Choose a Database to Merge into current database"
-msgstr ""
+msgstr "Wybierz bazę danych do włączenia do aktualnej bazy danych"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:79
 #, fuzzy
@@ -1299,26 +1299,26 @@ msgstr "Zaawansowane opcje scalania"
 #: ../../../ui/wxWidgets/MergeDlg.cpp:101
 #, fuzzy
 msgid "merge"
-msgstr ""
+msgstr "połącz"
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:49
 #, fuzzy
 msgid "You must select a valid file to continue."
-msgstr ""
+msgstr "By kontynuować musisz wybrać prawidłową nazwę pliku."
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:50
 msgid "You haven't selected any files"
-msgstr ""
+msgstr "Nie wybrano żadnych plików"
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:57
 #, fuzzy
 msgid "Selected file doesn't exist."
-msgstr ""
+msgstr "Wybrany plik nie istnieje."
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:58
 #, fuzzy
 msgid "Please select a valid file"
-msgstr ""
+msgstr "Proszę wybrac prawidłowy plik"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:102
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:281
@@ -1331,7 +1331,7 @@ msgstr "Żaden"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:282
 #, fuzzy
 msgid "YYYYMMMDD_HHMMSS"
-msgstr ""
+msgstr "YYYYMMMDD_HHMMSS"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:104
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:283
@@ -1448,7 +1448,7 @@ msgstr "Przykład:"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:304
 #, fuzzy
 msgid "Backup directory:"
-msgstr ""
+msgstr "Katalog na kopie zapasowe:"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:307
 msgid "Same as database's"
@@ -1503,17 +1503,17 @@ msgstr "dni zanim hasło wygaśnie"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:374
 #, fuzzy
 msgid "&Fully collapsed"
-msgstr ""
+msgstr "W pełni zwinięty"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:375
 #, fuzzy
 msgid "&Fully expanded"
-msgstr ""
+msgstr "W pełni rozwinięty"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:376
 #, fuzzy
 msgid "&Same as when last saved"
-msgstr ""
+msgstr "Taki &sam jak podczas ostatniego zapisu"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:377
 msgid "Initial Tree View"
@@ -1543,7 +1543,7 @@ msgstr "Podwójne kliknięcie"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:422
 #, fuzzy
 msgid "Shift double-click action"
-msgstr ""
+msgstr "Akcja na Shift-dwuklik"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:442
 msgid "Minimize after Autotype"
@@ -1574,11 +1574,11 @@ msgstr "Zapytanie o domyślną nazwę użytkownika"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:473
 #, fuzzy
 msgid "Alternate Browser"
-msgstr ""
+msgstr "Inna przeglądarka"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:489
 msgid "Browser Command Line parameters"
-msgstr ""
+msgstr "Parametry linii poleceń przeglądarki"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:492
 #, fuzzy
@@ -1613,7 +1613,7 @@ msgstr "Zacznij zapisywać wcześniejsze hasła"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 #, fuzzy
 msgid "Set maximum number of paswords saved to above value"
-msgstr ""
+msgstr "Ustaw maksynmalną liczbę zachowanych haseł na powyższą wartość"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:625
 msgid "Apply"
@@ -1643,7 +1643,7 @@ msgstr "Zablokuj bazę danych gdy blokuję obszar roboczy"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:656
 #, fuzzy
 msgid "Lock password database after"
-msgstr ""
+msgstr "Zablokuj bazę haseł po"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:663
 msgid "minutes idle"
@@ -1651,7 +1651,7 @@ msgstr "minutach nieaktywności"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:668
 msgid "Unlock Difficulty:"
-msgstr ""
+msgstr "Trudność odblokowania:"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:676
 #, fuzzy
@@ -1669,7 +1669,7 @@ msgstr "Bezpieczeństwo"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:690
 #, fuzzy
 msgid "System Tray"
-msgstr ""
+msgstr "Zasobnik systemowy"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:693
 #, fuzzy
@@ -1680,7 +1680,7 @@ msgstr "Pokazuj ikonę w zasobniku"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:717
 #, fuzzy
 msgid "  Remember last"
-msgstr ""
+msgstr "  Pamiętaj ostatnie"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:705
 #, fuzzy
@@ -1699,7 +1699,7 @@ msgstr "Ostatnie Bazy Danych PasswordSafe"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:723
 #, fuzzy
 msgid "databases"
-msgstr ""
+msgstr "bazy danych"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:726
 #, fuzzy
@@ -1709,11 +1709,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:730
 #, fuzzy
 msgid "Open database as read-only by default"
-msgstr ""
+msgstr "Domyślnie otwórz bazę danych tylko do odczytu"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:734
 msgid "Allow multiple instances"
-msgstr ""
+msgstr "Zezwól na wiele wystąpień"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:739
 msgid "Use Primary Selection for clipboard"
@@ -1737,7 +1737,7 @@ msgstr "pwsafe"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1242
 #, fuzzy
 msgid "Select a Browser"
-msgstr ""
+msgstr "Wybierz przeglądarkę"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1297
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:349
@@ -1748,7 +1748,7 @@ msgstr "Password Safe"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:166
 #, fuzzy
 msgid "Policy Name:"
-msgstr ""
+msgstr "Nazwa polityki:"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:363
 #, fuzzy
@@ -1776,21 +1776,21 @@ msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:395
 #, fuzzy
 msgid "Policy name cannot be blank"
-msgstr ""
+msgstr "Nazwa polityki nie może być pusta"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:400
 msgid "Policy name is already in use"
-msgstr ""
+msgstr "Nazwa polityki jest już w użyciu"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:406
 #, fuzzy
 msgid "Policy Error"
-msgstr ""
+msgstr "Błąd polityki"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:365
 #, fuzzy
 msgid "Clear Recent Safe List"
-msgstr ""
+msgstr "Wyczyść lisę ostatnich sejfów"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:371
 msgid "v&1.x format..."
@@ -1820,7 +1820,7 @@ msgstr "Czysty tekst..."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:379
 #, fuzzy
 msgid "&KeePass..."
-msgstr ""
+msgstr "&KeePass..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:380
 msgid "Import &From"

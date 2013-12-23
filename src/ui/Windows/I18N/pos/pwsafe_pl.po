@@ -5161,7 +5161,7 @@ msgstr "Pamiętaj ostatnie"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
-msgstr "Pamiętaj tą klawiaturę"
+msgstr "Pamiętaj tę klawiaturę"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
