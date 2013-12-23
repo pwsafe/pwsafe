@@ -25,7 +25,7 @@ under development and isn't very stable (in my experience, as compared to 2.8).
 
 Also note that Mac OS X ships with some version of wxWidgets (2.8.8 on Snow Leopard),
 but only the debug binaries. We haven't tried building with Apple's
-build of wxWidgets.  We always built wxWidges ourselves, partly because
+build of wxWidgets.  We always built wxWidgets ourselves, partly because
 we needed the release builds also, and partly because we wanted to link
 statically so that we could distribute the binaries on as many platforms
 as possible.
@@ -48,7 +48,7 @@ The first two need to be performed only once, unless you rebuild wxWidgets for s
 
 
 Building wxWidgets
-=================
+==================
 How you build wxWidgets depends on the version of Mac OS X you are building on, and
 the platform (hardware & OS) on which you want to run your build of PasswordSafe.  PasswordSafe
 can be built in four flavours (four different Xcode targets):
@@ -92,8 +92,8 @@ Since these targets are intended to run on 10.4 and above, we set these up to bu
 with 10.4 SDK.  Which in turn implies that wxWidgets 2.8 also needs to be built with 10.4 SDK.
 That involves passing a ton of parameters to the "./configure" script for building wxWidgets.
 There's a shell script (osx-build-wx) to aid with doing that, in the 'Misc' folder in the PasswordSafe
-folder .  You only need to do the following (this assumes that the PasswordSafe folder and the wxWidgets folder
-are in the same folder e.g. Documents/pwsafe and Documents/wxMac-2.8.12):
+folder.  You only need to do the following (this assumes that the PasswordSafe folder and the wxWidgets folder
+are in the same folder e.g., Documents/pwsafe and Documents/wxMac-2.8.12):
 
 1. Download wxMac-2.8.12.tar.gz (or the latest 2.8 version)
 2. tar xzf wxMac-2.8.12.tar.gz
@@ -107,10 +107,10 @@ to build them in separate directories otherwise the "wx-config" script from one 
 overwrite the other.  Of course, you don't need both Debug and Release builds
 of wxWidgets unless you need both Debug and Release builds of PasswordSafe.
 
-It is possible that PasswordSafe & wxWidgets are be built with 10.6 SDK and still run on 10.4+ if the
+It is possible for PasswordSafe & wxWidgets to be built with 10.6 SDK and still run on 10.4+ if the
 deployment target is set appropriately in Xcode, but I have no way of trying that.
 I'm also not aware of what precautions to take in the code to not add any dependencies
-that cannot be satisfied on 10.4
+that cannot be satisfied on 10.4.
 
 
 Building wxWidgets for pwsafe64 target
@@ -132,7 +132,7 @@ the corresponding configuration of wxWidgets.
 
 
 Building wxWidgets for pwsafe-llvm target
-========================================
+=========================================
 
 I use an llvm-built version of wxWidgets when I build pwsafe-llvm, but its
 probably not necessary.  The gcc and llvm libraries/binaries are compatible
@@ -150,7 +150,7 @@ For the release build, do the same, except replace "--enable-debug" with "--disa
 
 
 Generate xcconfig files
-=========================
+=======================
 
 Having built wxWidgets, unless you are willing to "make install" wxWidgets and overwrite 
 whatever shipped with your os, you will have to tell Xcode where to pick up your wxWidgets
@@ -160,18 +160,18 @@ of headers/libs as well as compiler and liker settings compatible with that buil
 This is used in UNIX makefiles to compile/link with the desired build of wxWidgets where its 
 trivial to read in the settings from outputs of external commands.
 
-Since Xcode can't pick up settings from output of external commands , we use a script to 
+Since Xcode can't pick up settings from output of external commands, we use a script to 
 put those settings into configuration files that Xcode can use. Xcode target configurations 
 can be "based on" xcconfig files, which are essentially sets of name-value pairs.  For a 
 target/configuration, Xcode will use settings from the xcconfig file, if found. Else, it 
 will use the values specified in its GUI.
 
 The "Xcode/generate-configs" script generates xcconfig data from the wx-config files.
-Go to the Xcode subdirectory of your pwsafe source checkout, and do this
+Go to the Xcode subdirectory of your pwsafe source checkout, and do this:
 
 ./generate-configs -d full_path_to_wx-config  > xcconfig_file
 
-For Release builds, the first parameter should be "-r" instead of "-d"
+For Release builds, the first parameter should be "-r" instead of "-d".
 
 Substitute "xcconfig_file" with the correct xcconfig file name from the above table.  Each
 target and each configuration has its own xcconfig file.  Make sure you have them
