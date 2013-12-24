@@ -32,17 +32,27 @@ multiple databases.
 1.2.2 Support Multiple Encryption Algorithms
 In addition to Twofish (which will remain the default), AES256 will be
 supported. Other algorithms may be added in the future.
-1.2.3 Other changes
+1.2.3 Support Attachments
+There's demand, mainly on the mobile ports, for the ability to store
+attachments with password entries. The main use-case is for photos
+taken by mobile phones, e.g., passports, credit cards, etc. Therefore,
+it seems reasonable to allow adding, deleting and viewing images for
+entries.
+As the size of an attachment can be large relative to the database, we
+would like to avoid reading and writing it unless and until
+necessary. Note that this is a break with the current paradigm of
+reading the database into memory once upon opening. 
+1.2.4 Other changes
 This Section summarizes minor changes from the previous format
 version, as is informative, not normative.
-1.2.3.1 Hex to Binary
+1.2.4.1 Hex to Binary
 Several numeric fields in are encoded in V3 as ASCII hex data, which
 is inefficient and arguably inelegant. All such fields should be
 changed to little-endian integer values.
-1.2.3.2 Time Representation
+1.2.4.2 Time Representation
 Time should be uniformly represented as 64 bit unsigned little-endian
 integers, in seconds from 1/1/1970, UTC. V3 representation is 32 bits.
-1.2.3.3 Fix Minor Weakness
+1.2.4.3 Fix Minor Weakness
 The only known weakness in the V3 format is that the HMAC
 integrity check does not currently cover the field type and field
 length values. This should be fixed. 
@@ -108,17 +118,34 @@ assumed on the field types.
 
 2.4.2 R1..Rn: The actual database records. Each record consists of one or
 more typed fields (as defined in Section 3.2), terminated by the 'END' type
-field. The UUID, Title, and Password fields are mandatory. All non-
-mandatory fields may either be absent or have zero length. When a field is
-absent or zero-length, its default value shall be used. Aside from the
-'END' field, no order is assumed on the field types.
+field. The first field of a record is a UUID type. The exact type
+defines the record type, and the contents of the field is the UUID of
+the record. Currently the following record types are defined:
+2.4.2.1 An "Entry" record. This represents a password entry. Aside
+from the UUID field, the Title, and Password fields are mandatory.
+2.4.2.2 A "Reference" record. This represents a "shortcut" or "alias"
+to an Entry record. TBD - do we need to have separate types for
+shortcuts and aliases, or can we make do with a common type?
+The manadatory fields for this record are: RefUUID - the UUID of the
+record, BaseUUID - the UUID of the referred-to record, END.
+2.4.2.3 An "Attachment" record. This record is used to contain
+attachments, e.g., jpeg, tiff, or other media types. This record is
+defined to be "skipped over" while reading, and to be copied without
+the need to decrypt and re-encrypt. See Section TBD for details.
+2.4.2.4 For all records, all non-mandatory fields may either be absent
+or have zero length. When a field is absent or zero-length, its
+default value shall be used. Aside from first UUID field and the the
+terminating 'END' field, no order is assumed on the field types unless
+otherwise specified.
 
 2.5 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
 256 as the underlying hash function. The value is calculated over all
 of the protected fields, including the field type, the field length
 and the data stored in the field, over all fields (starting from the
 version number in the header, ending with the last field of the last
-record). The key L is used as the hash key value.
+record). The exception is the content field (of the attachment
+record), which is handled separately as described in Section TBD. The
+key L is used as the hash key value.
 
 3. Fields: Data in PasswordSafe is stored in typed fields. Each field
 consists of one or more blocks. The blocks are the blocks of the underlying
@@ -148,8 +175,6 @@ representation.
  (This is equivalent to the time_t type on Windows and POSIX. On the
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
-
-XXX -- edited until here -- XXX
 
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
@@ -205,7 +230,7 @@ a delimited string for String. Only non-default values are stored. See
 PWSprefs.cpp for more details.  Note: normally strings are delimited
 by the doublequote character.  However, if this character is in the
 string value, an arbitrary character will be chosen to delimit the
-string. Version 0x0309 added database wide special symbols to the
+string. Version 0x0309 added database-wide special symbols to the
 Non-default preferences (0x02).
 
 [4] If requested to be saved, this is a string of 1s and 0s indicating the
@@ -322,7 +347,7 @@ without breaking backwards compatability.
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
-UUID                        0x01        UUID          Y              [1]
+EntUUID                     0x01        UUID          Y              [1]
 Group                       0x02        Text          Y              [2]
 Title                       0x03        Text          Y
 Username                    0x04        Text          Y
@@ -347,10 +372,12 @@ Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
-End of Entry                0xff        [empty]       Y              [21]
+AttRef                      0x1a        UUID          Y              [21]
+RefUUID                     0x41        UUID          Y              [22]
+End of Entry                0xff        [empty]       Y              [23]
 
-[1] Per-record UUID to assist in sync, merge, etc. Representation is
-as described in Section 3.1.1.
+[1] UUID of a password entry record. Representation is described in
+Section 3.1.1.
 
 [2] The "Group" supports displaying the entries in a tree-like manner.
 Groups can be hierarchical, with elements separated by a period, supporting
@@ -499,8 +526,78 @@ symbols for password field [0x16]. This was introduced in version
     PWS_HOTKEYF_CMD     0x40 (not supported by Windows)
 This was introduced in version 0x030D (PasswordSafe V3.30).
 
-[21] An explicit end of entry field is useful for supporting new fields
+[21] The UUID of an attachment record associated with an entry.  An
+entry record can have zero or more such fields. Each attachment field
+in a given password entry record must have a different value, but
+different entries can refer to the same attachment uuid.
+[22] UUID of a refernce record. Representation is described in Section
+3.1.1.
+[23] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
+
+3.4 Attachments
+
+3.4.1 Attachment record fields
+
+An Attachment record has the following fields (all mandatory):
+[TBD - change to table form]
+                                                 Currently
+Name                        Value        Type    Implemented      Comments
+--------------------------------------------------------------------------
+AttUUID                     0x61        UUID          Y              [1]
+Title                       0x03        Text          Y              [2]
+MediaType                   0x62        Text          Y              [3]
+FileName                    0x63        Text          Y              [4]
+AttEK                       0x64        32 bytes      Y              [5]
+AttAK                       0x65        32 bytes      Y              [6]
+Content                     0x66        binary        Y              [7]
+ContentHMAC                 0x67        32 bytes      Y              [8]
+End of Entry                0xff        [empty]       Y              
+
+[1] This is the UUID of the attachment record, which is referred to by
+password entries' AttRef field. Representation is described in Section
+3.1.1.
+[2] The title is a user-friendly name for the attachment.
+[3] MIME type - text string describing Media Type, per
+http://www.iana.org/assignments/media-types
+[4] Original file name - kept mainly for the extension, to support
+applications that require this for proper viewing.
+[5] Attachment encryption key: This is a 256 bit random key encrypting the
+content.
+[6] Attachment authentication key: This is a 256 bit random key used to
+verify the integrity of the content.
+[7] The binary representation of the attachment. Note that this is limited
+to 4GB (2^32 bytes), which should suffice.
+The first block of this field is encrypted under the database's
+encryption key. This is so the field's type and length can be determined
+without relying on the implicit order of the fields. The rest of the blocks
+are encrypted under the AttEK in CBC mode with the first block serving as
+the IV, using the same algorithm as the rest of the database. Padding of
+input is done with random data, as needed.
+[8] This is calculated over the same data that is protected using the AttEK,
+including padding. HMAC calculation uses AttAK and SHA256.
+To encrypt this field, the first block of the Content field is used as the
+IV, so as to continue the database CBC stream. This field must immeidately
+follow the Content field.
+
+3.4.2 Changes to database HMAC calculation
+
+3.4.2.1 The HMAC of the database file will not be calculated over the data
+that is covered by content field HMAC. This enables saving databases
+without the need to recalculate the HMAC of contents.
+
+3.4.2.2 The database HMAC will cover the attachment records' other fields,
+specifically the content HMAC key and the HMAC calculated under that key.
+The database HMAC will also cover the first block of the attachment content
+fields, as these are not covered by content HMAC.
+
+3.4.3 Implementation note
+
+When reading the database, it is assumed that the offsets of the attachment
+records will be noted for rapid access to the attachments when
+required. Care must be taken to ensure that the database was not modified
+between when the offsets were recorded and when they are actually
+required.
 
 4. Extensibility
 
