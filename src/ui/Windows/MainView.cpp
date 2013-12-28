@@ -2100,6 +2100,8 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 bool DboxMain::LockDataBase()
 {
   PWS_LOGIT;
+  if (m_core.GetCurFile().empty()) // Bug 1149: We tried to ChangeMode on an unopen file
+    return true;
 
   /*
    * Since we clear the data, any unchanged changes will be lost,
