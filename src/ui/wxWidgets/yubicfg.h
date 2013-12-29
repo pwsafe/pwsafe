@@ -36,6 +36,10 @@ class PWScore;
  * Control identifiers
  */
 
+#ifndef wxDIALOG_MODAL
+#define wxDIALOG_MODAL 0
+#endif
+
 ////@begin control identifiers
 #define ID_YUBICFGDLG 10109
 #define ID_YK_SERNUM 10113
