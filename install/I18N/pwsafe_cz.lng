@@ -137,6 +137,8 @@ LangString KOREAN_SUPPORT ${LANG_CZECH} "Korean"
 LangString CZECH_SUPPORT ${LANG_CZECH} "Czech"
 ; TURKISH_SUPPORT "Turkish"
 LangString TURKISH_SUPPORT ${LANG_CZECH} "Turkish"
+; HUNGARIAN_SUPPORT "Hungarian"
+LangString HUNGARIAN_SUPPORT ${LANG_CZECH} "Hungarian"
 
 ; LANG_PROGRAM "Czech Language"
 LangString LANG_PROGRAM ${LANG_CZECH} "Czech Language"

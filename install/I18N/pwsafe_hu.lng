@@ -1,0 +1,147 @@
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_hu.lng
+; include file for "pwsafe.nsi"
+; first edit : Karlo Van der Gucht
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2007 Rony Shapiro <ronys@users.sourceforge.net>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2010 extended by Karlo Van der Gucht Danish language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_HUNGARIAN} "Válasszon telepítési típust"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_HUNGARIAN} "Szokásos (Registrit használja, otthoni vagy saját számítógépre ajánlott)"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_HUNGARIAN} "Zöld (mindent egy helyen tárol, nem használja a számítógép registri adatbázisát)"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_HUNGARIAN} "Program Files"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_HUNGARIAN} "indítás automatikusan"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_HUNGARIAN} "Megjelenítés a start menüben"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_HUNGARIAN} "Parancsikon elhelyezése az asztalon"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_HUNGARIAN} "Eltávolítás parancsikon"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_HUNGARIAN} "Feltelepíti a fontos fájlokat, amik elengedhetetlenek a Password safe  használatához."
+
+; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_HUNGARIAN} "Kérem válassza ki azokat a nyelveket, amiket szeretne hogy a Password safe használjon."
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_HUNGARIAN} "A Password safe elindul a Windows bejelentkezésekor."
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_HUNGARIAN} "Ikon létrehozása a start menüben a Password safe részére."
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_HUNGARIAN} "Elhelyez egy parancsikont a Password safe részére az asztalon."
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_HUNGARIAN} "Elhelyez egy ikont a start menüben, mivel a Password Safe eltávolítható."
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_HUNGARIAN} "Telepítési típus"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_HUNGARIAN} "Válassza a szokásos telepítési típust ha egy pc-n használná csak, válassza a Zöld típust a hordozható verzió elkészítéséhez. Ha nem biztos a döntésébenn, a szokásos telepítési típus az ajánlott."
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_HUNGARIAN} "Válassza ki a telepítés típusát"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_HUNGARIAN} "Szokásos (Registrit használja, otthoni vagy saját számítógépre ajánlott)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_HUNGARIAN} "Zöld (mindent egy elkülönített mappában tárol, nem használja a számítógép registri adatbázisát)"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_HUNGARIAN} "A telepítő már fut."
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_HUNGARIAN} "Kérem zárja be a PasswordSafe alkalmazást, mielőtt egy új verziót feltelepít"
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_HUNGARIAN} "Telepítés nyelve"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_HUNGARIAN} "Kérem válassza ki a telepítő nyelvét"
+
+; LANGUAGE_SUPPORT "Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_HUNGARIAN} "Nyelv támogatása"
+; ENGLISH_SUPPORT "English"
+LangString ENGLISH_SUPPORT ${LANG_HUNGARIAN} "Angol"
+; CHINESE_CN_SUPPORT "Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_HUNGARIAN} "Kínai (egyszerűsített)"
+; CHINESE_TW_SUPPORT "Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_HUNGARIAN} "Kínai (hagyományos)"
+; GERMAN_SUPPORT "German"
+LangString GERMAN_SUPPORT ${LANG_HUNGARIAN} "Német"
+; SPANISH_SUPPORT "Spanish"
+LangString SPANISH_SUPPORT ${LANG_HUNGARIAN} "Spanyol"
+; SWEDISH_SUPPORT "Swedish"
+LangString SWEDISH_SUPPORT ${LANG_HUNGARIAN} "Svéd"
+; DUTCH_SUPPORT "Dutch"
+LangString DUTCH_SUPPORT ${LANG_HUNGARIAN} "Holland"
+; FRENCH_SUPPORT "French"
+LangString FRENCH_SUPPORT ${LANG_HUNGARIAN} "Francia"
+; RUSSIAN_SUPPORT "Russian"
+LangString RUSSIAN_SUPPORT ${LANG_HUNGARIAN} "Orosz"
+; POLISH_SUPPORT "Polish"
+LangString POLISH_SUPPORT ${LANG_HUNGARIAN} "Lengyel"
+; ITALIAN_SUPPORT "Italian"
+LangString ITALIAN_SUPPORT ${LANG_HUNGARIAN} "Olasz"
+; DANISH_SUPPORT "Danish"
+LangString DANISH_SUPPORT ${LANG_HUNGARIAN} "Dán"
+; KOREAN_SUPPORT "Korean"
+LangString KOREAN_SUPPORT ${LANG_HUNGARIAN} "Koreai"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_HUNGARIAN} "Cseh"
+; TURKISH_SUPPORT "Turkish"
+LangString TURKISH_SUPPORT ${LANG_HUNGARIAN} "Török"
+LangString HUNGARIAN_SUPPORT ${LANG_HUNGARIAN} "Magyar"
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_HUNGARIAN} "Program nyelve"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_HUNGARIAN} "Sajnálom, a Windows 95 már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_HUNGARIAN} "Sajnálom, a Windows 98 már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_HUNGARIAN} "Sajnálom, a Windows ME már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
+
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_HUNGARIAN} "Sajnálom, a Windows 2000 már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
+
+;=================================================================
+; End of pwsafe_hu.lng
