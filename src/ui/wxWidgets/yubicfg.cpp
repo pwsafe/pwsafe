@@ -308,7 +308,7 @@ void YubiCfgDlg::OnYkSetClick( wxCommandEvent& event )
 {
   Validate(); TransferDataFromWindow();
   m_ykstatus->SetLabel(wxT(""));
-  StringX skStr = m_yksk.c_str();
+  StringX skStr(m_yksk.c_str());
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);

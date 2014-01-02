@@ -18,11 +18,11 @@
 
 const wxString pwsafeAppName(APPNAME);
 #ifndef _DEBUG
-const wxString pwsafeVersionString = wxString::Format(_T("v%d.%d (%s) %s"),
+const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%d (%s) %s")),
                                                       MAJORVERSION, MINORVERSION,
                                                       _T(VCS_VERSION), SPECIALBUILD);
 #else
-const wxString pwsafeVersionString = wxString::Format(_T("v%d.%d (%s) [debug] %s"),
+const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%d (%s) [debug] %s")),
                                                       MAJORVERSION, MINORVERSION,
                                                       _T(VCS_VERSION), SPECIALBUILD);
 #endif
