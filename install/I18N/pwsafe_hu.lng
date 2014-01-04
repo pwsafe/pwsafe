@@ -19,95 +19,95 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_HUNGARIAN} "V√°lasszon telep√≠t√©si t√≠pust"
+LangString RESERVE_TITLE ${LANG_HUNGARIAN} "V·lasszon telepÌtÈsi tÌpust"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_HUNGARIAN} "Szok√°sos (Registrit haszn√°lja, otthoni vagy saj√°t sz√°m√≠t√≥g√©pre aj√°nlott)"
+LangString RESERVE_FIELD1 ${LANG_HUNGARIAN} "Szok·sos (Registrit haszn·lja, otthoni vagy saj·t sz·mÌtÛgÈpre aj·nlott)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_HUNGARIAN} "Z√∂ld (mindent egy helyen t√°rol, nem haszn√°lja a sz√°m√≠t√≥g√©p registri adatb√°zis√°t)"
+LangString RESERVE_FIELD2 ${LANG_HUNGARIAN} "Zˆld (mindent egy helyen t·rol, nem haszn·lja a sz·mÌtÛgÈp registri adatb·zis·t)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_HUNGARIAN} "Program Files"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_HUNGARIAN} "ind√≠t√°s automatikusan"
+LangString START_AUTO ${LANG_HUNGARIAN} "indÌt·s automatikusan"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_HUNGARIAN} "Megjelen√≠t√©s a start men√ºben"
+LangString START_SHOW ${LANG_HUNGARIAN} "MegjelenÌtÈs a start men¸ben"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_HUNGARIAN} "Parancsikon elhelyez√©se az asztalon"
+LangString START_SHORTCUT ${LANG_HUNGARIAN} "Parancsikon elhelyezÈse az asztalon"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_HUNGARIAN} "Elt√°vol√≠t√°s parancsikon"
+LangString UNINSTALL_SHORTCUT ${LANG_HUNGARIAN} "Elt·volÌt·s parancsikon"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_HUNGARIAN} "Feltelep√≠ti a fontos f√°jlokat, amik elengedhetetlenek a Password safe  haszn√°lat√°hoz."
+LangString DESC_ProgramFiles ${LANG_HUNGARIAN} "FeltelepÌti a fontos f·jlokat, amik elengedhetetlenek a Password safe  haszn·lat·hoz."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_HUNGARIAN} "K√©rem v√°lassza ki azokat a nyelveket, amiket szeretne hogy a Password safe haszn√°ljon."
+LangString DESC_LangSupport ${LANG_HUNGARIAN} "KÈrem v·lassza ki azokat a nyelveket, amiket szeretne hogy a Password safe haszn·ljon."
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_HUNGARIAN} "A Password safe elindul a Windows bejelentkez√©sekor."
+LangString DESC_StartUp ${LANG_HUNGARIAN} "A Password safe elindul a Windows bejelentkezÈsekor."
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_HUNGARIAN} "Ikon l√©trehoz√°sa a start men√ºben a Password safe r√©sz√©re."
+LangString DESC_StartMenu ${LANG_HUNGARIAN} "Ikon lÈtrehoz·sa a start men¸ben a Password safe rÈszÈre."
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_HUNGARIAN} "Elhelyez egy parancsikont a Password safe r√©sz√©re az asztalon."
+LangString DESC_DesktopShortcut ${LANG_HUNGARIAN} "Elhelyez egy parancsikont a Password safe rÈszÈre az asztalon."
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_HUNGARIAN} "Elhelyez egy ikont a start men√ºben, mivel a Password Safe elt√°vol√≠that√≥."
+LangString DESC_UninstallMenu ${LANG_HUNGARIAN} "Elhelyez egy ikont a start men¸ben, mivel a Password Safe elt·volÌthatÛ."
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_HUNGARIAN} "Telep√≠t√©si t√≠pus"
+LangString TEXT_GC_TITLE ${LANG_HUNGARIAN} "TelepÌtÈsi tÌpus"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_HUNGARIAN} "V√°lassza a szok√°sos telep√≠t√©si t√≠pust ha egy pc-n haszn√°ln√° csak, v√°lassza a Z√∂ld t√≠pust a hordozhat√≥ verzi√≥ elk√©sz√≠t√©s√©hez. Ha nem biztos a d√∂nt√©s√©benn, a szok√°sos telep√≠t√©si t√≠pus az aj√°nlott."
+LangString TEXT_GC_SUBTITLE ${LANG_HUNGARIAN} "V·lassza a szok·sos telepÌtÈsi tÌpust ha egy pc-n haszn·ln· csak, v·lassza a Zˆld tÌpust a hordozhatÛ verziÛ elkÈszÌtÈsÈhez. Ha nem biztos a dˆntÈsÈbenn, a szok·sos telepÌtÈsi tÌpus az aj·nlott."
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_HUNGARIAN} "V√°lassza ki a telep√≠t√©s t√≠pus√°t"
+LangString PSWINI_TITLE ${LANG_HUNGARIAN} "V·lassza ki a telepÌtÈs tÌpus·t"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_HUNGARIAN} "Szok√°sos (Registrit haszn√°lja, otthoni vagy saj√°t sz√°m√≠t√≥g√©pre aj√°nlott)"
+LangString PSWINI_TEXT1 ${LANG_HUNGARIAN} "Szok·sos (Registrit haszn·lja, otthoni vagy saj·t sz·mÌtÛgÈpre aj·nlott)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_HUNGARIAN} "Z√∂ld (mindent egy elk√ºl√∂n√≠tett mapp√°ban t√°rol, nem haszn√°lja a sz√°m√≠t√≥g√©p registri adatb√°zis√°t)"
+LangString PSWINI_TEXT2 ${LANG_HUNGARIAN} "Zˆld (mindent egy elk¸lˆnÌtett mapp·ban t·rol, nem haszn·lja a sz·mÌtÛgÈp registri adatb·zis·t)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_HUNGARIAN} "A telep√≠t≈ë m√°r fut."
+LangString RUNNING_INSTALL ${LANG_HUNGARIAN} "A telepÌtı m·r fut."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_HUNGARIAN} "K√©rem z√°rja be a PasswordSafe alkalmaz√°st, miel≈ëtt egy √∫j verzi√≥t feltelep√≠t"
+LangString RUNNING_APPLICATION ${LANG_HUNGARIAN} "KÈrem z·rja be a PasswordSafe alkalmaz·st, mielıtt egy ˙j verziÛt feltelepÌt"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_HUNGARIAN} "Telep√≠t√©s nyelve"
+LangString LANG_INSTALL ${LANG_HUNGARIAN} "TelepÌtÈs nyelve"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_HUNGARIAN} "K√©rem v√°lassza ki a telep√≠t≈ë nyelv√©t"
+LangString LANG_SELECT ${LANG_HUNGARIAN} "KÈrem v·lassza ki a telepÌtı nyelvÈt"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_HUNGARIAN} "Nyelv t√°mogat√°sa"
+LangString LANGUAGE_SUPPORT ${LANG_HUNGARIAN} "Nyelv t·mogat·sa"
 ; ENGLISH_SUPPORT "English"
 LangString ENGLISH_SUPPORT ${LANG_HUNGARIAN} "Angol"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_HUNGARIAN} "K√≠nai (egyszer≈±s√≠tett)"
+LangString CHINESE_CN_SUPPORT ${LANG_HUNGARIAN} "KÌnai (egyszer˚sÌtett)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_HUNGARIAN} "K√≠nai (hagyom√°nyos)"
+LangString CHINESE_TW_SUPPORT ${LANG_HUNGARIAN} "KÌnai (hagyom·nyos)"
 ; GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_HUNGARIAN} "N√©met"
+LangString GERMAN_SUPPORT ${LANG_HUNGARIAN} "NÈmet"
 ; SPANISH_SUPPORT "Spanish"
 LangString SPANISH_SUPPORT ${LANG_HUNGARIAN} "Spanyol"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_HUNGARIAN} "Sv√©d"
+LangString SWEDISH_SUPPORT ${LANG_HUNGARIAN} "SvÈd"
 ; DUTCH_SUPPORT "Dutch"
 LangString DUTCH_SUPPORT ${LANG_HUNGARIAN} "Holland"
 ; FRENCH_SUPPORT "French"
@@ -119,29 +119,28 @@ LangString POLISH_SUPPORT ${LANG_HUNGARIAN} "Lengyel"
 ; ITALIAN_SUPPORT "Italian"
 LangString ITALIAN_SUPPORT ${LANG_HUNGARIAN} "Olasz"
 ; DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_HUNGARIAN} "D√°n"
+LangString DANISH_SUPPORT ${LANG_HUNGARIAN} "D·n"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_HUNGARIAN} "Koreai"
 ; CZECH_SUPPORT "Czech"
 LangString CZECH_SUPPORT ${LANG_HUNGARIAN} "Cseh"
 ; TURKISH_SUPPORT "Turkish"
-LangString TURKISH_SUPPORT ${LANG_HUNGARIAN} "T√∂r√∂k"
-LangString HUNGARIAN_SUPPORT ${LANG_HUNGARIAN} "Magyar"
+LangString TURKISH_SUPPORT ${LANG_HUNGARIAN} "Tˆrˆk"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_HUNGARIAN} "Program nyelve"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_HUNGARIAN} "Sajn√°lom, a Windows 95 m√°r nem t√°mogatott. A haszn√°lathoz telep√≠tse fel a PasswordSafe 2.16 verzi√≥j√°t"
+LangString SORRY_NO_95 ${LANG_HUNGARIAN} "Sajn·lom, a Windows 95 m·r nem t·mogatott. A haszn·lathoz telepÌtse fel a PasswordSafe 2.16 verziÛj·t"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_HUNGARIAN} "Sajn√°lom, a Windows 98 m√°r nem t√°mogatott. A haszn√°lathoz telep√≠tse fel a PasswordSafe 2.16 verzi√≥j√°t"
+LangString SORRY_NO_98 ${LANG_HUNGARIAN} "Sajn·lom, a Windows 98 m·r nem t·mogatott. A haszn·lathoz telepÌtse fel a PasswordSafe 2.16 verziÛj·t"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_HUNGARIAN} "Sajn√°lom, a Windows ME m√°r nem t√°mogatott. A haszn√°lathoz telep√≠tse fel a PasswordSafe 2.16 verzi√≥j√°t"
+LangString SORRY_NO_ME ${LANG_HUNGARIAN} "Sajn·lom, a Windows ME m·r nem t·mogatott. A haszn·lathoz telepÌtse fel a PasswordSafe 2.16 verziÛj·t"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_HUNGARIAN} "Sajn√°lom, a Windows 2000 m√°r nem t√°mogatott. A haszn√°lathoz telep√≠tse fel a PasswordSafe 2.16 verzi√≥j√°t"
+LangString SORRY_NO_2K ${LANG_HUNGARIAN} "Sajn·lom, a Windows 2000 m·r nem t·mogatott. A haszn·lathoz telepÌtse fel a PasswordSafe 2.16 verziÛj·t"
 
 ;=================================================================
 ; End of pwsafe_hu.lng
