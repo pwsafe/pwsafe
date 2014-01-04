@@ -1780,7 +1780,6 @@
 				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
-				E6B14BC013499BAA007FA8AE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2023,19 +2022,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd ../help/\nmake -f Makefile.linux";
-		};
-		E6B14BC013499BAA007FA8AE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "";
 		};
 		E6BF9E5113348CA50084A011 /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
