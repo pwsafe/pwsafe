@@ -235,6 +235,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(wxID_DELETE,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -1841,6 +1842,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
 
+    case wxID_DELETE:
+      evt.Enable(GetSelectedEntry() != NULL);
+      break;
+      
     default:
       break;
   }
