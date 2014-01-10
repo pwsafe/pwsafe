@@ -20,11 +20,12 @@ POS := pwsafe.pot pos/pwsafe_cz.po pos/pwsafe_es.po pos/pwsafe_de.po \
 	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po \
 	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po \
 	pos/pwsafe_kr.po pos/pwsafe_sv.po pos/pwsafe_nl.po \
-	pos/pwsafe_tr.po
+	pos/pwsafe_tr.po pos/pwsafe_hu.po
 
 DLL_LIST = pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
-	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll
+	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
+	pwsafeHU.dll
 
 DEST_DIR := ../../../../build/bin/pwsafe/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
@@ -118,6 +119,12 @@ $(DEST_DIR)/pwsafeTR.dll : pos/pwsafe_tr.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x041f; \
 	$(RM) foo.dll; $(MV) pwsafeTR_TR.dll $(DEST_DIR)/pwsafeTR.dll
+	$(CHMOD) 755 $@
+
+$(DEST_DIR)/pwsafeHU.dll : pos/pwsafe_hu.po
+	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
+	$(RESPWSL) apply foo.dll 0x040e; \
+	$(RM) foo.dll; $(MV) pwsafeHU_HU.dll $(DEST_DIR)/pwsafeHU.dll
 	$(CHMOD) 755 $@
 
 # No need to change anything below this line
