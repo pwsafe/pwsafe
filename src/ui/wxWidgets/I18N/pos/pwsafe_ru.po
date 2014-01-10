@@ -53,7 +53,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/about.cpp:171
 msgid "Copyright (c) 2003-2009 by Rony Shapiro"
-msgstr "Copyright (c) 2003-2013 by Rony Shapiro"
+msgstr "Copyright (c) 2003-2014 by Rony Shapiro"
 
 #: ../../../ui/wxWidgets/about.cpp:178
 #: ../../../ui/wxWidgets/SystemTray.cpp:136
