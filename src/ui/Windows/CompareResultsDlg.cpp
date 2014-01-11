@@ -1441,7 +1441,7 @@ BOOL CCPListCtrl::PreTranslateMessage(MSG *pMsg)
   return CListCtrl::PreTranslateMessage(pMsg);
 } 
 
-bool CCPListCtrl::IsSelected(const int iRow)
+bool CCPListCtrl::IsSelected(DWORD_PTR iRow)
 {
   POSITION pos = GetFirstSelectedItemPosition();
 

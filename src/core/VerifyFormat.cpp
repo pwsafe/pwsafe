@@ -506,7 +506,8 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
 
   StringX sxBuffer, tmp;
   std::vector<StringX> in_tokens, out_entries;
-  int s = -1, nerror(-1);
+  int s = -1;
+  size_t nerror(-1);
   unsigned int ipwlen, m = 0, n = 0; // using uint instead of size_t to use 'x' format spec instead of complier-dependent z/I
   int rc = PWH_OK;
   time_t t;

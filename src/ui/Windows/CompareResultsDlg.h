@@ -34,7 +34,7 @@ public:
   inline int GetColumn() {return m_column;}
   void SetRow(const int iRow) {m_row = iRow;}
   void SetColumn(const int iColumn) {m_column = iColumn;}
-  bool IsSelected(const int iRow);
+  bool IsSelected(DWORD_PTR iRow);
 
 protected:
   //{{AFX_MSG(CCPListCtrl)
