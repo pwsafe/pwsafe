@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -268,6 +268,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == 0 && !m_filespec.IsEmpty()) {
+    m_MRU_combo.SetEditSel(-1, -1);
     m_pctlPasskey->SetFocus();
     return FALSE;
   }

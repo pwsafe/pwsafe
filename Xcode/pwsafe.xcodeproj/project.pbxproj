@@ -212,7 +212,6 @@
 		E6BF9E8C13348CDB0084A011 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
 		E6BF9E8D13348CDB0084A011 /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
 		E6BF9E8E13348CDB0084A011 /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
-		E6BF9E8F13348CDB0084A011 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A511E87E9700B01518 /* hmac.cpp */; };
 		E6BF9E9013348CDB0084A011 /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
 		E6BF9E9113348CDB0084A011 /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
 		E6BF9E9213348CDB0084A011 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83AC11E87E9700B01518 /* Match.cpp */; };
@@ -315,7 +314,6 @@
 		E6E31A2512FD69A0001618AB /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
 		E6E31A2612FD69A0001618AB /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
 		E6E31A2712FD69A0001618AB /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
-		E6E31A2812FD69A0001618AB /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A511E87E9700B01518 /* hmac.cpp */; };
 		E6E31A2912FD69A0001618AB /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
 		E6E31A2A12FD69A0001618AB /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
 		E6E31A2B12FD69A0001618AB /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83AC11E87E9700B01518 /* Match.cpp */; };
@@ -404,7 +402,6 @@
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
 		E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
 		E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
-		E6EE842011E87E9800B01518 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A511E87E9700B01518 /* hmac.cpp */; };
 		E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
 		E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
 		E6EE842411E87E9800B01518 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83AC11E87E9700B01518 /* Match.cpp */; };
@@ -1783,7 +1780,6 @@
 				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
-				E6B14BC013499BAA007FA8AE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2027,19 +2023,6 @@
 			shellPath = /bin/sh;
 			shellScript = "cd ../help/\nmake -f Makefile.linux";
 		};
-		E6B14BC013499BAA007FA8AE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "";
-		};
 		E6BF9E5113348CA50084A011 /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2087,7 +2070,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
+			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h\ntouch ../src/ui/wxWidgets/version.h";
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2205,7 +2188,6 @@
 				E6EE841D11E87E9800B01518 /* Command.cpp in Sources */,
 				E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */,
 				E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */,
-				E6EE842011E87E9800B01518 /* hmac.cpp in Sources */,
 				E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */,
 				E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */,
 				E6EE842411E87E9800B01518 /* Match.cpp in Sources */,
@@ -2388,7 +2370,6 @@
 				E6BF9E8C13348CDB0084A011 /* Command.cpp in Sources */,
 				E6BF9E8D13348CDB0084A011 /* CoreImpExp.cpp in Sources */,
 				E6BF9E8E13348CDB0084A011 /* core_st.cpp in Sources */,
-				E6BF9E8F13348CDB0084A011 /* hmac.cpp in Sources */,
 				E6BF9E9013348CDB0084A011 /* ItemData.cpp in Sources */,
 				E6BF9E9113348CDB0084A011 /* ItemField.cpp in Sources */,
 				E6BF9E9213348CDB0084A011 /* Match.cpp in Sources */,
@@ -2486,7 +2467,6 @@
 				E6E31A2512FD69A0001618AB /* Command.cpp in Sources */,
 				E6E31A2612FD69A0001618AB /* CoreImpExp.cpp in Sources */,
 				E6E31A2712FD69A0001618AB /* core_st.cpp in Sources */,
-				E6E31A2812FD69A0001618AB /* hmac.cpp in Sources */,
 				E6E31A2912FD69A0001618AB /* ItemData.cpp in Sources */,
 				E6E31A2A12FD69A0001618AB /* ItemField.cpp in Sources */,
 				E6E31A2B12FD69A0001618AB /* Match.cpp in Sources */,
@@ -2665,6 +2645,7 @@
 					__WXMAC__,
 					DEBUG,
 					_DEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
@@ -2689,6 +2670,7 @@
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 					NDEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
@@ -2726,6 +2708,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					NO_YUBI,
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
@@ -2840,6 +2823,7 @@
 					__WXMAC__,
 					DEBUG,
 					_DEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
@@ -2864,6 +2848,7 @@
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 					NDEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
@@ -2892,6 +2877,7 @@
 					__WXMAC__,
 					DEBUG,
 					_DEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2916,6 +2902,7 @@
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 					NDEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -3102,6 +3089,7 @@
 					__WXOSX_COCOA__,
 					DEBUG,
 					_DEBUG,
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe64.plist;
@@ -3128,6 +3116,7 @@
 					__WXOSX_COCOA__,
 					NDEBUG,
 					"wxDEBUG_LEVEL=0",
+					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe64.plist;

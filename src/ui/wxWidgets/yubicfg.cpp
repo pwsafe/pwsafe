@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -308,7 +308,7 @@ void YubiCfgDlg::OnYkSetClick( wxCommandEvent& event )
 {
   Validate(); TransferDataFromWindow();
   m_ykstatus->SetLabel(wxT(""));
-  StringX skStr = m_yksk.c_str();
+  StringX skStr(m_yksk.c_str());
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);

@@ -103,7 +103,7 @@ msgstr " 'Grupa'"
 
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
-msgstr ""
+msgstr " 'skrót klawiszowy'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
@@ -895,7 +895,7 @@ msgstr "Tak"
 
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
-msgstr ""
+msgstr "&Yubikey..."
 
 #. Resource IDs: (1356)
 msgid "&email:"
@@ -951,7 +951,7 @@ msgstr "* oznacza, że baza danych została zmieniona"
 
 #. Resource IDs: (216)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr ""
+msgstr "*** Nieprawidłowe znaki XML - więcej szczegułów w wyeksportowanym pliku XML ***"
 
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
@@ -1512,7 +1512,7 @@ msgstr "Ostatnia zmiana w którymkolwiek z pól:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
-msgstr ""
+msgstr "Hotkey aplikacji"
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -1690,7 +1690,7 @@ msgstr "Linia parametrów przeglądarki:"
 
 #. Resource IDs: (1001)
 msgid "Built on "
-msgstr ""
+msgstr "Zbudowany "
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2025,7 +2025,7 @@ msgstr "Kliknij by przełączyć relację i/lub w poprzednim wierszu"
 
 #. Resource IDs: (376)
 msgid "Click, then touch your YubiKey"
-msgstr ""
+msgstr "Kliknij, a następnie dotknij swój YubiKey"
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -2411,7 +2411,7 @@ msgstr "Baza Danych"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr ""
+msgstr "Skrót do wpisu w bazie danych"
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2604,7 +2604,7 @@ msgstr "Akcja na podwójne klinknięcie"
 
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
-msgstr ""
+msgstr "Podwójnie kliknij by poglądać/modyfikować ten wpis."
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2703,7 +2703,7 @@ msgstr "Znaki łatwo wyróżnialne"
 
 #. Resource IDs: (2004)
 msgid "Edit"
-msgstr ""
+msgstr "Edycja"
 
 #. Resource IDs: (121, 32220)
 #, fuzzy
@@ -2738,7 +2738,7 @@ msgstr "Opuszczono pustą linię %d"
 
 #. Resource IDs: (1088)
 msgid "Enable"
-msgstr ""
+msgstr "Włącz"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2884,7 +2884,7 @@ msgstr "Porównanie wpisów"
 
 #. Resource IDs: (373)
 msgid "Entry Keyboard Shortcut"
-msgstr ""
+msgstr "Wprowadź skrót klawiszowy"
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
@@ -2911,21 +2911,21 @@ msgstr "Ostrzeżenia przy importowaniu wpisu"
 #. Resource IDs: (216)
 #, c-format
 msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
-msgstr ""
+msgstr "Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Został on usunięty z wpisu %s."
 
 #. Resource IDs: (216)
 #, c-format
 msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr ""
+msgstr "Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Został on usunięty z wpisu."
 
 #. Resource IDs: (373)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr ""
+msgstr "Skrót klawiszowy wpisu musi zawierać klawisz Alt, Ctlr, lub oba te klawisze, oraz znaki alfanumeryczne (0-9, A-Z)."
 
 #. Resource IDs: (372)
 #, c-format
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
-msgstr ""
+msgstr "Skrót klawiszowy wpisu musi zawierać klawisz Alt, Ctlr, lub oba te klawisze.\n\n%s"
 
 #. Resource IDs: (205)
 #, c-format
@@ -3173,7 +3173,7 @@ msgstr "Pole istnieje"
 
 #. Resource IDs: (2001)
 msgid "File"
-msgstr ""
+msgstr "Plik"
 
 #. Resource IDs: (328)
 #, fuzzy
@@ -3501,7 +3501,7 @@ msgstr "HotKey1"
 
 #. Resource IDs: (372)
 msgid "However, we can't add either as all combinations are in use."
-msgstr ""
+msgstr "Jakkoliwek nie możemy dodać żadnego ponieważ wszyskie kombinacje są w użyciu."
 
 #. Resource IDs: (514)
 msgid "Hungarian"
@@ -3915,7 +3915,7 @@ msgstr "Zachowaj"
 
 #. Resource IDs: (193, 372, 65535)
 msgid "Keyboard Shortcut"
-msgstr ""
+msgstr "Skrót klawiszowy"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
@@ -4075,7 +4075,7 @@ msgstr "Wykonaj kopię zapasową"
 
 #. Resource IDs: (2010)
 msgid "Manage"
-msgstr ""
+msgstr "Zarządzaj"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -4103,7 +4103,7 @@ msgstr "Maks."
 
 #. Resource IDs: (1487)
 msgid "Maximum"
-msgstr ""
+msgstr "Maksimum"
 
 #. Resource IDs: (338)
 #, fuzzy
@@ -4369,7 +4369,7 @@ msgstr "Nie ma raportów w tym samym katalogu co bieżąca baza danych."
 
 #. Resource IDs: (376)
 msgid "No response from YubiKey"
-msgstr ""
+msgstr "Brak odpowiedzi z YubiKey"
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
@@ -4716,7 +4716,7 @@ msgstr "Password Safe - <Przywrócona kopia zapasowa bez nazwy>"
 
 #. Resource IDs: (373)
 msgid "Password Safe Application HotKey"
-msgstr ""
+msgstr "HotKey aplikacji Password Safe"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
@@ -4911,7 +4911,7 @@ msgstr "Proszę podać prefiks kopii zapasowej."
 
 #. Resource IDs: (376)
 msgid "Please insert your YubiKey"
-msgstr ""
+msgstr "Proszę wprowadzić swój YubiKey"
 
 #. Resource IDs: (334)
 #, fuzzy
@@ -5014,7 +5014,7 @@ msgstr "Przetwarzanie wpisu:"
 
 #. Resource IDs: (65535)
 msgid "Program Shortcuts"
-msgstr ""
+msgstr "Skróty programowe"
 
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -5161,7 +5161,7 @@ msgstr "Pamiętaj ostatnie"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
-msgstr ""
+msgstr "Pamiętaj tę klawiaturę"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5215,7 +5215,7 @@ msgstr "Reset"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr ""
+msgstr "Resetuj wszystkie skróty programowe"
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
@@ -5573,7 +5573,7 @@ msgstr "Ustaw font klawiatury wirtualnej"
 
 #. Resource IDs: (1)
 msgid "Set Yubikey"
-msgstr ""
+msgstr "Ustaw Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5638,7 +5638,7 @@ msgstr "Skróty"
 
 #. Resource IDs: (1471)
 msgid "Show"
-msgstr ""
+msgstr "Pokaż"
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -5782,7 +5782,7 @@ msgstr "Ustawienia specjane"
 
 #. Resource IDs: (1486)
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #. Resource IDs: (1220)
 #, fuzzy
@@ -5991,27 +5991,27 @@ msgstr "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. 
 
 #. Resource IDs: (372)
 msgid "The Alt and Ctrl keys have been added."
-msgstr ""
+msgstr "Dodano klawisze Alt i Ctrl."
 
 #. Resource IDs: (372)
 msgid "The Alt and Shift keys have been added."
-msgstr ""
+msgstr "Dodano klawisze Alt i Shift."
 
 #. Resource IDs: (372)
 msgid "The Alt key has been added."
-msgstr ""
+msgstr "Dodano klawisz Alt."
 
 #. Resource IDs: (372)
 msgid "The Alt, Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Dodano klawisze Alt, Ctrl i Shift."
 
 #. Resource IDs: (372)
 msgid "The Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Dodano klawisze Ctrl i Shift."
 
 #. Resource IDs: (372)
 msgid "The Ctrl key has been added."
-msgstr ""
+msgstr "Dodano klawisz Ctrl."
 
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
@@ -6157,12 +6157,12 @@ msgstr "Następujące rekordy zostały ominięte:"
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr ""
+msgstr "Skrót klawiszowy '%s'" jest już przydzielony do menu:\t'%s'\n%s nadpisze ten skrót menu.\nWybierz OK/Apply by to zaakceptować, lub zmień swój wybór."
 
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr ""
+msgstr "Skrót klawiszowy '%s' jest już używany przez:\n\t«%s» «%s» «%s»\nProszę wybrać inny skrót (ten został zresetowany)."
 
 #. Resource IDs: (363)
 #, c-format
@@ -6222,7 +6222,7 @@ msgstr "Są nowsze dokumenty niż aktualnie otwarte i zawierają zmiany dokonane
 
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
-msgstr ""
+msgstr "Ten Hotkey nie jest dostępny jako że jest już przydzielony do PasswordSafe (Zarządzaj->Opcje->Skróty)."
 
 #. Resource IDs: (344)
 #, c-format
@@ -6341,7 +6341,7 @@ msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma 
 
 #. Resource IDs: (331)
 msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Czas wygaśnięcie powninen być pomiędzy minutą, a 120 minutami."
+msgstr "Czas wygaśnięcie powninen być pomiędzy 1 minutą, a 120 minutami."
 
 #. Resource IDs: (327)
 #, fuzzy
@@ -6378,7 +6378,7 @@ msgstr "Widoczny pasek narzędzi"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
-msgstr "Traktuj pola zawierające tylko odstępy jako puste."
+msgstr "Traktuj pola zawierające tylko 'białe znaki' jako puste."
 
 #. Resource IDs: (1013)
 msgid "Tree1"
@@ -6576,7 +6576,7 @@ msgstr "Odblokuj"
 
 #. Resource IDs: (65535)
 msgid "Unlock Difficulty"
-msgstr ""
+msgstr "Odblokuj trudność"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
@@ -6836,7 +6836,7 @@ msgstr "Uwaga - nadmierna zawartość pola"
 
 #. Resource IDs: (1370)
 msgid "Warning goes here if generated"
-msgstr ""
+msgstr "Jeśli zanotowano ostrzeżenia, to pojawią się tu"
 
 #. Resource IDs: (331)
 #, fuzzy, c-format
@@ -6977,23 +6977,23 @@ msgstr "Zażądany font '%s' nie został znaleziony (brak instalacji?), zatąpio
 
 #. Resource IDs: (527)
 msgid "YubiKey Configuration"
-msgstr ""
+msgstr "Konfiguracja YubiKey"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Secret Key (20 bytes Hex)"
-msgstr ""
+msgstr "Tajny klucz YubiKey (20 bajtów heks)"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Serial Number:"
-msgstr ""
+msgstr "Numer seryjny YubiKey:"
 
 #. Resource IDs: (1469)
 msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
-msgstr ""
+msgstr "YubiKey dla PasswordSafe można zakupić tu: http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
-msgstr ""
+msgstr "Yubikey"
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
@@ -7398,7 +7398,7 @@ msgstr "\tJedna lub więcej z nazw polityk haseł nie została znaleziona w bazi
 #. Resource IDs: (216)
 #, c-format
 msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
-msgstr ""
+msgstr "\tJeden lub więcej skrótów klawiszowych były już przydzielone do wpisów w tej bazie danych. Zostały one usunięte z %s wpisów."
 
 #. Resource IDs: (215)
 #, c-format
@@ -7525,7 +7525,7 @@ msgstr "zawierający dowolny z"
 
 #. Resource IDs: (216)
 msgid "copied"
-msgstr ""
+msgstr "skopiowano"
 
 #. Resource IDs: (1093)
 msgid "databases."
@@ -7640,7 +7640,7 @@ msgstr "import"
 
 #. Resource IDs: (216)
 msgid "imported"
-msgstr ""
+msgstr "zaimportowano"
 
 #. Resource IDs: (1320)
 msgid "in"
@@ -7703,7 +7703,7 @@ msgstr "mniejszy lub równy"
 
 #. Resource IDs: (214)
 msgid "merged"
-msgstr ""
+msgstr "połączono"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"

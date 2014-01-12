@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -57,6 +57,7 @@ static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser 
 }
 
 PWScore::PWScore() :
+                     m_isAuxCore(false),
                      m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
                      m_hashIters(MIN_HASH_ITERATIONS),
@@ -673,20 +674,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   m_OrigDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
   m_RUEList = m_hdr.m_RUEList;
 
-  // Get pref string and tree display status & who saved when
-  // all possibly empty!
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  prefs->Load(m_hdr.m_prefString);
+  if (!m_isAuxCore) { // aux. core does not modify db prefs in pref singleton
+    // Get pref string and tree display status & who saved when
+    // all possibly empty!
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    prefs->Load(m_hdr.m_prefString);
 
-  // prepare handling of pre-2.0 DEFUSERCHR conversion
-  if (m_ReadFileVersion == PWSfile::V17) {
-    in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
-    m_hdr.m_nCurrentMajorVersion = PWSfile::V17;
-    m_hdr.m_nCurrentMinorVersion = 0;
-  } else {
-    // for 2.0 & later...
-    in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
-  }
+    // prepare handling of pre-2.0 DEFUSERCHR conversion
+    if (m_ReadFileVersion == PWSfile::V17) {
+      in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
+      m_hdr.m_nCurrentMajorVersion = PWSfile::V17;
+      m_hdr.m_nCurrentMinorVersion = 0;
+    } else {
+      // for 2.0 & later...
+      in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
+    }
+  } // !m_isAuxCore
 
   ClearData(); //Before overwriting old data, but after opening the file...
   SetChanged(false, false);
@@ -1983,7 +1986,7 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
 
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
-
+
   bool baseWasNormal = iter->second.IsNormal();
   if (type == CItemData::ET_ALIAS) {
     // Mark base entry as a base entry - must be a normal entry or already an alias base

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -204,7 +204,7 @@ int CWZFinish::ExecuteAction()
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
     case ID_MENUITEM_SYNCHRONIZE:
-      m_pothercore = new PWScore;
+      m_pothercore = new PWScore; // NOT PWSAuxCore, as we handle db prefs explicitly
       bOtherIsDB = true;
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:

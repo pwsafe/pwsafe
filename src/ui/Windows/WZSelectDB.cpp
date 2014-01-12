@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -467,7 +467,7 @@ LRESULT CWZSelectDB::OnWizardNext()
 
 bool CWZSelectDB::ProcessPhrase(const StringX &filename, const StringX &passkey)
 {
-  PWScore tmpcore;
+  PWSAuxCore tmpcore; // doesn't really need to be PWSAuxCore, since we only check the passkey
   if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey,
                                   &tmpcore) == PWScore::SUCCESS) {
     m_tries = 0;

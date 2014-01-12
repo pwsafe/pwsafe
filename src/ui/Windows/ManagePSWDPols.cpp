@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -620,11 +620,11 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // Remove the tooltip for the entry CListCtrl
   m_pToolTipCtrl->DelTool(GetDlgItem(IDC_POLICYENTRIES));
 
+  // Allow edit/view iff something's selected
+  GetDlgItem(IDC_EDIT)->EnableWindow(m_iSelectedItem != -1 ? TRUE : FALSE);
+
   switch (m_iSelectedItem) {
     case -1:
-      // Can't Edit if nothing selected (-1)
-      GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
-      // Drop through by design!!!
     case 0:
       // Can't List or Delete the database default (0) or if nothing selected (-1)
       GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
@@ -635,17 +635,11 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // List if use count is not zero & Delete if use count is zero
       CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
       PSWDPolicyMapCIter citer = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
-
-      // Always allow edit/view
-      GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
-
-        // Do not allow delete of policy if use count is non-zero
+      // Do not allow delete of policy if use count is non-zero
       GetDlgItem(IDC_DELETE)->EnableWindow(((citer == m_MapPSWDPLC.end()) || citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
-
       // Do not allow list of associated items if use count is zero
       GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) || (citer->second.usecount == 0)) ?
                                          FALSE : TRUE);
-
       break;
   }
   

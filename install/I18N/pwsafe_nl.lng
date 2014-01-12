@@ -112,6 +112,7 @@ LangString DANISH_SUPPORT ${LANG_DUTCH} "Deens"
 LangString KOREAN_SUPPORT ${LANG_DUTCH} "Koreaans"
 LangString CZECH_SUPPORT ${LANG_DUTCH} "Tsjechisch"
 LangString TURKISH_SUPPORT ${LANG_DUTCH} "Turks"
+LangString HUNGARIAN_SUPPORT ${LANG_DUTCH} "Hongaars"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_DUTCH} "Programma-taal"

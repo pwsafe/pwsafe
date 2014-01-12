@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -559,7 +559,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
     FindWindow(ID_SHOW_REPORT)->Hide();
 
-    PWScore* othercore = new PWScore;
+    PWSAuxCore* othercore = new PWSAuxCore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
     const int rc = ReadCore(*othercore, otherDBPath, m_syncData->combination,
                                     false, this);
