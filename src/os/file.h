@@ -27,7 +27,7 @@ namespace pws_os {
                          HANDLE &lockFileHandle, int &LockCount);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
-  extern long fileLength(std::FILE *fp);
+  extern ulong64 fileLength(std::FILE *fp);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 }
 #endif /* __FILE_H */

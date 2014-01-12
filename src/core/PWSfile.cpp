@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <limits>
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
                               RWmode mode, int &status,
@@ -273,6 +274,10 @@ static stringT ErrorMessages()
     break;
   case EIO: // synthesized upon fwrite failure
     LoadAString(cs_text, IDSC_FILEWRITEERROR);
+    break;
+  case EFBIG:
+    LoadAString(cs_text, IDSC_FILE_TOO_BIG);
+    break;
   default:
     break;
   }
@@ -286,49 +291,57 @@ static stringT ErrorMessages()
     if (_ret != cnt) { status = false; goto exit;} \
   }
 
+// std::numeric_limits<>::max() && m'soft's silly macros don't work together
+#ifdef max
+#undef max
+#endif
+
 bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
-  unsigned int len = 0;
+  ulong64 len = 0;
+  size_t slen = 0;
   unsigned char* buf = NULL;
   Fish *fish = NULL;
   bool status = true;
-  stringT out_fn;
+  const stringT out_fn = fn + CIPHERTEXT_SUFFIX;
   unsigned char *pwd = NULL;
   size_t passlen = 0;
   FILE *out = NULL;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));;
-  if (in != NULL) {
-    len = pws_os::fileLength(in);
-    buf = new unsigned char[len];
-
-    fread(buf, 1, len, in);
-    if (ferror(in)) { // this is how to detect fread errors
-      status = false;
-      int save_error = errno;
-      fclose(in);
-      errno = save_error;
-      goto exit;
-    }
-    if (fclose(in) != 0) {
-      status = false;
-      goto exit;
-    }
-  } else {
+  if (in == NULL) {
     status = false; goto exit;
   }
 
-  out_fn = fn;
-  out_fn += CIPHERTEXT_SUFFIX;
+  len = pws_os::fileLength(in);
+
+  if (len > std::numeric_limits<uint32>::max()) {
+    fclose(in);
+    errno = EFBIG;
+    status = false;
+    goto exit;
+  }
+
+  slen = static_cast<size_t>(len);
+  buf = new unsigned char[slen];
+
+  fread(buf, 1, slen, in);
+  if (ferror(in)) { // this is how to detect fread errors
+    status = false;
+    int save_error = errno;
+    fclose(in);
+    errno = save_error;
+    goto exit;
+  }
+  if (fclose(in) != 0) {
+    status = false;
+    goto exit;
+  }
 
   out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == NULL) {
     status = false; goto exit;
   }
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-  uint32 i32 = len;
-  SAFE_FWRITE(&i32, 1, sizeof(uint32), out);
-#else
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];   // HashSize
   PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
@@ -337,7 +350,6 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   GenRandhash(passwd, randstuff, randhash);
   SAFE_FWRITE(randstuff, 1,  8, out);
   SAFE_FWRITE(randhash,  1, sizeof(randhash), out);
-#endif // KEEP_FILE_MODE_BWD_COMPAT
 
   unsigned char thesalt[SaltLength];
   PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
@@ -354,7 +366,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   delete[] pwd; // gross - ConvertString allocates only if UNICODE.
 #endif
   try {
-    _writecbc(out, buf, len, 0, fish, ipthing);
+    _writecbc(out, buf, slen, 0, fish, ipthing);
   } catch (...) { // _writecbc throws an exception if it fails to write
     fclose(out);
     errno = EIO;
@@ -372,6 +384,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
+  ulong64 file_len;
   size_t len;
   unsigned char* buf = NULL;
   bool status = true;
@@ -387,11 +400,14 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     goto exit;
   }
 
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-  uint32 i32;
-  fread(&i32, 1, sizeof(uint32), in); // XXX portability issue
-  len = i32;
-#else
+  file_len = pws_os::fileLength(in);
+
+  if (file_len < (8 + sizeof(randhash) + 8 + SaltLength)) {
+    fclose(in);
+    LoadAString(errmess, IDSC_FILE_TOO_SHORT);
+    return false;
+  }
+
   fread(randstuff, 1, 8, in);
   randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
   fread(randhash, 1, sizeof(randhash), in);
@@ -402,7 +418,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     LoadAString(errmess, IDSC_BADPASSWORD);
     return false;
   }
-#endif // KEEP_FILE_MODE_BWD_COMPAT
 
   { // decryption in a block, since we use goto
     fread(salt,    1, SaltLength, in);
@@ -411,7 +426,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char dummyType;
     unsigned char *pwd = NULL;
     size_t passlen = 0;
-    long file_len = pws_os::fileLength(in);
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
@@ -488,8 +502,8 @@ PWSFileSig::PWSFileSig(const stringT &fname)
     // Probably smaller for V1 & V2 DBs
     if (m_length > 232) {
       if (m_length <= THRESHOLD) {
-        if (fread(buf, m_length, 1, fp) == 1) {
-          hash.Update(buf, m_length);
+        if (fread(buf, size_t(m_length), 1, fp) == 1) {
+          hash.Update(buf, size_t(m_length));
           hash.Final(m_digest);
         }
       } else { // m_length > THRESHOLD

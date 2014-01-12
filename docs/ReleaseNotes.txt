@@ -23,7 +23,9 @@ Bugs fixed in 3.33pre
 [1139] Backup file numbers now rollover 999 correctly.
 [1134] Filtering by type now works correctly for shortcuts & shortcut
 bases.
-[1130] Database field isn't highlighted when it doesn't have the focus.
+[1130] Database field isn't highlighted when it doesn't have the
+focus.
+[1067] Fail gracefully when trying to encrypt a file > 2GB.
 
 
 New Features for 3.32

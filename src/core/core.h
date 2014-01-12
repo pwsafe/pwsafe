@@ -222,12 +222,14 @@
 #define IDSC_RELATIVE                   3397
 #define IDSC_FILE_UNREADABLE            3398
 #define IDSC_FILE_TRUNCATED             3399
+#define IDSC_FILE_TOO_SHORT             3400
+#define IDSC_FILE_TOO_BIG               3401
 
-#define IDSC_DELETEBASET                3400
-#define IDSC_DELETEABASE                3401
-#define IDSC_DELETESBASE                3402
-#define IDSC_ALIASES                    3403
-#define IDSC_SHORTCUTS                  3404
+#define IDSC_DELETEBASET                3402
+#define IDSC_DELETEABASE                3403
+#define IDSC_DELETESBASE                3404
+#define IDSC_ALIASES                    3405
+#define IDSC_SHORTCUTS                  3406
 
 #define IDSC_WAS                        3410
 #define IDSC_WERE                       3411

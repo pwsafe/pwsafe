@@ -935,7 +935,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
-  vector<int> file_nums;
+  vector<unsigned int> file_nums;
 
   cs_filenamemask += _T("_???.ibak");
 
@@ -961,7 +961,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   sort(file_nums.begin(), file_nums.end());
 
   // nnn is the number of the file in the returned value: cs_filebasename_nnn
-  int nnn = file_nums.back();
+  size_t nnn = file_nums.back();
   nnn++;
   if (nnn > 999) {
     // as long as there's a _999 file, we set n starting from 001
