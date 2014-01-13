@@ -162,6 +162,8 @@ BEGIN
   IDSC_FILEWRITEERROR     "Error while writing file! Try saving in a different location"
   IDSC_FILE_UNREADABLE    "Cannot read file. Please check file permissions."
   IDSC_FILE_TRUNCATED     "File is truncated or otherwise corrupt. Please use backup database."
+  IDSC_FILE_TOO_SHORT     "File is too short."
+  IDSC_FILE_TOO_BIG       "File is too big."
 END
 
 // Status Bar

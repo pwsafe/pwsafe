@@ -347,7 +347,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return retval;
 }
 
-long pws_os::fileLength(std::FILE *fp)
+ulong64 pws_os::fileLength(std::FILE *fp)
 {
   if (fp == NULL)
     return -1;
@@ -357,6 +357,6 @@ long pws_os::fileLength(std::FILE *fp)
   struct stat st;
   if (fstat(fd, &st) == -1)
     return -1;
-  return st.st_size;
+  return ulong64(st.st_size);
 }
 

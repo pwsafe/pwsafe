@@ -345,7 +345,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
     const GuiRecord *iter = std::find_if(MainGuiInfo,
                                          MainGuiInfo + _countof(MainGuiInfo), finder);
     if (iter != MainGuiInfo + _countof(MainGuiInfo)) {
-      int index = std::distance(MainGuiInfo, iter);
+      int index = int(std::distance(MainGuiInfo, iter));
       tbCtrl.AddButtons(1, &m_pOriginalTBinfo[index]);
     }
     csToken = csButtonNames.Tokenize(L" ", curPos);

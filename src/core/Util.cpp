@@ -242,7 +242,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
 size_t _readcbc(FILE *fp,
          unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
          Fish *Algorithm, unsigned char *cbcbuffer,
-         const unsigned char *TERMINAL_BLOCK, size_t file_len)
+         const unsigned char *TERMINAL_BLOCK, ulong64 file_len)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   size_t numRead = 0;

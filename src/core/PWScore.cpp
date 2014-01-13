@@ -935,7 +935,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
-  vector<int> file_nums;
+  vector<unsigned int> file_nums;
 
   cs_filenamemask += _T("_???.ibak");
 
@@ -961,7 +961,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   sort(file_nums.begin(), file_nums.end());
 
   // nnn is the number of the file in the returned value: cs_filebasename_nnn
-  int nnn = file_nums.back();
+  size_t nnn = file_nums.back();
   nnn++;
   if (nnn > 999) {
     // as long as there's a _999 file, we set n starting from 001
@@ -970,7 +970,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     while (file_nums[x++] == nnn && x < file_nums.size())
       nnn++;
     // Now we need to determine who to delete.
-    int next = 999 - (maxnumincbackups - nnn);
+    size_t next = 999 - (maxnumincbackups - nnn);
     int m = 1;
     for (x = 0; x < file_nums.size(); x++)
       if (file_nums[x] < next)
@@ -1510,7 +1510,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
                  bInReadfile ? _T("true") : _T("false"), pRpt);
 
   int n = -1;
-  unsigned int uimaxsize(0);
+  size_t uimaxsize(0);
 
   MultiCommands *pmulticmds(NULL);
 
