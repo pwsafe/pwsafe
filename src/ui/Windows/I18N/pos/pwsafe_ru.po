@@ -975,7 +975,7 @@ msgstr "&Да"
 
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
-msgstr "&Yubikey..."
+msgstr "&YubiKey..."
 
 #. Resource IDs: (1356)
 msgid "&email:"
@@ -5802,7 +5802,7 @@ msgstr "Задать шрифт для экранной клавиатуры"
 
 # Сохранение ключа в Yubikey
 #. Resource IDs: (1)
-msgid "Set Yubikey"
+msgid "Set YubiKey"
 msgstr "Сохранить"
 
 #. Resource IDs: (1186)
@@ -5870,7 +5870,7 @@ msgstr "Комбинация клавиш"
 msgid "Shortcuts"
 msgstr "Комбинации клавиш"
 
-# Показать ключ (пароль) Yubikey
+# Показать ключ (пароль) YubiKey
 #. Resource IDs: (1471)
 msgid "Show"
 msgstr "Показать"
@@ -7273,7 +7273,7 @@ msgstr "YubiKey для Password Safe может быть приобретён н
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
-msgstr "Yubikey"
+msgstr "YubiKey"
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
