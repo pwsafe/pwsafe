@@ -17,6 +17,10 @@
 		<param name="Local" value="html\about_pws.html">
 		</OBJECT>
 	</LI><LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Password Safe и YubiKey">
+		<param name="Local" value="html\about_pws_yubi.html">
+		</OBJECT>
+	</LI><LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Начало работы">
 		</OBJECT>
 	<UL>

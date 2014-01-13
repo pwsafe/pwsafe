@@ -1,0 +1,4 @@
+*.bak
+project_stats.txt
+source/
+tm/
