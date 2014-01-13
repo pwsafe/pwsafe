@@ -540,7 +540,6 @@ without breaking backwards compatability.
 3.4.1 Attachment record fields
 
 An Attachment record has the following fields (all mandatory):
-[TBD - change to table form]
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
