@@ -1986,7 +1986,7 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
 
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
-
+
   bool baseWasNormal = iter->second.IsNormal();
   if (type == CItemData::ET_ALIAS) {
     // Mark base entry as a base entry - must be a normal entry or already an alias base
