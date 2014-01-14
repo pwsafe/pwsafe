@@ -200,7 +200,9 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (cs_dats.IsEmpty())
     cs_dats = DEFAULT_AUTOTYPE;
-  m_OPTMD.Autotype = (LPCWSTR)cs_dats;
+  m_OPTMD.AutotypeText = (LPCWSTR)cs_dats;
+  m_OPTMD.AutotypeDelay =
+    prefs->GetPref(PWSprefs::DefaultAutotypeDelay);
   m_OPTMD.MinAuto =
       prefs->GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;  
   
@@ -393,12 +395,14 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::DefaultUsername,
                  LPCWSTR(m_OPTMD.DefUsername), true);
 
-  if (m_OPTMD.Autotype.IsEmpty() || m_OPTMD.Autotype == DEFAULT_AUTOTYPE)
+  if (m_OPTMD.AutotypeText.IsEmpty() || m_OPTMD.AutotypeText == DEFAULT_AUTOTYPE)
     prefs->SetPref(PWSprefs::DefaultAutotypeString, L"", true);
-  else
-  if (m_OPTMD.Autotype != DEFAULT_AUTOTYPE)
+  else if (m_OPTMD.AutotypeText != DEFAULT_AUTOTYPE)
     prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                   LPCWSTR(m_OPTMD.Autotype), true);
+                   LPCWSTR(m_OPTMD.AutotypeText), true);
+  prefs->SetPref(PWSprefs::DefaultAutotypeDelay,
+                 m_OPTMD.AutotypeDelay,
+                 true);
 
   prefs->SetPref(PWSprefs::SavePasswordHistory,
                  m_OPTMD.SavePWHistory == TRUE, true);

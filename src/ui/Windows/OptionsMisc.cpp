@@ -49,7 +49,8 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_OtherBrowserLocation = M_OtherBrowserLocation();
   m_OtherEditorLocation = M_OtherEditorLocation();
   m_BrowserCmdLineParms = M_BrowserCmdLineParms();
-  m_Autotype = M_Autotype();
+  m_AutotypeText = M_AutotypeText();
+  m_AutotypeDelay = M_AutotypeDelay();
   m_ConfirmDelete = M_ConfirmDelete();
   m_MaintainDatetimeStamps = M_MaintainDatetimeStamps();
   m_EscExits = M_EscExits();
@@ -76,7 +77,8 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_MaintainDatetimeStamps);
   DDX_Check(pDX, IDC_USEDEFUSER, m_UseDefUsername);
   DDX_Text(pDX, IDC_DEFUSERNAME, m_DefUsername);
-  DDX_Text(pDX, IDC_DB_DEFAULTAUTOTYPE, m_Autotype);
+  DDX_Text(pDX, IDC_DB_DEF_AUTOTYPE_TEXT, m_AutotypeText);
+  DDX_Text(pDX, IDC_DB_DEF_AUTOTYPE_DELAY, m_AutotypeDelay);
   DDX_Check(pDX, IDC_CONFIRMDELETE, m_ConfirmDelete);
   DDX_Check(pDX, IDC_ESC_EXITS, m_EscExits);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
@@ -133,6 +135,13 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_DB_DEF_AUTOTYPE_DELAY));
+  pspin->SetRange32(1, 60000);
+  pspin->SetBase(10);
+  pspin->SetPos(m_AutotypeDelay);
+
   InitToolTip();
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   AddTool(IDC_MAINTAINDATETIMESTAMPS, IDS_MAINTAINDATETIMESTAMPS);
@@ -169,7 +178,8 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_OtherBrowserLocation()   != m_OtherBrowserLocation     ||
           M_OtherEditorLocation()    != m_OtherEditorLocation      ||
           M_BrowserCmdLineParms()    != m_BrowserCmdLineParms      ||
-          M_Autotype()               != m_Autotype                 ||
+          M_AutotypeText()           != m_AutotypeText             ||
+          M_AutotypeDelay()          != m_AutotypeDelay            ||
           M_AutotypeMinimize()       != m_AutotypeMinimize)
         return 1L;
       break;
@@ -214,7 +224,8 @@ BOOL COptionsMisc::OnApply()
   M_OtherBrowserLocation() = m_OtherBrowserLocation;
   M_OtherEditorLocation() = m_OtherEditorLocation;
   M_BrowserCmdLineParms() = m_BrowserCmdLineParms;
-  M_Autotype() = m_Autotype;
+  M_AutotypeText() = m_AutotypeText;
+  M_AutotypeDelay() = m_AutotypeDelay;
   M_ConfirmDelete() = m_ConfirmDelete;
   M_MaintainDatetimeStamps() = m_MaintainDatetimeStamps;
   M_EscExits() = m_EscExits;

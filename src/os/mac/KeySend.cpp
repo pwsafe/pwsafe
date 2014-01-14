@@ -10,8 +10,8 @@
 #include "./macsendstring.h"
 #include "../../core/Util.h"
 
-CKeySend::CKeySend(bool)
-  : m_delayMS(10) //default delay after each keystroke is 10 ms
+CKeySend::CKeySend(bool, unsigned defaultDelay)
+  : m_delayMS(defaultDelay)
 {
 }
 

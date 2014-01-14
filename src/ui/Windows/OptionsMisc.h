@@ -34,7 +34,8 @@ protected:
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
   CString m_BrowserCmdLineParms;
-  CString m_Autotype;
+  CString m_AutotypeText;
+  unsigned m_AutotypeDelay;
 
   BOOL m_ConfirmDelete;
   BOOL m_MaintainDatetimeStamps;

@@ -28,8 +28,8 @@ public:
 static INPUT cinput;
 static bool bFirst = true;
 
-CKeySend::CKeySend(bool bForceOldMethod)
- : m_delayMS(10)
+CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
+ : m_delayMS(defaultDelay)
 {
   if (bFirst) {
     cinput.type = INPUT_KEYBOARD;

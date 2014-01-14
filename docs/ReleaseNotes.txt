@@ -10,7 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.33pre
 ========================
-None
+[728] The default delay between characters on autotype is now
+configurable.
 
 Changes to Existing Features in 3.33pre
 =======================================

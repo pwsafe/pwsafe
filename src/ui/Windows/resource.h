@@ -362,15 +362,12 @@
 #define IDD_SHOW_COMPARE                522
 #define IDD_COMPARE_WITH                523
 #define IDB_EMPTY_GROUP                 524
-
 #define IDB_YUBI_LOGO                   525
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
-
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
-#define IDC_APPBUILTON                  1020
 #define IDC_CREATE_DB                   1003
 #define IDC_EXIT                        1004
 #define IDC_PASSWORD                    1005
@@ -387,6 +384,7 @@
 #define IDC_DELITEM                     1017
 #define IDC_VERIFY                      1018
 #define IDC_CONFIRMDELETE               1019
+#define IDC_APPBUILTON                  1020
 #define IDC_CONFIRMCOPY                 1021
 #define IDC_TRYAGAIN                    1022
 #define IDC_QUIT                        1023
@@ -558,7 +556,6 @@
 #define IDC_DEFENABLEGRIDLINES          1246
 #define IDC_LIST_HEADER                 1247
 #define IDC_CPLIST                      1248
-#define IDC_DB_DEFAULTAUTOTYPE          1249
 #define IDC_MINIMIZEONAUTOTYPE          1250
 #define IDC_ALTBROWSER_CMDLINE          1251
 #define IDC_DEFUNSHOWINTREE             1254
@@ -787,15 +784,18 @@
 #define IDC_STATIC_HASHITER             1496
 #define IDC_STATIC_HASHITER_MIN         1497
 #define IDC_STATIC_HASHITER_MAX         1498
+#define IDC_DB_DEF_AUTOTYPE_DELAY       1500
+#define IDC_SPIN2                       1501
+#define IDC_DB_DEF_AUTOTYPE_TEXT        1502
+#define IDC_DADSPIN                     1503
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-
 #define _APS_NEXT_RESOURCE_VALUE        528
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1499
+#define _APS_NEXT_CONTROL_VALUE         1504
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

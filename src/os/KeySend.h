@@ -22,7 +22,7 @@ class CKeySendImpl; // for os-specific stuff
 class CKeySend
 {
 public:
-  CKeySend(bool bForceOldMethod = false); // bForceOldMethod's Windows-specific
+  CKeySend(bool bForceOldMethod = false, unsigned defaultDelay = 10); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
   void ResetKeyboardState() const;

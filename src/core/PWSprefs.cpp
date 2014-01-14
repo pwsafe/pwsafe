@@ -158,6 +158,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
   {_T("ShiftDoubleClickAction"), DoubleClickCopyUsername, ptApplication,
                             minDCA, maxDCA},                        // application
+  {_T("DefaultAutotypeDelay"), 10, ptApplication,
+                            1, 60000},                              // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

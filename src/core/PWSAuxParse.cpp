@@ -511,7 +511,8 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   }
 
   const size_t N = sxautotype.length();
-  CKeySend ks(bForceOldMethod);
+  const unsigned defaultDelay = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeDelay);
+  CKeySend ks(bForceOldMethod, defaultDelay);
 
   // Turn off CAPSLOCK
   if (ks.isCapsLocked()) {
