@@ -2456,6 +2456,10 @@ msgid "Default"
 msgstr "Predeterminado"
 
 #. Resource IDs: (65535)
+msgid "Default Autotype delay (mS):"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Default Autotype string:"
 msgstr "Formato autoescritura por defecto:"
 
@@ -3173,6 +3177,14 @@ msgstr "Error de lectura de archivo"
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr "El archivo termina en la línea %d antes de las dobles comillas finales o del campo notas de un entrada."
+
+#. Resource IDs: (213)
+msgid "File is too big."
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "File is too short."
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."

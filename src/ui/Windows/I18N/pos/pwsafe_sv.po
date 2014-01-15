@@ -2534,6 +2534,10 @@ msgid "Default"
 msgstr "Förval"
 
 #. Resource IDs: (65535)
+msgid "Default Autotype delay (mS):"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Default Autotype string:"
 msgstr "Förvald autoskriftrad:"
 
@@ -3251,6 +3255,14 @@ msgstr "Läsfel i filen"
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr "Filen slutar på rad %d före avslutande citattecken i senaste posts notatfält."
+
+#. Resource IDs: (213)
+msgid "File is too big."
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "File is too short."
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
