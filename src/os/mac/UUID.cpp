@@ -45,7 +45,13 @@ pws_os::CUUID &pws_os::CUUID::operator=(const CUUID &that)
 {
   if (this != &that) {
     uuid_copy(m_uuid, that.m_uuid);
-    m_ua = NULL;
+    if (m_ua) {
+#ifndef TEST
+      trashMemory(m_ua, sizeof(uuid_array_t));
+#endif
+      delete[] m_ua;
+      m_ua = NULL;
+    }
     m_canonic = that.m_canonic;
   }
   return *this;

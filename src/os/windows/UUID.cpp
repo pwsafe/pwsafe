@@ -102,7 +102,11 @@ pws_os::CUUID &pws_os::CUUID::operator=(const CUUID &that)
 {
   if (this != &that) {
     std::memcpy(&m_uuid, &that.m_uuid, sizeof(m_uuid));
-    m_ua = NULL;
+    if (m_ua) {
+      trashMemory(m_ua, sizeof(uuid_array_t));
+      delete[] m_ua;
+      m_ua = NULL;
+    }
     m_canonic = that.m_canonic;
   }
   return *this;
