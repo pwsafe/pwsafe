@@ -1845,33 +1845,33 @@ msgstr "Plik"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:392
 #, fuzzy
 msgid "&Add Entry...\tCtrl+A"
-msgstr ""
+msgstr "Dod&j wpis...\tCtrl+A"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:393
 #, fuzzy
 msgid "Edit/&View Entry...\tCtrl+Enter"
-msgstr ""
+msgstr "Edytuj/Przeglądaj wpis...\tCtrl+Enter"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:394
 #, fuzzy
 msgid "&Delete Entry\tDel"
-msgstr ""
+msgstr "Usuń wpis\t&Del"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:395
 #, fuzzy
 msgid "Rename Entry\tF2"
-msgstr ""
+msgstr "Zmień nazwę wpisu\tF2"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:396
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:206
 #, fuzzy
 msgid "&Find Entry...\tCtrl+F"
-msgstr ""
+msgstr "Znajdź wpis...\tCtrl+F"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:397
 #, fuzzy
 msgid "&Duplicate Entry\tCtrl+D"
-msgstr ""
+msgstr "&Duplikuj wpis\tCtrl+D"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:399
 msgid "Add Group"
@@ -1880,27 +1880,27 @@ msgstr "Dodaj grupę"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:403
 #, fuzzy
 msgid "C&lear Clipboard\tCtrl+Del"
-msgstr ""
+msgstr "Wyczyść schowek\tCtrl+Del"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:405
 #, fuzzy
 msgid "&Copy Password to Clipboard\tCtrl+C"
-msgstr ""
+msgstr "Kopiuj hasło do Schowka\tCtrl+C"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:406
 #, fuzzy
 msgid "Copy &Username to Clipboard\tCtrl+U"
-msgstr ""
+msgstr "Kopiuj naze użytkownika do schowka\tCtrl+U"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:407
 #, fuzzy
 msgid "Copy &Notes to Clipboard\tCtrl+G"
-msgstr ""
+msgstr "Kopiuj &notatkę do schowka\tCtrl+G"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:408
 #, fuzzy
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
-msgstr ""
+msgstr "Kopiuj URL do schowka\tCtrl+Alt+L"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:409
 #, fuzzy
@@ -1915,7 +1915,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:411
 #, fuzzy
 msgid "Go to Base entry"
-msgstr ""
+msgstr "Idż do wpisu bazowego"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:412
 msgid "&Edit"
@@ -1956,7 +1956,7 @@ msgstr "Zwiń wszystkie"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:425
 #, fuzzy
 msgid "&New/Edit Filter..."
-msgstr ""
+msgstr "Filtr &nowego.edycji..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:426
 msgid "&Apply current"
@@ -2011,7 +2011,7 @@ msgstr "Sprawdź"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:442
 #, fuzzy
 msgid "Reports"
-msgstr ""
+msgstr "Raporty"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:443
 msgid "&View"
@@ -2024,17 +2024,17 @@ msgstr "Zmień Hasło Sejfu..."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:447
 #, fuzzy
 msgid "Make &Backup\tCtrl+B"
-msgstr ""
+msgstr "Twórz kopie bezpieczeństwa\tCtrl+B"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:448
 #, fuzzy
 msgid "&Restore from Backup...\tCtrl+R"
-msgstr ""
+msgstr "Odtwórz z kopii bezpieczeństwa...\tCtrl+R"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:450
 #, fuzzy
 msgid "&Options...\tCtrl+M"
-msgstr ""
+msgstr "&Opcje...\tCtrl+M"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
 #, fuzzy
@@ -2043,7 +2043,7 @@ msgstr "Polityki haseł..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 msgid "YubiKey..."
-msgstr ""
+msgstr "YubiKey..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:454
 msgid "&Manage"
@@ -2113,7 +2113,7 @@ msgstr "Wybierz bazę danych do otwarcia:"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1052
 #, fuzzy
 msgid "pwsafe.psafe3"
-msgstr ""
+msgstr "pwsafe.psafe3"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1074
 msgid "Open database"
@@ -2150,7 +2150,7 @@ msgstr "Błąd blokowania pliku"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1612
 #, fuzzy, c-format
 msgid "Unknown code: %d"
-msgstr ""
+msgstr "Nieznany kod: %d"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1646
 msgid "Add &Entry"
@@ -2163,7 +2163,7 @@ msgstr "Dodaj &grupę"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1648
 #, fuzzy
 msgid "&Rename Group"
-msgstr ""
+msgstr "Zmień nazwę grupy"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1649
 msgid "&Delete Group"
@@ -2254,7 +2254,7 @@ msgstr "&Edytuj wpis podstawowy"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1937
 #, c-format
 msgid "Couldn't find uuid %s"
-msgstr ""
+msgstr "Nie można znaleźć uuid %s"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2075
 msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
@@ -2264,7 +2264,7 @@ msgstr "Błąd operacji zapisu!\nPlik może byc uszkodzony.\nSpróbuj go zachowa
 #: ../../../ui/wxWidgets/wxutils.cpp:85
 #, fuzzy
 msgid "Unknown error"
-msgstr ""
+msgstr "Nieznany błąd"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2098
 #, fuzzy
@@ -2307,12 +2307,12 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2449
 #, fuzzy
 msgid "Import text"
-msgstr ""
+msgstr "Import tekstu"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2457
 #, fuzzy
 msgid "The database:"
-msgstr ""
+msgstr "Baza danych:"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2458
 #, fuzzy
@@ -2346,46 +2346,46 @@ msgstr "Tekst"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2502
 #, fuzzy
 msgid "Invalid format"
-msgstr ""
+msgstr "Zły format"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2519
 #, fuzzy
 msgid "Updated "
-msgstr ""
+msgstr "Zaktualizowano "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2519
 #, fuzzy
 msgid "Imported "
-msgstr ""
+msgstr "Zaimportowano "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2520
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2525
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2539
 #, fuzzy
 msgid " entry"
-msgstr ""
+msgstr " wpis"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2520
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2525
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2539
 #, fuzzy
 msgid " entries"
-msgstr ""
+msgstr " wpisy"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2525
 #, fuzzy
 msgid "Skipped "
-msgstr ""
+msgstr "Ominięto "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2532
 #, fuzzy
 msgid "with Password History errors "
-msgstr ""
+msgstr "z błędami historii hasła"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2539
 #, fuzzy
 msgid "Renamed "
-msgstr ""
+msgstr "Zmieniono nazwę "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2544
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2636
@@ -2493,7 +2493,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2667
 msgid " Build"
-msgstr ""
+msgstr " Zbudowany"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2688
 msgid "Import_XML"
