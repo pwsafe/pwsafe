@@ -5122,8 +5122,8 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-01-13 19:49+0400
-PO-Revision-Date: 2014-01-13 13:30+0400
+POT-Creation-Date: 2014-01-22 13:11+0400
+PO-Revision-Date: 2014-01-22 12:30+0400
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5131,11 +5131,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T155427Z" creationid="pm_kan" creationdate="20140113T155407Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T091612Z" creationid="pm_kan" creationdate="20140122T091612Z">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-01-13 19:54+0400
-PO-Revision-Date: 2014-01-13 19:54+0400
+POT-Creation-Date: 2014-01-22 13:11+0400
+PO-Revision-Date: 2014-01-22 13:20+0400
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 

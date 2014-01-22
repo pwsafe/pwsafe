@@ -1752,6 +1752,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Default AutoType Delay&lt;/b0&gt; This is the amount of time, in milli-seconds, that PasswordSafe waits between characters when performing the autotype.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090102Z" creationid="pm_kan" creationdate="20140122T090102Z">
+        <seg>&lt;b0&gt;Задержка между символами&lt;/b0&gt; Определяет время ожидания (в миллисекундах) перед автонабором следующего символа в последовательности.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Default AutoType String&lt;/b0&gt; Here you can specify the AutoType string to use by default for all entries.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T205334Z">
@@ -2685,6 +2693,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181909Z">
         <seg>Начиная с версии 3.12, &lt;b7&gt;Password Safe&lt;/b7&gt; может создавать произносимые пароли с помощью алгоритма Тома ван Флека (Tom Van Vleck), Морри Гассера (Morrie Gasser), и Дэна Эдвардса (Dan Edwards).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;br1/&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085649Z" creationid="pm_kan" creationdate="20140122T085649Z">
+        <seg>&lt;br1/&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -8178,6 +8194,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If the site requires an e-mail address as your login, it's much easier to set your email address in the Username field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085644Z" creationid="pm_kan" creationdate="20140122T085644Z">
+        <seg>Если сайт требует указания адреса электронно почты в качестве логина, удобнее сохранить его в поле  «Имя пользователя».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If the user specifies a warning interval e.g. 5 days before a password expires, the image shown changes to be half purple.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T123807Z">
@@ -8830,6 +8854,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T172603Z">
         <seg>Во всех случаях можно поставить флажок «Расширенные условия отбора». После этого будет доступна ещё одна страница, на которой можно указать ограничения по группе, заголовку, имени пользователя, ссылке или заметкам, а также отобрать поля для сравнения, слияния или экспорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In any case, you can also change this per-entry, as described &lt;a1&gt;here&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T091014Z" creationid="pm_kan" creationdate="20140122T091014Z">
+        <seg>Описание того, как настроить задержку ввода для конкретного элемента, приведено в разделе &lt;a1&gt;Автонабор&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10286,6 +10318,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152557Z">
         <seg>Этот шрифт должен поддерживать символы Unicode.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that this is meant for keeping an e-mail address associated with the site, e.g., support@myvendor.com.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085404Z" creationid="pm_kan" creationdate="20140122T085404Z">
+        <seg>Данное поле предназначено для хранения E-Mail, связанного с сайтом, например, адреса техподдержки support@myvendor.com.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12315,10 +12355,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>See the &lt;a1&gt;following notes&lt;/a1&gt; for more options.</seg>
+        <seg>See the &lt;a2&gt;following notes&lt;/a2&gt; for more options.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101017T194458Z">
-        <seg>Для получения дополнительной информации см. &lt;a1&gt;примечания&lt;/a1&gt;.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085719Z" creationid="pm_kan" creationdate="20140122T085719Z">
+        <seg>Для получения дополнительной информации см. &lt;a2&gt;примечания&lt;/a2&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13793,6 +13833,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T195617Z">
         <seg>Набор символов по умолчанию для создания пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The default, 10mS, should be fine for most systems.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090156Z" creationid="pm_kan" creationdate="20140122T090156Z">
+        <seg>Значение по умолчанию (10 мс) подходит для большинства систем.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17691,6 +17739,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T155116Z">
         <seg>Отчёты можно просмотреть позже, если контейнер останется в том же каталоге.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You may want to decrease it (make it faster) if you've a fast PC, or increase it (slow it down) for an older machine.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090425Z" creationid="pm_kan" creationdate="20140122T090425Z">
+        <seg>Но вы можете уменьшить его (сделать автонабор быстрее), если у вас мощный компьютер, или, наоборот, увеличить (замедлить автонабор) для старых машин.</seg>
       </tuv>
     </tu>
     <tu>
