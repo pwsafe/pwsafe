@@ -1,5 +1,5 @@
-Password Safe 3.32.1 Release Notes - ??? 2013
-=================================================
+Password Safe 3.33pre Release Notes - January 2014
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,22 +8,25 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.32.1
-=======================
+New Features for 3.33pre
+========================
+[728] The default delay between characters on autotype is now
+configurable.
+
+Changes to Existing Features in 3.33pre
+=======================================
 None
 
-Changes to Existing Features in 3.32.1
-======================================
-None
-
-Bugs fixed in 3.32.1
-====================
+Bugs fixed in 3.33pre
+=====================
 [1148] No longer crashes when canceling unlock with expired password entries.
 [1146] Edit button now enabled correctly in Manage->Password Policies.
 [1139] Backup file numbers now rollover 999 correctly.
 [1134] Filtering by type now works correctly for shortcuts & shortcut
 bases.
-[1130] Database field isn't highlighted when it doesn't have the focus.
+[1130] Database field isn't highlighted when it doesn't have the
+focus.
+[1067] Fail gracefully when trying to encrypt a file > 2GB.
 
 
 New Features for 3.32

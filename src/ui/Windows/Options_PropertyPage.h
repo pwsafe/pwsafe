@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -57,7 +57,8 @@ struct st_Opt_master_data {
   CSecString OtherBrowserLocation;
   CSecString BrowserCmdLineParms;
   CSecString OtherEditorLocation;
-  CSecString Autotype;
+  CSecString AutotypeText;
+  unsigned AutotypeDelay;
   BOOL UseDefuser;
   BOOL QuerySetDef;
   BOOL MinAuto;
@@ -149,7 +150,8 @@ public:
   inline CString &M_OtherBrowserLocation() {return m_OPTMD.OtherBrowserLocation;}
   inline CString &M_BrowserCmdLineParms() {return m_OPTMD.BrowserCmdLineParms;}
   inline CString &M_OtherEditorLocation() {return m_OPTMD.OtherEditorLocation;}
-  inline CString &M_Autotype() {return m_OPTMD.Autotype;}
+  inline CString &M_AutotypeText() {return m_OPTMD.AutotypeText;}
+  inline unsigned &M_AutotypeDelay() {return m_OPTMD.AutotypeDelay;}
   inline BOOL &M_UseDefUsername() {return m_OPTMD.UseDefuser;}
   inline BOOL &M_QuerySetDefUsername() {return m_OPTMD.QuerySetDef;}
   inline BOOL &M_AutotypeMinimize() {return m_OPTMD.MinAuto;}

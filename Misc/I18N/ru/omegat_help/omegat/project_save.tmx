@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="2.5.5_1" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.0.8_2" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -304,16 +304,16 @@
       <tuv lang="EN-US">
         <seg>"UUID" becomes the internal unique ID of the &lt;b0&gt;Password Safe&lt;/b0&gt; entry</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T182811Z">
-        <seg>«UUID» — уникальный идентификатор элемента.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152638Z">
+        <seg>«UUID» — уникальный идентификатор элемента.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>"UUID: " becomes the internal unique ID of the &lt;b0&gt;Password Safe&lt;/b0&gt; entry</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T175442Z">
-        <seg>«UUID» — уникальный идентификатор элемента.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152625Z">
+        <seg>«UUID» — уникальный идентификатор элемента.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -555,6 +555,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T201301Z">
         <seg>${appdir}</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\path\to\database.psafe3</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150356Z" creationid="pm_kan" creationdate="20140113T150356Z">
+        <seg>${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\path\to\database.psafe3</seg>
       </tuv>
     </tu>
     <tu>
@@ -823,6 +831,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>(This is stored as a decimal integer created from the virtual keycode for the character in the lower word plus the Microsoft Foundation Class CHotKeyCtrl modifier flags in the higher word.)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122333Z" creationid="pm_kan" creationdate="20140113T122333Z">
+        <seg>(Хранится как десятичное целое: в младшем слове содержится виртуальный код символа, в старшем — флаги CHotKeyCtrl [Microsoft Foundation Class])</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>*</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T200330Z">
@@ -945,8 +961,8 @@
       <tuv lang="EN-US">
         <seg>0-9</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T202600Z">
-        <seg>0-9</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T121901Z">
+        <seg>0–9</seg>
       </tuv>
     </tu>
     <tu>
@@ -1030,11 +1046,12 @@
       </tuv>
     </tu>
     <tu>
+      <note>		</note>
       <tuv lang="EN-US">
         <seg>0x0800: use hex only (0-9,a-f) characters (if set, then no other flags can be set)</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T143622Z">
-        <seg>0x0800 — использовать только шестнадцатеричные (0-9,a-f) символы (если указан данный флаг, остальные не должны быть установлены);</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T121853Z">
+        <seg>0x0800 — использовать только шестнадцатеричные (0–9,a–f) символы (если указан данный флаг, остальные не должны быть установлены);</seg>
       </tuv>
     </tu>
     <tu>
@@ -1767,6 +1784,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;a0&gt;YubiKey&lt;/a0&gt; is an innovative hardware authentication device developed and sold by &lt;a1&gt;Yubico&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105528Z" creationid="pm_kan" creationdate="20140113T105528Z">
+        <seg>&lt;a0&gt;YubiKey&lt;/a0&gt; это инновационное устройство аутентификации разработанное и продаваемое корпорацией &lt;a1&gt;Yubico&lt;/a1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;a10&gt;Password History Tab&lt;/a10&gt;&lt;br11&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150356Z">
@@ -1959,6 +1984,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Basic&lt;/a2&gt;&lt;/i1&gt;:&lt;/b0&gt; all necessary elements for password management</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132742Z" creationid="pm_kan" creationdate="20140113T132742Z">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Основные&lt;/a2&gt;:&lt;/i1&gt;&lt;/b0&gt; все необходимые элементы, связанные с управлением паролями</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Dates and Times&lt;/a2&gt;&lt;/i1&gt;:&lt;/b0&gt; expiry and statistics</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T213250Z">
@@ -2002,6 +2035,14 @@
         <seg>&lt;b0&gt;&lt;i1&gt;Basic&lt;/i1&gt;:&lt;/b0&gt; all necesarry elements for password management</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T230436Z">
+        <seg>&lt;b0&gt;&lt;i1&gt;Основные:&lt;/i1&gt;&lt;/b0&gt; все необходимые элементы, связанные с управлением паролями</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;&lt;i1&gt;Basic&lt;/i1&gt;:&lt;/b0&gt; all necessary elements for password management</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141246Z" creationid="pm_kan" creationdate="20140113T141246Z">
         <seg>&lt;b0&gt;&lt;i1&gt;Основные:&lt;/i1&gt;&lt;/b0&gt; все необходимые элементы, связанные с управлением паролями</seg>
       </tuv>
     </tu>
@@ -2143,6 +2184,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;AutoType&lt;/b0&gt; provides a means for you to easily and quickly enter user name and password information.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111811Z" creationid="pm_kan" creationdate="20140113T111811Z">
+        <seg>&lt;b0&gt;Автонабор&lt;/b0&gt; предназначен для ускорения и упрощения ввода имени пользователя и пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Autotype:&lt;/b0&gt; If this field is not empty, the its content replaces the default value for the autotype function (which is dislayed above and comes from either the &lt;b1&gt;Password Safe&lt;/b1&gt; default or this database's default as set via the &lt;a2&gt;"Manage → Options → Misc."&lt;/a2&gt; tab).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T125209Z">
@@ -2183,6 +2232,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Default AutoType Delay&lt;/b0&gt; This is the amount of time, in milli-seconds, that PasswordSafe waits between characters when performing the autotype.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090102Z" creationid="pm_kan" creationdate="20140122T090102Z">
+        <seg>&lt;b0&gt;Задержка между символами&lt;/b0&gt; Определяет время ожидания (в миллисекундах) перед автонабором следующего символа в последовательности.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Default AutoType String&lt;/b0&gt; Here you can specify the AutoType string to use by default for all entries.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T205334Z">
@@ -2195,6 +2252,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T203010Z">
         <seg>&lt;b0&gt;Строка автонабора по умолчанию&lt;/b0&gt; Здесь можно указать строку автонабора, применяемую по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Do not&lt;/b0&gt; click on the Generate button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145654Z" creationid="pm_kan" creationdate="20140113T145654Z">
+        <seg>&lt;b0&gt;Не нажимайте&lt;/b0&gt; на кнопку «Создать».</seg>
       </tuv>
     </tu>
     <tu>
@@ -2263,6 +2328,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Keyboard Shortcut:&lt;/b0&gt; Keyboard shortcuts can be assigned to an entry and allow that entry to be immediately selected irrespective of the current display of the database by pressing the appropriate keystrokes.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T133240Z" creationid="pm_kan" creationdate="20140113T133133Z">
+        <seg>&lt;b0&gt;Комбинация клавиш:&lt;/b0&gt; элементам контейнера можно назначить комбинации клавиш («горячие клавиши»), которые позволят выбирать их сразу после нажатия такое комбинации, независимо от текущего положения в контейнере.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Minimize after AutoType&lt;/b0&gt; By default, &lt;b1&gt;Password Safe&lt;/b1&gt; minimizes when autotyping.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T205315Z">
@@ -2291,6 +2364,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T130041Z">
         <seg>&lt;b0&gt;Примечание. Password Safe &lt;/b0&gt;&lt;i1&gt;только предупреждает&lt;/i1&gt; об истечении срока действия пароля. </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; After configuring your YubiKey, you must change the database's password to use the YubiKey for authentication as described in &lt;a1&gt;Changing Master Passwords&lt;/a1&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145909Z" creationid="pm_kan" creationdate="20140113T145532Z">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Чтобы использовать YubiKey для аутентификации, после проведения настройки необходимо сменить мастер-пароль контейнера.  Порядок изменения мастер-пароля описан описан в разделе &lt;a1&gt;Изменение мастер-пароля для контейнера&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2395,6 +2476,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T114820Z">
         <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; В случае возникновения проблем с автонабором попробуйте отключить блокировщики всплывающих окон </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; If you do not have a &lt;a1&gt;YubiKey&lt;/a1&gt;, the screen shown above will not have the YubiKey button and text displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141829Z" creationid="pm_kan" creationdate="20140113T141829Z">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Если у вас нет &lt;a1&gt;YubiKey&lt;/a1&gt;, соответствующие кнопки и поля не будут отображены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; If you do not have a &lt;a1&gt;YubiKey&lt;/a1&gt;, then the YubiKey buttons will not be displayed, and you can ignore the description of their use below.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112345Z" creationid="pm_kan" creationdate="20140113T112345Z">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Если у вас нет &lt;a1&gt;YubiKey&lt;/a1&gt;, соответствующие кнопки не будут отображены, и вы можете пропустить описание их использования.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2728,6 +2825,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; allows you to define key sequences (shortcuts) that perform specific operations in the application.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151013Z" creationid="pm_kan" creationdate="20140113T151013Z">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; позволяет определить комбинации клавиш (горячие клавиши) для выполнения различных действий внутри приложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; allows you to export password entries to text files.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T152656Z">
@@ -2819,6 +2924,14 @@
         <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; generate a report at the end of the import operation, summarizing what was done and noting any problems that may have occurred.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T164252Z">
+        <seg>По окончании операции импорта &lt;b0&gt;Password Safe&lt;/b0&gt; создаёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; generates a report at the end of the import operation, summarizing what was done and noting any problems that may have occurred.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143046Z" creationid="pm_kan" creationdate="20140113T143046Z">
         <seg>По окончании операции импорта &lt;b0&gt;Password Safe&lt;/b0&gt; создаёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
       </tuv>
     </tu>
@@ -3058,8 +3171,8 @@
       <tuv lang="EN-US">
         <seg>&lt;b0&gt;\o&lt;i1&gt;NNN&lt;/i1&gt;&lt;/b0&gt; is replaced by the contents of the n&lt;s2&gt;th&lt;/s2&gt; line of the Notes field</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T113958Z">
-        <seg>&lt;b0&gt;\o&lt;i1&gt;NNN&lt;/i1&gt;&lt;/b0&gt; заменяется n-й строкой поля «заметки»:</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151940Z">
+        <seg>&lt;b0&gt;\o&lt;i1&gt;NNN&lt;/i1&gt;&lt;/b0&gt; заменяется n-й строкой поля «заметки»:&lt;s2&gt;&lt;/s2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -3256,6 +3369,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;br1/&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085649Z" creationid="pm_kan" creationdate="20140122T085649Z">
+        <seg>&lt;br1/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;br17&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T104620Z">
@@ -3410,8 +3531,8 @@
       <tuv lang="EN-US">
         <seg>&lt;i0&gt;NNN&lt;/i0&gt; can be one to three digits (e.g., \o5 for the 5&lt;s1&gt;th&lt;/s1&gt; line, \o45 for the 45&lt;s2&gt;th&lt;/s2&gt;, etc.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T114019Z">
-        <seg>&lt;i0&gt;NNN&lt;/i0&gt; может состоять из одной, двух или трёх цифр (например, \o5 для 5-й строки, \o45 для 45-й, и т. д.);</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152016Z">
+        <seg>&lt;i0&gt;NNN&lt;/i0&gt; может состоять из одной, двух или трёх цифр (например, \o5 для 5-й строки, \o45 для 45-й, и т. д.);&lt;s1&gt;&lt;/s1&gt;&lt;s2&gt;&lt;/s2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -3816,6 +3937,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; can work with a &lt;a1&gt;YubiKey&lt;/a1&gt; device to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase), and tsomething you have (the YubiKey device).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114810Z" creationid="pm_kan" creationdate="20140113T114810Z">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; может использовать устройство &lt;a1&gt;YubiKey&lt;/a1&gt; для обеспечения «двуфакторной аутентификации», то есть для того, чтобы ваш контейнер был защищён с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; provides several mechanisms for using stored names and passwords.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T112945Z">
@@ -4186,8 +4315,8 @@
       <tuv lang="EN-US">
         <seg>&lt;s2&gt;Many of the setting are stored as &lt;i3&gt;preferences&lt;/i3&gt;, as described &lt;a4&gt;here&lt;/a4&gt;.&lt;/s2&gt;</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T201911Z">
-        <seg>&lt;s2&gt;Особенности сохранения настроек описаны &lt;a4&gt;здесь&lt;/a4&gt;.&lt;/s2&gt;</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152838Z">
+        <seg>&lt;s2&gt;Особенности сохранения настроек описаны &lt;a4&gt;здесь&lt;/a4&gt;.&lt;/s2&gt;&lt;i3&gt;&lt;/i3&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -4440,10 +4569,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>A database that's open for reading and writing (the default) can be protected against unintended changes by selecting the &lt;b0&gt;Change to R-O&lt;/b0&gt; entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T142546Z" creationid="pm_kan" creationdate="20140113T142400Z">
+        <seg>Чтобы защитить контейнера, открытый в режиме «чтение/запись» (по умолчанию), от случайных изменений, выберите пункт меню &lt;b0&gt;Переключить в режим только чтение (R-O)&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>A delimiter to reinstate the 'newline' character in a multi-line Notes field and the period ('.'), if present, in the Title field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162322Z">
         <seg>Для замены переносов строк в многострочных заметках и точки («.») в заголовках используется разделитель.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A list of currently in use entry keyboard shortcuts will be displayed below the &lt;b0&gt;Password Safe&lt;/b0&gt; program related menu shortcuts on the OptionsShortcuts tab via &lt;a1&gt;"Manage → Options → Shortcuts"&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T140129Z" creationid="pm_kan" creationdate="20140113T140129Z">
+        <seg>Список используемых в &lt;b0&gt;Password Safe&lt;/b0&gt; комбинаций клавиш для элементов отображается под списком горячих клавиш для пунктов меню на вкладке &lt;a1&gt;Управление→Настройки→Комбинации клавиш&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4728,10 +4873,34 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Adding YubiKey Authentication</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112737Z" creationid="pm_kan" creationdate="20140113T112737Z">
+        <seg>Добавление аутентификации при помощи YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Adding/Removing/Changing Password Authentication</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113708Z" creationid="pm_kan" creationdate="20140113T113708Z">
+        <seg>Добавление/удаление/изменение мастер-пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Additional</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T190815Z">
         <seg>Дополнительно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Additional notes on entry keyboard shortcuts:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T133315Z" creationid="pm_kan" creationdate="20140113T133218Z">
+        <seg>Особенности работы с горячими клавишами:</seg>
       </tuv>
     </tu>
     <tu>
@@ -4818,8 +4987,8 @@
       <tuv lang="EN-US">
         <seg>After opening, the current status will be shown in the Status Bar at the bottom of the &lt;b0&gt;Password Safe&lt;/b0&gt; window.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T154826Z">
-        <seg>После открытия контейнера текущий статус отображается в строке состояния.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152545Z">
+        <seg>После открытия контейнера текущий статус отображается в строке состояния.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -5160,6 +5329,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Although, this could have been changed to be any other valid shortcut, the use of the Enter key for this would still be active as it is a function of the Tree View.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103050Z" creationid="pm_kan" creationdate="20140113T103050Z">
+        <seg>Несмотря на то, что на данное действие можно было бы назначить другую комбинацию клавиш, сворачивание/разворачивание ветви всё равно происходило бы и по нажатию клавиши Enter, так как это системная комбинация для древовидного списка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T185421Z">
@@ -5196,6 +5373,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T173656Z">
         <seg>AlwaysOnTop</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>An entry keyboard shortcut must include the Alt or Ctrl key (with or without the Shift key).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134851Z" creationid="pm_kan" creationdate="20140113T134851Z">
+        <seg>Комбинация клавиш для элемента должна содержать хотя бы один из модификаторов Alt и Ctrl (с или без Shift).</seg>
       </tuv>
     </tu>
     <tu>
@@ -5264,6 +5449,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Any entry created via "Duplicate Group" or "Duplicate Entry" actions.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135917Z" creationid="pm_kan" creationdate="20140113T135917Z">
+        <seg>Элементы был создан посредством дублирования группы или элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Any field containing a blank will be output inside double quotation characters.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101018T180215Z">
@@ -5312,10 +5505,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Anything that you can do in Windows' "Start → Run" can be used here.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122505Z" creationid="pm_kan" creationdate="20140113T122505Z">
+        <seg>Можно указать любую команду, которая может быть выполнена в ОС Windows через меню «Пуск»→«Выполнить».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Appendices</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T191139Z">
         <seg>Приложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Application Hot Key</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151233Z" creationid="pm_kan" creationdate="20140113T151233Z">
+        <seg>Горячая клавиша для вызова программы</seg>
       </tuv>
     </tu>
     <tu>
@@ -5332,6 +5541,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T174625Z">
         <seg>Применение фильтра</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>As entry keyboard shortcuts cannot change the database when used, unlike say a menu item shortcut that could delete an entry, as a safety measure, entry keyboard shortcuts take precedence over menu item shortcuts.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134719Z" creationid="pm_kan" creationdate="20140113T134719Z">
+        <seg>Т. к. использование комбинации клавиш связанных с элементами контейнера не изменяет сам контейнер (в отличие от комбинаций для пунктов меню, которые могу быть назначены на удаление элемента), горячим клавишам для элементов был дан более высокий приоритет в случае конфликта.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5824,6 +6041,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>By clicking &lt;b0&gt;New Database&lt;/b0&gt; from the &lt;b1&gt;Safe Combination Entry&lt;/b1&gt; dialog when the program is started, or from the &lt;b2&gt;"File ? New Database"&lt;/b2&gt; menu once &lt;b3&gt;Password Safe&lt;/b3&gt; has been opened.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114523Z" creationid="pm_kan" creationdate="20140113T114523Z">
+        <seg>Щёлкнув &lt;b0&gt;Новый контейнер&lt;/b0&gt; в диалоге &lt;b1&gt;Пароль для контейнера&lt;/b1&gt;, выводимом при запуске программы, или через меню &lt;b2&gt;Файл→Новый контейнер&lt;/b2&gt;, которое доступно, если &lt;b3&gt;Password Safe&lt;/b3&gt; уже открыт.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>By clicking &lt;b0&gt;New Database&lt;/b0&gt; from the &lt;b1&gt;Safe Combination Entry&lt;/b1&gt; dialog when the program is started, or from the &lt;b2&gt;"File → New Database"&lt;/b2&gt; menu once &lt;b3&gt;Password Safe&lt;/b3&gt; has been opened.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T123421Z">
@@ -6088,6 +6313,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Change to R-O / Change to R/W</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141933Z" creationid="pm_kan" creationdate="20140113T141933Z">
+        <seg>Переключение режимов «только чтение» (R-O) и «чтение/запись» (R-W)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Changes are not saved in the database until you press OK to exit this dialog.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T114200Z">
@@ -6108,6 +6341,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T183234Z">
         <seg>Изменение пароля для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Changing YubiKeys</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114151Z" creationid="pm_kan" creationdate="20140113T114151Z">
+        <seg>Изменение YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -6218,8 +6459,8 @@
       <tuv lang="EN-US">
         <seg>Clear the clipboard of &lt;b0&gt;Password Safe&lt;/b0&gt; information when &lt;b1&gt;Password Safe&lt;/b1&gt; ends</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T182722Z">
-        <seg>Очищать буфер обмена при завершении работы &lt;b0&gt;Password Safe&lt;/b0&gt;</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153002Z">
+        <seg>Очищать буфер обмена при завершении работы &lt;b0&gt;Password Safe&lt;/b0&gt;&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -6308,6 +6549,62 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T120120Z">
         <seg>После завершения отбора нажмите «Экспорт» для применения настроек или «Отмена» для отклонения изменений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on &lt;s0&gt;OK&lt;/s0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113640Z" creationid="pm_kan" creationdate="20140113T113640Z">
+        <seg>Нажмите &lt;s0&gt;OK&lt;/s0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on Close to exit the dialog box.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143917Z" creationid="pm_kan" creationdate="20140113T143849Z">
+        <seg>Для выхода из диалога настроек нажмите кнопку «Закрыть».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on Set Yubikey.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143602Z" creationid="pm_kan" creationdate="20140113T143602Z">
+        <seg>Нажмите кнопку «Сохранить».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on the &lt;s0&gt;lower &lt;/s0&gt;Yubikey button, and then activate your YubiKey.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113240Z" creationid="pm_kan" creationdate="20140113T113240Z">
+        <seg>Нажмите на кнопку с надписью YubiКey, расположенную рядом с полем &lt;s0&gt;Новый пароль&lt;/s0&gt; и коснитесь кнопки на устройстве YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on the &lt;s0&gt;upper &lt;/s0&gt;Yubikey button, and then activate your YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113523Z" creationid="pm_kan" creationdate="20140113T113502Z">
+        <seg>Нажмите на кнопку с надписью YubiКey, расположенную рядом с полем &lt;s0&gt;Старый пароль&lt;/s0&gt; и коснитесь кнопки на устройстве YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on the Generate button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143356Z" creationid="pm_kan" creationdate="20140113T143356Z">
+        <seg>Нажмите кнопку «Создать».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120754Z" creationid="pm_kan" creationdate="20140113T120754Z">
+        <seg>Нажмите кнопку с надписью YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6564,6 +6861,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T100618Z">
         <seg>Изменить настройки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Configuring your YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110337Z" creationid="pm_kan" creationdate="20140113T110337Z">
+        <seg>Настройка YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -6931,8 +7236,8 @@
       <tuv lang="EN-US">
         <seg>Ctrl+Q and Alt+F4 are reserved for exiting the &lt;b0&gt;Password Safe&lt;/b0&gt; application.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202426Z">
-        <seg>Ctrl+Q и Alt+F4 зарезервированы для закрытия приложения.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153106Z">
+        <seg>Ctrl+Q и Alt+F4 зарезервированы для закрытия приложения.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -7073,6 +7378,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Database Entry Shortcuts</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151416Z" creationid="pm_kan" creationdate="20140113T151416Z">
+        <seg>Горячие клавиши для элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Database Properties</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151041Z">
@@ -7085,6 +7398,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T182004Z">
         <seg>В зависимости от настроек, при сворачивании программы возможна блокировка контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Database related:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122603Z" creationid="pm_kan" creationdate="20140113T122603Z">
+        <seg>Связанные с контейнером:</seg>
       </tuv>
     </tu>
     <tu>
@@ -7289,10 +7610,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Deleting this copy after use is &lt;b1&gt;not&lt;/b1&gt; sufficient for making it inaccessible to a determined attacker and in effect bypasses the security of the program.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141524Z" creationid="pm_kan" creationdate="20140113T141524Z">
+        <seg>Простого удаления файла после использования &lt;b1&gt;не достаточно&lt;/b1&gt; для предотвращения доступа злоумышленников к его содержимому, что может быть использовано для обхода защиты, предоставляемой Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Deleting this copy after use is &lt;b4&gt;not&lt;/b4&gt; sufficient and other actions should be taken to properly erase the data (e.g. third party 'shredding' utilities).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T173923Z">
         <seg>Простого удаления данной копии &lt;b4&gt;недостаточно&lt;/b4&gt;, и требуется использование дополнительных утилит для гарантированного удаления данных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Depending on your language, certain keys with the Alt key are reserved.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102947Z" creationid="pm_kan" creationdate="20140113T102829Z">
+        <seg>В зависимости от языка, некоторые комбинации с клавишей Alt могут быть зарезервированы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7889,6 +8226,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Enter the current Master Password in the Old Safe Combination field</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112951Z" creationid="pm_kan" creationdate="20140113T112951Z">
+        <seg>Введите текущий мастер-пароль в поле «Старый пароль».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Enter the database password and click &lt;b0&gt;OK&lt;/b0&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T205829Z">
@@ -7937,10 +8282,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Entry Keyboard Shortcuts are stored as part of the entry's record in the database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T133411Z" creationid="pm_kan" creationdate="20140113T133411Z">
+        <seg>Комбинации клавиш для элементов хранятся как часть данных элемента внутри контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Entry last access times are recorded, if the database is in Read/Write mode</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T181044Z">
         <seg>Записывать дату последнего обращения к элементу, если контейнер открыт в режиме «чтение/запись»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Entry-specifc shortcuts are defined in the entry's &lt;a0&gt;Additional tab&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151620Z" creationid="pm_kan" creationdate="20140113T151620Z">
+        <seg>Они задаются в диалоге редактирования элемента на складке &lt;a0&gt;Дополнительно&lt;/a0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7996,6 +8357,14 @@
         <seg>Even pieces of the master password can be build this way.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181710Z">
+        <seg> или его часть.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Even pieces of the master password can be built this way.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132654Z" creationid="pm_kan" creationdate="20140113T132654Z">
         <seg> или его часть.</seg>
       </tuv>
     </tu>
@@ -8457,6 +8826,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Following are instructions for each of these actions:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112707Z" creationid="pm_kan" creationdate="20140113T112707Z">
+        <seg>Ниже приведены инструкции по выполнению перечисленных действий.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Following are the details and limitations regarding the ability to define customized keyboard shortcuts for &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202150Z">
@@ -8469,6 +8846,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T202930Z">
         <seg>Ниже описываются особенности определения и использования в &lt;s0&gt;Password Safe&lt;/s0&gt; горячих клавиш.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Following are the details and limitations that apply to customized keyboard shortcuts for &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102628Z" creationid="pm_kan" creationdate="20140113T102628Z">
+        <seg>Ниже описываются особенности определения и использования горячих клавиш в &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8493,6 +8878,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T185350Z">
         <seg>Для XML-файлов KeePass V2 используется команда:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For YubiKey users: In addition to changing the master password as described above, this window allows you to add or remove YubiKey authentication, add or remove additional password authentication, as well as switch the YubiKey that is used to access the current database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112638Z" creationid="pm_kan" creationdate="20140113T112638Z">
+        <seg>Для владельцев YubiKey: кроме изменения мастер-пароля, здесь же можно добавить или удалить привязку контейнера к YubiKey и добавить или удалить аутентификацию по паролю. Кроме того, здесь вы можете изменить YubiKey, привязанный к контейнеру.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8561,10 +8954,34 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>For example, if the user specifies "Shift + 6", the shortcut could be changed to "Alt + Shift + 6".</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135234Z" creationid="pm_kan" creationdate="20140113T135234Z">
+        <seg>Например, комбинация «Shift + 6» может быть заменена на «Alt + Shift + 6».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For example, if you create an entry on January 1st and specify a 5 day recurring expiration, you will get an expiration notice starting on January 6th.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141046Z" creationid="pm_kan" creationdate="20140113T140945Z">
+        <seg>Пусть элемент был создан 1 января, и для него установлен срок действия в пять дней с повтором. Напоминания об истечении срока будут выводиться начиная с 6 января.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>For example, if you create an entry on January 1st and specify a 5 day recurring expiration.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101006T170915Z">
         <seg>Пусть элемент был создан 1 января, и для него установлен срок действия в пять дней с повтором.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For example, in German "&lt;u5&gt;F&lt;/u5&gt;ile" becomes "&lt;u6&gt;D&lt;/u6&gt;atei" and so Alt+D would be reserved instead of Alt+F.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102938Z" creationid="pm_kan" creationdate="20140113T102938Z">
+        <seg>Например, в русской локализации пункт меню «&lt;u5&gt;F&lt;/u5&gt;ile» заменяется на «&lt;u6&gt;Ф&lt;/u6&gt;айл», поэтому вместо Alt+F будет зарезервирована комбинация Alt+Ф.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8633,6 +9050,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>For maximum security, we recommend that your database be protected &lt;s0&gt;both &lt;/s0&gt;by your YubiKey and a Safe Combination (this is known as ).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115401Z" creationid="pm_kan" creationdate="20140113T115401Z">
+        <seg>Для большей безопасности мы рекомендуем, чтобы &lt;s0&gt;одновременно&lt;/s0&gt; использовались оба способа: YubiKey и мастер пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For more details on the keys that can (and cannot) be defined as shortcuts, see &lt;a0&gt;here&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151310Z" creationid="pm_kan" creationdate="20140113T151310Z">
+        <seg>Подробнее о том, какие комбинации можно (или нельзя) использовать для назначения «горячих клавиш» см. &lt;a0&gt;здесь&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>For more details on the keys that can (and cannot) be defined as shortcuts, see &lt;a2&gt;here&lt;/a2&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T204828Z">
@@ -8684,6 +9117,14 @@
         <seg>For non-English translations, please refer to those letters underlined on the main menu to determine what will be reserved for you.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110326T123342Z">
+        <seg>Для прочих локализаций нужно свериться с тем, что будет подчёркнуто в главном меню.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For other languages, please refer to those letters underlined on the main menu to determine what will be reserved for you.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102900Z" creationid="pm_kan" creationdate="20140113T102900Z">
         <seg>Для прочих локализаций нужно свериться с тем, что будет подчёркнуто в главном меню.</seg>
       </tuv>
     </tu>
@@ -8741,6 +9182,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T201527Z">
         <seg>Для сайтов или приложений, требующих ввода дополнительных данных, возможна тонкая настройка автонабора, описание которой приведено в разделе &lt;a0&gt;Настройка автонабора&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For web sites or applications that require different data, you can tailor the AutoType behaviour as described in the &lt;a0&gt;Customizing AutoType&lt;/a0&gt; section below.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111839Z" creationid="pm_kan" creationdate="20140113T111839Z">
+        <seg>Для сайтов или приложений, требующих ввода дополнительных данных, доступна тонкая настройка автонабора, описание которой приведено в разделе &lt;a0&gt;Настройка автонабора&lt;/a0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8853,6 +9302,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T190506Z">
         <seg>Начало работы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Getting YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110048Z" creationid="pm_kan" creationdate="20140113T110048Z">
+        <seg>Приобретение YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -9033,6 +9490,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Highlight changed unsaved entries in blue</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122105Z" creationid="pm_kan" creationdate="20140113T122105Z">
+        <seg>Подсветить изменённые элементы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>HighlightChanges</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T183038Z">
@@ -9059,8 +9524,8 @@
       <tuv lang="EN-US">
         <seg>Holding the Shift key down when pressing F3, finds the &lt;e0&gt;previous&lt;/e0&gt; entry in the database matching your criteria rather than the &lt;e1&gt;next&lt;/e1&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T194043Z">
-        <seg>При одновременном нажатии Shift и F3, выделение перейдёт на &lt;e0&gt;предыдущий&lt;/e0&gt; найденный элемент контейнера.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153021Z">
+        <seg>При одновременном нажатии Shift и F3, выделение перейдёт на &lt;e0&gt;предыдущий&lt;/e0&gt; найденный элемент контейнера.&lt;e1&gt;&lt;/e1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -9109,6 +9574,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T190158Z">
         <seg>Количество паролей, сохраняемых в истории</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>However, &lt;b0&gt;Password Safe&lt;/b0&gt; also has keyboard shortcuts defined that correspond to its menu items.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T133452Z" creationid="pm_kan" creationdate="20140113T133452Z">
+        <seg>Но, помимо этого, &lt;b0&gt;Password Safe&lt;/b0&gt; позволяет задавать горячие клавиши для пунктов меню.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9193,6 +9666,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>However, if you specify, for example, "Ctrl + 6" it will not be altered.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135313Z" creationid="pm_kan" creationdate="20140113T135313Z">
+        <seg>Но, «Ctrl + 6» не будет изменяться автоматически.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>However, it is possible to export a KeePass V2 database as a KeePass V1 database.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T183141Z">
@@ -9204,6 +9685,14 @@
         <seg>However, many web sites now require other information or no information (e.g. a search engine).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202006Z">
+        <seg>Но некоторым сайтам требуются другие данные (или они не требуются вообще).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>However, many web sites now require other information or no information (e.g., a search engine).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T101022Z" creationid="pm_kan" creationdate="20140113T101022Z">
         <seg>Но некоторым сайтам требуются другие данные (или они не требуются вообще).</seg>
       </tuv>
     </tu>
@@ -9285,6 +9774,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T134121Z">
         <seg>Если добавлена приставка «[autotype]», то после открытия ссылки производится автонабор по правилам, указанным в соответствующем поле.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If '[autotype]' is found before the URL, then after the URL has been displayed/actioned, &lt;b0&gt;Password Safe&lt;/b0&gt; then performs the AutoType action using this entry's AutoType field, or the default value if not specified.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152358Z" creationid="pm_kan" creationdate="20140113T141322Z">
+        <seg>Если добавлена приставка «[autotype]», то после открытия ссылки производится автонабор по заданным в соответствующем поле правилам.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -9389,6 +9886,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231426Z">
         <seg>Если в поле «Группа» указать новое имя, будет создана группа с таким же именем.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is "Dragged &amp; Dropped" into the database from another database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135718Z" creationid="pm_kan" creationdate="20140113T135718Z">
+        <seg>Элемент был «перетянут» из другого контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is added during a database merge.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135606Z" creationid="pm_kan" creationdate="20140113T135606Z">
+        <seg>Элементы был добавлен при слиянии контейнеров.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is imported (via text or XML).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135646Z" creationid="pm_kan" creationdate="20140113T135509Z">
+        <seg>Элемент был импортирован (из простого текстового файла или XML-файла).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9617,10 +10138,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If entries are copied to the database via the results of a database Compare dialog.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135822Z" creationid="pm_kan" creationdate="20140113T135822Z">
+        <seg>Элементы был скопирован из диалога результатов сравнения контейнеров.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If it is 'True' but '&lt;DefaultSequence&gt;' is empty, then the '&lt;DefaultAutoTypeSequence&gt;' field from the parent group is used as the &lt;b1&gt;Password Safe&lt;/b1&gt;'s entry's AutoType sequence.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T204023Z">
-        <seg>Если для элемента значение &lt;AutoType&gt; равно «True», но значение &lt;DefaultSequence&gt; пусто, то используется значение &lt;DefaultAutoTypeSequence&gt; от родительской группы.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152657Z">
+        <seg>Если для элемента значение &lt;AutoType&gt; равно «True», но значение &lt;DefaultSequence&gt; пусто, то используется значение &lt;DefaultAutoTypeSequence&gt; от родительской группы.&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -9637,6 +10166,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T205903Z">
         <seg>Если контейнер заблокирован, вас попросят ввести мастер-пароль при разворачивании окна приложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If it's not there, click on the ellipsis (...) and choose it.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T130622Z" creationid="pm_kan" creationdate="20140113T130622Z">
+        <seg>Если это не так, нажмите на кнопку «...» и выберите файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9675,8 +10212,8 @@
       <tuv lang="EN-US">
         <seg>If neither of these prefixes appear in the URL string, it is placed in the &lt;b1&gt;Password Safe&lt;/b1&gt;'s entry's URL field with only {S:FieldName} substitution.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T193431Z">
-        <seg>В противном случае строка URL подставляется в поле «Ссылка» с предварительной заменой только последовательностей вида {S:FieldName}.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152729Z">
+        <seg>&lt;b1&gt;&lt;/b1&gt;В противном случае строка URL подставляется в поле «Ссылка» с предварительной заменой только последовательностей вида {S:FieldName}.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9705,6 +10242,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If not checked, an horizontal scroll bar will appear, if necessary.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132729Z" creationid="pm_kan" creationdate="20140113T132729Z">
+        <seg>Иначе, при недостатке ширины, будет отображаться горизонтальная полоса прокрутки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If not, it will be permanently deleted.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110326T122805Z">
@@ -9721,6 +10266,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If not, then an error message will appear describing the problem.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143831Z" creationid="pm_kan" creationdate="20140113T143831Z">
+        <seg>В противном случае, будет отображено сообщение об ошибке.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If not, you will need to click on the Notes field in order to view the text there.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T201601Z">
@@ -9733,6 +10286,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T184810Z">
         <seg>В противном случае необходимо указать полные пути к файлам.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If one of these is not included when entering a value, all combinations of the Alt, Ctrl and Shift keys are tried in the order (Alt; Alt+Shift; Ctrl; Ctrl+Shift, Alt+Ctrl; Alt+Ctrl+Shift) to achieve a unique combination.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135127Z" creationid="pm_kan" creationdate="20140113T135127Z">
+        <seg>Если ни Alt, ни Ctrl не присутствуют в комбинации, для получения уникальной комбинации проверяются все комбинации модификаторов Ctrl, Alt и Shift (в порядке Alt; Alt+Shift; Ctrl; Ctrl+Shift, Alt+Ctrl; Alt+Ctrl+Shift).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9859,8 +10420,8 @@
       <tuv lang="EN-US">
         <seg>If the URL string begins with "\\" or "cmd://" (case insensitve) the field is placed in the &lt;b0&gt;Password Safe&lt;/b0&gt;'s entry's Run Command field and Placeholder substitution is performed (see below).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T193308Z">
-        <seg>Если строка URL начинается с «\\» или «cmd://» (независимо от регистра), то значение помещается в поле «Выполнить», но перед этим производится подстановка ключевых последовательностей (см. ниже).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152713Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;Если строка URL начинается с «\\» или «cmd://» (независимо от регистра), то значение помещается в поле «Выполнить», но перед этим производится подстановка ключевых последовательностей (см. ниже).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9869,6 +10430,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T161018Z">
         <seg>Если заголовок исходного элемента «Сервер» и никакой другой элемент не имеет такого заголовка, то элемент, в поле пароль которого указано «[Сервер]», будет являться его псевдонимом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the configuration is successful, then the dialog box will close.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143814Z" creationid="pm_kan" creationdate="20140113T143814Z">
+        <seg>При успешном завершения окно будет закрыто.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9941,6 +10510,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T152308Z">
         <seg>При повторении действия и сохранении отчёта на диск, предыдущий отчёт для этого действия перезаписывается.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the site requires an e-mail address as your login, it's much easier to set your email address in the Username field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085644Z" creationid="pm_kan" creationdate="20140122T085644Z">
+        <seg>Если сайт требует указания адреса электронно почты в качестве логина, удобнее сохранить его в поле  «Имя пользователя».</seg>
       </tuv>
     </tu>
     <tu>
@@ -10025,6 +10602,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If this field is blank, make sure your YubiKey is plugged in correctly.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143319Z" creationid="pm_kan" creationdate="20140113T143319Z">
+        <seg>Если поле пустое, убедитесь что устройство правильно подключено.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If this field is not empty, then the "Go" button is enabled.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110327T100316Z">
@@ -10043,8 +10628,8 @@
       <tuv lang="EN-US">
         <seg>If this is the first database opened on the startup of &lt;b0&gt;Password Safe&lt;/b0&gt;, &lt;b1&gt;Password Safe&lt;/b1&gt; will exit.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T154210Z">
-        <seg>Если данный контейнер был открыт при запуске &lt;b0&gt;Password Safe&lt;/b0&gt;, программа будет закрыта.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152525Z">
+        <seg>Если данный контейнер был открыт при запуске &lt;b0&gt;Password Safe&lt;/b0&gt;, программа будет закрыта.&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -10061,6 +10646,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T190906Z">
         <seg>Если флажок снят, при сворачивании Password Safe будет оставаться панели задач.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you &lt;s0&gt;&lt;/s0&gt;wish to protect your database using your YubiKey &lt;s1&gt;only&lt;/s1&gt;,&lt;s2&gt; &lt;/s2&gt;then leave the "Safe Combination" and "Verify" fields &lt;s3&gt;empty&lt;/s3&gt;, and &lt;s4&gt;&lt;/s4&gt;click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120537Z" creationid="pm_kan" creationdate="20140113T120537Z">
+        <seg>Если для защиты вы желаете использовать &lt;s1&gt;только&lt;/s1&gt;YubiKey , тогда оставьте поля «Пароль» и «Подтверждение» &lt;s3&gt;пустыми&lt;/s3&gt;, и щёлкните на кнопке с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you already have a YubiKey, note that &lt;b3&gt;Password Safe&lt;/b3&gt; uses slot #2 for authentication, leaving slot #1 for other applications.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111514Z" creationid="pm_kan" creationdate="20140113T111514Z">
+        <seg>Для хранения своих данных &lt;b3&gt;Password Safe&lt;/b3&gt; использует слот № 2, оставляя 1-й слот свободным для использования в других приложениях.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10123,8 +10724,8 @@
       <tuv lang="EN-US">
         <seg>If you change the password on January 7th, then the new expiration will be on January 12th (5 days after the password has been set).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101006T170902Z">
-        <seg>Если изменить пароль 7 января, он будет действовать до 12 января (в течение пяти дней со дня смены).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141053Z">
+        <seg>Если изменить пароль 7 января, то он будет действовать до 12 января (в течение пяти дней со дня смены).</seg>
       </tuv>
     </tu>
     <tu>
@@ -10209,6 +10810,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you currently have a password associated with this database, enter it in the Old Safe Combination field</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113447Z" creationid="pm_kan" creationdate="20140113T113447Z">
+        <seg>Если для доступа к контейнеру также используется пароль, введите его в поле «Старый пароль».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If you decide to remove a shortcut or revert to the default shortcut for a given action, just select the desired 'Shortcut Key' field and right-click.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T205035Z">
@@ -10217,10 +10826,34 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you do not activate your YubiKey in the allotted time (about 15 seconds), then an error message will be displayed, and you can try again or cancel.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132328Z" creationid="pm_kan" creationdate="20140113T121432Z">
+        <seg>Если привязка не будет выполнена в течение отведённого времени (около 15-ти секунд), будет выведено сообщение об ошибке. После этого вы можете повторить попытку попытку или отменить действие.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you do not have a YubiKey device, then the YubiKey-specific buttons and texts will not be displayed by &lt;s2&gt;Password Safe&lt;/s2&gt;, and the YubiKey-specific instructions below do not apply.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114907Z" creationid="pm_kan" creationdate="20140113T114907Z">
+        <seg>Если у вас нет YubiKey, соответствующие кнопки не будут отображены в &lt;s2&gt;Password Safe&lt;/s2&gt;, и вы можете пропустить описание их использования.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If you do open a Failsafe Backup and have decided that it is the version you wish to keep, you should save it as a normal database.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113735Z">
         <seg>Если Вы открыли аварийную резервную копию, и решили, что эту версию нужно оставить, сохраните данный файл как обычный контейнер, используя пункт меню «Файл»→«Сохранить как».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you don't want to use the default password policy (see &lt;a0&gt;Setting a Password Policy&lt;/a0&gt;), you can define in this tab a different password policy, marking "Use the policy below" and setting the appropriate elements.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141113Z" creationid="pm_kan" creationdate="20140113T141113Z">
+        <seg>Если для выбранного элемента вы не желаете использовать «политику по умолчанию» (см. &lt;a0&gt;Настройка политики создания паролей&lt;/a0&gt;), нужно выбрать на данной вкладке значение «Переопределить политику» и указать необходимые параметры в соответствующих полях.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10257,10 +10890,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you have a password associated with this database as well, enter it in the Old Safe Combination field</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114234Z" creationid="pm_kan" creationdate="20140113T114234Z">
+        <seg>Если для доступа к контейнеру также используется пароль, введите его в поле «Старый пароль».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If you have installed all the currently available additional language DLLs when &lt;b0&gt;Password Safe&lt;/b0&gt; was installed (which is the default), you will have the ability to switch between these languages on-the-fly via this menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T202227Z">
-        <seg>Если у вас установлены дополнительные языковые модули (устанавливаются по умолчанию), с помощью этого меню можно переключать язык программы на лету.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152919Z">
+        <seg>Если у вас установлены дополнительные языковые модули (устанавливаются по умолчанию), с помощью этого меню можно переключать язык программы на лету.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -10269,6 +10910,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T114018Z">
         <seg>Если какое-либо действие было отменено, вы можете вернуть его, нажав кнопку «Повторить» (если после него не было совершено других действий). </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you haven't already done so, insert your YubiKey into a USB slot on your PC.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115529Z" creationid="pm_kan" creationdate="20140113T115529Z">
+        <seg>Подключите YubiKey к USB-порту ПК, если это ещё не сделано.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10313,6 +10962,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you wish to protect your database using &lt;s0&gt;both &lt;/s0&gt;your YubiKey and a Safe Combination ("two factor authentication"), then &lt;s1&gt;first &lt;/s1&gt;enter the Safe Combination in the "Safe Combination" and "Verify" fields, &lt;s2&gt;then &lt;/s2&gt;click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120314Z" creationid="pm_kan" creationdate="20140113T120140Z">
+        <seg>Если для защиты контейнера вы желаете &lt;s0&gt;одновременно&lt;/s0&gt; использовать YubiKey и мастер-пароль, («двуфакторная аутентификация»), тогда &lt;s1&gt;сначала&lt;/s1&gt; введите пароль в поля «Пароль» и «Подтверждение», а &lt;s2&gt;затем&lt;/s2&gt; щёлкните на кнопке с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you wish to protect your database using your YubiKey &lt;s0&gt;only&lt;/s0&gt;, then leave the "Safe Combination" and "Verify" fields &lt;s1&gt;empty&lt;/s1&gt;, and click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T131609Z" creationid="pm_kan" creationdate="20140113T131609Z">
+        <seg>Если для защиты вы желаете использовать &lt;s0&gt;только&lt;/s0&gt; YubiKey, тогда оставьте поля «Пароль» и «Подтверждение» &lt;s1&gt;пустыми&lt;/s1&gt;, и щёлкните на кнопке с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If you wish to reset these values to the default for search, press the Reset button.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T160427Z">
@@ -10345,18 +11010,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you wish, enter (and confirm) a password in the New Safe Combination and Confirmation fields.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113952Z" creationid="pm_kan" creationdate="20140113T113056Z">
+        <seg>Если требуется, введите (и подтвердите) новый пароль в поля «Новый пароль» и «Подтверждение».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If you wish, you can enter your own password into the password field manually, or you can have &lt;b0&gt;Password Safe&lt;/b0&gt; generate a new one based on the current &lt;a1&gt;Password Policy&lt;/a1&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T134443Z">
-        <seg>Вы можете ввести пароль вручную, или создать его в соответствии с установленной &lt;a1&gt;Политикой создания паролей&lt;/a1&gt;.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152414Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;Вы можете ввести пароль вручную, или создать его в соответствии с установленной &lt;a1&gt;Политикой создания паролей&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>If you're unhappy with the result, you can click on &lt;b5&gt;Generate&lt;/b5&gt; again, or edit the password manually.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T134722Z">
-        <seg>Если созданный пароль вам не подходит, нажмите кнопку ещё раз или измените пароль вручную.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152432Z">
+        <seg>Если созданный пароль вам не подходит, нажмите кнопку ещё раз или измените пароль вручную.&lt;b5&gt;&lt;/b5&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -10365,6 +11038,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231517Z">
         <seg>Если созданный пароль вам не подходит, нажмите кнопку ещё раз или измените пароль вручную.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you're using YubiKey authentication, click on the Yubikey button, then activate your YubiKey.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141759Z" creationid="pm_kan" creationdate="20140113T141759Z">
+        <seg>Если вы используете YubiKey, нажмите кнопку с надписью «YubiKey» и  коснитесь кнопки на устройстве YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10381,6 +11062,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T160535Z">
         <seg>Если вы используете системы «единого входа», которые позволяют использовать один и тот же пароль для различных машин/серверов/приложений, то можно настроить несколько элементов &lt;s0&gt;Password Safe&lt;/s0&gt; таким образом, чтобы изменение пароля в одном из них автоматически отражалось в остальных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you've chosen to protect your database using &lt;s0&gt;both &lt;/s0&gt;your YubiKey and a Safe Combination, &lt;s1&gt;first &lt;/s1&gt;enter the Safe Combination in the "Open Password Safe" field, &lt;s2&gt;then &lt;/s2&gt;click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T130714Z" creationid="pm_kan" creationdate="20140113T130714Z">
+        <seg>Если для защиты контейнера используются YubiKey &lt;s0&gt;и&lt;/s0&gt; мастер-пароль, тогда &lt;s1&gt;сначала&lt;/s1&gt; введите пароль в поле «Пароль», а &lt;s2&gt;затем&lt;/s2&gt; щёлкните на кнопке с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you've chosen to protect your database using your YubiKey &lt;s3&gt;only&lt;/s3&gt;, then leave the "Open Password Safe" field &lt;s4&gt;empty&lt;/s4&gt;, and click on the Yubikey button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132150Z" creationid="pm_kan" creationdate="20140113T132113Z">
+        <seg>Если для защиты вы желаете использовать &lt;s3&gt;только&lt;/s3&gt; YubiKey, тогда оставьте поле «Пароль» &lt;s4&gt;пустым&lt;/s4&gt;, и щёлкните на кнопке с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If your YubiKey is connected to your PC, then a "Yubikey" button and text area will appear in the Safe Combination Entry and Setup windows, as show above.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123728Z" creationid="pm_kan" creationdate="20140113T115052Z">
+        <seg>Если YubiKey подключён к ПК, будут видны кнопка «YubiKey» и текстовое поле с описанием (см. картинку выше).</seg>
       </tuv>
     </tu>
     <tu>
@@ -10563,8 +11268,8 @@
       <tuv lang="EN-US">
         <seg>In addition to the backup and restore described here, &lt;b0&gt;Password Safe&lt;/b0&gt; automatically keeps a copy of the database before you save a change.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T120707Z">
-        <seg>Резервные копии создаются не только вручную, но и автоматически перед сохранением изменений в контейнере.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152037Z">
+        <seg>Резервные копии создаются не только вручную, но и автоматически перед сохранением изменений в контейнере.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -10657,6 +11362,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start &lt;b0&gt;Password Safe&lt;/b0&gt; (assuming you permit multiple instances via &lt;a1&gt;"Manage ? Options ? System"&lt;/a1&gt; tab) and create a new database, whilst having your normal database open in another instance.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141444Z" creationid="pm_kan" creationdate="20140113T141444Z">
+        <seg>Чтобы экспортировать элементы в другой контейнер &lt;b0&gt;Password Safe&lt;/b0&gt;, запустите ещё одну копию &lt;b0&gt;Password Safe&lt;/b0&gt; (должен быть разрешён запуск нескольких экземпляров на вкладке &lt;a1&gt;Управление→Настройки→Система&lt;/a1&gt;) и создайте новый контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start &lt;b0&gt;Password Safe&lt;/b0&gt; (assuming you permit multiple instances via &lt;a1&gt;"Manage → Options → System"&lt;/a1&gt; tab) and create a new database, whilst having your normal database open in another instance.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T142653Z">
@@ -10681,6 +11394,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>In addition, you can invoke AutoType after running an arbitrary command specified in the entry's &lt;a0&gt;Run Cmd&lt;/a0&gt; field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112020Z" creationid="pm_kan" creationdate="20140113T112020Z">
+        <seg>Также существует возможность вызова автонабора после запуска произвольных команд из поля &lt;a0&gt;Выполнить&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>In all cases, to read a database generated by a previous version of &lt;b0&gt;Password Safe&lt;/b0&gt;, just open it as you would any database.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204224Z">
@@ -10701,6 +11422,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T172603Z">
         <seg>Во всех случаях можно поставить флажок «Расширенные условия отбора». После этого будет доступна ещё одна страница, на которой можно указать ограничения по группе, заголовку, имени пользователя, ссылке или заметкам, а также отобрать поля для сравнения, слияния или экспорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In any case, you can also change this per-entry, as described &lt;a1&gt;here&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T091014Z" creationid="pm_kan" creationdate="20140122T091014Z">
+        <seg>Описание того, как настроить задержку ввода для конкретного элемента, приведено в разделе &lt;a1&gt;Автонабор&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10825,6 +11554,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>In this tab the most important elements are combined.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141258Z" creationid="pm_kan" creationdate="20140113T141258Z">
+        <seg>На данной вкладке собраны самые важные элементы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>In this tab the most inportant elements are combined.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101017T192012Z">
@@ -10889,10 +11626,50 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Insert the old YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114300Z" creationid="pm_kan" creationdate="20140113T114221Z">
+        <seg>Подключите старый YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Insert you YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113006Z" creationid="pm_kan" creationdate="20140113T113006Z">
+        <seg>Подключите YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Insert your YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114305Z" creationid="pm_kan" creationdate="20140113T113347Z">
+        <seg>Подключите YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Insert your YubiKey into your PC's USB slot</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123607Z" creationid="pm_kan" creationdate="20140113T123607Z">
+        <seg>Подключите YubiKey к USB-порту ПК.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Insert your backup YubiKey into your PC's USB slot</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145608Z" creationid="pm_kan" creationdate="20140113T145608Z">
+        <seg>Подключите запасной YubiKey к USB-порту ПК.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Inserted into the &lt;b0&gt;Password Safe&lt;/b0&gt; Notes field in the form:&lt;br1&gt;</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T195215Z">
-        <seg>Добавляются в поле «Заметки» в виде:&lt;br1&gt;</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152741Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;Добавляются в поле «Заметки» в виде:&lt;br1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -11417,6 +12194,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Likewise, a read-only database can be modified after clicking on &lt;b1&gt;Change to R/W&lt;/b1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T142706Z" creationid="pm_kan" creationdate="20140113T142526Z">
+        <seg>Аналогично, контейнер, открытый в режиме «только чтение» может быть переведён в режим «чтение/запись» выбором пункта меню &lt;b1&gt;Переключить в режим чтение/запись (R-W)&lt;/b1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Likewise, if the group and title together or title and user together specify a unique entry, then the corresponding user or group doesn't have to be specified.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T160732Z">
@@ -11597,6 +12382,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T172620Z">
         <seg>Создание резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Make sure Manage → Options → System "Allow multiple instances" is checked for this to work</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150545Z" creationid="pm_kan" creationdate="20140113T150545Z">
+        <seg>Чтобы данный пример заработал, убедитесь, что разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Make sure the desired database is selected in the "Open Password Safe" field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T130548Z" creationid="pm_kan" creationdate="20140113T130548Z">
+        <seg>Убедитесь, что в поле «Открыть контейнер» указан требуемый файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11811,8 +12612,8 @@
       <tuv lang="EN-US">
         <seg>Migrate &lt;b0&gt;Password Safe&lt;/b0&gt; configuration to user directory</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T203710Z">
-        <seg>Переместить файл настроек в каталог пользователя</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153245Z">
+        <seg>Переместить файл настроек в каталог пользователя&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -11980,6 +12781,14 @@
         <seg>Name of the Unicode font to be used to display all characters used in the Virtual Keyboad.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T194607Z">
+        <seg>Имя шрифта с поддержкой Unicode, используемого для отображения символов на экранной клавиатуре.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Name of the Unicode font to be used to display all characters used in the Virtual Keyboard.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122421Z" creationid="pm_kan" creationdate="20140113T122421Z">
         <seg>Имя шрифта с поддержкой Unicode, используемого для отображения символов на экранной клавиатуре.</seg>
       </tuv>
     </tu>
@@ -12241,6 +13050,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note that &lt;b1&gt;Password Safe&lt;/b1&gt; requires YubiKeys with firmware version &lt;s2&gt;2.2&lt;/s2&gt; and above.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110324Z" creationid="pm_kan" creationdate="20140113T110324Z">
+        <seg>Для работы &lt;b1&gt;Password Safe&lt;/b1&gt; требуется устройство с версией прошивки &lt;s2&gt;2.2&lt;/s2&gt; и выше.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note that Password Safe will only erase old databases if the suffix is an incremented number (running count).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T162055Z">
@@ -12377,6 +13194,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note that this is meant for keeping an e-mail address associated with the site, e.g., support@myvendor.com.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085404Z" creationid="pm_kan" creationdate="20140122T085404Z">
+        <seg>Данное поле предназначено для хранения E-Mail, связанного с сайтом, например, адреса техподдержки support@myvendor.com.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note that times in &lt;b0&gt;Password Safe&lt;/b0&gt; must be earlier than January 19, 2038.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T160831Z">
@@ -12443,8 +13268,8 @@
       <tuv lang="EN-US">
         <seg>Note that you will be prompted for the Safe combination the first time you double-click on the System Tray icon, &lt;b1&gt;not before&lt;/b1&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T203120Z">
-        <seg>Примечание. Мастер-пароль будет запрошен только тогда, когда вы дважды щёлкнете по значку левой кнопкой.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153157Z">
+        <seg>Примечание. Мастер-пароль будет запрошен только тогда, когда вы дважды щёлкнете по значку левой кнопкой.&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -12577,6 +13402,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note: This will also be noted in the Import report.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135547Z" creationid="pm_kan" creationdate="20140113T135547Z">
+        <seg>Примечание. Об этом также будет сообщено в журнале импорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note: This will also be noted in the Merge report.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135613Z" creationid="pm_kan" creationdate="20140113T135613Z">
+        <seg>Примечание. Об этом также будет сообщено в журнале слияния.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note: Windows environmental variables are &lt;s0&gt;not&lt;/s0&gt; case sensitive.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T193357Z">
@@ -12699,8 +13540,8 @@
       <tuv lang="EN-US">
         <seg>Num pad 0-9</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T183417Z">
-        <seg>Серые 0-9 (на цифровой клавиатуре)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T121906Z">
+        <seg>Серые 0–9 (на цифровой клавиатуре)</seg>
       </tuv>
     </tu>
     <tu>
@@ -12733,6 +13574,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T172857Z">
         <seg>Устаревшие настройки не перечислены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Obviously, you need a YubiKey device to start.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110131Z" creationid="pm_kan" creationdate="20140113T110131Z">
+        <seg>Очевидно, что для работы в таком режиме вам необходимо иметь YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Of course, you can also choose to protect the database by a Safe Combination alone, just enter the Safe Combination in the "Safe Combination" and "Verify" fields and then click on OK.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120730Z" creationid="pm_kan" creationdate="20140113T120730Z">
+        <seg>Конечно, вы также можете использовать только мастер-пароль. В этом случае просто введите пароль в поля «Пароль» и «Подтверждение» и нажмите кнопку OK.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12825,6 +13682,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Once the YubiKey has been activated, your Password Safe database will be created.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123839Z" creationid="pm_kan" creationdate="20140113T123839Z">
+        <seg>Контейнер Password Safe будет создан сразу после активации ключа YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Once the YubiKey has been activated, your Password Safe database will be opened.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132310Z" creationid="pm_kan" creationdate="20140113T132310Z">
+        <seg>Контейнер Password Safe будет открыт сразу после активации ключа YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Once you are satisfied that you have recovered the correct database, either the original or a Failsafe Backup, you should delete any old Failsafe Backups so that you will not be prompted to decide at a later date.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T124429Z">
@@ -12845,6 +13718,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T110603Z">
         <seg>После выбора поля щелчок в данной ячейке приводит к отображению списка с доступными условиями.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Once your YubiKey is configured, you can use it, along with you master passphrase, to protect your &lt;b0&gt;Password Safe&lt;/b0&gt; database, as described in &lt;a1&gt;Creating a New Safe&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111709Z" creationid="pm_kan" creationdate="20140113T111709Z">
+        <seg>После того, как вы настроили YubiKey, его можно использовать вместе с мастер-паролем для защиты контейнера &lt;b0&gt;Password Safe&lt;/b0&gt; (описание приведено в разделе &lt;a1&gt;Создание нового контейнера&lt;/a1&gt;).</seg>
       </tuv>
     </tu>
     <tu>
@@ -12981,6 +13862,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T114011Z">
         <seg>Открывает данный файл со справкой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Opening a database with YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123905Z" creationid="pm_kan" creationdate="20140113T123905Z">
+        <seg>Открытие контейнера с помощью YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -13273,6 +14162,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Safe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151834Z" creationid="pm_kan" creationdate="20140113T151834Z">
+        <seg>Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe About dialog box</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T113921Z">
@@ -13329,10 +14226,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Safe and YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105040Z" creationid="pm_kan" creationdate="20140113T105040Z">
+        <seg>Password Safe и YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe can export (and import) the database entries to this format.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T114608Z">
         <seg>Password Safe может экспортировать и импортировать содержимое контейнера в данный формат.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe can use YubiKey as the only access mechanism, or along with a conventional password.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113749Z" creationid="pm_kan" creationdate="20140113T113749Z">
+        <seg>Password Safe может использовать YubiKey как единственны способ аутентификации, так и как дополнительны к обычному паролю.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13804,8 +14717,8 @@
       <tuv lang="EN-US">
         <seg>Prior to version 3.22, &lt;b0&gt;Password Safe&lt;/b0&gt; kept application preferences (such as some of the user options, last files opened, window size and location, etc.) in a file in the same directory as the &lt;b1&gt;Password Safe&lt;/b1&gt; executable.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T203751Z">
-        <seg>До версии 3.22, &lt;b0&gt;Password Safe&lt;/b0&gt; сохранял изменения настроек (пользовательские настройки, список ранее открытых файлов, размеры окон и пр.) в том же каталоге, где находился исполняемый файл (pwsafe.exe).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153320Z">
+        <seg>До версии 3.22, &lt;b0&gt;Password Safe&lt;/b0&gt; сохранял изменения настроек (пользовательские настройки, список ранее открытых файлов, размеры окон и пр.) в том же каталоге, где находился исполняемый файл (&lt;b1&gt;pwsafe.exe&lt;/b1&gt;).</seg>
       </tuv>
     </tu>
     <tu>
@@ -13822,6 +14735,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T184355Z">
         <seg>Использованные программы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Program Shortcuts</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151245Z" creationid="pm_kan" creationdate="20140113T151245Z">
+        <seg>Горячие клавиши пунктов меню</seg>
       </tuv>
     </tu>
     <tu>
@@ -13948,8 +14869,8 @@
       <tuv lang="EN-US">
         <seg>Recent &lt;b0&gt;Password Safe&lt;/b0&gt; Databases</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T203349Z">
-        <seg>Недавно использованные контейнеры</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153228Z">
+        <seg>Недавно использованные контейнеры&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -14054,6 +14975,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T194418Z">
         <seg>Убрать настройки Password Safe из реестра Windows</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Remove the old YubiKey, insert the new one</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114257Z" creationid="pm_kan" creationdate="20140113T114257Z">
+        <seg>Отключите старый YubiKey и подключите новый.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Removing YubiKey Authentication</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113255Z" creationid="pm_kan" creationdate="20140113T113255Z">
+        <seg>Удаление аутентификации при помощи YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -14690,6 +15627,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>See the &lt;a2&gt;following notes&lt;/a2&gt; for more options.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085719Z" creationid="pm_kan" creationdate="20140122T085719Z">
+        <seg>Для получения дополнительной информации см. &lt;a2&gt;примечания&lt;/a2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>See the &lt;a4&gt;following notes&lt;/a4&gt; for more information.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T133808Z">
@@ -14794,6 +15739,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Select the Manage-&gt;Yubikey... menu item.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143212Z" creationid="pm_kan" creationdate="20140113T143212Z">
+        <seg>Выберите пункт меню «Управление→YubiKey...».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Select the password entry to edit from the list</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231553Z">
@@ -14868,8 +15821,8 @@
       <tuv lang="EN-US">
         <seg>Selecting &lt;b0&gt;Options...&lt;/b0&gt; brings up a tabbed dialog where many of Password Safe's settings can be viewed and edited.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T112940Z">
-        <seg>При выборе данного пункта будет отображён диалог, с помощью которого можно просматривать и редактировать настройки Password Safe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152757Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;При выборе данного пункта будет отображён диалог, с помощью которого можно просматривать и редактировать настройки Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14986,6 +15939,30 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Set the New Safe Combination (and the Confirmation) to the desired value.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113606Z" creationid="pm_kan" creationdate="20140113T113606Z">
+        <seg>Введите новый пароль и его подтверждение в соответствующие поля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Set the New Safe Combination (and the Confirmation) to the desired value: Blank to remove the password, or a new password to add or replace the password.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114129Z" creationid="pm_kan" creationdate="20140113T113935Z">
+        <seg>В полях «Новый пароль» и «Подтверждение» установите пустое значение, чтобы отключить проверку пароля, или новый пароля чтобы изменить или добавить проверку пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Set up the Safe Combination as follows:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115853Z" creationid="pm_kan" creationdate="20140113T115853Z">
+        <seg>Установите мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Set/Edit Filter is a good way to work with filters for a one-time task.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T111019Z">
@@ -15022,6 +15999,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T210540Z">
         <seg>Если помечено, &lt;s0&gt;Password Safe&lt;/s0&gt; будет по умолчанию отрывать контейнеры в режиме «только для чтения».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Setting up a Safe Combination with YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115427Z" creationid="pm_kan" creationdate="20140113T115427Z">
+        <seg>Установка мастера-пароля и YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -15284,6 +16269,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Similarly, an entry keyboard shortcut may not be in use when added to an entry but could become conflicted if you later customises the menu shortcuts or changes the language.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134424Z" creationid="pm_kan" creationdate="20140113T134424Z">
+        <seg>Аналогично, конфликта может не быть при назначении горячих клавиш, но он может произойти позже, если вы измените язык или комбинации клавиш для пунктов меню.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Similarly, when one or more entries are dragged from another database and dropped into the current database except "Drag - &lt;i0&gt;datetime&lt;/i0&gt;" will be used to make the Named Password Policy unique.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120810T124510Z">
@@ -15360,6 +16353,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T174029Z">
         <seg>В некоторых случаях требуется создавать пароли, содержащие только строчные буквы, в других требуется наличие прописных букв, цифр и спецсимволов, а также указание минимальной длины.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Some key combinations may be different on these keyboards - for example on a UK keyboard the # symbol has its own key (with the tilde ~) but on a US keyboard it is above the 3 key (i.e., Shift+3).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102710Z" creationid="pm_kan" creationdate="20140113T102710Z">
+        <seg>Некоторые комбинации клавиш могут отличаться, например, на клавиатуре с английской раскладкой символ «#» находится на клавише с тильдой «~», а на американской раскладке он находится на той же клавише, что и символ 3 (для вызова используется Shift+3).</seg>
       </tuv>
     </tu>
     <tu>
@@ -15462,8 +16463,8 @@
       <tuv lang="EN-US">
         <seg>Such a keyboard is available as a virtual keyboard.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T180900Z">
-        <seg>Также они доступны через экранную клавиатуру.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132553Z">
+        <seg>Дополнительные раскладки также доступны через экранную клавиатуру.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15716,6 +16717,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The "Click, then activate your YubiKey" will be replaced by a progress bar indicating the remaining time you have to activate your YubiKey (by touching the flashing green light on the device).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T121447Z" creationid="pm_kan" creationdate="20140113T121416Z">
+        <seg>Текст «Нажмите на кнопку и коснитесь YubiKey» изменится на индикатор, показывающий оставшееся время, в течение которого вы должны активировать YubiKey прикоснувшись к «кнопке» на устройстве (мигающий зелёный огонёк).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The "Group.Title" is considered a single field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T112810Z">
@@ -15758,8 +16767,8 @@
       <tuv lang="EN-US">
         <seg>The 'AutoType' Dragbar button behaves in a slightly different manner: Dragging it to an input area on another Window (e.g. Browser) will cause &lt;b2&gt;Password Safe&lt;/b2&gt; to begin AutoType from there.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T115255Z">
-        <seg>Кнопка «Автонабор» ведёт себя по-другому: перетаскивание её в область ввода другого окна (например, браузера) приведёт к началу автонабора в этом поле.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153421Z">
+        <seg>Кнопка «Автонабор» ведёт себя по-другому: перетаскивание её в область ввода другого окна (например, браузера) приведёт к началу автонабора в этом поле.&lt;b2&gt;&lt;/b2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -15868,6 +16877,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The &lt;e1&gt;Standard&lt;/e1&gt; setting should provide sufficient security without delaying the opening of a database significantly on most platforms.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102203Z" creationid="pm_kan" creationdate="20140113T101924Z">
+        <seg>Значение &lt;e1&gt;обычная&lt;/e1&gt; предоставляет достаточный уровень стойкости к перебору без заметного замедления открытия контейнера на большинстве платформ.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The &lt;i0&gt;Enter key&lt;/i0&gt; is also reserved as it is used to set the value of a shortcut in the &lt;a1&gt;"Manage → Options → Shortcuts"&lt;/a1&gt; tab.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202247Z">
@@ -15880,6 +16897,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T114000Z">
         <seg>Клавиша &lt;i0&gt;Enter&lt;/i0&gt; также зарезервирована, так как она используется для задания горячих клавиш на вкладке «Управление»→«Настройки»→«Комбинации клавиш».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The &lt;i0&gt;Escape key&lt;/i0&gt; is reserved as it can be used to close the Find Toolbar or to minimise &lt;b1&gt;Password Safe&lt;/b1&gt; to the System Tray (or to exit the application if the System Tray is not used).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103435Z" creationid="pm_kan" creationdate="20140113T103435Z">
+        <seg>Клавиша &lt;i0&gt;Esc&lt;/i0&gt; также зарезервирована, так как она используется для скрытия панели поиска и сворачивания &lt;b1&gt;Password Safe&lt;/b1&gt; в значок (или выхода из приложения, если использование значка в области уведомлений отключено в настройках).</seg>
       </tuv>
     </tu>
     <tu>
@@ -15964,10 +16989,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The Hot Key value.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122117Z" creationid="pm_kan" creationdate="20140113T122117Z">
+        <seg>Горячая клавиша</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The KeePass entry's UUID will be transferred to the &lt;b0&gt;Password Safe&lt;/b0&gt; entry unless it is already used within that database (which is &lt;e1&gt;very&lt;/e1&gt; unlikely), in which case a new value will be calculated during import.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T190720Z">
-        <seg>Уникальные идентификаторы (UUID) элементов KeePass переносятся в &lt;b0&gt;Password Safe&lt;/b0&gt;, если только они уже не используются для других элементов, в противном случае будет создан новый идентификатор.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123128Z">
+        <seg>Уникальные идентификатор (UUID) элемента KeePass переносятся в &lt;b0&gt;Password Safe&lt;/b0&gt; без изменений, если только он уже не используются для другого элемента (что бывает &lt;e1&gt;очень&lt;/e1&gt; редко), в противном случае будет создан новый идентификатор.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16072,6 +17105,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T184050Z">
         <seg>XSLT-файлы соответствуют стандарту XSLT V1.0, описанному на &lt;a0&gt; http://www.w3.org/TR/xslt&lt;/a0&gt;, и были проверены на файлах, созданных с помощью KeePass V1.19b и KeePass V2.15.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The YubiKey Configuration dialog box will appear.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143229Z" creationid="pm_kan" creationdate="20140113T143229Z">
+        <seg>Будет отображён диалог настройки YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The Yubikey button on the Safe Combination window will now become active, and the text to the right of will change to "Click, then activate your YubiKey"</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120157Z" creationid="pm_kan" creationdate="20140113T115830Z">
+        <seg>В окне «Установка пароля для контейнера» станет активной кнопка YubiKey и в поле справа появится текст «Нажмите на кнопку и коснитесь YubiKey».</seg>
       </tuv>
     </tu>
     <tu>
@@ -16276,6 +17325,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The data displayed in the "YubiKey Secret Key" field is the key associated with this database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145750Z" creationid="pm_kan" creationdate="20140113T145750Z">
+        <seg>Последовательность, отображённая в поле «Секретный ключ YubiKey» это ключ, связанный с контейнером.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The database ("Safe") contains all your user names, passwords, and any additional information you may have added.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T111438Z">
@@ -16332,6 +17389,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The default actions are set in &lt;a2&gt;Manage → Options → Misc.&lt;/a2&gt; tab, and marked with "(default)" in the drop-down lists.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132843Z" creationid="pm_kan" creationdate="20140113T132843Z">
+        <seg>В выпадающих списках значение по умолчанию помечено фразой «(по умолчанию)». Изменить значение по умолчанию можно на вкладке &lt;a2&gt;Управление→Настройки→Разное&lt;/a2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The default is '»' [Alt+0187], which may be overridden if needed.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162228Z">
@@ -16368,6 +17433,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T195617Z">
         <seg>Набор символов по умолчанию для создания пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The default, 10mS, should be fine for most systems.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090156Z" creationid="pm_kan" creationdate="20140122T090156Z">
+        <seg>Значение по умолчанию (10 мс) подходит для большинства систем.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16636,6 +17709,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The following window will be displayed:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112159Z" creationid="pm_kan" creationdate="20140113T112159Z">
+        <seg>Будет отображён следующий диалог:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The format is as follows ('$autotype' can replace '$a' in the following examples):</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T191337Z">
@@ -16696,6 +17777,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T190610Z">
         <seg>Только имя группы, содержащей текущий элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The group containing this entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122620Z" creationid="pm_kan" creationdate="20140113T122620Z">
+        <seg>Имя группы, содержащей текущий элемент.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16808,6 +17897,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T183012Z">
         <seg>Клавиша нажимается вместе с Shift</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The keyboard shortcut will be removed from an entry if it is already assigned to another entry in the database, in the following cases:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135425Z" creationid="pm_kan" creationdate="20140113T135425Z">
+        <seg>Комбинация клавиш отвязывается от элемента, если она уже назначена другому элементу и </seg>
       </tuv>
     </tu>
     <tu>
@@ -17022,8 +18119,8 @@
       <tuv lang="EN-US">
         <seg>The number of recent files that &lt;b0&gt;Password Safe&lt;/b0&gt; will keep may be configured via the &lt;a1&gt;"Manage → Options → System"&lt;/a1&gt; tab, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T155423Z">
-        <seg>Количество запоминаемых контейнеров настраивается на вкладке &lt;a1&gt;Управление→Настройки→Система&lt;/a1&gt;. Также там можно настроить отображение списка недавно используемых контейнеров внутри меню «Файл», а не в его подменю.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152604Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;Количество запоминаемых контейнеров настраивается на вкладке &lt;a1&gt;Управление→Настройки→Система&lt;/a1&gt;. Также там можно настроить отображение списка недавно используемых контейнеров внутри меню «Файл», а не в его подменю.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17038,8 +18135,8 @@
       <tuv lang="EN-US">
         <seg>The only exception to this is the &lt;b3&gt;Use hexadecimal digits only&lt;/b3&gt; check box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T174314Z">
-        <seg>Единственное исключение — настройка &lt;b3&gt;Только шестнадцатеричные цифры (0-9, a-f)&lt;/b3&gt;.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T121928Z">
+        <seg>Единственное исключение — настройка &lt;b3&gt;Только шестнадцатеричные цифры (0–9, a–f)&lt;/b3&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17108,6 +18205,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The scope of the menu item shortcuts is for all databases opened by a given user on a particular PC and can be customised by that user (Manage → Options, &lt;a1&gt;Shortcuts tab&lt;/a1&gt;) and may change according to the user selected application language e.g. English, German etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134055Z" creationid="pm_kan" creationdate="20140113T133820Z">
+        <seg>Область действия горячих клавиш для пунктов меню распространяется на все контейнеры, открываемые на данном ПК. Значения по умолчанию зависят от выбранного языка. Ручная настройка горячих клавиш для пунктов меню производится на вкладке &lt;a1&gt;Управление→Настройки→Комбинации клавиш&lt;/a1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The seconds</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T195632Z">
@@ -17156,6 +18261,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The setting of the slider determines how much processing is required to open and save a &lt;b0&gt;Password Safe&lt;/b0&gt; database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T101700Z" creationid="pm_kan" creationdate="20140113T101700Z">
+        <seg>Положение ползунка определяет количество вычислительных ресурсов, требуемых для открытия и сохранения контейнера &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The short form of the day of the week; e.g. Mon = Monday, Tue = Tuesday, etc.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T130431Z">
@@ -17192,6 +18305,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T141720Z">
         <seg>Для того, чтобы новая группа гарантированно сохранилась, можно создать новый элемент и набрать требуемое имя в поле «Группа» (вложенные группы разделяются точкой «.»). </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The simplest method of ensuring a new group remains is to create a new entry and type in the new group path in the group field (groups are separated by periods ('.')).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141402Z" creationid="pm_kan" creationdate="20140113T141402Z">
+        <seg>Для того, чтобы новая группа гарантированно сохранилась, можно создать новый элемент и набрать требуемое имя в поле «Группа» (вложенные группы разделяются точкой «.»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -17332,6 +18453,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The virtual keyboard can be shown by clicking on the &lt;s2&gt;&lt;i3&gt; &lt;/s2&gt;symbol.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132635Z" creationid="pm_kan" creationdate="20140113T132635Z">
+        <seg>Для отображения экранной клавиатуры нужно нажать кнопку &lt;s2&gt;&lt;i3&gt;&lt;/s2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The virtual keyboard can be shown by pushing the symbol &lt;s2&gt;&lt;i3&gt;&lt;/s2&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T180952Z">
@@ -17382,8 +18511,8 @@
       <tuv lang="EN-US">
         <seg>The&lt;b1&gt;Go&lt;/b1&gt; button to the right of the &lt;b2&gt;URL&lt;/b2&gt; field is enabled if the URL field is not empty.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T192909Z">
-        <seg></seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152323Z">
+        <seg>&lt;b1&gt;&lt;/b1&gt;&lt;b2&gt;&lt;/b2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -17460,6 +18589,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Therefore, although a warning is shown if you select an entry keyboard shortcut that is currently assigned to a menu item, there may not be a conflict if you later customise the menu shortcuts or change the application display language.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134247Z" creationid="pm_kan" creationdate="20140113T133947Z">
+        <seg>По этой причине, если вы выберете для элемента ту же комбинацию клавиш, что уже назначена для пункта меню, будет выведено предупреждение. Это не приведёт к конфликта настроек, если позже вы измените язык локализации приложения или установите другую комбинацию для пункта меню.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Therefore, as of version 3.22, the configuration file (pwsafe.cfg) will be created in the standard location for such files (in the user's 'Application Data' directory).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T203831Z">
@@ -17492,9 +18629,25 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Therefore, it is not possible to assign this key.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103024Z" creationid="pm_kan" creationdate="20140113T103024Z">
+        <seg>Поэтому её невозможно переназначить.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Therefore, we strongly recommend that you make regular copies of you password database 'off-line', that is, to another PC or disk.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20111002T144441Z">
+        <seg>Поэтому, рекомендуется регулярно создавать резервные копии контейнера с паролями на другом носителе или компьютере.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Therefore, we strongly recommend that you make regular copies of your password database 'off-line', that is, to another PC or disk.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114403Z" creationid="pm_kan" creationdate="20140113T114403Z">
         <seg>Поэтому, рекомендуется регулярно создавать резервные копии контейнера с паролями на другом носителе или компьютере.</seg>
       </tuv>
     </tu>
@@ -17504,6 +18657,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T212237Z">
         <seg>Политики привязаны к контейнеру и хранятся в заголовке контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>These are shown in the Shortcut Property Page as 'Delete' and 'Rename', respectively.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103541Z" creationid="pm_kan" creationdate="20140113T103541Z">
+        <seg>Поэтому, соответствующие действия на вкладке «Комбинации клавиш» названы просто «Удалить» и «Переименовать».</seg>
       </tuv>
     </tu>
     <tu>
@@ -17604,6 +18765,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>They cannot be set independently.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103451Z" creationid="pm_kan" creationdate="20140113T103451Z">
+        <seg>Данные сочетания нельзя задать по отдельности.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>They exist by virtue of an entry being present with within it or within a sub-group of the group.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T141253Z">
@@ -17660,6 +18829,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This allows you to customize your optional &lt;a0&gt;YubiKey&lt;/a0&gt; device so that you can use it to access your &lt;b1&gt;Password Safe&lt;/b1&gt; database, as well as creating a backup YubiKey in case the original get lost or damaged.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123453Z" creationid="pm_kan" creationdate="20140113T123453Z">
+        <seg>Здесь вы можете настроить ключ &lt;a0&gt;YubiKey&lt;/a0&gt; для доступа к контейнеру &lt;b1&gt;Password Safe&lt;/b1&gt;, или создать его  резервную копию, на случае повреждения или утери.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This allows you to define the following kinds of filters:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160417Z">
@@ -17694,8 +18871,8 @@
       <tuv lang="EN-US">
         <seg>This allows you to generate a password with a specified password policy to be put into the clipboard, by pushing &lt;i0&gt;Generate&lt;/i0&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T151444Z">
-        <seg>Создание пароля согласно выбранной политики и копирование его в буфер обмена.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152900Z">
+        <seg>Создание пароля согласно выбранной политики и копирование его в буфер обмена.&lt;i0&gt;&lt;/i0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -17724,6 +18901,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This allows you to use your YubiKey to access your Password Safe database, either in addition to, or instead of a "Safe Combination".</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115155Z" creationid="pm_kan" creationdate="20140113T115155Z">
+        <seg>В этом случае YubiKey может быть использован для доступа к контейнеру Password Safe вместо мастер-пароля или же в дополнение к нему.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This can be as simple as a sealed envelope in a drawer or safe-deposit box, or a more elaborate mechanism such as splitting the master password and giving different parts to different parties.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20111002T150241Z">
@@ -17748,6 +18933,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This can be overridden using this preference</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122406Z" creationid="pm_kan" creationdate="20140113T122406Z">
+        <seg>Здесь можно переопределить её значение.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This can be overriden using this preference</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T192116Z">
@@ -17767,6 +18960,14 @@
         <seg>This can be useful if, for example, the autotype is too fast for your machine.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100919T204649Z">
+        <seg>Например, это может потребоваться, если автонабор выполняется слишком быстро.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This can be useful if, for example, the default AutoType timing is too fast for your machine.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111855Z" creationid="pm_kan" creationdate="20140113T111855Z">
         <seg>Например, это может потребоваться, если автонабор выполняется слишком быстро.</seg>
       </tuv>
     </tu>
@@ -17900,6 +19101,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This functionality will only be enabled if the Hot Key to start or reopen &lt;b1&gt;Password Safe&lt;/b1&gt; is active.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151823Z" creationid="pm_kan" creationdate="20140113T151823Z">
+        <seg>Данная функция доступна только в том случае, если задана комбинация клавиш, позволяющая отобразить окно &lt;b1&gt;Password Safe.&lt;/b1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This functionaltity will only be enabled if the Hot Key to start or reopen &lt;b1&gt;Password Safe&lt;/b1&gt; is active.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202939Z">
@@ -17932,10 +19141,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This includes both Latin and non-Latin characters</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122433Z" creationid="pm_kan" creationdate="20140113T122433Z">
+        <seg>Используется как для латинских, так и для всех остальных символов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This is a deliberate design decision, since any mechanism for retrieving lost passwords poses a security hole that can be exploited.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100905T141358Z">
         <seg>Это осознанное решение разработчиков, так как любой механизм восстановления потерянных паролей является брешью в системе защиты и может быть использован злоумышленниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This is a very convenient combination.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112051Z" creationid="pm_kan" creationdate="20140113T112051Z">
+        <seg>Иногда это может быть очень удобным.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17988,6 +19213,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This is done via the Manage-&gt;Yubikey... dialog box as described in the &lt;a1&gt;Manage Menu&lt;/a1&gt; Section.&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111313Z" creationid="pm_kan" creationdate="20140113T110929Z">
+        <seg>Требуемые действия выполняются в пункте меню «Управление→YubiKey...» (описание доступно в разделе &lt;a1&gt;Управление&lt;/a1&gt;).&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This is equivalent to selecting the &lt;a0&gt;"View → Filter → New/Edit Filter"&lt;/a0&gt; menu entry.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160906Z">
@@ -18008,6 +19241,15 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T123838Z">
         <seg>Затем идёт список доступных аварийных резервных копий.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>								</note>
+      <tuv lang="EN-US">
+        <seg>This is the key that will be written to your backup YubiKey.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150117Z" creationid="pm_kan" creationdate="20140113T145823Z">
+        <seg>Этот ключ будет записан на резервный YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18436,6 +19678,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This tab allows you to control and review the shortcuts, as follows.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151142Z" creationid="pm_kan" creationdate="20140113T151142Z">
+        <seg>Здесь вы можете управлять назначением клавиатурных комбинаций.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This table summarizes the shortcuts that are associated with specific entries in the currently opened database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151513Z" creationid="pm_kan" creationdate="20140113T151513Z">
+        <seg>В данной таблице указаны горячие клавиши, связанные с элементами текущего контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This variable can appear anywhere in the Run Command as it only specifies what &lt;b0&gt;Password Safe&lt;/b0&gt; will do after the command string has been executed.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T200551Z">
@@ -18516,10 +19774,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This will create a 20 byte random secret key that will be written to your YubiKey, and used to access your database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143514Z" creationid="pm_kan" creationdate="20140113T143501Z">
+        <seg>Будет сгенерирована 20-байтная случайная последовательность, которая затем будет записана в YubiKey и использована при доступе к контейнеру.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This will delete the selected Failsafe Backup file.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T152651Z">
         <seg>Выбранная аварийная резервная копия будет удалена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will display the corresponding entry's Edit dialog box.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151808Z" creationid="pm_kan" creationdate="20140113T151808Z">
+        <seg>Будет открыт диалог редактирования элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18556,6 +19830,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This will not be the case if an entry is dragged within the same database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135744Z" creationid="pm_kan" creationdate="20140113T135744Z">
+        <seg>При перетаскивании внутри текущего контейнера этого не произойдёт.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will open a new instance of &lt;b0&gt;Password Safe&lt;/b0&gt; with the specified database (Thanks to Dave for this one):</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150351Z" creationid="pm_kan" creationdate="20140113T150351Z">
+        <seg>Открытие указанного контейнера в новом экземпляре &lt;b0&gt;Password Safe&lt;/b0&gt; (спасибо Дейву (Dave) за пример):</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This will open the specified database file, instead of the last one opened.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T184524Z">
@@ -18574,8 +19864,8 @@
       <tuv lang="EN-US">
         <seg>This will prevent &lt;b2&gt;Password Safe&lt;/b2&gt; validating databases automatically when they are opened.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T170352Z">
-        <seg>Не использовать автоматическую проверку целостности при открытии контейнера.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152057Z">
+        <seg>Не использовать автоматическую проверку целостности при открытии контейнера.&lt;b2&gt;&lt;/b2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -18616,6 +19906,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T121326Z">
         <seg>После ввода пароля будет проведена проверка на наличие несоответствий.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will write the generated key to your YubiKey, and save the data in encrypted form in your &lt;b0&gt;Password Safe&lt;/b0&gt; database, so that you can use it to configure a backup key.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143747Z" creationid="pm_kan" creationdate="20140113T143747Z">
+        <seg>При выполнении этого действия созданный ключ будет записан в YubiKey, а его зашифрованная копия в контейнер &lt;b0&gt;Password Safe&lt;/b0&gt; (чтобы его затем можно было использовать при создании резервной копии).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will write the generated key to your backup YubiKey.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150146Z" creationid="pm_kan" creationdate="20140113T150146Z">
+        <seg>Произойдёт сохранение ключа на резервное устройство.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18692,6 +19998,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To &lt;b2&gt;Password Safe&lt;/b2&gt;, it functions as an authentication token, providing strong physical security to the password database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110025Z" creationid="pm_kan" creationdate="20140113T110025Z">
+        <seg>Для &lt;b2&gt;Password Safe&lt;/b2&gt; он выступает как маркер аутентификации (токен), добавляющий привязку к физическому устройству для защиты контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To add a new filter, click on New.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T111133Z">
@@ -18740,6 +20054,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To change from one to another:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113818Z" creationid="pm_kan" creationdate="20140113T113818Z">
+        <seg>Для переключения между этими режимами:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To change the PasswordSafe database so that it is only protected by a master password:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T113338Z" creationid="pm_kan" creationdate="20140113T113338Z">
+        <seg>Для того, чтобы изменить параметры аутентификации при доступе к контейнеру на использование только мастер-пароля: </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To change your master password, please see &lt;a0&gt;Changing Master Passwords&lt;/a0&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T172125Z">
@@ -18780,6 +20110,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To convert a Password Safe database that is accessed using a Master Password (Safe Combination) to YubiKey access:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112830Z" creationid="pm_kan" creationdate="20140113T112830Z">
+        <seg>Чтобы изменения способа аутентификации при доступе к контейнеру Password Safe с мастер-пароля на YubiKey:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To create a backup YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145549Z" creationid="pm_kan" creationdate="20140113T145549Z">
+        <seg>Создание резервной копии YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To create a report about your searching results, press the &lt;i0&gt; symbol.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T161541Z">
@@ -18792,6 +20138,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T194307Z">
         <seg>Для создания отчёта о найденных элементах щёлкните по значку &lt;s0&gt;&lt;i1&gt;&lt;/s0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To customize your YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123556Z" creationid="pm_kan" creationdate="20140113T123556Z">
+        <seg>Для настройки YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -18840,6 +20194,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T172057Z">
         <seg>Для отображения или скрытия панели инструментов поставьте или снимите отметку с пункта меню &lt;s0&gt;Отобразить панель инструментов&lt;/s0&gt;.&lt;br1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To edit an entry-specific shortcut, double-click on the desired row.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151728Z" creationid="pm_kan" creationdate="20140113T151728Z">
+        <seg>Для редактирования комбинации клавиш элемента щёлкните дважды на соответствующей строке.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18924,6 +20286,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To open a Password Safe database protected with your Yubikey:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T130355Z" creationid="pm_kan" creationdate="20140113T130158Z">
+        <seg>Чтобы открыть контейнер Password Safe, защищённый YubiKey:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To overcome this, you may specify a delimiter to separate multiple lines when exporting them.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110307T095309Z">
@@ -18960,6 +20330,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181440Z">
         <seg>Чтобы ввести такие символы, требуется соответствующая раскладка клавиатуры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To revert &lt;i0&gt;all&lt;/i0&gt; shortcuts to their default values, click on 'Reset All Program Shortcuts'.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151411Z" creationid="pm_kan" creationdate="20140113T151353Z">
+        <seg>Для возврата &lt;i0&gt;всем&lt;/i0&gt; действиям комбинаций клавиш, заданных по умолчанию, нажмите на кнопку «Сбросить горячие клавиши меню».</seg>
       </tuv>
     </tu>
     <tu>
@@ -19004,6 +20382,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To setup a master password in a secure way, you could use accented characters (e.g. on a German keyboard) such as &lt;b0&gt;?&lt;/b0&gt;, &lt;b1&gt;?&lt;/b1&gt; or similar.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132522Z" creationid="pm_kan" creationdate="20140113T132522Z">
+        <seg>Внутри мастер-пароля вы можете использовать символы иностранных алфавитов, например, &lt;b0&gt;ä&lt;/b0&gt;, &lt;b1&gt;ö&lt;/b1&gt; для немецкой раскладки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To setup a master password in a secure way, you could use character (e.g. on a German keyboard) as &lt;b0&gt;ä&lt;/b0&gt;, &lt;b1&gt;ö&lt;/b1&gt; or simular.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T183229Z">
@@ -19032,6 +20418,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T111412Z">
         <seg>Для сохранения фильтра во внешнем файле установите флажок в столбце «Экспорт» и нажмите кнопку «Экспорт».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To switch from one YubiKey to another:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114211Z" creationid="pm_kan" creationdate="20140113T114211Z">
+        <seg>Для привязку другого YubiKey:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To the user, it looks like a small, thin, disk-on-key with a button on top.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105719Z" creationid="pm_kan" creationdate="20140113T105719Z">
+        <seg>Для пользователя YubiKey на небольшую флешку с кнопкой на одной из сторон.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19068,6 +20470,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To use a '$' in the string as normal text (not indicating that the following text is a variable name), escape it using a back-slash ('\') e.g., '\$text' becomes '$text' and is not treated as a variable called 'text'.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122542Z" creationid="pm_kan" creationdate="20140113T122542Z">
+        <seg>Для использования знака «$» как обычного символа в строке (чтобы он не указывал на имя переменной), экранируйте его символом «\». Например, «\$text» рассматривается как «$text», а не как переменная с именем «text».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To use a '$' in the string as normal text (not indicating that the following text is a variable name), escape it using a back-slash ('\') e.g. '\$text' becomes '$text' and is not treated as a variable called 'text'.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T190047Z">
@@ -19092,6 +20502,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>To use your &lt;a0&gt;configured&lt;/a0&gt; YubiKey to protect your database:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115450Z" creationid="pm_kan" creationdate="20140113T115450Z">
+        <seg>Для использования &lt;a0&gt;настроенного&lt;/a0&gt; YubiKey:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Toggle between List and Tree views.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T101009Z">
@@ -19112,6 +20530,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T193351Z">
         <seg>TreeListSampleText</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>True if the user has defined a Hot Key to get quick access to Password Safe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122041Z" creationid="pm_kan" creationdate="20140113T122041Z">
+        <seg>True [истина], если назначена горячая клавиша для вызова Password Safe</seg>
       </tuv>
     </tu>
     <tu>
@@ -19176,6 +20602,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T191324Z">
         <seg>В отличие от других переменных, она может принимать дополнительный параметр для изменения значения по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unlock Difficulty</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T101119Z" creationid="pm_kan" creationdate="20140113T101119Z">
+        <seg>Сложность перебора для мастер-пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -19508,6 +20942,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Using YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111522Z" creationid="pm_kan" creationdate="20140113T111522Z">
+        <seg>Использование YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Using YubiKey with PasswordSafe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114557Z" creationid="pm_kan" creationdate="20140113T114557Z">
+        <seg>Использование YubiKey с Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Using either method causes the &lt;b4&gt;Safe Combination Set Up&lt;/b4&gt; dialog to appear.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T182211Z">
@@ -19588,6 +21038,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Values are: AllCollapsed, AllExpanded or AsPerLastSave</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122356Z" creationid="pm_kan" creationdate="20140113T122356Z">
+        <seg>Возможные значения: «AllCollapsed» [полностью свёрнуто], «AllExpanded» [полностью развёрнуто] или «AsPerLastSave» [как в прошлый раз]</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Values are: AllColpased, AllExpanded or AsPerLastSave</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T191608Z">
@@ -19646,8 +21104,8 @@
       <tuv lang="EN-US">
         <seg>Version 2.x of &lt;b0&gt;Password Safe&lt;/b0&gt; can read databases created by itself, and by version 1.x of &lt;b1&gt;Password Safe&lt;/b1&gt;</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204130Z">
-        <seg>Версия &lt;b0&gt;Password Safe&lt;/b0&gt; 2.x может читать контейнеры, созданные в версиях 2.x и 1.x.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153336Z">
+        <seg>Версия &lt;b0&gt;Password Safe&lt;/b0&gt; 2.x может читать контейнеры, созданные в версиях 2.x и 1.x.&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -19805,6 +21263,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>We recommend that you only select combinations from those listed here.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T103559Z" creationid="pm_kan" creationdate="20140113T103559Z">
+        <seg>Поэтому, рекомендуется использовать только перечисленные ниже сочетания.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Welcome</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T180717Z">
@@ -19871,8 +21337,8 @@
       <tuv lang="EN-US">
         <seg>When a user changes the configuration to a non-default value, the new value is store by &lt;b1&gt;Password Safe&lt;/b1&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T172023Z">
-        <seg>Когда пользователь изменяет ту или иную настройку, её новое значение (отличное от значения по умолчанию) сохраняется.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152935Z">
+        <seg>Когда пользователь изменяет ту или иную настройку, её новое значение (отличное от значения по умолчанию) сохраняется.&lt;b1&gt;&lt;/b1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -19945,6 +21411,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T110709Z">
         <seg>Если элемент является псевдонимом для другого, его пароль совпадает с исходным. Так, при копировании в буфер обмен пароля псевдонима, туда будет помещён пароль исходного элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When changing to read-write, you will be prompted for the master password.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T142745Z" creationid="pm_kan" creationdate="20140113T142745Z">
+        <seg>При переключение в режим «чтение/запись» будет запрошен мастер-пароль.</seg>
       </tuv>
     </tu>
     <tu>
@@ -20031,8 +21505,8 @@
       <tuv lang="EN-US">
         <seg>When checked, pressing the keys in the sequence to the right will restore &lt;b0&gt;Password Safe&lt;/b0&gt; from the system tray, if minimized, or bring it to the front, if obscured by other applications.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T202832Z">
-        <seg>Если помечено, указанная комбинация клавиш будет использована для восстановления &lt;b0&gt;Password Safe&lt;/b0&gt; из скрытого состояния, или помещения его окна на передний план, когда оно перекрыто другими окнами.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T151239Z">
+        <seg>Если выбрано, указанная комбинация клавиш будет использована для восстановления &lt;b0&gt;Password Safe&lt;/b0&gt; из скрытого состояния, или помещения его окна на передний план, когда оно перекрыто другими окнами.</seg>
       </tuv>
     </tu>
     <tu>
@@ -20103,8 +21577,8 @@
       <tuv lang="EN-US">
         <seg>When exporting to a plain text file, this character is also used to replace a period (.) in a Title field so that the correct Tree structure is rebuilt on Import (&lt;b0&gt;Note:&lt;/b0&gt; a period is used to separate groups).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T115634Z">
-        <seg>При экспорте в простой текст этот символ также используется для замены точек (.) в заголовке. Это сделано для того, чтобы при импорте можно было восстановить разбиение на группы, т. к. точка используется для отделения групп.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153440Z">
+        <seg>При экспорте в простой текст этот символ также используется для замены точек (.) в заголовке. Это сделано для того, чтобы при импорте можно было восстановить разбиение на группы, т. к. точка используется для отделения групп.&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -20129,6 +21603,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T124829Z">
         <seg>Все импортируемые записи, ссылающиеся на политику, отсутствующую в текущем контейнере или импортируемом XML-файле, будут привязаны к политике по умолчанию из текущего контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When increasing this value, consider the slowest CPU that you will use to access the database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102537Z" creationid="pm_kan" creationdate="20140113T102537Z">
+        <seg>При увеличении этого значения учитывайте самый медленный компьютер, на котором будет использоваться данный контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -20197,6 +21679,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>When the database is opened in read-only mode, access times are &lt;b0&gt;not&lt;/b0&gt; updated.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150158Z" creationid="pm_kan" creationdate="20140113T150158Z">
+        <seg>Если контейнер открыт в режиме «только чтение», время последнего доступа &lt;b0&gt;не обновляется&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>When the database is opened in read-only mode, the access times are &lt;b0&gt;not&lt;/b0&gt; updated.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T155947Z">
@@ -20233,6 +21723,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T195401Z">
         <seg>При наступлении указанной даты &lt;s1&gt;Password Safe&lt;/s1&gt; выведет уведомление при запуске и пометит элемент другим цветом.&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When the expiration date approaches, &lt;b1&gt;Password Safe&lt;/b1&gt; will notify you upon startup that the password should be changed, as well as marking the entry in a distinct color.&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T140947Z" creationid="pm_kan" creationdate="20140113T140856Z">
+        <seg>Незадолго до наступления указанной даты &lt;b1&gt;Password Safe&lt;/b1&gt; при запуске выведет уведомление и пометит элемент другим цветом.&lt;br2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -20289,6 +21787,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T160012Z">
         <seg>При изменении пароля элемента &lt;s0&gt;&lt;s1&gt;&lt;s2&gt;&lt;s3&gt; &lt;/s3&gt;&lt;/s2&gt;&lt;/s1&gt;Password Safe&lt;/s0&gt; может сохранять предыдущее значение.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When you clisk on the Yubikey button, the "Click, then activate your YubiKey" will be replaced by a progress bar indicating the remaining time you have to activate your YubiKey (by touching the flashing green light on the device).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132256Z" creationid="pm_kan" creationdate="20140113T132256Z">
+        <seg>После нажатия на кнопку с надписью YubiKey, текст «Нажмите на кнопку и коснитесь YubiKey» изменится на индикатор, показывающий оставшееся время, в течение которого вы должны активировать YubiKey прикоснувшись к «кнопке» на устройстве (мигающий зелёный огонёк).</seg>
       </tuv>
     </tu>
     <tu>
@@ -20541,6 +22047,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>You can also switch between these modes by double-clicking on the R/W / R-O text in the status bar on the bottom of the application's window.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143003Z" creationid="pm_kan" creationdate="20140113T143003Z">
+        <seg>Также, для переключения между этими режимами можно дважды щёлкнуть на надписи R-W (R-0) в строке состояния.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You can always override this for a given entry in the Add Entry or Edit/View Entry dialog boxes.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T160106Z">
@@ -20577,6 +22091,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T213528Z">
         <seg>Также здесь можно скрыть или отобразить панель инструментов и выбрать стиль значков для неё.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You can create versions of the database that are readable by older versions of &lt;b0&gt;Password Safe&lt;/b0&gt; by explicitly exporting to the desired format (&lt;b1&gt;File → Export To&lt;/b1&gt; and select &lt;b2&gt;V1 format... &lt;/b2&gt;or &lt;b3&gt;V2 format...&lt;/b3&gt;).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153708Z" creationid="pm_kan" creationdate="20140113T153708Z">
+        <seg>Вы можете создать копии контейнера, читаемые в предыдущих версиях &lt;b0&gt;Password Safe&lt;/b0&gt; используя экспорт в требуемый формат (&lt;b1&gt;Файл→Экспортировать в&lt;/b1&gt;, а затем &lt;b2&gt;Формат v1.x&lt;/b2&gt; или &lt;b3&gt;Формат v2.x&lt;/b3&gt;).</seg>
       </tuv>
     </tu>
     <tu>
@@ -20649,6 +22171,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T210827Z">
         <seg>В качестве разделителя можно использовать пробелы, запятые и точки с запятой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You may also add the entry keyboard shortcut column to the Flattened List view and/or create a filter to just show those entries with or without keyboard shortcuts.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T140646Z" creationid="pm_kan" creationdate="20140113T140646Z">
+        <seg>Также вы можете включить отображение столбца с комбинации клавиш в режиме Простого списка и/или создать фильтр, отображающий только элементы с назначенными горячими клавишами.</seg>
       </tuv>
     </tu>
     <tu>
@@ -20749,6 +22279,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>You may double click on the keyboard shortcut in this list to Edit/View the corresponding entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T140248Z" creationid="pm_kan" creationdate="20140113T140248Z">
+        <seg>Для просмотра/редактирования связанного элемента щёлкните дважды на назначенной комбинации.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You may need to enclose the result in quotes in your Run Command for correct execution.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T212220Z">
@@ -20813,10 +22351,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>You may want to decrease it (make it faster) if you've a fast PC, or increase it (slow it down) for an older machine.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T090425Z" creationid="pm_kan" creationdate="20140122T090425Z">
+        <seg>Но вы можете уменьшить его (сделать автонабор быстрее), если у вас мощный компьютер, или, наоборот, увеличить (замедлить автонабор) для старых машин.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You may, however, View both the default and other policies.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T112903Z">
         <seg>Просмотр параметров существующих политик доступен в любом режиме.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You might also want to set the Double-Click Action for this entry to "Run Command"</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150836Z" creationid="pm_kan" creationdate="20140113T150836Z">
+        <seg>Также может оказаться удобным изменить «Действие по двойному клику» для этого элемента на «Выполнить команду».</seg>
       </tuv>
     </tu>
     <tu>
@@ -20877,6 +22431,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>You will be asked to enter the master password (safe combination) to confirm that you may export the database into a clear text unencrypted file before you can export its contents.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141636Z" creationid="pm_kan" creationdate="20140113T141636Z">
+        <seg>Для подтверждения экспорта данных в незащищённый текстовый файл, будет запрошен мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You will be asked to enter the master password or safe combination to confirm that you may export the database into a clear text unencrypted file before you can export its contents.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T152837Z">
@@ -20917,10 +22479,66 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Your YubiKey needs to be configured properly in order to work with &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110459Z" creationid="pm_kan" creationdate="20140113T110459Z">
+        <seg>Перед началом работы YubiKey должен быть настроен для взаимодействия с &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Your YubiKey's Serial Number should be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150037Z" creationid="pm_kan" creationdate="20140113T143250Z">
+        <seg>В нём вы должны увидеть серийный номер вашего устройства.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Your backup YubiKey's Serial Number should be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T145842Z" creationid="pm_kan" creationdate="20140113T145626Z">
+        <seg>В нём вы должны увидеть серийный номер вашего резервного устройства.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Your choices are as follows:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T152427Z">
         <seg>Можно выбрать одно из следующих действий:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>YubiKey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110032Z" creationid="pm_kan" creationdate="20140113T110032Z">
+        <seg>YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>YubiKey Configuration</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123502Z" creationid="pm_kan" creationdate="20140113T123502Z">
+        <seg>Настройки YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>YubiKeys can be purchased online from &lt;a0&gt;here&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110224Z" creationid="pm_kan" creationdate="20140113T110224Z">
+        <seg>Его можно приобрести в &lt;a0&gt;интернет-магазине&lt;/a0&gt; Yubico.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Yubikey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123214Z" creationid="pm_kan" creationdate="20140113T123214Z">
+        <seg>YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -21325,6 +22943,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>about_pws_yubi.html</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T112205Z" creationid="pm_kan" creationdate="20140113T112205Z">
+        <seg>about_pws_yubi.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>aliases.html</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T225943Z">
@@ -21477,6 +23103,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>create_new_db.html</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111533Z" creationid="pm_kan" creationdate="20140113T111533Z">
+        <seg>create_new_db.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>currentbackup</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182748Z">
@@ -21593,6 +23227,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182230Z">
         <seg>dontaskquestion</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>e &lt;s0&gt;or&lt;/s0&gt; email</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122718Z" creationid="pm_kan" creationdate="20140113T122718Z">
+        <seg>e &lt;s0&gt;или&lt;/s0&gt; email</seg>
       </tuv>
     </tu>
     <tu>
@@ -21933,6 +23575,30 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>http://www.yubico.com/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105051Z" creationid="pm_kan" creationdate="20140113T105051Z">
+        <seg>http://www.yubico.com/</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>http://www.yubico.com/o.php?refid=87&amp;rno=1465477058</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110052Z" creationid="pm_kan" creationdate="20140113T110052Z">
+        <seg>http://www.yubico.com/o.php?refid=87&amp;rno=1465477058</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>http://www.yubico.com/yubikey</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105048Z" creationid="pm_kan" creationdate="20140113T105048Z">
+        <seg>http://www.yubico.com/yubikey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>https://sourceforge.net</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181742Z">
@@ -22013,10 +23679,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>i&lt;s0&gt;th&lt;/s0&gt; line of the Notes field counting from the end, i.e., i=1 is the last line, i=2 means the penultimate line etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150224Z" creationid="pm_kan" creationdate="20140113T150224Z">
+        <seg>i-я&lt;s0&gt;&lt;/s0&gt; строка заметок, считая с конца: i=1 — последняя строка, i=2 — предпоследняя и т. д.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>i&lt;s0&gt;th&lt;/s0&gt; line of the Notes field counting from the start, i.e. i=1 is the first line, i=2 means the second line etc.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T193057Z">
         <seg>i-я&lt;s0&gt;&lt;/s0&gt; строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>i&lt;s0&gt;th&lt;/s0&gt; line of the Notes field counting from the start, i.e., i=1 is the first line, i=2 means the second line etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152949Z" creationid="pm_kan" creationdate="20140113T122758Z">
+        <seg>i-я строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д.&lt;s0&gt;&lt;/s0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -22119,24 +23801,24 @@
       <tuv lang="EN-US">
         <seg>images/about.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T113922Z">
-        <seg>images/about.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100312Z">
+        <seg>images/about.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/adv_txt_ex.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T125750Z">
-        <seg>images/export_text_adv.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100327Z">
+        <seg>images/export_text_adv.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/advanced_find.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T135632Z">
-        <seg>images/advanced_find.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095658Z">
+        <seg>images/advanced_find.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22151,24 +23833,24 @@
       <tuv lang="EN-US">
         <seg>images/alias_example.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T195713Z">
-        <seg>images/alias_example.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095741Z">
+        <seg>images/alias_example.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/change_font_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152412Z">
-        <seg>images/change_font_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100622Z">
+        <seg>images/change_font_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/change_language.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152028Z">
-        <seg>images/change_language.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100343Z">
+        <seg>images/change_language.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22183,112 +23865,112 @@
       <tuv lang="EN-US">
         <seg>images/combo_change.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T110522Z">
-        <seg>images/combo_change.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095812Z">
+        <seg>images/combo_change.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/compare_results.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T174858Z">
-        <seg>images/compare_results.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095820Z">
+        <seg>images/compare_results.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/db_properties.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151043Z">
-        <seg>images/db_properties.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100153Z">
+        <seg>images/db_properties.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/default_safe_open.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T180654Z">
-        <seg>images/default_safe_open.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095830Z">
+        <seg>images/default_safe_open.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_default_policy.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T215446Z">
-        <seg>images/edit_default_policy.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100439Z">
+        <seg>images/edit_default_policy.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_g_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T202022Z">
-        <seg>images/edit_g_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100004Z">
+        <seg>images/edit_g_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T201954Z">
-        <seg>images/edit_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095950Z">
+        <seg>images/edit_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_named_policy.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T221213Z">
-        <seg>images/edit_named_policy.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100452Z">
+        <seg>images/edit_named_policy.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_protected.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T140714Z">
-        <seg>images/edit_protected.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100110Z">
+        <seg>images/edit_protected.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_view_entry_add.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T213541Z">
-        <seg>images/edit_view_entry_add.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100033Z">
+        <seg>images/edit_view_entry_add.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_view_entry_base.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T221954Z">
-        <seg>images/edit_view_entry_base.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100102Z">
+        <seg>images/edit_view_entry_base.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_view_entry_date.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T215932Z">
-        <seg>images/edit_view_entry_date.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100039Z">
+        <seg>images/edit_view_entry_date.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_view_entry_policy.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T221552Z">
-        <seg>images/edit_view_entry_policy.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100056Z">
+        <seg>images/edit_view_entry_policy.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/edit_x_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T202013Z">
-        <seg>images/edit_x_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095957Z">
+        <seg>images/edit_x_menu.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22303,87 +23985,87 @@
       <tuv lang="EN-US">
         <seg>images/expired_password_filter.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T140326Z">
-        <seg>images/expired_password_filter.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100049Z">
+        <seg>images/expired_password_filter.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/export.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T112518Z">
-        <seg>images/export.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100119Z">
+        <seg>images/export.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/export_text_adv.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T113339Z">
-        <seg>images/export_text_adv.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100127Z">
+        <seg>images/export_text_adv.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/export_xml_adv.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T114920Z">
-        <seg>images/export_xml_adv.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095721Z">
+        <seg>images/export_xml_adv.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/failsafebackup.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T123750Z">
-        <seg>images/failsafebackup.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100135Z">
+        <seg>images/failsafebackup.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/file_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T125015Z">
-        <seg>images/file_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100144Z">
+        <seg>images/file_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter-ex1.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T132924Z">
-        <seg>images/filter-ex1.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100226Z">
+        <seg>images/filter-ex1.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter-ex2.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T132924Z">
-        <seg>images/filter-ex2.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100234Z">
+        <seg>images/filter-ex2.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter-ex3.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T132926Z">
-        <seg>images/filter-ex3.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100242Z">
+        <seg>images/filter-ex3.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T132921Z">
-        <seg>images/filter.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100217Z">
+        <seg>images/filter.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter_active.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151503Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100815Z">
         <seg>images/filter_active.jpg</seg>
       </tuv>
     </tu>
@@ -22391,31 +24073,31 @@
       <tuv lang="EN-US">
         <seg>images/filter_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151346Z">
-        <seg>images/filter_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100206Z">
+        <seg>images/filter_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/filter_mng.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T110958Z">
-        <seg>images/filter_mng.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100254Z">
+        <seg>images/filter_mng.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/find_bar.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T193721Z">
-        <seg>images/find_bar.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100523Z">
+        <seg>images/find_bar.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/find_report.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T194249Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100903Z">
         <seg>images/find_report.jpg</seg>
       </tuv>
     </tu>
@@ -22423,16 +24105,16 @@
       <tuv lang="EN-US">
         <seg>images/help_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T113753Z">
-        <seg>images/help_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100304Z">
+        <seg>images/help_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/import.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T145035Z">
-        <seg>images/import.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100320Z">
+        <seg>images/import.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22447,32 +24129,32 @@
       <tuv lang="EN-US">
         <seg>images/manage_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150114Z">
-        <seg>images/manage_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100335Z">
+        <seg>images/manage_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/manage_password_policies.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T212537Z">
-        <seg>images/manage_password_policies.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100433Z">
+        <seg>images/manage_password_policies.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/new_named_policy.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T220852Z">
-        <seg>images/new_named_policy.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100447Z">
+        <seg>images/new_named_policy.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/new_safe.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T180657Z">
-        <seg>images/new_safe.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095909Z">
+        <seg>images/new_safe.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22511,32 +24193,32 @@
       <tuv lang="EN-US">
         <seg>images/options/backups_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T210905Z">
-        <seg>images/options/backups_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095801Z">
+        <seg>images/options/backups_tab.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/options/display_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T184012Z">
-        <seg>images/options/display_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095929Z">
+        <seg>images/options/display_tab.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/options/misc_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T153335Z">
-        <seg>images/options/misc_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100426Z">
+        <seg>images/options/misc_tab.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/options/password_history_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T155906Z">
-        <seg>images/options/password_history_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100459Z">
+        <seg>images/options/password_history_tab.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -22559,40 +24241,40 @@
       <tuv lang="EN-US">
         <seg>images/options/shortcuts_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T204445Z">
-        <seg>images/options/shortcuts_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100540Z">
+        <seg>images/options/shortcuts_tab.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/options/system_tab.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T205612Z">
-        <seg>images/options/system_tab.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100546Z">
+        <seg>images/options/system_tab.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/rightclick_edit_e.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T204934Z">
-        <seg>images/rightclick_edit_e.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100012Z">
+        <seg>images/rightclick_edit_e.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/rightclick_edit_ex.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T204935Z">
-        <seg>images/rightclick_edit_ex.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100018Z">
+        <seg>images/rightclick_edit_ex.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/rightclick_edit_g.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T204937Z">
-        <seg>images/rightclick_edit_g.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100027Z">
+        <seg>images/rightclick_edit_g.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -23263,24 +24945,24 @@
       <tuv lang="EN-US">
         <seg>images/tree_view.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T220137Z">
-        <seg>images/tree_view.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100755Z">
+        <seg>images/tree_view.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/tree_view_change.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T214455Z">
-        <seg>images/tree_view_change.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100610Z">
+        <seg>images/tree_view_change.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/tree_view_change_only.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T214519Z">
-        <seg>images/tree_view_change_only.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100616Z">
+        <seg>images/tree_view_change_only.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -23295,32 +24977,32 @@
       <tuv lang="EN-US">
         <seg>images/view_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T213407Z">
-        <seg>images/view_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100604Z">
+        <seg>images/view_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/view_report.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151200Z">
-        <seg>images/view_report.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100159Z">
+        <seg>images/view_report.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/view_reports_menu.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152900Z">
-        <seg>images/view_reports_menu.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100628Z">
+        <seg>images/view_reports_menu.png</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>images/virtual_keyboard.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181027Z">
-        <seg>images/virtual_keyboard.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095922Z">
+        <seg>images/virtual_keyboard.png</seg>
       </tuv>
     </tu>
     <tu>
@@ -23335,8 +25017,24 @@
       <tuv lang="EN-US">
         <seg>images/weakpassword.jpg</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110131T105301Z">
-        <seg>images/weakpassword.jpg</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T095647Z">
+        <seg>images/weakpassword.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images/yubi_config.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123533Z" creationid="pm_kan" creationdate="20140113T123533Z">
+        <seg>images/yubi_config.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images/yubikey.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110037Z" creationid="pm_kan" creationdate="20140113T110037Z">
+        <seg>images/yubikey.jpg</seg>
       </tuv>
     </tu>
     <tu>
@@ -23503,8 +25201,8 @@
       <tuv lang="EN-US">
         <seg>p &lt;s0&gt;or&lt;/s0&gt; password</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T190613Z">
-        <seg>p &lt;s0&gt;or&lt;/s0&gt; password</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122650Z">
+        <seg>p &lt;s0&gt;или&lt;/s0&gt; password</seg>
       </tuv>
     </tu>
     <tu>
@@ -23825,6 +25523,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T143637Z">
         <seg>uuu — 3 шестнадцатеричные цифры: минимальное количество прописных букв;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>view report</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143023Z" creationid="pm_kan" creationdate="20140113T143023Z">
+        <seg>Просмотр отчёта</seg>
       </tuv>
     </tu>
     <tu>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="2.5.5_1" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.0.8_2" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2062,7 +2062,7 @@ offset approximately at %d</seg>
         <seg>Copyright (c) 2003-2009 by Rony Shapiro</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T180219Z">
-        <seg>Copyright (c) 2003-2013 by Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2014 by Rony Shapiro</seg>
       </tuv>
     </tu>
     <tu>
@@ -2075,10 +2075,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Copyright (c) 2003-2013 by Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2014 by Rony Shapiro</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T090803Z">
-        <seg>Copyright (c) 2003-2013 by Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2014 by Rony Shapiro</seg>
       </tuv>
     </tu>
     <tu>
@@ -5459,6 +5459,84 @@ Content-Transfer-Encoding: 8bit</seg>
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2013-09-15 21:52+0400
 PO-Revision-Date: 2013-09-15 21:50+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-12 15:12+0400
+PO-Revision-Date: 2013-10-13 18:30+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140112T111644Z" creationid="pm_kan" creationdate="20140112T111644Z">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-12 15:18+0400
+PO-Revision-Date: 2014-01-12 15:18+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-13 19:49+0400
+PO-Revision-Date: 2014-01-13 13:30+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T155427Z" creationid="pm_kan" creationdate="20140113T155407Z">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-13 19:54+0400
+PO-Revision-Date: 2014-01-13 19:54+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-22 13:11+0400
+PO-Revision-Date: 2014-01-22 12:30+0400
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T091612Z" creationid="pm_kan" creationdate="20140122T091612Z">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2014-01-22 13:11+0400
+PO-Revision-Date: 2014-01-22 13:20+0400
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 

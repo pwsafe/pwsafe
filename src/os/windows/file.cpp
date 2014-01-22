@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -410,13 +410,13 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return fd;
 }
 
-long pws_os::fileLength(std::FILE *fp) {
+ulong64 pws_os::fileLength(std::FILE *fp) {
   if (fp != NULL) {
-    long pos = std::ftell(fp);
-    std::fseek(fp, 0, SEEK_END);
-    long len = ftell(fp);
-    std::fseek(fp, pos, SEEK_SET);
-    return len;
+    __int64 pos = _ftelli64(fp);
+    _fseeki64(fp, 0, SEEK_END);
+    __int64 len = _ftelli64(fp);
+    _fseeki64(fp, pos, SEEK_SET);
+    return ulong64(len);
   } else
     return 0;
 }

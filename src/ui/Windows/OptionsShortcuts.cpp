@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -554,12 +554,12 @@ int CALLBACK COptionsShortcuts::CKBSHCompareFunc(LPARAM lParam1, LPARAM lParam2,
   if (nSortColumn == 0) {
     WORD wLHS_VirtualKeyCode, wRHS_VirtualKeyCode, wPWSModifiers;
     wLHS_VirtualKeyCode = lParam1& 0xff;
-    wPWSModifiers = lParam1 >> 16;
+    wPWSModifiers = WORD(lParam1 >> 16);
 
     WORD wLHS_HKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
     wRHS_VirtualKeyCode = lParam2 & 0xff;
-    wPWSModifiers = lParam2 >> 16;
+    wPWSModifiers = WORD(lParam2 >> 16);
 
     WORD wRHS_HKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
@@ -569,8 +569,8 @@ int CALLBACK COptionsShortcuts::CKBSHCompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = wRHS_VirtualKeyCode < wLHS_VirtualKeyCode ? 1 : -1;
 
   } else {
-    pws_os::CUUID &LHS_UUID = self->m_KBShortcutMap[lParam1];
-    pws_os::CUUID &RHS_UUID = self->m_KBShortcutMap[lParam2];
+    pws_os::CUUID &LHS_UUID = self->m_KBShortcutMap[int(lParam1)];
+    pws_os::CUUID &RHS_UUID = self->m_KBShortcutMap[int(lParam2)];
     iLHS = app.GetCore()->Find(LHS_UUID);
     iRHS = app.GetCore()->Find(RHS_UUID);
     switch (nSortColumn) {
@@ -647,7 +647,7 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
   // Disable parent whilst editing entry
   m_options_psh->EnableWindow(FALSE);
 
-  DWORD lParam = m_EntryShortcutLC.GetItemData(iItem);
+  DWORD_PTR lParam = m_EntryShortcutLC.GetItemData(iItem);
   pws_os::CUUID &EntryUUID = GetKBShortcutUUID(lParam);
   iter = app.GetCore()->Find(EntryUUID);
   bool bEdited = GetMainDlg()->EditItem(&iter->second, NULL);

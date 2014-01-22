@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -55,7 +55,7 @@ extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char *cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
-                       size_t file_len = 0);
+                       ulong64 file_len = 0);
 
 // _writecbc will throw(EIO) iff a write fail occurs!
 extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,

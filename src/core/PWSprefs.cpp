@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -158,6 +158,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
   {_T("ShiftDoubleClickAction"), DoubleClickCopyUsername, ptApplication,
                             minDCA, maxDCA},                        // application
+  {_T("DefaultAutotypeDelay"), 10, ptApplication,
+                            1, 60000},                              // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

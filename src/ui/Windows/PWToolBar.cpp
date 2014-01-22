@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -345,7 +345,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
     const GuiRecord *iter = std::find_if(MainGuiInfo,
                                          MainGuiInfo + _countof(MainGuiInfo), finder);
     if (iter != MainGuiInfo + _countof(MainGuiInfo)) {
-      int index = std::distance(MainGuiInfo, iter);
+      int index = int(std::distance(MainGuiInfo, iter));
       tbCtrl.AddButtons(1, &m_pOriginalTBinfo[index]);
     }
     csToken = csButtonNames.Tokenize(L" ", curPos);

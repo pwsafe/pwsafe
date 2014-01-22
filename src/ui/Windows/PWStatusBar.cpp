@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -128,7 +128,7 @@ BOOL CPWStatusBar::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRE
         NMMOUSE* pNMMouse = (NMMOUSE *)lParam;
         if (pNMMouse->dwItemSpec >= 0 &&
             pNMMouse->dwItemSpec < (unsigned int)m_nCount) {
-          UINT uCommandId = GetItemID(pNMMouse->dwItemSpec);
+          UINT uCommandId = GetItemID(int(pNMMouse->dwItemSpec));
           // Only Interested in double-click on R-O or R/W indicator or filter bitmap
           if (uCommandId == IDS_READ_ONLY || uCommandId == IDB_FILTER_ACTIVE)
             GetParent()->SendMessage(WM_COMMAND, uCommandId, 0);

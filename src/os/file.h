@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,7 +27,7 @@ namespace pws_os {
                          HANDLE &lockFileHandle, int &LockCount);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
-  extern long fileLength(std::FILE *fp);
+  extern ulong64 fileLength(std::FILE *fp);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 }
 #endif /* __FILE_H */

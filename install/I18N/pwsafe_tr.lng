@@ -126,6 +126,7 @@ LangString KOREAN_SUPPORT ${LANG_TURKISH} "Kore Dili"
 LangString CZECH_SUPPORT ${LANG_TURKISH} "Çekçe"
 ; TURKISH_SUPPORT "Turkish"
 LangString TURKISH_SUPPORT $(LANG_TURKISH) "Türkçe"
+LangString HUNGARIAN_SUPPORT ${LANG_TURKISH} "Macarca"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_TURKISH} "Program Dili"

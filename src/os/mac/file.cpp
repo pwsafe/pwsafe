@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -341,7 +341,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return retval;
 }
 
-long pws_os::fileLength(std::FILE *fp)
+ulong64 pws_os::fileLength(std::FILE *fp)
 {
   int fd = fileno(fp);
   if (fd == -1)
@@ -349,6 +349,6 @@ long pws_os::fileLength(std::FILE *fp)
   struct stat st;
   if (fstat(fd, &st) == -1)
     return -1;
-  return st.st_size;
+  return ulong64(st.st_size);
 }
 

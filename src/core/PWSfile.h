@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -146,7 +146,7 @@ protected:
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
-  size_t m_fileLength;
+  ulong64 m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;
 
@@ -172,7 +172,7 @@ public:
   bool operator!=(const PWSFileSig &that) {return !(*this == that);}
 
 private:
-  long m_length; // -1 if file doesn't exist or zero length
+  ulong64 m_length; // -1 if file doesn't exist or zero length
   unsigned char m_digest[SHA256::HASHLEN];
   int m_iErrorCode;
 };

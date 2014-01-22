@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,7 +34,7 @@ public:
   inline int GetColumn() {return m_column;}
   void SetRow(const int iRow) {m_row = iRow;}
   void SetColumn(const int iColumn) {m_column = iColumn;}
-  bool IsSelected(const int iRow);
+  bool IsSelected(DWORD_PTR iRow);
 
 protected:
   //{{AFX_MSG(CCPListCtrl)

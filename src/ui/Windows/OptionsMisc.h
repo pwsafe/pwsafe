@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,7 +34,8 @@ protected:
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
   CString m_BrowserCmdLineParms;
-  CString m_Autotype;
+  CString m_AutotypeText;
+  unsigned m_AutotypeDelay;
 
   BOOL m_ConfirmDelete;
   BOOL m_MaintainDatetimeStamps;

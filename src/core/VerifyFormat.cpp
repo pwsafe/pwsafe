@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -506,7 +506,8 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
 
   StringX sxBuffer, tmp;
   std::vector<StringX> in_tokens, out_entries;
-  int s = -1, nerror(-1);
+  int s = -1;
+  size_t nerror(size_t(-1));
   unsigned int ipwlen, m = 0, n = 0; // using uint instead of size_t to use 'x' format spec instead of complier-dependent z/I
   int rc = PWH_OK;
   time_t t;

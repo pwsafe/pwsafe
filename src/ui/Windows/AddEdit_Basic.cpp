@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2013 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,6 +30,7 @@
 
 #include <shlwapi.h>
 #include <fstream>
+#include <limits>
 
 #include "Richedit.h"
 
@@ -1131,6 +1132,10 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   return 0;
 }
 
+#ifdef max
+#undef max
+#endif
+
 LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 {
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
@@ -1145,14 +1150,23 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
     return 0L;
   }
 
-  long flength = pws_os::fileLength(fd);
+  ulong64 flength = pws_os::fileLength(fd);
 
-  ASSERT(flength % 2 == 0);
+  ASSERT(flength % 2 == 0); // guess this is 'cause we assume editor saves wchar_t?
 
-  BYTE *pBuffer = new BYTE[flength + sizeof(wchar_t)];
-  memset(pBuffer, 0, flength + sizeof(wchar_t));
+  size_t slength;
+  if (flength > (std::numeric_limits<size_t>::max() - 2)) {
+    // we're gonna truncate later in any case, due to the check
+    // on MAXTEXTCHARS. This is just to keep memory in check
+    slength = std::numeric_limits<size_t>::max() - 2;
+  } else {
+    slength = static_cast<size_t>(flength);
+  }
 
-  if (flength >= 2) {
+  BYTE *pBuffer = new BYTE[slength + sizeof(wchar_t)];
+  memset(pBuffer, 0, slength + sizeof(wchar_t));
+
+  if (slength >= 2) {
     // Read in BOM and check it is
     const unsigned char BOM[] = {0xff, 0xfe};
     fread(pBuffer, 1, 2, fd);
@@ -1160,14 +1174,14 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
     // if not a BOM - backspace and treat as data
     if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
       fseek(fd, 0, SEEK_SET);
-      flength += 2;
+      slength += 2;
     }
   }
 
   // Clear BOM
   memset(pBuffer, 0, 2);
   // Read in text
-  fread(pBuffer, sizeof(BYTE), flength - 2, fd);
+  fread(pBuffer, sizeof(BYTE), slength - 2, fd);
 
   note = reinterpret_cast<const LPCWSTR>(pBuffer);
 

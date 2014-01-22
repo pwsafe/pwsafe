@@ -2430,6 +2430,10 @@ msgid "Default"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Default Autotype delay (mS):"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Default Autotype string:"
 msgstr "默认自动输入字串:"
 
@@ -3147,6 +3151,14 @@ msgstr "文件读取错误！"
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr "文件结尾行 %d 在最后项目备注字段的双引号之前结束！"
+
+#. Resource IDs: (213)
+msgid "File is too big."
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "File is too short."
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."

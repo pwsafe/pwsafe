@@ -33,6 +33,7 @@
 
 <li>В настоящий момент распознаются следующие переменные:</li>
 
+
 <ul>
 <li>Связанные с приложением:</li>
 
@@ -46,7 +47,7 @@
 </tbody>
 </table>
 
-<li>Связанные с текущим контейнером:</li>
+<li>Связанные с контейнером:</li>
 
 <table border="0" cellpadding="10" cellspacing="0" width="90%">
 <colgroup><col width="15%"><col width="85%"></colgroup>
@@ -81,7 +82,7 @@
 </tr>
 <tr>
 <td style="font-weight: bold;">G <span style="font-weight: normal;">или</span> GROUP</td>
-<td>Только имя группы, содержащей текущий элемент.</td>
+<td>Имя группы, содержащей текущий элемент.</td>
 </tr>
 <tr>
 <td style="font-weight: bold;">t <span style="font-weight: normal;">или</span> title</td>
@@ -92,8 +93,12 @@
 <td>Имя пользователя</td>
 </tr>
 <tr>
-<td style="font-weight: bold;">p <span style="font-weight: normal;">or</span> password</td>
+<td style="font-weight: bold;">p <span style="font-weight: normal;">или</span> password</td>
 <td>Пароль</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">e <span style="font-weight: normal;">или</span> email</td>
+<td>e-mail (электронная почта)</td>
 </tr>
 <tr>
 <td style="font-weight: bold;">a <span style="font-weight: normal;">или</span> autotype</td>
@@ -109,7 +114,7 @@
 </tr>
 <tr>
 <td><b>n[i]</b> или <b>notes[i]</b></td>
-<td>i-я<sup></sup> строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д. См. примечание <a href="#n4">4</a>.</td>
+<td>i-я строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д.<sup></sup> См. примечание <a href="#n4">4</a>.</td>
 </tr>
 <tr>
 <td><b>n[-i]</b> или <b>notes[-i]</b></td>
@@ -117,6 +122,7 @@
 </tr>
 </tbody>
 </table>
+
 
 <table border="0" cellpadding="10" cellspacing="0" width="90%">
 <colgroup><col width="5%"><col width="95%"></colgroup>
@@ -183,11 +189,20 @@
 
 <hr style="width: 100%; height: 2px;">
 
-<h3>Пример</h3>Для подключения к myHost с именем пользователя и пароля из текущего элемента через <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">PuTTY</a>, нужно указать в поле «Выполнить» следующее значение:<br>
+<h3>Примеры</h3>
+<ul>
+<li>Для подключения к myHost с именем пользователя и пароля из текущего элемента через <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">PuTTY</a>, нужно указать в поле «Выполнить» следующее значение:
 <pre>
 "C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
 </pre>
-
+</li>
+<li>Открытие указанного контейнера в новом экземпляре <b>Password Safe</b> (спасибо Дейву (Dave) за пример):
+<pre> ${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\path\to\database.psafe3</pre></li>
+<ul>
+<li>Чтобы данный пример заработал, убедитесь, что разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система».</li>
+<li>Также может оказаться удобным изменить «Действие по двойному клику» для этого элемента на «Выполнить команду».</li>
+</ul> 
+</ul> 
 <hr><!-- Added some white space at the bottom for natural scrolling -->
 
 
