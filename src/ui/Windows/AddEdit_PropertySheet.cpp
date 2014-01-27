@@ -55,6 +55,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
     m_AEMD.symbols = m_AEMD.oldsymbols = L"";
+    m_AEMD.num_dependents = 0;
 
     // Entry type initialisation
     m_AEMD.original_entrytype = CItemData::ET_NORMAL;
@@ -619,6 +620,8 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // Set up dependents
   pws_os::CUUID original_base_uuid(pws_os::CUUID::NullUUID());
   CItemData::EntryType entrytype = m_AEMD.pci_original->GetEntryType();
+
+  m_AEMD.num_dependents = 0;
 
   pws_os::CUUID original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
   if (m_AEMD.pci_original->IsBase()) {
