@@ -19,6 +19,7 @@ None
 
 Bugs fixed in 3.33pre
 =====================
+[1155] Number of shortcuts is now correctly initialized.
 [1148] No longer crashes when canceling unlock with expired password entries.
 [1146] Edit button now enabled correctly in Manage->Password Policies.
 [1139] Backup file numbers now rollover 999 correctly.
