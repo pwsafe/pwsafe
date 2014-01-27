@@ -33,13 +33,14 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>  //for std::memset, on Linux
+#include <algorithm>
 
 using namespace std;
 
 XERCES_CPP_NAMESPACE_BEGIN
 
-static const XMLSize_t header = max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
-static const XMLSize_t offset = max(header / sizeof(XMLSize_t *), XMLSize_t(1));
+static const XMLSize_t header = std::max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
+static const XMLSize_t offset = std::max(header / sizeof(XMLSize_t *), XMLSize_t(1));
 
 #if XERCES_VERSION_MAJOR > 2
 void* XSecMemMgr::allocate(XMLSize_t size)

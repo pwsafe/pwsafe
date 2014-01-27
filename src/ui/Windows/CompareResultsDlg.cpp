@@ -1446,7 +1446,7 @@ bool CCPListCtrl::IsSelected(DWORD_PTR iRow)
   POSITION pos = GetFirstSelectedItemPosition();
 
   while (pos) {
-    if (GetNextSelectedItem(pos) == iRow)
+    if (GetNextSelectedItem(pos) == (int)iRow)
       return true;
   }
 
