@@ -1033,11 +1033,11 @@ void PWSprefs::FindConfigFile()
    */
 
   const stringT sExecDir = PWSdirs::GetExeDir();
-  const stringT sCnfgDir = PWSdirs::GetConfigDir();
-  PWSdirs dirs(sCnfgDir);
 
   // Set path & name of config file
   if (!m_userSetCfgFile) { // common case
+    const stringT sCnfgDir = PWSdirs::GetConfigDir();
+    PWSdirs dirs(sCnfgDir);
     m_configfilename = sExecDir + cfgFileName;
     if (pws_os::FileExists(m_configfilename)) {
       // old (exe dir) exists, is host/user there?

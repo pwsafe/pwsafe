@@ -19,6 +19,7 @@ None
 
 Bugs fixed in 3.33pre
 =====================
+[1160] Don't create config dir if config file passed in command line.
 [1155] Number of shortcuts is now correctly initialized.
 [1148] No longer crashes when canceling unlock with expired password entries.
 [1146] Edit button now enabled correctly in Manage->Password Policies.
