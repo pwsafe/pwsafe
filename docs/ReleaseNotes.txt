@@ -28,6 +28,8 @@ Bugs fixed in 3.33
 bases.
 [1130] Database field isn't highlighted when it doesn't have the
 focus.
+[1125] Increased range of unlock difficulty by a factor of four. This
+should give an order or magnitude or so between max and min settings.
 [1067] Fail gracefully when trying to encrypt a file > 2GB.
 
 
