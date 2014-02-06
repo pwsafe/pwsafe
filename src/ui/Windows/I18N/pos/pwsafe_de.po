@@ -3236,7 +3236,7 @@ msgstr "Umschalten von R-O nach R/W fehlgeschlagen: Die Datei scheint zu klein z
 
 #. Resource IDs: (366)
 msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
-msgstr "Umschalten von R/W nach R-O fehlgeschlagen: konnte die Datenbanksperee nicht aufheben.\nVersuchen Sie das Programm zu beenden, und starten erneut."
+msgstr "Umschalten von R/W nach R-O fehlgeschlagen: konnte die Datenbanksperre nicht aufheben.\nVersuchen Sie das Programm zu beenden, und starten erneut."
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
