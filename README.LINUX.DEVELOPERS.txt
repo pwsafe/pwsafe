@@ -30,7 +30,7 @@ git
 libXt-devel
 libXtst-devel
 libuuid-devel
-libykpers-1-devel (see note below)
+ykpers-devel (see note below)
 libyubikey-devel
 xerces-c-devel
 wxGTK-devel
@@ -44,7 +44,7 @@ development packages)
 
 --------------------
 
-Notes re libykpers-1:
+Notes re libykpers-1/ykpers-devel:
 If your distro doesn't have the development version of this you will
 need to build and install it from the source: 
 https://github.com/Yubico/yubikey-personalization.git
