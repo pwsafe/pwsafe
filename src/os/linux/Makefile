@@ -4,7 +4,7 @@
 
 #CONFIG=debug
 #CONFIG=release
-CONFIG=unicodedebug
+CONFIG?=unicodedebug
 #CONFIG=unicoderelease
 
 WX_CONFIG?=/usr/bin/wx-config

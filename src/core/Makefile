@@ -3,7 +3,7 @@
 
 #CONFIG=debug
 #CONFIG=release
-CONFIG=unicodedebug
+CONFIG?=unicodedebug
 #CONFIG=unicoderelease
 
 NAME=core
