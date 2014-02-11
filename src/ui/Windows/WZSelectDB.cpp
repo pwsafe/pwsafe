@@ -763,16 +763,17 @@ void CWZSelectDB::yubiRequestHMACSha1()
     // Initiate HMAC-SHA1 operation now
 
     if (yk.writeChallengeBegin(YKLIB_SECOND_SLOT, YKLIB_CHAL_HMAC,
-                                 chalBuf, chalLength) != YKLIB_OK) {
+                               chalBuf, chalLength) == YKLIB_OK) {
+      // request's in the air, setup GUI to wait for reply
+      m_pending = true;
+      m_yubi_status.ShowWindow(SW_HIDE);
+      m_yubi_status.SetWindowText(_T(""));
+      m_yubi_timeout.ShowWindow(SW_SHOW);
+      m_yubi_timeout.SetPos(15);
+    } else {
       TRACE(_T("yk.writeChallengeBegin() failed"));
-      return;
     }
-    // request's in the air, setup GUI to wait for reply
-    m_pending = true;
-    m_yubi_status.ShowWindow(SW_HIDE);
-    m_yubi_status.SetWindowText(_T(""));
-    m_yubi_timeout.ShowWindow(SW_SHOW);
-    m_yubi_timeout.SetPos(15);
+    trashMemory(chalBuf, chalLength);
   }
 }
 

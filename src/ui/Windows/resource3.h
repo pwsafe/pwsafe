@@ -708,6 +708,9 @@
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
 #define IDS_YUBI_TIMEOUT                6002
+#define IDS_YUBI_UNINITIALIZED          6003
+#define IDS_YUBI_INIT_FAILED            6004
+#define IDS_YUBI_INIT_SUCCESS           6005
 
 #define IDS_VALIDATE_ISSUES             5923
 #define IDS_CURRENT_ENTRY               5924

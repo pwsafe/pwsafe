@@ -263,9 +263,8 @@ void CPasskeySetup::ProcessPhrase()
 void CPasskeySetup::YubiFailed()
 {
     CGeneralMsgBox gmb;
-    INT_PTR rc = gmb.MessageBox(_T("The YubiKey appears uninitialized. Initialize it?"),
-                                AfxGetAppName(),
-                                MB_YESNO | MB_ICONQUESTION);
+    INT_PTR rc = gmb.AfxMessageBox(IDS_YUBI_UNINITIALIZED,
+                                   MB_YESNO | MB_ICONQUESTION);
     if (rc == IDYES) {
       YubiInitialize();
     }
@@ -279,13 +278,11 @@ void CPasskeySetup::YubiInitialize()
   pws_os::GetRandomData(sk, CYubiCfgDlg::YUBI_SK_LEN);
   if (ycd.WriteYubiSK(sk) == YKLIB_OK) {
       m_core.SetYubiSK(sk);
-      gmb.MessageBox(_T("YubiKey initialized sucessfully, close this message box and activate it."),
-                     AfxGetAppName(),
-                     MB_OK | MB_ICONINFORMATION);
+      gmb.AfxMessageBox(IDS_YUBI_INIT_SUCCESS,
+                        MB_OK | MB_ICONINFORMATION);
       PostMessage(WM_COMMAND, IDC_YUBIKEY_BTN);
   } else {
-    gmb.MessageBox(_T("Failed to initialize YubiKey. Please try again."),
-                     AfxGetAppName(),
-                     MB_OK | MB_ICONERROR);
+    gmb.AfxMessageBox(IDS_YUBI_INIT_FAILED,
+                      MB_OK | MB_ICONERROR);
   }
 }

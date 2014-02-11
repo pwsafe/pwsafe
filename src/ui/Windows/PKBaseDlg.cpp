@@ -16,6 +16,8 @@
 
 #include "core/pwsprefs.h"
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
+#include "core/Util.h" // for trashMemory()
+
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 using namespace std;
@@ -217,16 +219,17 @@ void CPKBaseDlg::yubiRequestHMACSha1()
     // Initiate HMAC-SHA1 operation now
 
     if (m_yk.writeChallengeBegin(YKLIB_SECOND_SLOT, YKLIB_CHAL_HMAC,
-                                 chalBuf, chalLength) != YKLIB_OK) {
+                                 chalBuf, chalLength) == YKLIB_OK) {
+      // request's in the air, setup GUI to wait for reply
+      m_pending = true;
+      m_yubi_status.ShowWindow(SW_HIDE);
+      m_yubi_status.SetWindowText(_T(""));
+      m_yubi_timeout.ShowWindow(SW_SHOW);
+      m_yubi_timeout.SetPos(15);
+    } else {
       TRACE(_T("m_yk.writeChallengeBegin() failed"));
-      return;
     }
-    // request's in the air, setup GUI to wait for reply
-    m_pending = true;
-    m_yubi_status.ShowWindow(SW_HIDE);
-    m_yubi_status.SetWindowText(_T(""));
-    m_yubi_timeout.ShowWindow(SW_SHOW);
-    m_yubi_timeout.SetPos(15);
+    trashMemory(chalBuf, chalLength);
   }
 }
 
