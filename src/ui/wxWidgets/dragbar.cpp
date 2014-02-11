@@ -33,6 +33,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <algorithm>
+
 BEGIN_EVENT_TABLE( CDragBar, wxControl )
   EVT_LEFT_DOWN(CDragBar::OnLeftDown)
   EVT_PAINT(CDragBar::OnPaint)

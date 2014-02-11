@@ -2,7 +2,7 @@
 
 # RELEASENAME should be provided by invoker, or grokked
 # from src/ui/wxWidgets/version.in
-RELEASENAME := 0.92BETA
+RELEASENAME := 0.93BETA
 
 MKDIR = /bin/mkdir -p
 CAT = /bin/cat

@@ -1220,6 +1220,10 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 
 void CAddEdit_Basic::OnViewDependents()
 {
+  // Ignore unless button is visible
+  if (!GetDlgItem(IDC_VIEWDEPENDENTS)->IsWindowVisible())
+    return;
+
   CString cs_msg, cs_type;
   CGeneralMsgBox gmb;
 

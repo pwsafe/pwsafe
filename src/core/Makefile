@@ -3,7 +3,7 @@
 
 #CONFIG=debug
 #CONFIG=release
-CONFIG=unicodedebug
+CONFIG?=unicodedebug
 #CONFIG=unicoderelease
 
 NAME=core
@@ -43,7 +43,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS = $(CXXFLAGS) -Wall -I.. -DLINUX
+CPPFLAGS := $(CXXFLAGS) -Wall -I.. -DLINUX $(CPPFLAGS)
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG

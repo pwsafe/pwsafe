@@ -4,7 +4,7 @@
 
 #CONFIG=debug
 #CONFIG=release
-CONFIG=unicodedebug
+CONFIG?=unicodedebug
 #CONFIG=unicoderelease
 
 WX_CONFIG?=/usr/bin/wx-config
@@ -43,7 +43,8 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) $(YBPERSFLAGS)
+CPPFLAGS := $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) $(YBPERSFLAGS) \
+                $(CPPFLAGS)
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -DDEBUG

@@ -1033,11 +1033,10 @@ void PWSprefs::FindConfigFile()
    */
 
   const stringT sExecDir = PWSdirs::GetExeDir();
-  const stringT sCnfgDir = PWSdirs::GetConfigDir();
-  PWSdirs dirs(sCnfgDir);
 
   // Set path & name of config file
   if (!m_userSetCfgFile) { // common case
+    const stringT sCnfgDir = PWSdirs::GetConfigDir();
     m_configfilename = sExecDir + cfgFileName;
     if (pws_os::FileExists(m_configfilename)) {
       // old (exe dir) exists, is host/user there?
@@ -1472,11 +1471,6 @@ void PWSprefs::SaveApplicationPreferences()
   if (!m_prefs_changed[APP_PREF])
     return;
 
-  // change to config dir
-  // dirs' d'tor will put us back when we leave
-  // needed for case where m_configfilename was passed relatively
-  PWSdirs dirs(PWSdirs::GetConfigDir());
-
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
     // Load prefs file in case it was changed elsewhere
@@ -1648,11 +1642,6 @@ void PWSprefs::SaveShortcuts()
 {
   if (!m_prefs_changed[SHC_PREF])
     return;
-
-  // change to config dir
-  // dirs' d'tor will put us back when we leave
-  // needed for case where m_configfilename was passed relatively
-  PWSdirs dirs(PWSdirs::GetConfigDir());
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
