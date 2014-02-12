@@ -1,4 +1,12 @@
 /*
+ * Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
+//-----------------------------------------------------------------------------
+/*
  * This code creates a wxGrid inside a wxCollapsiblePane, along with controls to set the number 
  * of rows and columns in the grid dynamically.  If a large number of rows and columns are added
  * to the grid while the pane is collapsed, the grid and the top-level dialog window become too 
