@@ -25,8 +25,8 @@ wishing to compile PasswordSafe for Windows. Linux developers should read the fi
 <p>There are several 'degrees of freedom' for Windows developers:</p>
 
 <ol>
-<li>Development tools: Microsoft's Visual Studio <i>2010</i>
-(referred to as 'VS2010' below) is currently the main development
+<li>Development tools: Microsoft's Visual Studio <i>2012</i>
+(referred to as 'VS2012' below) is currently the main development
 environment, although Visual Studio 2005 (MSVS8) is currently also
 supported. Visual Studio 2008 (MSVS9) should also work. See note below
 for Visual Express users.</li>
@@ -52,7 +52,8 @@ XML parser.  This will build the required DLLs using their Release configuration
 (pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
 the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
-<p>The Visual Studio 2010 projects have been updated to be able to generate the 64-bit
+
+<p>The Visual Studio 2012 projects have been updated to be able to generate the 64-bit
 versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
 environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
 environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
@@ -70,6 +71,7 @@ is not valid. The supported combinations are:</p>
 <b><i>No other combinations are supported or have been tested.</i></b>
 
 <p>The current MFC configurations are:</p>
+
 
 <ul>
 <li>32-bit versions - platform Win32:</li>
@@ -110,6 +112,7 @@ of the release builds below are selected.</li>
 <li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
+
 <li>64-bit versions - platform x64:</li>
 <ul>
 <li><b>Debugwx64</b> - builds the debug version without any XML parser</li>
@@ -133,82 +136,20 @@ configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p>
 <h4>Getting Source code</h4>
 
 <p>The source code for PasswordSafe may be downloaded as a zip file, or retrieved
-from the Subversion repository at <a href="https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe">
-https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe</a>
-using a subversion client. Currently (August 2010), the Windows version
+from the git repository at <a href="https://sourceforge.net/p/passwordsafe/git-code/ci/master/tree/" target="_blank">https://sourceforge.net/p/passwordsafe/git-code/ci/master/tree/</a>
+using a git client. Currently, the Windows version
 is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.</p>
-
-<p>If you're going to commit code to the repository, please set your subversion client's
-configuration file as follows:</p>
-
-<p>In the "[miscellany]" section, ensure the following variable is set to 'yes':</p>
-<pre>
-  enable-auto-props = yes
-</pre>
-
-<p>In the "[auto-props]" section, add the following if not already there:</p>
-<pre>
-  *.c = svn:eol-style=native
-  *.cmd = svn:eol-style=native;svn:mime-type=text/plain
-  *.cpp = svn:eol-style=native
-  *.cs = svn:eol-style=native
-  *.csproj = svn:eol-style=native
-  *.dsp = svn:eol-style=CRLF
-  *.dsw = svn:eol-style=CRLF
-  *.h = svn:eol-style=native
-  *.hhc = svn:eol-style=native
-  *.hhk = svn:eol-style=native
-  *.hpp = svn:eol-style=native
-  *.html = svn:eol-style=native;svn:mime-type=text/html
-  *.ico = svn:mime-type=image/x-icon
-  *.in = svn:eol-style=native
-  *.inc = svn:eol-style=native
-  *.ini = svn:eol-style=native
-  *.iss = svn:eol-style=native
-  *.jpg = svn:mime-type=image/jpeg
-  *.js = svn:eol-style=native
-  *.linux = svn:eol-style=native
-  *.manifest = svn:eol-style=CRLF
-  *.nsi = svn:eol-style=CRLF
-  *.pjd = svn:eol-style=native
-  *.pl = svn:eol-style=native
-  *.png = svn:mime-type=image/png
-  *.po = svn:eol-style=native
-  *.rc = svn:eol-style=native
-  *.rc2 = svn:eol-style=native
-  *.resx = svn:eol-style=native
-  *.sh = svn:eol-style=native;svn:executable
-  *.sln = svn:eol-style=CRLF
-  *.txt = svn:eol-style=native;svn:mime-type=text/plain
-  *.vbs = svn:eol-style=native
-  *.vcproj = svn:eol-style=CRLF
-  *.windows = svn:eol-style=native
-  *.wxs = svn:eol-style=native
-  *.xml = svn:eol-style=native;svn:mime-type=text/xml
-  *.xpm = svn:mime-type=image/x-xpm
-  *.xsd = svn:eol-style=native
-  *.xsl = svn:eol-style=native
-  LICENSE = svn:eol-style=native;svn:mime-type=text/plain
-  Makefile = svn:eol-style=native;svn:mime-type=text/plain
-  README = svn:eol-style=native;svn:mime-type=text/plain
-</pre>
-
-<p>(This file is ~/.subversion/config for Linux, and under Documents and
-Settings\user\Application Data\Subversion\config on Windows.  If using Tortoise
-SVN client under Windows, this can be accessed by right clicking a file, selecting 
-Tortoise SVN and then select Settings from the menu and using the Edit button in the
-General Settings panel).</p>
 
 <h4><a name="Windows_Build"></a>Windows Build</h4>
 
 <p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
-2010 (C++ compiler for PaswordSafe ('VC10') and C# compiler if you wish to re-generate
+2012 (C++ compiler for PaswordSafe ('VC11') and C# compiler if you wish to re-generate
 the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005
 (MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
 does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
 within the current official Windows version.</p>
 
-<p>The main (toplevel) Microsoft Visual Studio 2010 solution file is pwsafe.sln. The
+<p>The main (toplevel) Microsoft Visual Studio 2012 solution file is pwsafe11.sln. The
 MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
 Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
 
@@ -274,7 +215,7 @@ and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
 compiling source members using BlockInput.</b></p>
 
 <p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
-Studio, the file "UserVariables.props" (for VS10) or "UserVariables.vsprops"
+Studio, the file "UserVariables.props" (for VS10 and later) or "UserVariables.vsprops"
 (for VS8) <b><u><i>must</i></u></b> exist and describe the directories where
 the non-"Windows SDK" components have been installed. <b><u><i>The solution
 will not open correctly without this file being present</i></u></b>.
