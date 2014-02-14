@@ -46,12 +46,11 @@ supported by the Windows MFC version, for example, different alphabet virtual ke
 depend on such features, you should stick to the standard MFC build.</li>
 <li>XML support: As PasswordSafe provides XML import/export capabilities, it
 can be configured to use one of several XML parsers (or none).
-The currently supported version of PasswordSafe for Windows is built using the
-Microsoft XML parser but the Xerces parser used in the wxWidgets version can be used in the MFC
-version if the corresponding build configuration is selected (DebugX or ReleaseX).</li>
+The curently supported version of PasswordSafe for Windows is built using the
+Microsoft XML parser. </li>
 </ol>
 
-<p id="visExp"><em>Note regarding Visual Express:</em> The MFC version of PasswordSafe
+<p>Note regarding Visual Express: The MFC version of PasswordSafe
 <span style="font-weight: bold;">cannot</span> be built using Visual Express,
 as Microsoft does not provide MFC support in this product. It should, however,
 be possible to build the wxWidgets version.</p>
@@ -60,16 +59,16 @@ be possible to build the wxWidgets version.</p>
 platforms is based on MFC (Microsoft's Foundation Classes), and
 uses Microsoft's XML parser. This corresponds to the <i>ReleaseM</i>
 configuration in the build environment, i.e., the release build using Microsoft's
-XML parser. This will build the required DLLs using their Release configuration
+XML parser.  This will build the required DLLs using their Release configuration
 (pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
 the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
 <p>The Visual Studio 2012 and 2013 projects have been updated to be able to generate the 64-bit
 versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
-environment with the VC10 64-bit compiler. It has not been tested on a 32-bit Windows
+environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
 environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
-libraries and they should be placed in a new directory 'lib64\vc_lib' corresponding to
-the current 'lib\vc_lib' for the 32-bit versions. <i>If you continue to use VS2005,
+libraries and they should be placed in a new diretory 'lib64\vc_lib' corresponding to
+the current 'lib\vc_lib' for the 32-bit versions.  <i>If you continue to use VS2005,
 you should put the static libraries built by it in '\lib\vc8_lib'.</i></p>
 
 <p>For each Configuration there is an associated platform. Unfortunately, Visual Studio
@@ -82,7 +81,6 @@ is not valid. The supported combinations are:</p>
 <b><i>No other combinations are supported or have been tested.</i></b>
 
 <p>The current MFC configurations are:</p>
-
 
 <ul>
 <li>32-bit versions - platform Win32:</li>
@@ -123,7 +121,6 @@ of the release builds below are selected.</li>
 <li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
-
 <li>64-bit versions - platform x64:</li>
 <ul>
 <li><b>Debugwx64</b> - builds the debug version without any XML parser</li>
@@ -147,9 +144,71 @@ configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx-12.sln).<
 <h4>Getting Source code</h4>
 
 <p>The source code for PasswordSafe may be downloaded as a zip file, or retrieved
-from the git repository at <a href="https://sourceforge.net/p/passwordsafe/git-code/ci/master/tree/" target="_blank">https://sourceforge.net/p/passwordsafe/git-code/ci/master/tree/</a>
-using a git client. Currently, the Windows version
+from the Subversion repository at <a href="https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe">
+https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe</a>
+using a subversion client. Currently (August 2010), the Windows version
 is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.</p>
+
+<p>If you're going to commit code to the repository, please set your subversion client's
+configuration file as follows:</p>
+
+<p>In the "[miscellany]" section, ensure the following variable is set to 'yes':</p>
+<pre>
+  enable-auto-props = yes
+</pre>
+
+<p>In the "[auto-props]" section, add the following if not already there:</p>
+<pre>
+  *.c = svn:eol-style=native
+  *.cmd = svn:eol-style=native;svn:mime-type=text/plain
+  *.cpp = svn:eol-style=native
+  *.cs = svn:eol-style=native
+  *.csproj = svn:eol-style=native
+  *.dsp = svn:eol-style=CRLF
+  *.dsw = svn:eol-style=CRLF
+  *.h = svn:eol-style=native
+  *.hhc = svn:eol-style=native
+  *.hhk = svn:eol-style=native
+  *.hpp = svn:eol-style=native
+  *.html = svn:eol-style=native;svn:mime-type=text/html
+  *.ico = svn:mime-type=image/x-icon
+  *.in = svn:eol-style=native
+  *.inc = svn:eol-style=native
+  *.ini = svn:eol-style=native
+  *.iss = svn:eol-style=native
+  *.jpg = svn:mime-type=image/jpeg
+  *.js = svn:eol-style=native
+  *.linux = svn:eol-style=native
+  *.manifest = svn:eol-style=CRLF
+  *.nsi = svn:eol-style=CRLF
+  *.pjd = svn:eol-style=native
+  *.pl = svn:eol-style=native
+  *.png = svn:mime-type=image/png
+  *.po = svn:eol-style=native
+  *.rc = svn:eol-style=native
+  *.rc2 = svn:eol-style=native
+  *.resx = svn:eol-style=native
+  *.sh = svn:eol-style=native;svn:executable
+  *.sln = svn:eol-style=CRLF
+  *.txt = svn:eol-style=native;svn:mime-type=text/plain
+  *.vbs = svn:eol-style=native
+  *.vcproj = svn:eol-style=CRLF
+  *.windows = svn:eol-style=native
+  *.wxs = svn:eol-style=native
+  *.xml = svn:eol-style=native;svn:mime-type=text/xml
+  *.xpm = svn:mime-type=image/x-xpm
+  *.xsd = svn:eol-style=native
+  *.xsl = svn:eol-style=native
+  LICENSE = svn:eol-style=native;svn:mime-type=text/plain
+  Makefile = svn:eol-style=native;svn:mime-type=text/plain
+  README = svn:eol-style=native;svn:mime-type=text/plain
+</pre>
+
+<p>(This file is ~/.subversion/config for Linux, and under Documents and
+Settings\user\Application Data\Subversion\config on Windows.  If using Tortoise
+SVN client under Windows, this can be accessed by right clicking a file, selecting 
+Tortoise SVN and then select Settings from the menu and using the Edit button in the
+General Settings panel).</p>
 
 <h4><a name="Windows_Build"></a>Windows Build</h4>
 
