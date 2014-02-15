@@ -23,6 +23,9 @@
     <ClCompile Include="CoreImpExp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hmac.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ItemData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

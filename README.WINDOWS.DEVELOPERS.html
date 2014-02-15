@@ -27,8 +27,12 @@ wishing to compile PasswordSafe for Windows. Linux developers should read the fi
 <ol>
 <li>Development tools: Microsoft's Visual Studio <i>2012</i>
 (referred to as 'VS2012' below) is currently the main development
-environment, although Visual Studio 2005 (MSVS8) is currently also
-supported. Visual Studio 2008 (MSVS9) should also work. See note below
+environment, and pwsafe.sln is the main toplevel "solution" file.
+</li>
+<li>pwsafe_wx.sln is used to build the wxWidgets version under Windows, although this version is not
+formally supported under Windows (but see the <a href="#visExp">note</a> re Visual Express below).
+although Visual Studio 2005 (MSVS8) is currently also
+supported. Visual Studio 2008 (MSVS9) should also work. See <a href="#visExp">note</a> below
 for Visual Express users.</li>
 <li>User interface library: The curently supported version of PasswordSafe for Windows
 is built upon MFC (Microsoft's Foundation Classes). Work is also being done on a
@@ -39,7 +43,7 @@ The curently supported version of PasswordSafe for Windows is built using the
 Microsoft XML parser. </li>
 </ol>
 
-<p>Note regarding Visual Express: The MFC version of PasswordSafe
+<p id="visExp"><em>Note regarding Visual Express:</em> The MFC version of PasswordSafe
 <span style="font-weight: bold;">cannot</span> be built using Visual Express,
 as Microsoft does not provide MFC support in this product. It should, however,
 be possible to build the wxWidgets version.</p>
