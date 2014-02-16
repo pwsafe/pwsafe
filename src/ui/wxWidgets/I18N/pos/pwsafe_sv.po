@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 22:45+0200\n"
+"POT-Creation-Date: 2014-02-07 10:45+0200\n"
 "PO-Revision-Date: 2011-10-04 21:44+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -459,7 +459,7 @@ msgstr "Använd &VERSALER"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:588
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:539
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:220 ../../../core/core_st.cpp:250
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:220
 #, fuzzy
 msgid "Use digits"
 msgstr "Använd &siffror"
@@ -499,7 +499,7 @@ msgstr "Generera &uttalbara lösenord"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:644
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:581
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:278 ../../../core/core_st.cpp:243
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:278
 msgid "Or"
 msgstr "eller"
 
@@ -513,7 +513,6 @@ msgstr "Använd bara &hexadecimala tal (0-9, a-f)"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:588
-#: ../../../core/core_st.cpp:136
 msgid "Password Policy"
 msgstr "Lösenordspolicy"
 
@@ -522,7 +521,6 @@ msgid "Set Date/Time"
 msgstr "Reg.datum/tid"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:680
-#: ../../../core/core_st.cpp:132
 msgid "Password"
 msgstr "Lösenord"
 
@@ -530,7 +528,7 @@ msgstr "Lösenord"
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839 ../../../core/core_st.cpp:75
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
 #, fuzzy
 msgid "default"
 msgstr "Förval"
@@ -545,7 +543,6 @@ msgstr "[Noteringar är dolda - klicka här för att visa]"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1777
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:394
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:471
-#: ../../../core/core_st.cpp:76
 #, fuzzy
 msgid "Default Policy"
 msgstr "Förvalt set"
@@ -581,7 +578,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:260
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:288
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:329
-#: ../../../core/core_st.cpp:264
 msgid "Error"
 msgstr "Fel"
 
@@ -954,29 +950,29 @@ msgstr "&Ja"
 msgid "&No"
 msgstr "&Nej"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/dragbar.cpp:79
 msgid "Error dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/dragbar.cpp:82
 msgid "Nothing happened dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/dragbar.cpp:85
 #, fuzzy
 msgid "Copied successfully"
 msgstr "Operationen lyckades"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/dragbar.cpp:88
 #, fuzzy
 msgid "Moved successfully"
 msgstr "Operationen lyckades"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/dragbar.cpp:91
 msgid "Dragging cancelled"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/dragbar.cpp:94
 #, fuzzy
 msgid "Unexpected result dragging"
 msgstr ""
@@ -986,7 +982,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/editshortcut.cpp:123
 #: ../../../ui/wxWidgets/properties.cpp:124
 #: ../../../ui/wxWidgets/properties.cpp:132
-#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:279
+#: ../../../ui/wxWidgets/properties.cpp:143
 msgid "Unknown"
 msgstr "Okänd"
 
@@ -1318,12 +1314,11 @@ msgid "Value"
 msgstr "Värde:"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
-#: ../../../core/core_st.cpp:128
 msgid "Group"
 msgstr "Grupp"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:292
-#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:142
+#: ../../../ui/wxWidgets/PWSgrid.cpp:136
 msgid "Title"
 msgstr "Titel"
 
@@ -1390,7 +1385,7 @@ msgstr "Vänligen, välj rapport att visa."
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:102
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:281
-#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:240
+#: ../../../ui/wxWidgets/properties.cpp:171
 msgid "None"
 msgstr "Inga"
 
@@ -1407,7 +1402,7 @@ msgstr "Ökande tal [001-999]"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:111
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:411
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:69
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430
 msgid "Copy password to clipboard"
 msgstr "Kopiera lösenordet till Urklipp"
 
@@ -1421,50 +1416,49 @@ msgstr "Visa/redigera vald post"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:113
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:407
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:426
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:65
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439
 msgid "Autotype"
 msgstr "Autoskriv"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:114
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:408
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:66
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427
 msgid "Browse to URL"
 msgstr "Gå till URL"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:115
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:410
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:68
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429
 msgid "Copy notes to clipboard"
 msgstr "Kopiera noteringar till Urklipp"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:116
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:413
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:71
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432
 msgid "Copy username to clipboard"
 msgstr "Kopiera användarnamnet till Urklipp"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:117
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:412
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431
 msgid "Copy password to clipboard, minimize"
 msgstr "Kopiera lösenordet till Urklipp, minimera"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:118
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:409
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:67
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428
 msgid "Browse to URL + Autotype"
 msgstr "Gå till URL + Autoskriv"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:119
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:414
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:72
-#: ../../../core/core_st.cpp:139
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433
 msgid "Run Command"
 msgstr "Kör kommando"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:120
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:415
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:73
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434
 msgid "Send email"
 msgstr "Skicka e-post"
 
@@ -2610,7 +2604,7 @@ msgstr "Importen misslyckades"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2777
 #: ../../../ui/wxWidgets/PwsSync.cpp:594 ../../../ui/wxWidgets/PwsSync.cpp:745
-#: ../../../ui/wxWidgets/PwsSync.cpp:762 ../../../core/core_st.cpp:94
+#: ../../../ui/wxWidgets/PwsSync.cpp:762
 msgid "entry"
 msgstr "post"
 
@@ -2618,7 +2612,7 @@ msgstr "post"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2777
 #: ../../../ui/wxWidgets/PwsSync.cpp:594 ../../../ui/wxWidgets/PwsSync.cpp:745
-#: ../../../ui/wxWidgets/PwsSync.cpp:762 ../../../core/core_st.cpp:92
+#: ../../../ui/wxWidgets/PwsSync.cpp:762
 msgid "entries"
 msgstr "poster"
 
@@ -2640,7 +2634,6 @@ msgid "Import XML failed"
 msgstr "XML-import misslyckades"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2680
-#: ../../../core/core_st.cpp:231
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
@@ -2925,20 +2918,20 @@ msgstr "Hittade 1 matchande."
 msgid "%d/%d matches"
 msgstr "%d av %d matchar."
 
-#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:284
+#: ../../../ui/wxWidgets/properties.cpp:138
 #, c-format
 msgid "%s on %s"
 msgstr "%s på %s"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:316
+#: ../../../ui/wxWidgets/properties.cpp:160
 msgid "Yes"
 msgstr "Ja"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:235
+#: ../../../ui/wxWidgets/properties.cpp:160
 msgid "No"
 msgstr "Nej"
 
-#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:281
+#: ../../../ui/wxWidgets/properties.cpp:162
 #, c-format
 msgid "In Headers(%s)/In Entries("
 msgstr "I rubriker(%s)/I poster("
@@ -3251,15 +3244,15 @@ msgstr "Synkronisering från databas: %s\n"
 msgid "synchronized"
 msgstr "synkroniserad"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:746 ../../../core/core_st.cpp:297
+#: ../../../ui/wxWidgets/PwsSync.cpp:746
 msgid "was"
 msgstr "var"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:746 ../../../core/core_st.cpp:298
+#: ../../../ui/wxWidgets/PwsSync.cpp:746
 msgid "were"
 msgstr "var"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:747 ../../../core/core_st.cpp:276
+#: ../../../ui/wxWidgets/PwsSync.cpp:747
 #, c-format
 msgid ""
 "\n"
@@ -3268,7 +3261,7 @@ msgstr ""
 "\n"
 "Följande %s %s uppdaterades:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:763 ../../../core/core_st.cpp:275
+#: ../../../ui/wxWidgets/PwsSync.cpp:763
 #, c-format
 msgid ""
 "\n"
@@ -3517,7 +3510,6 @@ msgid "Please enter the key and verify it."
 msgstr "Vänligen, skriv in nyckeln och verifiera den."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
-#: ../../../core/core_st.cpp:266
 msgid "Warning"
 msgstr "Varning"
 
@@ -3528,35 +3520,35 @@ msgstr ""
 "\n"
 "Vänligen, försök med en annan"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37 ../../../core/core_st.cpp:95
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37
 msgid "equals"
 msgstr "är lika med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:86
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38
 msgid "does not equal"
 msgstr "är inte lika med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39 ../../../core/core_st.cpp:41
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39
 msgid "begins with"
 msgstr "börjar med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40 ../../../core/core_st.cpp:81
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40
 msgid "does not begin with"
 msgstr "börjar inte med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:91
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41
 msgid "ends with"
 msgstr "slutar med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42 ../../../core/core_st.cpp:85
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42
 msgid "does not end with"
 msgstr "slutar inte med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43 ../../../core/core_st.cpp:59
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43
 msgid "contains"
 msgstr "innehåller"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44 ../../../core/core_st.cpp:82
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44
 msgid "does not contain"
 msgstr "innehåller inte"
 
@@ -3754,1349 +3746,996 @@ msgstr ""
 msgid "Error: Unconfigured YubiKey?"
 msgstr ""
 
-#: ../../../core/core_st.cpp:32
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"Oväntat undantag under analysen."
+#~ msgid ""
+#~ "\n"
+#~ "Unexpected exception during parsing."
+#~ msgstr ""
+#~ "\n"
+#~ "Oväntat undantag under analysen."
 
-#: ../../../core/core_st.cpp:33
-msgid "OutOfMemoryException."
-msgstr "Slut-på-minne-undantag."
+#~ msgid "OutOfMemoryException."
+#~ msgstr "Slut-på-minne-undantag."
 
-#: ../../../core/core_st.cpp:34
-msgid "after"
-msgstr "efter"
+#~ msgid "after"
+#~ msgstr "efter"
 
-#: ../../../core/core_st.cpp:35
-msgid "alias"
-msgstr "alias"
+#~ msgid "alias"
+#~ msgstr "alias"
 
-#: ../../../core/core_st.cpp:36
-msgid "aliases"
-msgstr "alias"
+#~ msgid "aliases"
+#~ msgstr "alias"
 
-#: ../../../core/core_st.cpp:37
-msgid "And"
-msgstr "Och"
+#~ msgid "And"
+#~ msgstr "Och"
 
-#: ../../../core/core_st.cpp:38
-msgid "autotype:"
-msgstr "autoskriv:"
+#~ msgid "autotype:"
+#~ msgstr "autoskriv:"
 
-#: ../../../core/core_st.cpp:39
-msgid "Incorrect password"
-msgstr "Fel lösenord"
+#~ msgid "Incorrect password"
+#~ msgstr "Fel lösenord"
 
-#: ../../../core/core_st.cpp:40
-msgid "before"
-msgstr "innan"
+#~ msgid "before"
+#~ msgstr "innan"
 
-#: ../../../core/core_st.cpp:42
-msgid "between"
-msgstr "mellan"
+#~ msgid "between"
+#~ msgstr "mellan"
 
-#: ../../../core/core_st.cpp:43
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Kan inte skapa en ny XML konfigureringsfil eller lägga till dina val till en "
-"befintlig XML konfigureringsfil.\n"
-"\n"
-"Programmets samtliga konfiguartionsinställningar kommer att sparas i ditt "
-"register på denna dator.\n"
-"\n"
-"Databsrelaterade inställningar sparas i den öppna databasen när den stängs, "
-"om den inte bara är läsbar eller låst av annan användare."
+#~ msgid ""
+#~ "Unable to create a new XML configuration file or add your settings to an "
+#~ "existing XML configuration file.\n"
+#~ "\n"
+#~ "All application configuration settings will be saved in your registry "
+#~ "entry on this computer.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "Kan inte skapa en ny XML konfigureringsfil eller lägga till dina val till "
+#~ "en befintlig XML konfigureringsfil.\n"
+#~ "\n"
+#~ "Programmets samtliga konfiguartionsinställningar kommer att sparas i ditt "
+#~ "register på denna dator.\n"
+#~ "\n"
+#~ "Databsrelaterade inställningar sparas i den öppna databasen när den "
+#~ "stängs, om den inte bara är läsbar eller låst av annan användare."
 
-#: ../../../core/core_st.cpp:44
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Fel - kan inte fastställa konfigurationsinställningar!\n"
-"\n"
-"Inga programinställningar kommer att sparas.\n"
-"\n"
-"Databasrelaterade inställningar sparas i den öppna databasen när den stängs, "
-"om den inte bara är läsbar eller låst av annan användare."
+#~ msgid ""
+#~ "Error - unable to determine settings configuration!\n"
+#~ "\n"
+#~ "No application settings will be saved.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "Fel - kan inte fastställa konfigurationsinställningar!\n"
+#~ "\n"
+#~ "Inga programinställningar kommer att sparas.\n"
+#~ "\n"
+#~ "Databasrelaterade inställningar sparas i den öppna databasen när den "
+#~ "stängs, om den inte bara är läsbar eller låst av annan användare."
 
-#: ../../../core/core_st.cpp:45
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
-msgstr "Problem att läsa sparade filter (icke överensstämmande versioner?)"
+#~ msgid ""
+#~ "Trouble reading stored filters (version mismatch?). Filters will be "
+#~ "unusable."
+#~ msgstr "Problem att läsa sparade filter (icke överensstämmande versioner?)"
 
-#: ../../../core/core_st.cpp:46
-msgid "Unable to read locker?"
-msgstr "Kan du inte se vem som låser filen?"
+#~ msgid "Unable to read locker?"
+#~ msgstr "Kan du inte se vem som låser filen?"
 
-#: ../../../core/core_st.cpp:47
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Kan inte uppdatera dina poster i den befintliga XML-konfigurationsfilen.\n"
-"\n"
-"Programmets samtliga konfigurationsinställningar laddas fån denna fil, men "
-"inga ändringar  sparas.\n"
-"\n"
-"Databasrelaterade inställningar sparas i den öppna databasen när den stängs, "
-"om den inte bara är läsbar eller låst av annan användare."
+#~ msgid ""
+#~ "Unable to update your entries in the existing XML configuration file.\n"
+#~ "\n"
+#~ "All application configuration settings will be loaded from this file but "
+#~ "no changes will be saved.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "Kan inte uppdatera dina poster i den befintliga XML-konfigurationsfilen.\n"
+#~ "\n"
+#~ "Programmets samtliga konfigurationsinställningar laddas fån denna fil, "
+#~ "men inga ändringar  sparas.\n"
+#~ "\n"
+#~ "Databasrelaterade inställningar sparas i den öppna databasen när den "
+#~ "stängs, om den inte bara är läsbar eller låst av annan användare."
 
-#: ../../../core/core_st.cpp:48
-#, c-format
-msgid ""
-"%s\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%s\n"
-"\n"
-"Konfigurationsfilen kommer inte att användas."
+#~ msgid ""
+#~ "%s\n"
+#~ "\n"
+#~ "The configuration file will not be used."
+#~ msgstr ""
+#~ "%s\n"
+#~ "\n"
+#~ "Konfigurationsfilen kommer inte att användas."
 
-#: ../../../core/core_st.cpp:49
-msgid "Missing XSD File"
-msgstr "Saknas XSD-fil"
+#~ msgid "Missing XSD File"
+#~ msgstr "Saknas XSD-fil"
 
-#: ../../../core/core_st.cpp:50
-msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr ""
-"Kan inte validera en XML-fil som använder XML Schema (XSD) i ditt system."
+#~ msgid ""
+#~ "Unable to validate a XML file using a XML Schema (XSD) on your system."
+#~ msgstr ""
+#~ "Kan inte validera en XML-fil som använder XML Schema (XSD) i ditt system."
 
-#: ../../../core/core_st.cpp:51
-msgid "(case insensitive)"
-msgstr "(ej storlekskänslig)"
+#~ msgid "(case insensitive)"
+#~ msgstr "(ej storlekskänslig)"
 
-#: ../../../core/core_st.cpp:52
-msgid "(case sensitive)"
-msgstr "(storlekskänslig)"
+#~ msgid "(case sensitive)"
+#~ msgstr "(storlekskänslig)"
 
-#: ../../../core/core_st.cpp:53
-msgid "C:F[R-O]"
-msgstr "C:F[R-O]"
+#~ msgid "C:F[R-O]"
+#~ msgstr "C:F[R-O]"
 
-#: ../../../core/core_st.cpp:54
-msgid "C:F[R/W]"
-msgstr "C:F[R/W]"
+#~ msgid "C:F[R/W]"
+#~ msgstr "C:F[R/W]"
 
-#: ../../../core/core_st.cpp:55
-msgid "C:None  "
-msgstr "C:Inga"
+#~ msgid "C:None  "
+#~ msgstr "C:Inga"
 
-#: ../../../core/core_st.cpp:56
-msgid "C:Reg   "
-msgstr "C:Reg   "
+#~ msgid "C:Reg   "
+#~ msgstr "C:Reg   "
 
-#: ../../../core/core_st.cpp:57
-msgid "conflict"
-msgstr "konflikt"
+#~ msgid "conflict"
+#~ msgstr "konflikt"
 
-#: ../../../core/core_st.cpp:58
-msgid "conflicts"
-msgstr "konflikter"
+#~ msgid "conflicts"
+#~ msgstr "konflikter"
 
-#: ../../../core/core_st.cpp:60
-msgid "contains all of"
-msgstr "innehåller allt av"
+#~ msgid "contains all of"
+#~ msgstr "innehåller allt av"
 
-#: ../../../core/core_st.cpp:61
-msgid "contains any of"
-msgstr "innehåller något av"
+#~ msgid "contains any of"
+#~ msgstr "innehåller något av"
 
-#: ../../../core/core_st.cpp:62
 #, fuzzy
-msgid "copied"
-msgstr "URL kopierad"
+#~ msgid "copied"
+#~ msgstr "URL kopierad"
 
-#: ../../../core/core_st.cpp:63
-#, fuzzy, c-format
-msgid "%s - Copied %s"
-msgstr "Importerat %d %s"
-
-#: ../../../core/core_st.cpp:64
-#, c-format
-msgid " Current default (%s)"
-msgstr " Nuvarande förval (%s)"
-
-#: ../../../core/core_st.cpp:74
-msgid "View/Edit selected entry"
-msgstr "Visa/redigera vald post"
-
-#: ../../../core/core_st.cpp:77
 #, fuzzy
-msgid "default symbol set"
-msgstr "Förvalt set"
+#~ msgid "%s - Copied %s"
+#~ msgstr "Importerat %d %s"
 
-#: ../../../core/core_st.cpp:78
-#, c-format
-msgid ""
-"This entry has the following %d %s:\n"
-"%s\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
-msgstr ""
-"Denna post har följande %d %s:\n"
-"%s\n"
-"Vänligen, bekräfta för att fortsätta (alias posts lösenord kommer att "
-"ersättas med denna posts lösenord)?"
+#~ msgid " Current default (%s)"
+#~ msgstr " Nuvarande förval (%s)"
 
-#: ../../../core/core_st.cpp:79
+#~ msgid "View/Edit selected entry"
+#~ msgstr "Visa/redigera vald post"
+
 #, fuzzy
-msgid "Delete Base Entry Confirmation"
-msgstr "Radera en basposts ?"
+#~ msgid "default symbol set"
+#~ msgstr "Förvalt set"
 
-#: ../../../core/core_st.cpp:80
-#, c-format
-msgid ""
-"This entry has the following %d %s:\n"
-"%s\n"
-"Please confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-"Denna post har följande %d %s:\n"
-"%s\n"
-"Vänligen, bekräfta för att fortsätta (Alla genvägar till denna post kommer "
-"att raderas)?"
+#~ msgid ""
+#~ "This entry has the following %d %s:\n"
+#~ "%s\n"
+#~ "Please confirm to continue (alias entry's passwords will be replaced by "
+#~ "this entry's password)?"
+#~ msgstr ""
+#~ "Denna post har följande %d %s:\n"
+#~ "%s\n"
+#~ "Vänligen, bekräfta för att fortsätta (alias posts lösenord kommer att "
+#~ "ersättas med denna posts lösenord)?"
 
-#: ../../../core/core_st.cpp:83
-msgid "does not contain all of"
-msgstr "innehåller inte allt"
-
-#: ../../../core/core_st.cpp:84
-msgid "does not contain any of"
-msgstr "innehåller inte något av"
-
-#: ../../../core/core_st.cpp:87
-#, c-format
-msgid " Duplicate # %d"
-msgstr " Duplicera # %d"
-
-#: ../../../core/core_st.cpp:88
-#, c-format
-msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%s' - please check "
-"data carefully."
-msgstr ""
-"Svårigheter med en icke textbaserat (t. ex. tid) fält i posten '%s* - "
-"vänligen, kontrollera data noggrant."
-
-#: ../../../core/core_st.cpp:89
-msgid "End Report"
-msgstr "Rapportslut"
-
-#: ../../../core/core_st.cpp:90
-msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
-
-#: ../../../core/core_st.cpp:93
-#, c-format
-msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%s) appended:"
-"%s"
-msgstr ""
-
-#: ../../../core/core_st.cpp:96
-msgid "has expired"
-msgstr "har utgått"
-
-#: ../../../core/core_st.cpp:97
-#, c-format
-msgid "within %d day(s)"
-msgstr "inom %d dag(ar)"
-
-#: ../../../core/core_st.cpp:98
-msgid "First character of variable name must be alphabetic"
-msgstr "Första tecknet i variabelnamnet måste vara alfabetiskt"
-
-#: ../../../core/core_st.cpp:99
-msgid "Index not numeric"
-msgstr "Index är inte numeriskt"
-
-#: ../../../core/core_st.cpp:100
-msgid "Input string is empty"
-msgstr "Inmatningssträngen är tom"
-
-#: ../../../core/core_st.cpp:101
-msgid "Characters present between end of index ']' and '}'"
-msgstr "Tecken som finns mellan indexslutet ']' och '}'"
-
-#: ../../../core/core_st.cpp:102
-msgid "Index is invalid or missing"
-msgstr "Index är ogiltigt eller saknas"
-
-#: ../../../core/core_st.cpp:103
-msgid "Missing ending curly bracket for variable name"
-msgstr "Saknas avslutande krullparentes till variabelnamnet"
-
-#: ../../../core/core_st.cpp:104
-msgid "Missing ending round bracket for Autotype value"
-msgstr "Saknas avslutande rund parentes till autoskriv-värdet"
-
-#: ../../../core/core_st.cpp:105
-msgid "Missing ending square bracket for index value"
-msgstr "Saknas avslutande klammerparentes till indexvärdet"
-
-#: ../../../core/core_st.cpp:106
-msgid "There are unmatched quotes in the run command"
-msgstr "Det finns omatchade förslag i körkommandot"
-
-#: ../../../core/core_st.cpp:107
-msgid "Variable name is empty"
-msgstr "Variabelnamn är tomt"
-
-#: ../../../core/core_st.cpp:108
-msgid "Variable name must be alphanumeric"
-msgstr "Variaelnamnet måste vara alfanumeriskt"
-
-#: ../../../core/core_st.cpp:109
-msgid "an alias entry"
-msgstr "en aliaspost"
-
-#: ../../../core/core_st.cpp:110
-msgid "a base entry of an alias"
-msgstr "en alias baspost"
-
-#: ../../../core/core_st.cpp:111
-msgid "  Field is too long."
-msgstr "  Fältet är för långt."
-
-#: ../../../core/core_st.cpp:112
-msgid "  Field is too short."
-msgstr "  Fältet är för kort."
-
-#: ../../../core/core_st.cpp:113
-msgid "Error: A file with this name already exists"
-msgstr "Fel: En fil med detta namn finns redan"
-
-#: ../../../core/core_st.cpp:114
-msgid "The file was not found."
-msgstr "Filen hittades inte."
-
-#: ../../../core/core_st.cpp:115
-msgid "Error: File is read-only"
-msgstr "Fel: Filen är bara läsbar"
-
-#: ../../../core/core_st.cpp:116
 #, fuzzy
-msgid "File is too big."
-msgstr "  Fältet är för långt."
+#~ msgid "Delete Base Entry Confirmation"
+#~ msgstr "Radera en basposts ?"
 
-#: ../../../core/core_st.cpp:117
+#~ msgid ""
+#~ "This entry has the following %d %s:\n"
+#~ "%s\n"
+#~ "Please confirm to continue (All shortcuts to this entry will be deleted)?"
+#~ msgstr ""
+#~ "Denna post har följande %d %s:\n"
+#~ "%s\n"
+#~ "Vänligen, bekräfta för att fortsätta (Alla genvägar till denna post "
+#~ "kommer att raderas)?"
+
+#~ msgid "does not contain all of"
+#~ msgstr "innehåller inte allt"
+
+#~ msgid "does not contain any of"
+#~ msgstr "innehåller inte något av"
+
+#~ msgid " Duplicate # %d"
+#~ msgstr " Duplicera # %d"
+
+#~ msgid ""
+#~ "Trouble with a non-textual (e.g., time) field in record '%s' - please "
+#~ "check data carefully."
+#~ msgstr ""
+#~ "Svårigheter med en icke textbaserat (t. ex. tid) fält i posten '%s* - "
+#~ "vänligen, kontrollera data noggrant."
+
+#~ msgid "End Report"
+#~ msgstr "Rapportslut"
+
+#~ msgid "--------------------------------------------------------------------------------"
+#~ msgstr "--------------------------------------------------------------------------------"
+
+#~ msgid "has expired"
+#~ msgstr "har utgått"
+
+#~ msgid "within %d day(s)"
+#~ msgstr "inom %d dag(ar)"
+
+#~ msgid "First character of variable name must be alphabetic"
+#~ msgstr "Första tecknet i variabelnamnet måste vara alfabetiskt"
+
+#~ msgid "Index not numeric"
+#~ msgstr "Index är inte numeriskt"
+
+#~ msgid "Input string is empty"
+#~ msgstr "Inmatningssträngen är tom"
+
+#~ msgid "Characters present between end of index ']' and '}'"
+#~ msgstr "Tecken som finns mellan indexslutet ']' och '}'"
+
+#~ msgid "Index is invalid or missing"
+#~ msgstr "Index är ogiltigt eller saknas"
+
+#~ msgid "Missing ending curly bracket for variable name"
+#~ msgstr "Saknas avslutande krullparentes till variabelnamnet"
+
+#~ msgid "Missing ending round bracket for Autotype value"
+#~ msgstr "Saknas avslutande rund parentes till autoskriv-värdet"
+
+#~ msgid "Missing ending square bracket for index value"
+#~ msgstr "Saknas avslutande klammerparentes till indexvärdet"
+
+#~ msgid "There are unmatched quotes in the run command"
+#~ msgstr "Det finns omatchade förslag i körkommandot"
+
+#~ msgid "Variable name is empty"
+#~ msgstr "Variabelnamn är tomt"
+
+#~ msgid "Variable name must be alphanumeric"
+#~ msgstr "Variaelnamnet måste vara alfanumeriskt"
+
+#~ msgid "an alias entry"
+#~ msgstr "en aliaspost"
+
+#~ msgid "a base entry of an alias"
+#~ msgstr "en alias baspost"
+
+#~ msgid "  Field is too long."
+#~ msgstr "  Fältet är för långt."
+
+#~ msgid "  Field is too short."
+#~ msgstr "  Fältet är för kort."
+
+#~ msgid "Error: A file with this name already exists"
+#~ msgstr "Fel: En fil med detta namn finns redan"
+
+#~ msgid "The file was not found."
+#~ msgstr "Filen hittades inte."
+
+#~ msgid "Error: File is read-only"
+#~ msgstr "Fel: Filen är bara läsbar"
+
 #, fuzzy
-msgid "File is too short."
-msgstr "  Fältet är för kort."
+#~ msgid "File is too big."
+#~ msgstr "  Fältet är för långt."
 
-#: ../../../core/core_st.cpp:118
-msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr ""
-"Filen är trunkerad eller på annat sett felaktig. Vänligen, använd databasens "
-"backup."
-
-#: ../../../core/core_st.cpp:119
-msgid "Cannot read file. Please check file permissions."
-msgstr "Kan inte läsa filen. Vänligen, kontrollera filrättigheterna."
-
-#: ../../../core/core_st.cpp:120
-msgid "Error while writing file! Try saving in a different location"
-msgstr "Fel vid filskrivning! Försök att spara i ett annat format"
-
-#: ../../../core/core_st.cpp:121
-#, c-format
-msgid ""
-"Filter %s already exists in the database, do you wish to replace it with "
-"this?"
-msgstr "Filter %s finns redan i databasen, vill du ersätta det med detta?"
-
-#: ../../../core/core_st.cpp:122
-msgid "Stored filters will be unusable until the file's restored."
-msgstr "Sparade filter är inte användbara tills dess filen har startats om."
-
-#: ../../../core/core_st.cpp:123
-msgid "Last Access Time"
-msgstr "Senaste åtkomsttid"
-
-#: ../../../core/core_st.cpp:124
-msgid "AutoType"
-msgstr "Autoskriv"
-
-#: ../../../core/core_st.cpp:125
-msgid "Created Time"
-msgstr "Skapad den"
-
-#: ../../../core/core_st.cpp:126
-msgid "DCA"
-msgstr "DCA"
-
-#: ../../../core/core_st.cpp:127
-msgid "e-mail"
-msgstr "e-post"
-
-#: ../../../core/core_st.cpp:129
-msgid "Group/Title"
-msgstr "Grupp/Titel"
-
-#: ../../../core/core_st.cpp:130
 #, fuzzy
-msgid "Keyboard Shortcut"
-msgstr "Skapa genväg"
+#~ msgid "File is too short."
+#~ msgstr "  Fältet är för kort."
 
-#: ../../../core/core_st.cpp:131
-msgid "Notes"
-msgstr "Noteringar"
+#~ msgid "File is truncated or otherwise corrupt. Please use backup database."
+#~ msgstr ""
+#~ "Filen är trunkerad eller på annat sett felaktig. Vänligen, använd "
+#~ "databasens backup."
 
-#: ../../../core/core_st.cpp:133
-msgid "Password Modified Time"
-msgstr "Lösenordets ändringstidpunkt"
+#~ msgid "Cannot read file. Please check file permissions."
+#~ msgstr "Kan inte läsa filen. Vänligen, kontrollera filrättigheterna."
 
-#: ../../../core/core_st.cpp:134
-msgid "Protected"
-msgstr "Skyddad"
+#~ msgid "Error while writing file! Try saving in a different location"
+#~ msgstr "Fel vid filskrivning! Försök att spara i ett annat format"
 
-#: ../../../core/core_st.cpp:135
-msgid "History"
-msgstr "Historik"
+#~ msgid ""
+#~ "Filter %s already exists in the database, do you wish to replace it with "
+#~ "this?"
+#~ msgstr "Filter %s finns redan i databasen, vill du ersätta det med detta?"
 
-#: ../../../core/core_st.cpp:137
+#~ msgid "Stored filters will be unusable until the file's restored."
+#~ msgstr "Sparade filter är inte användbara tills dess filen har startats om."
+
+#~ msgid "Last Access Time"
+#~ msgstr "Senaste åtkomsttid"
+
+#~ msgid "AutoType"
+#~ msgstr "Autoskriv"
+
+#~ msgid "Created Time"
+#~ msgstr "Skapad den"
+
+#~ msgid "DCA"
+#~ msgstr "DCA"
+
+#~ msgid "e-mail"
+#~ msgstr "e-post"
+
+#~ msgid "Group/Title"
+#~ msgstr "Grupp/Titel"
+
 #, fuzzy
-msgid "Password Policy Name"
-msgstr "Lösenordspolicy"
+#~ msgid "Keyboard Shortcut"
+#~ msgstr "Skapa genväg"
 
-#: ../../../core/core_st.cpp:138
-msgid "Record Modified Time"
-msgstr "Registrerad ändringstidpunkt"
+#~ msgid "Notes"
+#~ msgstr "Noteringar"
 
-#: ../../../core/core_st.cpp:140
-msgid "Shift+DCA"
-msgstr "Skift+DCA"
+#~ msgid "Password Modified Time"
+#~ msgstr "Lösenordets ändringstidpunkt"
 
-#: ../../../core/core_st.cpp:141
-msgid "Symbols"
-msgstr "Symboler"
+#~ msgid "Protected"
+#~ msgstr "Skyddad"
 
-#: ../../../core/core_st.cpp:143
-msgid "URL"
-msgstr "URL"
+#~ msgid "History"
+#~ msgstr "Historik"
 
-#: ../../../core/core_st.cpp:144
-msgid "Username"
-msgstr "Användarnamn"
-
-#: ../../../core/core_st.cpp:145
-msgid "UUID"
-msgstr "UUID"
-
-#: ../../../core/core_st.cpp:146
-msgid "Password Expiry Date"
-msgstr "Lösenordets utgångsdatum"
-
-#: ../../../core/core_st.cpp:147
-msgid "Password Expiry Interval"
-msgstr "Lösenordets utgångsperiod"
-
-#: ../../../core/core_st.cpp:148
-msgid "a normal entry"
-msgstr "en normal post"
-
-#: ../../../core/core_st.cpp:149
-msgid "added but not yet saved to database"
-msgstr "tillagd men ännu inte sparad i databasen"
-
-#: ../../../core/core_st.cpp:150
 #, fuzzy
-msgid "in the database"
-msgstr "i databasen"
+#~ msgid "Password Policy Name"
+#~ msgstr "Lösenordspolicy"
 
-#: ../../../core/core_st.cpp:151
-msgid "a shortcut entry"
-msgstr "en genvägspost"
+#~ msgid "Record Modified Time"
+#~ msgstr "Registrerad ändringstidpunkt"
 
-#: ../../../core/core_st.cpp:152
+#~ msgid "Shift+DCA"
+#~ msgstr "Skift+DCA"
+
+#~ msgid "Symbols"
+#~ msgstr "Symboler"
+
+#~ msgid "URL"
+#~ msgstr "URL"
+
+#~ msgid "Username"
+#~ msgstr "Användarnamn"
+
+#~ msgid "UUID"
+#~ msgstr "UUID"
+
+#~ msgid "Password Expiry Date"
+#~ msgstr "Lösenordets utgångsdatum"
+
+#~ msgid "Password Expiry Interval"
+#~ msgstr "Lösenordets utgångsperiod"
+
+#~ msgid "a normal entry"
+#~ msgstr "en normal post"
+
+#~ msgid "added but not yet saved to database"
+#~ msgstr "tillagd men ännu inte sparad i databasen"
+
 #, fuzzy
-msgid "a base entry of a shortcut"
-msgstr "en alias baspost"
+#~ msgid "in the database"
+#~ msgstr "i databasen"
 
-#: ../../../core/core_st.cpp:153
-msgid "changed but not yet saved to database"
-msgstr "ändrad men ännu inte sparad i databasen"
+#~ msgid "a shortcut entry"
+#~ msgstr "en genvägspost"
 
-#: ../../../core/core_st.cpp:154
-msgid "greater than"
-msgstr "större än"
-
-#: ../../../core/core_st.cpp:155
-msgid "greater than or equal to"
-msgstr "större eller lika med"
-
-#: ../../../core/core_st.cpp:156
-#, c-format
-msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
-msgstr ""
-"Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förväntades "
-"inte."
-
-#: ../../../core/core_st.cpp:157
-#, c-format
-msgid "Line %d: "
-msgstr "Rad %d: "
-
-#: ../../../core/core_st.cpp:158
-#, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
-msgstr ""
-"Filen slutar på rad %d före avslutande citattecken i senaste posts notatfält."
-
-#: ../../../core/core_st.cpp:159
-msgid "Import aborted. Please see report."
-msgstr "Importen avbröts. Vänligen, se rapporten."
-
-#: ../../../core/core_st.cpp:160
-msgid ""
-"The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\n"
-"\n"
-"Import aborted."
-msgstr ""
-"TXT- eller CSV-filen exporterades inte som begärts då postregistreringar "
-"spänner över fler rader i CSV-filen.\n"
-"\n"
-"Importen avbröts."
-
-#: ../../../core/core_st.cpp:161
-#, c-format
-msgid ""
-"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%s\".\n"
-msgstr ""
-"%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i "
-"importfilen. La till importerad post med namn=\"%s\".\n"
-
-#: ../../../core/core_st.cpp:162
-#, c-format
-msgid "Entry on line %d with Group=\"%s\""
-msgstr "Post på rade %d med Grupp=\"%s\""
-
-#: ../../../core/core_st.cpp:163
-#, c-format
-msgid "Entry on line %d with no group"
-msgstr "Post på rad %d utan grupp"
-
-#: ../../../core/core_st.cpp:164
-#, c-format
-msgid "Entry with Group=\"%s\""
-msgstr "Post med Grupp=\"%s\""
-
-#: ../../../core/core_st.cpp:165
-msgid "Entry with no group"
-msgstr "Post utan grupp"
-
-#: ../../../core/core_st.cpp:166
 #, fuzzy
-msgid "imported"
-msgstr "import"
+#~ msgid "a base entry of a shortcut"
+#~ msgstr "en alias baspost"
 
-#: ../../../core/core_st.cpp:167
-#, c-format
-msgid "Empty line %d skipped"
-msgstr "Tom rad %d överhoppad"
+#~ msgid "changed but not yet saved to database"
+#~ msgstr "ändrad men ännu inte sparad i databasen"
 
-#: ../../../core/core_st.cpp:168
-#, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-msgstr "Post %s%d med Grupp=\"%s\", Titel=\"%s\", Användare=\"%s\""
+#~ msgid "greater than"
+#~ msgstr "större än"
 
-#: ../../../core/core_st.cpp:169
-msgid "id="
-msgstr "id="
+#~ msgid "greater than or equal to"
+#~ msgstr "större eller lika med"
 
-#: ../../../core/core_st.cpp:170
-msgid "Internal error. Import failed. No records imported."
-msgstr "Internt fel. Importen misslyckades. Ingenting har importerades."
+#~ msgid ""
+#~ "Invalid input on line %d.  Number of fields separated by '%c' is not as "
+#~ "expected."
+#~ msgstr ""
+#~ "Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förväntades "
+#~ "inte."
 
-#: ../../../core/core_st.cpp:171
-#, c-format
-msgid "Found %d known column headers:"
-msgstr "Fann %d kända kolumnrubriker:"
+#~ msgid "Line %d: "
+#~ msgstr "Rad %d: "
 
-#: ../../../core/core_st.cpp:172
-#, c-format
-msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-msgstr ""
-"Posten på rad %d innehåller ett ogiltigt \"%s\" fält. Den har ignorerats."
+#~ msgid ""
+#~ "File ends on line %d before ending double quote of last entry's note "
+#~ "field."
+#~ msgstr ""
+#~ "Filen slutar på rad %d före avslutande citattecken i senaste posts "
+#~ "notatfält."
 
-#: ../../../core/core_st.cpp:173
-msgid "The following columns will be processed: "
-msgstr "Följande kolumner kommer att köras:"
+#~ msgid "Import aborted. Please see report."
+#~ msgstr "Importen avbröts. Vänligen, se rapporten."
 
-#: ../../../core/core_st.cpp:174
-msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
-msgstr ""
-"Följande kolumner återfanns, men bara Grupp/Titel, Användare och Lösenord "
-"kommer att behandlas."
+#~ msgid ""
+#~ "The TXT or CSV file was not exported as required as entry records span "
+#~ "multiple lines in the CSV file.\n"
+#~ "\n"
+#~ "Import aborted."
+#~ msgstr ""
+#~ "TXT- eller CSV-filen exporterades inte som begärts då postregistreringar "
+#~ "spänner över fler rader i CSV-filen.\n"
+#~ "\n"
+#~ "Importen avbröts."
 
-#: ../../../core/core_st.cpp:175
-#, c-format
-msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
-msgstr ""
-"Rad %d överhoppad - Bara %d fält funna, emedan körning av rubriken visar att "
-"det borde vara %d."
+#~ msgid ""
+#~ "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+#~ "Import file. Added imported entry with title=\"%s\".\n"
+#~ msgstr ""
+#~ "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i "
+#~ "importfilen. La till importerad post med namn=\"%s\".\n"
 
-#: ../../../core/core_st.cpp:176
-msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
-msgstr ""
-"Endera av eller både grupp-/titel- och lösenords-kolumner saknas. Ingenting "
-"har importerades."
+#~ msgid "Entry on line %d with Group=\"%s\""
+#~ msgstr "Post på rade %d med Grupp=\"%s\""
 
-#: ../../../core/core_st.cpp:177
-msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
-msgstr ""
-"Hittade inte nästa posts Titel-fält i KeePass V1 TXT (borde vara inom "
-"fyrkantsparentes)."
+#~ msgid "Entry on line %d with no group"
+#~ msgstr "Post på rad %d utan grupp"
 
-#: ../../../core/core_st.cpp:178
-msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
-"Kolumnens rubrikrad känns inte igen som första post. Ingenting har "
-"importerats."
+#~ msgid "Entry with Group=\"%s\""
+#~ msgstr "Post med Grupp=\"%s\""
 
-#: ../../../core/core_st.cpp:179
-msgid "No records in import file!"
-msgstr "Inga värden i importerad fil!"
+#~ msgid "Entry with no group"
+#~ msgstr "Post utan grupp"
 
-#: ../../../core/core_st.cpp:180
-#, fuzzy, c-format
-msgid "Line %d skipped: Empty mandatory Password field."
-msgstr ""
-"Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Lösenord-fält."
-
-#: ../../../core/core_st.cpp:181
-#, fuzzy, c-format
-msgid "Line %d skipped: Empty mandatory Title field."
-msgstr "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Titel-fält."
-
-#: ../../../core/core_st.cpp:182
-#, c-format
-msgid " Import # %d"
-msgstr " Importera # %d"
-
-#: ../../../core/core_st.cpp:183
-msgid "on line "
-msgstr "on line"
-
-#: ../../../core/core_st.cpp:184
-#, fuzzy, c-format
-msgid "%s  - Imported %s"
-msgstr "Importerat %d %s"
-
-#: ../../../core/core_st.cpp:185
-msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
-msgstr ""
-"För att ersätta lösenord till existerande poster måste alla följande "
-"kolumner vara med: Grupp/Titel, Användare och Lösenord. En eller fler saknas "
-"och inga poster har uppdaterats."
-
-#: ../../../core/core_st.cpp:186
-#, c-format
-msgid "%s not found. Cannot update entry's password.\n"
-msgstr "%s hittades inte. Kan inte uppdatera posters lösenord.\n"
-
-#: ../../../core/core_st.cpp:187
-#, c-format
-msgid "%s has an empty %s.\n"
-msgstr "%s har en tom %s.\n"
-
-#: ../../../core/core_st.cpp:188
-#, c-format
-msgid ""
-"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
-msgstr ""
-"Posten \"%s, %s, %s\" har ett lösenord i rätt format för ett alias, men "
-"basposten är redan en alias."
-
-#: ../../../core/core_st.cpp:189
-msgid "\tThis entry has been made an alias of associated base entry."
-msgstr "\tDenna post har gjorts till en alias till associerad baspost."
-
-#: ../../../core/core_st.cpp:190
-#, c-format
-msgid ""
-"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
-msgstr ""
-"Posten\"%s, %s, %s\" har ett lösenord i rätt format för en alias, men "
-"basposten finns inte."
-
-#: ../../../core/core_st.cpp:191
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
-msgstr "\tDenna post förblir en vanlig post och lösenordet har inte ändrats."
-
-#: ../../../core/core_st.cpp:192
-#, c-format
-msgid ""
-"The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
-"entry. It cannot be imported."
-msgstr ""
-"%s posten \"%s, %s, %s\"pekar inte på en normal eller existerande %s "
-"baspost. Den kan inte importeras."
-
-#: ../../../core/core_st.cpp:193
-msgid "Entry import warnings"
-msgstr "Postimportvarningar"
-
-#: ../../../core/core_st.cpp:194
-msgid "Internal error: Invalid oflag or pmode argument"
-msgstr "Internt fel: Ogiltig oflag- eller pmodeargument"
-
-#: ../../../core/core_st.cpp:195
-msgid "invalid!"
-msgstr "ogiltig!"
-
-#: ../../../core/core_st.cpp:196
-msgid "  Invalid date/time value."
-msgstr "  Felaktigt datum/tidsangivelse."
-
-#: ../../../core/core_st.cpp:197
-msgid "  Field length is incorrect."
-msgstr "  Fältlängden är felaktig."
-
-#: ../../../core/core_st.cpp:198
-msgid "Internal error: An invalid flag was specified"
-msgstr "Internt fel: En ogiltig flagga angavs"
-
-#: ../../../core/core_st.cpp:199
-#, c-format
-msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr "  Ogiltig rubrik: '%s' (måste vara 5 hexadecimala tecken)."
-
-#: ../../../core/core_st.cpp:200
-#, c-format
-msgid "  Invalid number of saved old passwords %d."
-msgstr "  Felaktigt antal sparade gamla lösenord %d."
-
-#: ../../../core/core_st.cpp:201
-#, c-format
-msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr "  Ogiltigt statusvärde: %d (måste vara antingen 0 eller 1)."
-
-#: ../../../core/core_st.cpp:202
-msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr "  Ogiltig lösenordslängd hittades (inte ett hexadecimalt tal)"
-
-#: ../../../core/core_st.cpp:203
-msgid ""
-"  Invalid password length found (differs from length of following password)."
-msgstr ""
-"  Ogiltig lösenordslängd hittades (avviker i längd från följande lösenord)."
-
-#: ../../../core/core_st.cpp:204
-msgid "Invalid Filter schema."
-msgstr "Ogiltigt filterschema."
-
-#: ../../../core/core_st.cpp:205
-msgid "Schema does not have a version number."
-msgstr "Schemat har inget versionsnummer."
-
-#: ../../../core/core_st.cpp:206
-msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
-msgstr ""
-"  Hittat felaktigt fältavgränsande tecken - endast ett enda blanksteg är "
-"tillåtet mellan fälten."
-
-#: ../../../core/core_st.cpp:207
-#, c-format
-msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr "XML-filtrets version (%d) är större än nuvarande schema (%d)."
-
-#: ../../../core/core_st.cpp:208
-#, c-format
-msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
-msgstr ""
-"XML-filtrets version (%d) är större än det som stöds av denna session av "
-"PasswordSafe (%d)."
-
-#: ../../../core/core_st.cpp:209
-msgid "is"
-msgstr "är"
-
-#: ../../../core/core_st.cpp:210
-msgid "is active"
-msgstr "är aktiv"
-
-#: ../../../core/core_st.cpp:211
-msgid "is inactive"
-msgstr "är inaktiv"
-
-#: ../../../core/core_st.cpp:212
-msgid "is not"
-msgstr "är inte"
-
-#: ../../../core/core_st.cpp:213
-msgid "is not present"
-msgstr "inte aktuell"
-
-#: ../../../core/core_st.cpp:214
-msgid "is present"
-msgstr "är aktuell"
-
-#: ../../../core/core_st.cpp:215
-#, c-format
-msgid ""
-"Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has "
-"been removed from the %s entry."
-msgstr ""
-
-#: ../../../core/core_st.cpp:216
-#, c-format
-msgid ""
-"Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe "
-"application. It has been removed from the entry."
-msgstr ""
-
-#: ../../../core/core_st.cpp:217
-msgid "less than"
-msgstr "mindre än"
-
-#: ../../../core/core_st.cpp:218
-msgid "less than or equal to"
-msgstr "mindre än eller lika med"
-
-#: ../../../core/core_st.cpp:219
-msgid "File or path not found"
-msgstr "Fil eller sökväg hittades inte"
-
-#: ../../../core/core_st.cpp:220
-#, c-format
-msgid ""
-"\n"
-"The following new %s %s merged into this database:"
-msgstr ""
-"\n"
-"Följande nya%s %s slogs samman med denna databas:"
-
-#: ../../../core/core_st.cpp:221
-#, c-format
-msgid ""
-"\n"
-"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr ""
-"\n"
-"Sammanslagningen genomförd: %d %s added (%d %s, %d %s, %d %s)"
-
-#: ../../../core/core_st.cpp:222
-#, fuzzy, c-format
-msgid ""
-"Conflicting entries for \"%s\" \"%s\" \"%s\".\n"
-"  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
-"    Differing field(s): %s"
-msgstr ""
-"Poster i konflikt «%s» «%s» «%s».\n"
-"  La till sammanslagen post som«%s» «%s» «%s».\n"
-"    Skiljande fält(s): %s"
-
-#: ../../../core/core_st.cpp:223
 #, fuzzy
-msgid "merged"
-msgstr "Slå ihop"
+#~ msgid "imported"
+#~ msgstr "import"
 
-#: ../../../core/core_st.cpp:224
-#, fuzzy, c-format
-msgid "%s - Merged %s"
-msgstr "Importerat %d %s"
+#~ msgid "Empty line %d skipped"
+#~ msgstr "Tom rad %d överhoppad"
 
-#: ../../../core/core_st.cpp:225
-msgid "MISSING PASSWORD"
-msgstr ""
+#~ msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+#~ msgstr "Post %s%d med Grupp=\"%s\", Titel=\"%s\", Användare=\"%s\""
 
-#: ../../../core/core_st.cpp:226
-#, c-format
-msgid "\tPassword policy name '%s' is not in the database."
-msgstr ""
+#~ msgid "id="
+#~ msgstr "id="
 
-#: ../../../core/core_st.cpp:227
-msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
-msgstr ""
+#~ msgid "Internal error. Import failed. No records imported."
+#~ msgstr "Internt fel. Importen misslyckades. Ingenting har importerades."
 
-#: ../../../core/core_st.cpp:228
-msgid "Can't obtain the schema version."
-msgstr "Kan inte hitta schemaversionen."
+#~ msgid "Found %d known column headers:"
+#~ msgstr "Fann %d kända kolumnrubriker:"
 
-#: ../../../core/core_st.cpp:229
-#, c-format
-msgid "MISSING TITLE # %d"
-msgstr ""
+#~ msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
+#~ msgstr ""
+#~ "Posten på rad %d innehåller ett ogiltigt \"%s\" fält. Den har ignorerats."
 
-#: ../../../core/core_st.cpp:230
-msgid "The filter XML version is missing."
-msgstr "XML-filtrets version saknas."
+#~ msgid "The following columns will be processed: "
+#~ msgstr "Följande kolumner kommer att köras:"
 
-#: ../../../core/core_st.cpp:232
-#, fuzzy, c-format
-msgid "Create SchemaCache60 Error 0x%08X during %s."
-msgstr "Skapa SchemaCache%2d Fel 0x%08X vid %s."
+#~ msgid ""
+#~ "The following columns were recognised but only Group/Title, Username and "
+#~ "Password will be processed:"
+#~ msgstr ""
+#~ "Följande kolumner återfanns, men bara Grupp/Titel, Användare och Lösenord "
+#~ "kommer att behandlas."
 
-#: ../../../core/core_st.cpp:233
-#, fuzzy, c-format
-msgid "SAX Parse60 Error 0x%08X during %s."
-msgstr "SAX parse%2d fel 0x%08X under %s."
+#~ msgid ""
+#~ "Line %d skipped - Only %d fields found, whereas parsing the Header says "
+#~ "there should be %d."
+#~ msgstr ""
+#~ "Rad %d överhoppad - Bara %d fält funna, emedan körning av rubriken visar "
+#~ "att det borde vara %d."
 
-#: ../../../core/core_st.cpp:234
-#, c-format
-msgid "Error (%08X): line %d character %d %s"
-msgstr "Fel (%08X): rad %d tecken %d %s"
+#~ msgid ""
+#~ "Either or both of the Group/Title and Password columns are missing. No "
+#~ "records imported."
+#~ msgstr ""
+#~ "Endera av eller både grupp-/titel- och lösenords-kolumner saknas. "
+#~ "Ingenting har importerades."
 
-#: ../../../core/core_st.cpp:236
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"Kan inte stänga konfigurationsfilen.\n"
-"\n"
-"Använder registret."
+#~ msgid ""
+#~ "Could not find the next entry's title field in the KeePass V1 TXT (should "
+#~ "be within square brackets)."
+#~ msgstr ""
+#~ "Hittade inte nästa posts Titel-fält i KeePass V1 TXT (borde vara inom "
+#~ "fyrkantsparentes)."
 
-#: ../../../core/core_st.cpp:237
-msgid "Cannot create lock file - no permission in directory?"
-msgstr "Kan inte skapa nyckelfil - saknar du rättigheter i mappen?"
+#~ msgid ""
+#~ "Column header row not recognised as first record. No records imported."
+#~ msgstr ""
+#~ "Kolumnens rubrikrad känns inte igen som första post. Ingenting har "
+#~ "importerats."
 
-#: ../../../core/core_st.cpp:238
-msgid "Internal error: Out of file handles"
-msgstr "Internt fel: Slut på filhanterare"
+#~ msgid "No records in import file!"
+#~ msgstr "Inga värden i importerad fil!"
 
-#: ../../../core/core_st.cpp:239
-msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
-msgstr ""
-"Kan inte använda en MS XML-läsare i ditt system. Varken MS XML V3, V4 eller "
-"V6 verkar tillgänglig."
-
-#: ../../../core/core_st.cpp:241
-msgid "is not set"
-msgstr "inte vald"
-
-#: ../../../core/core_st.cpp:242
-#, fuzzy, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of invalid UUIDs fixed: %d\n"
-"\n"
-"Number of duplicate UUIDs fixed: %d\n"
-"\n"
-"Number of non-unique Group/Title/User fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued: %d\n"
-"\n"
-"Number of Shortcut warnings issued: %d\n"
-"\n"
-"Number of entries with fields that cannot be fully displayed: %d.\n"
-"\n"
-"Recommend that the database is now saved."
-msgstr ""
-"rntal processade poster: %d\n"
-"\n"
-"Antal UUIDs som fixats: %d\n"
-"\n"
-"Antal lösenordshistoriken som fixats: %d\n"
-"\n"
-"Antal icke unika Grupper/Titlar/Användare som fixats: %d\n"
-"\n"
-"Antal alias-varningar som genererats: %d\n"
-"\n"
-"Antal länkvarningarsom genererats %d\n"
-"\n"
-"Antal poster med fält som inte kan visas fullständigt: %d"
-
-#: ../../../core/core_st.cpp:244
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
-msgstr ""
-"Lösenordet borde bestå av blandade tecken med åtminståne en siffra eller "
-"interpunkteringstecken"
-
-#: ../../../core/core_st.cpp:245
-msgid "Password is too short"
-msgstr "Lösenordet är för kort"
-
-#: ../../../core/core_st.cpp:246
-msgid "Easyvision characters"
-msgstr "Lättlästa tecken"
-
-#: ../../../core/core_st.cpp:247
-msgid "Hexadecimal characters"
-msgstr "Hexadecimala tecken"
-
-#: ../../../core/core_st.cpp:248
 #, fuzzy
-msgid "Password length"
-msgstr "Lösenordets längd:"
+#~ msgid "Line %d skipped: Empty mandatory Password field."
+#~ msgstr ""
+#~ "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Lösenord-fält."
 
-#: ../../../core/core_st.cpp:249
-msgid "Pronounceable passwords"
-msgstr "Uttalbara lösenord"
-
-#: ../../../core/core_st.cpp:251
 #, fuzzy
-msgid "Use lowercase characters"
-msgstr "Minsta antal gemena tecken"
+#~ msgid "Line %d skipped: Empty mandatory Title field."
+#~ msgstr ""
+#~ "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Titel-fält."
 
-#: ../../../core/core_st.cpp:252
+#~ msgid " Import # %d"
+#~ msgstr " Importera # %d"
+
+#~ msgid "on line "
+#~ msgstr "on line"
+
 #, fuzzy
-msgid "Use symbols"
-msgstr "symboler"
+#~ msgid "%s  - Imported %s"
+#~ msgstr "Importerat %d %s"
 
-#: ../../../core/core_st.cpp:253
+#~ msgid ""
+#~ "To replace passwords of existing entries, all the following columns must "
+#~ "be present: Group/Title, Username and Password.  One or more are missing "
+#~ "and no entries have been updated."
+#~ msgstr ""
+#~ "För att ersätta lösenord till existerande poster måste alla följande "
+#~ "kolumner vara med: Grupp/Titel, Användare och Lösenord. En eller fler "
+#~ "saknas och inga poster har uppdaterats."
+
+#~ msgid "%s not found. Cannot update entry's password.\n"
+#~ msgstr "%s hittades inte. Kan inte uppdatera posters lösenord.\n"
+
+#~ msgid "%s has an empty %s.\n"
+#~ msgstr "%s har en tom %s.\n"
+
+#~ msgid ""
+#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+#~ "the base entry is already an alias."
+#~ msgstr ""
+#~ "Posten \"%s, %s, %s\" har ett lösenord i rätt format för ett alias, men "
+#~ "basposten är redan en alias."
+
+#~ msgid "\tThis entry has been made an alias of associated base entry."
+#~ msgstr "\tDenna post har gjorts till en alias till associerad baspost."
+
+#~ msgid ""
+#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+#~ "the base entry does not exist."
+#~ msgstr ""
+#~ "Posten\"%s, %s, %s\" har ett lösenord i rätt format för en alias, men "
+#~ "basposten finns inte."
+
+#~ msgid ""
+#~ "\tThis entry remains a normal entry and the password has not been changed."
+#~ msgstr ""
+#~ "\tDenna post förblir en vanlig post och lösenordet har inte ändrats."
+
+#~ msgid ""
+#~ "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
+#~ "entry. It cannot be imported."
+#~ msgstr ""
+#~ "%s posten \"%s, %s, %s\"pekar inte på en normal eller existerande %s "
+#~ "baspost. Den kan inte importeras."
+
+#~ msgid "Entry import warnings"
+#~ msgstr "Postimportvarningar"
+
+#~ msgid "Internal error: Invalid oflag or pmode argument"
+#~ msgstr "Internt fel: Ogiltig oflag- eller pmodeargument"
+
+#~ msgid "invalid!"
+#~ msgstr "ogiltig!"
+
+#~ msgid "  Invalid date/time value."
+#~ msgstr "  Felaktigt datum/tidsangivelse."
+
+#~ msgid "  Field length is incorrect."
+#~ msgstr "  Fältlängden är felaktig."
+
+#~ msgid "Internal error: An invalid flag was specified"
+#~ msgstr "Internt fel: En ogiltig flagga angavs"
+
+#~ msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+#~ msgstr "  Ogiltig rubrik: '%s' (måste vara 5 hexadecimala tecken)."
+
+#~ msgid "  Invalid number of saved old passwords %d."
+#~ msgstr "  Felaktigt antal sparade gamla lösenord %d."
+
+#~ msgid "  Invalid status value: %d (must be either 0 or 1)."
+#~ msgstr "  Ogiltigt statusvärde: %d (måste vara antingen 0 eller 1)."
+
+#~ msgid "  Invalid password length found (not a hexadecimal number)."
+#~ msgstr "  Ogiltig lösenordslängd hittades (inte ett hexadecimalt tal)"
+
+#~ msgid ""
+#~ "  Invalid password length found (differs from length of following "
+#~ "password)."
+#~ msgstr ""
+#~ "  Ogiltig lösenordslängd hittades (avviker i längd från följande "
+#~ "lösenord)."
+
+#~ msgid "Invalid Filter schema."
+#~ msgstr "Ogiltigt filterschema."
+
+#~ msgid "Schema does not have a version number."
+#~ msgstr "Schemat har inget versionsnummer."
+
+#~ msgid ""
+#~ "  Invalid field separator character found - only a single blank is "
+#~ "allowed between fields."
+#~ msgstr ""
+#~ "  Hittat felaktigt fältavgränsande tecken - endast ett enda blanksteg är "
+#~ "tillåtet mellan fälten."
+
+#~ msgid "The filter XML version (%d) is greater than the current schema (%d)."
+#~ msgstr "XML-filtrets version (%d) är större än nuvarande schema (%d)."
+
+#~ msgid ""
+#~ "The filter XML version (%d) is greater than that supported by this "
+#~ "instance of PasswordSafe (%d)."
+#~ msgstr ""
+#~ "XML-filtrets version (%d) är större än det som stöds av denna session av "
+#~ "PasswordSafe (%d)."
+
+#~ msgid "is"
+#~ msgstr "är"
+
+#~ msgid "is active"
+#~ msgstr "är aktiv"
+
+#~ msgid "is inactive"
+#~ msgstr "är inaktiv"
+
+#~ msgid "is not"
+#~ msgstr "är inte"
+
+#~ msgid "is not present"
+#~ msgstr "inte aktuell"
+
+#~ msgid "is present"
+#~ msgstr "är aktuell"
+
+#~ msgid "less than"
+#~ msgstr "mindre än"
+
+#~ msgid "less than or equal to"
+#~ msgstr "mindre än eller lika med"
+
+#~ msgid "File or path not found"
+#~ msgstr "Fil eller sökväg hittades inte"
+
+#~ msgid ""
+#~ "\n"
+#~ "The following new %s %s merged into this database:"
+#~ msgstr ""
+#~ "\n"
+#~ "Följande nya%s %s slogs samman med denna databas:"
+
+#~ msgid ""
+#~ "\n"
+#~ "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
+#~ msgstr ""
+#~ "\n"
+#~ "Sammanslagningen genomförd: %d %s added (%d %s, %d %s, %d %s)"
+
 #, fuzzy
-msgid "Use uppercase characters"
-msgstr "Minsta antal versala tecken"
+#~ msgid ""
+#~ "Conflicting entries for \"%s\" \"%s\" \"%s\".\n"
+#~ "  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
+#~ "    Differing field(s): %s"
+#~ msgstr ""
+#~ "Poster i konflikt «%s» «%s» «%s».\n"
+#~ "  La till sammanslagen post som«%s» «%s» «%s».\n"
+#~ "    Skiljande fält(s): %s"
 
-#: ../../../core/core_st.cpp:254
-#, c-format
-msgid "Error in a Password History %s:"
-msgstr "Fel i en lösenordshistorik %s:"
-
-#: ../../../core/core_st.cpp:255
-#, c-format
-msgid "sub-field starting at position %d (within the History field): "
-msgstr "underfält börjar vid positionen %d (inom Historik-fältet):"
-
-#: ../../../core/core_st.cpp:256
-msgid "  All Password History ignored."
-msgstr "  All lösenordshistorik har ignorerats."
-
-#: ../../../core/core_st.cpp:257
-msgid "Read Error"
-msgstr "Läsfel"
-
-#: ../../../core/core_st.cpp:258
-#, c-format
-msgid ""
-"\tOne or more entry keyboard shortcuts were already assigned to entries in "
-"this database. They have been removed from the %s entries."
-msgstr ""
-
-#: ../../../core/core_st.cpp:259
-msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
-msgstr ""
-
-#: ../../../core/core_st.cpp:260
-#, c-format
-msgid "%s%s%s_Report.txt"
-msgstr "%s%s%s_Rapport.txt"
-
-#: ../../../core/core_st.cpp:261
-#, c-format
-msgid "Report of %s function started at %s"
-msgstr "Rapport på funktionen %s som startade %s "
-
-#: ../../../core/core_st.cpp:262
-#, c-format
-msgid "on database %s"
-msgstr "på databas %s"
-
-#: ../../../core/core_st.cpp:263
-msgid "Validate"
-msgstr "Validera"
-
-#: ../../../core/core_st.cpp:265
-msgid "Fatal Error"
-msgstr "Fatalt fel"
-
-#: ../../../core/core_st.cpp:267
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: \"%s\"%s\"%s\": "
-msgstr ""
-"\n"
-"Fel i lösenordshistoriken för post: »%s»%s»%s»: "
-
-#: ../../../core/core_st.cpp:268
-msgid "See Password History filters"
-msgstr "Se lösenords historiska filter"
-
-#: ../../../core/core_st.cpp:269
-msgid "See Password Policy filters"
-msgstr "Se lösenords policyfilter"
-
-#: ../../../core/core_st.cpp:270
-msgid "is set"
-msgstr "är vald"
-
-#: ../../../core/core_st.cpp:271
-msgid "shortcut"
-msgstr "genväg"
-
-#: ../../../core/core_st.cpp:272
-msgid "shortcuts"
-msgstr "genvägar"
-
-#: ../../../core/core_st.cpp:273
-msgid "policy specific symbols"
-msgstr ""
-
-#: ../../../core/core_st.cpp:274
-msgid "Start Report"
-msgstr "Att rapportera"
-
-#: ../../../core/core_st.cpp:277
-#, fuzzy, c-format
-msgid "%s - Sync'd %s"
-msgstr "Importerat %d %s"
-
-#: ../../../core/core_st.cpp:278
-msgid "System error: No more file handles available"
-msgstr "Systemfel: Finns inga fler fil-hanterare"
-
-#: ../../../core/core_st.cpp:280
-msgid "Internal error: Unexpected error number"
-msgstr "Internt fel: oväntat felnummer"
-
-#: ../../../core/core_st.cpp:282
-msgid "Unknown function"
-msgstr "Okänd funktion"
-
-#: ../../../core/core_st.cpp:283
-msgid "Unknown object"
-msgstr "Okänt objekt"
-
-#: ../../../core/core_st.cpp:285
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
-"Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
-
-#: ../../../core/core_st.cpp:286
-#, fuzzy, c-format
-msgid ""
-"The following entries have passwords in the correct form for %s, but the "
-"base entry does not exist."
-msgstr ""
-"Posten\"%s, %s, %s\" har ett lösenord i rätt format för en alias, men "
-"basposten finns inte."
-
-#: ../../../core/core_st.cpp:287
-msgid "The following entries were duplicates of an existing entry."
-msgstr "Följande poster är duplikat av en existerande post."
-
-#: ../../../core/core_st.cpp:288
 #, fuzzy
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
-"Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+#~ msgid "merged"
+#~ msgstr "Slå ihop"
 
-#: ../../../core/core_st.cpp:289
-#, fuzzy, c-format
-msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%s'"
-msgstr ""
-"Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
-
-#: ../../../core/core_st.cpp:290
 #, fuzzy
-msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
-"Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+#~ msgid "%s - Merged %s"
+#~ msgstr "Importerat %d %s"
 
-#: ../../../core/core_st.cpp:291
-#, c-format
-msgid "\tGroup='%s', Title='%s', User='%s' %s"
-msgstr "\tGrupp='%s'; Titel='%s'; Användare='%s' %s"
+#~ msgid "Can't obtain the schema version."
+#~ msgstr "Kan inte hitta schemaversionen."
 
-#: ../../../core/core_st.cpp:292
-#, c-format
-msgid "- Its title has been changed to:'%s'"
-msgstr "- Dess titel har ändrats till:'%s'"
+#~ msgid "The filter XML version is missing."
+#~ msgstr "XML-filtrets version saknas."
 
-#: ../../../core/core_st.cpp:293
-msgid "The following ERRORS were detected and were FIXED."
-msgstr ""
+#, fuzzy
+#~ msgid "Create SchemaCache60 Error 0x%08X during %s."
+#~ msgstr "Skapa SchemaCache%2d Fel 0x%08X vid %s."
 
-#: ../../../core/core_st.cpp:294
-msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
-msgstr ""
-"Följande poster hade en ogiltig lösenordshistorik. Denna har återskapats med "
-"tillgängliga data. Det kan förekomma viss förlust av historik."
+#, fuzzy
+#~ msgid "SAX Parse60 Error 0x%08X during %s."
+#~ msgstr "SAX parse%2d fel 0x%08X under %s."
 
-#: ../../../core/core_st.cpp:295
-#, fuzzy, c-format
-msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %s."
-msgstr ""
-"Följande poster har en eller fler textfält som är för långa för att kunna "
-"visas eller editeras (fler än %d tecken)."
+#~ msgid "Error (%08X): line %d character %d %s"
+#~ msgstr "Fel (%08X): rad %d tecken %d %s"
 
-#: ../../../core/core_st.cpp:296
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
-msgstr ""
+#~ msgid ""
+#~ "Unable to get configuration file lock.\n"
+#~ "\n"
+#~ "Will use registry."
+#~ msgstr ""
+#~ "Kan inte stänga konfigurationsfilen.\n"
+#~ "\n"
+#~ "Använder registret."
 
-#: ../../../core/core_st.cpp:299
-msgid "will expire"
-msgstr "går ut"
+#~ msgid "Cannot create lock file - no permission in directory?"
+#~ msgstr "Kan inte skapa nyckelfil - saknar du rättigheter i mappen?"
 
-#: ../../../core/core_st.cpp:300
-#, c-format
-msgid ""
-"SAX Parse Error during %s\n"
-"%s."
-msgstr ""
-"SAX parsefel i %s\n"
-"%s."
+#~ msgid "Internal error: Out of file handles"
+#~ msgstr "Internt fel: Slut på filhanterare"
 
-#: ../../../core/core_st.cpp:301
-#, c-format
-msgid "XML %s: line %d character %d: %s"
-msgstr "XML %s: rad %d tecken %d: %s"
+#~ msgid ""
+#~ "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or "
+#~ "V6 seems available."
+#~ msgstr ""
+#~ "Kan inte använda en MS XML-läsare i ditt system. Varken MS XML V3, V4 "
+#~ "eller V6 verkar tillgänglig."
 
-#: ../../../core/core_st.cpp:302
-msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr ""
+#~ msgid "is not set"
+#~ msgstr "inte vald"
 
-#: ../../../core/core_st.cpp:303
-msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "Internt fel: Kunde inte initiera konfigurationsfilens XML-struktur"
+#, fuzzy
+#~ msgid ""
+#~ "Number of entries processed: %d\n"
+#~ "\n"
+#~ "Number of invalid UUIDs fixed: %d\n"
+#~ "\n"
+#~ "Number of duplicate UUIDs fixed: %d\n"
+#~ "\n"
+#~ "Number of non-unique Group/Title/User fixed: %d\n"
+#~ "\n"
+#~ "Number of Password Histories fixed: %d\n"
+#~ "\n"
+#~ "Number of Alias warnings issued: %d\n"
+#~ "\n"
+#~ "Number of Shortcut warnings issued: %d\n"
+#~ "\n"
+#~ "Number of entries with fields that cannot be fully displayed: %d.\n"
+#~ "\n"
+#~ "Recommend that the database is now saved."
+#~ msgstr ""
+#~ "rntal processade poster: %d\n"
+#~ "\n"
+#~ "Antal UUIDs som fixats: %d\n"
+#~ "\n"
+#~ "Antal lösenordshistoriken som fixats: %d\n"
+#~ "\n"
+#~ "Antal icke unika Grupper/Titlar/Användare som fixats: %d\n"
+#~ "\n"
+#~ "Antal alias-varningar som genererats: %d\n"
+#~ "\n"
+#~ "Antal länkvarningarsom genererats %d\n"
+#~ "\n"
+#~ "Antal poster med fält som inte kan visas fullständigt: %d"
 
-#: ../../../core/core_st.cpp:304
-msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
-msgstr ""
-"Ett filter var aktivt. Export av data begränsades till att bara inkludera de "
-"som visas."
+#~ msgid ""
+#~ "Password should be mixed case, with at least one digit or punctuation "
+#~ "character"
+#~ msgstr ""
+#~ "Lösenordet borde bestå av blandade tecken med åtminståne en siffra eller "
+#~ "interpunkteringstecken"
 
-#: ../../../core/core_st.cpp:305
-msgid "Export of data was restricted to certain fields by the user."
-msgstr "Export av data begränsades till vissa fält av användaren."
+#~ msgid "Password is too short"
+#~ msgstr "Lösenordet är för kort"
 
-#: ../../../core/core_st.cpp:306
-msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
-msgstr ""
+#~ msgid "Easyvision characters"
+#~ msgstr "Lättlästa tecken"
 
-#: ../../../core/core_st.cpp:307
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
-msgstr "Not: Dessa preferenser används bara vid import till en tom databas."
+#~ msgid "Hexadecimal characters"
+#~ msgstr "Hexadecimala tecken"
 
-#: ../../../core/core_st.cpp:308
-msgid "Subset of entries restricted by the following rule:"
-msgstr "Delmängd av poster vilka begränsas av följande regel:"
+#, fuzzy
+#~ msgid "Password length"
+#~ msgstr "Lösenordets längd:"
 
-#: ../../../core/core_st.cpp:309
-msgid ""
-"The user specified that the following fields be excluded from the export:"
-msgstr "Användaren specificerade att följande fält ska uteslutas vid export:"
+#~ msgid "Pronounceable passwords"
+#~ msgstr "Uttalbara lösenord"
 
-#: ../../../core/core_st.cpp:310
-#, fuzzy, c-format
-msgid ""
-"Configuration file error:\n"
-"%s\n"
-"%s\n"
-"offset approximately at %d"
-msgstr ""
-"Fel på konfigurationsfilen:\n"
-"%s\n"
-"%s\n"
-"rad %d kolumn %d"
+#, fuzzy
+#~ msgid "Use lowercase characters"
+#~ msgstr "Minsta antal gemena tecken"
 
-#: ../../../core/core_st.cpp:311
-msgid "import"
-msgstr "import"
+#, fuzzy
+#~ msgid "Use symbols"
+#~ msgstr "symboler"
 
-#: ../../../core/core_st.cpp:312
-msgid "Unable to load configuration file"
-msgstr "Kan inte starta konfigurationsfilen"
+#, fuzzy
+#~ msgid "Use uppercase characters"
+#~ msgstr "Minsta antal versala tecken"
 
-#: ../../../core/core_st.cpp:313
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
-msgstr ""
-"Kunde inte låsa konfigurationsfilen - öppnad av en annan instans av "
-"PasswordSafe?"
+#~ msgid "Error in a Password History %s:"
+#~ msgstr "Fel i en lösenordshistorik %s:"
 
-#: ../../../core/core_st.cpp:314
-msgid "Unable to save configuration file"
-msgstr "Kan inte spara konfigurationsfilen"
+#~ msgid "sub-field starting at position %d (within the History field): "
+#~ msgstr "underfält börjar vid positionen %d (inom Historik-fältet):"
 
-#: ../../../core/core_st.cpp:315
-msgid "validation"
-msgstr "validering"
+#~ msgid "  All Password History ignored."
+#~ msgstr "  All lösenordshistorik har ignorerats."
 
-#: ../../../core/core_st.cpp:317
-#, c-format
-msgid "Yes - EasyVision Symbols: %s"
-msgstr ""
+#~ msgid "Read Error"
+#~ msgstr "Läsfel"
 
-#: ../../../core/core_st.cpp:318
-#, fuzzy, c-format
-msgid "Yes (at least %d)"
-msgstr "Måste vara åtminstonde %d"
+#~ msgid "%s%s%s_Report.txt"
+#~ msgstr "%s%s%s_Rapport.txt"
 
-#: ../../../core/core_st.cpp:319
-#, c-format
-msgid "Yes - Pronounceable Symbols: %s"
-msgstr ""
+#~ msgid "Report of %s function started at %s"
+#~ msgstr "Rapport på funktionen %s som startade %s "
 
-#: ../../../core/core_st.cpp:320
-#, fuzzy, c-format
-msgid "Yes - At least %d from %s: %s"
-msgstr "Måste vara åtminstonde %d"
+#~ msgid "on database %s"
+#~ msgstr "på databas %s"
+
+#~ msgid "Validate"
+#~ msgstr "Validera"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Fatalt fel"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "Error in Password History for entry: \"%s\"%s\"%s\": "
+#~ msgstr ""
+#~ "\n"
+#~ "Fel i lösenordshistoriken för post: »%s»%s»%s»: "
+
+#~ msgid "See Password History filters"
+#~ msgstr "Se lösenords historiska filter"
+
+#~ msgid "See Password Policy filters"
+#~ msgstr "Se lösenords policyfilter"
+
+#~ msgid "is set"
+#~ msgstr "är vald"
+
+#~ msgid "shortcut"
+#~ msgstr "genväg"
+
+#~ msgid "shortcuts"
+#~ msgstr "genvägar"
+
+#~ msgid "Start Report"
+#~ msgstr "Att rapportera"
+
+#, fuzzy
+#~ msgid "%s - Sync'd %s"
+#~ msgstr "Importerat %d %s"
+
+#~ msgid "System error: No more file handles available"
+#~ msgstr "Systemfel: Finns inga fler fil-hanterare"
+
+#~ msgid "Internal error: Unexpected error number"
+#~ msgstr "Internt fel: oväntat felnummer"
+
+#~ msgid "Unknown function"
+#~ msgstr "Okänd funktion"
+
+#~ msgid "Unknown object"
+#~ msgstr "Okänt objekt"
+
+#~ msgid ""
+#~ "The following entries had an invalid UUID field.  This has been corrected."
+#~ msgstr ""
+#~ "Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries have passwords in the correct form for %s, but the "
+#~ "base entry does not exist."
+#~ msgstr ""
+#~ "Posten\"%s, %s, %s\" har ett lösenord i rätt format för en alias, men "
+#~ "basposten finns inte."
+
+#~ msgid "The following entries were duplicates of an existing entry."
+#~ msgstr "Följande poster är duplikat av en existerande post."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries had a duplicate UUID field.  This has been "
+#~ "corrected."
+#~ msgstr ""
+#~ "Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries had an empty Password field, which is not "
+#~ "permitted. The password has been set to '%s'"
+#~ msgstr ""
+#~ "Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries had an empty Title field, which is not permitted."
+#~ msgstr ""
+#~ "Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigerats."
+
+#~ msgid "\tGroup='%s', Title='%s', User='%s' %s"
+#~ msgstr "\tGrupp='%s'; Titel='%s'; Användare='%s' %s"
+
+#~ msgid "- Its title has been changed to:'%s'"
+#~ msgstr "- Dess titel har ändrats till:'%s'"
+
+#~ msgid ""
+#~ "The following entries had an invalid Password History.  This has been "
+#~ "rebuilt with available data.  There may be some loss of history."
+#~ msgstr ""
+#~ "Följande poster hade en ogiltig lösenordshistorik. Denna har återskapats "
+#~ "med tillgängliga data. Det kan förekomma viss förlust av historik."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries have one or more text fields too long to display or "
+#~ "edit (over %d characters).  The largest entry size found was ~%d %s."
+#~ msgstr ""
+#~ "Följande poster har en eller fler textfält som är för långa för att kunna "
+#~ "visas eller editeras (fler än %d tecken)."
+
+#~ msgid "will expire"
+#~ msgstr "går ut"
+
+#~ msgid ""
+#~ "SAX Parse Error during %s\n"
+#~ "%s."
+#~ msgstr ""
+#~ "SAX parsefel i %s\n"
+#~ "%s."
+
+#~ msgid "XML %s: line %d character %d: %s"
+#~ msgstr "XML %s: rad %d tecken %d: %s"
+
+#~ msgid "Internal error: Couldn't initialize config file XML structure"
+#~ msgstr "Internt fel: Kunde inte initiera konfigurationsfilens XML-struktur"
+
+#~ msgid ""
+#~ "A filter was active. Export of data was restricted to include only those "
+#~ "displayed."
+#~ msgstr ""
+#~ "Ett filter var aktivt. Export av data begränsades till att bara inkludera "
+#~ "de som visas."
+
+#~ msgid "Export of data was restricted to certain fields by the user."
+#~ msgstr "Export av data begränsades till vissa fält av användaren."
+
+#~ msgid ""
+#~ "Note: These preferences are only used when importing into an empty "
+#~ "database."
+#~ msgstr "Not: Dessa preferenser används bara vid import till en tom databas."
+
+#~ msgid "Subset of entries restricted by the following rule:"
+#~ msgstr "Delmängd av poster vilka begränsas av följande regel:"
+
+#~ msgid ""
+#~ "The user specified that the following fields be excluded from the export:"
+#~ msgstr ""
+#~ "Användaren specificerade att följande fält ska uteslutas vid export:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Configuration file error:\n"
+#~ "%s\n"
+#~ "%s\n"
+#~ "offset approximately at %d"
+#~ msgstr ""
+#~ "Fel på konfigurationsfilen:\n"
+#~ "%s\n"
+#~ "%s\n"
+#~ "rad %d kolumn %d"
+
+#~ msgid "import"
+#~ msgstr "import"
+
+#~ msgid "Unable to load configuration file"
+#~ msgstr "Kan inte starta konfigurationsfilen"
+
+#~ msgid ""
+#~ "Failed to lock configuration file - opened by another instance of "
+#~ "PasswordSafe?"
+#~ msgstr ""
+#~ "Kunde inte låsa konfigurationsfilen - öppnad av en annan instans av "
+#~ "PasswordSafe?"
+
+#~ msgid "Unable to save configuration file"
+#~ msgstr "Kan inte spara konfigurationsfilen"
+
+#~ msgid "validation"
+#~ msgstr "validering"
+
+#, fuzzy
+#~ msgid "Yes (at least %d)"
+#~ msgstr "Måste vara åtminstonde %d"
+
+#, fuzzy
+#~ msgid "Yes - At least %d from %s: %s"
+#~ msgstr "Måste vara åtminstonde %d"
 
 #~ msgid ""
 #~ "At least one type of character (lowercase, uppercase, digits,\n"
