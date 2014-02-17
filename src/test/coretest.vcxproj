@@ -269,7 +269,7 @@
     <ClInclude Include="TwoFishTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\core\core11.vcxproj">
+    <ProjectReference Include="..\core\core.vcxproj">
       <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

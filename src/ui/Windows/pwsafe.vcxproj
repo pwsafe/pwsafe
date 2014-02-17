@@ -1695,19 +1695,19 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\core\core11.vcxproj">
+    <ProjectReference Include="..\..\core\core.vcxproj">
       <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\os\windows\os11.vcxproj">
+    <ProjectReference Include="..\..\os\windows\os.vcxproj">
       <Project>{d5dbd8e8-cf48-4ca3-b773-c5f3b3316c73}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\os\windows\pws_autotype\pws_autotype11.vcxproj">
+    <ProjectReference Include="..\..\os\windows\pws_autotype\pws_autotype.vcxproj">
       <Project>{fc3f78c0-1b04-40cf-a7b5-6f037436d9c0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\os\windows\pws_osk\pws_osk11.vcxproj">
+    <ProjectReference Include="..\..\os\windows\pws_osk\pws_osk.vcxproj">
       <Project>{5f619d4f-185a-4b4b-8e77-02698eaeb962}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
