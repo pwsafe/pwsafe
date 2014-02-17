@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debugwx64|x64">
@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>pwsafe11</ProjectName>
+    <ProjectName>pwsafe</ProjectName>
     <ProjectGuid>{45779F00-D0DD-477B-B1E1-F624B6C86AB9}</ProjectGuid>
     <RootNamespace>pwsafe</RootNamespace>
     <Keyword>Win32Proj</Keyword>
