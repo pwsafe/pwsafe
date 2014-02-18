@@ -35,7 +35,8 @@
 
 #define V3_SUFFIX      _T("psafe3")
 #define V4_SUFFIX      _T("psafe4")
-#define DEFAULT_SUFFIX      V4_SUFFIX
+// For now, default to V3, at least until we're sufficiently tested.
+#define DEFAULT_SUFFIX      V3_SUFFIX
 
 class Fish;
 class Asker;
@@ -45,7 +46,7 @@ class PWSFilters;
 class PWSfile
 {
 public:
-  enum VERSION {V17, V20, V30, V40, VCURRENT = V40,
+  enum VERSION {V17, V20, V30, V40, VCURRENT = V30,
     NEWFILE = 98,
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
 

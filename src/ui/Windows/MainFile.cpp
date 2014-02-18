@@ -359,7 +359,7 @@ int DboxMain::NewFile(StringX &newfilename)
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  std::wstring v3FileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
+  std::wstring newFileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
   std::wstring dir;
   if (m_core.GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
@@ -374,7 +374,7 @@ int DboxMain::NewFile(StringX &newfilename)
   while (1) {
     CPWFileDialog fd(FALSE,
                      DEFAULT_SUFFIX,
-                     v3FileName.c_str(),
+                     newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                      OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_VCURR_ALL)),
@@ -1267,7 +1267,7 @@ int DboxMain::SaveAs()
     cf = LPCWSTR(defname);
   }
 
-  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+  std::wstring newFileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
   std::wstring dir;
   if (m_core.GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
@@ -1280,7 +1280,7 @@ int DboxMain::SaveAs()
   while (1) {
     CPWFileDialog fd(FALSE,
                      DEFAULT_SUFFIX,
-                     v3FileName.c_str(),
+                     newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
@@ -1394,9 +1394,29 @@ void DboxMain::OnExportVx(UINT nID)
   if (gmb.DoModal() == IDS_CANCEL)
     return;
 
+  PWSfile::VERSION ver = PWSfile::UNKNOWN_VERSION;
+  stringT sfx = L"";
+  int fdf = IDS_FDF_DB_ALL;
+
+  switch (nID) {
+    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
+      ver =  PWSfile::V17; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V2FORMAT:
+      ver =  PWSfile::V20; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V4FORMAT:
+      ver =  PWSfile::V40; sfx = L"psafe4"; fdf = IDS_FDF_V4_ALL;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
+
+
   //SaveAs-type dialog box
-  std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                      L"dat");
+  std::wstring exportFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                        sfx);
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
 
   std::wstring dir;
@@ -1411,10 +1431,10 @@ void DboxMain::OnExportVx(UINT nID)
   while (1) {
     CPWFileDialog fd(FALSE,
                      DEFAULT_SUFFIX,
-                     OldFormatFileName.c_str(),
+                     exportFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                     CString(MAKEINTRESOURCE(fdf)),
                      this);
 
     fd.m_ofn.lpstrTitle = cs_text;

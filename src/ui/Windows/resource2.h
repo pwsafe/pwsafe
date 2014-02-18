@@ -44,7 +44,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORT2PLAINTEXT    32010
 #define ID_MENUITEM_EXPORT2OLD1XFORMAT  32011
 #define ID_MENUITEM_EXPORT2V2FORMAT     32012
-#define ID_MENUITEM_EXPORT2V3FORMAT     32013
+#define ID_MENUITEM_EXPORT2V4FORMAT     32013
 #define ID_MENUITEM_EXPORT2XML          32014
 #define ID_IMPORTMENU                   32020
 #define ID_MENUITEM_IMPORT_XML          32021
