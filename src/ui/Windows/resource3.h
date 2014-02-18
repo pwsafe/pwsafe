@@ -34,6 +34,8 @@
 #define IDS_FDF_PR_ALL                  5058
 #define IDS_FDF_TXT_ALL                 5059
 #define IDS_FDF_CSV_ALL                 5060
+#define IDS_FDF_V12_ALL                 5061
+#define IDS_FDF_V4_ALL                  5062
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
