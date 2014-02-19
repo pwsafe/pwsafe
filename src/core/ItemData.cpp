@@ -1879,7 +1879,7 @@ static bool pull_time(time_t &t, const unsigned char *data, size_t len)
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
     const __time64_t *t64 = reinterpret_cast<const __time64_t *>(buf); // XXX assumes little_endian
-    if (_gmtime64_s(&ts, t64) == 0) {
+    if (_gmtime64_s(&ts, t64) != 0) {
       ASSERT(0); return false;
     }
     t = _mkgmtime32(&ts);
