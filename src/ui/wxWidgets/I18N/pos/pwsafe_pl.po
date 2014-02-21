@@ -1052,11 +1052,11 @@ msgstr "Importuj Ustawienia tekstowe"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:80
 msgid "Import options"
-msgstr ""
+msgstr "Opcje importu"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:86
 msgid "Import under group"
-msgstr ""
+msgstr "Importuj do grupy"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:92
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:60
@@ -1065,7 +1065,7 @@ msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:143
 msgid "Delimiters"
-msgstr ""
+msgstr "Znaki oddzielające"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:147
 msgid "Comma"
@@ -1073,11 +1073,11 @@ msgstr "Przecinek"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:148
 msgid "Space"
-msgstr ""
+msgstr "Spacja"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:149
 msgid "Semicolon"
-msgstr ""
+msgstr "Średnik"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:151
 msgid "Tab"
@@ -1090,12 +1090,12 @@ msgstr "Inny"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:179
 msgid "Select a text file to import:"
-msgstr ""
+msgstr "Wybierz plik tekstowy do zaimportowania:"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:180
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
-msgstr ""
+msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*; *)|*.*; *"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:27
 msgid "Import XML Settings"
@@ -1103,7 +1103,7 @@ msgstr "Importuj ustawienia XML"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:39
 msgid "XML file to import:"
-msgstr ""
+msgstr "Plik XML do zaimportowania:"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:43
 msgid "Please Choose a XML File to Import"
@@ -1111,19 +1111,19 @@ msgstr "Wybierz plik XML do zaimportowania"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:44
 msgid "XML files (*.xml)|*.xml"
-msgstr ""
+msgstr "Pliki XML (*.xml)|*.xml"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:54
 msgid "Import under Group"
-msgstr ""
+msgstr "Importuj do grupy"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:403
 msgid " Copy # "
-msgstr ""
+msgstr " Nr kopii "
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:544
 msgid "There was an error autotyping.  "
-msgstr ""
+msgstr "Podczas automatycznego pisania wystąpił błąd.  "
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:564
 msgid ""
@@ -1888,7 +1888,7 @@ msgstr "Zmień nazwę wpisu\tF2"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:401
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:206
 msgid "&Find Entry...\tCtrl+F"
-msgstr "Znajdź wpis...\tCtrl+F"
+msgstr "Znajdź wpis...\tCtrl+&F"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:402
 msgid "&Duplicate Entry\tCtrl+D"
@@ -1900,15 +1900,15 @@ msgstr "Dodaj grupę"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:408
 msgid "C&lear Clipboard\tCtrl+Del"
-msgstr "Wyczyść schowek\tCtrl+Del"
+msgstr "Wyczyść schowek\tCtrl+De&l"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:410
 msgid "&Copy Password to Clipboard\tCtrl+C"
-msgstr "Kopiuj hasło do Schowka\tCtrl+C"
+msgstr "Kopiuj hasło do S&chowka\tCtrl+C"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:411
 msgid "Copy &Username to Clipboard\tCtrl+U"
-msgstr "Kopiuj naze użytkownika do schowka\tCtrl+U"
+msgstr "Kopi&uj nazwę użytkownika do schowka\tCtrl+U"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:412
 msgid "Copy &Notes to Clipboard\tCtrl+G"
@@ -2033,11 +2033,11 @@ msgstr "Zmień Hasło Sejfu..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
 msgid "Make &Backup\tCtrl+B"
-msgstr "Twórz kopie bezpieczeństwa\tCtrl+B"
+msgstr "Twórz kopie &bezpieczeństwa\tCtrl+B"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 msgid "&Restore from Backup...\tCtrl+R"
-msgstr "Odtwórz z kopii bezpieczeństwa...\tCtrl+R"
+msgstr "Odtwó&rz z kopii bezpieczeństwa...\tCtrl+R"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:455
 msgid "&Options...\tCtrl+M"
@@ -2183,7 +2183,7 @@ msgstr "Dodaj &grupę"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1658
 msgid "&Rename Group"
-msgstr "Zmień nazwę grupy"
+msgstr "Zmień nazwę g&rupy"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1659
 msgid "&Delete Group"
@@ -2392,7 +2392,7 @@ msgstr "Ominięto "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2546
 msgid "with Password History errors "
-msgstr "z błędami historii hasła"
+msgstr "z błędami historii hasła "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2553
 msgid "Renamed "
