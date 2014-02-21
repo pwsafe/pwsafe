@@ -13,7 +13,7 @@
 typedef time_t __time32_t;
 typedef unsigned long long __time64_t;
 
-extern struct tm *gmtime64_r(const __time64_t *timep, struct tm *result);
+extern int gmtime64_r(const __time64_t *timep, struct tm *result);
 
 namespace pws_os {
   /**
