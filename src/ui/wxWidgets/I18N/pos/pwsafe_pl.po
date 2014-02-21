@@ -3102,38 +3102,38 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:773
 msgid " were "
-msgstr ""
+msgstr " były "
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:773
 msgid " with corresponding entries from \""
-msgstr ""
+msgstr " z odpowiednimi wpisami z \""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:780
 #, c-format
 msgid "All fields in matching entries were %s"
-msgstr ""
+msgstr "Wszystkie pola z pasujących wpisów były %s"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:784
 #, c-format
 msgid "The following fields were %s"
-msgstr ""
+msgstr "Następujące pola były %s"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:787
 #, c-format
 msgid "\t* %s"
-msgstr ""
+msgstr "\t* %s"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:306
 msgid "]"
-msgstr ""
+msgstr "]"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:312
 msgid "}"
-msgstr ""
+msgstr "}"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:333 ../../../ui/wxWidgets/PWStree.cpp:348
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../../../ui/wxWidgets/PWStree.cpp:630
 msgid "New Group"
@@ -3141,24 +3141,24 @@ msgstr "Nowa Grupa"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:632
 msgid "Could not add empty group item to tree"
-msgstr ""
+msgstr "Nie można dodać pustej grupy do drzewa"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:645
 msgid "Renaming of non-Group items is not implemented"
-msgstr ""
+msgstr "Zamiana nazwy nie-grupy nie jest zaimplementowana"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:664
 msgid "Dots are not allowed in group names"
-msgstr ""
+msgstr "Kropki nie są dozwolone w nazwie grupy"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:664
 msgid "Invalid Character"
-msgstr ""
+msgstr "Nieprawidłowy znak"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:107
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:109
 msgid "Enter old safe combination (if any) and click on top Yubikey button"
-msgstr ""
+msgstr "Wprowadź starą kombinację (jeśli jest) i kliknij na górny przycisk Yubikey"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:162
 msgid ""
@@ -3168,11 +3168,11 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:174
 msgid "Old safe combination:"
-msgstr ""
+msgstr "Stara kombinacja:"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:185
 msgid "New safe combination:"
-msgstr ""
+msgstr "Nowa kombinacja:"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:196
 msgid "Confirmation:"
@@ -3202,29 +3202,29 @@ msgstr "Nowe hasło i jego potwierdzenie nie są identyczne"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:299
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:274
 msgid "Weak passphrase:"
-msgstr ""
+msgstr "Słabe hasło:"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:304
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:279
 msgid "Use it anyway?"
-msgstr ""
+msgstr "Mimo wszystko użyć tego?"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:357
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:392
 msgid "YubiKey safe combination incorrect"
-msgstr ""
+msgstr "Nieprawidłowa kombinacja YubiKey"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:359
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
-msgstr ""
+msgstr "Wprowadź nową kombinację (jeśli jest) i kliknij na dolny przycisk Yubikey"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:383
 msgid "Please confirm existing combination"
-msgstr ""
+msgstr "Proszę potwierdzić istniejącą kombinację"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:400
 msgid "Current safe combination incorrect"
-msgstr ""
+msgstr "Aktualna kombinacja jest nieprawidłowa"
 
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:73
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:341
@@ -3234,7 +3234,7 @@ msgstr "Hasło nie może być puste."
 
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:193
 msgid "VX.YY"
-msgstr ""
+msgstr "VX.YY"
 
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:196
 msgid "Open Password Database:"
@@ -3262,12 +3262,12 @@ msgstr "Anuluj"
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:260
 #, c-format
 msgid "V%d.%d %s"
-msgstr ""
+msgstr "V%d.%d %s"
 
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:263
 #, c-format
 msgid "V%d.%d.%d %s"
-msgstr ""
+msgstr "V%d.%d.%d %s"
 
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:378
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:275
@@ -3321,7 +3321,7 @@ msgstr "Ostrzeżenie"
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:287
 msgid "Please try another"
-msgstr ""
+msgstr "Proszę spróbować innego"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:37
 msgid "equals"
@@ -3357,15 +3357,15 @@ msgstr "nie zawiera"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:102
 msgid "All entries"
-msgstr ""
+msgstr "Wszystkie wpisy"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:104
 msgid "Entries whose "
-msgstr ""
+msgstr "Wpisy których "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:106
 msgid "not "
-msgstr ""
+msgstr "nie "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:106
 msgid "case-sensitive]"
@@ -3373,15 +3373,15 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:118
 msgid "&Lock Safe"
-msgstr ""
+msgstr "Zab&lokuj sejf"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:122
 msgid "&Unlock Safe"
-msgstr ""
+msgstr "Odblok&uj sejf"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:126
 msgid "No Safe Open"
-msgstr ""
+msgstr "Żaden sejf nie jest otwarty"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 msgid "&Recent Entries History"
@@ -3397,7 +3397,7 @@ msgstr "Odtwó&rz"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:144
 msgid "&Clear Clipboard"
-msgstr ""
+msgstr "Wy&czyść schowek"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:145
 msgid "&About Password Safe..."
@@ -3405,7 +3405,7 @@ msgstr "O P&assword Safe..."
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:147
 msgid "&Exit"
-msgstr ""
+msgstr "Wyjści&e"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:161
 msgid "&Clear Recent History"
@@ -3463,7 +3463,7 @@ msgstr "&Zapisz na dysku"
 
 #: ../../../ui/wxWidgets/ViewReport.cpp:44
 msgid "&Copy to Clipboard"
-msgstr ""
+msgstr "Skopiuj do s&chowka"
 
 #: ../../../ui/wxWidgets/ViewReport.cpp:46
 msgid "&Finish"
@@ -3499,11 +3499,11 @@ msgstr "Ograniczenie wersji testowej"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:173
 msgid "YubiKey Serial Number: "
-msgstr ""
+msgstr "Numer seryjny YubiKey: "
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:179
 msgid "YubiKey Secret Key (20 Byte Hex)"
-msgstr ""
+msgstr "Tajny numer YubiKey (20 bajtów szesnastkowych)"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:193 ../../../ui/wxWidgets/yubicfg.cpp:332
 msgid "Hide"
