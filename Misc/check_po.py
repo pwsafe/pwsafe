@@ -50,7 +50,6 @@ def check_count(msgid, msgstr, s, line_warns):
 	return r
 
 
-
 def check_quotes(msgid, msgstr, line_warns):
 	"""check if quote count is the same"""
 	return check_count(msgid, msgstr, '"', line_warns)
@@ -112,7 +111,7 @@ def check_accelerator(msgid, msgstr, line_warns):
 			a2 = msgstr[p2:p2 + 2]
 			if a1 != a2:
 				#line_warns.append('acc2')
-				return 0 # ok they can be different
+				return 0   # ok they can be different
 	return 0
 
 
@@ -143,26 +142,36 @@ def check_po(fn):
 	msgid = ''
 	msgstr = ''
 	line_no = 0
+	last_line = ''
 	for line in lines:
 		line_no += 1
+		line0 = line
 		line = line.strip()
+		line = line.strip('"')
 		if line.startswith('msgid '):
 			item_cnt += 1
 			msgid = line[6:]
 			msgstr = ''
-		if line.startswith('msgstr '):
+		elif line.startswith('msgstr '):
 			msgstr = line[7:]
 			msgid = msgid.strip('"')
 			msgstr = msgstr.strip('"')
-			if not msgstr:
+		elif line:
+			if msgid:
+				msgid += line
+			if msgstr:
+				msgstr += line
+		else:
+			if last_line.startswith('msgstr ""'):
 				empty_item_cnt += 1
-			else:
+			elif msgstr:
 				line_warns = []
 				wc = check_str(msgid, msgstr, line_warns)
 				if wc:
 					print('%s:%d:%s: [%s] [%s]' % (fn, line_no, ','.join(line_warns), msgid, msgstr))
 					warn_cnt += wc
-			msgstr = ''
+				msgstr = ''
+		last_line = line0
 	print('%s: items: %d; empty items: %d; warning cnt: %d' % (fn, item_cnt, empty_item_cnt, warn_cnt))
 
 
