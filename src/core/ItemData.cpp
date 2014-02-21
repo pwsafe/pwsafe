@@ -37,6 +37,14 @@ using pws_os::CUUID;
 bool CItemData::IsSessionKeySet = false;
 unsigned char CItemData::SessionKey[64];
 
+// some fwd declarations:
+static bool pull_string(StringX &str, const unsigned char *data, size_t len);
+static bool pull_time(time_t &t, const unsigned char *data, size_t len);
+static bool pull_int32(int32 &i, const unsigned char *data, size_t len);
+static bool pull_int16(int16 &i16, const unsigned char *data, size_t len);
+static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
+
+
 void CItemData::SetSessionKey()
 {
   // must be called once per session, no more, no less
@@ -403,12 +411,12 @@ void CItemData::GetTime(int whichtime, time_t &t) const
     size_t tlen = sizeof(in); // ditto
 
     GetField(fiter->second, in, tlen);
-
     if (tlen != 0) {
-      int32 t32;
-      ASSERT(tlen == sizeof(t32));
-      memcpy(&t32, in, sizeof(t32));
-      t = t32;
+    // time field's store in native time_t size, regardless of
+    // the representation on file
+      ASSERT(tlen == sizeof(t));
+      if (!pull_time(t, in, tlen))
+        ASSERT(0);
     } else {
       t = 0;
     }
