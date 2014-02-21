@@ -2617,7 +2617,7 @@ msgstr "Podaj nazwę eksportowanej bazy danych"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2843
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
-msgstr ""
+msgstr "Nie można określić dlaczego wywołano PasswordSafeFrame::OnExportVx"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2854
 msgid "Export Text"
@@ -2667,7 +2667,7 @@ msgstr "Eksport bazy danych: "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3033
 msgid "No entries satisfied your selection criteria and so none were exported!"
-msgstr ""
+msgstr "Nie ma wpisów pasujących do podanych kryteriów i nic nie zostało wyeksportowane!"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3046
 #, fuzzy
@@ -2734,7 +2734,7 @@ msgstr "Nie można wyświetlić paska wyszukiwania"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:411
 msgid "Could not re-display searchbar at "
-msgstr ""
+msgstr "Nie można pokazać ponownie paska wyszukiwania w "
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:411
 msgid " of size "
@@ -2754,11 +2754,11 @@ msgstr " błędu"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:523
 msgid "Search hit bottom, continuing at top"
-msgstr ""
+msgstr "Szukanie doszło do końca i jest kontynuowane od początku"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:541
 msgid "Search hit top, continuing at bottom"
-msgstr ""
+msgstr "Szukanie doszło do początki i jest kontynuowane od końca"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:557
 #, fuzzy
@@ -2838,104 +2838,104 @@ msgstr "Nieznane pola:"
 
 #: ../../../ui/wxWidgets/properties.cpp:224
 msgid "x.y"
-msgstr ""
+msgstr "x.y"
 
 #: ../../../ui/wxWidgets/properties.cpp:227
 #: ../../../ui/wxWidgets/properties.cpp:230
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: ../../../ui/wxWidgets/properties.cpp:233
 msgid "U"
-msgstr ""
+msgstr "U"
 
 #: ../../../ui/wxWidgets/properties.cpp:236
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: ../../../ui/wxWidgets/properties.cpp:239
 msgid "a"
-msgstr ""
+msgstr "a"
 
 #: ../../../ui/wxWidgets/properties.cpp:243
 msgid "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-msgstr ""
+msgstr "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 #: ../../../ui/wxWidgets/properties.cpp:247
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:340
 msgid "Another instance of Password Safe is already running"
-msgstr ""
+msgstr "Inna instancja PasswordSafe jest już uruchomiona"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:368
 msgid "Could not initialize help subsystem. Help will not be available"
-msgstr ""
+msgstr "Nie można zainicjować systemu pomocy. Pomoc nie będzie dostępna"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:369
 msgid "Error initializing help"
-msgstr ""
+msgstr "Błąd w czasie inicjalizowania pomocy"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:535
 msgid "Missing help definition for page \""
-msgstr ""
+msgstr "Brakuje definicji pomocy dla strony \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:536
 msgid "\" of \""
-msgstr ""
+msgstr "\" z \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:540
 msgid "Missing help definition for window \""
-msgstr ""
+msgstr "Brakuje definicji pomocy dla okna \""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:550
 msgid "Please inform the developers."
-msgstr ""
+msgstr "Proszę poinformować programistów."
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:551
 msgid "Help Undefined"
-msgstr ""
+msgstr "Pomoc nie jest zdefiniowana"
 
 #: ../../../ui/wxWidgets/PWSDragBar.cpp:111
 msgid "Drag this image onto another window to paste the '"
-msgstr ""
+msgstr "Przesuń ten obrazek do innego okna by wkleić '"
 
 #: ../../../ui/wxWidgets/PWSDragBar.cpp:112
 msgid "' field."
-msgstr ""
+msgstr "' pola."
 
 #: ../../../ui/wxWidgets/PWSgrid.cpp:137
 msgid "User"
-msgstr ""
+msgstr "Użytkownik"
 
 #: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:647
 msgid "&Reset/Remove shortcut\tDel"
-msgstr ""
+msgstr "Z&resetuj/Usuń skrót\tDel"
 
 #: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:765
 msgid "Shortcut # "
-msgstr ""
+msgstr "Nr skrutu "
 
 #: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:766
 msgid "is not a valid shortcut"
-msgstr ""
+msgstr "nie jest poprawnym skrótem"
 
 #: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:767
 msgid "Invalid shortcut"
-msgstr ""
+msgstr "Niepoprawny skrót"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:147
 msgid "synchronize"
-msgstr ""
+msgstr "synchronizuj"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:225
 msgid "Synchronize another database with currently open database"
-msgstr ""
+msgstr "Synchronizuj inną bazę z aktualnie otwartą bazą"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:355
 msgid "Introduction"
-msgstr ""
+msgstr "Wstęp"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:359
 msgid ""
@@ -2945,7 +2945,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:362
 msgid "More Info"
-msgstr ""
+msgstr "Więcej informacji"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:365
 msgid ""
@@ -2973,23 +2973,23 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:385
 msgid "Select another database"
-msgstr ""
+msgstr "Wybierz inną bazę danych"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:387
 msgid "Choose Database to Synchronize with \""
-msgstr ""
+msgstr "Wybierz bazę danych by zsynchronizować z \""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:388
 msgid "Please Choose a Database to Synchronize with current database"
-msgstr ""
+msgstr "Proszę wybrać bazę do synchronizacji z aktualną bazą"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:411
 msgid "Synchronization options"
-msgstr ""
+msgstr "Opcje synchronizacji"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:436
 msgid "Options Summary"
-msgstr ""
+msgstr "Podumowanie opcji"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:461
 msgid ""
@@ -3001,49 +3001,49 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:478
 msgid " will be updated with corresponding entries from \""
-msgstr ""
+msgstr " będzie zaktualizowana odpowiednimi wpsami z \""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:485
 msgid "All fields in matching entries will be updated"
-msgstr ""
+msgstr "Wszystkie pola pasujących wpisów będą zaktualizowane"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:491
 msgid "Following fields in matching entries will be updated:"
-msgstr ""
+msgstr "Następujące pola pasujących wpisów będą zaktualizowane:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:495
 msgid "Following fields will not be updated:"
-msgstr ""
+msgstr "Następujące pola nie będą aktualizowane:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:514
 msgid "Synchronization status"
-msgstr ""
+msgstr "Status synchronizacji"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:532
 msgid "See a detailed report"
-msgstr ""
+msgstr "Zobac raport szczegółowy"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:568
 msgid "Your database is being synchronized with \""
-msgstr ""
+msgstr "Twoja baza jest synchronizowana z \""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:578
 msgid "There was an error during synchronization"
-msgstr ""
+msgstr "Podczas sychronizacji wystąpił błąd"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:592
 #, c-format
 msgid "Your database has been synchronized with \"%s\""
-msgstr ""
+msgstr "Twoja baza danych została zsynchronizowana z \"%s\""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:593
 #, c-format
 msgid "%d %s updated"
-msgstr ""
+msgstr "%d %s zaktulizowano"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:595
 msgid "Synchronization completed successfully"
-msgstr ""
+msgstr "Synchronizacja zakończona pomyślnie"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:611
 #, c-format
