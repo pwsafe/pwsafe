@@ -186,7 +186,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
 
-  EVT_MENU( ID_EXPORT2V3FORMAT, PasswordSafeFrame::OnExportVx )
+  EVT_MENU( ID_EXPORT2V4FORMAT, PasswordSafeFrame::OnExportVx )
 
   EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
 
@@ -427,7 +427,7 @@ void PasswordSafeFrame::CreateMenubar()
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2V3FORMAT, _("v&3 format..."), _T(""), wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
@@ -3004,45 +3004,55 @@ void PasswordSafeFrame::ViewReport(CReport& rpt)
 
 void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 {
-  int rc;
+  int rc = PWScore::FAILURE;
   StringX newfile;
-  wxString cs_text, cs_title, cs_temp;
-
-  //SaveAs-type dialog box
-  std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                      wxT("dat"));
-  cs_text = _("Please name the exported database");
-
-  //filename cannot have the path. Need to pass it separately
-  wxFileName filename(towxstring(OldFormatFileName));
-  wxString dir = filename.GetPath();
-  if (dir.empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-
-  wxFileDialog fd(this, cs_text, dir, filename.GetFullName(),
-                _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
-                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-  if (fd.ShowModal() != wxID_OK)
-    return;
-
-  newfile = tostringx(fd.GetPath());
+  wxString cs_fmt;
+  PWSfile::VERSION ver = PWSfile::UNKNOWN_VERSION;
+  stringT sfx = wxEmptyString;
 
   switch (evt.GetId()) {
     case ID_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V17);
+      ver =  PWSfile::V17; sfx = L"dat";
+      cs_fmt = _("Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*");
       break;
     case ID_EXPORT2V2FORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V20);
+      ver =  PWSfile::V20; sfx = L"dat";
+      cs_fmt = _("Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*");
       break;
-    case ID_EXPORT2V3FORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V30);
+    case ID_EXPORT2V4FORMAT:
+      ver =  PWSfile::V40; sfx = L"psafe4";
+      cs_fmt =_("Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*");
       break;
     default:
-      wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
-      rc = PWScore::FAILURE;
+      ver = PWSfile::UNKNOWN_VERSION; // internal error
       break;
   }
+
+  if (ver != PWSfile::UNKNOWN_VERSION) {
+    //SaveAs-type dialog box
+    std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                             sfx);
+    const wxString cs_text = _("Please name the exported database");
+
+    //filename cannot have the path. Need to pass it separately
+    wxFileName filename(towxstring(OldFormatFileName));
+    wxString dir = filename.GetPath();
+    if (dir.empty())
+      dir = towxstring(PWSdirs::GetSafeDir());
+
+
+    wxFileDialog fd(this, cs_text, dir, filename.GetFullName(), cs_fmt,
+                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (fd.ShowModal() != wxID_OK)
+      return;
+
+    newfile = tostringx(fd.GetPath());
+    rc = m_core.WriteFile(newfile, ver);
+  } else { // internal error
+    wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
+  }
+
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
   }

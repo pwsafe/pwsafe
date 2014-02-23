@@ -891,7 +891,7 @@
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                 </document>
                 <document>
-                  <string name="title">"v&amp;3 format...: ID_EXPORT2V3FORMAT"</string>
+                  <string name="title">"v&amp;4 format (EXPERIMENTAL)...: ID_EXPORT2V4FORMAT"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"menuitem"</string>
@@ -900,9 +900,9 @@
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbMenuItemProxy"</string>
-                  <string name="proxy-Id name">"ID_EXPORT2V3FORMAT"</string>
+                  <string name="proxy-Id name">"ID_EXPORT2V4FORMAT"</string>
                   <long name="proxy-Id value">10015</long>
-                  <string name="proxy-Label">"v&amp;3 format..."</string>
+                  <string name="proxy-Label">"v&amp;4 format (EXPERIMENTAL)..."</string>
                   <string name="proxy-Kind">"Normal"</string>
                   <bool name="proxy-Checked">0</bool>
                   <bool name="proxy-Enabled">1</bool>
@@ -2274,14 +2274,6 @@
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Horizontal"</string>
             <string name="proxy-Member variable name">""</string>
-            <string name="proxy-AlignH">"Centre"</string>
-            <string name="proxy-AlignV">"Centre"</string>
-            <long name="proxy-Stretch factor">0</long>
-            <long name="proxy-Border">5</long>
-            <bool name="proxy-wxLEFT">1</bool>
-            <bool name="proxy-wxRIGHT">1</bool>
-            <bool name="proxy-wxTOP">1</bool>
-            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
