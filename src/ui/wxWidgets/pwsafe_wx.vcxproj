@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debugwx64|x64">
@@ -586,6 +586,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleasewxX64|x64'">true</ExcludedFromBuild>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\core.vcxproj">
+      <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\os\windows\os.vcxproj">
+      <Project>{d5dbd8e8-cf48-4ca3-b773-c5f3b3316c73}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\os\windows\yubi\YkLib22.vcxproj">
+      <Project>{326058ee-494b-4e51-bb34-1f4505e368b7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

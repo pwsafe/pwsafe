@@ -384,8 +384,6 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseX64|x64'">os</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">os</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">os</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

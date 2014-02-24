@@ -339,8 +339,6 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template64|x64'">pwsafe</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
@@ -1709,6 +1707,10 @@
     </ProjectReference>
     <ProjectReference Include="..\..\os\windows\pws_osk\pws_osk.vcxproj">
       <Project>{5f619d4f-185a-4b4b-8e77-02698eaeb962}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\os\windows\yubi\YkLib22.vcxproj">
+      <Project>{326058ee-494b-4e51-bb34-1f4505e368b7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
