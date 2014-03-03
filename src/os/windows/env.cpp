@@ -75,7 +75,6 @@ void pws_os::setenv(const char *name, const char *value)
 #endif // _MSC_VER < 1400
 }
 
-
 stringT pws_os::getusername()
 {
   TCHAR user[UNLEN + sizeof(TCHAR)];
@@ -119,14 +118,51 @@ stringT pws_os::getprocessid()
   return os.str();
 }
 
-void pws_os::getosversion(DWORD &major, DWORD &minor)
+  /*
+  * Versions supported by current PasswordSafe
+  *   Operating system       Version  Other
+  *    Windows 8.1            6.2     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+  *    Windows 2012 R2        6.2     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+  *    Windows 8              6.1     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+  *    Windows 2012           6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+  *    Windows 7              6.1     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+  *    Windows Server 2008 R2 6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+  *    Windows Vista          6.0     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+  *    Windows Server 2008    6.0     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+  *    Windows Server 2003 R2 5.2     GetSystemMetrics(SM_SERVERR2) != 0
+  *    Windows Home Server    5.2     OSVERSIONINFOEX.wSuiteMask & VER_SUITE_WH_SERVER
+  *    Windows Server 2003    5.2     GetSystemMetrics(SM_SERVERR2) == 0
+  *    Windows XP Pro x64     5.2     (OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION) &&
+  *                                   (SYSTEM_INFO.wProcessorArchitecture==PROCESSOR_ARCHITECTURE_AMD64)
+  *    Windows XP             5.1     Not applicable
+  *
+  * Versions no longer supported by current PasswordSafe due to missing APIs
+  *   Operating system       Version  Other
+  *    Windows 2000           5.0     PlatformID 2
+  *    Windows NT 4.0         4.0     PlatformID 2
+  *    Windows ME             4.90    PlatformID 1
+  *    Windows 98             4.10    PlatformID 1
+  *    Windows 95             4.0     PlatformID 1
+  *    Windows NT 3.51        3.51    PlatformID 2
+  *    Windows NT 3.5	        3.5     PlatformID 2
+  *    Windows for Workgroups 3.11    PlatformID 0
+  *    Windows NT 3.1	        3.10    PlatformID 2
+  *    Windows 3.0	          3.0     n/a
+  *    Windows 2.0            2.??    n/a
+  *    Windows 1.0	          1.??    n/a
+  *
+  */
+
+bool pws_os::IsWindowsVistaOrGreater()
 {
-  OSVERSIONINFO os;
-  SecureZeroMemory(&os, sizeof(os));
-  os.dwOSVersionInfoSize = sizeof(os);
-  if (GetVersionEx(&os) == FALSE) {
-    ASSERT(0);
-  }
-  major = os.dwMajorVersion;
-  minor = os.dwMinorVersion;
+  OSVERSIONINFOEXW osvi = { sizeof(osvi), 0, 0, 0, 0, { 0 }, 0, 0 };
+  DWORDLONG        dwlConditionMask = 0;
+
+  VER_SET_CONDITION(dwlConditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);
+  VER_SET_CONDITION(dwlConditionMask, VER_MINORVERSION, VER_GREATER_EQUAL);
+
+  osvi.dwMajorVersion = HIBYTE(_WIN32_WINNT_VISTA);
+  osvi.dwMinorVersion = LOBYTE(_WIN32_WINNT_VISTA);
+
+  return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION, dwlConditionMask) != FALSE;
 }

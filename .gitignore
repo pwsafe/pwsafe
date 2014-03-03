@@ -10,3 +10,5 @@ ipch
 *.suo
 *.wixpdb
 
+/src/ui/wxWidgets/*.props
+*.props

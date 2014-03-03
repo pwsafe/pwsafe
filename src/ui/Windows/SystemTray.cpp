@@ -103,11 +103,6 @@ CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
 BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, UINT uID, UINT menuID)
 {
-  // this is only for Windows 95 (or higher)
-  m_bEnabled = (GetVersion() & 0xff) >= 4;
-  if (!m_bEnabled)
-    return FALSE;
-
   // Make sure Notification window is valid (not needed - CJM)
   // VERIFY(m_bEnabled = (pParent && ::IsWindow(pParent->GetSafeHwnd())));
   // if (!m_bEnabled) return FALSE;

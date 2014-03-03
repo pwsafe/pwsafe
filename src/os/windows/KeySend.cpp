@@ -48,10 +48,7 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
   if (bForceOldMethod)
     m_impl->m_isOldOS = true;
   else {
-    DWORD majorVersion, minorVersion;
-    pws_os::getosversion(majorVersion, minorVersion);
-    m_impl->m_isOldOS = ((majorVersion <= 4) ||
-                         (majorVersion == 5 && minorVersion == 0));
+    m_impl->m_isOldOS = !pws_os::IsWindowsVistaOrGreater();
   }
   // get the locale of the current thread.
   // we are assuming that all window and threading in the 

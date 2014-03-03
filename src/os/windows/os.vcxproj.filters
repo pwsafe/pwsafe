@@ -39,6 +39,9 @@
     <ClInclude Include="..\pws_tchar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\PWSVersionHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\rand.h">
       <Filter>Header Files</Filter>
     </ClInclude>

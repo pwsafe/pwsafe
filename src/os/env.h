@@ -20,7 +20,11 @@ namespace pws_os {
   extern stringT getusername(); // returns name of current user
   extern stringT gethostname(); // returns name of current machine
   extern stringT getprocessid();
-  extern void    getosversion(DWORD &major, DWORD &minor);
+
+#if defined(_MSC_VER)
+  // Windows only - MFC or wxWidgts
+  extern bool    IsWindowsVistaOrGreater();
+#endif
 }
 #endif /* __ENV_H */
 //-----------------------------------------------------------------------------

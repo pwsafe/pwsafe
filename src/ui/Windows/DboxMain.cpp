@@ -697,7 +697,6 @@ void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
 
-  pws_os::getosversion(m_WindowsMajorVersion, m_WindowsMinorVersion);
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
@@ -2646,7 +2645,7 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 
   // Musn't block if Vista or later and there is no reason to block it.
   // Get out fast!
-  if (m_WindowsMajorVersion >= 6) {
+  if (pws_os::IsWindowsVistaOrGreater()) {
     if (m_bBlockShutdown) {
       m_iSessionEndingStatus = IDCANCEL;
     } else {
@@ -2657,7 +2656,7 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     // Windows XP or earlier - we ask user, Vista and later - we don't as we have
     // already set ShutdownBlockReasonCreate
-    if (m_WindowsMajorVersion < 6) {
+    if (!pws_os::IsWindowsVistaOrGreater()) {
       CGeneralMsgBox gmb;
       CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_ENDSESSION));
       cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());

@@ -100,56 +100,14 @@ stringT pws_os::fullpath(const stringT &relpath)
   return retval;
 }
 
-
-
 static bool GetLocalDir(int nFolder, stringT &sLocalPath)
 {
-  /*
-   * Versions supported by current PasswordSafe
-   *   Operating system       Version Other
-   *    Windows 7              6.1     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
-   *    Windows Server 2008 R2 6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
-   *    Windows Server 2008    6.0     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
-   *    Windows Vista          6.0     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
-   *    Windows Server 2003 R2 5.2     GetSystemMetrics(SM_SERVERR2) != 0
-   *    Windows Home Server    5.2     OSVERSIONINFOEX.wSuiteMask & VER_SUITE_WH_SERVER
-   *    Windows Server 2003    5.2     GetSystemMetrics(SM_SERVERR2) == 0
-   *    Windows XP Pro x64     5.2     (OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION) &&
-   *                                   (SYSTEM_INFO.wProcessorArchitecture==PROCESSOR_ARCHITECTURE_AMD64)
-   *    Windows XP             5.1     Not applicable
-   *    Windows 2000           5.0     PlatformID 2
-   *
-   * Versions no longer supported by current PasswordSafe due to missing APIs
-   *   Operating system       Version Other
-   *    Windows NT 4.0         4.0     PlatformID 2
-   *    Windows ME             4.90    PlatformID 1
-   *    Windows 98             4.10    PlatformID 1
-   *    Windows 95             4.0     PlatformID 1
-   *    Windows NT 3.51        3.51    PlatformID 2
-   *    Windows NT 3.5	       3.5     PlatformID 2
-   *    Windows for Workgroups 3.11    PlatformID 0
-   *    Windows NT 3.1	       3.10    PlatformID 2
-   *    Windows 3.0	           3.0     n/a
-   *    Windows 2.0            2.??    n/a
-   *    Windows 1.0	           1.??    n/a
-   *
-   * Use dwMajorVersion & dwMinorVersion from OSVERSIONINFOEX Structure via GetVersionEx
-   * Note: Windows NT 4.0 SP6 and later is needed for the 'EX' version of OSVERSIONINFO for
-   * the extra fields (wSuiteMask & wProductType), to be valid
-   */
-
   // String buffer for holding the path.
   TCHAR strPath[MAX_PATH];
-  OSVERSIONINFOEX osvi;
-  BOOL brc(FALSE);
 
-  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-  GetVersionEx((LPOSVERSIONINFO)&osvi);
+  // Get the special folder path - do not create it if it does not exist
+  BOOL brc = SHGetSpecialFolderPath(NULL, strPath, nFolder, FALSE);
 
-  if (osvi.dwMajorVersion >= 5) {
-    // Get the special folder path - do not create it if it does not exist
-    brc = SHGetSpecialFolderPath(NULL, strPath, nFolder, FALSE);
-  }
   if (brc == TRUE) {
     // Call to 'SHGetSpecialFolderPath' worked
     sLocalPath = strPath;

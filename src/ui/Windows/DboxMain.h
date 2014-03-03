@@ -954,7 +954,6 @@ private:
 
   // Workstation Locked
   bool m_bWSLocked, m_bWTSRegistered, m_bBlockShutdown;
-  DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
 
   // Need this in case not running on Vista or later
   HMODULE m_hUser32;

@@ -35,6 +35,7 @@
 
 #include "os/Debug.h"
 #include "os/dir.h"
+#include "os/env.h"
 #include "os/run.h"
 #include "os/logit.h"
 
@@ -77,7 +78,7 @@ void DboxMain::DatabaseModified(bool bChanged)
   static bool bCurrentState(false);
 
   // Don't do anything if status unchanged or not at least Vista
-  if (m_WindowsMajorVersion < 6 || 
+  if (!pws_os::IsWindowsVistaOrGreater() ||
       m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 

@@ -938,6 +938,7 @@
     <ClInclude Include="..\mem.h" />
     <ClInclude Include="..\pws_str.h" />
     <ClInclude Include="..\pws_tchar.h" />
+    <ClInclude Include="..\PWSVersionHelpers.h" />
     <ClInclude Include="..\rand.h" />
     <ClInclude Include="..\registry.h" />
     <ClInclude Include="..\run.h" />

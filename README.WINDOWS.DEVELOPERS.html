@@ -27,20 +27,29 @@ wishing to compile PasswordSafe for Windows. Linux developers should read the fi
 <ol>
 <li>Development tools: Microsoft's Visual Studio <i>2012</i>
 (referred to as 'VS2012' below) is currently the main development
-environment, and pwsafe.sln is the main toplevel "solution" file.
+environment, and pwsafe.sln is the main toplevel "solution" file. Visual Studio <i>2013</i>
+(referred to as 'VS2013' below) is also being maintained as it will, at some point, become
+the main development environment. Its solution and project files have a suffix of "-12" corresponding
+to the version of the C++ compiler (VC12).
 </li>
 <li>pwsafe_wx.sln is used to build the wxWidgets version under Windows, although this version is not
-formally supported under Windows (but see the <a href="#visExp">note</a> re Visual Express below).
-although Visual Studio 2005 (MSVS8) is currently also
-supported. Visual Studio 2008 (MSVS9) should also work. See <a href="#visExp">note</a> below
-for Visual Express users.</li>
-<li>User interface library: The curently supported version of PasswordSafe for Windows
-is built upon MFC (Microsoft's Foundation Classes). Work is also being done on a
-wxWidgets version, which should provide cross platform support.</li>
+formally supported under Windows (but see the <a href="#visExp">note</a> re: Visual Express below).  Note:
+the wxWidgets library must be built with the same version of Visual Studio as being used to build
+PasswordSafe or you will receive numerous compatibility error messages during the link phase.</li>
+<li>Previous versions i.e. Visual Studio 2005 (MSVS8) and 2010 (MSVS10) are no longer maintained but their
+solution and project files have been retained in the "old-sln" directory.
+See <a href="#visExp">note</a> below for Visual Express users.</li>
+<li>User interface library: The currently supported version of PasswordSafe for Windows
+is built upon MFC (Microsoft's Foundation Classes). The wxWidgets version, which provides cross
+platform support can also be built on Windows and corresponds to that used on other platforms i.e.
+Linux and MAC OS.  Note that the wxWidgets version in all environments does not support all features
+supported by the Windows MFC version, for example, different alphabet virtual keyboards.  If you
+depend on such features, you should stick to the standard MFC build.</li>
 <li>XML support: As PasswordSafe provides XML import/export capabilities, it
 can be configured to use one of several XML parsers (or none).
-The curently supported version of PasswordSafe for Windows is built using the
-Microsoft XML parser. </li>
+The currently supported version of PasswordSafe for Windows is built using the
+Microsoft XML parser but the Xerces parser used in the wxWidgets version can be used in the MFC
+version if the corresponding build configuration is selected (DebugX or ReleaseX).</li>
 </ol>
 
 <p id="visExp"><em>Note regarding Visual Express:</em> The MFC version of PasswordSafe
@@ -52,17 +61,16 @@ be possible to build the wxWidgets version.</p>
 platforms is based on MFC (Microsoft's Foundation Classes), and
 uses Microsoft's XML parser. This corresponds to the <i>ReleaseM</i>
 configuration in the build environment, i.e., the release build using Microsoft's
-XML parser.  This will build the required DLLs using their Release configuration
+XML parser. This will build the required DLLs using their Release configuration
 (pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
 the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
-
-<p>The Visual Studio 2012 projects have been updated to be able to generate the 64-bit
+<p>The Visual Studio 2012 and 2013 projects have been updated to be able to generate the 64-bit
 versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
-environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
+environment with the VC10 64-bit compiler. It has not been tested on a 32-bit Windows
 environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
-libraries and they should be placed in a new diretory 'lib64\vc_lib' corresponding to
-the current 'lib\vc_lib' for the 32-bit versions.  <i>If you continue to use VS2005,
+libraries and they should be placed in a new directory 'lib64\vc_lib' corresponding to
+the current 'lib\vc_lib' for the 32-bit versions. <i>If you continue to use VS2005,
 you should put the static libraries built by it in '\lib\vc8_lib'.</i></p>
 
 <p>For each Configuration there is an associated platform. Unfortunately, Visual Studio
@@ -129,11 +137,11 @@ of the release builds below are selected.</li>
 <p>Note that the core and os project files contain <i>all</i> of the above projects,
 even if you are only selecting one of the MFC or the wxWidget builds. You should not
 have to select them individually as selecting the main PasswordSafe 
-configuration will select the correct configuration for these projects.  You should
-also be careful not to select all configrations in the VS2010 Batch Build process
-either to build, rebuild or clean all configurations.  Only select MFC configurations
-if using the MFC PasswordSafe solution (pwsafe.sln) and the wxWdigets
-configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p>
+configuration will select the correct configuration for these projects. <i>You should
+also be careful not to select all configurations in the Visual Studio Batch Build process
+either to build, rebuild or clean all configurations. Only select MFC configurations
+if using the MFC PasswordSafe solution (pwsafe.sln) and the wxWidgets
+configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</i></p>
 
 <h3><a name="Software_Requirements"></a>Software Requirements</h3>
 
@@ -148,48 +156,30 @@ is built using Microsoft's development tools as described <a href="#Windows_Buil
 
 <p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
 2012 (C++ compiler for PaswordSafe ('VC11') and C# compiler if you wish to re-generate
-the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005
-(MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
+the Virtual Keyboard data, which is not normally necessary). The Visual Studio Express compiler
 does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
 within the current official Windows version.</p>
 
-<p>The main (toplevel) Microsoft Visual Studio 2012 solution file is pwsafe11.sln. The
-MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
-Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
+<p>The main (toplevel) Microsoft Visual Studio 2012 solution file is pwsafe.sln.</p>
 
 <p>In order to build the Windows version of PasswordSafe, you
 need to install the following freely available components, in addition to
 Visual Studio:</p>
 <ul>
 <li><a href="http://msdn.microsoft.com/en-us/windows/dd146047.aspx">
-Microsoft's Windows SDK</a>. If you have installed Visual Studio 2008,
-it will have installed a Windows SDK V6.0A and you do not have to install
-another SDK. If you haven't installed VS2008, then please select either
-of the following versions:
-<ul>
-<li>"Windows Vista Update &amp; .NET 3.0 SDK"
-[V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
-<li>"Windows Server 2008 and .NET Framework 3.5"
-[V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
-<li>"Windows 7 and .NET Framework 3.5 SP1
-[V6.1.7600.16385 dated August 2009] - known as V7.0.</li>
-</ul>
-All these replace the old "Platform SDK" and support Operating
-Systems: Vista and Windows XP; and Development Environments: Visual
-Studio 2005 and 2008. However, V7.0 and later support Windows 7 <b>but not</b>
-Visual Studio 2005. At this time, PasswordSafe does not use any facilities or
-functions that are not supported by Windows XP and Visual Studio 2005.
-<br>
-By default, the SDKs are installed in directory "C:\Program
-Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A', '6.1' or '7.0'.
-<u>See note below.</u></li>
+Microsoft's Windows SDK</a>.
+If using the currently support Visual Studio 2012, you should use the Windows SDK version
+V7.1A. For the newer VS2013, you should use version V8.1A. For no longer maintained versions
+please refer to <a href="#No_longer_maintained_VS">
+No Longer Maintained Visual Studio Development Environments (Windows only)</a> below.
+</li>
 <li>To compile and produce the Help files (.chm) then
 <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-%0D%0Ac8a6-452f-9aa0-d597d16580cc&amp;DisplayLang=en">
 Microsoft's HTML Help Workshop</a> is required. Note however that the headers and
 libraries necessary for compiling PasswordSafe itself are included in the
 Windows SDK mentioned above.</li>
-<li>A subversion client, such as <a href="http://tortoisesvn.net/downloads">
-Tortoise SVN Client</a> (for updating the revision number within PasswordSafe's
+<li>A git client, such as <a href="https://code.google.com/p/tortoisegit/wiki/Download">
+Tortoise git Client</a> (for updating the revision number within PasswordSafe's
 version details)</li>
 <li>For XML Support, one or more of the following is needed (see the
 <a href="#XML_Processing"> XML processing section</a> for more details):
@@ -202,21 +192,18 @@ V3.1.1 XML Library</a></li>
 </li>
 </ul>
 
-<p><b>SDK NOTE:</b> In order to compile PasswordSafe using MFC,
+<p><b>SDK & WDK NOTE:</b> In order to compile PasswordSafe using MFC,
 the Microsoft Windows SDK's 'include' and 'lib' directories
-must be added to the directories supplied by Visual Studio 2005. This is
-achieved in VS2005 via Tools &gt; Options &gt; Project and Solutions
-&gt; VC++ directories &gt; Include files and Library files.
-They can be added at the end of each appropriate set using the directory you
-specified during installation (the defaults are: "C:\Program
-Files\Microsoft SDKs\Windows\NNN\Include" and "C:\Program
-Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A, 6.1 or 7.0 as
-noted above). The Microsoft Visual Studio Registration Tool only adds
-the .Net libraries and not those needed for PasswordSafe. <b>It is
-recommended that you get SDK V6.1 <u>and</u> you place them above the
-libraries supplied with Visual Studio e.g. "$(VCInstallDir)PlatformSDK\include"
-and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
-compiling source members using BlockInput.</b></p>
+must be added to the directories supplied by Visual Studio.
+In addition, since the implementation of support for the YubiKey
+hardware, the Windows Driver Kit must also be installed and its
+libraries made available to Visual Studio. For VS2012, WDK 7.1A is
+required and, for VS2013, WDK V8.1A. Note due to an incompatibility
+between WDK 7.1A and SDK 7.1 for VS2012, an include file must be deleted
+from the installed WDK V7.1A (see the Readme.txt file in the
+src/os/windows/yubi directory for more details). This is <u>not</u>
+required if using VS2013 and WDK 8.1.
+</b></p>
 
 <p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
 Studio, the file "UserVariables.props" (for VS10 and later) or "UserVariables.vsprops"
@@ -224,20 +211,29 @@ Studio, the file "UserVariables.props" (for VS10 and later) or "UserVariables.vs
 the non-"Windows SDK" components have been installed. <b><u><i>The solution
 will not open correctly without this file being present</i></u></b>.
 For your convenience, we've included a simple Visual Basic script, "configure.vbs"
-(or "configure8.vbs" for VS8) in the src/ui/Windows directory, that you can
-run to generate the above file with the correct values.  These script will also
-prompt for the location of the 64-bit Xerces libraries for 64-bit builds.</p>
+(or "configure-12.vbs" for VS2013 or "configure8.vbs" for VS2005) in the src/ui/Windows
+directory (src/ui/wxWidgets directory for the wxWidgets builds), that you can
+run to generate the above file with the correct values. These script will also
+prompt for the location of the 64-bit Xerces libraries for 64-bit builds.
+<b>When migrating from VS2012 to VS2013, ensure that you run the configure-12.vbs
+in order to add the location of the Windows Driver Kit for a successful build of
+the YubiKey library.</b></p>
 
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
 <p>Originally, PasswordSafe used Microsoft's XML library for XML parsing and
 validation. For portability, we're now support the
 <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
-libraries, which are available for non-Windows platforms.  We recommend the
+libraries, which are available for non-Windows platforms. We recommend the
 latest version (currently 3.1.1 as of April 2010), as they
 supply pre-built Windows binaries using the VS2005 (VC8) and VS2008 (VC9) and
 VS2010 (VC10) compilers. <b>Note: for 64-bit Xerces builds, you must use the 64-bit
 versions of the Xerces libraries.</b></p>
+
+<p><b>It is important that you have the Xerces libraries built with the same version
+of Visual Studio as you are using to build PasswordSafe.  You will receive numerous
+error messages during the link stage if they are not the same.  The same applies to the
+wxWidgest library if building that version of PasswordSafe under Windows.</b></p>
 
 <p>To determine which XML library to use while building PasswordSafe,
 we've defined a pre-processor variable (USE_XML_LIBRARY). If <u>NOT</u>
@@ -314,6 +310,47 @@ this directory in the section entitled "Symbol file (.pdb)
 locations:").</li>
 <li>Press F5 to start debugging, and away you go.</li>
 </ol>
+
+<h3><a name="No_longer_maintained_VS"></a>No Longer Maintained Visual Studio Development Environments (Windows only)</h3>
+
+<p>If you have installed Visual Studio 2008,
+it will have installed a Windows SDK V6.0A and you do not have to install
+another SDK. If you haven't installed VS2008, then please select either
+of the following versions:</p>
+<ul>
+<li>"Windows Vista Update &amp; .NET 3.0 SDK"
+[V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
+<li>"Windows Server 2008 and .NET Framework 3.5"
+[V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
+<li>"Windows 7 and .NET Framework 3.5 SP1
+[V6.1.7600.16385 dated August 2009] - known as V7.0.</li>
+</ul>
+All these replace the old "Platform SDK" and support Operating
+Systems: Vista and Windows XP; and Development Environments: Visual
+Studio 2005 and 2008. However, V7.0 and later support Windows 7 <b>but not</b>
+Visual Studio 2005. At this time, PasswordSafe does not use any facilities or
+functions that are not supported by Windows XP and Visual Studio 2005.
+<br>
+By default, the SDKs are installed in directory "C:\Program
+Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A', '6.1' or '7.0'.
+<u>See note below.</u>
+</ul>
+
+<p><b>SDK NOTE:</b> In order to compile PasswordSafe using MFC,
+the Microsoft Windows SDK's 'include' and 'lib' directories
+must be added to the directories supplied by Visual Studio. This is
+achieved in VS2005 via Tools &gt; Options &gt; Project and Solutions
+&gt; VC++ directories &gt; Include files and Library files.
+They can be added at the end of each appropriate set using the directory you
+specified during installation (the defaults are: "C:\Program
+Files\Microsoft SDKs\Windows\NNN\Include" and "C:\Program
+Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A, 6.1 or 7.0 as
+noted above). The Microsoft Visual Studio Registration Tool only adds
+the .Net libraries and not those needed for PasswordSafe. It is
+recommended that you get SDK V6.1 <u>and</u> you place them above the
+libraries supplied with Visual Studio e.g. "$(VCInstallDir)PlatformSDK\include"
+and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
+compiling source members using BlockInput.</p>
 
 <p><b>*** End of Developer Notes ***</b></p>
 
