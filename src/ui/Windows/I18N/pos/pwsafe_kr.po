@@ -3066,6 +3066,10 @@ msgstr "Faeroese"
 msgid "Failed to create empty document."
 msgstr "빈 문서를 만드는 데 실패했습니다."
 
+#. Resource IDs: (376)
+msgid "Failed to initialize YubiKey. Please try again."
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
 msgstr "도움말을 실행하는 데 실패했습니다."
@@ -3490,9 +3494,9 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32021; 'E&xit'
-msgid "ID:32021:V C +Q"
-msgstr "ID:32021:V C +Q"
+#. Accelerator Entry for Menu ID:32027; 'E&xit'
+msgid "ID:32027:V C +Q"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
 msgid "ID:32051:V C +A"
@@ -4668,17 +4672,25 @@ msgstr "Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe 백업본 (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe 데이터베이스 (*.psafe3)|*.psafe3|모든 파일 (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|모든 파일 (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.ibak)|*.ibak|모든 파일 (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -5946,6 +5958,10 @@ msgstr ""
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr ""
 
+#. Resource IDs: (376)
+msgid "The YubiKey appears uninitialized. Initialize it?"
+msgstr ""
+
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
 msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
@@ -6103,12 +6119,12 @@ msgstr "이전 보안 비밀번호가 일치하지 않습니다"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
 msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -6910,6 +6926,10 @@ msgstr ""
 
 #. Resource IDs: (1469)
 msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "YubiKey initialized sucessfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7727,6 +7747,10 @@ msgstr "v1.x 형식...(&V)"
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v2 형식...(&V)"
+
+#. Resource IDs: (32013)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

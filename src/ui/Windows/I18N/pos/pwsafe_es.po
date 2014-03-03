@@ -3092,6 +3092,10 @@ msgstr "Feroés"
 msgid "Failed to create empty document."
 msgstr "Fallo al crear documento vacío."
 
+#. Resource IDs: (376)
+msgid "Failed to initialize YubiKey. Please try again."
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
 msgstr "Fallo al abrir la ayuda."
@@ -3516,9 +3520,9 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32021; 'E&xit'
-msgid "ID:32021:V C +Q"
-msgstr "ID:32021:V C +Q"
+#. Accelerator Entry for Menu ID:32027; 'E&xit'
+msgid "ID:32027:V C +Q"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
 msgid "ID:32051:V C +A"
@@ -4694,17 +4698,25 @@ msgstr "Copias seguridad Password Safe (*.bak)|*.bak|Copias seguridad intermedia
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Copias seguridad Password Safe (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Bases de datos Password Safe (*.psafe3)|*.psafe3|Todos los archivos (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr "Bases de datos Password (*.psafe3; *.dat)|*.psafe3; *.dat|Todos los archivos (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Bases de datos Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Copias de seguridad Password Safe (*.bak)|*.bak|Copias de seguiridad intermedias Password Safe (*.ibak)|*.ibak|Todos los archivos (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -5973,6 +5985,10 @@ msgstr ""
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr "El archivo TXT o CSV no se exportó ya que los registros de entrada se dividen en varias líneas en el archivo CSV.\n\nExportación abortada."
 
+#. Resource IDs: (376)
+msgid "The YubiKey appears uninitialized. Initialize it?"
+msgstr ""
+
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
 msgstr "La contraseña no puede estar en blanco."
@@ -6130,13 +6146,13 @@ msgstr "La contraseña de seguridad antigua no es correcta"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr "La base de datos original, \"%s\", está en formato pre-3.0. No se cambiará.\nTus cambios se guardarán como \"%s\" en el nuevo formato, que no puede utilizarse por versiones antiguas de PasswordSafe. Para guardar tus cambios en el formato antiguo, usa el comando \"Archivo->Exportar a->Formato (1.x or 2)\" command."
+msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr "La base de datos original, \"%s\", está en formato pre-3.0. Los datos se guardarán en el nuevo formato, que no puede utilizarse con versiones antiguas de PasswordSafe. Para guardar los datos en el antiguo formato, usa el comando \"Archivo->Exportar a->Formato (1.x or 2)\" command."
+msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -6937,6 +6953,10 @@ msgstr ""
 
 #. Resource IDs: (1469)
 msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "YubiKey initialized sucessfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7754,6 +7774,10 @@ msgstr "formato v&1.x..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "formato v&2..."
+
+#. Resource IDs: (32013)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"
