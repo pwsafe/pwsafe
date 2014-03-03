@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug64|x64">
@@ -938,7 +938,6 @@
     <ClInclude Include="..\mem.h" />
     <ClInclude Include="..\pws_str.h" />
     <ClInclude Include="..\pws_tchar.h" />
-    <ClInclude Include="..\PWSVersionHelpers.h" />
     <ClInclude Include="..\rand.h" />
     <ClInclude Include="..\registry.h" />
     <ClInclude Include="..\run.h" />
