@@ -4736,7 +4736,7 @@ msgstr "HotKey aplikacji Password Safe"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
-msgstr "Kopie zapasowe Password Safe(*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak||"
+msgstr "Kopie zapasowe Password Safe(*.bak)|*.bak|Tymczasowe kopie zapasowe Password Safe (*.ibak)|*.ibak||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak||"
@@ -4756,7 +4756,7 @@ msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
+msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Tymczasowe kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
