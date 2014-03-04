@@ -2920,7 +2920,7 @@ msgstr "Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Zosta
 #. Resource IDs: (216)
 #, c-format
 msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr "Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Został on usunięty z wpisu."
+msgstr "Skrót klawiszowy %s wpisu %s jest już zajęty przez PasswordSafe. Został on usunięty z wpisu."
 
 #. Resource IDs: (373)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
@@ -3106,7 +3106,7 @@ msgstr "Nie udało się utworzyć pustego dokumentu."
 
 #. Resource IDs: (376)
 msgid "Failed to initialize YubiKey. Please try again."
-msgstr ""
+msgstr "Nie udało się zainicjować YubiKey. Proszę spróbować ponownie."
 
 #. Resource IDs: (3857)
 #, fuzzy
@@ -3545,7 +3545,7 @@ msgstr "ID:32005:V C +S"
 
 #. Accelerator Entry for Menu ID:32027; 'E&xit'
 msgid "ID:32027:V C +Q"
-msgstr ""
+msgstr "ID:32027:V C +Q"
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
 msgid "ID:32051:V C +A"
@@ -4744,7 +4744,7 @@ msgstr "Kopie zapasowe Password Safe (*.bak)|*.bak||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.dat)|*.dat|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
@@ -4752,15 +4752,15 @@ msgstr "Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*|
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe4)|*.psafe4|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -6043,7 +6043,7 @@ msgstr "Plik TXT lub CSV nie został wyeksportowany jak należy, gdyż rekordy w
 
 #. Resource IDs: (376)
 msgid "The YubiKey appears uninitialized. Initialize it?"
-msgstr ""
+msgstr "YubiKey wygląda na niezainicjowanego. Zainicjować go?"
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -6185,7 +6185,7 @@ msgstr "Następujące rekordy zostały ominięte:"
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr "Skrót klawiszowy '%s'" jest już przydzielony do menu:\t'%s'\n%s nadpisze ten skrót menu.\nWybierz OK/Apply by to zaakceptować, lub zmień swój wybór."
+msgstr "Skrót klawiszowy '%s' jest już przydzielony do menu:\t'%s'\n%s nadpisze ten skrót menu.\nWybierz OK/Apply by to zaakceptować, lub zmień swój wybór."
 
 #. Resource IDs: (372)
 #, c-format
@@ -6204,12 +6204,12 @@ msgstr "Stare hasło jest niepoprawne"
 #. Resource IDs: (333)
 #, c-format
 msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
-msgstr ""
+msgstr "Oryginalna baza danych \"%s\" jest w starym formacie. Nie będzie zmieniona.\nTwoje zmiany zostaną zapisane jako \"%s\" w nowym formacie z którego nie mogą korzystac starsze wersje PasswordSafe. By zapisać zmiany w starym formacie użyj \"Plik->Eksport do->...\"."
 
 #. Resource IDs: (333)
 #, c-format
 msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
-msgstr ""
+msgstr "Oryginalna baza danych \"%s\" jest w starym formacie. Dane będą zapisane w nowym formacie z którego nie mogą korzystac starsze wersje PasswordSafe. By zapisać dane w starym formacie użyj \"Plik->Eksport do->...\"."
 
 #. Resource IDs: (342)
 #, c-format
@@ -7021,7 +7021,7 @@ msgstr "YubiKey dla PasswordSafe można zakupić tu: http://www.yubico.com/Passw
 
 #. Resource IDs: (376)
 msgid "YubiKey initialized sucessfully, close this message box and activate it."
-msgstr ""
+msgstr "YubiKey zainicjowany, zamknij te okno i go aktywizuj."
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
@@ -7371,7 +7371,7 @@ msgstr "\n\nZignorowac to i zachować mimo wszystko - Tak/Nie?"
 
 #. Resource IDs: (342)
 msgid "\n\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\n\nWybierz Tak by kontynuować z tym hasłwm lub Nie by anulować."
+msgstr "\n\nWybierz Tak by kontynuować z tym hasłem lub Nie by anulować."
 
 #. Resource IDs: (335)
 msgid "\n\nThe databases are identical when comparing the selected or default fields!"
@@ -7860,7 +7860,7 @@ msgstr "format v&2..."
 
 #. Resource IDs: (32013)
 msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
+msgstr "format v&4 (EKSPERYMENTALNY)..."
 
 #. Resource IDs: (191)
 msgid "validation"
