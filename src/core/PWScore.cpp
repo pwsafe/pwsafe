@@ -461,6 +461,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
   int status;
+
+  if (version == PWSfile::VCURRENT)
+    version = m_ReadFileVersion;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
                                       PWSfile::Write, status);
 
