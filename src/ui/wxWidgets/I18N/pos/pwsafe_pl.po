@@ -131,7 +131,7 @@ msgid ""
 "password are required. If you have set a default username, it will appear in "
 "the\n"
 "username field."
-msgstr ""
+msgstr "By dodać wpis, wypełnij poniższe pola. Co najmniej tytuł\ni hasło są wymagane. Jeśli ustawiono domyślną nazwę użytkownika\nto pojawi się ona w polu z nazwą użytkownika."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:271
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:153
@@ -849,7 +849,7 @@ msgstr "Synchronizacja sie nie powiodła"
 msgid ""
 "Please specify the name & group\n"
 " for shortcut to "
-msgstr ""
+msgstr "Proszę wskazać nazwę i grupę\ndla skrótu do "
 
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:175
 #: ../../../ui/wxWidgets/editshortcut.cpp:222
@@ -893,7 +893,7 @@ msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe "
 "Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
 "files (*.*; *)|*.*;*"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Tymczasowe kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:62
@@ -922,7 +922,7 @@ msgstr "Plik jest już otwarty."
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
-msgstr ""
+msgstr "Nieprawidłowe hasło, baza nie jest PasswordSafe lub jest uszkodzona. (kopia zapasowa bazy ma taką samą nazwę jak oryginał, ale zakońconą '~')"
 
 #: ../../../ui/wxWidgets/deleteconfirmation.cpp:134
 msgid "Are you sure you want to delete the selected entry?"
@@ -979,7 +979,7 @@ msgstr "Nieznany"
 msgid ""
 "Please specify the name and group for this shortcut\n"
 "to the base entry "
-msgstr ""
+msgstr "Prosze wskazać nazwę i grupę dla tego skrótu\ndo wpisu "
 
 #: ../../../ui/wxWidgets/editshortcut.cpp:188
 msgid "Date/Time Information"
@@ -1001,14 +1001,14 @@ msgid ""
 "Warning! This operation will create an unprotected copy of ALL of the "
 "passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
-msgstr ""
+msgstr "Uwaga! Ta operacja stworzy niechronione kopie WSZYSTKICH haseł\nw bazie danych. Skasowanie tej kopii po użyciu NIE wystarczy."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:53
 msgid ""
 "Please do not use this option unless you understand and accept the risks. "
 "This option\n"
 "bypasses the security provided by this program."
-msgstr ""
+msgstr "Proszę używac tej opcji jedynie jeśli rozumiesz i akceptujesz ryzyko. Ta opcja\nomija bezpieczeństwo zapewniane przez ten program."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:70
 #: ../../../ui/wxWidgets/MergeDlg.cpp:42 ../../../ui/wxWidgets/PwsSync.cpp:387
@@ -1044,7 +1044,7 @@ msgstr "Nie można uruchomic zewnętrznej klawiatury ekranowej"
 msgid ""
 "Could not launch a new process for xvkbd.  Simultaneous execution is "
 "disabled?"
-msgstr ""
+msgstr "Nie można uruchomić nowego procesu dla xvkbd. Czy wyłączono równoległe wykonywanie?"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:53
 msgid "Import Text Settings"
@@ -1129,7 +1129,7 @@ msgstr "Podczas automatycznego pisania wystąpił błąd.  "
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
-msgstr ""
+msgstr "Błąd z przełączeniem na inną aplikację przed automatycznym pisaniem. Proszę przełączyć się ręcznie w przeciągu 5 sekund"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:708
 msgid "Unable to send email"
@@ -1742,7 +1742,7 @@ msgstr "Zezwól na wiele wystąpień"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:739
 msgid "Use Primary Selection for clipboard"
-msgstr ""
+msgstr "Użyj Głównego Wyboru do schowka"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:744
 msgid "System"
@@ -1788,7 +1788,7 @@ msgstr "Szesnastkowe hasła muszą mieć parzystą długość - każdy bajt ma d
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
-msgstr ""
+msgstr "Co najmniej jeden znak (mała, duża litera, cyfra, symbol) musi zostać wybrany"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:377
 msgid "Password must be between 4 and 1024 characters"
@@ -2074,7 +2074,7 @@ msgid ""
 "another name?\n"
 "\n"
 "Click 'No' to exit without saving."
-msgstr ""
+msgstr "Nie można stworzyc tymczasowej kopii.  Zapisać bazę gdzieś indziej lub z inną nazwą?\n\nWybierz 'Nie' by wyjść bez zapisu."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:871
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:876
@@ -2114,7 +2114,7 @@ msgstr "Czy chcesz zachować zmiany w bazie haseł"
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:966
 msgid ": "
-msgstr ""
+msgstr ": "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:413
@@ -2151,7 +2151,7 @@ msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
 "*.*;*"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Wszystkie pliki (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1281
 #, fuzzy, c-format
@@ -2324,7 +2324,7 @@ msgstr "Nie można załadować bazy danych"
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
-msgstr ""
+msgstr "Aktualna baza danych została otwarta tylko do odczytu.  Nie można do niej importować."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2463
 msgid "Import text"
@@ -2422,7 +2422,7 @@ msgstr "Wybierz plik tekstowy KeePass do zaimportowania"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2861
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
-msgstr ""
+msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2596
 msgid "Import_KeePassV1_CSV"
@@ -2941,7 +2941,7 @@ msgstr "Wstęp"
 msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
-msgstr ""
+msgstr "Synchronizacja z inna bazą danych zmieni wpisy w Twojej\nbazie danych na podstawie odpowadnich wpisów z innej bazy."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:362
 msgid "More Info"
@@ -3279,7 +3279,7 @@ msgstr ""
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
 "*.*;*"
-msgstr ""
+msgstr "Baza danych Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat| Wszystkie pliki (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:166
 msgid "Please enter the safe combination for this password database."
@@ -3293,7 +3293,7 @@ msgstr "nazwa pliku"
 msgid ""
 "Safe\n"
 "combination:"
-msgstr ""
+msgstr "Hasło\nsejfu:"
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
 msgid ""
@@ -3369,7 +3369,7 @@ msgstr "nie "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:106
 msgid "case-sensitive]"
-msgstr ""
+msgstr "zależne od wielkości liter]"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:118
 msgid "&Lock Safe"
@@ -3474,7 +3474,7 @@ msgid ""
 "File corrupt or truncated!\n"
 "Data may have been lost or modified.\n"
 "Continue anyway?"
-msgstr ""
+msgstr "Plik popsuty lub przycięty!\nDane mogą być stracone lub zmodyfikowane.\nKontynuować?"
 
 #: ../../../ui/wxWidgets/wxutils.cpp:70
 #, c-format
