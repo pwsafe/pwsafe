@@ -182,7 +182,7 @@ void CPasswordPolicy::CreateControls()
   wxSpinCtrl* itemSpinCtrl9 = new wxSpinCtrl( itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
   itemBoxSizer7->Add(itemSpinCtrl9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwMinsGSzr = new wxGridSizer(6, 2, 0, 0);
+  m_pwMinsGSzr = new wxGridSizer(2, 0, 0);
   itemStaticBoxSizer6->Add(m_pwMinsGSzr, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_pwpUseLowerCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
