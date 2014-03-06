@@ -648,6 +648,9 @@ void AddEditPropSheet::CreateControls()
   m_pwpHexCtrl->SetValue(false);
   itemStaticBoxSizer88->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
+  // Resize, if necessary
+  Layout();
+  
   GetBookCtrl()->AddPage(itemPanel87, _("Password Policy"));
 
   // Set validators
