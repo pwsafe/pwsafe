@@ -115,9 +115,9 @@ void CProperties::Init()
                                       m_core.GetHeader().m_nCurrentMinorVersion);
   std::vector<stringT> aryGroups;
   m_core.GetUniqueGroups(aryGroups);
-  m_numgroups = wxString::Format(_T("%d"), aryGroups.size());
+  m_numgroups << aryGroups.size();
 
-  m_numentries = wxString::Format(_T("%d"), m_core.GetNumEntries());
+  m_numentries << m_core.GetNumEntries();
 
   time_t twls = m_core.GetHeader().m_whenlastsaved;
   if (twls == 0) {
