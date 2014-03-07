@@ -39,14 +39,15 @@
 ; installer performs some minor tasks that are common to many 
 ; Windows installers:
 ; 
-; 1. The installer will allow the user to place icons on the desktop
+; 1. The installer allows the user to place icons on the desktop
 ;    or in the Start Menu, for easy access.  
 ;
-; 2. The installer places four registry values in 
+; 2. The installer optionally places four registry values in 
 ;    HKCU\Software\Password Safe\Password Safe.  These registry
 ;    values are for the use of the installer itself.  Password Safe
 ;    does not rely on these registry values.  If the installer is not
-;    used, these registry values need not be created.
+;    used, or if a "Green" installation is selected (see below), these
+;    registry values are not created. 
 ;
 ; 3. The installer will create an uninstaller and place an entry to
 ;    uninstall Password Safe in the Add or Remove Programs Wizard.
@@ -77,10 +78,11 @@
 ; should be followed each time you want to create a release:
 ;
 ; 1. Compile Password Safe in release mode.  The script relies on 
-;    pwsafe.exe existing in the Release subdirectory.
+;    pwsafe.exe existing in the ReleaseM subdirectory.
 ;
 ; 2. Compile the help files for Password Safe.  The script relies on 
-;    pwsafe.chm existing in the help/default subdirectory.
+;    the English pwsafe.chm existing in the help/default subdirectory,
+;    and other translations in their respective help/* subdirectories.
 ;
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
@@ -94,7 +96,7 @@
 ; the installer.  It can be placed, by itself, on a publicly available
 ; location.
 ; 
-; the script is setup for several languages, and ready for others.
+; The script is setup for several languages, and ready for others.
 ; Just remove the comments ";-L-" where appropriate.
 ; Additional languages can be easily added, the following "pieces"
 ; have to be provided:
@@ -141,7 +143,7 @@
   Var INSTALL_TYPE
   Var HOST_OS
   
-  ;Request application privileges for Windows Vista, Windows 7
+  ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
 
 ;--------------------------------
@@ -285,9 +287,8 @@ LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer support
 ;Reserve Files
 
   ; NSIS documentation states that it's a Good Idea to put the following
-  ; two lines when using a custom dialog:  
+  ; line when using a custom dialog:  
   ReserveFile "pws-install.ini"
-  ;!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS  : VdG for MUI-2 :  !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS is no longer supported as InstallOptions
 
 ;-----------------------------------------------------------------
 ; The program itself
@@ -307,7 +308,6 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\build\bin\pwsafe\releasem\pwsafe.exe"
   File "..\build\bin\pwsafe\releasem\pws_at.dll"
   File "..\build\bin\pwsafe\releasem\pws_osk.dll"
-;"no Win98"  File /oname=p98.exe "..\build\bin\pwsafe\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
