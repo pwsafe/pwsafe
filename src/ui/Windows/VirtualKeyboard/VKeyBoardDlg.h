@@ -127,6 +127,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int m_iKeyboard;
+  CToolTipCtrl *m_pToolTipCtrl;
 
 private:
   void GetAllKeyboardsAvailable();
@@ -143,7 +144,6 @@ private:
   void ApplyUnicodeFont(CWnd* pDlgItem);
   void DoRCtrl(const bool bDoFull);
 
-  CToolTipCtrl *m_pToolTipCtrl;
   CFont *m_pPassphraseFont;
 
   CVKBButton m_vkbb_Alt, m_vkbb_AltGr, m_vkbb_CapsLock, m_vkbb_AltNum, m_vkbb_BackSpace;

@@ -624,7 +624,7 @@ void CPasswordPolicyDlg::do_hex(const bool bHex)
 
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       UINT id = nonHexLengths[i];
-      cs_value.Format(L"%d", m_savelen[i]);
+      cs_value.Format(L"%u", m_savelen[i]);
       GetDlgItem(id)->SetWindowText(cs_value);
       GetDlgItem(id)->EnableWindow(m_save[i]);
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(m_save[i]);

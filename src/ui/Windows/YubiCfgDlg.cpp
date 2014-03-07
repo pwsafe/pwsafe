@@ -207,8 +207,8 @@ void CYubiCfgDlg::OnBnClickedOk()
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
-    int rc;
-    if ((rc = WriteYubiSK(yubi_sk_bin)) == YKLIB_OK) { // 1. Update SK on Yubi.
+
+    if (WriteYubiSK(yubi_sk_bin) == YKLIB_OK) { // 1. Update SK on Yubi.
       // 2. If YubiKey update succeeds, update in core.
       m_core.SetYubiSK(yubi_sk_bin);
       // 3. Write DB ASAP!

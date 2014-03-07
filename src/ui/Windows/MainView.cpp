@@ -391,8 +391,8 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
 {
   // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
-  const CItemData *pci_entry(pci);
   if (m_core.GetNumEntries() != 0) {
+    const CItemData *pci_entry(pci);
     BOOL State = (pci_entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
@@ -2760,11 +2760,11 @@ void DboxMain::OnResetColumns()
 
 void DboxMain::AutoResizeColumns()
 {
-  int iIndex, iType;
+  int iIndex;
   // CHeaderCtrl get values
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     iIndex = m_nColumnIndexByOrder[iOrder];
-    iType = m_nColumnTypeByIndex[iIndex];
+    int iType = m_nColumnTypeByIndex[iIndex];
 
     m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
     m_nColumnWidthByIndex[iIndex] = m_ctlItemList.GetColumnWidth(iIndex);
@@ -3507,9 +3507,9 @@ void DboxMain::OnToolBarFindReport()
   } else {
     buffer.Format(IDS_SEARCHRESULTS2, csFindString);
     rpt.WriteLine((LPCWSTR)buffer);
-    int i, index;
-    for (i = 0; i < (int)pindices->size(); i++) {
-      index = pindices->at(i);
+
+    for (int i = 0; i < (int)pindices->size(); i++) {
+      int index = pindices->at(i);
       CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
       buffer.Format(IDS_COMPARESTATS, pci->GetGroup().c_str(),
                     pci->GetTitle().c_str(), pci->GetUser().c_str());

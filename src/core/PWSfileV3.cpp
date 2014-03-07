@@ -590,14 +590,14 @@ int PWSfileV3::ReadHeader()
 
   unsigned char fieldType;
   StringX text;
-  size_t numRead;
   bool utf8status;
   unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
   bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
-    numRead = ReadCBC(fieldType, utf8, utf8Len);
+    if (ReadCBC(fieldType, utf8, utf8Len) == 0)
+      continue;
 
     switch (fieldType) {
     case HDR_VERSION: /* version */

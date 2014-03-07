@@ -80,7 +80,7 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 #if (_MSC_VER >= 1400)
   swscanf_s(pData, L"%08x%02x%02x%04x", &procID, &iDDType, &dw_type, &iLen);
 #else
-  swscanf(pData, L"08x%02x%02x%04x", &procID, &iDDType, &dw_type, &iLen);
+  swscanf(pData, L"%08x%02x%02x%04x", &procID, &iDDType, &dw_type, &iLen);
 #endif
 
   // Check if it is ours?

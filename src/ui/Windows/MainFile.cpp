@@ -1653,7 +1653,6 @@ void DboxMain::OnImportText()
 
   StringX ImportedPrefix(dlg.m_groupName);
   CString cs_text;
-  wchar_t fieldSeparator(dlg.m_Separator[0]);
 
   std::wstring dir;
   if (m_core.GetCurFile().empty())
@@ -1707,6 +1706,7 @@ void DboxMain::OnImportText()
     rpt.WriteLine();
 
     Command *pcmd = NULL;
+    wchar_t fieldSeparator(dlg.m_Separator[0]);
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
                                     delimiter, bImportPSWDsOnly,
                                     strError,
@@ -2466,10 +2466,6 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  std::vector<StringX> vs_added;
-  std::vector<StringX> vs_AliasesAdded;
-  std::vector<StringX> vs_ShortcutsAdded;
-
   CItemData::FieldBits bsFields;
   std::wstring subgroup_name;
   int subgroup_object, subgroup_function;
@@ -2729,7 +2725,6 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   str_temp.Format(IDS_SYNCHINGDATABASE, pothercore->GetCurFile().c_str());
   prpt->WriteLine((LPCWSTR)str_temp);
   prpt->WriteLine();
-  std::vector<StringX> vs_updated;
 
   ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::SYNCH);
 

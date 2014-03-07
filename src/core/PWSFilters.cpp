@@ -531,7 +531,6 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   size_t utf8Len = 0;
 
   ostringstream oss;
-  StringX tmp;
   stringT cs_tmp;
   time_t time_now;
 

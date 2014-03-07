@@ -98,7 +98,7 @@ BOOL CPWResizeDialog::OnInitDialog()
 
   // Arrange all the controls - needed for resizeable dialog
   CRect sbRect, mainCtrlRect, btnRect, dlgRect;
-  int xleft, ytop;
+  int ytop;
 
   GetClientRect(&dlgRect);
   m_DialogMinWidth = dlgRect.Width();
@@ -128,11 +128,10 @@ BOOL CPWResizeDialog::OnInitDialog()
 
   ytop = mainCtrlRect.bottom + m_ybuttondiff;
 
-  CWnd *pwnd;
   for (int i = 1; i <= m_numbtns; i++) {
-    pwnd = GetDlgItem(m_viBottomButtons[i - 1]);
+    CWnd *pwnd = GetDlgItem(m_viBottomButtons[i - 1]);
     pwnd->GetWindowRect(&btnRect);
-    xleft = (i * m_DialogMinWidth / (m_numbtns + 1)) - (btnRect.Width() / 2);
+    int xleft = (i * m_DialogMinWidth / (m_numbtns + 1)) - (btnRect.Width() / 2);
     pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
   }
 
@@ -177,18 +176,17 @@ void CPWResizeDialog::SetControls(int cx, int cy)
                           cx - (2 * pt_top.x), cy - m_cyBSpace, TRUE);
 
   // Keep buttons in the bottom area
-  int xleft, ytop;
+  int ytop;
 
   m_pMainCtrl->GetWindowRect(&mainCtrlRect);
   ScreenToClient(&mainCtrlRect);
 
   ytop = mainCtrlRect.bottom + m_ybuttondiff;
 
-  CWnd *pwnd;
   for (int i = 1; i <= m_numbtns; i++) {
-    pwnd = GetDlgItem(m_viBottomButtons[i - 1]);
+    CWnd *pwnd = GetDlgItem(m_viBottomButtons[i - 1]);
     pwnd->GetWindowRect(&btnRect);
-    xleft = (i * cx / (m_numbtns + 1)) - (btnRect.Width() / 2);
+    int xleft = (i * cx / (m_numbtns + 1)) - (btnRect.Width() / 2);
     pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
   }
 

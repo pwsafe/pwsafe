@@ -544,7 +544,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_vkbb_ClearBuffer.EnableWindow(FALSE);
 
   if (m_cbxKeyBoards.GetCount() == 0) {
-    int iItem;
     // Get current Keyboard layout name
     wchar_t wcKLID[KL_NAMELENGTH  + 1];
     VERIFY(GetKeyboardLayoutName(wcKLID));
@@ -568,7 +567,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
     for (kbl_iter = m_KBL.begin(); kbl_iter != m_KBL.end(); kbl_iter++) {
       const st_Keyboard_Layout &st_kbl = *kbl_iter;
       CString cs_temp(MAKEINTRESOURCE(st_kbl.uiCtrlID));
-      iItem = m_cbxKeyBoards.AddString(cs_temp);
+      int iItem = m_cbxKeyBoards.AddString(cs_temp);
       m_cbxKeyBoards.SetItemData(iItem, (DWORD)st_kbl.uiKLID);
     }
   }

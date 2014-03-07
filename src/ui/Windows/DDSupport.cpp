@@ -51,7 +51,6 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
   // Serialize ALL entries
   int nCount;
   POSITION pos;
-  CDDObject *pDDObject;
 
   nCount = (int)GetCount();
 
@@ -60,7 +59,7 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
 
   pos = GetHeadPosition();
   while (pos != NULL) {
-    pDDObject = (CDDObject *)GetNext(pos);
+    CDDObject *pDDObject = (CDDObject *)GetNext(pos);
     pDDObject->DDSerializeEntry(outDDmemfile);
   }
 }
@@ -70,13 +69,12 @@ void CDDObList::DDUnSerialize(CSMemFile &inDDmemfile)
   // Deserialize all entries
   ASSERT(GetCount() == 0);
   int n, nCount;
-  CDDObject *pDDObject;
 
   inDDmemfile.Read((void *)&nCount, sizeof(nCount));
   inDDmemfile.Read((void *)&m_bDragNode, sizeof(bool));
 
   for (n = 0; n < nCount; n++) {
-    pDDObject = new CDDObject();
+    CDDObject *pDDObject = new CDDObject();
     pDDObject->DDUnSerializeEntry(inDDmemfile);
     AddTail(pDDObject);
   }

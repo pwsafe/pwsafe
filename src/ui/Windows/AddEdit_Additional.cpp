@@ -286,9 +286,9 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   wchar_t buffer[10];
 #if (_MSC_VER >= 1400)
-  swprintf_s(buffer, 10, L"%d", M_NumPWHistory());
+  swprintf_s(buffer, 10, L"%lu", M_NumPWHistory());
 #else
-  swprintf(buffer, L"%d", M_NumPWHistory());
+  swprintf(buffer, L"%lu", M_NumPWHistory());
 #endif
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
@@ -519,7 +519,6 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Add Alt and/or Ctrl key and tell user but first check not already in use
       int iRC;
       pws_os::CUUID chk_uuid;
-      int iNewKBShortcut;
 
       WORD wValidModifierCombos[] = {
                    PWS_HOTKEYF_ALT,
@@ -535,7 +534,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
       for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
-        iNewKBShortcut = ((wPWSModifiers | wValidModifierCombos[iChange]) << 16) + wVirtualKeyCode;
+        int iNewKBShortcut = ((wPWSModifiers | wValidModifierCombos[iChange]) << 16) + wVirtualKeyCode;
         chk_uuid = M_pcore()->GetKBShortcut(iNewKBShortcut);
         if (chk_uuid == CUUID::NullUUID() || chk_uuid == M_entry_uuid()) {
           ierror = iActions[iChange];

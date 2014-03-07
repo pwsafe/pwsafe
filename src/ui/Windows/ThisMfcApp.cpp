@@ -1443,7 +1443,7 @@ void ThisMfcApp::GetLanguageFiles()
       szLanguage_Native = new wchar_t[inum + 1];
       ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, szLanguage_Native, inum);
 
-      int jnum = 0, knum = 0;
+      int jnum = 0;
       if (!cs_CC.IsEmpty()) {
         // Get Country name in that language
         jnum = ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, NULL, 0);
@@ -1452,7 +1452,7 @@ void ThisMfcApp::GetLanguageFiles()
           ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, szCountry_Native, jnum);
         }
         // Get Country name in English
-        knum = ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, NULL, 0);
+        int knum = ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, NULL, 0);
         if (knum > 0) {
           szCountry_English = new wchar_t[knum + 1];
           ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, szCountry_English, knum);

@@ -173,21 +173,18 @@ void CKeySendImpl::OldSendChar(TCHAR c)
     //send a shift up
     keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale),
                 KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
-    shiftDown = false;
   }
 
   if (ctrlDown) {
     //send a ctrl up
     keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
                 KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-    ctrlDown = false;
   } 
 
   if (altDown) {
     //send a alt up
     keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale),
                 KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-    altDown = false;       
   } 
   ::Sleep(m_delay);
 }

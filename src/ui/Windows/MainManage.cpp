@@ -394,7 +394,7 @@ void DboxMain::OnOptions()
     if (pOptionsPS->UpdateShortcuts()) {
       // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
-      MapMenuShortcutsIter iter, iter_entry, iter_group;
+      MapMenuShortcutsIter iter, iter_entry;
       m_MapMenuShortcuts = pOptionsPS->GetMaps();
 
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();

@@ -155,12 +155,12 @@ bool PerformConfigMigration()
   // already in the new location.
   // This is ONLY done when we migrate the user's settings.
   if (bRetVal == true) {
-    bool bCopyAutoloadFilters(false), bALFRO(false);
+    bool bALFRO(false);
     std::wstring wsOldAutoLoadFilters = wsExecDir + L"autoload_filters.xml";
     std::wstring wsNewAutoLoadFilters = wsUserCfgDir + L"autoload_filters.xml";
     if (pws_os::FileExists(wsOldAutoLoadFilters, bALFRO) &&
         !pws_os::FileExists(wsNewAutoLoadFilters)) {
-      bCopyAutoloadFilters = pws_os::CopyAFile(wsOldAutoLoadFilters,
+      bool bCopyAutoloadFilters = pws_os::CopyAFile(wsOldAutoLoadFilters,
                                                wsNewAutoLoadFilters);
 
      // If we have copied it, there are no more nodes in the old configuration file

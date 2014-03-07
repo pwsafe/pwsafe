@@ -78,7 +78,6 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
                                const CString &LnkDescription,
                                const CString &IconLocation, UINT IconIndex)
 {
-  HRESULT hr;
   CFile cfFull;
   CString sExePath, sExe, sSpecialFolder;
 
@@ -124,7 +123,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
       /* Call IShellLink::SetIconLocation with the file containing
          the icon and the index of the icon */
       if (!IconLocation.IsEmpty()) {
-        hr = psl->SetIconLocation(IconLocation, IconIndex);
+        HRESULT hr = psl->SetIconLocation(IconLocation, IconIndex);
 #ifdef _DEBUG
         if (FAILED(hr))
           pws_os::Trace(L"IconLocation not changed!\n");

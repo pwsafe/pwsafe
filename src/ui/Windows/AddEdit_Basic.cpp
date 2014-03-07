@@ -1132,17 +1132,13 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   return 0;
 }
 
-#ifdef max
-#undef max
-#endif
-
 LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 {
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
   // Now get what the user saved in this file and put it back into Notes field
   M_realnotes().Empty();
-  std::wstring linebuf, note;
+  std::wstring note;
 
   FILE *fd;
 
@@ -1155,10 +1151,10 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   ASSERT(flength % 2 == 0); // guess this is 'cause we assume editor saves wchar_t?
 
   size_t slength;
-  if (flength > (std::numeric_limits<size_t>::max() - 2)) {
+  if (flength > ((std::numeric_limits<size_t>::max)() - 2)) {
     // we're gonna truncate later in any case, due to the check
     // on MAXTEXTCHARS. This is just to keep memory in check
-    slength = std::numeric_limits<size_t>::max() - 2;
+    slength = (std::numeric_limits<size_t>::max)() - 2;
   } else {
     slength = static_cast<size_t>(flength);
   }

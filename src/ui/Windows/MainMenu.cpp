@@ -300,7 +300,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Now that we have all menu strings - go get current accelerator strings
   // and update Map
-  MapMenuShortcutsIter iter, iter_entry, iter_group, inuse_iter;
+  MapMenuShortcutsIter iter, iter_entry, inuse_iter;
   HACCEL curacctbl = app.m_ghAccelTable;
   //if (curacctbl != NULL) {
   //  DestroyAcceleratorTable(app.m_ghAccelTable);

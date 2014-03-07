@@ -496,11 +496,11 @@ PWSFileSig::PWSFileSig(const stringT &fname)
   FILE *fp = pws_os::FOpen(fname, _T("rb"));
   if (fp != NULL) {
     SHA256 hash;
-    unsigned char buf[THRESHOLD];
     m_length = pws_os::fileLength(fp);
     // Minimum size for an empty V3 DB is 232 bytes - pre + post, no hdr or records!
     // Probably smaller for V1 & V2 DBs
     if (m_length > 232) {
+      unsigned char buf[THRESHOLD];
       if (m_length <= THRESHOLD) {
         if (fread(buf, size_t(m_length), 1, fp) == 1) {
           hash.Update(buf, size_t(m_length));

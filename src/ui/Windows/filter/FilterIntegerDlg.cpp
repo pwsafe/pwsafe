@@ -121,7 +121,6 @@ BOOL CFilterIntegerDlg::OnInitDialog()
   CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
-  int iItem(-1);
 
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
@@ -131,7 +130,7 @@ BOOL CFilterIntegerDlg::OnInitDialog()
       for (size_t i = 0; i < _countof(mrx); i++) {
         UINT iumsg = PWSMatch::GetRule(mrx[i]);
         cs_text.LoadString(iumsg);
-        iItem = m_cbxRule.AddString(cs_text);
+        int iItem = m_cbxRule.AddString(cs_text);
         m_cbxRule.SetItemData(iItem, mrx[i]);
         m_rule2selection[mrx[i]] = iItem;
       }
@@ -144,7 +143,7 @@ BOOL CFilterIntegerDlg::OnInitDialog()
     for (size_t i = 0; i < _countof(mrx); i++) {
       UINT iumsg = PWSMatch::GetRule(mrx[i]);
       cs_text.LoadString(iumsg);
-      iItem = m_cbxRule.AddString(cs_text);
+      int iItem = m_cbxRule.AddString(cs_text);
       m_cbxRule.SetItemData(iItem, mrx[i]);
       m_rule2selection[mrx[i]] = iItem;
     }

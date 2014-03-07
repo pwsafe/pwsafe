@@ -473,7 +473,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   coStringXStream ofs;
   oStringXStream oss_xml;
 
-  StringX pwh, tmp;
+  StringX tmp;
   stringT cs_temp;
   time_t time_now;
 
@@ -819,7 +819,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   cStringXStream iss;
   unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
   bool bError(false);
-  size_t total(0);
   while(!feof(fs)) {
     size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
     if (ferror(fs)) {
@@ -828,7 +827,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
     buffer[count] = '\0';
     iss << buffer;
-    total += count;
   }
 
   // Close the file
@@ -1138,7 +1136,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (bImportPSWDsOnly) {
       StringX sxgroup(_T("")), sxtitle, sxuser;
       const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
-      stringT entrytitle;
       size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
       if (lastdot != stringT::npos) {
         sxgroup = grouptitle.substr(0, lastdot).c_str();
@@ -1495,7 +1492,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   cStringXStream iss;
   unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
   bool bError(false);
-  size_t total(0);
   while(!feof(fs)) {
     size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
     if (ferror(fs)) {
@@ -1504,7 +1500,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     }
     buffer[count] = '\0';
     iss << buffer;
-    total += count;
   }
 
   // Close the file
@@ -1842,7 +1837,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
 void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
 {
-  char ch;
   bool bInField = false;
   CUTF8Conv conv;
 
@@ -1850,7 +1844,7 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
   StringX sxdata;
 
   for(size_t i = 0; i < linebuf.length(); i++ ) {
-    ch = linebuf[i];
+    char ch = linebuf[i];
 
     if(ch == 0)
       continue;

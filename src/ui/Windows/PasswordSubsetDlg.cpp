@@ -217,13 +217,13 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   m_stcwarningmsg.ResetColour();
   m_subset.Trim();
 
-  int icurpos(0), lastpos;
+  int icurpos(0);
   std::vector<int> vpos;
   CString resToken(m_subset);
   const size_t ipwlengh = m_passwd.length();
 
   while (resToken != L"" && icurpos != -1) {
-    lastpos = icurpos;
+    int lastpos = icurpos;
     resToken = m_subset.Tokenize(L";, ", icurpos);
     if (resToken == L"")
       continue;

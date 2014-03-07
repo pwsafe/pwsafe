@@ -79,7 +79,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 #if (_MSC_VER >= 1400)
   swscanf_s(pData, L"%08x%02x%02x", &procID, &iDDType, &iType);
 #else
-  swscanf(pData, L"08x%02x%02x", &procID, &iDDType, &iType);
+  swscanf(pData, L"%08x%02x%02x", &procID, &iDDType, &iType);
 #endif
 
   // Check if it is ours?

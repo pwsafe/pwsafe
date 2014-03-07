@@ -124,7 +124,7 @@ BOOL CWZAdvanced::OnInitDialog()
   CWZPropertyPage::OnInitDialog();
 
   CString cs_text, cs_tmp;
-  int iItem(-1), i;
+  int iItem(-1);
 
   // Make Next button say the function
   cs_tmp.LoadString(m_pWZPSH->GetButtonID());
@@ -184,7 +184,7 @@ BOOL CWZAdvanced::OnInitDialog()
       }
     }
 
-    for (i = 0; i < cboSubgroupFunction->GetCount(); i++) {
+    for (int i = 0; i < cboSubgroupFunction->GetCount(); i++) {
       if ((int)cboSubgroupFunction->GetItemData(i) == m_subgroup_function) {
         cboSubgroupFunction->SetCurSel(i);
         break;
@@ -214,7 +214,7 @@ BOOL CWZAdvanced::OnInitDialog()
       cboSubgroupObject->SetItemData(iItem, CItemData::NOTES);
     }
 
-    for (i = 0; i < cboSubgroupObject->GetCount(); i++) {
+    for (int i = 0; i < cboSubgroupObject->GetCount(); i++) {
       if ((int)cboSubgroupObject->GetItemData(i) == m_subgroup_object) {
         cboSubgroupObject->SetCurSel(i);
         break;
@@ -683,7 +683,6 @@ LRESULT CWZAdvanced::OnWizardNext()
 {
   CGeneralMsgBox gmb;
   CString cs_text;
-  DWORD_PTR dw_data;
 
   UpdateData();
   m_bsFields.reset();
@@ -694,7 +693,7 @@ LRESULT CWZAdvanced::OnWizardNext()
 
     for (int i = 0; i < num_selected; i++) {
       nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
-      dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
+      DWORD_PTR dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
       m_bsFields.set(dw_data & 0xff, true);
     }
 
@@ -888,18 +887,14 @@ void CWZAdvanced::OnSelectSome()
 
 void CWZAdvanced::OnSelectAll()
 {
-  CString cs_text;
-  int iItem;
-  DWORD_PTR dw_data;
-
   int num_in_list = m_pLC_List->GetItemCount();
   if (num_in_list == 0)
     return;
 
   for (int i = 0; i < num_in_list; i++) {
-    cs_text = m_pLC_List->GetItemText(i, 0);
-    dw_data = m_pLC_List->GetItemData(i);
-    iItem = m_pLC_Selected->InsertItem(0, cs_text);
+    CString cs_text = m_pLC_List->GetItemText(i, 0);
+    DWORD_PTR dw_data = m_pLC_List->GetItemData(i);
+    int iItem = m_pLC_Selected->InsertItem(0, cs_text);
     m_pLC_Selected->SetItemData(iItem, dw_data);
   }
 
@@ -909,10 +904,6 @@ void CWZAdvanced::OnSelectAll()
 
 void CWZAdvanced::OnDeselectSome()
 {
-  CString cs_text;
-  int iItem;
-  DWORD_PTR dw_data;
-
   int num_selected = m_pLC_Selected->GetItemCount();
   if (num_selected == 0)
     return;
@@ -924,15 +915,15 @@ void CWZAdvanced::OnDeselectSome()
     if (nItem == -1)
       continue;
 
-    cs_text = m_pLC_Selected->GetItemText(nItem, 0);
-    dw_data = m_pLC_Selected->GetItemData(nItem);
+    CString cs_text = m_pLC_Selected->GetItemText(nItem, 0);
+    DWORD_PTR dw_data = m_pLC_Selected->GetItemData(nItem);
 
     // Ignore mandatory fields - can't be deselected
     if (m_bsMandatoryFields.test(dw_data & 0xff))
       continue;
 
     m_pLC_Selected->DeleteItem(nItem);
-    iItem = m_pLC_List->InsertItem(0, cs_text);
+    int iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
   }
 
@@ -942,22 +933,18 @@ void CWZAdvanced::OnDeselectSome()
 
 void CWZAdvanced::OnDeselectAll()
 {
-  CString cs_text;
-  int iItem;
-  DWORD_PTR dw_data;
-
   int num_selected = m_pLC_Selected->GetItemCount();
   if (num_selected == 0)
     return;
 
   for (int i = num_selected - 1; i >= 0; i--) {
-    cs_text = m_pLC_Selected->GetItemText(i, 0);
-    dw_data = m_pLC_Selected->GetItemData(i);
+    CString cs_text = m_pLC_Selected->GetItemText(i, 0);
+    DWORD_PTR dw_data = m_pLC_Selected->GetItemData(i);
     // Ignore mandatory fields - can't be deselected
     if (m_bsMandatoryFields.test(dw_data & 0xff))
       continue;
 
-    iItem = m_pLC_List->InsertItem(0, cs_text);
+    int iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
     m_pLC_Selected->DeleteItem(i);
   }

@@ -59,7 +59,6 @@ BOOL CFilterEntryStatusDlg::OnInitDialog()
 
   // NOTE: These ComboBox are NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
-    iItem = -1;
     cs_text.LoadString(IDSC_IS);
     iItem = m_cbxRule.AddString(cs_text);
     m_cbxRule.SetItemData(iItem, PWSMatch::MR_IS);
@@ -72,7 +71,6 @@ BOOL CFilterEntryStatusDlg::OnInitDialog()
   }
 
   if (m_cbxEStatus.GetCount() == 0) {
-    iItem = -1;
     cs_text.LoadString(IDSC_FSCLEAN);
     iItem = m_cbxEStatus.AddString(cs_text);
     m_cbxEStatus.SetItemData(iItem, CItemData::ES_CLEAN);

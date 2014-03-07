@@ -697,7 +697,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
   CItemData ci_temp;
-  StringX csMyPassword, cs_possibleUUID;
   bool go = true;
   bool limited = false;
 
@@ -1537,7 +1536,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
     CItemData &ci = iter->second;
     CItemData fixedItem(ci);
     bool bFixed(false);
-    int flags = CItemData::VF_OK;
+    int flags = CItemData::VF_OK;  // Although set - never used or passed back to caller Why bother except for Debug?
 
     n++;
 
@@ -1553,7 +1552,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       // This field is mandatory!
       // Change it and insert into a std::set which guarantees uniqueness
       int i = 0;
-      StringX s_copy, sxnewtitle(sxtitle);
+      StringX sxnewtitle(sxtitle);
       do {
         i++;
         Format(sxnewtitle, IDSC_MISSINGTITLE, i);
@@ -1827,6 +1826,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
   } else {
     return false;
   }
+  // CppCheck says: "error: Memory leak: pmulticmds".  I can't see these commands executed either!
 }
 
 bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)

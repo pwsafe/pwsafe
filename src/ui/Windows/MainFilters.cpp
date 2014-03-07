@@ -202,7 +202,7 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
 bool DboxMain::PassesFiltering(const CItemData &ci,
                                const st_filters &filters)
 {
-  bool thistest_rc, thisgroup_rc;
+  bool thistest_rc;
   bool bValue(false);
   const CItemData *pci;
 
@@ -220,7 +220,7 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
     const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
-    thisgroup_rc = false;
+    bool thisgroup_rc = false;
     vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
@@ -423,7 +423,7 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
 bool DboxMain::PassesPWHFiltering(const CItemData *pci,
                                   const st_filters &filters) const
 {
-  bool thisgroup_rc, thistest_rc, bPresent;
+  bool thistest_rc, bPresent;
   bool bValue(false);
   int iValue(0);
 
@@ -444,7 +444,7 @@ bool DboxMain::PassesPWHFiltering(const CItemData *pci,
     const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
-    thisgroup_rc = false;
+    bool thisgroup_rc = false;
     vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
@@ -545,7 +545,7 @@ bool DboxMain::PassesPWHFiltering(const CItemData *pci,
 bool DboxMain::PassesPWPFiltering(const CItemData *pci,
                                   const st_filters &filters) const
 {
-  bool thisgroup_rc, thistest_rc, bPresent;
+  bool thistest_rc, bPresent;
   bool bValue(false);
   int iValue(0);
 
@@ -561,7 +561,7 @@ bool DboxMain::PassesPWPFiltering(const CItemData *pci,
     const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
-    thisgroup_rc = false;
+    bool thisgroup_rc = false;
     vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {

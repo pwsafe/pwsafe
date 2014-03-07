@@ -988,7 +988,7 @@ void DboxMain::OnEdit()
         EditShortcut(pci);
       else
         EditItem(pci);
-    } catch (CString err) {
+    } catch (CString &err) {
       CGeneralMsgBox gmb;
       gmb.MessageBox(err, NULL, MB_OK | MB_ICONERROR);
     }
@@ -997,11 +997,10 @@ void DboxMain::OnEdit()
     // perhaps not the most elegant solution to improving non-mouse use,
     // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
     // let me know...
-    CItemData *pci_node(NULL);
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-        pci_node = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        CItemData *pci_node = (CItemData *)m_ctlItemTree.GetItemData(ti);
         if (pci_node == NULL) { // node selected
           m_ctlItemTree.Expand(ti, TVE_TOGGLE);
         }
@@ -1865,7 +1864,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
   wchar_t *dot;
-  bool bAddToViews;
 
   const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
@@ -1885,7 +1883,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
     bool bChangedPolicy(false);
     ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
-    bAddToViews = true;
+    bool bAddToViews = true;
     pDDObject->ToItem(ci_temp);
 
     StringX sxPolicyName = ci_temp.GetPolicyName();

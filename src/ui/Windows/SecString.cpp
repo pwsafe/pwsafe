@@ -53,7 +53,7 @@ void CSecString::Format(UINT nID, ... )
   va_end(args);
 }
 
-const CSecString& CSecString::operator=(const CSecString& stringSrc)
+CSecString& CSecString::operator=(const CSecString& stringSrc)
 {
   if (this != &stringSrc) {
     trashstring();

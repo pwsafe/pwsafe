@@ -1473,9 +1473,8 @@ void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
   WORD wVirtualKeyCode(0);
   WORD wPWSModifiers(0);
   size_t len = sx_KBShortcut.length();
-  size_t i(0);
   if (!sx_KBShortcut.empty()) {
-    for (i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; i++) {
       if (sx_KBShortcut.substr(i, 1) == _T(":")) {
         // 4 hex digits should follow the colon
         ASSERT(i + 5 == len);

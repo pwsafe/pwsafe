@@ -127,7 +127,7 @@ public:
   operator CString() const {return m_mystring;}
   operator CString&() {return m_mystring;}
 
-  const CSecString& operator=(const CSecString& stringSrc);
+  CSecString& operator=(const CSecString& stringSrc);
   const CSecString& operator=(wchar_t ch);
   const CSecString& operator=(LPCWSTR lpsz);
   const CSecString& operator+=(const CSecString& s) {m_mystring += s.m_mystring; return *this;}

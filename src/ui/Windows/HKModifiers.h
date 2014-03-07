@@ -62,7 +62,7 @@ inline WORD ConvertModifersWindows2MFC(const WORD &wModifiers)
   if (wModifiers & MOD_SHIFT)
     wHKModifiers |= HOTKEYF_SHIFT;
     
-  return wModifiers;
+  return wHKModifiers;
 }
 
 inline WORD ConvertModifersPWS2Windows(const WORD &wPWSModifiers)

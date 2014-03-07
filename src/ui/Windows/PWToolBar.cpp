@@ -539,10 +539,9 @@ void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 
   CBitmap bmNormal, bmDisabled;
-  UINT bmID;
 
   for (int i = 0; i < numBMs; i++) {
-    bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
+    UINT bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
     if (bmID == 0)
       continue; // skip over separator
     BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),

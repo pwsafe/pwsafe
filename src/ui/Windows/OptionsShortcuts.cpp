@@ -94,7 +94,6 @@ END_MESSAGE_MAP()
 
 BOOL COptionsShortcuts::OnInitDialog()
 {
-  BOOL brc;
   COptions_PropertyPage::OnInitDialog();
 
   m_AppHotKeyCtrl.m_pParent = this;
@@ -208,7 +207,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   } // foreach mapKBShortcutMap
 
   // Now sort via keyboard shortcut
-  brc = m_EntryShortcutLC.SortItems(CKBSHCompareFunc, (LPARAM)this);
+  m_EntryShortcutLC.SortItems(CKBSHCompareFunc, (LPARAM)this);
 
   m_EntryShortcutLC.SetColumnWidth(0, m_iColWidth); // SHCT_SHORTCUTKEYS
   m_EntryShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // GROUP
@@ -350,10 +349,9 @@ void COptionsShortcuts::OnResetAll()
 {
   MapMenuShortcutsIter iter;
   CString str;
-  UINT id;
 
   for (int i = 0; i < m_ShortcutLC.GetItemCount(); i++) {
-    id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
+    UINT id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
     iter = m_MapMenuShortcuts.find(id);
     iter->second.siVirtKey = iter->second.siDefVirtKey;
@@ -709,7 +707,6 @@ int COptionsShortcuts::CheckAppHotKey()
       // Add Alt and/or Ctrl key and tell user but first check not already in use
       int iRC;
       pws_os::CUUID chk_uuid;
-      int iNewAppHotKey;
 
       WORD wValidModifierCombos[] = {
                    PWS_HOTKEYF_ALT,
@@ -725,7 +722,7 @@ int COptionsShortcuts::CheckAppHotKey()
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
       for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
-        iNewAppHotKey = wValidModifierCombos[iChange];
+        int iNewAppHotKey = wValidModifierCombos[iChange];
         chk_uuid = app.GetCore()->GetKBShortcut(iNewAppHotKey);
         if (chk_uuid == CUUID::NullUUID()) {
           ierror = iActions[iChange];

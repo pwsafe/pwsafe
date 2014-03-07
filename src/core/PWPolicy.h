@@ -76,6 +76,7 @@ struct PWPolicy {
       symbolminlength = that.symbolminlength;
       upperminlength  = that.upperminlength;
       symbols = that.symbols;
+      usecount = that.usecount;
       // don't care about usecount!
     }
     return *this;

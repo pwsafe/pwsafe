@@ -297,7 +297,7 @@ void CAddEdit_DateTimes::UpdateStats()
     return;
 
   CString cs_text;
-  cs_text.Format(L"%u", M_entrysize());
+  cs_text.Format(L"%lu", M_entrysize());
 
   for (int i = cs_text.GetLength() - 3; i > 0; i -= 3) {
     cs_text.Insert(i, L",");

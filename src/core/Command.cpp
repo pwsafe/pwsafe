@@ -46,7 +46,8 @@ unit of work.
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_bState(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_bState(false), m_bSaveDBChanged(false),
+m_bUniqueGTUValidated(false)
 {
 }
 

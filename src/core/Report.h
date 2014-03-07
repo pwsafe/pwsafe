@@ -32,7 +32,6 @@ public:
 private:
   oStringXStream m_osxs;
   stringT m_cs_filename;
-  int m_imode;
   stringT m_tcAction;
   stringT m_csDataBase;
 };
