@@ -525,8 +525,7 @@ private:
   // End of Command Interface implementations
 
   // Validate() returns true if data modified, false if all OK
-  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
-                CReport *pRpt, st_ValidateResults &st_vr);
+  bool Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr);
 
   void ParseDependants(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);

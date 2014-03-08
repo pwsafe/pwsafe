@@ -891,7 +891,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // NOTE: When a "other" core is involved (Compare, Merge etc.), we NEVER validate
   // the "other" core.
   if (bValidate)
-    bValidateRC = Validate(iMAXCHARS, true, pRpt, st_vr);
+    bValidateRC = Validate(iMAXCHARS, pRpt, st_vr);
 
   if (pRpt != NULL)
     pRpt->EndReport();
@@ -1485,8 +1485,7 @@ void PWScore::ParseDependants()
   }
 }
 
-bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
-                       CReport *pRpt, st_ValidateResults &st_vr)
+bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr)
 {
   /*
      1. Check PWH is valid
@@ -1505,18 +1504,10 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
         initial file opening.
   */
 
-  PWS_LOGIT_ARGS("iMAXCHARS=%d; bInReadfile=%s; pRpt=%p", iMAXCHARS,
-                 bInReadfile ? _T("true") : _T("false"), pRpt);
+  PWS_LOGIT_ARGS("iMAXCHARS=%d; pRpt=%p", iMAXCHARS, pRpt);
 
   int n = -1;
   size_t uimaxsize(0);
-
-  MultiCommands *pmulticmds(NULL);
-
-  // We do not use the Command infrastructure with Undo/Redo when reading in
-  // the database
-  if (!bInReadfile)
-    pmulticmds = MultiCommands::Create(this);
 
   stringT cs_Error;
   pws_os::Trace(_T("Start validation\n"));
@@ -1631,15 +1622,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
     if (bFixed) {
       // Mark as modified
       fixedItem.SetStatus(CItemData::ES_MODIFIED);
-      if (bInReadfile) {
-        // We must fix entry without using the Command mechanism and Undo/Redo during
-        // initial read of the file
-        m_pwlist[fixedItem.GetUUID()] = fixedItem;
-      } else {
-        // Otherwise, we must do it via the normal Command mechanism
-        Command *pcmd = EditEntryCommand::Create(this, ci, fixedItem);
-        pmulticmds->Add(pcmd);
-      }
+      // We assume that this is run during file read. If not, then we
+      // need to run using the Command mechanism for Undo/Redo.
+      m_pwlist[fixedItem.GetUUID()] = fixedItem;
     }
   } // iteration over m_pwlist
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
