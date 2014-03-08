@@ -153,7 +153,7 @@
 ;--------------------------------
 ; Pages
 
-  !insertmacro MUI_PAGE_LICENSE "..\LICENSE" ;$(myLicenseData)
+  !insertmacro MUI_PAGE_LICENSE "..\..\LICENSE" ;$(myLicenseData)
   ; ask about installation type, "green" or "regular"
   Page custom GreenOrRegular
   !insertmacro MUI_PAGE_COMPONENTS
@@ -309,20 +309,20 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "..\build\bin\pwsafe\releasem\pwsafe.exe"
-  File "..\build\bin\pwsafe\releasem\pws_at.dll"
-  File "..\build\bin\pwsafe\releasem\pws_osk.dll"
-  File "..\help\default\pwsafe.chm"
-  File "..\LICENSE"
-  File "..\README.TXT"
-  File "..\docs\ReleaseNotes.txt"
-  File "..\docs\ReleaseNotes.html"
-  File "..\docs\ChangeLog.txt"
-  File "..\xml\pwsafe.xsd"
-  File "..\xml\pwsafe.xsl"
-  File "..\xml\pwsafe_filter.xsd"
-  File "..\xml\KPV1_to_PWS.xslt"
-  File "..\xml\KPV2_to_PWS.xslt"
+  File "..\..\build\bin\pwsafe\releasem\pwsafe.exe"
+  File "..\..\build\bin\pwsafe\releasem\pws_at.dll"
+  File "..\..\build\bin\pwsafe\releasem\pws_osk.dll"
+  File "..\..\help\default\pwsafe.chm"
+  File "..\..\LICENSE"
+  File "..\..\README.TXT"
+  File "..\..\docs\ReleaseNotes.txt"
+  File "..\..\docs\ReleaseNotes.html"
+  File "..\..\docs\ChangeLog.txt"
+  File "..\..\xml\pwsafe.xsd"
+  File "..\..\xml\pwsafe.xsl"
+  File "..\..\xml\pwsafe_filter.xsd"
+  File "..\..\xml\KPV1_to_PWS.xslt"
+  File "..\..\xml\KPV2_to_PWS.xslt"
 
   ; skip over registry writes if 'Green' installation selected
   IntCmp $INSTALL_TYPE 1 GreenInstall
@@ -361,82 +361,82 @@ SectionGroup /e "$(LANGUAGE_SUPPORT)" LanguageSupport
 Section  "$(ENGLISH_SUPPORT)" EnglishSection
   SectionIn RO ; mandatory
   SetOutPath "$INSTDIR"  
-  File "..\help\default\pwsafe.chm"
+  File "..\..\help\default\pwsafe.chm"
 SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
-  File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH.dll"
+  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
 Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH_TW.dll"
-  File /nonfatal "..\help\pwsafeZH\pwsafeZH_TW.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH_TW.dll"
+  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
 SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDE.dll"
-  File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDE.dll"
+  File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(SPANISH_SUPPORT)" SpanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeES.dll"
-  File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeES.dll"
+  File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
 SectionEnd
 Section /o "$(SWEDISH_SUPPORT)" SwedishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
-  File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeSV.dll"
+  File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
-  File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeNL.dll"
+  File /nonfatal "..\..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
-  File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeFR.dll"
+  File /nonfatal "..\..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
 Section /o "$(RUSSIAN_SUPPORT)" RussianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeRU.dll"
-  File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeRU.dll"
+  File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
 SectionEnd
 Section /o "$(POLISH_SUPPORT)" PolishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafePL.dll"
-  File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafePL.dll"
+  File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
 SectionEnd
 Section /o "$(ITALIAN_SUPPORT)" ItalianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
-  File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeIT.dll"
+  File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDA.dll"
-  File /nonfatal "..\help\pwsafeDA\pwsafeDA.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDA.dll"
+  File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeKO.dll"
-  File /nonfatal "..\help\pwsafeKO\pwsafeKO.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeKO.dll"
+  File /nonfatal "..\..\help\pwsafeKO\pwsafeKO.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
-  File /nonfatal "..\help\pwsafeCZ\pwsafeCZ.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
+  File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
 SectionEnd
 Section /o "$(TURKISH_SUPPORT)" TurkishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeTR.dll"
-  File /nonfatal "..\help\pwsafeTR\pwsafeTR.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeTR.dll"
+  File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
 SectionEnd
 Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeHU.dll"
-  File /nonfatal "..\help\pwsafeHU\pwsafeHU.chm"
+  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeHU.dll"
+  File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
 SectionGroupEnd
 

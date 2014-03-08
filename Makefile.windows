@@ -116,8 +116,8 @@ signatures:
 installables: nsis msi
 
 nsis:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/pwsafe.nsi
-	$(MV) install/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:
 	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
