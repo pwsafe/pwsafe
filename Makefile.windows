@@ -121,12 +121,12 @@ nsis:
 
 msi:
 	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
-		< install/pwsafe-template.wxs > install/pwsafe.wxs
+		< install/windows/pwsafe-template.wxs > install/pwsafe.wxs
 	$(CANDLE) install/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
-	$(RM) pwsafe.wixobj
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
+	$(RM) pwsafe.wixobj install/pwsafe.wxs
 
 release:  i18n bin-release src-release
 
