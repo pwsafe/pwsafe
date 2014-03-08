@@ -120,14 +120,6 @@ public:
                     ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
                     ES_LAST};
 
-  // Flags if error found during validate of the entry
-  enum  {VF_OK              =  0,
-         VF_BAD_UUID        =  1,
-         VF_EMPTY_TITLE     =  2,
-         VF_EMPTY_PASSWORD  =  4,
-         VF_NOT_UNIQUE_GTU  =  8,
-         VF_BAD_PSWDHISTORY = 16};
-
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 

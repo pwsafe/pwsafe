@@ -1536,7 +1536,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
     CItemData &ci = iter->second;
     CItemData fixedItem(ci);
     bool bFixed(false);
-    int flags = CItemData::VF_OK;  // Although set - never used or passed back to caller Why bother except for Debug?
 
     n++;
 
@@ -1565,7 +1564,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       bFixed = true;
       vGTU_EmptyTitle.push_back(st_GroupTitleUser2(sxgroup, sxtitle, sxuser, sxnewtitle));
       st_vr.num_empty_titles++;
-      flags |= CItemData::VF_EMPTY_TITLE;
       sxtitle = sxnewtitle;
     } else {
       // Title was not empty
@@ -1588,7 +1586,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
         bFixed = true;
         vGTU_NONUNIQUE.push_back(st_GroupTitleUser2(sxgroup, sxtitle, sxuser, sxnewtitle));
         st_vr.num_duplicate_GTU_fixed++;
-        flags |= CItemData::VF_NOT_UNIQUE_GTU;
         sxtitle = sxnewtitle;
       }
     }
@@ -1600,7 +1597,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       bFixed = true;
       vGTU_EmptyPassword.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
       st_vr.num_empty_passwords++;
-      flags |= CItemData::VF_EMPTY_PASSWORD;
     }
 
     // Test if Password History was fixed
@@ -1608,7 +1604,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       bFixed = true;
       vGTU_PWH.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
       st_vr.num_PWH_fixed++;
-      flags |= CItemData::VF_BAD_PSWDHISTORY;
     }
 
     // Note excessively sized text fields
