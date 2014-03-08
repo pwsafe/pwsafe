@@ -124,6 +124,11 @@
 !include "nsProcess.nsh"
 
 ;--------------------------------
+; Host OS version detection
+!include "WinVer.nsh"
+
+
+;--------------------------------
 ; Version Info
 ;
 ; Hopefully, this file will be compiled via the following command line
@@ -141,7 +146,6 @@
 ;Variables
 
   Var INSTALL_TYPE
-  Var HOST_OS
   
   ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
@@ -237,11 +241,11 @@ LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
 
 ; Descriptions
 LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
-LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that PasswordSafe will use."
 LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that PasswordSafe will use."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
@@ -319,21 +323,6 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe_filter.xsd"
   File "..\xml\KPV1_to_PWS.xslt"
   File "..\xml\KPV2_to_PWS.xslt"
-
-  Goto dont_install_Win98
-  ; If installing under Windows98, delete pwsafe.exe, rename
-  ; p98.exe pwsafe.exe
-  ; Otherwise, delete p98.exe
-  StrCmp $HOST_OS '98' is_98 isnt_98
-  is_98:
-    Delete $INSTDIR\pwsafe.exe
-    Rename $INSTDIR\p98.exe $INSTDIR\pwsafe.exe
-    Goto lbl_cont
-  isnt_98:
-    Delete $INSTDIR\p98.exe
-  lbl_cont:
-dont_install_Win98:
-
 
   ; skip over registry writes if 'Green' installation selected
   IntCmp $INSTALL_TYPE 1 GreenInstall
@@ -502,11 +491,11 @@ SectionEnd
   ; Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${ProgramFiles} $(DESC_ProgramFiles)
-    !insertmacro MUI_DESCRIPTION_TEXT ${LanguageSupport} $(DESC_LangSupport)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${UninstallMenu} $(DESC_UninstallMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(DESC_DesktopShortcut)
+    !insertmacro MUI_DESCRIPTION_TEXT ${LanguageSupport} $(DESC_LangSupport)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
@@ -588,14 +577,23 @@ Function .onInit
 
  ;Extract InstallOptions INI files
  !insertmacro INSTALLOPTIONS_EXTRACT "pws-install.ini"
- Call GetWindowsVersion
- Pop $R0
-; Strcpy $R0 '98' ; ONLY for test
- StrCmp $R0 '95' is_win95
- StrCmp $R0 '98' is_win98
- StrCmp $R0 'ME' is_winME
- StrCmp $R0 '2000' is_win2k
- StrCpy $HOST_OS $R0
+
+ ${If} ${IsWin95}
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_95)
+  Quit
+ ${EndIf}
+ ${If} ${IsWin98}
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_98)
+  Quit
+ ${EndIf}
+ ${If} ${IsWinME}
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
+  Quit
+ ${EndIf}
+ ${If} ${IsWin2000}
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_2K)
+  Quit
+ ${EndIf}
 
 ; Following tests should really be done
 ; after .onInit, since language is initialized
@@ -668,21 +666,6 @@ Function .onInit
   Pop $LANGUAGE
   StrCmp $LANGUAGE "cancel" 0 +2
   Abort
-  
-  Return
-  ; - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-is_win95:
-  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_95)
-  Quit
-is_win98:
-  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_98)
-  Quit
-is_winME:
-  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
-  Quit
-is_win2k:
-  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_2K)
-  Quit
 FunctionEnd
 
 Function GreenOrRegular
@@ -693,96 +676,3 @@ Function GreenOrRegular
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(RESERVE_FIELD2)
   !insertmacro INSTALLOPTIONS_DISPLAY "pws-install.ini"
 FunctionEnd
-  
- ;--------------------------------
- ;
- ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
- ; Updated by Joost Verburg
- ;
- ; Returns on top of stack
- ;
- ; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003, Vista)
- ; or
- ; '' (Unknown Windows Version)
- ;
- ; Usage:
- ;   Call GetWindowsVersion
- ;   Pop $R0
- ;   ; at this point $R0 is "NT 4.0" or whatnot
- 
- Function GetWindowsVersion
- 
-   Push $R0
-   Push $R1
- 
-   ClearErrors
- 
-   ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-
-   IfErrors 0 lbl_winnt
-   
-   ; we are not NT
-   ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
- 
-   StrCpy $R1 $R0 1
-   StrCmp $R1 '4' 0 lbl_error
- 
-   StrCpy $R1 $R0 3
- 
-   StrCmp $R1 '4.0' lbl_win32_95
-   StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
- 
-   lbl_win32_95:
-     StrCpy $R0 '95'
-   Goto lbl_done
- 
-   lbl_win32_98:
-     StrCpy $R0 '98'
-   Goto lbl_done
- 
-   lbl_win32_ME:
-     StrCpy $R0 'ME'
-   Goto lbl_done
- 
-   lbl_winnt:
- 
-   StrCpy $R1 $R0 1
- 
-   StrCmp $R1 '3' lbl_winnt_x
-   StrCmp $R1 '4' lbl_winnt_x
- 
-   StrCpy $R1 $R0 3
- 
-   StrCmp $R1 '5.0' lbl_winnt_2000
-   StrCmp $R1 '5.1' lbl_winnt_XP
-   StrCmp $R1 '5.2' lbl_winnt_2003
-   StrCmp $R1 '6.0' lbl_winnt_vista lbl_error
- 
-   lbl_winnt_x:
-     StrCpy $R0 "NT $R0" 6
-   Goto lbl_done
- 
-   lbl_winnt_2000:
-     Strcpy $R0 '2000'
-   Goto lbl_done
- 
-   lbl_winnt_XP:
-     Strcpy $R0 'XP'
-   Goto lbl_done
- 
-   lbl_winnt_2003:
-     Strcpy $R0 '2003'
-   Goto lbl_done
- 
-   lbl_winnt_vista:
-     Strcpy $R0 'Vista'
-   Goto lbl_done
- 
-   lbl_error:
-     Strcpy $R0 ''
-   lbl_done:
- 
-   Pop $R1
-   Exch $R0
- 
- FunctionEnd
