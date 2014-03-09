@@ -647,7 +647,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
 
  exit:
   stringT buffer, temp(_T(""));
-  if (nerror >= 0) {
+  if (nerror != size_t(-1)) {
     // Need to add information about which PWH entry is in error
     LoadAString(buffer, IDSC_ENTRY);
     Format(temp, _T("%s %d"), buffer.c_str(), nerror);
