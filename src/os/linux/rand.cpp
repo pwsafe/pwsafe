@@ -74,7 +74,7 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     if (ent_avail) {
       unsigned ent_bits;
       if (ent_avail >> ent_bits && ent_bits >= 32) {
-        slen = ent_bits/8;
+        slen = ent_bits >= 256 ? 256/8 : ent_bits/8;
         data = new char[slen];
         ifstream rnd("/dev/random");
         if (rnd.read(data, slen))
