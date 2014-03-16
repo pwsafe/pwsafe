@@ -32,21 +32,6 @@
     <ClCompile Include="Match.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MFileValidator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PWCharPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,6 +98,21 @@
     <ClCompile Include="VerifyFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XML\XERCES\XFileSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\Xerces\XFileValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\XERCES\XFileXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\XERCES\XFilterSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\XERCES\XFilterXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="XML\XMLFileHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -173,21 +173,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Match.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MFileValidator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MFileXMLProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Proxy.h">
@@ -269,6 +254,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VerifyFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XERCES\XFileSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\Xerces\XFileValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XERCES\XFileXMLProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XERCES\XFilterSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XERCES\XFilterXMLProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XML\XMLDefs.h">
