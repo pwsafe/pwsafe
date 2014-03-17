@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>pws_osk</ProjectName>
     <ProjectGuid>{5F619D4F-185A-4B4B-8E77-02698EAEB962}</ProjectGuid>
     <RootNamespace>pws_osk</RootNamespace>
     <Keyword>Win32Proj</Keyword>

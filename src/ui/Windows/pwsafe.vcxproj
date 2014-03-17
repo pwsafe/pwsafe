@@ -43,6 +43,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>pwsafe</ProjectName>
     <ProjectGuid>{A3313FA9-CB57-48C2-B660-EE4BF94714D2}</ProjectGuid>
     <RootNamespace>pwsafe</RootNamespace>
     <Keyword>MFCProj</Keyword>

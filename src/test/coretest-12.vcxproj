@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>coretest</ProjectName>
     <ProjectGuid>{0FF1232A-8377-4271-BC22-04E57A39FFB6}</ProjectGuid>
     <RootNamespace>coretest</RootNamespace>
     <Keyword>MFCProj</Keyword>
@@ -265,8 +266,12 @@
     <ClInclude Include="TwoFishTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\core\core.vcxproj">
+    <ProjectReference Include="..\core\core-12.vcxproj">
       <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\os\windows\os-12.vcxproj">
+      <Project>{d5dbd8e8-cf48-4ca3-b773-c5f3b3316c73}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

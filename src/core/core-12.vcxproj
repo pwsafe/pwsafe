@@ -43,6 +43,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>core</ProjectName>
     <ProjectGuid>{261882E8-80AF-4373-A8CC-A8D52E24BF27}</ProjectGuid>
     <RootNamespace>core</RootNamespace>
     <Keyword>MFCProj</Keyword>

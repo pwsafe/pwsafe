@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>pws_autotype</ProjectName>
     <ProjectGuid>{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}</ProjectGuid>
     <RootNamespace>pws_autotype</RootNamespace>
     <Keyword>Win32Proj</Keyword>

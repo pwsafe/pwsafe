@@ -12,3 +12,4 @@ ipch
 
 /src/ui/wxWidgets/*.props
 *.props
+*.stackdump

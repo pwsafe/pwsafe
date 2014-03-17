@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coretest", "src\test\coretest.vcxproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcxproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcxproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
@@ -48,17 +46,6 @@ Global
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.ReleaseM|Win32.Build.0 = ReleaseM|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.ReleaseM|x64.ActiveCfg = ReleaseM|x64
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.ReleaseM|x64.Build.0 = ReleaseM|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|x64.ActiveCfg = Debug|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|Win32.ActiveCfg = Debug|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.ActiveCfg = Debug|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.ActiveCfg = Debug|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|x64.ActiveCfg = Debug|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|x64.Build.0 = Debug|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.ActiveCfg = Release|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|x64.ActiveCfg = Release|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|Win32.ActiveCfg = Release|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|x64.ActiveCfg = Release|x64
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|x64.ActiveCfg = Debug|x64
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|x64.Build.0 = Debug|x64

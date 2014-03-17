@@ -43,6 +43,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>os</ProjectName>
     <ProjectGuid>{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}</ProjectGuid>
     <RootNamespace>os</RootNamespace>
     <Keyword>Win32Proj</Keyword>

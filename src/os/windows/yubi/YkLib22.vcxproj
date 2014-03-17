@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>YkLib22</ProjectName>
     <ProjectGuid>{326058EE-494B-4E51-BB34-1F4505E368B7}</ProjectGuid>
     <RootNamespace>YkLib22</RootNamespace>
     <Keyword>Win32Proj</Keyword>
