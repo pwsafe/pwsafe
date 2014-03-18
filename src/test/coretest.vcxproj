@@ -120,7 +120,6 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ShowProgress>LinkVerboseLib</ShowProgress>
       <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -159,7 +158,6 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ShowProgress>LinkVerboseLib</ShowProgress>
       <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
