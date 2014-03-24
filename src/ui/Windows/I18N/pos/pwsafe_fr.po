@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PasswordSafe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-03-21 13:01-0500\n"
+"PO-Revision-Date: 2014-03-23 14:24-0500\n"
 "Last-Translator: Francois Lamoureux <franklamoureux@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1922,7 +1922,7 @@ msgstr "Paramètres de ligne de commande du navigateur:"
 
 #. Resource IDs: (1001)
 msgid "Built on "
-msgstr "Compilé sur"
+msgstr "Compilé le "
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
