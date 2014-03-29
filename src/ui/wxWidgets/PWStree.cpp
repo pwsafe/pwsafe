@@ -668,14 +668,16 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
     case ID_TREECTRL_1:
     {
       wxTreeItemId groupItem = evt.GetItem();
-      PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
-      if (data && data->BeingAdded()) {
-        // A new group being added
-        FinishAddingGroup(evt, groupItem);
-      }
-      else if (data && data->BeingEdited()) {
-        // An existing group being renamed
-        FinishRenamingGroup(evt, groupItem, data->GetOldPath());
+      if (groupItem.IsOk()) {
+        PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
+        if (data && data->BeingAdded()) {
+          // A new group being added
+          FinishAddingGroup(evt, groupItem);
+        }
+        else if (data && data->BeingEdited()) {
+          // An existing group being renamed
+          FinishRenamingGroup(evt, groupItem, data->GetOldPath());
+        }
       }
       break;
     }
