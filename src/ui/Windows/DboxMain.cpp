@@ -76,7 +76,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// Also needed by CInfoDisplay
+// Also needed by CInfoDisplay and CPasswordSubsetDlg
 extern HRGN GetWorkAreaRegion();
 extern BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam);
 
@@ -904,13 +904,16 @@ void DboxMain::InitPasswordSafe()
 
   CRect rect;
   prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-
-  if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
+  
+  HRGN hrgnWork = GetWorkAreaRegion();
+  // also check that window will be visible
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
     PlaceWindow(this, &rect, SW_HIDE);
   }
+  ::DeleteObject(hrgnWork);
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
