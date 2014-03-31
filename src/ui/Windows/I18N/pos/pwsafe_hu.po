@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PsswordSafe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-01-05 00:45+0100\n"
-"Last-Translator: Ócsvári Áron <oaron1@gmail.com>\n"
-"Language-Team: OAron-team <oaron1@gmail.com>\n"
+"PO-Revision-Date: 2014-03-16 22:15+0100\n"
+"Last-Translator: Ervin Steckl <ervin.steckl@gmail.com>\n"
+"Language-Team: OAron-Steckl-team <oaron1@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,7 +37,7 @@ msgstr " "
 
 #. Resource IDs: (204)
 msgid "  All Password History ignored."
-msgstr ""
+msgstr "Az összes jelszóelőzmény figyelmen kívül hagyva."
 
 #. Resource IDs: (191)
 msgid "  Field is too long."
@@ -53,37 +53,39 @@ msgstr "A mező hossza nem megfelelő."
 
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
-msgstr "Nem megfelelő dátum/idő formátum"
+msgstr "Érvénytelen dátum/idő érték."
 
 #. Resource IDs: (191)
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
 msgstr ""
+"Érvénytelen mezőhatároló karakter - a mezők között csak egyetlen üres "
+"megengedett."
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr ""
+msgstr "  Érvénytelen fejléc: '%s' (5 hexadecimális karakternek kell lennie)."
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr ""
+msgstr "  A régi jelszavak száma érvénytelen: %d."
 
 #. Resource IDs: (192)
 msgid ""
 "  Invalid password length found (differs from length of following password)."
-msgstr ""
+msgstr "  Érvénytelen jelszóhossz (különbözöik a következő jelszó hosszától)."
 
 #. Resource IDs: (190)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr ""
+msgstr "  Érvénytelen jelszóhossz (nem hexadecimális karakter)."
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr ""
+msgstr "  Érvénytelen állapotérték: %d (0 vagy 1 lehet)."
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -107,7 +109,7 @@ msgstr "'Billentyűparancs'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
-msgstr ""
+msgstr " 'Utolsó hozzáférés ideje'"
 
 #. Resource IDs: (336)
 msgid " 'Notes'"
@@ -131,7 +133,7 @@ msgstr "'Jelszó módosításának ideje'"
 
 #. Resource IDs: (345)
 msgid " 'Password Policy'"
-msgstr "'Jelszó szabály'"
+msgstr "'Jelszószabály'"
 
 #. Resource IDs: (336)
 msgid " 'Password'"
@@ -143,7 +145,7 @@ msgstr "'Szabály neve'"
 
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
-msgstr ""
+msgstr " 'Rekord módosításának ideje'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
@@ -220,16 +222,16 @@ msgstr "# %d importálása"
 #. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
-msgstr ""
+msgstr " [Folyamatazonosító=%s]"
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
-msgstr ""
+msgstr "! Szerkesztés külső programmal"
 
 #. Resource IDs: (368)
 #, c-format
 msgid "# characters: %d"
-msgstr ""
+msgstr "Karakterek száma: %d"
 
 #. Resource IDs: (1456)
 msgid "#description"
@@ -241,7 +243,7 @@ msgstr "#bejegyzések"
 
 #. Resource IDs: (1192)
 msgid "#format"
-msgstr "#formáttum"
+msgstr "#formátum"
 
 #. Resource IDs: (1193)
 msgid "#groups"
@@ -253,11 +255,11 @@ msgstr "#név"
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
-msgstr ""
+msgstr "#unkflds"
 
 #. Resource IDs: (1255)
 msgid "#uuid"
-msgstr ""
+msgstr "#uuid"
 
 #. Resource IDs: (1197)
 msgid "#what"
@@ -274,7 +276,7 @@ msgstr "#ki"
 #. Resource IDs: (3868)
 #, c-format
 msgid "%1 contained an unexpected object."
-msgstr "%1 egy nem várt objektumot tartalmaz."
+msgstr "%1 egy nem várt objektumot tartalmazott."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -344,7 +346,7 @@ msgstr "%d elem"
 #. Resource IDs: (330)
 #, c-format
 msgid "%d of %d matches."
-msgstr ""
+msgstr "Találat: %d / %d"
 
 #. Resource IDs: (215)
 #, c-format
@@ -369,7 +371,7 @@ msgstr "%s - %s másolva"
 #. Resource IDs: (370)
 #, c-format
 msgid "%s - Drag & Drop %s"
-msgstr ""
+msgstr "%s - Áthúzás %s"
 
 #. Resource IDs: (215)
 #, c-format
@@ -379,18 +381,18 @@ msgstr "%s - %s egyesítve"
 #. Resource IDs: (216)
 #, c-format
 msgid "%s - Sync'd %s"
-msgstr ""
+msgstr "%s - Szinkronizálva %s"
 
 #. Resource IDs: (363)
 #, c-format
 msgid ""
 "%s Either try to save database with another name or exit without saving."
-msgstr ""
+msgstr "%s Mentse az adatbázist más néven vagy lépjen ki mentés nélkül."
 
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
-msgstr ""
+msgstr "%s [Helyreállítva]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -406,42 +408,42 @@ msgstr ""
 #. Resource IDs: (367)
 #, c-format
 msgid "%s failed"
-msgstr ""
+msgstr "%s sikertelen"
 
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being exported: %s"
-msgstr ""
+msgstr "%s fájl exportálása: %s"
 
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
-msgstr ""
+msgstr "%s fájl importálása: %s"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "%s has an empty %s.\n"
-msgstr ""
+msgstr "%s tartalmaz egy üres '%s'-t.\n"
 
 #. Resource IDs: (326)
 #, c-format
 msgid "%s is a directory"
-msgstr ""
+msgstr "%s egy könyvtár"
 
 #. Resource IDs: (211)
 #, c-format
 msgid "%s not found. Cannot update entry's password.\n"
-msgstr ""
+msgstr "%s nem található. A bejegyzés jelszava nem módosítható.\n"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "%s on %s"
-msgstr ""
+msgstr "%s ezen: %s"
 
 #. Resource IDs: (204)
 #, c-format
 msgid "%s%s%s_Report.txt"
-msgstr ""
+msgstr "%s%s%s_Report.txt"
 
 #. Resource IDs: (212)
 #, c-format
@@ -449,26 +451,28 @@ msgid ""
 "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%s\".\n"
 msgstr ""
+"%s, Cím=\"%s\", Felhasználó=\"%s\" már létezik az adatbázisban vagy az "
+"Import fájlban. A beimportált tételnek ez lett a címe:\"%s\".\n"
 
 #. Resource IDs: (343)
 #, c-format
 msgid "%sA newer release is available.%s"
-msgstr ""
+msgstr "%sElérhető egy újabb verzió.%s"
 
 #. Resource IDs: (343)
 #, c-format
 msgid "%sCould not read server version data.%s"
-msgstr ""
+msgstr "%sKiszolgáló verzióadatának olvasása sikertelen.%s"
 
 #. Resource IDs: (342)
 #, c-format
 msgid "%sCouldn't contact server.%s"
-msgstr ""
+msgstr "%sNem sikerült kapcsolatot teremteni a kiszolgálóval.%s"
 
 #. Resource IDs: (343)
 #, c-format
 msgid "%sThis is the latest release!%s"
-msgstr ""
+msgstr "%sEz a legfrisebb verzió!%s"
 
 #. Resource IDs: (333)
 #, c-format
@@ -477,6 +481,9 @@ msgid ""
 "\n"
 "Could not open file for reading!"
 msgstr ""
+"%s\n"
+"\n"
+"A fájl megnyitása olvasásra sikertelen!"
 
 #. Resource IDs: (333)
 #, c-format
@@ -485,6 +492,9 @@ msgid ""
 "\n"
 "Could not open file for writing!"
 msgstr ""
+"%s\n"
+"\n"
+"A fájl megnyitása írásra sikertelen!"
 
 #. Resource IDs: (333)
 #, c-format
@@ -495,6 +505,11 @@ msgid ""
 "Data may have been lost or modified.\n"
 "Continue anyway?"
 msgstr ""
+"%s\n"
+"\n"
+"A fájl megsérült vagy a tartalma csonkolva van!\n"
+"Adat veszhetett el vagy módosulhatott.\n"
+"Ennek ellenére folytatja?"
 
 #. Resource IDs: (334)
 #, c-format
@@ -503,6 +518,9 @@ msgid ""
 "\n"
 "File is currently locked by %s"
 msgstr ""
+"%s\n"
+"\n"
+"A fájlt jelenleg zárolja %s"
 
 #. Resource IDs: (334)
 #, c-format
@@ -511,6 +529,9 @@ msgid ""
 "\n"
 "Invalid format"
 msgstr ""
+"%s\n"
+"\n"
+"Érvénytelen formátum"
 
 #. Resource IDs: (190)
 #, c-format
@@ -519,6 +540,9 @@ msgid ""
 "\n"
 "The configuration file will not be used."
 msgstr ""
+"%s\n"
+"\n"
+"A konfigurációs fájl nem lesz használva."
 
 #. Resource IDs: (333)
 #, c-format
@@ -527,428 +551,434 @@ msgid ""
 "\n"
 "Unknown error"
 msgstr ""
+"%s\n"
+"\n"
+"Ismeretlen hiba"
 
 #. Resource IDs: (359)
 msgid "&Abort"
-msgstr ""
+msgstr "&Megszakítás"
 
 #. Resource IDs: (32202)
 msgid "&About Password Safe..."
-msgstr ""
+msgstr "&A Password Safe program névjegye..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
-msgstr ""
+msgstr "&Bejegyzés hozzáadása..."
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
-msgstr ""
+msgstr "&Alkalmaz"
 
 #. Resource IDs: (32114)
 msgid "&Apply current"
-msgstr ""
+msgstr "&Az aktuális alkalmazása"
 
 #. Resource IDs: (1357)
 msgid "&Autotype:"
-msgstr ""
+msgstr "&Autogépelés:"
 
 #. Resource IDs: (332, 32072)
 msgid "&Browse to URL"
-msgstr ""
+msgstr "&Navigálás URL-re"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
-msgstr ""
+msgstr "&Széf kombinációjának megváltoztatása..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
-msgstr ""
+msgstr "&Klasszikus eszközsor "
 
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
-msgstr ""
+msgstr "&Előzmények törlése"
 
 #. Resource IDs: (32008)
 msgid "&Clear Recent Safe List"
-msgstr ""
+msgstr "&Legutóbbi széfek listájának törlése "
 
 #. Resource IDs: (351)
 msgid "&Clear current"
-msgstr ""
+msgstr "&Aktuális törlése"
 
 #. Resource IDs: (32004)
 msgid "&Close"
-msgstr ""
+msgstr "&Bezár"
 
 #. Resource IDs: (32120)
 msgid "&Compare"
-msgstr ""
+msgstr "&Összehasonlítás"
 
 #. Resource IDs: (347, 1403)
 msgid "&Continue"
-msgstr ""
+msgstr "&Folytatás"
 
 #. Resource IDs: (1343, 2132)
 msgid "&Copy"
-msgstr ""
+msgstr "&Másolás"
 
 #. Resource IDs: (32066)
 msgid "&Copy Password to Clipboard"
-msgstr ""
+msgstr "&Jelszó másolása a vágólapra"
 
 #. Resource IDs: (332)
 msgid "&Copy Password to clipboard"
-msgstr ""
+msgstr "&Jelszó másolása a vágólapra"
 
 #. Resource IDs: (1041)
 msgid "&Create a New Database"
-msgstr ""
+msgstr "&Új adatbázis létrehozása"
 
 #. Resource IDs: (1344, 1405, 2132, 32055)
 msgid "&Delete"
-msgstr ""
+msgstr "&Törlés"
 
 #. Resource IDs: (32056)
 msgid "&Delete Entry"
-msgstr ""
+msgstr "&Bejegyzés törlése"
 
 #. Resource IDs: (32057)
 msgid "&Delete Group"
-msgstr ""
+msgstr "&Csoport törlése"
 
 #. Resource IDs: (332)
 msgid "&Delete from Recent Entry List"
-msgstr ""
+msgstr "&Törlés a legutóbbi bejgyegyzések listájáról"
 
 #. Resource IDs: (1015, 1038)
 msgid "&Don't ask me again"
-msgstr ""
+msgstr "&Ne kérdezze meg újra"
 
 #. Resource IDs: (1015)
 msgid "&Don't remind me again"
-msgstr ""
+msgstr "&Ne emlékeztessen újra"
 
 #. Resource IDs: (32107)
 msgid "&Dragbar visible"
-msgstr ""
+msgstr "&Áthúzósáv (Dragbar) látható"
 
 #. Resource IDs: (32063)
 msgid "&Duplicate Entry"
-msgstr ""
+msgstr "&Bejegyzés duplikálása"
 
 #. Resource IDs: (32086)
 msgid "&Duplicate Group"
-msgstr ""
+msgstr "&Csoport duplikálása"
 
 #. Resource IDs: (1342, 1461, 32050)
 msgid "&Edit"
-msgstr ""
+msgstr "&Szerkesztés"
 
 #. Resource IDs: (32081)
 msgid "&Edit Base entry"
-msgstr ""
+msgstr "&Alapbejegyzés szerkesztése"
 
 #. Resource IDs: (1346)
 msgid "&Export"
-msgstr ""
+msgstr "&Exportálás"
 
 #. Resource IDs: (32001)
 msgid "&File"
-msgstr ""
+msgstr "&Fájl"
 
 #. Resource IDs: (32112)
 msgid "&Filters"
-msgstr ""
+msgstr "&Szűrők"
 
 #. Resource IDs: (32121)
 msgid "&Find"
-msgstr ""
+msgstr "&Keresés"
 
 #. Resource IDs: (32079)
 msgid "&Find..."
-msgstr ""
+msgstr "&Keresés..."
 
 #. Resource IDs: (2)
 msgid "&Finish"
-msgstr ""
+msgstr "&Befejezés"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
-msgstr ""
+msgstr "&Betűtípus:"
 
 #. Resource IDs: (1025)
 msgid "&Generate"
-msgstr ""
+msgstr "&Generálás"
 
 #. Resource IDs: (32078)
 msgid "&Go to Base entry"
-msgstr ""
+msgstr "&Ugrás az alapbejegyzésre"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
-msgstr ""
+msgstr "&Súgó"
 
 #. Resource IDs: (328, 3842)
 msgid "&Hide"
-msgstr ""
+msgstr "&Elrejtés"
 
 #. Resource IDs: (359)
 msgid "&Ignore"
-msgstr ""
+msgstr "&Figyelmen kívül hagyás"
 
 #. Resource IDs: (1345)
 msgid "&Import"
-msgstr ""
+msgstr "&Import"
 
 #. Resource IDs: (1228)
 msgid "&In"
-msgstr ""
+msgstr "&In"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
-msgstr ""
+msgstr "&Megtartás"
 
 #. Resource IDs: (1462)
 msgid "&List"
-msgstr ""
+msgstr "&Lista"
 
 #. Resource IDs: (32150)
 msgid "&Manage"
-msgstr ""
+msgstr "&Kezelés"
 
 #. Resource IDs: (32115)
 msgid "&Manage..."
-msgstr ""
+msgstr "&Kezelés..."
 
 #. Resource IDs: (32124)
 msgid "&Merge"
-msgstr ""
+msgstr "&Összefűzés"
 
 #. Resource IDs: (32253)
 msgid "&Minimize"
-msgstr ""
+msgstr "&Kis méret"
 
 #. Resource IDs: (348, 1041, 1341)
 msgid "&New"
-msgstr ""
+msgstr "&Új"
 
 #. Resource IDs: (65535)
 msgid "&New "
-msgstr ""
+msgstr "&Új"
 
 #. Resource IDs: (32104)
 msgid "&New Toolbar"
-msgstr ""
+msgstr "&Új eszköztár"
 
 #. Resource IDs: (32003)
 msgid "&New..."
-msgstr ""
+msgstr "&Új"
 
 #. Resource IDs: (32113)
 msgid "&New/Edit Filter"
-msgstr ""
+msgstr "&Szűrő hozzáadása/szerkesztése"
 
 #. Resource IDs: (2, 340)
 msgid "&No"
-msgstr ""
+msgstr "&Nem"
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
-msgstr ""
+msgstr "&Megjegyzés:"
 
 #. Resource IDs: (1227)
 msgid "&On"
-msgstr ""
+msgstr "&On"
 
 #. Resource IDs: (360)
 msgid "&Open"
-msgstr ""
+msgstr "&Megnyitás"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr ""
+msgstr "&Másik adatbázis megnyitása..."
 
 #. Resource IDs: (32002)
 msgid "&Open..."
-msgstr ""
+msgstr "&Megnyitás"
 
 #. Resource IDs: (32154)
 msgid "&Options..."
-msgstr ""
+msgstr "&Beállítások..."
 
 #. Resource IDs: (32118)
 msgid "&Password Font"
-msgstr ""
+msgstr "&Jelszó betűtípusa"
 
 #. Resource IDs: (1353)
 msgid "&Password:"
-msgstr ""
+msgstr "&Jelszó:"
 
 #. Resource IDs: (2132)
 msgid "&Paste"
-msgstr ""
+msgstr "&Beillesztés "
 
 #. Resource IDs: (32010, 32084)
 msgid "&Plain Text (tab separated)..."
-msgstr ""
+msgstr "&Egyszerű szöveg (tabbal határolt)..."
 
 #. Resource IDs: (32016)
 msgid "&Plain Text..."
-msgstr ""
+msgstr "&Egyszerű szöveg..."
 
 #. Resource IDs: (32020)
 msgid "&Properties"
-msgstr ""
+msgstr "&Tulajdonságok"
 
 #. Resource IDs: (1023)
 msgid "&Quit"
-msgstr ""
+msgstr "&Kilépés"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
-msgstr ""
+msgstr "&Legutóbbi bejegyzések"
 
 #. Resource IDs: (327)
 msgid "&Recent Safes"
-msgstr ""
+msgstr "&Legutóbbi széfek"
 
 #. Resource IDs: (32111)
 msgid "&Refresh"
-msgstr ""
+msgstr "&Frissítés"
 
 #. Resource IDs: (32119)
 msgid "&Reports"
-msgstr ""
+msgstr "&Jelentések"
 
 #. Resource IDs: (1374)
 msgid "&Reset"
-msgstr ""
+msgstr "&Alaphelyzetbe állítás"
 
 #. Resource IDs: (32254)
 msgid "&Restore"
-msgstr ""
+msgstr "&Visszaállítás"
 
 #. Resource IDs: (359)
 msgid "&Retry"
-msgstr ""
+msgstr "&Újra"
 
 #. Resource IDs: (354, 32076)
 msgid "&Run Command"
-msgstr ""
+msgstr "&Parancs futtatása"
 
 #. Resource IDs: (32005)
 msgid "&Save"
-msgstr ""
+msgstr "&Mentés"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
-msgstr ""
+msgstr "&Mentés lemezre"
 
 #. Resource IDs: (348)
 msgid "&Search"
-msgstr ""
+msgstr "&Keresés"
 
 #. Resource IDs: (1404)
 msgid "&Select"
-msgstr ""
+msgstr "&Kiválaszt"
 
 #. Resource IDs: (358)
 msgid "&Send email"
-msgstr ""
+msgstr "&Email küldése"
 
 #. Resource IDs: (351)
 msgid "&Set current"
-msgstr ""
+msgstr "&Aktuális beállítása"
 
 #. Resource IDs: (328, 1014)
 msgid "&Show"
-msgstr ""
+msgstr "&Mutat"
 
 #. Resource IDs: (1090)
 msgid "&Size:"
-msgstr ""
+msgstr "&Méret:"
 
 #. Resource IDs: (32128)
 msgid "&Synchronize"
-msgstr ""
+msgstr "&Szinkronizálás"
 
 #. Resource IDs: (1351, 65535)
 msgid "&Title:"
-msgstr ""
+msgstr "&Cím:"
 
 #. Resource IDs: (32117)
 msgid "&Tree/List Font"
-msgstr ""
+msgstr "&Fanézet/Lista betűtípusa"
 
 #. Resource IDs: (1022)
 msgid "&Try Again"
-msgstr ""
+msgstr "&Próbálja újra"
 
 #. Resource IDs: (359)
 msgid "&Try again"
-msgstr ""
+msgstr "&Próbálja újra"
 
 #. Resource IDs: (2132)
 msgid "&Undo"
-msgstr ""
+msgstr "&Visszavonás"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
-msgstr ""
+msgstr "&Felhasználónév:"
 
 #. Resource IDs: (32125)
 msgid "&Validate"
-msgstr ""
+msgstr "&Érvényesítés"
 
 #. Resource IDs: (32101)
 msgid "&View"
-msgstr ""
+msgstr "&Nézet"
 
 #. Resource IDs: (1268)
 msgid "&View Aliases"
-msgstr ""
+msgstr "&Álnevek megtekintése"
 
 #. Resource IDs: (32053)
 msgid "&View Entry..."
-msgstr ""
+msgstr "&Bejegyzés megtekintése"
 
 #. Resource IDs: (347)
 msgid "&View Report"
-msgstr ""
+msgstr "&Jelentés megtekintése"
 
 #. Resource IDs: (32126)
 msgid "&Virtual Keyboard Font"
-msgstr ""
+msgstr "&Virtuális billentyűzet betűtípusa"
 
 #. Resource IDs: (32013, 32015, 32085)
 msgid "&XML format..."
-msgstr ""
+msgstr "&XML formátum..."
 
 #. Resource IDs: (1, 340)
 msgid "&Yes"
-msgstr ""
+msgstr "&Igen"
 
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
-msgstr ""
+msgstr "&Yubikey..."
 
 #. Resource IDs: (1356)
 msgid "&email:"
-msgstr ""
+msgstr "&email:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
-msgstr ""
+msgstr "'Alt Gr' (jobboldai Alt) billentyű"
 
 #. Resource IDs: (1444)
 msgid "'Browse to URL' copies password to clipboard"
-msgstr ""
+msgstr "'URL-re Ugrás' funkció a vágólapra másolja a jelszót"
 
 #. Resource IDs: (353)
 msgid ""
 "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
 "Minimize' conflict. Please change one or both."
 msgstr ""
+"Ütközik egymással a 'Vágólap törlése kicsinyítéskor' funkció és a dupla "
+"kattintás művelete: 'Kicsinyítéskor a jelszó másolása a vágólapra'. Kérem "
+"változtassa meg az egyiket vagy mindkettőt."
 
 #. Resource IDs: (358)
 msgid ""
@@ -966,80 +996,96 @@ msgid ""
 "\n"
 "Thank you for your help to improve PasswordSafe."
 msgstr ""
+"'\n"
+"\n"
+"Ha jelenteni kívánja ezt a hibát, válaszoljon 'Igen'-nel alább és töltse fel "
+"ezt a fájlt a Hibajelentésbe (Bug Report). Ha 'Nem'-mel válaszol, a fájl "
+"törölve lesz.\n"
+"\n"
+"A fájlban található diagnosztikai információk nem tartalmazzák az Ön "
+"személyes adatait, sem pedig a megnyitott adatbázis bármiféle adatát.\n"
+"\n"
+"Mindazonáltal, ha kívánja (és a probléma előidézhető egy tesztadatbázissal), "
+"elküldheti nekünk azt a minidump fájlt, csakúgy, mint a tesztadatbázist.\n"
+"\n"
+"Köszönjük, hogy segít a PasswordSafe programot még jobbá tenni."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
-msgstr ""
+msgstr "(A pontok is ezzel lesznek lecserélve a Cím mezőben)"
 
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
-msgstr ""
+msgstr "(Kattintson duplán egy bejegyzésen annak szerkesztéséhez)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr ""
+msgstr "(A PasswordSafe újraindítása után lép életbe.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
-msgstr ""
+msgstr "(legalább "
 
 #. Resource IDs: (207, 346)
 msgid "(case insensitive)"
-msgstr ""
+msgstr "(kis- és nagybetűk nincsenek megkülönböztetve)"
 
 #. Resource IDs: (207, 346)
 msgid "(case sensitive)"
-msgstr ""
+msgstr "(kis- és nagybetűk megkülönböztetése)"
 
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
-msgstr ""
+msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
 msgstr ""
+"* azt jelenti, hogy az adatbázis az utolsó mentés óta meg lett változtatva"
 
 #. Resource IDs: (216)
 msgid ""
 "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
+"*** Érvénytelen XML karakterek - ld. az exportált XML fájlt a részletekért "
+"***"
 
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
-msgstr ""
+msgstr "*** A műveletet a felhasználó megszakította ***"
 
 #. Resource IDs: (213)
 #, c-format
 msgid "- Its title has been changed to:'%s'"
-msgstr ""
+msgstr "- A címe megváltozott erre: '%s' "
 
 #. Resource IDs: (513)
 msgid "- Physical -"
-msgstr ""
+msgstr "- Fizikai - "
 
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
-msgstr ""
+msgstr "--------------------------------------------------------------------------------"
 
 #. Resource IDs: (214)
 msgid "-merged-"
-msgstr ""
+msgstr "-összefűzve-"
 
 #. Resource IDs: (1009, 1010, 1067, 1223, 1432, 1435, 1457, 1458)
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. Resource IDs: (1017)
 msgid "...."
-msgstr ""
+msgstr "...."
 
 #. Resource IDs: (1293, 1294, 1428, 1430)
 msgid "....."
-msgstr ""
+msgstr "....."
 
 #. Resource IDs: (1260, 1261)
 msgid "......."
-msgstr ""
+msgstr "......."
 
 #. Resource IDs: (358)
 msgid ""
@@ -1049,296 +1095,301 @@ msgid ""
 "\n"
 "\t'"
 msgstr ""
+".dmp'\n"
+"\n"
+"az Ön ideiglenes könyvtárában: \n"
+"\n"
+"\t'"
 
 #. Resource IDs: (8020)
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #. Resource IDs: (8030)
 msgid "01"
-msgstr ""
+msgstr "01"
 
 #. Resource IDs: (8031)
 msgid "02"
-msgstr ""
+msgstr "02"
 
 #. Resource IDs: (8032)
 msgid "03"
-msgstr ""
+msgstr "03"
 
 #. Resource IDs: (8033)
 msgid "04"
-msgstr ""
+msgstr "04"
 
 #. Resource IDs: (8034)
 msgid "05"
-msgstr ""
+msgstr "05"
 
 #. Resource IDs: (8035)
 msgid "06"
-msgstr ""
+msgstr "06"
 
 #. Resource IDs: (8036)
 msgid "07"
-msgstr ""
+msgstr "07"
 
 #. Resource IDs: (8037)
 msgid "08"
-msgstr ""
+msgstr "08"
 
 #. Resource IDs: (8038)
 msgid "09"
-msgstr ""
+msgstr "09"
 
 #. Resource IDs: (8021)
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #. Resource IDs: (8039)
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #. Resource IDs: (511, 8081)
 msgid "101 Keys"
-msgstr ""
+msgstr "101 billentyűs"
 
 #. Resource IDs: (511, 8082)
 msgid "102 Keys"
-msgstr ""
+msgstr "102 billentyűs"
 
 #. Resource IDs: (511, 8083)
 msgid "106 Keys"
-msgstr ""
+msgstr "106 billentyűs"
 
 #. Resource IDs: (8040)
 msgid "11"
-msgstr ""
+msgstr "11"
 
 #. Resource IDs: (8041)
 msgid "12"
-msgstr ""
+msgstr "12"
 
 #. Resource IDs: (8042)
 msgid "13"
-msgstr ""
+msgstr "13"
 
 #. Resource IDs: (8043)
 msgid "14"
-msgstr ""
+msgstr "14"
 
 #. Resource IDs: (8044)
 msgid "15"
-msgstr ""
+msgstr "15"
 
 #. Resource IDs: (8045)
 msgid "16"
-msgstr ""
+msgstr "16"
 
 #. Resource IDs: (8046)
 msgid "17"
-msgstr ""
+msgstr "17"
 
 #. Resource IDs: (8047)
 msgid "18"
-msgstr ""
+msgstr "18"
 
 #. Resource IDs: (8048)
 msgid "19"
-msgstr ""
+msgstr "19"
 
 #. Resource IDs: (8022)
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #. Resource IDs: (8049)
 msgid "20"
-msgstr ""
+msgstr "20"
 
 #. Resource IDs: (8050)
 msgid "21"
-msgstr ""
+msgstr "21"
 
 #. Resource IDs: (8051)
 msgid "22"
-msgstr ""
+msgstr "22"
 
 #. Resource IDs: (8052)
 msgid "23"
-msgstr ""
+msgstr "23"
 
 #. Resource IDs: (8053)
 msgid "24"
-msgstr ""
+msgstr "24"
 
 #. Resource IDs: (8054)
 msgid "25"
-msgstr ""
+msgstr "25"
 
 #. Resource IDs: (8055)
 msgid "26"
-msgstr ""
+msgstr "26"
 
 #. Resource IDs: (8056)
 msgid "27"
-msgstr ""
+msgstr "27"
 
 #. Resource IDs: (8057)
 msgid "28"
-msgstr ""
+msgstr "28"
 
 #. Resource IDs: (8058)
 msgid "29"
-msgstr ""
+msgstr "29"
 
 #. Resource IDs: (8023)
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #. Resource IDs: (8059)
 msgid "30"
-msgstr ""
+msgstr "30"
 
 #. Resource IDs: (8060)
 msgid "31"
-msgstr ""
+msgstr "31"
 
 #. Resource IDs: (8061)
 msgid "32"
-msgstr ""
+msgstr "32"
 
 #. Resource IDs: (8062)
 msgid "33"
-msgstr ""
+msgstr "33"
 
 #. Resource IDs: (8063)
 msgid "34"
-msgstr ""
+msgstr "34"
 
 #. Resource IDs: (8064)
 msgid "35"
-msgstr ""
+msgstr "35"
 
 #. Resource IDs: (8065)
 msgid "36"
-msgstr ""
+msgstr "36"
 
 #. Resource IDs: (8066)
 msgid "37"
-msgstr ""
+msgstr "37"
 
 #. Resource IDs: (8067)
 msgid "38"
-msgstr ""
+msgstr "38"
 
 #. Resource IDs: (8068)
 msgid "39"
-msgstr ""
+msgstr "39"
 
 #. Resource IDs: (8024)
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #. Resource IDs: (8069)
 msgid "40"
-msgstr ""
+msgstr "40"
 
 #. Resource IDs: (8070)
 msgid "41"
-msgstr ""
+msgstr "41"
 
 #. Resource IDs: (8071)
 msgid "42"
-msgstr ""
+msgstr "42"
 
 #. Resource IDs: (8072)
 msgid "43"
-msgstr ""
+msgstr "43"
 
 #. Resource IDs: (8073)
 msgid "44"
-msgstr ""
+msgstr "44"
 
 #. Resource IDs: (8074)
 msgid "45"
-msgstr ""
+msgstr "45"
 
 #. Resource IDs: (8075)
 msgid "46"
-msgstr ""
+msgstr "46"
 
 #. Resource IDs: (8076)
 msgid "47"
-msgstr ""
+msgstr "47"
 
 #. Resource IDs: (8077)
 msgid "48"
-msgstr ""
+msgstr "48"
 
 #. Resource IDs: (8078)
 msgid "49"
-msgstr ""
+msgstr "49"
 
 #. Resource IDs: (8025)
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #. Resource IDs: (8079)
 msgid "50"
-msgstr ""
+msgstr "50"
 
 #. Resource IDs: (8080)
 msgid "51"
-msgstr ""
+msgstr "51"
 
 #. Resource IDs: (8026)
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #. Resource IDs: (8027)
 msgid "7"
-msgstr ""
+msgstr "7"
 
 #. Resource IDs: (8028)
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #. Resource IDs: (8029)
 msgid "9"
-msgstr ""
+msgstr "9"
 
 #. Resource IDs: (1156)
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #. Resource IDs: (1157)
 msgid "<<"
-msgstr ""
+msgstr "<<"
 
 #. Resource IDs: (1154)
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #. Resource IDs: (1155)
 msgid ">>"
-msgstr ""
+msgstr ">>"
 
 #. Resource IDs: (329)
 msgid "A dot is invalid as the first character of the Group field."
-msgstr ""
+msgstr "A Csoport mezőben az első karakter nem lehet pont."
 
 #. Resource IDs: (326)
 msgid "A fatal error occured: "
-msgstr ""
+msgstr "Végzetes hiba történt: "
 
 #. Resource IDs: (211)
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
-msgstr ""
+msgstr "Egy szűrő aktív volt. Csak a megjelenített tételek lettek exportálva."
 
 #. Resource IDs: (363)
 msgid "A future date is not valid for this field"
-msgstr ""
+msgstr "Jövőbeni dátum nem érvényes ebben a mezőben "
 
 #. Resource IDs: (65535)
 msgid ""
@@ -1346,197 +1397,207 @@ msgid ""
 "be used to encrypt the password database file. The Safe Combination can use "
 "any keyboard character and is case-sensitive."
 msgstr ""
+"Egy új jelszóadatbázis lesz létrehozva. Az Ön által megadott "
+"széfkombinációval lesz titkosítva a fájl. A széfkombináció bármilyen "
+"karaktert tartalmazhat és a kis- és nagybetűk különbözőnek számítanak."
 
 #. Resource IDs: (367)
 msgid ""
 "A red and white indicator means that a filter is active\n"
 "(if showing, double click to clear filter)"
 msgstr ""
+"A vörös-fehér jelzés azt jelenti, hogy egy szűrő aktív\n"
+"(ha látszik, dupla kattintással törölhető a szűrés)"
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
-msgstr ""
+msgstr "Egy szükséges erőforrás nem volt elérhető."
 
 #. Resource IDs: (364)
 msgid "ALL of the passwords and data"
-msgstr ""
+msgstr "Az ÖSSZES jelszó és adat "
 
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
-msgstr ""
+msgstr "AaBbYyZz 0O1lIL"
 
 #. Resource IDs: (110)
 msgid "About Password Safe"
-msgstr ""
+msgstr "A Password Safe programról "
 
 #. Resource IDs: (1227)
 msgid "Absolute"
-msgstr ""
+msgstr "Abszolút"
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Access to %1 was denied."
-msgstr ""
+msgstr "Hozzáférés megtagadva: %1"
 
 #. Resource IDs: (350, 371)
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. Resource IDs: (32051)
 msgid "Add &Entry"
-msgstr ""
+msgstr "&Bejegyzés hozzáadása"
 
 #. Resource IDs: (32064)
 msgid "Add &Group"
-msgstr ""
+msgstr "&Csoport hozzáadása"
 
 #. Resource IDs: (357)
 msgid "Add Entry"
-msgstr ""
+msgstr "Bejegyzés hozzáadása"
 
 #. Resource IDs: (32064)
 msgid "Add Group"
-msgstr ""
+msgstr "Csoport hozzáadása"
 
 #. Resource IDs: (370)
 msgid "Add a New Database Named Password Policy"
-msgstr ""
+msgstr "Password Policy nevű adatbázis hozzáadása"
 
 #. Resource IDs: (466, 504)
 msgid "Additional"
-msgstr ""
+msgstr "További"
 
 #. Resource IDs: (340, 494)
 msgid "Advanced"
-msgstr ""
+msgstr "Speciális"
 
 #. Resource IDs: (339)
 msgid "Advanced Compare Options"
-msgstr ""
+msgstr "Speciális összehasonlítási beállítások"
 
 #. Resource IDs: (341, 32307)
 msgid "Advanced Find Options"
-msgstr ""
+msgstr "Speciális keresési beállítások"
 
 #. Resource IDs: (495)
 msgid "Advanced Merge Extra"
-msgstr ""
+msgstr "Speciális Extra Összefűzés"
 
 #. Resource IDs: (339)
 msgid "Advanced Merge Options"
-msgstr ""
+msgstr "Speciális összefűzési beállítások"
 
 #. Resource IDs: (360)
 msgid "Advanced Synchronize Options"
-msgstr ""
+msgstr "Speciális szinkronizálási beállítások"
 
 #. Resource IDs: (363)
 msgid "Advanced Text 'Single Entry' Export Options"
-msgstr ""
+msgstr "Speciális szövegexportálási beállítások (Egyetlen tétel)"
 
 #. Resource IDs: (339)
 msgid "Advanced Text Export Options"
-msgstr ""
+msgstr "Speciális szövegexportálási beállítások"
 
 #. Resource IDs: (364)
 msgid "Advanced XML 'Single Entry' Export Options"
-msgstr ""
+msgstr "Speciális XML exportálási beállítások (Egyetlen tétel)"
 
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
-msgstr ""
+msgstr "Speciális XML exportálási beállítások "
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
-msgstr ""
+msgstr "Speciális mezőkiválasztási feltételek"
 
 #. Resource IDs: (514)
 msgid "Albanian"
-msgstr ""
+msgstr "Albán"
 
 #. Resource IDs: (365)
 msgid "Alias Base entry"
-msgstr ""
+msgstr "Álnév alapbejegyzése"
 
 #. Resource IDs: (365)
 msgid "Alias Base entry - password expired"
-msgstr ""
+msgstr "Álnév alapbejegyzése - a jelszó lejárt"
 
 #. Resource IDs: (365)
 msgid "Alias Base entry - warning password will expire"
-msgstr ""
+msgstr "Álnév alapbejegyzése - figyelmeztetés - a jelszó le fog járni"
 
 #. Resource IDs: (479)
 msgid "Alias Password Change"
-msgstr ""
+msgstr "Álnév jelszócsere"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
-msgstr ""
+msgstr "Minden fájl (*.*)"
 
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
-msgstr ""
+msgstr "Minden lehetséges oszlop meg van jelenítve"
 
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
-msgstr ""
+msgstr "A Jelszószabályokon végrehajtott változások elvesznek"
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
 msgstr ""
+"Több példány engedélyezése (ehhez minden futó példányt újra kell indítani)"
 
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
-msgstr ""
+msgstr "A Cím mezőben is ezzel lesznek a pontok lecserélve"
 
 #. Resource IDs: (8012)
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. Resource IDs: (8013)
 msgid "Alt Gr"
-msgstr ""
+msgstr "Alt Gr"
 
 #. Resource IDs: (8014)
 msgid "Alt Num"
-msgstr ""
+msgstr "Alt Num"
 
 #. Resource IDs: (356)
 msgid "Alt+"
-msgstr ""
+msgstr "Alt+"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr ""
+msgstr "Másik böngésző"
 
 #. Resource IDs: (65535)
 msgid "Alternate Notes Text Editor"
-msgstr ""
+msgstr "Másik szövegszerkesztő a megjegyzés szerkesztéséhez"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
-msgstr ""
+msgstr "A Password Safe mindig legyen látható"
 
 #. Resource IDs: (314)
 msgid "Always on top"
-msgstr ""
+msgstr "Mindig látható"
 
 #. Resource IDs: (342)
 msgid "An alias cannot refer to itself!"
-msgstr ""
+msgstr "Egy álnév nem hivatkozhat önmagára!"
 
 #. Resource IDs: (329)
 #, c-format
 msgid ""
 "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
 msgstr ""
+"Már van ilyen tétel: Csoport \"%s\", Megnevezés \"%s\" és felhasználónév \"%s"
+"\"."
 
 #. Resource IDs: (356)
 #, c-format
 msgid ""
 "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
 msgstr ""
+"Már van ilyen tétel: Csoport \"%s\", Megnevezés \"%s\" és üres "
+"felhasználónév."
 
 #. Resource IDs: (339)
 #, c-format
@@ -1544,6 +1605,8 @@ msgid ""
 "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already "
 "exists."
 msgstr ""
+"Már van ilyen tétel: Üres csoportnév, Megnevezés \"%s\", és felhasználónév "
+"\"%s\"."
 
 #. Resource IDs: (357)
 #, c-format
@@ -1551,64 +1614,66 @@ msgid ""
 "An entry with an empty Group, Title \"%s\" and empty User Name already "
 "exists."
 msgstr ""
+"Már van ilyen tétel: Üres csoportnév, Megnevezés \"%s\" és üres "
+"felhasználónév."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
-msgstr ""
+msgstr "Egy érvénytelen fájlkezelő lett hozzárendelve ehhez: %1."
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "Ismeretlen hiba történt."
 
 #. Resource IDs: (3867, 3868)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
-msgstr ""
+msgstr "Ismeretlen hiba történt %1 elérése során."
 
 #. Resource IDs: (208)
 msgid "And"
-msgstr ""
+msgstr "És"
 
 #. Resource IDs: (351)
 msgid "And / Or"
-msgstr ""
+msgstr "És / Vagy"
 
 #. Resource IDs: (1116)
 msgid "Any field last changed on:"
-msgstr ""
+msgstr "Bármely mező utolsó módosításának ideje:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
-msgstr ""
+msgstr "Alkalmazás gyorsbillentyű"
 
 #. Resource IDs: (353, 1216)
 msgid "Apply"
-msgstr ""
+msgstr "Alkalmaz"
 
 #. Resource IDs: (1478)
 msgid "Apply these changes to Protected Entries (if required)."
-msgstr ""
+msgstr "Érvényesítse a változásokat a védett bejegyzéseken (ha szükséges)."
 
 #. Resource IDs: (513)
 msgid "Arabic (101)"
-msgstr ""
+msgstr "Arab (101)"
 
 #. Resource IDs: (341)
 msgid "Are you sure you want to delete the selected entry?"
-msgstr ""
+msgstr "Biztos, hogy törli a kiválasztott bejegyzést?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
-msgstr ""
+msgstr "Biztos, hogy törli a kiválasztott csoportot?"
 
 #. Resource IDs: (515)
 msgid "Armenian Eastern"
-msgstr ""
+msgstr "Armenian, Keleti"
 
 #. Resource IDs: (519)
 msgid "Armenian Western"
-msgstr ""
+msgstr "Armenian, Nyugati"
 
 #. Resource IDs: (330)
 msgid ""
@@ -1616,207 +1681,212 @@ msgid ""
 "cannot be used within it to delimit multiple lines. Please enter another "
 "character."
 msgstr ""
+"Mivel a dupla idézőjel határolja a teljes Megjegyzés mezőt, ezért az nem "
+"használható azon belül az egyes sorok elválasztására. Kérem válasszon másik "
+"karaktert."
 
 #. Resource IDs: (331)
 msgid ""
 "At least one type of character (lowercase, uppercase, digits,\n"
 "symbols, hexadecimal) must be permitted."
 msgstr ""
+"Legalább az egyik fajta karaktert (kisbetű, nagybetű, számok, \n"
+"szinbólumok, hexadecimális) engedélyeznie kell."
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
-msgstr ""
+msgstr "Nem támogatott művelet végrehajtásának kísérlete."
 
 #. Resource IDs: (3867, 3868)
 #, c-format
 msgid "Attempted to access %1 past its end."
-msgstr ""
+msgstr "%1 elérési kísérlete érvénytelen pozícióban (a vége után)."
 
 #. Resource IDs: (3868)
 #, c-format
 msgid "Attempted to read from the writing %1."
-msgstr ""
+msgstr "??? %1"
 
 #. Resource IDs: (3868)
 #, c-format
 msgid "Attempted to write to the reading %1."
-msgstr ""
+msgstr "??? %1"
 
 #. Resource IDs: (188)
 msgid "AutoType"
-msgstr ""
+msgstr "Autogépelés"
 
 #. Resource IDs: (353)
 msgid "Autoload"
-msgstr ""
+msgstr "Auto betöltés"
 
 #. Resource IDs: (251, 340, 65535)
 msgid "Autotype"
-msgstr ""
+msgstr "Autogépelés"
 
 #. Resource IDs: (355)
 msgid "Autotype copied "
-msgstr ""
+msgstr "Autogépelés másolva"
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
-msgstr ""
+msgstr "Elérhető mezők:"
 
 #. Resource IDs: (65535)
 msgid "Available Filters:"
-msgstr ""
+msgstr "Elérhető szűrők:"
 
 #. Resource IDs: (65535)
 msgid "Available Password Policies:"
-msgstr ""
+msgstr "Elérhető jelszószabályok:"
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
-msgstr ""
+msgstr "Azeri Cirill"
 
 #. Resource IDs: (515)
 msgid "Azeri Latin"
-msgstr ""
+msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory"
-msgstr ""
+msgstr "Mentési könyvtár"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
-msgstr ""
+msgstr "Mentés neve"
 
 #. Resource IDs: (137, 505)
 msgid "Backups"
-msgstr ""
+msgstr "Mentések"
 
 #. Resource IDs: (65535)
 msgid "Base entry:"
-msgstr ""
+msgstr "Alapbejegyzés:"
 
 #. Resource IDs: (65535)
 msgid "Base:"
-msgstr ""
+msgstr "Alap:"
 
 #. Resource IDs: (465, 501)
 msgid "Basic"
-msgstr ""
+msgstr "Elemi"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
-msgstr ""
+msgstr "Belarusz"
 
 #. Resource IDs: (519)
 msgid "Belgian (Comma)"
-msgstr ""
+msgstr "Belga (Vessző)"
 
 #. Resource IDs: (517)
 msgid "Belgian (Period)"
-msgstr ""
+msgstr "Belga (Pont)"
 
 #. Resource IDs: (517)
 msgid "Belgian French"
-msgstr ""
+msgstr "Belga Francia"
 
 #. Resource IDs: (516)
 msgid "Bengali"
-msgstr ""
+msgstr "Bengáli"
 
 #. Resource IDs: (520)
 msgid "Bengali - INSCRIPT"
-msgstr ""
+msgstr "Bengáli - INSCRIPT"
 
 #. Resource IDs: (519)
 msgid "Bengali - INSCRIPT (Legacy)"
-msgstr ""
+msgstr "Bengáli - INSCRIPT (Legacy)"
 
 #. Resource IDs: (8006)
 msgid "BkSpc"
-msgstr ""
+msgstr "Backspace"
 
 #. Resource IDs: (518)
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "Boszniai (Cirill)"
 
 #. Resource IDs: (1213, 1214, 1215)
 msgid "Browse"
-msgstr ""
+msgstr "Tallózás"
 
 #. Resource IDs: (251)
 msgid "Browse to URL"
-msgstr ""
+msgstr "Navigálás az URL-re"
 
 #. Resource IDs: (355, 32073)
 msgid "Browse to URL + &Autotype"
-msgstr ""
+msgstr "Navigálás az URL-re + &Autogépelés"
 
 #. Resource IDs: (251, 32073)
 msgid "Browse to URL + Autotype"
-msgstr ""
+msgstr "Navigálás az URL-re + Autogépelés"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
-msgstr ""
+msgstr "Böngésző futtatási paraméterek:"
 
 #. Resource IDs: (1001)
 msgid "Built on "
-msgstr ""
+msgstr "Ezen alapul:"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bolgár"
 
 #. Resource IDs: (518)
 msgid "Bulgarian (Latin)"
-msgstr ""
+msgstr "Bolgár (Latin)"
 
 #. Resource IDs: (521)
 msgid "Bulgarian (Phonetic Traditional)"
-msgstr ""
+msgstr "Bolgár (Fonetikus Hagyományos)"
 
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
-msgstr ""
+msgstr "Bolgár (Írógép)"
 
 #. Resource IDs: (1411)
 msgid "Bytes"
-msgstr ""
+msgstr "Bájt"
 
 #. Resource IDs: (32065)
 msgid "C&lear Clipboard"
-msgstr ""
+msgstr "Vágólap tör&lése"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
-msgstr ""
+msgstr "C++ megszakítás"
 
 #. Resource IDs: (1387)
 msgid "C++ Unexpected"
-msgstr ""
+msgstr "C++ váratlan"
 
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
-msgstr ""
+msgstr "C:F[R-O]"
 
 #. Resource IDs: (203)
 msgid "C:F[R/W]"
-msgstr ""
+msgstr "C:F[R/W]"
 
 #. Resource IDs: (202)
 msgid "C:None  "
-msgstr ""
+msgstr "C:None  "
 
 #. Resource IDs: (202)
 msgid "C:Reg   "
-msgstr ""
+msgstr "C:Reg   "
 
 #. Resource IDs: (317)
 msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr ""
+msgstr "CSV fájlok (*.csv)|*.csv|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr ""
+msgstr "A jelszó lejárata előtt 1-30 nappal lehetséges a figyelmeztetés"
 
 #. Resource IDs: (210)
 #, c-format
@@ -1825,107 +1895,111 @@ msgid ""
 "Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"Nem található az XML Sémadefiníciós fájl (%s) a PasswordSafe "
+"alkalmazáskönyvtárában.\n"
+" Másolja ide a telepítési fájlból, vagy telepítse újra a PasswordSafe-et."
 
 #. Resource IDs: (208)
 msgid "Can't obtain the schema version."
-msgstr ""
+msgstr "Nem sikerült kinyerni a séma verzióját."
 
 #. Resource IDs: (518)
 msgid "Canadian French"
-msgstr ""
+msgstr "Kanadai Francia"
 
 #. Resource IDs: (518)
 msgid "Canadian French (Legacy)"
-msgstr ""
+msgstr "Kanadai Francia (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Canadian Multilingual Standard"
-msgstr ""
+msgstr "Kanadai Többnyelvű Standard"
 
 #. Resource IDs: (2, 347, 8084, 32157, 32273)
 msgid "Cancel"
-msgstr ""
+msgstr "Mégse"
 
 #. Resource IDs: (348)
 msgid "Cannot be less than zero."
-msgstr ""
+msgstr "Nem lehet nullánál kisebb."
 
 #. Resource IDs: (348)
 #, c-format
 msgid "Cannot be more than %d"
-msgstr ""
+msgstr "Nem lehett több, mint %d"
 
 #. Resource IDs: (189)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr ""
+msgstr "Zárolási fájl létrehozása sikertelen - nincs engedély a mappán?"
 
 #. Resource IDs: (367)
 msgid "Cannot create missing directories in path to the export file."
-msgstr ""
+msgstr "Az export fájl mappájához a hiányzó mappák létrehozása sikertelen."
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
 msgstr ""
+"Nem folytatható mivel ez a bejegyzés törölve lett a megnyitott adatbázisból."
 
 #. Resource IDs: (213)
 msgid "Cannot read file. Please check file permissions."
-msgstr ""
+msgstr "A fájl nem olvasható. Ellenőrizze a jogosultságokat a fájlon."
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
-msgstr ""
+msgstr "A régi széfkombináció nem ellenőrizhető - eltűnt a fájl?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
-msgstr ""
+msgstr "Caps Lock"
 
 #. Resource IDs: (1162, 1310)
 msgid "Case Sensitive"
-msgstr ""
+msgstr "Kis- és nagybetűre érzékeny"
 
 #. Resource IDs: (343, 32305)
 msgid "Case insensitive search"
-msgstr ""
+msgstr "Kis- és nagybetűre érzéketlen keresés"
 
 #. Resource IDs: (343, 32306)
 msgid "Case sensitive search"
-msgstr ""
+msgstr "Kis- és nagybetűre érzékeny keresés"
 
 #. Resource IDs: (366)
 msgid "Chan&ge to R-O"
-msgstr ""
+msgstr "Csak olvashatóra vál&toztatás"
 
 #. Resource IDs: (366)
 msgid "Chan&ge to R/W"
-msgstr ""
+msgstr "Írás/Olvasás-ra vál&toztatás"
 
 #. Resource IDs: (32116)
 msgid "Change &Font"
-msgstr ""
+msgstr "&Betűtípus megváltoztatása"
 
 #. Resource IDs: (32158)
 msgid "Change &Language"
-msgstr ""
+msgstr "&Nyelv megváltoztatása"
 
 #. Resource IDs: (1414)
 msgid "Change Base"
-msgstr ""
+msgstr "Alap megváltoztatása"
 
 #. Resource IDs: (349)
 msgid "Change Date"
-msgstr ""
+msgstr "Dátum megváltoztatása"
 
 #. Resource IDs: (127)
 msgid "Change Safe Combination"
-msgstr ""
+msgstr "Széfkombináció megváltoztatása"
 
 #. Resource IDs: (1415)
 msgid "Change This"
-msgstr ""
+msgstr "Ennek megváltoztatása"
 
 #. Resource IDs: (366)
 msgid "Change database mode?"
-msgstr ""
+msgstr "Megváltoztatja az adatbázis módját?"
 
 #. Resource IDs: (319)
 msgid ""
@@ -1934,214 +2008,233 @@ msgid ""
 "\n"
 "Entries with more than this new maximum already saved will remain unchanged."
 msgstr ""
+"Az elmentett jelszavak maximális számának megváltoztatása az új maximum "
+"értékre azokon a bejegyzéseken, amelyek jelenleg ennél kevesebbet mentenek.\n"
+"\n"
+"Azok a bejegyzések nem lesznek megváltoztatva, amelyek jelenleg is többet "
+"tárolnak az új maximumnál."
 
 #. Resource IDs: (370)
 msgid "Change/View Database Default Password Policy"
 msgstr ""
+"Az adatbázis alapértelmezett jelszószabályának megváltoztatása/megtekintése"
 
 #. Resource IDs: (370)
 msgid "Change/View a Database Named Password Policy"
-msgstr ""
+msgstr "Az adatbázis elnevezett jelszószabályának megváltoztatása/megtekintése"
 
 #. Resource IDs: (368)
 msgid ""
 "Change/View selected Named Password Policy or the database default policy"
 msgstr ""
+"A kiválaszott elnevezett jelszószabály vagy az alapértelmezett szabály "
+"megváltoztatása/megtekintése"
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
 msgstr ""
+"Az OK megnyomása után a változtatások érvényre jutnak a már létező "
+"bejegyzéseken."
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
-msgstr ""
+msgstr "Karakterek találhatók a ']' vagy '}' jelek között. ???"
 
 #. Resource IDs: (3887)
 msgid "Check"
-msgstr ""
+msgstr "Ellenőrzés"
 
 #. Resource IDs: (521)
 msgid "Chinese Bopomofo"
-msgstr ""
+msgstr "Kínai Bopomofo"
 
 #. Resource IDs: (521)
 msgid "Chinese ChaJei"
-msgstr ""
+msgstr "Kínai ChaJei"
 
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
-msgstr ""
+msgstr "Buffer törlése"
 
 #. Resource IDs: (145)
 msgid "Clear Clipboard"
-msgstr ""
+msgstr "Vágólap törlése"
 
 #. Resource IDs: (32302)
 msgid "Clear Find"
-msgstr ""
+msgstr "Keresés törlése"
 
 #. Resource IDs: (1141)
 msgid "Clear History"
-msgstr ""
+msgstr "Történet törlése"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
-msgstr ""
+msgstr "Vágólap törlése kilépéskor"
 
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
-msgstr ""
+msgstr "Vágólap törlése kis méretre állításnál"
 
 #. Resource IDs: (1477)
 msgid "Clear password history for ALL entries"
-msgstr ""
+msgstr "Az ÖSSZES bejegyzés jelszótörténetének törlése"
 
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
-msgstr ""
+msgstr "Kattintson ide a különböző beállítások részleteiért."
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
-msgstr ""
+msgstr "Kattintson ide egy mező felvételéért"
 
 #. Resource IDs: (510)
 msgid "Click to change case."
-msgstr ""
+msgstr "Kattintson a kis- és nagybetű közötti váltáshoz."
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
-msgstr ""
+msgstr "Kattintson a generált jelszó vágólapra másolásához"
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
-msgstr ""
+msgstr "Kattintson a vágólapra másoláshoz"
 
 #. Resource IDs: (358)
 msgid ""
 "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
 msgstr ""
+"Kattintson a vágólapra másoláshoz, Ctrl+Kattintás az URL mezőbe is beírja "
+"ezt az értéket"
 
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
-msgstr ""
+msgstr "Kattintson ennek a sornak az engedélyezéséhez/tiltásához"
 
 #. Resource IDs: (510)
 msgid ""
 "Click to enter a character code via virtual numeric keypad. The character is "
 "added when this button is clicked again."
 msgstr ""
+"Kattintson egy karakterkód beírásához a virtuális numerikus billentyűzeten. "
+"A karakter ezen gombra való újbóli kattintáskor lesz hozzáadva."
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
 msgstr ""
+"Kattintson a kibontáshoz és a vágólapra másoláshoz, Ctrl+kattintás esetén "
+"kibontás nélkül másol a vágólapra"
 
 #. Resource IDs: (355)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
 msgstr ""
+"Kattintson a linkre való ugráshoz, Ctrl+kattintás esetén ugrás a linkre + "
+"Autogépelés"
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"
-msgstr ""
+msgstr "Kattintson egy új sor beszúrásáhol ez alá"
 
 #. Resource IDs: (510)
 msgid "Click to randomise the characters in the virtual keypad."
-msgstr ""
+msgstr "Kattintson a virtuális billentyűk véletlenszerű megjelenítéséhez"
 
 #. Resource IDs: (352)
 msgid "Click to remove this row"
-msgstr ""
+msgstr "Kattintson a sor eltávolításához"
 
 #. Resource IDs: (358)
 msgid "Click to send email to this address"
-msgstr ""
+msgstr "Kattintson egy email küldéséhez erre a címre"
 
 #. Resource IDs: (352)
 msgid "Click to set criteria for matching the field"
-msgstr ""
+msgstr "Kattintson egy feltétel beállításához a mezővel való egyezőséghez ???"
 
 #. Resource IDs: (352)
 msgid "Click to set the field to filter by"
-msgstr ""
+msgstr "Kattintson a mező szűrőként való használatához"
 
 #. Resource IDs: (511)
 msgid "Click to switch to English"
-msgstr ""
+msgstr "Kattintson az angolra váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Full-width"
-msgstr ""
+msgstr "Kattintson a teljes szélességre váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Half-width"
-msgstr ""
+msgstr "Kattintson a félszélességre váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Hiragana"
-msgstr ""
+msgstr "Kattintson a Hiraganára váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Kana"
-msgstr ""
+msgstr "Kattintson a Kanára váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Katakana"
-msgstr ""
+msgstr "Kattintson a Katakanára váltáshoz"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Korean"
-msgstr ""
+msgstr "Kattintson a Koreaira váltáshoz"
 
 #. Resource IDs: (510)
 msgid "Click to toggle Caps Lock key."
-msgstr ""
+msgstr "Kattintson a Caps Lock átváltásához."
 
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
-msgstr ""
+msgstr "Kattintson az előző sorral való ÉS/VAGY kapcsolat váltásához"
 
 #. Resource IDs: (376)
 msgid "Click, then touch your YubiKey"
-msgstr ""
+msgstr "Kattintson, majd érintse meg a Yubikey-ét"
 
 #. Resource IDs: (1, 358)
 msgid "Close"
-msgstr ""
+msgstr "Bezárás"
 
 #. Resource IDs: (32301)
 msgid "Close Find Bar"
-msgstr ""
+msgstr "Keresősáv bezárása"
 
 #. Resource IDs: (32110)
 msgid "Collapse All"
-msgstr ""
+msgstr "Összes összecsukása"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
-msgstr ""
+msgstr "Oszlopválasztó"
 
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
+"A fejlécsor felismerése sikertelen az első sorban. Importálás nem történt."
 
 #. Resource IDs: (1080)
 msgid "Comma"
-msgstr ""
+msgstr "Vessző"
 
 #. Resource IDs: (3857)
 msgid "Command failed."
-msgstr ""
+msgstr "A parancs végrehajtása sikertelen."
 
 #. Resource IDs: (346, 365)
 msgid "Compare"
-msgstr ""
+msgstr "Összehasonlítás"
 
 #. Resource IDs: (335)
 msgid "Compare Complete"
-msgstr ""
+msgstr "Összehasonlítás elkészült"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
-msgstr ""
+msgstr "Adatbázisösszehasonlítás eredménye"
 
 #. Resource IDs: (335)
 #, c-format
@@ -2151,55 +2244,59 @@ msgid ""
 " and:\n"
 "\t %s"
 msgstr ""
+"Összehasonlítás elkészült az aktuális adatbázisra: \n"
+"\t %s\n"
+" és:\n"
+"\t %s"
 
 #. Resource IDs: (32091)
 msgid "Compare entries..."
-msgstr ""
+msgstr "Bejegyzések összehasonlítása..."
 
 #. Resource IDs: (32019)
 msgid "Compare..."
-msgstr ""
+msgstr "Összehasonlítás..."
 
 #. Resource IDs: (364)
 msgid "Comparing current database with:"
-msgstr ""
+msgstr "Aktuális adatbázis összehasonlítása ezzel:"
 
 #. Resource IDs: (343)
 #, c-format
 msgid "Comparing current database with: %s"
-msgstr ""
+msgstr "Aktuális adatbázis összehasonlítása ezzel: %s"
 
 #. Resource IDs: (340)
 msgid "Comparison"
-msgstr ""
+msgstr "Összehasonlítás"
 
 #. Resource IDs: (65535)
 msgid "Comparison Database:"
-msgstr ""
+msgstr "Összehasonlítási adatbázis:"
 
 #. Resource IDs: (371)
 msgid "Comparison Entry"
-msgstr ""
+msgstr "Összehasonlítási bejegyzés"
 
 #. Resource IDs: (362)
 msgid "Completed but ...."
-msgstr ""
+msgstr "Kész, de ..."
 
 #. Resource IDs: (362)
 msgid "Completed successfully"
-msgstr ""
+msgstr "Sikeresen befejezve"
 
 #. Resource IDs: (65535)
 msgid "Con&firm Password:"
-msgstr ""
+msgstr "Jel&szó megerősítése:"
 
 #. Resource IDs: (1422)
 msgid "Configuration File:"
-msgstr ""
+msgstr "Konfigurációs fájl:"
 
 #. Resource IDs: (1221)
 msgid "Configuration Information"
-msgstr ""
+msgstr "Konfiguráció információ"
 
 #. Resource IDs: (191)
 #, c-format
@@ -2209,22 +2306,26 @@ msgid ""
 "%s\n"
 "offset approximately at %d"
 msgstr ""
+"Konfigurációs fájl hiba:\n"
+"%s\n"
+"%s\n"
+"pozíció kb. itt: %d"
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
-msgstr ""
+msgstr "Konfigurációs fájl állapota"
 
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
-msgstr ""
+msgstr "Bezárás megerősítése párbeszédablak"
 
 #. Resource IDs: (1019)
 msgid "Confirm deletion of items"
-msgstr ""
+msgstr "Erősítse meg a tételek törlését"
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
-msgstr ""
+msgstr "Az elem vágólapra másolásának megerősítése"
 
 #. Resource IDs: (371)
 #, c-format
@@ -2233,6 +2334,9 @@ msgid ""
 "\n"
 "If already present in the target database, they will be replaced!"
 msgstr ""
+"Erősítse meg, hogy ezeket az bejegyzéseket átmásolja innen: %s ide %s\n"
+"\n"
+"Ha a céladatbázisban már léteznek, akkor le lesznek cserélve!"
 
 #. Resource IDs: (340)
 #, c-format
@@ -2241,6 +2345,9 @@ msgid ""
 "\n"
 "If already present in the target database, it will be replaced!"
 msgstr ""
+"Erősítse meg, hogy ezt az bejegyzést átmásolja innen: %s ide %s\n"
+"\n"
+"Ha a céladatbázisban már létez, akkor le lesz cserélve!"
 
 #. Resource IDs: (371)
 #, c-format
@@ -2249,10 +2356,13 @@ msgid ""
 "\n"
 "Selected fields will be replaced in all entries!"
 msgstr ""
+"Erősítse meg, hogy szinkronizálja ezeket a bejegyzéseket innen: %s ide %s\n"
+"\n"
+"A kiválasztott mezők minden bejegyzésben le lesznek cserélve!"
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
-msgstr ""
+msgstr "Megerősítés:"
 
 #. Resource IDs: (214)
 #, c-format
@@ -2261,10 +2371,13 @@ msgid ""
 "  Adding merged entry as «%s» «%s» «%s».\n"
 "    Differing field(s): %s"
 msgstr ""
+"Ütköző bejegyzések: «%s» «%s» «%s».\n"
+"  Összefűzött bejegyzés hozzáadása: «%s» «%s» «%s».\n"
+"    Eltérő mező(k): %s"
 
 #. Resource IDs: (1)
 msgid "Continue"
-msgstr ""
+msgstr "Folytatás"
 
 #. Resource IDs: (360)
 #, c-format
@@ -2275,189 +2388,196 @@ msgid ""
 "\n"
 "to the clipboard."
 msgstr ""
+"A jelszó\n"
+"\n"
+"\"%s\"\n"
+"\n"
+"a vágólapra másolva."
 
 #. Resource IDs: (32069)
 msgid "Copy &Notes to Clipboard"
-msgstr ""
+msgstr "&Megjegyzés vágólapra másolása"
 
 #. Resource IDs: (332)
 msgid "Copy &Notes to clipboard"
-msgstr ""
+msgstr "&Megjegyzés vágólapra másolása"
 
 #. Resource IDs: (32068)
 msgid "Copy &Username to Clipboard"
-msgstr ""
+msgstr "&Felhasználónév vágólapra másolása"
 
 #. Resource IDs: (332)
 msgid "Copy &Username to clipboard"
-msgstr ""
+msgstr "&Felhasználónév vágólapra másolása"
 
 #. Resource IDs: (1174)
 msgid "Copy All"
-msgstr ""
+msgstr "Minden másolása"
 
 #. Resource IDs: (32270)
 msgid "Copy Here"
-msgstr ""
+msgstr "Másolás ide"
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
-msgstr ""
+msgstr "Futtatási parancs vágólapra másolása"
 
 #. Resource IDs: (32070)
 msgid "Copy UR&L to Clipboard"
-msgstr ""
+msgstr "UR&L vágólapra másolása"
 
 #. Resource IDs: (329, 32070)
 msgid "Copy URL to Clipboard"
-msgstr ""
+msgstr "URL vágólapra másolása"
 
 #. Resource IDs: (332)
 msgid "Copy URL to clipboard"
-msgstr ""
+msgstr "URL vágólapra másolása"
 
 #. Resource IDs: (32223)
 msgid "Copy all entries to Original"
-msgstr ""
+msgstr "Minden bejegyzés másolása az Eredetibe"
 
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
-msgstr ""
+msgstr "Email vágólapra másolása"
 
 #. Resource IDs: (358)
 msgid "Copy email to clipboard"
-msgstr ""
+msgstr "Email vágólapra másolása"
 
 #. Resource IDs: (251)
 msgid "Copy notes to clipboard"
-msgstr ""
+msgstr "Megjegyzés vágólapra másolása"
 
 #. Resource IDs: (251)
 msgid "Copy password to clipboard"
-msgstr ""
+msgstr "Jelszó vágólapra másolása"
 
 #. Resource IDs: (251)
 msgid "Copy password to clipboard, minimize"
-msgstr ""
+msgstr "Jelszó vágólapra másolása, kis méretre váltás"
 
 #. Resource IDs: (1151)
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Vágólapra másolás"
 
 #. Resource IDs: (353)
 msgid "Copy to DB"
-msgstr ""
+msgstr "Másolás adatbázisba"
 
 #. Resource IDs: (32221)
 msgid "Copy to Original"
-msgstr ""
+msgstr "Másolás az Eredetibe"
 
 #. Resource IDs: (251)
 msgid "Copy username to clipboard"
-msgstr ""
+msgstr "Felhasználónév vágólapra másolása"
 
 #. Resource IDs: (1218)
 msgid "Copyright Notice"
-msgstr ""
+msgstr "Copyright megjegyzések"
 
 #. Resource IDs: (326)
 #, c-format
 msgid "Could not access file: %s"
-msgstr ""
+msgstr "Fájl elérése sikertelen: %s"
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Could not create %1 because the directory is full."
-msgstr ""
+msgstr "%1 létrehozása nem sikerült, mert a könyvtár megtelt."
 
 #. Resource IDs: (215)
 msgid ""
 "Could not find the next entry's title field in the KeePass V1 TXT (should be "
 "within square brackets)."
 msgstr ""
+"A következő bejegyzés megnevezés mezője nem található a KeePass V1 "
+"szövegfájlban (szögletes zárójelben kellene lennie)."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Could not open %1 because there are too many open files."
-msgstr ""
+msgstr "%1 megnyitása sikertelen, mert túl sok a megnyitott fájl."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Could not remove %1 because it is the current directory."
-msgstr ""
+msgstr "%1 eltávolítása nem sikerült mert az aktuális könyvtárban van."
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
-msgstr ""
+msgstr "Nyomtatás indítása nem sikerült."
 
 #. Resource IDs: (344)
 msgid "Couldn't find base entry - inconsistent database"
-msgstr ""
+msgstr "Alapbejegyzés nem található - inkonzisztens adatbázis"
 
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
-msgstr ""
+msgstr "Adatbázis mentése nem sikerült - Kérem mentsen"
 
 #. Resource IDs: (32077)
 msgid "Create &Shortcut"
-msgstr ""
+msgstr "&Parancsikon létrehozása"
 
 #. Resource IDs: (191)
 #, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %s."
-msgstr ""
+msgstr "Create SchemaCache60 hiba 0x%08X eközben: %s."
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
-msgstr ""
+msgstr "Parancsikon létrehozása"
 
 #. Resource IDs: (368)
 msgid "Create a new Password Policy"
-msgstr ""
+msgstr "Új jelszószabály létrehozása"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr ""
+msgstr "Köztes mentés (.ibak fájl) létrehozása mentés előtt"
 
 #. Resource IDs: (32308)
 msgid "Create report of previous Find search"
-msgstr ""
+msgstr "Jelentés létrehozása az előző keresésből"
 
 #. Resource IDs: (327)
 msgid "Created"
-msgstr ""
+msgstr "Létrehozva"
 
 #. Resource IDs: (189)
 msgid "Created Time"
-msgstr ""
+msgstr "Létrehozás ideje"
 
 #. Resource IDs: (1108)
 msgid "Created on:"
-msgstr ""
+msgstr "Létrehozva:"
 
 #. Resource IDs: (351)
 msgid "Criteria"
-msgstr ""
+msgstr "Feltétel"
 
 #. Resource IDs: (514)
 msgid "Croatian"
-msgstr ""
+msgstr "Horvát"
 
 #. Resource IDs: (8011)
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Resource IDs: (356)
 msgid "Ctrl+"
-msgstr ""
+msgstr "Ctrl+"
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
-msgstr ""
+msgstr "&Kivágás"
 
 #. Resource IDs: (371)
 msgid "Current Entry"
-msgstr ""
+msgstr "Aktuális bejegyzés"
 
 #. Resource IDs: (343)
 #, c-format
@@ -2467,6 +2587,10 @@ msgid ""
 "\n"
 "Please visit the PasswordSafe website to download the latest version."
 msgstr ""
+"Aktuális verzió:\t%s\n"
+"Legújabb verzió:\t%s\n"
+"\n"
+"Látogassa meg a PasswordSafe weboldalát a legújabb verzió letöltéséhez."
 
 #. Resource IDs: (343)
 #, c-format
@@ -2477,196 +2601,209 @@ msgid ""
 "Your purchase includes free upgrades for one year.\n"
 "Please contact the PasswordSafe Administrator for your upgrade."
 msgstr ""
+"Aktuális verzió:\t%s\n"
+"Legújabb verzió:\t%s\n"
+"\n"
+"Az ön vásárlása 1 éves ingyenes követést tartalmaz.\n"
+"Kérem lépjen kapcsolatba a PasswordSafe adminisztrátorával."
 
 #. Resource IDs: (32155)
 msgid "Customize &Main Toolbar"
-msgstr ""
+msgstr "Fő &eszközsor testreszabása"
 
 #. Resource IDs: (32155)
 msgid "Customize Main Toolbar"
-msgstr ""
+msgstr "Fő eszközsor testreszabása"
 
 #. Resource IDs: (513)
 msgid "Czech"
-msgstr ""
+msgstr "Cseh"
 
 #. Resource IDs: (518)
 msgid "Czech (QWERTY)"
-msgstr ""
+msgstr "Cseh (QWERTY)"
 
 #. Resource IDs: (520)
 msgid "Czech Programmers"
-msgstr ""
+msgstr "Cseh Programozó"
 
 #. Resource IDs: (360)
 msgid "DB Format"
-msgstr ""
+msgstr "DB formátum"
 
 #. Resource IDs: (192, 357)
 msgid "DCA"
-msgstr ""
+msgstr "DCA"
 
 #. Resource IDs: (513)
 msgid "Danish"
-msgstr ""
+msgstr "Dán"
 
 #. Resource IDs: (353, 360)
 msgid "Database"
-msgstr ""
+msgstr "Adatbázis"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr ""
+msgstr "Adatbázisbejegyzés parancsikon"
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
-msgstr ""
+msgstr "Adatbázis egyedi azonosító"
 
 #. Resource IDs: (65535)
 msgid "Database Unique ID:"
-msgstr ""
+msgstr "Adatbázis egyedi azonosító:"
 
 #. Resource IDs: (65535)
 msgid "Database format:"
-msgstr ""
+msgstr "Adatbázis formátum:"
 
 #. Resource IDs: (1454)
 msgid ""
 "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
+"Az adatbázis csak olvasható. Az adatbázis beállításain történt változások "
+"nem lesznek elmentve."
 
 #. Resource IDs: (337)
 msgid ""
 "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr ""
+"Az adatbázis csak olvasható. Sajnálom, az adatbázis beállításain történt "
+"változások mentése nem lehetséges."
 
 #. Resource IDs: (367)
 msgid ""
 "Database mode: read-only (R-O) or read/write (R/W)\n"
 "(Doubleclick to toggle mode)"
 msgstr ""
+"Adatbázis módja: csak olvasható (R-O) vagy írható-olvasható (R/W)\n"
+"(Dupla kattintás a mód váltásához)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
-msgstr ""
+msgstr "Adatbázis neve"
 
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
-msgstr ""
+msgstr "Adatbázis érvényesítve - nem találtam problémát."
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
-msgstr ""
+msgstr "Dátum/Idő információ"
 
 #. Resource IDs: (467, 502)
 msgid "Dates and Times"
-msgstr ""
+msgstr "Dátumok és idők"
 
 #. Resource IDs: (65535)
 msgid "Default"
-msgstr ""
+msgstr "Alapértelmezett"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
-msgstr ""
+msgstr "Alapértelmezett Autogépelés szöveg:"
 
 #. Resource IDs: (258)
 msgid "Default Policy"
-msgstr ""
+msgstr "Alapértelmezett szabály"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
-msgstr ""
+msgstr "Alapértelmezett felhasználónév"
 
 #. Resource IDs: (331)
 msgid ""
 "Default number of saved password history entries must be between 1 and 255."
-msgstr ""
+msgstr "Mentett korábbi jelszavak alapértelmezett száma 1 és 255 között."
 
 #. Resource IDs: (1438)
 msgid "Default set"
-msgstr ""
+msgstr "Alapértelmezett halmaz"
 
 #. Resource IDs: (352)
 msgid "Delete"
-msgstr ""
+msgstr "Törlés"
 
 #. Resource IDs: (213)
 msgid "Delete Base Entry Confirmation"
-msgstr ""
+msgstr "Alapbejegyzés törlésének megerősítése"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
-msgstr ""
+msgstr "Törlés megerősítése"
 
 #. Resource IDs: (32056)
 msgid "Delete Entry"
-msgstr ""
+msgstr "Bejegyzés törlése"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
-msgstr ""
+msgstr "Szűrő törlése"
 
 #. Resource IDs: (368)
 msgid ""
 "Delete selected Password Policy\n"
 "(only an unused Named Password Policy may be deleted)"
 msgstr ""
+"Kiválasztott jelszószabály törlése\n"
+"(csak nem használt, nevesített jelszószabály törölhető)"
 
 #. Resource IDs: (65535)
 msgid "Description:"
-msgstr ""
+msgstr "Leírás:"
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
-msgstr ""
+msgstr "Összes kiválasztásának megszüntetése"
 
 #. Resource IDs: (340)
 msgid "Deselect some entries"
-msgstr ""
+msgstr "Egyes elemek kiválasztásának megszüntetése"
 
 #. Resource IDs: (3859)
 msgid "Destination disk drive is full."
-msgstr ""
+msgstr "A céllemez megtelt."
 
 #. Resource IDs: (337)
 msgid "Destination location does not exist or is not accessible."
-msgstr ""
+msgstr "A célhely nem létezik vagy nem hozzáférhető."
 
 #. Resource IDs: (370)
 msgid "Details"
-msgstr ""
+msgstr "Részletek"
 
 #. Resource IDs: (329)
 #, c-format
 msgid "Details of this shortcut to the base entry '%s':"
-msgstr ""
+msgstr "Parancsikon részletei ehhez az alapbejegyzéshez: '%s':"
 
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
-msgstr ""
+msgstr "Devanagari - INSCRIPT"
 
 #. Resource IDs: (498, 511)
 msgid "Dialog"
-msgstr ""
+msgstr "Dialógus"
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Disk full while accessing %1."
-msgstr ""
+msgstr "%1 elérése közben a lemez megtelt."
 
 #. Resource IDs: (3860)
 #, c-format
 msgid "Dispatch exception: %1"
-msgstr ""
+msgstr "Dispatch kivétel: %1"
 
 #. Resource IDs: (138, 506)
 msgid "Display"
-msgstr ""
+msgstr "Megjelenítés"
 
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165)
 msgid "Display Filter - "
-msgstr ""
+msgstr "Szűrő megjelenítése - "
 
 #. Resource IDs: (368)
 msgid ""
@@ -2674,33 +2811,39 @@ msgid ""
 "(The latter may take a while depending on the number of entries in this "
 "database)"
 msgstr ""
+"Szabály beállításainak megjelenítése vagy a nevesített szabályt használó "
+"bejegyzések listázása\n"
+"(Ez utóbbi eltarthat egy darabig, az adatbázisban található bejegyzések "
+"számától függően)"
 
 #. Resource IDs: (32067)
 msgid "Display subset of Password"
-msgstr ""
+msgstr "Jelszó egy részletének megjelenítése"
 
 #. Resource IDs: (3887)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr ""
+"Helyre kívánja állítani ezeket az automatikusan mentett dokumentumokat?"
 
 #. Resource IDs: (333)
 #, c-format
 msgid "Do you want to save changes to the password database: %s?"
-msgstr ""
+msgstr "Menti a jelszóadatbázisban történt változásokat? (%s)"
 
 #. Resource IDs: (336)
 msgid "Do you want to save changes to the password list?"
-msgstr ""
+msgstr "Menti a jelszólistában történt változásokat?"
 
 #. Resource IDs: (65535)
 msgid ""
 "Do you wish to change this entry's Base entry's password or change this "
 "entry's own password?"
 msgstr ""
+"Az alapbejegyzés, vagy ezen bejegyzés saját jelszavát kívánja megváltoztatni?"
 
 #. Resource IDs: (352)
 msgid "Do you wish to replace it?"
-msgstr ""
+msgstr "Lecseréli?"
 
 #. Resource IDs: (328)
 #, c-format
@@ -2711,85 +2854,95 @@ msgid ""
 "\n"
 "or Cancel the shutdown\\restart\\logoff?"
 msgstr ""
+"Kívánja menteni az adatbázison végrehajtott változásokat:\n"
+"\n"
+"%s\n"
+"\n"
+"vagy megszakítja a Leállítást\\Újraindítást\\Kijelentkezést?"
 
 #. Resource IDs: (3887)
 msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
 msgstr ""
+"Ne állítsa helyre az automatikusan mentett dokumentumokat\n"
+"Használja a dokumentumok utolsó mentett verzióját"
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
-msgstr ""
+msgstr "Duplakattintás esemény"
 
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
-msgstr ""
+msgstr "Kattintson duplán a bejegyzés szerkesztéséhez/megtekintéséhez."
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
-msgstr ""
+msgstr "Duplakattintás esemény:"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Autotype"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen az Autogépeléshez"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Browse to URL"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen az URL-re navigáláshoz"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr ""
+"Kattintson duplán a bejegyzésen az URL-re navigáláshoz + Autogépeléshez"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Copy Notes"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen a megjegyzés vágólapra másolásához"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Copy Password"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Copy Password and Minimize"
 msgstr ""
+"Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához és a kis "
+"mérethez"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Copy Username"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen a felhasználónév vágólapra másolásához"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Run Command"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen parancs futtatásához"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Send email"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen email küldéséhez"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen annak megtekintéséhez/szerkesztéséhez"
 
 #. Resource IDs: (65535)
 msgid "Double-click action"
-msgstr ""
+msgstr "Duplakattintás esemény"
 
 #. Resource IDs: (370)
 msgid "Double-click an entry to Edit/View it"
-msgstr ""
+msgstr "Kattintson duplán a bejegyzésen annak szerkesztéséhez/megtekintéséhez"
 
 #. Resource IDs: (366)
 msgid "Doubleclick action for current entry"
-msgstr ""
+msgstr "Az aktuális bejegyzés duplakattintás eseménye"
 
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
-msgstr ""
+msgstr "Húzza ezt a képet egy másik ablakra a(z) '%s' mező beillesztéséhez."
 
 #. Resource IDs: (367)
 msgid "Drag this image onto a another window to start AutoType from there."
-msgstr ""
+msgstr "Húzza ezt a képet egy másik ablakra az Autogépelés megkezdéséhez."
 
 #. Resource IDs: (342)
 #, c-format
@@ -2798,223 +2951,234 @@ msgid ""
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
+"Az eldobott bejegyzés: '%s:%s:%s' jelszava egy szintén álnév-bejegyzésre "
+"mutat.\n"
+"\n"
+"Az eldobott bejegyzés most már annak a bejegyzésnek az alapbejegyzésére "
+"hivatkozik."
 
 #. Resource IDs: (32086)
 msgid "Duplicate Group"
-msgstr ""
+msgstr "Csoport megkettőzése"
 
 #. Resource IDs: (514)
 msgid "Dutch"
-msgstr ""
+msgstr "Holland"
 
 #. Resource IDs: (2, 347, 32021)
 msgid "E&xit"
-msgstr ""
+msgstr "&Kilépés"
 
 #. Resource IDs: (32021)
 msgid "E&xit\tCtrl+Q\\Alt+F4"
-msgstr ""
+msgstr "&Kilépés\tCtrl+Q\\Alt+F4"
 
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
-msgstr ""
+msgstr "&Bejegyzés exportálása"
 
 #. Resource IDs: (257)
 msgid "Easyvision characters"
-msgstr ""
+msgstr "Easyvision karakterek"
 
 #. Resource IDs: (2004)
 msgid "Edit"
-msgstr ""
+msgstr "Szerkesztés"
 
 #. Resource IDs: (32220)
 msgid "Edit Entry"
-msgstr ""
+msgstr "Bejegyzés szerkesztése"
 
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
-msgstr ""
+msgstr "Bejegyzés szerkesztése..."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "Edit Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Bejegyzés szerkesztése:   «%s» «%s» «%s»"
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
-msgstr ""
+msgstr "Parancsikon szerkesztése"
 
 #. Resource IDs: (32052)
 msgid "Edit/&View Entry..."
-msgstr ""
+msgstr "Bejegyzés szerkesztése/&Megtekintése"
 
 #. Resource IDs: (203)
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
 msgstr ""
+"A Csoport/Megnevezés és Jelszó oszlopok egyike, vagy mindkettő, hiányzik. "
+"Nem történt importálás."
 
 #. Resource IDs: (204)
 #, c-format
 msgid "Empty line %d skipped"
-msgstr ""
+msgstr "A %d. számú üres sor kihagyva."
 
 #. Resource IDs: (1088)
 msgid "Enable"
-msgstr ""
+msgstr "Engedélyezés"
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
-msgstr ""
+msgstr "%1 elérése közben hardver I/O hiba történt."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a locking violation while accessing %1."
-msgstr ""
+msgstr "%1 elérése közben zárolássértési hiba történt."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a sharing violation while accessing %1."
-msgstr ""
+msgstr "%1 elérése közben megosztás megsértés történt."
 
 #. Resource IDs: (3843)
 msgid "Encountered an improper argument."
-msgstr ""
+msgstr "Érvénytelen paraméter."
 
 #. Resource IDs: (3859)
 #, c-format
 msgid "Encountered an unexpected error while reading %1."
-msgstr ""
+msgstr "%1 elérése közben váratlan hiba történt."
 
 #. Resource IDs: (3859)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
-msgstr ""
+msgstr "%1 írása közben váratlan hiba történt."
 
 #. Resource IDs: (118)
 msgid "Encrypt/Decrypt"
-msgstr ""
+msgstr "Titkosítás/Visszafejtés"
 
 #. Resource IDs: (327)
 msgid "Encryption failed"
-msgstr ""
+msgstr "Titkosítás sikertelen"
 
 #. Resource IDs: (204)
 msgid "End Report"
-msgstr ""
+msgstr "Jelentés vége"
 
 #. Resource IDs: (65535)
 msgid "Enter Key:"
-msgstr ""
+msgstr "Adja meg a kulcsot:"
 
 #. Resource IDs: (130, 132)
 msgid "Enter Safe Combination"
-msgstr ""
+msgstr "Adja meg a széf kombinációt"
 
 #. Resource IDs: (3858)
 msgid "Enter a GUID."
-msgstr ""
+msgstr "Adjon meg egy GUID-ot."
 
 #. Resource IDs: (3858)
 msgid "Enter a currency."
-msgstr ""
+msgstr "Adjon meg egy pénznemet."
 
 #. Resource IDs: (3858)
 msgid "Enter a date and/or time."
-msgstr ""
+msgstr "Adjon meg egy dátumot és/vagy időt."
 
 #. Resource IDs: (3858)
 msgid "Enter a date."
-msgstr ""
+msgstr "Adjon meg egy dátumot."
 
 #. Resource IDs: (3858)
 #, c-format
 msgid "Enter a number between %1 and %2."
-msgstr ""
+msgstr "Adjon meg egy számot %1 és %2 között."
 
 #. Resource IDs: (3858)
 msgid "Enter a number."
-msgstr ""
+msgstr "Adjon meg egy számot."
 
 #. Resource IDs: (3858)
 msgid "Enter a positive integer."
-msgstr ""
+msgstr "Adjon meg egy pozitív számot."
 
 #. Resource IDs: (3858)
 msgid "Enter a time."
-msgstr ""
+msgstr "Adjon meg egy időt."
 
 #. Resource IDs: (3858)
 #, c-format
 msgid "Enter an integer between %1 and %2."
-msgstr ""
+msgstr "Adjon meg egy egész számot %1 és %2 között."
 
 #. Resource IDs: (3858)
 msgid "Enter an integer between 0 and 255."
-msgstr ""
+msgstr "Adjon meg egy egész számot 0 és 255 között."
 
 #. Resource IDs: (3858)
 msgid "Enter an integer."
-msgstr ""
+msgstr "Adjon meg egy egész számot."
 
 #. Resource IDs: (3858)
 #, c-format
 msgid "Enter no more than %1 characters."
-msgstr ""
+msgstr "Adjon meg legfeljebb %1 karaktert."
 
 #. Resource IDs: (65535)
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
 "colons."
 msgstr ""
+"Adja meg a jelszókarakterek pozícióit szóközökkel, vesszőkkel vagy "
+"pontosvesszőkkel elválasztva."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
-msgstr ""
+msgstr "Adja meg a mintaszöveget alább"
 
 #. Resource IDs: (336)
 msgid "Entries in both databases but with differences:"
-msgstr ""
+msgstr "Bejegyzések, amelyek mindkét adatbázisban szerepelnek, de különböznek:"
 
 #. Resource IDs: (336)
 #, c-format
 msgid "Entries only in comparison database (%s):"
 msgstr ""
+"Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
 
 #. Resource IDs: (336)
 #, c-format
 msgid "Entries only in current database (%s):"
-msgstr ""
+msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
-msgstr ""
+msgstr "Bejegyzések, amelyek a kiválasztott szabályt használják:"
 
 #. Resource IDs: (365)
 msgid "Entries with a password expiry"
-msgstr ""
+msgstr "Jelszólejárattal rendelkező bejegyzések"
 
 #. Resource IDs: (211)
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr ""
+"Bejegyzés %s%d ahol Csoport=\"%s\", Megnevezés=\"%s\", Felhasználó=\"%s\""
 
 #. Resource IDs: (522)
 msgid "Entry Comparison"
-msgstr ""
+msgstr "Bejegyzés összehasonlítása"
 
 #. Resource IDs: (373)
 msgid "Entry Keyboard Shortcut"
-msgstr ""
+msgstr "Bejegyzés billentyűparancsa"
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
-msgstr ""
+msgstr "A bejegyzés jelszószabály-változásai"
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
-msgstr ""
+msgstr "Bejegyzés egyedi azonosítója:"
 
 #. Resource IDs: (205)
 #, c-format
@@ -3022,6 +3186,8 @@ msgid ""
 "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
 "the base entry does not exist."
 msgstr ""
+"A bejegyzés: \"%s, %s, %s\" az álnévnek megfelelő formátumú jelszóval "
+"rendelkezik, de az alapbejegyzés nem létezik."
 
 #. Resource IDs: (205)
 #, c-format
@@ -3029,10 +3195,12 @@ msgid ""
 "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
 "the base entry is already an alias."
 msgstr ""
+"A bejegyzés: \"%s, %s, %s\" az álnévnek megfelelő formátumú jelszóval "
+"rendelkezik, de az alapbejegyzés már maga is egy álnév."
 
 #. Resource IDs: (205)
 msgid "Entry import warnings"
-msgstr ""
+msgstr "Figyelmeztetések a bejegyzés importálásakor"
 
 #. Resource IDs: (216)
 #, c-format
@@ -3040,6 +3208,9 @@ msgid ""
 "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has "
 "been removed from the %s entry."
 msgstr ""
+"A bejegyzés billentyűparancsa %s (bejegyzés: %s) már hozzá van rendelve "
+"ehhez a bejegyzéshez: %s. A billentyűparancs el lett távolítva erről a "
+"bejegyzésről: %s."
 
 #. Resource IDs: (216)
 #, c-format
@@ -3047,12 +3218,17 @@ msgid ""
 "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe "
 "application. It has been removed from the entry."
 msgstr ""
+"A bejegyzés billentyűparancsa %s (bejegyzés: %s) már hozzá van rendelve a "
+"PasswordSafe alkalmazáshoz. A billentyűparancs el lett távolítva a "
+"bejegyzésről."
 
 #. Resource IDs: (373)
 msgid ""
 "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys "
 "and an alphanumeric character (0-9, A-Z)."
 msgstr ""
+"A bejegyzés billentyűparancsának tartalmaznia kell az Alt és/vagy a Ctrl "
+"billentyűt, valamint egy alfanumerikus karaktert (0-9, A-Z)."
 
 #. Resource IDs: (372)
 #, c-format
@@ -3061,55 +3237,60 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"A bejegyzés billentyűparancsának tartalmaznia kell az Alt és/vagy a Ctrl "
+"billentyűt.\n"
+"\n"
+"%s"
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
 msgstr ""
+"Sor: %d  A bejegyzés \"%s\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with Group=\"%s\""
-msgstr ""
+msgstr "Bejegyzés a(z) %d. sorban, Csoport=\"%s\""
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with no group"
-msgstr ""
+msgstr "Bejegyzés a(z) %d. sorban Csoport nélkül"
 
 #. Resource IDs: (363)
 msgid "Entry size"
-msgstr ""
+msgstr "Bejegyzés mérete"
 
 #. Resource IDs: (1409)
 msgid "Entry size:"
-msgstr ""
+msgstr "Bejegyzés mérete:"
 
 #. Resource IDs: (359)
 msgid "Entry status"
-msgstr ""
+msgstr "Bejegyzés állapota"
 
 #. Resource IDs: (349)
 msgid "Entry type"
-msgstr ""
+msgstr "Bejegyzés típusa"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "Entry with Group=\"%s\""
-msgstr ""
+msgstr "Bejegyzés, ahol Csoport=\"%s\""
 
 #. Resource IDs: (212)
 msgid "Entry with no group"
-msgstr ""
+msgstr "Bejegyzés Csoport nélkül"
 
 #. Resource IDs: (209, 358)
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #. Resource IDs: (191)
 #, c-format
 msgid "Error (%08X): line %d character %d %s"
-msgstr ""
+msgstr "Hiba (%08X): sor: %d pozíció: %d %s"
 
 #. Resource IDs: (190)
 msgid ""
@@ -3120,6 +3301,13 @@ msgid ""
 "Database related settings will be stored in the open database when it is "
 "closed, assuming it is not read-only or locked by another user."
 msgstr ""
+"Hiba - a beállítások megállapítása sikertelen\n"
+"\n"
+"Az alkalmazásbeállítások nem lesznek elmentve.\n"
+"\n"
+"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott "
+"adatbázisba, feltéve, hogy az nem csak olvasható és nincs más felhasználó "
+"által zárolva."
 
 #. Resource IDs: (354)
 #, c-format
@@ -3128,91 +3316,94 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Hiba a(z) %d. oszlopban:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History %s:"
-msgstr ""
+msgstr "Hiba egy jelszóelőzményben: %s:"
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
-msgstr ""
+msgstr "Hiba a futtatási parancs felolvasásakor"
 
 #. Resource IDs: (212)
 msgid "Error while writing file! Try saving in a different location"
-msgstr ""
+msgstr "Hiba a fájl írásakor! Próbálja meg egy másik helyre menteni"
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
-msgstr ""
+msgstr "Hiba: ezen a néven már létezik egy fájl"
 
 #. Resource IDs: (203)
 msgid "Error: File is read-only"
-msgstr ""
+msgstr "Hiba: a fájl csak olvasható"
 
 #. Resource IDs: (1078)
 msgid "Escape key closes application"
-msgstr ""
+msgstr "Az Escape billentyű bezárja a programot"
 
 #. Resource IDs: (515)
 msgid "Estonian"
-msgstr ""
+msgstr "Észt"
 
 #. Resource IDs: (65535)
 msgid "Example:"
-msgstr ""
+msgstr "Példa:"
 
 #. Resource IDs: (1004)
 msgid "Exit"
-msgstr ""
+msgstr "Kilépés"
 
 #. Resource IDs: (32109)
 msgid "Expand All"
-msgstr ""
+msgstr "Összes kibontása"
 
 #. Resource IDs: (32054)
 msgid "Expand/Collapse Group"
-msgstr ""
+msgstr "Csoport kibontása/összecsukása"
 
 #. Resource IDs: (119)
 msgid "Expiring Passwords"
-msgstr ""
+msgstr "Lejáró jelszavak"
 
 #. Resource IDs: (353)
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 #. Resource IDs: (32129)
 msgid "Export &Text"
-msgstr ""
+msgstr "Exportálás &szöveg formátumba"
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr ""
+msgstr "Exportálás &formátumba"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
-msgstr ""
+msgstr "Exportálás &XML-be"
 
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
-msgstr ""
+msgstr "Bejegyzés exportálása ebbe:"
 
 #. Resource IDs: (365)
 msgid "Export Text"
-msgstr ""
+msgstr "Exportálás szöveg formátumba"
 
 #. Resource IDs: (112)
 msgid "Export Text Extra"
-msgstr ""
+msgstr "Exportálás extra szöveg formátumba"
 
 #. Resource IDs: (365)
 msgid "Export XML"
-msgstr ""
+msgstr "Exportálás XML-be"
 
 #. Resource IDs: (364)
 msgid "Export file:"
-msgstr ""
+msgstr "Fájl exportálása:"
 
 #. Resource IDs: (367)
 #, c-format
@@ -3220,22 +3411,25 @@ msgid ""
 "Export file: '%s' already exists.\n"
 "Do you want to replace it?"
 msgstr ""
+"A kimeneti fájl: '%s' már létezik.\n"
+"Lecseréli?"
 
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr ""
+"Az adatok exportálása néhány mezőre lett korlátozva a felhasználó által."
 
 #. Resource IDs: (363)
 msgid "Export_Text"
-msgstr ""
+msgstr "Export_Text"
 
 #. Resource IDs: (363)
 msgid "Export_XML"
-msgstr ""
+msgstr "Export_XML"
 
 #. Resource IDs: (364)
 msgid "Exporting to file:"
-msgstr ""
+msgstr "Exportálás ebbe a fájlba:"
 
 #. Resource IDs: (516)
 msgid "Faeroese"
@@ -3243,11 +3437,11 @@ msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Failed to create empty document."
-msgstr ""
+msgstr "Üres dukumentum létrehozása sikertelen."
 
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
-msgstr ""
+msgstr "Súgó indítása sikertelen."
 
 #. Resource IDs: (354)
 msgid ""
@@ -3255,24 +3449,30 @@ msgid ""
 "\n"
 "Autotype for Launch of a Browser or Running a command is disabled."
 msgstr ""
+"Az Autogépelést támogató DLL betöltése sikertelen (rossz verzió?).\n"
+"\n"
+"Az Autogépelés a Böngésző indítása és Parancs futtatása funkciókra le lett "
+"tiltva."
 
 #. Resource IDs: (208)
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr ""
+"A konfigurációs fájl zárolása sikertelen - talán a PasswordSafe alkalmazás "
+"egy másik példánya használja?"
 
 #. Resource IDs: (3857)
 msgid "Failed to open document."
-msgstr ""
+msgstr "A dokumentum megnyitása sikertelen."
 
 #. Resource IDs: (337)
 msgid "Failed to save changed preferences."
-msgstr ""
+msgstr "A megváltozott beállítások mentése sikertelen."
 
 #. Resource IDs: (3857)
 msgid "Failed to save document."
-msgstr ""
+msgstr "A dokumentum mentése sikertelen."
 
 #. Resource IDs: (366)
 #, c-format
@@ -3282,98 +3482,114 @@ msgid ""
 "%s %s\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
+"Az átállás Csak Olvasható módról Írható módra sikertelen, mert az adatbázis "
+"már meg van nyitva Írható módban ezzel::\n"
+"%s %s\n"
+"(Egyidőben csak egy program nyithatja meg írásra)"
 
 #. Resource IDs: (366)
 msgid ""
 "Failed to switch from R-O to R/W: Could not open the database. It may have "
 "been deleted or renamed or there may be a problem with its drive."
 msgstr ""
+"Az átállás Csak Olvasható módról Írható módra sikertelen: az adatbázis "
+"megnyitása sikertelen. Talán letörölték vagy átnevezték, vagy valami "
+"probléma lehet ezzel a lemezzel."
 
 #. Resource IDs: (366)
 msgid ""
 "Failed to switch from R-O to R/W: The file appears to be too short to be a "
 "valid database."
 msgstr ""
+"Az átállás Csak Olvasható módról Írható módra sikertelen: a fájl túl kicsi "
+"ahhoz, hogy érvényes adatbázis lehessen."
 
 #. Resource IDs: (366)
 msgid ""
 "Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
+"Az átállás Írható módról Csak Olvasható  módra sikertelen: az adatbázis-"
+"zárolás elengedése sikertelen.\n"
+"Próbáljon meg kilépni és újraindítani a programot."
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
-msgstr ""
+msgstr "Failsafe mentés törlése"
 
 #. Resource IDs: (164)
 msgid "Failsafe Backup Files"
-msgstr ""
+msgstr "Failsafe mentési fájlok"
 
 #. Resource IDs: (209)
 msgid "Fatal Error"
-msgstr ""
+msgstr "Fatális hiba"
 
 #. Resource IDs: (350, 351)
 msgid "Field"
-msgstr ""
+msgstr "Mező"
 
 #. Resource IDs: (65535)
 msgid "Field Separator"
-msgstr ""
+msgstr "Mezőhatároló"
 
 #. Resource IDs: (349)
 msgid "Field active"
-msgstr ""
+msgstr "A mező aktív"
 
 #. Resource IDs: (349)
 msgid "Field present"
-msgstr ""
+msgstr "A mező megvan"
 
 #. Resource IDs: (2001)
 msgid "File"
-msgstr ""
+msgstr "Fájl"
 
 #. Resource IDs: (328)
 msgid "File In Use"
-msgstr ""
+msgstr "A fájl használatban van"
 
 #. Resource IDs: (333)
 msgid "File Read Error"
-msgstr ""
+msgstr "Fájlolvasási hiba"
 
 #. Resource IDs: (189)
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
+"A fájl véget ér a(z) %d. sorban, mielőtt az utolsó bejegyzés megjegyzését "
+"lezáró dupla idézőjel meglett volna."
 
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
+"A fájlt csonkolták, vagy más módon lett korrupt. Készítsen mentést az "
+"adatabázisról."
 
 #. Resource IDs: (334)
 msgid "File lock error"
-msgstr ""
+msgstr "Fájlzárolási hiba"
 
 #. Resource IDs: (333)
 msgid "File open error"
-msgstr ""
+msgstr "Fájlmegnyitási hiba"
 
 #. Resource IDs: (328)
 msgid "File open error."
-msgstr ""
+msgstr "Fájlmegnyitási hiba."
 
 #. Resource IDs: (190)
 msgid "File or path not found"
-msgstr ""
+msgstr "Fájl vagy útvonal nem található"
 
 #. Resource IDs: (326)
 msgid "File or path not found."
-msgstr ""
+msgstr "Fájl vagy útvonal nem található."
 
 #. Resource IDs: (333)
 msgid "File version warning"
-msgstr ""
+msgstr "Fájlverzió figyelmeztetés"
 
 #. Resource IDs: (335)
 #, c-format
@@ -3382,6 +3598,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"%s fájl érvényesítése ezzel az XML sémával sikertelen:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (335)
 #, c-format
@@ -3390,6 +3609,10 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás "
+"során:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (370)
 #, c-format
@@ -3397,6 +3620,8 @@ msgid ""
 "File: %s was imported (%d warning(s) issued about missing Password Policy "
 "Names). See report for details."
 msgstr ""
+"%s fájl importálása megtörtént (%d figyelmeztetés hiányzó jelszószabályok "
+"miatt). Nézze meg a jelentést a részletekért."
 
 #. Resource IDs: (335)
 #, c-format
@@ -3404,65 +3629,67 @@ msgid ""
 "File: %s was imported (entries validated %d / imported %d%s%s%s). See report "
 "for details."
 msgstr ""
+"%s fájl importálása megtörtént (%d bejegyzés érvényesítve / importálva %d%s%s"
+"%s). Nézze meg a jelentést a részletekért."
 
 #. Resource IDs: (209)
 #, c-format
 msgid ""
 "Filter %s already exists in the database, do you wish to replace it with "
 "this?"
-msgstr ""
+msgstr "%s szűrő már létezik az adatbázisban, kívánja lecserélni ezzel?"
 
 #. Resource IDs: (65535)
 msgid "Filter name:"
-msgstr ""
+msgstr "Szűrő neve:"
 
 #. Resource IDs: (358)
 msgid "Filter1"
-msgstr ""
+msgstr "Szűrő1"
 
 #. Resource IDs: (352)
 msgid "Filters successfully exported"
-msgstr ""
+msgstr "A szűrők sikeresen exportálva"
 
 #. Resource IDs: (352)
 msgid "Filters successfully imported"
-msgstr ""
+msgstr "A szűrők sikeresen importálva"
 
 #. Resource IDs: (346, 32300)
 msgid "Find"
-msgstr ""
+msgstr "Keresés"
 
 #. Resource IDs: (32061)
 msgid "Find Next"
-msgstr ""
+msgstr "Következő keresése"
 
 #. Resource IDs: (32062)
 msgid "Find Previous"
-msgstr ""
+msgstr "Előző keresése"
 
 #. Resource IDs: (514)
 msgid "Finnish"
-msgstr ""
+msgstr "Finn"
 
 #. Resource IDs: (519)
 msgid "Finnish with Sami"
-msgstr ""
+msgstr "Finn Samival"
 
 #. Resource IDs: (210)
 msgid "First character of variable name must be alphabetic"
-msgstr ""
+msgstr "A változó nevének első karaktere betű kell, hogy legyen"
 
 #. Resource IDs: (32102)
 msgid "Flattened &List"
-msgstr ""
+msgstr "Egyszerű &lista"
 
 #. Resource IDs: (148)
 msgid "Font"
-msgstr ""
+msgstr "Betűtípus"
 
 #. Resource IDs: (1089)
 msgid "Font st&yle:"
-msgstr ""
+msgstr "Betűtípus &stílus:"
 
 #. Resource IDs: (342)
 msgid ""
@@ -3470,115 +3697,119 @@ msgid ""
 "Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
+"Biztonsági okokból az adatbázis be kell zárni az Internetre való csatlakozás "
+"előtt.\n"
+"Nyomja meg az OK-t az adatbázis bezárásához és a folytatáshoz (a változások "
+"mentve lesznek)"
 
 #. Resource IDs: (203)
 #, c-format
 msgid "Found %d known column headers:"
-msgstr ""
+msgstr "%d ismert oszlopfejlécet találtam:"
 
 #. Resource IDs: (330)
 msgid "Found 1 match."
-msgstr ""
+msgstr "1 találat."
 
 #. Resource IDs: (514)
 msgid "French"
-msgstr ""
+msgstr "Francia"
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
-msgstr ""
+msgstr "Teljesen összecsukva"
 
 #. Resource IDs: (1177)
 msgid "Fully expanded"
-msgstr ""
+msgstr "Teljesen kibontva"
 
 #. Resource IDs: (520)
 msgid "Gaelic"
-msgstr ""
+msgstr "Kelta"
 
 #. Resource IDs: (1025)
 msgid "Generate"
-msgstr ""
+msgstr "Generálás"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
-msgstr ""
+msgstr "&Jelszó generálása"
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
-msgstr ""
+msgstr "Könnyen &kiejthető jelszó generálása"
 
 #. Resource IDs: (359)
 msgid "Generate Password"
-msgstr ""
+msgstr "Jelszó generálása"
 
 #. Resource IDs: (370)
 msgid "Generate Password using selected Password Policy"
-msgstr ""
+msgstr "Jelszó generálása a kiválasztott jelszószabály alapján"
 
 #. Resource IDs: (516)
 msgid "Georgian"
-msgstr ""
+msgstr "Grúz"
 
 #. Resource IDs: (520)
 msgid "Georgian (Ergonomic)"
-msgstr ""
+msgstr "Grúz (ergonomikus)"
 
 #. Resource IDs: (519)
 msgid "Georgian (QWERTY)"
-msgstr ""
+msgstr "Grúz (QWERTY)"
 
 #. Resource IDs: (513)
 msgid "German"
-msgstr ""
+msgstr "Német"
 
 #. Resource IDs: (518)
 msgid "German (IBM)"
-msgstr ""
+msgstr "Német (IBM)"
 
 #. Resource IDs: (32204)
 msgid "Get &Help\tF1"
-msgstr ""
+msgstr "&Súgó\tF1"
 
 #. Resource IDs: (326)
 msgid "Given path is a directory or file is read-only"
-msgstr ""
+msgstr "A megadott útvonal vagy egy könyvtár, vagy a fájl csak olvasható"
 
 #. Resource IDs: (1379)
 msgid "Go"
-msgstr ""
+msgstr "Indít"
 
 #. Resource IDs: (355)
 msgid "Go "
-msgstr ""
+msgstr "Indít"
 
 #. Resource IDs: (355)
 msgid "Go+"
-msgstr ""
+msgstr "Indít+"
 
 #. Resource IDs: (513)
 msgid "Greek"
-msgstr ""
+msgstr "Görög"
 
 #. Resource IDs: (518)
 msgid "Greek (220)"
-msgstr ""
+msgstr "Görög (220)"
 
 #. Resource IDs: (520)
 msgid "Greek (220) Latin"
-msgstr ""
+msgstr "Görög (220) Latin"
 
 #. Resource IDs: (520)
 msgid "Greek (319)"
-msgstr ""
+msgstr "Görög (319)"
 
 #. Resource IDs: (521)
 msgid "Greek (319) Latin"
-msgstr ""
+msgstr "Görög (319) Latin"
 
 #. Resource IDs: (521)
 msgid "Greek Latin"
-msgstr ""
+msgstr "Görög Latin"
 
 #. Resource IDs: (521)
 msgid "Greek Polytonic"
@@ -3586,27 +3817,27 @@ msgstr ""
 
 #. Resource IDs: (191, 327)
 msgid "Group"
-msgstr ""
+msgstr "Csoport"
 
 #. Resource IDs: (339)
 msgid "Group [Mandatory Field]"
-msgstr ""
+msgstr "Csoport [Kötelező mező]"
 
 #. Resource IDs: (355)
 msgid "Group copied "
-msgstr ""
+msgstr "Csoport másolva"
 
 #. Resource IDs: (188, 327)
 msgid "Group/Title"
-msgstr ""
+msgstr "Csoport/Cím"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
-msgstr ""
+msgstr "Csoport:"
 
 #. Resource IDs: (328)
 msgid "Group\tTitle\tUsername\tPassword Expiry Date\n"
-msgstr ""
+msgstr "Csoport\tCím\tFelhasználónév\tJelszó lejáratának dátuma\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
@@ -3614,7 +3845,7 @@ msgstr ""
 
 #. Resource IDs: (8019)
 msgid "HK"
-msgstr ""
+msgstr "HK"
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3622,51 +3853,51 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hebrew"
-msgstr ""
+msgstr "Héber"
 
 #. Resource IDs: (351, 57670)
 msgid "Help"
-msgstr ""
+msgstr "Súgó"
 
 #. Resource IDs: (57670)
 msgid "Help (F1)"
-msgstr ""
+msgstr "Súgó (F1)"
 
 #. Resource IDs: (258)
 msgid "Hexadecimal characters"
-msgstr ""
+msgstr "Hexadecimális karakterek"
 
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options."
-msgstr ""
+msgstr "A Hexadecimális kizárja az összes többi opciót"
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
-msgstr ""
+msgstr "Tálcaikon elrejtése (A Gyorsbillentyűknek aktívnak KELL lenniük)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
-msgstr ""
+msgstr "Megváltozott bejegyzések kiemelése"
 
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
-msgstr ""
+msgstr "Tradícionális Hindi"
 
 #. Resource IDs: (189)
 msgid "History"
-msgstr ""
+msgstr "Előzmény"
 
 #. Resource IDs: (371)
 msgid "History entry"
-msgstr ""
+msgstr "Előzménytétel"
 
 #. Resource IDs: (1088)
 msgid "Hot Key"
-msgstr ""
+msgstr "Gyorsbillentyű"
 
 #. Resource IDs: (1087)
 msgid "HotKey1"
-msgstr ""
+msgstr "Gyorsbillentyű1"
 
 #. Resource IDs: (372)
 msgid "However, we can't add either as all combinations are in use."
@@ -3674,11 +3905,11 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hungarian"
-msgstr ""
+msgstr "Magyar"
 
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
-msgstr ""
+msgstr "Magyar 101 billentyűs"
 
 #. Resource IDs: (1269)
 msgid "I am a ..."
@@ -3686,31 +3917,31 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32002; '&Open...'
 msgid "ID:32002:V C +O"
-msgstr ""
+msgstr "Azonosító:32002:V C +O"
 
 #. Accelerator Entry for Menu ID:32003; '&New...'
 msgid "ID:32003:V C +N"
-msgstr ""
+msgstr "Azonosító:32003:V C +N"
 
 #. Accelerator Entry for Menu ID:32005; '&Save'
 msgid "ID:32005:V C +S"
-msgstr ""
+msgstr "Azonosító:32005:V C +S"
 
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
-msgstr ""
+msgstr "Azonosító:32021:V C +Q"
 
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
-msgstr ""
+msgstr "Azonosító:32051:V C +A"
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
-msgstr ""
+msgstr "Azonosító:32063:V C +D"
 
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
-msgstr ""
+msgstr "Azonosító:32066:V C +C"
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
@@ -3810,27 +4041,31 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Icelandic"
-msgstr ""
+msgstr "Izlandi"
 
 #. Resource IDs: (344)
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #. Resource IDs: (320)
 msgid ""
 "If enabled, a 'snapshot' will be taken before every save, and named "
 "according to the options listed below."
 msgstr ""
+"Ha engedélyezi, egy 'pillanatkép' lesz létrehozva minden mentéskor amely a "
+"lent megadott beállítások szerint lesz elnevezve."
 
 #. Resource IDs: (330)
 msgid "If requested, then a delimiter character must be entered."
-msgstr ""
+msgstr "Amennyiben kéri, akkor meg kell adnia egy határoló karaktert."
 
 #. Resource IDs: (361)
 msgid ""
 "If the passphrase is the same as the currently opened database, properties "
 "of this backup are shown."
 msgstr ""
+"Ha a jelszó ugyanaz, mint az épp megnyitott adatbázisé, akkor ennek a "
+"mentésnek a beállításai meg lesznek jelenítve."
 
 #. Resource IDs: (361)
 msgid ""
@@ -3838,6 +4073,9 @@ msgid ""
 "PasswordSafe will exit.  If not, the new open will be cancelled and the "
 "existing opened database, if any, will remain open."
 msgstr ""
+"Ha ez az az első adatbázis, amely a PasswordSafe indulásakor lett megnyitva, "
+"akkor a PasswordSafe kilép. Ha nem, akkor az új megnyitás el lesz vetve és "
+"az éppen megnyitott adatbázis - ha van ilyen - marad megnyitva."
 
 #. Resource IDs: (510)
 #, c-format
@@ -3847,206 +4085,216 @@ msgid ""
 "\n"
 "You may need to also select the Shift key to see them."
 msgstr ""
+"Ha ez a billentyűzet támogat karaktereket %s által, akkor ez e billentyű "
+"engedélyezve lesz és használható a kiválasztásukhoz.\n"
+"\n"
+"Esetleg a Shift billentyű kiválasztására is szükség lehet a megtekintéshez."
 
 #. Resource IDs: (370)
 msgid ""
 "If you specify using your own symbol list, you cannot leave it empty. "
 "Unselecting use of symbols."
 msgstr ""
+"Ha a saját szimbólumlistájával adja meg, akkor nem hagyhatja üresen. "
+"Unselecting use of symbols.!!!"
 
 #. Resource IDs: (517)
 msgid "Igbo"
-msgstr ""
+msgstr "Igbo"
 
 #. Resource IDs: (361)
 msgid ""
 "Ignore all Failsafe Backup files and continue with the currently selected "
 "database."
 msgstr ""
+"Minde Failsafe mentési fájl figyelmen kívül hagyása és folytatás a "
+"kiválaszott adatbázissal."
 
 #. Resource IDs: (32014)
 msgid "Import &From"
-msgstr ""
+msgstr "Importálás &innen: "
 
 #. Resource IDs: (32122)
 msgid "Import &Text"
-msgstr ""
+msgstr "&Szöveg importálása"
 
 #. Resource IDs: (32123)
 msgid "Import &XML"
-msgstr ""
+msgstr "&XML importálása"
 
 #. Resource IDs: (32133)
 msgid "Import KeePass V1 CSV"
-msgstr ""
+msgstr "KeePass V1 CSV importálása"
 
 #. Resource IDs: (32132)
 msgid "Import KeePass V1 TXT"
-msgstr ""
+msgstr "KeePass V1 TXT importálása"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
-msgstr ""
+msgstr "Szövegbeállítások importálása"
 
 #. Resource IDs: (343)
 msgid "Import Text failed"
-msgstr ""
+msgstr "Szöveg importálása sikertelen"
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
-msgstr ""
+msgstr "XML beállítások importálása"
 
 #. Resource IDs: (341)
 msgid "Import XML failed"
-msgstr ""
+msgstr "XML importálása sikertelen"
 
 #. Resource IDs: (215)
 msgid "Import aborted. Please see report."
-msgstr ""
+msgstr "Importálás megszakítva. Kérem tekintse meg a jelentést."
 
 #. Resource IDs: (367)
 msgid "Import failed"
-msgstr ""
+msgstr "Importálás sikertelen"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
 msgstr ""
+"CSAK a létező bejegyzések jelszavának megváltoztatása az importálás során"
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
-msgstr ""
+msgstr "Importálás csoport alá?"
 
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
-msgstr ""
+msgstr "Import_KeePassV1_CSV"
 
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_TXT"
-msgstr ""
+msgstr "Import_KeePassV1_TXT"
 
 #. Resource IDs: (346)
 msgid "Import_Text"
-msgstr ""
+msgstr "Import_Text"
 
 #. Resource IDs: (346)
 msgid "Import_XML"
-msgstr ""
+msgstr "Import_XML"
 
 #. Resource IDs: (330, 353)
 msgid "Imported"
-msgstr ""
+msgstr "Importálva"
 
 #. Resource IDs: (334)
 #, c-format
 msgid "Imported %d %s"
-msgstr ""
+msgstr "%d %s importálva"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "In Headers(%s)/In Entries("
-msgstr ""
+msgstr "Fejlécekben(%s)/Bejegyzésekben("
 
 #. Resource IDs: (350)
 msgid "Inactive"
-msgstr ""
+msgstr "Inaktív"
 
 #. Resource IDs: (146)
 msgid "Incorrect Passkey"
-msgstr ""
+msgstr "Helytelen jelszó"
 
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
-msgstr ""
+msgstr "Helytelen fájlnév."
 
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
-msgstr ""
+msgstr "Helytelen jelszó, nem PasswordSafe adatbázis, vagy sérült adatbázis."
 
 #. Resource IDs: (204)
 msgid "Incorrect password"
-msgstr ""
+msgstr "Helytelen jelszó"
 
 #. Resource IDs: (337)
 msgid "Incremented Number [001-999]"
-msgstr ""
+msgstr "Növekvő szám [001-999]"
 
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
-msgstr ""
+msgstr "Az index érvénytelen vagy hiányzik"
 
 #. Resource IDs: (210)
 msgid "Index not numeric"
-msgstr ""
+msgstr "Az index nem numerikus"
 
 #. Resource IDs: (354)
 #, c-format
 msgid "Index points after the end of the password (length %d)."
-msgstr ""
+msgstr "Az index a jelszó vége utánra mutat (hossza: %d)."
 
 #. Resource IDs: (372)
 #, c-format
 msgid "Index points before the start of the password (length %d)."
-msgstr ""
+msgstr "Az index a jelszó eleje előttre mutat (hossza: %d)."
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
-msgstr ""
+msgstr "Kezdeti fanézet"
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
-msgstr ""
+msgstr "Kezdeti tálcaikon"
 
 #. Resource IDs: (210)
 msgid "Input string is empty"
-msgstr ""
+msgstr "A bemeneti szöveg üres"
 
 #. Resource IDs: (8085)
 msgid "Insert"
-msgstr ""
+msgstr "Beszúrás"
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
-msgstr ""
+msgstr "Nincs elég memória a művelet végrehajtásához."
 
 #. Resource IDs: (65535)
 msgid "Intermediate Backups"
-msgstr ""
+msgstr "Köztes mentés"
 
 #. Resource IDs: (3857)
 msgid "Internal application error."
-msgstr ""
+msgstr "Belső alkalmazáshiba."
 
 #. Resource IDs: (203)
 msgid "Internal error. Import failed. No records imported."
-msgstr ""
+msgstr "Belső hiba. Az importálás sikertelen. Nem lett rekord importálva."
 
 #. Resource IDs: (204)
 msgid "Internal error: An invalid flag was specified"
-msgstr ""
+msgstr "Belső hiba: érvénytelen jelző lett megadva"
 
 #. Resource IDs: (208)
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr ""
+"Belső hiba: a konfigurációs fájl XML struktúrájának inicializálása sikertelen"
 
 #. Resource IDs: (189)
 msgid "Internal error: Invalid oflag or pmode argument"
-msgstr ""
+msgstr "Belső hiba: érvénytelen jelző vagy pmode paraméter."
 
 #. Resource IDs: (204)
 msgid "Internal error: Out of file handles"
-msgstr ""
+msgstr "Belső hiba: nincs több szabad fájlkezelő"
 
 #. Resource IDs: (190)
 msgid "Internal error: Unexpected error number"
-msgstr ""
+msgstr "Belső hiba: nem várt hibakód"
 
 #. Resource IDs: (208)
 msgid "Invalid Filter schema."
-msgstr ""
+msgstr "Érvénytelen szűrőséma."
 
 #. Resource IDs: (1388)
 msgid "Invalid Parameter"
-msgstr ""
+msgstr "Érvénytelen paraméter"
 
 #. Resource IDs: (189)
 #, c-format
@@ -4054,30 +4302,32 @@ msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr ""
+"Érvénytelen bevitel a(z) %d. sorban. '%c' karakterrel elválasztott mezők "
+"száma nem az elvárt."
 
 #. Resource IDs: (356)
 msgid "Invalid shortcut ignored."
-msgstr ""
+msgstr "Érvénytelen parancsikon figyelmen kívül hagyva."
 
 #. Resource IDs: (518)
 msgid "Irish"
-msgstr ""
+msgstr "Ír"
 
 #. Resource IDs: (514)
 msgid "Italian"
-msgstr ""
+msgstr "Olasz"
 
 #. Resource IDs: (518)
 msgid "Italian (142)"
-msgstr ""
+msgstr "Olasz (142)"
 
 #. Resource IDs: (521)
 msgid "Japanese"
-msgstr ""
+msgstr "Japán"
 
 #. Resource IDs: (1412)
 msgid "KBytes"
-msgstr ""
+msgstr "KBájt"
 
 #. Resource IDs: (516)
 msgid "Kannada"
@@ -4085,100 +4335,105 @@ msgstr ""
 
 #. Resource IDs: (516)
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazah"
 
 #. Resource IDs: (32024)
 msgid "KeePass V1 CSV File..."
-msgstr ""
+msgstr "KeePass V1 CSV Fájl..."
 
 #. Resource IDs: (32017)
 msgid "KeePass V1 TXT File..."
-msgstr ""
+msgstr "KeePass V1 TXT fájl..."
 
 #. Resource IDs: (1143)
 msgid "Keep"
-msgstr ""
+msgstr "Megtart"
 
 #. Resource IDs: (193, 372, 65535)
 msgid "Keyboard Shortcut"
-msgstr ""
+msgstr "Billentyűparancs"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
-msgstr ""
+msgstr "Billentyűzet típusa:"
 
 #. Resource IDs: (521)
 msgid "Korean"
-msgstr ""
+msgstr "Koreai"
 
 #. Resource IDs: (516)
 msgid "Kyrgyz Cyrillic"
-msgstr ""
+msgstr "Kirgiz cirill"
 
 #. Resource IDs: (8009)
 msgid "L Ctrl"
-msgstr ""
+msgstr "Bal Ctrl"
 
 #. Resource IDs: (189)
 msgid "Last Access Time"
-msgstr ""
+msgstr "Utolsó hozzáférés ideje"
 
 #. Resource IDs: (327)
 msgid "Last Accessed"
-msgstr ""
+msgstr "Utolsó hozzáférés"
 
 #. Resource IDs: (328)
 msgid "Last Modified"
-msgstr ""
+msgstr "Utolsó módosítás"
 
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
-msgstr ""
+msgstr "Utoljára hozzáférve: "
 
 #. Resource IDs: (367)
 msgid "Last clipboard action"
-msgstr ""
+msgstr "Utolsó vágólapművelet"
 
 #. Resource IDs: (65535)
 msgid "Last saved by:"
-msgstr ""
+msgstr "Utoljára mentette: "
 
 #. Resource IDs: (65535)
 msgid "Last saved on:"
-msgstr ""
+msgstr "Utoljára mentve: "
 
 #. Resource IDs: (342)
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr ""
+msgstr "Legújabb verzió? Kattintson <a href=\"%s\">ide</a> az ellenőrzéshez."
 
 #. Resource IDs: (517)
 msgid "Latin American"
-msgstr ""
+msgstr "Latin amerikai"
 
 #. Resource IDs: (515)
 msgid "Latvian"
-msgstr ""
+msgstr "Lett"
 
 #. Resource IDs: (519)
 msgid "Latvian (QWERTY)"
-msgstr ""
+msgstr "Litván (QWERTY)"
 
 #. Resource IDs: (510)
 msgid "Left Ctrl key"
-msgstr ""
+msgstr "Bal Ctrl billentyű"
 
 #. Resource IDs: (356)
 msgid ""
 "Left click here to change. Right click here to reset or remove it. After "
 "selecting the shortcut key combination, press Enter to set it."
 msgstr ""
+"Kattintson itt a bal gombbal a változtatáshoz. Kattintson jobb gombbal az "
+"eltávolításhoz. A gyorsbillentyű kiválasztása után Enterrel lehet azt "
+"beállítani."
 
 #. Resource IDs: (331)
 msgid ""
 "Length of passwords generated in hexadecimal format must be even\n"
 "as each byte is two hexadecimal digits."
 msgstr ""
+"A hexadecimális formátumú jelszavak hossza páros kell, hogy legyen,\n"
+"mivel minden bájt két hexadecimális számjegyből áll."
 
 #. Resource IDs: (204)
 #, c-format
@@ -4186,102 +4441,104 @@ msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
 "there should be %d."
 msgstr ""
+"%d. sor kihagyva - csak %d mezőt találtam, pedig a fejléc adatai alapján %d "
+"mezőt kellett volna."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
-msgstr ""
+msgstr "%d. sor kihagyva: a kötelezően megadandó jelszó mező üres."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
-msgstr ""
+msgstr "%d. sor kihagyva: a kötelezően megadandó Cím mező üres."
 
 #. Resource IDs: (189)
 #, c-format
 msgid "Line %d: "
-msgstr ""
+msgstr "%d. sor:"
 
 #. Resource IDs: (1433, 65535)
 msgid "Line delimiter in Notes field:"
-msgstr ""
+msgstr "Sorhatároló karakter a Megjegyzés mezőben:"
 
 #. Resource IDs: (370, 1152)
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #. Resource IDs: (1012, 1257, 1303, 1347, 1466, 1467)
 msgid "List1"
-msgstr ""
+msgstr "Lista1"
 
 #. Resource IDs: (519)
 msgid "Lithuanian"
-msgstr ""
+msgstr "Litván"
 
 #. Resource IDs: (515)
 msgid "Lithuanian IBM"
-msgstr ""
+msgstr "Litván IBM"
 
 #. Resource IDs: (520)
 msgid "Lithuanian Standard"
-msgstr ""
+msgstr "Litván Standard"
 
 #. Resource IDs: (329)
 msgid "Lock Safe"
-msgstr ""
+msgstr "Széf zárolása"
 
 #. Resource IDs: (1077)
 msgid "Lock password database after "
-msgstr ""
+msgstr "Jelszóadatbázis zárolása utána"
 
 #. Resource IDs: (1026)
 msgid "Lock password database on minimize"
-msgstr ""
+msgstr "Jelszóadatbázis zárolása kicsinyítéskor"
 
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
-msgstr ""
+msgstr "Jelszóadatbázis zárolása a számítógép zárolásakor"
 
 #. Resource IDs: (1413)
 msgid "MBytes"
-msgstr ""
+msgstr "MBájt"
 
 #. Resource IDs: (215)
 msgid "MISSING PASSWORD"
-msgstr ""
+msgstr "HIÁNYZÓ JELSZÓ"
 
 #. Resource IDs: (215)
 #, c-format
 msgid "MISSING TITLE # %d"
-msgstr ""
+msgstr "HIÁNYZÓ CÍM # %d"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
-msgstr ""
+msgstr "Levelezőrendszer DLL érvénytelen."
 
 #. Resource IDs: (32152)
 msgid "Make Backup"
-msgstr ""
+msgstr "Mentés készítése"
 
 #. Resource IDs: (2010)
 msgid "Manage"
-msgstr ""
+msgstr "Kezelés"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
-msgstr ""
+msgstr "Szűrők kezelése"
 
 #. Resource IDs: (515)
 msgid "Manage Password Policies"
-msgstr ""
+msgstr "Jelszószabályok kezelése"
 
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
-msgstr ""
+msgstr "Az aktuális tételek jelszótörténetének kezelése"
 
 #. Resource IDs: (517)
 msgid "Maori"
-msgstr ""
+msgstr "Maori"
 
 #. Resource IDs: (517)
 msgid "Marathi"
@@ -4289,146 +4546,150 @@ msgstr ""
 
 #. Resource IDs: (1212)
 msgid "Max."
-msgstr ""
+msgstr "Max."
 
 #. Resource IDs: (1487)
 msgid "Maximum"
-msgstr ""
+msgstr "Maximum"
 
 #. Resource IDs: (338)
 msgid ""
 "Maximum number of backups kept using incremented number suffix\n"
 "must be between 1 and 999."
 msgstr ""
+"A mentések folyamatosan emelkedő sorszámának\n"
+"1 és 999 közé kell esnie."
 
 #. Resource IDs: (338)
 #, c-format
 msgid "Maximum number of days that can be specified is %d"
-msgstr ""
+msgstr "Legfeljebb %d nap adható meg"
 
 #. Resource IDs: (349)
 msgid "Maximum number stored"
-msgstr ""
+msgstr "A maximális szám tárolva"
 
 #. Resource IDs: (371)
 msgid "Maximum saved"
-msgstr ""
+msgstr "A maximum tárolva"
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
-msgstr ""
+msgstr "Az első szám és a 'Tartomány' szabály maximális értéke"
 
 #. Resource IDs: (356)
 msgid "Menu Item"
-msgstr ""
+msgstr "Menütétel"
 
 #. Resource IDs: (347, 365)
 msgid "Merge"
-msgstr ""
+msgstr "Összefűzés"
 
 #. Resource IDs: (362)
 msgid "Merge failed"
-msgstr ""
+msgstr "Ősszefűzés sikertelen"
 
 #. Resource IDs: (32018)
 msgid "Merge..."
-msgstr ""
+msgstr "Összefűzés..."
 
 #. Resource IDs: (335)
 #, c-format
 msgid "Merging database: %s\n"
-msgstr ""
+msgstr "Adatbázis összefűzése: %s\n"
 
 #. Resource IDs: (364)
 msgid "Merging this database into current database:"
-msgstr ""
+msgstr "Ennek az adatbázisnak az összefűzése az aktuálissal:"
 
 #. Resource IDs: (1421)
 msgid "Migrate PasswordSafe configuration to user directory"
-msgstr ""
+msgstr "A PasswordSafe konfiguráció migrálása a felhasználói könyvtárba"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
-msgstr ""
+msgstr "Autogépelés után minimalizálás"
 
 #. Resource IDs: (350)
 msgid "Minimum digits"
-msgstr ""
+msgstr "Számjegyek legkisebb száma"
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
-msgstr ""
+msgstr "Kisbetűk legkisebb száma"
 
 #. Resource IDs: (350)
 msgid "Minimum symbols"
-msgstr ""
+msgstr "Szimbólumok legkisebb száma"
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
-msgstr ""
+msgstr "Nagybetűk legkisebb száma"
 
 #. Resource IDs: (139, 507)
 msgid "Misc."
-msgstr ""
+msgstr "Vegyes"
 
 #. Resource IDs: (210)
 msgid "Missing XSD File"
-msgstr ""
+msgstr "XSD fájl hiányzik"
 
 #. Resource IDs: (210)
 msgid "Missing ending curly bracket for variable name"
-msgstr ""
+msgstr "Záró kapcsos zárójel hiányzik a változó nevéből"
 
 #. Resource IDs: (211)
 msgid "Missing ending round bracket for Autotype value"
-msgstr ""
+msgstr "Záró zárójel hiányzik az Autogépelés értékből"
 
 #. Resource IDs: (210)
 msgid "Missing ending square bracket for index value"
-msgstr ""
+msgstr "Záró szögletes zárójel hiányzik az index értékéből"
 
 #. Resource IDs: (3887)
 msgid "Mixed"
-msgstr ""
+msgstr "Vegyes"
 
 #. Resource IDs: (517)
 msgid "Mongolian Cyrillic"
-msgstr ""
+msgstr "Mongol cirill"
 
 #. Resource IDs: (32271)
 msgid "Move Here"
-msgstr ""
+msgstr "Mozgatás ide"
 
 #. Resource IDs: (348)
 #, c-format
 msgid "Must be at least %d"
-msgstr ""
+msgstr "Legalább ennyinek kell lennie: %d"
 
 #. Resource IDs: (357)
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #. Resource IDs: (65535)
 msgid ""
 "NOTE: Changing this entry's own password will make this a normal entry and "
 "break the link with its base?"
 msgstr ""
+"MEGJEGYZÉS: ezen bejegyzés jelszavának megváltoztatása által ez egy normál "
+"bejegyzéssé válik és megszakad a kapcsolat az alapbejegyzéssel."
 
 #. Resource IDs: (353)
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. Resource IDs: (1037)
 msgid "Name. Name. Name."
-msgstr ""
+msgstr "Név. Név. Név."
 
 #. Resource IDs: (65535)
 msgid "Name:"
-msgstr ""
+msgstr "Név:"
 
 #. Resource IDs: (1471)
 msgid "Named Policy"
-msgstr ""
+msgstr "Elnevezett szabály"
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
@@ -4436,96 +4697,101 @@ msgstr ""
 
 #. Resource IDs: (328, 1229)
 msgid "Never"
-msgstr ""
+msgstr "Soha"
 
 #. Resource IDs: (30721)
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #. Resource IDs: (332)
 msgid "New Group"
-msgstr ""
+msgstr "Új csoport"
 
 #. Resource IDs: (65535)
 msgid "New Safe Combination:"
-msgstr ""
+msgstr "Új széfjelszó:"
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
-msgstr ""
+msgstr "Új verzió jelent meg!"
 
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
-msgstr ""
+msgstr "Új széf jelszó és annak megerősítése nem azonosak"
 
 #. Resource IDs: (1003)
 msgid "New..."
-msgstr ""
+msgstr "Új..."
 
 #. Resource IDs: (364)
 msgid "Next >"
-msgstr ""
+msgstr "Következő >"
 
 #. Resource IDs: (212, 1083)
 msgid "No"
-msgstr ""
+msgstr "Nem"
 
 #. Resource IDs: (329)
 msgid "No Safe open"
-msgstr ""
+msgstr "Nincs széf megnyitva"
 
 #. Resource IDs: (1183)
 msgid "No change"
-msgstr ""
+msgstr "Nincs változás"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
-msgstr ""
+msgstr "Nincs feltétel megadva"
 
 #. Resource IDs: (335)
 msgid "No database open with which to compare against another database!"
 msgstr ""
+"Nincs adatbázis megnyitva, amit össze lehetne hasonlítani egy másikkal!"
 
 #. Resource IDs: (359)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
 msgstr ""
+"Egyetlen bejegyzés sem felel meg az ön által megadott feltételeknek, így "
+"egyik sem lehet %s!"
 
 #. Resource IDs: (359)
 msgid "No entries selected"
-msgstr ""
+msgstr "Nincs kiválaszott bejegyzés"
 
 #. Resource IDs: (345)
 msgid "No entry exists within this database matching your specifications."
 msgstr ""
+"Ebben az adatbázisban nincs olyan bejegyzés, amely megfelelne az ön által "
+"megadott feltételeknek."
 
 #. Resource IDs: (3843)
 msgid "No error message is available."
-msgstr ""
+msgstr "Hibaüzenet szövege nem elérhető."
 
 #. Resource IDs: (3867, 3868)
 msgid "No error occurred."
-msgstr ""
+msgstr "Nem történt hiba."
 
 #. Resource IDs: (330)
 msgid "No fields selected for export!"
-msgstr ""
+msgstr "Nincs mező kiválasztva exportálásra!"
 
 #. Resource IDs: (341)
 msgid "No fields selected for searching!"
-msgstr ""
+msgstr "Nincs keresési mező kiválaszva!"
 
 #. Resource IDs: (340)
 msgid "No fields selected to compare!"
-msgstr ""
+msgstr "Nincs összehasonlítási mező kiválasztva."
 
 #. Resource IDs: (348)
 msgid "No fields selected to filter the display!"
-msgstr ""
+msgstr "Nincs mező kiválasztva a megjelenítés szűréséhez!"
 
 #. Resource IDs: (360)
 msgid "No fields selected to synchronize!"
-msgstr ""
+msgstr "Nincs mező kiválasztva szinkronizáláshoz!"
 
 #. Resource IDs: (330)
 msgid "No function selected for basing your restrictions."
@@ -4533,11 +4799,11 @@ msgstr ""
 
 #. Resource IDs: (351)
 msgid "No items matched your filter"
-msgstr ""
+msgstr "Egyetlen tétel sem felel meg a szűrésnek"
 
 #. Resource IDs: (330)
 msgid "No matches found."
-msgstr ""
+msgstr "Nincs találat."
 
 #. Resource IDs: (330)
 msgid "No object selected for basing your restrictions."
@@ -4545,55 +4811,57 @@ msgstr ""
 
 #. Resource IDs: (204)
 msgid "No records in import file!"
-msgstr ""
+msgstr "Az importálandó fájlban nincsenek rekordok!"
 
 #. Resource IDs: (344)
 msgid "No reports exist in the same directory as the current database."
-msgstr ""
+msgstr "Nem található jelentés az aktuális adatbázis könyvtárában."
 
 #. Resource IDs: (376)
 msgid "No response from YubiKey"
-msgstr ""
+msgstr "A Yubikey nem válaszol."
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
-msgstr ""
+msgstr "Nincs engedélyezett sor"
 
 #. Resource IDs: (349)
 msgid "No rule selected"
-msgstr ""
+msgstr "Nincs kiválasztott szabály"
 
 #. Resource IDs: (212, 337)
 msgid "None"
-msgstr ""
+msgstr "Egyik sem"
 
 #. Resource IDs: (364)
 msgid "Normal entry"
-msgstr ""
+msgstr "Normál bejegyzés"
 
 #. Resource IDs: (365)
 msgid "Normal entry - password expired"
-msgstr ""
+msgstr "Normál bejegyzés - a jelszó lejárt"
 
 #. Resource IDs: (365)
 msgid "Normal entry - warning password will expire"
-msgstr ""
+msgstr "Normál bejegyzés - figyelmeztetés a jelszó lejáratára"
 
 #. Resource IDs: (514)
 msgid "Norwegian"
-msgstr ""
+msgstr "Norvég"
 
 #. Resource IDs: (516)
 msgid "Norwegian with Sami"
-msgstr ""
+msgstr "Norvég Samival"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr ""
+"Nem lett az összes rendszerleíróadatbázis-bejegyzés (vagy INI fájl) "
+"eltávolítva."
 
 #. Resource IDs: (370)
 msgid "Not used"
-msgstr ""
+msgstr "Nem használt"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -4601,65 +4869,77 @@ msgid ""
 "explicitly save them to overwrite the original documents.  If you choose to "
 "not recover the auto-saved versions, they will be deleted."
 msgstr ""
+"Amennyiben az automatikusan mentett dokumentumok helyreállítását választja, "
+"önnek kell elvégezni azok mentését az eredeti dokumentum felülírásával. Ha "
+"úgy dönt, hogy nem állítja helyre az automatikusan mentett verziókat, azok "
+"törölve lesznek."
 
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
-msgstr ""
+msgstr "Megjegyzés: az üres mezők így vannak jelölve: »*»"
 
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
-msgstr ""
+msgstr "Megjegyzés: A bejegyzás formátuma: »Csoport»Megnevezés»Felhasználónév»"
 
 #. Resource IDs: (215)
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
+"Megjegyzés: ezek a jelszószabályok nem fogják lecserélni az aktuális "
+"adatbázisban lévő azonos nevű jelszószabályokat."
 
 #. Resource IDs: (211)
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr ""
+"Megjegyzés: ezek a beállítások csak üres adatbázisba történő importálás "
+"esetén lesznek használva."
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
-msgstr ""
+msgstr "Jegyzetek"
 
 #. Resource IDs: (355)
 msgid "Notes copied "
-msgstr ""
+msgstr "Jegyzetek másolva"
 
 #. Resource IDs: (348)
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
 msgstr ""
+"Ez a szám már a legnagyobb értékre van állítva. 'Nagyobb mint' beállítás nem "
+"engedélyezett."
 
 #. Resource IDs: (348)
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr ""
+"Ez a szám már a legkisebb értékre van állítva. 'Kisebb mint' beállítás nem "
+"engedélyezett."
 
 #. Resource IDs: (361)
 msgid "Number of Entries"
-msgstr ""
+msgstr "Bejegyzések száma"
 
 #. Resource IDs: (65535)
 msgid "Number of Entries:"
-msgstr ""
+msgstr "Bejegyzések száma:"
 
 #. Resource IDs: (360)
 msgid "Number of Groups"
-msgstr ""
+msgstr "Csoportok száma"
 
 #. Resource IDs: (65535)
 msgid "Number of Groups:"
-msgstr ""
+msgstr "Csoportok száma:"
 
 #. Resource IDs: (361)
 msgid "Number of Unknown Fields"
-msgstr ""
+msgstr "Ismeretlen mezők száma"
 
 #. Resource IDs: (367)
 msgid "Number of entries in database"
-msgstr ""
+msgstr "Bejegyzések száma az adatbázisban"
 
 #. Resource IDs: (190)
 #, c-format
@@ -4682,6 +4962,24 @@ msgid ""
 "\n"
 "Recommend that the database is now saved."
 msgstr ""
+"Feldolgozott bejegyzések száma: %d\n"
+"\n"
+"Rendbetett érvénytelen UUID-k száma: %d\n"
+"\n"
+"Rendbetett duplikált UUID-k száma: %d\n"
+"\n"
+"Rendbetett nem egyedi Csoport/Cím/Felhasználó tételek száma: %d\n"
+"\n"
+"Rendbetett jelszótörténetek száma: %d\n"
+"\n"
+"Kiadott álnév figyelmeztetések száma: %d\n"
+"\n"
+"Kiadott gyorsbillentyű figyelmeztetések száma: %d\n"
+"\n"
+"Azon bejegyzések száma, amelyeknél egyes mezők teljes megjelenítése nem "
+"lehetséges: %d\n"
+"\n"
+"Javasolt az adabázis mentése most."
 
 #. Resource IDs: (337)
 #, c-format
@@ -4689,11 +4987,13 @@ msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
 "new default was %d"
 msgstr ""
+"%d tétel esetében a 'Mentett jelszavak maximális száma' az új "
+"alapértelmezésre lett változtatva"
 
 #. Resource IDs: (371)
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
-msgstr ""
+msgstr "%d tétel esetében a jelszótörténet el lett távolítva"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4701,6 +5001,8 @@ msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr ""
+"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
+"ne legyen mentve"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4708,10 +5010,12 @@ msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr ""
+"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
+"mentve legyen"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
-msgstr ""
+msgstr "Ismeretlen mezők száma:"
 
 #. Resource IDs: (371)
 msgid "Number saved"
@@ -4723,38 +5027,38 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Numeric Pad"
-msgstr ""
+msgstr "Numerikus billentyűzet"
 
 #. Resource IDs: (1, 351)
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. Resource IDs: (330)
 msgid "Off"
-msgstr ""
+msgstr "Ki"
 
 #. Resource IDs: (65535)
 msgid "Old Safe Combination:"
-msgstr ""
+msgstr "Régi széfkombináció:"
 
 #. Resource IDs: (330)
 msgid "On"
-msgstr ""
+msgstr "Be"
 
 #. Resource IDs: (359)
 msgid ""
 "One of more preferences have been changed. Are you sure you wish to cancel?"
-msgstr ""
+msgstr "Egy vagy több beállítás meg lett változtatva. Biztos, hogy elveti?"
 
 #. Resource IDs: (369)
 msgid ""
 "One or more Password Policies have been changed. Are you sure you wish to "
 "cancel?"
-msgstr ""
+msgstr "Egy vagy több jelszószabály meg lett változtatva. Biztos, hogy elveti?"
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
-msgstr ""
+msgstr "Egy vagy több automatikusan mentett dokumentum található."
 
 #. Resource IDs: (340)
 #, c-format
@@ -4762,190 +5066,197 @@ msgid ""
 "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; "
 "In both (identical): %d"
 msgstr ""
+"Csak az eredeti adatbázisban: %d; Csak az összehasonlítási adatbázisban: %d; "
+"Mindkettőben (különbözőek): %d; Mindkettőben (egyezőek): %d"
 
 #. Resource IDs: (3841)
 msgid "Open"
-msgstr ""
+msgstr "Megnyitás"
 
 #. Resource IDs: (65535)
 msgid "Open Password Database:"
-msgstr ""
+msgstr "Jelszóadatbázis megnyitása:"
 
 #. Resource IDs: (1086)
 msgid "Open as read-only"
-msgstr ""
+msgstr "Megnyitás csak olvasásra"
 
 #. Resource IDs: (333)
 msgid "Open database"
-msgstr ""
+msgstr "Adatbázis megnyitása"
 
 #. Resource IDs: (1300)
 msgid "Open database read-only by default"
-msgstr ""
+msgstr "Adatbázis megnyitása alapértelmezés szerint csak olvasásra"
 
 #. Resource IDs: (327)
 msgid "Options"
-msgstr ""
+msgstr "Beállítások"
 
 #. Resource IDs: (208, 1399, 65535)
 msgid "Or"
-msgstr ""
+msgstr "Vagy"
 
 #. Resource IDs: (340)
 msgid "Original"
-msgstr ""
+msgstr "Eredeti"
 
 #. Resource IDs: (65535)
 msgid "Original Database:"
-msgstr ""
+msgstr "Eredeti adatbázis:"
 
 #. Resource IDs: (1401)
 msgid "Original Value:"
-msgstr ""
+msgstr "Eredeti érték:"
 
 #. Resource IDs: (516)
 msgid "Oriya"
-msgstr ""
+msgstr "Oriya"
 
 #. Resource IDs: (1116)
 msgid "Other value last changed on:"
-msgstr ""
+msgstr "Egyéb érték utolsó módosításának dátuma:"
 
 #. Resource IDs: (1081, 1201)
 msgid "Other:"
-msgstr ""
+msgstr "Egyéb:"
 
 #. Resource IDs: (1206)
 msgid "Other: "
-msgstr ""
+msgstr "Egyéb:"
 
 #. Resource IDs: (3843)
 msgid "Out of memory."
-msgstr ""
+msgstr "Elfogyott a memória."
 
 #. Resource IDs: (192)
 msgid "OutOfMemoryException."
-msgstr ""
+msgstr "OutOfMemoryException."
 
 #. Resource IDs: (339)
 msgid "PWS_CPF_CDD"
-msgstr ""
+msgstr "PWS_CPF_CDD"
 
 #. Resource IDs: (341)
 msgid "PWS_CPF_TVDD"
-msgstr ""
+msgstr "PWS_CPF_TVDD"
 
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
-msgstr ""
+msgstr "Jelszó érvénytelen"
 
 #. Resource IDs: (363)
 msgid "Passkey needed to save. Please unlock database and try again"
 msgstr ""
+"A mentéshez jelszóra van szükség. Oldja fel az adatbázist és próbálja újra"
 
 #. Resource IDs: (360)
 msgid "Passphrase"
-msgstr ""
+msgstr "Jelszó"
 
 #. Resource IDs: (65535)
 msgid "Passphrase character count:"
-msgstr ""
+msgstr "Jelszó karaktereinek száma:"
 
 #. Resource IDs: (188, 327)
 msgid "Password"
-msgstr ""
+msgstr "Jelszó"
 
 #. Resource IDs: (364)
 msgid "Password Database:"
-msgstr ""
+msgstr "Jelszó adatbázis:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
-msgstr ""
+msgstr "Jelszó lejárat"
 
 #. Resource IDs: (189, 327)
 msgid "Password Expiry Date"
-msgstr ""
+msgstr "Jelszó lejáratának dátuma"
 
 #. Resource IDs: (192, 348)
 msgid "Password Expiry Interval"
-msgstr ""
+msgstr "Jelszólejárat időköze"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
-msgstr ""
+msgstr "Jelszó legenerálva a megjelenített szabály alapján"
 
 #. Resource IDs: (120, 140, 340, 350, 1381, 1382)
 msgid "Password History"
-msgstr ""
+msgstr "Jelszótörténet"
 
 #. Resource IDs: (351)
 msgid "Password History Filter"
-msgstr ""
+msgstr "Jelszótörténet szűrő"
 
 #. Resource IDs: (367)
 msgid "Password Length"
-msgstr ""
+msgstr "Jelszó hossza"
 
 #. Resource IDs: (327)
 msgid "Password Modified"
-msgstr ""
+msgstr "Jelszó módosítva"
 
 #. Resource IDs: (189)
 msgid "Password Modified Time"
-msgstr ""
+msgstr "Jelszó módosításának ideje"
 
 #. Resource IDs: (32159)
 msgid "Password Policies..."
-msgstr ""
+msgstr "Jelszószabályok..."
 
 #. Resource IDs: (141, 192, 345, 369, 468, 503, 508)
 msgid "Password Policy"
-msgstr ""
+msgstr "Jelszószabály"
 
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
-msgstr ""
+msgstr "Jelszószabály szűrő"
 
 #. Resource IDs: (193)
 msgid "Password Policy Name"
-msgstr ""
+msgstr "Jelszószabály neve"
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
-msgstr ""
+msgstr "Jelszószabály felülbírálása"
 
 #. Resource IDs: (134, 3585)
 msgid "Password Safe"
-msgstr ""
+msgstr "Password Safe"
 
 #. Resource IDs: (337)
 msgid "Password Safe - <Untitled Restored Backup>"
-msgstr ""
+msgstr "Password Safe - <Névtelen Visszaállított Mentés>"
 
 #. Resource IDs: (373)
 msgid "Password Safe Application HotKey"
-msgstr ""
+msgstr "Password Safe alkalmazás gyorsbillentyű"
 
 #. Resource IDs: (317)
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
 msgstr ""
+"Password Safe mentések (*.bak)|*.bak|Password Safe Köztes mentések (*.ibak)|"
+"*.ibak||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak||"
-msgstr ""
+msgstr "Password Safe mentések (*.bak)|*.bak||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Password Safe adatbázisok (*.psafe3)|*.psafe3|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*."
 "*||"
 msgstr ""
+"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3; *.dat|Minden fájl (*."
+"*)|*.*||"
 
 #. Resource IDs: (316)
 msgid ""
@@ -4953,18 +5264,21 @@ msgid ""
 "Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
 "files (*.*)|*.*||"
 msgstr ""
+"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe "
+"mentések (*.bak)|*.bak|Password Safe köztes mentések (*.ibak)|*.ibak|Minden "
+"fájl (*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
-msgstr ""
+msgstr "Password Safe x.xx"
 
 #. Resource IDs: (339)
 msgid "Password [Mandatory Field]"
-msgstr ""
+msgstr "Jelszó [kötelező mező]"
 
 #. Resource IDs: (341)
 msgid "Password implies this is an alias entry, but "
-msgstr ""
+msgstr "A jelszó arra utal, hogy ez egy álnév bejegyzés, de"
 
 #. Resource IDs: (342)
 msgid ""
@@ -4972,126 +5286,132 @@ msgid ""
 "title.\n"
 "Every entry must have a title."
 msgstr ""
+"A jelszó arra utal, hogy ez egy álnév bejegyzés, de meghatároz egy cím "
+"nélküli alapbejegyzést.\n"
+"Minden bejegyzésnek kell, hogy legyen címe."
 
 #. Resource IDs: (188)
 msgid "Password is too short"
-msgstr ""
+msgstr "A jelszó túl rövid"
 
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
-msgstr ""
+msgstr "Jelszó utolsó változásának ideje:"
 
 #. Resource IDs: (257)
 msgid "Password length"
-msgstr ""
+msgstr "Jelszó hossza"
 
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr ""
+msgstr "A jelszó hossza kevesebb, mint a 'legalább N karakter' tételek összege"
 
 #. Resource IDs: (331)
 msgid "Password length must be between 4 and 1024 characters."
-msgstr ""
+msgstr "A jelszó hossza 4 és 1024 között lehet"
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
-msgstr ""
+msgstr "Jelszó hossza:"
 
 #. Resource IDs: (188)
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
 msgstr ""
+"A jelszó tartalmazzon kis- és nagybetűket, valamint legalább 1 számjegyet "
+"vagy speciális karaktert"
 
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr ""
+"A PasswordSafe alkalmazás (verzió: V%d.%d.%d (Build %s)) hibát tartalmazott."
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-msgstr ""
+msgstr "PasswordSafe: Egyes bejegyzések jelszava lejárt vagy hamarosan lejár"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto &Type"
-msgstr ""
+msgstr "&Autogépelés"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
-msgstr ""
+msgstr "&Autogépelés"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto&type"
-msgstr ""
+msgstr "&Autogépelés"
 
 #. Resource IDs: (515)
 msgid "Persian"
-msgstr ""
+msgstr "Perzsa"
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
-msgstr ""
+msgstr "Fizikai billentyűzet:"
 
 #. Resource IDs: (372, 32084)
 msgid "Plain Text (tab separated)..."
-msgstr ""
+msgstr "Egyszerű szöveg (tabulátorral tagolt)..."
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
-msgstr ""
+msgstr "Kérem válasszon egy visszaállítandó mentést:"
 
 #. Resource IDs: (335)
 msgid "Please Choose a Database to Compare with current open database"
-msgstr ""
+msgstr "Kérem válasszon egy adatbázist az aktuálissal való összehasonlításhoz"
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
-msgstr ""
+msgstr "Kérem válasszon egy megnyitandó adatbázist:"
 
 #. Resource IDs: (362)
 msgid "Please Choose a Database to Validate:"
-msgstr ""
+msgstr "Kérem válasszon egy érvényesítendő adatbázist:"
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
-msgstr ""
+msgstr "Kérem válassza ki az importálandó KeePass szövegfájlt"
 
 #. Resource IDs: (336)
 msgid "Please Choose a Name for this Backup:"
-msgstr ""
+msgstr "Kérem adjon nevet ennek a mentésnek:"
 
 #. Resource IDs: (334)
 msgid "Please Choose a Text File to Import"
-msgstr ""
+msgstr "Kérem válassza ki az importálandó szövegfájlt"
 
 #. Resource IDs: (334)
 msgid "Please Choose a XML File to Import"
-msgstr ""
+msgstr "Kérem válassza ki az importálandó XML fájlt"
 
 #. Resource IDs: (335)
 msgid "Please choose a database to merge into current database"
-msgstr ""
+msgstr "Kérem válassza ki az aktuális adatbázisba fésülendő adatbázist"
 
 #. Resource IDs: (360)
 msgid "Please choose a database to synchronize with current database"
-msgstr ""
+msgstr "Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist"
 
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
-msgstr ""
+msgstr "Kérem válasszon nevet az aktuális (Névtelen) adatbázisnak:"
 
 #. Resource IDs: (338)
 msgid "Please choose a name for the new database"
-msgstr ""
+msgstr "Kérem válasszon nevet az új adatbázisnak:"
 
 #. Resource IDs: (334)
 msgid "Please choose a new name for the current database:"
-msgstr ""
+msgstr "Kérem válasszon egy új nevet az aktuális adatbázisnak:"
 
 #. Resource IDs: (353)
 #, c-format
 msgid "Please confirm delete of the %s filter %s?"
-msgstr ""
+msgstr "Kérem hagyja jóvá a(z) %s szűrő törlését: %s"
 
 #. Resource IDs: (331)
 msgid ""
@@ -5099,72 +5419,75 @@ msgid ""
 "configuration from the Windows registry.\n"
 "\n"
 msgstr ""
+"Kérem erősítse meg, hogy törölni kívánja az aktuális felhasználó "
+"PasswordSafe konfigurációját a Windows rendszerleíróadatbázisból.\n"
+"\n"
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
-msgstr ""
+msgstr "Kérem adja meg a keresendő szöveget"
 
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
-msgstr ""
+msgstr "Kérem adjon meg egy titkosító vagy feloldó kulcsot"
 
 #. Resource IDs: (65535)
 msgid ""
 "Please enter the current combination, followed by a new combination.  Type "
 "the new combination once again to confirm it."
-msgstr ""
+msgstr "Kérem adja meg az aktuális kombinációt, majd az újat kétszer."
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
-msgstr ""
+msgstr "Kérem adja meg a kulcsot és ellenőrizze."
 
 #. Resource IDs: (368)
 msgid "Please enter the new database description"
-msgstr ""
+msgstr "Kérem adja meg az új adatbázis leírását"
 
 #. Resource IDs: (368)
 msgid "Please enter the new database name"
-msgstr ""
+msgstr "Kérem adja meg az új adatabázis nevét"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
-msgstr ""
+msgstr "Kérem adja meg ezen adatbázis jelszókombinációját."
 
 #. Resource IDs: (337)
 msgid "Please enter your backup database prefix."
-msgstr ""
+msgstr "Kérem adja meg a mentési fájlok előtagját."
 
 #. Resource IDs: (376)
 msgid "Please insert your YubiKey"
-msgstr ""
+msgstr "Kérem helyezze be a Yubikey-t"
 
 #. Resource IDs: (334)
 msgid "Please name the XML file"
-msgstr ""
+msgstr "Kérem adjon nevet az XML fájlnak"
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
-msgstr ""
+msgstr "Kérem adjon nevet az exportált adatbázisnak"
 
 #. Resource IDs: (334)
 msgid "Please name the plaintext file"
-msgstr ""
+msgstr "Kérem adjon nevet a szövegfájlnak"
 
 #. Resource IDs: (352)
 msgid "Please name this filter"
-msgstr ""
+msgstr "Kérem adjon nevet ennek a szűrőnek"
 
 #. Resource IDs: (343)
 msgid "Please select report to view."
-msgstr ""
+msgstr "Kérem válassza ki a megtekintendő jelentést."
 
 #. Resource IDs: (348)
 msgid "Please specify text"
-msgstr ""
+msgstr "Kérem adja meg a szöveget"
 
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
-msgstr ""
+msgstr "Kérem adja meg a mentések helyét."
 
 #. Resource IDs: (345)
 #, c-format
@@ -5174,44 +5497,46 @@ msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
-msgstr ""
+msgstr "Kérem adja meg a mentések helyének alkönyvárát."
 
 #. Resource IDs: (344)
 msgid ""
 "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr ""
+"Kérem látogasson el a <a href=\"http://pwsafe.org/\">PasswordSafe honlapra.</"
+"a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
-msgstr ""
+msgstr "Szabály neve"
 
 #. Resource IDs: (369)
 msgid "Policy Name is already in use"
-msgstr ""
+msgstr "Ez a szabálynév már használatban van"
 
 #. Resource IDs: (369)
 msgid "Policy Name is blank"
-msgstr ""
+msgstr "A szabály neve üres"
 
 #. Resource IDs: (369)
 msgid "Policy field"
-msgstr ""
+msgstr "Szabály mező"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
-msgstr ""
+msgstr "Lengyel (214)"
 
 #. Resource IDs: (514)
 msgid "Polish (Programmers)"
-msgstr ""
+msgstr "Lengyel (Programozó)"
 
 #. Resource IDs: (517)
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugál"
 
 #. Resource IDs: (514)
 msgid "Portuguese (Brazilian ABNT)"
-msgstr ""
+msgstr "Portugál (Brazil ABNT)"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -5219,14 +5544,17 @@ msgid ""
 "character of a password of length N. -1 is the last character, -2 the next "
 "to last etc. up to -N for the first password character."
 msgstr ""
+"1-es pozíció az első karakter, 2-es a második, stb. egészen N-ig, amely az N "
+"karakter hosszú jelszó utolsó karaktere. (-1)-es pozíció az utolsó karakter, "
+"(-2)-es az utolsó előtti, egészen (-N)-ig, amely a jelszó első karaktere."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
-msgstr ""
+msgstr "Pozíciók:"
 
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
-msgstr ""
+msgstr "Nyomja meg az összes hozzáadott karakter törléséhez."
 
 #. Resource IDs: (65535)
 msgid ""
@@ -5238,58 +5566,60 @@ msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
-msgstr ""
+msgstr "Előző jelszavak"
 
 #. Resource IDs: (1436)
 msgid "Processing entry:"
-msgstr ""
+msgstr "Bejegyzés feldolgozása:"
 
 #. Resource IDs: (65535)
 msgid "Program Shortcuts"
-msgstr ""
+msgstr "Program parancsikonok"
 
 #. Resource IDs: (317)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Programok (*.exe)|*.exe|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (258)
 msgid "Pronounceable passwords"
-msgstr ""
+msgstr "Könnyen kiejthető jelszavak"
 
 #. Resource IDs: (370)
 msgid ""
 "Pronounceable passwords must contain either lowercase or uppercase "
 "characters or both"
 msgstr ""
+"A könnyen kiejthető jelszavaknak tartalmazniuk kell kis- vagy nagybetűt, "
+"vagy mindkettőt"
 
 #. Resource IDs: (136)
 msgid "Properties"
-msgstr ""
+msgstr "Tulajdonságok"
 
 #. Resource IDs: (361)
 msgid "Properties of the currently selected database."
-msgstr ""
+msgstr "A kiválasztott adatbázis tulajdonságai."
 
 #. Resource IDs: (32089)
 msgid "Protect All Entries"
-msgstr ""
+msgstr "Minden bejegyzés védelme."
 
 #. Resource IDs: (32087)
 msgid "Protect Entry"
-msgstr ""
+msgstr "Bejegyzés védelme."
 
 #. Resource IDs: (192, 363)
 msgid "Protected"
-msgstr ""
+msgstr "Védett"
 
 #. Resource IDs: (366)
 #, c-format
 msgid "Protected Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Védett bejegyzés:   «%s» «%s» «%s»"
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
-msgstr ""
+msgstr "Jelszó másolva"
 
 #. Resource IDs: (516)
 msgid "Punjabi"
@@ -5301,11 +5631,11 @@ msgstr ""
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
-msgstr ""
+msgstr "A fanézetben a csoportok megjelenítése elsőként"
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
-msgstr ""
+msgstr "Ikon elhelyezése az értesítési területen (System Tray)"
 
 #. Resource IDs: (1030)
 msgid "Query user to set default username"
@@ -5313,47 +5643,47 @@ msgstr ""
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
-msgstr ""
+msgstr "Jobb Ctrl"
 
 #. Resource IDs: (315)
 msgid "R-O"
-msgstr ""
+msgstr "Csak olvasható"
 
 #. Resource IDs: (315)
 msgid "R/W"
-msgstr ""
+msgstr "Írható-olvasható"
 
 #. Resource IDs: (65535)
 msgid "Random password generation rules"
-msgstr ""
+msgstr "Véletlenszerű jelszó generálásának szabályai"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
-msgstr ""
+msgstr "Véletlenszerű"
 
 #. Resource IDs: (203)
 msgid "Read Error"
-msgstr ""
+msgstr "Olvasási hiba"
 
 #. Resource IDs: (347)
 msgid "Read-Only"
-msgstr ""
+msgstr "Csak olvasható"
 
 #. Resource IDs: (347)
 msgid "Read-Write"
-msgstr ""
+msgstr "Írható-olvasható"
 
 #. Resource IDs: (327)
 msgid "Recent"
-msgstr ""
+msgstr "Legutóbbi"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr ""
+msgstr "Utoljára megnyitott adatbázisok a Fájl menüben, almenü helyett."
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr ""
+msgstr "Utoljára megnyitott adatbázisok"
 
 #. Resource IDs: (189)
 msgid "Record Modified Time"
@@ -5371,19 +5701,19 @@ msgstr ""
 
 #. Resource IDs: (1297)
 msgid "Recurring"
-msgstr ""
+msgstr "Ismétlődő"
 
 #. Resource IDs: (1476, 32083)
 msgid "Redo"
-msgstr ""
+msgstr "Mégis"
 
 #. Resource IDs: (368)
 msgid "Redo the last change to password policies that was previously undone"
-msgstr ""
+msgstr "A korábban visszavont jelszószabály-módosítások újbóli beállítása"
 
 #. Resource IDs: (1228)
 msgid "Relative"
-msgstr ""
+msgstr "Relatív"
 
 #. Resource IDs: (1420)
 msgid ""
@@ -5393,50 +5723,52 @@ msgstr ""
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
-msgstr ""
+msgstr "Utolsó megjegyzése"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
-msgstr ""
+msgstr "E billentyűzet megjegyzése"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
-msgstr ""
+msgstr "A PasswordSafe konfiguráció eltávolítása a rendszerleíróadatbázisól"
 
 #. Resource IDs: (320)
 msgid ""
 "Remove all saved passwords for entries and stop saving any new password "
 "history in all entries."
 msgstr ""
+"Minden bejegyzés összes mentett jelszavának eltávolítása és a jelszavak "
+"mentésének beszüntetése."
 
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
-msgstr ""
+msgstr "Parancsikon eltávolítása"
 
 #. Resource IDs: (32058)
 msgid "Rename"
-msgstr ""
+msgstr "Átnevezés"
 
 #. Resource IDs: (32060)
 msgid "Rename Entry"
-msgstr ""
+msgstr "Bejegyzés átnevezése"
 
 #. Resource IDs: (32059)
 msgid "Rename Group"
-msgstr ""
+msgstr "Csoport átnevezése"
 
 #. Resource IDs: (347)
 msgid "Report created"
-msgstr ""
+msgstr "Jelentés létrehozva"
 
 #. Resource IDs: (204)
 #, c-format
 msgid "Report of %s function started at %s"
-msgstr ""
+msgstr "Jelentés %s funkcióról, amely elindult ekkor: %s"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
-msgstr ""
+msgstr "A kért módváltás sikertelen"
 
 #. Resource IDs: (356)
 msgid ""
@@ -5444,94 +5776,98 @@ msgid ""
 "\n"
 "Unable to provide Virtual Keyboard."
 msgstr ""
+"A szükséges Unicode betűkészlet nincs telepítve ezen a rendszeren.\n"
+"\n"
+"Virtuális billentyűzet szolgáltatása nem lehetséges."
 
 #. Resource IDs: (356)
 #, c-format
 msgid "Reserved shortcut '%s' ignored."
-msgstr ""
+msgstr "'%s' parancsikon foglalt, ezért figyelmen kívül hagyva."
 
 #. Resource IDs: (1427)
 msgid "Reset"
-msgstr ""
+msgstr "Visszaállítás"
 
 #. Resource IDs: (1368)
 msgid "Reset All"
-msgstr ""
+msgstr "Az összes visszaállítása"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr ""
+msgstr "Minden parancsikon visszaállítása"
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
-msgstr ""
+msgstr "Oszlopszélesség visszaállítása"
 
 #. Resource IDs: (32211)
 msgid "Reset Columns"
-msgstr ""
+msgstr "Oszlopok visszaállítása"
 
 #. Resource IDs: (32290)
 msgid "Reset this shortcut"
-msgstr ""
+msgstr "Parancsikon visszaállítása"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr ""
+msgstr "Visszaállítás mentésből..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
-msgstr ""
+msgstr "A bejegyzések egy részére történő korlátozás:"
 
 #. Resource IDs: (65535)
 msgid "Result summary:"
-msgstr ""
+msgstr "Eredményösszesítő:"
 
 #. Resource IDs: (510)
 msgid "Right Ctrl key"
-msgstr ""
+msgstr "Jobb Ctrl billentyű"
 
 #. Resource IDs: (65535)
 msgid ""
 "Right-click on the 'Y' in either of the first 2 columns for additional "
 "functions"
 msgstr ""
+"További funkciókért kattintson az 'Y'-ra az első két oszlop valamelyikében."
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
-msgstr ""
+msgstr "Román (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Romanian (Programmers)"
-msgstr ""
+msgstr "Román (Programozó)"
 
 #. Resource IDs: (519)
 msgid "Romanian (Standard)"
-msgstr ""
+msgstr "Román (Standard)"
 
 #. Resource IDs: (348)
 #, c-format
 msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr ""
+msgstr "%d. sor nem teljes. Kérem adja meg a mezőt és a kritériumot."
 
 #. Resource IDs: (351)
 msgid "Row number"
-msgstr ""
+msgstr "Sor száma"
 
 #. Resource IDs: (350)
 msgid "Rule"
-msgstr ""
+msgstr "Szabály"
 
 #. Resource IDs: (65535)
 msgid "Rule:"
-msgstr ""
+msgstr "Szabály:"
 
 #. Resource IDs: (1358)
 msgid "Run Cmd:"
-msgstr ""
+msgstr "CMD futtatása:"
 
 #. Resource IDs: (192, 251, 354)
 msgid "Run Command"
-msgstr ""
+msgstr "Futtatási parancs:"
 
 #. Resource IDs: (355)
 msgid "RunCmd copied "
@@ -5539,15 +5875,15 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Russian"
-msgstr ""
+msgstr "Orosz"
 
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
-msgstr ""
+msgstr "Orosz (írógép)"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
-msgstr ""
+msgstr "&Szinkronizálás..."
 
 #. Resource IDs: (192)
 #, c-format
@@ -5555,15 +5891,17 @@ msgid ""
 "SAX Parse Error during %s\n"
 "%s."
 msgstr ""
+"SAX elemzési hiba %s közben\n"
+"%s."
 
 #. Resource IDs: (191)
 #, c-format
 msgid "SAX Parse60 Error 0x%08X during %s."
-msgstr ""
+msgstr "SAX Parse60 hiba 0x%08X %s közben."
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
-msgstr ""
+msgstr "Széf kombináció megadása"
 
 #. Resource IDs: (133)
 msgid "Safe Combination Setup"
@@ -5571,89 +5909,89 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Safe Combination:"
-msgstr ""
+msgstr "Széf kombináció:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
-msgstr ""
+msgstr "Ugyanaz, mint az adatbázisé"
 
 #. Resource IDs: (1178)
 msgid "Same as when last saved"
-msgstr ""
+msgstr "Az utolsó mentéssel megegyezik"
 
 #. Resource IDs: (520)
 msgid "Sami Extended Finland-Sweden"
-msgstr ""
+msgstr "Sami Kiterjesztett Finnország-Svédország"
 
 #. Resource IDs: (519)
 msgid "Sami Extended Norway"
-msgstr ""
+msgstr "Sami Kiterjesztett Norvégia"
 
 #. Resource IDs: (1073)
 msgid "Sample"
-msgstr ""
+msgstr "Minta"
 
 #. Resource IDs: (345)
 msgid "Sample text cannot be empty"
-msgstr ""
+msgstr "A mintaszöveg nem lehet üres"
 
 #. Resource IDs: (1137)
 msgid "Save"
-msgstr ""
+msgstr "Mentés"
 
 #. Resource IDs: (32006)
 msgid "Save &As..."
-msgstr ""
+msgstr "Mentés &másként..."
 
 #. Resource IDs: (363, 3841)
 msgid "Save As"
-msgstr ""
+msgstr "Mentés másként..."
 
 #. Resource IDs: (332)
 msgid "Save Error"
-msgstr ""
+msgstr "Mentési hiba"
 
 #. Resource IDs: (368)
 msgid "Save all changes to Password Policies"
-msgstr ""
+msgstr "Minden jelszószabály-változás mentése"
 
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
-msgstr ""
+msgstr "Menti %1 változásait?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr ""
+msgstr "Adatbázis Szerkesztés vagy Hozzáadás utáni azonnali mentése"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
-msgstr ""
+msgstr "Sc&ript:"
 
 #. Resource IDs: (208)
 msgid "Schema does not have a version number."
-msgstr ""
+msgstr "A sémának nincs verziószáma."
 
 #. Resource IDs: (330)
 #, c-format
 msgid "Search has wrapped, continuing from the %s."
-msgstr ""
+msgstr "A keresés átfordult, folytatás innen: %s."
 
 #. Resource IDs: (348)
 msgid "Second date must be later than first"
-msgstr ""
+msgstr "A második dátumnak nagyobbnak kell lennie az elsőnél."
 
 #. Resource IDs: (348)
 msgid "Second number must be greater than first"
-msgstr ""
+msgstr "A második számnak nagyobbnak kell lennie az elsőnél."
 
 #. Resource IDs: (142)
 msgid "Security"
-msgstr ""
+msgstr "Biztonság"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
-msgstr ""
+msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
 
 #. Resource IDs: (208)
 msgid "See Password History filters"
@@ -5666,31 +6004,31 @@ msgstr ""
 #. Resource IDs: (3867)
 #, c-format
 msgid "Seek failed on %1"
-msgstr ""
+msgstr "%1 keresése sikertelen"
 
 #. Resource IDs: (352)
 msgid "Select"
-msgstr ""
+msgstr "Kiválasztás"
 
 #. Resource IDs: (2132)
 msgid "Select &All"
-msgstr ""
+msgstr "&Összes kiválasztása"
 
 #. Resource IDs: (337)
 msgid "Select Browser:"
-msgstr ""
+msgstr "Válasszon böngészőt:"
 
 #. Resource IDs: (497)
 msgid "Select Database"
-msgstr ""
+msgstr "Válasszon adatbázist"
 
 #. Resource IDs: (65535)
 msgid "Select Keyboard:"
-msgstr ""
+msgstr "Válasszon billentyűzetet"
 
 #. Resource IDs: (338)
 msgid "Select Location for Intermediate Backups"
-msgstr ""
+msgstr "Válasszon helyet a köztes mentéseknek"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -5698,47 +6036,47 @@ msgstr ""
 
 #. Resource IDs: (3858)
 msgid "Select a button."
-msgstr ""
+msgstr "Válasszon egy gombot."
 
 #. Resource IDs: (340)
 msgid "Select all entries"
-msgstr ""
+msgstr "Minden bejegyzés kijelölése"
 
 #. Resource IDs: (352)
 msgid "Select and apply a filter"
-msgstr ""
+msgstr "Szűrő kiválasztása és alkalmazása"
 
 #. Resource IDs: (523)
 msgid "Select entry to compare"
-msgstr ""
+msgstr "Válasszon bejegyzést az összehasonlításhoz"
 
 #. Resource IDs: (340)
 msgid "Select some entries"
-msgstr ""
+msgstr "Válasszon ki néhány bejegyzést"
 
 #. Resource IDs: (1153)
 msgid "Selected"
-msgstr ""
+msgstr "Kiválasztva"
 
 #. Resource IDs: (65535)
 msgid "Selected Fields:"
-msgstr ""
+msgstr "Kiváalsztott mezők:"
 
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
-msgstr ""
+msgstr "Kiválasztott mezők részletei:"
 
 #. Resource IDs: (1468)
 msgid "Selected policy details:"
-msgstr ""
+msgstr "Kiválasztott szabály részletei:"
 
 #. Resource IDs: (1380)
 msgid "Send"
-msgstr ""
+msgstr "Küldés"
 
 #. Resource IDs: (32074)
 msgid "Send &email"
-msgstr ""
+msgstr "&Email küldése"
 
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
@@ -5746,15 +6084,15 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Send email"
-msgstr ""
+msgstr "Email küldése"
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
-msgstr ""
+msgstr "Szerb (Cirill)"
 
 #. Resource IDs: (517)
 msgid "Serbian (Latin)"
-msgstr ""
+msgstr "Szerb (Latin)"
 
 #. Resource IDs: (517)
 msgid "Sesotho sa Leboa"
@@ -5762,32 +6100,32 @@ msgstr ""
 
 #. Resource IDs: (353)
 msgid "Session"
-msgstr ""
+msgstr "Munkamenet"
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
-msgstr ""
+msgstr "Dátum/idő beállítása"
 
 #. Resource IDs: (144)
 msgid "Set Default Username?"
-msgstr ""
+msgstr "Beállít alapértelmezett felhasználónevet?"
 
 #. Resource IDs: (351)
 msgid "Set Display Filter"
-msgstr ""
+msgstr "Megjelenítési szűrő beállítása"
 
 #. Resource IDs: (150, 349)
 msgid "Set Display Filters"
-msgstr ""
+msgstr "Megjelenítési szűrők beállítása"
 
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Display Filters: %d Added; %d Active"
-msgstr ""
+msgstr "Megjelenítési szűrők beállítása: %d hozzáadva, %d aktív"
 
 #. Resource IDs: (345)
 msgid "Set Entry's Password Policy"
-msgstr ""
+msgstr "Bejegyzés jelszószabályának beállítása"
 
 #. Resource IDs: (349)
 #, c-format
@@ -5801,11 +6139,11 @@ msgstr ""
 
 #. Resource IDs: (356)
 msgid "Set Password display font"
-msgstr ""
+msgstr "Jelszó megjelenítéséhez használt betűtípus"
 
 #. Resource IDs: (1373)
 msgid "Set Sample &Text"
-msgstr ""
+msgstr "&Mintaszöveg megadása"
 
 #. Resource IDs: (356)
 msgid "Set Tree/List display font"
@@ -5813,11 +6151,11 @@ msgstr ""
 
 #. Resource IDs: (357)
 msgid "Set Virtual Keyboard font"
-msgstr ""
+msgstr "Virtuális billentyűzet betűtípusának megadása"
 
 #. Resource IDs: (1)
 msgid "Set Yubikey"
-msgstr ""
+msgstr "Yubikey megadása"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5829,7 +6167,7 @@ msgstr ""
 
 #. Resource IDs: (8007, 8008)
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. Resource IDs: (65535)
 msgid "Shift + Double-Click Action:"
@@ -5841,15 +6179,15 @@ msgstr ""
 
 #. Resource IDs: (356)
 msgid "Shift+"
-msgstr ""
+msgstr "Shift+"
 
 #. Resource IDs: (192, 368)
 msgid "Shift+DCA"
-msgstr ""
+msgstr "Shift+DKM"
 
 #. Resource IDs: (368)
 msgid "Shift+Double Click Action"
-msgstr ""
+msgstr "Shift+Dupla Kattintás Művelet"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5961,15 +6299,15 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Slovak"
-msgstr ""
+msgstr "Szlovák"
 
 #. Resource IDs: (519)
 msgid "Slovak (QWERTY)"
-msgstr ""
+msgstr "Szlovák (QWERTY)"
 
 #. Resource IDs: (515)
 msgid "Slovenian"
-msgstr ""
+msgstr "Szlovén"
 
 #. Resource IDs: (357)
 msgid ""
@@ -6037,11 +6375,11 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
-msgstr ""
+msgstr "Spanyol"
 
 #. Resource IDs: (518)
 msgid "Spanish Variation"
-msgstr ""
+msgstr "Spanyol variáció"
 
 #. Resource IDs: (1439)
 msgid "Special set"
@@ -6049,7 +6387,7 @@ msgstr ""
 
 #. Resource IDs: (1486)
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -6111,11 +6449,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Suffix:"
-msgstr ""
+msgstr "Utótag:"
 
 #. Resource IDs: (515)
 msgid "Swedish"
-msgstr ""
+msgstr "Svéd"
 
 #. Resource IDs: (518)
 msgid "Swedish with Sami"
@@ -6123,11 +6461,11 @@ msgstr ""
 
 #. Resource IDs: (518)
 msgid "Swiss French"
-msgstr ""
+msgstr "Svájci francia"
 
 #. Resource IDs: (517)
 msgid "Swiss German"
-msgstr ""
+msgstr "Svájci német"
 
 #. Resource IDs: (192, 366)
 msgid "Symbols"
@@ -6178,7 +6516,7 @@ msgstr ""
 
 #. Resource IDs: (8018)
 msgid "Sz"
-msgstr ""
+msgstr "Sz"
 
 #. Resource IDs: (338)
 msgid "TRIAL"
@@ -6186,7 +6524,7 @@ msgstr ""
 
 #. Resource IDs: (1079)
 msgid "Tab"
-msgstr ""
+msgstr "Tab"
 
 #. Resource IDs: (515)
 msgid "Tajik"
@@ -6194,7 +6532,7 @@ msgstr ""
 
 #. Resource IDs: (516)
 msgid "Tamil"
-msgstr ""
+msgstr "Tamil"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
@@ -6202,7 +6540,7 @@ msgstr ""
 
 #. Resource IDs: (516)
 msgid "Tatar"
-msgstr ""
+msgstr "Tatár"
 
 #. Resource IDs: (516)
 msgid "Telugu"
@@ -6214,23 +6552,25 @@ msgstr ""
 
 #. Resource IDs: (347)
 msgid "Text"
-msgstr ""
+msgstr "Szöveg"
 
 #. Resource IDs: (317)
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Szövegfájlok (*.txt)|*.txt|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr ""
+"Szövegfájlok (*.txt)|*.txt|CSV fájlok (*.csv)|*.csv|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (356)
 msgid "Text will be red if the shortcut differs from its default value."
 msgstr ""
+"A szöveg vörös lesz ha a gyorsbillentyű eltér az alapértelmezett értékétől."
 
 #. Resource IDs: (1322)
 msgid "Text:"
-msgstr ""
+msgstr "Szöveg:"
 
 #. Resource IDs: (515)
 msgid "Thai Kedmanee"
@@ -6250,7 +6590,7 @@ msgstr ""
 
 #. Resource IDs: (333)
 msgid "That file is already open."
-msgstr ""
+msgstr "Ez a fájl már meg van nyitva."
 
 #. Resource IDs: (205)
 #, c-format
@@ -6258,36 +6598,41 @@ msgid ""
 "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
 "entry. It cannot be imported."
 msgstr ""
+"%s bejegyzés \"%s, %s, %s\" nem egy normál vagy létező %s alapbejegyzésre "
+"mutat. Nem lehet importálni."
 
 #. Resource IDs: (510)
 msgid ""
 "The ALT key is not used on any keyboard to select characters. Use the 'Alt "
 "Num' key to enter a character via its decimal value."
 msgstr ""
+"Az ALT billentyű egyetlen billentyűzeten sem használható karakterek "
+"kijelölésére. Használja a numerikus billentyűzetet egy karakter "
+"hexadecimális formában való megadásához."
 
 #. Resource IDs: (372)
 msgid "The Alt and Ctrl keys have been added."
-msgstr ""
+msgstr "Az Alt és Ctrl billenytűk hozzáadva."
 
 #. Resource IDs: (372)
 msgid "The Alt and Shift keys have been added."
-msgstr ""
+msgstr "Az Alt és Shift billentyűk hozzáadva."
 
 #. Resource IDs: (372)
 msgid "The Alt key has been added."
-msgstr ""
+msgstr "Az Alt billentyű hozzáadva."
 
 #. Resource IDs: (372)
 msgid "The Alt, Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Az Alt, Ctrl és Shift billentyűk hozzáadva."
 
 #. Resource IDs: (372)
 msgid "The Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "A Ctrl és Shift billentyűk hozzáadva."
 
 #. Resource IDs: (372)
 msgid "The Ctrl key has been added."
-msgstr ""
+msgstr "A Ctrl billentyű hozzáadva."
 
 #. Resource IDs: (215)
 msgid ""
@@ -6296,10 +6641,14 @@ msgid ""
 "\n"
 "Import aborted."
 msgstr ""
+"A TXT vagy CSV fájl nem lett beimportálva mert az egyes bejegyzések több "
+"sort is elfoglalnak a fájlban.\n"
+"\n"
+"Importálás megszakítva."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
-msgstr ""
+msgstr "A kombináció nem lehet üres."
 
 #. Resource IDs: (332)
 #, c-format
@@ -6308,6 +6657,8 @@ msgid ""
 "Do you wish to look for it elsewhere (Search), create a new database (New), "
 "or Exit?"
 msgstr ""
+"%s adatbázis nem nyitható meg.\n"
+"Kívánja megkeresni, létrehoz egy újat vagy kilép?"
 
 #. Resource IDs: (366)
 msgid ""
@@ -6316,6 +6667,10 @@ msgid ""
 "\n"
 "Please close the database and re-open it in R/W mode."
 msgstr ""
+"Az adatbázis megváltozott azóta, hogy meg lett nyitva olvasásra, ezért nem "
+"lehetséges átváltani író-olvasó módra.\n"
+"\n"
+"Kérem zárja be az adatbázist és nyissa újra író-olvasó módban."
 
 #. Resource IDs: (339)
 #, c-format
@@ -6330,6 +6685,16 @@ msgid ""
 "\n"
 "Note: Only one user at a time can open the database for writing."
 msgstr ""
+"Az adatbázis:\n"
+"%s\n"
+"\n"
+"használatban van:\n"
+"%s%s által.\n"
+"\n"
+"Megnyitja az adatbázist csak olvasásra, vagy kilép?\n"
+"\n"
+"Megjegyzés: Egyidőben csak egy felhasználó nyithatja meg az adatbázist "
+"írásra."
 
 #. Resource IDs: (328)
 #, c-format
@@ -6346,6 +6711,18 @@ msgid ""
 "being used by anyone else,\n"
 "including another copy of Password Safe running on your machine."
 msgstr ""
+"Az adatbázis:\n"
+"%s\n"
+"\n"
+"használatban van:\n"
+"%s%s által.\n"
+"\n"
+"Megnyitja az adatbázist csak olvasásra, vagy kilép?\n"
+"\n"
+"Megjegyzés: Csak akkor válassza az \"Írható-olvasható\" módot, ha biztos "
+"abban, hogy az adatbázis\n"
+"nincs használatban valaki más által, beleértve az Ön gépén futó PasswordSafe "
+"program egy másik példányát."
 
 #. Resource IDs: (361)
 #, c-format
@@ -6837,11 +7214,11 @@ msgstr ""
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
-msgstr ""
+msgstr "U&RL:"
 
 #. Resource IDs: (188, 327)
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. Resource IDs: (355)
 msgid "URL copied "
@@ -6853,15 +7230,15 @@ msgstr ""
 
 #. Resource IDs: (192)
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 #. Resource IDs: (515)
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrán"
 
 #. Resource IDs: (520)
 msgid "Ukrainian (Enhanced)"
-msgstr ""
+msgstr "Ukrán (továbbfejlesztett)"
 
 #. Resource IDs: (190)
 msgid ""
@@ -6967,7 +7344,7 @@ msgstr ""
 
 #. Resource IDs: (1475, 32082)
 msgid "Undo"
-msgstr ""
+msgstr "Visszavonás"
 
 #. Resource IDs: (368)
 msgid "Undo the last change to password policies"
@@ -6991,27 +7368,27 @@ msgstr ""
 
 #. Resource IDs: (211)
 msgid "Unknown"
-msgstr ""
+msgstr "Ismeretlen"
 
 #. Resource IDs: (329)
 msgid "Unknown            "
-msgstr ""
+msgstr "Ismeretlen"
 
 #. Resource IDs: (350)
 msgid "Unknown fields"
-msgstr ""
+msgstr "Ismeretlen mezők"
 
 #. Resource IDs: (1263)
 msgid "Unknown fields:"
-msgstr ""
+msgstr "Ismeretlen mezők:"
 
 #. Resource IDs: (211)
 msgid "Unknown function"
-msgstr ""
+msgstr "Ismeretlen függvény"
 
 #. Resource IDs: (211)
 msgid "Unknown object"
-msgstr ""
+msgstr "Ismeretlen objektum"
 
 #. Resource IDs: (32251)
 msgid "Unlock"
@@ -7059,7 +7436,7 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #. Resource IDs: (313)
 msgid ""
@@ -7240,11 +7617,11 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnámi"
 
 #. Resource IDs: (352)
 msgid "View"
-msgstr ""
+msgstr "Nézet"
 
 #. Resource IDs: (344)
 msgid "View Aliases"
@@ -7252,12 +7629,12 @@ msgstr ""
 
 #. Resource IDs: (329, 32220)
 msgid "View Entry"
-msgstr ""
+msgstr "Bejegyzés megtekintése"
 
 #. Resource IDs: (330)
 #, c-format
 msgid "View Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Bejegyzés megtekintése:   «%s» «%s» «%s»"
 
 #. Resource IDs: (157, 1431)
 msgid "View Report"
@@ -7265,23 +7642,23 @@ msgstr ""
 
 #. Resource IDs: (344)
 msgid "View Shortcut"
-msgstr ""
+msgstr "Billentyűparancs megtekintése"
 
 #. Resource IDs: (345)
 msgid "View Shortcuts"
-msgstr ""
+msgstr "Billentyűparancsok megtekintése"
 
 #. Resource IDs: (352)
 msgid "View a filter"
-msgstr ""
+msgstr "egy szűrő megtekintése"
 
 #. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
-msgstr ""
+msgstr "A kiválasztott bejegyzés megtekintése/szerkesztése"
 
 #. Resource IDs: (32201)
 msgid "Visit Password Safe &website..."
-msgstr ""
+msgstr "A Password Safe &weboldalának meglátogatása..."
 
 #. Resource IDs: (363)
 msgid ""
@@ -7309,11 +7686,11 @@ msgstr ""
 
 #. Resource IDs: (1232)
 msgid "Warn"
-msgstr ""
+msgstr "Figyelmeztet"
 
 #. Resource IDs: (209, 1362)
 msgid "Warning"
-msgstr ""
+msgstr "Figyelmeztetés"
 
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
@@ -7321,7 +7698,7 @@ msgstr ""
 
 #. Resource IDs: (1370)
 msgid "Warning goes here if generated"
-msgstr ""
+msgstr "Figyelmeztetések kerülnek ide, ha lesznek"
 
 #. Resource IDs: (331)
 #, c-format
@@ -7330,42 +7707,46 @@ msgid ""
 "\n"
 " %s"
 msgstr ""
+"Gyenge jelszó:\n"
+"\n"
+" %s"
 
 #. Resource IDs: (361)
 msgid "What saved"
-msgstr ""
+msgstr "Mi lett mentve"
 
 #. Resource IDs: (361)
 msgid "When saved"
-msgstr ""
+msgstr "Mikor lett mentve"
 
 #. Resource IDs: (1105, 1109, 1111, 1113, 1117)
 msgid "Whenever"
-msgstr ""
+msgstr "Bármikor "
 
 #. Resource IDs: (361)
 msgid "Who saved"
-msgstr ""
+msgstr "Ki mentette "
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
-msgstr ""
+msgstr "Win32 nem kezelt kivétel"
 
 #. Resource IDs: (363)
 msgid "Windows Registry"
-msgstr ""
+msgstr "Windows Registry (Rendszerleíróadatbázis)"
 
 #. Resource IDs: (517)
 msgid "Wolof"
-msgstr ""
+msgstr "Wolof"
 
 #. Resource IDs: (354)
 msgid "Word Wrap"
-msgstr ""
+msgstr "Hosszú sorok törése"
 
 #. Resource IDs: (1363)
 msgid "Word Wrap Notes in Add && Edit"
 msgstr ""
+"Hosszú sorok törése a Megjegyzések mezőben Hozzáadásnál és Szerkesztésnél "
 
 #. Resource IDs: (332)
 #, c-format
@@ -7374,10 +7755,13 @@ msgid ""
 "\n"
 "It would then be used by default for new items."
 msgstr ""
+"Beállítja \"%s\"-t alapértelmezett felhasználónévnek?\n"
+"\n"
+"Új bejegyzések esetén ez lenne az alapértelmezés. "
 
 #. Resource IDs: (333)
 msgid "Write Error"
-msgstr ""
+msgstr "Írási hiba"
 
 #. Resource IDs: (359)
 msgid ""
@@ -7385,6 +7769,9 @@ msgid ""
 "File may have been corrupted.\n"
 "Try saving in a different location"
 msgstr ""
+"Írási művelet sikertelen!\n"
+"A fájl megsérülhetett.\n"
+"Próbálja meg elmenteni egy másik mappába"
 
 #. Resource IDs: (320)
 msgid ""
@@ -7393,74 +7780,76 @@ msgstr ""
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
-msgstr ""
+msgstr "X"
 
 #. Resource IDs: (347)
 msgid "XML"
-msgstr ""
+msgstr "XML"
 
 #. Resource IDs: (191)
 #, c-format
 msgid "XML %s: line %d character %d: %s"
-msgstr ""
+msgstr "XML %s: sor: %d pozíció: %d: %s"
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
-msgstr ""
+msgstr "XML fájlok (*.xml)|*.xml|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
-msgstr ""
+msgstr "XML fájlok (*.xml)|*.xml||"
 
 #. Resource IDs: (372, 32085)
 msgid "XML format..."
-msgstr ""
+msgstr "XML formátum..."
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
-msgstr ""
+msgstr "ÉÉHHNN_ÓÓPPMM"
 
 #. Resource IDs: (212)
 msgid "Yes"
-msgstr ""
+msgstr "Igen"
 
 #. Resource IDs: (257)
 #, c-format
 msgid "Yes (at least %d)"
-msgstr ""
+msgstr "Igen (legalább %d)"
 
 #. Resource IDs: (257)
 #, c-format
 msgid "Yes - At least %d from %s: %s"
-msgstr ""
+msgstr "Igen - Legalább %d ennyiből: %s: %s"
 
 #. Resource IDs: (257)
 #, c-format
 msgid "Yes - EasyVision Symbols: %s"
-msgstr ""
+msgstr "Igen - EasyVision szimbólumok: %s"
 
 #. Resource IDs: (257)
 #, c-format
 msgid "Yes - Pronounceable Symbols: %s"
-msgstr ""
+msgstr "Igen - kimondható szimbólumok: %s"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
-msgstr ""
+msgstr "Igen:"
 
 #. Resource IDs: (517)
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
 #. Resource IDs: (366)
 msgid ""
 "You have chosen not to save your changes, which will be lost. Do you wish to "
 "continue?"
 msgstr ""
+"Ön úgy döntött, hogy nem menti a változásokat, amelyek így el fognak veszni. "
+"Folytatja? "
 
 #. Resource IDs: (362)
 msgid "You must save this database before it can be exported."
-msgstr ""
+msgstr "Exportálás előtt mentenie kell ezt az adatbázist."
 
 #. Resource IDs: (361)
 msgid ""
@@ -7470,6 +7859,12 @@ msgid ""
 "you aren't sure, continue with the current database and use the database "
 "Compare function to view the differences between the versions."
 msgstr ""
+"Az aktuálisan megnyitott adatbázis lesz az első sorban. A Failsafe mentési "
+"fájlok azalatt lesznek megjelenítve. Ha a jelszó ugyanaz, mint az aktuális "
+"adatbázisban, akkor a mentési fájl tulajdonsági is meg lesznek jelenítve. Ha "
+"nem biztos a dolgában, folytassa az aktuális adatbázissal és használja az "
+"adatbázisok összehasonlítása funkciót a verziók közötti különbségek "
+"megjelenítéséhez."
 
 #. Resource IDs: (357)
 #, c-format
@@ -7477,212 +7872,272 @@ msgid ""
 "Your requested font, '%s', could not be found (not installed?), using '%s' "
 "instead."
 msgstr ""
+"A kért betűkészlet, '%s', nem található (nincs telepítve?), '%s' kerül "
+"felhasználásra."
 
 #. Resource IDs: (1469)
 msgid ""
 "YubiKey Client API not installed.\r\n"
 "http://www.yubico.com/yubikey"
 msgstr ""
+"YubiKey kliens API nincs telepítve.\r\n"
+"http://www.yubico.com/yubikey"
 
 #. Resource IDs: (526)
 msgid "YubiKey Configuration"
-msgstr ""
+msgstr "YubiKey Konfiguráció"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Secret Key (20 bytes Hex)"
-msgstr ""
+msgstr "YubiKey titkos kulcs (20 hexadecimális számjegy)"
 
 #. Resource IDs: (65535)
 msgid "YubiKey Serial Number:"
-msgstr ""
+msgstr "YubiKey sorozatszám:"
 
 #. Resource IDs: (1469)
 msgid ""
 "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/"
 "PasswordSafe"
 msgstr ""
+"A PasswordSafe-hez a YubiKey megvásárolható ezen a címen: http://www.yubico."
+"com/PasswordSafe"
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
-msgstr ""
+msgstr "Yubikey"
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
-msgstr ""
+msgstr "Nagyítás\tCtrl + NUM +"
 
 #. Resource IDs: (371)
 msgid "Zoom out\tCtrl + NUM SUB"
-msgstr ""
+msgstr "Kicsinyítés\tCtrl + NUM -"
 
 #. Resource IDs: (330)
 msgid "[No current database]"
-msgstr ""
+msgstr "[Nincs aktuális adatbázis]"
 
 #. Resource IDs: (328)
 msgid "[Notes hidden - click here to display]"
-msgstr ""
+msgstr "[Megjegyzések elrejtve - kattintson ide a megjelenítéshez]"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Add Group"
 msgstr ""
+"\n"
+"Csoport hozzáadása"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Add New Entry"
 msgstr ""
+"\n"
+"Új bejegyzés hozzáadása"
 
 #. Resource IDs: (2020)
 msgid ""
 "\n"
 "Advanced Find Options"
 msgstr ""
+"\n"
+"Kiterjesztett keresési beállítások"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Browse to URL"
 msgstr ""
+"\n"
+"Ugrás URL-re"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Browse to URL + Autotype"
 msgstr ""
+"\n"
+"Ugrás URL-re + Autogépelés"
 
 #. Resource IDs: (2020)
 msgid ""
 "\n"
 "Case insensitive search"
 msgstr ""
+"\n"
+"Kis- nagybetű-érzéketlen keresés"
 
 #. Resource IDs: (2020)
 msgid ""
 "\n"
 "Case sensitive search"
 msgstr ""
+"\n"
+"Kis- nagybetű-érzékeny keresés"
 
 #. Resource IDs: (2009)
 msgid ""
 "\n"
 "Clear Filters"
 msgstr ""
+"\n"
+"Szűrők törlése"
 
 #. Resource IDs: (2019)
 msgid ""
 "\n"
 "Clear Find"
 msgstr ""
+"\n"
+"Keresőmező törlése"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Clear the clipboard contents"
 msgstr ""
+"\n"
+"Vágólap tartalmának törlése"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Close Database"
 msgstr ""
+"\n"
+"Adatbázis bezárása"
 
 #. Resource IDs: (2019)
 msgid ""
 "\n"
 "Close Find Bar"
 msgstr ""
+"\n"
+"Keresősáv bezárása"
 
 #. Resource IDs: (2007)
 msgid ""
 "\n"
 "Collapse All"
 msgstr ""
+"\n"
+"Az összes összecsukása"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Compare entries..."
 msgstr ""
+"\n"
+"Bejegyzések összehasonlítása..."
 
 #. Resource IDs: (2002)
 msgid ""
 "\n"
 "Compare two Databases"
 msgstr ""
+"\n"
+"Két adatbázis összehasonlítása"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Copy Notes to Clipboard"
 msgstr ""
+"\n"
+"Jegyzetek másolása a vágólapra"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Copy Password to Clipboard"
 msgstr ""
+"\n"
+"Jelszó másolása a vágólapra"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Copy Run Command to Clipboard"
 msgstr ""
+"\n"
+"Futtatási parancs másolása a vágólapra"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Copy Username to Clipboard"
 msgstr ""
+"\n"
+"Felhasználónév másolása a vágólapra"
 
 #. Resource IDs: (2020)
 msgid ""
 "\n"
 "Create report of previous Find search"
 msgstr ""
+"\n"
+"Jelentés készítése az előző keresésről"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Delete an Entry"
 msgstr ""
+"\n"
+"Egy bejegyzés törlése"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Display subset of Password"
 msgstr ""
+"\n"
+"Jelszó egy részének megjelenítése"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Duplicate Entry"
 msgstr ""
+"\n"
+"Bejegyzés megkettőzése"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Duplicate Group"
 msgstr ""
+"\n"
+"Csoport megkettőzése"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Edit Base entry"
 msgstr ""
+"\n"
+"Alapbejegyzés szerkesztése"
 
 #. Resource IDs: (2008)
 msgid ""
 "\n"
 "Edit Filters"
 msgstr ""
+"\n"
+"Szűrők szerkesztése"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Edit an Entry"
 msgstr ""
+"\n"
+"Egy bejegyzés szerkesztése"
 
 #. Resource IDs: (191)
 #, c-format
@@ -7690,96 +8145,128 @@ msgid ""
 "\n"
 "Error in Password History for entry: »%s»%s»%s»: "
 msgstr ""
+"\n"
+"Hiba a jelszótörténetben ennél a bejegyzésnél: »%s»%s»%s»: "
 
 #. Resource IDs: (2007)
 msgid ""
 "\n"
 "Expand All"
 msgstr ""
+"\n"
+"Összes kibontása"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Export Entry in XML format..."
 msgstr ""
+"\n"
+"Bejegyzés exportálása XML formátumba..."
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Export Entry to Plain Text..."
 msgstr ""
+"\n"
+"Bejegyzés exportálása egyszerű szövegbe..."
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Export to Text"
 msgstr ""
+"\n"
+"Exportálás szövegbe"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Export to XML"
 msgstr ""
+"\n"
+"Exportálás XML-be"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Find Next"
 msgstr ""
+"\n"
+"Következő keresése"
 
 #. Resource IDs: (2004)
 msgid ""
 "\n"
 "Find Previous"
 msgstr ""
+"\n"
+"Előző keresése"
 
 #. Resource IDs: (2010)
 msgid ""
 "\n"
 "Generate Password"
 msgstr ""
+"\n"
+"Jelszó generálása"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Go to Base entry"
 msgstr ""
+"\n"
+"Alapbejegyzésre ugrás "
 
 #. Resource IDs: (3605)
 msgid ""
 "\n"
 "Help"
 msgstr ""
+"\n"
+"Súgó"
 
 #. Resource IDs: (2002)
 msgid ""
 "\n"
 "Import Text"
 msgstr ""
+"\n"
+"Szöveg Importálása"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Import XML"
 msgstr ""
+"\n"
+"XML Importálása"
 
 #. Resource IDs: (2017)
 msgid ""
 "\n"
 "List View/Tree View"
 msgstr ""
+"\n"
+"Listanézet/Fanézet"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Make New Database"
 msgstr ""
+"\n"
+"Új adatbázis létrehozása"
 
 #. Resource IDs: (2008)
 msgid ""
 "\n"
 "Manage Filters"
 msgstr ""
+"\n"
+"Szűrők kezelése"
 
 #. Resource IDs: (214)
 #, c-format
@@ -7787,66 +8274,88 @@ msgid ""
 "\n"
 "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
 msgstr ""
+"\n"
+"Összefésülés kész: %d %s hozzáadva (%d %s, %d %s, %d %s)"
 
 #. Resource IDs: (2002)
 msgid ""
 "\n"
 "Merge into Database"
 msgstr ""
+"\n"
+"Adatbázisba fésülés"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Open Another Database"
 msgstr ""
+"\n"
+"Másik adatbázis megnyitása"
 
 #. Resource IDs: (2010)
 msgid ""
 "\n"
 "Options"
 msgstr ""
+"\n"
+"Beállítások"
 
 #. Resource IDs: (2010)
 msgid ""
 "\n"
 "Password Policies"
 msgstr ""
+"\n"
+"Jelszóházirendek"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Perform Autotype"
 msgstr ""
+"\n"
+"Autogépelés"
 
 #. Resource IDs: (331)
 msgid ""
 "\n"
 "Please try another"
 msgstr ""
+"\n"
+"Próbáljon másikat"
 
 #. Resource IDs: (326)
 msgid ""
 "\n"
 "Program will terminate."
 msgstr ""
+"\n"
+"A program leáll."
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Protect All Entries"
 msgstr ""
+"\n"
+"Összes bejegyzés védelme"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Protect Entry"
 msgstr ""
+"\n"
+"Bejegyzés védelme"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Redo"
 msgstr ""
+"\n"
+"Ismét"
 
 #. Resource IDs: (362)
 #, c-format
@@ -7854,60 +8363,80 @@ msgid ""
 "\n"
 "Renamed %d %s"
 msgstr ""
+"\n"
+"%d %s átnevezve"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Run Command"
 msgstr ""
+"\n"
+"Parancs Futtatása"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Save Database"
 msgstr ""
+"\n"
+"Adatbázis Mentése"
 
 #. Resource IDs: (2001)
 msgid ""
 "\n"
 "Save Database As..."
 msgstr ""
+"\n"
+"Adatbázis mentése másként..."
 
 #. Resource IDs: (2016)
 msgid ""
 "\n"
 "Select Entry"
 msgstr ""
+"\n"
+"Bejegyzés Kiválasztása"
 
 #. Resource IDs: (2005)
 msgid ""
 "\n"
 "Send email"
 msgstr ""
+"\n"
+"Email küldése"
 
 #. Resource IDs: (2008)
 msgid ""
 "\n"
 "Set/Clear Filters"
 msgstr ""
+"\n"
+"Szűrők Beállítása/Törlése"
 
 #. Resource IDs: (2007)
 msgid ""
 "\n"
 "Show Find Toolbar"
 msgstr ""
+"\n"
+"Keresés Eszköztár mutatása"
 
 #. Resource IDs: (2008)
 msgid ""
 "\n"
 "Show Unsaved Changes"
 msgstr ""
+"\n"
+"Nem Mentett Változtatások Mutatása"
 
 #. Resource IDs: (2009)
 msgid ""
 "\n"
 "Show entries with Password Expiry dates"
 msgstr ""
+"\n"
+"Jelszó lejárattal rendelkező bejegyzések mutatása"
 
 #. Resource IDs: (334)
 #, c-format
@@ -7915,12 +8444,16 @@ msgid ""
 "\n"
 "Skipped %d %s"
 msgstr ""
+"\n"
+"Átugorva %d %s"
 
 #. Resource IDs: (2002)
 msgid ""
 "\n"
 "Synchronize Databases"
 msgstr ""
+"\n"
+"Adatbázisok Szinkronizálása"
 
 #. Resource IDs: (214)
 #, c-format
@@ -7928,6 +8461,8 @@ msgid ""
 "\n"
 "Synchronize completed: %d %s updated"
 msgstr ""
+"\n"
+"Szinkronizálás kész: %d %s módosítva"
 
 #. Resource IDs: (214)
 #, c-format
@@ -7935,6 +8470,8 @@ msgid ""
 "\n"
 "The following %s %s updated:"
 msgstr ""
+"\n"
+"Az alábbi %s %s módosítva:"
 
 #. Resource IDs: (214)
 #, c-format
@@ -7942,6 +8479,8 @@ msgid ""
 "\n"
 "The following new %s %s merged into this database:"
 msgstr ""
+"\n"
+"Az alábbi új %s %s befésülve ebbe az adatbázisba:"
 
 #. Resource IDs: (341)
 msgid ""
@@ -7949,42 +8488,57 @@ msgid ""
 "This field is being edited in your\n"
 "default text editor."
 msgstr ""
+"\n"
+"Ez a mező az Ön alapértelemzett\n"
+"szövegszerkesztőjében van szerkeszve."
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Undo"
 msgstr ""
+"\n"
+"Visszavonás"
 
 #. Resource IDs: (192)
 msgid ""
 "\n"
 "Unexpected exception during parsing."
 msgstr ""
+"\n"
+"Nem várt kivétel a feldolgozás során."
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Unprotect All Entries"
 msgstr ""
+"\n"
+"Összes bejegyzés védelmének feloldása"
 
 #. Resource IDs: (2006)
 msgid ""
 "\n"
 "Unprotect Entry"
 msgstr ""
+"\n"
+"Bejegyzés védelmének feloldása"
 
 #. Resource IDs: (331)
 msgid ""
 "\n"
 "Use it anyway?"
 msgstr ""
+"\n"
+"Mégis használjam?"
 
 #. Resource IDs: (2017)
 msgid ""
 "\n"
 "View Reports"
 msgstr ""
+"\n"
+"Jelentések megtekintése"
 
 #. Resource IDs: (328)
 msgid ""
@@ -7993,6 +8547,11 @@ msgid ""
 "Cannot open database. It probably does not exist.\n"
 "Please select to Open another database, create a New database or Cancel."
 msgstr ""
+"\n"
+"\n"
+"Adatbázis megnyitása sikertelen. Valószínűleg nem létezik.\n"
+"Kérem válasszon másik adatbázist, hozzon létre újat vagy válassza a Mégse "
+"lehetőséget."
 
 #. Resource IDs: (354)
 msgid ""
@@ -8000,6 +8559,9 @@ msgid ""
 "\n"
 "Ignore this and save anyway - Yes/no?"
 msgstr ""
+"\n"
+"\n"
+"Figyelmen kívül hagyás és mentés - Igen/nem?"
 
 #. Resource IDs: (342)
 msgid ""
@@ -8007,6 +8569,10 @@ msgid ""
 "\n"
 "Select Yes to continue with this password or No to cancel?"
 msgstr ""
+"\n"
+"\n"
+"Válassza az Igen-t a jelenlegi jelszóval való folytatáshoz vagy a Nem-et az "
+"elvetéshez?"
 
 #. Resource IDs: (335)
 msgid ""
@@ -8014,6 +8580,10 @@ msgid ""
 "\n"
 "The databases are identical when comparing the selected or default fields!"
 msgstr ""
+"\n"
+"\n"
+"A kiválaszott vagy alapértelmezők alapján összehasonlítva az adatbázisok "
+"egyformák!"
 
 #. Resource IDs: (341)
 msgid ""
@@ -8021,12 +8591,17 @@ msgid ""
 "\n"
 "Unknown fields will also be copied with the entry."
 msgstr ""
+"\n"
+"\n"
+"Ismeretlen mezők is másolva lesznek a bejegyzéssel."
 
 #. Resource IDs: (345)
 msgid ""
 "\n"
 "email: "
 msgstr ""
+"\n"
+"email: "
 
 #. Resource IDs: (362)
 #, c-format
@@ -8034,17 +8609,21 @@ msgid ""
 "\n"
 "with Password History errors %d"
 msgstr ""
+"\n"
+"Jelszóelőzmény hibákkal  %d"
 
 #. Resource IDs: (367)
 msgid ""
 "\n"
 "with warnings"
 msgstr ""
+"\n"
+"figyelmeztetésekkel "
 
 #. Resource IDs: (346)
 #, c-format
 msgid "\t%s was restricted to the following fields:"
-msgstr ""
+msgstr "\t%s korlátozva lett az alábbi mezőkre:"
 
 #. Resource IDs: (336)
 #, c-format
@@ -8052,33 +8631,41 @@ msgid ""
 "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
 "\t\thas differences in the following fields:"
 msgstr ""
+"\tBejegyzés - Csoport:\"%s\"; Megnevezés:\"%s\"; Felhasználó:\"%s\"\n"
+"\t\teltérések vannak az alábbi mezőkben:"
 
 #. Resource IDs: (335)
 #, c-format
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr ""
+msgstr "\tCsoport:'%s'; Megnevezés:'%s'; Felhasználó:'%s'"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "\tGroup='%s', Title='%s', User='%s' %s"
-msgstr ""
+msgstr "\tCsoport='%s', Megnevezés='%s', Felhasználó='%s' %s"
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string '%s'"
 msgstr ""
+"\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
 
 #. Resource IDs: (215)
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
+"\tEgy vagy több jelszóházirend neve megtalálható az adatbázisban, de más "
+"beállításokkal. Az érintett jelszóházirendek át lettek nevezve."
 
 #. Resource IDs: (215)
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
+"\tEgy vagy több jelszóházirend neve nem található meg az adatbázisban. Az "
+"érintett bejegyzéseknél be lett állítva, hogy az adatbázis alapértelmezett "
+"jelszóházirendjét használják."
 
 #. Resource IDs: (216)
 #, c-format
@@ -8086,16 +8673,19 @@ msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %s entries."
 msgstr ""
+"\tEgy vagy több bejegyzés billentyűparancsa már hozzá lett rendelve az ebben "
+"az adatbázisban lévő valamely bejegyzéshez. Az alábbi bejegyzésekről el lett "
+"távolítva a billentyűparancs: %s."
 
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
-msgstr ""
+msgstr "\t'%s' nevű jelszóházirend nem szerepel az adatbázisban."
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries contain search string '%s'"
-msgstr ""
+msgstr "\tAz alábbi bejegyzések tartalmazzák a keresett szöveget: '%s'"
 
 #. Resource IDs: (346)
 #, c-format
@@ -8103,291 +8693,294 @@ msgid ""
 "\tThe following restrictions were selected:\n"
 "\t\t %s"
 msgstr ""
+"\tAz alábbi korlátozások lettek kiválaszva:\n"
+"\t\t %s"
 
 #. Resource IDs: (205)
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr ""
+msgstr "Egy a bejegyzés a hozzá kapcsolódó alapbejegyzés egy álneve lett."
 
 #. Resource IDs: (205)
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
 msgstr ""
+"Egy a bejegyzés megmarad normál típusúnak és a jelszó nem változott meg."
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr ""
+msgstr "egy parancsikon alapbejegyzése"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
-msgstr ""
+msgstr "egy álnév alapbejegyzése"
 
 #. Resource IDs: (206)
 msgid "a normal entry"
-msgstr ""
+msgstr "egy normál bejegyzés"
 
 #. Resource IDs: (206)
 msgid "a shortcut entry"
-msgstr ""
+msgstr "egy parancsikon bejegyzés"
 
 #. Resource IDs: (211)
 msgid "added but not yet saved to database"
-msgstr ""
+msgstr "hozzáadva, de még nincs mentve az adatbázisba"
 
 #. Resource IDs: (207)
 msgid "after"
-msgstr ""
+msgstr "után"
 
 #. Resource IDs: (205)
 msgid "alias"
-msgstr ""
+msgstr "álnév"
 
 #. Resource IDs: (213)
 msgid "aliases"
-msgstr ""
+msgstr "álnevek"
 
 #. Resource IDs: (206)
 msgid "an alias entry"
-msgstr ""
+msgstr "egy álnév bejegyzés"
 
 #. Resource IDs: (3841)
 msgid "an unnamed file"
-msgstr ""
+msgstr "egy névtelen fájl"
 
 #. Resource IDs: (1307, 1419)
 msgid "and"
-msgstr ""
+msgstr "és"
 
 #. Resource IDs: (1352)
 msgid "as default username"
-msgstr ""
+msgstr "alapértelmezett felhasználónévként"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr ""
+msgstr "autogépelés:"
 
 #. Resource IDs: (207)
 msgid "before"
-msgstr ""
+msgstr "előtt"
 
 #. Resource IDs: (206)
 msgid "begins with"
-msgstr ""
+msgstr "ezzel kezdődik:"
 
 #. Resource IDs: (207)
 msgid "between"
-msgstr ""
+msgstr "között"
 
 #. Resource IDs: (355)
 msgid "bottom"
-msgstr ""
+msgstr "utolsó"
 
 #. Resource IDs: (211)
 msgid "changed but not yet saved to database"
-msgstr ""
+msgstr "megváltoztatva, de még nincs mentve az adatbázisba"
 
 #. Resource IDs: (365)
 msgid "compared"
-msgstr ""
+msgstr "összehasonlítva"
 
 #. Resource IDs: (214)
 msgid "conflict"
-msgstr ""
+msgstr "ütközés"
 
 #. Resource IDs: (214)
 msgid "conflicts"
-msgstr ""
+msgstr "ütközések"
 
 #. Resource IDs: (206)
 msgid "contains"
-msgstr ""
+msgstr "tartalmaz"
 
 #. Resource IDs: (214)
 msgid "contains all of"
-msgstr ""
+msgstr "mindegyiket tartalmazza"
 
 #. Resource IDs: (214)
 msgid "contains any of"
-msgstr ""
+msgstr "ezek közül bármelyiket tartalmazza:"
 
 #. Resource IDs: (216)
 msgid "copied"
-msgstr ""
+msgstr "másolva"
 
 #. Resource IDs: (1093)
 msgid "databases."
-msgstr ""
+msgstr "adatbázisok."
 
 #. Resource IDs: (1321)
 msgid "day(s)"
-msgstr ""
+msgstr "nap(ok)"
 
 #. Resource IDs: (1298)
 msgid "days"
-msgstr ""
+msgstr "nap"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
-msgstr ""
+msgstr "nap a jelszó lejártáig"
 
 #. Resource IDs: (251)
 msgid "default"
-msgstr ""
+msgstr "alapértelmezett"
 
 #. Resource IDs: (257)
 msgid "default symbol set"
-msgstr ""
+msgstr "alapértelmezett szimbólumkészlet"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
-msgstr ""
+msgstr "nem ezzel kezdődik:"
 
 #. Resource IDs: (206)
 msgid "does not contain"
-msgstr ""
+msgstr "nem tartalmaz"
 
 #. Resource IDs: (214)
 msgid "does not contain all of"
-msgstr ""
+msgstr "nem tartalmazza mindet"
 
 #. Resource IDs: (214)
 msgid "does not contain any of"
-msgstr ""
+msgstr "egyiket sem tartalmazza"
 
 #. Resource IDs: (206)
 msgid "does not end with"
-msgstr ""
+msgstr "nem erre végződik:"
 
 #. Resource IDs: (206)
 msgid "does not equal"
-msgstr ""
+msgstr "nem egyenlő"
 
 #. Resource IDs: (192)
 msgid "e-mail"
-msgstr ""
+msgstr "e-mail"
 
 #. Resource IDs: (358)
 msgid "email"
-msgstr ""
+msgstr "email"
 
 #. Resource IDs: (358)
 msgid "email copied "
-msgstr ""
+msgstr "email másolva"
 
 #. Resource IDs: (206)
 msgid "ends with"
-msgstr ""
+msgstr "erre végződik:"
 
 #. Resource IDs: (213)
 msgid "entries"
-msgstr ""
+msgstr "bejegyzések"
 
 #. Resource IDs: (213)
 msgid "entry"
-msgstr ""
+msgstr "bejegyzés"
 
 #. Resource IDs: (206)
 msgid "equals"
-msgstr ""
+msgstr "egyenlő"
 
 #. Resource IDs: (365)
 msgid "exported"
-msgstr ""
+msgstr "exportálva"
 
 #. Resource IDs: (1191)
 msgid "filename"
-msgstr ""
+msgstr "fájlnév"
 
 #. Resource IDs: (207)
 msgid "greater than"
-msgstr ""
+msgstr "nagyobb mint"
 
 #. Resource IDs: (207)
 msgid "greater than or equal to"
-msgstr ""
+msgstr "nagyobb vagy egyenlő mint"
 
 #. Resource IDs: (208)
 msgid "has expired"
-msgstr ""
+msgstr "lejárt"
 
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
-msgstr ""
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
-msgstr ""
+msgstr "id="
 
 #. Resource IDs: (191)
 msgid "import"
-msgstr ""
+msgstr "import"
 
 #. Resource IDs: (216)
 msgid "imported"
-msgstr ""
+msgstr "importálva"
 
 #. Resource IDs: (1320)
 msgid "in"
-msgstr ""
+msgstr "ban(ben)"
 
 #. Resource IDs: (211)
 msgid "in the database"
-msgstr ""
+msgstr "az adatbázisban"
 
 #. Resource IDs: (207)
 msgid "invalid!"
-msgstr ""
+msgstr "érvénytelen!"
 
 #. Resource IDs: (206)
 msgid "is"
-msgstr ""
+msgstr " "
 
 #. Resource IDs: (207)
 msgid "is active"
-msgstr ""
+msgstr "aktív"
 
 #. Resource IDs: (207)
 msgid "is inactive"
-msgstr ""
+msgstr "inaktív"
 
 #. Resource IDs: (206)
 msgid "is not"
-msgstr ""
+msgstr "nem"
 
 #. Resource IDs: (207)
 msgid "is not present"
-msgstr ""
+msgstr "nem létezik"
 
 #. Resource IDs: (207)
 msgid "is not set"
-msgstr ""
+msgstr "nincs beállítva"
 
 #. Resource IDs: (207)
 msgid "is present"
-msgstr ""
+msgstr "létezik"
 
 #. Resource IDs: (207)
 msgid "is set"
-msgstr ""
+msgstr "beállítva"
 
 #. Resource IDs: (1144)
 msgid "last passwords"
-msgstr ""
+msgstr "utolsó jelszavak"
 
 #. Resource IDs: (207)
 msgid "less than"
-msgstr ""
+msgstr "kisebb mint"
 
 #. Resource IDs: (207)
 msgid "less than or equal to"
-msgstr ""
+msgstr "kisebb vagy egyenlő mint"
 
 #. Resource IDs: (214)
 msgid "merged"
-msgstr ""
+msgstr "összefésülve"
 
 #. Resource IDs: (1445)
 msgid "minutes idle"
-msgstr ""
+msgstr "perce inaktív"
 
 #. Resource IDs: (342)
 #, c-format
@@ -8395,147 +8988,153 @@ msgid ""
 "multiple entries exist with title=%s and username=%s or with group=%s and "
 "title=%s."
 msgstr ""
+"több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy "
+"csoport=%s és megnevezés=%s"
 
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s."
-msgstr ""
+msgstr "több bejegyzés is van ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
 msgstr ""
+"nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
 msgstr ""
+"nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
+msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid ""
 "no entry exists with title=%s and username=%s or with group=%s, title=%s."
 msgstr ""
+"nincs ilyen bejegyzés: megnevezés=%s és felhasználónév=%s vagy csoport=%s, "
+"megnevezés=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s."
-msgstr ""
+msgstr "nincs bejegyzés ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (204)
 #, c-format
 msgid "on database %s"
-msgstr ""
+msgstr "%s adatbázison"
 
 #. Resource IDs: (212)
 msgid "on line "
-msgstr ""
+msgstr "sorban"
 
 #. Resource IDs: (3869)
 msgid "pixels"
-msgstr ""
+msgstr "képpontok"
 
 #. Resource IDs: (257)
 msgid "policy specific symbols"
-msgstr ""
+msgstr "szabályspecifikus szimbólumok"
 
 #. Resource IDs: (1446)
 msgid "previous passwords per entry"
-msgstr ""
+msgstr "előző jelszavak bejegyzésenként"
 
 #. Resource IDs: (338)
 msgid "pwsafe"
-msgstr ""
+msgstr "pwsafe"
 
 #. Resource IDs: (205)
 msgid "shortcut"
-msgstr ""
+msgstr "parancsikon"
 
 #. Resource IDs: (346)
 #, c-format
 msgid "shortcut to %s"
-msgstr ""
+msgstr "parancsikon ehhez: %s"
 
 #. Resource IDs: (213)
 msgid "shortcuts"
-msgstr ""
+msgstr "parancsikonok"
 
 #. Resource IDs: (1265)
 msgid "static"
-msgstr ""
+msgstr "statikus"
 
 #. Resource IDs: (215)
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
-msgstr ""
+msgstr "almező a(z) %d. helyen (az előzmény mezőben):"
 
 #. Resource IDs: (346)
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
-msgstr ""
+msgstr "részlet: '%s' mező '%s' '%s' %s"
 
 #. Resource IDs: (366)
 msgid "synchronized"
-msgstr ""
+msgstr "szinkronizálva"
 
 #. Resource IDs: (1417, 65535)
 msgid "the following text:"
-msgstr ""
+msgstr "az alábbi szöveg:"
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"
-msgstr ""
+msgstr "e bejegyzés jelszava és adatai"
 
 #. Resource IDs: (354)
 msgid "top"
-msgstr ""
+msgstr "első"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr ""
+msgstr "használt elemen a Tálca menüben."
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
-msgstr ""
+msgstr "v&1.x formátum..."
 
 #. Resource IDs: (32012)
 msgid "v&2 format..."
-msgstr ""
+msgstr "v&2 formátum..."
 
 #. Resource IDs: (191)
 msgid "validation"
-msgstr ""
+msgstr "ellenőrzés"
 
 #. Resource IDs: (214)
 msgid "was"
-msgstr ""
+msgstr "volt"
 
 #. Resource IDs: (214)
 msgid "were"
-msgstr ""
+msgstr "volt"
 
 #. Resource IDs: (1209)
 msgid "whatever"
-msgstr ""
+msgstr "bármi"
 
 #. Resource IDs: (1418, 65535)
 msgid "where"
-msgstr ""
+msgstr "hol"
 
 #. Resource IDs: (208)
 msgid "will expire"
-msgstr ""
+msgstr "le fog járni"
 
 #. Resource IDs: (208)
 #, c-format
 msgid "within %d day(s)"
-msgstr ""
+msgstr "%d napon belül"
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"
-msgstr ""
+msgstr "xxxxxx"
