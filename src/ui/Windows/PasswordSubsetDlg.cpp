@@ -24,6 +24,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern HRGN GetWorkAreaRegion();
 //-----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(CNumEdit, CEdit)
   //{{AFX_MSG_MAP(CNumEdit)
@@ -132,10 +133,12 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 
                                           rect.left, rect.right);
 
-  if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
+  HRGN hrgnWork = GetWorkAreaRegion();
+  // also check that window will be visible
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
     rect = dlgRect;
   }
-
+  ::DeleteObject(hrgnWork);
   // Ignore size just set position
   SetWindowPos(NULL, rect.left, rect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 

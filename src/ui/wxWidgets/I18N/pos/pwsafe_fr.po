@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-07 10:45+0200\n"
+"POT-Creation-Date: 2014-03-25 19:48+0200\n"
 "PO-Revision-Date: 2011-10-12 16:57-0800\n"
 "Last-Translator: François Lamoureux <franklamoureux@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,7 +164,7 @@ msgid "Password:"
 msgstr "Mot de &Passe:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:306
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1087
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1090
 msgid "&Hide"
 msgstr "&Cacher"
 
@@ -221,14 +221,14 @@ msgstr "Action double-clic :"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:380
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:396
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:805
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
 #, fuzzy
 msgid "Auto Type"
 msgstr "Auto-frappe"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:806
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:320
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:481
 msgid "Browse"
@@ -236,49 +236,49 @@ msgstr "Choisir..."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:807
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "Aller à l'URL + Autofrappe"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
 #, fuzzy
 msgid "Copy Notes"
 msgstr "Afficher les notes"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
 #, fuzzy
 msgid "Copy Password"
 msgstr "Mot de passe"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "Copier le mot de passe au presse-papier, réduire"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:814
 #, fuzzy
 msgid "Copy Username"
 msgstr "Nom d'utilisateur"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:815
 #, fuzzy
 msgid "Edit/View Entry"
 msgstr "Visualiser l'entrée"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:816
 #, fuzzy
 msgid "Execute Run command"
 msgstr " 'Exécuter la commande'"
@@ -337,8 +337,8 @@ msgid "Recurring"
 msgstr "Répéter"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:481
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:954
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1457
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:957
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1460
 msgid "Never"
 msgstr "Jamais"
 
@@ -437,7 +437,7 @@ msgstr "(minimum"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:585
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:600
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:615
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:521
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:536
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:551
@@ -458,7 +458,7 @@ msgstr "Utiliser des M&AJUSCULES"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:588
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:539
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:220
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:220 ../../../core/core_st.cpp:250
 #, fuzzy
 msgid "Use digits"
 msgstr "Utiliser des &Chiffres"
@@ -498,7 +498,7 @@ msgstr "Générer des mots &prononçables"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:644
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:581
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:278
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:278 ../../../core/core_st.cpp:243
 msgid "Or"
 msgstr "Ou"
 
@@ -509,52 +509,55 @@ msgstr "Ou"
 msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr "Utiliser des chiffres &Hexadécimaux seulement (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:654
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1504
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:588
+#: ../../../core/core_st.cpp:136
 msgid "Password Policy"
 msgstr "Stratégie de mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:679
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:682
 msgid "Set Date/Time"
 msgstr "Mettre à jour la date/l'heure"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:680
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:683
+#: ../../../core/core_st.cpp:132
 msgid "Password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842 ../../../core/core_st.cpp:75
 #, fuzzy
 msgid "default"
 msgstr "Défaut"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:896
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:899
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notes cachées - cliquer ici pour les afficher]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1000
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1026
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1280
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1777
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1003
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1029
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1283
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1780
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:394
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:471
+#: ../../../core/core_st.cpp:76
 #, fuzzy
 msgid "Default Policy"
 msgstr "Symboles par défaut :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1055
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1058
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1056
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1170
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1655
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1682
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1059
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1166
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1173
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1658
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1685
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:116
@@ -577,60 +580,61 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:260
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:288
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:329
+#: ../../../core/core_st.cpp:264
 msgid "Error"
 msgstr "Erreur"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1112
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1115
 msgid "&Show"
 msgstr "&Afficher"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1165
 #, fuzzy
 msgid "This entry must have a "
 msgstr "Cette entrée doit comporter un titre."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1165
 #, fuzzy
 msgid "title"
 msgstr "Titre"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1165
 #, fuzzy
 msgid "password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1170
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1173
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "Les deux entrées ne coïncident pas."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1436
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1439
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "Récurrence (%d jours)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1500
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1503
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1296
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 "Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1654
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1657
 msgid "Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1681
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1684
 #, fuzzy
 msgid "Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1761
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1764
 #, fuzzy
 msgid "mailto:"
 msgstr "&courriel:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1781
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1784
 #, c-format
 msgid "Couldn't find policy %s\n"
 msgstr ""
@@ -983,7 +987,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/editshortcut.cpp:123
 #: ../../../ui/wxWidgets/properties.cpp:124
 #: ../../../ui/wxWidgets/properties.cpp:132
-#: ../../../ui/wxWidgets/properties.cpp:143
+#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:279
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -1319,11 +1323,12 @@ msgid "Value"
 msgstr "Valeur:"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
+#: ../../../core/core_st.cpp:128
 msgid "Group"
 msgstr "Groupe"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:292
-#: ../../../ui/wxWidgets/PWSgrid.cpp:136
+#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:142
 msgid "Title"
 msgstr "Titre"
 
@@ -1390,7 +1395,7 @@ msgstr "Veuillez sélectionner un rapport pour l'afficher. "
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:102
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:281
-#: ../../../ui/wxWidgets/properties.cpp:171
+#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:240
 msgid "None"
 msgstr "Aucun"
 
@@ -1407,7 +1412,7 @@ msgstr "Nombre incrémenté [001-999]"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:111
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:411
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:430
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:69
 msgid "Copy password to clipboard"
 msgstr "Copier le mot de passe au presse-papier"
 
@@ -1421,49 +1426,50 @@ msgstr "Voir/Modifier l'entrée sélectionnée"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:113
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:407
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:426
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:439
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:65
 msgid "Autotype"
 msgstr "Autofrappe"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:114
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:408
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:427
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:66
 msgid "Browse to URL"
 msgstr "Aller sur l'URL"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:115
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:410
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:429
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:68
 msgid "Copy notes to clipboard"
 msgstr "Copier les notes au presse-papier"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:116
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:413
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:432
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:71
 msgid "Copy username to clipboard"
 msgstr "Copier le nom d'utilisateur au presse-papier"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:117
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:412
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:431
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:70
 msgid "Copy password to clipboard, minimize"
 msgstr "Copier le mot de passe au presse-papier, réduire"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:118
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:409
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:67
 msgid "Browse to URL + Autotype"
 msgstr "Aller à l'URL + Autofrappe"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:119
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:414
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:433
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:72
+#: ../../../core/core_st.cpp:139
 msgid "Run Command"
 msgstr "Exécuter la commande"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:120
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:415
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:434
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:73
 msgid "Send email"
 msgstr "Envoyer un courriel"
 
@@ -2610,7 +2616,7 @@ msgstr "L'importation a échoué."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2777
 #: ../../../ui/wxWidgets/PwsSync.cpp:594 ../../../ui/wxWidgets/PwsSync.cpp:745
-#: ../../../ui/wxWidgets/PwsSync.cpp:762
+#: ../../../ui/wxWidgets/PwsSync.cpp:762 ../../../core/core_st.cpp:94
 msgid "entry"
 msgstr "entrée"
 
@@ -2618,7 +2624,7 @@ msgstr "entrée"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2777
 #: ../../../ui/wxWidgets/PwsSync.cpp:594 ../../../ui/wxWidgets/PwsSync.cpp:745
-#: ../../../ui/wxWidgets/PwsSync.cpp:762
+#: ../../../ui/wxWidgets/PwsSync.cpp:762 ../../../core/core_st.cpp:92
 msgid "entries"
 msgstr "entrées"
 
@@ -2640,6 +2646,7 @@ msgid "Import XML failed"
 msgstr "L'importation de XML a échoué"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2680
+#: ../../../core/core_st.cpp:231
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
@@ -2929,20 +2936,20 @@ msgstr "1 occurence trouvée."
 msgid "%d/%d matches"
 msgstr "%d des %d résultats."
 
-#: ../../../ui/wxWidgets/properties.cpp:138
+#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:284
 #, c-format
 msgid "%s on %s"
 msgstr "%s sur %s"
 
-#: ../../../ui/wxWidgets/properties.cpp:160
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:316
 msgid "Yes"
 msgstr "Oui"
 
-#: ../../../ui/wxWidgets/properties.cpp:160
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:235
 msgid "No"
 msgstr "Non"
 
-#: ../../../ui/wxWidgets/properties.cpp:162
+#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:281
 #, c-format
 msgid "In Headers(%s)/In Entries("
 msgstr "Dans les entêtes(%s)/Dans les entrées("
@@ -3255,15 +3262,15 @@ msgstr "Synchronisation à partir du fichier: %s\n"
 msgid "synchronized"
 msgstr "synchronisé"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:746
+#: ../../../ui/wxWidgets/PwsSync.cpp:746 ../../../core/core_st.cpp:297
 msgid "was"
 msgstr "a été"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:746
+#: ../../../ui/wxWidgets/PwsSync.cpp:746 ../../../core/core_st.cpp:298
 msgid "were"
 msgstr "ont été"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:747
+#: ../../../ui/wxWidgets/PwsSync.cpp:747 ../../../core/core_st.cpp:276
 #, c-format
 msgid ""
 "\n"
@@ -3272,7 +3279,7 @@ msgstr ""
 "\n"
 "Les %s %s suivants mis-à-jour:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:763
+#: ../../../ui/wxWidgets/PwsSync.cpp:763 ../../../core/core_st.cpp:275
 #, c-format
 msgid ""
 "\n"
@@ -3522,6 +3529,7 @@ msgid "Please enter the key and verify it."
 msgstr "SVP, entrez la clef et vérifiez-la."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
+#: ../../../core/core_st.cpp:266
 msgid "Warning"
 msgstr "Attention"
 
@@ -3532,35 +3540,35 @@ msgstr ""
 "\n"
 "SVP, essayez-en un autre"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37 ../../../core/core_st.cpp:95
 msgid "equals"
 msgstr "égale"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:86
 msgid "does not equal"
 msgstr "n'est pas égal à"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39 ../../../core/core_st.cpp:41
 msgid "begins with"
 msgstr "commence par"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40 ../../../core/core_st.cpp:81
 msgid "does not begin with"
 msgstr "ne commence pas avec"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:91
 msgid "ends with"
 msgstr "se termine par"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42 ../../../core/core_st.cpp:85
 msgid "does not end with"
 msgstr "ne se termine pas par"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43 ../../../core/core_st.cpp:59
 msgid "contains"
 msgstr "contient"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44 ../../../core/core_st.cpp:82
 msgid "does not contain"
 msgstr "ne contient pas"
 
@@ -3759,1017 +3767,1369 @@ msgstr ""
 msgid "Error: Unconfigured YubiKey?"
 msgstr ""
 
-#~ msgid ""
-#~ "\n"
-#~ "Unexpected exception during parsing."
-#~ msgstr ""
-#~ "\n"
-#~ "Exception inatendue pendant l'analyse."
+#: ../../../core/core_st.cpp:32
+msgid ""
+"\n"
+"Unexpected exception during parsing."
+msgstr ""
+"\n"
+"Exception inatendue pendant l'analyse."
 
-#~ msgid "OutOfMemoryException."
-#~ msgstr "OutOfMemoryException."
+#: ../../../core/core_st.cpp:33
+msgid "OutOfMemoryException."
+msgstr "OutOfMemoryException."
 
-#~ msgid "after"
-#~ msgstr "après"
+#: ../../../core/core_st.cpp:34
+msgid "after"
+msgstr "après"
 
-#~ msgid "alias"
-#~ msgstr "alias"
+#: ../../../core/core_st.cpp:35
+msgid "alias"
+msgstr "alias"
 
-#~ msgid "aliases"
-#~ msgstr "alias"
+#: ../../../core/core_st.cpp:36
+msgid "aliases"
+msgstr "alias"
 
-#~ msgid "And"
-#~ msgstr "Et"
+#: ../../../core/core_st.cpp:37
+msgid "And"
+msgstr "Et"
 
-#~ msgid "autotype:"
-#~ msgstr "autofrappe:"
+#: ../../../core/core_st.cpp:38
+msgid "autotype:"
+msgstr "autofrappe:"
 
-#~ msgid "Incorrect password"
-#~ msgstr "Mot de passe incorrect"
+#: ../../../core/core_st.cpp:39
+msgid "Incorrect password"
+msgstr "Mot de passe incorrect"
 
-#~ msgid "before"
-#~ msgstr "avant"
+#: ../../../core/core_st.cpp:40
+msgid "before"
+msgstr "avant"
 
-#~ msgid "between"
-#~ msgstr "entre"
+#: ../../../core/core_st.cpp:42
+msgid "between"
+msgstr "entre"
 
-#~ msgid ""
-#~ "Unable to create a new XML configuration file or add your settings to an "
-#~ "existing XML configuration file.\n"
-#~ "\n"
-#~ "All application configuration settings will be saved in your registry "
-#~ "entry on this computer.\n"
-#~ "\n"
-#~ "Database related settings will be stored in the open database when it is "
-#~ "closed, assuming it is not read-only or locked by another user."
-#~ msgstr ""
-#~ "Incapable de créer un nouveau fichier XML de configuration ou d'ajouter "
-#~ "vos réglages à un fichier XML existant de configuration.\n"
-#~ "\n"
-#~ "Tous les réglages de configuration de l'application seront sauvegardés "
-#~ "dans le registre sur cet ordinateur.\n"
-#~ "\n"
-#~ "Les réglages du fichier seront stockés dans le fichier ouvert quand il "
-#~ "sera fermé, présumant que celui-ci n'est pas ouvert en lecture seule ou "
-#~ "verrouillée par un autre utilisateur."
+#: ../../../core/core_st.cpp:43
+msgid ""
+"Unable to create a new XML configuration file or add your settings to an "
+"existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be saved in your registry entry "
+"on this computer.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Incapable de créer un nouveau fichier XML de configuration ou d'ajouter vos "
+"réglages à un fichier XML existant de configuration.\n"
+"\n"
+"Tous les réglages de configuration de l'application seront sauvegardés dans "
+"le registre sur cet ordinateur.\n"
+"\n"
+"Les réglages du fichier seront stockés dans le fichier ouvert quand il sera "
+"fermé, présumant que celui-ci n'est pas ouvert en lecture seule ou "
+"verrouillée par un autre utilisateur."
 
-#~ msgid ""
-#~ "Error - unable to determine settings configuration!\n"
-#~ "\n"
-#~ "No application settings will be saved.\n"
-#~ "\n"
-#~ "Database related settings will be stored in the open database when it is "
-#~ "closed, assuming it is not read-only or locked by another user."
-#~ msgstr ""
-#~ "Erreur - incapable de déterminer les réglages de configuration!\n"
-#~ "\n"
-#~ "Aucun réglage de l'application ne seront enregistrés.\n"
-#~ "\n"
-#~ "Les réglages en relation avec la base seront stockés dans la base ouverte "
-#~ "quand elle sera fermée, à condition qu'elle ne soit pas en lecture seule "
-#~ "ni verrouillée par un autre usager."
+#: ../../../core/core_st.cpp:44
+msgid ""
+"Error - unable to determine settings configuration!\n"
+"\n"
+"No application settings will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Erreur - incapable de déterminer les réglages de configuration!\n"
+"\n"
+"Aucun réglage de l'application ne seront enregistrés.\n"
+"\n"
+"Les réglages en relation avec la base seront stockés dans la base ouverte "
+"quand elle sera fermée, à condition qu'elle ne soit pas en lecture seule ni "
+"verrouillée par un autre usager."
 
-#~ msgid ""
-#~ "Trouble reading stored filters (version mismatch?). Filters will be "
-#~ "unusable."
-#~ msgstr ""
-#~ "Impossible de lire les filtres enregistrés (version incompatible?). Les "
-#~ "filtres seront inutilisables."
+#: ../../../core/core_st.cpp:45
+msgid ""
+"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgstr ""
+"Impossible de lire les filtres enregistrés (version incompatible?). Les "
+"filtres seront inutilisables."
 
-#~ msgid "Unable to read locker?"
-#~ msgstr "Incapable de lire le verrou?"
+#: ../../../core/core_st.cpp:46
+msgid "Unable to read locker?"
+msgstr "Incapable de lire le verrou?"
 
-#~ msgid ""
-#~ "Unable to update your entries in the existing XML configuration file.\n"
-#~ "\n"
-#~ "All application configuration settings will be loaded from this file but "
-#~ "no changes will be saved.\n"
-#~ "\n"
-#~ "Database related settings will be stored in the open database when it is "
-#~ "closed, assuming it is not read-only or locked by another user."
-#~ msgstr ""
-#~ "Incapable de mettre à jour vos entrées dans le fichier de configuration "
-#~ "XML.\n"
-#~ "\n"
-#~ "Tous les réglages de l'application seront chargés depuis ce fichier mais "
-#~ "aucun changement ne sera enregistré.\n"
-#~ "\n"
-#~ "Les réglages de l'application seront stockés dans la base ouverte à sa "
-#~ "fermeture, dans la mesure où elle n'est pas en lecture seule ou "
-#~ "verrouillée par un autre utilisateur."
+#: ../../../core/core_st.cpp:47
+msgid ""
+"Unable to update your entries in the existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be loaded from this file but no "
+"changes will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Incapable de mettre à jour vos entrées dans le fichier de configuration "
+"XML.\n"
+"\n"
+"Tous les réglages de l'application seront chargés depuis ce fichier mais "
+"aucun changement ne sera enregistré.\n"
+"\n"
+"Les réglages de l'application seront stockés dans la base ouverte à sa "
+"fermeture, dans la mesure où elle n'est pas en lecture seule ou verrouillée "
+"par un autre utilisateur."
 
-#~ msgid ""
-#~ "%s\n"
-#~ "\n"
-#~ "The configuration file will not be used."
-#~ msgstr ""
-#~ "%s\n"
-#~ "\n"
-#~ "Le fichier de configuration ne sera pas utilisé."
+#: ../../../core/core_st.cpp:48
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"The configuration file will not be used."
+msgstr ""
+"%s\n"
+"\n"
+"Le fichier de configuration ne sera pas utilisé."
 
-#~ msgid "Missing XSD File"
-#~ msgstr "Fichier XSD manquant"
+#: ../../../core/core_st.cpp:49
+msgid "Missing XSD File"
+msgstr "Fichier XSD manquant"
 
-#~ msgid ""
-#~ "Unable to validate a XML file using a XML Schema (XSD) on your system."
-#~ msgstr ""
-#~ "Impossible de valider un fichier XML qui utilise un schéma XSD sur votre "
-#~ "système."
+#: ../../../core/core_st.cpp:50
+msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
+msgstr ""
+"Impossible de valider un fichier XML qui utilise un schéma XSD sur votre "
+"système."
 
-#~ msgid "(case insensitive)"
-#~ msgstr "(insensible à la casse)"
+#: ../../../core/core_st.cpp:51
+msgid "(case insensitive)"
+msgstr "(insensible à la casse)"
 
-#~ msgid "(case sensitive)"
-#~ msgstr "(sensible à la casse)"
+#: ../../../core/core_st.cpp:52
+msgid "(case sensitive)"
+msgstr "(sensible à la casse)"
 
-#~ msgid "C:F[R-O]"
-#~ msgstr "C:F[R-O]"
+#: ../../../core/core_st.cpp:53
+msgid "C:F[R-O]"
+msgstr "C:F[R-O]"
 
-#~ msgid "C:F[R/W]"
-#~ msgstr "C:F[R/W]"
+#: ../../../core/core_st.cpp:54
+msgid "C:F[R/W]"
+msgstr "C:F[R/W]"
 
-#~ msgid "C:None  "
-#~ msgstr "C:Aucun  "
+#: ../../../core/core_st.cpp:55
+msgid "C:None  "
+msgstr "C:Aucun  "
 
-#~ msgid "C:Reg   "
-#~ msgstr "C:Reg   "
+#: ../../../core/core_st.cpp:56
+msgid "C:Reg   "
+msgstr "C:Reg   "
 
-#~ msgid "conflict"
-#~ msgstr "conflit"
+#: ../../../core/core_st.cpp:57
+msgid "conflict"
+msgstr "conflit"
 
-#~ msgid "conflicts"
-#~ msgstr "conflits"
+#: ../../../core/core_st.cpp:58
+msgid "conflicts"
+msgstr "conflits"
 
-#~ msgid "contains all of"
-#~ msgstr "contient tout de"
+#: ../../../core/core_st.cpp:60
+msgid "contains all of"
+msgstr "contient tout de"
 
-#~ msgid "contains any of"
-#~ msgstr "contient aucun de"
+#: ../../../core/core_st.cpp:61
+msgid "contains any of"
+msgstr "contient aucun de"
 
+#: ../../../core/core_st.cpp:62
 #, fuzzy
-#~ msgid "copied"
-#~ msgstr "URL copiée "
+msgid "copied"
+msgstr "URL copiée "
 
+#: ../../../core/core_st.cpp:63
+#, fuzzy, c-format
+msgid "%s - Copied %s"
+msgstr "%d %s importé"
+
+#: ../../../core/core_st.cpp:64
+#, c-format
+msgid " Current default (%s)"
+msgstr " Défaut courant (%s)"
+
+#: ../../../core/core_st.cpp:74
+msgid "View/Edit selected entry"
+msgstr "Voir/Modifier l'entrée sélectionnée"
+
+#: ../../../core/core_st.cpp:77
 #, fuzzy
-#~ msgid "%s - Copied %s"
-#~ msgstr "%d %s importé"
+msgid "default symbol set"
+msgstr "Symboles par défaut :"
 
-#~ msgid " Current default (%s)"
-#~ msgstr " Défaut courant (%s)"
+#: ../../../core/core_st.cpp:78
+#, c-format
+msgid ""
+"This entry has the following %d %s:\n"
+"%s\n"
+"Please confirm to continue (alias entry's passwords will be replaced by this "
+"entry's password)?"
+msgstr ""
+"Cette entrée à les %d %s suivants:\n"
+"%s\n"
+"Veuillez confirmer pour continuer (tous mots de passe de cet alias seront "
+"remplacés par le mot de passe de cette entrée)?"
 
-#~ msgid "View/Edit selected entry"
-#~ msgstr "Voir/Modifier l'entrée sélectionnée"
-
+#: ../../../core/core_st.cpp:79
 #, fuzzy
-#~ msgid "default symbol set"
-#~ msgstr "Symboles par défaut :"
+msgid "Delete Base Entry Confirmation"
+msgstr "Confirmation de suppression d'une entrée de la base?"
 
-#~ msgid ""
-#~ "This entry has the following %d %s:\n"
-#~ "%s\n"
-#~ "Please confirm to continue (alias entry's passwords will be replaced by "
-#~ "this entry's password)?"
-#~ msgstr ""
-#~ "Cette entrée à les %d %s suivants:\n"
-#~ "%s\n"
-#~ "Veuillez confirmer pour continuer (tous mots de passe de cet alias seront "
-#~ "remplacés par le mot de passe de cette entrée)?"
+#: ../../../core/core_st.cpp:80
+#, c-format
+msgid ""
+"This entry has the following %d %s:\n"
+"%s\n"
+"Please confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+"Cette entrée à les %d %s suivants:\n"
+"%s\n"
+"Veuillez confirmer pour continuer (Tous les raccourcis vers cette entrée "
+"seont supprimés)"
 
+#: ../../../core/core_st.cpp:83
+msgid "does not contain all of"
+msgstr "ne contient pas tout de"
+
+#: ../../../core/core_st.cpp:84
+msgid "does not contain any of"
+msgstr "ne contient aucun de"
+
+#: ../../../core/core_st.cpp:87
+#, c-format
+msgid " Duplicate # %d"
+msgstr " %d # Identique"
+
+#: ../../../core/core_st.cpp:88
+#, c-format
+msgid ""
+"Trouble with a non-textual (e.g., time) field in record '%s' - please check "
+"data carefully."
+msgstr ""
+"Problème avec un champ non-textuel dans l'enregistrement '%s' - veuillez "
+"vérifier soigneusement les données."
+
+#: ../../../core/core_st.cpp:89
+msgid "End Report"
+msgstr "Fin du rapport"
+
+#: ../../../core/core_st.cpp:90
+msgid "--------------------------------------------------------------------------------"
+msgstr "--------------------------------------------------------------------------------"
+
+#: ../../../core/core_st.cpp:93
+#, c-format
+msgid ""
+"The following entries had a policy name that already existed in this "
+"database but with different settings.\n"
+"A new named policy has been created with the current date/time (%s) appended:"
+"%s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:96
+msgid "has expired"
+msgstr "a expiré"
+
+#: ../../../core/core_st.cpp:97
+#, c-format
+msgid "within %d day(s)"
+msgstr "dans %d jour(s)"
+
+#: ../../../core/core_st.cpp:98
+msgid "First character of variable name must be alphabetic"
+msgstr "Le premeir caractère du nom de la variable doit être alphabétique"
+
+#: ../../../core/core_st.cpp:99
+msgid "Index not numeric"
+msgstr "Index non numerique"
+
+#: ../../../core/core_st.cpp:100
+msgid "Input string is empty"
+msgstr "La chaîne d'entrée est vide"
+
+#: ../../../core/core_st.cpp:101
+msgid "Characters present between end of index ']' and '}'"
+msgstr "Caractères présents entre la fin de l'index ']' et '}'"
+
+#: ../../../core/core_st.cpp:102
+msgid "Index is invalid or missing"
+msgstr "L'index est invalide ou manquant"
+
+#: ../../../core/core_st.cpp:103
+msgid "Missing ending curly bracket for variable name"
+msgstr "Accolade finale manquante pour un nom de variable"
+
+#: ../../../core/core_st.cpp:104
+msgid "Missing ending round bracket for Autotype value"
+msgstr "Parenthèse finale manquante pour une valeur d'autofrappe"
+
+#: ../../../core/core_st.cpp:105
+msgid "Missing ending square bracket for index value"
+msgstr "Crochet final manquant pour une valeur d'index"
+
+#: ../../../core/core_st.cpp:106
+msgid "There are unmatched quotes in the run command"
+msgstr "Des guillemets sont désappareillés dans la commande lancée"
+
+#: ../../../core/core_st.cpp:107
+msgid "Variable name is empty"
+msgstr "Le nom de la variable est vide"
+
+#: ../../../core/core_st.cpp:108
+msgid "Variable name must be alphanumeric"
+msgstr "Le nom de la variable doit être alphanumérique"
+
+#: ../../../core/core_st.cpp:109
+msgid "an alias entry"
+msgstr "une entrée alias"
+
+#: ../../../core/core_st.cpp:110
+msgid "a base entry of an alias"
+msgstr "entrée de base pour un alias"
+
+#: ../../../core/core_st.cpp:111
+msgid "  Field is too long."
+msgstr "  Le champ est trop long."
+
+#: ../../../core/core_st.cpp:112
+msgid "  Field is too short."
+msgstr "  Le champ est trop court."
+
+#: ../../../core/core_st.cpp:113
+msgid "Error: A file with this name already exists"
+msgstr "Erreur: un fic hier de ce nom existe déjà"
+
+#: ../../../core/core_st.cpp:114
+msgid "The file was not found."
+msgstr "Le fichier n'a pas été trouvé."
+
+#: ../../../core/core_st.cpp:115
+msgid "Error: File is read-only"
+msgstr "Erreur: le fichier est seulement en lecture"
+
+#: ../../../core/core_st.cpp:116
 #, fuzzy
-#~ msgid "Delete Base Entry Confirmation"
-#~ msgstr "Confirmation de suppression d'une entrée de la base?"
+msgid "File is too big."
+msgstr "  Le champ est trop long."
 
-#~ msgid ""
-#~ "This entry has the following %d %s:\n"
-#~ "%s\n"
-#~ "Please confirm to continue (All shortcuts to this entry will be deleted)?"
-#~ msgstr ""
-#~ "Cette entrée à les %d %s suivants:\n"
-#~ "%s\n"
-#~ "Veuillez confirmer pour continuer (Tous les raccourcis vers cette entrée "
-#~ "seont supprimés)"
-
-#~ msgid "does not contain all of"
-#~ msgstr "ne contient pas tout de"
-
-#~ msgid "does not contain any of"
-#~ msgstr "ne contient aucun de"
-
-#~ msgid " Duplicate # %d"
-#~ msgstr " %d # Identique"
-
-#~ msgid ""
-#~ "Trouble with a non-textual (e.g., time) field in record '%s' - please "
-#~ "check data carefully."
-#~ msgstr ""
-#~ "Problème avec un champ non-textuel dans l'enregistrement '%s' - veuillez "
-#~ "vérifier soigneusement les données."
-
-#~ msgid "End Report"
-#~ msgstr "Fin du rapport"
-
-#~ msgid "--------------------------------------------------------------------------------"
-#~ msgstr "--------------------------------------------------------------------------------"
-
-#~ msgid "has expired"
-#~ msgstr "a expiré"
-
-#~ msgid "within %d day(s)"
-#~ msgstr "dans %d jour(s)"
-
-#~ msgid "First character of variable name must be alphabetic"
-#~ msgstr "Le premeir caractère du nom de la variable doit être alphabétique"
-
-#~ msgid "Index not numeric"
-#~ msgstr "Index non numerique"
-
-#~ msgid "Input string is empty"
-#~ msgstr "La chaîne d'entrée est vide"
-
-#~ msgid "Characters present between end of index ']' and '}'"
-#~ msgstr "Caractères présents entre la fin de l'index ']' et '}'"
-
-#~ msgid "Index is invalid or missing"
-#~ msgstr "L'index est invalide ou manquant"
-
-#~ msgid "Missing ending curly bracket for variable name"
-#~ msgstr "Accolade finale manquante pour un nom de variable"
-
-#~ msgid "Missing ending round bracket for Autotype value"
-#~ msgstr "Parenthèse finale manquante pour une valeur d'autofrappe"
-
-#~ msgid "Missing ending square bracket for index value"
-#~ msgstr "Crochet final manquant pour une valeur d'index"
-
-#~ msgid "There are unmatched quotes in the run command"
-#~ msgstr "Des guillemets sont désappareillés dans la commande lancée"
-
-#~ msgid "Variable name is empty"
-#~ msgstr "Le nom de la variable est vide"
-
-#~ msgid "Variable name must be alphanumeric"
-#~ msgstr "Le nom de la variable doit être alphanumérique"
-
-#~ msgid "an alias entry"
-#~ msgstr "une entrée alias"
-
-#~ msgid "a base entry of an alias"
-#~ msgstr "entrée de base pour un alias"
-
-#~ msgid "  Field is too long."
-#~ msgstr "  Le champ est trop long."
-
-#~ msgid "  Field is too short."
-#~ msgstr "  Le champ est trop court."
-
-#~ msgid "Error: A file with this name already exists"
-#~ msgstr "Erreur: un fic hier de ce nom existe déjà"
-
-#~ msgid "The file was not found."
-#~ msgstr "Le fichier n'a pas été trouvé."
-
-#~ msgid "Error: File is read-only"
-#~ msgstr "Erreur: le fichier est seulement en lecture"
-
+#: ../../../core/core_st.cpp:117
 #, fuzzy
-#~ msgid "File is too big."
-#~ msgstr "  Le champ est trop long."
+msgid "File is too short."
+msgstr "  Le champ est trop court."
 
+#: ../../../core/core_st.cpp:118
+msgid "File is truncated or otherwise corrupt. Please use backup database."
+msgstr ""
+"Le fichier est tronqué ou corrompu. Veuillez utiliser une copie de "
+"sauvegarde."
+
+#: ../../../core/core_st.cpp:119
+msgid "Cannot read file. Please check file permissions."
+msgstr ""
+"Impossible de lire le fichier. Veuillez vérifier les permissions du fichier."
+
+#: ../../../core/core_st.cpp:120
+msgid "Error while writing file! Try saving in a different location"
+msgstr ""
+"Error lors de l'écriture du fichier! Essayer d'enregistrer dans un dossier "
+"différent."
+
+#: ../../../core/core_st.cpp:121
+#, c-format
+msgid ""
+"Filter %s already exists in the database, do you wish to replace it with "
+"this?"
+msgstr ""
+"Le filtre %s existe déjà dans la base, voulez-vous le remplacer avec ça?"
+
+#: ../../../core/core_st.cpp:122
+msgid "Stored filters will be unusable until the file's restored."
+msgstr ""
+"Les filtres enregistrés seront inutilisables jusqu'à ce que le fichier soit "
+"récupéré."
+
+#: ../../../core/core_st.cpp:123
+msgid "Last Access Time"
+msgstr "Heure du dernier accès"
+
+#: ../../../core/core_st.cpp:124
+msgid "AutoType"
+msgstr "Auto-frappe"
+
+#: ../../../core/core_st.cpp:125
+msgid "Created Time"
+msgstr "Date de création"
+
+#: ../../../core/core_st.cpp:126
+msgid "DCA"
+msgstr "ACD"
+
+#: ../../../core/core_st.cpp:127
+msgid "e-mail"
+msgstr "courrier"
+
+#: ../../../core/core_st.cpp:129
+msgid "Group/Title"
+msgstr "Groupe/Titre"
+
+#: ../../../core/core_st.cpp:130
 #, fuzzy
-#~ msgid "File is too short."
-#~ msgstr "  Le champ est trop court."
+msgid "Keyboard Shortcut"
+msgstr "Créer un raccourci"
 
-#~ msgid "File is truncated or otherwise corrupt. Please use backup database."
-#~ msgstr ""
-#~ "Le fichier est tronqué ou corrompu. Veuillez utiliser une copie de "
-#~ "sauvegarde."
+#: ../../../core/core_st.cpp:131
+msgid "Notes"
+msgstr "Notes"
 
-#~ msgid "Cannot read file. Please check file permissions."
-#~ msgstr ""
-#~ "Impossible de lire le fichier. Veuillez vérifier les permissions du "
-#~ "fichier."
+#: ../../../core/core_st.cpp:133
+msgid "Password Modified Time"
+msgstr "Heure de modification du mot de passe"
 
-#~ msgid "Error while writing file! Try saving in a different location"
-#~ msgstr ""
-#~ "Error lors de l'écriture du fichier! Essayer d'enregistrer dans un "
-#~ "dossier différent."
+#: ../../../core/core_st.cpp:134
+msgid "Protected"
+msgstr "Protégé"
 
-#~ msgid ""
-#~ "Filter %s already exists in the database, do you wish to replace it with "
-#~ "this?"
-#~ msgstr ""
-#~ "Le filtre %s existe déjà dans la base, voulez-vous le remplacer avec ça?"
+#: ../../../core/core_st.cpp:135
+msgid "History"
+msgstr "Historique"
 
-#~ msgid "Stored filters will be unusable until the file's restored."
-#~ msgstr ""
-#~ "Les filtres enregistrés seront inutilisables jusqu'à ce que le fichier "
-#~ "soit récupéré."
-
-#~ msgid "Last Access Time"
-#~ msgstr "Heure du dernier accès"
-
-#~ msgid "AutoType"
-#~ msgstr "Auto-frappe"
-
-#~ msgid "Created Time"
-#~ msgstr "Date de création"
-
-#~ msgid "DCA"
-#~ msgstr "ACD"
-
-#~ msgid "e-mail"
-#~ msgstr "courrier"
-
-#~ msgid "Group/Title"
-#~ msgstr "Groupe/Titre"
-
+#: ../../../core/core_st.cpp:137
 #, fuzzy
-#~ msgid "Keyboard Shortcut"
-#~ msgstr "Créer un raccourci"
+msgid "Password Policy Name"
+msgstr "Stratégie de mot de passe"
 
-#~ msgid "Notes"
-#~ msgstr "Notes"
+#: ../../../core/core_st.cpp:138
+msgid "Record Modified Time"
+msgstr "Enregistrer l'heure de modification"
 
-#~ msgid "Password Modified Time"
-#~ msgstr "Heure de modification du mot de passe"
+#: ../../../core/core_st.cpp:140
+msgid "Shift+DCA"
+msgstr "Maj + ACD"
 
-#~ msgid "Protected"
-#~ msgstr "Protégé"
+#: ../../../core/core_st.cpp:141
+msgid "Symbols"
+msgstr "Symboles"
 
-#~ msgid "History"
-#~ msgstr "Historique"
+#: ../../../core/core_st.cpp:143
+msgid "URL"
+msgstr "URL"
 
+#: ../../../core/core_st.cpp:144
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: ../../../core/core_st.cpp:145
+msgid "UUID"
+msgstr "UUID"
+
+#: ../../../core/core_st.cpp:146
+msgid "Password Expiry Date"
+msgstr "Date d'expiration du mot de passe"
+
+#: ../../../core/core_st.cpp:147
+msgid "Password Expiry Interval"
+msgstr "Délai d'expiration du mot de passe"
+
+#: ../../../core/core_st.cpp:148
+msgid "a normal entry"
+msgstr "une entrée normale"
+
+#: ../../../core/core_st.cpp:149
+msgid "added but not yet saved to database"
+msgstr "ajoutés mais pas encore enregistré au fichier"
+
+#: ../../../core/core_st.cpp:150
+msgid "in the database"
+msgstr "au fichier"
+
+#: ../../../core/core_st.cpp:151
+msgid "a shortcut entry"
+msgstr "une entrée raccourci"
+
+#: ../../../core/core_st.cpp:152
+msgid "a base entry of a shortcut"
+msgstr "entrée de base pour un raccourci"
+
+#: ../../../core/core_st.cpp:153
+msgid "changed but not yet saved to database"
+msgstr "modifié mais pas encore enregistré au fichier"
+
+#: ../../../core/core_st.cpp:154
+msgid "greater than"
+msgstr "plus grand que"
+
+#: ../../../core/core_st.cpp:155
+msgid "greater than or equal to"
+msgstr "est plus grand ou égal à"
+
+#: ../../../core/core_st.cpp:156
+#, c-format
+msgid ""
+"Invalid input on line %d.  Number of fields separated by '%c' is not as "
+"expected."
+msgstr ""
+"Entrée invalide sur la ligne %d.  Le nombre de champs séparés par '%c' n'est "
+"pas celui attendu."
+
+#: ../../../core/core_st.cpp:157
+#, c-format
+msgid "Line %d: "
+msgstr "Ligne %d: "
+
+#: ../../../core/core_st.cpp:158
+#, c-format
+msgid ""
+"File ends on line %d before ending double quote of last entry's note field."
+msgstr ""
+"Le fichier finit à la ligne %d avant les guillemets de fin du champ de note "
+"de la dernière entrée."
+
+#: ../../../core/core_st.cpp:159
+msgid "Import aborted. Please see report."
+msgstr "Importation interrompue. Veuillez voir le rapport."
+
+#: ../../../core/core_st.cpp:160
+msgid ""
+"The TXT or CSV file was not exported as required as entry records span "
+"multiple lines in the CSV file.\n"
+"\n"
+"Import aborted."
+msgstr ""
+"Le fichier TXT ou CSV n'a pas été exporté tel que demandé car certaines "
+"entrées sont sur plusieurs lignes dans le fichier CSV.\n"
+"\n"
+"Importation interrompue"
+
+#: ../../../core/core_st.cpp:161
+#, c-format
+msgid ""
+"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+"Import file. Added imported entry with title=\"%s\".\n"
+msgstr ""
+"%s, Titre=\"%s\", Utilisateur=\"%s\" existe déjà dans votre fichier ou le "
+"fichier importé. Entrée ajoutée avec le titre \"%s\".\n"
+
+#: ../../../core/core_st.cpp:162
+#, c-format
+msgid "Entry on line %d with Group=\"%s\""
+msgstr "Entrée à la ligne %d avec Groupe=\"%s\""
+
+#: ../../../core/core_st.cpp:163
+#, c-format
+msgid "Entry on line %d with no group"
+msgstr "Entrée à la ligne %d sans groupe"
+
+#: ../../../core/core_st.cpp:164
+#, c-format
+msgid "Entry with Group=\"%s\""
+msgstr "Entrée avec Groupe=\"%s\""
+
+#: ../../../core/core_st.cpp:165
+msgid "Entry with no group"
+msgstr "Entrée sans groupe"
+
+#: ../../../core/core_st.cpp:166
 #, fuzzy
-#~ msgid "Password Policy Name"
-#~ msgstr "Stratégie de mot de passe"
+msgid "imported"
+msgstr "importer"
 
-#~ msgid "Record Modified Time"
-#~ msgstr "Enregistrer l'heure de modification"
+#: ../../../core/core_st.cpp:167
+#, c-format
+msgid "Empty line %d skipped"
+msgstr "La ligne vide %d a été sautée"
 
-#~ msgid "Shift+DCA"
-#~ msgstr "Maj + ACD"
+#: ../../../core/core_st.cpp:168
+#, c-format
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+msgstr "Entrée %s%d avec Groupe=\"%s\", Titre=\"%s\", Utilisateur=\"%s\""
 
-#~ msgid "Symbols"
-#~ msgstr "Symboles"
+#: ../../../core/core_st.cpp:169
+msgid "id="
+msgstr "id="
 
-#~ msgid "URL"
-#~ msgstr "URL"
+#: ../../../core/core_st.cpp:170
+msgid "Internal error. Import failed. No records imported."
+msgstr ""
+"Erreur interne. L'importation a échoué. Aucun enregistrements importés."
 
-#~ msgid "Username"
-#~ msgstr "Nom d'utilisateur"
+#: ../../../core/core_st.cpp:171
+#, c-format
+msgid "Found %d known column headers:"
+msgstr "%d entêtes de colonne connues:"
 
-#~ msgid "UUID"
-#~ msgstr "UUID"
+#: ../../../core/core_st.cpp:172
+#, c-format
+msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
+msgstr "L'entrée de la ligne %d a un champ \"%s\" invalide. Il a été ignoré."
 
-#~ msgid "Password Expiry Date"
-#~ msgstr "Date d'expiration du mot de passe"
+#: ../../../core/core_st.cpp:173
+msgid "The following columns will be processed: "
+msgstr "Les colonnes suivantes seront traitées:"
 
-#~ msgid "Password Expiry Interval"
-#~ msgstr "Délai d'expiration du mot de passe"
+#: ../../../core/core_st.cpp:174
+msgid ""
+"The following columns were recognised but only Group/Title, Username and "
+"Password will be processed:"
+msgstr ""
+"Les colonnes suivantes ont été reconnues mais seulement Groupe/Titre, Nom "
+"d'utilisateur et Mot de passe seront traités :"
 
-#~ msgid "a normal entry"
-#~ msgstr "une entrée normale"
+#: ../../../core/core_st.cpp:175
+#, c-format
+msgid ""
+"Line %d skipped - Only %d fields found, whereas parsing the Header says "
+"there should be %d."
+msgstr ""
+"Ligne %d sautée. Seulement %d champs on été trouvés alors que l'analyse de "
+"l'entête en détecte %d."
 
-#~ msgid "added but not yet saved to database"
-#~ msgstr "ajoutés mais pas encore enregistré au fichier"
+#: ../../../core/core_st.cpp:176
+msgid ""
+"Either or both of the Group/Title and Password columns are missing. No "
+"records imported."
+msgstr ""
+"Soit l'une ou les deux des colonnes Groupe/Titre et Mot de passe sont "
+"manquantes. Aucun enregistrement importé."
 
-#~ msgid "in the database"
-#~ msgstr "au fichier"
+#: ../../../core/core_st.cpp:177
+msgid ""
+"Could not find the next entry's title field in the KeePass V1 TXT (should be "
+"within square brackets)."
+msgstr ""
+"Impossible de trouver le titre de l'entrée suivante dans le texte KeePass V1 "
+"(devrait être entre crochets)."
 
-#~ msgid "a shortcut entry"
-#~ msgstr "une entrée raccourci"
+#: ../../../core/core_st.cpp:178
+msgid "Column header row not recognised as first record. No records imported."
+msgstr ""
+"L'entète de colonne pas reconnue comme premier enregistrement. Aucun "
+"enregistrement importés."
 
-#~ msgid "a base entry of a shortcut"
-#~ msgstr "entrée de base pour un raccourci"
+#: ../../../core/core_st.cpp:179
+msgid "No records in import file!"
+msgstr "Aucun enregistrement dans le fichier importé!"
 
-#~ msgid "changed but not yet saved to database"
-#~ msgstr "modifié mais pas encore enregistré au fichier"
+#: ../../../core/core_st.cpp:180
+#, fuzzy, c-format
+msgid "Line %d skipped: Empty mandatory Password field."
+msgstr "Ligne %d sautée. Elle a un champ Mot de Passe obligatoire non rempli."
 
-#~ msgid "greater than"
-#~ msgstr "plus grand que"
+#: ../../../core/core_st.cpp:181
+#, fuzzy, c-format
+msgid "Line %d skipped: Empty mandatory Title field."
+msgstr "Ligne %d sautée. Elle a un champ Titre obligatoire non rempli."
 
-#~ msgid "greater than or equal to"
-#~ msgstr "est plus grand ou égal à"
+#: ../../../core/core_st.cpp:182
+#, c-format
+msgid " Import # %d"
+msgstr " Importer # %d"
 
-#~ msgid ""
-#~ "Invalid input on line %d.  Number of fields separated by '%c' is not as "
-#~ "expected."
-#~ msgstr ""
-#~ "Entrée invalide sur la ligne %d.  Le nombre de champs séparés par '%c' "
-#~ "n'est pas celui attendu."
+#: ../../../core/core_st.cpp:183
+msgid "on line "
+msgstr "à la ligne"
 
-#~ msgid "Line %d: "
-#~ msgstr "Ligne %d: "
+#: ../../../core/core_st.cpp:184
+#, fuzzy, c-format
+msgid "%s  - Imported %s"
+msgstr "%d %s importé"
 
-#~ msgid ""
-#~ "File ends on line %d before ending double quote of last entry's note "
-#~ "field."
-#~ msgstr ""
-#~ "Le fichier finit à la ligne %d avant les guillemets de fin du champ de "
-#~ "note de la dernière entrée."
+#: ../../../core/core_st.cpp:185
+msgid ""
+"To replace passwords of existing entries, all the following columns must be "
+"present: Group/Title, Username and Password.  One or more are missing and no "
+"entries have been updated."
+msgstr ""
+"Pour remplacer les mots de passe d'entrées existantes, les colonnes "
+"suivantes doivent être présente: Groupe/Titre, Nom d'utilisateur et Mot de "
+"passe. Une ou plusieurs sont manquantes et aucune entrée n'a été mise à jour."
 
-#~ msgid "Import aborted. Please see report."
-#~ msgstr "Importation interrompue. Veuillez voir le rapport."
+#: ../../../core/core_st.cpp:186
+#, c-format
+msgid "%s not found. Cannot update entry's password.\n"
+msgstr "%s non trouvé. Impossible de mettre à jour l'entrée de mot de passe.\n"
 
-#~ msgid ""
-#~ "The TXT or CSV file was not exported as required as entry records span "
-#~ "multiple lines in the CSV file.\n"
-#~ "\n"
-#~ "Import aborted."
-#~ msgstr ""
-#~ "Le fichier TXT ou CSV n'a pas été exporté tel que demandé car certaines "
-#~ "entrées sont sur plusieurs lignes dans le fichier CSV.\n"
-#~ "\n"
-#~ "Importation interrompue"
+#: ../../../core/core_st.cpp:187
+#, c-format
+msgid "%s has an empty %s.\n"
+msgstr "%s a %s vide.\n"
 
-#~ msgid ""
-#~ "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
-#~ "Import file. Added imported entry with title=\"%s\".\n"
-#~ msgstr ""
-#~ "%s, Titre=\"%s\", Utilisateur=\"%s\" existe déjà dans votre fichier ou le "
-#~ "fichier importé. Entrée ajoutée avec le titre \"%s\".\n"
+#: ../../../core/core_st.cpp:188
+#, c-format
+msgid ""
+"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+"the base entry is already an alias."
+msgstr ""
+"L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
+"alias mais l'entrée de base est déjà un alias."
 
-#~ msgid "Entry on line %d with Group=\"%s\""
-#~ msgstr "Entrée à la ligne %d avec Groupe=\"%s\""
+#: ../../../core/core_st.cpp:189
+msgid "\tThis entry has been made an alias of associated base entry."
+msgstr "\tCette entrée est devenue un alias de l'entrée de base associée."
 
-#~ msgid "Entry on line %d with no group"
-#~ msgstr "Entrée à la ligne %d sans groupe"
+#: ../../../core/core_st.cpp:190
+#, c-format
+msgid ""
+"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+"the base entry does not exist."
+msgstr ""
+"L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
+"alias mais l'entrée de base n'existe pas."
 
-#~ msgid "Entry with Group=\"%s\""
-#~ msgstr "Entrée avec Groupe=\"%s\""
+#: ../../../core/core_st.cpp:191
+msgid ""
+"\tThis entry remains a normal entry and the password has not been changed."
+msgstr ""
+"\tCette entrée reste une entrée normale et le mot de passe n'a pas été "
+"changé."
 
-#~ msgid "Entry with no group"
-#~ msgstr "Entrée sans groupe"
+#: ../../../core/core_st.cpp:192
+#, c-format
+msgid ""
+"The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
+"entry. It cannot be imported."
+msgstr ""
+"L'entrée %s \"%s, %s, %s\" ne pointe pas sur une entrée de base %s normale "
+"ou existante. Elle ne peut être importée."
 
+#: ../../../core/core_st.cpp:193
+msgid "Entry import warnings"
+msgstr "Avertissements d'importation d'entrées"
+
+#: ../../../core/core_st.cpp:194
+msgid "Internal error: Invalid oflag or pmode argument"
+msgstr "Erreur interne: oflag ou argument du pmode invalide "
+
+#: ../../../core/core_st.cpp:195
+msgid "invalid!"
+msgstr "invalide!"
+
+#: ../../../core/core_st.cpp:196
+msgid "  Invalid date/time value."
+msgstr "  Valeur de date ou d'heure invalide."
+
+#: ../../../core/core_st.cpp:197
+msgid "  Field length is incorrect."
+msgstr "La longueur du champ est invalide."
+
+#: ../../../core/core_st.cpp:198
+msgid "Internal error: An invalid flag was specified"
+msgstr "Erreur interne: un signal invalide a été spécifié."
+
+#: ../../../core/core_st.cpp:199
+#, c-format
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr "En-tête invalide: '%s' (doit être 5 caractères hexadécimaux)."
+
+#: ../../../core/core_st.cpp:200
+#, c-format
+msgid "  Invalid number of saved old passwords %d."
+msgstr "  Nombre invalide d'anciens mot de passe enregistrés : %d."
+
+#: ../../../core/core_st.cpp:201
+#, c-format
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr "Valeur de statut invalide: %d (doit être 0 ou  1)."
+
+#: ../../../core/core_st.cpp:202
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr "Longueur de mot de passe invalide (nombre non-hexadécimal)."
+
+#: ../../../core/core_st.cpp:203
+msgid ""
+"  Invalid password length found (differs from length of following password)."
+msgstr ""
+"Longueur de mot de passe invalide (different de la longueur du mot de passe "
+"suivant)."
+
+#: ../../../core/core_st.cpp:204
+msgid "Invalid Filter schema."
+msgstr "Schéma de filtre invalide."
+
+#: ../../../core/core_st.cpp:205
+msgid "Schema does not have a version number."
+msgstr "Le schéma n'a pas de numéro de version"
+
+#: ../../../core/core_st.cpp:206
+msgid ""
+"  Invalid field separator character found - only a single blank is allowed "
+"between fields."
+msgstr ""
+"  Séparateur de champ invalide trouvé - seul un espace blanc est permis "
+"entre les champs."
+
+#: ../../../core/core_st.cpp:207
+#, c-format
+msgid "The filter XML version (%d) is greater than the current schema (%d)."
+msgstr ""
+"La version du filtre XML (%d) est plus grande que le schéma courant (%d)."
+
+#: ../../../core/core_st.cpp:208
+#, c-format
+msgid ""
+"The filter XML version (%d) is greater than that supported by this instance "
+"of PasswordSafe (%d)."
+msgstr ""
+"La version du filtre XML (%d) est plus grande que celle indispensable pour "
+"cette instance de PasswordSafe (%d)."
+
+#: ../../../core/core_st.cpp:209
+msgid "is"
+msgstr "est"
+
+#: ../../../core/core_st.cpp:210
+msgid "is active"
+msgstr "est actif"
+
+#: ../../../core/core_st.cpp:211
+msgid "is inactive"
+msgstr "est inactif"
+
+#: ../../../core/core_st.cpp:212
+msgid "is not"
+msgstr "n'est pas"
+
+#: ../../../core/core_st.cpp:213
+msgid "is not present"
+msgstr "n'est pas présent"
+
+#: ../../../core/core_st.cpp:214
+msgid "is present"
+msgstr "est présent"
+
+#: ../../../core/core_st.cpp:215
+#, c-format
+msgid ""
+"Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has "
+"been removed from the %s entry."
+msgstr ""
+
+#: ../../../core/core_st.cpp:216
+#, c-format
+msgid ""
+"Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe "
+"application. It has been removed from the entry."
+msgstr ""
+
+#: ../../../core/core_st.cpp:217
+msgid "less than"
+msgstr "Moins que"
+
+#: ../../../core/core_st.cpp:218
+msgid "less than or equal to"
+msgstr "Moins que ou égal à"
+
+#: ../../../core/core_st.cpp:219
+msgid "File or path not found"
+msgstr "Le fichier ou son chemin n'ont pas été trouvés"
+
+#: ../../../core/core_st.cpp:220
+#, c-format
+msgid ""
+"\n"
+"The following new %s %s merged into this database:"
+msgstr ""
+"\n"
+"Les nouveau %s %s suivants seront fusionnés dans ce fichier :"
+
+#: ../../../core/core_st.cpp:221
+#, c-format
+msgid ""
+"\n"
+"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr ""
+"\n"
+"Fusion complétée: %d %s ajoutées (%d %s, %d %s, %d %s)"
+
+#: ../../../core/core_st.cpp:222
+#, fuzzy, c-format
+msgid ""
+"Conflicting entries for \"%s\" \"%s\" \"%s\".\n"
+"  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
+"    Differing field(s): %s"
+msgstr ""
+"Entrées en conflit pour «%s» «%s» «%s».\n"
+"  Entrée fusionnée ajoutée en tant que «%s» «%s» «%s».\n"
+"    Champ(s) différent(s): %s"
+
+#: ../../../core/core_st.cpp:223
 #, fuzzy
-#~ msgid "imported"
-#~ msgstr "importer"
+msgid "merged"
+msgstr "Fusionner"
 
-#~ msgid "Empty line %d skipped"
-#~ msgstr "La ligne vide %d a été sautée"
+#: ../../../core/core_st.cpp:224
+#, fuzzy, c-format
+msgid "%s - Merged %s"
+msgstr "%d %s importé"
 
-#~ msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-#~ msgstr "Entrée %s%d avec Groupe=\"%s\", Titre=\"%s\", Utilisateur=\"%s\""
+#: ../../../core/core_st.cpp:225
+msgid "MISSING PASSWORD"
+msgstr ""
 
-#~ msgid "id="
-#~ msgstr "id="
+#: ../../../core/core_st.cpp:226
+#, c-format
+msgid "\tPassword policy name '%s' is not in the database."
+msgstr ""
 
-#~ msgid "Internal error. Import failed. No records imported."
-#~ msgstr ""
-#~ "Erreur interne. L'importation a échoué. Aucun enregistrements importés."
+#: ../../../core/core_st.cpp:227
+msgid ""
+"\tOne or more Password Policy Names were not found in the database. The "
+"affected entries have been changed to use the database's default policy."
+msgstr ""
 
-#~ msgid "Found %d known column headers:"
-#~ msgstr "%d entêtes de colonne connues:"
+#: ../../../core/core_st.cpp:228
+msgid "Can't obtain the schema version."
+msgstr "Impossible d'obtenir la version du schéma."
 
-#~ msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-#~ msgstr ""
-#~ "L'entrée de la ligne %d a un champ \"%s\" invalide. Il a été ignoré."
+#: ../../../core/core_st.cpp:229
+#, c-format
+msgid "MISSING TITLE # %d"
+msgstr ""
 
-#~ msgid "The following columns will be processed: "
-#~ msgstr "Les colonnes suivantes seront traitées:"
+#: ../../../core/core_st.cpp:230
+msgid "The filter XML version is missing."
+msgstr "La version du filtre XML est manquante."
 
-#~ msgid ""
-#~ "The following columns were recognised but only Group/Title, Username and "
-#~ "Password will be processed:"
-#~ msgstr ""
-#~ "Les colonnes suivantes ont été reconnues mais seulement Groupe/Titre, Nom "
-#~ "d'utilisateur et Mot de passe seront traités :"
+#: ../../../core/core_st.cpp:232
+#, fuzzy, c-format
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr "Create SchemaCache%2d Error 0x%08X during %s."
 
-#~ msgid ""
-#~ "Line %d skipped - Only %d fields found, whereas parsing the Header says "
-#~ "there should be %d."
-#~ msgstr ""
-#~ "Ligne %d sautée. Seulement %d champs on été trouvés alors que l'analyse "
-#~ "de l'entête en détecte %d."
+#: ../../../core/core_st.cpp:233
+#, fuzzy, c-format
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr "Erreur %2d de code SAX  0x%08X  pendant %s."
 
-#~ msgid ""
-#~ "Either or both of the Group/Title and Password columns are missing. No "
-#~ "records imported."
-#~ msgstr ""
-#~ "Soit l'une ou les deux des colonnes Groupe/Titre et Mot de passe sont "
-#~ "manquantes. Aucun enregistrement importé."
+#: ../../../core/core_st.cpp:234
+#, c-format
+msgid "Error (%08X): line %d character %d %s"
+msgstr "Erreur (%08X): ligne %d caractère %d %s"
 
-#~ msgid ""
-#~ "Could not find the next entry's title field in the KeePass V1 TXT (should "
-#~ "be within square brackets)."
-#~ msgstr ""
-#~ "Impossible de trouver le titre de l'entrée suivante dans le texte KeePass "
-#~ "V1 (devrait être entre crochets)."
+#: ../../../core/core_st.cpp:236
+msgid ""
+"Unable to get configuration file lock.\n"
+"\n"
+"Will use registry."
+msgstr ""
+"Impossible de lire le verrou du fichier de configuration.\n"
+"\n"
+"Le programme va utiliser le registre."
 
-#~ msgid ""
-#~ "Column header row not recognised as first record. No records imported."
-#~ msgstr ""
-#~ "L'entète de colonne pas reconnue comme premier enregistrement. Aucun "
-#~ "enregistrement importés."
+#: ../../../core/core_st.cpp:237
+msgid "Cannot create lock file - no permission in directory?"
+msgstr ""
+"Impossible de créer un fichier de verrouillage - aucune permission dans le "
+"dossier?"
 
-#~ msgid "No records in import file!"
-#~ msgstr "Aucun enregistrement dans le fichier importé!"
+#: ../../../core/core_st.cpp:238
+msgid "Internal error: Out of file handles"
+msgstr "Erreur interne: sorti des pointeurs de fichiers"
 
+#: ../../../core/core_st.cpp:239
+msgid ""
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
+"seems available."
+msgstr ""
+"Impossible d'utiliser le lecteur MS XML sur votre système.  Ni MS XML V3, V4 "
+"ou V6 ne semblent disponibles."
+
+#: ../../../core/core_st.cpp:241
+msgid "is not set"
+msgstr "n'est pas mis"
+
+#: ../../../core/core_st.cpp:242
+#, fuzzy, c-format
+msgid ""
+"Number of entries processed: %d\n"
+"\n"
+"Number of invalid UUIDs fixed: %d\n"
+"\n"
+"Number of duplicate UUIDs fixed: %d\n"
+"\n"
+"Number of non-unique Group/Title/User fixed: %d\n"
+"\n"
+"Number of Password Histories fixed: %d\n"
+"\n"
+"Number of Alias warnings issued: %d\n"
+"\n"
+"Number of Shortcut warnings issued: %d\n"
+"\n"
+"Number of entries with fields that cannot be fully displayed: %d.\n"
+"\n"
+"Recommend that the database is now saved."
+msgstr ""
+"Nombre d'entrées traitées: %d\n"
+"\n"
+"Nombre de UUID corrigés: %d\n"
+"\n"
+"Nombre d'historique de mot de passe corrrigés: %d\n"
+"\n"
+"Nombre de Groupe/Titre/Utilisateur non-unique corrigés: %d\n"
+"\n"
+"Nombre d'avertissement d'Alias émis: %d\n"
+"\n"
+"Nombre d'avertissement de Raccourcis émis: %d\n"
+"\n"
+"Nombre d'entrées avec chanmps ne pouvant être affiché complètement: %d"
+
+#: ../../../core/core_st.cpp:244
+msgid ""
+"Password should be mixed case, with at least one digit or punctuation "
+"character"
+msgstr ""
+"Le mot de passe devrait comporter des casses différentes avec au moins un "
+"chiffre ou caractère de ponctuation"
+
+#: ../../../core/core_st.cpp:245
+msgid "Password is too short"
+msgstr "Le mot de passe est trop court"
+
+#: ../../../core/core_st.cpp:246
+msgid "Easyvision characters"
+msgstr "Gros caractères"
+
+#: ../../../core/core_st.cpp:247
+msgid "Hexadecimal characters"
+msgstr "Caractères hexadécimaux"
+
+#: ../../../core/core_st.cpp:248
 #, fuzzy
-#~ msgid "Line %d skipped: Empty mandatory Password field."
-#~ msgstr ""
-#~ "Ligne %d sautée. Elle a un champ Mot de Passe obligatoire non rempli."
+msgid "Password length"
+msgstr "Longueur :"
 
+#: ../../../core/core_st.cpp:249
+msgid "Pronounceable passwords"
+msgstr "Mots de passe prononçables"
+
+#: ../../../core/core_st.cpp:251
 #, fuzzy
-#~ msgid "Line %d skipped: Empty mandatory Title field."
-#~ msgstr "Ligne %d sautée. Elle a un champ Titre obligatoire non rempli."
+msgid "Use lowercase characters"
+msgstr "Caractères minuscules minimum"
 
-#~ msgid " Import # %d"
-#~ msgstr " Importer # %d"
-
-#~ msgid "on line "
-#~ msgstr "à la ligne"
-
+#: ../../../core/core_st.cpp:252
 #, fuzzy
-#~ msgid "%s  - Imported %s"
-#~ msgstr "%d %s importé"
+msgid "Use symbols"
+msgstr "symboles"
 
-#~ msgid ""
-#~ "To replace passwords of existing entries, all the following columns must "
-#~ "be present: Group/Title, Username and Password.  One or more are missing "
-#~ "and no entries have been updated."
-#~ msgstr ""
-#~ "Pour remplacer les mots de passe d'entrées existantes, les colonnes "
-#~ "suivantes doivent être présente: Groupe/Titre, Nom d'utilisateur et Mot "
-#~ "de passe. Une ou plusieurs sont manquantes et aucune entrée n'a été mise "
-#~ "à jour."
-
-#~ msgid "%s not found. Cannot update entry's password.\n"
-#~ msgstr ""
-#~ "%s non trouvé. Impossible de mettre à jour l'entrée de mot de passe.\n"
-
-#~ msgid "%s has an empty %s.\n"
-#~ msgstr "%s a %s vide.\n"
-
-#~ msgid ""
-#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-#~ "the base entry is already an alias."
-#~ msgstr ""
-#~ "L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
-#~ "alias mais l'entrée de base est déjà un alias."
-
-#~ msgid "\tThis entry has been made an alias of associated base entry."
-#~ msgstr "\tCette entrée est devenue un alias de l'entrée de base associée."
-
-#~ msgid ""
-#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-#~ "the base entry does not exist."
-#~ msgstr ""
-#~ "L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
-#~ "alias mais l'entrée de base n'existe pas."
-
-#~ msgid ""
-#~ "\tThis entry remains a normal entry and the password has not been changed."
-#~ msgstr ""
-#~ "\tCette entrée reste une entrée normale et le mot de passe n'a pas été "
-#~ "changé."
-
-#~ msgid ""
-#~ "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
-#~ "entry. It cannot be imported."
-#~ msgstr ""
-#~ "L'entrée %s \"%s, %s, %s\" ne pointe pas sur une entrée de base %s "
-#~ "normale ou existante. Elle ne peut être importée."
-
-#~ msgid "Entry import warnings"
-#~ msgstr "Avertissements d'importation d'entrées"
-
-#~ msgid "Internal error: Invalid oflag or pmode argument"
-#~ msgstr "Erreur interne: oflag ou argument du pmode invalide "
-
-#~ msgid "invalid!"
-#~ msgstr "invalide!"
-
-#~ msgid "  Invalid date/time value."
-#~ msgstr "  Valeur de date ou d'heure invalide."
-
-#~ msgid "  Field length is incorrect."
-#~ msgstr "La longueur du champ est invalide."
-
-#~ msgid "Internal error: An invalid flag was specified"
-#~ msgstr "Erreur interne: un signal invalide a été spécifié."
-
-#~ msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-#~ msgstr "En-tête invalide: '%s' (doit être 5 caractères hexadécimaux)."
-
-#~ msgid "  Invalid number of saved old passwords %d."
-#~ msgstr "  Nombre invalide d'anciens mot de passe enregistrés : %d."
-
-#~ msgid "  Invalid status value: %d (must be either 0 or 1)."
-#~ msgstr "Valeur de statut invalide: %d (doit être 0 ou  1)."
-
-#~ msgid "  Invalid password length found (not a hexadecimal number)."
-#~ msgstr "Longueur de mot de passe invalide (nombre non-hexadécimal)."
-
-#~ msgid ""
-#~ "  Invalid password length found (differs from length of following "
-#~ "password)."
-#~ msgstr ""
-#~ "Longueur de mot de passe invalide (different de la longueur du mot de "
-#~ "passe suivant)."
-
-#~ msgid "Invalid Filter schema."
-#~ msgstr "Schéma de filtre invalide."
-
-#~ msgid "Schema does not have a version number."
-#~ msgstr "Le schéma n'a pas de numéro de version"
-
-#~ msgid ""
-#~ "  Invalid field separator character found - only a single blank is "
-#~ "allowed between fields."
-#~ msgstr ""
-#~ "  Séparateur de champ invalide trouvé - seul un espace blanc est permis "
-#~ "entre les champs."
-
-#~ msgid "The filter XML version (%d) is greater than the current schema (%d)."
-#~ msgstr ""
-#~ "La version du filtre XML (%d) est plus grande que le schéma courant (%d)."
-
-#~ msgid ""
-#~ "The filter XML version (%d) is greater than that supported by this "
-#~ "instance of PasswordSafe (%d)."
-#~ msgstr ""
-#~ "La version du filtre XML (%d) est plus grande que celle indispensable "
-#~ "pour cette instance de PasswordSafe (%d)."
-
-#~ msgid "is"
-#~ msgstr "est"
-
-#~ msgid "is active"
-#~ msgstr "est actif"
-
-#~ msgid "is inactive"
-#~ msgstr "est inactif"
-
-#~ msgid "is not"
-#~ msgstr "n'est pas"
-
-#~ msgid "is not present"
-#~ msgstr "n'est pas présent"
-
-#~ msgid "is present"
-#~ msgstr "est présent"
-
-#~ msgid "less than"
-#~ msgstr "Moins que"
-
-#~ msgid "less than or equal to"
-#~ msgstr "Moins que ou égal à"
-
-#~ msgid "File or path not found"
-#~ msgstr "Le fichier ou son chemin n'ont pas été trouvés"
-
-#~ msgid ""
-#~ "\n"
-#~ "The following new %s %s merged into this database:"
-#~ msgstr ""
-#~ "\n"
-#~ "Les nouveau %s %s suivants seront fusionnés dans ce fichier :"
-
-#~ msgid ""
-#~ "\n"
-#~ "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
-#~ msgstr ""
-#~ "\n"
-#~ "Fusion complétée: %d %s ajoutées (%d %s, %d %s, %d %s)"
-
+#: ../../../core/core_st.cpp:253
 #, fuzzy
-#~ msgid ""
-#~ "Conflicting entries for \"%s\" \"%s\" \"%s\".\n"
-#~ "  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
-#~ "    Differing field(s): %s"
-#~ msgstr ""
-#~ "Entrées en conflit pour «%s» «%s» «%s».\n"
-#~ "  Entrée fusionnée ajoutée en tant que «%s» «%s» «%s».\n"
-#~ "    Champ(s) différent(s): %s"
+msgid "Use uppercase characters"
+msgstr "Caractères majuscules minimum"
 
+#: ../../../core/core_st.cpp:254
+#, c-format
+msgid "Error in a Password History %s:"
+msgstr "Erreur dans l'historique de mot de passe %s:"
+
+#: ../../../core/core_st.cpp:255
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr "sous-champ débutant à la position %d (dans le champ Historique): "
+
+#: ../../../core/core_st.cpp:256
+msgid "  All Password History ignored."
+msgstr "  Tout l'historique de mot de passe ignoré"
+
+#: ../../../core/core_st.cpp:257
+msgid "Read Error"
+msgstr "Erreur de lecture"
+
+#: ../../../core/core_st.cpp:258
+#, c-format
+msgid ""
+"\tOne or more entry keyboard shortcuts were already assigned to entries in "
+"this database. They have been removed from the %s entries."
+msgstr ""
+
+#: ../../../core/core_st.cpp:259
+msgid ""
+"\tOne or more Password Policy Names were already in this database but had "
+"different settings. They have been renamed."
+msgstr ""
+
+#: ../../../core/core_st.cpp:260
+#, c-format
+msgid "%s%s%s_Report.txt"
+msgstr "%s%s%s_Report.txt"
+
+#: ../../../core/core_st.cpp:261
+#, c-format
+msgid "Report of %s function started at %s"
+msgstr "Rapport de la fonction %s démarrée à %s"
+
+#: ../../../core/core_st.cpp:262
+#, c-format
+msgid "on database %s"
+msgstr "dans le fichier %s"
+
+#: ../../../core/core_st.cpp:263
+msgid "Validate"
+msgstr "Valider"
+
+#: ../../../core/core_st.cpp:265
+msgid "Fatal Error"
+msgstr "Erreur fatale"
+
+#: ../../../core/core_st.cpp:267
+#, fuzzy, c-format
+msgid ""
+"\n"
+"Error in Password History for entry: \"%s\"%s\"%s\": "
+msgstr ""
+"\n"
+"Erreur dans l'historique du mot de passe pour l'entrée: »%s»%s»%s»: "
+
+#: ../../../core/core_st.cpp:268
+msgid "See Password History filters"
+msgstr "Voir les filtres de l'historique des mots de passe"
+
+#: ../../../core/core_st.cpp:269
+msgid "See Password Policy filters"
+msgstr "Voir les filtres de la stratégie de mots de passe"
+
+#: ../../../core/core_st.cpp:270
+msgid "is set"
+msgstr "est mis"
+
+#: ../../../core/core_st.cpp:271
+msgid "shortcut"
+msgstr "raccourci"
+
+#: ../../../core/core_st.cpp:272
+msgid "shortcuts"
+msgstr "raccourcis"
+
+#: ../../../core/core_st.cpp:273
+msgid "policy specific symbols"
+msgstr ""
+
+#: ../../../core/core_st.cpp:274
+msgid "Start Report"
+msgstr "Commencer le rapport"
+
+#: ../../../core/core_st.cpp:277
+#, fuzzy, c-format
+msgid "%s - Sync'd %s"
+msgstr "%d %s importé"
+
+#: ../../../core/core_st.cpp:278
+msgid "System error: No more file handles available"
+msgstr "Erreur système: Plus de pointeurs de fichiers disponibles"
+
+#: ../../../core/core_st.cpp:280
+msgid "Internal error: Unexpected error number"
+msgstr "Erreur interne: Numéro d'erreur inattendu"
+
+#: ../../../core/core_st.cpp:282
+msgid "Unknown function"
+msgstr "Fonction inconnue"
+
+#: ../../../core/core_st.cpp:283
+msgid "Unknown object"
+msgstr "Objet inconnu"
+
+#: ../../../core/core_st.cpp:285
+msgid ""
+"The following entries had an invalid UUID field.  This has been corrected."
+msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
+
+#: ../../../core/core_st.cpp:286
+#, fuzzy, c-format
+msgid ""
+"The following entries have passwords in the correct form for %s, but the "
+"base entry does not exist."
+msgstr ""
+"L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
+"alias mais l'entrée de base n'existe pas."
+
+#: ../../../core/core_st.cpp:287
+msgid "The following entries were duplicates of an existing entry."
+msgstr "Les entrées suivantes étaient similaires à une entrée déjà existante."
+
+#: ../../../core/core_st.cpp:288
 #, fuzzy
-#~ msgid "merged"
-#~ msgstr "Fusionner"
+msgid ""
+"The following entries had a duplicate UUID field.  This has been corrected."
+msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
 
+#: ../../../core/core_st.cpp:289
+#, fuzzy, c-format
+msgid ""
+"The following entries had an empty Password field, which is not permitted. "
+"The password has been set to '%s'"
+msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
+
+#: ../../../core/core_st.cpp:290
 #, fuzzy
-#~ msgid "%s - Merged %s"
-#~ msgstr "%d %s importé"
-
-#~ msgid "Can't obtain the schema version."
-#~ msgstr "Impossible d'obtenir la version du schéma."
-
-#~ msgid "The filter XML version is missing."
-#~ msgstr "La version du filtre XML est manquante."
-
-#, fuzzy
-#~ msgid "Create SchemaCache60 Error 0x%08X during %s."
-#~ msgstr "Create SchemaCache%2d Error 0x%08X during %s."
-
-#, fuzzy
-#~ msgid "SAX Parse60 Error 0x%08X during %s."
-#~ msgstr "Erreur %2d de code SAX  0x%08X  pendant %s."
-
-#~ msgid "Error (%08X): line %d character %d %s"
-#~ msgstr "Erreur (%08X): ligne %d caractère %d %s"
-
-#~ msgid ""
-#~ "Unable to get configuration file lock.\n"
-#~ "\n"
-#~ "Will use registry."
-#~ msgstr ""
-#~ "Impossible de lire le verrou du fichier de configuration.\n"
-#~ "\n"
-#~ "Le programme va utiliser le registre."
-
-#~ msgid "Cannot create lock file - no permission in directory?"
-#~ msgstr ""
-#~ "Impossible de créer un fichier de verrouillage - aucune permission dans "
-#~ "le dossier?"
-
-#~ msgid "Internal error: Out of file handles"
-#~ msgstr "Erreur interne: sorti des pointeurs de fichiers"
-
-#~ msgid ""
-#~ "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or "
-#~ "V6 seems available."
-#~ msgstr ""
-#~ "Impossible d'utiliser le lecteur MS XML sur votre système.  Ni MS XML V3, "
-#~ "V4 ou V6 ne semblent disponibles."
-
-#~ msgid "is not set"
-#~ msgstr "n'est pas mis"
-
-#, fuzzy
-#~ msgid ""
-#~ "Number of entries processed: %d\n"
-#~ "\n"
-#~ "Number of invalid UUIDs fixed: %d\n"
-#~ "\n"
-#~ "Number of duplicate UUIDs fixed: %d\n"
-#~ "\n"
-#~ "Number of non-unique Group/Title/User fixed: %d\n"
-#~ "\n"
-#~ "Number of Password Histories fixed: %d\n"
-#~ "\n"
-#~ "Number of Alias warnings issued: %d\n"
-#~ "\n"
-#~ "Number of Shortcut warnings issued: %d\n"
-#~ "\n"
-#~ "Number of entries with fields that cannot be fully displayed: %d.\n"
-#~ "\n"
-#~ "Recommend that the database is now saved."
-#~ msgstr ""
-#~ "Nombre d'entrées traitées: %d\n"
-#~ "\n"
-#~ "Nombre de UUID corrigés: %d\n"
-#~ "\n"
-#~ "Nombre d'historique de mot de passe corrrigés: %d\n"
-#~ "\n"
-#~ "Nombre de Groupe/Titre/Utilisateur non-unique corrigés: %d\n"
-#~ "\n"
-#~ "Nombre d'avertissement d'Alias émis: %d\n"
-#~ "\n"
-#~ "Nombre d'avertissement de Raccourcis émis: %d\n"
-#~ "\n"
-#~ "Nombre d'entrées avec chanmps ne pouvant être affiché complètement: %d"
-
-#~ msgid ""
-#~ "Password should be mixed case, with at least one digit or punctuation "
-#~ "character"
-#~ msgstr ""
-#~ "Le mot de passe devrait comporter des casses différentes avec au moins un "
-#~ "chiffre ou caractère de ponctuation"
-
-#~ msgid "Password is too short"
-#~ msgstr "Le mot de passe est trop court"
-
-#~ msgid "Easyvision characters"
-#~ msgstr "Gros caractères"
-
-#~ msgid "Hexadecimal characters"
-#~ msgstr "Caractères hexadécimaux"
-
-#, fuzzy
-#~ msgid "Password length"
-#~ msgstr "Longueur :"
-
-#~ msgid "Pronounceable passwords"
-#~ msgstr "Mots de passe prononçables"
-
-#, fuzzy
-#~ msgid "Use lowercase characters"
-#~ msgstr "Caractères minuscules minimum"
-
-#, fuzzy
-#~ msgid "Use symbols"
-#~ msgstr "symboles"
-
-#, fuzzy
-#~ msgid "Use uppercase characters"
-#~ msgstr "Caractères majuscules minimum"
-
-#~ msgid "Error in a Password History %s:"
-#~ msgstr "Erreur dans l'historique de mot de passe %s:"
-
-#~ msgid "sub-field starting at position %d (within the History field): "
-#~ msgstr "sous-champ débutant à la position %d (dans le champ Historique): "
-
-#~ msgid "  All Password History ignored."
-#~ msgstr "  Tout l'historique de mot de passe ignoré"
-
-#~ msgid "Read Error"
-#~ msgstr "Erreur de lecture"
-
-#~ msgid "%s%s%s_Report.txt"
-#~ msgstr "%s%s%s_Report.txt"
-
-#~ msgid "Report of %s function started at %s"
-#~ msgstr "Rapport de la fonction %s démarrée à %s"
-
-#~ msgid "on database %s"
-#~ msgstr "dans le fichier %s"
-
-#~ msgid "Validate"
-#~ msgstr "Valider"
-
-#~ msgid "Fatal Error"
-#~ msgstr "Erreur fatale"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "Error in Password History for entry: \"%s\"%s\"%s\": "
-#~ msgstr ""
-#~ "\n"
-#~ "Erreur dans l'historique du mot de passe pour l'entrée: »%s»%s»%s»: "
-
-#~ msgid "See Password History filters"
-#~ msgstr "Voir les filtres de l'historique des mots de passe"
-
-#~ msgid "See Password Policy filters"
-#~ msgstr "Voir les filtres de la stratégie de mots de passe"
-
-#~ msgid "is set"
-#~ msgstr "est mis"
-
-#~ msgid "shortcut"
-#~ msgstr "raccourci"
-
-#~ msgid "shortcuts"
-#~ msgstr "raccourcis"
-
-#~ msgid "Start Report"
-#~ msgstr "Commencer le rapport"
-
-#, fuzzy
-#~ msgid "%s - Sync'd %s"
-#~ msgstr "%d %s importé"
-
-#~ msgid "System error: No more file handles available"
-#~ msgstr "Erreur système: Plus de pointeurs de fichiers disponibles"
-
-#~ msgid "Internal error: Unexpected error number"
-#~ msgstr "Erreur interne: Numéro d'erreur inattendu"
-
-#~ msgid "Unknown function"
-#~ msgstr "Fonction inconnue"
-
-#~ msgid "Unknown object"
-#~ msgstr "Objet inconnu"
-
-#~ msgid ""
-#~ "The following entries had an invalid UUID field.  This has been corrected."
-#~ msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
-
-#, fuzzy
-#~ msgid ""
-#~ "The following entries have passwords in the correct form for %s, but the "
-#~ "base entry does not exist."
-#~ msgstr ""
-#~ "L'entrée \"%s, %s, %s\" a un mot de passe dans la forme correcte pour un "
-#~ "alias mais l'entrée de base n'existe pas."
-
-#~ msgid "The following entries were duplicates of an existing entry."
-#~ msgstr ""
-#~ "Les entrées suivantes étaient similaires à une entrée déjà existante."
-
-#, fuzzy
-#~ msgid ""
-#~ "The following entries had a duplicate UUID field.  This has been "
-#~ "corrected."
-#~ msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
-
-#, fuzzy
-#~ msgid ""
-#~ "The following entries had an empty Password field, which is not "
-#~ "permitted. The password has been set to '%s'"
-#~ msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
-
-#, fuzzy
-#~ msgid ""
-#~ "The following entries had an empty Title field, which is not permitted."
-#~ msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
-
-#~ msgid "\tGroup='%s', Title='%s', User='%s' %s"
-#~ msgstr "\tGroupe='%s', Titre='%s', Utilisateur='%s' %s"
-
-#~ msgid "- Its title has been changed to:'%s'"
-#~ msgstr "- Son titre a été changé pour: '%s'"
-
-#~ msgid ""
-#~ "The following entries had an invalid Password History.  This has been "
-#~ "rebuilt with available data.  There may be some loss of history."
-#~ msgstr ""
-#~ "Les entrées suivante avaient un historique de mot de passe invalide. Ceci "
-#~ "a été corrigé avec l'information disponible. Il y a pu avoir quelques "
-#~ "perte d'historique."
-
-#, fuzzy
-#~ msgid ""
-#~ "The following entries have one or more text fields too long to display or "
-#~ "edit (over %d characters).  The largest entry size found was ~%d %s."
-#~ msgstr ""
-#~ "Les entrées suivantes ont un ou plusieurs champs trop long pour afficher "
-#~ "ou modifier (plus de %d caractères)."
-
-#~ msgid "will expire"
-#~ msgstr "expirera"
-
-#~ msgid ""
-#~ "SAX Parse Error during %s\n"
-#~ "%s."
-#~ msgstr ""
-#~ "Erreur d'analyse SAX durant %s\n"
-#~ "%s."
-
-#~ msgid "XML %s: line %d character %d: %s"
-#~ msgstr "XML %s: ligne %d caractère %d: %s"
-
-#~ msgid "Internal error: Couldn't initialize config file XML structure"
-#~ msgstr ""
-#~ "Erreur interne: N'a pas pu initialiser la structure XML du fichier de "
-#~ "configuration"
-
-#~ msgid ""
-#~ "A filter was active. Export of data was restricted to include only those "
-#~ "displayed."
-#~ msgstr ""
-#~ "Un filtre était actif. L'exportation a été restreinte pour inclure "
-#~ "seulement les entrées affichées."
-
-#~ msgid "Export of data was restricted to certain fields by the user."
-#~ msgstr "L'exportation a été restreinte à certains champ par l'utilisateur."
-
-#~ msgid ""
-#~ "Note: These preferences are only used when importing into an empty "
-#~ "database."
-#~ msgstr ""
-#~ "Note : Ces préférences sont utilisées seulement lors de l'importation "
-#~ "dans un fichier de mots de passe vide."
-
-#~ msgid "Subset of entries restricted by the following rule:"
-#~ msgstr "Sous-ensemble des entrées restreint par la règle suivante :"
-
-#~ msgid ""
-#~ "The user specified that the following fields be excluded from the export:"
-#~ msgstr ""
-#~ "L'utilisateur a spécifié que les champs suivants soient exclus de "
-#~ "l'exportation :"
-
-#, fuzzy
-#~ msgid ""
-#~ "Configuration file error:\n"
-#~ "%s\n"
-#~ "%s\n"
-#~ "offset approximately at %d"
-#~ msgstr ""
-#~ "Erreur du fichier de configuration:\n"
-#~ "%s\n"
-#~ "%s\n"
-#~ "ligne %d colonne %d"
-
-#~ msgid "import"
-#~ msgstr "importer"
-
-#~ msgid "Unable to load configuration file"
-#~ msgstr "Incapable de charger le fichier de configuration"
-
-#~ msgid ""
-#~ "Failed to lock configuration file - opened by another instance of "
-#~ "PasswordSafe?"
-#~ msgstr ""
-#~ "Le verrouillage du fichier de configuration a échoué - ouvert par une "
-#~ "autre instance de PasswordSafe?"
-
-#~ msgid "Unable to save configuration file"
-#~ msgstr "Incapable d'enregistrer le fichier de configuration"
-
-#~ msgid "validation"
-#~ msgstr "validation"
-
-#, fuzzy
-#~ msgid "Yes (at least %d)"
-#~ msgstr "Doivent être au moins %d"
-
-#, fuzzy
-#~ msgid "Yes - At least %d from %s: %s"
-#~ msgstr "Doivent être au moins %d"
+msgid "The following entries had an empty Title field, which is not permitted."
+msgstr "Les entrées suivantes avaient un UUID invalide. Ceci a été corrigé."
+
+#: ../../../core/core_st.cpp:291
+#, c-format
+msgid "\tGroup='%s', Title='%s', User='%s' %s"
+msgstr "\tGroupe='%s', Titre='%s', Utilisateur='%s' %s"
+
+#: ../../../core/core_st.cpp:292
+#, c-format
+msgid "- Its title has been changed to:'%s'"
+msgstr "- Son titre a été changé pour: '%s'"
+
+#: ../../../core/core_st.cpp:293
+msgid "The following ERRORS were detected and were FIXED."
+msgstr ""
+
+#: ../../../core/core_st.cpp:294
+msgid ""
+"The following entries had an invalid Password History.  This has been "
+"rebuilt with available data.  There may be some loss of history."
+msgstr ""
+"Les entrées suivante avaient un historique de mot de passe invalide. Ceci a "
+"été corrigé avec l'information disponible. Il y a pu avoir quelques perte "
+"d'historique."
+
+#: ../../../core/core_st.cpp:295
+#, fuzzy, c-format
+msgid ""
+"The following entries have one or more text fields too long to display or "
+"edit (over %d characters).  The largest entry size found was ~%d %s."
+msgstr ""
+"Les entrées suivantes ont un ou plusieurs champs trop long pour afficher ou "
+"modifier (plus de %d caractères)."
+
+#: ../../../core/core_st.cpp:296
+msgid ""
+"The following WARNINGS were detected - you should review and fix them "
+"manually."
+msgstr ""
+
+#: ../../../core/core_st.cpp:299
+msgid "will expire"
+msgstr "expirera"
+
+#: ../../../core/core_st.cpp:300
+#, c-format
+msgid ""
+"SAX Parse Error during %s\n"
+"%s."
+msgstr ""
+"Erreur d'analyse SAX durant %s\n"
+"%s."
+
+#: ../../../core/core_st.cpp:301
+#, c-format
+msgid "XML %s: line %d character %d: %s"
+msgstr "XML %s: ligne %d caractère %d: %s"
+
+#: ../../../core/core_st.cpp:302
+msgid ""
+"*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr ""
+
+#: ../../../core/core_st.cpp:303
+msgid "Internal error: Couldn't initialize config file XML structure"
+msgstr ""
+"Erreur interne: N'a pas pu initialiser la structure XML du fichier de "
+"configuration"
+
+#: ../../../core/core_st.cpp:304
+msgid ""
+"A filter was active. Export of data was restricted to include only those "
+"displayed."
+msgstr ""
+"Un filtre était actif. L'exportation a été restreinte pour inclure seulement "
+"les entrées affichées."
+
+#: ../../../core/core_st.cpp:305
+msgid "Export of data was restricted to certain fields by the user."
+msgstr "L'exportation a été restreinte à certains champ par l'utilisateur."
+
+#: ../../../core/core_st.cpp:306
+msgid ""
+"Note: These Password Policies will not replace existing policies with the "
+"same name in the current database."
+msgstr ""
+
+#: ../../../core/core_st.cpp:307
+msgid ""
+"Note: These preferences are only used when importing into an empty database."
+msgstr ""
+"Note : Ces préférences sont utilisées seulement lors de l'importation dans "
+"un fichier de mots de passe vide."
+
+#: ../../../core/core_st.cpp:308
+msgid "Subset of entries restricted by the following rule:"
+msgstr "Sous-ensemble des entrées restreint par la règle suivante :"
+
+#: ../../../core/core_st.cpp:309
+msgid ""
+"The user specified that the following fields be excluded from the export:"
+msgstr ""
+"L'utilisateur a spécifié que les champs suivants soient exclus de "
+"l'exportation :"
+
+#: ../../../core/core_st.cpp:310
+#, fuzzy, c-format
+msgid ""
+"Configuration file error:\n"
+"%s\n"
+"%s\n"
+"offset approximately at %d"
+msgstr ""
+"Erreur du fichier de configuration:\n"
+"%s\n"
+"%s\n"
+"ligne %d colonne %d"
+
+#: ../../../core/core_st.cpp:311
+msgid "import"
+msgstr "importer"
+
+#: ../../../core/core_st.cpp:312
+msgid "Unable to load configuration file"
+msgstr "Incapable de charger le fichier de configuration"
+
+#: ../../../core/core_st.cpp:313
+msgid ""
+"Failed to lock configuration file - opened by another instance of "
+"PasswordSafe?"
+msgstr ""
+"Le verrouillage du fichier de configuration a échoué - ouvert par une autre "
+"instance de PasswordSafe?"
+
+#: ../../../core/core_st.cpp:314
+msgid "Unable to save configuration file"
+msgstr "Incapable d'enregistrer le fichier de configuration"
+
+#: ../../../core/core_st.cpp:315
+msgid "validation"
+msgstr "validation"
+
+#: ../../../core/core_st.cpp:317
+#, c-format
+msgid "Yes - EasyVision Symbols: %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:318
+#, fuzzy, c-format
+msgid "Yes (at least %d)"
+msgstr "Doivent être au moins %d"
+
+#: ../../../core/core_st.cpp:319
+#, c-format
+msgid "Yes - Pronounceable Symbols: %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:320
+#, fuzzy, c-format
+msgid "Yes - At least %d from %s: %s"
+msgstr "Doivent être au moins %d"
 
 #~ msgid ""
 #~ "At least one type of character (lowercase, uppercase, digits,\n"
