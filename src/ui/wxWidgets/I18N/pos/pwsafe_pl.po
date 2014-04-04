@@ -3056,7 +3056,7 @@ msgid ""
 "\n"
 "If you continue, fields will be updated in your existing database\n"
 "from your selected input database"
-msgstr ""
+msgstr "OSTRZEŻENIE!\n\nJeśli będziesz kontynuował, wpisy w instniejącej bazie danych\nzostaną zaktualizowane wpisami z wybranej bazy danych"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:478
 msgid " will be updated with corresponding entries from \""
@@ -3111,7 +3111,7 @@ msgid ""
 "\n"
 "File corrupt or truncated!\n"
 "Data may have been lost or modified."
-msgstr ""
+msgstr "%s\n\nPlik popsuty lub przycięty!\nDane mogły zostać stracone lub zmienione."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:620
 #, c-format
@@ -3224,7 +3224,7 @@ msgstr ""
 msgid ""
 "Please enter the current combination, followed by a new combination.\n"
 "Type the new combination once again to confirm it."
-msgstr ""
+msgstr "Prosze podać aktualne hasło, a potem nowe hasło.\nA potem znów nowe hasło, by je potwierdzić."
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:174
 msgid "Old safe combination:"
@@ -3333,7 +3333,7 @@ msgstr "V%d.%d.%d %s"
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:378
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:275
 msgid "Three strikes - yer out!"
-msgstr ""
+msgstr "Three strikes - yer out!"
 
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:415
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:445
@@ -3365,7 +3365,7 @@ msgid ""
 "A new password database will be created.\n"
 "The safe combination will be used to encrypt the password database file.\n"
 "You can use any keyboard character. The combination is case-sensitive."
-msgstr ""
+msgstr "Zostanie stworzona nowa baza danych.\nDo jej zaszyfrowania zostanie użyte hasło.\nMożesz używac dowolnych znaków z klawiatury. Wielkość liter ma znaczenie."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:167
 msgid "Verify:"
