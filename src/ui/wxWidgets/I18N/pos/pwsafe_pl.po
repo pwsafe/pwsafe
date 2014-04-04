@@ -3964,12 +3964,12 @@ msgstr "Błąd: Plik tylko do odczytu"
 #: ../../../core/core_st.cpp:116
 #, fuzzy
 msgid "File is too big."
-msgstr "  Pole jest zbyt długie."
+msgstr "Plik jest zbyt duży."
 
 #: ../../../core/core_st.cpp:117
 #, fuzzy
 msgid "File is too short."
-msgstr "  Pole jest zbyt krótkie."
+msgstr "Plik jest zbyt mały."
 
 #: ../../../core/core_st.cpp:118
 msgid "File is truncated or otherwise corrupt. Please use backup database."
