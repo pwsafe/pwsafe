@@ -2128,6 +2128,10 @@ msgid ""
 "by old versions of PasswordSafe. To save your changes in the old format, use "
 "the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
+"Oryginalna baza danych: \"%s\" jest w starym formacie. To nie będzie zmienione.\n"
+"Twoje zmiany zostaną zapisane jako \"%s\" w nowym formacie, który nie może być użyty "
+"przez starsze wersje PasswordSafe. By zapisać zmiany w starym formacie użyj "
+"komendy \"Plik->Eksportuj do -> Stary formatd (1.x lub 2)\"."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:888
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1248
@@ -2176,6 +2180,10 @@ msgid ""
 "PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
 "Old (1.x or 2) format' command."
 msgstr ""
+"Oryginalna baza danych: '%s' jest w starym formacie. Dane zostaną "
+"zapisane w nowym formacie, z którego nie mogą skorzystać starsze wersje  "
+"PasswordSafe. By zapisać dane w starym formacie użyj komendy 'Plik->Eksport do-> "
+"Stary format (1.x lub 2)'."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1260
 msgid "Please choose a name for the current (Untitled) database:"
@@ -4499,6 +4507,9 @@ msgid ""
 "  Adding merged entry as \"%s\" \"%s\" \"%s\".\n"
 "    Differing field(s): %s"
 msgstr ""
+"Skonfilkowanye wpisy dla \"%s\" \"%s\" \"%s\".\n"
+"  Dodano scalone wpisy jako \"%s\" \"%s\" \"%s\".\n"
+"    Pola które sie różniły: %s"
 
 #: ../../../core/core_st.cpp:223
 #, fuzzy
