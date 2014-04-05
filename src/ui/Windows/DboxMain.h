@@ -294,6 +294,7 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
+  void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets,

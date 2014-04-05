@@ -809,6 +809,9 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           break;
         case L'R': case L'r':
           m_core.SetReadOnly(true);
+          /* Set initially RO too to prevent possible RO/RW mode change issues on open,
+            it will be set to real open state value later (in DboxMain::PostOpenProcessing) */
+          dbox.SetDBInitiallyRO(true);
           break;
         case L'S': case L's':
           startSilent = true;
