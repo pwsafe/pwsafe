@@ -1,12 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the PasswordSafe package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: PasswordSafe 3.33.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -749,7 +749,7 @@ msgstr "&Importeren"
 
 #. Resource IDs: (1228)
 msgid "&In"
-msgstr "&In"
+msgstr "O&ver"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
@@ -805,7 +805,7 @@ msgstr "&Notities:"
 
 #. Resource IDs: (1227)
 msgid "&On"
-msgstr "&Aan"
+msgstr "&Op"
 
 #. Resource IDs: (360)
 msgid "&Open"
