@@ -227,7 +227,7 @@ class PolicyValidator : public MultiCheckboxValidator
 {
 public:
   PolicyValidator(int rbID, int ids[], size_t num,
-		  const wxString& msg, const wxString& title)
+      const wxString& msg, const wxString& title)
     : MultiCheckboxValidator(ids, num, msg, title), m_rbID(rbID) {}
   PolicyValidator(const PolicyValidator &other)
     : MultiCheckboxValidator(other), m_rbID(other.m_rbID) {}
@@ -239,7 +239,7 @@ public:
     if (win && win->IsEnabled()) {
       wxRadioButton* rb = wxDynamicCast(win, wxRadioButton);
       if (rb && rb->GetValue()) {
-	return true;
+  return true;
       }
     }
     return MultiCheckboxValidator::Validate(parent);
@@ -824,8 +824,8 @@ static struct {short pv; wxString name;}
 
   bool useDefault = (dca < PWSprefs::minDCA || dca > PWSprefs::maxDCA);
   short defDCA =  short(PWSprefs::GetInstance()->
-			GetPref(isShift ?
-				PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
+      GetPref(isShift ?
+        PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
   if (useDefault) {
     iDCA = defDCA;
   } else {

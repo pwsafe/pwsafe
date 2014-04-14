@@ -656,12 +656,12 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
       hdr = BuildHeader(bsFields, false);
       size_t found = hdr.find(_T("\t"));
-	    while (found != StringX::npos) {
-		    if (found != StringX::npos) {
-			    hdr.replace(found, 1, _T(", "));
-		    }
-		    found = hdr.find(_T("\t"));
-	    }
+      while (found != StringX::npos) {
+        if (found != StringX::npos) {
+          hdr.replace(found, 1, _T(", "));
+        }
+        found = hdr.find(_T("\t"));
+      }
       hdr = _T("     ") + hdr;
       conv.ToUTF8(hdr, utf8, utf8Len);
       ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);

@@ -30,7 +30,7 @@ inline wxString towxstring(const StringX& str) {
 }
 
 inline wxString towxstring(const stringT& str) {
-	return wxString(str.data(), str.size());
+  return wxString(str.data(), str.size());
 }
 
 inline stringT tostdstring(const wxString& str) {

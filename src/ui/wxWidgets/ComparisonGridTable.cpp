@@ -436,13 +436,13 @@ wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellA
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );
   int idx = row/2;
   if (m_compData->at(idx).bsDiffs.test(ColumnToField(col))) {
-	  wxGridCellAttr* diffAttr = attr->Clone();
-	  diffAttr->SetTextColour(*wxRED);
-	  return diffAttr;
+    wxGridCellAttr* diffAttr = attr->Clone();
+    diffAttr->SetTextColour(*wxRED);
+    return diffAttr;
   }
   else {
-	  attr->IncRef();
-	  return attr;
+    attr->IncRef();
+    return attr;
   }
 }
 

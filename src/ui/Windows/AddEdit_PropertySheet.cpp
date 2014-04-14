@@ -300,7 +300,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.PWHistory = m_AEMD.PWHistory;
           m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
           m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
-          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;		 
+          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
           switch (m_AEMD.ipolicy) {
             case DEFAULT_POLICY:
               m_AEMD.pci->SetPWPolicy(L"");

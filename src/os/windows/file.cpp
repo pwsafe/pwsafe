@@ -247,7 +247,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   stringT sDrive, sDir, sName, sExt;
   pws_os::splitpath(lock_filename, sDrive, sDir, sName, sExt);
   stringT sNewDir = sDrive + sDir;
-	DWORD dwAttrib = GetFileAttributes(sNewDir.c_str());
+  DWORD dwAttrib = GetFileAttributes(sNewDir.c_str());
   DWORD dwerr(0);
   if (dwAttrib == INVALID_FILE_ATTRIBUTES)
     dwerr = GetLastError();

@@ -548,7 +548,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
  * The entire logic is borrowed from ui/Windows/MainEdit.cpp
  */
 void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
-					const std::vector<size_t>& vactionverboffsets)
+          const std::vector<size_t>& vactionverboffsets)
 {
   // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
   // Except for anything involving time (\d, \w, \W) or use older method (\z)

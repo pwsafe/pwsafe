@@ -178,7 +178,7 @@ bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
     ykey = yk_open_first_key();
     if (ykey == NULL)
       goto done;
-	if (yk_write_to_key(ykey, SLOT_CHAL_HMAC2, challenge, len)) {
+  if (yk_write_to_key(ykey, SLOT_CHAL_HMAC2, challenge, len)) {
       m_reqstat = PENDING;
       retval = true;
     }

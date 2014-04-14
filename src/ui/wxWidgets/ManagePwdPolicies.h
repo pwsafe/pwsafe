@@ -75,11 +75,11 @@ class CManagePasswordPolicies: public wxDialog
 public:
   /// Constructors
   CManagePasswordPolicies( wxWindow* parent,  PWScore &core,
-			   wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME,
-			   const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE,
-			   const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION,
-			   const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE,
-			   long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
+         wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME,
+         const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE,
+         const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION,
+         const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE,
+         long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME, const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE, const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION, const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE, long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );

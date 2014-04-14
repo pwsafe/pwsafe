@@ -1944,8 +1944,8 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     if (bChangedPolicy) {
       StringX sxChanged = L"\r\n\xab" + sxgroup + L"\xbb " +
-	                        L"\xab" + sxnewtitle + L"\xbb " +
-	                        L"\xab" + sxuser + L"\xbb";
+                          L"\xab" + sxnewtitle + L"\xbb " +
+                          L"\xab" + sxuser + L"\xbb";
       sxEntriesWithNewNamedPolicies += sxChanged;
     }
 

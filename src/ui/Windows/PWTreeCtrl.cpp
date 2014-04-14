@@ -1433,7 +1433,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
                                                        DBEmptyGroupsCommand::EG_DELETE));
         }
-		
+
         app.GetMainDlg()->Execute(pmulticmds);
       } else
         if (dropEffect == DROPEFFECT_COPY) {

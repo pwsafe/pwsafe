@@ -26,7 +26,7 @@ class SystemTray : protected wxTaskBarIcon
     SystemTray(PasswordSafeFrame* frame);
 
     void SetTrayStatus(TrayStatus st);
-	  TrayStatus GetTrayStatus() const {return m_status;}
+    TrayStatus GetTrayStatus() const {return m_status;}
     void ShowIcon(void) { SetTrayStatus(m_status); }
     bool IsLocked(void) const { return m_status == TRAY_LOCKED; }
     
@@ -49,7 +49,7 @@ class SystemTray : protected wxTaskBarIcon
     wxIcon iconClosed, iconUnlocked, iconLocked;
     PasswordSafeFrame* m_frame;
     TrayStatus m_status;
-	
+
     DECLARE_EVENT_TABLE()
 };
 

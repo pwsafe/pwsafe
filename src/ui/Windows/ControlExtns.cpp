@@ -1121,7 +1121,7 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
     return 0L; 
  
   std::wstring cs_data;
-	HANDLE hData = GetClipboardData(CF_UNICODETEXT);
+  HANDLE hData = GetClipboardData(CF_UNICODETEXT);
   if (hData != NULL) {
     wchar_t *buffer = (wchar_t *)GlobalLock(hData);
     if (buffer != NULL) {
@@ -1129,7 +1129,7 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
       GlobalUnlock(hData);
     }
   }
-	CloseClipboard();
+  CloseClipboard();
 
   CString cs_text, cs_oldtext;;
   GetWindowText(cs_text);
@@ -1196,7 +1196,7 @@ void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
       BOOL fFocus = lpNMCustomDraw->uItemState & CDIS_FOCUS;
       DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
-				     		&lpNMCustomDraw->rc, fChecked, fHot, fFocus);
+                 &lpNMCustomDraw->rc, fChecked, fHot, fFocus);
   }
 }
 

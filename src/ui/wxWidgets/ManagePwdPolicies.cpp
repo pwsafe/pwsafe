@@ -84,8 +84,8 @@ END_EVENT_TABLE()
 
 
 CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &core, wxWindowID id,
-						  const wxString& caption, const wxPoint& pos,
-						  const wxSize& size, long style )
+              const wxString& caption, const wxPoint& pos,
+              const wxSize& size, long style )
 : m_core(core), m_iundo_pos(-1), m_curPolRow(-1),
   m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
   m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true)

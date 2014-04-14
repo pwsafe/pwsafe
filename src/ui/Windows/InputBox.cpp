@@ -19,7 +19,7 @@ IMPLEMENT_DYNAMIC(CInputBox, CPWDialog)
 
 CInputBox::CInputBox(UINT nIDCaption, CString csInitalText, int maxlen,
     const bool bReadOnly, CWnd *pParent)
-	: CPWDialog(CInputBox::IDD, pParent), m_nIDCaption(nIDCaption), m_maxlen(maxlen),
+  : CPWDialog(CInputBox::IDD, pParent), m_nIDCaption(nIDCaption), m_maxlen(maxlen),
   m_csText(csInitalText), m_bReadOnly(bReadOnly), m_bInitDone(false)
 { 
 }
@@ -30,7 +30,7 @@ CInputBox::~CInputBox()
 
 void CInputBox::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
 
   DDX_Control(pDX, IDC_INPUTBOX_TEXT, m_edText);
 }

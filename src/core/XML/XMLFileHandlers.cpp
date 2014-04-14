@@ -823,8 +823,8 @@ void XMLFileHandlers::AddXMLEntries()
           // Yes we did, so use renamed version
           cur_entry->policyname = citer->second;
           StringX sxChanged = L"\r\n\xab" + cur_entry->group    + L"\xbb " +
-	                            L"\xab"     + cur_entry->title    + L"\xbb " +
-	                            L"\xab"     + cur_entry->username + L"\xbb";
+                              L"\xab"     + cur_entry->title    + L"\xbb " +
+                              L"\xab"     + cur_entry->username + L"\xbb";
           sxEntriesWithNewNamedPolicies += sxChanged;
         } else {
           // No we didn't, verify current database has it

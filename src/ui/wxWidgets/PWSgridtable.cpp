@@ -132,20 +132,20 @@ wxString PWSGridTable::GetColLabelValue(int col)
 
 wxString PWSGridTable::GetValue(int row, int col)
 {
-	if (size_t(row) < m_pwsgrid->GetNumItems() &&
+  if (size_t(row) < m_pwsgrid->GetNumItems() &&
       size_t(col) < NumberOf(PWSGridCellData)) {
-		const CItemData *pItem = m_pwsgrid->GetItem(row);
+    const CItemData *pItem = m_pwsgrid->GetItem(row);
     if (pItem != NULL) {
       if (PWSGridCellData[col].ft != CItemData::POLICY) {
-			  return towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
+        return towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
       } else {
         PWPolicy pwp;
         pItem->GetPWPolicy(pwp);
         return towxstring(pwp.GetDisplayString());
       }
-		}
-	}
-	return wxEmptyString;
+    }
+  }
+  return wxEmptyString;
 }
 
 void PWSGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
@@ -206,21 +206,21 @@ void PWSGridTable::SetView(wxGrid* newGrid)
 
 bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 {
-	size_t curNumRows = m_pwsgrid->GetNumItems();
+  size_t curNumRows = m_pwsgrid->GetNumItems();
   
-	if (pos >= curNumRows) {
-		wxFAIL_MSG( wxString::Format 
+  if (pos >= curNumRows) {
+    wxFAIL_MSG( wxString::Format
                 (
                  wxT("Called PWSGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
                  static_cast<unsigned int>(pos),
                  static_cast<unsigned int>(numRows),
                  static_cast<unsigned int>(curNumRows)
                  ) );
-		return false;
-	}
+    return false;
+  }
 
-	if (numRows > curNumRows - pos)
-		numRows = curNumRows - pos;
+  if (numRows > curNumRows - pos)
+    numRows = curNumRows - pos;
 
   if (GetView()) {
     //This will actually remove the item from grid display
@@ -231,7 +231,7 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
     GetView()->ProcessTableMessage(msg);
   }
     
-	return true;  
+  return true;
 }
 
 bool PWSGridTable::AppendRows(size_t numRows/*=1*/)

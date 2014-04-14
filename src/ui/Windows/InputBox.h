@@ -13,20 +13,20 @@
 
 class CInputBox : public CPWDialog
 {
-	DECLARE_DYNAMIC(CInputBox)
+  DECLARE_DYNAMIC(CInputBox)
 
 public:
-	CInputBox(UINT nIDCaption, CString csInit, int maxlen = 0,
+  CInputBox(UINT nIDCaption, CString csInit, int maxlen = 0,
               const bool bReadOnly = false, CWnd *pParent = NULL);   // standard constructor
-	virtual ~CInputBox();
+  virtual ~CInputBox();
 
   CString GetText() {return m_csText;}
 
 // Dialog Data
-	enum { IDD = IDD_INPUTBOX };
+  enum { IDD = IDD_INPUTBOX };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -41,5 +41,5 @@ protected:
   int m_maxlen;
   bool m_bReadOnly, m_bInitDone;
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 };

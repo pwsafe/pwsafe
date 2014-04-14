@@ -36,7 +36,7 @@
 
 int ReadCore(PWSAuxCore& othercore, const wxString& file, const StringX& combination,
              bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
-				bool setupCopy /*= false*/)
+        bool setupCopy /*= false*/)
 {
   othercore.ClearData();
 
@@ -44,7 +44,7 @@ int ReadCore(PWSAuxCore& othercore, const wxString& file, const StringX& combina
   int rc = othercore.ReadFile(dbpath, combination);
 
   if (setupCopy)
-	  PWSprefs::GetInstance()->SetupCopyPrefs();
+    PWSprefs::GetInstance()->SetupCopyPrefs();
 
   switch (rc) {
     case PWScore::SUCCESS:

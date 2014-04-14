@@ -47,9 +47,9 @@ typedef struct _KeyPress {
 
 struct AutotypeGlobals
 {
-	Boolean			error_detected;
-	char			errorString[1024];
-} atGlobals	= { False, {0} };
+  Boolean      error_detected;
+  char      errorString[1024];
+} atGlobals  = { False, {0} };
 
 class autotype_exception: public std::exception
 {
@@ -78,7 +78,7 @@ int ErrorHandler(Display *my_dpy, XErrorEvent *event)
 
 void XTest_SendEvent(XKeyEvent *event)
 {
-	XTestFakeKeyEvent(event->display, event->keycode, event->type == KeyPress, 0);
+  XTestFakeKeyEvent(event->display, event->keycode, event->type == KeyPress, 0);
 }
 
 void XSendKeys_SendEvent(XKeyEvent *event)
@@ -88,56 +88,56 @@ void XSendKeys_SendEvent(XKeyEvent *event)
 
 void XSendKeys_SendKeyEvent(XKeyEvent* event)
 {
-	event->type = KeyPress;
-	XSendKeys_SendEvent(event);
+  event->type = KeyPress;
+  XSendKeys_SendEvent(event);
 
-	event->type = KeyRelease;
-	XSendKeys_SendEvent(event);
+  event->type = KeyRelease;
+  XSendKeys_SendEvent(event);
 
-	XFlush(event->display);
+  XFlush(event->display);
 }
 
 
 void XTest_SendKeyEvent(XKeyEvent* event)
 {
-	XKeyEvent shiftEvent;
+  XKeyEvent shiftEvent;
 
-	/* must simulate the shift-press for CAPS and shifted keypresses manually */
-	if (event->state & ShiftMask) {
-		memcpy(&shiftEvent, event, sizeof(shiftEvent));
+  /* must simulate the shift-press for CAPS and shifted keypresses manually */
+  if (event->state & ShiftMask) {
+    memcpy(&shiftEvent, event, sizeof(shiftEvent));
 
-		shiftEvent.keycode = XKeysymToKeycode(event->display, XK_Shift_L);
-		shiftEvent.type = KeyPress;
+    shiftEvent.keycode = XKeysymToKeycode(event->display, XK_Shift_L);
+    shiftEvent.type = KeyPress;
 
-		XTest_SendEvent(&shiftEvent);
-	}
+    XTest_SendEvent(&shiftEvent);
+  }
 
-	event->type = KeyPress;
-	XTest_SendEvent(event);
+  event->type = KeyPress;
+  XTest_SendEvent(event);
 
-	event->type = KeyRelease;
-	XTest_SendEvent(event);
+  event->type = KeyRelease;
+  XTest_SendEvent(event);
 
-	if (event->state & ShiftMask) {
-		shiftEvent.type = KeyRelease;
-		XTest_SendEvent(&shiftEvent);
-	}
+  if (event->state & ShiftMask) {
+    shiftEvent.type = KeyRelease;
+    XTest_SendEvent(&shiftEvent);
+  }
 
-	XFlush(event->display);
+  XFlush(event->display);
 
 }
 
 Bool UseXTest(Display* disp)
 {
-	int major_opcode, first_event, first_error;
-	static Bool useXTest;
-	static int checked = 0;
+  int major_opcode, first_event, first_error;
+  static Bool useXTest;
+  static int checked = 0;
 
-	if (!checked) {
-		useXTest = XQueryExtension(disp, "XTEST", &major_opcode, &first_event, &first_error);
-		checked = 1;
-	}
-	return useXTest;
+  if (!checked) {
+    useXTest = XQueryExtension(disp, "XTEST", &major_opcode, &first_event, &first_error);
+    checked = 1;
+  }
+  return useXTest;
 }
 
 class AutotypeEvent: public XKeyEvent {
@@ -146,7 +146,7 @@ public:
   {
     display = XOpenDisplay(NULL);
     if (display) {
-      int	  revert_to;
+      int    revert_to;
       XGetInputFocus(display, &window, &revert_to);
       subwindow = None;
       x = y = x_root = y_root = 1;

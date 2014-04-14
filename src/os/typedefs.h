@@ -131,14 +131,14 @@ typedef int32_t LONG;
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
 #define MAKELONG(low, high) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
-#define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))	
+#define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))
 #elif defined(PWS_BIG_ENDIAN)
 #define HIBYTE(w) ((BYTE)(w))
 #define LOBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define HIWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define LOWORD(ul) (WORD(DWORD(ul) >> 16))
 #define MAKELONG(low, high) ((LONG) (((WORD) (high)) | ((DWORD) ((WORD) (low))) << 16)) 
-#define MAKEWORD(low, high) ((WORD)((((WORD)(low)) << 8) | ((BYTE)(high))))	
+#define MAKEWORD(low, high) ((WORD)((((WORD)(low)) << 8) | ((BYTE)(high))))
 #else
 #error "One of PWS_LITTLE_ENDIAN or PWS_BIG_ENDIAN must be defined before including typedefs.h"
 #endif

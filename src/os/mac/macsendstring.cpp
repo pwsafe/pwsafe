@@ -76,11 +76,11 @@ void SendString(CFStringRef str, unsigned delayMS)
 
 void pws_os::SendString(const char* str, unsigned delayMS)
 {
-	//GetApplicationTextEncoding call here certainly seems wrong.  We should store the keyboard layout
-	//and string encoding in password db.  But this works for now.
-	CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault, str, GetApplicationTextEncoding());
-	SendString(cfstr, delayMS);
-	CFRelease(cfstr);
+  //GetApplicationTextEncoding call here certainly seems wrong.  We should store the keyboard layout
+  //and string encoding in password db.  But this works for now.
+  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault, str, GetApplicationTextEncoding());
+  SendString(cfstr, delayMS);
+  CFRelease(cfstr);
 }
 
 bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
@@ -119,11 +119,11 @@ bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
 int main (int argc, const char * argv[]) 
 {
     for (int i = 1; i < argc; ++i)
-	{
-		printf("Sending \"%s\", switch to another application in 5 seconds...\n", argv[i]);
-		sleep(5);
-		SendString(argv[i], 5000);
-	}
+  {
+    printf("Sending \"%s\", switch to another application in 5 seconds...\n", argv[i]);
+    sleep(5);
+    SendString(argv[i], 5000);
+  }
     return 0;
 }
 

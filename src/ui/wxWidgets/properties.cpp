@@ -150,7 +150,7 @@ void CProperties::Init()
   else {
     ostringstreamT os;
     pws_os::CUUID huuid(*file_uuid.GetARep(),
-			true); // true for canonical format
+      true); // true for canonical format
     os << huuid;
     m_file_uuid = os.str().c_str();
   }

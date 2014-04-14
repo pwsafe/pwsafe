@@ -517,12 +517,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (bDoShortcuts)
     SetUpMenuStrings(pPopupMenu);
 
-	// Change the 'Change Mode' text as appropriate	 
-  if (uiMenuID == ID_FILEMENU) {	 
-    pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,	 
-                           ID_MENUITEM_CHANGEMODE,	 
-                           bReadOnly ? CS_READWRITE : CS_READONLY);	 
-    return;	 
+  // Change the 'Change Mode' text as appropriate
+  if (uiMenuID == ID_FILEMENU) {
+    pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,
+                           ID_MENUITEM_CHANGEMODE,
+                           bReadOnly ? CS_READWRITE : CS_READONLY);
+    return;
   }
 
   // We have done for all except the Edit and View menus

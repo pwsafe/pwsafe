@@ -506,7 +506,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
   }
 
   CRect rectLV;
-	m_ListCtrl.GetClientRect(rectLV);
+  m_ListCtrl.GetClientRect(rectLV);
   int nColWidth  = (rectLV.Width()) / 3;
   int nColWidth0 = int(0.8 * nColWidth);
   int nColWidth12 = int(1.08 * nColWidth);

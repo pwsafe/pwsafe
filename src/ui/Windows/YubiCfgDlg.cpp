@@ -34,7 +34,7 @@ using namespace std;
 static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
-	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
+  : CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
     m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event

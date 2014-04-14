@@ -66,8 +66,8 @@ END_MESSAGE_MAP()
 
 int CPWStatusBar::OnCreate(LPCREATESTRUCT pCreateStruct)
 {
-	if (CStatusBar::OnCreate(pCreateStruct) == -1)
-		return -1;
+  if (CStatusBar::OnCreate(pCreateStruct) == -1)
+    return -1;
 
   m_pSBToolTips = new CInfoDisplay;
 
@@ -122,7 +122,7 @@ BOOL CPWStatusBar::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRE
 {
   switch(message) {
     case WM_NOTIFY:
-		{
+    {
       NMHDR *pNMHDR = (NMHDR *)lParam;
       if (NM_DBLCLK == pNMHDR->code) {
         NMMOUSE* pNMMouse = (NMMOUSE *)lParam;

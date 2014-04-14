@@ -57,8 +57,8 @@ protected:
   //}}AFX_MSG
   void ProcessPhrase();
   // Override base class yubi callbacks:
-	void yubiInserted(void);
-	void yubiRemoved(void);
+  void yubiInserted(void);
+  void yubiRemoved(void);
   DECLARE_MESSAGE_MAP()
 
 private:

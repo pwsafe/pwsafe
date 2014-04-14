@@ -55,8 +55,8 @@ class CPKBaseDlg : public CPWDialog {
   // Yubico-related:
   bool IsYubiInserted() const;
   // Callbacks:
-	virtual void yubiInserted(void); // called when Yubikey's inserted
-	virtual void yubiRemoved(void);  // called when Yubikey's removed
+  virtual void yubiInserted(void); // called when Yubikey's inserted
+  virtual void yubiRemoved(void);  // called when Yubikey's removed
   void yubiCheckCompleted(); // called when request pending and timer fired
 
   void yubiRequestHMACSha1(); // request HMAC of m_passkey

@@ -150,7 +150,7 @@ void PwsafeApp::initLanguageSupport()
   // Workaround for wx bug 15006
   if (language == wxLANGUAGE_UNKNOWN) {
     std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables."
-		 << endl;
+     << endl;
     // Undefine empty environment variables and try again
     wxString langFull;
     if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull){
@@ -180,7 +180,7 @@ void PwsafeApp::initLanguageSupport()
 #endif
     if (!m_locale->AddCatalog(wxT("pwsafe"))) {
       std::wcerr << L"Couldn't load text for "
-		 << m_locale->GetLanguageName(language).c_str() << endl;
+     << m_locale->GetLanguageName(language).c_str() << endl;
     }
 
     if(! m_locale->IsOk()) {
@@ -191,7 +191,7 @@ void PwsafeApp::initLanguageSupport()
     }
   } else {
     std::cerr << "The selected language is not supported by your system."
-	      << "Try installing support for this language." << std::endl;
+        << "Try installing support for this language." << std::endl;
     m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
     language = wxLANGUAGE_ENGLISH;
   }
@@ -204,8 +204,8 @@ void PwsafeApp::initLanguageSupport()
  */
 
 PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
-			 m_frame(0), m_recentDatabases(0),
-			 m_controller(new wxHtmlHelpController), m_locale(NULL)
+       m_frame(0), m_recentDatabases(0),
+       m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
   Init();
 }
@@ -239,10 +239,10 @@ void PwsafeApp::Init()
 
 #ifdef __WXDEBUG__
 void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func, 
-								const wxChar *cond, const wxChar *msg)
+                const wxChar *cond, const wxChar *msg)
 {
   if (m_locale)
-	  wxApp::OnAssertFailure(file, line, func, cond, msg);
+    wxApp::OnAssertFailure(file, line, func, cond, msg);
   else
       std::wcerr << file << L'(' << line << L"):"
                  << L" assert \"" << cond << L"\" failed in " << (func? func: L"") << L"(): "

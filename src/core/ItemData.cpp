@@ -1604,10 +1604,10 @@ bool CItemData::ValidatePWHistory()
   PWHistList::const_iterator citer;
   for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
     Format(sxBuffer, _T("%08x%04x%s"),
-	           static_cast<long>(citer->changetttdate), citer->password.length(),
-	           citer->password.c_str());
-	    sxNewHistory += sxBuffer;
-	    sxBuffer = _T("");
+             static_cast<long>(citer->changetttdate), citer->password.length(),
+             citer->password.c_str());
+      sxNewHistory += sxBuffer;
+      sxBuffer = _T("");
   }
 
   if (pwh != sxNewHistory)

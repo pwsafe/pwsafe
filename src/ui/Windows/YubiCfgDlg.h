@@ -20,20 +20,20 @@ class CYubiCfgDlg : public CPWDialog
 {
 public:
   enum {YUBI_SK_LEN = PWSfile::HeaderRecord::YUBI_SK_LEN};
-	CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
-	virtual ~CYubiCfgDlg();
+  CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
+  virtual ~CYubiCfgDlg();
 
   int WriteYubiSK(const unsigned char *yubi_sk_bin);
 
   // Dialog Data
-	enum { IDD = IDD_YUBIKEY };
+  enum { IDD = IDD_YUBIKEY };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   
-	DECLARE_MESSAGE_MAP()
-	CString m_YubiSN;
+  DECLARE_MESSAGE_MAP()
+  CString m_YubiSN;
   CSecString m_YubiSK;
   CSecEditExtn m_ex_YubiSK;
 public:
@@ -44,8 +44,8 @@ public:
  private:
   void ReadYubiSN();
   bool IsYubiInserted() const;
-	void yubiInserted(void); // called when Yubikey's inserted
-	void yubiRemoved(void);  // called when Yubikey's removed
+  void yubiInserted(void); // called when Yubikey's inserted
+  void yubiRemoved(void);  // called when Yubikey's removed
   void ShowSK();
   void HideSK();
 
