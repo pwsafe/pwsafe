@@ -54,7 +54,7 @@ static Startup startup;
 size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
                         const wchar_t *src, size_t , bool )
 {
-  return ::wcstombs(dst, src, maxdstlen);
+  return ::wcstombs(dst, src, maxdstlen) + 1;
 }
 
 size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,

@@ -154,6 +154,11 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
       char *dst = new char[dstlen+1];
       dstlen = pws_os::wcstombs(dst, dstlen, wpdata, srclen);
       ASSERT(dstlen != size_t(-1));
+#ifdef __linux
+      //[1150,1167]: Discard the terminating NULLs in text fields
+      if (dstlen && !dst[dstlen-1])
+        dstlen--;
+#endif
       retval = out->WriteField(static_cast<unsigned char>(ft), reinterpret_cast<unsigned char *>(dst), dstlen);
       trashMemory(dst, dstlen);
       delete[] dst;
