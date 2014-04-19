@@ -459,6 +459,8 @@ void CPasskeyEntry::UpdateRO()
         m_PKE_ReadOnly = FALSE;
       GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
     }
+    ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE ? 
+                                                    BST_CHECKED : BST_UNCHECKED);
     UpdateData(FALSE);
   } // !m_bForceReadOnly
 }
@@ -537,8 +539,6 @@ void CPasskeyEntry::OnOpenFileBrowser()
   }
   if (rc == IDOK) {
     m_PKE_ReadOnly = fd.GetReadOnlyPref();
-    ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE ? 
-                                           BST_CHECKED : BST_UNCHECKED);
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
     m_pctlPasskey->EnableWindow(TRUE);
