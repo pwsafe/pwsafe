@@ -115,6 +115,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancel( wxCommandEvent& event );
 
+  /// combobox event handlers, to change the read-only checkbox accordingly
+  void OnDBSelectionChange( wxCommandEvent& event );
+
 ////@begin CSafeCombinationEntry member function declarations
 
   StringX GetPassword() const { return m_password ; }
@@ -154,6 +157,7 @@ private:
   // Not strictly yubi, but refactored to work with it:
 #endif
   void ProcessPhrase();
+  void UpdateReadOnlyCheckbox();
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_

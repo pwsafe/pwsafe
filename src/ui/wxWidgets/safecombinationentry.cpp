@@ -80,6 +80,7 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
 
+  EVT_COMBOBOX(ID_DBASECOMBOBOX, CSafeCombinationEntry::OnDBSelectionChange)
 ////@end CSafeCombinationEntry event table entries
 END_EVENT_TABLE()
 
@@ -267,8 +268,10 @@ void CSafeCombinationEntry::CreateControls()
   wxArrayString recentFiles;
   wxGetApp().recentDatabases().GetAll(recentFiles);
   m_filenameCB->Append(recentFiles);
-  // if m_readOnly, then don't allow user to change it
-  itemCheckBox15->Enable(!m_readOnly);
+  // The underlying native combobox widget might not yet be ready
+  //  to hand back the string we just added
+  wxCommandEvent cmdEvent(wxEVT_COMMAND_COMBOBOX_SELECTED, m_filenameCB->GetId());
+  GetEventHandler()->AddPendingEvent(cmdEvent);
   // if filename field not empty, set focus to password:
   if (!m_filename.empty()) {
     FindWindow(ID_COMBINATION)->SetFocus();
@@ -419,6 +422,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
     m_filename = fd.GetPath();
     wxComboBox *cb = dynamic_cast<wxComboBox *>(FindWindow(ID_DBASECOMBOBOX));
     cb->SetValue(m_filename);
+    UpdateReadOnlyCheckbox();
   }
 }
 
@@ -516,3 +520,21 @@ void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
   }
 }
 #endif
+
+void CSafeCombinationEntry::OnDBSelectionChange( wxCommandEvent& /*event*/ )
+{
+  UpdateReadOnlyCheckbox();
+}
+
+void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
+{
+  wxFileName fn(m_filenameCB->GetValue());
+
+  // Do nothing if the file doesn't exist
+  if ( fn.FileExists() ) {
+    const bool writeable = fn.IsFileWritable();
+    wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
+    ro->SetValue( writeable? m_core.IsReadOnly(): true );
+    ro->Enable(writeable);
+  }
+}
