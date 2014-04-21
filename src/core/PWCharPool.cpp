@@ -139,6 +139,15 @@ CPasswordCharPool::~CPasswordCharPool()
     free(const_cast<charT*>(m_char_arrays[SYMBOL]));
 }
 
+void CPasswordCharPool::GetDefaultSymbols(stringT &symbols)
+{
+  const StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+  if (!sx_symbols.empty())
+    symbols = sx_symbols.c_str();
+  else
+    symbols = std_symbol_chars;
+}
+
 CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int rand) const
 {
   /*

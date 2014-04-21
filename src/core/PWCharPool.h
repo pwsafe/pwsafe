@@ -39,8 +39,7 @@ public:
   ~CPasswordCharPool();
 
   static bool CheckPassword(const StringX &pwd, StringX &error);
-  static void GetDefaultSymbols(stringT &symbols)
-  {symbols = std_symbol_chars;}
+  static void GetDefaultSymbols(stringT &symbols);
   static void GetEasyVisionSymbols(stringT &symbols)
   {symbols = easyvision_symbol_chars;}
   static void GetPronounceableSymbols(stringT &symbols)

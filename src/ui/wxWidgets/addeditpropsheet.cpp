@@ -683,14 +683,10 @@ void AddEditPropSheet::CreateControls()
   m_PWHgrid->SetColLabelValue(1, _("Password"));
 
   // Setup symbols
-  StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
-  if (sx_symbols.empty()) {
-    stringT st_symbols;
-    CPasswordCharPool::GetDefaultSymbols(st_symbols);
-    sx_symbols = st_symbols.c_str();
-  }
+  stringT st_symbols;
+  CPasswordCharPool::GetDefaultSymbols(st_symbols);
 
-  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(sx_symbols.c_str());
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
 
 /*!

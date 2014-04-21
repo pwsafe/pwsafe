@@ -278,14 +278,10 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   }
 
   // Setup symbols
-  StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
-  if (sx_symbols.length() == 0) {
-    stringT st_symbols;
-    CPasswordCharPool::GetDefaultSymbols(st_symbols);
-    sx_symbols = st_symbols.c_str();
-  }
+  stringT st_symbols;
+  CPasswordCharPool::GetDefaultSymbols(st_symbols);
 
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText(sx_symbols.c_str());
+  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText(st_symbols.c_str());
   m_symbols.SetWindowText(M_symbols());
 
   m_bInitdone = true;
