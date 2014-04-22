@@ -23,6 +23,8 @@
 #include "core/PWSprefs.h"
 #include "core/PWCharPool.h"
 
+#include <algorithm>
+
 #include "resource.h"
 #include "resource3.h"  // String resources
 
@@ -664,21 +666,6 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
   UpdateData(FALSE);
 }
 
-void BubbleSort(std::wstring &str)
-{
-  wchar_t tmp;
-
-  for (size_t i = 0; i < str.size() - 1; ++i) {
-    for (size_t j = i + 1; j < str.size(); ++j) {
-      if (str[i] < str[j]) {
-        tmp = str[i];
-        str[i] = str[j];
-        str[j] = tmp;
-      }
-    }
-  }
-}
-
 void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
 {
   if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
@@ -699,11 +686,11 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
     bIsSymbolsChanged = true;
   } else {
     // We do not care if same string in different order:
-    //  so Bubble sort new string
-    BubbleSort(newstr);
+    //  so sort new string
+    std::sort(newstr.begin(), newstr.end());
 
-    //  then Bubble sort old string
-    BubbleSort(oldstr);
+    //  then sort old string
+    std::sort(oldstr.begin(), oldstr.end());
 
     // Then compare
     bIsSymbolsChanged = oldstr.compare(newstr) != 0;
