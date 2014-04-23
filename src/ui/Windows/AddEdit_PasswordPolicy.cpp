@@ -59,8 +59,7 @@ CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent,
                                                  st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_PasswordPolicy::IDD, CAddEdit_PasswordPolicy::IDD_SHORT,
-                          pAEMD),
-    m_useownsymbols(DEFAULT_SYMBOLS), m_bInitdone(false)
+                          pAEMD), m_bInitdone(false)
 {
   m_policy_radibtn = M_ipolicy() != SPECIFIC_POLICY ? 0 : 1 ;
 
@@ -116,7 +115,6 @@ void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_USEHEXDIGITS, m_pwusehexdigits);
   DDX_Check(pDX, IDC_PRONOUNCEABLE, m_pwmakepronounceable);
 
-  DDX_Radio(pDX, IDC_USEDEFAULTSYMBOLS, m_useownsymbols);
   DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_symbols);
   
   DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
@@ -136,8 +134,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
   ON_BN_CLICKED(IDC_USEPWPOLICYNAME, OnSelectNamedPolicy)
   ON_BN_CLICKED(IDC_ENTRYPWPOLICY, OnSetSpecificPWPolicy)
-  ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
-  ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
 
   ON_EN_CHANGE(IDC_DEFPWLENGTH, OnChanged)
   ON_EN_CHANGE(IDC_MINDIGITLENGTH, OnChanged)
@@ -152,6 +148,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
+  ON_BN_CLICKED(IDC_RESET_SYMBOLS, &CAddEdit_PasswordPolicy::OnSymbolReset)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -280,10 +277,6 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   }
 
   // Setup symbols
-  stringT st_symbols;
-  CPasswordCharPool::GetDefaultSymbols(st_symbols);
-
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText(st_symbols.c_str());
   m_symbols.SetWindowText(M_symbols());
 
   m_bInitdone = true;
@@ -452,9 +445,7 @@ void CAddEdit_PasswordPolicy::do_hex(const bool bHex)
       GetDlgItem(LenTxts[i * 2 + 1])->EnableWindow(FALSE);
     }
 
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
   } else {
     // non-hex, restore state
@@ -474,11 +465,8 @@ void CAddEdit_PasswordPolicy::do_hex(const bool bHex)
 
     BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
                    m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
-                                             TRUE : FALSE);
+    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
   }
 }
 
@@ -509,9 +497,7 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(SW_HIDE);
     }
 
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
+    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
   } else {
     // Show lengths
@@ -528,12 +514,17 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
     }
 
     BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
-                                             TRUE : FALSE);
+    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
   }
+  stringT symbols;
+  if (m_pweasyvision)
+    CPasswordCharPool::GetEasyVisionSymbols(symbols);
+  else if (m_pwmakepronounceable)
+    CPasswordCharPool::GetPronounceableSymbols(symbols);
+  else
+    CPasswordCharPool::GetDefaultSymbols(symbols);
+  m_symbols.SetWindowText(symbols.c_str());
 }
 
 void CAddEdit_PasswordPolicy::OnUseLowerCase()
@@ -616,11 +607,8 @@ void CAddEdit_PasswordPolicy::OnUseSymbols()
   GetDlgItem(IDC_STATIC_SY1)->ShowWindow(iShow);
   GetDlgItem(IDC_STATIC_SY2)->EnableWindow(bEnable);
   GetDlgItem(IDC_STATIC_SY2)->ShowWindow(iShow);
-  GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
-  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
-                                           TRUE : FALSE);
+  GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
+  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
   m_pwsymbolminlength = IsDlgButtonChecked(IDC_USESYMBOLS);  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
 }
@@ -696,17 +684,6 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
     bIsSymbolsChanged = oldstr.compare(newstr) != 0;
   }
   m_ae_psh->SetSymbolsChanged(bIsSymbolsChanged);
-}
-
-void CAddEdit_PasswordPolicy::OnSymbols()
-{
-  m_ae_psh->SetChanged(true);
-  m_useownsymbols = ((CButton *)GetDlgItem(IDC_USEDEFAULTSYMBOLS))->GetCheck() == BST_CHECKED ?
-                      DEFAULT_SYMBOLS : OWN_SYMBOLS;
-
-  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(m_useownsymbols == DEFAULT_SYMBOLS ? FALSE : TRUE);
-  if (m_useownsymbols == OWN_SYMBOLS)
-    GetDlgItem(IDC_OWNSYMBOLS)->SetFocus();
 }
 
 void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
@@ -818,11 +795,9 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
   BOOL bDefaultSymbolsAndRadioButtons(FALSE), bOwnSymbolsEditControl(FALSE);
   if (m_pwusesymbols == TRUE && bEnableSpecificPolicy == TRUE) {
      bDefaultSymbolsAndRadioButtons = TRUE;
-     bOwnSymbolsEditControl = (m_useownsymbols == OWN_SYMBOLS) ? TRUE : FALSE;
+     bOwnSymbolsEditControl = TRUE;
   }
-  GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bDefaultSymbolsAndRadioButtons);
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bDefaultSymbolsAndRadioButtons);
-  GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bDefaultSymbolsAndRadioButtons);
+  GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bDefaultSymbolsAndRadioButtons);
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bOwnSymbolsEditControl);
 
   UpdateData(FALSE);
@@ -869,13 +844,12 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
       M_pwp().symbolminlength = (int)m_pwsymbolminlength;
       M_pwp().upperminlength = (int)m_pwupperminlength;
 
-      if (m_pwusesymbols == TRUE && m_useownsymbols == OWN_SYMBOLS) {
+      if (m_pwusesymbols == TRUE) {
         M_iownsymbols() = OWN_SYMBOLS;
         CString cs_symbols;
         m_symbols.GetWindowText(cs_symbols);
         M_symbols() = CSecString(cs_symbols);
       } else {
-        m_useownsymbols = DEFAULT_SYMBOLS;
         M_iownsymbols() = DEFAULT_SYMBOLS;
       }
       break;
@@ -905,8 +879,6 @@ void CAddEdit_PasswordPolicy::SetVariablesFromPolicy()
     m_pwdigitminlength = 1;
   if (m_pwusesymbols == TRUE && m_pwsymbolminlength == 0)
     m_pwsymbolminlength = 1;
-
-  m_useownsymbols = M_iownsymbols();
 }
 
 void CAddEdit_PasswordPolicy::DisablePolicy()
@@ -973,4 +945,12 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
   SetVariablesFromPolicy();
   SetPolicyControls();
+}
+
+
+void CAddEdit_PasswordPolicy::OnSymbolReset()
+{
+  stringT symbols;
+  CPasswordCharPool::GetDefaultSymbols(symbols);
+  m_symbols.SetWindowText(symbols.c_str());
 }

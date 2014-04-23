@@ -48,8 +48,6 @@ public:
   size_t m_pwsymbolminlength;
   size_t m_pwupperminlength;
 
-  int m_useownsymbols;
-
   //}}AFX_DATA
 
   // Overrides
@@ -80,7 +78,6 @@ protected:
   afx_msg void OnMakePronounceable();
   afx_msg void OnSelectNamedPolicy();
   afx_msg void OnSetSpecificPWPolicy();
-  afx_msg void OnSymbols();
   afx_msg void OnOwnSymbolsChanged();
   afx_msg void OnNamesComboChanged();
   //}}AFX_MSG
@@ -110,6 +107,8 @@ private:
   bool m_bInitdone;
 
   int m_policy_radibtn;  // Can't use M_policy() anymore
+public:
+    afx_msg void OnSymbolReset();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

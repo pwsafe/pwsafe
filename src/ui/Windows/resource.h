@@ -756,6 +756,7 @@
 #define IDC_BUTTON2                     1468
 #define IDC_YUBI_API                    1469
 #define IDC_BUTTON1                     1470
+#define IDC_RESET_SYMBOLS               1470
 #define IDC_YUBI_SHOW_HIDE              1471
 #define IDC_EDIT                        1472
 #define IDC_LIST_POLICYENTRIES          1473
