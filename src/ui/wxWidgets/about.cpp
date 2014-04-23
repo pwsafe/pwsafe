@@ -299,6 +299,7 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
       // change to widechar representation
       if (!conv.FromUTF8(buff, nRead, chunk)) {
         delete in_stream;
+        in_stream = 0;
         status = CheckVersion::CANT_READ;
         break;
       } else {
