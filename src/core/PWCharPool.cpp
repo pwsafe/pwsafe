@@ -441,15 +441,32 @@ StringX CPasswordCharPool::MakePronounceable() const
 
 bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
 {
+  /**
+   * A password is "Good enough" if:
+   * It is at least SufficientLength characters long
+   * OR
+   * It is at least MinLength characters long AND it has
+   * at least one uppercase and one lowercase and one (digit or other).
+   *
+   * A future enhancement of this might be to calculate the Shannon Entropy
+   * in combination with a minimum password length.
+   * http://rosettacode.org/wiki/Entropy
+   */
+
+  const size_t SufficientLength = 12;
   const size_t MinLength = 8;
-  size_t length = pwd.length();
-  // check for minimun length
+  const size_t length = pwd.length();
+
+  if (length >= SufficientLength) {
+    return true;
+  }
+
   if (length < MinLength) {
     LoadAString(error, IDSC_PASSWORDTOOSHORT);
     return false;
   }
 
-  // check for at least one  uppercase and lowercase and  digit or other
+  // check for at least one uppercase and lowercase and one (digit or other)
   bool has_uc = false, has_lc = false, has_digit = false, has_other = false;
 
   for (size_t i = 0; i < length; i++) {
