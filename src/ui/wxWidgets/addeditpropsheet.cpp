@@ -683,10 +683,7 @@ void AddEditPropSheet::CreateControls()
   m_PWHgrid->SetColLabelValue(1, _("Password"));
 
   // Setup symbols
-  stringT st_symbols;
-  CPasswordCharPool::GetDefaultSymbols(st_symbols);
-
-  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(CPasswordCharPool::GetDefaultSymbols().c_str());
 }
 
 /*!
@@ -1655,12 +1652,12 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
       return;
     }
 
-    CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
+    st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
   } else { // not checked - restore default symbols to appropriate value
     if (m_pwpPronounceCtrl->GetValue())
-      CPasswordCharPool::GetPronounceableSymbols(st_symbols);
+      st_symbols = CPasswordCharPool::GetPronounceableSymbols();
     else
-      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+      st_symbols = CPasswordCharPool::GetDefaultSymbols();
   }
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
@@ -1681,12 +1678,12 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
-    CPasswordCharPool::GetPronounceableSymbols(st_symbols);
+    st_symbols = CPasswordCharPool::GetPronounceableSymbols();
   } else { // not checked - restore default symbols to appropriate value
     if (m_pwpEasyCtrl->GetValue())
-      CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
+      st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
     else
-      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+      st_symbols = CPasswordCharPool::GetDefaultSymbols();
   }
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }

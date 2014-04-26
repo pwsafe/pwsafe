@@ -20,7 +20,6 @@
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
 
-#include "core/PWCharPool.h"
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
 #include "core/core.h"

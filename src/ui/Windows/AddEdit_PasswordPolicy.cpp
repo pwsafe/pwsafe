@@ -519,11 +519,11 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
   }
   stringT symbols;
   if (m_pweasyvision)
-    CPasswordCharPool::GetEasyVisionSymbols(symbols);
+    symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_pwmakepronounceable)
-    CPasswordCharPool::GetPronounceableSymbols(symbols);
+    symbols = CPasswordCharPool::GetPronounceableSymbols();
   else
-    CPasswordCharPool::GetDefaultSymbols(symbols);
+    symbols = CPasswordCharPool::GetDefaultSymbols();
   m_symbols.SetWindowText(symbols.c_str());
 }
 
@@ -950,7 +950,5 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
 void CAddEdit_PasswordPolicy::OnSymbolReset()
 {
-  stringT symbols;
-  CPasswordCharPool::GetDefaultSymbols(symbols);
-  m_symbols.SetWindowText(symbols.c_str());
+  m_symbols.SetWindowText(CPasswordCharPool::GetDefaultSymbols().c_str());
 }

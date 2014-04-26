@@ -185,10 +185,9 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   stringT yes, no;
   LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
 
-  stringT std_symbols, easyvision_symbols, pronounceable_symbols;
-  CPasswordCharPool::GetDefaultSymbols(std_symbols);
-  CPasswordCharPool::GetEasyVisionSymbols(easyvision_symbols);
-  CPasswordCharPool::GetPronounceableSymbols(pronounceable_symbols);
+  stringT std_symbols = CPasswordCharPool::GetDefaultSymbols();
+  stringT easyvision_symbols = CPasswordCharPool::GetEasyVisionSymbols();
+  stringT pronounceable_symbols = CPasswordCharPool::GetPronounceableSymbols();
 
   const bool bEV = (flags & PWPolicy::UseEasyVision) != 0;
   const bool bPR = (flags & PWPolicy::MakePronounceable) != 0;

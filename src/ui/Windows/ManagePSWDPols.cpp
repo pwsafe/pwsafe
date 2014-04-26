@@ -19,7 +19,6 @@
 #include "Fonts.h"
 
 #include "core/core.h"
-#include "core/PWCharPool.h"
 
 #include "resource3.h"  // String resources
 

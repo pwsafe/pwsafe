@@ -39,11 +39,9 @@ public:
   ~CPasswordCharPool();
 
   static bool CheckPassword(const StringX &pwd, StringX &error);
-  static void GetDefaultSymbols(stringT &symbols);
-  static void GetEasyVisionSymbols(stringT &symbols)
-  {symbols = easyvision_symbol_chars;}
-  static void GetPronounceableSymbols(stringT &symbols)
-  {symbols = pronounceable_symbol_chars;}
+  static stringT GetDefaultSymbols();
+  static stringT GetEasyVisionSymbols() {return easyvision_symbol_chars;}
+  static stringT GetPronounceableSymbols() {return pronounceable_symbol_chars;}
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,

@@ -94,9 +94,9 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
   m_pnonHex[4] = &m_PWEasyVision;
   m_pnonHex[5] = &m_PWMakePronounceable;
 
-  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
-  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
-  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
+  m_std_symbols = CPasswordCharPool::GetDefaultSymbols();
+  m_easyvision_symbols = CPasswordCharPool::GetEasyVisionSymbols();
+  m_pronounceable_symbols = CPasswordCharPool::GetPronounceableSymbols();
 }
 
 CPasswordPolicyDlg::~CPasswordPolicyDlg()

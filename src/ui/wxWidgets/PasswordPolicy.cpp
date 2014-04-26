@@ -102,11 +102,11 @@ void CPasswordPolicy::SetDefaultSymbolDisplay()
 {
   stringT symset;
   if (m_pwUseEasyVision) 
-    CPasswordCharPool::GetEasyVisionSymbols(symset);
+    symset = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_pwMakePronounceable)
-    CPasswordCharPool::GetPronounceableSymbols(symset);
+    symset = CPasswordCharPool::GetPronounceableSymbols();
   else
-    CPasswordCharPool::GetDefaultSymbols(symset);
+    symset = CPasswordCharPool::GetDefaultSymbols();
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(symset.c_str());
 }
 
