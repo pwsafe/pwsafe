@@ -301,7 +301,8 @@ class CSymbolEdit : public CEdit
 {
   // Construction
 public:
-  CSymbolEdit() {}
+  CSymbolEdit();
+  void SetValidSym(const stringT &s);
 
 protected:
   //{{AFX_MSG(CSymbolEdit)
@@ -310,6 +311,8 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+private:
+  stringT m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
 };
 
 /////////////////////////////////////////////////////////////////////////////

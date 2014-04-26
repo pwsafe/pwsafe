@@ -497,8 +497,6 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(SW_HIDE);
     }
 
-    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
   } else {
     // Show lengths
     for (i = 0; i < N_HEX_LENGTHS; i++) {
@@ -512,19 +510,8 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[i * 2 + 1])->EnableWindow(m_save_enabled[i][0]);
       GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(iShow);
     }
-
-    BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
-    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
   }
-  stringT symbols;
-  if (m_pweasyvision)
-    symbols = CPasswordCharPool::GetEasyVisionSymbols();
-  else if (m_pwmakepronounceable)
-    symbols = CPasswordCharPool::GetPronounceableSymbols();
-  else
-    symbols = CPasswordCharPool::GetDefaultSymbols();
-  m_symbols.SetWindowText(symbols.c_str());
+  OnSymbolReset();
 }
 
 void CAddEdit_PasswordPolicy::OnUseLowerCase()
@@ -950,5 +937,13 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
 void CAddEdit_PasswordPolicy::OnSymbolReset()
 {
-  m_symbols.SetWindowText(CPasswordCharPool::GetDefaultSymbols().c_str());
+  stringT symbols;
+  if (m_pweasyvision)
+    symbols = CPasswordCharPool::GetEasyVisionSymbols();
+  else if (m_pwmakepronounceable)
+    symbols = CPasswordCharPool::GetPronounceableSymbols();
+  else
+    symbols = CPasswordCharPool::GetDefaultSymbols();
+  m_symbols.SetValidSym(symbols);
+  m_symbols.SetWindowText(symbols.c_str());
 }

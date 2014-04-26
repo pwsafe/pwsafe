@@ -14,7 +14,7 @@
 #include "core/ItemField.h" // for CSecEditExtn
 #include "core/BlowFish.h"  // ditto
 #include "core/PWSrand.h"   // ditto
-
+#include "core/PWCharPool.h" // for CSymbolEdit
 #include "resource2.h"     // for CEditExtn context menu
 
 #include "vsstyle.h"
@@ -1095,6 +1095,31 @@ BEGIN_MESSAGE_MAP(CSymbolEdit, CEdit)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+CSymbolEdit::CSymbolEdit() : CEdit(), m_validSym(CPasswordCharPool::GetDefaultSymbols())
+{
+}
+
+void CSymbolEdit::SetValidSym(const stringT &s)
+{
+  // Set the member variable.
+  // it's the caller's responsibility to decide
+  // whether or not to filter current value of
+  // the control to new set.
+  m_validSym = s;
+
+# if 0
+  // Here's one way to filter text to respect
+  // new symbol set
+  CString curSyms, newSyms;
+  GetWindowText(curSyms);
+  size_t slen = m_validSym.length();
+  for (size_t i = 0; i < slen; i++)
+    if (curSyms.Find(m_validSym[i]))
+      newSyms += m_validSym[i];
+  SetWindowText(newSyms);
+#endif
+}
+
 void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
   //Allowed inputs are passed on to the base class
@@ -1104,8 +1129,8 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   }
 
   wint_t wChar = reinterpret_cast<wint_t &>(nChar);
-  // Must not be alphanumeric nor have and Alt/Ctrl key
-  if ((_istalpha(wChar) == 0 && _istdigit(wChar) == 0 && (nFlags & 0xE0800000) == 0)) {
+  // Must be a valid symbol, per current valid set
+  if (m_validSym.find(wChar) != std::string::npos) {
     CString cs_text;
     GetWindowText(cs_text);
     // Must not have duplicates
@@ -1135,10 +1160,10 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
   GetWindowText(cs_text);
   cs_oldtext = cs_text;
 
-  // Must not be alphanumeric
   for (size_t i = 0; i < cs_data.length(); i++) {
     wchar_t wChar = cs_data.at(i);
-    if ((_istalpha(wChar) == 0 && _istdigit(wChar) == 0)) {
+  // Must be a valid symbol, per current valid set
+    if (m_validSym.find(wChar) != std::string::npos) {
       // Must not have duplicates
       if (cs_text.Find(wChar) == -1)
         cs_text += wChar;
