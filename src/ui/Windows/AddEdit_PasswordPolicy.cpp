@@ -164,6 +164,17 @@ BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG* pMsg)
   return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
 }
 
+static void setupBuddy(CWnd *p, int spinid, int id, size_t &length, short min = 0)
+{
+  CSpinButtonCtrl* pspin;
+
+  pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
+  pspin->SetBuddy(p->GetDlgItem(id));
+  pspin->SetRange(min, 1024);
+  pspin->SetBase(10);
+  pspin->SetPos((int)length);
+}
+
 BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
@@ -207,7 +218,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     }
   }
 
-  // If specific policy - disable named policy comboboc
+  // If specific policy - disable named policy combobox
   m_cbxPolicyNames.EnableWindow(M_ipolicy() == SPECIFIC_POLICY ? FALSE : TRUE);
 
   if (M_ipolicy() == NAMED_POLICY) {
@@ -225,37 +236,11 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   }
 
   // Set up spin control relationships
-  CSpinButtonCtrl* pspin;
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
-  pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
-  pspin->SetRange(4, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos((int)m_pwdefaultlength);
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
-  pspin->SetBuddy(GetDlgItem(IDC_MINDIGITLENGTH));
-  pspin->SetRange(0, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos((int)m_pwdigitminlength);
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
-  pspin->SetBuddy(GetDlgItem(IDC_MINLOWERLENGTH));
-  pspin->SetRange(0, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos((int)m_pwlowerminlength);
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
-  pspin->SetBuddy(GetDlgItem(IDC_MINSYMBOLLENGTH));
-  pspin->SetRange(0, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos((int)m_pwsymbolminlength);
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINUPPERCASE);
-  pspin->SetBuddy(GetDlgItem(IDC_MINUPPERLENGTH));
-  pspin->SetRange(0, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos((int)m_pwupperminlength);
+  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_pwdefaultlength, 4);
+  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_pwdigitminlength);
+  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_pwlowerminlength);
+  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_pwupperminlength);
+  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_pwsymbolminlength);
 
   // Disable controls based on m_ipolicy
   SetPolicyControls();
@@ -272,8 +257,8 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     DisablePolicy();
     GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
   }
 
   // Setup symbols
