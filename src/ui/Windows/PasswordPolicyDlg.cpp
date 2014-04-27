@@ -705,67 +705,53 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
   GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText((*pst_symbols).c_str());
 }
 
-void CPasswordPolicyDlg::OnUseLowerCase()
+// Following from AddEdit_PasswordPolicy - TBD - move to common mixin class
+void CPasswordPolicyDlg::do_useX(UseX x, int &minlength)
 {
+  const struct { int cb; int edit; int spin; int left; int right;} controls[] = {
+    {IDC_USELOWERCASE, IDC_MINLOWERLENGTH,  IDC_SPINLOWERCASE, IDC_STATIC_LC1, IDC_STATIC_LC2},
+    {IDC_USEUPPERCASE, IDC_MINUPPERLENGTH,  IDC_SPINUPPERCASE, IDC_STATIC_UC1, IDC_STATIC_UC2},
+    {IDC_USEDIGITS,    IDC_MINDIGITLENGTH,  IDC_SPINDIGITS,    IDC_STATIC_DG1, IDC_STATIC_DG2},
+    {IDC_USESYMBOLS,   IDC_MINSYMBOLLENGTH, IDC_SPINSYMBOLS,   IDC_STATIC_SY1, IDC_STATIC_SY2},
+  };
   UnselectNamedPolicy();
   UpdateData(TRUE);
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USELOWERCASE) == BST_CHECKED) ? TRUE : FALSE;
+  BOOL bChecked = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED) ? TRUE : FALSE;
 
-  GetDlgItem(IDC_MINLOWERLENGTH)->EnableWindow(bChecked);
-  GetDlgItem(IDC_SPINLOWERCASE)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_LC1)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_LC2)->EnableWindow(bChecked);
-  m_PWLowerMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
+  GetDlgItem(controls[x].edit)->EnableWindow(bChecked);
+  GetDlgItem(controls[x].spin)->EnableWindow(bChecked);
+  GetDlgItem(controls[x].left)->EnableWindow(bChecked);
+  GetDlgItem(controls[x].right)->EnableWindow(bChecked);
+  if (x == USESYM) {
+    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bChecked);
+    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bChecked);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bChecked);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bChecked == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ? TRUE : FALSE);
+    // GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
+    // GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
+  }
+  minlength = bChecked;  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
+}
+
+void CPasswordPolicyDlg::OnUseLowerCase()
+{
+  do_useX(USELOWER, m_PWLowerMinLength);
 }
 
 void CPasswordPolicyDlg::OnUseUpperCase()
 {
-  UnselectNamedPolicy();
-  UpdateData(TRUE);
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USEUPPERCASE) == BST_CHECKED) ? TRUE : FALSE;
-
-  GetDlgItem(IDC_MINUPPERLENGTH)->EnableWindow(bChecked);
-  GetDlgItem(IDC_SPINUPPERCASE)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_UC1)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_UC2)->EnableWindow(bChecked);
-  m_PWUpperMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
-  UpdateData(FALSE);
+  do_useX(USEUPPER, m_PWUpperMinLength);
 }
 
 void CPasswordPolicyDlg::OnUseDigits()
 {
-  UnselectNamedPolicy();
-  UpdateData(TRUE);
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USEDIGITS) == BST_CHECKED) ? TRUE : FALSE;
-
-  GetDlgItem(IDC_MINDIGITLENGTH)->EnableWindow(bChecked);
-  GetDlgItem(IDC_SPINDIGITS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_DG1)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_DG2)->EnableWindow(bChecked);
-  m_PWDigitMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
-  UpdateData(FALSE);
+  do_useX(USEDIGITS, m_PWDigitMinLength);
 }
 
 void CPasswordPolicyDlg::OnUseSymbols()
 {
-  UnselectNamedPolicy();
-  UpdateData(TRUE);
-
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
-
-  GetDlgItem(IDC_MINSYMBOLLENGTH)->EnableWindow(bChecked);
-  GetDlgItem(IDC_SPINSYMBOLS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_SY1)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_SY2)->EnableWindow(bChecked);
-
-  GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bChecked == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ? TRUE : FALSE);
-
-  m_PWSymbolMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
-
+  do_useX(USESYM, m_PWSymbolMinLength);
   UpdateData(FALSE);
 }
 
