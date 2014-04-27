@@ -514,90 +514,55 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
   OnSymbolReset();
 }
 
-void CAddEdit_PasswordPolicy::OnUseLowerCase()
+void CAddEdit_PasswordPolicy::do_useX(UseX x, size_t &minlength)
 {
+  const struct { int cb; int edit; int spin; int left; int right;} controls[] = {
+    {IDC_USELOWERCASE, IDC_MINLOWERLENGTH,  IDC_SPINLOWERCASE, IDC_STATIC_LC1, IDC_STATIC_LC2},
+    {IDC_USEUPPERCASE, IDC_MINUPPERLENGTH,  IDC_SPINUPPERCASE, IDC_STATIC_UC1, IDC_STATIC_UC2},
+    {IDC_USEDIGITS,    IDC_MINDIGITLENGTH,  IDC_SPINDIGITS,    IDC_STATIC_DG1, IDC_STATIC_DG2},
+    {IDC_USESYMBOLS,   IDC_MINSYMBOLLENGTH, IDC_SPINSYMBOLS,   IDC_STATIC_SY1, IDC_STATIC_SY2},
+  };
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
 
-  BOOL bEnable = (IsDlgButtonChecked(IDC_USELOWERCASE) == BST_CHECKED &&
-                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
+  BOOL bEnable = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED &&
+                  m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
 
-  GetDlgItem(IDC_MINLOWERLENGTH)->EnableWindow(bEnable);
-  GetDlgItem(IDC_MINLOWERLENGTH)->ShowWindow(iShow);
-  GetDlgItem(IDC_SPINLOWERCASE)->EnableWindow(bEnable);
-  GetDlgItem(IDC_SPINLOWERCASE)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_LC1)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_LC1)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_LC2)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_LC2)->ShowWindow(iShow);
-  m_pwlowerminlength = IsDlgButtonChecked(IDC_USELOWERCASE);  // Based on FALSE=0 & TRUE=1
+  GetDlgItem(controls[x].edit)->EnableWindow(bEnable);
+  GetDlgItem(controls[x].edit)->ShowWindow(iShow);
+  GetDlgItem(controls[x].spin)->EnableWindow(bEnable);
+  GetDlgItem(controls[x].spin)->ShowWindow(iShow);
+  GetDlgItem(controls[x].left)->EnableWindow(bEnable);
+  GetDlgItem(controls[x].left)->ShowWindow(iShow);
+  GetDlgItem(controls[x].right)->EnableWindow(bEnable);
+  GetDlgItem(controls[x].right)->ShowWindow(iShow);
+  if (x == USESYM) {
+    GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
+  }
+  minlength = IsDlgButtonChecked(controls[x].cb);  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
+}
+
+void CAddEdit_PasswordPolicy::OnUseLowerCase()
+{
+  do_useX(USELOWER, m_pwlowerminlength);
 }
 
 void CAddEdit_PasswordPolicy::OnUseUpperCase()
 {
-  UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
-
-  BOOL bEnable = (IsDlgButtonChecked(IDC_USEUPPERCASE) == BST_CHECKED &&
-                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
-  int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
-
-  GetDlgItem(IDC_MINUPPERLENGTH)->EnableWindow(bEnable);
-  GetDlgItem(IDC_MINUPPERLENGTH)->ShowWindow(iShow);
-  GetDlgItem(IDC_SPINUPPERCASE)->EnableWindow(bEnable);
-  GetDlgItem(IDC_SPINUPPERCASE)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_UC1)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_UC1)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_UC2)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_UC2)->ShowWindow(iShow);
-  m_pwupperminlength = IsDlgButtonChecked(IDC_USEUPPERCASE);  // Based on FALSE=0 & TRUE=1
-  UpdateData(FALSE);
+  do_useX(USEUPPER, m_pwupperminlength);
 }
 
 void CAddEdit_PasswordPolicy::OnUseDigits()
 {
-  UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
-
-  BOOL bEnable = (IsDlgButtonChecked(IDC_USEDIGITS) == BST_CHECKED &&
-                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
-  int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
-
-  GetDlgItem(IDC_MINDIGITLENGTH)->EnableWindow(bEnable);
-  GetDlgItem(IDC_MINDIGITLENGTH)->ShowWindow(iShow);
-  GetDlgItem(IDC_SPINDIGITS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_SPINDIGITS)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_DG1)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_DG1)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_DG2)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_DG2)->ShowWindow(iShow);
-  m_pwdigitminlength = IsDlgButtonChecked(IDC_USEDIGITS);  // Based on FALSE=0 & TRUE=1
-  UpdateData(FALSE);
+  do_useX(USEDIGITS, m_pwdigitminlength);
 }
 
 void CAddEdit_PasswordPolicy::OnUseSymbols()
 {
-  UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
-
-  BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
-                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
-  int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
-
-  GetDlgItem(IDC_MINSYMBOLLENGTH)->EnableWindow(bEnable);
-  GetDlgItem(IDC_MINSYMBOLLENGTH)->ShowWindow(iShow);
-  GetDlgItem(IDC_SPINSYMBOLS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_SPINSYMBOLS)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_SY1)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_SY1)->ShowWindow(iShow);
-  GetDlgItem(IDC_STATIC_SY2)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_SY2)->ShowWindow(iShow);
-  GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
-  m_pwsymbolminlength = IsDlgButtonChecked(IDC_USESYMBOLS);  // Based on FALSE=0 & TRUE=1
-  UpdateData(FALSE);
+  do_useX(USESYM, m_pwsymbolminlength);
 }
 
 void CAddEdit_PasswordPolicy::OnUseHexdigits()
