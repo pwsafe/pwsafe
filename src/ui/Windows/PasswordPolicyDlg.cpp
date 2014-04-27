@@ -168,6 +168,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CPasswordPolicyDlg message handlers
 
+// Following copied from AddEdit_PasswordPolicy.cpp. Move to common mixin?
+static void setupBuddy(CWnd *p, int spinid, int id, int &length, short min = 0)
+{
+  CSpinButtonCtrl* pspin;
+
+  pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
+  pspin->SetBuddy(p->GetDlgItem(id));
+  pspin->SetRange(min, 1024);
+  pspin->SetBase(10);
+  pspin->SetPos((int)length);
+}
+
 BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
@@ -321,36 +333,11 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     break;
   }
 
-  CSpinButtonCtrl *pspin  = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
-  CSpinButtonCtrl *pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
-  CSpinButtonCtrl *pspinL = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
-  CSpinButtonCtrl *pspinS = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
-  CSpinButtonCtrl *pspinU = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINUPPERCASE);
-
-  pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
-  pspin->SetRange(4, 1024);
-  pspin->SetBase(10);
-  pspin->SetPos(m_PWDefaultLength);
-
-  pspinD->SetBuddy(GetDlgItem(IDC_MINDIGITLENGTH));
-  pspinD->SetRange(0, 1024);
-  pspinD->SetBase(10);
-  pspinD->SetPos(m_PWDigitMinLength);
-
-  pspinL->SetBuddy(GetDlgItem(IDC_MINLOWERLENGTH));
-  pspinL->SetRange(0, 1024);
-  pspinL->SetBase(10);
-  pspinL->SetPos(m_PWLowerMinLength);
-
-  pspinS->SetBuddy(GetDlgItem(IDC_MINSYMBOLLENGTH));
-  pspinS->SetRange(0, 1024);
-  pspinS->SetBase(10);
-  pspinS->SetPos(m_PWSymbolMinLength);
-
-  pspinU->SetBuddy(GetDlgItem(IDC_MINUPPERLENGTH));
-  pspinU->SetRange(0, 1024);
-  pspinU->SetBase(10);
-  pspinU->SetPos(m_PWUpperMinLength);
+  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_PWDefaultLength, 4);
+  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_PWDigitMinLength);
+  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_PWLowerMinLength);
+  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_PWUpperMinLength);
+  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength);
 
   m_save[SAVE_LOWERCASE] = m_PWUseLowercase;
   m_save[SAVE_UPPERCASE] = m_PWUseUppercase;
