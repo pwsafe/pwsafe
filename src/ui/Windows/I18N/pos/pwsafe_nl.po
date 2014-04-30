@@ -4576,7 +4576,7 @@ msgstr "Aan"
 
 #. Resource IDs: (359)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Een of meer voorkeuren is gewizjigd. Weet u zeket dat u wilt annuleren?"
+msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #. Resource IDs: (369)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"

@@ -7378,7 +7378,7 @@ msgstr "Moet tenmiste %d zijn."
 #~ "One of more preferences have been changed. Are you sure you wish to "
 #~ "cancel?"
 #~ msgstr ""
-#~ "Een of meer voorkeuren is gewizjigd. Weet u zeket dat u wilt annuleren?"
+#~ "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #~ msgid "One or more auto-saved documents were found."
 #~ msgstr "Een of meer automatisch bewaarde documenten zijn gevonden."
