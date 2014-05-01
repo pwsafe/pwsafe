@@ -42,6 +42,7 @@ public:
   static stringT GetDefaultSymbols();
   static stringT GetEasyVisionSymbols() {return easyvision_symbol_chars;}
   static stringT GetPronounceableSymbols() {return pronounceable_symbol_chars;}
+  static void ResetDefaultSymbols(); // reset the preference string
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,

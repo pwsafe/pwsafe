@@ -150,6 +150,11 @@ stringT CPasswordCharPool::GetDefaultSymbols()
   return symbols;
 }
 
+void CPasswordCharPool::ResetDefaultSymbols()
+{
+  PWSprefs::GetInstance()->SetPref(PWSprefs::DefaultSymbols, std_symbol_chars);
+}
+
 CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int rand) const
 {
   /*
