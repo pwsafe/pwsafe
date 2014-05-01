@@ -724,10 +724,7 @@
 #define IDC_STATIC_WZFILE               1435
 #define IDC_STATIC_WZPROCESSING         1436
 #define IDC_STATIC_WZRESULTS            1437
-#define IDC_USEDEFAULTSYMBOLS           1438
-#define IDC_USEOWNSYMBOLS               1439
 #define IDC_OWNSYMBOLS                  1440
-#define IDC_STATIC_DEFAULTSYMBOLS       1441
 #define IDC_DEFAULTAUTOTYPE             1442
 #define IDC_STATIC_DRAGAUTO             1443
 #define IDC_COPYPSWDURL                 1444

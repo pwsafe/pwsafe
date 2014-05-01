@@ -64,7 +64,6 @@ protected:
   CSecString m_password;
   CSecEditExtn m_ex_password;
   
-  int m_UseOwnSymbols, m_oldUseOwnSymbols;
   CString m_Symbols, m_oldSymbols;
   CString m_policyname, m_oldpolicyname;
 
@@ -93,12 +92,12 @@ protected:
   afx_msg void OnGeneratePassword();
   afx_msg void OnCopyPassword();
   afx_msg void OnENChangePassword();
-  afx_msg void OnSymbols();
   afx_msg void OnENChangePolicyName();
   afx_msg void OnNamesComboChanged();
   afx_msg void OnUseNamedPolicy();
   afx_msg void OnENOwnSymbols();
   //}}AFX_MSG
+  afx_msg void OnSymbolReset();
 
   DECLARE_MESSAGE_MAP()
 
@@ -110,7 +109,8 @@ private:
   
   void do_hex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const int iSet); // iSet == 0 none, 1 - EasyVision, 2 - Pronounceable
-
+  void do_reset_symbols(bool restore_defaults);
+  
   enum UseX {USELOWER = 0, USEUPPER = 1, USEDIGITS = 2, USESYM = 3};
   void do_useX(UseX x, int &minlength); // used by OnUse{LowerCase,UpperCase,Digits,Symbols}
 
@@ -132,7 +132,6 @@ private:
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
 
-  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
   bool m_bReadOnly;
 
   bool m_bLongPPs;
