@@ -726,16 +726,16 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
   GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(bEnableSpecificPolicy);
 
   // Deal with symbols...
-  // Default policy - all 4 disabled (2 x radio buttons, 2 x static text).
-  // Specific policy - if default, then enable radio buttons, default set text.
-  // Specific policy - if own symbols, then all 4 enabled.
-  BOOL bDefaultSymbolsAndRadioButtons(FALSE), bOwnSymbolsEditControl(FALSE);
-  if (m_pwusesymbols == TRUE && bEnableSpecificPolicy == TRUE) {
-     bDefaultSymbolsAndRadioButtons = TRUE;
-     bOwnSymbolsEditControl = TRUE;
-  }
-  GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bDefaultSymbolsAndRadioButtons);
-  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bOwnSymbolsEditControl);
+  // Default policy - all disabled like the rest.
+  // Specific policy - enable if Use Symbols set.
+  BOOL bEnableSymControls = (m_pwusesymbols == TRUE && bEnableSpecificPolicy == TRUE) ? TRUE: FALSE;
+
+  GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnableSymControls);
+  GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnableSymControls);
+
+  // populate m_symbols
+  if (M_symbols().IsEmpty())
+    OnSymbolReset();
 
   UpdateData(FALSE);
 }
