@@ -118,6 +118,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
+  ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, &CAddEdit_Additional::OnNMDblclkPwhistoryList)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -965,4 +966,17 @@ void CAddEdit_Additional::OnPWHCopyAll()
   }
 
   GetMainDlg()->SetClipboardData(HistStr);
+}
+
+
+void CAddEdit_Additional::OnNMDblclkPwhistoryList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+  int selectedRow = pNMItemActivate->iItem;
+  if (selectedRow >= 0) { // -1 means user doubleclicked on whitespace
+    int i = M_pwhistlist().size() - selectedRow;
+    const StringX histpasswd = M_pwhistlist()[i].password;
+    GetMainDlg()->SetClipboardData(histpasswd);
+  }
+  *pResult = 0;
 }
