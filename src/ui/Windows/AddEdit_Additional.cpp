@@ -974,7 +974,7 @@ void CAddEdit_Additional::OnNMDblclkPwhistoryList(NMHDR *pNMHDR, LRESULT *pResul
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;
   if (selectedRow >= 0) { // -1 means user doubleclicked on whitespace
-    int i = M_pwhistlist().size() - selectedRow;
+    int i = M_pwhistlist().size() - selectedRow - 1;
     const StringX histpasswd = M_pwhistlist()[i].password;
     GetMainDlg()->SetClipboardData(histpasswd);
   }
