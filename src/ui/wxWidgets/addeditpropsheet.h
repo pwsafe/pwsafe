@@ -184,6 +184,15 @@ public:
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
   void OnPolicylistSelected( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
+  void OnLowercaseCB( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
+  void OnUppercaseCB( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
+  void OnDigitsCB( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
   void OnSymbolsCB( wxCommandEvent& event );
 

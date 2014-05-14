@@ -72,6 +72,9 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
   EVT_COMBOBOX( ID_POLICYLIST, AddEditPropSheet::OnPolicylistSelected )
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
+  EVT_CHECKBOX( ID_CHECKBOX3, AddEditPropSheet::OnLowercaseCB )
+  EVT_CHECKBOX( ID_CHECKBOX4, AddEditPropSheet::OnUppercaseCB )
+  EVT_CHECKBOX( ID_CHECKBOX5, AddEditPropSheet::OnDigitsCB )
   EVT_CHECKBOX( ID_CHECKBOX6, AddEditPropSheet::OnSymbolsCB )
   EVT_BUTTON( ID_RESET_SYMBOLS, AddEditPropSheet::OnResetSymbolsClick )
   EVT_CHECKBOX( ID_CHECKBOX7, AddEditPropSheet::OnEZreadCBClick )
@@ -722,7 +725,6 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
   bUseVal = (pwp.flags & PWPolicy::UseSymbols) != 0;
   m_pwpSymCtrl->SetValue(bUseVal);
   m_pwpSymSpin->SetValue(pwp.symbolminlength);
-  m_ownsymbols->Enable(bUseVal);
 
   bUseVal = (pwp.flags & PWPolicy::UseEasyVision) != 0;
   m_pwpEasyCtrl->SetValue(bUseVal);
@@ -744,6 +746,16 @@ void AddEditPropSheet::EnablePWPolicyControls(bool enable)
   m_pwpLenCtrl->Enable(enable);
   EnableSizerChildren(m_pwMinsGSzr, enable && !m_pwpHexCtrl->GetValue());
   m_pwpHexCtrl->Enable(enable);
+  if (enable) {
+    // Be more specific for character set controls
+    m_pwpLCSpin->Enable(m_pwpUseLowerCtrl->GetValue());
+    m_pwpUCSpin->Enable(m_pwpUseUpperCtrl->GetValue());
+    m_pwpDigSpin->Enable(m_pwpUseDigitsCtrl->GetValue());
+    bool useSyms = m_pwpSymCtrl->GetValue();
+    m_ownsymbols->Enable(useSyms);
+    m_pwpSymSpin->Enable(useSyms);
+    FindWindow(ID_RESET_SYMBOLS)->Enable(useSyms);
+  }
 }
 
 struct newer {
@@ -1738,10 +1750,10 @@ void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
 
 void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6 in AddEditPropSheet.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6 in AddEditPropSheet. 
+  bool checked = event.IsChecked();
+  m_ownsymbols->Enable(checked);
+  m_pwpSymSpin->Enable(checked);
+  FindWindow(ID_RESET_SYMBOLS)->Enable(checked);
 }
 
 
@@ -1773,5 +1785,35 @@ void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& event )
     st_symbols = CPasswordCharPool::GetDefaultSymbols();
   m_symbols = st_symbols.c_str();
   m_ownsymbols->SetValue(m_symbols);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
+ */
+
+void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
+{
+  m_pwpDigSpin->Enable(event.IsChecked());
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
+ */
+
+void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
+{
+  m_pwpUCSpin->Enable(event.IsChecked());
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
+ */
+
+void AddEditPropSheet::OnLowercaseCB( wxCommandEvent& event )
+{
+  m_pwpLCSpin->Enable(event.IsChecked());
 }
 
