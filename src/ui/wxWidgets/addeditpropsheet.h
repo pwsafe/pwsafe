@@ -97,10 +97,8 @@ class UIInterFace;
 #define ID_SPINCTRL7 10128
 #define ID_CHECKBOX6 10121
 #define ID_SPINCTRL8 10129
-#define IDC_USE_DEFAULTSYMBOLS 10210
-#define IDC_STATIC_DEFAULT_SYMBOLS 10213
-#define IDC_USE_OWNSYMBOLS 10211
 #define IDC_OWNSYMBOLS 10212
+#define ID_RESET_SYMBOLS 10109
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
@@ -189,11 +187,11 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
   void OnSymbolsCB( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
-  void OnSymbolsRB( wxCommandEvent& event );
-
   /// wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
   void OnOwnSymSetFocus( wxFocusEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
+  void OnResetSymbolsClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
   void OnEZreadCBClick( wxCommandEvent& event );
@@ -266,12 +264,6 @@ public:
   wxString GetUrl() const { return m_url ; }
   void SetUrl(wxString value) { m_url = value ; }
 
-  bool GetUsedefaultsymbols() const { return m_usedefaultsymbols ; }
-  void SetUsedefaultsymbols(bool value) { m_usedefaultsymbols = value ; }
-
-  bool GetUseownsymbols() const { return m_useownsymbols ; }
-  void SetUseownsymbols(bool value) { m_useownsymbols = value ; }
-
   wxString GetUser() const { return m_user ; }
   void SetUser(wxString value) { m_user = value ; }
 
@@ -343,8 +335,6 @@ private:
   wxString m_symbols;
   wxString m_title;
   wxString m_url;
-  bool m_usedefaultsymbols;
-  bool m_useownsymbols;
   wxString m_user;
   ////@end AddEditPropSheet member variables
   short m_DCA;
