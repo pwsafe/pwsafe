@@ -2159,30 +2159,7 @@ int PasswordSafeFrame::New()
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   m_RUEList.ClearEntries();
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
-#ifdef notyet
-  if (!m_bOpen) {
-    // Previous state was closed - reset DCA in status bar
-    SetDCAText();
-  }
-
-  // Set Dragbar images correctly
-  m_DDGroup.SetStaticState(false);
-  m_DDTitle.SetStaticState(false);
-  m_DDPassword.SetStaticState(false);
-  m_DDUser.SetStaticState(false);
-  m_DDNotes.SetStaticState(false);
-  m_DDURL.SetStaticState(false);
-  m_DDemail.SetStaticState(false);
-
-  UpdateMenuAndToolBar(true);
-
-  // Set timer for user-defined idle lockout, if selected (DB preference)
-  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    ResetIdleLockCounter();
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
-  }
-#endif
+  // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
   return PWScore::SUCCESS;
 }
 
