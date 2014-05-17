@@ -57,10 +57,8 @@ class wxSpinCtrl;
 #define ID_SPINCTRL7 10128
 #define ID_CHECKBOX6 10121
 #define ID_SPINCTRL8 10129
-#define IDC_USE_DEFAULTSYMBOLS 10210
-#define IDC_STATIC_DEFAULT_SYMBOLS 10213
-#define IDC_USE_OWNSYMBOLS 10211
 #define IDC_OWNSYMBOLS 10212
+#define ID_RESET_SYMBOLS 10113
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
@@ -116,8 +114,14 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
   void OnPwPolUseSymbols( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
-  void OnSymbolsRB( wxCommandEvent& event );
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
+  void OnResetSymbolsClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
+  void OnEZreadCBClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
+  void OnPronouceableCBClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
@@ -174,9 +178,6 @@ public:
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
-  int GetUseOwnSymbols() const { return m_UseOwnSymbols ; }
-  void SetUseOwnSymbols(int value) { m_UseOwnSymbols = value ; }
-
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -204,6 +205,7 @@ public:
   wxCheckBox* m_pwpSymCtrl;
   wxBoxSizer* m_pwNumSymbox;
   wxSpinCtrl* m_pwpSymSpin;
+  wxTextCtrl* m_OwnSymbols;
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
@@ -222,9 +224,8 @@ private:
   bool m_pwUseSymbols;
   bool m_pwUseUppercase;
   int m_pwdefaultlength;
-  int m_UseOwnSymbols;
 ////@end CPasswordPolicy member variables
-  void SetDefaultSymbolDisplay();
+  void SetDefaultSymbolDisplay(bool restore_defaults);
   void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   bool UpdatePolicy();
   bool Verify();
@@ -245,7 +246,6 @@ private:
   int m_oldpwSymbolMinLength;
   int m_oldpwDigitMinLength;
   wxString m_oldSymbols;
-  int m_oldUseOwnSymbols; // enum {DEFAULT_SYMBOLS, OWN_SYMBOLS}
   PWPolicy m_st_pp; // The edited policy
 };
 
