@@ -81,8 +81,8 @@ public:
 ////@begin PwsafeApp member variables
 ////@end PwsafeApp member variables
 
-  void OnActivate(wxActivateEvent& actEvent);
-  void OnActivityTimer(wxTimerEvent& timerEvent);
+  void OnIdleTimer(wxTimerEvent& timerEvent);
+  void ConfigureIdleTimer();
   void OnHelp(wxCommandEvent& evt);
   void OnDBGUIPrefsChange(wxEvent& evt);
 
@@ -94,15 +94,12 @@ public:
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
   
-  void StopIdleTimer();
-  void StartIdleTimer();
-  bool IsIdleTimerRunning() const;
-
  private:
     PWScore m_core;
-    wxTimer* m_activityTimer;
+    wxTimer* m_idleTimer;
+    bool m_idleFlag; // true unless an event happened in the idle lock interval;
     PasswordSafeFrame* m_frame;
-    enum { ACTIVITY_TIMER_ID = 33 } ; 
+    enum { IDLE_TIMER_ID = 33 } ; 
     CRecentDBList *m_recentDatabases;
 
     //A map of dialog titles (or tab names) vs help sections

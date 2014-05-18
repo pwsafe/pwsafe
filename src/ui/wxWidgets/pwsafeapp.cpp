@@ -136,8 +136,7 @@ BEGIN_EVENT_TABLE( PwsafeApp, wxApp )
 
 ////@begin PwsafeApp event table entries
 ////@end PwsafeApp event table entries
-EVT_ACTIVATE_APP(PwsafeApp::OnActivate)
-EVT_TIMER(ACTIVITY_TIMER_ID, PwsafeApp::OnActivityTimer)
+EVT_TIMER(IDLE_TIMER_ID, PwsafeApp::OnIdleTimer)
 EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
 END_EVENT_TABLE()
 
@@ -203,8 +202,8 @@ void PwsafeApp::initLanguageSupport()
  * Constructor for PwsafeApp
  */
 
-PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
-       m_frame(0), m_recentDatabases(0),
+PwsafeApp::PwsafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
+                         m_idleFlag(true), m_frame(0), m_recentDatabases(0),
        m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
   Init();
@@ -215,7 +214,7 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
  */
 PwsafeApp::~PwsafeApp()
 {
-  delete m_activityTimer;
+  delete m_idleTimer;
   delete m_recentDatabases;
 
   PWSprefs::DeleteInstance();
@@ -398,30 +397,13 @@ bool PwsafeApp::OnInit()
   return true;
 }
 
-void PwsafeApp::StopIdleTimer()
-{
-  m_activityTimer->Stop();
-}
-
-void PwsafeApp::StartIdleTimer()
-{
-  int timeout = PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout);
-  if (timeout != 0)
-    m_activityTimer->Start(timeout*60*1000, true);
-}
-
-bool PwsafeApp::IsIdleTimerRunning() const
-{
-  return m_activityTimer->IsRunning();
-}
-
 /*!
  * Cleanup for PwsafeApp
  */
 
 int PwsafeApp::OnExit()
 {
-  StopIdleTimer();
+  m_idleTimer->Stop();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
@@ -437,31 +419,45 @@ int PwsafeApp::OnExit()
 ////@end PwsafeApp cleanup
 }
 
-void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
+void PwsafeApp::ConfigureIdleTimer()
 {
-  StopIdleTimer();
-  if (!actEvent.GetActive()) {
-    StartIdleTimer();
+  const PWSprefs *prefs =   PWSprefs::GetInstance();
+
+  bool isRunning = m_idleTimer->IsRunning();
+  bool shouldBeRunning = prefs->GetPref(PWSprefs::LockDBOnIdleTimeout);
+  int timeOut = shouldBeRunning ? prefs->GetPref(PWSprefs::IdleTimeout) : 0;
+
+  if (!isRunning) {
+    if (shouldBeRunning && timeOut != 0) {
+      m_idleTimer->Start(timeOut * 60 * 1000, wxTIMER_CONTINUOUS);
+    } else {
+      // not running, nor should it be - nop
+    } 
+  } else { // running
+    if (!shouldBeRunning || timeOut == 0) {
+      m_idleTimer->Stop();
+    } else if (timeOut != 0) { // Restart
+      m_idleTimer->Start(timeOut * 60 * 1000, wxTIMER_CONTINUOUS);
+    }
   }
-  actEvent.Skip();
 }
 
-void PwsafeApp::OnActivityTimer(wxTimerEvent &evt)
+void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
-  if (evt.GetId() == ACTIVITY_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty())
-      m_frame->HideUI(true);  //true => lock
+  if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+    if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty()) {
+      if (m_idleFlag) // cleared if a user event occurred via FilterEvent()
+        m_frame->HideUI(true);  //true => lock
+      else
+        m_idleFlag = true; // arm for next interval
+    }
   }
 }
 
 void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  if (IsIdleTimerRunning()) {
-    // Restart, in case Idle timer settings have just changed
-    StopIdleTimer();
-    StartIdleTimer();
-  }
+  ConfigureIdleTimer();
 }
 
 CRecentDBList &PwsafeApp::recentDatabases()
@@ -507,9 +503,85 @@ void PwsafeApp::RestoreFrameCoords(void)
 }
 
 int PwsafeApp::FilterEvent(wxEvent& evt) {
+  const wxEventType et = evt.GetEventType();
+
+  // Clear idle flag for lock-on-idle timer
+  // We need a whitelist rather than a blacklist because
+  // undocumented events are passed through here as well...
+  if ((et == wxEVT_COMMAND_BUTTON_CLICKED) ||
+      (et == wxEVT_COMMAND_CHECKBOX_CLICKED) ||
+      (et == wxEVT_COMMAND_CHOICE_SELECTED) ||
+      (et == wxEVT_COMMAND_LISTBOX_SELECTED) ||
+      (et == wxEVT_COMMAND_LISTBOX_DOUBLECLICKED) ||
+      (et == wxEVT_COMMAND_TEXT_UPDATED) ||
+      (et == wxEVT_COMMAND_TEXT_ENTER) ||
+      (et == wxEVT_COMMAND_MENU_SELECTED) ||
+      (et == wxEVT_COMMAND_SLIDER_UPDATED) ||
+      (et == wxEVT_COMMAND_RADIOBOX_SELECTED) ||
+      (et == wxEVT_COMMAND_RADIOBUTTON_SELECTED) ||
+      (et == wxEVT_COMMAND_SCROLLBAR_UPDATED) ||
+      (et == wxEVT_COMMAND_VLBOX_SELECTED) ||
+      (et == wxEVT_COMMAND_COMBOBOX_SELECTED) ||
+      (et == wxEVT_COMMAND_TOOL_RCLICKED) ||
+      (et == wxEVT_COMMAND_TOOL_ENTER) ||
+      (et == wxEVT_COMMAND_SPINCTRL_UPDATED) ||
+      (et == wxEVT_LEFT_DOWN) ||
+      (et == wxEVT_LEFT_UP) ||
+      (et == wxEVT_MIDDLE_DOWN) ||
+      (et == wxEVT_MIDDLE_UP) ||
+      (et == wxEVT_RIGHT_DOWN) ||
+      (et == wxEVT_RIGHT_UP) ||
+      (et == wxEVT_MOTION) ||
+      (et == wxEVT_ENTER_WINDOW) ||
+      (et == wxEVT_LEAVE_WINDOW) ||
+      (et == wxEVT_LEFT_DCLICK) ||
+      (et == wxEVT_MIDDLE_DCLICK) ||
+      (et == wxEVT_RIGHT_DCLICK) ||
+      (et == wxEVT_SET_FOCUS) ||
+      (et == wxEVT_MOUSEWHEEL) ||
+      (et == wxEVT_NAVIGATION_KEY) ||
+      (et == wxEVT_KEY_DOWN) ||
+      (et == wxEVT_KEY_UP) ||
+      (et == wxEVT_SCROLL_TOP) ||
+      (et == wxEVT_SCROLL_BOTTOM) ||
+      (et == wxEVT_SCROLL_LINEUP) ||
+      (et == wxEVT_SCROLL_LINEDOWN) ||
+      (et == wxEVT_SCROLL_PAGEUP) ||
+      (et == wxEVT_SCROLL_PAGEDOWN) ||
+      (et == wxEVT_SCROLL_THUMBTRACK) ||
+      (et == wxEVT_SCROLL_THUMBRELEASE) ||
+      (et == wxEVT_SCROLL_CHANGED) ||
+      (et == wxEVT_SIZE) ||
+      (et == wxEVT_MOVE) ||
+      (et == wxEVT_ACTIVATE_APP) ||
+      (et == wxEVT_ACTIVATE) ||
+      (et == wxEVT_SHOW) ||
+      (et == wxEVT_ICONIZE) ||
+      (et == wxEVT_MAXIMIZE) ||
+      (et == wxEVT_MENU_OPEN) ||
+      (et == wxEVT_MENU_CLOSE) ||
+      (et == wxEVT_MENU_HIGHLIGHT) ||
+      (et == wxEVT_CONTEXT_MENU) ||
+      (et == wxEVT_JOY_BUTTON_DOWN) ||
+      (et == wxEVT_JOY_BUTTON_UP) ||
+      (et == wxEVT_JOY_MOVE) ||
+      (et == wxEVT_JOY_ZMOVE) ||
+      (et == wxEVT_DROP_FILES) ||
+      (et == wxEVT_COMMAND_TEXT_COPY) ||
+      (et == wxEVT_COMMAND_TEXT_CUT) ||
+      (et == wxEVT_COMMAND_TEXT_PASTE) ||
+      (et == wxEVT_COMMAND_LEFT_CLICK) ||
+      (et == wxEVT_COMMAND_LEFT_DCLICK) ||
+      (et == wxEVT_COMMAND_RIGHT_CLICK) ||
+      (et == wxEVT_COMMAND_RIGHT_DCLICK) ||
+      (et == wxEVT_COMMAND_ENTER) ||
+      (et == wxEVT_HELP) ||
+      (et == wxEVT_DETAILED_HELP))
+    m_idleFlag = false; // for lock on idle timer
+
   if (evt.IsCommandEvent() && evt.GetId() == wxID_HELP &&
-          (evt.GetEventType() == wxEVT_COMMAND_BUTTON_CLICKED ||
-            evt.GetEventType() == wxEVT_COMMAND_MENU_SELECTED)) {
+      (et == wxEVT_COMMAND_BUTTON_CLICKED ||
+       et == wxEVT_COMMAND_MENU_SELECTED)) {
     OnHelp(*wxDynamicCast(&evt, wxCommandEvent));
     return int(true);
   }

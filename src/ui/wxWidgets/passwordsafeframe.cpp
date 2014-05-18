@@ -624,6 +624,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
 {
   int status = m_core.ReadCurFile(passwd);
   if (status == PWScore::SUCCESS) {
+    wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   } else {
@@ -2397,7 +2398,6 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::LockDb()
 {
-  wxGetApp().StopIdleTimer();
   m_guiInfo->Save(this);
   if (SaveAndClearDatabase())
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
