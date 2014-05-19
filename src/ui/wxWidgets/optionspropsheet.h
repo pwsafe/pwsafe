@@ -31,8 +31,6 @@
 
 ////@begin forward declarations
 class wxSpinCtrl;
-class wxGridSizer;
-class wxBoxSizer;
 ////@end forward declarations
 class wxBookCtrlEvent;
 
@@ -84,19 +82,6 @@ class wxBookCtrlEvent;
 #define ID_TEXTCTRL13 10169
 #define ID_BUTTON8 10170
 #define ID_TEXTCTRL14 10171
-#define ID_PANEL3 10134
-#define ID_SPINCTRL3 10117
-#define ID_CHECKBOX3 10118
-#define ID_SPINCTRL5 10126
-#define ID_CHECKBOX4 10119
-#define ID_SPINCTRL6 10127
-#define ID_CHECKBOX5 10120
-#define ID_SPINCTRL7 10128
-#define ID_CHECKBOX6 10121
-#define ID_SPINCTRL8 10129
-#define ID_CHECKBOX7 10122
-#define ID_CHECKBOX8 10123
-#define ID_CHECKBOX9 10124
 #define ID_PANEL4 10135
 #define ID_CHECKBOX26 10172
 #define ID_SPINCTRL11 10173
@@ -190,9 +175,6 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
   void OnBrowseLocationClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnPwPolUseClick( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
   void OnPWHistSaveClick( wxCommandEvent& event );
 
@@ -212,8 +194,6 @@ public:
 
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
-
-  void OnAtLeastChars(wxSpinEvent& evt);
 
 
 ////@begin COptions member function declarations
@@ -235,6 +215,9 @@ public:
 
   bool GetEscexits() const { return m_escexits ; }
   void SetEscexits(bool value) { m_escexits = value ; }
+
+  int GetHashIterSlider() const { return m_hashIterSlider ; }
+  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
 
   int GetInittreeview() const { return m_inittreeview ; }
   void SetInittreeview(int value) { m_inittreeview = value ; }
@@ -317,9 +300,6 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
-  int GetHashIterSlider() const { return m_hashIterSlider ; }
-  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
-
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -348,22 +328,6 @@ public:
   wxComboBox* m_SDCACB;
   wxTextCtrl* m_defusernameTXT;
   wxStaticText* m_defusernameLBL;
-  wxGridSizer* m_pwMinsGSzr;
-  wxCheckBox* m_pwpUseLowerCtrl;
-  wxBoxSizer* m_pwNumLCbox;
-  wxSpinCtrl* m_pwpLCSpin;
-  wxCheckBox* m_pwpUseUpperCtrl;
-  wxBoxSizer* m_pwNumUCbox;
-  wxSpinCtrl* m_pwpUCSpin;
-  wxCheckBox* m_pwpUseDigitsCtrl;
-  wxBoxSizer* m_pwNumDigbox;
-  wxSpinCtrl* m_pwpDigSpin;
-  wxCheckBox* m_pwpSymCtrl;
-  wxBoxSizer* m_pwNumSymbox;
-  wxSpinCtrl* m_pwpSymSpin;
-  wxCheckBox* m_pwpEasyCtrl;
-  wxCheckBox* m_pwpPronounceCtrl;
-  wxCheckBox* m_pwpHexCtrl;
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
   wxButton* m_pwhistapplyBN;
@@ -379,6 +343,7 @@ private:
   bool m_confirmdelete;
   int m_doubleclickaction;
   bool m_escexits;
+  int m_hashIterSlider;
   int m_inittreeview;
   bool m_maintaindatetimestamps;
   bool m_minauto;
@@ -405,7 +370,6 @@ private:
   bool m_sysstartup;
   bool m_usedefuser;
   bool m_wordwrapnotes;
-  int m_hashIterSlider;
 ////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
