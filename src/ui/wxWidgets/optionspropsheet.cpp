@@ -1075,6 +1075,7 @@ void COptions::PropSheetToPrefs()
 
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue(), true);
   prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue(), true);
+  wxGetApp().ConfigureIdleTimer();
 }
 
 void COptions::OnOk(wxCommandEvent& /* evt */)
