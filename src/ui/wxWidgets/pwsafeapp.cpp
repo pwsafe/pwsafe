@@ -350,13 +350,13 @@ bool PwsafeApp::OnInit()
 
   if (cmd_closed) {
     m_core.SetCurFile(wxT(""));
-    // dbox.SetStartClosed(true);
   }
-  // dbox.SetStartSilent(cmd_silent);
   if (cmd_minimized) {
     m_core.SetCurFile(wxT(""));
-    //dbox.SetStartClosed(true);
-    // dbox.SetStartSilent(true);
+  }
+  if (cmd_silent) {
+    // start silent implies use system tray.
+    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);    
   }
 
   //Initialize help subsystem
@@ -372,7 +372,7 @@ bool PwsafeApp::OnInit()
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
 
-  if (!cmd_closed) {
+  if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
     CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(NULL, m_core);
@@ -393,7 +393,12 @@ bool PwsafeApp::OnInit()
 
   RestoreFrameCoords();
   m_frame->Show();
-  SetTopWindow(m_frame);
+  if (cmd_minimized) 
+    m_frame->Iconize(true);
+  else if (cmd_silent)
+    m_frame->HideUI(false);
+  else
+    SetTopWindow(m_frame);
   return true;
 }
 
