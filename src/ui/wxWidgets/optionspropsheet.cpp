@@ -652,7 +652,7 @@ void COptions::CreateControls()
   itemCheckBox88->SetValidator( wxGenericValidator(& m_secclrclponmin) );
   itemCheckBox89->SetValidator( wxGenericValidator(& m_secclrclponexit) );
   itemCheckBox90->SetValidator( wxGenericValidator(& m_secconfrmcpy) );
-  itemCheckBox91->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
+  itemCheckBox91->SetValidator( wxGenericValidator(& m_seclockonmin) );
   itemCheckBox92->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
   itemSlider99->SetValidator( wxGenericValidator(& m_hashIterSlider) );
   itemCheckBox112->SetValidator( wxGenericValidator(& m_sysstartup) );
