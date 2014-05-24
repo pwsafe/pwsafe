@@ -2403,6 +2403,12 @@ void PasswordSafeFrame::LockDb()
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
 }
 
+void PasswordSafeFrame::SetTrayStatus(bool locked)
+{
+  m_sysTray->SetTrayStatus(locked ? SystemTray::TRAY_LOCKED : SystemTray::TRAY_UNLOCKED);
+}
+
+
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {
   CRecentDBList& db = wxGetApp().recentDatabases();

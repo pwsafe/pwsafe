@@ -413,6 +413,8 @@ public:
 
   CItemData *GetSelectedEntry() const;
     wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+
+    void SetTrayStatus(bool locked);
     
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;

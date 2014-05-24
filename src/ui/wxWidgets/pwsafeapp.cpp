@@ -395,9 +395,10 @@ bool PwsafeApp::OnInit()
   m_frame->Show();
   if (cmd_minimized) 
     m_frame->Iconize(true);
-  else if (cmd_silent)
-    m_frame->HideUI(false);
-  else
+  else if (cmd_silent) {
+    m_frame->SetTrayStatus(true);
+    m_frame->HideUI(true);
+  } else
     SetTopWindow(m_frame);
   return true;
 }
