@@ -9,6 +9,7 @@
 #include "../sleep.h"
 #include "./xsendstring.h"
 #include "../../core/Util.h"
+#include "../../core/PWSprefs.h"
 
 CKeySend::CKeySend(bool, unsigned defaultDelay)
   : m_delayMS(defaultDelay)
@@ -21,7 +22,15 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
-  pws_os::SendString(data, pws_os::ATMETHOD_XSENDKEYS, m_delayMS);
+  /**
+   * Default method is via XSendKeys. Since this may be blocked,
+   * we also support XTEST, even though the latter is less capable (?)
+   */
+
+  bool useAlt = PWSprefs::GetInstance()->GetPref(PWSprefs::UseAltAutoType);
+  pws_os::AutotypeMethod am = useAlt ? pws_os::ATMETHOD_XTEST : pws_os::ATMETHOD_XSENDKEYS;
+
+  pws_os::SendString(data, am, m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d)

@@ -617,17 +617,26 @@ void COptions::CreateControls()
   itemBoxSizer105->Add(itemCheckBox121, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
+#if defined(__WXX11__) || defined(__WXGTK__)
+  wxCheckBox* itemCheckBox122 = new wxCheckBox( itemPanel104, ID_CHECKBOX40, _("Use alternate AutoType method"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox122->SetValue(false);
+  itemCheckBox122->SetHelpText(_("When set, use XTEST for AutoType instead of XSendEvent.\nXSendEvent can handle more control keys, but may be blocked by some applications."));
+  if (COptions::ShowToolTips())
+    itemCheckBox122->SetToolTip(_("If AutoType doesn't work, setting this may help."));
+  itemBoxSizer105->Add(itemCheckBox122, 0, wxALIGN_LEFT|wxALL, 5);
+#endif
+
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
 
-  wxPanel* itemPanel122 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
-  wxGrid* itemGrid123 = new wxGrid( itemPanel122, ID_GRID1, wxDefaultPosition, itemPanel122->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid123->SetDefaultColSize(100);
-  itemGrid123->SetDefaultRowSize(25);
-  itemGrid123->SetColLabelSize(25);
-  itemGrid123->SetRowLabelSize(50);
-  itemGrid123->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
+  wxPanel* itemPanel123 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  wxGrid* itemGrid124 = new wxGrid( itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  itemGrid124->SetDefaultColSize(100);
+  itemGrid124->SetDefaultRowSize(25);
+  itemGrid124->SetColLabelSize(25);
+  itemGrid124->SetRowLabelSize(50);
+  itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
 
-  GetBookCtrl()->AddPage(itemPanel122, _("Shortcuts"));
+  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
 
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
@@ -662,6 +671,9 @@ void COptions::CreateControls()
   itemCheckBox120->SetValidator( wxGenericValidator(& m_sysmultinst) );
 #if defined(__WXX11__) || defined(__WXGTK__)
   itemCheckBox121->SetValidator( wxGenericValidator(& m_usePrimarySelection) );
+#endif
+#if defined(__WXX11__) || defined(__WXGTK__)
+  itemCheckBox122->SetValidator( wxGenericValidator(& m_useAltAutoType) );
 #endif
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
@@ -797,6 +809,7 @@ void COptions::PrefsToPropSheet()
   m_sysmultinst = prefs->GetPref(PWSprefs::MultipleInstances);
 #if defined(__X__) || defined(__WXGTK__)
   m_usePrimarySelection = prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard);
+  m_useAltAutoType = prefs->GetPref(PWSprefs::UseAltAutoType);
 #endif
 }
 
@@ -887,6 +900,7 @@ void COptions::PropSheetToPrefs()
 #if defined(__X__) || defined(__WXGTK__)
   prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_usePrimarySelection);
   wxTheClipboard->UsePrimarySelection(m_usePrimarySelection);
+  prefs->SetPref(PWSprefs::UseAltAutoType, m_useAltAutoType);
 #endif
 
   // Now do a bit of trickery to find the new preferences to be stored in

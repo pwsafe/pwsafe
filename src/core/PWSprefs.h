@@ -120,6 +120,7 @@ public:
     HighlightChanges, HideSystemTray,
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
+    UseAltAutoType,  //Only under X-Windows
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

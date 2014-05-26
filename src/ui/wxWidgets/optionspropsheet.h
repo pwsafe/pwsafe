@@ -107,6 +107,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX33 10186
 #define ID_CHECKBOX34 10005
 #define ID_CHECKBOX39 10010
+#define ID_CHECKBOX40 10114
 #define ID_PANEL7 10138
 #define ID_GRID1 10187
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
@@ -300,6 +301,9 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
+  bool GetUseAltAutoType() const { return m_useAltAutoType ; }
+  void SetUseAltAutoType(bool value) { m_useAltAutoType = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -370,6 +374,7 @@ private:
   bool m_sysstartup;
   bool m_usedefuser;
   bool m_wordwrapnotes;
+  bool m_useAltAutoType;
 ////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
