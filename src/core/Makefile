@@ -22,6 +22,7 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
+									pbkdf2.cpp KeyWrap.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
