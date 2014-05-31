@@ -102,6 +102,9 @@ DECLARE_HANDLE(HDROP);
 // Update current filters whilst SetFilters dialog is open
 #define PWS_MSG_EXECUTE_FILTERS         (WM_APP + 60)
 
+// Notification from tree control that a file was dropped on it
+#define PWS_MSG_DROPPED_FILE            (WM_APP + 65)
+
 /* Message to get Virtual Keyboard buffer.  Here for doc. only. See VKeyBoardDlg.h
 #define PWS_MSG_INSERTBUFFER            (WM_APP + 70)
 */
@@ -581,6 +584,7 @@ public:
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
+  LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -756,7 +760,6 @@ public:
   afx_msg void OnRunCommand();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
-  afx_msg void OnDropFiles(HDROP hDrop);
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);

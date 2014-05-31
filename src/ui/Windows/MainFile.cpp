@@ -2849,6 +2849,13 @@ LRESULT DboxMain::OnProcessCompareResultAllFunction(WPARAM wParam, LPARAM lFunct
   return lres;
 }
 
+LRESULT DboxMain::OnDroppedFile(WPARAM /* wParam */, LPARAM /* lParam */)
+{
+  bool bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
+  Open(m_ctlItemTree.GetDroppedFile(), bReadOnly);
+  return 0;
+}
+
 LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);

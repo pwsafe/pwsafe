@@ -486,7 +486,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
 
-  ON_WM_DROPFILES()
   ON_WM_SIZING()
   ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_TRAYUNLOCK, OnTrayLockUnLock)
@@ -518,6 +517,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutoType)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
+  ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
   ON_MESSAGE(WM_ENDSESSION, OnEndSession)
 
@@ -1878,32 +1878,6 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = 0;
 
   return TRUE;    // message was handled
-}
-
-void DboxMain::OnDropFiles(HDROP hDrop)
-{
-  //SetActiveWindow();
-  SetForegroundWindow();
-
-#if 0
-  // here's what we really want - sorta
-  HDROP m_hDropInfo = hDropInfo;
-  CString Filename;
-
-  if (m_hDropInfo) {
-    int iFiles = DragQueryFile(m_hDropInfo, (UINT)-1, NULL, 0);
-    for (int i=0; i<ifiles; i++) {
-      char* pFilename = Filename.GetBuffer(_MAX_PATH);
-      // do whatever...
-    }   // for each files...
-  }       // if DropInfo
-
-  DragFinish(m_hDropInfo);
-
-  m_hDropInfo = 0;
-#endif
-
-  DragFinish(hDrop);
 }
 
 void DboxMain::UpdateAlwaysOnTop()

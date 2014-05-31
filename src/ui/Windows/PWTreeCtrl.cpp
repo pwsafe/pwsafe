@@ -312,6 +312,11 @@ SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
 DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
+  if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
+    pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() Found a file!\n");
+    return DROPEFFECT_MOVE;
+  }
+
   // Is it ours?
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
     return DROPEFFECT_NONE;
@@ -333,6 +338,11 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
 DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
+  if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
+    pws_os::Trace(L"CPWTreeCtrl::OnDragOver() Found a file!\n");
+    return DROPEFFECT_MOVE;
+  }
+
   // Is it ours?
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
     return DROPEFFECT_NONE;
@@ -1239,6 +1249,41 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
   // before every return, otherwise next mouse/keybord selection 
   // will be treated as drop target selections
+
+  if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
+    HGLOBAL hg;
+    HDROP hdrop;
+    UINT nFiles;
+    TCHAR szDraggedFile[MAX_PATH];
+
+    pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
+    hg = pDataObject->GetGlobalData(CF_HDROP);
+    if (hg == NULL) {
+      pws_os::Trace(L"CPWTreeCtrl::OnDrop() No global data\n");
+      goto done;
+    }
+    hdrop = HDROP(GlobalLock(hg));
+    if (hdrop == NULL) {
+      pws_os::Trace(L"CPWTreeCtrl::OnDrop() Could not lock global data\n");
+      GlobalUnlock(hg);
+      goto done;
+    }
+    nFiles = DragQueryFile(hdrop, UINT(-1), NULL, 0);
+    // Support exactly one file being dropped
+    if (nFiles != 1) {
+      pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %d files dropped\n", nFiles);
+      GlobalUnlock(hg);
+      goto done;
+    }
+    DragQueryFile(hdrop, 0, szDraggedFile, MAX_PATH);
+    pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
+    GlobalUnlock(hg);
+    m_droppedFile = szDraggedFile;
+    app.GetMainDlg()->PostMessage(PWS_MSG_DROPPED_FILE);
+  done:
+    SelectDropTarget(NULL);
+    return FALSE;
+  }
 
   // Is it ours?
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) {

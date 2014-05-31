@@ -85,6 +85,7 @@ public:
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
+  const StringX &GetDroppedFile() const {return m_droppedFile;}
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -136,7 +137,8 @@ private:
   HGLOBAL m_hgDataALL, m_hgDataUTXT, m_hgDataTXT;
   CLIPFORMAT m_cfdropped;
   bool m_bDropped;
-
+  StringX m_droppedFile;
+  
   CSecString m_eLabel; // label at start of edit, if we need to revert
 
   bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent);
