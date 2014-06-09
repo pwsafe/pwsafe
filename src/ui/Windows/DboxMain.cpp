@@ -1803,6 +1803,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       case TAR_EXIT:
         retval = PWScore::USER_EXIT;
         break;
+      case TAR_OPEN_NODB:
+        retval = PWScore::OPEN_NODB;
+        break;
       default:
         DBGMSG("Default to WRONG_PASSWORD\n");
         retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel

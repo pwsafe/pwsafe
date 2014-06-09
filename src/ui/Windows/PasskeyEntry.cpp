@@ -130,6 +130,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_JUSTOPEN_NODB, OnJustOpenNoDB)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -641,4 +642,10 @@ void CPasskeyEntry::OnYubikeyBtn()
     return;
   }
   yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CPasskeyEntry::OnJustOpenNoDB()
+{
+  m_status = TAR_OPEN_NODB;
+  CPWDialog::OnCancel();
 }

@@ -141,7 +141,8 @@ public:
     NO_ENTRIES_EXPORTED,                      //  20
     DB_HAS_DUPLICATES,                        //  21
     OK_WITH_ERRORS,                           //  22
-    OK_WITH_VALIDATION_ERRORS                 //  23
+    OK_WITH_VALIDATION_ERRORS,                //  23
+    OPEN_NODB                                 //  24
   };
 
   PWScore();

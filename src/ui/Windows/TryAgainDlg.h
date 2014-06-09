@@ -19,7 +19,8 @@ enum
   TAR_NEW,
   TAR_OPEN,
   TAR_CANCEL,
-  TAR_EXIT
+  TAR_EXIT,
+  TAR_OPEN_NODB
 };
 
 //-----------------------------------------------------------------------------

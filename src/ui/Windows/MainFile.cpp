@@ -114,6 +114,9 @@ BOOL DboxMain::OpenOnInit()
   if (rc == PWScore::USER_CANCEL || rc == PWScore::USER_EXIT)
     return FALSE;
 
+  if (rc == PWScore::OPEN_NODB)
+    return TRUE;
+
   CString cs_title;
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();

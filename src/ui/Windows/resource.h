@@ -752,7 +752,6 @@
 #define IDC_YUBI_GEN_BN                 1467
 #define IDC_BUTTON2                     1468
 #define IDC_YUBI_API                    1469
-#define IDC_BUTTON1                     1470
 #define IDC_RESET_SYMBOLS               1470
 #define IDC_YUBI_SHOW_HIDE              1471
 #define IDC_EDIT                        1472
@@ -783,9 +782,9 @@
 #define IDC_STATIC_HASHITER_MIN         1497
 #define IDC_STATIC_HASHITER_MAX         1498
 #define IDC_DB_DEF_AUTOTYPE_DELAY       1500
-#define IDC_SPIN2                       1501
-#define IDC_DB_DEF_AUTOTYPE_TEXT        1502
-#define IDC_DADSPIN                     1503
+#define IDC_DB_DEF_AUTOTYPE_TEXT        1501
+#define IDC_DADSPIN                     1502
+#define IDC_JUSTOPEN_NODB               1503
 
 // Next default values for new objects
 // 
