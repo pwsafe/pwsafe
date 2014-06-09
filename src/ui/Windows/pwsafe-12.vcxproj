@@ -1017,7 +1017,6 @@
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="ThisMfcApp.h" />
     <ClInclude Include="TryAgainDlg.h" />
-    <ClInclude Include="version.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h" />

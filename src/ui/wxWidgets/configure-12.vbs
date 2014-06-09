@@ -52,7 +52,7 @@ strGitDir = "C:\Program Files (x86)\Git"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-12.0"
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-12.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.12"
-strWDKDir = "C:\Program Files" & strPgmFiles & "\Windows Kits\8.1"
+strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF

@@ -716,9 +716,6 @@
     <ClInclude Include="TryAgainDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ViewReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
