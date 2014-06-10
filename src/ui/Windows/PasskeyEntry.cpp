@@ -130,7 +130,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_JUSTOPEN_NODB, OnJustOpenNoDB)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -207,7 +206,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     CRecentFileList *mru = app.GetMRU();
     ASSERT(mru != NULL);
 
-    const int N = mru->GetSize();
+    int N = mru->GetSize();
 
     std::vector<CSecString> cs_tooltips;
 
@@ -227,9 +226,21 @@ BOOL CPasskeyEntry::OnInitDialog(void)
           m_MRU_combo.SetItemData(li, i);
       }
     }
+    if ((N > 0) || !m_filespec.IsEmpty()) {
+      // Add an empty row to allow NODB
+      int li = m_MRU_combo.AddString(L"");
+      if (li != CB_ERR && li != CB_ERRSPACE) {
+        m_MRU_combo.SetItemData(li, N);
+        CString cs_empty(MAKEINTRESOURCE(IDS_EMPTY_DB));
+        cs_tooltips.push_back(cs_empty);
+        N++; // for SetHeight
+      }
+    }
+
     if (N > 0) {
       SetHeight(N);
     }
+
     m_MRU_combo.SetToolTipStrings(cs_tooltips);
   }
 
@@ -362,6 +373,12 @@ void CPasskeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
+  if (m_filespec.IsEmpty()) {
+    m_status = TAR_OPEN_NODB;
+    CPWDialog::OnCancel();
+    return;
+  }
+
   CGeneralMsgBox gmb;
   if (m_passkey.IsEmpty()) {
     gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
@@ -481,8 +498,10 @@ void CPasskeyEntry::OnComboSelChange()
   int curSel = m_MRU_combo.GetCurSel();
   const int N = mru->GetSize();
 
-  if (curSel == CB_ERR || curSel >= N) {
+  if (curSel == CB_ERR || curSel > N) {
     ASSERT(0);
+  } else if (curSel == N) {
+    m_filespec = L"";
   } else {
     int i = int(m_MRU_combo.GetItemData(curSel));
     if (i >= 0) // -1 means original m_filespec
@@ -642,10 +661,4 @@ void CPasskeyEntry::OnYubikeyBtn()
     return;
   }
   yubiRequestHMACSha1(); // request HMAC of m_passkey
-}
-
-void CPasskeyEntry::OnJustOpenNoDB()
-{
-  m_status = TAR_OPEN_NODB;
-  CPWDialog::OnCancel();
 }

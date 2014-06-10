@@ -90,7 +90,6 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
-  afx_msg void OnJustOpenNoDB();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

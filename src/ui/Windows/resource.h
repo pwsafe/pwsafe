@@ -784,7 +784,6 @@
 #define IDC_DB_DEF_AUTOTYPE_DELAY       1500
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
-#define IDC_JUSTOPEN_NODB               1503
 
 // Next default values for new objects
 // 
