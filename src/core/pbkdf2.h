@@ -14,18 +14,20 @@
 
 #ifndef __PBKDF2_H
 #define __PBKDF2_H
-class Hash;
+class HMAC_BASE;
 /**
    @param password          The input password (or key)
    @param password_len      The length of the password (octets)
    @param salt              The salt (or nonce)
    @param salt_len          The length of the salt (octets)
    @param iteration_count   # of iterations desired for LTC_PKCS #5 v2 [read specs for more]
+   @param hmac              Abstract base class of HMAC implementation (parametrized on hash function
+                            (see hmac.h for details)
    @param out               [out] The destination for this algorithm
    @param outlen            [in/out] The max size and resulting size of the algorithm output
 */
 void pbkdf2(const unsigned char *password, unsigned long password_len, 
             const unsigned char *salt,     unsigned long salt_len,
-            int iteration_count,
+            int iteration_count,           HMAC_BASE *hmac,
             unsigned char *out,            unsigned long *outlen);
 #endif /* __PBKDF2_H */
