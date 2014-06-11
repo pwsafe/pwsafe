@@ -144,7 +144,7 @@ int PWSfileV4::SanityCheck(FILE *stream)
 
 int PWSfileV4::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
-                            unsigned char *aPtag, uint32 *nITER)
+                            unsigned char *, uint32 *)
 {
   PWS_LOGIT;
 
