@@ -516,8 +516,11 @@
     <ClCompile Include="ExpiredList.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
+    <ClCompile Include="KeyWrap.cpp" />
     <ClCompile Include="Match.cpp" />
+    <ClCompile Include="pbkdf2.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="PWSfileV4.cpp" />
     <ClCompile Include="PWSLog.cpp" />
     <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
@@ -565,9 +568,12 @@
     <ClInclude Include="hmac.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
+    <ClInclude Include="KeyWrap.h" />
     <ClInclude Include="Match.h" />
+    <ClInclude Include="pbkdf2.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="PWSfileV4.h" />
     <ClInclude Include="PWSLog.h" />
     <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
     <ClInclude Include="XML\MSXML\MFileValidator.h" />
