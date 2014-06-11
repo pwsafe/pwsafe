@@ -100,12 +100,12 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   }
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
-  bool yubiInserted = IsYubiInserted();
+  bool b_yubiInserted = IsYubiInserted();
   // MFC has ancient bug: can't render disabled version of bitmap,
   // so instead of showing drek, we roll our own, and leave enabled.
   ybn->EnableWindow(TRUE);
 
-  if (yubiInserted) {
+  if (b_yubiInserted) {
     ((CButton*)ybn)->SetBitmap(m_yubiLogo);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
   } else {
