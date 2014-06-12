@@ -1,7 +1,7 @@
 PasswordSafe database format description version 4.0
 ----------------------------------------------------
 
-Copyright (c) 2013 Rony Shapiro <ronys@users.sourceforge.net>.
+Copyright (c) 2013-2014 Rony Shapiro <ronys@users.sourceforge.net>.
 All rights reserved. Use of the code is allowed under the Artistic
 License terms, as specified in the LICENSE file distributed with this
 code, or available from
@@ -41,8 +41,8 @@ entries.
 As the size of an attachment can be large relative to the database, we
 would like to avoid reading and writing it unless and until
 necessary. Note that this is a break with the current paradigm of
-reading the database into memory once upon opening. 
-1.2.4 Other changes
+reading the entire database into memory once upon opening. 
+1.2.4 Other Changes
 This Section summarizes minor changes from the previous format
 version, as is informative, not normative.
 1.2.4.1 Hex to Binary
@@ -50,7 +50,7 @@ Several numeric fields in are encoded in V3 as ASCII hex data, which
 is inefficient and arguably inelegant. All such fields should be
 changed to little-endian integer values.
 1.2.4.2 Time Representation
-Time should be uniformly represented as 64 bit unsigned little-endian
+Time should be uniformly represented as 40 bit unsigned little-endian
 integers, in seconds from 1/1/1970, UTC. V3 representation is 32 bits.
 1.2.4.3 Fix Minor Weakness
 The only known weakness in the V3 format is that the HMAC
@@ -76,7 +76,8 @@ encryption and integrity verification keys, wrapped as follows:
     SALT|ITER|KW(P',K)|KW(P',L)
 
 Where:
-2.1.1 SALT is a 256 bit random value, generated at file creation time.
+2.1.1 SALT is a 256 bit random value, generated at Key Block creation
+time.
 
 2.1.2 ITER is the number of iterations on the hash function to
 calculate P', stored as a 32 bit little-endian value. This value is
@@ -118,20 +119,25 @@ assumed on the field types.
 
 2.4.2 R1..Rn: The actual database records. Each record consists of one or
 more typed fields (as defined in Section 3.2), terminated by the 'END' type
-field. The first field of a record is a UUID type. The exact type
-defines the record type, and the contents of the field is the UUID of
-the record. Currently the following record types are defined:
+field. The first field of a record is UUID field, of one of several
+possible UUID types. The specific type defines the record type, and the
+contents of the field is the UUID of the record.
+Currently the following record types are defined:
+
 2.4.2.1 An "Entry" record. This represents a password entry. Aside
 from the UUID field, the Title, and Password fields are mandatory.
+
 2.4.2.2 A "Reference" record. This represents a "shortcut" or "alias"
 to an Entry record. TBD - do we need to have separate types for
 shortcuts and aliases, or can we make do with a common type?
 The manadatory fields for this record are: RefUUID - the UUID of the
 record, BaseUUID - the UUID of the referred-to record, END.
+
 2.4.2.3 An "Attachment" record. This record is used to contain
 attachments, e.g., jpeg, tiff, or other media types. This record is
 defined to be "skipped over" while reading, and to be copied without
 the need to decrypt and re-encrypt. See Section TBD for details.
+
 2.4.2.4 For all records, all non-mandatory fields may either be absent
 or have zero length. When a field is absent or zero-length, its
 default value shall be used. Aside from first UUID field and the the
@@ -170,7 +176,7 @@ representation.
  UTF-8 encoded unless explicitly stated otherwise.
 
 3.1.3 Time
- Timestamps are stored as 64 bit, little endian, unsigned integers,
+ Timestamps are stored as 40 bit, little endian, unsigned integers,
  representing the number of seconds since Midnight, January 1, 1970, GMT.
  (This is equivalent to the time_t type on Windows and POSIX. On the
  Macintosh, the value needs to be adjusted by the constant value 2082844800
@@ -185,7 +191,7 @@ UUID                        0x01        UUID          Y              [2]
 Non-default preferences     0x02        Text          Y              [3]
 Tree Display Status         0x03        Text          Y              [4]
 Timestamp of last save      0x04        time_t        Y              [5]
-Who performed last save     0x05        Text          Y   [DEPRECATED 6]
+Who performed last save     0x05        Text          Y     [OBSOLETE 6]
 What performed last save    0x06        Text          Y              [7]
 Last saved by user          0x07        Text          Y              [8]
 Last saved on host          0x08        Text          Y              [9]
@@ -202,25 +208,11 @@ Yubico                      0x12        Text                         [13]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
-is 0x0310 (stored in little-endian format, that is, 0x10, 0x03).
-PasswordSafe V3.01 introduced Format 0x0300
-PasswordSafe V3.03 introduced Format 0x0301
-PasswordSafe V3.09 introduced Format 0x0302
-PasswordSafe V3.12 introduced Format 0x0303
-PasswordSafe V3.13 introduced Format 0x0304
-PasswordSafe V3.14 introduced Format 0x0305
-PasswordSafe V3.19 introduced Format 0x0306
-PasswordSafe V3.22 introduced Format 0x0307
-PasswordSafe V3.25 introduced Format 0x0308
-PasswordSafe V3.26 introduced Format 0x0309
-PasswordSafe V3.28 introduced Format 0x030A
-PasswordSafe V3.29 introduced Format 0x030B
-PasswordSafe V3.29Y introduced Format 0x030C
-PasswordSafe V3.30 introduced Format 0x030D
+is 0x0400 (stored in little-endian format, that is, 0x00, 0x04).
 
-[2] A universally unique identifier is needed in order to synchronize
-databases across different machine. Representation is described in
-Section 3.1.1.
+[2] A universally unique database identifier is needed in order to
+synchronize databases across different machine. Representation is
+described in Section 3.1.1.
 
 [3] Non-default preferences are encoded in a string as follows: The
 string is of the form "X nn vv X nn vv..." Where X=[BIS] for boolean,
@@ -230,16 +222,14 @@ a delimited string for String. Only non-default values are stored. See
 PWSprefs.cpp for more details.  Note: normally strings are delimited
 by the doublequote character.  However, if this character is in the
 string value, an arbitrary character will be chosen to delimit the
-string. Version 0x0309 added database-wide special symbols to the
-Non-default preferences (0x02).
+string.
 
 [4] If requested to be saved, this is a string of 1s and 0s indicating the
 expanded state of the tree display when the database was saved. This can
 be applied at database open time, if the user wishes, so that the tree is
 displayed as it was. Alternatively, it can be ignored and the tree
 displayed completely expanded or collapsed. Note that the mapping of
-the string to the display state is implementation-specific. Introduced
-in format 0x0301.
+the string to the display state is implementation-specific.
 
 [5] Representation is as described in Section 3.1.3. Note that prior
 to PasswordSafe 3.09, this field was mistakenly represented as an
@@ -247,16 +237,10 @@ eight-byte hexadecimal ASCII string. Implementations SHOULD attempt to
 parse 8-byte long timestamps as a hexadecimal ASCII string
 representation of the timestamp value.
 
-[6] Text saved in the format: nnnnu..uh..h, where: 
-    nnnn = 4 hexadecimal digits giving length of following user name field
-    u..u = user name
-    h..h = host computer name
-    Note: As of format 0x0302, this field is deprecated, and should be
-    replaced by fields 0x07 and 0x08. In databases prior to format
-    0x0302, this field should be maintained. 0x0302 and later may
-    either maintain this field in addition to fields 0x07 and 0x08,
-    for backwards compatability, or not write this field. If both this
-    field and 0x07, 0x08 exist, they MUST represent the same values.
+[6] This field was deprecated in the V3 format, and should not be read
+or written in a V4 database. If the field appears while importing an
+old V3 database, the application should convert it to the fields
+replacing it as described in the V3 file format.
 
 [7] Free form text giving the application that saved the database.
 For example, the Windows PasswordSafe application will use the text
@@ -267,30 +251,24 @@ zeroes e.g. "Password Safe V3.02".
 
 [8] Text containing the username (e.g., login, userid, etc.) of the
 user who last saved the database, as determined by the appropriate
-operating-system dependent function. This field was introduced in
-format version 0x0302, as a replacement for field 0x05. See Comment
-[6].
+operating-system dependent function.
 
 [9] Text containing the hostname (e.g., machine name, hostid, etc.) of the
 machine on which the database was last saved, as determined by the
-appropriate operating-system dependent function. This field was
-introduced in format version 0x0302, as a replacement for field
-0x05. See Comment [6].
+appropriate operating-system dependent function.
 
 [10] Database name. A logical name for a database which can be used by
 applications in place of the possibly lengthy filepath notion. Note
 that this field SHOULD be limited to what can be displayed in a single
-line. This field was introduced in format version 0x0302.
+line.
 
 [11] Database Description. A purely informative description concerning
-the purpose or other practical use of the database. This field was
-introduced in format version 0x0302.
+the purpose or other practical use of the database.
 
 [12] Specfic filters for this database.  This is the text equivalent to
 the XML export of the filters as defined by the filter schema. The text 
 'image' has no 'print formatting' e.g. tabs and carraige return/line feeds,
-since XML processing does not require this. This field was introduced in 
-format version 0x0305.
+since XML processing does not require this.
 
 [13] Values marked 'Reserved' are know to have been used by customized
 versions of PasswordSafe. To ensure compatability between versions,
