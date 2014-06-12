@@ -33,6 +33,30 @@
 using namespace std;
 using pws_os::CUUID;
 
+/**
+ * Format version history:
+ *
+ * PasswordSafe Version   Format Version
+ * =====================================
+ *         V3.01           0x0300
+ *         V3.03           0x0301
+ *         V3.09           0x0302
+ *         V3.12           0x0303
+ *         V3.13           0x0304
+ *         V3.14           0x0305
+ *         V3.19           0x0306
+ *         V3.22           0x0307
+ *         V3.25           0x0308
+ *         V3.26           0x0309
+ *         V3.28           0x030A
+ *         V3.29           0x030B
+ *         V3.29Y          0x030C
+ *         V3.30           0x030D
+*/
+
+
+const short VersionNum = 0x030D;
+
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
@@ -302,8 +326,6 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
     H.Final(X);
   }
 }
-
-const short VersionNum = 0x030D;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \
