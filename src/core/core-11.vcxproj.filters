@@ -149,6 +149,9 @@
     <ClCompile Include="KeyWrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWStime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlowFish.h">
@@ -320,6 +323,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyWrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWStime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
