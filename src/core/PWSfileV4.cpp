@@ -17,6 +17,7 @@
 #include "core.h"
 #include "pbkdf2.h"
 #include "KeyWrap.h"
+#include "PWStime.h"
 
 #include "os/debug.h"
 #include "os/file.h"
@@ -457,12 +458,12 @@ int PWSfileV4::WriteHeader()
   }
 
   // Write out time of this update
-  time_t time_now;
-  time(&time_now);
-  numWritten = WriteCBC(HDR_LASTUPDATETIME,
-                        reinterpret_cast<unsigned char *>(&time_now), sizeof(time_t));
-  if (numWritten <= 0) { status = FAILURE; goto end; }
-  m_hdr.m_whenlastsaved = time_now;
+  {
+    PWStime pwt; // c'tor set current time
+    numWritten = WriteCBC(HDR_LASTUPDATETIME, pwt, pwt.GetLength());
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+    m_hdr.m_whenlastsaved = pwt;
+  }
 
   // Write out who saved it!
   {
@@ -703,7 +704,6 @@ int PWSfileV4::ReadHeader()
   bool utf8status;
   unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
-  bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
     numRead = ReadCBC(fieldType, utf8, utf8Len);
@@ -766,39 +766,18 @@ int PWSfileV4::ReadHeader()
       break;
 
     case HDR_LASTUPDATETIME: /* When last saved */
-      if (utf8Len == 8) {
-        // Handle pre-3.09 implementations that mistakenly
-        // stored this as a hex value
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (!utf8status)
-          pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) failed\n"));
-        iStringXStream is(text);
-        is >> hex >> m_hdr.m_whenlastsaved;
-      } else if (utf8Len == 4) {
-        // retrieve time_t
-        m_hdr.m_whenlastsaved = *reinterpret_cast< time_t*>(utf8);
+      ASSERT(utf8Len == PWStime::TIME_LEN); // V4 header only needs to deal with PWStime 40 bit representation
+      if (utf8Len == PWStime::TIME_LEN) { // fail silently in Release build if not 
+        PWStime pwt(utf8);
+        m_hdr.m_whenlastsaved = pwt;
       } else {
         m_hdr.m_whenlastsaved = 0;
       }
       break;
 
     case HDR_LASTUPDATEUSERHOST: /* and by whom */
-      // DEPRECATED, but we still know how to read this
-      if (!found0302UserHost) { // if new fields also found, don't overwrite
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          StringX tlen = text.substr(0, 4);
-          iStringXStream is(tlen);
-          int ulen = 0;
-          is >> hex >> ulen;
-          StringX uh = text.substr(4);
-          m_hdr.m_lastsavedby = uh.substr(0, ulen);
-          m_hdr.m_lastsavedon = uh.substr(ulen);
-        } else
-          pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
-      }
+      // DEPRECATED, should never appear in a V4 format file header
+      ASSERT(0);
       break;
 
     case HDR_LASTUPDATEAPPLICATION: /* and by what */
@@ -812,14 +791,12 @@ int PWSfileV4::ReadHeader()
     case HDR_LASTUPDATEUSER:
       if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
       m_hdr.m_lastsavedby = text;
       break;
 
     case HDR_LASTUPDATEHOST:
       if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
       m_hdr.m_lastsavedon = text;
       break;
 
@@ -945,7 +922,7 @@ int PWSfileV4::ReadHeader()
           StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
           StringX sxTemp;
 
-          // Get number of polices
+          // Get number of policies
           sxTemp = text.substr(0, 2) + sxBlank;
           size_t j = 2;  // Skip over # name entries
           iStringXStream is(sxTemp);
