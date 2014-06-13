@@ -28,6 +28,7 @@ public:
   PWStime(); // default c'tor initiates value to current time
   PWStime(const PWStime &);
   PWStime(std::time_t);
+  PWStime(const unsigned char *pbuf); // pbuf points to a TIME_LEN array
   ~PWStime();
   PWStime &operator=(const PWStime &);
   PWStime &operator=(std::time_t);
