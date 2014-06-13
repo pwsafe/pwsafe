@@ -168,7 +168,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0501;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
