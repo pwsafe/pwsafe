@@ -498,9 +498,9 @@ void CPasskeyEntry::OnComboSelChange()
   int curSel = m_MRU_combo.GetCurSel();
   const int N = mru->GetSize();
 
-  if (curSel == CB_ERR || curSel > N) {
+  if (curSel == CB_ERR) {
     ASSERT(0);
-  } else if (curSel == N) {
+  } else if (curSel >= N) {
     m_filespec = L"";
   } else {
     int i = int(m_MRU_combo.GetItemData(curSel));
