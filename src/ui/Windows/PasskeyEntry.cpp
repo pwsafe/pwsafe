@@ -230,7 +230,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       // Add an empty row to allow NODB
       int li = m_MRU_combo.AddString(L"");
       if (li != CB_ERR && li != CB_ERRSPACE) {
-        m_MRU_combo.SetItemData(li, N);
+        m_MRU_combo.SetItemData(li, DWORD_PTR(-2)); // -1 already taken, but a < 0 value is easier to check than N
         CString cs_empty(MAKEINTRESOURCE(IDS_EMPTY_DB));
         cs_tooltips.push_back(cs_empty);
         N++; // for SetHeight
@@ -506,6 +506,8 @@ void CPasskeyEntry::OnComboSelChange()
     int i = int(m_MRU_combo.GetItemData(curSel));
     if (i >= 0) // -1 means original m_filespec
       m_filespec = (*mru)[i];
+    else if (i == -2)
+      m_filespec = L"";
     else
       m_filespec = m_orig_filespec;
   }
