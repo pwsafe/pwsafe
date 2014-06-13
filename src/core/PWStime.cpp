@@ -39,6 +39,11 @@ PWStime::PWStime(std::time_t t)
   setTime(t);
 }
 
+PWStime::PWStime(const unsigned char *pbuf)
+{
+  memcpy(m_time, pbuf, TIME_LEN);
+}
+
 PWStime::~PWStime()
 {
 }
