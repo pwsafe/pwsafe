@@ -20,6 +20,7 @@
 #include "StringXStream.h"
 #include "core.h"
 #include "PWSfile.h"
+#include "PWStime.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
@@ -206,10 +207,9 @@ int CItemData::Write(PWSfile *out) const
         unsigned char buf[4];
         putInt32(buf, static_cast<int32>(t));
         out->WriteField(static_cast<unsigned char>(TimeFields[i]), buf, out->timeFieldLen());
-      } else if (out->timeFieldLen() == 5) { // Experimental
-        unsigned char buf[8] = {0};
-        putInt<time_t>(buf, t);
-        out->WriteField(static_cast<unsigned char>(TimeFields[i]), buf, out->timeFieldLen());
+      } else if (out->timeFieldLen() == PWStime::TIME_LEN) {
+        PWStime pwt(t);
+        out->WriteField(static_cast<unsigned char>(TimeFields[i]), pwt, pwt.GetLength());
       } else ASSERT(0);
     } // t != 0
   }
@@ -1886,8 +1886,8 @@ static bool pull_time(time_t &t, const unsigned char *data, size_t len)
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
-    const __time64_t *t64 = reinterpret_cast<const __time64_t *>(buf); // XXX assumes little_endian
-    if (_gmtime64_s(&ts, t64) != 0) {
+    const __time64_t t64 = getInt<__time64_t>(buf);
+    if (_gmtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
     t = _mkgmtime32(&ts);

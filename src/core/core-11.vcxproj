@@ -522,6 +522,7 @@
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="PWSfileV4.cpp" />
     <ClCompile Include="PWSLog.cpp" />
+    <ClCompile Include="PWStime.cpp" />
     <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
     <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
@@ -575,6 +576,7 @@
     <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="PWSfileV4.h" />
     <ClInclude Include="PWSLog.h" />
+    <ClInclude Include="PWStime.h" />
     <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
     <ClInclude Include="XML\MSXML\MFileValidator.h" />
     <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />
