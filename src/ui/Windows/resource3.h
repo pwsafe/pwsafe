@@ -747,3 +747,4 @@
 #define IDS_APPHOTKEY_OVERRIDE          5955
 #define IDS_ENTRYKBST_OVERRIDE          5956
 #define IDS_EMPTY_DB                    5957
+#define IDS_TOOMANYTRIES                5958

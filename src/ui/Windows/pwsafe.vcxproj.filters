@@ -333,9 +333,6 @@
     <ClCompile Include="ThisMfcApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TryAgainDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ViewReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -711,9 +708,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThisMfcApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TryAgainDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="version.h">

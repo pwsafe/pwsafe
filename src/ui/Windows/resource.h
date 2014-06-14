@@ -35,7 +35,6 @@
 #define IDD_PS_SYSTEM                   143
 #define IDD_QUERYSETDEF                 144
 #define IDD_SECURECLEAR                 145
-#define IDD_TRYAGAIN                    146
 #define IDD_PWFONTDIALOG                148
 #define IDD_SAMPLETEXT                  149
 #define IDD_SETFILTERS                  150
@@ -386,9 +385,6 @@
 #define IDC_CONFIRMDELETE               1019
 #define IDC_APPBUILTON                  1020
 #define IDC_CONFIRMCOPY                 1021
-#define IDC_TRYAGAIN                    1022
-#define IDC_QUIT                        1023
-#define IDC_OPEN                        1024
 #define IDC_GENERATEPASSWORD            1025
 #define IDC_LOCKONMINIMIZE              1026
 #define IDC_DEFPWSHOWINEDIT             1028

@@ -886,7 +886,6 @@
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
-    <ClCompile Include="TryAgainDlg.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
@@ -1016,7 +1015,6 @@
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="ThisMfcApp.h" />
-    <ClInclude Include="TryAgainDlg.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />

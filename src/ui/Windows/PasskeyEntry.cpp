@@ -40,7 +40,6 @@ down the streetsky.  [Groucho Marx]
 
 #include "PasskeyEntry.h"
 #include "Fonts.h"
-#include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
 
@@ -419,26 +418,15 @@ void CPasskeyEntry::ProcessPhrase()
   }
     break;
   case PWScore::WRONG_PASSWORD:
-    if (m_tries >= 2) { // too many tries
-      CTryAgainDlg errorDlg(this);
-
-      INT_PTR nResponse = errorDlg.DoModal();
-      if (nResponse == IDOK) {
-      } else if (nResponse == IDCANCEL) {
-        m_status = errorDlg.GetCancelReturnValue();
-        if (m_status == TAR_OPEN) { // open another
-          PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
-        } else if (m_status == TAR_NEW) { // create new
-          PostMessage(WM_COMMAND, IDC_CREATE_DB);
-        }
-        CPWDialog::OnCancel();
-      }
+    if (m_tries++ >= 2) { // too many tries
+      CString cs_toomany;
+      cs_toomany.Format(IDS_TOOMANYTRIES, m_tries);
+      gmb.AfxMessageBox(cs_toomany);
     } else { // try again
-      m_tries++;
       gmb.AfxMessageBox(m_index == GCP_CHANGEMODE ? IDS_BADPASSKEY : IDS_INCORRECTKEY);
-      m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
-      m_pctlPasskey->SetFocus();
     }
+    m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
+    m_pctlPasskey->SetFocus();
     break;
   case PWScore::READ_FAIL:
     gmb.AfxMessageBox(IDSC_FILE_UNREADABLE);

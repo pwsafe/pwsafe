@@ -22,7 +22,6 @@
 #include "AboutDlg.h"
 #include "Fonts.h"
 #include "MFCMessages.h"
-#include "TryAgainDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
 #include "GeneralMsgBox.h"
@@ -1795,7 +1794,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn) {
       case TAR_OPEN:
-        ASSERT(0); // now handled entirely in CPasskeyEntry
       case TAR_CANCEL:
       case TAR_NEW:
         retval = PWScore::USER_CANCEL;

@@ -14,7 +14,6 @@
 #include "WZPropertySheet.h"
 
 #include "Fonts.h"
-#include "TryAgainDlg.h"
 #include "SecString.h"
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
@@ -472,27 +471,19 @@ bool CWZSelectDB::ProcessPhrase(const StringX &filename, const StringX &passkey)
                                   &tmpcore) == PWScore::SUCCESS) {
     m_tries = 0;
     return true;
-  }
-
-  if (m_tries >= 2) {
-    CTryAgainDlg errorDlg(this);
-
-    INT_PTR nResponse = errorDlg.DoModal();
-    if (nResponse == IDCANCEL) {
-      int status = errorDlg.GetCancelReturnValue();
-      if (status == TAR_OPEN) { // open another
-        PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
-        return false;
-      }
-    }
   } else {
-    m_tries++;
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_INCORRECTKEY);
+    if (m_tries++ >= 2) {
+      CString cs_toomany;
+      cs_toomany.Format(IDS_TOOMANYTRIES, m_tries);
+      gmb.AfxMessageBox(cs_toomany);
+    } else {
+      gmb.AfxMessageBox(IDS_INCORRECTKEY);
+    }
     m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
     m_pctlPasskey->SetFocus();
+    return false;
   }
-  return false;
 }
 
 void CWZSelectDB::OnOpenFileBrowser()

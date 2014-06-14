@@ -28,6 +28,21 @@
 class DboxMain;
 class CVKeyBoardDlg;
 
+/**
+ * Globally useful values...
+ * (Originally from TryAgainDlg.h, which perhaps explains TAR_...)
+ */
+enum
+{
+  TAR_OK,
+  TAR_INVALID,
+  TAR_NEW,
+  TAR_OPEN,
+  TAR_CANCEL,
+  TAR_EXIT,
+  TAR_OPEN_NODB
+};
+
 class CPasskeyEntry : public CPKBaseDlg
 {
   // Construction

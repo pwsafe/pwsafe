@@ -18,7 +18,7 @@
 #include "PWPropertySheet.h"
 #include "DboxMain.h"
 #include "PasskeyChangeDlg.h"
-#include "TryAgainDlg.h"
+#include "PasskeyEntry.h"
 #include "Options_PropertySheet.h"
 #include "OptionsSystem.h"
 #include "OptionsSecurity.h"
