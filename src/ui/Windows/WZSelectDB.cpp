@@ -622,12 +622,16 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
   // Insert the buffer
   m_passkey.Insert(nStartChar, vkbuffer);
 
-  // Update the dialog
-  UpdateData(FALSE);
-
   // Put cursor at end of inserted text
   m_pctlPasskey->SetSel(nStartChar + vkbuffer.GetLength(),
                         nStartChar + vkbuffer.GetLength());
+
+  // Update the dialog
+  UpdateData(FALSE);
+
+  // Ensure flags set so that buttons are activated as required
+  if (vkbuffer.GetLength() > 0)
+    OnPassKeyChange();
 
   return 0L;
 }
