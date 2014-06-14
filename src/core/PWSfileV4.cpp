@@ -501,23 +501,26 @@ int PWSfileV4::WriteHeader()
   }
 
   if (!m_hdr.m_RUEList.empty()) {
-    coStringXStream oss;
     size_t num = m_hdr.m_RUEList.size();
     if (num > 255)
-      num = 255;  // Do not exceed 2 hex character length field
-    oss << setw(2) << setfill('0') << hex << num;
+      num = 255;  // Only save up to max as defined by FormatV3.
+
+    int buflen = (num * sizeof(uuid_array_t)) + 1;
+    unsigned char *buf = new unsigned char[buflen];
+    buf[0] = (unsigned char)num;
+    unsigned char *buf_ptr = buf + 1;
+
     UUIDListIter iter = m_hdr.m_RUEList.begin();
-    // Only save up to max as defined by FormatV3.
+    
     for (size_t n = 0; n < num; n++, iter++) {
       const uuid_array_t *rep = iter->GetARep();
-      for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-        oss << setw(2) << setfill('0') << hex <<  static_cast<unsigned int>((*rep)[i]);
-      }
+      memcpy(buf_ptr, rep, sizeof(uuid_array_t));
+      buf_ptr += sizeof(uuid_array_t);
     }
 
-    numWritten = WriteCBC(HDR_RUE,
-                          reinterpret_cast<const unsigned char *>(oss.str().c_str()),
-                          oss.str().length());
+    numWritten = WriteCBC(HDR_RUE, buf, buflen);
+    trashMemory(buf, buflen);
+    delete[] buf;
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
@@ -860,32 +863,20 @@ int PWSfileV4::ReadHeader()
 
     case HDR_RUE:
       {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        // All data is character representation of hex - i.e. 0-9a-f
-        // No need to convert from char.
-        std::string temp = reinterpret_cast<char *>(utf8);
-
+        // All data is binary
         // Get number of entries
-        int num(0);
-        std::istringstream is(temp.substr(0, 2));
-        is >> hex >> num;
+        int num = utf8[0];
 
         // verify we have enough data
-        if (utf8Len != num * sizeof(uuid_array_t) * 2 + 2)
+        if (utf8Len != num * sizeof(uuid_array_t) + 1)
           break;
 
         // Get the entries and save them
-        size_t j = 2;
-        for (int n = 0; n < num; n++) {
-          unsigned int x(0);
-          uuid_array_t tmp_ua;
-          for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
-            stringstream ss;
-            ss.str(temp.substr(j, 2));
-            ss >> hex >> x;
-            tmp_ua[i] = static_cast<unsigned char>(x);
-          }
-          const CUUID uuid(tmp_ua);
+        unsigned char *buf = utf8 + 1;
+        for (int n = 0; n < num; n++, buf += sizeof(uuid_array_t)) {
+          uuid_array_t ua = {0};
+          memcpy(ua, buf, sizeof(uuid_array_t));
+          const CUUID uuid(ua);
           if (uuid != CUUID::NullUUID())
             m_hdr.m_RUEList.push_back(uuid);
         }

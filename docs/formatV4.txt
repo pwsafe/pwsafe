@@ -274,13 +274,10 @@ since XML processing does not require this.
 versions of PasswordSafe. To ensure compatability between versions,
 use of these values should be avoided.
 
-[14] A list of the UUIDs (32 hex character representation of the 16 byte field)
-of the recently used entries, prefixed by a 2 hex character representation
-of the number of these entries (right justified and left filled with zeroes).
-The size of the number of entries field gives a maximum number of entries of 255,
-however the GUI may impose further restrictions e.g. Windows MFC UI limits this
-to 25. The first entry is the most recent entry accessed. This field was
-introduced in format version 0x0307.
+[14] A list of the UUIDs (16 byte binary representation) of the
+recently used entries, prefixed by a one byte representation of the
+number of these entries. The entries are stored in the order of last
+access, with the first entry being the most recent entry accessed.
 
 [15] This field allows multiple Password Policies per database.  The format is:
     "NN{LLxxx...xxxffffnnnllluuudddsssMMSSS...SSS}"
