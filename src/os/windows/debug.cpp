@@ -80,16 +80,16 @@ void pws_os::Trace0(LPCTSTR )
 #include "../../core/StringX.h"
 
 // This routine uses Windows functions
-void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
+DWORD pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   LPVOID lpMsgBuf;
   LPVOID lpDisplayBuf;
 
-  const DWORD dw = GetLastError();
+  const DWORD dwLastError = GetLastError();
 
-  FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+  FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                 NULL,
-                dw,
+                dwLastError,
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                 (LPTSTR) &lpMsgBuf,
                 0, NULL);
@@ -97,7 +97,7 @@ void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
   lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
        (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.length() + 40) * sizeof(TCHAR));
   wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"),
-           csFunction.c_str(), dw, lpMsgBuf);
+           csFunction.c_str(), dwLastError, lpMsgBuf);
   if (bMsgBox)
     MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
   else
@@ -105,6 +105,8 @@ void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 
   LocalFree(lpMsgBuf);
   LocalFree(lpDisplayBuf);
+
+  return dwLastError;
 }
 
 void pws_os::HexDump(unsigned char *pmemory, const int &length,
@@ -173,9 +175,10 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
   };
 }
 #else  /* _DEBUG or DEBUG */
-void pws_os::IssueError(const stringT &, bool )
+DWORD pws_os::IssueError(const stringT &, bool )
 {
 //  Do nothing in non-Debug mode
+  return 0;
 }
 
 void pws_os::HexDump(unsigned char *, const int &,

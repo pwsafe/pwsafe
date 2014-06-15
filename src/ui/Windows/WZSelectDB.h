@@ -10,6 +10,7 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
+#include "GetMasterPhrase.h"
 
 #include "resource.h"
 
@@ -52,6 +53,7 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
+  afx_msg void OnEnterCombination();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -66,7 +68,13 @@ private:
 
   bool ProcessPhrase(const StringX &filename, const StringX &passkey);
   bool m_bFileExistsUserAsked;
+
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  bool m_bVKAvailable;
+
+  // non-Secure Desktop use of the virtual keyboard
+  HWND m_hwndVKeyBoard;
+
   st_SaveAdvValues *m_pst_SADV;
   CFont m_WarningFont;
 
@@ -75,6 +83,11 @@ private:
   static const wchar_t PSSWDCHAR;
 
   afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+  // Secure Desktop
+  int m_iUserTimeLimit;
+  bool m_bUseSecureDesktop;
+
   // Yubico-related:
   bool IsYubiInserted() const;
   // Callbacks:

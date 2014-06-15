@@ -22,7 +22,7 @@ namespace pws_os {
   // Opens a messagebox or write to debugger window 
   // with text of last system error, titlebar
   // is csFunction
-  void IssueError(const stringT &csFunction, bool bMsgBox = true);
+  DWORD IssueError(const stringT &csFunction, bool bMsgBox = true);
 
   /*
     Outputs a printable version of memory dump (hex + ascii)

@@ -123,7 +123,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("HideSystemTray"), false, ptApplication},             // application
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
-  {_T("UseAltAutoType"), false, ptApplication}, //application
+  {_T("UseAltAutoType"), false, ptApplication},             //application
+  {_T("UseSecureDesktop"), false, ptApplication},          //application
 };
 
 // Default value = -1 means set at runtime
@@ -161,6 +162,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             minDCA, maxDCA},                        // application
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
+  {_T("SecureDesktopTimeout"), 120, ptApplication, 60, 300},        // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

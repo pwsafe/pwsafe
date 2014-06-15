@@ -121,6 +121,7 @@ public:
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     UseAltAutoType,  //Only under X-Windows
+    UseSecureDesktop,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -130,6 +131,7 @@ public:
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
+    SecureDesktopTimeout,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,

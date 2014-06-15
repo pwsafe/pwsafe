@@ -14,18 +14,18 @@
 #include "PKBaseDlg.h"
 #include "ControlExtns.h"
 
-class CVKeyBoardDlg;
-
 class CPasskeyChangeDlg : public CPKBaseDlg
 {
   // Construction
 public:
-  CPasskeyChangeDlg(CWnd* pParent = NULL);   // standard constructor
+  CPasskeyChangeDlg(CWnd* pParent = NULL, bool bUseSecureDesktop = false);   // standard constructor
   ~CPasskeyChangeDlg();
 
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
   enum { IDD = IDD_KEYCHANGE_DIALOG };
+  enum { IDDSD = IDD_SDKEYCHANGE };
+
   CSecString m_oldpasskey;
   CSecString m_newpasskey;
   CSecString m_confirmnew;
@@ -54,8 +54,13 @@ protected:
   afx_msg void OnConfirmVK();
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
+  afx_msg void OnYubikey2Btn();
+  afx_msg void OnYubikeyBtn();
+  afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   //}}AFX_MSG
+
   void ProcessPhrase();
+
   // Override base class yubi callbacks:
   void yubiInserted(void);
   void yubiRemoved(void);
@@ -69,9 +74,8 @@ private:
   bool m_Yubi1pressed; // implies old password was Yubi-based
   bool m_Yubi2pressed; // implies new password to be -"-.
   bool m_oldpasskeyConfirmed;
-public:
-    afx_msg void OnYubikey2Btn();
-    afx_msg void OnYubikeyBtn();
+
+  bool m_bUseSecureDesktop;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2014 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,10 +11,18 @@
 // VKBButton.h : header file
 //-----------------------------------------------------------------------------
 
+/*
+
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+
+*/
+
 // Special Flat button for Virtual Keyboards
 // Also, if a Push button, will show pushed state by change of colour (unless disabled)
 
-class CVKBButton : public CButton
+class CVKBButton
 {
 public:
   CVKBButton();
@@ -32,20 +40,12 @@ public:
 
 protected:
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CVKBButton)
-  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-  virtual void PreSubclassWindow();
-  //}}AFX_VIRTUAL
-
-  // Generated message map functions
-  //{{AFX_MSG(CVKBButton)
-  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
-  //}}AFX_MSG
-
-  DECLARE_MESSAGE_MAP()
+  void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
 private:
-  bool m_bMouseInWindow;
+  friend class CVKeyBoardDlg;
+
+  HWND m_hWnd;
+  //bool m_bMouseInWindow;
   bool m_bDeadKey, m_bFlat, m_bPushed, m_bChangePushColour;
 };

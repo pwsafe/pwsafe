@@ -93,6 +93,7 @@
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
 #define IDB_PWSDB                       224
+#define IDB_PWSBITMAP                   225
 #define IDB_ALIAS                       230
 #define IDB_ABASE                       231
 #define IDB_ABASE_EXPIRED               232
@@ -364,6 +365,14 @@
 #define IDB_YUBI_LOGO                   525
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
+#define IDD_PASSKEYENTRY_SD             528
+#define IDD_PASSKEYENTRY_FIRST_SD       529
+#define IDD_PASSKEYENTRY_WITHEXIT_SD    530
+#define IDD_SDBACKGROUND                531
+#define IDD_SDVKEYBOARD                 532
+#define IDD_SDGETPHRASE                 533
+#define IDD_SDKEYCHANGE                 534
+#define IDD_SDPASSKEYSETUP              535
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -395,8 +404,9 @@
 #define IDC_CRYPTKEY2                   1033
 #define IDC_DEFUSERNAME                 1034
 #define IDC_DEFPWLENGTH                 1036
-#define IDC_MESSAGE                     1037
+#define IDC_DEFAULT_USERNAME            1037
 #define IDC_QUERYCHECK                  1038
+#define IDC_SELECTED_DATABASE           1039
 #define IDC_NEW                         1041
 #define IDC_STATIC_LOGO                 1042
 #define IDC_ALWAYSONTOP                 1043
@@ -780,14 +790,22 @@
 #define IDC_DB_DEF_AUTOTYPE_DELAY       1500
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
+#define IDC_USESECUREDESKTOP            1503
+#define IDC_STATIC_SECUREDESKTOPSECS    1504
+#define IDC_SECUREDESKTOP_TIMEOUT       1505
+#define IDC_SECUREDESKTOPSPIN           1506
+#define IDC_ENTERCOMBINATION            1507
+#define IDC_STATIC_TIMER                1508
+#define IDC_STATIC_TIMERTEXT            1509
+#define IDC_STATIC_ENTERCOMBINATION     1510
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        528
+#define _APS_NEXT_RESOURCE_VALUE        536
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1503
+#define _APS_NEXT_CONTROL_VALUE         1511
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

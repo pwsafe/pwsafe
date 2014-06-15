@@ -99,13 +99,15 @@ void pws_os::Trace0(LPCTSTR )
 #include "../../core/StringX.h"
 
 // This routine uses Windows functions
-void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
+DWORD pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
   if (bMsgBox)
     std::_tout << csFunction;
   else
     std::_terr << csFunction;
+
+  return 0;
 }
 
 void pws_os::HexDump(unsigned char *pmemory, const int &length,

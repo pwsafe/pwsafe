@@ -27,7 +27,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
                              const CString& a_filespec)
   : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
-  m_message = a_filespec; // Path Ellipsis=true, no length woes
+  m_Database = a_filespec; // Path Ellipsis=true, no length woes
   m_iSortedColumn = 4;
   m_bSortAscending = FALSE;
   m_idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
@@ -78,7 +78,7 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_EXPIRED_PASSWORD_LIST, m_expPWListCtrl);
-  DDX_Text(pDX, IDC_MESSAGE, m_message);
+  DDX_Text(pDX, IDC_SELECTED_DATABASE, m_Database);
 }
 
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)

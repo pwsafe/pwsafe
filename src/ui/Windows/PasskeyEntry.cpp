@@ -16,14 +16,20 @@ down the streetsky.  [Groucho Marx]
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
-#include "GeneralMsgBox.h"
+#include "PasskeyEntry.h"
+#include "PasskeySetup.h"
+#include "Fonts.h"
+#include "DboxMain.h" // for CheckPasskey()
 #include "PWSversion.h"
+#include "GeneralMsgBox.h"
+#include "SDThread.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
 #include "core/PWSfile.h"
+#include "core/Util.h"
 #include "core/core.h"
 
 #include "os/file.h"
@@ -38,43 +44,45 @@ down the streetsky.  [Groucho Marx]
 
 #include "SysColStatic.h"
 
-#include "PasskeyEntry.h"
-#include "Fonts.h"
-#include "DboxMain.h" // for CheckPasskey()
-#include "PasskeySetup.h"
-
-#include "core/Util.h"
-
 #include <iomanip>  // For setbase and setw
 
 // See DboxMain.h for the relevant enum
-int CPasskeyEntry::dialog_lookup[5] = {
+int CPasskeyEntry::dialog_lookup[10] = {
+  // Normal dialogs
   IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
   IDD_PASSKEYENTRY,                // GCP_NORMAL
   IDD_PASSKEYENTRY,                // GCP_RESTORE
   IDD_PASSKEYENTRY_WITHEXIT,       // GCP_WITHEXIT
-  IDD_PASSKEYENTRY};               // GCP_CHANGEMODE
+  IDD_PASSKEYENTRY,                // GCP_CHANGEMODE
+  // Secure Desktop dialogs
+  IDD_PASSKEYENTRY_FIRST_SD,       // GCP_FIRST_SD
+  IDD_PASSKEYENTRY_SD,             // GCP_NORMAL_SD
+  IDD_PASSKEYENTRY_SD,             // GCP_RESTORE_SD
+  IDD_PASSKEYENTRY_WITHEXIT_SD,    // GCP_WITHEXIT_SD
+  IDD_PASSKEYENTRY_SD              // GCP_CHANGEMODE_SD
+};
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
-  : CPKBaseDlg(dialog_lookup[index], pParent),
-  m_index(index),
+                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
+                             bool bUseSecureDesktop)
+  : CPKBaseDlg(dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)], pParent),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
-  m_bForceReadOnly(bForceReadOnly),
-    m_bHideReadOnly(bHideReadOnly),
+  m_bForceReadOnly(bForceReadOnly), m_bHideReadOnly(bHideReadOnly),
   m_yubi_sk(NULL)
 {
+  m_index = index;
+
   DBGMSG("CPasskeyEntry()\n");
   if (m_index == GCP_FIRST) {
     DBGMSG("** FIRST **\n");
   }
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
-  m_message = a_filespec;
+  m_SelectedDatabase = a_filespec;
 
   PWSversion *pPWSver = PWSversion::GetInstance();
   int nMajor = pPWSver->GetMajor();
@@ -101,18 +109,21 @@ CPasskeyEntry::~CPasskeyEntry()
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
   CPKBaseDlg::DoDataExchange(pDX);
-  if (m_index == GCP_FIRST)
-    DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 
   //{{AFX_DATA_MAP(CPasskeyEntry)
+  if (m_index == GCP_FIRST) {
+    DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
+    DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
+  }
+
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
-  DDX_Control(pDX, IDOK, m_ctlOK);
-  DDX_Text(pDX, IDC_MESSAGE, m_message);
+  DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
   DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 
-  if (m_index == GCP_FIRST)
-    DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
-
+  if (!m_bUseSecureDesktop)
+    DDX_Control(pDX, IDOK, m_ctlOK);
+  else
+    DDX_Control(pDX, IDC_ENTERCOMBINATION, m_ctlEnterCombination);
   //}}AFX_DATA_MAP
 }
 
@@ -129,6 +140,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -149,58 +161,67 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 {
   CPKBaseDlg::OnInitDialog();
 
-  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  if (!m_bUseSecureDesktop) {
+    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
-  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+  }
 
-  switch(m_index) {
-    case GCP_FIRST:
-      // At start up - give the user the option unless file is R-O
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
+  switch (m_index) {
+  case GCP_FIRST:
+    // At start up - give the user the option unless file is R-O
+    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
 #ifdef DEMO
-      GetDlgItem(IDC_SPCL_TXT)->
-         SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
+    GetDlgItem(IDC_SPCL_TXT)->
+      SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
 #endif
-      break;
-    case GCP_NORMAL:
-      // otherwise during open - user can - again unless file is R-O
-      if (m_bHideReadOnly) {
-        GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      } else {
-        GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      }
-      break;
-    case GCP_RESTORE:
-    case GCP_WITHEXIT:
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      break;
-    case GCP_CHANGEMODE:
+    break;
+  case GCP_NORMAL:
+    // otherwise during open - user can - again unless file is R-O
+    if (m_bHideReadOnly) {
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      break;
-    default:
-      ASSERT(FALSE);
+    }
+    else {
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+    }
+    break;
+  case GCP_RESTORE:
+  case GCP_WITHEXIT:
+    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+    break;
+  case GCP_CHANGEMODE:
+    GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+    break;
+  default:
+    ASSERT(FALSE);
   }
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!CVKeyBoardDlg::IsOSKAvailable()) {
+  if (!m_bUseSecureDesktop && !m_bVKAvailable) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  if (m_message.IsEmpty() && m_index == GCP_FIRST) {
-    m_pctlPasskey->EnableWindow(FALSE);
-    m_ctlOK.EnableWindow(TRUE);
-    m_message.LoadString(IDS_NOCURRENTSAFE);
+  if (m_SelectedDatabase.IsEmpty()) {
+    if (m_index == GCP_FIRST) {
+      if (m_bUseSecureDesktop) {
+        m_pctlPasskey->EnableWindow(FALSE);
+        m_ctlOK.EnableWindow(TRUE);
+        m_SelectedDatabase.LoadString(IDS_NOCURRENTSAFE);
+      }
+      else
+        m_ctlEnterCombination.EnableWindow(FALSE);
+    }
   }
 
   if (m_index == GCP_FIRST) {
-    GetDlgItem(IDC_MESSAGE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_SELECTED_DATABASE)->ShowWindow(SW_HIDE);
 
     CRecentFileList *mru = app.GetMRU();
     ASSERT(mru != NULL);
@@ -229,7 +250,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       // Add an empty row to allow NODB
       int li = m_MRU_combo.AddString(L"");
       if (li != CB_ERR && li != CB_ERRSPACE) {
-        m_MRU_combo.SetItemData(li, DWORD_PTR(-2)); // -1 already taken, but a < 0 value is easier to check than N
+        m_MRU_combo.SetItemData(li, N);
         CString cs_empty(MAKEINTRESOURCE(IDS_EMPTY_DB));
         cs_tooltips.push_back(cs_empty);
         N++; // for SetHeight
@@ -270,7 +291,8 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     SetActiveWindow();
     SetForegroundWindow();
-    m_pctlPasskey->SetFocus();
+    if (!m_bUseSecureDesktop)
+      m_pctlPasskey->SetFocus();
     return FALSE;
   }
 
@@ -279,9 +301,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
-  if (m_index == 0 && !m_filespec.IsEmpty()) {
+  if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
-    m_pctlPasskey->SetFocus();
+    if (!m_bUseSecureDesktop)
+      m_pctlPasskey->SetFocus();
     return FALSE;
   }
 
@@ -351,7 +374,9 @@ void CPasskeyEntry::OnCreateDb()
   // 3. Set m_filespec && m_passkey to returned value!
   m_filespec = newfile;
   m_passkey = pksetup.GetPassKey();
-  ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
+  if (!m_bUseSecureDesktop)
+    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
+
   m_status = TAR_NEW;
   CPWDialog::OnOK();
 }
@@ -422,7 +447,8 @@ void CPasskeyEntry::ProcessPhrase()
       CString cs_toomany;
       cs_toomany.Format(IDS_TOOMANYTRIES, m_tries);
       gmb.AfxMessageBox(cs_toomany);
-    } else { // try again
+    }
+    else { // try again
       gmb.AfxMessageBox(m_index == GCP_CHANGEMODE ? IDS_BADPASSKEY : IDS_INCORRECTKEY);
     }
     m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
@@ -474,8 +500,14 @@ void CPasskeyEntry::UpdateRO()
 void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
-  m_pctlPasskey->EnableWindow(TRUE);
-  m_ctlOK.EnableWindow(TRUE);
+  if (!m_bUseSecureDesktop) {
+    m_pctlPasskey->EnableWindow(TRUE);
+    m_ctlOK.EnableWindow(TRUE);
+  }
+  else
+  {
+    m_ctlEnterCombination.EnableWindow(TRUE);
+  }
 
   UpdateRO();
 }
@@ -500,9 +532,15 @@ void CPasskeyEntry::OnComboSelChange()
       m_filespec = m_orig_filespec;
   }
 
-  m_pctlPasskey->EnableWindow(TRUE);
-  m_pctlPasskey->SetFocus();
-  m_ctlOK.EnableWindow(TRUE);
+  if (!m_bUseSecureDesktop) {
+    m_pctlPasskey->EnableWindow(TRUE);
+    m_pctlPasskey->SetFocus();
+    m_ctlOK.EnableWindow(TRUE);
+  }
+  else
+  {
+    m_ctlEnterCombination.EnableWindow(TRUE);
+  }
 
   UpdateRO();
 }
@@ -551,10 +589,17 @@ void CPasskeyEntry::OnOpenFileBrowser()
     m_PKE_ReadOnly = fd.GetReadOnlyPref();
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
-    m_pctlPasskey->EnableWindow(TRUE);
-    m_ctlOK.EnableWindow(TRUE);
-    if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
-      m_pctlPasskey->SetFocus();
+    if (!m_bUseSecureDesktop) {
+      // Normal
+      m_pctlPasskey->EnableWindow(TRUE);
+      if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
+        m_pctlPasskey->SetFocus();
+      }
+      m_ctlOK.EnableWindow(TRUE);
+    }
+    else {
+      // Secure Desktop
+      m_ctlEnterCombination.EnableWindow(TRUE);
     }
     UpdateRO();
   } // rc == IDOK
@@ -588,31 +633,43 @@ void CPasskeyEntry::SetHeight(const int num)
 
 void CPasskeyEntry::OnVirtualKeyboard()
 {
+  // This is used if Secure Desktop isn't!
+  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
+
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!CVKeyBoardDlg::IsOSKAvailable())
+  if (!m_bVKAvailable)
     return;
 
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
+  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top
-    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
-    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
+    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
+      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
+
+    if (m_hwndVKeyBoard == NULL) {
+      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      ASSERT(m_hwndVKeyBoard);
+    }
   } else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top
-  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  // Now show it and make it top & enable it
+  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  ::EnableWindow(m_hwndVKeyBoard, TRUE);
 }
 
 LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
 {
+  // This is used if Secure Desktop isn't!
+
   // Update the variables
   UpdateData(TRUE);
 
@@ -651,4 +708,20 @@ void CPasskeyEntry::OnYubikeyBtn()
     return;
   }
   yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CPasskeyEntry::OnEnterCombination()
+{
+  // Get passphrase from Secure Desktop
+  CPKBaseDlg::StartThread(IDD_SDGETPHRASE);
+
+  ShowWindow(SW_SHOW);
+
+  if (m_GMP.bPhraseEntered) {
+    ShowWindow(SW_SHOW);
+    m_passkey = m_GMP.sPhrase.c_str();
+    ProcessPhrase();
+  }
+  else
+    CPWDialog::OnCancel();
 }

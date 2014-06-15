@@ -14,7 +14,6 @@
 #include "PKBaseDlg.h"
 #include "ControlExtns.h"
 
-class CVKeyBoardDlg;
 class DboxMain;
 class PWScore;
 
@@ -51,9 +50,11 @@ protected:
   void YubiFailed(); // If YubiKey failed, offer to initialize it.
   void YubiInitialize(); // called if YubiFailed and user confirmed
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
+  afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
 private:
   DboxMain *m_pDbx;
   CSecEditExtn *m_pctlVerify;

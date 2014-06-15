@@ -65,7 +65,7 @@ public:
   enum { IDD = IDD_DISPLAY_EXPIRED_ENTRIES };
   CExpPswdLC m_expPWListCtrl;
   CImageList *m_pImageList;
-  CString m_message;
+  CString m_Database;
   int m_iSortedColumn; 
   BOOL m_bSortAscending; 
 

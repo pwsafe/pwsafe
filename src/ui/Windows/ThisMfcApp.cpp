@@ -51,6 +51,7 @@
 #include <vector>
 #include <errno.h>
 #include <io.h>
+#include <ddeml.h>
 
 // Only produce minidumps in release code
 #ifndef _DEBUG
@@ -69,6 +70,18 @@ static char THIS_FILE[] = __FILE__;
 
 const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
+
+// Message Filter processing (WH_MSGFILTER)  [_AfxMsgFilterHook from thrdcore.cpp]
+LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam)
+{
+  CWinThread *pThread;
+  if (afxContextIsDLL || (code < 0 && code != MSGF_DDEMGR) ||
+    (pThread = AfxGetThread()) == NULL) {
+    return ::CallNextHookEx(_afxThreadState->m_hHookOldMsgFilter, code, wParam, lParam);
+  }
+  ASSERT(pThread != NULL);
+  return (LRESULT)pThread->ProcessMessageFilter(code, (LPMSG)lParam);
+}
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 END_MESSAGE_MAP()

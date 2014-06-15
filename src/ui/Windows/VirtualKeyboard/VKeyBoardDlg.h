@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2014 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,123 +13,71 @@
 // VKeyBoardDlg.h : header file
 //-----------------------------------------------------------------------------
 
-#define NUM_KEYS (IDC_VKBBTN_KBD51 - IDC_VKBBTN_KBD01 + 1)
-#define NUM_DIGITS (IDC_VKBBTN_N9 - IDC_VKBBTN_N0 + 1)
+/*
 
-#include "../ThisMfcApp.h"
-#include "../PWDialog.h"
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
+
+*/
+
 #include "../resource.h"
-#include "../SecString.h"
+
+#include "VKdefinitions.h"
 #include "VKresource.h"
 #include "VKBButton.h"
-#include "../../../os/windows/pws_osk/pws_osk.h"
-#include <vector>
-#include <map>
 
-typedef OSK_API void (* LP_OSK_ListKeyboards) (UINT &uiKLID, UINT &uiCtrlID);
-typedef OSK_API BOOL (* LP_OSK_GetKeyboardData) (UINT uiKLID, st_KBImpl &stKBImpl);
-typedef OSK_API int  (* LP_OSK_GetVersion) ();
+#include "../../../core/StringX.h"
 
-enum {USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT};
-
-// See DboxMain.h as well, since all PWS messages are either defined or documented there
-#define PWS_MSG_INSERTBUFFER (WM_APP + 70)
-
-enum eJapanese {ENGLISH = 0, JAPANESE};    // Used for m_Kana
-enum eHK       {HIRAGANA = 0, KATAKANA};   // Used for m_Hiragana
-enum eSize     {HALF = 0, FULL};           // Used for m_Size
-
-struct st_Keyboard_Layout {
-  UINT uiKLID;
-  UINT uiCtrlID;
-
-  st_Keyboard_Layout()
-    : uiKLID(0), uiCtrlID(0)
-  {
-  }
-
-  st_Keyboard_Layout(const st_Keyboard_Layout &that)
-    : uiKLID(that.uiKLID), uiCtrlID(that.uiCtrlID)
-  {
-  }
-
-  st_Keyboard_Layout &operator=(const st_Keyboard_Layout &that)
-  {
-    if (this != &that) {
-      uiKLID = that.uiKLID;
-      uiCtrlID = that.uiCtrlID;
-    }
-    return *this;
-  }
-};
-
-typedef std::vector<st_Keyboard_Layout> vKeyboard_Layouts;
-typedef vKeyboard_Layouts::const_iterator KBL_citer;
-
-typedef std::map<BYTE, const st_SC2CHAR> Map_st_SC2Char;
-typedef Map_st_SC2Char::iterator Iter_Map_st_SC2CHAR;
-
-class CVKeyBoardDlg : public CPWDialog
+class CVKeyBoardDlg
 {
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
+  static INT_PTR CALLBACK VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
   static wchar_t *ARIALUMS;
   static wchar_t *ARIALU;
   static wchar_t *LUCIDAUS;
 
-  CVKeyBoardDlg(CWnd *pParent, LPCWSTR wcKLID = NULL);
+  CVKeyBoardDlg(HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
-  enum { IDD = IDD_VKEYBOARD };
+  enum { IDD = IDD_SDVKEYBOARD };
 
-  const CSecString &GetPassphrase() const {return m_phrase;}
+  const StringX &GetPassphrase() const {return m_phrase;}
   const UINT &GetKLID() const {return m_uiKLID;}
   const bool SaveKLID() const {return m_bSaveKLID == BST_CHECKED;}
 
   void ResetKeyboard();
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   BOOL OnInitDialog();
 
   int m_phrasecount;
-  CComboBox m_cbxKeyBoards;
 
-  BOOL PreTranslateMessage(MSG* pMsg);
-
-  //{{AFX_MSG(CVKeyBoardDlg)
-  afx_msg void OnPostNcDestroy();
-  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
-  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-  afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
-  afx_msg void OnCancel();
-  afx_msg void OnInsert();
-  afx_msg void OnRandomize();
-  afx_msg void OnClearBuffer();
-  afx_msg void OnBackSpace();
-  afx_msg void OnShift();
-  afx_msg void OnLCtrl();
-  afx_msg void OnRCtrl();
-  afx_msg void OnRHCtrl();
-  afx_msg void OnAltNum();
-  afx_msg void OnAltGr();
-  afx_msg void OnCapsLock();
-  afx_msg void OnSpaceBar();
-  afx_msg void OnKeySize();
-  afx_msg void OnHiragana();
-  afx_msg void OnNumerics(UINT nID);
-  afx_msg void OnKeys(UINT nID);
-  afx_msg void OnChangeKeyboard();
-  afx_msg void OnChangeKeyboardType();
-  afx_msg void OnSaveKLID();
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
+  void OnCancel();
+  void OnInsert();
+  void OnRandomize();
+  void OnClearBuffer();
+  void OnBackSpace();
+  void OnShift();
+  void OnLCtrl();
+  void OnRCtrl();
+  void OnRHCtrl();
+  void OnAltNum();
+  void OnAltGr();
+  void OnCapsLock();
+  void OnSpaceBar();
+  void OnKeySize();
+  void OnHiragana();
+  void OnNumerics(UINT nID);
+  void OnKeys(UINT nID);
+  void OnChangeKeyboard();
+  void OnChangeKeyboardType();
+  void OnSaveKLID();
 
   int m_iKeyboard;
-  CToolTipCtrl *m_pToolTipCtrl;
 
-private:
   void GetAllKeyboardsAvailable();
   void ProcessKeyboard(const UINT uiKLID, const bool bSetType = true);
   void ResetKeys();
@@ -141,10 +89,16 @@ private:
   void SetKoreanKeyboard();
   void SetStandardKeyboard();
   void SetSpecialKeys();
-  void ApplyUnicodeFont(CWnd* pDlgItem);
+  void ApplyUnicodeFont(HWND hDlgItem);
   void DoRCtrl(const bool bDoFull);
 
-  CFont *m_pPassphraseFont;
+  BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
+  BOOL AddTooltip(UINT uiControlID, stringT sText);
+  BOOL DeleteTooltip(UINT uiControlID);
+  BOOL UpdateTooltipText(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
+  BOOL UpdateTooltipText(UINT uiControlID, stringT sText);
+
+  HFONT m_PassphraseFont;
 
   CVKBButton m_vkbb_Alt, m_vkbb_AltGr, m_vkbb_CapsLock, m_vkbb_AltNum, m_vkbb_BackSpace;
   CVKBButton m_vkbb_LShift, m_vkbb_LCtrl, m_vkbb_RShift, m_vkbb_RCtrl, m_vkbb_RHCtrl;
@@ -158,17 +112,19 @@ private:
   // Japanese
   CVKBButton m_vkbb_SmallSpaceBar, m_vkbb_Size, m_vkbb_Hiragana;
 
+  Map_ID2XButton m_Map_ID2XButton;
+
   wchar_t m_wcDeadKey;
   wchar_t *m_pnumbers[NUM_DIGITS];
   BYTE m_scancodes[NUM_KEYS];
 
-  CString m_selectedkb;
+  StringX m_selectedkb;
 
   st_VKBD *m_pstvkbd;
   Map_st_SC2Char m_map_stSC2Char;
   std::vector<BYTE> m_vsc;
 
-  CSecString m_phrase;
+  StringX m_phrase;
   int m_altchar;
   int m_Size, m_Hiragana, m_Kana;
   bool m_bAltNum, m_bAltGr, m_bCapsLock, m_bRandom;
@@ -185,15 +141,16 @@ private:
   BOOL m_bSaveKLID;
   vKeyboard_Layouts m_KBL;
   BYTE m_State, m_SaveState;
-  CBrush m_pBkBrush;
+  HBRUSH m_hBkBrush;
 
-  HINSTANCE m_OSK_module;
+  HMODULE m_OSK_module, m_hInstance;
   LP_OSK_GetKeyboardData m_pGetKBData;
   LP_OSK_ListKeyboards m_pListKBs;
   st_KBImpl m_stKBImpl;
-  CWnd *m_pParent;
-  UINT m_uiMouseDblClkTime;
-};
+  HWND m_hParent, m_hMasterPhrase, m_hwndDlg, m_hcbxKeyBoards, m_hwndTooltip;
+  bool m_bUseSecureDesktop;
+  int m_iUserTimeLimit;
+  };
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

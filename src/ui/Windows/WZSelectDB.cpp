@@ -53,6 +53,12 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
+
+  // Call it as it also performs important initilisation
+  m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
+
+  m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
 }
 
 CWZSelectDB::~CWZSelectDB()
@@ -69,7 +75,6 @@ CWZSelectDB::~CWZSelectDB()
     StringX cs_KLID = os.str().c_str();
     PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
 
-    m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;
   }
 }
@@ -78,17 +83,20 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
 
-  // Can't use DDX_Text for CSecEditExtn
-  m_pctlPasskey->DoDDX(pDX, m_passkey);
-
   //{{AFX_DATA_MAP(CWZSelectDB)
   DDX_Text(pDX, IDC_DATABASE, m_filespec);
 
-  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-  DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
-  DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
+
+  if (!m_bUseSecureDesktop) {
+    // Can't use DDX_Text for CSecEditExtn
+    m_pctlPasskey->DoDDX(pDX, m_passkey);
+    DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+
+    DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+    DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
+  }
 
   const UINT nID = m_pWZPSH->GetID();
 
@@ -136,6 +144,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
+  ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
   //}}AFX_MSG_MAP
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_WM_TIMER()
@@ -149,9 +158,32 @@ void CWZSelectDB::OnHelp()
 BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
-  SetTimer(1, 250, 0); // Setup a timer to poll YubiKey every 250 ms
-  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+
+  // Setup a timer to poll YubiKey every 250 ms
+  SetTimer(1, 250, 0);
+
+  if (!m_bUseSecureDesktop) {
+    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+
+    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(FALSE);
+  }
+  else
+  {
+    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
+    GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
+
+  }
 
   const UINT nID = m_pWZPSH->GetID();
   CString cs_text,cs_temp;
@@ -230,10 +262,7 @@ BOOL CWZSelectDB::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  // Disble passphrase until database name filled in
-  m_pctlPasskey->EnableWindow(TRUE);
-
-  // Disable Next until fields set
+   // Disable Next until fields set
   m_pWZPSH->SetWizardButtons(0);
 
   CString cs_tmp(MAKEINTRESOURCE(m_pWZPSH->GetButtonID()));
@@ -244,28 +273,36 @@ BOOL CWZSelectDB::OnInitDialog()
   // Yubi-related initializations:
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
-  CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-  if (CPKBaseDlg::YubiExists()) {
-    ybn->ShowWindow(SW_SHOW);
-    m_yubi_status.ShowWindow(SW_SHOW);
-  } else {
-    ybn->ShowWindow(SW_HIDE);
-    m_yubi_status.ShowWindow(SW_HIDE);
-  }
-  m_yubi_timeout.ShowWindow(SW_HIDE);
-  m_yubi_timeout.SetRange(0, 15);
-  bool yubiInserted = IsYubiInserted();
-  // MFC has ancient bug: can't render diasbled version of bitmap,
-  // so instead of showing drek, we roll our own, and leave enabled.
-  ybn->EnableWindow(TRUE);
+  if (!m_bUseSecureDesktop) {
+    // Disable passphrase until database name filled in
+    m_pctlPasskey->EnableWindow(TRUE);
 
-  if (yubiInserted) {
-    ((CButton*)ybn)->SetBitmap(m_yubiLogo);
-    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-  } else {
-    ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
-    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
+    CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
+
+    if (CPKBaseDlg::YubiExists()) {
+      ybn->ShowWindow(SW_SHOW);
+      m_yubi_status.ShowWindow(SW_SHOW);
+    }
+    else {
+      ybn->ShowWindow(SW_HIDE);
+      m_yubi_status.ShowWindow(SW_HIDE);
+    }
+    m_yubi_timeout.ShowWindow(SW_HIDE);
+    m_yubi_timeout.SetRange(0, 15);
+    bool yubiInserted = IsYubiInserted();
+    // MFC has ancient bug: can't render diasbled version of bitmap,
+    // so instead of showing drek, we roll our own, and leave enabled.
+    ybn->EnableWindow(TRUE);
+
+    if (yubiInserted) {
+      ((CButton*)ybn)->SetBitmap(m_yubiLogo);
+      m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+    }
+    else {
+      ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
+      m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
+    }
   }
 
   return FALSE;
@@ -332,6 +369,28 @@ void CWZSelectDB::OnAdvanced()
                                         IDS_WZNEXT));
 
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
+}
+
+void CWZSelectDB::OnEnterCombination()
+{
+  // Only needed for its thread processing - never dispays its own dialog (no DoModal etc.)
+  CPKBaseDlg *pPKBaseDlg = new CPKBaseDlg(IDD_PASSKEYENTRY_SD, this);
+
+  // Get passphrase from Secure Desktop
+  pPKBaseDlg->StartThread(IDD_SDGETPHRASE);
+
+  if (pPKBaseDlg->m_GMP.bPhraseEntered) {
+    m_passkey = pPKBaseDlg->m_GMP.sPhrase.c_str();
+    if (m_passkey.GetLength() > 0)
+      m_state |= KEYPRESENT;
+    else
+      m_state &= ~KEYPRESENT;
+
+    m_pWZPSH->SetWizardButtons(m_state == BOTHPRESENT ? PSWIZB_NEXT : 0);
+  }
+
+  ShowWindow(SW_SHOW);
+  delete pPKBaseDlg;
 }
 
 void CWZSelectDB::OnPassKeyChange()
@@ -565,9 +624,11 @@ void CWZSelectDB::OnOpenFileBrowser()
   if (rc == IDOK) {
     m_filespec = fd.GetPathName();
     m_pctlDB->SetWindowText(m_filespec);
-    m_pctlPasskey->EnableWindow(TRUE);
-    if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
-      m_pctlPasskey->SetFocus();
+    if (!m_bUseSecureDesktop) {
+      m_pctlPasskey->EnableWindow(TRUE);
+      if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
+        m_pctlPasskey->SetFocus();
+      }
     }
     // If the file exists and we are doing a save, CFileDialog
     // would have prompted the user
@@ -578,29 +639,38 @@ void CWZSelectDB::OnOpenFileBrowser()
 
 void CWZSelectDB::OnVirtualKeyboard()
 {
+  // This is used if Secure Desktop isn't!
+  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
+
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
   if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
+  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top
-    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
-    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
-  } else {
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
+    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
+      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
+
+    if (m_hwndVKeyBoard == NULL) {
+      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      ASSERT(m_hwndVKeyBoard);
+    }
+  }
+  else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top
-  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
-  return;
+  // Now show it and make it top & enable it
+  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  ::EnableWindow(m_hwndVKeyBoard, TRUE);
 }
 
 LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
@@ -624,7 +694,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
 
   // Put cursor at end of inserted text
   m_pctlPasskey->SetSel(nStartChar + vkbuffer.GetLength(),
-                        nStartChar + vkbuffer.GetLength());
+    nStartChar + vkbuffer.GetLength());
 
   // Update the dialog
   UpdateData(FALSE);
@@ -780,8 +850,11 @@ void CWZSelectDB::OnYubikeyBtn()
 
 void CWZSelectDB::OnTimer(UINT_PTR)
 {
-  // If an operation is pending, check if it has completed
+  // Ignore if Secure Desktop
+  if (m_bUseSecureDesktop)
+    return;
 
+  // If an operation is pending, check if it has completed
   if (m_pending) {
     yubiCheckCompleted();
   } else {

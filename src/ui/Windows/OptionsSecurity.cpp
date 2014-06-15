@@ -44,7 +44,9 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_LockOnWindowLock = M_LockOnWindowLock();
   m_LockOnIdleTimeout = M_LockOnIdleTimeout();
   m_CopyPswdBrowseURL = M_CopyPswdBrowseURL();
+  m_UseSecureDesktop = M_UseSecureDesktop();
   m_IdleTimeOut = M_IdleTimeOut();
+  m_SecureDesktopTimeout = M_SecureDesktopTimeout();
   SetHashIter(M_HashIters());
 }
 
@@ -65,6 +67,8 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+  DDX_Check(pDX, IDC_USESECUREDESKTOP, m_UseSecureDesktop);
+  DDX_Text(pDX, IDC_SECUREDESKTOP_TIMEOUT, m_SecureDesktopTimeout);
 
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
@@ -78,6 +82,7 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
+  ON_BN_CLICKED(IDC_USESECUREDESKTOP, OnSecureDesktopTimeout)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -95,12 +100,19 @@ BOOL COptionsSecurity::OnInitDialog()
   }
 
   OnLockOnIdleTimeout();
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
+  CSpinButtonCtrl *pspin;
 
+  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
   pspin->SetRange(1, 120);
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
+
+  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SECUREDESKTOPSPIN);
+  pspin->SetBuddy(GetDlgItem(IDC_SECUREDESKTOP_TIMEOUT));
+  pspin->SetRange(60, 300);
+  pspin->SetBase(10);
+  pspin->SetPos(m_SecureDesktopTimeout);
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
   pslider->SetRange(MinHIslider, MaxHIslider);
@@ -151,7 +163,10 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_LockOnIdleTimeout()        != m_LockOnIdleTimeout        ||
           M_CopyPswdBrowseURL()        != m_CopyPswdBrowseURL        ||
           (m_LockOnIdleTimeout         == TRUE &&
-           M_IdleTimeOut()             != m_IdleTimeOut))
+           M_IdleTimeOut()             != m_IdleTimeOut)             ||
+          M_UseSecureDesktop()         != m_UseSecureDesktop         ||
+          (m_UseSecureDesktop          == TRUE &&
+           M_SecureDesktopTimeout()    != m_SecureDesktopTimeout))
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -198,7 +213,9 @@ BOOL COptionsSecurity::OnApply()
   M_LockOnWindowLock() = m_LockOnWindowLock;
   M_LockOnIdleTimeout() = m_LockOnIdleTimeout;
   M_CopyPswdBrowseURL() = m_CopyPswdBrowseURL;
+  M_UseSecureDesktop() = m_UseSecureDesktop;
   M_IdleTimeOut() = m_IdleTimeOut;
+  M_SecureDesktopTimeout() = m_SecureDesktopTimeout;
   UpdateHashIter();
   M_HashIters() = m_HashIter;
 
@@ -225,6 +242,12 @@ BOOL COptionsSecurity::OnKillActive()
     return FALSE;
   }
 
+  if ((m_SecureDesktopTimeout < 60) || (m_SecureDesktopTimeout > 300)) {
+    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
+    ((CEdit*)GetDlgItem(IDC_SECUREDESKTOP_TIMEOUT))->SetFocus();
+    return FALSE;
+  }
+
   return COptions_PropertyPage::OnKillActive();
 }
 
@@ -239,6 +262,14 @@ void COptionsSecurity::OnLockOnIdleTimeout()
   GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
   GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
   GetDlgItem(IDC_STATIC_IDLEMINS)->EnableWindow(enable);
+}
+
+void COptionsSecurity::OnSecureDesktopTimeout()
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_USESECUREDESKTOP))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_SECUREDESKTOP_TIMEOUT)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_SECUREDESKTOPSECS)->EnableWindow(enable);
 }
 
 HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)

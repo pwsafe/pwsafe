@@ -10,12 +10,15 @@
 // PasskeyEntry.h
 //-----------------------------------------------------------------------------
 
+#include "PKBaseDlg.h"
+
 #include "SysColStatic.h"
 #include "SecString.h"
+
 #include "core/PwsPlatform.h"
+
 #include "afxcmn.h"
 
-#include "PKBaseDlg.h"
 //-----------------------------------------------------------------------------
 /**
 * This class is a bit schizophrenic - it has multiple personalities,
@@ -26,12 +29,11 @@
 */
 
 class DboxMain;
-class CVKeyBoardDlg;
 
 /**
- * Globally useful values...
- * (Originally from TryAgainDlg.h, which perhaps explains TAR_...)
- */
+* Globally useful values...
+* (Originally from TryAgainDlg.h, which perhaps explains TAR_...)
+*/
 enum
 {
   TAR_OK,
@@ -49,7 +51,8 @@ class CPasskeyEntry : public CPKBaseDlg
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly);
+                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
+                bool bUseSecureDesktop);
 
   ~CPasskeyEntry();
 
@@ -61,20 +64,18 @@ public:
 
 protected:
   // Dialog Data
-  enum { IDD_BASIC = IDD_PASSKEYENTRY };
-  enum { IDD_WEXIT = IDD_PASSKEYENTRY_WITHEXIT };
-  enum { IDD = IDD_PASSKEYENTRY_FIRST };
 
   //{{AFX_DATA(CPasskeyEntry)
   CSysColStatic m_ctlLogo;
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
+  CButton m_ctlEnterCombination;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
 
   //}}AFX_DATA
-  CString m_message;
+  CString m_SelectedDatabase;
   CComboBoxExtn m_MRU_combo;
   CString m_filespec, m_orig_filespec;
 
@@ -86,9 +87,8 @@ protected:
 
   int m_tries;
   int m_status;
-  int m_index;
 
-  static int dialog_lookup[5];
+  static int dialog_lookup[10];
 
   HICON m_hIcon;
 
@@ -105,6 +105,7 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
+  afx_msg void OnEnterCombination();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

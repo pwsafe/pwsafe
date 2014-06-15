@@ -122,7 +122,7 @@ void DboxMain::OnAdd()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
 
       INT_PTR rc2 = defDlg.DoModal();
 
@@ -232,7 +232,7 @@ void DboxMain::OnCreateShortcut()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences

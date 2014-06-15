@@ -53,7 +53,9 @@ void DboxMain::OnPassphraseChange()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
-  CPasskeyChangeDlg changeDlg(this);
+
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  CPasskeyChangeDlg changeDlg(this, bUseSecureDesktop);
 
   INT_PTR rc = changeDlg.DoModal();
 
@@ -194,6 +196,7 @@ int DboxMain::RestoreSafe()
   }
 
   rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+
   CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:

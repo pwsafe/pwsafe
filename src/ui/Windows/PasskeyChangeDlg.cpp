@@ -35,11 +35,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
+
 //-----------------------------------------------------------------------------
-CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
+CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent, bool bUseSecureDesktop)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
-    m_oldpasskeyConfirmed(false)
+    m_oldpasskeyConfirmed(false), m_bUseSecureDesktop(bUseSecureDesktop)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";
@@ -74,14 +76,33 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
-  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, &CPasskeyChangeDlg::OnYubikey2Btn)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, &CPasskeyChangeDlg::OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_WM_TIMER()
+  ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
+
+  if (m_bUseSecureDesktop)
+  {
+    // We need a dialog but we don't want to show it - sneeky code here
+    ShowWindow(SW_HIDE);
+    int irc(IDCANCEL);
+
+    CPKBaseDlg::StartThread(IDD_SDKEYCHANGE);
+
+    if (m_GMP.bPhraseEntered && m_GMP.bNewPhraseEntered) {
+      m_passkey = m_GMP.sPhrase.c_str();
+      m_newpasskey = m_GMP.sNewPhrase.c_str();
+      irc =  IDOK;
+    }
+
+    EndDialog(irc);
+    return TRUE;
+  }
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
@@ -98,12 +119,21 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   ybn2->SetBitmap(IsYubiInserted() ? m_yubiLogo : m_yubiLogoDisabled);
  
   // Only show virtual Keyboard menu if we can load DLL
-  if (!CVKeyBoardDlg::IsOSKAvailable()) {
+  if (!m_bVKAvailable) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
   return TRUE;
+}
+
+void CPasskeyChangeDlg::OnWindowPosChanging(WINDOWPOS *lpwndpos)
+{
+  // Stop dialog showing
+  if (m_bUseSecureDesktop && (lpwndpos->flags & SWP_SHOWWINDOW)) {
+    lpwndpos->flags |= SWP_HIDEWINDOW;
+    lpwndpos->flags &= ~SWP_SHOWWINDOW;
+  }
 }
 
 void CPasskeyChangeDlg::yubiInserted(void)
@@ -129,6 +159,7 @@ void CPasskeyChangeDlg::OnOK()
   if (!m_oldpasskey.IsEmpty()) {
     m_passkey = m_oldpasskey; // old passkey is from Yubikey
   }
+
   CGeneralMsgBox gmb;
   int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), m_passkey);
   if (rc == PWScore::WRONG_PASSWORD)
@@ -139,6 +170,7 @@ void CPasskeyChangeDlg::OnOK()
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
     gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
+
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
@@ -147,19 +179,20 @@ void CPasskeyChangeDlg::OnOK()
   // (also used in CPasskeySetup)
   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
     INT_PTR rc = gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONSTOP);
     if (rc == IDYES)
-      CPWDialog::OnOK();
+      CPKBaseDlg::OnOK();
 #else
     cs_text.LoadString(IDS_TRYANOTHER);
     cs_msg += cs_text;
     gmb.AfxMessageBox(cs_msg, NULL, MB_OK | MB_ICONSTOP);
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   } else {
-    CPWDialog::OnOK();
+    CPKBaseDlg::OnOK();
   }
 }
 
@@ -190,33 +223,44 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 
 void CPasskeyChangeDlg::OnVirtualKeyboard()
 {
+  // This is used if Secure Desktop isn't!
+  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
+
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!CVKeyBoardDlg::IsOSKAvailable())
+  if (!m_bVKAvailable)
     return;
 
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
+  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top
-    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
-    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
-  } else {
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
+    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
+      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
+
+    if (m_hwndVKeyBoard == NULL) {
+      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      ASSERT(m_hwndVKeyBoard);
+    }
+  }
+  else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top
-  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
-  return;
+  // Now show it and make it top & enable it
+  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  ::EnableWindow(m_hwndVKeyBoard, TRUE);
 }
 
 LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
 {
+  // This is used if Secure Desktop isn't!
+
   // Update the variables
   UpdateData(TRUE);
 
@@ -287,7 +331,6 @@ void CPasskeyChangeDlg::OnYubikey2Btn()
     yubiRequestHMACSha1(); // request HMAC of m_passkey
   }
 }
-
 
 void CPasskeyChangeDlg::ProcessPhrase()
 {

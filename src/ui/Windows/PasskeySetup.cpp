@@ -9,17 +9,21 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
+
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "GeneralMsgBox.h"
 #include "Options_PropertySheet.h"
+#include "PasskeySetup.h"
+#include "Fonts.h"
 #include "YubiCfgDlg.h"
 
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "core/PwsPlatform.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
+#include "core/util.h"
 
 #include "os/dir.h"
 #include "os/rand.h"
@@ -28,11 +32,6 @@
 
 #include "resource.h"
 #include "resource3.h"  // String resources
-
-#include "core/util.h"
-
-#include "PasskeySetup.h"
-#include "Fonts.h"
 
 #include <iomanip>  // For setbase and setw
 
@@ -80,18 +79,45 @@ END_MESSAGE_MAP()
 BOOL CPasskeySetup::OnInitDialog() 
 {
   CPKBaseDlg::OnInitDialog();
+
+  if (m_bUseSecureDesktop)
+  {
+    // We need a dialog but we don't want to show it - sneeky code here
+    ShowWindow(SW_HIDE);
+    int irc(IDCANCEL);
+
+    CPKBaseDlg::StartThread(IDD_SDPASSKEYSETUP);
+
+    if (m_GMP.bPhraseEntered) {
+      m_passkey = m_GMP.sPhrase.c_str();
+      irc = IDOK;
+    }
+
+    EndDialog(irc);
+    return TRUE;
+  }
+
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!CVKeyBoardDlg::IsOSKAvailable()) {
+  if (!m_bVKAvailable) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
   return TRUE;
+}
+
+void CPasskeySetup::OnWindowPosChanging(WINDOWPOS *lpwndpos)
+{
+  // Stop dialog showing
+  if (m_bUseSecureDesktop && (lpwndpos->flags & SWP_SHOWWINDOW)) {
+    lpwndpos->flags |= SWP_HIDEWINDOW;
+    lpwndpos->flags &= ~SWP_SHOWWINDOW;
+  }
 }
 
 void CPasskeySetup::OnCancel() 
@@ -163,29 +189,38 @@ void CPasskeySetup::OnVerifykeySetfocus()
 
 void CPasskeySetup::OnVirtualKeyboard()
 {
+  // This is used if Secure Desktop isn't!
+  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
+
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!CVKeyBoardDlg::IsOSKAvailable())
+  if (!m_bVKAvailable)
     return;
 
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
+  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top
-    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
-    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
-  } else {
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
+    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
+      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
+
+    if (m_hwndVKeyBoard == NULL) {
+      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      ASSERT(m_hwndVKeyBoard);
+    }
+  }
+  else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top
-  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
-  return;
+  // Now show it and make it top & enable it
+  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  ::EnableWindow(m_hwndVKeyBoard, TRUE);
 }
 
 LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)

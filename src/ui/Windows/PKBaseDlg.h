@@ -15,6 +15,8 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "GetMasterPhrase.h"
+
 #include "os/windows/yubi/YkLib.h"
 
 class CVKeyBoardDlg;
@@ -29,7 +31,7 @@ class CVKeyBoardDlg;
  */
 
 class CPKBaseDlg : public CPWDialog {
- public:
+public:
   CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
@@ -41,17 +43,47 @@ class CPKBaseDlg : public CPWDialog {
   static bool YubiExists() {return s_yubiDetected;}
   static void SetYubiExists() {s_yubiDetected = true;}
 
- protected:
+protected:
+  friend class CWZSelectDB;
+
+  enum {
+     WINDOWSHOOKREMOVED         = 0x01,
+     WAITABLETIMERCREATED       = 0x02,
+     WAITABLETIMERSET           = 0x04,
+     DIMMENDSCREENBITMAPCREATED = 0x08,
+     THREADCREATED              = 0x10,
+     THREADRESUMED              = 0x20,
+   };
+
+  enum {
+    DT_ENTERKEY = 0,
+    DT_CHANGEKEY,
+    DT_NEWDBKEY
+  };
+
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   static const wchar_t PSSWDCHAR;
+  int m_index;
+  bool m_bVKAvailable;
 
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
   virtual void YubiFailed() {};
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+  // non-Secure Desktop use of the virtual keyboard
+  HWND m_hwndVKeyBoard;
+
+  // Secure Desktop
+  void GetDimmedScreen(CBitmap &bmpDimmedScreen);
+  void StartThread(const int iDialogType);
+  GetMasterPhrase m_GMP;
+  int m_iUserTimeLimit, m_iRC;
+  bool m_bUseSecureDesktop;
+
   // Yubico-related:
   bool IsYubiInserted() const;
   // Callbacks:
@@ -66,7 +98,9 @@ class CPKBaseDlg : public CPWDialog {
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
   CBitmap m_yubiLogoDisabled;
- private:
+
+private:
+  // Yubico-related:
   static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
   mutable CYkLib m_yk;
   bool m_pending; // request pending?

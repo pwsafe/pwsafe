@@ -29,14 +29,14 @@ CQuerySetDef::CQuerySetDef(CWnd* pParent)
   : CPWDialog(CQuerySetDef::IDD, pParent)
 {
   m_querycheck = FALSE;
-  m_message = L"";
+  m_defaultusername = L"";
 }
 
 void CQuerySetDef::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   DDX_Check(pDX, IDC_QUERYCHECK, m_querycheck);
-  DDX_Text(pDX, IDC_MESSAGE, m_message);
+  DDX_Text(pDX, IDC_DEFAULT_USERNAME, m_defaultusername);
 }
 
 BEGIN_MESSAGE_MAP(CQuerySetDef, CPWDialog)

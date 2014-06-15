@@ -24,7 +24,8 @@ public:
   enum { IDD = IDD_QUERYSETDEF };
   BOOL m_querycheck;
   //}}AFX_DATA
-  CString m_message;
+
+  CString m_defaultusername;
 
   // Overrides
   // ClassWizard generated virtual function overrides

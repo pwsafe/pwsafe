@@ -336,12 +336,6 @@
     <ClCompile Include="ViewReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualKeyboard\VKBButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WZPropertyPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -394,6 +388,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PKBaseDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualKeyboard\VKBButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -710,13 +713,13 @@
     <ClInclude Include="ThisMfcApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ViewReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VirtualKeyboard\VKBButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualKeyboard\VKDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h">
@@ -792,6 +795,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PKBaseDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GetMasterPhrase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1626,6 +1635,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\Yubikey-button-disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\PWS-SD.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

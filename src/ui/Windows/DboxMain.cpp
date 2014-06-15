@@ -1626,11 +1626,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   PWS_LOGIT_ARGS("index=%d; flags=0x%04x", index, flags);
 
   // index:
-  //  GCP_FIRST      (0) first
-  //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
-  //  GCP_RESTORE    (2) OK, CANCEL & HELP buttons
-  //  GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
-  //  GCB_CHANGEMODE (4) OK, CANCEL & HELP buttons
+  //  GCP_FIRST         (0) First
+  //  GCP_NORMAL        (1) OK, CANCEL & HELP buttons
+  //  GCP_RESTORE       (2) OK, CANCEL & HELP buttons
+  //  GCP_WITHEXIT      (3) OK, CANCEL, EXIT & HELP buttons
+  //  GCB_CHANGEMODE    (4) OK, CANCEL & HELP buttons
+
+  // +  NUM_PER_ENVIRONMENT for Secure Desktop
 
   // for adv_type values, see enum in AdvancedDlg.h
 
@@ -1674,11 +1676,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   m_bsFields.set();
 
   ASSERT(dbox_pkentry == NULL); // should have been taken care of above
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+
   dbox_pkentry = new CPasskeyEntry(this,
                                    filename.c_str(),
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
-                                   bHideReadOnly);
+                                   bHideReadOnly, bUseSecureDesktop);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
