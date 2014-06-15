@@ -40,12 +40,15 @@ struct PWPolicy {
     MakePronounceable   = 0x0200,
     Unused              = 0x01ff};
 
-  unsigned short flags; // bitwise-or of the above
+  uint16 flags; // bitwise-or of the above
+  // Following are limited by format to 2-byte values,
+  // but changing int to uint16 is unwarranted, too much ugliness.
   int length;
   int digitminlength;
   int lowerminlength;
   int symbolminlength;
   int upperminlength;
+
   StringX symbols; // policy-specific set of 'symbol' characters
   size_t usecount; // how many entries use this policy?
 

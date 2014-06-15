@@ -279,16 +279,16 @@ recently used entries, prefixed by a one byte representation of the
 number of these entries. The entries are stored in the order of last
 access, with the first entry being the most recent entry accessed.
 
-[15] This field allows multiple Password Policies per database.  The format is:
-    "NN{LLxxx...xxxffffnnnllluuudddsssMMSSS...SSS}"
+[15] Database-specific Password Policies.  The format is:
+    "N{Lxxx...xxxffnnlluuddssMSSS...SSS}"
 where:
-     NN = 2 hexadecimal digits giving number of password policies in
-    field (max. 255).
+     N = 1 byte specifying the number of password policies in field
+    (max. 255).
      
    Each entry is of the form:
-     LL = 2 hexadecimal digits giving length of the policy name in bytes
-     xxx...xxx = The policy name (maximum 255 bytes)
-     ffff = 4 hexadecimal digits representing the following flags
+     L = 1 byte specifying length of the policy name in bytes
+     xxx...xxx = The policy name (maximum 255 bytes, UTF-8, non-null terminated)
+     ff = 2 bytes in little-endian order representing the following flags
         UseLowercase        0x8000
         UseUppercase        0x4000
         UseDigits           0x2000
@@ -297,17 +297,14 @@ where:
         UseEasyVision       0x0400
         MakePronounceable   0x0200
         Unused              0x01ff
-    nnn  = 3 hexadecimal digits password total length
-    lll  = 3 hexadecimal digits password minimum number of lowercase characters
-    uuu  = 3 hexadecimal digits password minimum number of uppercase characters
-    ddd  = 3 hexadecimal digits password minimum number of digit characters
-    sss  = 3 hexadecimal digits password minimum number of symbol characters
-    MM = 2 hexadecimal digits giving the length in bytes of allowed special
-         symbols, or zero to specify the database default special symbol
-         set.
+    nn  = 2 bytes in little-endian order password total length
+    ll  = 2 bytes in little-endian order password minimum number of lowercase characters
+    uu  = 2 bytes in little-endian order password minimum number of uppercase characters
+    dd  = 2 bytes in little-endian order password minimum number of digit characters
+    ss  = 2 bytes in little-endian order password minimum number of symbol characters
+    M = 1 byte giving the length in bytes of allowed special symbols,
+     or zero to specify the database default special symbol set.
     SSS...SSS = List of allowed symbols in this policy (maximum 255 bytes)
-    
-This field was introduced in format version 0x030A.
 
 [16] This fields contains the name of an empty group that cannot be constructed
 from entries within the database. Unlike other header fields, this field can appear
