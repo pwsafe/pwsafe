@@ -22,6 +22,7 @@
 #include "os/debug.h"
 #include "os/file.h"
 #include "os/logit.h"
+#include "os/utf8conv.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
@@ -526,37 +527,70 @@ int PWSfileV4::WriteHeader()
 
   // Named Policies
   if (!m_MapPSWDPLC.empty()) {
-    oStringXStream oss;
-    oss.fill(charT('0'));
+    size_t numPols = m_MapPSWDPLC.size();
 
-    size_t num = m_MapPSWDPLC.size();
-    if (num > 255)
-      num = 255;  // Do not exceed 2 hex character length field
+    if (numPols > 255)
+      numPols = 255;  // Do not exceed a single byte
 
-    oss << setw(2) << hex << num;
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.begin();
-    for (size_t n = 0; n < num; n++, iter++) {
-      // The Policy name is limited to 255 characters.
-      // This should have been prevented by the GUI.
-      // If not, don't write it out as it may cause issues
-      if (iter->first.length() > 255)
-        continue;
-
-      oss << setw(2) << hex << iter->first.length();
-      oss << iter->first.c_str();
-      StringX strpwp(iter->second);
-      oss << strpwp.c_str();
-      if (iter->second.symbols.empty()) {
-        oss << _T("00");
-      } else {
-        oss << setw(2) << hex << iter->second.symbols.length();
-        oss << iter->second.symbols.c_str();
-      }
+    // Quick iteration to figure out total size
+    PSWDPolicyMapIter iter;
+    size_t totlen = 1; // 1 byte for num of policies
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      size_t polNameLen = pws_os::wcstombs(NULL, 0, iter->first.c_str(), iter->first.length());
+      size_t symSetLen = pws_os::wcstombs(NULL, 0,
+                                          iter->second.symbols.c_str(), iter->second.symbols.length());
+      totlen +=
+        1 +                            // length of policy name
+        polNameLen +
+        2 +                            // flags
+        2*5 +                          // various lengths
+        1 +                            // length of special symbol set
+        symSetLen;
     }
 
-    numWritten = WriteCBC(HDR_PSWDPOLICIES, StringX(oss.str().c_str()));
+    // Allocate buffer in calculated size
+    unsigned char *buf = new unsigned char[totlen];
+    memset(buf, 0, totlen); // in case we trucate some names, don't leak info.
+
+    // fill buffer
+    buf[0] = (unsigned char)numPols;
+    unsigned char *buf_ptr = buf + 1;
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      size_t polNameLen = pws_os::wcstombs(NULL, 0, iter->first.c_str(), iter->first.length());
+      if (polNameLen > 255) // too bad if too long...
+        polNameLen = 255;
+      *buf_ptr++ = (unsigned char)polNameLen;
+      pws_os::wcstombs((char *)buf_ptr, polNameLen, iter->first.c_str(), iter->first.length());
+      buf_ptr += polNameLen;
+
+      const PWPolicy &pwpol = iter->second;
+      putInt16(buf_ptr, pwpol.flags);            buf_ptr += 2;
+      putInt16(buf_ptr, uint16(pwpol.length));           buf_ptr += 2;
+      putInt16(buf_ptr, uint16(pwpol.lowerminlength));   buf_ptr += 2;
+      putInt16(buf_ptr, uint16(pwpol.upperminlength));   buf_ptr += 2;
+      putInt16(buf_ptr, uint16(pwpol.digitminlength));   buf_ptr += 2;
+      putInt16(buf_ptr, uint16(pwpol.symbolminlength));  buf_ptr += 2;
+
+      if (pwpol.symbols.empty()) {
+        *buf_ptr++ = 0;
+      } else {
+        size_t symSetLen = pws_os::wcstombs(NULL, 0,
+                                          pwpol.symbols.c_str(), pwpol.symbols.length());
+      if (symSetLen > 255) // too bad if too long...
+        symSetLen = 255;
+        *buf_ptr++ = (unsigned char)symSetLen;
+        pws_os::wcstombs((char *)buf_ptr, symSetLen,
+                         pwpol.symbols.c_str(), pwpol.symbols.length());
+        buf_ptr += symSetLen;
+      }
+    } // for loop over policies
+
+    ASSERT(buf_ptr == buf + totlen); // check our math...
+    numWritten = WriteCBC(HDR_PSWDPOLICIES, buf, totlen);
+    trashMemory(buf, totlen);
+    delete[] buf;
     if (numWritten <= 0) { status = FAILURE; goto end; }
-  }
+  } // named policies
 
   // Empty Groups
   for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
@@ -894,76 +928,56 @@ int PWSfileV4::ReadHeader()
       break;
 
     case HDR_PSWDPOLICIES:
-      /**
-       * Very sad situation here: this field code was also assigned to
-       * YUBI_SK in 3.27Y. Here we try to infer the actual type based
-       * on the actual value stored in the field.
-       * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
-       * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
-       * digits.
-       */
-      if (utf8Len != HeaderRecord::YUBI_SK_LEN ||
-          (utf8Len >= 4 &&
-           isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
-           isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          const size_t recordlength = text.length();
-          StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
-          StringX sxTemp;
+      {
+        const size_t minPolLen = 1 + 1 + 1 + 2 + 2*5 + 1; // see formatV4.txt
+        if (utf8Len < minPolLen)
+          break; // Error
 
-          // Get number of policies
-          sxTemp = text.substr(0, 2) + sxBlank;
-          size_t j = 2;  // Skip over # name entries
-          iStringXStream is(sxTemp);
-          int num(0);
-          is >> hex >> num;
+        unsigned char *buf_ptr = utf8;
+        const unsigned char *max_ptr = utf8 + utf8Len; // for sanity checks
+        int num = *buf_ptr++;
 
-          // Get the policies and save them
-          for (int n = 0; n < num; n++) {
-            if (j > recordlength) break;  // Error
+        // Get the policies and save them
+        for (int n = 0; n < num; n++) {
+          StringX sxPolicyName;
+          PWPolicy pwp;
 
-            int namelength, symbollength;
-
-            sxTemp = text.substr(j, 2) + sxBlank;
-            iStringXStream tmp_is(sxTemp);
-            j += 2;  // Skip over name length
-
-            tmp_is >> hex >> namelength;
-            if (j + namelength > recordlength) break;  // Error
-
-            StringX sxPolicyName = text.substr(j, namelength);
-            j += namelength;  // Skip over name
-            if (j + 19 > recordlength) break;  // Error
-
-            StringX cs_pwp(text.substr(j, 19));
-            PWPolicy pwp(cs_pwp);
-            j += 19;  // Skip over pwp
-
-            if (j + 2 > recordlength) break;  // Error
-            sxTemp = text.substr(j, 2) + sxBlank;
-            tmp_is.str(sxTemp);
-            j += 2;  // Skip over symbols length
-            tmp_is >> hex >> symbollength;
-
-            StringX sxSymbols;
-            if (symbollength != 0) {
-              if (j + symbollength > recordlength) break;  // Error
-              sxSymbols = text.substr(j, symbollength);
-              j += symbollength;  // Skip over symbols
-            }
-            pwp.symbols = sxSymbols;
-
-            pair< map<StringX, PWPolicy>::iterator, bool > pr;
-            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-            if (pr.second == false) break; // Error
+          int nameLen = *buf_ptr++;
+          // need to tack on null byte to name before conversion
+          unsigned char *nmbuf = new unsigned char[nameLen + 1];
+          memcpy(nmbuf, buf_ptr, nameLen); nmbuf[nameLen] = 0;
+          utf8status = m_utf8conv.FromUTF8(nmbuf, nameLen, sxPolicyName);
+          trashMemory(nmbuf, nameLen); delete[] nmbuf;
+          if (!utf8status)
+            continue;
+          buf_ptr += nameLen;
+          if (buf_ptr > max_ptr)
+            break; // Error
+          pwp.flags = getInt16(buf_ptr);            buf_ptr += 2;
+          pwp.length = getInt16(buf_ptr);           buf_ptr += 2;
+          pwp.lowerminlength = getInt16(buf_ptr);   buf_ptr += 2;
+          pwp.upperminlength = getInt16(buf_ptr);   buf_ptr += 2;
+          pwp.digitminlength = getInt16(buf_ptr);   buf_ptr += 2;
+          pwp.symbolminlength = getInt16(buf_ptr);  buf_ptr += 2;
+          if (buf_ptr > max_ptr)
+            break; // Error
+          int symLen = *buf_ptr++;
+          if (symLen > 0) {
+            // need to tack on null byte to symbols before conversion
+            unsigned char *symbuf = new unsigned char[symLen + 1];
+            memcpy(symbuf, buf_ptr, symLen); symbuf[symLen] = 0;
+            utf8status = m_utf8conv.FromUTF8(symbuf, symLen, pwp.symbols);
+            trashMemory(symbuf, symLen); delete[] symbuf;
+            if (!utf8status)
+              continue;
+            buf_ptr += symLen;
           }
-        }
-      } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
-        //        and at least one non-hex character in first 4 of field.
-        m_hdr.m_yubi_sk = new unsigned char[HeaderRecord::YUBI_SK_LEN];
-        memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
+          if (buf_ptr > max_ptr)
+            break; // Error
+          pair< map<StringX, PWPolicy>::iterator, bool > pr;
+          pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
+          if (pr.second == false) break; // Error
+        } // iterate over named policies
       }
       break;
 
