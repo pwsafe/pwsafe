@@ -81,23 +81,41 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
 {
   CSDThread *selfThreadProc = (CSDThread *)lpParameter;
 
-  StringX sTemp;
+  WNDCLASS wc = { 0 };
+
+  StringX sxTemp, sxPrefix;
   DWORD dwError;
 
   selfThreadProc->m_pGMP->clear();
   selfThreadProc->m_hwndVKeyBoard = NULL;
 
   PWPolicy policy;
+
+  // Get uppercase prefix - 1st character for Desktop name, 2nd for Window Class name
+  policy.flags = PWPolicy::UseUppercase;
+  policy.length = 2;
+  policy.upperminlength = 2;
+
+  sxPrefix = policy.MakeRandomPassword();
+
+  // Future use of this is for the next 15 characters of Dekstop & Window Class names
   policy.flags = PWPolicy::UseLowercase | PWPolicy::UseUppercase | PWPolicy::UseDigits;
-  policy.length = 14;
+  policy.length = 15;
   policy.lowerminlength = policy.upperminlength = policy.digitminlength = 1;
 
 #ifndef NO_NEW_DESKTOP
   selfThreadProc->m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
 
-  sTemp = StringX(_T("DT")) + policy.MakeRandomPassword();
+  // Ensure we don't use an existing Desktop (very unlikely but....)
+  do {
+    //Create random Desktop name
+    sxTemp = sxPrefix.substr(0, 1) + policy.MakeRandomPassword();
 
-  selfThreadProc->m_sDesktopName = sTemp.c_str();
+    selfThreadProc->m_sDesktopName = sxTemp.c_str();
+
+    // Check not already there
+    selfThreadProc->CheckDesktop();
+  } while (selfThreadProc->m_bDesktopPresent);
 
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
@@ -142,21 +160,25 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   selfThreadProc->xFlags |= SWITCHEDDESKTOP;
 #endif
 
-  // Create Modeless background window
-  sTemp = StringX(_T("WC")) + policy.MakeRandomPassword();
+  // Ensure we don't use an existing Window Class Name (very unlikely but....)
+  do {
+    //Create random Modeless Overlayed Background Window Class Name
+    sxTemp = sxPrefix.substr(1, 1) + policy.MakeRandomPassword();
 
-  selfThreadProc->m_sBkGrndClassName = sTemp.c_str();
+    selfThreadProc->m_sBkGrndClassName = sxTemp.c_str();
 
-  {
-    WNDCLASS wc = { 0 };
-    wc.lpfnWndProc = ::DefWindowProc;
-    wc.hInstance = selfThreadProc->m_hInstance;
-    wc.lpszClassName = selfThreadProc->m_sBkGrndClassName.c_str();
-    if (!RegisterClass(&wc)) {
-      dwError = pws_os::IssueError(_T("RegisterClass - Background"), false);
-      ASSERT(0);
-      goto BadExit;
-    }
+    // Check not already there
+    selfThreadProc->CheckWindow();
+  } while (selfThreadProc->m_bWindowPresent);
+
+  // Register the Window Class Name
+  wc.lpfnWndProc = ::DefWindowProc;
+  wc.hInstance = selfThreadProc->m_hInstance;
+  wc.lpszClassName = selfThreadProc->m_sBkGrndClassName.c_str();
+  if (!RegisterClass(&wc)) {
+    dwError = pws_os::IssueError(_T("RegisterClass - Background Window"), false);
+    ASSERT(0);
+    goto BadExit;
   }
 
   // Update Progress
@@ -329,26 +351,62 @@ BadExit:
   return (DWORD)-1;
 }
 
-// Is new Desktop still there?
+// Is Desktop there?
 BOOL CALLBACK CSDThread::DesktopEnumProc(LPTSTR name, LPARAM lParam)
 {
   CSDThread *self = (CSDThread *)lParam;
 
+  // If already there, set flag and no need to be called again
   if (_tcscmp(name, self->m_sDesktopName.c_str()) == 0) {
-    self->m_bDesktopStillPresent = true;
+    self->m_bDesktopPresent = true;
     return FALSE;
   }
 
   return TRUE;
 }
 
-void CSDThread::CheckDesktopStillPresent()
+void CSDThread::CheckDesktop()
 {
-  m_bDesktopStillPresent = false;
+  m_bDesktopPresent = false;
+
+  // Check if Desktop already created and still there
+  HWINSTA station = GetProcessWindowStation();
+  EnumDesktops(station, (DESKTOPENUMPROC)DesktopEnumProc, (LPARAM)this);
+  CloseWindowStation(station);
+}
+
+// Is Window there?
+BOOL CALLBACK CSDThread::WindowEnumProc(HWND hwnd, LPARAM lParam)
+{
+  CSDThread *self = (CSDThread *)lParam;
+
+  // Get Window Class Name
+  const int nMaxCOunt = 256;
+  TCHAR szClassName[nMaxCOunt] = { 0 };
+  int irc = GetClassName(hwnd, szClassName, nMaxCOunt);
+  if (irc == 0) {
+    pws_os::IssueError(_T("WindowEnumProc - Error return from GetClassName"), false);
+    ASSERT(0);
+    self->m_bWindowPresent = true;
+    return FALSE;
+  }
+
+  // If already there, set flag and no need to be called again
+  if (_tcscmp(szClassName, self->m_sBkGrndClassName.c_str()) == 0) {
+    self->m_bWindowPresent = true;
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+void CSDThread::CheckWindow()
+{
+  m_bWindowPresent = false;
 
   // Populate vector with desktop names.
   HWINSTA station = GetProcessWindowStation();
-  EnumDesktops(station, (DESKTOPENUMPROC)DesktopEnumProc, (LPARAM)this);
+  EnumWindows((WNDENUMPROC)WindowEnumProc, (LPARAM)this);
   CloseWindowStation(station);
 }
 

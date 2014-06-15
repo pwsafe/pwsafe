@@ -43,6 +43,7 @@ public:
    static INT_PTR CALLBACK MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
    static void CALLBACK TimerProc(void *lpParameter, BOOLEAN TimerOrWaitFired);
    static BOOL CALLBACK DesktopEnumProc(LPTSTR name, LPARAM lParam);
+   static BOOL CALLBACK WindowEnumProc(HWND hwnd, LPARAM lParam);
 
  private:
    friend class CPKBaseDlg;
@@ -50,7 +51,8 @@ public:
    friend class CPasskeyChangeDlg;
 
    void SetBkGndImage(HWND hwndBkGnd);
-   void CheckDesktopStillPresent();
+   void CheckDesktop();
+   void CheckWindow();
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;
@@ -72,7 +74,7 @@ public:
    WORD m_wDialogID;
 
    bool m_bVKCreated, m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
-   bool m_bUseSecureDesktop, m_bDesktopStillPresent;
+   bool m_bUseSecureDesktop, m_bDesktopPresent, m_bWindowPresent;
    BYTE xFlags;
 
    // Secure Desktop related

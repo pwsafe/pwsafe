@@ -451,8 +451,10 @@ void CPasskeyEntry::ProcessPhrase()
     else { // try again
       gmb.AfxMessageBox(m_index == GCP_CHANGEMODE ? IDS_BADPASSKEY : IDS_INCORRECTKEY);
     }
-    m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
-    m_pctlPasskey->SetFocus();
+    if (!m_bUseSecureDesktop) {
+      m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
+      m_pctlPasskey->SetFocus();
+    }
     break;
   case PWScore::READ_FAIL:
     gmb.AfxMessageBox(IDSC_FILE_UNREADABLE);
