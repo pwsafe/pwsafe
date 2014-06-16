@@ -310,8 +310,6 @@ where:
 from entries within the database. Unlike other header fields, this field can appear
 multiple times.
 
-This field was introduced in format version 0x030B.
-
 [17] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
@@ -502,7 +500,7 @@ This was introduced in version 0x030D (PasswordSafe V3.30).
 entry record can have zero or more such fields. Each attachment field
 in a given password entry record must have a different value, but
 different entries can refer to the same attachment uuid.
-[22] UUID of a refernce record. Representation is described in Section
+[22] UUID of a reference record. Representation is described in Section
 3.1.1.
 [23] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
