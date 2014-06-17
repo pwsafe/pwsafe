@@ -173,8 +173,9 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
   };
 }
 #else  /* _DEBUG or DEBUG */
-void pws_os::IssueError(const stringT &, bool )
+DWORD pws_os::IssueError(const stringT &, bool )
 {
+  return 0;
 }
 
 void pws_os::HexDump(unsigned char *, const int &,
