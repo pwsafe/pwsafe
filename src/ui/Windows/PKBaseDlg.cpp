@@ -43,7 +43,6 @@ m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
   m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
 
   m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
 }
 
 CPKBaseDlg::~CPKBaseDlg()
@@ -101,16 +100,14 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   // Setup a timer to poll the key every 250 ms
   SetTimer(1, 250, 0);
 
-  if (!m_bUseSecureDesktop) {
-    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-
-    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-  }
-
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
 
   if (!m_bUseSecureDesktop) {
+    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+
     CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
     if (YubiExists()) {
@@ -286,7 +283,7 @@ void CPKBaseDlg::OnTimer(UINT_PTR )
   }
 }
 
-void CPKBaseDlg::StartThread(const int iDialogType)
+void CPKBaseDlg::StartThread(int iDialogType)
 {
   // SetThreadDesktop fails in MFC because _AfxMsgFilterHook is used in every
   // Thread. Need to unhook and before calling SetThreadDesktop
@@ -335,9 +332,10 @@ void CPKBaseDlg::StartThread(const int iDialogType)
   xFlags |= WAITABLETIMERCREATED;
 
   // Get out of Jail Free Card method in case there is a problem in the thread
-  // Set the timer to go off 2 minutes after calling SetWaitableTimer.
+  // Set the timer to go off PWSprefs::SecureDesktopTimeout after calling SetWaitableTimer.
   // Timer unit is 100-nanoseconds
-  liDueTime.QuadPart = -(m_iUserTimeLimit * nTimerUnitsPerSecond);
+  int iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
+  liDueTime.QuadPart = -(iUserTimeLimit * nTimerUnitsPerSecond);
 
   if (!SetWaitableTimer(hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
     dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);

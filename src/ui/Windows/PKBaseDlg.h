@@ -27,7 +27,7 @@ class CVKeyBoardDlg;
  * For Yubikey support, the principle is that yubi-specific controls are
  * totally hidden unless/until user inserts a Yubikey for the 1st time
  * in the app's lifetime, after which controls are visible, but enabled/disabled
- * to reflect inserterd/removed state of the device.
+ * to reflect inserted/removed state of the device.
  */
 
 class CPKBaseDlg : public CPWDialog {
@@ -36,7 +36,7 @@ public:
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
 
-  CSecString GetPassKey() const {return m_passkey;}
+  const CSecString &GetPassKey() const {return m_passkey;}
 
   // Following help us assure that if a YubiKey's
   // inserted in *any* dbox that uses it, others will reflect this.
@@ -79,9 +79,9 @@ protected:
 
   // Secure Desktop
   void GetDimmedScreen(CBitmap &bmpDimmedScreen);
-  void StartThread(const int iDialogType);
+  void StartThread(int iDialogType);
   GetMasterPhrase m_GMP;
-  int m_iUserTimeLimit, m_iRC;
+  int m_iRC;
   bool m_bUseSecureDesktop;
 
   // Yubico-related:
