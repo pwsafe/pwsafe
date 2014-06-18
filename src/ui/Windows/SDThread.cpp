@@ -12,15 +12,15 @@
 #include "stdafx.h"
 
 #include "SDThread.h"
-#include "VirtualKeyboard\VKeyBoardDlg.h"
+#include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "ThisMfcApp.h"
 #include "resource3.h"
 
-#include "..\..\core\PWSprefs.h"
-#include "..\..\core\PWPolicy.h"
-#include "..\..\core\PWCharPool.h" // for CheckPassword()
-#include "..\..\os\debug.h"
+#include "core/PWSprefs.h"
+#include "core/PWPolicy.h"
+#include "core/PWCharPool.h" // for CheckPassword()
+#include "os/debug.h"
 
 #include "resource.h"
 

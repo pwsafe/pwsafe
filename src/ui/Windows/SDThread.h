@@ -10,9 +10,8 @@
 
 // CSDThread.h header file
 
+#include "core/StringX.h"
 #include "GetMasterPhrase.h"
-
-#include "../../core/StringX.h"
 
 class CVKeyBoardDlg;
 
@@ -23,18 +22,7 @@ public:
   CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID);
   virtual ~CSDThread();
 
-  StringX GetPhrase() { return m_pGMP->sPhrase; }
-
-  enum {
-    NEWDESKTOCREATED           = 0x01,
-    SETTHREADDESKTOP           = 0x02,
-    SWITCHEDDESKTOP            = 0x04,
-    REGISTEREDWINDOWCLASS      = 0x08,
-    BACKGROUNDWINDOWCREATED    = 0x10,
-    MASTERPHRASEDIALOGCREATED  = 0x20,
-    VIRTUALKEYBOARDCREATED     = 0x40,
-    MASTERPHRASEDIALOGENDED    = 0x80,
-  };
+  StringX GetPhrase() const { return m_pGMP->sPhrase; }
 
  protected:
    BOOL InitInstance();
@@ -46,6 +34,17 @@ public:
    static BOOL CALLBACK WindowEnumProc(HWND hwnd, LPARAM lParam);
 
  private:
+  enum {
+    NEWDESKTOCREATED           = 0x01,
+    SETTHREADDESKTOP           = 0x02,
+    SWITCHEDDESKTOP            = 0x04,
+    REGISTEREDWINDOWCLASS      = 0x08,
+    BACKGROUNDWINDOWCREATED    = 0x10,
+    MASTERPHRASEDIALOGCREATED  = 0x20,
+    VIRTUALKEYBOARDCREATED     = 0x40,
+    MASTERPHRASEDIALOGENDED    = 0x80,
+  };
+
    friend class CPKBaseDlg;
    friend class CPasskeyEntry;
    friend class CPasskeyChangeDlg;

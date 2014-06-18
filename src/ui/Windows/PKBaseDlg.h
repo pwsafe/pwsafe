@@ -46,21 +46,6 @@ public:
 protected:
   friend class CWZSelectDB;
 
-  enum {
-     WINDOWSHOOKREMOVED         = 0x01,
-     WAITABLETIMERCREATED       = 0x02,
-     WAITABLETIMERSET           = 0x04,
-     DIMMENDSCREENBITMAPCREATED = 0x08,
-     THREADCREATED              = 0x10,
-     THREADRESUMED              = 0x20,
-   };
-
-  enum {
-    DT_ENTERKEY = 0,
-    DT_CHANGEKEY,
-    DT_NEWDBKEY
-  };
-
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
@@ -100,6 +85,14 @@ protected:
   CBitmap m_yubiLogoDisabled;
 
 private:
+  enum {
+     WINDOWSHOOKREMOVED         = 0x01,
+     WAITABLETIMERCREATED       = 0x02,
+     WAITABLETIMERSET           = 0x04,
+     DIMMENDSCREENBITMAPCREATED = 0x08,
+     THREADCREATED              = 0x10,
+     THREADRESUMED              = 0x20,
+   };
   // Yubico-related:
   static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
   mutable CYkLib m_yk;
