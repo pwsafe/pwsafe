@@ -230,8 +230,6 @@ void COptions_PropertySheet::SetupInitialValues()
     prefs->GetPref(PWSprefs::UseSecureDesktop) ? TRUE : FALSE;
   m_OPTMD.IdleTimeOut =
       prefs->GetPref(PWSprefs::IdleTimeout);
-  m_OPTMD.SecureDesktopTimeout =
-    prefs->GetPref(PWSprefs::SecureDesktopTimeout);
   m_OPTMD.HashIters = GetMainDlg()->GetHashIters();
   m_OPTMD.CopyPswdBrowseURL =
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
@@ -420,8 +418,6 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
-  prefs->SetPref(PWSprefs::SecureDesktopTimeout,
-                 m_OPTMD.SecureDesktopTimeout, true);
 
   GetMainDlg()->SetHashIters(m_OPTMD.HashIters);
 

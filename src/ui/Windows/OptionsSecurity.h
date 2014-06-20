@@ -43,7 +43,6 @@ protected:
   BOOL m_CopyPswdBrowseURL;
   BOOL m_UseSecureDesktop;
   int m_IdleTimeOut;
-  int m_SecureDesktopTimeout;
   //}}AFX_DATA
 
   enum {MinHIslider = 0, MaxHIslider = 31};
@@ -68,7 +67,6 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
   afx_msg void OnHelp();
   afx_msg void OnLockOnIdleTimeout();
-  afx_msg void OnSecureDesktopTimeout();
   afx_msg void OnLockOnMinimize();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG

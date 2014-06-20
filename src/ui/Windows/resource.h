@@ -792,8 +792,6 @@
 #define IDC_DADSPIN                     1502
 #define IDC_USESECUREDESKTOP            1503
 #define IDC_STATIC_SECUREDESKTOPSECS    1504
-#define IDC_SECUREDESKTOP_TIMEOUT       1505
-#define IDC_SECUREDESKTOPSPIN           1506
 #define IDC_ENTERCOMBINATION            1507
 #define IDC_STATIC_TIMER                1508
 #define IDC_STATIC_TIMERTEXT            1509

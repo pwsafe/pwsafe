@@ -78,7 +78,6 @@ struct st_Opt_master_data {
   BOOL CopyPswdBrowseURL;
   BOOL UseSecureDesktop;
   int IdleTimeOut;
-  int SecureDesktopTimeout;
   uint32 HashIters;
 
   // Shortcut Data
@@ -173,7 +172,6 @@ public:
   inline BOOL &M_CopyPswdBrowseURL() {return m_OPTMD.CopyPswdBrowseURL;}
   inline BOOL &M_UseSecureDesktop() {return m_OPTMD.UseSecureDesktop;}
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
-  inline int &M_SecureDesktopTimeout() {return m_OPTMD.SecureDesktopTimeout;}
   inline uint32 &M_HashIters() {return m_OPTMD.HashIters;}
 
   // Shortcut Data
