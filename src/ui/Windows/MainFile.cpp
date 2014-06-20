@@ -2295,10 +2295,9 @@ void DboxMain::ChangeMode(bool promptUser)
   } else if (promptUser) {
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    bool bUseSecudeDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
     CPasskeyEntry dbox_pkentry(this,
                                m_core.GetCurFile().c_str(),
-                               GCP_CHANGEMODE, true, false, true, bUseSecudeDesktop);
+                               GCP_CHANGEMODE, true, false, true);
 
     INT_PTR rc = dbox_pkentry.DoModal();
     if (rc != IDOK)

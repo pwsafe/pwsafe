@@ -64,9 +64,8 @@ int CPasskeyEntry::dialog_lookup[10] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
-                             bool bUseSecureDesktop)
-  : CPKBaseDlg(dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)], pParent),
+                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
+  : CPKBaseDlg(LookupDialog(index), pParent),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
@@ -94,6 +93,12 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
     m_appversion.Format(L"V%d.%02d%s", nMajor, nMinor, csSpecialBuild);
   else
     m_appversion.Format(L"V%d.%02d.%02d%s", nMajor, nMinor, nBuild, csSpecialBuild);
+}
+
+int CPasskeyEntry::LookupDialog(int index)
+{
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  return dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)];
 }
 
 CPasskeyEntry::~CPasskeyEntry()

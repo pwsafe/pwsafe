@@ -51,8 +51,7 @@ class CPasskeyEntry : public CPKBaseDlg
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
-                bool bUseSecureDesktop);
+                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly);
 
   ~CPasskeyEntry();
 
@@ -88,8 +87,6 @@ protected:
   int m_tries;
   int m_status;
 
-  static int dialog_lookup[10];
-
   HICON m_hIcon;
 
   // Generated message map functions
@@ -115,6 +112,9 @@ private:
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();
+  int LookupDialog(int index); // pass correct resid to base class c'tor
+  static int dialog_lookup[10];
+
   unsigned char *m_yubi_sk;
 };
 //-----------------------------------------------------------------------------

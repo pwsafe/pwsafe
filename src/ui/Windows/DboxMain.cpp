@@ -1676,13 +1676,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   m_bsFields.set();
 
   ASSERT(dbox_pkentry == NULL); // should have been taken care of above
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
 
   dbox_pkentry = new CPasskeyEntry(this,
                                    filename.c_str(),
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
-                                   bHideReadOnly, bUseSecureDesktop);
+                                   bHideReadOnly);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
