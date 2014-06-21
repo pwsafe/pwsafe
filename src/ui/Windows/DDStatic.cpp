@@ -649,9 +649,10 @@ void CDDStatic::EndDrop()
       if (hwndFoundWindow != NULL) {
         ::SetForegroundWindow(hwndFoundWindow);
       }
-
-      app.GetMainDlg()->ClearClipboardData();
       app.GetMainDlg()->PostMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
     }
   }
+  // Clear the clipboard when we're done pasting it:
+  if (m_pci != NULL)
+    app.GetMainDlg()->ClearClipboardData();
 }
