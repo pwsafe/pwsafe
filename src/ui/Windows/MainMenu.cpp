@@ -654,13 +654,24 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     }
 
     // Scenario 2 - Group selected (Tree view only)
-    //   Add Entry, Sep, <Group Items>, Sep, Clear Clipboard
+    //   Add Entry, Find, Sep, <Group Items>, Sep, Clear Clipboard
     if (!m_IsListView && bGroupSelected) {
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
-        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
+      // Only have Find Next/Previous if find still active and entries were found
+      if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FIND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FINDUP, tc_dummy);
+      } else { // otherwise just add "Find..."
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+      }
+
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_GROUPENTER, tc_dummy);
       if (!bReadOnly) {
