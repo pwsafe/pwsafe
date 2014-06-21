@@ -55,14 +55,22 @@ void DboxMain::OnPassphraseChange()
     return;
 
   bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  CPasskeyChangeDlg changeDlg(this, bUseSecureDesktop);
+  INT_PTR rc;
 
-  INT_PTR rc = changeDlg.DoModal();
+  do
+  {
+    CPasskeyChangeDlg changeDlg(this, bUseSecureDesktop);
 
-  if (rc == IDOK) {
-    m_core.ChangePasskey(changeDlg.m_newpasskey);
-    ChangeOkUpdate();
-  }
+    rc = changeDlg.DoModal();
+
+    if (rc == IDOK) {
+      m_core.ChangePasskey(changeDlg.m_newpasskey);
+      ChangeOkUpdate();
+    }
+
+    // In case user wanted to toggle Secure Desktop
+    bUseSecureDesktop = !bUseSecureDesktop;
+  } while (rc == INT_MAX);
 }
 
 void DboxMain::OnBackupSafe()

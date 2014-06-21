@@ -414,8 +414,20 @@ int DboxMain::NewFile(StringX &newfilename)
       return PWScore::USER_CANCEL;
   }
 
-  CPasskeySetup pksetup(this, m_core);
-  rc = pksetup.DoModal();
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  CSecString sPasskey;
+
+  do
+  {
+    CPasskeySetup pksetup(this, m_core, bUseSecureDesktop);
+    rc = pksetup.DoModal();
+
+    if (rc == IDOK)
+      sPasskey = pksetup.GetPassKey();
+
+    // In case user wanted to toggle Secure Desktop
+    bUseSecureDesktop = !bUseSecureDesktop;
+  } while (rc == INT_MAX);
 
   if (rc == IDCANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
@@ -439,7 +451,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.LockFile(newfilename.c_str(), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(pksetup.GetPassKey());
+  m_core.NewFile(sPasskey);
   m_bDBNeedsReading = false;
 
   // Tidy up filters
@@ -2295,11 +2307,20 @@ void DboxMain::ChangeMode(bool promptUser)
   } else if (promptUser) {
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    CPasskeyEntry dbox_pkentry(this,
-                               m_core.GetCurFile().c_str(),
-                               GCP_CHANGEMODE, true, false, true);
+    bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+    INT_PTR rc;
+    do
+    {
+      CPasskeyEntry PasskeyEntryDlg(this,
+        m_core.GetCurFile().c_str(),
+        GCP_CHANGEMODE, true, false, true, bUseSecureDesktop);
 
-    INT_PTR rc = dbox_pkentry.DoModal();
+      rc = PasskeyEntryDlg.DoModal();
+
+      // In case user wanted to toggle Secure Desktop
+      bUseSecureDesktop = !bUseSecureDesktop;
+    } while (rc == INT_MAX);
+
     if (rc != IDOK)
       return;
   }

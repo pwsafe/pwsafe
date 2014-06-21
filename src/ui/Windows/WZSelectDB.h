@@ -10,6 +10,7 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
+#include "SysColStatic.h"
 #include "GetMasterPhrase.h"
 
 #include "resource.h"
@@ -36,6 +37,7 @@ protected:
   CString m_filespec;
   int m_tries, m_state;
   int m_bAdvanced;
+  CSysColStatic m_ctlSDToggle;
 
   BOOL OnInitDialog();
   void DoDataExchange(CDataExchange* pDX);
@@ -53,7 +55,9 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnEnterCombination();
+  afx_msg void OnSwitchSecureDesktop();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -82,11 +86,10 @@ private:
   // but MFC doesn't allow us to do this. So much for OOD.
   static const wchar_t PSSWDCHAR;
 
-  afx_msg void OnTimer(UINT_PTR nIDEvent);
-
   // Secure Desktop
   int m_iUserTimeLimit;
   bool m_bUseSecureDesktop;
+  void ConfigureDialog();
 
   // Yubico-related:
   bool IsYubiInserted() const;

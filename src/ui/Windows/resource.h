@@ -373,6 +373,8 @@
 #define IDD_SDGETPHRASE                 533
 #define IDD_SDKEYCHANGE                 534
 #define IDD_SDPASSKEYSETUP              535
+#define IDB_USING_SD                    536
+#define IDB_NOT_USING_SD                537
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -792,18 +794,19 @@
 #define IDC_DADSPIN                     1502
 #define IDC_USESECUREDESKTOP            1503
 #define IDC_STATIC_SECUREDESKTOPSECS    1504
-#define IDC_ENTERCOMBINATION            1507
-#define IDC_STATIC_TIMER                1508
-#define IDC_STATIC_TIMERTEXT            1509
-#define IDC_STATIC_ENTERCOMBINATION     1510
+#define IDC_ENTERCOMBINATION            1505
+#define IDC_STATIC_TIMER                1506
+#define IDC_STATIC_TIMERTEXT            1507
+#define IDC_STATIC_ENTERCOMBINATION     1508
+#define IDC_SDSWITCH                    1509
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        536
+#define _APS_NEXT_RESOURCE_VALUE        538
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1511
+#define _APS_NEXT_CONTROL_VALUE         1510
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

@@ -21,7 +21,7 @@ class CPasskeySetup : public CPKBaseDlg
 {
   // Construction
 public:
-  CPasskeySetup(CWnd* pParent, PWScore &core);   // standard constructor
+  CPasskeySetup(CWnd* pParent, PWScore &core, bool bUseSecureDesktop);   // standard constructor
   ~CPasskeySetup();
 
 protected:

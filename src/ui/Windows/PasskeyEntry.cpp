@@ -64,8 +64,9 @@ int CPasskeyEntry::dialog_lookup[10] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
-  : CPKBaseDlg(LookupDialog(index), pParent),
+                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
+                             bool bUseSecureDesktop)
+  : CPKBaseDlg(dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)], pParent, bUseSecureDesktop),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
@@ -93,12 +94,6 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
     m_appversion.Format(L"V%d.%02d%s", nMajor, nMinor, csSpecialBuild);
   else
     m_appversion.Format(L"V%d.%02d.%02d%s", nMajor, nMinor, nBuild, csSpecialBuild);
-}
-
-int CPasskeyEntry::LookupDialog(int index)
-{
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  return dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)];
 }
 
 CPasskeyEntry::~CPasskeyEntry()
@@ -134,6 +129,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
+  ON_WM_CTLCOLOR()
   ON_WM_DESTROY()
   ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -304,6 +300,25 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   // Following works fine for other (non-hotkey) cases:
   SetForegroundWindow();
 
+  //CBitmap bitmap;
+  //BITMAP bm;
+
+  //// Change all pixels in this 'grey' to transparent
+  //const COLORREF crTransparent = RGB(192, 192, 192);
+
+  //bitmap.LoadBitmap(m_bUseSecureDesktop ? IDB_TRAYUNLOCK_CLASSIC : DB_TRAYLOCK_CLASSIC);
+  //bitmap.GetBitmap(&bm);
+
+  //m_pImageList = new CImageList();
+
+  //BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+  //  ILC_MASK | ILC_COLORDDB, 1, 0);
+  //ASSERT(status != 0);
+
+  //m_pImageList->Add(&bitmap, crTransparent);
+  //bitmap.DeleteObject();
+
+
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
@@ -314,6 +329,19 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   return TRUE;
+}
+
+HBRUSH CPasskeyEntry::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CPKBaseDlg::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  if (nCtlColor == CTLCOLOR_STATIC && pWnd->GetDlgCtrlID() == IDC_SDSWITCH)
+  {
+    pDC->SetBkMode(TRANSPARENT);
+    hbr = (HBRUSH)GetStockObject(NULL_BRUSH);
+  }
+
+  return hbr;
 }
 
 void CPasskeyEntry::OnCreateDb()
@@ -370,15 +398,25 @@ void CPasskeyEntry::OnCreateDb()
   }
 
   // 2. Get a password
-  CPasskeySetup pksetup(this, *app.GetCore());
-  rc = pksetup.DoModal();
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+
+  do
+  {
+    CPasskeySetup pksetup(this, *app.GetCore(), bUseSecureDesktop);
+    rc = pksetup.DoModal();
+
+    if (rc == IDOK)
+      m_passkey = pksetup.GetPassKey();
+
+    // In case user wanted to toggle Secure Desktop
+    bUseSecureDesktop = !bUseSecureDesktop;
+  } while (rc == INT_MAX);
 
   if (rc != IDOK)
     return;  //User cancelled password entry
 
   // 3. Set m_filespec && m_passkey to returned value!
   m_filespec = newfile;
-  m_passkey = pksetup.GetPassKey();
   if (!m_bUseSecureDesktop)
     ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
 

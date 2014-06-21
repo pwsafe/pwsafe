@@ -202,6 +202,7 @@ enum {GCP_READONLY = 1,
 class CDDObList;
 class ExpiredList;
 class CAddEdit_PropertySheet;
+class CPasskeyEntry;
 
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
@@ -823,6 +824,8 @@ private:
 
   StringX m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;
+
+  CPasskeyEntry *m_pPasskeyEntryDlg;
 
   bool m_IsStartSilent;
   bool m_IsStartClosed;

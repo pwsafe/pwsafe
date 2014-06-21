@@ -15,9 +15,12 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "SysColStatic.h"
 #include "GetMasterPhrase.h"
 
 #include "os/windows/yubi/YkLib.h"
+
+#include <limits>
 
 class CVKeyBoardDlg;
 
@@ -32,7 +35,7 @@ class CVKeyBoardDlg;
 
 class CPKBaseDlg : public CPWDialog {
 public:
-  CPKBaseDlg(int id, CWnd *pParent);
+  CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop);
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
 
@@ -46,12 +49,20 @@ public:
 protected:
   friend class CWZSelectDB;
 
+  CSysColStatic m_ctlSDToggle;
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   static const wchar_t PSSWDCHAR;
   int m_index;
   bool m_bVKAvailable;
+
+  // Generated message map functions
+  //{{AFX_MSG(CPKBaseDlg)
+  afx_msg void OnSwitchSecureDesktop();
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
   virtual void YubiFailed() {};
@@ -93,6 +104,8 @@ private:
      THREADCREATED              = 0x10,
      THREADRESUMED              = 0x20,
    };
+
+
   // Yubico-related:
   static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
   mutable CYkLib m_yk;

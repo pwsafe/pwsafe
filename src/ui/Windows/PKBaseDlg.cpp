@@ -31,8 +31,9 @@ bool CPKBaseDlg::s_yubiDetected = false;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
-CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
-: CPWDialog(id, pParent), m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
+CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop)
+  : CPWDialog(id, pParent), m_bUseSecureDesktop(bUseSecureDesktop),
+  m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
 m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
 {
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
@@ -41,8 +42,6 @@ m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
 
   // Call it as it also performs important initilisation
   m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
-
-  m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
 }
 
 CPKBaseDlg::~CPKBaseDlg()
@@ -72,6 +71,8 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
+  DDX_Control(pDX, IDC_SDSWITCH, m_ctlSDToggle);
+
   if (!m_bUseSecureDesktop) {
     // Can't use DDX_Text for CSecEditExtn
     m_pctlPasskey->DoDDX(pDX, m_passkey);
@@ -81,6 +82,13 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
   }
 }
+
+BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
+  //{{AFX_MSG_MAP(CPKBaseDlg)
+  ON_STN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 
 bool CPKBaseDlg::IsYubiInserted() const
 {
@@ -99,6 +107,16 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 
   // Setup a timer to poll the key every 250 ms
   SetTimer(1, 250, 0);
+
+  // This bit makes the background come out right on the bitmaps
+  if (m_bUseSecureDesktop)
+  {
+    m_ctlSDToggle.ReloadBitmap(IDB_USING_SD);
+  }
+  else
+  {
+    m_ctlSDToggle.ReloadBitmap(IDB_NOT_USING_SD);
+  }
 
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
@@ -281,6 +299,11 @@ void CPKBaseDlg::OnTimer(UINT_PTR )
         yubiRemoved();
     }
   }
+}
+
+void CPKBaseDlg::OnSwitchSecureDesktop()
+{
+  EndDialog(INT_MAX);
 }
 
 void CPKBaseDlg::StartThread(int iDialogType)

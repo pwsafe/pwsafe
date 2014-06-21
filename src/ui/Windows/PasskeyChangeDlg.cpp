@@ -39,7 +39,7 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent, bool bUseSecureDesktop)
-  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
+  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent, bUseSecureDesktop),
     m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
     m_oldpasskeyConfirmed(false), m_bUseSecureDesktop(bUseSecureDesktop)
 {

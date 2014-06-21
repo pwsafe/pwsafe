@@ -40,7 +40,6 @@ const wchar_t CWZSelectDB::PSSWDCHAR = L'*';
 
 IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
-
 CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
  : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0),
   m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
@@ -88,15 +87,16 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
+  DDX_Control(pDX, IDC_SDSWITCH, m_ctlSDToggle);
 
-  if (!m_bUseSecureDesktop) {
+  //if (!m_bUseSecureDesktop) {
     // Can't use DDX_Text for CSecEditExtn
     m_pctlPasskey->DoDDX(pDX, m_passkey);
     DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 
     DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
     DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
-  }
+  //}
 
   const UINT nID = m_pWZPSH->GetID();
 
@@ -137,6 +137,7 @@ void AFXAPI CWZSelectDB::DDV_CheckExpDelimiter(CDataExchange* pDX,
 BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   //{{AFX_MSG_MAP(CWZSelectDB)
   ON_WM_CTLCOLOR()
+  ON_WM_TIMER()
   ON_EN_CHANGE(IDC_PASSKEY, OnPassKeyChange)
   ON_EN_CHANGE(IDC_DATABASE, OnDatabaseChange)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
@@ -145,9 +146,9 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
-  //}}AFX_MSG_MAP
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_WM_TIMER()
+  ON_STN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CWZSelectDB::OnHelp()
@@ -162,28 +163,8 @@ BOOL CWZSelectDB::OnInitDialog()
   // Setup a timer to poll YubiKey every 250 ms
   SetTimer(1, 250, 0);
 
-  if (!m_bUseSecureDesktop) {
-    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-
-    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(FALSE);
-  }
-  else
-  {
-    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
-    GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
-    GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
-
-  }
+  // Configure dialog for Secure Dialog
+  ConfigureDialog();
 
   const UINT nID = m_pWZPSH->GetID();
   CString cs_text,cs_temp;
@@ -290,12 +271,12 @@ BOOL CWZSelectDB::OnInitDialog()
     }
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetRange(0, 15);
-    bool yubiInserted = IsYubiInserted();
+    bool bYubiInserted = IsYubiInserted();
     // MFC has ancient bug: can't render diasbled version of bitmap,
     // so instead of showing drek, we roll our own, and leave enabled.
     ybn->EnableWindow(TRUE);
 
-    if (yubiInserted) {
+    if (bYubiInserted) {
       ((CButton*)ybn)->SetBitmap(m_yubiLogo);
       m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
     }
@@ -351,6 +332,63 @@ HBRUSH CWZSelectDB::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   return hbr;
 }
 
+void CWZSelectDB::OnSwitchSecureDesktop()
+{
+  m_bUseSecureDesktop = !m_bUseSecureDesktop;
+
+  ConfigureDialog();
+}
+
+void CWZSelectDB::ConfigureDialog()
+{
+  if (!m_bUseSecureDesktop)
+  {
+    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+
+    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_SHOW);
+
+    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_PASSKEY)->EnableWindow(TRUE);
+    GetDlgItem(IDC_VKB)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_VKB)->EnableWindow(TRUE);
+
+    m_ctlSDToggle.ReloadBitmap(IDB_NOT_USING_SD);
+
+    if (IsYubiInserted())
+    {
+      GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
+      GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(TRUE);
+      GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(TRUE);
+    }
+  }
+  else
+  {
+    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(TRUE);
+    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
+
+    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
+
+    GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(FALSE);
+
+    m_ctlSDToggle.ReloadBitmap(IDB_USING_SD);
+  }
+}
+
 BOOL CWZSelectDB::OnSetActive()
 {
   CWZPropertyPage::OnSetActive();
@@ -374,7 +412,7 @@ void CWZSelectDB::OnAdvanced()
 void CWZSelectDB::OnEnterCombination()
 {
   // Only needed for its thread processing - never dispays its own dialog (no DoModal etc.)
-  CPKBaseDlg *pPKBaseDlg = new CPKBaseDlg(IDD_PASSKEYENTRY_SD, this);
+  CPKBaseDlg *pPKBaseDlg = new CPKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
 
   // Get passphrase from Secure Desktop
   pPKBaseDlg->StartThread(IDD_SDGETPHRASE);

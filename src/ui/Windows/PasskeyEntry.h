@@ -51,7 +51,8 @@ class CPasskeyEntry : public CPKBaseDlg
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly);
+                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
+                bool bUseSecureDesktop);
 
   ~CPasskeyEntry();
 
@@ -103,6 +104,7 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
   afx_msg void OnEnterCombination();
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -112,7 +114,6 @@ private:
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();
-  int LookupDialog(int index); // pass correct resid to base class c'tor
   static int dialog_lookup[10];
 
   unsigned char *m_yubi_sk;

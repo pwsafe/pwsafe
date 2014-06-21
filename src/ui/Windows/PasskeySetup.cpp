@@ -43,8 +43,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 //-----------------------------------------------------------------------------
-CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
-  : CPKBaseDlg(CPasskeySetup::IDD, pParent),
+CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core, bool bUseSecureDesktop)
+  : CPKBaseDlg(CPasskeySetup::IDD, pParent, bUseSecureDesktop),
     m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_verify = L"";

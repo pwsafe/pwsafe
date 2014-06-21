@@ -114,7 +114,7 @@ void DboxMain::SetLocalStrings()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
-  m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
+  m_pPasskeyEntryDlg(NULL), m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
   m_core(*app.GetCore()),
@@ -1103,14 +1103,28 @@ BOOL DboxMain::OnInitDialog()
       if (pws_os::FileExists(fname)) 
         bOOI = OpenOnInit();
       else { // really first install!
-        CPasskeySetup dbox_pksetup(this, m_core);
-        INT_PTR rc = dbox_pksetup.DoModal();
+        bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+        INT_PTR rc;
+        CSecString sPasskey;
+        do
+        {
+          CPasskeySetup dbox_pksetup(this, m_core, bUseSecureDesktop);
+          rc = dbox_pksetup.DoModal();
+
+          if (rc == IDOK)
+            sPasskey = dbox_pksetup.GetPassKey();
+
+          // In case user wanted to toggle Secure Desktop
+          bUseSecureDesktop = !bUseSecureDesktop;
+        } while (rc == INT_MAX);
+
         if (rc == IDCANCEL) {
           PostQuitMessage(0);
           return FALSE;
         }
+
         m_core.SetCurFile(fname.c_str());
-        m_core.NewFile(dbox_pksetup.GetPassKey());
+        m_core.NewFile(sPasskey);
         m_core.SetReadOnly(false); 
         rc = m_core.WriteCurFile();
         if (rc == PWScore::CANT_OPEN_FILE) {
@@ -1615,8 +1629,6 @@ int DboxMain::CheckPasskey(const StringX &filename, const StringX &passkey,
     return pcore->CheckPasskey(filename, passkey);
 }
 
-static CPasskeyEntry *dbox_pkentry = NULL;
-
 int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
@@ -1648,8 +1660,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   bool bForceReadOnly = (flags & GCP_FORCEREADONLY) == GCP_FORCEREADONLY;
   bool bHideReadOnly = (flags & GCP_HIDEREADONLY) == GCP_HIDEREADONLY;
 
-  if (dbox_pkentry != NULL) { // can happen via systray unlock
-    dbox_pkentry->BringWindowToTop();
+  if (m_pPasskeyEntryDlg != NULL) { // can happen via systray unlock
+    m_pPasskeyEntryDlg->BringWindowToTop();
     return PWScore::USER_CANCEL; // multi-thread,
     // original thread will continue processing
   }
@@ -1675,29 +1687,40 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // (not possible if the user selects some or all available options)
   m_bsFields.set();
 
-  ASSERT(dbox_pkentry == NULL); // should have been taken care of above
+  ASSERT(m_pPasskeyEntryDlg == NULL); // should have been taken care of above
 
-  dbox_pkentry = new CPasskeyEntry(this,
+  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+
+tryagain:
+  m_pPasskeyEntryDlg = new CPasskeyEntry(this,
                                    filename.c_str(),
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
-                                   bHideReadOnly);
+                                   bHideReadOnly, bUseSecureDesktop);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
-  CWnd *pOldTarget = app.SetSystemTrayTarget(dbox_pkentry);
+  CWnd *pOldTarget = app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
   
-  INT_PTR rc = dbox_pkentry->DoModal();
- 
+  INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
+
+  if (rc == INT_MAX)
+  {
+    // User wanted to toggle Secure Desktop
+    bUseSecureDesktop = !bUseSecureDesktop;
+    delete m_pPasskeyEntryDlg;
+    goto tryagain;
+  }
+
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
-    const StringX curFile = dbox_pkentry->GetFileName().GetString();
+    const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
     pcore->SetCurFile(curFile);
     std::wstring locker(L""); // null init is important here
-    passkey = LPCWSTR(dbox_pkentry->GetPasskey());
+    passkey = LPCWSTR(m_pPasskeyEntryDlg->GetPasskey());
 
     // This dialog's setting of read-only overrides file dialog
-    bool bIsReadOnly = dbox_pkentry->IsReadOnly();
+    bool bIsReadOnly = m_pPasskeyEntryDlg->IsReadOnly();
     pcore->SetReadOnly(bIsReadOnly);
 
     // Set read-only mode if user explicitly requested it OR
@@ -1774,9 +1797,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
           retval = PWScore::USER_CANCEL;
       }
     } else { // locker.IsEmpty() means no lock needed or lock was successful
-      if (dbox_pkentry->GetStatus() == TAR_NEW) {
+      if (m_pPasskeyEntryDlg->GetStatus() == TAR_NEW) {
         // Save new file
-        pcore->NewFile(dbox_pkentry->GetPasskey());
+        pcore->NewFile(m_pPasskeyEntryDlg->GetPasskey());
         rc = pcore->WriteCurFile();
 
         if (rc == PWScore::CANT_OPEN_FILE) {
@@ -1794,7 +1817,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         retval = PWScore::SUCCESS;
     }
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
-    int cancelreturn = dbox_pkentry->GetStatus();
+    int cancelreturn = m_pPasskeyEntryDlg->GetStatus();
     switch (cancelreturn) {
       case TAR_OPEN:
       case TAR_CANCEL:
@@ -1817,8 +1840,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // Put it back
   app.SetSystemTrayTarget(pOldTarget);
 
-  delete dbox_pkentry;
-  dbox_pkentry = NULL;
+  delete m_pPasskeyEntryDlg;
+  m_pPasskeyEntryDlg = NULL;
   return retval;
 }
 
@@ -1829,10 +1852,10 @@ void DboxMain::CancelPendingPasswordDialog()
    * password dialog box when locking.
    * The ensures a sane state upon restore.
    */
-  if (dbox_pkentry == NULL)
+  if (m_pPasskeyEntryDlg == NULL)
     return; // all is well, nothing to do
   else
-    dbox_pkentry->SendMessage(WM_CLOSE);
+    m_pPasskeyEntryDlg->SendMessage(WM_CLOSE);
 }
 
 BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)

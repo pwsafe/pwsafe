@@ -47,6 +47,9 @@ void CSysColStatic::ReloadBitmap(int nImageID)
   const COLORREF cr = GetSysColor(COLOR_3DFACE);
   const COLORREF cr192 = RGB(192, 192, 192);
 
+  if (!m_imt.IsNull())
+    m_imt.Detach();
+
   m_imt.LoadFromResource(AfxGetInstanceHandle(), m_nImageID);
 
   // Need to handle images with <= 8bpp (colour tables) and
