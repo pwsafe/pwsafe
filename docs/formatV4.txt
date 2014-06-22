@@ -118,7 +118,7 @@ and END fields are mandatory. Aside from these two fields, no order is
 assumed on the field types.
 
 2.4.2 R1..Rn: The actual database records. Each record consists of one or
-more typed fields (as defined in Section 3.2), terminated by the 'END' type
+more typed fields (as defined in Section 3.3), terminated by the 'END' type
 field. The first field of a record is UUID field, of one of several
 possible UUID types. The specific type defines the record type, and the
 contents of the field is the UUID of the record.
@@ -127,18 +127,34 @@ Currently the following record types are defined:
 2.4.2.1 An "Entry" record. This represents a password entry. Aside
 from the UUID field, the Title, and Password fields are mandatory.
 
-2.4.2.2 A "Reference" record. This represents a "shortcut" or "alias"
-to an Entry record. TBD - do we need to have separate types for
-shortcuts and aliases, or can we make do with a common type?
-The manadatory fields for this record are: RefUUID - the UUID of the
-record, BaseUUID - the UUID of the referred-to record, END.
+2.4.2.2 An "Alias" record. This record is identical to an Entry
+record, except that instead of a Password field, it has a Reference to
+the "base" Entry record, from which it takes the password value at
+runtime. (The use-case for this is a single-sign-on site, where the
+user has access to several systems that share the same password).
+The manadatory fields for this record are:
+- AliasUUID: The UUID of the record
+- Title
+- BaseUUID - the UUID of the referred-to Entry record
+- END
 
-2.4.2.3 An "Attachment" record. This record is used to contain
+2.4.2.3 A "Shortcut" record. This record also refers to a "base" Entry
+record, but, unlike an alias, takes all of the field values from the
+base Entry except for title and (optionally) group and user. The
+fields for this record are, therefore:
+- ShortcutUUID (mandatory)
+- Title (mandatory)
+- Group (optional)
+- User (optional)
+- BaseUUID - the UUID of the referred-to Entry record
+- END
+
+2.4.2.4 An "Attachment" record. This record is used to contain
 attachments, e.g., jpeg, tiff, or other media types. This record is
 defined to be "skipped over" while reading, and to be copied without
 the need to decrypt and re-encrypt. See Section TBD for details.
 
-2.4.2.4 For all records, all non-mandatory fields may either be absent
+2.4.2.5 For all records, all non-mandatory fields may either be absent
 or have zero length. When a field is absent or zero-length, its
 default value shall be used. Aside from first UUID field and the the
 terminating 'END' field, no order is assumed on the field types unless
@@ -317,12 +333,12 @@ without breaking backwards compatability.
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
-EntUUID                     0x01        UUID          Y              [1]
+UUID                        0x01        UUID          Y              [1]
 Group                       0x02        Text          Y              [2]
 Title                       0x03        Text          Y
 Username                    0x04        Text          Y
 Notes                       0x05        Text          Y
-Password                    0x06        Text          Y              [3,4]
+Password                    0x06        Text          Y
 Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
@@ -343,7 +359,9 @@ Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
 AttRef                      0x1a        UUID          Y              [21]
-RefUUID                     0x41        UUID          Y              [22]
+BaseUUID                    0x41        UUID          Y              [22]
+AliasUUID                   0x42        UUID
+ShortcutUUID                0x43        UUID
 End of Entry                0xff        [empty]       Y              [23]
 
 [1] UUID of a password entry record. Representation is described in
@@ -354,24 +372,6 @@ Groups can be hierarchical, with elements separated by a period, supporting
 groups such as "Finance.credit cards.Visa", "Finance.credit
 cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
 should be "escaped" by the application.
-
-[3] If the entry is an alias, the password will be saved in a special form 
-of "[[uuidstr]]", where "uuidstr" is a 32-character representation of the 
-alias' associated base entry's UUID (field type 0x01).  This representation
-is the same as the standard 36-character string representation as defined in 
-RFC4122 but with the four hyphens removed. If an entry with this UUID is not
-in the database, this is treated just as an 'unusual' password.  The alias
-will only use its base's password entry when copying it to the clipboard or
-during Autotype.
-
-[4] If the entry is a shortcut, the password will be saved in a special form 
-of "[~uuidstr~]", where "uuidstr" is a 32-character representation of the 
-shortcut's associated base entry's UUID (field type 0x01).  This representation
-is the same as the standard 36-character string representation as defined in 
-RFC4122 but with the four hyphens removed. If an entry with this UUID is not
-in the database, this is treated just as an 'unusual' password. The shortcut
-will use all its base's data when used in any action.  It has no fields of
-its own.
 
 [5] Representation is as described in Section 3.1.3.
 
