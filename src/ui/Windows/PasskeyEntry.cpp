@@ -584,6 +584,10 @@ void CPasskeyEntry::OnComboSelChange()
   }
   else
   {
+    CString csText;
+    csText.LoadString(m_filespec.IsEmpty() ? IDS_OK : IDS_ENTERCOMBINATION);
+
+    m_ctlEnterCombination.SetWindowText(csText);
     m_ctlEnterCombination.EnableWindow(TRUE);
   }
 
@@ -757,8 +761,14 @@ void CPasskeyEntry::OnYubikeyBtn()
 
 void CPasskeyEntry::OnEnterCombination()
 {
+  if (m_filespec.IsEmpty()) {
+    m_status = TAR_OPEN_NODB;
+    CPWDialog::OnCancel();
+    return;
+  }
+
   // Get passphrase from Secure Desktop
-  CPKBaseDlg::StartThread(IDD_SDGETPHRASE);
+  StartThread(IDD_SDGETPHRASE);
 
   ShowWindow(SW_SHOW);
 

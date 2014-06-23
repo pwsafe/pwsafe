@@ -85,6 +85,7 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
 
   StringX sxTemp, sxPrefix;
   DWORD dwError;
+  selfThreadProc->m_dwRC = (DWORD)-1;
 
   selfThreadProc->m_pGMP->clear();
   selfThreadProc->m_hwndVKeyBoard = NULL;
@@ -322,7 +323,7 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   // Update Progress
   selfThreadProc->xFlags &= ~NEWDESKTOCREATED;
 #endif
- return (DWORD)0;
+  return selfThreadProc->m_dwRC;
 
 BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
@@ -730,6 +731,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
      }
 
       PostQuitMessage(IDOK);
+      selfMPProc->m_dwRC = IDOK;
       return (INT_PTR)TRUE; // Processed
     }  // IDOK
 
@@ -754,9 +756,16 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       }
 
       PostQuitMessage(IDCANCEL);
+      selfMPProc->m_dwRC = IDCANCEL;
       return (INT_PTR)TRUE; // Processed
     }
 
+    case IDC_SDSWITCH:
+    {
+      PostQuitMessage(INT_MAX);
+      selfMPProc->m_dwRC = INT_MAX;
+      return (INT_PTR)TRUE; // Processed
+    }
     }  // switch (iControlID)
     break;
   }  // WM_COMMAND

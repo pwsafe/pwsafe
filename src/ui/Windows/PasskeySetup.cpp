@@ -44,7 +44,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core, bool bUseSecureDesktop)
-  : CPKBaseDlg(CPasskeySetup::IDD, pParent, bUseSecureDesktop),
+  : CPKBaseDlg(bUseSecureDesktop ? CPasskeySetup::IDD_SD : CPasskeySetup::IDD, pParent, bUseSecureDesktop),
     m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_verify = L"";
@@ -84,16 +84,14 @@ BOOL CPasskeySetup::OnInitDialog()
   {
     // We need a dialog but we don't want to show it - sneeky code here
     ShowWindow(SW_HIDE);
-    int irc(IDCANCEL);
 
-    CPKBaseDlg::StartThread(IDD_SDPASSKEYSETUP);
+    StartThread(IDD_SDPASSKEYSETUP);
 
     if (m_GMP.bPhraseEntered) {
       m_passkey = m_GMP.sPhrase.c_str();
-      irc = IDOK;
     }
 
-    EndDialog(irc);
+    EndDialog((int)m_dwRC);  // Use Thread RC
     return TRUE;
   }
 

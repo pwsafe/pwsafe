@@ -90,17 +90,15 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   {
     // We need a dialog but we don't want to show it - sneeky code here
     ShowWindow(SW_HIDE);
-    int irc(IDCANCEL);
 
-    CPKBaseDlg::StartThread(IDD_SDKEYCHANGE);
+    StartThread(IDD_SDKEYCHANGE);
 
     if (m_GMP.bPhraseEntered && m_GMP.bNewPhraseEntered) {
       m_passkey = m_GMP.sPhrase.c_str();
       m_newpasskey = m_GMP.sNewPhrase.c_str();
-      irc =  IDOK;
     }
 
-    EndDialog(irc);
+    EndDialog((int)m_dwRC);  // Use Thread RC
     return TRUE;
   }
 

@@ -28,6 +28,7 @@ protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
+  enum { IDD_SD = IDD_SDPASSKEYSETUP };
   CSecString m_verify;
   //}}AFX_DATA
 

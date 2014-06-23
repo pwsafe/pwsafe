@@ -80,5 +80,6 @@ public:
    // Secure Desktop related
    void GetDimmedScreen();
    void StartThread();
-   int m_iLastFocus, m_iRC;
+   int m_iLastFocus;
+   DWORD m_dwRC;
 };

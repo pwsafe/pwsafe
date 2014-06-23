@@ -748,3 +748,4 @@
 #define IDS_ENTRYKBST_OVERRIDE          5956
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
+#define IDS_ENTERCOMBINATION            5959

@@ -77,7 +77,7 @@ protected:
   void GetDimmedScreen(CBitmap &bmpDimmedScreen);
   void StartThread(int iDialogType);
   GetMasterPhrase m_GMP;
-  int m_iRC;
+  DWORD m_dwRC;  // SD Thread exit code
   bool m_bUseSecureDesktop;
 
   // Yubico-related:
@@ -104,7 +104,6 @@ private:
      THREADCREATED              = 0x10,
      THREADRESUMED              = 0x20,
    };
-
 
   // Yubico-related:
   static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.

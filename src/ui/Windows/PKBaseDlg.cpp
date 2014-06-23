@@ -318,14 +318,14 @@ void CPKBaseDlg::StartThread(int iDialogType)
   CBitmap bmpDimmedScreen;
   LARGE_INTEGER liDueTime;
   HANDLE hThread(0), hWaitableTimer(0);
-  DWORD dwError, dwThreadID, dwEvent, dwThreadExitCode(0);
+  DWORD dwError, dwThreadID, dwEvent;
   bool bTimerPopped(false);
 
   // Set timer constants
   const int nTimerUnitsPerSecond = 10000000;
 
   // Set good return code
-  m_iRC = 0;
+  m_dwRC = 0;
 
   // Clear progress flags
   BYTE xFlags = 0;
@@ -463,7 +463,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
   xFlags &= ~(WAITABLETIMERCREATED | WAITABLETIMERSET);
 
   // Before deleting the thread - get its return code
-  GetExitCodeThread(hThread, &dwThreadExitCode);
+  GetExitCodeThread(hThread, &m_dwRC);
 
   delete pThrdDlg;
 
@@ -490,8 +490,6 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Update Progress
   xFlags &= ~DIMMENDSCREENBITMAPCREATED;
 
-  // Set return code to that of the thread's
-  m_iRC = dwThreadExitCode;
   return;
 
 BadExit:
@@ -521,7 +519,7 @@ BadExit:
   }
 
   // Set bad return code
-  m_iRC = -1;
+  m_dwRC = (DWORD)-1;
 }
 
 void CPKBaseDlg::GetDimmedScreen(CBitmap &bmpDimmedScreen)
