@@ -35,8 +35,8 @@ extern ThisMfcApp app;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
-CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID)
-  : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID),
+CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID, HMONITOR hCurrentMonitor)
+  : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID), m_hCurrentMonitor(hCurrentMonitor),
   m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
   m_bVKCreated(false), m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
   m_iMinutes(-1), m_iSeconds(-1)
@@ -483,16 +483,11 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       ShowWindow(hwndStaticTimerText, SW_HIDE);
     }
 
-    // Centre in primary monitor
-
-    // Get Primary Monitor
-    const POINT ptZero = { 0, 0 };
-    HMONITOR hPrimaryMonitor = MonitorFromPoint(ptZero, MONITOR_DEFAULTTOPRIMARY);
-
-    // Get its information
+    // Centre in monitor having previous dialog
+    // Get current Monitor information
     MONITORINFO mi;
     mi.cbSize = sizeof(mi);
-    GetMonitorInfo(hPrimaryMonitor, &mi);
+    GetMonitorInfo(selfMPProc->m_hCurrentMonitor, &mi);
 
     // Get Window rectangle
     CRect wRect;

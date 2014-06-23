@@ -19,7 +19,7 @@ class CSDThread
 {
 
 public:
-  CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID);
+  CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID, HMONITOR hCurrentMonitor);
   virtual ~CSDThread();
 
   StringX GetPhrase() const { return m_pGMP->sPhrase; }
@@ -71,6 +71,7 @@ public:
    int m_iMinutes, m_iSeconds;
    int m_iUserTimeLimit;
    WORD m_wDialogID;
+   HMONITOR m_hCurrentMonitor;
 
    bool m_bVKCreated, m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
    bool m_bUseSecureDesktop, m_bDesktopPresent, m_bWindowPresent;

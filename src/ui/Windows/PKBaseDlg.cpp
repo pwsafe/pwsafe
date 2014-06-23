@@ -375,8 +375,11 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Update progress
   xFlags |= DIMMENDSCREENBITMAPCREATED;
 
+  // Get current Monitor
+  HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
+
   // Create Dialog Thread class instance
-  pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType);
+  pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType, hCurrentMonitor);
 
   // Create thread
   hThread = CreateThread(NULL, 0, pThrdDlg->ThreadProc, (void *)pThrdDlg, CREATE_SUSPENDED, &dwThreadID);
