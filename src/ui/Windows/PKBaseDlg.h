@@ -49,7 +49,7 @@ public:
 protected:
   friend class CWZSelectDB;
 
-  CSysColStatic m_ctlSDToggle;
+  CButtonBitmapExtn m_ctlSDToggle;
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;

@@ -1293,3 +1293,41 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
   DeleteObject(hBitmap);
   DeleteDC(hMemDC);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// CButtonExtn
+
+CButtonBitmapExtn::CButtonBitmapExtn()
+{
+}
+
+CButtonBitmapExtn::~CButtonBitmapExtn()
+{
+}
+
+BEGIN_MESSAGE_MAP(CButtonBitmapExtn, CButton)
+  //{{AFX_MSG_MAP(CButtonBitmapExtn)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+  CDC dc;
+  dc.Attach(lpDrawItemStruct->hDC);
+
+  CBitmap bmp;
+  bmp.LoadBitmap(m_IDB);
+
+  BITMAP bitMapInfo;
+  bmp.GetBitmap(&bitMapInfo);
+
+  CDC memDC;
+  memDC.CreateCompatibleDC(&dc);
+
+  memDC.SelectObject(&bmp);
+  int bmw = bitMapInfo.bmWidth;
+  int bmh = bitMapInfo.bmHeight;
+
+  // Draw button image transparently
+  ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMAsk);
+}

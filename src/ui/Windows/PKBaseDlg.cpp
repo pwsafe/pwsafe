@@ -85,7 +85,7 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPKBaseDlg)
-  ON_STN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
+  ON_BN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -109,14 +109,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   SetTimer(1, 250, 0);
 
   // This bit makes the background come out right on the bitmaps
-  if (m_bUseSecureDesktop)
-  {
-    m_ctlSDToggle.ReloadBitmap(IDB_USING_SD);
-  }
-  else
-  {
-    m_ctlSDToggle.ReloadBitmap(IDB_NOT_USING_SD);
-  }
+  m_ctlSDToggle.SetBitmapMaskAndID(RGB(255, 255, 255), m_bUseSecureDesktop ? IDB_USING_SD : IDB_NOT_USING_SD);
 
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);

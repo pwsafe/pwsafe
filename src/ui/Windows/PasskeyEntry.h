@@ -104,7 +104,6 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
   afx_msg void OnEnterCombination();
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

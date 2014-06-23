@@ -351,3 +351,31 @@ private:
   int m_icolour;
   int m_type;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+// CButtonBitmapExtn
+
+class CButtonBitmapExtn : public CButton
+{
+  // Construction
+public:
+  CButtonBitmapExtn();
+  virtual ~CButtonBitmapExtn();
+
+  void SetBitmapMaskAndID(const COLORREF cfMAsk, const int IDB)
+  {
+    m_cfMAsk = cfMAsk;  m_IDB = IDB;
+  }
+
+protected:
+  //{{AFX_MSG(CButtonBitmapExtn)
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+
+  int m_IDB;
+  COLORREF m_cfMAsk;
+};

@@ -129,7 +129,6 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
-  ON_WM_CTLCOLOR()
   ON_WM_DESTROY()
   ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -300,25 +299,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   // Following works fine for other (non-hotkey) cases:
   SetForegroundWindow();
 
-  //CBitmap bitmap;
-  //BITMAP bm;
-
-  //// Change all pixels in this 'grey' to transparent
-  //const COLORREF crTransparent = RGB(192, 192, 192);
-
-  //bitmap.LoadBitmap(m_bUseSecureDesktop ? IDB_TRAYUNLOCK_CLASSIC : DB_TRAYLOCK_CLASSIC);
-  //bitmap.GetBitmap(&bm);
-
-  //m_pImageList = new CImageList();
-
-  //BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-  //  ILC_MASK | ILC_COLORDDB, 1, 0);
-  //ASSERT(status != 0);
-
-  //m_pImageList->Add(&bitmap, crTransparent);
-  //bitmap.DeleteObject();
-
-
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
@@ -329,19 +309,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   return TRUE;
-}
-
-HBRUSH CPasskeyEntry::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  HBRUSH hbr = CPKBaseDlg::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  if (nCtlColor == CTLCOLOR_STATIC && pWnd->GetDlgCtrlID() == IDC_SDSWITCH)
-  {
-    pDC->SetBkMode(TRANSPARENT);
-    hbr = (HBRUSH)GetStockObject(NULL_BRUSH);
-  }
-
-  return hbr;
 }
 
 void CPasskeyEntry::OnCreateDb()
