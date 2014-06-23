@@ -795,7 +795,7 @@ void COptions::PrefsToPropSheet()
   if (hashIters <= MIN_HASH_ITERATIONS) {
     m_hashIterSlider = 0;
   } else {
-    const int step = MAX_USABLE_HASH_ITERS/31;
+    const int step = MAX_USABLE_HASH_ITERS/100;
     m_hashIterSlider = uint32(hashIters/step);
   }
 
