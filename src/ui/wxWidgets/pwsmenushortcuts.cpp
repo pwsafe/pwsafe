@@ -649,7 +649,7 @@ void PWSMenuShortcuts::OnShortcutRightClick( wxGridEvent& evt )
   wxCHECK_RET(evt.GetRow() >= 0 && unsigned(evt.GetRow()) < m_midata.size(),
                 wxString::Format(wxT("Invalid index [%d] for reset/remove shortcut"),
                                   evt.GetRow()).c_str());
-  GridAndIndex gr = { wxDynamicCast(evt.GetEventObject(), wxGrid), evt.GetRow() };
+  GridAndIndex gr = { wxDynamicCast(evt.GetEventObject(), wxGrid), size_t(evt.GetRow()) };
   wxCHECK_RET(gr.grid, wxT("Could not get grid from right-click grid event"));
 
   shortcutsMenu.SetClientData(reinterpret_cast<void*>(&gr));
