@@ -251,7 +251,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       // Add an empty row to allow NODB
       int li = m_MRU_combo.AddString(L"");
       if (li != CB_ERR && li != CB_ERRSPACE) {
-        m_MRU_combo.SetItemData(li, N);
+        m_MRU_combo.SetItemData(li, DWORD_PTR(-2)); // -1 already taken, but a < 0 value is easier to check than N
         CString cs_empty(MAKEINTRESOURCE(IDS_EMPTY_DB));
         cs_tooltips.push_back(cs_empty);
         N++; // for SetHeight
