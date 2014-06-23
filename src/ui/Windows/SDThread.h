@@ -67,7 +67,8 @@ public:
 
    unsigned int m_iStartTime;
    HANDLE m_hTimer;
-   HWND m_hwndStaticTimer, m_hwndVKStaticTimer;
+   HWND m_hwndStaticTimer, m_hwndStaticTimerText, m_hwndStaticSeconds;
+   HWND m_hwndVKStaticTimer, m_hwndVKStaticTimerText, m_hwndVKStaticSeconds;
    int m_iMinutes, m_iSeconds;
    int m_iUserTimeLimit;
    WORD m_wDialogID;

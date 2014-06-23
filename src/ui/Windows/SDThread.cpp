@@ -31,6 +31,8 @@
 
 using namespace std;
 
+int iStartTime;  // Start time for SD timer - does get reset by edit changes or mousclicks (VK)
+
 extern ThisMfcApp app;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
@@ -429,6 +431,8 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
   /**
       NOTE: Normally return code TRUE meaning it has processed this message and FALSE meaning it did not.
 
+      However - MS Dpcumentation is conflicting!
+
       The following messages have different rules:
       WM_CHARTOITEM
       WM_COMPAREITEM
@@ -457,6 +461,9 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     selfMPProc = (CSDThread *)lParam;
 
     selfMPProc->m_hwndStaticTimer = GetDlgItem(hwndDlg, IDC_STATIC_TIMER);
+    selfMPProc->m_hwndStaticTimerText = GetDlgItem(hwndDlg, IDC_STATIC_TIMERTEXT);
+    selfMPProc->m_hwndStaticSeconds = GetDlgItem(hwndDlg, IDC_STATIC_SECONDS);
+
     int iMinutes = selfMPProc->m_iUserTimeLimit / 60;
     int iSeconds = selfMPProc->m_iUserTimeLimit - (60 * iMinutes);
     stringT sTime;
@@ -473,7 +480,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       }
 
       // Get start time in milliseconds
-      selfMPProc->m_iStartTime = GetTickCount();
+      iStartTime = GetTickCount();
     }
     else
     {
@@ -555,7 +562,10 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       // Now show it and make it top & enable it
       SetWindowPos(selfMPProc->m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
       EnableWindow(selfMPProc->m_hwndVKeyBoard, TRUE);
+
       selfMPProc->m_hwndVKStaticTimer = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_TIMER);
+      selfMPProc->m_hwndVKStaticTimerText = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_TIMERTEXT);
+      selfMPProc->m_hwndVKStaticTimer = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_SECONDS);
 
       return (INT_PTR)TRUE; // Processed
     }  // IDC_VKB
@@ -569,6 +579,12 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       {
         selfMPProc->m_iLastFocus = iControlID;
         // Don't say we have processed to let default action occur
+        return (INT_PTR)FALSE;
+      }
+      if (iNotificationCode == EN_CHANGE)
+      {
+        // Reset timer start time
+        iStartTime = GetTickCount();
         return (INT_PTR)FALSE;
       }
       break;
@@ -856,7 +872,19 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN )
     return;
 
   // Get time left in seconds
-  int iTimeLeft = selfTimerProc->m_iUserTimeLimit - (GetTickCount() - selfTimerProc->m_iStartTime) / 1000;;
+  int iTimeLeft = selfTimerProc->m_iUserTimeLimit - (GetTickCount() - iStartTime) / 1000;
+
+  int iShow = (iTimeLeft <= selfTimerProc->m_iUserTimeLimit / 4) ? SW_SHOW : SW_HIDE;
+  ShowWindow(selfTimerProc->m_hwndStaticTimer, iShow);
+  ShowWindow(selfTimerProc->m_hwndStaticTimerText, iShow);
+  ShowWindow(selfTimerProc->m_hwndStaticSeconds, iShow);
+  ShowWindow(selfTimerProc->m_hwndVKStaticTimer, iShow);
+  ShowWindow(selfTimerProc->m_hwndVKStaticTimerText, iShow);
+  ShowWindow(selfTimerProc->m_hwndVKStaticSeconds, iShow);
+
+  if (iShow == SW_HIDE)
+    return;
+
   int iMinutes = iTimeLeft / 60;
   int iSeconds = iTimeLeft - (60 * iMinutes);
   if (selfTimerProc->m_iMinutes != iMinutes || selfTimerProc->m_iSeconds != iSeconds) {

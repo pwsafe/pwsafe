@@ -49,6 +49,8 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace std;
 
+extern int iStartTime;
+
 /*
 
 Keyboard - Key Buttons and their scan codes:
@@ -431,6 +433,8 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
   /**
       NOTE: Normally return code TRUE meaning it has processed this message and FALSE meaning it did not.
 
+      However - MS Dpcumentation is conflicting!
+
       The following messages have different rules:
           WM_CHARTOITEM
           WM_COMPAREITEM
@@ -466,6 +470,9 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     switch (iNotificationCode) {
     case BN_CLICKED:
     {
+      // Reset timer start time
+      iStartTime = GetTickCount();
+
       switch (iControlID) {
       case IDC_VKCANCEL:
       {
@@ -525,6 +532,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     }  // CBN_SELCHANGE
     }  // switch (iNotificationCode)
   } // WM_COMMAND
+
   case WM_CTLCOLORSTATIC:
   case WM_CTLCOLORDLG:
   {
@@ -539,7 +547,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
   case WM_LBUTTONDOWN:
   {
     PostMessage(hwndDlg, WM_NCLBUTTONDOWN, HTCAPTION, lParam);
-    return TRUE;
+    return (INT_PTR)TRUE;
   }
   case WM_DRAWITEM:
   {
@@ -550,7 +558,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     {
       id->second->DrawItem((LPDRAWITEMSTRUCT)lParam);
     }
-    return TRUE;
+    return (INT_PTR)TRUE;
   }
   } // switch (uMsg)
 

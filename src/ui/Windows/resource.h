@@ -798,7 +798,8 @@
 #define IDC_STATIC_TIMER                1506
 #define IDC_STATIC_TIMERTEXT            1507
 #define IDC_STATIC_ENTERCOMBINATION     1508
-#define IDC_SDSWITCH                    1509
+#define IDC_STATIC_SECONDS              1509
+#define IDC_SDSWITCH                    1510
 
 // Next default values for new objects
 // 
@@ -806,7 +807,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        538
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1510
+#define _APS_NEXT_CONTROL_VALUE         1511
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
