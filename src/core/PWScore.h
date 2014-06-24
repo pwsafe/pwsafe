@@ -56,62 +56,7 @@ struct st_DBProperties {
   StringX db_description;
 };
 
-// Results of a database verification
-struct st_ValidateResults {
-  int num_invalid_UUIDs;
-  int num_duplicate_UUIDs;
-  int num_empty_titles;
-  int num_empty_passwords;
-  int num_duplicate_GTU_fixed;
-  int num_PWH_fixed;
-  int num_excessivetxt_found;
-  int num_alias_warnings;
-  int num_shortcuts_warnings;
-
-  st_ValidateResults()
-  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
-  num_empty_titles(0), num_empty_passwords(0),
-  num_duplicate_GTU_fixed(0),
-  num_PWH_fixed(0), num_excessivetxt_found(0),
-  num_alias_warnings(0), num_shortcuts_warnings(0)
-  {}
-
-  st_ValidateResults(const st_ValidateResults &that)
-  : num_invalid_UUIDs(that.num_invalid_UUIDs),
-  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
-  num_empty_titles(that.num_empty_titles),
-  num_empty_passwords(that.num_empty_passwords),
-  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
-  num_PWH_fixed(that.num_PWH_fixed),
-  num_excessivetxt_found(that.num_excessivetxt_found),
-  num_alias_warnings(that.num_alias_warnings),
-  num_shortcuts_warnings(that.num_shortcuts_warnings)
-  {}
-
-  st_ValidateResults &operator=(const st_ValidateResults &that) {
-    if (this != &that) {
-      num_invalid_UUIDs = that.num_invalid_UUIDs;
-      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
-      num_empty_titles = that.num_empty_titles;
-      num_empty_passwords = that.num_empty_passwords;
-      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
-      num_PWH_fixed = that.num_PWH_fixed;
-      num_excessivetxt_found = that.num_excessivetxt_found;
-      num_alias_warnings = that.num_alias_warnings;
-      num_shortcuts_warnings = that.num_shortcuts_warnings;
-    }
-    return *this;
-  }
-
-  int TotalIssues()
-  { 
-    return (num_invalid_UUIDs + num_duplicate_UUIDs +
-            num_empty_titles + num_empty_passwords +
-            num_duplicate_GTU_fixed +
-            num_PWH_fixed + num_excessivetxt_found +
-            num_alias_warnings + num_shortcuts_warnings);
-  }
-};
+struct st_ValidateResults;
 
 class PWScore : public CommandInterface
 {
