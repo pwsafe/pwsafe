@@ -108,6 +108,32 @@ void CItemData::Clear()
   m_entrystatus = ES_CLEAN;
 }
 
+void CItemData::ParseSpecialPasswords()
+{
+  const StringX csMyPassword = GetPassword();
+  if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
+    StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
+    ToLower(cs_possibleUUID);
+    if (((csMyPassword.substr(0,2) == _T("[[") &&
+          csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+         (csMyPassword.substr(0, 2) == _T("[~") &&
+          csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+        cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
+      CUUID buuid(cs_possibleUUID.c_str());
+      if (csMyPassword.substr(0, 2) == _T("[[")) {
+        SetUUID(buuid, ALIASUUID);
+      } else {
+        SetUUID(buuid, SHORTCUTUUID);
+      }
+    }
+  }
+}
+
+void CItemData::SetSpecialPasswords()
+{
+  // XXX TBD
+}
+
 int CItemData::Read(PWSfile *in)
 {
   int status = PWSfile::SUCCESS;
@@ -138,9 +164,23 @@ int CItemData::Read(PWSfile *in)
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
-  if (numread > 0)
+  if (numread > 0) {
+    // Determine entry type:
+    // ET_NORMAL (which may later change to ET_ALIASBASE or ET_SHORTCUTBASE)
+    // ET_ALIAS or ET_SHORTCUT
+    // For V4, this is simple, as we have different UUID types
+    // For V3, we need to parse the password
+    ParseSpecialPasswords();
+    if (m_fields.find(UUID) != m_fields.end())
+      m_entrytype = ET_NORMAL; // may change later to ET_*BASE
+    else if (m_fields.find(ALIASUUID) != m_fields.end())
+      m_entrytype = ET_ALIAS;
+    else if (m_fields.find(SHORTCUTUUID) != m_fields.end())
+      m_entrytype = ET_SHORTCUT;
+    else 
+      ASSERT(0);
     return status;
-  else
+  } else
     return PWSfile::END_OF_FILE;
 }
 
@@ -427,7 +467,22 @@ void CItemData::GetTime(int whichtime, time_t &t) const
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
   size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.find(UUID);
+  FieldConstIter fiter = m_fields.end();;
+  switch (m_entrytype) {
+  case ET_NORMAL:
+  case ET_ALIASBASE:
+  case ET_SHORTCUTBASE:
+    fiter = m_fields.find(UUID);
+    break;
+  case ET_ALIAS:
+    fiter = m_fields.find(ALIASUUID);
+    break;
+  case ET_SHORTCUT:
+    fiter = m_fields.find(SHORTCUTUUID);
+    break;
+  default:
+    ASSERT(0);
+  }
   if (fiter == m_fields.end()) {
     pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!"));
     memset(uuid_array, 0, length);
@@ -1298,6 +1353,11 @@ void CItemData::SetGroup(const StringX &group)
 void CItemData::SetUUID(const uuid_array_t &uuid)
 {
   SetField(UUID, static_cast<const unsigned char *>(uuid), sizeof(uuid));
+}
+
+void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
+{
+  SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
 }
 
 void CItemData::SetURL(const StringX &url)

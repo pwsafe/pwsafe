@@ -88,6 +88,10 @@ public:
     SHIFTDCA = 0x17,   // shift-doubleclick action (enum)
     POLICYNAME = 0x18, // named non-default password policy for item
     KBSHORTCUT = 0x19, // Keyboard shortcuts
+    ATTREF = 0x1a,     // UUID of attachment (v4)
+    BASEUUID = 0x41,   // Base UUID of Alias or Shortcut (v4)
+    ALIASUUID = 0x42,  // UUID indicates this is an Alias (v4)
+    SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -227,7 +231,7 @@ public:
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
   void SetUUID(const uuid_array_t &uuid); // V20
-  void SetUUID(const pws_os::CUUID &uuid) {SetUUID(*uuid.GetARep());}
+  void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
   void SetGroup(const StringX &group); // V20
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
@@ -399,6 +403,10 @@ private:
 
   bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
 
+  // for V3 Alias or Shortcut, the base UUID is encoded in password
+  void ParseSpecialPasswords();
+  void SetSpecialPasswords();
+
   void UpdatePasswordHistory(); // used by UpdatePassword()
 
   void GetUnknownField(unsigned char &type, size_t &length,
@@ -414,7 +422,8 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == CTIME      || t == PMTIME || t == ATIME    || t == XTIME     || t == RMTIME ||
     t == XTIME_INT  ||
     t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
-    t == KBSHORTCUT ||
+    t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
+    t == SHORTCUTUUID ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */
