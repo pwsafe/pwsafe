@@ -704,14 +704,6 @@
 #define IDS_ENTRIESCLEARALL             5920
 #define IDS_NOTESZOOMIN                 5921
 #define IDS_NOTESZOOMOUT                5922
-
-#define IDS_YUBI_CLICK_PROMPT           6000
-#define IDS_YUBI_INSERT_PROMPT          6001
-#define IDS_YUBI_TIMEOUT                6002
-#define IDS_YUBI_UNINITIALIZED          6003
-#define IDS_YUBI_INIT_FAILED            6004
-#define IDS_YUBI_INIT_SUCCESS           6005
-
 #define IDS_VALIDATE_ISSUES             5923
 #define IDS_CURRENT_ENTRY               5924
 #define IDS_COMPARISON_ENTRY            5925
@@ -749,3 +741,12 @@
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
 #define IDS_ENTERCOMBINATION            5959
+#define IDS_TOGGLE_SECURE_DESKTOP_ON    5960
+#define IDS_TOGGLE_SECURE_DESKTOP_OFF   5961
+
+#define IDS_YUBI_CLICK_PROMPT           6000
+#define IDS_YUBI_INSERT_PROMPT          6001
+#define IDS_YUBI_TIMEOUT                6002
+#define IDS_YUBI_UNINITIALIZED          6003
+#define IDS_YUBI_INIT_FAILED            6004
+#define IDS_YUBI_INIT_SUCCESS           6005

@@ -744,5 +744,8 @@ void CPasskeyEntry::OnEnterCombination()
     m_passkey = m_GMP.sPhrase.c_str();
     ProcessPhrase();
   }
+
   // Just do nothing if no passphrase entered i.e. user pressed cancel
+  // Try to get this seen
+  SetForegroundWindow();
 }

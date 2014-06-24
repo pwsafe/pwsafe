@@ -51,6 +51,8 @@ public:
   void ResetKeyboard();
 
 protected:
+  friend class CSDThread;
+
   BOOL OnInitDialog();
 
   int m_phrasecount;
@@ -148,6 +150,7 @@ protected:
   LP_OSK_ListKeyboards m_pListKBs;
   st_KBImpl m_stKBImpl;
   HWND m_hParent, m_hMasterPhrase, m_hwndDlg, m_hcbxKeyBoards, m_hwndTooltip;
+  HWND m_hwndVKStaticTimer, m_hwndVKStaticTimerText, m_hwndVKStaticSeconds;
   bool m_bUseSecureDesktop;
   int m_iUserTimeLimit;
   };

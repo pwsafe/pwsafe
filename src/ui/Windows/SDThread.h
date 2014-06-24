@@ -49,6 +49,9 @@ public:
    friend class CPasskeyEntry;
    friend class CPasskeyChangeDlg;
 
+   BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
+   BOOL AddTooltip(UINT uiControlID, stringT sText);
+
    void SetBkGndImage(HWND hwndBkGnd);
    void CheckDesktop();
    void CheckWindow();
@@ -68,11 +71,13 @@ public:
    unsigned int m_iStartTime;
    HANDLE m_hTimer;
    HWND m_hwndStaticTimer, m_hwndStaticTimerText, m_hwndStaticSeconds;
-   HWND m_hwndVKStaticTimer, m_hwndVKStaticTimerText, m_hwndVKStaticSeconds;
+   HWND m_hwndDlg, m_hwndTooltip;
    int m_iMinutes, m_iSeconds;
    int m_iUserTimeLimit;
    WORD m_wDialogID;
    HMONITOR m_hCurrentMonitor;
+   COLORREF m_cfMask;
+   int m_IDB;
 
    bool m_bVKCreated, m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
    bool m_bUseSecureDesktop, m_bDesktopPresent, m_bWindowPresent;

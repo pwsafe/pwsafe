@@ -71,7 +71,7 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
-  DDX_Control(pDX, IDC_SDSWITCH, m_ctlSDToggle);
+  DDX_Control(pDX, IDC_SD_TOGGLE, m_ctlSDToggle);
 
   if (!m_bUseSecureDesktop) {
     // Can't use DDX_Text for CSecEditExtn
@@ -85,7 +85,7 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPKBaseDlg)
-  ON_BN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
+  ON_BN_CLICKED(IDC_SD_TOGGLE, OnSwitchSecureDesktop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -105,10 +105,16 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 {
   CPWDialog::OnInitDialog();
 
+  // Add Secure Desktop Toggle button Tooltip
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 1);
+
+  AddTool(IDC_SD_TOGGLE, m_bUseSecureDesktop ? IDS_TOGGLE_SECURE_DESKTOP_ON : IDS_TOGGLE_SECURE_DESKTOP_OFF);
+  ActivateToolTip();
+
   // Setup a timer to poll the key every 250 ms
   SetTimer(1, 250, 0);
 
-  // This bit makes the background come out right on the bitmaps
+  // This bit makes the background come out right on the bitmaps - these 2 bitmaps use white as the mask
   m_ctlSDToggle.SetBitmapMaskAndID(RGB(255, 255, 255), m_bUseSecureDesktop ? IDB_USING_SD : IDB_NOT_USING_SD);
 
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
@@ -149,6 +155,13 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   }
 
   return TRUE;
+}
+
+BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
+{
+  RelayToolTipEvent(pMsg);
+
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 void CPKBaseDlg::yubiInserted(void)

@@ -25,6 +25,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 extern HRGN GetWorkAreaRegion();
+
 //-----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(CNumEdit, CEdit)
   //{{AFX_MSG_MAP(CNumEdit)

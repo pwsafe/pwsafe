@@ -212,7 +212,6 @@ BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
   return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
-
 BOOL COptionsBackup::OnKillActive()
 {
   COptions_PropertyPage::OnKillActive();

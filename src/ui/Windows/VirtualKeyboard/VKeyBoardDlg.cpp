@@ -567,6 +567,10 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
 BOOL CVKeyBoardDlg::OnInitDialog()
 {
+  m_hwndVKStaticTimer = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMER);
+  m_hwndVKStaticTimerText = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMERTEXT);
+  m_hwndVKStaticSeconds = GetDlgItem(m_hwndDlg, IDC_STATIC_SECONDS);
+
   // Set up buttons button
   for (int i = 0; i < NUM_DIGITS; i++) {
     m_vkbb_Numbers[i].m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_N0 + i);

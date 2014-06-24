@@ -87,7 +87,7 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-  DDX_Control(pDX, IDC_SDSWITCH, m_ctlSDToggle);
+  DDX_Control(pDX, IDC_SD_TOGGLE, m_ctlSDToggle);
 
   //if (!m_bUseSecureDesktop) {
     // Can't use DDX_Text for CSecEditExtn
@@ -147,7 +147,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_SDSWITCH, OnSwitchSecureDesktop)
+  ON_BN_CLICKED(IDC_SD_TOGGLE, OnSwitchSecureDesktop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

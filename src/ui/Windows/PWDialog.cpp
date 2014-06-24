@@ -107,7 +107,6 @@ void CPWDialog::ShowHelp(const CString &topicFile)
   }
 }
 
-
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   if (GetMainDlg()->m_eye_catcher != NULL &&
@@ -134,7 +133,6 @@ INT_PTR CPWDialog::DoModal()
 
   return rc;
 }
-
 
 CPWDialogTracker *CPWDialog::GetDialogTracker()
 {
@@ -182,4 +180,3 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   m_mutex.Unlock();
   std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }
-

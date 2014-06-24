@@ -799,7 +799,7 @@
 #define IDC_STATIC_TIMERTEXT            1507
 #define IDC_STATIC_ENTERCOMBINATION     1508
 #define IDC_STATIC_SECONDS              1509
-#define IDC_SDSWITCH                    1510
+#define IDC_SD_TOGGLE                   1510
 
 // Next default values for new objects
 // 

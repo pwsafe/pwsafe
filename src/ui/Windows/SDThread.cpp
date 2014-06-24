@@ -460,6 +460,8 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
   {
     selfMPProc = (CSDThread *)lParam;
 
+    selfMPProc->m_hwndDlg = hwndDlg;
+
     selfMPProc->m_hwndStaticTimer = GetDlgItem(hwndDlg, IDC_STATIC_TIMER);
     selfMPProc->m_hwndStaticTimerText = GetDlgItem(hwndDlg, IDC_STATIC_TIMERTEXT);
     selfMPProc->m_hwndStaticSeconds = GetDlgItem(hwndDlg, IDC_STATIC_SECONDS);
@@ -470,7 +472,14 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     Format(sTime, _T("%02d:%02d"), iMinutes, iSeconds);
     SetWindowText(selfMPProc->m_hwndStaticTimer, sTime.c_str());
 
-    if (selfMPProc->m_bUseSecureDesktop) {
+    // Secure Desktop toggle button image transparent mask
+    selfMPProc->m_cfMask = RGB(255, 255, 255);
+
+    if (selfMPProc->m_bUseSecureDesktop)
+    {
+      // Seure Desktop toggle bitmap
+      selfMPProc->m_IDB = IDB_USING_SD;
+
       // Set up timer - fires every 100 milliseconds
       brc = CreateTimerQueueTimer(&(selfMPProc->m_hTimer), NULL, (WAITORTIMERCALLBACK)TimerProc,
         selfMPProc, 0, 100, 0);
@@ -484,12 +493,38 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
     else
     {
+      // Seure Desktop toggle bitmap
+      selfMPProc->m_IDB = IDB_NOT_USING_SD;
+
       // Not using Secure Desktop - hide timer
       ShowWindow(selfMPProc->m_hwndStaticTimer, SW_HIDE);
 
       HWND hwndStaticTimerText = GetDlgItem(hwndDlg, IDC_STATIC_TIMERTEXT);
       ShowWindow(hwndStaticTimerText, SW_HIDE);
     }
+
+    // Create the tooltip
+    selfMPProc->m_hwndTooltip = CreateWindowEx(NULL, TOOLTIPS_CLASS, NULL,
+      WS_POPUP | WS_EX_TOOLWINDOW | TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX,
+      CW_USEDEFAULT, CW_USEDEFAULT,
+      CW_USEDEFAULT, CW_USEDEFAULT,
+      hwndDlg, NULL,
+      GetModuleHandle(NULL), NULL);
+
+    if (!selfMPProc->m_hwndTooltip)
+      ASSERT(0);
+
+    SendMessage(selfMPProc->m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, (LPARAM)300);
+
+    //int iTime = SendMessage(selfMPProc->m_hwndTooltip, TTM_GETDELAYTIME, TTDT_AUTOPOP, NULL);
+    SendMessage(selfMPProc->m_hwndTooltip, TTM_SETDELAYTIME, TTDT_INITIAL, 1000);       // Default  500 ms
+    SendMessage(selfMPProc->m_hwndTooltip, TTM_SETDELAYTIME, TTDT_AUTOPOP, 5000);       // Default 5000 ms
+    SendMessage(selfMPProc->m_hwndTooltip, TTM_SETDELAYTIME, TTDT_RESHOW,  1000);       // Default  100 ms
+
+    selfMPProc->AddTooltip(IDC_SD_TOGGLE, IDS_TOGGLE_SECURE_DESKTOP_ON);
+
+    // Activate tooltips
+    SendMessage(selfMPProc->m_hwndTooltip, TTM_ACTIVATE, TRUE, NULL);
 
     // Centre in monitor having previous dialog
     // Get current Monitor information
@@ -562,10 +597,6 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       // Now show it and make it top & enable it
       SetWindowPos(selfMPProc->m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
       EnableWindow(selfMPProc->m_hwndVKeyBoard, TRUE);
-
-      selfMPProc->m_hwndVKStaticTimer = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_TIMER);
-      selfMPProc->m_hwndVKStaticTimerText = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_TIMERTEXT);
-      selfMPProc->m_hwndVKStaticTimer = GetDlgItem(selfMPProc->m_hwndVKeyBoard, IDC_STATIC_SECONDS);
 
       return (INT_PTR)TRUE; // Processed
     }  // IDC_VKB
@@ -776,7 +807,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       return (INT_PTR)TRUE; // Processed
     }
 
-    case IDC_SDSWITCH:
+    case IDC_SD_TOGGLE:
     {
       PostQuitMessage(INT_MAX);
       selfMPProc->m_dwRC = INT_MAX;
@@ -786,6 +817,31 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     break;
   }  // WM_COMMAND
 
+    case WM_DRAWITEM:
+    {
+      if (wParam == IDC_SD_TOGGLE) {
+        LPDRAWITEMSTRUCT lpDrawItemStruct = (LPDRAWITEMSTRUCT)lParam;
+        CDC dc;
+        dc.Attach(lpDrawItemStruct->hDC);
+
+        CBitmap bmp;
+        bmp.LoadBitmap(selfMPProc->m_IDB);
+
+        BITMAP bitMapInfo;
+        bmp.GetBitmap(&bitMapInfo);
+
+        CDC memDC;
+        memDC.CreateCompatibleDC(&dc);
+
+        memDC.SelectObject(&bmp);
+        int bmw = bitMapInfo.bmWidth;
+        int bmh = bitMapInfo.bmHeight;
+
+        // Draw button image transparently
+        ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, selfMPProc->m_cfMask);
+        return TRUE;
+      }
+    }
   case PWS_MSG_INSERTBUFFER:
   {
     // Get the buffer
@@ -875,12 +931,20 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN )
   int iTimeLeft = selfTimerProc->m_iUserTimeLimit - (GetTickCount() - iStartTime) / 1000;
 
   int iShow = (iTimeLeft <= selfTimerProc->m_iUserTimeLimit / 4) ? SW_SHOW : SW_HIDE;
-  ShowWindow(selfTimerProc->m_hwndStaticTimer, iShow);
-  ShowWindow(selfTimerProc->m_hwndStaticTimerText, iShow);
-  ShowWindow(selfTimerProc->m_hwndStaticSeconds, iShow);
-  ShowWindow(selfTimerProc->m_hwndVKStaticTimer, iShow);
-  ShowWindow(selfTimerProc->m_hwndVKStaticTimerText, iShow);
-  ShowWindow(selfTimerProc->m_hwndVKStaticSeconds, iShow);
+
+  if (selfTimerProc->m_bMPWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndMasterPhraseDlg))
+  {
+    ShowWindow(selfTimerProc->m_hwndStaticTimer, iShow);
+    ShowWindow(selfTimerProc->m_hwndStaticTimerText, iShow);
+    ShowWindow(selfTimerProc->m_hwndStaticSeconds, iShow);
+  }
+
+  if (selfTimerProc->m_bVKWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndVKeyBoard))
+  {
+    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimer, iShow);
+    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimerText, iShow);
+    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticSeconds, iShow);
+  }
 
   if (iShow == SW_HIDE)
     return;
@@ -898,7 +962,7 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN )
 
     if (selfTimerProc->m_bVKWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndVKeyBoard))
     {
-      SetWindowText(selfTimerProc->m_hwndVKStaticTimer, sTime.c_str());
+      SetWindowText(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimer, sTime.c_str());
     }
 
     selfTimerProc->m_iMinutes = iMinutes;
@@ -936,4 +1000,45 @@ void CSDThread::SetBkGndImage(HWND hwndBkGnd)
   SelectObject(hDCMem, hbmpOld);
   DeleteDC(hDCMem);
   ReleaseDC(NULL, hDCScreen);
+}
+
+// Modified from MSDN: http://msdn.microsoft.com/en-us/library/bb760252(v=vs.85).aspx
+
+BOOL CSDThread::AddTooltip(UINT uiControlID, stringT sText)
+{
+  if (!uiControlID || sText.empty())
+    return FALSE;
+
+  // Get the window of the tool.
+  HWND hwndTool = GetDlgItem(m_hwndDlg, uiControlID);
+
+  // Associate the tooltip with the tool.
+  TOOLINFO ti = { 0 };
+  ti.cbSize = sizeof(ti);
+  ti.hwnd = m_hwndDlg;
+  ti.uFlags = TTF_IDISHWND | TTF_SUBCLASS | TTF_CENTERTIP | TTF_TRANSPARENT;
+  ti.uId = (UINT_PTR)hwndTool;
+  ti.lpszText = (LPWSTR)sText.c_str();
+
+  BOOL brc = SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
+
+  return brc;
+}
+
+BOOL CSDThread::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
+{
+  if (!uiControlID || !uiToolString)
+    return FALSE;
+
+  stringT sText;
+  LoadAString(sText, uiToolString);
+  if (sText.empty())
+    return FALSE;
+
+  if (uiFormat != NULL)
+  {
+    Format(sText, uiFormat, sText.c_str());
+  }
+
+  return AddTooltip(uiControlID, sText);
 }
