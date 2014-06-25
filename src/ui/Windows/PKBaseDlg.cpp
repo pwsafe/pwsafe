@@ -105,8 +105,8 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 {
   CPWDialog::OnInitDialog();
 
-  // Add Secure Desktop Toggle button Tooltip
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 1);
+  // Add Secure Desktop Toggle button Tooltip - don't extend tooltip times
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
 
   AddTool(IDC_SD_TOGGLE, m_bUseSecureDesktop ? IDS_TOGGLE_SECURE_DESKTOP_ON : IDS_TOGGLE_SECURE_DESKTOP_OFF);
   ActivateToolTip();
