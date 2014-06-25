@@ -152,8 +152,8 @@ public:
   StringX GetPassword() const {return GetField(PASSWORD);}
   size_t GetPasswordLength() const {return GetField(PASSWORD).length();}
   StringX GetNotes(TCHAR delimiter = 0) const;
-  void GetUUID(uuid_array_t &) const; // V20
-  const pws_os::CUUID GetUUID() const; // V20 - see comment in .cpp re return type
+  void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
+  const pws_os::CUUID GetUUID(FieldType ft = END) const; // V20 - see comment in .cpp re return type
   StringX GetGroup() const {return GetField(GROUP);} // V20
   StringX GetURL() const {return GetField(URL);} // V30
   StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30

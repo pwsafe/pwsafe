@@ -110,6 +110,12 @@ void CItemData::Clear()
 
 void CItemData::ParseSpecialPasswords()
 {
+  // For V3 records, the Base UUID and dependent type (shortcut or alias)
+  // is encoded in the password field. 
+  // If the password isn't in the encoded format, this is a no-op
+  // If it is, then this 'normalizes' the entry record to be the same
+  // as a V4 one.
+
   const StringX csMyPassword = GetPassword();
   if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
     StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
@@ -120,18 +126,54 @@ void CItemData::ParseSpecialPasswords()
           csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
         cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
       CUUID buuid(cs_possibleUUID.c_str());
+      SetUUID(buuid, BASEUUID);
+      uuid_array_t uuid;
+      GetUUID(uuid);
+      FieldType ft = UUID;
       if (csMyPassword.substr(0, 2) == _T("[[")) {
-        SetUUID(buuid, ALIASUUID);
+        ft = ALIASUUID;
+      } else if (csMyPassword.substr(0, 2) == _T("[~")) {
+        ft = SHORTCUTUUID;
       } else {
-        SetUUID(buuid, SHORTCUTUUID);
+        ASSERT(0);
       }
+      ClearField(UUID);
+      SetUUID(uuid, ft);
     }
   }
 }
 
 void CItemData::SetSpecialPasswords()
 {
-  // XXX TBD
+  // Meant to be used for writing a record
+  // in V3 format
+  ASSERT(((m_entrytype == ET_NORMAL || m_entrytype == ET_ALIASBASE || m_entrytype == ET_SHORTCUTBASE)
+          && m_fields.find(UUID) != m_fields.end()) ||
+         (m_entrytype == ET_ALIAS && m_fields.find(ALIASUUID) != m_fields.end()) ||
+         (m_entrytype == ET_SHORTCUT && m_fields.find(SHORTCUTUUID) != m_fields.end()));
+
+  CUUID base_uuid(CUUID::NullUUID());
+  if (m_fields.find(ALIASUUID) != m_fields.end())
+    base_uuid = GetUUID(ALIASUUID);
+  else if (m_fields.find(SHORTCUTUUID) != m_fields.end())
+    base_uuid = GetUUID(SHORTCUTUUID);
+
+  if (base_uuid != CUUID::NullUUID()) {
+    StringX uuid_str;
+
+    if (IsAlias()) {
+      uuid_str = _T("[[");
+      uuid_str += base_uuid;
+      uuid_str += _T("]]");
+    } else if (IsShortcut()) {
+      uuid_str = _T("[~");
+      uuid_str += base_uuid;
+      uuid_str += _T("~]");
+    } else {
+      ASSERT(0);
+    }
+    SetPassword(uuid_str);
+  }
 }
 
 int CItemData::Read(PWSfile *in)
@@ -464,25 +506,28 @@ void CItemData::GetTime(int whichtime, time_t &t) const
     t = 0;
 }
 
-void CItemData::GetUUID(uuid_array_t &uuid_array) const
+void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
 {
   size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.end();;
-  switch (m_entrytype) {
-  case ET_NORMAL:
-  case ET_ALIASBASE:
-  case ET_SHORTCUTBASE:
-    fiter = m_fields.find(UUID);
-    break;
-  case ET_ALIAS:
-    fiter = m_fields.find(ALIASUUID);
-    break;
-  case ET_SHORTCUT:
-    fiter = m_fields.find(SHORTCUTUUID);
-    break;
-  default:
-    ASSERT(0);
-  }
+  FieldConstIter fiter = m_fields.end();
+  if (ft != END) { // END means "infer correct UUID from entry type"
+    // anything != END is used as-is, no questions asked
+    fiter = m_fields.find(ft);
+  } else switch (m_entrytype) {
+    case ET_NORMAL:
+    case ET_ALIASBASE:
+    case ET_SHORTCUTBASE:
+      fiter = m_fields.find(UUID);
+      break;
+    case ET_ALIAS:
+      fiter = m_fields.find(ALIASUUID);
+      break;
+    case ET_SHORTCUT:
+      fiter = m_fields.find(SHORTCUTUUID);
+      break;
+    default:
+      ASSERT(0);
+    }
   if (fiter == m_fields.end()) {
     pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!"));
     memset(uuid_array, 0, length);
@@ -490,7 +535,7 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
     GetField(fiter->second, static_cast<unsigned char *>(uuid_array), length);
 }
 
-const CUUID CItemData::GetUUID() const
+const CUUID CItemData::GetUUID(FieldType ft) const
 {
   // Ideally we'd like to return a uuid_array_t, but C++ doesn't
   // allow array return values.
@@ -499,7 +544,7 @@ const CUUID CItemData::GetUUID() const
   // Frustrating, but that's life...
 
   uuid_array_t ua;
-  GetUUID(ua);
+  GetUUID(ua, ft);
   return CUUID(ua);
 }
 
@@ -2303,6 +2348,10 @@ stringT CItemData::EngFieldName(FieldType ft)
   case SYMBOLS:    return _T("Symbols");
   case POLICYNAME: return _T("Password Policy Name");
   case KBSHORTCUT: return _T("Keyboard Shortcut");
+  case ATTREF:     return _T("Attachment Reference");
+  case BASEUUID:   return _T("Base UUID");
+  case ALIASUUID:  return _T("Alias UUID");
+  case SHORTCUTUUID:return _T("Shortcut UUID");
   default:
     ASSERT(0);
     return _T("");
