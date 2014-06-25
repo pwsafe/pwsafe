@@ -10,7 +10,6 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
-#include "SysColStatic.h"
 #include "GetMasterPhrase.h"
 
 #include "resource.h"
@@ -37,7 +36,7 @@ protected:
   CString m_filespec;
   int m_tries, m_state;
   int m_bAdvanced;
-  CSysColStatic m_ctlSDToggle;
+  CButtonBitmapExtn m_ctlSDToggle;
 
   BOOL OnInitDialog();
   void DoDataExchange(CDataExchange* pDX);

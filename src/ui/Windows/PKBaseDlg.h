@@ -15,7 +15,6 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "SysColStatic.h"
 #include "GetMasterPhrase.h"
 
 #include "os/windows/yubi/YkLib.h"

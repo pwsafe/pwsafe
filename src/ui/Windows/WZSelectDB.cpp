@@ -341,6 +341,10 @@ void CWZSelectDB::OnSwitchSecureDesktop()
 
 void CWZSelectDB::ConfigureDialog()
 {
+  // This bit makes the background come out right on the bitmaps - these 2 bitmaps use white as the mask
+  m_ctlSDToggle.SetBitmapMaskAndID(RGB(255, 255, 255), m_bUseSecureDesktop ? IDB_USING_SD : IDB_NOT_USING_SD);
+  m_ctlSDToggle.Invalidate();
+
   if (!m_bUseSecureDesktop)
   {
     Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
@@ -354,8 +358,6 @@ void CWZSelectDB::ConfigureDialog()
     GetDlgItem(IDC_PASSKEY)->EnableWindow(TRUE);
     GetDlgItem(IDC_VKB)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_VKB)->EnableWindow(TRUE);
-
-    m_ctlSDToggle.ReloadBitmap(IDB_NOT_USING_SD);
 
     if (IsYubiInserted())
     {
@@ -384,8 +386,6 @@ void CWZSelectDB::ConfigureDialog()
     GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(FALSE);
     GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(FALSE);
-
-    m_ctlSDToggle.ReloadBitmap(IDB_USING_SD);
   }
 }
 
