@@ -49,6 +49,13 @@ public:
    friend class CPasskeyEntry;
    friend class CPasskeyChangeDlg;
 
+   void OnInitDialog();
+   void OnVirtualKeyboard();
+   void OnOK();
+   void OnCancel();
+   void OnQuit();
+   void OnInsertBuffer();
+
    BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
    BOOL AddTooltip(UINT uiControlID, stringT sText);
 

@@ -23,6 +23,9 @@ NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED
   #error On Screen Virtual Keyboard requires a UNICODE configuration
 #endif
 
+// Required for ToolTips to work on non-MFC dialogs (SD & Virtual Keyboard)
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
 #include "../stdafx.h"
 
 #include "VKeyBoardDlg.h"
@@ -537,12 +540,24 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
   case WM_CTLCOLORDLG:
   {
     if (!IsWindowEnabled(hwndDlg))
-      return NULL;
+      return (INT_PTR)FALSE;
+
+    // Red text for Timer static controls - not yet working as text is overwritten
+    //switch (GetWindowLong((HWND)lParam, GWL_ID))
+    //{
+    //case IDC_STATIC_TIMER:
+    //case IDC_STATIC_TIMERTEXT:
+    //case IDC_STATIC_SECONDS:
+    //  SetTextColor((HDC)wParam, RGB(255, 0, 0));
+    //  SetBkMode((HDC)wParam, TRANSPARENT);
+    //  return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+    //}
 
     // Black text on white background
     SetTextColor((HDC)wParam, RGB(0, 0, 0));
     SetBkColor((HDC)wParam, RGB(255, 255, 255));
     return (INT_PTR)(self->m_hBkBrush);
+
   }
   case WM_LBUTTONDOWN:
   {
