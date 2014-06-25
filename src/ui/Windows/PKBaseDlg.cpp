@@ -34,7 +34,7 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop)
   : CPWDialog(id, pParent), m_bUseSecureDesktop(bUseSecureDesktop),
   m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
-m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
+  m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
 {
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
@@ -323,12 +323,10 @@ void CPKBaseDlg::StartThread(int iDialogType)
 
   CBitmap bmpDimmedScreen;
   LARGE_INTEGER liDueTime;
-  HANDLE hThread(0), hWaitableTimer(0);
+  HANDLE hThread(0);
   DWORD dwError, dwThreadID, dwEvent;
   bool bTimerPopped(false);
-
-  // Set timer constants
-  const int nTimerUnitsPerSecond = 10000000;
+  BOOL brc;
 
   // Set good return code
   m_dwRC = 0;
@@ -349,32 +347,6 @@ void CPKBaseDlg::StartThread(int iDialogType)
 
   pState->m_hHookOldMsgFilter = NULL;
 
-  // Set up waitable timer just in case there is an issue
-  hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
-  if (hWaitableTimer == NULL) {
-    dwError = pws_os::IssueError(_T("CreateWaitableTimer"), false);
-    ASSERT(hWaitableTimer);
-    goto BadExit;
-  }
-
-  // Update progress
-  xFlags |= WAITABLETIMERCREATED;
-
-  // Get out of Jail Free Card method in case there is a problem in the thread
-  // Set the timer to go off PWSprefs::SecureDesktopTimeout after calling SetWaitableTimer.
-  // Timer unit is 100-nanoseconds
-  int iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
-  liDueTime.QuadPart = -(iUserTimeLimit * nTimerUnitsPerSecond);
-
-  if (!SetWaitableTimer(hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
-    dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
-    ASSERT(0);
-    goto BadExit;
-  }
-
-  // Update progress
-  xFlags |= WAITABLETIMERSET;
-
   // Get orignal desktop screen shot
   GetDimmedScreen(bmpDimmedScreen);
 
@@ -386,6 +358,33 @@ void CPKBaseDlg::StartThread(int iDialogType)
 
   // Create Dialog Thread class instance
   pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType, hCurrentMonitor);
+
+  // Set up waitable timer just in case there is an issue
+  pThrdDlg->m_hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
+
+  if (pThrdDlg->m_hWaitableTimer == NULL) {
+    dwError = pws_os::IssueError(_T("CreateWaitableTimer"), false);
+    ASSERT(pThrdDlg->m_hWaitableTimer);
+    goto BadExit;
+  }
+
+  // Update progress
+  xFlags |= WAITABLETIMERCREATED;
+
+  // Get out of Jail Free Card method in case there is a problem in the thread
+  // Set the timer to go off PWSprefs::SecureDesktopTimeout after calling SetWaitableTimer.
+  // Timer unit is 100-nanoseconds
+  int iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
+  liDueTime.QuadPart = -(iUserTimeLimit * 10000000);
+
+  if (!SetWaitableTimer(pThrdDlg->m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
+    dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
+    ASSERT(0);
+    goto BadExit;
+  }
+
+  // Update progress
+  xFlags |= WAITABLETIMERSET;
 
   // Create thread
   hThread = CreateThread(NULL, 0, pThrdDlg->ThreadProc, (void *)pThrdDlg, CREATE_SUSPENDED, &dwThreadID);
@@ -407,7 +406,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
 
   // Set up array of wait handles and wait for either the timer to pop or the thread to end
   {
-    HANDLE hWait[2] = { hWaitableTimer, hThread };
+    HANDLE hWait[2] = { pThrdDlg->m_hWaitableTimer, hThread };
     dwEvent = WaitForMultipleObjects(2, hWait, FALSE, INFINITE);
   }
 
@@ -438,7 +437,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
     xFlags &= ~THREADRESUMED;
 
     // Cancel timer
-    if (!CancelWaitableTimer(hWaitableTimer)) {
+    if (!CancelWaitableTimer(pThrdDlg->m_hWaitableTimer)) {
       dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
       ASSERT(0);
       goto BadExit;
@@ -459,7 +458,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
   }
 
   // Close the WaitableTimer handle
-  if (!CloseHandle(hWaitableTimer)) {
+  if (!CloseHandle(pThrdDlg->m_hWaitableTimer)) {
     dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
     ASSERT(0);
     goto BadExit;
@@ -515,10 +514,10 @@ BadExit:
     bmpDimmedScreen.DeleteObject();
   }
   if (xFlags & WAITABLETIMERSET) {
-    ::CancelWaitableTimer(hWaitableTimer);
+    ::CancelWaitableTimer(pThrdDlg->m_hWaitableTimer);
   }
   if (xFlags & WAITABLETIMERCREATED) {
-    CloseHandle(hWaitableTimer);
+    CloseHandle(pThrdDlg->m_hWaitableTimer);
   }
   if (xFlags & WINDOWSHOOKREMOVED) {
     pState->m_hHookOldMsgFilter = SetWindowsHookEx(WH_MSGFILTER, MsgFilter, NULL, GetCurrentThreadId());

@@ -38,6 +38,7 @@ public:
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
   BOOL PreTranslateMessage(MSG* pMsg);
+  void DoDataExchange(CDataExchange* pDX);
 
   const CSecString &GetPassKey() const {return m_passkey;}
 
@@ -62,15 +63,14 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CPKBaseDlg)
   afx_msg void OnSwitchSecureDesktop();
+  afx_msg void OnDestroy();
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
   virtual void YubiFailed() {};
-  virtual void DoDataExchange(CDataExchange* pDX);
-  afx_msg void OnDestroy();
-  afx_msg void OnTimer(UINT_PTR nIDEvent);
 
   // non-Secure Desktop use of the virtual keyboard
   HWND m_hwndVKeyBoard;
@@ -100,9 +100,9 @@ protected:
 private:
   enum {
      WINDOWSHOOKREMOVED         = 0x01,
-     WAITABLETIMERCREATED       = 0x02,
-     WAITABLETIMERSET           = 0x04,
-     DIMMENDSCREENBITMAPCREATED = 0x08,
+     DIMMENDSCREENBITMAPCREATED = 0x02,
+     WAITABLETIMERCREATED       = 0x04,
+     WAITABLETIMERSET           = 0x08,
      THREADCREATED              = 0x10,
      THREADRESUMED              = 0x20,
    };

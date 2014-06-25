@@ -37,6 +37,7 @@ enum { USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT };
 
 // See DboxMain.h as well, since all PWS messages are either defined or documented there
 #define PWS_MSG_INSERTBUFFER (WM_APP + 70)
+#define PWS_MSG_RESETTIMER   (WM_APP + 71)
 
 enum eJapanese { ENGLISH = 0, JAPANESE };    // Used for m_Kana
 enum eHK       { HIRAGANA = 0, KATAKANA };   // Used for m_Hiragana

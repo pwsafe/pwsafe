@@ -107,6 +107,7 @@ DECLARE_HANDLE(HDROP);
 
 /* Message to get Virtual Keyboard buffer.  Here for doc. only. See VKeyBoardDlg.h
 #define PWS_MSG_INSERTBUFFER            (WM_APP + 70)
+#define PWS_MSG_RESETTIMER              (WM_APP + 71)
 */
 
 

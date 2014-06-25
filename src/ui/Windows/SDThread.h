@@ -62,6 +62,7 @@ public:
    void SetBkGndImage(HWND hwndBkGnd);
    void CheckDesktop();
    void CheckWindow();
+   void ResetTimer();
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;
@@ -77,6 +78,7 @@ public:
 
    unsigned int m_iStartTime;
    HANDLE m_hTimer;
+   HANDLE m_hWaitableTimer;
    HWND m_hwndStaticTimer, m_hwndStaticTimerText, m_hwndStaticSeconds;
    HWND m_hwndDlg, m_hwndTooltip;
    int m_iMinutes, m_iSeconds;

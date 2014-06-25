@@ -472,8 +472,8 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     switch (iNotificationCode) {
     case BN_CLICKED:
     {
-      // Reset timer start time
-      iStartTime = GetTickCount();
+      // Need to reset waitable timer in SDThread!
+      SendMessage(self->m_hMasterPhrase, PWS_MSG_RESETTIMER, 0, 0);
 
       switch (iControlID) {
       case IDC_VKCANCEL:
@@ -493,7 +493,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
       }
       case IDC_VK101: { self->OnChangeKeyboardType(); return TRUE; }
       case IDC_VK102: { self->OnChangeKeyboardType(); return TRUE; }
-      case IDC_VKINSERT: { self->OnInsert(); return TRUE; }
+      case IDC_VKINSERT: { self->OnInsertBuffer(); return TRUE; }
       case IDC_VKCLEARBUFFER: { self->OnClearBuffer(); return TRUE; }
       case IDC_VKBACKSPACE: { self->OnBackSpace(); return TRUE; }
       case IDC_VKBBTN_LSHIFT: { self->OnShift(); return TRUE; }
@@ -550,8 +550,13 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     case IDC_STATIC_TIMER:
     case IDC_STATIC_TIMERTEXT:
     case IDC_STATIC_SECONDS:
-      SetTextColor((HDC)wParam, RGB(255, 0, 0));
-      return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+      if (!IsWindowVisible((HWND)lParam))
+      {
+        SetTextColor((HDC)wParam, RGB(255, 0, 0));
+        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+      }
+      else
+        return (INT_PTR)FALSE;
     }
 
     // Black text
@@ -866,7 +871,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   return TRUE;
 }
 
-void CVKeyBoardDlg::OnInsert()
+void CVKeyBoardDlg::OnInsertBuffer()
 {
   if (m_bAltNum)
     OnAltNum();

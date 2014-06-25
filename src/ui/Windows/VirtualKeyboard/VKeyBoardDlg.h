@@ -58,7 +58,7 @@ protected:
   int m_phrasecount;
 
   void OnCancel();
-  void OnInsert();
+  void OnInsertBuffer();
   void OnRandomize();
   void OnClearBuffer();
   void OnBackSpace();

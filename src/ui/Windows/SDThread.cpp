@@ -41,7 +41,7 @@ CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int
   : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID), m_hCurrentMonitor(hCurrentMonitor),
   m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
   m_bVKCreated(false), m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
-  m_iMinutes(-1), m_iSeconds(-1)
+  m_iMinutes(-1), m_iSeconds(-1), m_hWaitableTimer(0)
 {
   InitInstance();
 }
@@ -495,7 +495,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       if (iNotificationCode == EN_CHANGE)
       {
         // Reset timer start time
-        iStartTime = GetTickCount();
+        selfMPProc->ResetTimer();
       }
       // Don't say we have processed to let default action occur
       return (INT_PTR)FALSE;
@@ -560,9 +560,12 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     case IDC_STATIC_TIMER:
     case IDC_STATIC_TIMERTEXT:
     case IDC_STATIC_SECONDS:
-      SetTextColor((HDC)wParam, RGB(255, 0, 0));
-      SetBkColor((HDC)wParam, GetSysColor(COLOR_BTNFACE));
-      return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+      if (IsWindowVisible((HWND)lParam))
+      {
+        SetTextColor((HDC)wParam, RGB(255, 0, 0));
+        SetBkColor((HDC)wParam, GetSysColor(COLOR_BTNFACE));
+        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+      }
     }
 
     return (INT_PTR)FALSE;
@@ -573,6 +576,12 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     selfMPProc->OnVirtualKeyboard();
     return (INT_PTR)TRUE; // Processed
   }  // PWS_MSG_INSERTBUFFER
+
+  case PWS_MSG_RESETTIMER:
+  {
+    selfMPProc->ResetTimer();
+    return (INT_PTR)TRUE; // Processed
+  }
 
   case WM_QUIT:
   {
@@ -695,7 +704,7 @@ void CSDThread::OnVirtualKeyboard()
     return;
 
   // Reset timer start time
-  iStartTime = GetTickCount();
+  ResetTimer();
 
   if (m_hwndVKeyBoard != NULL && IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top and enable it
@@ -1028,6 +1037,27 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
     selfTimerProc->m_iMinutes = iMinutes;
     selfTimerProc->m_iSeconds = iSeconds;
   }
+}
+
+void CSDThread::ResetTimer()
+{
+  LARGE_INTEGER liDueTime;
+  DWORD dwError;
+
+  if (m_hWaitableTimer == NULL)
+    return;
+
+  // Now reset it - calling SetWaitableTimer, stops and then restarts it
+  int iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
+  liDueTime.QuadPart = -(iUserTimeLimit * 10000000);
+
+  if (!SetWaitableTimer(m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
+    dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
+    ASSERT(0);
+  }
+
+  // Reset tick count for static text display
+  iStartTime = GetTickCount();
 }
 
 void CSDThread::SetBkGndImage(HWND hwndBkGnd)
