@@ -66,6 +66,9 @@ void DboxMain::OnPassphraseChange()
     if (rc == IDOK) {
       m_core.ChangePasskey(changeDlg.m_newpasskey);
       ChangeOkUpdate();
+
+      // Update preference
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
     }
 
     // In case user wanted to toggle Secure Desktop

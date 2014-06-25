@@ -1714,6 +1714,10 @@ tryagain:
 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
+
+    // Update preference
+    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
+
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
     pcore->SetCurFile(curFile);
     std::wstring locker(L""); // null init is important here

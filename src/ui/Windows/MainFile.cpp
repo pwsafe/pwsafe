@@ -423,7 +423,12 @@ int DboxMain::NewFile(StringX &newfilename)
     rc = pksetup.DoModal();
 
     if (rc == IDOK)
+    {
       sPasskey = pksetup.GetPassKey();
+
+      // Update preference
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
+    }
 
     // In case user wanted to toggle Secure Desktop
     bUseSecureDesktop = !bUseSecureDesktop;
@@ -2315,7 +2320,12 @@ void DboxMain::ChangeMode(bool promptUser)
         m_core.GetCurFile().c_str(),
         GCP_CHANGEMODE, true, false, true, bUseSecureDesktop);
 
-      rc = PasskeyEntryDlg.DoModal();
+        rc = PasskeyEntryDlg.DoModal();
+
+        if (rc == IDOK) {
+          // Update preference
+          PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
+        }
 
       // In case user wanted to toggle Secure Desktop
       bUseSecureDesktop = !bUseSecureDesktop;
