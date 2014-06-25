@@ -293,13 +293,13 @@ public:
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
   bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
+  bool HasUUID() const; // UUID type matches entry type and is set
   bool IsGroupSet() const                  { return IsFieldSet(GROUP);     }
   bool IsUserSet() const                   { return IsFieldSet(USER);      }
   bool IsNotesSet() const                  { return IsFieldSet(NOTES);     }
   bool IsURLSet() const                    { return IsFieldSet(URL);       }
   bool IsRunCommandSet() const             { return IsFieldSet(RUNCMD);    }
   bool IsEmailSet() const                  { return IsFieldSet(EMAIL);     }
-  bool IsUUIDSet() const                   { return IsFieldSet(UUID);      }
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsPasswordSet() const               { return IsFieldSet(PASSWORD);  }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
