@@ -432,7 +432,6 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 
 INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-
   /**
       NOTE: Normally return code TRUE meaning it has processed this message and FALSE meaning it did not.
 
@@ -542,20 +541,21 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     if (!IsWindowEnabled(hwndDlg))
       return (INT_PTR)FALSE;
 
-    // Red text for Timer static controls - not yet working as text is overwritten
-    //switch (GetWindowLong((HWND)lParam, GWL_ID))
-    //{
-    //case IDC_STATIC_TIMER:
-    //case IDC_STATIC_TIMERTEXT:
-    //case IDC_STATIC_SECONDS:
-    //  SetTextColor((HDC)wParam, RGB(255, 0, 0));
-    //  SetBkMode((HDC)wParam, TRANSPARENT);
-    //  return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
-    //}
-
-    // Black text on white background
-    SetTextColor((HDC)wParam, RGB(0, 0, 0));
+    // Default white background
     SetBkColor((HDC)wParam, RGB(255, 255, 255));
+
+    // Red text for Timer static controls
+    switch (GetWindowLong((HWND)lParam, GWL_ID))
+    {
+    case IDC_STATIC_TIMER:
+    case IDC_STATIC_TIMERTEXT:
+    case IDC_STATIC_SECONDS:
+      SetTextColor((HDC)wParam, RGB(255, 0, 0));
+      return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+    }
+
+    // Black text
+    SetTextColor((HDC)wParam, RGB(0, 0, 0));
     return (INT_PTR)(self->m_hBkBrush);
 
   }

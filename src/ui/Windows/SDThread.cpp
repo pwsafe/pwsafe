@@ -549,23 +549,24 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
   }
 
-  //case WM_CTLCOLORSTATIC :
-  //{
-  //  if (!IsWindowEnabled(hwndDlg))
-  //    return (INT_PTR)FALSE;
+  case WM_CTLCOLORSTATIC:
+  {
+    if (!IsWindowEnabled(hwndDlg))
+      return (INT_PTR)FALSE;
 
-      // Red text for Timer static controls - not yet working as text is overwritten
-  //  switch (GetWindowLong((HWND)lParam, GWL_ID))
-  //  {
-  //  case IDC_STATIC_TIMER:
-  //  case IDC_STATIC_TIMERTEXT:
-  //  case IDC_STATIC_SECONDS:
-  //    SetTextColor((HDC)wParam, RGB(255, 0, 0));
-  //  }
+    // Red text for Timer static controls - not yet working as text is overwritten
+    switch (GetWindowLong((HWND)lParam, GWL_ID))
+    {
+    case IDC_STATIC_TIMER:
+    case IDC_STATIC_TIMERTEXT:
+    case IDC_STATIC_SECONDS:
+      SetTextColor((HDC)wParam, RGB(255, 0, 0));
+      SetBkColor((HDC)wParam, GetSysColor(COLOR_BTNFACE));
+      return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+    }
 
-  //  SetBkMode((HDC)wParam, TRANSPARENT);
-  //  return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
-  //}
+    return (INT_PTR)FALSE;
+  }
 
   case PWS_MSG_INSERTBUFFER:
   {
@@ -617,6 +618,7 @@ void CSDThread::OnInitDialog()
     // Set up timer - fires every 100 milliseconds
     brc = CreateTimerQueueTimer(&(m_hTimer), NULL, (WAITORTIMERCALLBACK)TimerProc,
       this, 0, 100, 0);
+
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
       ASSERT(brc);
@@ -690,13 +692,16 @@ void CSDThread::OnVirtualKeyboard()
 
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
   if (!CVKeyBoardDlg::IsOSKAvailable())
-    return; // Processed
+    return;
+
+  // Reset timer start time
+  iStartTime = GetTickCount();
 
   if (m_hwndVKeyBoard != NULL && IsWindowVisible(m_hwndVKeyBoard)) {
     // Already there - move to top and enable it
     SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
     EnableWindow(m_hwndVKeyBoard, TRUE);
-    return; // Processed
+    return;
   }
 
   // If not already created - do it, otherwise just reset it
@@ -970,7 +975,7 @@ void CSDThread::OnInsertBuffer()
   SendMessage(hedtPhrase, EM_SETSEL, nStartChar + vkbuffer.length(), nStartChar + vkbuffer.length());
 }
 
-void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN )
+void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFired */)
 {
   CSDThread *selfTimerProc = (CSDThread *)lpParameter;
 
