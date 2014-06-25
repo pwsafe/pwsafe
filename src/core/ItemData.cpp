@@ -143,14 +143,20 @@ void CItemData::ParseSpecialPasswords()
   }
 }
 
+bool CItemData::HasUUID() const
+{
+  return (((m_entrytype == ET_NORMAL ||
+            m_entrytype == ET_ALIASBASE ||
+            m_entrytype == ET_SHORTCUTBASE) && IsFieldSet(UUID)) ||
+          (m_entrytype == ET_ALIAS && IsFieldSet(ALIASUUID)) ||
+          (m_entrytype == ET_SHORTCUT && IsFieldSet(SHORTCUTUUID)));
+}
+
 void CItemData::SetSpecialPasswords()
 {
   // Meant to be used for writing a record
   // in V3 format
-  ASSERT(((m_entrytype == ET_NORMAL || m_entrytype == ET_ALIASBASE || m_entrytype == ET_SHORTCUTBASE)
-          && m_fields.find(UUID) != m_fields.end()) ||
-         (m_entrytype == ET_ALIAS && m_fields.find(ALIASUUID) != m_fields.end()) ||
-         (m_entrytype == ET_SHORTCUT && m_fields.find(SHORTCUTUUID) != m_fields.end()));
+  ASSERT(HasUUID());
 
   CUUID base_uuid(CUUID::NullUUID());
   if (m_fields.find(ALIASUUID) != m_fields.end())
@@ -274,7 +280,7 @@ int CItemData::Write(PWSfile *out) const
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
                                   END};
 
-  ASSERT(IsUUIDSet());
+  ASSERT(HasUUID());
   GetUUID(item_uuid);
   out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
 
