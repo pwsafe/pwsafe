@@ -48,6 +48,7 @@ typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 class BlowFish;
 class PWSfile;
+class PWSfileV4;
 
 struct DisplayInfoBase
 {
@@ -139,6 +140,8 @@ public:
 
   int Read(PWSfile *in);
   int Write(PWSfile *out) const;
+  int Write(PWSfileV4 *out) const;
+  int WriteCommon(PWSfile *out) const;
 
   // Convenience: Get the name associated with FieldType
   static stringT FieldName(FieldType ft);

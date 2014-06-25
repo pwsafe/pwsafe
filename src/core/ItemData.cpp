@@ -20,6 +20,7 @@
 #include "StringXStream.h"
 #include "core.h"
 #include "PWSfile.h"
+#include "PWSfileV4.h"
 #include "PWStime.h"
 
 #include "os/typedefs.h"
@@ -156,30 +157,28 @@ void CItemData::SetSpecialPasswords()
 {
   // Meant to be used for writing a record
   // in V3 format
-  ASSERT(HasUUID());
 
-  CUUID base_uuid(CUUID::NullUUID());
-  if (m_fields.find(ALIASUUID) != m_fields.end())
-    base_uuid = GetUUID(ALIASUUID);
-  else if (m_fields.find(SHORTCUTUUID) != m_fields.end())
-    base_uuid = GetUUID(SHORTCUTUUID);
-
-  if (base_uuid != CUUID::NullUUID()) {
+  if (IsDependent()) {
+    ASSERT(IsFieldSet(BASEUUID));
+    CUUID base_uuid(GetUUID(BASEUUID));
+    ASSERT(base_uuid != CUUID::NullUUID());
     StringX uuid_str;
 
     if (IsAlias()) {
+      base_uuid = GetUUID(ALIASUUID);
       uuid_str = _T("[[");
       uuid_str += base_uuid;
       uuid_str += _T("]]");
     } else if (IsShortcut()) {
+      base_uuid = GetUUID(SHORTCUTUUID);
       uuid_str = _T("[~");
       uuid_str += base_uuid;
       uuid_str += _T("~]");
-    } else {
+    } else
       ASSERT(0);
-    }
+
     SetPassword(uuid_str);
-  }
+  } // IsDependent()
 }
 
 int CItemData::Read(PWSfile *in)
@@ -266,10 +265,9 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
   return retval;
 }
 
-int CItemData::Write(PWSfile *out) const
+int CItemData::WriteCommon(PWSfile *out) const
 {
   int status = PWSfile::SUCCESS;
-  uuid_array_t item_uuid;
   int i;
 
   const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
@@ -279,10 +277,6 @@ int CItemData::Write(PWSfile *out) const
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
                                   END};
-
-  ASSERT(HasUUID());
-  GetUUID(item_uuid);
-  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -335,6 +329,74 @@ int CItemData::Write(PWSfile *out) const
   WriteUnknowns(out);
   // Assume that if previous write failed, last one will too for same reason
   status = out->WriteField(END, _T(""));
+
+  return status;
+}
+
+int CItemData::Write(PWSfile *out) const
+{
+  int status = PWSfile::SUCCESS;
+
+  // Map different UUID types (V4 concept) to original V3 UUID
+  uuid_array_t item_uuid;
+  FieldType ft = END;
+
+  ASSERT(HasUUID());
+  if (!IsDependent())
+    ft = UUID;
+  else if (IsAlias())
+    ft = ALIASUUID;
+  else if (IsShortcut())
+    ft = SHORTCUTUUID;
+  else ASSERT(0);
+  GetUUID(item_uuid, ft);
+
+  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
+
+  // We need to cast away constness to change Password field
+  // for dependent entries
+  // We restore the password afterwards (not that it should matter
+  // for a dependent), so logically we're still const.
+
+  CItemData *self = const_cast<CItemData *>(this);
+  const StringX saved_password = GetPassword();
+  self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
+
+  status = WriteCommon(out);
+
+  self->SetPassword(saved_password);
+  return status;
+}
+
+int CItemData::Write(PWSfileV4 *out) const
+{
+  int status = PWSfile::SUCCESS;
+  uuid_array_t item_uuid;
+
+  ASSERT(HasUUID());
+
+  FieldType ft = END;
+
+  ASSERT(HasUUID());
+  if (!IsDependent())
+    ft = UUID;
+  else if (IsAlias())
+    ft = ALIASUUID;
+  else if (IsShortcut())
+    ft = SHORTCUTUUID;
+  else ASSERT(0);
+  GetUUID(item_uuid, ft);
+
+  out->WriteField(static_cast<unsigned char>(ft), item_uuid,
+                  sizeof(uuid_array_t));
+  if (IsDependent()) {
+    uuid_array_t base_uuid;
+    ASSERT(IsFieldSet(BASEUUID));
+    GetUUID(base_uuid, BASEUUID);
+    out->WriteField(BASEUUID, base_uuid, sizeof(uuid_array_t));
+  }
+
+  status = WriteCommon(out);
 
   return status;
 }
