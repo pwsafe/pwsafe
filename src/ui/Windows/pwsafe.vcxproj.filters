@@ -1640,5 +1640,11 @@
     <Image Include="graphics\PWS-SD.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\Using_SD.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\Not_Using_SD.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

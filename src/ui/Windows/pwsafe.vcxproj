@@ -1345,7 +1345,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\Not_Using_SD.bmp" />
     <Image Include="graphics\PWS-SD.bmp" />
+    <Image Include="graphics\Using_SD.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>
