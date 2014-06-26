@@ -89,14 +89,12 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
   DDX_Control(pDX, IDC_SD_TOGGLE, m_ctlSDToggle);
 
-  //if (!m_bUseSecureDesktop) {
-    // Can't use DDX_Text for CSecEditExtn
-    m_pctlPasskey->DoDDX(pDX, m_passkey);
-    DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+  // Can't use DDX_Text for CSecEditExtn
+  m_pctlPasskey->DoDDX(pDX, m_passkey);
+  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 
-    DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
-    DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
-  //}
+  DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+  DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
 
   const UINT nID = m_pWZPSH->GetID();
 
@@ -429,6 +427,8 @@ void CWZSelectDB::OnEnterCombination()
 
   ShowWindow(SW_SHOW);
   delete pPKBaseDlg;
+
+  UpdateData(FALSE);
 }
 
 void CWZSelectDB::OnPassKeyChange()
