@@ -87,16 +87,16 @@ BOOL CSDThread::InitInstance()
 
 DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
 {
-  CSDThread *selfThreadProc = (CSDThread *)lpParameter;
+  CSDThread *self = (CSDThread *)lpParameter;
 
   WNDCLASS wc = { 0 };
 
   StringX sxTemp, sxPrefix;
   DWORD dwError;
-  selfThreadProc->m_dwRC = (DWORD)-1;
+  self->m_dwRC = (DWORD)-1;
 
-  selfThreadProc->m_pGMP->clear();
-  selfThreadProc->m_hwndVKeyBoard = NULL;
+  self->m_pGMP->clear();
+  self->m_hwndVKeyBoard = NULL;
 
   PWPolicy policy;
 
@@ -113,31 +113,31 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   policy.lowerminlength = policy.upperminlength = policy.digitminlength = 1;
 
 #ifndef NO_NEW_DESKTOP
-  selfThreadProc->m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
+  self->m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
 
   // Ensure we don't use an existing Desktop (very unlikely but....)
   do {
     //Create random Desktop name
     sxTemp = sxPrefix.substr(0, 1) + policy.MakeRandomPassword();
 
-    selfThreadProc->m_sDesktopName = sxTemp.c_str();
+    self->m_sDesktopName = sxTemp.c_str();
 
     // Check not already there
-    selfThreadProc->CheckDesktop();
-  } while (selfThreadProc->m_bDesktopPresent);
+    self->CheckDesktop();
+  } while (self->m_bDesktopPresent);
 
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
 
-  selfThreadProc->m_hNewDesktop = CreateDesktop(selfThreadProc->m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
-  if (selfThreadProc->m_hNewDesktop == NULL) {
+  self->m_hNewDesktop = CreateDesktop(self->m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
+  if (self->m_hNewDesktop == NULL) {
     dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
-    ASSERT(selfThreadProc->m_hNewDesktop);
+    ASSERT(self->m_hNewDesktop);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= NEWDESKTOCREATED;
+  self->xFlags |= NEWDESKTOCREATED;
 
   // The following 3 calls must be in this order to ensure correct operation
   // Need to disable creation of ctfmon.exe in order to close desktop
@@ -150,23 +150,23 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     // No need to ASSERT here
   }
 
-  if (!SetThreadDesktop(selfThreadProc->m_hNewDesktop)) {
+  if (!SetThreadDesktop(self->m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= SETTHREADDESKTOP;
+  self->xFlags |= SETTHREADDESKTOP;
 
-  if (!SwitchDesktop(selfThreadProc->m_hNewDesktop)) {
+  if (!SwitchDesktop(self->m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= SWITCHEDDESKTOP;
+  self->xFlags |= SWITCHEDDESKTOP;
 #endif
 
   // Ensure we don't use an existing Window Class Name (very unlikely but....)
@@ -174,16 +174,16 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     //Create random Modeless Overlayed Background Window Class Name
     sxTemp = sxPrefix.substr(1, 1) + policy.MakeRandomPassword();
 
-    selfThreadProc->m_sBkGrndClassName = sxTemp.c_str();
+    self->m_sBkGrndClassName = sxTemp.c_str();
 
     // Check not already there
-    selfThreadProc->CheckWindow();
-  } while (selfThreadProc->m_bWindowPresent);
+    self->CheckWindow();
+  } while (self->m_bWindowPresent);
 
   // Register the Window Class Name
   wc.lpfnWndProc = ::DefWindowProc;
-  wc.hInstance = selfThreadProc->m_hInstance;
-  wc.lpszClassName = selfThreadProc->m_sBkGrndClassName.c_str();
+  wc.hInstance = self->m_hInstance;
+  wc.lpszClassName = self->m_sBkGrndClassName.c_str();
   if (!RegisterClass(&wc)) {
     dwError = pws_os::IssueError(_T("RegisterClass - Background Window"), false);
     ASSERT(0);
@@ -191,46 +191,46 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= REGISTEREDWINDOWCLASS;
+  self->xFlags |= REGISTEREDWINDOWCLASS;
 
-  selfThreadProc->m_hwndBkGnd = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW,
-    selfThreadProc->m_sBkGrndClassName.c_str(), NULL, WS_POPUP | WS_VISIBLE,
+  self->m_hwndBkGnd = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW,
+    self->m_sBkGrndClassName.c_str(), NULL, WS_POPUP | WS_VISIBLE,
     0, 0, ::GetSystemMetrics(SM_CXVIRTUALSCREEN), ::GetSystemMetrics(SM_CYVIRTUALSCREEN),
-    NULL, NULL, selfThreadProc->m_hInstance, NULL);
+    NULL, NULL, self->m_hInstance, NULL);
 
-  if (!selfThreadProc->m_hwndBkGnd) {
+  if (!self->m_hwndBkGnd) {
     dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
-    ASSERT(selfThreadProc->m_hwndBkGnd);
+    ASSERT(self->m_hwndBkGnd);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= BACKGROUNDWINDOWCREATED;
+  self->xFlags |= BACKGROUNDWINDOWCREATED;
 
-  selfThreadProc->SetBkGndImage(selfThreadProc->m_hwndBkGnd);
+  self->SetBkGndImage(self->m_hwndBkGnd);
 
   // Don't allow any action if this is clicked!
-  EnableWindow(selfThreadProc->m_hwndBkGnd, FALSE);// iDialogID - IDD_SDGETPHRASE
+  EnableWindow(self->m_hwndBkGnd, FALSE);// iDialogID - IDD_SDGETPHRASE
 
-  selfThreadProc->m_hwndMasterPhraseDlg = CreateDialogParam(selfThreadProc->m_hInstance,
-    MAKEINTRESOURCE(selfThreadProc->m_wDialogID),
-    HWND_DESKTOP, (DLGPROC)selfThreadProc->MPDialogProc, (LPARAM)selfThreadProc);
+  self->m_hwndMasterPhraseDlg = CreateDialogParam(self->m_hInstance,
+    MAKEINTRESOURCE(self->m_wDialogID),
+    HWND_DESKTOP, (DLGPROC)self->MPDialogProc, (LPARAM)self);
 
-  if (!selfThreadProc->m_hwndMasterPhraseDlg) {
+  if (!self->m_hwndMasterPhraseDlg) {
     dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags |= MASTERPHRASEDIALOGCREATED;
+  self->xFlags |= MASTERPHRASEDIALOGCREATED;
 
-  selfThreadProc->m_pVKeyBoardDlg = new CVKeyBoardDlg(selfThreadProc->m_hwndBkGnd, selfThreadProc->m_hwndMasterPhraseDlg);
+  self->m_pVKeyBoardDlg = new CVKeyBoardDlg(self->m_hwndBkGnd, self->m_hwndMasterPhraseDlg);
 
   // Update Progress
-  selfThreadProc->xFlags |= VIRTUALKEYBOARDCREATED;
+  self->xFlags |= VIRTUALKEYBOARDCREATED;
 
-  ShowWindow(selfThreadProc->m_hwndMasterPhraseDlg, SW_SHOW);
+  ShowWindow(self->m_hwndMasterPhraseDlg, SW_SHOW);
 
   MSG msg;
   BOOL brc;
@@ -240,122 +240,122 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     if (brc == -1)
       break;
 
-    if (!IsDialogMessage(selfThreadProc->m_hwndMasterPhraseDlg, &msg)) {
+    if (!IsDialogMessage(self->m_hwndMasterPhraseDlg, &msg)) {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
   }
 
-  // Call DialogProc directly to clear "selfThreadProc".
+  // Call DialogProc directly to clear "self".
   // NOTE: - it would NEVER get the WM_QUIT message EVER as this
   // is used to get out of the message loop above(see GetMessage)
-  selfThreadProc->MPDialogProc(NULL, WM_QUIT, NULL, NULL);
+  self->MPDialogProc(NULL, WM_QUIT, NULL, NULL);
 
   // Update Progress
-  selfThreadProc->xFlags |= MASTERPHRASEDIALOGENDED;
+  self->xFlags |= MASTERPHRASEDIALOGENDED;
 
   // Destroy Masterphrase window
-  if (!DestroyWindow(selfThreadProc->m_hwndMasterPhraseDlg)) {
+  if (!DestroyWindow(self->m_hwndMasterPhraseDlg)) {
     dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags &= ~MASTERPHRASEDIALOGCREATED;
+  self->xFlags &= ~MASTERPHRASEDIALOGCREATED;
 
   // Delete Virtual Keyboard instance
-  delete selfThreadProc->m_pVKeyBoardDlg;
+  delete self->m_pVKeyBoardDlg;
 
   // Update Progress
-  selfThreadProc->xFlags &= ~VIRTUALKEYBOARDCREATED;
+  self->xFlags &= ~VIRTUALKEYBOARDCREATED;
 
   // Destroy background layered window
-  if (!DestroyWindow(selfThreadProc->m_hwndBkGnd)) {
+  if (!DestroyWindow(self->m_hwndBkGnd)) {
     dwError = pws_os::IssueError(_T("DestroyWindow - Background"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags &= ~BACKGROUNDWINDOWCREATED;
+  self->xFlags &= ~BACKGROUNDWINDOWCREATED;
 
   // Unregister it
-  if (!UnregisterClass(selfThreadProc->m_sBkGrndClassName.c_str(), selfThreadProc->m_hInstance)) {
+  if (!UnregisterClass(self->m_sBkGrndClassName.c_str(), self->m_hInstance)) {
     dwError = pws_os::IssueError(_T("UnregisterClass - Background"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags &= ~REGISTEREDWINDOWCLASS;
+  self->xFlags &= ~REGISTEREDWINDOWCLASS;
 
-  selfThreadProc->m_pbmpDimmedScreen->DeleteObject();
+  self->m_pbmpDimmedScreen->DeleteObject();
 
   // Clear variables
-  selfThreadProc->m_pVKeyBoardDlg = NULL;
-  selfThreadProc->m_hwndMasterPhraseDlg = NULL;
-  selfThreadProc->m_sBkGrndClassName.clear();
-  selfThreadProc->m_sDesktopName.clear();
-  selfThreadProc->m_hwndBkGnd = NULL;
+  self->m_pVKeyBoardDlg = NULL;
+  self->m_hwndMasterPhraseDlg = NULL;
+  self->m_sBkGrndClassName.clear();
+  self->m_sDesktopName.clear();
+  self->m_hwndBkGnd = NULL;
 
 #ifndef NO_NEW_DESKTOP
   // The following 2 calls must be in this order to ensure the new desktop is
   // correctly deleted when finished with - EXCEPT in Winodws 7 (MS bug?)
 
   // Switch back to the initial desktop
-  if (!SwitchDesktop(selfThreadProc->m_hOriginalDesk)) {
+  if (!SwitchDesktop(self->m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  selfThreadProc->xFlags &= ~SWITCHEDDESKTOP;
+  self->xFlags &= ~SWITCHEDDESKTOP;
 
-  if (!SetThreadDesktop(selfThreadProc->m_hOriginalDesk)) {
+  if (!SetThreadDesktop(self->m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
     ASSERT(0);
     goto BadExit;
   }
   // Update Progress
-  selfThreadProc->xFlags &= ~SETTHREADDESKTOP;
+  self->xFlags &= ~SETTHREADDESKTOP;
 
   // Now that thread is ending - close new desktop
-  if (selfThreadProc->xFlags & NEWDESKTOCREATED) {
-    if (!CloseDesktop(selfThreadProc->m_hNewDesktop)) {
+  if (self->xFlags & NEWDESKTOCREATED) {
+    if (!CloseDesktop(self->m_hNewDesktop)) {
       dwError = pws_os::IssueError(_T("CloseDesktop (new)"), false);
       ASSERT(0);
     }
   }
   // Update Progress
-  selfThreadProc->xFlags &= ~NEWDESKTOCREATED;
+  self->xFlags &= ~NEWDESKTOCREATED;
 #endif
-  return selfThreadProc->m_dwRC;
+  return self->m_dwRC;
 
 BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
-  if (selfThreadProc->xFlags & VIRTUALKEYBOARDCREATED) {
+  if (self->xFlags & VIRTUALKEYBOARDCREATED) {
     // Delete Virtual Keyboard instance
-    delete selfThreadProc->m_pVKeyBoardDlg;
+    delete self->m_pVKeyBoardDlg;
   }
-  if (selfThreadProc->xFlags & MASTERPHRASEDIALOGCREATED) {
-    DestroyWindow(selfThreadProc->m_hwndMasterPhraseDlg);
+  if (self->xFlags & MASTERPHRASEDIALOGCREATED) {
+    DestroyWindow(self->m_hwndMasterPhraseDlg);
   }
-  if (selfThreadProc->xFlags & BACKGROUNDWINDOWCREATED) {
-    DestroyWindow(selfThreadProc->m_hwndBkGnd);
+  if (self->xFlags & BACKGROUNDWINDOWCREATED) {
+    DestroyWindow(self->m_hwndBkGnd);
   }
-  if (selfThreadProc->xFlags & REGISTEREDWINDOWCLASS) {
-    UnregisterClass(selfThreadProc->m_sBkGrndClassName.c_str(), selfThreadProc->m_hInstance);
+  if (self->xFlags & REGISTEREDWINDOWCLASS) {
+    UnregisterClass(self->m_sBkGrndClassName.c_str(), self->m_hInstance);
   }
-  if (selfThreadProc->xFlags & SWITCHEDDESKTOP) {
-    SwitchDesktop(selfThreadProc->m_hOriginalDesk);
+  if (self->xFlags & SWITCHEDDESKTOP) {
+    SwitchDesktop(self->m_hOriginalDesk);
   }
-  if (selfThreadProc->xFlags & SETTHREADDESKTOP) {
-    SetThreadDesktop(selfThreadProc->m_hOriginalDesk);
+  if (self->xFlags & SETTHREADDESKTOP) {
+    SetThreadDesktop(self->m_hOriginalDesk);
   }
-  if (selfThreadProc->xFlags & NEWDESKTOCREATED) {
-    CloseDesktop(selfThreadProc->m_hNewDesktop);
+  if (self->xFlags & NEWDESKTOCREATED) {
+    CloseDesktop(self->m_hNewDesktop);
   }
   return (DWORD)-1;
 }
@@ -437,7 +437,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
   /**
       NOTE: Normally return code TRUE meaning it has processed this message and FALSE meaning it did not.
 
-      However - MS Dpcumentation is conflicting!
+      However - MS Documentation is conflicting!
 
       The following messages have different rules:
       WM_CHARTOITEM
@@ -453,24 +453,24 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       WM_VKEYTOITEM
   **/
 
-  static CSDThread *selfMPProc(NULL);
+  static CSDThread *self(NULL);
 
-  if (uMsg != WM_INITDIALOG && selfMPProc == NULL)
+  if (uMsg != WM_INITDIALOG && self == NULL)
     return (INT_PTR)FALSE;
 
   switch (uMsg) {
   case WM_INITDIALOG:
   {
-    selfMPProc = (CSDThread *)lParam;
-    selfMPProc->m_hwndDlg = hwndDlg;
+    self = (CSDThread *)lParam;
+    self->m_hwndDlg = hwndDlg;
 
-    selfMPProc->OnInitDialog();
+    self->OnInitDialog();
     return (INT_PTR)TRUE; // Processed - special case
   }  // WM_INITDIALOG
 
   case WM_SHOWWINDOW:
   {
-    selfMPProc->m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
+    self->m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
 
     return (INT_PTR)FALSE;  // Processed!
   }
@@ -484,7 +484,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     switch (iControlID) {
     case IDC_VKB:
     {
-      selfMPProc->OnVirtualKeyboard();
+      self->OnVirtualKeyboard();
       return (INT_PTR)TRUE; // Processed
     }  // IDC_VKB
 
@@ -494,34 +494,34 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     case IDC_CONFIRMNEW:
       if (iNotificationCode == EN_SETFOCUS)
       {
-        // Reemember last edit control as we need to know where to insert charatcers
+        // Remember last edit control as we need to know where to insert characters
         // if the user uses the Virtual Keyboard
-        selfMPProc->m_iLastFocus = iControlID;
+        self->m_iLastFocus = iControlID;
       }
       if (iNotificationCode == EN_CHANGE)
       {
         // Reset timer start time
-        selfMPProc->ResetTimer();
+        self->ResetTimer();
       }
       // Don't say we have processed to let default action occur
       return (INT_PTR)FALSE;
 
     case IDOK:
     {
-      selfMPProc->OnOK();
+      self->OnOK();
       return (INT_PTR)TRUE; // Processed
     }  // IDOK
 
     case IDCANCEL:
     {
-      selfMPProc->OnCancel();
+      self->OnCancel();
       return (INT_PTR)TRUE; // Processed
     }
 
     case IDC_SD_TOGGLE:
     {
       PostQuitMessage(INT_MAX);
-      selfMPProc->m_dwRC = INT_MAX;
+      self->m_dwRC = INT_MAX;
       return (INT_PTR)TRUE; // Processed
     }
     }  // switch (iControlID)
@@ -537,7 +537,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       dc.Attach(pDrawItemStruct->hDC);
 
       CBitmap bmp;
-      bmp.LoadBitmap(selfMPProc->m_IDB);
+      bmp.LoadBitmap(self->m_IDB);
 
       BITMAP bitMapInfo;
       bmp.GetBitmap(&bitMapInfo);
@@ -550,7 +550,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       int bmh = bitMapInfo.bmHeight;
 
       // Draw button image transparently
-      ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, selfMPProc->m_cfMask);
+      ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, self->m_cfMask);
       return TRUE;
     }
   }
@@ -579,25 +579,25 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
   case PWS_MSG_INSERTBUFFER:
   {
-    selfMPProc->OnVirtualKeyboard();
+    self->OnVirtualKeyboard();
     return (INT_PTR)TRUE; // Processed
   }  // PWS_MSG_INSERTBUFFER
 
   case PWS_MSG_RESETTIMER:
   {
-    selfMPProc->ResetTimer();
+    self->ResetTimer();
     return (INT_PTR)TRUE; // Processed
   }
 
   case WM_QUIT:
   {
     // Special handling for WM_QUIT, which it would NEVER EVER get normally
-    ASSERT(selfMPProc);
+    ASSERT(self);
 
-    selfMPProc->OnQuit();
+    self->OnQuit();
 
     // Don't need it any more
-    selfMPProc = NULL;
+    self = NULL;
 
     return (INT_PTR)TRUE;
   }  // WM_QUIT
@@ -746,7 +746,7 @@ void CSDThread::OnOK()
   StringX sErrorMsg;
 
   /*
-  selfThreadProc->m_wDialogID
+  self->m_wDialogID
 
   IDD_SDGETPHRASE      IDC_PASSKEY, IDC_VKB, IDOK, IDCANCEL
   IDD_SDKEYCHANGE      IDC_PASSKEY, IDC_NEWPASSKEY, IDC_CONFIRMNEW, IDC_VKB, IDOK, IDCANCEL
@@ -992,33 +992,33 @@ void CSDThread::OnInsertBuffer()
 
 void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFired */)
 {
-  CSDThread *selfTimerProc = (CSDThread *)lpParameter;
+  CSDThread *self = (CSDThread *)lpParameter;
 
   // Don't do anything if closing down
-  if (!selfTimerProc->m_bDoTimerProcAction)
+  if (!self->m_bDoTimerProcAction)
     return;
 
   // Don't do anything if windows aren't visible
-  if (!selfTimerProc->m_bMPWindowBeingShown && !selfTimerProc->m_bVKWindowBeingShown)
+  if (!self->m_bMPWindowBeingShown && !self->m_bVKWindowBeingShown)
     return;
 
   // Get time left in seconds
-  int iTimeLeft = selfTimerProc->m_iUserTimeLimit - (GetTickCount() - iStartTime) / 1000;
+  int iTimeLeft = self->m_iUserTimeLimit - (GetTickCount() - iStartTime) / 1000;
 
-  int iShow = (iTimeLeft <= selfTimerProc->m_iUserTimeLimit / 4) ? SW_SHOW : SW_HIDE;
+  int iShow = (iTimeLeft <= self->m_iUserTimeLimit / 4) ? SW_SHOW : SW_HIDE;
 
-  if (selfTimerProc->m_bMPWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndMasterPhraseDlg))
+  if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg))
   {
-    ShowWindow(selfTimerProc->m_hwndStaticTimer, iShow);
-    ShowWindow(selfTimerProc->m_hwndStaticTimerText, iShow);
-    ShowWindow(selfTimerProc->m_hwndStaticSeconds, iShow);
+    ShowWindow(self->m_hwndStaticTimer, iShow);
+    ShowWindow(self->m_hwndStaticTimerText, iShow);
+    ShowWindow(self->m_hwndStaticSeconds, iShow);
   }
 
-  if (selfTimerProc->m_bVKWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndVKeyBoard))
+  if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard))
   {
-    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimer, iShow);
-    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimerText, iShow);
-    ShowWindow(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticSeconds, iShow);
+    ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticTimer, iShow);
+    ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticTimerText, iShow);
+    ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticSeconds, iShow);
   }
 
   if (iShow == SW_HIDE)
@@ -1026,22 +1026,22 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
 
   int iMinutes = iTimeLeft / 60;
   int iSeconds = iTimeLeft - (60 * iMinutes);
-  if (selfTimerProc->m_iMinutes != iMinutes || selfTimerProc->m_iSeconds != iSeconds) {
+  if (self->m_iMinutes != iMinutes || self->m_iSeconds != iSeconds) {
     stringT sTime;
     Format(sTime, _T("%02d:%02d"), iMinutes, iSeconds);
 
-    if (selfTimerProc->m_bMPWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndMasterPhraseDlg))
+    if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg))
     {
-      SetWindowText(selfTimerProc->m_hwndStaticTimer, sTime.c_str());
+      SetWindowText(self->m_hwndStaticTimer, sTime.c_str());
     }
 
-    if (selfTimerProc->m_bVKWindowBeingShown || IsWindowVisible(selfTimerProc->m_hwndVKeyBoard))
+    if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard))
     {
-      SetWindowText(selfTimerProc->m_pVKeyBoardDlg->m_hwndVKStaticTimer, sTime.c_str());
+      SetWindowText(self->m_pVKeyBoardDlg->m_hwndVKStaticTimer, sTime.c_str());
     }
 
-    selfTimerProc->m_iMinutes = iMinutes;
-    selfTimerProc->m_iSeconds = iSeconds;
+    self->m_iMinutes = iMinutes;
+    self->m_iSeconds = iSeconds;
   }
 }
 
