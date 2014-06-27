@@ -958,11 +958,19 @@ void CSDThread::OnQuit()
     }
 
     // Delete all timers in the timer queue
-    brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
-    if (brc == NULL) {
-      dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
-      ASSERT(brc);
-    }
+    do
+    {
+      brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
+      if (brc == NULL) {
+        // No need to call again if error code is ERROR_IO_PENDING.
+        // Note description of ERROR_IO_PENDING is "Overlapped I/O operation is in progress"
+        if (GetLastError() == ERROR_IO_PENDING)
+          break;
+
+        // Otherwise debug write out other error messages and try again
+        dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
+      }
+    } while (brc == NULL);
 
     // Wait for timer queue to go
     WaitForSingleObject(hEvent, INFINITE);
