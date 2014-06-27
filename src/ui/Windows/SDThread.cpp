@@ -29,6 +29,12 @@
 
 #pragma comment(lib, "Imm32.lib")
 
+// Following makes debugging SD UI changes feasible
+// Of course, remove if/when debugging the Secure Desktop funtionality itself...
+#ifdef _DEBUG
+#define NO_NEW_DESKTOP
+#endif
+
 using namespace std;
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mousclicks (VK)
@@ -955,7 +961,7 @@ void CSDThread::OnQuit()
     brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
-      ASSERT(brc);
+      //      ASSERT(brc); XXX - hit here with "error 997: Overlapped I/O operation is in progress." - do-while?
     }
 
     // Wait for timer queue to go
