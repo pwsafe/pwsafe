@@ -961,7 +961,7 @@ void CSDThread::OnQuit()
     brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
-      //      ASSERT(brc); XXX - hit here with "error 997: Overlapped I/O operation is in progress." - do-while?
+      ASSERT(brc);
     }
 
     // Wait for timer queue to go
