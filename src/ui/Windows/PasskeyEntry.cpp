@@ -723,7 +723,7 @@ void CPasskeyEntry::OnYubikeyBtn()
       m_MRU_combo.SetFocus();
     return;
   }
-  yubiRequestHMACSha1(); // request HMAC of m_passkey
+  yubiRequestHMACSha1(m_passkey);
 }
 
 void CPasskeyEntry::OnEnterCombination()

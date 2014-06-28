@@ -17,6 +17,7 @@
 #include "ThisMfcApp.h"
 #include "resource3.h"
 
+#include "core/core.h" // for IDSC_UNKNOWN_ERROR
 #include "core/PWSprefs.h"
 #include "core/PWPolicy.h"
 #include "core/PWCharPool.h" // for CheckPassword()
@@ -270,7 +271,7 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   // Update Progress
   self->xFlags &= ~VIRTUALKEYBOARDCREATED;
 
-  // Destroy background layered window
+  // Destroy background layered window`<
   if (!DestroyWindow(self->m_hwndBkGnd)) {
     dwError = pws_os::IssueError(_T("DestroyWindow - Background"), false);
     ASSERT(0);
@@ -419,7 +420,94 @@ void CSDThread::CheckWindow()
   CloseWindowStation(station);
 }
 
-StringX GetControlText(const HWND hwnd)
+void CSDThread::YubiControlsUpdate(bool insertedOrRemoved)
+{
+  HWND hwndYbn = GetDlgItem(m_hwndDlg, IDC_YUBIKEY_BTN);
+  HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
+  HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
+
+  if (!YubiExists()) {
+    // if YubiKey was never detected, hide relevant controls
+    if (hwndYbn != NULL) ShowWindow(hwndYbn, SW_HIDE);
+    if (hwndYstatus != NULL) ShowWindow(hwndYstatus, SW_HIDE);
+    if (hwndYprog != NULL) ShowWindow(hwndYprog, SW_HIDE);
+  } else { // YubiExists - deal with it
+    if (hwndYstatus != NULL) {
+      const CString prompt(MAKEINTRESOURCE(insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT));
+      SetWindowText(hwndYstatus, prompt);
+      ShowWindow(hwndYstatus, SW_SHOW);
+    }
+    if (hwndYbn != NULL) {
+      HBITMAP hbm = HBITMAP(insertedOrRemoved ? m_yubiLogo : m_yubiLogoDisabled);
+      SendMessage(hwndYbn, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hbm);
+      ShowWindow(hwndYbn, SW_SHOW);
+    }
+  }
+}
+
+void CSDThread::yubiShowChallengeSent()
+{
+  // A request's in the air, setup GUI to wait for reply
+
+  // Since we can't get here unless the yubi button was clicked,
+  // we can assume the relevant windows are there.
+  HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
+  HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
+
+  ShowWindow(hwndYstatus, SW_HIDE);
+  SetWindowText(hwndYstatus, _T(""));
+  ShowWindow(hwndYprog, SW_SHOW);
+  SendMessage(hwndYprog, PBM_SETPOS, 15, 0);
+}
+
+void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf)
+{
+  // Since we can't get here unless the yubi button was clicked,
+  // we can assume the relevant windows are there.
+  HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
+  HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
+
+  switch (yrc) {
+  case YKLIB_OK:
+    SendMessage(hwndYprog, PBM_SETPOS, 0, 0);
+    // XXX We will have to support [sb]newPhrase[Entered] for passphrase change too...
+    m_pGMP->sPhrase = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
+    m_pGMP->bPhraseEntered = true;
+    ::SendMessage(m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDOK, BN_CLICKED), 0);
+    break;
+
+  case YKLIB_PROCESSING:  // Still processing or waiting for the result
+    break;
+
+  case YKLIB_TIMER_WAIT:  // A given number of seconds remain
+    SendMessage(hwndYprog, PBM_SETPOS, ts, 0);
+    break;
+
+  case YKLIB_INVALID_RESPONSE:  // Invalid or no response
+    ShowWindow(hwndYprog, SW_HIDE);
+    SetWindowText(hwndYstatus, CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
+    ShowWindow(hwndYstatus, SW_SHOW);
+    break;
+
+  default:                // A non-recoverable error has occured
+    ShowWindow(hwndYprog, SW_HIDE);
+    SetWindowText(hwndYstatus, CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
+    ShowWindow(hwndYstatus, SW_SHOW);
+    break;
+  }
+}
+
+void CSDThread::yubiInserted(void)
+{
+  YubiControlsUpdate(true);
+}
+
+void CSDThread::yubiRemoved(void)
+{
+  YubiControlsUpdate(false);
+}
+
+static StringX GetControlText(const HWND hwnd)
 {
   int n = GetWindowTextLength(hwnd) + 1;
   if (n > 1)
@@ -506,6 +594,15 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       // Don't say we have processed to let default action occur
       return (INT_PTR)FALSE;
 
+    case IDC_YUBIKEY_BTN:
+      {
+        HWND hwndPassKey = GetDlgItem(self->m_hwndDlg, IDC_PASSKEY);
+        const StringX sxPassKey = GetControlText(hwndPassKey);
+        self->yubiRequestHMACSha1(sxPassKey.c_str());
+      }
+      // Don't say we have processed to let default action occur
+      return (INT_PTR)FALSE;
+
     case IDOK:
     {
       self->OnOK();
@@ -552,6 +649,8 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       // Draw button image transparently
       ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, self->m_cfMask);
       return TRUE;
+    } else {
+      return FALSE;
     }
   }
 
@@ -621,6 +720,13 @@ void CSDThread::OnInitDialog()
   stringT sTime;
   Format(sTime, _T("%02d:%02d"), iMinutes, iSeconds);
   SetWindowText(m_hwndStaticTimer, sTime.c_str());
+
+  m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
+  m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
+  HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
+  if (hwndYprog != NULL)
+    SendMessage(hwndYprog, PBM_SETRANGE, 0, MAKELPARAM(0, 15));
+  YubiControlsUpdate(IsYubiInserted());
 
   // Secure Desktop toggle button image transparent mask
   m_cfMask = RGB(255, 255, 255);
@@ -748,15 +854,21 @@ void CSDThread::OnOK()
   /*
   self->m_wDialogID
 
-  IDD_SDGETPHRASE      IDC_PASSKEY, IDC_VKB, IDOK, IDCANCEL
-  IDD_SDKEYCHANGE      IDC_PASSKEY, IDC_NEWPASSKEY, IDC_CONFIRMNEW, IDC_VKB, IDOK, IDCANCEL
-  IDD_SDPASSKEYSETUP   IDC_PASSKEY, IDC_VERIFY, IDC_VKB, IDOK, IDCANCEL
+  IDD_SDGETPHRASE      IDC_PASSKEY, IDC_VKB, IDC_YUBIKEY_BTN, IDOK, IDCANCEL
+  IDD_SDKEYCHANGE      IDC_PASSKEY, IDC_NEWPASSKEY, IDC_CONFIRMNEW, IDC_VKB, IDC_YUBIKEY_BTN[2], IDOK, IDCANCEL
+  IDD_SDPASSKEYSETUP   IDC_PASSKEY, IDC_VERIFY, IDC_VKB, IDC_YUBIKEY_BTN, IDOK, IDCANCEL
   */
 
   StringX sxPassKey, sxNewPassKey1, sxNewPassKey2, sxVerifyPassKey;
 
   HWND hwndPassKey = GetDlgItem(m_hwndDlg, IDC_PASSKEY);
-  sxPassKey = GetControlText(hwndPassKey);
+
+  // bPhraseEntered will be set here IFF we were called by yubiProcessCompleted
+  // in which case the text is the response from the YubiKey
+  if (!m_pGMP->bPhraseEntered)
+    sxPassKey = GetControlText(hwndPassKey);
+  else
+    sxPassKey = m_pGMP->sPhrase;
 
   if (!sxPassKey.empty()) {
     m_pGMP->sPhrase = sxPassKey;
@@ -1009,6 +1121,9 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
   // Don't do anything if windows aren't visible
   if (!self->m_bMPWindowBeingShown && !self->m_bVKWindowBeingShown)
     return;
+
+  // Do Yubi polling
+  self->YubiPoll(); // Mixins rock!
 
   // Get time left in seconds
   int iTimeLeft = self->m_iUserTimeLimit - (GetTickCount() - iStartTime) / 1000;

@@ -281,7 +281,7 @@ void CPasskeySetup::OnYubikeyBtn()
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
   }
-  yubiRequestHMACSha1(); // request HMAC of m_passkey
+  yubiRequestHMACSha1(m_passkey);
 }
 
 void CPasskeySetup::ProcessPhrase()

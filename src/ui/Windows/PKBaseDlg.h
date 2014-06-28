@@ -16,8 +16,7 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 #include "GetMasterPhrase.h"
-
-#include "os/windows/yubi/YkLib.h"
+#include "YubiMixin.h"
 
 #include <limits>
 
@@ -32,7 +31,7 @@ class CVKeyBoardDlg;
  * to reflect inserted/removed state of the device.
  */
 
-class CPKBaseDlg : public CPWDialog {
+class CPKBaseDlg : public CPWDialog , public CYubiMixin {
 public:
   CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop);
   virtual ~CPKBaseDlg();
@@ -41,11 +40,6 @@ public:
   void DoDataExchange(CDataExchange* pDX);
 
   const CSecString &GetPassKey() const {return m_passkey;}
-
-  // Following help us assure that if a YubiKey's
-  // inserted in *any* dbox that uses it, others will reflect this.
-  static bool YubiExists() {return s_yubiDetected;}
-  static void SetYubiExists() {s_yubiDetected = true;}
 
 protected:
   friend class CWZSelectDB;
@@ -69,9 +63,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-  virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
-  virtual void YubiFailed() {};
-
   // non-Secure Desktop use of the virtual keyboard
   HWND m_hwndVKeyBoard;
 
@@ -82,14 +73,11 @@ protected:
   DWORD m_dwRC;  // SD Thread exit code
   bool m_bUseSecureDesktop;
 
-  // Yubico-related:
-  bool IsYubiInserted() const;
-  // Callbacks:
+  virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
+  virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf);
   virtual void yubiInserted(void); // called when Yubikey's inserted
   virtual void yubiRemoved(void);  // called when Yubikey's removed
-  void yubiCheckCompleted(); // called when request pending and timer fired
 
-  void yubiRequestHMACSha1(); // request HMAC of m_passkey
   // Indicate that we're waiting for user to activate YubiKey:
   CProgressCtrl m_yubi_timeout;
   // Show user what's going on / what we're waiting for:
@@ -107,10 +95,4 @@ private:
      THREADRESUMED              = 0x20,
    };
 
-  // Yubico-related:
-  static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
-  mutable CYkLib m_yk;
-  bool m_pending; // request pending?
-  bool m_present; // key present?
-  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };

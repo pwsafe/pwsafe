@@ -313,7 +313,7 @@ void CPasskeyChangeDlg::OnYubikeyBtn()
   // This is for existing password verification
   UpdateData(TRUE);
   m_Yubi1pressed = true;
-  yubiRequestHMACSha1(); // request HMAC of m_passkey
+  yubiRequestHMACSha1(m_passkey);
 }
 
 void CPasskeyChangeDlg::OnYubikey2Btn()
@@ -326,7 +326,7 @@ void CPasskeyChangeDlg::OnYubikey2Btn()
     m_Yubi2pressed = true;
     m_oldpasskey = m_passkey; // might need for confirmation
     m_passkey = m_newpasskey;
-    yubiRequestHMACSha1(); // request HMAC of m_passkey
+    yubiRequestHMACSha1(m_newpasskey);
   }
 }
 

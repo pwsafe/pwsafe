@@ -12,10 +12,11 @@
 
 #include "core/StringX.h"
 #include "GetMasterPhrase.h"
+#include "YubiMixin.h"
 
 class CVKeyBoardDlg;
 
-class CSDThread
+class CSDThread : public CYubiMixin
 {
 
 public:
@@ -71,6 +72,18 @@ public:
    CBitmap *m_pbmpDimmedScreen;
    GetMasterPhrase *m_pGMP;
    CVKeyBoardDlg *m_pVKeyBoardDlg;
+
+   // Yubi stuff
+   CProgressCtrl m_yubi_timeout;
+   CEdit m_yubi_status;
+   CBitmap m_yubiLogo;
+   CBitmap m_yubiLogoDisabled;
+   void YubiControlsUpdate(bool insertedOrRemoved); // enable/disable/show/hide
+   // Callbacks interfaces
+   virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
+   virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf);
+   virtual void yubiInserted(void);
+   virtual void yubiRemoved(void);
 
    HINSTANCE m_hInstance;
    HWND m_hwndBkGnd, m_hwndVKeyBoard, m_hwndMasterPhraseDlg;

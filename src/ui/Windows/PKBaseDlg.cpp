@@ -27,14 +27,13 @@
 using namespace std;
 
 const wchar_t CPKBaseDlg::PSSWDCHAR = L'*';
-bool CPKBaseDlg::s_yubiDetected = false;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop)
   : CPWDialog(id, pParent), m_bUseSecureDesktop(bUseSecureDesktop),
   m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
-  m_pVKeyBoardDlg(NULL), m_pending(false), m_hwndVKeyBoard(NULL)
+  m_pVKeyBoardDlg(NULL), m_hwndVKeyBoard(NULL)
 {
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
@@ -88,18 +87,6 @@ BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SD_TOGGLE, OnSwitchSecureDesktop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-
-bool CPKBaseDlg::IsYubiInserted() const
-{
-  if (m_pending)
-    return true; // can't check in the middle of a request
-  else {
-    CSingleLock singeLock(&m_mutex);
-    singeLock.Lock();
-    return (m_yk.enumPorts() == 1);
-  }
-}
 
 BOOL CPKBaseDlg::OnInitDialog(void)
 {
@@ -167,47 +154,43 @@ BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
 void CPKBaseDlg::yubiInserted(void)
 {
   CButton *ybn = (CButton*)GetDlgItem(IDC_YUBIKEY_BTN);
-  ybn->SetBitmap(m_yubiLogo);
-  ybn->ShowWindow(SW_SHOW);
-  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-  m_yubi_status.ShowWindow(SW_SHOW);
+  // Not there if Secure Desktop enabled
+  if (ybn != NULL) {
+    ybn->SetBitmap(m_yubiLogo);
+    ybn->ShowWindow(SW_SHOW);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+    m_yubi_status.ShowWindow(SW_SHOW);
+  }
 }
 
 void CPKBaseDlg::yubiRemoved(void)
 {
-  ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
-  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
-}
-
-static StringX Bin2Hex(const unsigned char *buf, int len)
-{
-  wostringstream os;
-  os << setw(2);
-  os << setfill(L'0');
-  for (int i = 0; i < len; i++) {
-    os << hex << setw(2) << int(buf[i]);
+  CButton *ybn = (CButton*)GetDlgItem(IDC_YUBIKEY_BTN);
+  // Not there if Secure Desktop enabled
+  if (ybn != NULL) {
+    ybn->SetBitmap(m_yubiLogoDisabled);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
-  return StringX(os.str().c_str());
 }
 
-void CPKBaseDlg::yubiCheckCompleted()
+void CPKBaseDlg::yubiShowChallengeSent()
 {
-  // We now wait for a response with the HMAC-SHA1 digest
-  BYTE respBuf[SHA1_DIGEST_SIZE];
-  unsigned short timer;
-  CSingleLock singeLock(&m_mutex);
-  singeLock.Lock();
-  YKLIB_RC rc = m_yk.waitForCompletion(YKLIB_NO_WAIT,
-                                       respBuf, sizeof(respBuf), &timer);
-  switch (rc) {
+  // A request's in the air, setup GUI to wait for reply
+  m_yubi_status.ShowWindow(SW_HIDE);
+  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_timeout.ShowWindow(SW_SHOW);
+  m_yubi_timeout.SetPos(15);
+}
+
+void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf)
+{
+  switch (yrc) {
   case YKLIB_OK:
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetPos(0);
     m_yubi_status.SetWindowText(_T(""));
     TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
-    m_pending = false;
-    m_yk.closeKey();
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     // The returned hash is the passkey
     ProcessPhrase();
@@ -219,92 +202,29 @@ void CPKBaseDlg::yubiCheckCompleted()
     break;
 
   case YKLIB_TIMER_WAIT:  // A given number of seconds remain 
-    m_yubi_timeout.SetPos(timer);
+    m_yubi_timeout.SetPos(ts);
     break;
 
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
-    m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
     m_yubi_status.ShowWindow(SW_SHOW);
-    m_yk.closeKey();
     YubiFailed(); // allow subclass to do something useful
     break;
 
   default:                // A non-recoverable error has occured
-    m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
-    m_yk.closeKey();
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), rc);
+    TRACE(_T("yubiCompleted(%d)\n"), yrc);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }
 }
 
-void CPKBaseDlg::yubiRequestHMACSha1()
-{
-  if (m_pending) {
-    // no-op if a request's already in the air
-  } else {
-    CSingleLock singeLock(&m_mutex);
-    singeLock.Lock();
-    // open key
-    // if zero or >1 key, we'll fail
-    if (m_yk.openKey() != YKLIB_OK) {
-      return;
-    }
-
-    // Prepare the HMAC-SHA1 challenge here
-
-    BYTE chalBuf[SHA1_MAX_BLOCK_SIZE];
-    BYTE chalLength = BYTE(m_passkey.GetLength()*sizeof(TCHAR));
-    memset(chalBuf, 0, SHA1_MAX_BLOCK_SIZE);
-    if (chalLength > SHA1_MAX_BLOCK_SIZE)
-      chalLength = SHA1_MAX_BLOCK_SIZE;
-
-    memcpy(chalBuf, m_passkey, chalLength);
-
-    // Initiate HMAC-SHA1 operation now
-
-    if (m_yk.writeChallengeBegin(YKLIB_SECOND_SLOT, YKLIB_CHAL_HMAC,
-                                 chalBuf, chalLength) == YKLIB_OK) {
-      // request's in the air, setup GUI to wait for reply
-      m_pending = true;
-      m_yubi_status.ShowWindow(SW_HIDE);
-      m_yubi_status.SetWindowText(_T(""));
-      m_yubi_timeout.ShowWindow(SW_SHOW);
-      m_yubi_timeout.SetPos(15);
-    } else {
-      TRACE(_T("m_yk.writeChallengeBegin() failed"));
-    }
-    trashMemory(chalBuf, chalLength);
-  }
-}
-
 void CPKBaseDlg::OnTimer(UINT_PTR )
 {
-  // Ignore if Secure Desktop
-  if (m_bUseSecureDesktop)
-    return;
-
-  // If an operation is pending, check if it has completed
-  if (m_pending) {
-    yubiCheckCompleted();
-  } else {
-    // No HMAC operation is pending - check if one and only one key is present
-    bool inserted = IsYubiInserted();
-    // call relevant callback if something's changed
-    if (inserted != m_present) {
-      m_present = inserted;
-      if (m_present) {
-        SetYubiExists(); // proof that user has a yubikey!
-        yubiInserted();
-      } else
-        yubiRemoved();
-    }
-  }
+  YubiPoll();
 }
 
 void CPKBaseDlg::OnSwitchSecureDesktop()
