@@ -678,7 +678,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
   case PWS_MSG_INSERTBUFFER:
   {
-    self->OnVirtualKeyboard();
+    self->OnInsertBuffer();
     return (INT_PTR)TRUE; // Processed
   }  // PWS_MSG_INSERTBUFFER
 
