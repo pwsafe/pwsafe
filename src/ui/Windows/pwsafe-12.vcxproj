@@ -896,6 +896,7 @@
     <ClCompile Include="WZSelectDB.cpp" />
     <ClCompile Include="SDThread.cpp" />
     <ClCompile Include="YubiCfgDlg.cpp" />
+    <ClCompile Include="YubiMixin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -1032,6 +1033,7 @@
     <ClInclude Include="WZSelectDB.h" />
     <ClInclude Include="SDThread.h" />
     <ClInclude Include="YubiCfgDlg.h" />
+    <ClInclude Include="YubiMixin.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />
@@ -1345,10 +1347,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="graphics\locked_tray.bmp" />
+    <Image Include="graphics\Not_Using_SD.bmp" />
     <Image Include="graphics\PWS-SD.bmp" />
-    <Image Include="graphics\toolbar\new\bitmap1.bmp" />
-    <Image Include="graphics\unlocked_tray.bmp" />
+    <Image Include="graphics\Using_SD.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>
