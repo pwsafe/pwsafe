@@ -224,7 +224,8 @@ void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYT
 
 void CPKBaseDlg::OnTimer(UINT_PTR )
 {
-  YubiPoll();
+  if (!m_yubiPollDisable)
+    YubiPoll();
 }
 
 void CPKBaseDlg::OnSwitchSecureDesktop()
@@ -317,6 +318,9 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Update progress
   xFlags |= THREADCREATED;
 
+  // Avoid polling Yubikey from > 1 thread
+  m_yubiPollDisable = true;
+
   // Resume thread (not really necessary to create it suspended and then resume but just in
   // case we want to do extra processing between creation and running
   ResumeThread(hThread);
@@ -329,6 +333,9 @@ void CPKBaseDlg::StartThread(int iDialogType)
     HANDLE hWait[2] = { pThrdDlg->m_hWaitableTimer, hThread };
     dwEvent = WaitForMultipleObjects(2, hWait, FALSE, INFINITE);
   }
+
+  // we can allow yubi polling again
+  m_yubiPollDisable = false;
 
   // Find out what happened
   switch (dwEvent) {

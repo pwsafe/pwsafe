@@ -45,6 +45,7 @@ class CYubiMixin {
   StringX Bin2Hex(const unsigned char *buf, int len);
   static bool s_yubiDetected; // set if yubikey was inserted in the app's lifetime.
   mutable CYkLib m_yk;
+  bool m_yubiPollDisable;
   bool m_pending; // request pending?
   bool m_present; // key present?
   mutable CMutex m_mutex; // protect against race conditions when calling Yubi API

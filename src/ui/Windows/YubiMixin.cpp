@@ -14,7 +14,7 @@
 
 bool CYubiMixin::s_yubiDetected = false;
 
-CYubiMixin::CYubiMixin() : m_pending(false)
+CYubiMixin::CYubiMixin() : m_yubiPollDisable(false), m_pending(false)
 {}
 
 void CYubiMixin::YubiPoll()
