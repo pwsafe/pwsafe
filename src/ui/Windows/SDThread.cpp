@@ -46,7 +46,7 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
 CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID, HMONITOR hCurrentMonitor)
   : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID), m_hCurrentMonitor(hCurrentMonitor),
-  m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
+    m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
   m_bVKCreated(false), m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
   m_iMinutes(-1), m_iSeconds(-1), m_hWaitableTimer(0)
 {
@@ -423,24 +423,40 @@ void CSDThread::CheckWindow()
 void CSDThread::YubiControlsUpdate(bool insertedOrRemoved)
 {
   HWND hwndYbn = GetDlgItem(m_hwndDlg, IDC_YUBIKEY_BTN);
+  HWND hwndYbn2 = GetDlgItem(m_hwndDlg, IDC_YUBIKEY2_BTN); // only in Change Combination
   HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
   HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
 
   if (!YubiExists()) {
     // if YubiKey was never detected, hide relevant controls
     if (hwndYbn != NULL) ShowWindow(hwndYbn, SW_HIDE);
+    if (hwndYbn2 != NULL) ShowWindow(hwndYbn2, SW_HIDE);
     if (hwndYstatus != NULL) ShowWindow(hwndYstatus, SW_HIDE);
     if (hwndYprog != NULL) ShowWindow(hwndYprog, SW_HIDE);
   } else { // YubiExists - deal with it
+    HBITMAP hbm;
+    CString prompt;
+
+    if (insertedOrRemoved) {
+      hbm = HBITMAP(m_yubiLogo);
+      prompt = CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT));
+    } else {
+      hbm = HBITMAP(m_yubiLogoDisabled);
+      prompt = CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
+    }
+
     if (hwndYstatus != NULL) {
-      const CString prompt(MAKEINTRESOURCE(insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT));
       SetWindowText(hwndYstatus, prompt);
       ShowWindow(hwndYstatus, SW_SHOW);
     }
+
     if (hwndYbn != NULL) {
-      HBITMAP hbm = HBITMAP(insertedOrRemoved ? m_yubiLogo : m_yubiLogoDisabled);
       SendMessage(hwndYbn, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hbm);
       ShowWindow(hwndYbn, SW_SHOW);
+    }
+    if (hwndYbn2 != NULL) {
+      SendMessage(hwndYbn2, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hbm);
+      ShowWindow(hwndYbn2, SW_SHOW);
     }
   }
 }
@@ -462,6 +478,7 @@ void CSDThread::yubiShowChallengeSent()
 
 void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf)
 {
+  ASSERT(m_passkeyID == IDC_PASSKEY || m_passkeyID == IDC_NEWPASSKEY);
   // Since we can't get here unless the yubi button was clicked,
   // we can assume the relevant windows are there.
   HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
@@ -470,10 +487,16 @@ void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE
   switch (yrc) {
   case YKLIB_OK:
     SendMessage(hwndYprog, PBM_SETPOS, 0, 0);
-    // XXX We will have to support [sb]newPhrase[Entered] for passphrase change too...
-    m_pGMP->sPhrase = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
-    m_pGMP->bPhraseEntered = true;
-    ::SendMessage(m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDOK, BN_CLICKED), 0);
+    ShowWindow(hwndYprog, SW_HIDE);
+    SetWindowText(hwndYstatus, _T(""));
+    ShowWindow(hwndYstatus, SW_SHOW);
+    if (m_passkeyID == IDC_PASSKEY) {
+      m_yubiResp[0] = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
+      if (m_wDialogID != IDD_SDKEYCHANGE)
+        ::SendMessage(m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDOK, BN_CLICKED), 0);
+    } else { // IDC_NEWPASSKEY
+      m_yubiResp[1] = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
+    }
     break;
 
   case YKLIB_PROCESSING:  // Still processing or waiting for the result
@@ -598,6 +621,17 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       {
         HWND hwndPassKey = GetDlgItem(self->m_hwndDlg, IDC_PASSKEY);
         const StringX sxPassKey = GetControlText(hwndPassKey);
+        self->m_passkeyID = IDC_PASSKEY;
+        self->yubiRequestHMACSha1(sxPassKey.c_str());
+      }
+      // Don't say we have processed to let default action occur
+      return (INT_PTR)FALSE;
+
+    case IDC_YUBIKEY2_BTN: // in Change Combination, this is the new
+      {
+        HWND hwndNewPassKey = GetDlgItem(self->m_hwndDlg, IDC_NEWPASSKEY);
+        const StringX sxPassKey = GetControlText(hwndNewPassKey);
+        self->m_passkeyID = IDC_NEWPASSKEY;
         self->yubiRequestHMACSha1(sxPassKey.c_str());
       }
       // Don't say we have processed to let default action occur
@@ -865,10 +899,10 @@ void CSDThread::OnOK()
 
   // bPhraseEntered will be set here IFF we were called by yubiProcessCompleted
   // in which case the text is the response from the YubiKey
-  if (!m_pGMP->bPhraseEntered)
+  if (m_yubiResp[0].empty())
     sxPassKey = GetControlText(hwndPassKey);
   else
-    sxPassKey = m_pGMP->sPhrase;
+    sxPassKey = m_yubiResp[0];
 
   if (!sxPassKey.empty()) {
     m_pGMP->sPhrase = sxPassKey;
@@ -885,8 +919,7 @@ void CSDThread::OnOK()
   switch (m_wDialogID) {
   case IDD_SDGETPHRASE:
   {
-    // Just verify IDC_PASSKEY - done by caller
-    // Tidy everything
+    // Just verify IDC_PASSKEY - already done before switch statement
     break;
   }
   case IDD_SDKEYCHANGE:
@@ -901,15 +934,14 @@ void CSDThread::OnOK()
       iMsgID = IDS_WRONGOLDPHRASE;
     else if (rc == PWScore::CANT_OPEN_FILE)
       iMsgID = IDS_CANTVERIFY;
-    else
-    {
+    else { // old passphrase verified, check new
       HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
       sxNewPassKey1 = GetControlText(hwndNewPassKey1);
 
       HWND hwndNewPassKey2 = GetDlgItem(m_hwndDlg, IDC_CONFIRMNEW);
       sxNewPassKey2 = GetControlText(hwndNewPassKey2);
 
-      if (sxNewPassKey1.empty()) {
+      if (sxNewPassKey1.empty() && m_yubiResp[1].empty()) {
         iMsgID = IDS_CANNOTBEBLANK;
         hwndFocus = hwndNewPassKey1;
       }
@@ -926,7 +958,7 @@ void CSDThread::OnOK()
       return;
     }
 
-    if (!CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
+    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
       StringX sxMsg, sxText;
       Format(sxMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
@@ -943,7 +975,10 @@ void CSDThread::OnOK()
       return;
 #endif  // PWS_FORCE_STRONG_PASSPHRASE
     }
-    m_pGMP->sNewPhrase = sxNewPassKey1;
+    if (m_yubiResp[1].empty())
+      m_pGMP->sNewPhrase = sxNewPassKey1;
+    else
+      m_pGMP->sNewPhrase = m_yubiResp[1];
     m_pGMP->bNewPhraseEntered = true;
     break;
   }
@@ -969,7 +1004,7 @@ void CSDThread::OnOK()
       return;
     }
 
-    if (!CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
+    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
       StringX sxMsg, sxText;
       Format(sxMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
@@ -986,7 +1021,10 @@ void CSDThread::OnOK()
       return;
 #endif  // PWS_FORCE_STRONG_PASSPHRASE
     }
-    m_pGMP->sNewPhrase = sxNewPassKey1;
+    if (m_yubiResp[1].empty())
+      m_pGMP->sNewPhrase = sxNewPassKey1;
+    else
+      m_pGMP->sNewPhrase = m_yubiResp[1];
     m_pGMP->bNewPhraseEntered = true;
     break;
   }

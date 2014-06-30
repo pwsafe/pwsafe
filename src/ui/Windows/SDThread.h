@@ -84,6 +84,8 @@ public:
    virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf);
    virtual void yubiInserted(void);
    virtual void yubiRemoved(void);
+   int m_passkeyID; // either IDC_PASSKEY or IDC_NEWPASSKEY
+   StringX m_yubiResp[2]; // [0] set via IDC_PASSKEY, [1] via IDC_NEWPASSKEY
 
    HINSTANCE m_hInstance;
    HWND m_hwndBkGnd, m_hwndVKeyBoard, m_hwndMasterPhraseDlg;
