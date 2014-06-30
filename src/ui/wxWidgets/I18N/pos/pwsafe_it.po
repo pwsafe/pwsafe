@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PasswordSafe ITA v0.94\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-19 14:28+0200\n"
-"PO-Revision-Date: 2014-06-27 13:01+0200\n"
+"POT-Creation-Date: 2014-06-28 14:18+0200\n"
+"PO-Revision-Date: 2014-06-28 14:48+0200\n"
 "Last-Translator: Luca Mariot <rymoah@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: it\n"
@@ -81,31 +81,31 @@ msgstr "Tentativo di connessione al server..."
 msgid "http://pwsafe.org/latest.xml"
 msgstr "http://pwsafe.org/latest.xml"
 
-#: ../../../ui/wxWidgets/about.cpp:321
+#: ../../../ui/wxWidgets/about.cpp:322
 msgid "Couldn't contact server."
 msgstr "Impossibile contattare il server."
 
-#: ../../../ui/wxWidgets/about.cpp:324
+#: ../../../ui/wxWidgets/about.cpp:325
 msgid "This is the latest release!"
 msgstr "Questa è l'ultima versione!"
 
-#: ../../../ui/wxWidgets/about.cpp:328
+#: ../../../ui/wxWidgets/about.cpp:329
 msgid "Current version: "
 msgstr "Versione corrente: "
 
-#: ../../../ui/wxWidgets/about.cpp:330
+#: ../../../ui/wxWidgets/about.cpp:331
 msgid "Latest version:\t"
 msgstr "Ultima versione:\t"
 
-#: ../../../ui/wxWidgets/about.cpp:332
+#: ../../../ui/wxWidgets/about.cpp:333
 msgid "Please visit the PasswordSafe website to download the latest version."
 msgstr "Visita il sito web di PasswordSafe per scaricare l'ultima versione."
 
-#: ../../../ui/wxWidgets/about.cpp:333
+#: ../../../ui/wxWidgets/about.cpp:334
 msgid "Newer Version Found!"
 msgstr "Versione più recente trovata!"
 
-#: ../../../ui/wxWidgets/about.cpp:340
+#: ../../../ui/wxWidgets/about.cpp:341
 msgid "Could not read server version data."
 msgstr "Impossibile leggere i dati di versione dal server."
 
@@ -177,6 +177,7 @@ msgid "Notes:"
 msgstr "Note:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:337
+#: ../../../ui/wxWidgets/helpmap.h:44
 msgid "Basic"
 msgstr "Generale"
 
@@ -262,6 +263,7 @@ msgstr "Shift+Doppio Click:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:504
+#: ../../../ui/wxWidgets/helpmap.h:39
 msgid "Password History"
 msgstr "Cronologia Password"
 
@@ -282,6 +284,7 @@ msgid "Copy All"
 msgstr "Copia Tutto"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:422
+#: ../../../ui/wxWidgets/helpmap.h:47
 msgid "Additional"
 msgstr "Proprietà Aggiuntive"
 
@@ -350,6 +353,7 @@ msgid "Any field last changed on:"
 msgstr "Data ultima modifica altri campi:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:503
+#: ../../../ui/wxWidgets/helpmap.h:45
 msgid "Dates and Times"
 msgstr "Date e Scadenze"
 
@@ -445,6 +449,8 @@ msgstr "Usa soltanto cifre esadecimali (0-9, a-f)"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1465
+#: ../../../ui/wxWidgets/helpmap.h:38 ../../../ui/wxWidgets/helpmap.h:46
+#: ../../../ui/wxWidgets/PasswordPolicy.h:66
 msgid "Password Policy"
 msgstr "Generazione Password"
 
@@ -1282,6 +1288,7 @@ msgstr "Digitazione Automatica"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:103
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:380
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:399
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:190
 msgid "Browse to URL"
 msgstr "Visita URL"
 
@@ -1371,6 +1378,7 @@ msgid "Same as database's"
 msgstr "La stessa dove è salvato il database"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:295
+#: ../../../ui/wxWidgets/helpmap.h:35
 msgid "Backups"
 msgstr "Backup"
 
@@ -1431,6 +1439,7 @@ msgid "Initial Tree View"
 msgstr "Vista ad albero iniziale"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:353
+#: ../../../ui/wxWidgets/helpmap.h:36
 msgid "Display"
 msgstr "Visualizza"
 
@@ -1487,6 +1496,7 @@ msgid "Browser Command Line parameters"
 msgstr "Parametri da linea di comando con cui avviare il Browser"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:464
+#: ../../../ui/wxWidgets/helpmap.h:37
 msgid "Misc."
 msgstr "Varie"
 
@@ -1563,6 +1573,7 @@ msgid "Maximum"
 msgstr "Massima"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:560
+#: ../../../ui/wxWidgets/helpmap.h:40
 msgid "Security"
 msgstr "Sicurezza"
 
@@ -1634,10 +1645,12 @@ msgstr ""
 "aiutare."
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:629
+#: ../../../ui/wxWidgets/helpmap.h:41
 msgid "System"
 msgstr "Sistema"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:639
+#: ../../../ui/wxWidgets/helpmap.h:42
 msgid "Shortcuts"
 msgstr "Scorciatoie"
 
@@ -1839,10 +1852,12 @@ msgid "&Dragbar visible"
 msgstr "Barra di &Trascinamento visibile"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:427
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
 msgid "Expand All"
 msgstr "Espandi Tutto"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:428
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
 msgid "Collapse All"
 msgstr "Riduci Tutto"
 
@@ -3445,3 +3460,130 @@ msgstr "Errore: Risposta non valida dalla YubiKey"
 #: ../../../ui/wxWidgets/YubiMixin.cpp:140
 msgid "Error: Unconfigured YubiKey?"
 msgstr "Errore: YubiKey non configurata?"
+
+#: ../../../ui/wxWidgets/about.h:47
+msgid "About Password Safe"
+msgstr "Informazioni su Password Safe"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.h:106
+#: ../../../ui/wxWidgets/addeditpropsheet.h:112
+msgid "Edit Entry"
+msgstr "Modifica Voce"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.h:111
+msgid "Add Entry"
+msgstr "Aggiungi Voce"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.h:113
+msgid "View Entry"
+msgstr "Visualizza Voce"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.h:114
+msgid "Add, Edit or View Entry"
+msgstr "Aggiungi, Modifica o Visualizza Voce"
+
+#: ../../../ui/wxWidgets/createshortcutdlg.h:49
+msgid "Create Shortcut"
+msgstr "Crea Scorciatoia"
+
+#: ../../../ui/wxWidgets/deleteconfirmation.h:40
+msgid "Delete Confirmation"
+msgstr "Conferma Cancellazione"
+
+#: ../../../ui/wxWidgets/editshortcut.h:49
+msgid "Edit Shortcut"
+msgstr "Modifica Scorciatoia"
+
+#: ../../../ui/wxWidgets/ManagePwdPolicies.h:59
+msgid "Manage Password Policies"
+msgstr "Gestione Metodi Generazione Password"
+
+#: ../../../ui/wxWidgets/optionspropsheet.h:114
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+msgid "Options"
+msgstr "Opzioni"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.h:104
+#: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
+msgid "PasswordSafe"
+msgstr "PasswordSafe"
+
+#: ../../../ui/wxWidgets/properties.h:52
+msgid "Properties"
+msgstr "Proprietà"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:179
+msgid "Make New Database"
+msgstr "Crea un Nuovo Database"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:180
+msgid "Open Another Database"
+msgstr "Apri un Altro Database"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:181
+msgid "Close Database"
+msgstr "Chiudi Database"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:182
+msgid "Save Database"
+msgstr "Salva Database"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:184
+msgid "Copy Password to Clipboard"
+msgstr "Copia Password negli Appunti"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:185
+msgid "Copy Username to Clipboard"
+msgstr "Copia Nome Utente negli Appunti"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:186
+msgid "Copy Notes to Clipboard"
+msgstr "Copia le Note negli Appunti"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:187
+msgid "Clear the clipboard contents"
+msgstr "Svuota Appunti"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:189
+msgid "Perform Autotype"
+msgstr "Esegui Digitazione Automatica"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:191
+msgid "Send Email"
+msgstr "Invia Email"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+msgid "Add New Entry"
+msgstr "Aggiungi Voce"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+msgid "Edit an Entry"
+msgstr "Modifica Voce"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+msgid "Delete an Entry"
+msgstr "Cancella Voce"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+msgid "Help"
+msgstr "Aiuto"
+
+#: ../../../ui/wxWidgets/safecombinationchange.h:55
+msgid "Change Safe Combination"
+msgstr "Cambia Combinazione di Sicurezza"
+
+#: ../../../ui/wxWidgets/safecombinationentry.h:58
+msgid "Safe Combination Entry"
+msgstr "Inserimento Combinazione di Sicurezza"
+
+#: ../../../ui/wxWidgets/safecombinationprompt.h:52
+msgid "Enter Safe Combination"
+msgstr "Inserire Combinazione di Sicurezza"
+
+#: ../../../ui/wxWidgets/safecombinationsetup.h:55
+msgid "Safe Combination Setup"
+msgstr "Impostazione Combinazione di Sicurezza"
+
+#: ../../../ui/wxWidgets/yubicfg.h:52
+msgid "YubiKey Configuration"
+msgstr "Configurazione YubiKey"
