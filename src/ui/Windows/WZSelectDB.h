@@ -11,12 +11,13 @@
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
 #include "GetMasterPhrase.h"
+#include "YubiMixin.h"
 
 #include "resource.h"
 
 class CVKeyBoardDlg;
 
-class CWZSelectDB : public CWZPropertyPage
+class CWZSelectDB : public CWZPropertyPage, public CYubiMixin
 {
 public:
   DECLARE_DYNAMIC(CWZSelectDB)
@@ -91,22 +92,18 @@ private:
   void ConfigureDialog();
 
   // Yubico-related:
-  bool IsYubiInserted() const;
   // Callbacks:
-  void yubiInserted(void); // called when Yubikey's inserted
-  void yubiRemoved(void);  // called when Yubikey's removed
-  void yubiCheckCompleted(); // called when request pending and timer fired
+  virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
+  virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf); // called by yubiCheckCompleted()
+  virtual void yubiInserted(void); // called when Yubikey's inserted
+  virtual void yubiRemoved(void);  // called when Yubikey's removed
 
-  void yubiRequestHMACSha1(); // request HMAC of m_passkey
   // Indicate that we're waiting for user to activate YubiKey:
   CProgressCtrl m_yubi_timeout;
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
   CBitmap m_yubiLogoDisabled;
-  bool m_pending; // request pending?
-  bool m_present; // key present?
-  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };
 //-----------------------------------------------------------------------------
 // Local variables:

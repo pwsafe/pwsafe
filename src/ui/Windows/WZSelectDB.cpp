@@ -17,9 +17,10 @@
 #include "SecString.h"
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
-#include "PKBaseDlg.h" // for *YubiExists
+#include "PKBaseDlg.h"
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
+#include "core/core.h" // for IDSC_UNKNOWN_ERROR
 #include "core/Util.h"
 #include "core/PWSdirs.h"
 #include "os/env.h"
@@ -45,7 +46,7 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
   m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
   m_bFileExistsUserAsked(false),
   m_filespec(L""), m_passkey(L""),
-  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn), m_pending(false),
+  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
   m_pctlPasskey(new CSecEditExtn)
 {
   m_pWZPSH = (CWZPropertySheet *)pParent;
@@ -259,7 +260,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
     CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-    if (CPKBaseDlg::YubiExists()) {
+    if (YubiExists()) {
       ybn->ShowWindow(SW_SHOW);
       m_yubi_status.ShowWindow(SW_SHOW);
     }
@@ -410,13 +411,18 @@ void CWZSelectDB::OnAdvanced()
 void CWZSelectDB::OnEnterCombination()
 {
   // Only needed for its thread processing - never dispays its own dialog (no DoModal etc.)
-  CPKBaseDlg *pPKBaseDlg = new CPKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
+  CPKBaseDlg PKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
+  // XXX This doesn't work for YubiKey, as we need a timer handler. Either subclass PKBaseDlg
+  // XXX just for OnTimer, or do some serious refactoring (and make PKBaseDlg an abstract base
+  // XXX class while we're at it)
 
+  // Avoid polling Yubikey from > 1 thread
+  m_yubiPollDisable = true;
   // Get passphrase from Secure Desktop
-  pPKBaseDlg->StartThread(IDD_SDGETPHRASE);
+  PKBaseDlg.StartThread(IDD_SDGETPHRASE);
 
-  if (pPKBaseDlg->m_GMP.bPhraseEntered) {
-    m_passkey = pPKBaseDlg->m_GMP.sPhrase.c_str();
+  if (PKBaseDlg.m_GMP.bPhraseEntered) {
+    m_passkey = PKBaseDlg.m_GMP.sPhrase.c_str();
     if (m_passkey.GetLength() > 0)
       m_state |= KEYPRESENT;
     else
@@ -426,8 +432,6 @@ void CWZSelectDB::OnEnterCombination()
   }
 
   ShowWindow(SW_SHOW);
-  delete pPKBaseDlg;
-
   UpdateData(FALSE);
 }
 
@@ -744,19 +748,6 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
   return 0L;
 }
 
-// Yubi-related stuff, copied from CPKBaseDlg because MFC broke multiple-inheritance
-bool CWZSelectDB::IsYubiInserted() const
-{
-  if (m_pending)
-    return true; // can't check in the middle of a request
-  else {
-    CYkLib yk;
-    CSingleLock singeLock(&m_mutex);
-    singeLock.Lock();
-    return (yk.enumPorts() == 1);
-  }
-}
-
 void CWZSelectDB::yubiInserted(void)
 {
   CButton *ybn = (CButton *)GetDlgItem(IDC_YUBIKEY_BTN);
@@ -769,36 +760,23 @@ void CWZSelectDB::yubiInserted(void)
 
 void CWZSelectDB::yubiRemoved(void)
 {
-((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
+  ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 }
+  BYTE respBuf[SHA1_DIGEST_SIZE];
 
-static StringX Bin2Hex(const unsigned char *buf, int len)
+void CWZSelectDB::yubiShowChallengeSent()
 {
-  wostringstream os;
-  os << setw(2);
-  os << setfill(L'0');
-  for (int i = 0; i < len; i++) {
-    os << hex << setw(2) << int(buf[i]);
-  }
-  return StringX(os.str().c_str());
+  // A request's in the air, setup GUI to wait for reply
+  m_yubi_status.ShowWindow(SW_HIDE);
+  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_timeout.ShowWindow(SW_SHOW);
+  m_yubi_timeout.SetPos(15);
 }
 
-void CWZSelectDB::yubiCheckCompleted()
+void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf)
 {
-  // We now wait for a response with the HMAC-SHA1 digest
-  BYTE respBuf[SHA1_DIGEST_SIZE];
-  unsigned short timer;
-  CSingleLock singeLock(&m_mutex);
-  CYkLib yk;
-  singeLock.Lock();
-  if (yk.openKey() != YKLIB_OK) {
-    m_yubi_status.SetWindowText(_T("Failed to access YubiKey"));
-      return;
-  }
-  YKLIB_RC rc = yk.waitForCompletion(YKLIB_NO_WAIT,
-                                     respBuf, sizeof(respBuf), &timer);
-  switch (rc) {
+  switch (yrc) {
   case YKLIB_OK:
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
@@ -809,7 +787,6 @@ void CWZSelectDB::yubiCheckCompleted()
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     // The returned hash is the passkey
     m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable
-    m_yubi_status.SetWindowText(_T("YubiKey data received")); // shouldn't really show
     // This will check the password, etc.:
     UpdateData(FALSE); // passwd -> control
     m_pWZPSH->PostMessage(WM_COMMAND, MAKELONG(ID_WIZNEXT, BN_CLICKED), 0);
@@ -817,13 +794,13 @@ void CWZSelectDB::yubiCheckCompleted()
   case YKLIB_PROCESSING:  // Still processing or waiting for the result
     break;
   case YKLIB_TIMER_WAIT:  // A given number of seconds remain
-    m_yubi_timeout.SetPos(timer);
+    m_yubi_timeout.SetPos(ts);
     break;
 
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
-    m_yubi_status.SetWindowText(_T("YubiKey timed out"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
     m_yubi_status.ShowWindow(SW_SHOW);
     break;
 
@@ -831,59 +808,17 @@ void CWZSelectDB::yubiCheckCompleted()
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
-    yk.closeKey();
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), rc);
-    m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
+    TRACE(_T("yubiCompleted(%d)\n"), yrc);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
-  }
-}
-
-void CWZSelectDB::yubiRequestHMACSha1()
-{
-  if (m_pending) {
-    // no-op if a request's already in the air
-  } else {
-    CYkLib yk;
-    CSingleLock singeLock(&m_mutex);
-    singeLock.Lock();
-    // open key
-    // if zero or >1 key, we'll fail
-    if (yk.openKey() != YKLIB_OK) {
-      return;
-    }
-
-    // Prepare the HMAC-SHA1 challenge here
-
-    BYTE chalBuf[SHA1_MAX_BLOCK_SIZE];
-    BYTE chalLength = BYTE(m_passkey.GetLength()*sizeof(TCHAR));
-    memset(chalBuf, 0, SHA1_MAX_BLOCK_SIZE);
-    if (chalLength > SHA1_MAX_BLOCK_SIZE)
-      chalLength = SHA1_MAX_BLOCK_SIZE;
-
-    memcpy(chalBuf, m_passkey, chalLength);
-
-    // Initiate HMAC-SHA1 operation now
-
-    if (yk.writeChallengeBegin(YKLIB_SECOND_SLOT, YKLIB_CHAL_HMAC,
-                               chalBuf, chalLength) == YKLIB_OK) {
-      // request's in the air, setup GUI to wait for reply
-      m_pending = true;
-      m_yubi_status.ShowWindow(SW_HIDE);
-      m_yubi_status.SetWindowText(_T(""));
-      m_yubi_timeout.ShowWindow(SW_SHOW);
-      m_yubi_timeout.SetPos(15);
-    } else {
-      TRACE(_T("yk.writeChallengeBegin() failed"));
-    }
-    trashMemory(chalBuf, chalLength);
   }
 }
 
 void CWZSelectDB::OnYubikeyBtn()
 {
   UpdateData(TRUE);
-  yubiRequestHMACSha1(); // request HMAC of m_passkey
+  yubiRequestHMACSha1(m_passkey);
 }
 
 void CWZSelectDB::OnTimer(UINT_PTR)
