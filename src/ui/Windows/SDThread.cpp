@@ -44,8 +44,10 @@ extern ThisMfcApp app;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
-CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID, HMONITOR hCurrentMonitor)
-  : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID), m_hCurrentMonitor(hCurrentMonitor),
+CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, int iDialogID,
+                     HMONITOR hCurrentMonitor, bool bUseSecureDesktop)
+  : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID),
+    m_hCurrentMonitor(hCurrentMonitor), m_bUseSecureDesktop(bUseSecureDesktop),
     m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
   m_bVKCreated(false), m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
   m_iMinutes(-1), m_iSeconds(-1), m_hWaitableTimer(0)
@@ -76,7 +78,6 @@ BOOL CSDThread::InitInstance()
 
   m_pGMP->clear();
 
-  m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
   m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
   m_hTimer = NULL;
 

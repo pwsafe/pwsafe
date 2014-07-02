@@ -412,9 +412,6 @@ void CWZSelectDB::OnEnterCombination()
 {
   // Only needed for its thread processing - never dispays its own dialog (no DoModal etc.)
   CPKBaseDlg PKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
-  // XXX This doesn't work for YubiKey, as we need a timer handler. Either subclass PKBaseDlg
-  // XXX just for OnTimer, or do some serious refactoring (and make PKBaseDlg an abstract base
-  // XXX class while we're at it)
 
   // Avoid polling Yubikey from > 1 thread
   m_yubiPollDisable = true;

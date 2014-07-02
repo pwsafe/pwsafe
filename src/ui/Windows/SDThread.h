@@ -20,7 +20,8 @@ class CSDThread : public CYubiMixin
 {
 
 public:
-  CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, const int iDialogID, HMONITOR hCurrentMonitor);
+  CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen,
+            int iDialogID, HMONITOR hCurrentMonitor, bool bUseSecureDesktop);
   virtual ~CSDThread();
 
   StringX GetPhrase() const { return m_pGMP->sPhrase; }

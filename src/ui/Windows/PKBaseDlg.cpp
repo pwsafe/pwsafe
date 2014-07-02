@@ -278,7 +278,8 @@ void CPKBaseDlg::StartThread(int iDialogType)
   HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
 
   // Create Dialog Thread class instance
-  pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType, hCurrentMonitor);
+  pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType,
+                           hCurrentMonitor, m_bUseSecureDesktop);
 
   // Set up waitable timer just in case there is an issue
   pThrdDlg->m_hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
