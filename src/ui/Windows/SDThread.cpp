@@ -789,9 +789,8 @@ void CSDThread::OnInitDialog()
 
     // Not using Secure Desktop - hide timer
     ShowWindow(m_hwndStaticTimer, SW_HIDE);
-
-    HWND hwndStaticTimerText = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMERTEXT);
-    ShowWindow(hwndStaticTimerText, SW_HIDE);
+    ShowWindow(m_hwndStaticTimerText, SW_HIDE);
+    ShowWindow(m_hwndStaticSeconds, SW_HIDE);
   }
 
   // Create the tooltip
