@@ -240,8 +240,6 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Reset the hook again to msgfilter (equivalent to _AfxMsgFilterHook)
   // after finishing processing and before returning.
 
-  CSDThread *pThrdDlg(NULL);
-
   CBitmap bmpDimmedScreen;
   LARGE_INTEGER liDueTime;
   HANDLE hThread(0);
@@ -260,7 +258,10 @@ void CPKBaseDlg::StartThread(int iDialogType)
   BOOL bReHook = UnhookWindowsHookEx(pState->m_hHookOldMsgFilter);
   if (!bReHook) {
     ASSERT(bReHook);
-    goto BadExit;
+    // goto BadExit; nothing to cleanup, don't use goto in order
+    // not to skip on CSDThread c'tor
+    m_dwRC = (DWORD)-1; // Set bad return code
+    return;
   }
 
   // Update progress
@@ -278,15 +279,15 @@ void CPKBaseDlg::StartThread(int iDialogType)
   HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
 
   // Create Dialog Thread class instance
-  pThrdDlg = new CSDThread(&m_GMP, &bmpDimmedScreen, iDialogType,
-                           hCurrentMonitor, m_bUseSecureDesktop);
+  CSDThread thrdDlg(&m_GMP, &bmpDimmedScreen, iDialogType,
+                    hCurrentMonitor, m_bUseSecureDesktop);
 
   // Set up waitable timer just in case there is an issue
-  pThrdDlg->m_hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
+  thrdDlg.m_hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
 
-  if (pThrdDlg->m_hWaitableTimer == NULL) {
+  if (thrdDlg.m_hWaitableTimer == NULL) {
     dwError = pws_os::IssueError(_T("CreateWaitableTimer"), false);
-    ASSERT(pThrdDlg->m_hWaitableTimer);
+    ASSERT(thrdDlg.m_hWaitableTimer);
     goto BadExit;
   }
 
@@ -299,7 +300,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
   int iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
   liDueTime.QuadPart = -(iUserTimeLimit * 10000000);
 
-  if (!SetWaitableTimer(pThrdDlg->m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
+  if (!SetWaitableTimer(thrdDlg.m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
     dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
     ASSERT(0);
     goto BadExit;
@@ -309,7 +310,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
   xFlags |= WAITABLETIMERSET;
 
   // Create thread
-  hThread = CreateThread(NULL, 0, pThrdDlg->ThreadProc, (void *)pThrdDlg, CREATE_SUSPENDED, &dwThreadID);
+  hThread = CreateThread(NULL, 0, thrdDlg.ThreadProc, (void *)&thrdDlg, CREATE_SUSPENDED, &dwThreadID);
   if (hThread == NULL) {
     dwError = pws_os::IssueError(_T("CreateThread"), false);
     ASSERT(hThread);
@@ -331,7 +332,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
 
   // Set up array of wait handles and wait for either the timer to pop or the thread to end
   {
-    HANDLE hWait[2] = { pThrdDlg->m_hWaitableTimer, hThread };
+    HANDLE hWait[2] = { thrdDlg.m_hWaitableTimer, hThread };
     dwEvent = WaitForMultipleObjects(2, hWait, FALSE, INFINITE);
   }
 
@@ -349,7 +350,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
     xFlags &= ~WAITABLETIMERSET;
 
     // Stop thread - by simulating clicking on Cancel button
-    ::SendMessage(pThrdDlg->m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
+    ::SendMessage(thrdDlg.m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
 
     // Now wait for thread to complete
     WaitForSingleObject(hThread, INFINITE);
@@ -365,7 +366,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
     xFlags &= ~THREADRESUMED;
 
     // Cancel timer
-    if (!CancelWaitableTimer(pThrdDlg->m_hWaitableTimer)) {
+    if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
       dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
       ASSERT(0);
       goto BadExit;
@@ -386,7 +387,7 @@ void CPKBaseDlg::StartThread(int iDialogType)
   }
 
   // Close the WaitableTimer handle
-  if (!CloseHandle(pThrdDlg->m_hWaitableTimer)) {
+  if (!CloseHandle(thrdDlg.m_hWaitableTimer)) {
     dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
     ASSERT(0);
     goto BadExit;
@@ -398,12 +399,8 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Before deleting the thread - get its return code
   GetExitCodeThread(hThread, &m_dwRC);
 
-  delete pThrdDlg;
-
   // Update Progress
   xFlags &= ~(THREADCREATED | THREADRESUMED);
-
-  pThrdDlg = NULL;
 
   // Put hook back
   if (bReHook) {
@@ -429,23 +426,21 @@ BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
   if (xFlags & THREADRESUMED) {
     // Stop thread - by simulating clicking on Cancel button
-    ::SendMessage(pThrdDlg->m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
+    ::SendMessage(thrdDlg.m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
 
     // Now wait for thread to complete
     WaitForSingleObject(hThread, INFINITE);
   }
   if (xFlags & THREADCREATED) {
-    delete pThrdDlg;
-    pThrdDlg = NULL;
   }
   if (xFlags & DIMMENDSCREENBITMAPCREATED) {
     bmpDimmedScreen.DeleteObject();
   }
   if (xFlags & WAITABLETIMERSET) {
-    ::CancelWaitableTimer(pThrdDlg->m_hWaitableTimer);
+    ::CancelWaitableTimer(thrdDlg.m_hWaitableTimer);
   }
   if (xFlags & WAITABLETIMERCREATED) {
-    CloseHandle(pThrdDlg->m_hWaitableTimer);
+    CloseHandle(thrdDlg.m_hWaitableTimer);
   }
   if (xFlags & WINDOWSHOOKREMOVED) {
     pState->m_hHookOldMsgFilter = SetWindowsHookEx(WH_MSGFILTER, MsgFilter, NULL, GetCurrentThreadId());
