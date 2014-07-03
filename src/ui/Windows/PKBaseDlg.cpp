@@ -233,7 +233,7 @@ void CPKBaseDlg::OnSwitchSecureDesktop()
   EndDialog(INT_MAX);
 }
 
-void CPKBaseDlg::StartThread(int iDialogType)
+void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 {
   // SetThreadDesktop fails in MFC because _AfxMsgFilterHook is used in every
   // Thread. Need to unhook and before calling SetThreadDesktop
@@ -245,7 +245,6 @@ void CPKBaseDlg::StartThread(int iDialogType)
   HANDLE hThread(0);
   DWORD dwError, dwThreadID, dwEvent;
   bool bTimerPopped(false);
-  BOOL brc;
 
   // Set good return code
   m_dwRC = 0;
@@ -275,8 +274,11 @@ void CPKBaseDlg::StartThread(int iDialogType)
   // Update progress
   xFlags |= DIMMENDSCREENBITMAPCREATED;
 
-  // Get current Monitor
-  HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
+  // Get current Monitor if not supplied (only from Wizard)
+  if (hCurrentMonitor == NULL) {
+    ASSERT(this->GetSafeHwnd());
+    hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
+  }
 
   // Create Dialog Thread class instance
   CSDThread thrdDlg(&m_GMP, &bmpDimmedScreen, iDialogType,

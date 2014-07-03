@@ -415,8 +415,12 @@ void CWZSelectDB::OnEnterCombination()
 
   // Avoid polling Yubikey from > 1 thread
   m_yubiPollDisable = true;
+
+  // Get current monitor - not possible in PKBaseDlg as its dialog is not shown
+  HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
+
   // Get passphrase from Secure Desktop
-  PKBaseDlg.StartThread(IDD_SDGETPHRASE);
+  PKBaseDlg.StartThread(IDD_SDGETPHRASE, hCurrentMonitor);
 
   if (PKBaseDlg.m_GMP.bPhraseEntered) {
     m_passkey = PKBaseDlg.m_GMP.sPhrase.c_str();
