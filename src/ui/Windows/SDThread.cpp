@@ -436,18 +436,17 @@ void CSDThread::YubiControlsUpdate(bool insertedOrRemoved)
     if (hwndYprog != NULL) ShowWindow(hwndYprog, SW_HIDE);
   } else { // YubiExists - deal with it
     HBITMAP hbm;
-    CString prompt;
+    wstring prompt;
 
     if (insertedOrRemoved) {
       hbm = HBITMAP(m_yubiLogo);
-      prompt = CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT));
     } else {
       hbm = HBITMAP(m_yubiLogoDisabled);
-      prompt = CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
     }
+    LoadAString(prompt, insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT);
 
     if (hwndYstatus != NULL) {
-      SetWindowText(hwndYstatus, prompt);
+      SetWindowText(hwndYstatus, prompt.c_str());
       ShowWindow(hwndYstatus, SW_SHOW);
     }
 
@@ -484,6 +483,7 @@ void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE
   // we can assume the relevant windows are there.
   HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
   HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
+  wstring sMessage;
 
   switch (yrc) {
   case YKLIB_OK:
@@ -509,13 +509,15 @@ void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE
 
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
     ShowWindow(hwndYprog, SW_HIDE);
-    SetWindowText(hwndYstatus, CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
+    LoadAString(sMessage, IDS_YUBI_TIMEOUT);
+    SetWindowText(hwndYstatus, sMessage.c_str());
     ShowWindow(hwndYstatus, SW_SHOW);
     break;
 
   default:                // A non-recoverable error has occured
     ShowWindow(hwndYprog, SW_HIDE);
-    SetWindowText(hwndYstatus, CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
+    LoadAString(sMessage, IDSC_UNKNOWN_ERROR);
+    SetWindowText(hwndYstatus, sMessage.c_str());
     ShowWindow(hwndYstatus, SW_SHOW);
     break;
   }
