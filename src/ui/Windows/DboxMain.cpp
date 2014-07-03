@@ -1700,7 +1700,7 @@ tryagain:
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
-  CWnd *pOldTarget = app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
+  app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
@@ -1841,8 +1841,8 @@ tryagain:
     }
   }
 
-  // Put it back
-  app.SetSystemTrayTarget(pOldTarget);
+  // Put us back
+  app.SetSystemTrayTarget(this);
 
   delete m_pPasskeyEntryDlg;
   m_pPasskeyEntryDlg = NULL;

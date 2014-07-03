@@ -53,7 +53,7 @@ public:
 
   // Operations
 public:
-  CWnd *SetTarget(CWnd *pTarget); // ronys
+  void SetTarget(CWnd *pTarget) {m_pTarget = pTarget;}
   BOOL Enabled() const {return m_bEnabled;}
   BOOL Visible() const {return !m_bHidden;}
 

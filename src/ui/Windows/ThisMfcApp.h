@@ -95,8 +95,7 @@ public:
   DWORD GetBaseThreadID() {return m_nBaseThreadID;}
   void GetLanguageFiles();
   void SetLanguage();
-  CWnd *SetSystemTrayTarget(CWnd *pWnd)
-  {return m_pTrayIcon->SetTarget(pWnd);}
+  void SetSystemTrayTarget(CWnd *pWnd) {m_pTrayIcon->SetTarget(pWnd);}
 
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 
