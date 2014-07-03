@@ -433,22 +433,30 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   /**
-      NOTE: Normally return code TRUE meaning it has processed this message and FALSE meaning it did not.
+    MS documentation is contradictory.
 
-      However - MS Dpcumentation is conflicting!
+    DialogProc documentation http://msdn.microsoft.com/en-gb/library/windows/desktop/ms645469(v=vs.85).aspx states:
+      Typically, the dialog box procedure should return TRUE if it processed the message and
+      FALSE if it did not. If the dialog box procedure returns FALSE, the dialog manager
+      performs the default dialog operation in response to the message.
 
-      The following messages have different rules:
-          WM_CHARTOITEM
-          WM_COMPAREITEM
-          WM_CTLCOLORBTN
-          WM_CTLCOLORDLG
-          WM_CTLCOLOREDIT
-          WM_CTLCOLORLISTBOX
-          WM_CTLCOLORSCROLLBAR
-          WM_CTLCOLORSTATIC
-          WM_INITDIALOG
-          WM_QUERYDRAGICON
-          WM_VKEYTOITEM
+    However, individual Windows Message documentation often state something different and
+    we have used the above rules except for the special cases below.
+
+    WM_INITDIALOG (special case)
+      Return FALSE if user selects control to have focus (via SetFocus) else return TRUE to give it
+      to the control whose handle is specified by parameter wPARAM.
+    WM_CTLCOLORSTATIC (special case)
+      If an application processes this message, the return value is a handle to a brush
+      that the system uses to paint the background of the static control (cast to INT_PTR)
+      otherwise return FALSE.
+    PWS_MSG_INSERTBUFFER
+      Set return code to caller via: SetWindowLong (hwndDlg, DWL_MSGRESULT, lResult);
+      Return TRUE if it processed the message and FALSE if it did not.
+    PWS_MSG_RESETTIMER
+     Set return code to caller via: SetWindowLong (hwndDlg, DWL_MSGRESULT, lResult);
+     Return TRUE if it processed the message and FALSE if it did not.
+
   **/
 
   static CVKeyBoardDlg *self;
@@ -462,7 +470,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     self = (CVKeyBoardDlg *)lParam;
     self->m_hwndDlg = hwndDlg;
     self->OnInitDialog();
-    return TRUE; // Processed - special case
+    return TRUE; // Processed - special case - focus default control from RC file
   }
   case WM_COMMAND:
   {
@@ -475,6 +483,8 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
       // Need to reset waitable timer in SDThread!
       SendMessage(self->m_hMasterPhrase, PWS_MSG_RESETTIMER, 0, 0);
 
+      // All button clicks are processed (return TRUE) unless not caught by the a particular
+      // case statement or in the default section
       switch (iControlID) {
       case IDC_VKCANCEL:
       {
@@ -533,13 +543,14 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
       }
     }  // CBN_SELCHANGE
     }  // switch (iNotificationCode)
+    break;
   } // WM_COMMAND
 
   case WM_CTLCOLORSTATIC:
   case WM_CTLCOLORDLG:
   {
     if (!IsWindowEnabled(hwndDlg))
-      return (INT_PTR)FALSE;
+      return FALSE;  // Not processed
 
     // Default white background
     SetBkColor((HDC)wParam, RGB(255, 255, 255));
@@ -553,21 +564,21 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
       if (!IsWindowVisible((HWND)lParam))
       {
         SetTextColor((HDC)wParam, RGB(255, 0, 0));
-        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);  // Processed
       }
       else
-        return (INT_PTR)FALSE;
+        return FALSE;  // Not processed
     }
 
     // Black text
     SetTextColor((HDC)wParam, RGB(0, 0, 0));
-    return (INT_PTR)(self->m_hBkBrush);
+    return (INT_PTR)(self->m_hBkBrush);  // Processed
 
   }
   case WM_LBUTTONDOWN:
   {
     PostMessage(hwndDlg, WM_NCLBUTTONDOWN, HTCAPTION, lParam);
-    return (INT_PTR)TRUE;
+    return TRUE;  // Processed
   }
   case WM_DRAWITEM:
   {
@@ -578,7 +589,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     {
       id->second->DrawItem((LPDRAWITEMSTRUCT)lParam);
     }
-    return (INT_PTR)TRUE;
+    return TRUE;  // Processed
   }
   } // switch (uMsg)
 
@@ -1151,7 +1162,6 @@ void CVKeyBoardDlg::OnAltGr()
   m_vkbb_AltGr.SetPushedState(m_bAltGr);
 
   // Korean & Japanese
-  //CString cs_ToolTip;
   switch (m_uiKLID) {
     case KOREAN_KBD:
       m_State = 0;
