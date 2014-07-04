@@ -1004,17 +1004,17 @@ void CSDThread::OnOK()
   }
   case IDD_SDPASSKEYSETUP:
   {
-    // Verify DC_PASSKEY, IDC_VERIFY
+    // Verify IDC_PASSKEY, IDC_VERIFY
     UINT iMsgID(0);
     HWND hwndFocus = hwndPassKey;
-    {
-      HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_VERIFY);
-      sxNewPassKey1 = GetControlText(hwndNewPassKey1);
+    // sxNewPassKey may be from Yubi, so we get the control text again:
+    const StringX sxNewPassKey0 = GetControlText(hwndPassKey);
+    HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_VERIFY);
+    sxNewPassKey1 = GetControlText(hwndNewPassKey1);
 
-      if (sxPassKey != sxNewPassKey1) {
-        iMsgID = IDS_ENTRIESDONOTMATCH;
-        hwndFocus = hwndNewPassKey1;
-      }
+    if (sxNewPassKey0 != sxNewPassKey1) {
+      iMsgID = IDS_ENTRIESDONOTMATCH;
+      hwndFocus = hwndNewPassKey1;
     }
 
     if (iMsgID != 0) {
@@ -1025,7 +1025,7 @@ void CSDThread::OnOK()
     }
 
     StringX sxErrorMsg;
-    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sxErrorMsg)) {
+    if (m_yubiResp[0].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey0, sxErrorMsg)) {
       StringX sMsg, sText;
       Format(sMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
