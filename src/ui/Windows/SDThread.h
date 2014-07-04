@@ -106,7 +106,7 @@ public:
    COLORREF m_cfMask;
    int m_IDB;
 
-   bool m_bVKCreated, m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
+   bool m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
    bool m_bUseSecureDesktop, m_bDesktopPresent, m_bWindowPresent;
    BYTE xFlags;
 

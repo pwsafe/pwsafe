@@ -47,9 +47,9 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, int iDialogID,
                      HMONITOR hCurrentMonitor, bool bUseSecureDesktop)
   : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID),
-    m_hCurrentMonitor(hCurrentMonitor), m_bUseSecureDesktop(bUseSecureDesktop),
-    m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
-  m_bVKCreated(false), m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
+  m_hCurrentMonitor(hCurrentMonitor), m_bUseSecureDesktop(bUseSecureDesktop),
+  m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
+  m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
   m_iMinutes(-1), m_iSeconds(-1), m_hWaitableTimer(0)
 {
   InitInstance();
@@ -1056,9 +1056,8 @@ void CSDThread::OnOK()
   // Tell TimerProc to do nothing
   m_bDoTimerProcAction = false;
 
-  if (m_bVKCreated) {
-    ASSERT(m_hwndVKeyBoard);
-
+  if (m_hwndVKeyBoard != NULL) {
+    ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     brc = DestroyWindow(m_hwndVKeyBoard);
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
@@ -1066,7 +1065,6 @@ void CSDThread::OnOK()
     }
 
     m_hwndVKeyBoard = NULL;
-    m_bVKCreated = false;
   }
 
   PostQuitMessage(IDOK);
@@ -1083,9 +1081,8 @@ void CSDThread::OnCancel()
 
   m_pGMP->clear();
 
-  if (m_bVKCreated) {
-    ASSERT(m_hwndVKeyBoard);
-
+  if (m_hwndVKeyBoard != NULL) {
+    ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     brc = DestroyWindow(m_hwndVKeyBoard);
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
@@ -1093,7 +1090,6 @@ void CSDThread::OnCancel()
     }
 
     m_hwndVKeyBoard = NULL;
-    m_bVKCreated = false;
   }
 
   PostQuitMessage(IDCANCEL);
@@ -1105,7 +1101,7 @@ void CSDThread::OnQuit()
   BOOL brc;
   DWORD dwError;
 
-  if (m_bVKCreated && m_hwndVKeyBoard != NULL) {
+  if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     brc = DestroyWindow(m_hwndVKeyBoard);
     if (brc == NULL) {
@@ -1114,7 +1110,6 @@ void CSDThread::OnQuit()
     }
 
     m_hwndVKeyBoard = NULL;
-    m_bVKCreated = false;
   }
 
   // Delete timer (only if set)
