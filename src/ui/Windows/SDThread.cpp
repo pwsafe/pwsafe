@@ -436,17 +436,17 @@ void CSDThread::YubiControlsUpdate(bool insertedOrRemoved)
     if (hwndYprog != NULL) ShowWindow(hwndYprog, SW_HIDE);
   } else { // YubiExists - deal with it
     HBITMAP hbm;
-    wstring prompt;
+    stringT sMessage;
 
     if (insertedOrRemoved) {
       hbm = HBITMAP(m_yubiLogo);
     } else {
       hbm = HBITMAP(m_yubiLogoDisabled);
     }
-    LoadAString(prompt, insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT);
+    LoadAString(sMessage, insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT);
 
     if (hwndYstatus != NULL) {
-      SetWindowText(hwndYstatus, prompt.c_str());
+      SetWindowText(hwndYstatus, sMessage.c_str());
       ShowWindow(hwndYstatus, SW_SHOW);
     }
 
@@ -483,7 +483,7 @@ void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE
   // we can assume the relevant windows are there.
   HWND hwndYstatus = GetDlgItem(m_hwndDlg, IDC_YUBI_STATUS);
   HWND hwndYprog = GetDlgItem(m_hwndDlg, IDC_YUBI_PROGRESS);
-  wstring sMessage;
+  stringT sMessage;
 
   switch (yrc) {
   case YKLIB_OK:
@@ -900,7 +900,7 @@ void CSDThread::OnOK()
 {
   BOOL brc;
   DWORD dwError;
-  StringX sErrorMsg;
+  stringT sErrorMsg;
 
   /*
   self->m_wDialogID
@@ -975,20 +975,21 @@ void CSDThread::OnOK()
       return;
     }
 
-    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
-      StringX sxMsg, sxText;
-      Format(sxMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
+    StringX sxErrorMsg;
+    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sxErrorMsg)) {
+      stringT sMsg, sText;
+      Format(sMsg, IDS_WEAKPASSPHRASE, sxErrorMsg.c_str());
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      LoadAString(sxText, IDS_USEITANYWAY);
-      sxMsg += sxText;
-      INT_PTR rc = MessageBox(m_hwndDlg, sxMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
+      LoadAString(sText, IDS_USEITANYWAY);
+      sMsg += sText;
+      INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
       if (rc == IDNO)
         return;
 #else
-      LoadAString(sxText, IDS_TRYANOTHER);
-      sxMsg += sxText;
-      MessageBox(m_hwndDlg, sxMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
+      LoadAString(sText, IDS_TRYANOTHER);
+      sMsg += sText;
+      MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
       return;
 #endif  // PWS_FORCE_STRONG_PASSPHRASE
     }
@@ -1021,20 +1022,21 @@ void CSDThread::OnOK()
       return;
     }
 
-    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sErrorMsg)) {
-      StringX sxMsg, sxText;
-      Format(sxMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
+    StringX sxErrorMsg;
+    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sxErrorMsg)) {
+      StringX sMsg, sText;
+      Format(sMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      LoadAString(sxText, IDS_USEITANYWAY);
-      sxMsg += sxText;
-      INT_PTR rc = MessageBox(m_hwndDlg, sxMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
+      LoadAString(sText, IDS_USEITANYWAY);
+      sMsg += sText;
+      INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
       if (rc == IDNO)
         return;
 #else
-      LoadAString(sxText, IDS_TRYANOTHER);
-      sxMsg += sxText;
-      MessageBox(m_hwndDlg, sxMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
+      LoadAString(sText, IDS_TRYANOTHER);
+      sMsg += sText;
+      MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
       return;
 #endif  // PWS_FORCE_STRONG_PASSPHRASE
     }
