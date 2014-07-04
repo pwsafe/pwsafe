@@ -548,6 +548,38 @@ static StringX GetControlText(const HWND hwnd)
 
 INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  static CSDThread *self(NULL);
+
+  if (uMsg != WM_INITDIALOG && self == NULL)
+    return FALSE;
+
+  switch (uMsg) {
+    case WM_INITDIALOG:
+    {
+      self = (CSDThread *)lParam;
+      self->m_hwndDlg = hwndDlg;
+
+      self->OnInitDialog();
+      return TRUE; // Processed - special case - focus default control from RC file
+    }
+    case WM_QUIT:
+    {
+      // Special handling for genreated WM_QUIT message, which it would NEVER EVER get normally
+      ASSERT(self);
+
+      self->OnQuit();
+
+      // Don't need it any more
+      self = NULL;
+
+      return TRUE;
+    }  // WM_QUIT
+  }
+  return self->DialogProc(hwndDlg, uMsg, wParam, lParam);
+}
+
+INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
   /**
     MS documentation is contradictory.
 
@@ -559,9 +591,6 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     However, individual Windows Message documentation often state something different and
     we have used the above rules except for the special cases below.
 
-    WM_INITDIALOG (special case)
-      Return FALSE if user selects control to have focus (via SetFocus) else return TRUE to give it
-      to the control whose handle is specified by parameter wPARAM.
     WM_CTLCOLORSTATIC (special case)
       If an application processes this message, the return value is a handle to a brush
       that the system uses to paint the background of the static control (cast to INT_PTR)
@@ -575,24 +604,10 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
   **/
 
-  static CSDThread *self(NULL);
-
-  if (uMsg != WM_INITDIALOG && self == NULL)
-    return FALSE;
-
   switch (uMsg) {
-  case WM_INITDIALOG:
-  {
-    self = (CSDThread *)lParam;
-    self->m_hwndDlg = hwndDlg;
-
-    self->OnInitDialog();
-    return TRUE; // Processed - special case - focus default control from RC file
-  }  // WM_INITDIALOG
-
   case WM_SHOWWINDOW:
   {
-    self->m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
+    m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
     return TRUE;  // Processed!
   }
 
@@ -605,7 +620,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     switch (iControlID) {
     case IDC_VKB:
       if (iNotificationCode == BN_CLICKED) {
-        self->OnVirtualKeyboard();
+        OnVirtualKeyboard();
         return TRUE;  // Processed
       }
       break;
@@ -618,47 +633,47 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       {
         // Remember last edit control as we need to know where to insert characters
         // if the user uses the Virtual Keyboard
-        self->m_iLastFocus = iControlID;
+        m_iLastFocus = iControlID;
         return TRUE;  // Processed
       }
       if (iNotificationCode == EN_CHANGE)
       {
         // Reset timer start time
-        self->ResetTimer();
+        ResetTimer();
         return TRUE;  // Processed
       }
       break;
 
     case IDC_YUBIKEY_BTN:
       if (iNotificationCode == BN_CLICKED) {
-        HWND hwndPassKey = GetDlgItem(self->m_hwndDlg, IDC_PASSKEY);
+        HWND hwndPassKey = GetDlgItem(m_hwndDlg, IDC_PASSKEY);
         const StringX sxPassKey = GetControlText(hwndPassKey);
-        self->m_passkeyID = IDC_PASSKEY;
-        self->yubiRequestHMACSha1(sxPassKey.c_str());
+        m_passkeyID = IDC_PASSKEY;
+        yubiRequestHMACSha1(sxPassKey.c_str());
         return TRUE; // Processed
       }
       break;
 
     case IDC_YUBIKEY2_BTN: // in Change Combination, this is the new
       if (iNotificationCode == BN_CLICKED) {
-        HWND hwndNewPassKey = GetDlgItem(self->m_hwndDlg, IDC_NEWPASSKEY);
+        HWND hwndNewPassKey = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
         const StringX sxPassKey = GetControlText(hwndNewPassKey);
-        self->m_passkeyID = IDC_NEWPASSKEY;
-        self->yubiRequestHMACSha1(sxPassKey.c_str());
+        m_passkeyID = IDC_NEWPASSKEY;
+        yubiRequestHMACSha1(sxPassKey.c_str());
         return TRUE; // Processed
       }
       break;
 
     case IDOK:
       if (iNotificationCode == BN_CLICKED) {
-        self->OnOK();
+        OnOK();
         return TRUE;  // Processed
       }
       break;
 
     case IDCANCEL:
       if (iNotificationCode == BN_CLICKED) {
-        self->OnCancel();
+        OnCancel();
         return TRUE;  // Processed
       }
       break;
@@ -666,7 +681,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     case IDC_SD_TOGGLE:
       if (iNotificationCode == BN_CLICKED) {
         PostQuitMessage(INT_MAX);
-        self->m_dwRC = INT_MAX;
+        m_dwRC = INT_MAX;
         return TRUE; // Processed
       }
       break;
@@ -683,7 +698,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       dc.Attach(pDrawItemStruct->hDC);
 
       CBitmap bmp;
-      bmp.LoadBitmap(self->m_IDB);
+      bmp.LoadBitmap(m_IDB);
 
       BITMAP bitMapInfo;
       bmp.GetBitmap(&bitMapInfo);
@@ -696,12 +711,12 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       int bmh = bitMapInfo.bmHeight;
 
       // Draw button image transparently
-      ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, self->m_cfMask);
+      ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMask);
       return TRUE;  // Processed
     } else {
       return FALSE;  // Not processed
     }
-  }
+  }  // WM_DRAWITEM
 
   case WM_CTLCOLORSTATIC:
   {
@@ -723,39 +738,26 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
 
     return FALSE;  // Not processed
-  }
+  }  // WM_CTLCOLORSTATIC
 
   case PWS_MSG_INSERTBUFFER:
   {
-    self->OnInsertBuffer();
+    OnInsertBuffer();
     SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
     return TRUE; // Processed
   }  // PWS_MSG_INSERTBUFFER
 
   case PWS_MSG_RESETTIMER:
   {
-    self->ResetTimer();
+    ResetTimer();
     SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
     return TRUE; // Processed
-  }
-
-  case WM_QUIT:
-  {
-    // Special handling for WM_QUIT, which it would NEVER EVER get normally
-    ASSERT(self);
-
-    self->OnQuit();
-
-    // Don't need it any more
-    self = NULL;
-
-    return TRUE;
-  }  // WM_QUIT
+  }  // PWS_MSG_RESETTIMER:
 
   }  // switch (uMsg)
 
   // Anything else is "not processed"
-  return FALSE; // Not processed
+  return FALSE;
 }
 
 void CSDThread::OnInitDialog()
@@ -1104,6 +1106,7 @@ void CSDThread::OnQuit()
   DWORD dwError;
 
   if (m_bVKCreated && m_hwndVKeyBoard != NULL) {
+    ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     brc = DestroyWindow(m_hwndVKeyBoard);
     if (brc == NULL) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);

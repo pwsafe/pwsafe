@@ -57,6 +57,8 @@ protected:
 
   int m_phrasecount;
 
+  INT_PTR DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
   void OnCancel();
   void OnInsertBuffer();
   void OnRandomize();

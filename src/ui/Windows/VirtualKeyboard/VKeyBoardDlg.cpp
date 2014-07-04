@@ -432,6 +432,35 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 
 INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  static CVKeyBoardDlg *self;
+
+  if (uMsg != WM_INITDIALOG && self == NULL)
+    return FALSE;
+
+  switch (uMsg) {
+    case WM_INITDIALOG:
+    {
+      self = (CVKeyBoardDlg *)lParam;
+      self->m_hwndDlg = hwndDlg;
+      self->OnInitDialog();
+      return TRUE; // Processed - special case - focus default control from RC file
+    }
+    case WM_QUIT:
+    {
+      // Special handling for genreated WM_QUIT message, which it would NEVER EVER get normally
+      ASSERT(self);
+
+      // Don't need it any more
+      self = NULL;
+
+      return TRUE;
+    }  // WM_QUIT
+  }
+  return self->DialogProc(hwndDlg, uMsg, wParam, lParam);
+}
+
+INT_PTR CVKeyBoardDlg::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
   /**
     MS documentation is contradictory.
 
@@ -443,9 +472,6 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     However, individual Windows Message documentation often state something different and
     we have used the above rules except for the special cases below.
 
-    WM_INITDIALOG (special case)
-      Return FALSE if user selects control to have focus (via SetFocus) else return TRUE to give it
-      to the control whose handle is specified by parameter wPARAM.
     WM_CTLCOLORSTATIC (special case)
       If an application processes this message, the return value is a handle to a brush
       that the system uses to paint the background of the static control (cast to INT_PTR)
@@ -459,19 +485,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
   **/
 
-  static CVKeyBoardDlg *self;
-
-  if (uMsg != WM_INITDIALOG && self == NULL)
-    return FALSE;
-
   switch (uMsg) {
-  case WM_INITDIALOG:
-  {
-    self = (CVKeyBoardDlg *)lParam;
-    self->m_hwndDlg = hwndDlg;
-    self->OnInitDialog();
-    return TRUE; // Processed - special case - focus default control from RC file
-  }
   case WM_COMMAND:
   {
     const int iControlID = LOWORD(wParam);
@@ -481,7 +495,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     case BN_CLICKED:
     {
       // Need to reset waitable timer in SDThread!
-      SendMessage(self->m_hMasterPhrase, PWS_MSG_RESETTIMER, 0, 0);
+      SendMessage(m_hMasterPhrase, PWS_MSG_RESETTIMER, 0, 0);
 
       // All button clicks are processed (return TRUE) unless not caught by the a particular
       // case statement or in the default section
@@ -489,10 +503,10 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
       case IDC_VKCANCEL:
       {
         // If pressed when a Dead Key is active, just cancel this
-        if (self->m_bDeadKeyActive)
+        if (m_bDeadKeyActive)
         {
-          self->SetDeadKeyEnvironment(false);
-          self->SetButtons();
+          SetDeadKeyEnvironment(false);
+          SetButtons();
           return TRUE;
         }
 
@@ -501,35 +515,35 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
         return TRUE;
       }
-      case IDC_VK101: { self->OnChangeKeyboardType(); return TRUE; }
-      case IDC_VK102: { self->OnChangeKeyboardType(); return TRUE; }
-      case IDC_VKINSERT: { self->OnInsertBuffer(); return TRUE; }
-      case IDC_VKCLEARBUFFER: { self->OnClearBuffer(); return TRUE; }
-      case IDC_VKBACKSPACE: { self->OnBackSpace(); return TRUE; }
-      case IDC_VKBBTN_LSHIFT: { self->OnShift(); return TRUE; }
-      case IDC_VKBBTN_RSHIFT: { self->OnShift(); return TRUE; }
-      case IDC_VKBBTN_LCTRL: { self->OnLCtrl(); return TRUE; }
-      case IDC_VKBBTN_RCTRL: { self->OnRCtrl(); return TRUE; }
-      case IDC_VKBBTN_RHCTRL: { self->OnRHCtrl(); return TRUE; }
-      case IDC_VKBBTN_ALTGR: { self->OnAltGr(); return TRUE; }
-      case IDC_VKBBTN_ALTNUM: { self->OnAltNum(); return TRUE; }
-      case IDC_VKBBTN_CAPSLOCK: { self->OnCapsLock(); return TRUE; }
-      case IDC_VKBBTN_SPACEBAR: { self->OnSpaceBar(); return TRUE; }
-      case IDC_VKBBTN_SMALLSPACEBAR: { self->OnSpaceBar(); return TRUE; }
-      case IDC_VKBBTN_SIZE: { self->OnKeySize(); return TRUE; }
-      case IDC_VKBBTN_HIRAGANA: { self->OnHiragana(); return TRUE; }
-      case IDC_VKRANDOMIZE: { self->OnRandomize(); return TRUE; }
-      case IDC_SAVEKLID: { self->OnSaveKLID(); return TRUE; }
+      case IDC_VK101: { OnChangeKeyboardType(); return TRUE; }
+      case IDC_VK102: { OnChangeKeyboardType(); return TRUE; }
+      case IDC_VKINSERT: { OnInsertBuffer(); return TRUE; }
+      case IDC_VKCLEARBUFFER: { OnClearBuffer(); return TRUE; }
+      case IDC_VKBACKSPACE: { OnBackSpace(); return TRUE; }
+      case IDC_VKBBTN_LSHIFT: { OnShift(); return TRUE; }
+      case IDC_VKBBTN_RSHIFT: { OnShift(); return TRUE; }
+      case IDC_VKBBTN_LCTRL: { OnLCtrl(); return TRUE; }
+      case IDC_VKBBTN_RCTRL: { OnRCtrl(); return TRUE; }
+      case IDC_VKBBTN_RHCTRL: { OnRHCtrl(); return TRUE; }
+      case IDC_VKBBTN_ALTGR: { OnAltGr(); return TRUE; }
+      case IDC_VKBBTN_ALTNUM: { OnAltNum(); return TRUE; }
+      case IDC_VKBBTN_CAPSLOCK: { OnCapsLock(); return TRUE; }
+      case IDC_VKBBTN_SPACEBAR: { OnSpaceBar(); return TRUE; }
+      case IDC_VKBBTN_SMALLSPACEBAR: { OnSpaceBar(); return TRUE; }
+      case IDC_VKBBTN_SIZE: { OnKeySize(); return TRUE; }
+      case IDC_VKBBTN_HIRAGANA: { OnHiragana(); return TRUE; }
+      case IDC_VKRANDOMIZE: { OnRandomize(); return TRUE; }
+      case IDC_SAVEKLID: { OnSaveKLID(); return TRUE; }
       default:
       {
         if (iControlID >= IDC_VKBBTN_N0 && iControlID <= IDC_VKBBTN_N9)
         {
-          self->OnNumerics(iControlID);
+          OnNumerics(iControlID);
           return TRUE;
         }
         if (iControlID >= IDC_VKBBTN_KBD01 && iControlID <= IDC_VKBBTN_KBD51)
         {
-          self->OnKeys(iControlID);
+          OnKeys(iControlID);
           return TRUE;
         }
       }
@@ -538,7 +552,7 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
     case  CBN_SELCHANGE:
     {
       if (iControlID == IDC_VKEYBOARDS) {
-        self->OnChangeKeyboard();
+        OnChangeKeyboard();
         return TRUE;
       }
     }  // CBN_SELCHANGE
@@ -572,25 +586,27 @@ INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
     // Black text
     SetTextColor((HDC)wParam, RGB(0, 0, 0));
-    return (INT_PTR)(self->m_hBkBrush);  // Processed
+    return (INT_PTR)(m_hBkBrush);  // Processed
+  }  // WM_CTLCOLORSTATIC & WM_CTLCOLORDLG
 
-  }
   case WM_LBUTTONDOWN:
   {
     PostMessage(hwndDlg, WM_NCLBUTTONDOWN, HTCAPTION, lParam);
     return TRUE;  // Processed
-  }
+  }  // WM_LBUTTONDOWN
+
   case WM_DRAWITEM:
   {
     const int iControlID = LOWORD(wParam);
     // Need to get the handle for this control and then the corresponding CXKBButton
-    Iter_Map_ID_XButton id = self->m_Map_ID2XButton.find(iControlID);
-    if (id != self->m_Map_ID2XButton.end())
+    Iter_Map_ID_XButton id = m_Map_ID2XButton.find(iControlID);
+    if (id != m_Map_ID2XButton.end())
     {
       id->second->DrawItem((LPDRAWITEMSTRUCT)lParam);
     }
     return TRUE;  // Processed
-  }
+  } // WM_DRAWITEM
+
   } // switch (uMsg)
 
   return FALSE;  // Not processed

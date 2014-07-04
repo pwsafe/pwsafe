@@ -51,6 +51,8 @@ public:
    friend class CPasskeyEntry;
    friend class CPasskeyChangeDlg;
 
+   INT_PTR DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
    void OnInitDialog();
    void OnVirtualKeyboard();
    void OnOK();
