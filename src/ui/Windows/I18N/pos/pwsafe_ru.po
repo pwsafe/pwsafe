@@ -6420,7 +6420,7 @@ msgstr "Пароль имеет вид псевдонима, но исходны
 #. Resource IDs: (373)
 #, c-format
 msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
-msgstr "Пароль для контейнера был введён неверно %d раз(а) подряд. Убедитесь, что\n- Не нажата клавиша Caps Lock.\n- Выбрана верная раскладка клавиатуры (если вы используете несколько языков ввода).\n- Верно выбран контейнер.\n- Возможно, контейнер повреждён. Попробуйте открыть резервную копию."
+msgstr "Пароль для контейнера был введён неверно %d раз(а) подряд. Убедитесь, что\n- Не нажата клавиша Caps Lock.\n- Выбрана верная раскладка клавиатуры (если вы используете несколько языков ввода).\n- Верно выбран контейнер.\nВозможно, контейнер повреждён. Попробуйте открыть резервную копию."
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
