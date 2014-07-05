@@ -11,10 +11,10 @@ chmod -X ./source/*
 #apply helper patches
 [ -e omegat_helper.diff ] && patch -p0 < omegat_helper.diff
 #update ui tmx
-po2tmx --source-language=EN-US --language=RU-RU $POFILE ../tm/pwsafe_ru-ui.tmx
+po2tmx --source-language=EN-US --language=RU-RU $POFILE ../tm/pwsafe_ru-ui.tmx || exit 1
 #sync wxwidgets ui po
 SRC_BASE=../../../../src
-SRCS="${SRC_BASE}/ui/wxWidgets/*.cpp ${SRC_BASE}/core/*.cpp ${SRC_BASE}/os/linux/*.cpp"
-xgettext --no-wrap --from-code=UTF-8 --default-domain=pwsafe --language=C++ --keyword=_ --output=./source/pwsafe.pot $SRCS
-msgmerge --no-wrap --no-fuzzy-match --output=./source/pwsafe_ru_wx.po $POFILE ./source/pwsafe.pot
+SRCS="${SRC_BASE}/ui/wxWidgets/*.h ${SRC_BASE}/ui/wxWidgets/*.cpp ${SRC_BASE}/core/*.h ${SRC_BASE}/core/*.cpp ${SRC_BASE}/os/linux/*.h ${SRC_BASE}/os/linux/*.cpp"
+xgettext --no-wrap --from-code=UTF-8 --default-domain=pwsafe --language=C++ --keyword=_ --output=./source/pwsafe.pot $SRCS || exit 1
+msgmerge --no-wrap --no-fuzzy-match --output=./source/pwsafe_ru_wx.po $POFILE ./source/pwsafe.pot || exit 1
 rm  ./source/pwsafe.pot
