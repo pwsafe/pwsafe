@@ -1,12 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PasswordSafe package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PasswordSafe 3.33.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -647,10 +647,6 @@ msgstr "&Kopieer Wachtwoord naar Klembord"
 msgid "&Copy Password to clipboard"
 msgstr "&Kopieer Wachtwoord naar klembord"
 
-#. Resource IDs: (1041)
-msgid "&Create a New Database"
-msgstr "&Maak een Nieuwe Database"
-
 #. Resource IDs: (1344)
 msgid "&Delete"
 msgstr "&Verwijder"
@@ -811,10 +807,6 @@ msgstr "&Op"
 msgid "&Open"
 msgstr "&Open"
 
-#. Resource IDs: (1024)
-msgid "&Open Another Database..."
-msgstr "&Open Andere Database..."
-
 #. Resource IDs: (32002)
 msgid "&Open..."
 msgstr "&Open..."
@@ -846,10 +838,6 @@ msgstr "&Gewone Tekst..."
 #. Resource IDs: (32020)
 msgid "&Properties"
 msgstr "&Eigenschappen"
-
-#. Resource IDs: (1023)
-msgid "&Quit"
-msgstr "&Afsluiten"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
@@ -927,10 +915,6 @@ msgstr "&Titel:"
 msgid "&Tree/List Font"
 msgstr "&Boom/Lijst Font"
 
-#. Resource IDs: (1022)
-msgid "&Try Again"
-msgstr "&Probeer Nogmaals"
-
 #. Resource IDs: (359)
 msgid "&Try again"
 msgstr "&Probeer nogmaals"
@@ -1006,6 +990,10 @@ msgstr "(Ook gebruikt om spaties te vervangen in het Titel veld)"
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
 msgstr "(Dubbel-klik een vermelding om deze te bewerken)"
+
+#. Resource IDs: (373)
+msgid "(Empty)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -1327,6 +1315,10 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
+
+#. Resource IDs: (1506)
+msgid "99:99"
+msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1992,6 +1984,10 @@ msgstr "Klembord wissen bij minimaliseren"
 msgid "Clear password history for ALL entries"
 msgstr "Wis wachtwoord geschiedenis van ALLE vermeldingen"
 
+#. Resource IDs: (376, 1457)
+msgid "Click button, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
 msgstr "Klik hier om details te zien van de verschillende voorkeuren."
@@ -2003,6 +1999,14 @@ msgstr "Hier klikken om een veld te kiezen"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Klik om wisselen tussen hoofd- en kleine letters."
+
+#. Resource IDs: (373)
+msgid "Click to change to database combination entry via Secure Desktop"
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Click to change to old database combination entry method"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2092,10 +2096,6 @@ msgstr "Klik om de Caps Lock toets aan/uit te zetten"
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klik om te wisselen tussen en/of relatie naar vorige regel"
 
-#. Resource IDs: (376)
-msgid "Click, then touch your YubiKey"
-msgstr "Klik, en raak vervolgens uw Yubikey aan"
-
 #. Resource IDs: (1)
 msgid "Close"
 msgstr "Sluiten"
@@ -2115,6 +2115,10 @@ msgstr "Kolom Kiezer"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Regel met Kolom titels niet herkend als eerste rij. Geen rijen geïmporteerd"
+
+#. Resource IDs: (373, 1505)
+msgid "Combination..."
+msgstr ""
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2538,10 +2542,6 @@ msgstr "Standaard Gebruikersnaam"
 #. Resource IDs: (331)
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis moet tussen de 1 en 255 zijn."
-
-#. Resource IDs: (1438)
-msgid "Default set"
-msgstr "Standaard set"
 
 #. Resource IDs: (352)
 msgid "Delete"
@@ -3585,8 +3585,8 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32027; 'E&xit'
-msgid "ID:32027:V C +Q"
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
+msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
@@ -3823,10 +3823,6 @@ msgstr "In Titels (%s)/In Vermeldingen("
 #. Resource IDs: (350)
 msgid "Inactive"
 msgstr "Niet actief"
-
-#. Resource IDs: (146)
-msgid "Incorrect Passkey"
-msgstr "Verkeerd wachtwoord"
 
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
@@ -4763,24 +4759,16 @@ msgstr "Password Safe back-ups (*.bak)|*.bak|Password Safe tussentijdse back-ups
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe back-ups (*.bak)|*.bak||"
 
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
-
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe Databases (*.psafe3)|*.psafe3|Alle bestanden (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
-
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4930,8 +4918,8 @@ msgid "Please enter an encryption or decryption key"
 msgstr "Geef een codering of decodering sleutel"
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Voer alstublieft de huidige combinatie in, gevolgd door een nieuwe combinatie. Daarna de nieuwe combinatie nog een keer als bevestiging."
+msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -5811,10 +5799,6 @@ msgstr "Spaans"
 msgid "Spanish Variation"
 msgstr "Spaanse variatie"
 
-#. Resource IDs: (1439)
-msgid "Special set"
-msgstr "Speciale set"
-
 #. Resource IDs: (1486)
 msgid "Standard"
 msgstr "Standaard"
@@ -6210,12 +6194,12 @@ msgstr "De oude kluis combinatie is niet correct."
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -6223,9 +6207,10 @@ msgstr ""
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "Het wachtwoord bestaat in 'alias' vorm maar de gerefereerde vermelding '%s:%s:%s' is zelf een alias.\n\nWilt u dat deze vermelding naar de 'werkelijke' basis vermelding verwijst?"
 
-#. Resource IDs: (65535)
-msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "De kluis combinatie is drie keer ingevoerd zonder succes. Als u de kluis combinatie niet weet kunt u proberen een andere wachtwoord database te openen of een nieuwe blanco wachtwoord database aan maken."
+#. Resource IDs: (373)
+#, c-format
+msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -6258,6 +6243,10 @@ msgstr "Deze zijn recenter opgeslagen dan de huidige open documenten en ze bevat
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr "De Sneltoets waarde is niet beschikbaar omdat hij reeds is toegekend aan de PasswordSafe applicatie (Beheer->Extra->Sneltoetsen)."
+
+#. Resource IDs: (1507)
+msgid "This Window will close automatically in"
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6665,8 +6654,8 @@ msgid "Use &Lowercase letters"
 msgstr "Gebruik &kleine letters"
 
 #. Resource IDs: (1050)
-msgid "Use &Symbols (i.e. &&, %, $, etc.)"
-msgstr "Gebruik &Symbolen (b.v.  &&, %, $, etc.)"
+msgid "Use &Symbols"
+msgstr ""
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
@@ -6683,6 +6672,10 @@ msgstr "Gebruik Database Beleid"
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
 msgstr "Gebruik Benoemd Beleid"
+
+#. Resource IDs: (1503)
+msgid "Use Secure Desktop for master passphrase"
+msgstr ""
 
 #. Resource IDs: (369)
 msgid "Use count"
@@ -7784,6 +7777,10 @@ msgstr "vorige wachtwoorden per vermelding"
 msgid "pwsafe"
 msgstr "pwsafe"
 
+#. Resource IDs: (1509)
+msgid "seconds"
+msgstr ""
+
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "Snelkoppeling"
@@ -7838,10 +7835,6 @@ msgstr "v&1.x formaat..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v&2 formaat..."
-
-#. Resource IDs: (32013)
-msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

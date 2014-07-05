@@ -1317,6 +1317,10 @@ msgstr "8"
 msgid "9"
 msgstr "9"
 
+#. Resource IDs: (1506)
+msgid "99:99"
+msgstr ""
+
 #. Resource IDs: (1156)
 msgid "<"
 msgstr "<"
@@ -2017,6 +2021,10 @@ msgstr "Очищать буфер обмена при сворачивании"
 msgid "Clear password history for ALL entries"
 msgstr "Очистить историю паролей у ВСЕХ элементов"
 
+#. Resource IDs: (376, 1457)
+msgid "Click button, then touch your YubiKey"
+msgstr ""
+
 # урезано
 #. Resource IDs: (1451)
 msgid "Click here for details on the various preferences."
@@ -2029,6 +2037,14 @@ msgstr "Нажмите для выбора поля"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Нажмите для изменения регистра"
+
+#. Resource IDs: (373)
+msgid "Click to change to database combination entry via Secure Desktop"
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Click to change to old database combination entry method"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2125,10 +2141,6 @@ msgstr "Нажмите для переключения Caps Lock"
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Нажмите для переключения условия и/или относительно предыдущей строки"
 
-#. Resource IDs: (376)
-msgid "Click, then touch your YubiKey"
-msgstr "Нажмите на кнопку и коснитесь YubiKey"
-
 #. Resource IDs: (1, 2, 358)
 msgid "Close"
 msgstr "Закрыть"
@@ -2148,6 +2160,10 @@ msgstr "Выбор столбца"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Невозможно определить строку заголовков по первой записи. Записи не были импортированы."
+
+#. Resource IDs: (373, 1505)
+msgid "Combination..."
+msgstr ""
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -3943,6 +3959,7 @@ msgstr "В заголовках(%s)/в элементах("
 msgid "Inactive"
 msgstr "Неактивен"
 
+#. Resource IDs: (3857)
 # AFX_IDP_INVALID_FILENAME
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
@@ -5090,8 +5107,8 @@ msgid "Please enter an encryption or decryption key"
 msgstr "Введите ключ для шифрования или дешифрования"
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Укажите текущий пароль, а затем новый пароль.  Повторите новый пароль для подтверждения."
+msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -6457,6 +6474,10 @@ msgstr "Эти документы были сохранены позднее п�
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr "Выбранная комбинация недоступна, т. к. уже назначена для вызова Password Safe («Управление->Настройки...->Комбинации клавиш»)."
 
+#. Resource IDs: (1507)
+msgid "This Window will close automatically in"
+msgstr ""
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -6906,6 +6927,10 @@ msgstr "Использовать политику"
 #. Resource IDs: (1481)
 msgid "Use Named Policy"
 msgstr "Использовать политику"
+
+#. Resource IDs: (1503)
+msgid "Use Secure Desktop for master passphrase"
+msgstr ""
 
 # столбец в информации о политике
 #. Resource IDs: (369)
@@ -8058,6 +8083,10 @@ msgstr "предыдущих паролей для элемента"
 #. Resource IDs: (338)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (1509)
+msgid "seconds"
+msgstr ""
 
 #. Resource IDs: (205)
 msgid "shortcut"

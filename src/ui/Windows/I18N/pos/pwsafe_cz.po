@@ -574,10 +574,6 @@ msgstr "&Kopíruj heslo do schránky"
 msgid "&Copy Password to clipboard"
 msgstr "&Kopíruj heslo do schránky"
 
-#. Resource IDs: (1041)
-msgid "&Create a New Database"
-msgstr "&Vytvoř nový seznam hesel"
-
 #. Resource IDs: (1344, 1405, 2132, 32055)
 msgid "&Delete"
 msgstr "&Smazat"
@@ -738,10 +734,6 @@ msgstr "&Na"
 msgid "&Open"
 msgstr "&Otevřít"
 
-#. Resource IDs: (1024)
-msgid "&Open Another Database..."
-msgstr "&Otevřít jinou databázi"
-
 #. Resource IDs: (32002)
 msgid "&Open..."
 msgstr "&Otevřít ..."
@@ -773,10 +765,6 @@ msgstr "&Prostý text"
 #. Resource IDs: (32020)
 msgid "&Properties"
 msgstr "&Vlastnosti"
-
-#. Resource IDs: (1023)
-msgid "&Quit"
-msgstr "&Ukončit"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
@@ -855,10 +843,6 @@ msgstr "&Titul:"
 msgid "&Tree/List Font"
 msgstr "&Strom/font seznamu"
 
-#. Resource IDs: (1022)
-msgid "&Try Again"
-msgstr "&Opakovat"
-
 #. Resource IDs: (359)
 msgid "&Try again"
 msgstr "&Zkus znova"
@@ -935,6 +919,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
 msgstr "(Dvojklik pro editaci)"
+
+#. Resource IDs: (373)
+msgid "(Empty)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -1256,6 +1244,10 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
+
+#. Resource IDs: (1506)
+msgid "99:99"
+msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1928,6 +1920,10 @@ msgstr "Vymaž schránku při minimalizaci"
 msgid "Clear password history for ALL entries"
 msgstr ""
 
+#. Resource IDs: (376, 1457)
+msgid "Click button, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
 msgstr "Klikni pro detaily dalších nastavení."
@@ -1939,6 +1935,14 @@ msgstr "Klinkni pro označení pole"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Klikni pro změnu"
+
+#. Resource IDs: (373)
+msgid "Click to change to database combination entry via Secure Desktop"
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Click to change to old database combination entry method"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2031,10 +2035,6 @@ msgstr "Click to toggle Caps Lock key."
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Click to toggle and/or relation to previous row"
 
-#. Resource IDs: (376)
-msgid "Click, then touch your YubiKey"
-msgstr ""
-
 #. Resource IDs: (1, 358)
 msgid "Close"
 msgstr "Zavři"
@@ -2055,6 +2055,10 @@ msgstr "Column Picker"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Hlavička nebyla rozpoznána jako záznam - neimkportuji."
+
+#. Resource IDs: (373, 1505)
+msgid "Combination..."
+msgstr ""
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2485,10 +2489,6 @@ msgstr "Výchozí přihlašovací jméno"
 #, fuzzy
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Default number of saved password history entries must be between 1 and 255."
-
-#. Resource IDs: (1438)
-msgid "Default set"
-msgstr "Výhozí nastavení"
 
 #. Resource IDs: (352)
 msgid "Delete"
@@ -3534,8 +3534,8 @@ msgstr ""
 msgid "ID:32005:V C +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32027; 'E&xit'
-msgid "ID:32027:V C +Q"
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
+msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
@@ -3771,10 +3771,6 @@ msgstr ""
 
 #. Resource IDs: (350)
 msgid "Inactive"
-msgstr ""
-
-#. Resource IDs: (146)
-msgid "Incorrect Passkey"
 msgstr ""
 
 #. Resource IDs: (3857)
@@ -4712,24 +4708,16 @@ msgstr ""
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr ""
 
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
-
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
-
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4879,8 +4867,8 @@ msgid "Please enter an encryption or decryption key"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Vlož stávající heslo a nové heslo. Nové hesl vypiš dvakrát a potvrď je OK. "
+msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -5762,10 +5750,6 @@ msgstr ""
 msgid "Spanish Variation"
 msgstr ""
 
-#. Resource IDs: (1439)
-msgid "Special set"
-msgstr ""
-
 #. Resource IDs: (1486)
 msgid "Standard"
 msgstr ""
@@ -6161,12 +6145,12 @@ msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -6174,8 +6158,9 @@ msgstr ""
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n\nDo you wish this entry to point to the 'real' base entry?"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
+#. Resource IDs: (373)
+#, c-format
+msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
 
 #. Resource IDs: (361)
@@ -6208,6 +6193,10 @@ msgstr ""
 
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
+
+#. Resource IDs: (1507)
+msgid "This Window will close automatically in"
 msgstr ""
 
 #. Resource IDs: (344)
@@ -6616,7 +6605,7 @@ msgid "Use &Lowercase letters"
 msgstr ""
 
 #. Resource IDs: (1050)
-msgid "Use &Symbols (i.e. &&, %, $, etc.)"
+msgid "Use &Symbols"
 msgstr ""
 
 #. Resource IDs: (1050)
@@ -6634,6 +6623,10 @@ msgstr ""
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
 msgstr "Umožni více pravidel "
+
+#. Resource IDs: (1503)
+msgid "Use Secure Desktop for master passphrase"
+msgstr ""
 
 #. Resource IDs: (369)
 #, fuzzy
@@ -7736,6 +7729,10 @@ msgstr "předchozí hesla"
 msgid "pwsafe"
 msgstr "pwsafe"
 
+#. Resource IDs: (1509)
+msgid "seconds"
+msgstr ""
+
 #. Resource IDs: (205)
 msgid "shortcut"
 msgstr "zkratka"
@@ -7790,10 +7787,6 @@ msgstr ""
 
 #. Resource IDs: (32012)
 msgid "v&2 format..."
-msgstr ""
-
-#. Resource IDs: (32013)
-msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
 #. Resource IDs: (191)

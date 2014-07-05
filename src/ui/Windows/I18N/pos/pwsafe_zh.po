@@ -557,10 +557,6 @@ msgstr "复制密码到剪贴板(&C)"
 msgid "&Copy Password to clipboard"
 msgstr "复制密码到剪贴板(&C)"
 
-#. Resource IDs: (1041)
-msgid "&Create a New Database"
-msgstr "新建一个数据库(&C)"
-
 #. Resource IDs: (1344)
 msgid "&Delete"
 msgstr "删除(&D)"
@@ -721,10 +717,6 @@ msgstr ""
 msgid "&Open"
 msgstr "打开(&O)"
 
-#. Resource IDs: (1024)
-msgid "&Open Another Database..."
-msgstr "打开其它数据库(&O)..."
-
 #. Resource IDs: (32002)
 msgid "&Open..."
 msgstr "打开(&O)..."
@@ -756,10 +748,6 @@ msgstr "纯文本文件(&P)..."
 #. Resource IDs: (32020)
 msgid "&Properties"
 msgstr "属性(&P)"
-
-#. Resource IDs: (1023)
-msgid "&Quit"
-msgstr "退出(&Q)"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
@@ -837,10 +825,6 @@ msgstr "标题(&T):"
 msgid "&Tree/List Font"
 msgstr "树状目录/列表字体(&T)"
 
-#. Resource IDs: (1022)
-msgid "&Try Again"
-msgstr "重试(&T)"
-
 #. Resource IDs: (359)
 msgid "&Try again"
 msgstr "重试(&T)"
@@ -916,6 +900,10 @@ msgstr "(同时代替标题字段的句号)"
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
 msgstr "(双击一个项目编辑它)"
+
+#. Resource IDs: (373)
+msgid "(Empty)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -1237,6 +1225,10 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
+
+#. Resource IDs: (1506)
+msgid "99:99"
+msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1902,6 +1894,10 @@ msgstr "最小化时清空剪贴板"
 msgid "Clear password history for ALL entries"
 msgstr ""
 
+#. Resource IDs: (376, 1457)
+msgid "Click button, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
 msgstr ""
@@ -1913,6 +1909,14 @@ msgstr "单击这里选择字段"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "单击更改大小写"
+
+#. Resource IDs: (373)
+msgid "Click to change to database combination entry via Secure Desktop"
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Click to change to old database combination entry method"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2002,10 +2006,6 @@ msgstr "单击切换为大小写键"
 msgid "Click to toggle and/or relation to previous row"
 msgstr "单击切换和/或前一行的关系"
 
-#. Resource IDs: (376)
-msgid "Click, then touch your YubiKey"
-msgstr ""
-
 #. Resource IDs: (1)
 msgid "Close"
 msgstr "关闭"
@@ -2025,6 +2025,10 @@ msgstr "栏目选择器"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "栏目标题行不认可为首记录，无记录导入！"
+
+#. Resource IDs: (373, 1505)
+msgid "Combination..."
+msgstr ""
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2448,10 +2452,6 @@ msgstr "默认用户名"
 #. Resource IDs: (331)
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "默认保存项目历史密码数量必须在 1 和 255 之间！"
-
-#. Resource IDs: (1438)
-msgid "Default set"
-msgstr ""
 
 #. Resource IDs: (352)
 msgid "Delete"
@@ -3494,8 +3494,8 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32027; 'E&xit'
-msgid "ID:32027:V C +Q"
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
+msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
@@ -3732,10 +3732,6 @@ msgstr "在标题(%s)/在项目("
 #. Resource IDs: (350)
 msgid "Inactive"
 msgstr "静止"
-
-#. Resource IDs: (146)
-msgid "Incorrect Passkey"
-msgstr "错误密匙"
 
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
@@ -4672,24 +4668,16 @@ msgstr "Password Safe 备份 (*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe 备份 (*.bak)|*.bak||"
 
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
-
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe 数据库 (*.psafe3)|*.psafe3|所有文件 (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
-
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4839,8 +4827,8 @@ msgid "Please enter an encryption or decryption key"
 msgstr "请输入一个加密或解密密匙"
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "首先请输入当前保险箱旧密码，接着输入新密码，再确认输入一遍新密码，最后单击确定按钮完成更改。"
+msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -5720,10 +5708,6 @@ msgstr "西班牙语"
 msgid "Spanish Variation"
 msgstr "西班牙语(变种)"
 
-#. Resource IDs: (1439)
-msgid "Special set"
-msgstr ""
-
 #. Resource IDs: (1486)
 msgid "Standard"
 msgstr ""
@@ -6119,12 +6103,12 @@ msgstr "旧密码不正确！"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -6132,9 +6116,10 @@ msgstr ""
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "密码别名处于良好状态，但已引用项目“%s:%s:%s”是它自己的一个别名。\n\n你是否需要该项目显示“真实”的基本项目位置？"
 
-#. Resource IDs: (65535)
-msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "保险箱数据库密码已被输入三次均未成功，如果你不知道该密码，你可以尝试打开其它密码数据库或创建一个新空白密码数据库两者任选其一！"
+#. Resource IDs: (373)
+#, c-format
+msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -6166,6 +6151,10 @@ msgstr "这是最近保存比当前打开还新的包含了应用程序关闭之
 
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
+
+#. Resource IDs: (1507)
+msgid "This Window will close automatically in"
 msgstr ""
 
 #. Resource IDs: (344)
@@ -6574,8 +6563,8 @@ msgid "Use &Lowercase letters"
 msgstr "使用小写字母(&L)"
 
 #. Resource IDs: (1050)
-msgid "Use &Symbols (i.e. &&, %, $, etc.)"
-msgstr "使用符号(&S) (如: &&, %, $,等)"
+msgid "Use &Symbols"
+msgstr ""
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
@@ -6591,6 +6580,10 @@ msgstr ""
 
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (1503)
+msgid "Use Secure Desktop for master passphrase"
 msgstr ""
 
 #. Resource IDs: (369)
@@ -7693,6 +7686,10 @@ msgstr "个早期每项目密码"
 msgid "pwsafe"
 msgstr "pwsafe"
 
+#. Resource IDs: (1509)
+msgid "seconds"
+msgstr ""
+
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "快捷方式"
@@ -7747,10 +7744,6 @@ msgstr "v1.x 旧版格式(&1)..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v2 旧版格式(&2)..."
-
-#. Resource IDs: (32013)
-msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

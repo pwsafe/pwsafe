@@ -674,10 +674,6 @@ msgstr "&Kopiera lösenordet till Urklipp"
 msgid "&Copy Password to clipboard"
 msgstr "&Kopiera lösenordet till Urklipp"
 
-#. Resource IDs: (1041)
-msgid "&Create a New Database"
-msgstr "&Skapa en ny databas"
-
 #. Resource IDs: (1344)
 msgid "&Delete"
 msgstr "&Radera"
@@ -838,10 +834,6 @@ msgstr "&Den"
 msgid "&Open"
 msgstr "&Öppna"
 
-#. Resource IDs: (1024)
-msgid "&Open Another Database..."
-msgstr "&Öppna en annan databas..."
-
 #. Resource IDs: (32002)
 msgid "&Open..."
 msgstr "&Öppna..."
@@ -873,10 +865,6 @@ msgstr "&Ren text..."
 #. Resource IDs: (32020)
 msgid "&Properties"
 msgstr "&Egenskaper"
-
-#. Resource IDs: (1023)
-msgid "&Quit"
-msgstr "&Avsluta"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
@@ -954,10 +942,6 @@ msgstr "&Titel:"
 msgid "&Tree/List Font"
 msgstr "&Träd-/tabellfont"
 
-#. Resource IDs: (1022)
-msgid "&Try Again"
-msgstr "&Försök igen"
-
 #. Resource IDs: (359)
 msgid "&Try again"
 msgstr "&Försök igen"
@@ -1033,6 +1017,10 @@ msgstr "(Används också som ersättning för punkter i Titel-fältet)"
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
 msgstr "(Dubbelklicka på en post för att redigera den)"
+
+#. Resource IDs: (373)
+msgid "(Empty)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -1354,6 +1342,10 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
+
+#. Resource IDs: (1506)
+msgid "99:99"
+msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -2019,6 +2011,10 @@ msgstr "Rensa Urklipp vid Minimera"
 msgid "Clear password history for ALL entries"
 msgstr "Rensa lösenordshistorik för ALLA poster"
 
+#. Resource IDs: (376, 1457)
+msgid "Click button, then touch your YubiKey"
+msgstr ""
+
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
 msgstr "Klicka här för uppgifter om de olika preferenserna."
@@ -2030,6 +2026,14 @@ msgstr "Klicka här för att välja fält"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Klicka för att ändra läge"
+
+#. Resource IDs: (373)
+msgid "Click to change to database combination entry via Secure Desktop"
+msgstr ""
+
+#. Resource IDs: (373)
+msgid "Click to change to old database combination entry method"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2119,10 +2123,6 @@ msgstr "Klicka för att växla Caps Lock-tangenten."
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klicka för att växla och/eller anknyta till föregående rad"
 
-#. Resource IDs: (376)
-msgid "Click, then touch your YubiKey"
-msgstr "Klicka och ta sedan Din YubiKey"
-
 #. Resource IDs: (1)
 msgid "Close"
 msgstr "Stäng"
@@ -2142,6 +2142,10 @@ msgstr "Kolumnväljare"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Kolumnens rubrikrad känns inte igen som första post. Ingenting har importerats."
+
+#. Resource IDs: (373, 1505)
+msgid "Combination..."
+msgstr ""
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2565,10 +2569,6 @@ msgstr "Förvalt användarnamn"
 #. Resource IDs: (331)
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Förvalt antal sparade posters historiska lösenord måste vara mellan 1 och 255."
-
-#. Resource IDs: (1438)
-msgid "Default set"
-msgstr "Förvald inställning"
 
 #. Resource IDs: (352)
 msgid "Delete"
@@ -3611,8 +3611,8 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32027; 'E&xit'
-msgid "ID:32027:V C +Q"
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
+msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
@@ -3849,10 +3849,6 @@ msgstr "I rubriker(%s)/I poster("
 #. Resource IDs: (350)
 msgid "Inactive"
 msgstr "Inaktiv"
-
-#. Resource IDs: (146)
-msgid "Incorrect Passkey"
-msgstr "Fel Safe-nyckel"
 
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
@@ -4789,24 +4785,16 @@ msgstr "Password Safe säkerhetskopior(*.bak)|*.bak|Password Safe mellanlagrade 
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe säkerhetskopior (*.bak)|*.bak||"
 
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
-
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe databaser (*.psafe3)|*.psafe3|Alla filer (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
-
-#. Resource IDs: (317)
-msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4956,8 +4944,8 @@ msgid "Please enter an encryption or decryption key"
 msgstr "Vänligen, skriv in en kodnings- eller avkodningsnyckel"
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Vänligen, ange nuvarande nyckel och därefter en ny nyckel. Skriv den nya nyckeln ytterligare en gång för att bekräfta den."
+msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -5837,10 +5825,6 @@ msgstr "Spanskt"
 msgid "Spanish Variation"
 msgstr "Spansk variant"
 
-#. Resource IDs: (1439)
-msgid "Special set"
-msgstr "Speciellt set"
-
 #. Resource IDs: (1486)
 msgid "Standard"
 msgstr "Standard"
@@ -6236,12 +6220,12 @@ msgstr "Den gamla Safe-nyckeln är felaktig"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in an old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in an old format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->...\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -6249,9 +6233,10 @@ msgstr ""
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en alias.\n\nVill du att denna post skal peka på den 'verkliga' basposten?"
 
-#. Resource IDs: (65535)
-msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "Safe-nyckeln har använts tre gånger utan framgång. Om du inte känner till Safe-nyckeln, kan du antingen försöka öppna en annan lösenordsdatabas, eller skapa en ny tom lösenordsdatabas."
+#. Resource IDs: (373)
+#, c-format
+msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -6284,6 +6269,10 @@ msgstr "Dessa har sparats senare än de nu öppna dokumenten och har förändrin
 #. Resource IDs: (373)
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr "Detta HotKey-värde är inte tillgängligt då det redan har tilldelats PasswordSafe applikationen (Hantera->Alternativ->Genvägar)."
+
+#. Resource IDs: (1507)
+msgid "This Window will close automatically in"
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6691,8 +6680,8 @@ msgid "Use &Lowercase letters"
 msgstr "Använd &gemener"
 
 #. Resource IDs: (1050)
-msgid "Use &Symbols (i.e. &&, %, $, etc.)"
-msgstr "Använd &symboler (t. ex. &&, %, $, etc.)"
+msgid "Use &Symbols"
+msgstr ""
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
@@ -6709,6 +6698,10 @@ msgstr "Använd databaspolicy"
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
 msgstr "Använd angiven policy"
+
+#. Resource IDs: (1503)
+msgid "Use Secure Desktop for master passphrase"
+msgstr ""
 
 #. Resource IDs: (369)
 msgid "Use count"
@@ -7810,6 +7803,10 @@ msgstr "tidigare lösenord per post"
 msgid "pwsafe"
 msgstr "pwsafe"
 
+#. Resource IDs: (1509)
+msgid "seconds"
+msgstr ""
+
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "genväg"
@@ -7864,10 +7861,6 @@ msgstr "v&1.x format..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v&2 format..."
-
-#. Resource IDs: (32013)
-msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"
