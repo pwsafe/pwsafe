@@ -45,7 +45,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void SendToClipboard();
   void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
   StringX GetData(const CItemData *pci);
 
