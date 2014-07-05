@@ -239,11 +239,7 @@ void CDisplayFSBkupFiles::OnDelete()
   const wchar_t *lpsz_delete = ws_selected.c_str();
   wchar_t szToBeDeleted[_MAX_PATH + 1];
 
-#if (_MSC_VER >= 1400)
   wcscpy_s(szToBeDeleted, _MAX_PATH, lpsz_delete);
-#else
-  wcscpy(szToBeDeleted, lpsz_delete);
-#endif
 
   // Must end with double NULL
   szToBeDeleted[ws_selected.length() + 1] = L'\0';

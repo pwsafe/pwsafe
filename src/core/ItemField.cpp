@@ -80,11 +80,7 @@ void CItemField::Set(const unsigned char* value, size_t length,
 
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
-#if (_MSC_VER >= 1400)
     memcpy_s(tempmem, BlockLength, value, m_Length);
-#else
-    memcpy(tempmem, value, m_Length);
-#endif
 
     //Fill the unused characters in with random stuff
     PWSrand::GetInstance()->GetRandomData(tempmem + m_Length, static_cast<unsigned long>(BlockLength - m_Length));

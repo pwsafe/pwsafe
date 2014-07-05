@@ -341,12 +341,7 @@ size_t _readcbc(FILE *fp,
 
 void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
 {
-#if (_MSC_VER >= 1400)
   (void) _tcsncpy_s(target, tcount, source, scount);
-#else
-  UNREFERENCED_PARAMETER(tcount);
-  (void)_tcsncpy(target, source, scount);
-#endif
 }
 
 size_t PWSUtil::strLength(const LPCTSTR str)
@@ -363,18 +358,12 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
   if (t != 0) {
     TCHAR datetime_str[80];
     struct tm *st;
-#if (_MSC_VER >= 1400)
     struct tm st_s;
     errno_t err;
     err = localtime_s(&st_s, &t);  // secure version
     if (err != 0) // invalid time
       return ConvertToDateTimeString(0, result_format);
     st = &st_s; // hide difference between versions
-#else
-    st = localtime(&t);
-    if (st == NULL) // null means invalid time
-      return ConvertToDateTimeString(0, result_format);
-#endif
     switch (result_format) {
     case TMC_EXPORT_IMPORT:
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
@@ -446,11 +435,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 #ifdef _WIN32
   struct _timeb *ptimebuffer;
   ptimebuffer = new _timeb;
-#if (_MSC_VER >= 1400)
   _ftime_s(ptimebuffer);
-#else
-  _ftime(ptimebuffer);
-#endif
 #else
   struct timeb *ptimebuffer;
   ptimebuffer = new timeb;

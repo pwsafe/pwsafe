@@ -476,12 +476,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     if (ilen == 0) {
       lpszW[ilen] = L'\0';
     } else {
-#if (_MSC_VER >= 1400)
       (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
-#else
-      (void)wcsncpy(lpszW, cs_dragdata, ilen);
-      lpszW[ilen] = L'\0';
-#endif
     }
   } else {
     // They want it in ASCII - use lpszW temporarily

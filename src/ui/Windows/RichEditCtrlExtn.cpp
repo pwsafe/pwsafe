@@ -229,13 +229,8 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
           cf2.yHeight = (format_iter->iSize) * 20;
         } else if (format_iter->entrytype == Name) {
           cf2.dwMask = CFM_FACE;
-#if (_MSC_VER >= 1400)
           memcpy_s(cf2.szFaceName, sizeof(cf2.szFaceName),
                    format_iter->tcszFACENAME, sizeof(format_iter->tcszFACENAME));
-#else
-          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, 
-                 sizeof(format_iter->tcszFACENAME));
-#endif
         }
         SetSelectionCharFormat(cf2);
       }
@@ -496,11 +491,7 @@ vnext:
           cur_format.iStart = iFontChangeStart;
           cur_format.iEnd = iTextPosition;
           SecureZeroMemory(cur_format.tcszFACENAME, sizeof(cur_format.tcszFACENAME));
-#if (_MSC_VER >= 1400)
           wcscpy_s(cur_format.tcszFACENAME, LF_FACESIZE, (LPCWSTR)csLastFaceName);
-#else
-          wcscpy(cur_format.tcszFACENAME, (LPCWSTR)csLastFaceName);
-#endif
           m_vFormat.push_back(cur_format);
           vLastFacenames.pop_back();
         }
@@ -588,11 +579,7 @@ vnext:
           csURL = csHTMLTag.Mid(8, dwTEnd - 8);
           if (!csURL.IsEmpty()) {
             csURL.MakeLower();
-#if (_MSC_VER >= 1400)
             wcscpy_s(this_ALink.tcszURL, _MAX_PATH, csURL);
-#else
-            wcscpy(this_ALink.tcszURL, csURL);
-#endif
           }
         }
         // Now get Friendly Name (note doing this within the while loop!)
@@ -637,11 +624,7 @@ COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
     // Convert HTML to COLORREF
     ASSERT(csValue.GetLength() == 7);
     int icolour;
-#if (_MSC_VER >= 1400)
     swscanf_s(csValue.Mid(1), L"%06x", &icolour);
-#else
-    swscanf(csValue.Mid(1), L"%06x", &icolour);
-#endif
     int ired = (icolour & 0xff0000) >> 16;
     int igreen = (icolour & 0xff00);
     int iblue = (icolour & 0xff) << 16;

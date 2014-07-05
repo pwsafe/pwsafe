@@ -20,9 +20,7 @@
 #if !defined(AFX_SHORTCUT_H__2599590A_2D2B_49B1_9E63_BF123E5B67B8__INCLUDED_)
 #define AFX_SHORTCUT_H__2599590A_2D2B_49B1_9E63_BF123E5B67B8__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 /*
 ******************************************************************

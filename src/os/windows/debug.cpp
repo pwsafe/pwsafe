@@ -38,15 +38,9 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   const size_t N = _tcslen(nBuf > -1 ? szBuffer : szErrorMsg) + sTimeStamp.length() + 2;
   TCHAR *szDebugString = new TCHAR[N];
 
-#if (_MSC_VER >= 1400)
   _tcscpy_s(szDebugString, N, sTimeStamp.c_str());
   _tcscat_s(szDebugString, N, _T(" "));
   _tcscat_s(szDebugString, N, nBuf > -1 ? szBuffer : szErrorMsg);
-#else
-  _tcscpy(szDebugString, sTimeStamp.c_str());
-  _tcscat(szDebugString, _T(" "));
-  _tcscat(szDebugString, nBuf > -1 ? szBuffer : szErrorMsg);
-#endif
 
   OutputDebugString(szDebugString);
   delete [] szDebugString;
@@ -62,15 +56,9 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   const size_t N = _tcslen(lpszFormat) + sTimeStamp.length() + 2;
   TCHAR *szDebugString = new TCHAR[N];
 
-#if (_MSC_VER >= 1400)
   _tcscpy_s(szDebugString, N, sTimeStamp.c_str());
   _tcscat_s(szDebugString, N, _T(" "));
   _tcscat_s(szDebugString, N, lpszFormat);
-#else
-  _tcscpy(szDebugString, sTimeStamp.c_str());
-  _tcscat(szDebugString, _T(" "));
-  _tcscat(szDebugString, lpszFormat);
-#endif
 
   OutputDebugString(szDebugString);
   delete [] szDebugString;

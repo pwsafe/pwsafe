@@ -141,14 +141,9 @@ bool UpdateRODLL(const CString csInFilePath, const LCID locale)
   TCHAR drive[_MAX_DRIVE];
   TCHAR dir[_MAX_DIR];
 
-#if _MSC_VER >= 1400
   _tsplitpath_s((LPCTSTR)csInFilePath, drive, _MAX_DRIVE, dir, _MAX_DIR,
     NULL, 0, NULL, 0);
   _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, (LPCTSTR)csFilename, _T("dll"));
-#else
-  _tsplitpath((LPCTSTR)csInFilePath, drive, dir, NULL, NULL);
-  _tmakepath(path_buffer, drive, dir, (LPCTSTR)csFilename, _T("dll"));
-#endif
 
   csOutFilePath = path_buffer;
   if (!CopyFile(csInFilePath, csOutFilePath, FALSE)) {

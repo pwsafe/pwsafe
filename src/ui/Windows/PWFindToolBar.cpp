@@ -152,11 +152,7 @@ CPWFindToolBar::CPWFindToolBar()
   lf.lfWeight = FW_LIGHT;
   lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
   CString strDefaultFont = L"MS Sans Serif";
-#if (_MSC_VER >= 1400)
   wcscpy_s(lf.lfFaceName, LF_FACESIZE, strDefaultFont);
-#else
-  wcscpy(lf.lfFaceName, strDefaultFont);
-#endif  
   VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
 }
 

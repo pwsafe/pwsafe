@@ -368,14 +368,9 @@ int CExpPWListDlg::GetEntryImage(const st_ExpLocalListEntry &elle)
     time_t now, warnexptime((time_t)0);
     time(&now);
     struct tm st;
-#if (_MSC_VER >= 1400)
     errno_t err;
     err = localtime_s(&st, &now);  // secure version
     ASSERT(err == 0);
-#else
-    st = *localtime(&now);
-    ASSERT(st != NULL); // null means invalid time
-#endif
     st.tm_mday += m_idays;
     warnexptime = mktime(&st);
 

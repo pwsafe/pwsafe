@@ -3281,13 +3281,8 @@ void DboxMain::SavePreferencesOnExit()
 
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     int iIndex = m_nColumnIndexByOrder[iOrder];
-#if (_MSC_VER >= 1400)
     _itow_s(m_nColumnTypeByIndex[iIndex], wc_buffer, 8, 10);
     _itow_s(m_nColumnWidthByIndex[iIndex], widths, 8, 10);
-#else
-    _itow(m_nColumnTypeByIndex[iIndex], wc_buffer, 10);
-    _itow(m_nColumnWidthByIndex[iIndex], widths, 10);
-#endif
     cs_columns += wc_buffer;
     cs_columnswidths += widths;
     cs_columns += L",";

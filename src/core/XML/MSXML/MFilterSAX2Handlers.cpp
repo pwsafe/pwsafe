@@ -93,18 +93,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pL
   int iLineNumber, iCharacter;
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
 #else
-  _tcscpy(szErrorMessage, pwchErrorMessage);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
-#else
-  wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
-#endif
 #endif
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
@@ -112,13 +104,8 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pL
   stringT cs_format;
   LoadAString(cs_format, IDSC_MSXMLSAXGENERROR);
 
-#if (_MSC_VER >= 1400)
   _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
               hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
-#else
-  _stprintf(szFormatString, cs_format.c_str(),
-              hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
-#endif
 
   m_strValidationResult += szFormatString;
 
@@ -214,18 +201,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
   TCHAR szCurElement[MAX_PATH + 1] = {0};
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
 #else
-  _tcsncpy(szCurElement, pwchRawName, cchRawName);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
-#else
-  wcstombs(szCurElement, pwchRawName, cchRawName);
-#endif
 #endif
 
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
@@ -251,21 +230,11 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
       pAttributes->getQName(i, &QName, &QName_length);
       pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
       _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
       _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else
-      _tcsncpy(szQName, QName, QName_length);
-      _tcsncpy(szValue, Value, Value_length);
-#endif
 #else  // UNICODE
-#if (_MSC_VER >= 1400)
       wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
       wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#else
-      wcstombs(szQName, QName, QName_length);
-      wcstombs(szValue, Value, Value_length);
-#endif
 #endif  // UNICODE
       if (QName_length == 7 && memcmp(szQName, _T("version"), 7 * sizeof(TCHAR)) == 0) {
         m_iXMLVersion = _ttoi(szValue);
@@ -303,21 +272,11 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
       pAttributes->getQName(i, &QName, &QName_length);
       pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
       _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
       _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else
-      _tcsncpy(szQName, QName, QName_length);
-      _tcsncpy(szValue, Value, Value_length);
-#endif
 #else  // UNICODE
-#if (_MSC_VER >= 1400)
       wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
       wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#else
-      wcstombs(szQName, QName, QName_length);
-      wcstombs(szValue, Value, Value_length);
-#endif
 #endif  // UNICODE
 
       if (bfilter && QName_length == 10 && memcmp(szQName, _T("filtername"), 10 * sizeof(TCHAR)) == 0)
@@ -346,18 +305,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::characters(
   TCHAR* szData = new TCHAR[cchChars + 2];
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
 #else
-  _tcsncpy(szData, pwchChars, cchChars);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
-#else
-  wcstombs(szData, pwchChars, cchChars);
-#endif
 #endif
 
   szData[cchChars]=0;
@@ -381,18 +332,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
   TCHAR szCurElement[MAX_PATH + 1] = {0};
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchQName, cchQName);
 #else
-  _tcsncpy(szCurElement, pwchQName, cchQName);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchQName, cchQName);
-#else
-  wcstombs(szCurElement, pwchQName, cchQName);
-#endif
 #endif
 
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {

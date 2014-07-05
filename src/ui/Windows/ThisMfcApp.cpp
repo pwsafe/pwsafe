@@ -435,16 +435,10 @@ void ThisMfcApp::LoadLocalizedStuff()
   if (!helpFileFound && m_pszHelpFilePath != NULL && _tcslen(m_pszHelpFilePath) > 0) { // last resort
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
-#if (_MSC_VER >= 1400)
     _wsplitpath_s(m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
                   _MAX_FNAME, ext, _MAX_EXT);
     _wcslwr_s(fname, _MAX_FNAME);
     _wcslwr_s(ext, _MAX_EXT);
-#else
-    _wsplitpath(m_pszHelpFilePath, NULL, NULL, fname, ext);
-    _wcslwr(ext);
-    _wcslwr(fname);
-#endif
     cs_HelpPath.Format(L"%s%s", fname, ext);
   }
 

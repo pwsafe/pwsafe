@@ -1366,11 +1366,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   int iDDType;
   long lBufLen;
 
-#if (_MSC_VER >= 1400)
   sscanf_s((char *)pData, OLE_HDR_FMT, &lPid, &iDDType, &lBufLen);
-#else
-  sscanf((char *)pData, OLE_HDR_FMT, &lPid, &iDDType, &lBufLen);
-#endif
   pData += OLE_HDR_LEN; // so ProcessData won't sweat
 
   // NULL-ness of pil is also a good indicator of intra/inter-ness
@@ -2131,12 +2127,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
     //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
-#if (_MSC_VER >= 1400)
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
-#else
-    (void)wcsncpy(lpszW, cs_dragdata, ilen);
-    lpszW[ilen] = L'\0';
-#endif
   } else {
     // They want it in ASCII - use lpszW temporarily
     lpszW = cs_dragdata.GetBuffer(ilen + 1);
@@ -2252,12 +2243,8 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
   char header[OLE_HDR_LEN + 1];
   // Note: GetDDType will return either FROMTREE or FROMTREE_R
-#if (_MSC_VER >= 1400)
   sprintf_s(header, sizeof(header),
             OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);
-#else
-  sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);
-#endif
   CMemFile mf;
   mf.Write(header, OLE_HDR_LEN);
   mf.Write(buffer, lBufLen);

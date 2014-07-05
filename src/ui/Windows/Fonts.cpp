@@ -174,11 +174,7 @@ void Fonts::ExtractFont(const CString &str, LOGFONT &lf)
   lf.lfPitchAndFamily = _wtoi((LPCWSTR)GetToken(s, L","));
 #pragma warning(pop)
 
-#if (_MSC_VER >= 1400)
   wcscpy_s(lf.lfFaceName, LF_FACESIZE, s);
-#else
-  wcscpy(lf.lfFaceName, s);
-#endif  
 }
 
 

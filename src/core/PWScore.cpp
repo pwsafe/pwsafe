@@ -2777,13 +2777,8 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
         m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
         int status, old_max, num_saved;
         const wchar_t *lpszPWHistory = cs_tmp.c_str();
-#if (_MSC_VER >= 1400)
         int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"),
                                &status, &old_max, &num_saved);
-#else
-        int iread = swscanf(lpszPWHistory, _T("%01d%02x%02x"),
-                             &status, &old_max, &num_saved);
-#endif
         if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
           cs_tmp = m_text + cs_tmp.substr(3);
           ci.SetPWHistory(cs_tmp);

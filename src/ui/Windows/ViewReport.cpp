@@ -102,7 +102,6 @@ BOOL CViewReport::OnInitDialog()
   // horizontal scroll bars
   wchar_t pSeps[] = L"\r\n";
   int iMaxWidth(-1);
-#if (_MSC_VER >= 1400)
   // Capture individual lines:
   wchar_t *next_token;
   wchar_t *token = wcstok_s((LPWSTR)lpszText, pSeps, &next_token);
@@ -112,16 +111,6 @@ BOOL CViewReport::OnInitDialog()
       iMaxWidth = sz.cx;
     token = wcstok_s(NULL, pSeps, &next_token);
   }
-#else
-  // Capture individual lines:
-  wchar_t *token = _wcstok(pTemp, pSeps);
-  while(token) {
-    CSize sz = dc.GetTextExtent(token, (int)wcslen(token));
-    if (sz.cx > iMaxWidth)
-      iMaxWidth = sz.cx;
-    token = _wcstok(NULL, pSeps);
-  }
-#endif
 
   dc.SelectObject(pOldFont);
 

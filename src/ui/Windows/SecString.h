@@ -71,12 +71,7 @@ public:
   int Remove(wchar_t ch) {return m_mystring.Remove(ch);}
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
-#if (_MSC_VER >= 1400)
   CSecString &Trim() {m_mystring.Trim(); return *this;}
-#else
-  CSecString &Trim()
-  {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
-#endif
   void MakeLower() {m_mystring.MakeLower();}
   void MakeUpper() {m_mystring.MakeUpper();}
   int Compare(const LPCWSTR lpszOther) const {return m_mystring.Compare(lpszOther);}

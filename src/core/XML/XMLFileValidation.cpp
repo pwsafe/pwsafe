@@ -134,14 +134,10 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
 #endif
 #else   // NON-UNICODE
 #if USE_XML_LIBRARY == MSXML
-#if (_MSC_VER >= 1400)
   size_t numchars = wcslen(name);
   char* szData = new char[numchars + 2];
   size_t num_converted;
   wcstombs_s(&num_converted, szData, numchars + 2, name, numchars);
-#else
-  wcstombs(szData, name, numchars);
-#endif  // MSXML NON-UNICODE _MSC_VER
   const stringT strValue(szData);
   delete szData;
 #elif USE_XML_LIBRARY == XERCES

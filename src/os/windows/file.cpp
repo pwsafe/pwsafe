@@ -96,13 +96,8 @@ static bool FileOP(const stringT &src, const stringT &dst,
   const TCHAR *lpsz_current = srcD.c_str();
   const TCHAR *lpsz_new = dstD.c_str();
 
-#if (_MSC_VER >= 1400)
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
   _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
-#else
-  _tcscpy(szSource, lpsz_current);
-  _tcscpy(szDestination, lpsz_new);
-#endif
 
   // Must end with double NULL
   szSource[srcD.length() + 1] = TCHAR('\0');
@@ -402,11 +397,7 @@ bool pws_os::IsLockedFile(const stringT &filename)
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
   std::FILE *fd = NULL;
-#if (_MSC_VER >= 1400)
   _tfopen_s(&fd, filename.c_str(), mode);
-#else
-  fd = _tfopen(m_filename.c_str(), mode);
-#endif
   return fd;
 }
 

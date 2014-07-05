@@ -286,11 +286,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   m_PWHistListCtrl.SetRedraw(TRUE);
 
   wchar_t buffer[10];
-#if (_MSC_VER >= 1400)
   swprintf_s(buffer, 10, L"%lu", M_NumPWHistory());
-#else
-  swprintf(buffer, L"%lu", M_NumPWHistory());
-#endif
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
@@ -731,17 +727,10 @@ BOOL CAddEdit_Additional::OnApply()
 
   if (!(M_PWHistory().IsEmpty() && M_SavePWHistory() == FALSE)) {
     wchar_t buffer[6];
-#if (_MSC_VER >= 1400)
     swprintf_s(buffer, 6, L"%1x%02x%02x",
               (M_SavePWHistory() == FALSE) ? 0 : 1,
               M_MaxPWHistory(),
               M_pwhistlist().size());
-#else
-    swprintf(buffer, L"%1x%02x%02x",
-             (M_SavePWHistory() == FALSE) ? 0 : 1,
-             M_MaxPWHistory(),
-             M_pwhistlist().size());
-#endif
     if (M_PWHistory().GetLength() >= 5) {
       for (int i = 0; i < 5; i++) {
         M_PWHistory().SetAt(i, buffer[i]);

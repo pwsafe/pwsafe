@@ -76,18 +76,10 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::error(struct ISAXLocator * pLoc
   int iLineNumber, iCharacter;
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
 #else
-  _tcscpy(szErrorMessage, pwchErrorMessage);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
-#else
-  wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
-#endif
 #endif
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
@@ -95,13 +87,8 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::error(struct ISAXLocator * pLoc
   stringT cs_format;
   LoadAString(cs_format, IDSC_MSXMLSAXGENERROR);
 
-#if (_MSC_VER >= 1400)
   _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
               hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
-#else
-  _stprintf(szFormatString, cs_format.c_str(),
-            hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
-#endif
 
   m_strValidationResult += szFormatString;
 
@@ -201,22 +188,12 @@ TCHAR * FileProcessAttributes(
     pAttributes->getQName(i, &QName, &QName_length);
     pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
     _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
     _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
-    _tcsncpy(szQName, QName, QName_length);
-    _tcsncpy(szValue, Value, Value_length);
-#endif
-#else
-#if (_MSC_VER >= 1400)
     size_t num_converted;
     wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
     wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#else
-    wcstombs(szQName, QName, QName_length);
-    wcstombs(szValue, Value, Value_length);
-#endif
 #endif
     if (_tcscmp(szQName, lpName) == 0) {
       return _tcsdup(szValue);
@@ -237,11 +214,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
 {
   wchar_t szCurElement[MAX_PATH + 1] = {0};
 
-#if (_MSC_VER >= 1400)
   wcsncpy_s(szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
-#else
-  wcsncpy(szCurElement, pwchRawName, cchRawName);
-#endif
 
   if (m_bValidation) {
     if (wcscmp(szCurElement, L"passwordsafe") == 0) {
@@ -295,18 +268,10 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
   TCHAR* szData = new TCHAR[cchChars + 2];
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
   _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
 #else
-  _tcsncpy(szData, pwchChars, cchChars);
-#endif
-#else
-#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
-#else
-  wcstombs(szData, pwchChars, cchChars);
-#endif
 #endif
 
   szData[cchChars] = 0;
@@ -329,11 +294,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::endElement(
 {
   wchar_t szCurElement[MAX_PATH + 1] = {0};
 
-#if (_MSC_VER >= 1400)
   wcsncpy_s(szCurElement, MAX_PATH + 1, pwchQName, cchQName);
-#else
-  wcsncpy(szCurElement, pwchQName, cchQName);
-#endif
 
   if (m_bValidation) {
     if (wcscmp(szCurElement, L"entry") == 0)

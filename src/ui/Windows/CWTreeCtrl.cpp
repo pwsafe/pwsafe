@@ -269,14 +269,9 @@ int CCWTreeCtrl::GetEntryImage(const CItemData &ci) const
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
       int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
       struct tm st;
-#if (_MSC_VER >= 1400)
       errno_t err;
       err = localtime_s(&st, &now);  // secure version
       ASSERT(err == 0);
-#else
-      st = *localtime(&now);
-      ASSERT(st != NULL); // null means invalid time
-#endif
       st.tm_mday += idays;
       warnexptime = mktime(&st);
 
