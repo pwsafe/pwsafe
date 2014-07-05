@@ -4,8 +4,11 @@ DOMAIN := pwsafe
 POT := $(DOMAIN).pot
 SRC_BASE := ../../..
 SRCS := $(wildcard $(SRC_BASE)/ui/wxWidgets/*.cpp) \
+	$(wildcard $(SRC_BASE)/ui/wxWidgets/*.h) \
 	$(wildcard $(SRC_BASE)/core/*.cpp) \
-	$(wildcard $(SRC_BASE)/os/linux/*.cpp)
+	$(wildcard $(SRC_BASE)/core/*.h) \
+	$(wildcard $(SRC_BASE)/os/linux/*.cpp) \
+	$(wildcard $(SRC_BASE)/os/linux/*.h)
 
 LANGS := de dk es fr it kr nl pl ru sv zh
 

@@ -195,7 +195,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   if (m_message.IsEmpty() && m_index == GCP_FIRST) {
     m_pctlPasskey->EnableWindow(FALSE);
-    m_ctlOK.EnableWindow(FALSE);
+    m_ctlOK.EnableWindow(TRUE);
     m_message.LoadString(IDS_NOCURRENTSAFE);
   }
 
