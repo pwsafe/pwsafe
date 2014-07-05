@@ -265,13 +265,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   /*
-   * this bit makes the background come out right on
-   * the bitmaps
+   * this bit makes the background come out right on the bitmaps
    */
 
   if (m_index == GCP_FIRST) {
     m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
-    m_ctlLogo.ReloadBitmap(IDB_CLOGO);
+    m_ctlLogo.ReloadBitmap(m_bUseSecureDesktop ? IDB_CLOGO_SMALL : IDB_CLOGO);
   } else {
     m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
   }
