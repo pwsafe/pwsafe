@@ -1494,14 +1494,12 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
 
-     Notes:
-     1. m_pwlist is implemented as a map keyed on UUIDs, each entry is
-        guaranteed to have a unique uuid. The uniqueness invariant
-        should be enforced elsewhere.
-        (ReadFile during Open and Import have already ensured UUIDs are unique
-        and valid)
-     2. If bInReadfile is true, the validation is being performed during normal
-        initial file opening.
+     Note:
+     m_pwlist is implemented as a map keyed on UUIDs, each entry is
+     guaranteed to have a unique uuid. The uniqueness invariant
+     should be enforced elsewhere.
+     (ReadFile during Open and Import have already ensured UUIDs are unique
+     and valid)
   */
 
   PWS_LOGIT_ARGS("iMAXCHARS=%d; pRpt=%p", iMAXCHARS, pRpt);
