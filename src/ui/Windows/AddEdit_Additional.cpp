@@ -114,11 +114,11 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
   ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
   ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
+  ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, OnHistListClick)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
-  ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, &CAddEdit_Additional::OnNMDblclkPwhistoryList)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -854,19 +854,6 @@ void CAddEdit_Additional::OnClearPWHist()
   m_ae_psh->SetChanged(true);
 }
 
-void CAddEdit_Additional::OnHistListClick(NMHDR *pNotifyStruct, LRESULT *)
-{
-  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNotifyStruct;
-  ASSERT(lpnmitem != NULL);
-  int item = lpnmitem->iItem;
-  if (item == -1)
-    return;
-
-  size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
-  const PWHistEntry pwhentry = M_pwhistlist()[itempos];
-  GetMainDlg()->SetClipboardData(pwhentry.password);
-}
-
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   HD_NOTIFY *phdn = (HD_NOTIFY *) pNotifyStruct;
@@ -958,7 +945,7 @@ void CAddEdit_Additional::OnPWHCopyAll()
 }
 
 
-void CAddEdit_Additional::OnNMDblclkPwhistoryList(NMHDR *pNMHDR, LRESULT *pResult)
+void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;

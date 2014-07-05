@@ -105,8 +105,6 @@ private:
   int32 m_iPWSAppHotKey, m_iOldHotKey;
   WORD m_wModifiers, m_wVirtualKeyCode;
   bool m_bPWSHotKeyEnabled;
-public:
-    afx_msg void OnNMDblclkPwhistoryList(NMHDR *pNMHDR, LRESULT *pResult);
 };
 //-----------------------------------------------------------------------------
 // Local variables:
