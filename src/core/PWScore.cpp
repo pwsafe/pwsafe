@@ -21,6 +21,7 @@
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
+#include "os/pws_tchar.h"
 #include "os/typedefs.h"
 #include "os/dir.h"
 #include "os/debug.h"
@@ -1810,13 +1811,13 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
 {
   // Verify Entry Keyboard shortcut is valid
-  // Note: to support cross-platforms, can't use "Virtual Key Codes" 
+  // Note: to support cross-platforms, can't use "Virtual Key Codes"
   // as they differ between Windows, Linux & Mac.
   // However, the alphanumeric ASCII values are common
   // and so entry keyboard shortcuts are restricted to these values.
 
   if (iKBShortcut != 0) {
-    static const TCHAR *tcValidKeys = 
+    static const TCHAR *tcValidKeys =
             _T("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     static const WORD wValidModifiers = 0xffff ^ (
                             PWS_HOTKEYF_ALT   | PWS_HOTKEYF_CONTROL |
@@ -1829,7 +1830,7 @@ bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
 
     // If there are too many bits in the Modifiers or
     // Not a valid ASCII character (0-9, A-Z) - remove
-    if ((wValidModifiers & wPWSModifiers) || 
+    if ((wValidModifiers & wPWSModifiers) ||
           _tcschr(tcValidKeys, wVirtualKeyCode) == NULL) {
       // Remove Entry Keyboard Shortcut
       iKBShortcut = 0;
@@ -2775,7 +2776,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
         m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
         int status, old_max, num_saved;
         const wchar_t *lpszPWHistory = cs_tmp.c_str();
-        int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"),
+        int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"),
                                &status, &old_max, &num_saved);
         if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
           cs_tmp = m_text + cs_tmp.substr(3);

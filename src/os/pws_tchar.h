@@ -15,9 +15,6 @@
 #ifdef _WIN32
 #include <tchar.h>
 #else
-#define _gmtime64_s(ts64, tm64) gmtime64_r(tm64, ts64)
-#define _mkgmtime32(ts) mktime(ts)
-#define localtime_s(st, t) (localtime_r(t, st) != NULL ? 0 : 1)
 #ifdef UNICODE
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)
@@ -33,7 +30,9 @@
 #include "linux/pws_time.h"
 #define _tcsdup(s) wcsdup(s)
 #endif
+#include "funcwrap.h"
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
+#define _tcsncpy_s wcsncpy_s
 #define _tcslen(s) wcslen(s)
 #define _tcsclen(s) wcslen(s)
 #define _tcscmp(s1, s2) wcscmp(s1, s2)
@@ -42,10 +41,11 @@
 #define _tcsftime wcsftime
 #define _tasctime_s(s, N, st) pws_os::asctime(s, N, st)
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
-#define _vstprintf_s(str, size, fmt, args) vswprintf(str, size, fmt, args)
+#define _vstprintf_s vswprintf_s
 #define _ftprintf fwprintf
-#define _stprintf_s swprintf
+#define _stprintf_s swprintf_s
 #define _stscanf swscanf
+#define _stscanf_s swscanf_s
 #ifdef __PWS_MACINTOSH__
 # include "./mac/pws_str.h"
 #define _tcsicmp pws_os::wcscasecmp

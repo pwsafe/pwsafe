@@ -1788,7 +1788,7 @@ bool CItemData::IsExpired() const
 
 bool CItemData::WillExpire(const int numdays) const
 {
-  time_t now, exptime, XTime;
+  time_t now, exptime=time_t(-1), XTime;
   time(&now);
 
   GetXTime(XTime);
@@ -1804,8 +1804,10 @@ bool CItemData::WillExpire(const int numdays) const
   errno_t err;
   err = localtime_s(&st, &now);  // secure version
   ASSERT(err == 0);
-  st.tm_mday += numdays;
-  exptime = mktime(&st);
+  if (!err){
+    st.tm_mday += numdays;
+    exptime = mktime(&st);
+  }
   if (exptime == time_t(-1))
     exptime = now;
 

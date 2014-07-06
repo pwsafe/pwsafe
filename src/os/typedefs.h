@@ -45,7 +45,7 @@ typedef char charT;
 #define PWS_HOTKEYF_CONTROL 0x02
 #define PWS_HOTKEYF_SHIFT   0x04
 #define PWS_HOTKEYF_EXT     0x08
- 
+
 // wxWidgets Only - Not used in Windows MFC
 #define PWS_HOTKEYF_ALTGR   PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL
 #define PWS_HOTKEYF_META    0x10
@@ -94,6 +94,7 @@ typedef unsigned long DWORD;
 #else /* !defined(_WIN32) */
 #include <stdint.h>
 #include <sys/types.h>
+#include <errno.h>
 typedef int8_t  int8;
 typedef int16_t int16;
 typedef int32_t int32;
@@ -104,7 +105,7 @@ typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 
-typedef int errno_t;
+typedef error_t errno_t;
 
 #ifdef UNICODE
 #ifndef _T
@@ -130,14 +131,14 @@ typedef int32_t LONG;
 #define HIBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
-#define MAKELONG(low, high) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
+#define MAKELONG(low, high) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16))
 #define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))
 #elif defined(PWS_BIG_ENDIAN)
 #define HIBYTE(w) ((BYTE)(w))
 #define LOBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define HIWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define LOWORD(ul) (WORD(DWORD(ul) >> 16))
-#define MAKELONG(low, high) ((LONG) (((WORD) (high)) | ((DWORD) ((WORD) (low))) << 16)) 
+#define MAKELONG(low, high) ((LONG) (((WORD) (high)) | ((DWORD) ((WORD) (low))) << 16))
 #define MAKEWORD(low, high) ((WORD)((((WORD)(low)) << 8) | ((BYTE)(high))))
 #else
 #error "One of PWS_LITTLE_ENDIAN or PWS_BIG_ENDIAN must be defined before including typedefs.h"

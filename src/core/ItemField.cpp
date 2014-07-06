@@ -14,6 +14,7 @@
 #include "Util.h"
 #include "Fish.h"
 #include "PWSrand.h"
+#include "os/funcwrap.h"
 
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 size_t CItemField::GetBlockSize(size_t size) const

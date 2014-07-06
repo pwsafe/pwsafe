@@ -10,6 +10,7 @@
 
 #include "ExpiredList.h"
 #include "ItemData.h"
+#include "os/funcwrap.h"
 
 #include <functional>
 #include <algorithm>
@@ -62,14 +63,17 @@ ExpiredList ExpiredList::GetExpired(const int &idays)
   ExpiredList::iterator iter;
   struct tm st;
 
-  time_t now, exptime;
+  time_t now, exptime=time_t(-1);
   time(&now);
   errno_t err;
-  err = localtime_s(&st, &now);  // secure version
+  err = localtime_s(&st, &now);
   ASSERT(err == 0);
-  st.tm_mday += idays;
-  // Note: mktime will normalise the date structure before converting to time_t
-  exptime = mktime(&st);
+  if (!err) {
+    st.tm_mday += idays;
+    // Note: mktime will normalize the date structure before converting to time_t
+    exptime = mktime(&st);
+  }
+
   if (exptime == time_t(-1))
     exptime = now;
 

@@ -341,7 +341,8 @@ size_t _readcbc(FILE *fp,
 
 void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
 {
-  (void) _tcsncpy_s(target, tcount, source, scount);
+  UNREFERENCED_PARAMETER(tcount); //not used in now in non-MSVS wrapped version of _tcsncpy_s
+  _tcsncpy_s(target, tcount, source, scount);
 }
 
 size_t PWSUtil::strLength(const LPCTSTR str)
@@ -542,15 +543,15 @@ StringX PWSUtil::NormalizeTTT(const StringX &in, size_t maxlen)
 
 bool ValidateXMLCharacters(const StringX &value, ostringstream &ostInvalidPositions)
 {
-  // From: http://www.w3.org/TR/REC-xml/#sec-cdata-sect 
+  // From: http://www.w3.org/TR/REC-xml/#sec-cdata-sect
   // CDATA Sections
-  // [18]    CDSect   ::=    CDStart CData CDEnd  
-  // [19]    CDStart  ::=    '<![CDATA[' 
-  // [20]    CData    ::=    (Char* - (Char* ']]>' Char*))  
-  // [21]    CDEnd    ::=    ']]>' 
-  
+  // [18]    CDSect   ::=    CDStart CData CDEnd
+  // [19]    CDStart  ::=    '<![CDATA['
+  // [20]    CData    ::=    (Char* - (Char* ']]>' Char*))
+  // [21]    CDEnd    ::=    ']]>'
+
   // From: http://www.w3.org/TR/REC-xml/#NT-Char
-  //  Char    ::=    #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | 
+  //  Char    ::=    #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
   //                 [#x10000-#x10FFFF]
   // any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
 
