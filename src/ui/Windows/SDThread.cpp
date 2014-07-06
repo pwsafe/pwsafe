@@ -28,6 +28,9 @@
 #include <algorithm>
 #include <Imm.h>
 
+#include <atlimage.h>
+#include <Gdiplusimaging.h>
+
 #pragma comment(lib, "Imm32.lib")
 
 // Following makes debugging SD UI changes feasible
@@ -38,17 +41,17 @@
 
 using namespace std;
 
-int iStartTime;  // Start time for SD timer - does get reset by edit changes or mousclicks (VK)
+int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
 
 extern ThisMfcApp app;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
-CSDThread::CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen, int iDialogID,
+CSDThread::CSDThread(int iDialogID, GetMasterPhrase *pGMP,
                      HMONITOR hCurrentMonitor, bool bUseSecureDesktop)
-  : m_pGMP(pGMP), m_pbmpDimmedScreen(pbmpDimmedScreen), m_wDialogID((WORD)iDialogID),
+  : m_pGMP(pGMP), m_wDialogID((WORD)iDialogID),
   m_hCurrentMonitor(hCurrentMonitor), m_bUseSecureDesktop(bUseSecureDesktop),
-  m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndBkGnd(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
+  m_passkeyID(-1), m_hNewDesktop(NULL), m_hwndMasterPhraseDlg(NULL), m_pVKeyBoardDlg(NULL),
   m_bDoTimerProcAction(false), m_bMPWindowBeingShown(false), m_bVKWindowBeingShown(false),
   m_iMinutes(-1), m_iSeconds(-1), m_hWaitableTimer(0)
 {
@@ -67,8 +70,7 @@ BOOL CSDThread::InitInstance()
   // Only called once the Thread is "Resumed"
   _AFX_THREAD_STATE *pState = AfxGetThreadState();
 
-  if (pState->m_hHookOldMsgFilter)
-  {
+  if (pState->m_hHookOldMsgFilter) {
     if (!UnhookWindowsHookEx(pState->m_hHookOldMsgFilter)) {
       pws_os::IssueError(_T("UnhookWindowsHookEx"), false);
       ASSERT(0);
@@ -87,20 +89,31 @@ BOOL CSDThread::InitInstance()
   return TRUE;
 }
 
-DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
+DWORD WINAPI CSDThread::SDThreadProc(LPVOID lpParameter)
 {
   CSDThread *self = (CSDThread *)lpParameter;
 
+  return self->ThreadProc();
+}
+
+DWORD CSDThread::ThreadProc()
+{
   WNDCLASS wc = { 0 };
 
   StringX sxTemp, sxPrefix;
   DWORD dwError;
-  self->m_dwRC = (DWORD)-1;
+  m_dwRC = (DWORD)-1;
 
-  self->m_pGMP->clear();
-  self->m_hwndVKeyBoard = NULL;
+  m_pGMP->clear();
+  m_hwndVKeyBoard = NULL;
 
   PWPolicy policy;
+
+  // Get Monitor Images before we create new desktop
+  GetMonitorImages();
+
+  // Update Progress
+  xFlags |= MONITORIMAGESCREATED;
 
   // Get uppercase prefix - 1st character for Desktop name, 2nd for Window Class name
   policy.flags = PWPolicy::UseUppercase;
@@ -115,31 +128,31 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   policy.lowerminlength = policy.upperminlength = policy.digitminlength = 1;
 
 #ifndef NO_NEW_DESKTOP
-  self->m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
+  m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
 
   // Ensure we don't use an existing Desktop (very unlikely but....)
   do {
     //Create random Desktop name
     sxTemp = sxPrefix.substr(0, 1) + policy.MakeRandomPassword();
 
-    self->m_sDesktopName = sxTemp.c_str();
+    m_sDesktopName = sxTemp.c_str();
 
     // Check not already there
-    self->CheckDesktop();
-  } while (self->m_bDesktopPresent);
+    CheckDesktop();
+  } while (m_bDesktopPresent);
 
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
 
-  self->m_hNewDesktop = CreateDesktop(self->m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
-  if (self->m_hNewDesktop == NULL) {
+  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
+  if (m_hNewDesktop == NULL) {
     dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
-    ASSERT(self->m_hNewDesktop);
+    ASSERT(m_hNewDesktop);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags |= NEWDESKTOCREATED;
+  xFlags |= NEWDESKTOCREATED;
 
   // The following 3 calls must be in this order to ensure correct operation
   // Need to disable creation of ctfmon.exe in order to close desktop
@@ -152,23 +165,23 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     // No need to ASSERT here
   }
 
-  if (!SetThreadDesktop(self->m_hNewDesktop)) {
+  if (!SetThreadDesktop(m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags |= SETTHREADDESKTOP;
+  xFlags |= SETTHREADDESKTOP;
 
-  if (!SwitchDesktop(self->m_hNewDesktop)) {
+  if (!SwitchDesktop(m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags |= SWITCHEDDESKTOP;
+  xFlags |= SWITCHEDDESKTOP;
 #endif
 
   // Ensure we don't use an existing Window Class Name (very unlikely but....)
@@ -176,16 +189,16 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     //Create random Modeless Overlayed Background Window Class Name
     sxTemp = sxPrefix.substr(1, 1) + policy.MakeRandomPassword();
 
-    self->m_sBkGrndClassName = sxTemp.c_str();
+    m_sBkGrndClassName = sxTemp.c_str();
 
     // Check not already there
-    self->CheckWindow();
-  } while (self->m_bWindowPresent);
+    CheckWindow();
+  } while (m_bWindowPresent);
 
   // Register the Window Class Name
   wc.lpfnWndProc = ::DefWindowProc;
-  wc.hInstance = self->m_hInstance;
-  wc.lpszClassName = self->m_sBkGrndClassName.c_str();
+  wc.hInstance = m_hInstance;
+  wc.lpszClassName = m_sBkGrndClassName.c_str();
   if (!RegisterClass(&wc)) {
     dwError = pws_os::IssueError(_T("RegisterClass - Background Window"), false);
     ASSERT(0);
@@ -193,46 +206,75 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   }
 
   // Update Progress
-  self->xFlags |= REGISTEREDWINDOWCLASS;
+  xFlags |= REGISTEREDWINDOWCLASS;
 
-  self->m_hwndBkGnd = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW,
-    self->m_sBkGrndClassName.c_str(), NULL, WS_POPUP | WS_VISIBLE,
-    0, 0, ::GetSystemMetrics(SM_CXVIRTUALSCREEN), ::GetSystemMetrics(SM_CYVIRTUALSCREEN),
-    NULL, NULL, self->m_hInstance, NULL);
+  for (MonitorImageInfoIter it = m_vMonitorImageInfo.begin(); it != m_vMonitorImageInfo.end(); it++) {
+    HWND hwndBkGrndWindow = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW,
+      m_sBkGrndClassName.c_str(), NULL, WS_POPUP | WS_VISIBLE,
+      it->left, it->top, it->width, it->height,
+      NULL, NULL, m_hInstance, NULL);
 
-  if (!self->m_hwndBkGnd) {
-    dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
-    ASSERT(self->m_hwndBkGnd);
-    goto BadExit;
+    if (!hwndBkGrndWindow) {
+      dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
+      ASSERT(hwndBkGrndWindow);
+      goto BadExit;
+    }
+
+    // Save handle to background window
+    it->hwndBkGrndWindow = hwndBkGrndWindow;
+
+    HDC hdcScreen = GetDC(0);
+    HDC hdc = CreateCompatibleDC(hdcScreen);
+    HBITMAP hbmOld = (HBITMAP)SelectObject(hdc, it->hbmDimmendMonitorImage);
+
+    // Get the size of the bitmap
+    BITMAP bm;
+    GetObject(it->hbmDimmendMonitorImage, sizeof(bm), &bm);
+    SIZE sizeBkGnd = {bm.bmWidth, bm.bmHeight};
+
+    // Use the source image's alpha channel for blending
+    BLENDFUNCTION bf = {0};
+    bf.BlendOp = AC_SRC_OVER;
+    bf.SourceConstantAlpha = 255;
+    bf.AlphaFormat = AC_SRC_ALPHA;
+
+    POINT ptZero = { 0 ,0 };
+
+    // Paint the window (in the right location) with the alpha-blended bitmap
+    UpdateLayeredWindow(hwndBkGrndWindow, NULL, NULL, &sizeBkGnd,
+      hdc, &ptZero, RGB(0, 0, 0), &bf, ULW_OPAQUE);
+
+    // Don't allow any action if this is clicked!
+    EnableWindow(hwndBkGrndWindow, FALSE);
+
+    // Tidy up GDI resources
+    ReleaseDC(NULL, hdcScreen);
+    SelectObject(hdc, hbmOld);
+    DeleteDC(hdc);
   }
 
   // Update Progress
-  self->xFlags |= BACKGROUNDWINDOWCREATED;
+  xFlags |= BACKGROUNDWINDOWSCREATED;
 
-  self->SetBkGndImage(self->m_hwndBkGnd);
+  m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstance, MAKEINTRESOURCE(m_wDialogID),
+    HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
 
-  // Don't allow any action if this is clicked!
-  EnableWindow(self->m_hwndBkGnd, FALSE);// iDialogID - IDD_SDGETPHRASE
-
-  self->m_hwndMasterPhraseDlg = CreateDialogParam(self->m_hInstance,
-    MAKEINTRESOURCE(self->m_wDialogID),
-    HWND_DESKTOP, (DLGPROC)self->MPDialogProc, (LPARAM)self);
-
-  if (!self->m_hwndMasterPhraseDlg) {
+  if (!m_hwndMasterPhraseDlg) {
     dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags |= MASTERPHRASEDIALOGCREATED;
+  xFlags |= MASTERPHRASEDIALOGCREATED;
 
-  self->m_pVKeyBoardDlg = new CVKeyBoardDlg(self->m_hwndBkGnd, self->m_hwndMasterPhraseDlg);
+  // Use first monitor's background window as owner for virtual keyboard
+  m_pVKeyBoardDlg = new CVKeyBoardDlg(m_vMonitorImageInfo[0].hwndBkGrndWindow, m_hwndMasterPhraseDlg);
 
   // Update Progress
-  self->xFlags |= VIRTUALKEYBOARDCREATED;
+  xFlags |= VIRTUALKEYBOARDCREATED;
 
-  ShowWindow(self->m_hwndMasterPhraseDlg, SW_SHOW);
+  ShowWindow(m_hwndMasterPhraseDlg, SW_SHOW);
 
   MSG msg;
   BOOL brc;
@@ -242,7 +284,7 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
     if (brc == -1)
       break;
 
-    if (!IsDialogMessage(self->m_hwndMasterPhraseDlg, &msg)) {
+    if (!IsDialogMessage(m_hwndMasterPhraseDlg, &msg)) {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
@@ -251,114 +293,139 @@ DWORD WINAPI CSDThread::ThreadProc(LPVOID lpParameter)
   // Call DialogProc directly to clear "self".
   // NOTE: - it would NEVER get the WM_QUIT message EVER as this
   // is used to get out of the message loop above(see GetMessage)
-  self->MPDialogProc(NULL, WM_QUIT, NULL, NULL);
+  MPDialogProc(NULL, WM_QUIT, NULL, NULL);
 
   // Update Progress
-  self->xFlags |= MASTERPHRASEDIALOGENDED;
+  xFlags |= MASTERPHRASEDIALOGENDED;
 
   // Destroy Masterphrase window
-  if (!DestroyWindow(self->m_hwndMasterPhraseDlg)) {
+  if (!DestroyWindow(m_hwndMasterPhraseDlg)) {
     dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags &= ~MASTERPHRASEDIALOGCREATED;
+  xFlags &= ~MASTERPHRASEDIALOGCREATED;
 
   // Delete Virtual Keyboard instance
-  delete self->m_pVKeyBoardDlg;
+  delete m_pVKeyBoardDlg;
 
   // Update Progress
-  self->xFlags &= ~VIRTUALKEYBOARDCREATED;
+  xFlags &= ~VIRTUALKEYBOARDCREATED;
 
-  // Destroy background layered window`<
-  if (!DestroyWindow(self->m_hwndBkGnd)) {
-    dwError = pws_os::IssueError(_T("DestroyWindow - Background"), false);
-    ASSERT(0);
-    goto BadExit;
+  // Destroy background layered windows, images & monitor DCs
+  for (MonitorImageInfoIter it = m_vMonitorImageInfo.begin(); it != m_vMonitorImageInfo.end(); it++) {
+    if (it->hwndBkGrndWindow != NULL)
+      DestroyWindow(it->hwndBkGrndWindow);
+    if (it->hbmDimmendMonitorImage)
+      ::DeleteObject(it->hbmDimmendMonitorImage);
+    if (it->hdcMonitor)
+      ::DeleteDC(it->hdcMonitor);
   }
 
   // Update Progress
-  self->xFlags &= ~BACKGROUNDWINDOWCREATED;
+  xFlags &= ~(BACKGROUNDWINDOWSCREATED | MONITORIMAGESCREATED);
 
   // Unregister it
-  if (!UnregisterClass(self->m_sBkGrndClassName.c_str(), self->m_hInstance)) {
+  if (!UnregisterClass(m_sBkGrndClassName.c_str(), m_hInstance)) {
     dwError = pws_os::IssueError(_T("UnregisterClass - Background"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags &= ~REGISTEREDWINDOWCLASS;
+  xFlags &= ~REGISTEREDWINDOWCLASS;
 
-  self->m_pbmpDimmedScreen->DeleteObject();
-
-  // Clear variables
-  self->m_pVKeyBoardDlg = NULL;
-  self->m_hwndMasterPhraseDlg = NULL;
-  self->m_sBkGrndClassName.clear();
-  self->m_sDesktopName.clear();
-  self->m_hwndBkGnd = NULL;
+  // Clear variables - just in case someone decides to reuse this instance
+  m_pVKeyBoardDlg = NULL;
+  m_hwndMasterPhraseDlg = NULL;
+  m_sBkGrndClassName.clear();
+  m_sDesktopName.clear();
+  m_vMonitorImageInfo.clear();
 
 #ifndef NO_NEW_DESKTOP
   // The following 2 calls must be in this order to ensure the new desktop is
-  // correctly deleted when finished with - EXCEPT in Winodws 7 (MS bug?)
+  // correctly deleted when finished with
 
   // Switch back to the initial desktop
-  if (!SwitchDesktop(self->m_hOriginalDesk)) {
+  if (!SwitchDesktop(m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
     ASSERT(0);
     goto BadExit;
   }
 
   // Update Progress
-  self->xFlags &= ~SWITCHEDDESKTOP;
+  xFlags &= ~SWITCHEDDESKTOP;
 
-  if (!SetThreadDesktop(self->m_hOriginalDesk)) {
+  // Switch thread back to initial desktop
+  if (!SetThreadDesktop(m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
     ASSERT(0);
     goto BadExit;
   }
   // Update Progress
-  self->xFlags &= ~SETTHREADDESKTOP;
+  xFlags &= ~SETTHREADDESKTOP;
 
   // Now that thread is ending - close new desktop
-  if (self->xFlags & NEWDESKTOCREATED) {
-    if (!CloseDesktop(self->m_hNewDesktop)) {
+  if (xFlags & NEWDESKTOCREATED) {
+    // Note: There can be a good return code even if it does not close
+    // due to programs external to PWS keeping it around!
+    if (!CloseDesktop(m_hNewDesktop)) {
       dwError = pws_os::IssueError(_T("CloseDesktop (new)"), false);
       ASSERT(0);
     }
   }
   // Update Progress
-  self->xFlags &= ~NEWDESKTOCREATED;
+  xFlags &= ~NEWDESKTOCREATED;
 #endif
-  return self->m_dwRC;
+  return m_dwRC;
 
 BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
-  if (self->xFlags & VIRTUALKEYBOARDCREATED) {
+  if (xFlags & VIRTUALKEYBOARDCREATED) {
     // Delete Virtual Keyboard instance
-    delete self->m_pVKeyBoardDlg;
+    delete m_pVKeyBoardDlg;
   }
-  if (self->xFlags & MASTERPHRASEDIALOGCREATED) {
-    DestroyWindow(self->m_hwndMasterPhraseDlg);
+  if (xFlags & MASTERPHRASEDIALOGCREATED) {
+    // Destroy master phrase dialog window
+    DestroyWindow(m_hwndMasterPhraseDlg);
   }
-  if (self->xFlags & BACKGROUNDWINDOWCREATED) {
-    DestroyWindow(self->m_hwndBkGnd);
+  if (xFlags & BACKGROUNDWINDOWSCREATED || xFlags & MONITORIMAGESCREATED) {
+    // Destroy background layered window's, images & monitor DCs
+    for (MonitorImageInfoIter it = m_vMonitorImageInfo.begin(); it != m_vMonitorImageInfo.end(); it++) {
+      if (it->hwndBkGrndWindow)
+        DestroyWindow(it->hwndBkGrndWindow);
+      if (it->hbmDimmendMonitorImage)
+        ::DeleteObject(it->hbmDimmendMonitorImage);
+      if (it->hdcMonitor)
+        ::DeleteDC(it->hdcMonitor);
+    }
   }
-  if (self->xFlags & REGISTEREDWINDOWCLASS) {
-    UnregisterClass(self->m_sBkGrndClassName.c_str(), self->m_hInstance);
+  if (xFlags & REGISTEREDWINDOWCLASS) {
+    // Unregister background windows' registered class
+    UnregisterClass(m_sBkGrndClassName.c_str(), m_hInstance);
   }
-  if (self->xFlags & SWITCHEDDESKTOP) {
-    SwitchDesktop(self->m_hOriginalDesk);
+  if (xFlags & SWITCHEDDESKTOP) {
+    // Switch back to the initial desktop
+    SwitchDesktop(m_hOriginalDesk);
   }
-  if (self->xFlags & SETTHREADDESKTOP) {
-    SetThreadDesktop(self->m_hOriginalDesk);
+  if (xFlags & SETTHREADDESKTOP) {
+    // Switch thread back to initial desktop
+    SetThreadDesktop(m_hOriginalDesk);
   }
-  if (self->xFlags & NEWDESKTOCREATED) {
-    CloseDesktop(self->m_hNewDesktop);
+  if (xFlags & NEWDESKTOCREATED) {
+    // Close the new desktop (subject to programs external to PWS keeping it around!)
+    CloseDesktop(m_hNewDesktop);
   }
+
+  // Clear variables - just in case someone decides to reuse this instance
+  m_pVKeyBoardDlg = NULL;
+  m_hwndMasterPhraseDlg = NULL;
+  m_sBkGrndClassName.clear();
+  m_sDesktopName.clear();
+  m_vMonitorImageInfo.clear();
+
   return (DWORD)-1;
 }
 
@@ -382,7 +449,7 @@ void CSDThread::CheckDesktop()
 
   // Check if Desktop already created and still there
   HWINSTA station = GetProcessWindowStation();
-  EnumDesktops(station, (DESKTOPENUMPROC)DesktopEnumProc, (LPARAM)this);
+  EnumDesktops(station, (DESKTOPENUMPROC)DesktopEnumProc, reinterpret_cast<LPARAM>(this));
   CloseWindowStation(station);
 }
 
@@ -417,7 +484,7 @@ void CSDThread::CheckWindow()
 
   // Populate vector with desktop names.
   HWINSTA station = GetProcessWindowStation();
-  EnumWindows((WNDENUMPROC)WindowEnumProc, (LPARAM)this);
+  EnumWindows((WNDENUMPROC)WindowEnumProc, reinterpret_cast<LPARAM>(this));
   CloseWindowStation(station);
 }
 
@@ -536,8 +603,7 @@ void CSDThread::yubiRemoved(void)
 static StringX GetControlText(const HWND hwnd)
 {
   int n = GetWindowTextLength(hwnd) + 1;
-  if (n > 1)
-  {
+  if (n > 1) {
     StringX s(n, 0);
     GetWindowText(hwnd, &s[0], n);
     s.pop_back();  // Remove trailing NULL [C++11 feature]
@@ -564,7 +630,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
     case WM_QUIT:
     {
-      // Special handling for genreated WM_QUIT message, which it would NEVER EVER get normally
+      // Special handling for generated WM_QUIT message, which it would NEVER EVER get normally
       ASSERT(self);
 
       self->OnQuit();
@@ -605,154 +671,151 @@ INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
   **/
 
   switch (uMsg) {
-  case WM_SHOWWINDOW:
-  {
-    m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
-    return TRUE;  // Processed!
-  }
-
-  case WM_COMMAND:
-  {
-    const int iControlID = LOWORD(wParam);
-    const int iNotificationCode = HIWORD(wParam);
-
-    // lParam == handle to the control window
-    switch (iControlID) {
-    case IDC_VKB:
-      if (iNotificationCode == BN_CLICKED) {
-        OnVirtualKeyboard();
-        return TRUE;  // Processed
-      }
-      break;
-
-    case IDC_PASSKEY:
-    case IDC_NEWPASSKEY:
-    case IDC_VERIFY:
-    case IDC_CONFIRMNEW:
-      if (iNotificationCode == EN_SETFOCUS)
-      {
-        // Remember last edit control as we need to know where to insert characters
-        // if the user uses the Virtual Keyboard
-        m_iLastFocus = iControlID;
-        return TRUE;  // Processed
-      }
-      if (iNotificationCode == EN_CHANGE)
-      {
-        // Reset timer start time
-        ResetTimer();
-        return TRUE;  // Processed
-      }
-      break;
-
-    case IDC_YUBIKEY_BTN:
-      if (iNotificationCode == BN_CLICKED) {
-        HWND hwndPassKey = GetDlgItem(m_hwndDlg, IDC_PASSKEY);
-        const StringX sxPassKey = GetControlText(hwndPassKey);
-        m_passkeyID = IDC_PASSKEY;
-        yubiRequestHMACSha1(sxPassKey.c_str());
-        return TRUE; // Processed
-      }
-      break;
-
-    case IDC_YUBIKEY2_BTN: // in Change Combination, this is the new
-      if (iNotificationCode == BN_CLICKED) {
-        HWND hwndNewPassKey = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
-        const StringX sxPassKey = GetControlText(hwndNewPassKey);
-        m_passkeyID = IDC_NEWPASSKEY;
-        yubiRequestHMACSha1(sxPassKey.c_str());
-        return TRUE; // Processed
-      }
-      break;
-
-    case IDOK:
-      if (iNotificationCode == BN_CLICKED) {
-        OnOK();
-        return TRUE;  // Processed
-      }
-      break;
-
-    case IDCANCEL:
-      if (iNotificationCode == BN_CLICKED) {
-        OnCancel();
-        return TRUE;  // Processed
-      }
-      break;
-
-    case IDC_SD_TOGGLE:
-      if (iNotificationCode == BN_CLICKED) {
-        PostQuitMessage(INT_MAX);
-        m_dwRC = INT_MAX;
-        return TRUE; // Processed
-      }
-      break;
-    }  // switch (iControlID)
-    break;
-  }  // WM_COMMAND
-
-  case WM_DRAWITEM:
-  {
-    if (wParam == IDC_SD_TOGGLE) {
-      // Draw Secure Desktop toggle bitmap with transparency
-      DRAWITEMSTRUCT *pDrawItemStruct = (DRAWITEMSTRUCT *)lParam;
-      CDC dc;
-      dc.Attach(pDrawItemStruct->hDC);
-
-      CBitmap bmp;
-      bmp.LoadBitmap(m_IDB);
-
-      BITMAP bitMapInfo;
-      bmp.GetBitmap(&bitMapInfo);
-
-      CDC memDC;
-      memDC.CreateCompatibleDC(&dc);
-
-      memDC.SelectObject(&bmp);
-      int bmw = bitMapInfo.bmWidth;
-      int bmh = bitMapInfo.bmHeight;
-
-      // Draw button image transparently
-      ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMask);
-      return TRUE;  // Processed
-    } else {
-      return FALSE;  // Not processed
-    }
-  }  // WM_DRAWITEM
-
-  case WM_CTLCOLORSTATIC:
-  {
-    if (!IsWindowEnabled(hwndDlg))
-      return FALSE;  // Not processed
-
-    // Red text for Timer static controls - not yet working as text is overwritten
-    switch (GetWindowLong((HWND)lParam, GWL_ID))
+    case WM_SHOWWINDOW:
     {
-    case IDC_STATIC_TIMER:
-    case IDC_STATIC_TIMERTEXT:
-    case IDC_STATIC_SECONDS:
-      if (IsWindowVisible((HWND)lParam))
-      {
-        SetTextColor((HDC)wParam, RGB(255, 0, 0));
-        SetBkColor((HDC)wParam, GetSysColor(COLOR_BTNFACE));
-        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
-      }
+      m_bMPWindowBeingShown = (BOOL)wParam == TRUE;
+      return TRUE;  // Processed!
     }
 
-    return FALSE;  // Not processed
-  }  // WM_CTLCOLORSTATIC
+    case WM_COMMAND:
+    {
+      const int iControlID = LOWORD(wParam);
+      const int iNotificationCode = HIWORD(wParam);
 
-  case PWS_MSG_INSERTBUFFER:
-  {
-    OnInsertBuffer();
-    SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
-    return TRUE; // Processed
-  }  // PWS_MSG_INSERTBUFFER
+      // lParam == handle to the control window
+      switch (iControlID) {
+      case IDC_VKB:
+        if (iNotificationCode == BN_CLICKED) {
+          OnVirtualKeyboard();
+          return TRUE;  // Processed
+        }
+        break;
 
-  case PWS_MSG_RESETTIMER:
-  {
-    ResetTimer();
-    SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
-    return TRUE; // Processed
-  }  // PWS_MSG_RESETTIMER:
+      case IDC_PASSKEY:
+      case IDC_NEWPASSKEY:
+      case IDC_VERIFY:
+      case IDC_CONFIRMNEW:
+        if (iNotificationCode == EN_SETFOCUS) {
+          // Remember last edit control as we need to know where to insert characters
+          // if the user uses the Virtual Keyboard
+          m_iLastFocus = iControlID;
+          return TRUE;  // Processed
+        }
+        if (iNotificationCode == EN_CHANGE) {
+          // Reset timer start time
+          ResetTimer();
+          return TRUE;  // Processed
+        }
+        break;
+
+      case IDC_YUBIKEY_BTN:
+        if (iNotificationCode == BN_CLICKED) {
+          HWND hwndPassKey = GetDlgItem(m_hwndDlg, IDC_PASSKEY);
+          const StringX sxPassKey = GetControlText(hwndPassKey);
+          m_passkeyID = IDC_PASSKEY;
+          yubiRequestHMACSha1(sxPassKey.c_str());
+          return TRUE; // Processed
+        }
+        break;
+
+      case IDC_YUBIKEY2_BTN: // in Change Combination, this is the new
+        if (iNotificationCode == BN_CLICKED) {
+          HWND hwndNewPassKey = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
+          const StringX sxPassKey = GetControlText(hwndNewPassKey);
+          m_passkeyID = IDC_NEWPASSKEY;
+          yubiRequestHMACSha1(sxPassKey.c_str());
+          return TRUE; // Processed
+        }
+        break;
+
+      case IDOK:
+        if (iNotificationCode == BN_CLICKED) {
+          OnOK();
+          return TRUE;  // Processed
+        }
+        break;
+
+      case IDCANCEL:
+        if (iNotificationCode == BN_CLICKED) {
+          OnCancel();
+          return TRUE;  // Processed
+        }
+        break;
+
+      case IDC_SD_TOGGLE:
+        if (iNotificationCode == BN_CLICKED) {
+          PostQuitMessage(INT_MAX);
+          m_dwRC = INT_MAX;
+          return TRUE; // Processed
+        }
+        break;
+      }  // switch (iControlID)
+      break;
+    }  // WM_COMMAND
+
+    case WM_DRAWITEM:
+    {
+      if (wParam == IDC_SD_TOGGLE) {
+        // Draw Secure Desktop toggle bitmap with transparency
+        DRAWITEMSTRUCT *pDrawItemStruct = (DRAWITEMSTRUCT *)lParam;
+        CDC dc;
+        dc.Attach(pDrawItemStruct->hDC);
+
+        CBitmap bmp;
+        bmp.LoadBitmap(m_IDB);
+
+        BITMAP bitMapInfo;
+        bmp.GetBitmap(&bitMapInfo);
+
+        CDC memDC;
+        memDC.CreateCompatibleDC(&dc);
+
+        memDC.SelectObject(&bmp);
+        int bmw = bitMapInfo.bmWidth;
+        int bmh = bitMapInfo.bmHeight;
+
+        // Draw button image transparently
+        ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMask);
+        return TRUE;  // Processed
+      } else {
+        return FALSE;  // Not processed
+      }
+    }  // WM_DRAWITEM
+
+    case WM_CTLCOLORSTATIC:
+    {
+      if (!IsWindowEnabled(hwndDlg))
+        return FALSE;  // Not processed
+
+      // Red text for Timer static controls - not yet working as text is overwritten
+      switch (GetWindowLong((HWND)lParam, GWL_ID))
+      {
+        case IDC_STATIC_TIMER:
+        case IDC_STATIC_TIMERTEXT:
+        case IDC_STATIC_SECONDS:
+          if (IsWindowVisible((HWND)lParam)) {
+            SetTextColor((HDC)wParam, RGB(255, 0, 0));
+            SetBkColor((HDC)wParam, GetSysColor(COLOR_BTNFACE));
+            return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);
+          }
+      } // switch on control ID
+
+      return FALSE;  // Not processed
+    }  // WM_CTLCOLORSTATIC
+
+    case PWS_MSG_INSERTBUFFER:
+    {
+      OnInsertBuffer();
+      SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
+      return TRUE; // Processed
+    }  // PWS_MSG_INSERTBUFFER
+
+    case PWS_MSG_RESETTIMER:
+    {
+      ResetTimer();
+      SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
+      return TRUE; // Processed
+    }  // PWS_MSG_RESETTIMER:
 
   }  // switch (uMsg)
 
@@ -785,8 +848,7 @@ void CSDThread::OnInitDialog()
   // Secure Desktop toggle button image transparent mask
   m_cfMask = RGB(255, 255, 255);
 
-  if (m_bUseSecureDesktop)
-  {
+  if (m_bUseSecureDesktop) {
     // Seure Desktop toggle bitmap
     m_IDB = IDB_USING_SD;
 
@@ -801,9 +863,7 @@ void CSDThread::OnInitDialog()
 
     // Get start time in milliseconds
     iStartTime = GetTickCount();
-  }
-  else
-  {
+  } else {
     // Seure Desktop toggle bitmap
     m_IDB = IDB_NOT_USING_SD;
 
@@ -816,10 +876,8 @@ void CSDThread::OnInitDialog()
   // Create the tooltip
   m_hwndTooltip = CreateWindowEx(NULL, TOOLTIPS_CLASS, NULL,
     WS_POPUP | WS_EX_TOOLWINDOW | TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX,
-    CW_USEDEFAULT, CW_USEDEFAULT,
-    CW_USEDEFAULT, CW_USEDEFAULT,
-    m_hwndDlg, NULL,
-    GetModuleHandle(NULL), NULL);
+    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+    m_hwndDlg, NULL, GetModuleHandle(NULL), NULL);
 
   if (!m_hwndTooltip)
     ASSERT(0);
@@ -888,8 +946,7 @@ void CSDThread::OnVirtualKeyboard()
       dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
       ASSERT(m_hwndVKeyBoard);
     }
-  }
-  else {
+  } else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
@@ -926,9 +983,7 @@ void CSDThread::OnOK()
   if (!sxPassKey.empty()) {
     m_pGMP->sPhrase = sxPassKey;
     m_pGMP->bPhraseEntered = true;
-  }
-  else
-  {
+  } else {
     LoadAString(sErrorMsg, m_wDialogID == IDD_SDPASSKEYSETUP ? IDS_ENTERKEYANDVERIFY : IDS_CANNOTBEBLANK);
     MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK);
     SetFocus(hwndPassKey);
@@ -936,122 +991,122 @@ void CSDThread::OnOK()
   }
 
   switch (m_wDialogID) {
-  case IDD_SDGETPHRASE:
-  {
-    // Just verify IDC_PASSKEY - already done before switch statement
-    break;
-  }
-  case IDD_SDKEYCHANGE:
-  {
-    // Verify DC_PASSKEY, IDC_NEWPASSKEY, IDC_CONFIRMNEW
-    UINT iMsgID(0);
-    int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), sxPassKey);
+    case IDD_SDGETPHRASE:
+    {
+      // Just verify IDC_PASSKEY - already done before switch statement
+      break;
+    }
+    case IDD_SDKEYCHANGE:
+    {
+      // Verify DC_PASSKEY, IDC_NEWPASSKEY, IDC_CONFIRMNEW
+      UINT iMsgID(0);
+      int rc = app.GetCore()->CheckPasskey(app.GetCore()->GetCurFile(), sxPassKey);
 
-    HWND hwndFocus = hwndPassKey;
+      HWND hwndFocus = hwndPassKey;
 
-    if (rc == PWScore::WRONG_PASSWORD)
-      iMsgID = IDS_WRONGOLDPHRASE;
-    else if (rc == PWScore::CANT_OPEN_FILE)
-      iMsgID = IDS_CANTVERIFY;
-    else { // old passphrase verified, check new
-      HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
+      if (rc == PWScore::WRONG_PASSWORD)
+        iMsgID = IDS_WRONGOLDPHRASE;
+      else if (rc == PWScore::CANT_OPEN_FILE)
+        iMsgID = IDS_CANTVERIFY;
+      else { // old passphrase verified, check new
+        HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_NEWPASSKEY);
+        sxNewPassKey1 = GetControlText(hwndNewPassKey1);
+
+        HWND hwndNewPassKey2 = GetDlgItem(m_hwndDlg, IDC_CONFIRMNEW);
+        sxNewPassKey2 = GetControlText(hwndNewPassKey2);
+
+        if (sxNewPassKey1.empty() && m_yubiResp[1].empty()) {
+          iMsgID = IDS_CANNOTBEBLANK;
+          hwndFocus = hwndNewPassKey1;
+        }
+        else if (sxNewPassKey1 != sxNewPassKey2) {
+          iMsgID = IDS_NEWOLDDONOTMATCH;
+          hwndFocus = hwndNewPassKey2;
+        }
+      }
+
+      if (iMsgID != 0) {
+        LoadAString(sErrorMsg, iMsgID);
+        MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
+        SetFocus(hwndFocus);
+        return;
+      }
+
+      StringX sxErrorMsg;
+      if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sxErrorMsg)) {
+        stringT sMsg, sText;
+        Format(sMsg, IDS_WEAKPASSPHRASE, sxErrorMsg.c_str());
+
+#ifndef PWS_FORCE_STRONG_PASSPHRASE
+        LoadAString(sText, IDS_USEITANYWAY);
+        sMsg += sText;
+        INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
+        if (rc == IDNO)
+          return;
+#else
+        LoadAString(sText, IDS_TRYANOTHER);
+        sMsg += sText;
+        MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
+        return;
+#endif  // PWS_FORCE_STRONG_PASSPHRASE
+      }
+      if (m_yubiResp[1].empty())
+        m_pGMP->sNewPhrase = sxNewPassKey1;
+      else
+        m_pGMP->sNewPhrase = m_yubiResp[1];
+      m_pGMP->bNewPhraseEntered = true;
+      break;
+    }
+    case IDD_SDPASSKEYSETUP:
+    {
+      // Verify IDC_PASSKEY, IDC_VERIFY
+      UINT iMsgID(0);
+      HWND hwndFocus = hwndPassKey;
+      // sxNewPassKey may be from Yubi, so we get the control text again:
+      const StringX sxNewPassKey0 = GetControlText(hwndPassKey);
+      HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_VERIFY);
       sxNewPassKey1 = GetControlText(hwndNewPassKey1);
 
-      HWND hwndNewPassKey2 = GetDlgItem(m_hwndDlg, IDC_CONFIRMNEW);
-      sxNewPassKey2 = GetControlText(hwndNewPassKey2);
-
-      if (sxNewPassKey1.empty() && m_yubiResp[1].empty()) {
-        iMsgID = IDS_CANNOTBEBLANK;
+      if (sxNewPassKey0 != sxNewPassKey1) {
+        iMsgID = IDS_ENTRIESDONOTMATCH;
         hwndFocus = hwndNewPassKey1;
       }
-      else if (sxNewPassKey1 != sxNewPassKey2) {
-        iMsgID = IDS_NEWOLDDONOTMATCH;
-        hwndFocus = hwndNewPassKey2;
+
+      if (iMsgID != 0) {
+        LoadAString(sErrorMsg, iMsgID);
+        MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
+        SetFocus(hwndFocus);
+        return;
       }
-    }
 
-    if (iMsgID != 0) {
-      LoadAString(sErrorMsg, iMsgID);
-      MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
-      SetFocus(hwndFocus);
-      return;
-    }
-
-    StringX sxErrorMsg;
-    if (m_yubiResp[1].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey1, sxErrorMsg)) {
-      stringT sMsg, sText;
-      Format(sMsg, IDS_WEAKPASSPHRASE, sxErrorMsg.c_str());
+      StringX sxErrorMsg;
+      if (m_yubiResp[0].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey0, sxErrorMsg)) {
+        StringX sMsg, sText;
+        Format(sMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      LoadAString(sText, IDS_USEITANYWAY);
-      sMsg += sText;
-      INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
-      if (rc == IDNO)
-        return;
+        LoadAString(sText, IDS_USEITANYWAY);
+        sMsg += sText;
+        INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
+        if (rc == IDNO)
+          return;
 #else
-      LoadAString(sText, IDS_TRYANOTHER);
-      sMsg += sText;
-      MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
-      return;
-#endif  // PWS_FORCE_STRONG_PASSPHRASE
-    }
-    if (m_yubiResp[1].empty())
-      m_pGMP->sNewPhrase = sxNewPassKey1;
-    else
-      m_pGMP->sNewPhrase = m_yubiResp[1];
-    m_pGMP->bNewPhraseEntered = true;
-    break;
-  }
-  case IDD_SDPASSKEYSETUP:
-  {
-    // Verify IDC_PASSKEY, IDC_VERIFY
-    UINT iMsgID(0);
-    HWND hwndFocus = hwndPassKey;
-    // sxNewPassKey may be from Yubi, so we get the control text again:
-    const StringX sxNewPassKey0 = GetControlText(hwndPassKey);
-    HWND hwndNewPassKey1 = GetDlgItem(m_hwndDlg, IDC_VERIFY);
-    sxNewPassKey1 = GetControlText(hwndNewPassKey1);
-
-    if (sxNewPassKey0 != sxNewPassKey1) {
-      iMsgID = IDS_ENTRIESDONOTMATCH;
-      hwndFocus = hwndNewPassKey1;
-    }
-
-    if (iMsgID != 0) {
-      LoadAString(sErrorMsg, iMsgID);
-      MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
-      SetFocus(hwndFocus);
-      return;
-    }
-
-    StringX sxErrorMsg;
-    if (m_yubiResp[0].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey0, sxErrorMsg)) {
-      StringX sMsg, sText;
-      Format(sMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
-
-#ifndef PWS_FORCE_STRONG_PASSPHRASE
-      LoadAString(sText, IDS_USEITANYWAY);
-      sMsg += sText;
-      INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
-      if (rc == IDNO)
+        LoadAString(sText, IDS_TRYANOTHER);
+        sMsg += sText;
+        MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
         return;
-#else
-      LoadAString(sText, IDS_TRYANOTHER);
-      sMsg += sText;
-      MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
-      return;
 #endif  // PWS_FORCE_STRONG_PASSPHRASE
+      }
+      if (m_yubiResp[1].empty())
+        m_pGMP->sNewPhrase = sxNewPassKey1;
+      else
+        m_pGMP->sNewPhrase = m_yubiResp[1];
+      m_pGMP->bNewPhraseEntered = true;
+      break;
     }
-    if (m_yubiResp[1].empty())
-      m_pGMP->sNewPhrase = sxNewPassKey1;
-    else
-      m_pGMP->sNewPhrase = m_yubiResp[1];
-    m_pGMP->bNewPhraseEntered = true;
-    break;
-  }
-  default:
-    ASSERT(0);
-  }
+    default:
+      ASSERT(0);
+  }  // switch m_wDialogID
 
   // Tell TimerProc to do nothing
   m_bDoTimerProcAction = false;
@@ -1125,8 +1180,7 @@ void CSDThread::OnQuit()
     }
 
     // Delete all timers in the timer queue
-    do
-    {
+    do {
       brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
       if (brc == NULL) {
         // No need to call again if error code is ERROR_IO_PENDING.
@@ -1185,15 +1239,13 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
 
   int iShow = (iTimeLeft <= self->m_iUserTimeLimit / 4) ? SW_SHOW : SW_HIDE;
 
-  if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg))
-  {
+  if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg)) {
     ShowWindow(self->m_hwndStaticTimer, iShow);
     ShowWindow(self->m_hwndStaticTimerText, iShow);
     ShowWindow(self->m_hwndStaticSeconds, iShow);
   }
 
-  if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard))
-  {
+  if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard)) {
     ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticTimer, iShow);
     ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticTimerText, iShow);
     ShowWindow(self->m_pVKeyBoardDlg->m_hwndVKStaticSeconds, iShow);
@@ -1208,13 +1260,11 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
     stringT sTime;
     Format(sTime, _T("%02d:%02d"), iMinutes, iSeconds);
 
-    if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg))
-    {
+    if (self->m_bMPWindowBeingShown || IsWindowVisible(self->m_hwndMasterPhraseDlg)) {
       SetWindowText(self->m_hwndStaticTimer, sTime.c_str());
     }
 
-    if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard))
-    {
+    if (self->m_bVKWindowBeingShown || IsWindowVisible(self->m_hwndVKeyBoard)) {
       SetWindowText(self->m_pVKeyBoardDlg->m_hwndVKStaticTimer, sTime.c_str());
     }
 
@@ -1244,40 +1294,7 @@ void CSDThread::ResetTimer()
   iStartTime = GetTickCount();
 }
 
-void CSDThread::SetBkGndImage(HWND hwndBkGnd)
-{
-  HBITMAP hbmpBkGnd = (HBITMAP)*m_pbmpDimmedScreen;
-
-  // Get the size of the bitmap
-  BITMAP bm;
-  GetObject(*m_pbmpDimmedScreen, sizeof(bm), &bm);
-  SIZE sizeBkGnd = { bm.bmWidth, bm.bmHeight };
-
-  // Create a memory DC holding the BkGnd bitmap
-  HDC hDCScreen = GetDC(NULL);
-  HDC hDCMem = CreateCompatibleDC(hDCScreen);
-  HBITMAP hbmpOld = (HBITMAP)SelectObject(hDCMem, hbmpBkGnd);
-
-  // Use the source image's alpha channel for blending
-  BLENDFUNCTION bf = { 0 };
-  bf.BlendOp = AC_SRC_OVER;
-  bf.SourceConstantAlpha = 255;
-  bf.AlphaFormat = AC_SRC_ALPHA;
-
-  POINT ptZero = { 0 };
-
-  // Paint the window (in the right location) with the alpha-blended bitmap
-  UpdateLayeredWindow(hwndBkGnd, hDCScreen, &ptZero, &sizeBkGnd,
-    hDCMem, &ptZero, RGB(0, 0, 0), &bf, ULW_OPAQUE);
-
-  // Delete temporary objects
-  SelectObject(hDCMem, hbmpOld);
-  DeleteDC(hDCMem);
-  ReleaseDC(NULL, hDCScreen);
-}
-
-// Modified from MSDN: http://msdn.microsoft.com/en-us/library/bb760252(v=vs.85).aspx
-
+// AddTooltip is a modified form from MSDN: http://msdn.microsoft.com/en-us/library/bb760252(v=vs.85).aspx
 BOOL CSDThread::AddTooltip(UINT uiControlID, stringT sText)
 {
   if (!uiControlID || sText.empty())
@@ -1294,9 +1311,7 @@ BOOL CSDThread::AddTooltip(UINT uiControlID, stringT sText)
   ti.uId = (UINT_PTR)hwndTool;
   ti.lpszText = (LPWSTR)sText.c_str();
 
-  BOOL brc = SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
-
-  return brc;
+  return SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
 }
 
 BOOL CSDThread::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
@@ -1309,10 +1324,160 @@ BOOL CSDThread::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
   if (sText.empty())
     return FALSE;
 
-  if (uiFormat != NULL)
-  {
+  if (uiFormat != NULL) {
     Format(sText, uiFormat, sText.c_str());
   }
 
   return AddTooltip(uiControlID, sText);
+}
+
+void CSDThread::GetMonitorImages()
+{
+  HDC hDesktopDC = ::GetDC(NULL);
+  EnumDisplayMonitors(hDesktopDC, NULL, MonitorEnumProc, reinterpret_cast<LPARAM>(this));
+
+  // Cleanup GDI resources
+  ::ReleaseDC(NULL, hDesktopDC);
+}
+
+BOOL CALLBACK CSDThread::MonitorEnumProc(HMONITOR /*hMonitor*/, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+{
+  CSDThread *self = (CSDThread *)dwData;
+
+  HDC hdcCapture(0);
+  HBITMAP hbmDimmendMonitorImage;
+
+  // Get monitor information
+  const int nScreenWidth = GetDeviceCaps(hdcMonitor, HORZRES);
+  const int nScreenHeight = GetDeviceCaps(hdcMonitor, VERTRES);
+
+  self->CaptureMonitorImage(hdcMonitor, hdcCapture, hbmDimmendMonitorImage,
+    lprcMonitor->left, lprcMonitor->top, nScreenWidth, nScreenHeight);
+
+  // Save new monitor HDC (hdcCapture) with its Bitmap & position/size
+  st_MonitorImageInfo st_mi;
+  st_mi.hdcMonitor = hdcCapture;
+  st_mi.left = lprcMonitor->left;
+  st_mi.top = lprcMonitor->top;
+  st_mi.width = nScreenWidth;
+  st_mi.height = nScreenHeight;
+  st_mi.hbmDimmendMonitorImage = hbmDimmendMonitorImage;
+  self->m_vMonitorImageInfo.push_back(st_mi);
+
+  return TRUE;
+}
+
+void CSDThread::CaptureMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDimmendMonitorImage,
+  const int left, const int top, const int nScreenWidth, const int nScreenHeight)
+{
+  // Create a memory DC compatible with the monitor
+  hdcCapture = CreateCompatibleDC(hdcMonitor);
+
+  // Create a bitmap compatible with the monitor and of the correct size
+  HBITMAP hBitmap = CreateCompatibleBitmap(hdcMonitor, nScreenWidth, nScreenHeight);
+
+  // Select it into the specified DC
+  HGDIOBJ hOldBitmap = SelectObject(hdcCapture, hBitmap);
+
+  // Bit-Blit the contents of the Desktop DC into the created compatible DC
+  // Only time the monitor's position is needed (left, top)
+  BitBlt(hdcCapture, 0, 0, nScreenWidth, nScreenHeight, hdcMonitor, left, top, SRCCOPY | CAPTUREBLT);
+
+  // Alpha-blend with black rectangle and PWS image
+  DimMonitorImage(hdcMonitor, hdcCapture, hbmDimmendMonitorImage);
+
+  // Cleanup GDI resources
+  ::DeleteObject(hBitmap);
+  ::DeleteObject(hOldBitmap);
+}
+
+void CSDThread::DimMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDimmendMonitorImage)
+{
+  /*
+    Create a dimmed image of what is currently displayed on this monitor
+    Overlay this with a blended black rectangle and tiled PWS motif bitmap
+
+    Note: All offsets are (0,0) irrespective of the monitor's relative position in the virtual screen.
+  */
+
+  const int nScreenWidth = GetDeviceCaps(hdcMonitor, HORZRES);
+  const int nScreenHeight = GetDeviceCaps(hdcMonitor, VERTRES);
+
+  // Create final dimmed screen memory DC
+  HDC hdcDimmedScreen = CreateCompatibleDC(hdcCapture);
+
+  // Create the final bitmap in that DC
+  hbmDimmendMonitorImage = CreateCompatibleBitmap(hdcCapture, nScreenWidth, nScreenHeight);
+  HGDIOBJ hbmOldDimmendMonitorImage = SelectObject(hdcDimmedScreen, hbmDimmendMonitorImage);
+
+  // Copy this monitor's screen image here
+  BitBlt(hdcDimmedScreen, 0, 0, nScreenWidth, nScreenHeight, hdcCapture, 0, 0, SRCCOPY);
+
+  // Create memory DC for black rectangle
+  HDC hdcRectangle = CreateCompatibleDC(hdcCapture);
+
+  // Create a bitmap in that DC
+  HBITMAP hbmRectangle = CreateCompatibleBitmap(hdcCapture, nScreenWidth, nScreenHeight);
+  HGDIOBJ hbmOldRectangle = SelectObject(hdcRectangle, hbmRectangle);
+
+  // Fill bitmap with a black rectangle
+  RECT rcFill = {0, 0, nScreenWidth, nScreenHeight};
+  HBRUSH hbrBlack = CreateSolidBrush(RGB(0, 0, 0));
+  FillRect(hdcRectangle, &rcFill, hbrBlack);
+
+  // Load the PWS Logo bitmap
+  HBITMAP hbmPWSLogo = LoadBitmap(m_hInstance, MAKEINTRESOURCE(IDB_PWSBITMAP));
+  BITMAP bmPWSLogo;
+  GetObject(hbmPWSLogo, sizeof(BITMAP), &bmPWSLogo);
+  const int bm_width = bmPWSLogo.bmWidth;
+  const int bm_height = bmPWSLogo.bmHeight;
+
+  // Create another memory DC for this bitmap and select the PWS bitmap
+  HDC hdcPWSLogo = CreateCompatibleDC(hdcCapture);
+  HGDIOBJ hbmOldPWSLogo = SelectObject(hdcPWSLogo, hbmPWSLogo);
+
+  // Create another memory DC for the tiled bitmap
+  HDC hdcTiledPWSLogo = CreateCompatibleDC(hdcCapture);
+
+  // Create a bitmap in the tiled DC
+  HBITMAP hbmpTiledPWSLogo = CreateCompatibleBitmap(hdcCapture, nScreenWidth, nScreenHeight);
+  HGDIOBJ hbmOldTiledPWSLogo = SelectObject(hdcTiledPWSLogo, hbmpTiledPWSLogo);
+
+  // Tile the PWS bitmap over the new bitmap
+  for (int y = 0; y < nScreenHeight; y += bm_height) {
+    for (int x = 0; x < nScreenWidth; x += bm_width) {
+      BitBlt(hdcTiledPWSLogo, x, y, nScreenWidth, nScreenHeight, hdcPWSLogo, 0, 0, SRCCOPY);
+    }
+  }
+
+  // Required for the following 2 alpha blends
+  BLENDFUNCTION bf;
+  bf.BlendOp = AC_SRC_OVER;
+  bf.BlendFlags = 0;
+  bf.SourceConstantAlpha = 127;
+  bf.AlphaFormat = 0;
+
+  // Alpha blend the tiled PWS bitmap onto the black rectangle
+  AlphaBlend(hdcRectangle, 0, 0, nScreenWidth, nScreenHeight,
+    hdcTiledPWSLogo, 0, 0, nScreenWidth, nScreenHeight, bf);
+
+  // Alpha blend(combine) the image containing the background and the rectangle + tiled image
+  AlphaBlend(hdcDimmedScreen, 0, 0, nScreenWidth, nScreenHeight,
+    hdcRectangle, 0, 0, nScreenWidth, nScreenHeight, bf);
+
+  // Tidy up graphics resources
+  // Reset everything first
+  ::SelectObject(hdcRectangle, hbmOldRectangle);
+  ::SelectObject(hdcPWSLogo, hbmOldPWSLogo);
+  ::SelectObject(hdcTiledPWSLogo, hbmOldTiledPWSLogo);
+  ::SelectObject(hdcDimmedScreen, hbmOldDimmendMonitorImage);
+
+  // Now delete created GDI objects
+  ::DeleteObject(hbrBlack);
+  ::DeleteObject(hbmPWSLogo);
+
+  ::DeleteDC(hdcRectangle);
+  ::DeleteDC(hdcPWSLogo);
+  ::DeleteDC(hdcTiledPWSLogo);
+  ::DeleteDC(hdcDimmedScreen);
 }

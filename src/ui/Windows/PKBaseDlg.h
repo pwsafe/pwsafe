@@ -67,7 +67,6 @@ protected:
   HWND m_hwndVKeyBoard;
 
   // Secure Desktop
-  void GetDimmedScreen(CBitmap &bmpDimmedScreen);
   void StartThread(int iDialogType, HMONITOR hCurrentMonitor = NULL);
   GetMasterPhrase m_GMP;
   DWORD m_dwRC;  // SD Thread exit code

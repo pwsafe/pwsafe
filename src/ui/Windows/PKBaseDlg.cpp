@@ -240,7 +240,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
   // Reset the hook again to msgfilter (equivalent to _AfxMsgFilterHook)
   // after finishing processing and before returning.
 
-  CBitmap bmpDimmedScreen;
   LARGE_INTEGER liDueTime;
   HANDLE hThread(0);
   DWORD dwError, dwThreadID, dwEvent;
@@ -268,9 +267,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 
   pState->m_hHookOldMsgFilter = NULL;
 
-  // Get orignal desktop screen shot
-  GetDimmedScreen(bmpDimmedScreen);
-
   // Update progress
   xFlags |= DIMMENDSCREENBITMAPCREATED;
 
@@ -281,8 +277,7 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
   }
 
   // Create Dialog Thread class instance
-  CSDThread thrdDlg(&m_GMP, &bmpDimmedScreen, iDialogType,
-                    hCurrentMonitor, m_bUseSecureDesktop);
+  CSDThread thrdDlg(iDialogType, &m_GMP, hCurrentMonitor, m_bUseSecureDesktop);
 
   // Set up waitable timer just in case there is an issue
   thrdDlg.m_hWaitableTimer = CreateWaitableTimer(NULL, FALSE, NULL);
@@ -312,7 +307,7 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
   xFlags |= WAITABLETIMERSET;
 
   // Create thread
-  hThread = CreateThread(NULL, 0, thrdDlg.ThreadProc, (void *)&thrdDlg, CREATE_SUSPENDED, &dwThreadID);
+  hThread = CreateThread(NULL, 0, thrdDlg.SDThreadProc, (void *)&thrdDlg, CREATE_SUSPENDED, &dwThreadID);
   if (hThread == NULL) {
     dwError = pws_os::IssueError(_T("CreateThread"), false);
     ASSERT(hThread);
@@ -343,50 +338,50 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 
   // Find out what happened
   switch (dwEvent) {
-  case WAIT_OBJECT_0 + 0:
-  {
-    // Timer popped
-    bTimerPopped = true;
+    case WAIT_OBJECT_0 + 0:
+    {
+      // Timer popped
+      bTimerPopped = true;
 
-    // Update Progress
-    xFlags &= ~WAITABLETIMERSET;
+      // Update Progress
+      xFlags &= ~WAITABLETIMERSET;
 
-    // Stop thread - by simulating clicking on Cancel button
-    ::SendMessage(thrdDlg.m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
+      // Stop thread - by simulating clicking on Cancel button
+      ::SendMessage(thrdDlg.m_hwndMasterPhraseDlg, WM_COMMAND, MAKEWPARAM(IDCANCEL, BN_CLICKED), 0);
 
-    // Now wait for thread to complete
-    WaitForSingleObject(hThread, INFINITE);
+      // Now wait for thread to complete
+      WaitForSingleObject(hThread, INFINITE);
 
-    // Update progress
-    xFlags &= ~THREADRESUMED;
-    break;
-  }
-  case WAIT_OBJECT_0 + 1:
-  {
-    // Thread ended
-    // Update progress
-    xFlags &= ~THREADRESUMED;
+      // Update progress
+      xFlags &= ~THREADRESUMED;
+      break;
+    }
+    case WAIT_OBJECT_0 + 1:
+    {
+      // Thread ended
+      // Update progress
+      xFlags &= ~THREADRESUMED;
 
-    // Cancel timer
-    if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
-      dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
+      // Cancel timer
+      if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
+        dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
+        ASSERT(0);
+        goto BadExit;
+      }
+
+      // Update progress
+      xFlags &= ~WAITABLETIMERSET;
+
+      break;
+    }
+    case WAIT_FAILED:
+    {
+      // Should not happen!
+      dwError = pws_os::IssueError(_T("WAIT_FAILED"), false);
       ASSERT(0);
       goto BadExit;
     }
-
-    // Update progress
-    xFlags &= ~WAITABLETIMERSET;
-
-    break;
-  }
-  case WAIT_FAILED:
-  {
-    // Should not happen!
-    dwError = pws_os::IssueError(_T("WAIT_FAILED"), false);
-    ASSERT(0);
-    goto BadExit;
-  }
-  }
+  }  // switch on dwEvent (Wait reason)
 
   // Close the WaitableTimer handle
   if (!CloseHandle(thrdDlg.m_hWaitableTimer)) {
@@ -416,9 +411,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
     xFlags &= ~WINDOWSHOOKREMOVED;
   }
 
-  // Tidy up GDI resources
-  bmpDimmedScreen.DeleteObject();
-
   // Update Progress
   xFlags &= ~DIMMENDSCREENBITMAPCREATED;
 
@@ -436,7 +428,7 @@ BadExit:
   if (xFlags & THREADCREATED) {
   }
   if (xFlags & DIMMENDSCREENBITMAPCREATED) {
-    bmpDimmedScreen.DeleteObject();
+    //bmpDimmedScreen.DeleteObject();
   }
   if (xFlags & WAITABLETIMERSET) {
     ::CancelWaitableTimer(thrdDlg.m_hWaitableTimer);
@@ -450,144 +442,4 @@ BadExit:
 
   // Set bad return code
   m_dwRC = (DWORD)-1;
-}
-
-void CPKBaseDlg::GetDimmedScreen(CBitmap &bmpDimmedScreen)
-{
-  /*
-  Fairly involved process but not difficult!
-  1. Get size of screen (including all monitors)
-  2. Create a memory DC corresponding to the screen
-  3. Create a bitmap in that DC
-  4. Copy across the current screen image to this bitmap
-
-  5. Now create final dimmed screen memory DC
-  6. Create a bitmap in that DC
-  7. Copy the screen image here
-
-  8. Create memory DC for black rectangle
-  9. Create a bitmap in that DC
-  10. Fill bitmap with a black rectangle
-
-  11. Load the PWS bitmap
-  12. Create another memory DC for this bitmap and select the PWS bitmap
-  13. Create another memory DC for the tiled bitmap
-  14. Create a bitmap in the tiled DC
-
-  15. Tile the PWS bitmap over the new bitmap
-
-  16. Alphablend the tiled PWS bitmap onto the black rectangle
-
-  17. Alphablend the combined tiled PWS & black rectangle over the screen image
-
-  18. Tidy up graphics resources
-  */
-
-  // This needs to be here to get the screen shot of the original desktop
-  /* 1 */
-  CRect rect(0, 0, ::GetSystemMetrics(SM_CXVIRTUALSCREEN), ::GetSystemMetrics(SM_CYVIRTUALSCREEN));
-
-  // Create a screen and a memory device context
-  HDC hDCScreen = ::CreateDC(_T("DISPLAY"), NULL, NULL, NULL);
-  CDC *pDCScreen = CDC::FromHandle(hDCScreen);
-
-  /* 2 */
-  CDC memDC_Screen;
-  memDC_Screen.CreateCompatibleDC(pDCScreen);
-
-  // Create a compatible bitmap and select it in the memory DC
-  /* 3 */
-  CBitmap bmp_Screen;
-  bmp_Screen.CreateCompatibleBitmap(pDCScreen, rect.Width(), rect.Height());
-  HBITMAP hBmpOld = (HBITMAP)::SelectObject(memDC_Screen, bmp_Screen);
-
-  // bit-blit from screen to memory device context. Note: CAPTUREBLT needed to capture overlayed images
-  /* 4 */
-  const DWORD dwRop = SRCCOPY | CAPTUREBLT;
-  memDC_Screen.BitBlt(0, 0, rect.Width(), rect.Height(), pDCScreen, rect.left, rect.top, dwRop);
-
-  // Create offscreen buffer to compose the final image which consists of
-  // an alphablended rectangle + PWS bitmap on top of a background image
-  /* 5 */
-  CDC memDC_DimmedScreen;
-  memDC_DimmedScreen.CreateCompatibleDC(pDCScreen);
-
-  /* 6 */
-  bmpDimmedScreen.CreateCompatibleBitmap(pDCScreen, rect.Width(), rect.Height());
-  CBitmap *pOldbmp = memDC_DimmedScreen.SelectObject(&bmpDimmedScreen);
-
-  // Copy the background image into this DC
-  /* 7 */
-  memDC_DimmedScreen.BitBlt(0, 0, rect.Width(), rect.Height(), &memDC_Screen, 0, 0, SRCCOPY);
-
-  // Create another memory DC to draw black rectangle
-  /* 8 */
-  CDC memDC_Rectangle;
-  memDC_Rectangle.CreateCompatibleDC(pDCScreen);
-
-  /* 9 */
-  CBitmap bmp_Rectangle;
-  bmp_Rectangle.CreateCompatibleBitmap(pDCScreen, rect.Width(), rect.Height());
-  CBitmap *pOldbmpRect = memDC_Rectangle.SelectObject(&bmp_Rectangle);
-
-  // Draw the black rectangle
-  /* 10 */
-  memDC_Rectangle.FillSolidRect(CRect(0, 0, rect.Width(), rect.Height()), RGB(0, 0, 0));
-
-  // Copy PWS bitmap onto rectangle
-  /* 11 */
-  CBitmap bmp_PWS;
-  bmp_PWS.LoadBitmap(IDB_PWSBITMAP);
-  BITMAP bPWSmap;
-  bmp_PWS.GetBitmap(&bPWSmap);
-  int bmw = bPWSmap.bmWidth;
-  int bmh = bPWSmap.bmHeight;
-
-  /* 12 */
-  CDC memDC_PWSbitmap;
-  memDC_PWSbitmap.CreateCompatibleDC(pDCScreen);
-  CBitmap *pOldbmpPWS = memDC_PWSbitmap.SelectObject(&bmp_PWS);
-
-  /*13 */
-  CDC memDC_TiledPWSbitmap;
-  memDC_TiledPWSbitmap.CreateCompatibleDC(pDCScreen);
-
-  /* 14 */
-  CBitmap bmp_TiledPWSbitmap;
-  bmp_TiledPWSbitmap.CreateCompatibleBitmap(pDCScreen, rect.Width(), rect.Height());
-  CBitmap *pOldbmpTiledPWSbitmap = memDC_TiledPWSbitmap.SelectObject(&bmp_TiledPWSbitmap);
-
-  /* 15 */
-  for (int y = 0; y < rect.Height(); y += bmh)
-  {
-    for (int x = 0; x < rect.Width(); x += bmw)
-    {
-      memDC_TiledPWSbitmap.BitBlt(x, y, rect.Width(), rect.Height(), &memDC_PWSbitmap, 0, 0, SRCCOPY);
-    }
-  }
-
-  BLENDFUNCTION bf;
-  bf.BlendOp = AC_SRC_OVER;
-  bf.BlendFlags = 0;
-  bf.SourceConstantAlpha = 127;
-  bf.AlphaFormat = 0;
-
-  /* 16 */
-  // Blend the tiled PWS image into the rectangle
-  memDC_Rectangle.AlphaBlend(0, 0, rect.Width(), rect.Height(), &memDC_TiledPWSbitmap, 0, 0, rect.Width(), rect.Height(), bf);
-
-  /* 17 */
-  // Combine the image containing the background and the rectangle + tiled image
-  memDC_DimmedScreen.AlphaBlend(0, 0, rect.Width(), rect.Height(), &memDC_Rectangle, 0, 0, rect.Width(), rect.Height(), bf);
-
-  /* 18 */
-  // Reset everything
-  ::SelectObject(memDC_Screen, hBmpOld);
-  memDC_DimmedScreen.SelectObject(pOldbmp);
-  memDC_Rectangle.SelectObject(pOldbmpRect);
-  memDC_PWSbitmap.SelectObject(pOldbmpPWS);
-  memDC_TiledPWSbitmap.SelectObject(pOldbmpTiledPWSbitmap);
-  bmp_PWS.DeleteObject();
-
-  ::DeleteDC(hDCScreen);
 }

@@ -14,37 +14,73 @@
 #include "GetMasterPhrase.h"
 #include "YubiMixin.h"
 
+#include <vector>
+
+struct st_MonitorImageInfo
+{
+  HDC hdcMonitor;
+  HWND hwndBkGrndWindow;
+  HBITMAP hbmDimmendMonitorImage;
+  int left, top, width, height;
+
+  st_MonitorImageInfo()
+    : hdcMonitor(0), hwndBkGrndWindow(0), hbmDimmendMonitorImage(0), left(0), top(0), width(0), height(0)
+  {}
+
+  st_MonitorImageInfo(const st_MonitorImageInfo &that)
+    : hdcMonitor(that.hdcMonitor), hwndBkGrndWindow(that.hwndBkGrndWindow),
+    hbmDimmendMonitorImage(that.hbmDimmendMonitorImage),
+    left(that.left), top(that.top), width(that.width), height(that.height)
+  {}
+
+  st_MonitorImageInfo &operator=(const st_MonitorImageInfo &that)
+  {
+    if (this != &that) {
+      hdcMonitor = that.hdcMonitor;
+      hwndBkGrndWindow = that.hwndBkGrndWindow;
+      hbmDimmendMonitorImage = that.hbmDimmendMonitorImage;
+      left = that.left;
+      top = that.top;
+      width = that.width;
+      height = that.height;
+    }
+    return *this;
+  }
+};
+
 class CVKeyBoardDlg;
 
 class CSDThread : public CYubiMixin
 {
 
 public:
-  CSDThread(GetMasterPhrase *pGMP, CBitmap *pbmpDimmedScreen,
-            int iDialogID, HMONITOR hCurrentMonitor, bool bUseSecureDesktop);
+  CSDThread(int iDialogID, GetMasterPhrase *pGMP,
+            HMONITOR hCurrentMonitor, bool bUseSecureDesktop);
   virtual ~CSDThread();
 
   StringX GetPhrase() const { return m_pGMP->sPhrase; }
 
  protected:
    BOOL InitInstance();
-   static DWORD WINAPI ThreadProc(void *lpParameter);
+   static DWORD WINAPI SDThreadProc(void *lpParameter);
 
    static INT_PTR CALLBACK MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
    static void CALLBACK TimerProc(void *lpParameter, BOOLEAN TimerOrWaitFired);
    static BOOL CALLBACK DesktopEnumProc(LPTSTR name, LPARAM lParam);
    static BOOL CALLBACK WindowEnumProc(HWND hwnd, LPARAM lParam);
+   static BOOL CALLBACK MonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData);
 
  private:
   enum {
-    NEWDESKTOCREATED           = 0x01,
-    SETTHREADDESKTOP           = 0x02,
-    SWITCHEDDESKTOP            = 0x04,
-    REGISTEREDWINDOWCLASS      = 0x08,
-    BACKGROUNDWINDOWCREATED    = 0x10,
-    MASTERPHRASEDIALOGCREATED  = 0x20,
-    VIRTUALKEYBOARDCREATED     = 0x40,
-    MASTERPHRASEDIALOGENDED    = 0x80,
+    MONITORIMAGESCREATED       = 0x0001,
+    NEWDESKTOCREATED           = 0x0002,
+    SETTHREADDESKTOP           = 0x0004,
+    SWITCHEDDESKTOP            = 0x0008,
+    REGISTEREDWINDOWCLASS      = 0x0010,
+    BACKGROUNDWINDOWSCREATED   = 0x0020,
+    MASTERPHRASEDIALOGCREATED  = 0x0040,
+    VIRTUALKEYBOARDCREATED     = 0x0080,
+    MASTERPHRASEDIALOGENDED    = 0x0100,
   };
 
    friend class CPKBaseDlg;
@@ -52,6 +88,7 @@ public:
    friend class CPasskeyChangeDlg;
 
    INT_PTR DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+   DWORD ThreadProc();
 
    void OnInitDialog();
    void OnVirtualKeyboard();
@@ -63,7 +100,6 @@ public:
    BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
    BOOL AddTooltip(UINT uiControlID, stringT sText);
 
-   void SetBkGndImage(HWND hwndBkGnd);
    void CheckDesktop();
    void CheckWindow();
    void ResetTimer();
@@ -72,7 +108,6 @@ public:
    stringT m_sBkGrndClassName;
    stringT m_sDesktopName;
 
-   CBitmap *m_pbmpDimmedScreen;
    GetMasterPhrase *m_pGMP;
    CVKeyBoardDlg *m_pVKeyBoardDlg;
 
@@ -91,7 +126,7 @@ public:
    StringX m_yubiResp[2]; // [0] set via IDC_PASSKEY, [1] via IDC_NEWPASSKEY
 
    HINSTANCE m_hInstance;
-   HWND m_hwndBkGnd, m_hwndVKeyBoard, m_hwndMasterPhraseDlg;
+   HWND m_hwndVKeyBoard, m_hwndMasterPhraseDlg;
    HDESK m_hOriginalDesk, m_hNewDesktop;
 
    unsigned int m_iStartTime;
@@ -108,11 +143,23 @@ public:
 
    bool m_bDoTimerProcAction, m_bMPWindowBeingShown, m_bVKWindowBeingShown;
    bool m_bUseSecureDesktop, m_bDesktopPresent, m_bWindowPresent;
-   BYTE xFlags;
+   short xFlags;
+
+   // Secure Desktop - screen related
+   void CaptureMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDimmendScreen,
+     const int left, const int top, const int nScreenWidth, const int nScreenHeight);
+   void DimMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDimmendScreen);
+   void GetMonitorImages();
+
+   // Vector of monitors and related image information
+   typedef std::vector<st_MonitorImageInfo> MonitorImageInfo;
+   typedef std::vector<st_MonitorImageInfo>::iterator MonitorImageInfoIter;
+   MonitorImageInfo m_vMonitorImageInfo;
 
    // Secure Desktop related
-   void GetDimmedScreen();
    void StartThread();
    int m_iLastFocus;
+
+   // Thread return code
    DWORD m_dwRC;
 };
