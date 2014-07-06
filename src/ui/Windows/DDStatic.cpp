@@ -305,6 +305,10 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
     RECT rClient;
     GetClientRect(&rClient);
 
+    // Copy data to Clipboard if Control pressed
+    if (nFlags & MK_CONTROL)
+      SendToClipboard();
+
     // Start dragging
     m_bDropped = false;
     //pws_os::Trace(L"CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n");
@@ -379,6 +383,33 @@ void CDDStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
       pixels[i] = newbkgrndColourRGB;
     }
   }
+}
+
+void CDDStatic::SendToClipboard()
+{
+  if (m_nID == IDC_STATIC_DRAGAUTO)
+    return;
+
+  if (m_pci == NULL) {
+    if (!m_groupname.empty()) {
+      app.GetMainDlg()->SetClipboardData(m_groupname);
+      app.GetMainDlg()->UpdateLastClipboardAction(CItemData::GROUP);
+    }
+    return;
+  }
+
+  const CItemData *pci(m_pci);
+
+  // Handle shortcut or alias
+  if ((m_nID == IDC_STATIC_DRAGPASSWORD && pci->IsAlias()) ||
+      (pci->IsShortcut() && (m_nID != IDC_STATIC_DRAGGROUP &&
+                             m_nID != IDC_STATIC_DRAGTITLE &&
+                             m_nID != IDC_STATIC_DRAGUSER))) {
+    pci = app.GetMainDlg()->GetBaseEntry(pci);
+  }
+
+  StringX cs_dragdata = GetData(pci);
+  app.GetMainDlg()->SetClipboardData(cs_dragdata);
 }
 
 BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)

@@ -50,12 +50,14 @@ application using the Dragbar, select the entry, and then drag the "N"
 icon from the Dragbar to the application. When you release the left 
 mouse button, the contents of the Notes field will be pasted to the 
 application. The Dragbar will disable ("grey out") icons for fields that 
-are empty for the selected entry. <br>
+are empty in the selected entry. <br>
 The 'AutoType' Dragbar button behaves in a slightly different
 manner: Dragging it to an input area on another Window
 (e.g. Browser) will cause <b>Password Safe</b> to begin AutoType from there.</p>
 
-<p><b>Note:</b><i>There appears to be an issue using the new AutoType Dragbar image with
+<p><b>Notes:</b>
+<ul>
+<li>There appears to be an issue using the new AutoType Dragbar image with
 Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed
 before the first tab character are lost. This does <u>NOT</u> occur with Firefox
 and Chrome browsers. Although we have a solution for this (we send a Tab followed
@@ -64,7 +66,11 @@ AutoType image), the side-effect is
 that you can only use the Dragbar AutoType image to replace any existing string in
 that window by the expanded AutoType string. If dropped in a window of another
 application the result will depend on how that application processes the Tab and Shift+Tab
-characters.</i></p>
+characters.
+<li>If the <i>control</i> key is pressed while clicking on a dragbar icon, the relevant text is copied to the clipboard <em>in addition</em>
+to being pasted when the mouse button is released. This can be useful in cases where the drop "missed" by a pixel or two, allowing you to
+perform a paste operation, rather than trying to drag again.</li>
+</ul></p>
 
 To display or hide the Dragbar, check or uncheck the <b>Dragbar Visible</b> menu item.
 
