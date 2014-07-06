@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.0.8_2" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.2" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1816,6 +1816,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;a10&gt;Shortcuts Tab&lt;/a10&gt;&lt;br11&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115603Z" creationid="pm_kan" creationdate="20140705T114921Z">
+        <seg>&lt;a10&gt;«Комбинации клавиш»&lt;/a10&gt;&lt;br11&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;a12&gt;Misc Tab&lt;/a12&gt;&lt;br13&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150402Z">
@@ -1828,6 +1836,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T201842Z">
         <seg>&lt;a12&gt;«Комбинации клавиш»&lt;/a12&gt; &lt;a13&gt;Вкладка «Система»&lt;/a13&gt;&lt;br14&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;a12&gt;System Tab&lt;/a12&gt;&lt;br13&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T114950Z" creationid="pm_kan" creationdate="20140705T114950Z">
+        <seg>&lt;a12&gt;«Система»&lt;/a12&gt;&lt;br13&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1850,8 +1866,8 @@
       <tuv lang="EN-US">
         <seg>&lt;a4&gt;Misc Tab&lt;/a4&gt;&lt;br5&gt;</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T201702Z">
-        <seg>&lt;a4&gt;Вкладка «Разное»&lt;/a4&gt;&lt;br5&gt;</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115905Z">
+        <seg>&lt;a4&gt;«Разное»&lt;/a4&gt;&lt;br5&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -7834,6 +7850,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Double-Clicking on a row in the list of recent passwords will copy the password displayed in that row to the clipboard.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115258Z" creationid="pm_kan" creationdate="20140705T115258Z">
+        <seg>Одинарный или двойной щелчок на строке списка приводит к копированию соответствующего пароля в буфер обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Double-click the selected entry&lt;br0&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T184556Z">
@@ -8078,6 +8102,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T221206Z">
         <seg>Диалог редактирования именованной политики</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Edit an Existing Named Password Policy</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115202Z" creationid="pm_kan" creationdate="20140705T115202Z">
+        <seg>Редактирование существующей именованной политики</seg>
       </tuv>
     </tu>
     <tu>
@@ -13058,6 +13090,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note that &lt;e0&gt;NNN&lt;/e0&gt; in the above is limited to three digits, so that, for example, \w5000 will create a half-second delay and then emit the letter '0', which is probably not what you intended (\W5 would do the trick, though).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T114734Z" creationid="pm_kan" creationdate="20140705T114734Z">
+        <seg>Обратите внимание, что &lt;e0&gt;NNN&lt;/e0&gt; в данном случае принимает не более 3-х цифр. Таким образом, «\w5000» выполнит задержку в полсекунды, после чего напечатает символ «0», что скорее всего отличается от того, что вы задумали (задержку в 5 секунд можно задать с помощью «\W5»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note that Password Safe will only erase old databases if the suffix is an incremented number (running count).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T162055Z">
@@ -17637,6 +17677,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The following dialog is shown.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115148Z" creationid="pm_kan" creationdate="20140705T115148Z">
+        <seg>Будет отображён следующий диалог:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The following examples should make this clear.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T193310Z">
@@ -18049,6 +18097,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101017T200922Z">
         <seg>В качестве имени в паре может быть указано одно из следующих значений:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The name of a password policy can be at most 255 characters long.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115117Z" creationid="pm_kan" creationdate="20140705T115117Z">
+        <seg>Длина имени политики не должна превышать 255 символов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -22275,6 +22331,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T204727Z">
         <seg>Вы можете создать до 255 именованных политик создания паролей, имя каждой из которых не превосходит 255 символов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You may create up to 255 named password policies.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T115051Z" creationid="pm_kan" creationdate="20140705T115051Z">
+        <seg>Вы можете создать до 255 именованных политик.</seg>
       </tuv>
     </tu>
     <tu>
