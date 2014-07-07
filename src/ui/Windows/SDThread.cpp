@@ -983,8 +983,9 @@ void CSDThread::OnOK()
   if (!sxPassKey.empty()) {
     m_pGMP->sPhrase = sxPassKey;
     m_pGMP->bPhraseEntered = true;
-  } else {
-    LoadAString(sErrorMsg, m_wDialogID == IDD_SDPASSKEYSETUP ? IDS_ENTERKEYANDVERIFY : IDS_CANNOTBEBLANK);
+  } else if (m_yubiResp[1].empty()) { // not an error if yubikey password change
+    LoadAString(sErrorMsg,
+                m_wDialogID == IDD_SDPASSKEYSETUP ? IDS_ENTERKEYANDVERIFY : IDS_CANNOTBEBLANK);
     MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK);
     SetFocus(hwndPassKey);
     return;
