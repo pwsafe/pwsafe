@@ -267,9 +267,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 
   pState->m_hHookOldMsgFilter = NULL;
 
-  // Update progress
-  xFlags |= DIMMENDSCREENBITMAPCREATED;
-
   // Get current Monitor if not supplied (only from Wizard)
   if (hCurrentMonitor == NULL) {
     ASSERT(this->GetSafeHwnd());
@@ -411,9 +408,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
     xFlags &= ~WINDOWSHOOKREMOVED;
   }
 
-  // Update Progress
-  xFlags &= ~DIMMENDSCREENBITMAPCREATED;
-
   return;
 
 BadExit:
@@ -426,9 +420,6 @@ BadExit:
     WaitForSingleObject(hThread, INFINITE);
   }
   if (xFlags & THREADCREATED) {
-  }
-  if (xFlags & DIMMENDSCREENBITMAPCREATED) {
-    //bmpDimmedScreen.DeleteObject();
   }
   if (xFlags & WAITABLETIMERSET) {
     ::CancelWaitableTimer(thrdDlg.m_hWaitableTimer);

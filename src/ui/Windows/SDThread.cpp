@@ -248,9 +248,9 @@ DWORD CSDThread::ThreadProc()
     EnableWindow(hwndBkGrndWindow, FALSE);
 
     // Tidy up GDI resources
-    ReleaseDC(NULL, hdcScreen);
-    SelectObject(hdc, hbmOld);
-    DeleteDC(hdc);
+    ::ReleaseDC(NULL, hdcScreen);
+    ::SelectObject(hdc, hbmOld);
+    ::DeleteDC(hdc);
   }
 
   // Update Progress

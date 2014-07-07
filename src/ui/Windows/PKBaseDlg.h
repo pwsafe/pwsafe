@@ -87,11 +87,10 @@ protected:
 private:
   enum {
      WINDOWSHOOKREMOVED         = 0x01,
-     DIMMENDSCREENBITMAPCREATED = 0x02,
-     WAITABLETIMERCREATED       = 0x04,
-     WAITABLETIMERSET           = 0x08,
-     THREADCREATED              = 0x10,
-     THREADRESUMED              = 0x20,
+     WAITABLETIMERCREATED       = 0x02,
+     WAITABLETIMERSET           = 0x03,
+     THREADCREATED              = 0x08,
+     THREADRESUMED              = 0x10,
    };
 
 };
