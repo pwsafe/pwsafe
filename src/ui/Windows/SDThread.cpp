@@ -27,6 +27,10 @@
 
 #include <algorithm>
 
+// Required for Low Level Keyboard hook - can't be a member variable as the hook
+// code can't be in this class.
+HHOOK g_hKeyboardHook;
+
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
@@ -80,6 +84,9 @@ BOOL CSDThread::InitInstance()
   // Clear progress flags
   xFlags = 0;
 
+  // Clear Low Level Keyboard hook
+  g_hKeyboardHook = NULL;
+
   return TRUE;
 }
 
@@ -90,8 +97,65 @@ DWORD WINAPI CSDThread::SDThreadProc(LPVOID lpParameter)
   return self->ThreadProc();
 }
 
+static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+  /*
+   There are a number of key combinations that can not be intercepted programmatically
+   1. "Ctrl + Alt + Del".  This is Windows' "Secure Attention Sequence" and is handled by the Windows Kernel
+   2. "Win + L" = Windows Lock Workstation.  This is controlled by a Registry Entry
+        HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableLockWorkstation
+   3. "Ctrl + Shift + Esc" - Start Task Manager.  This is controlled by a Registry Entry.
+        HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskmgr
+  */
+
+  if (nCode < 0 || nCode != HC_ACTION)  // do not process message
+    return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
+
+  KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
+  switch (wParam) {
+    case WM_KEYDOWN:
+    case WM_KEYUP:
+    {
+      /*
+        If one disables the user pressing VK_LWIN/VK_RWIN (by returning immediately RC=1),
+        the other key will go through automatically and is not what the user intended
+        i.e. User pressed "Win + F" (Find), if the "Win" key is suppressed, then it is as if
+        the user just pressed the "F" key into the passphrase.
+
+        However, this is better than the other solution of ignoring keys if either of the Win keys
+        are pressed [(GetAsyncKeyState(VK_LWIN) & 0x8000) || (GetAsyncKeyState(VK_RWIN) & 0x8000)]
+        as this can leave the Win key in a pressed condition such that all normal
+        key strokes are ignored and the Win key may remain in this state until cleared (either by
+        SendInput in the calling function in PkBaseDlg or by the user pressing it).  Also, some
+        "Win + key" combinations appear to be "stored up"
+
+        On balance, it is better for the user to enter the wrong passphrase (e.g. "Win + F" -> F) than
+        the keyboard to be in an unusual state and the results of numerous "Win + key" actions suddenly
+        occurring.
+
+        The ignoring of the Win key and the possible impact pon characters in the passphrase should be documented
+        in the Help entry.
+      */
+      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN))
+        return 1;
+      break;
+    }
+  }
+
+  return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
+}
+
 DWORD CSDThread::ThreadProc()
 {
+  // Disable Windows shortcuts
+  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
+  if (g_hKeyboardHook == NULL) {
+    ASSERT(0);
+  } else {
+    // Update Progress
+    xFlags |= KEYBOARDHOOKINSTALLED;
+  }
+
   WNDCLASS wc = { 0 };
 
   StringX sxTemp, sxPrefix;
@@ -286,6 +350,10 @@ DWORD CSDThread::ThreadProc()
     if (brc == -1)
       break;
 
+    // Do not allow Escape to end this dialog
+    if ((msg.message == WM_KEYDOWN || msg.message == WM_KEYUP) && msg.wParam == VK_ESCAPE)
+      continue;
+
     if (!IsDialogMessage(m_hwndMasterPhraseDlg, &msg)) {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
@@ -339,13 +407,6 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags &= ~REGISTEREDWINDOWCLASS;
 
-  // Clear variables - just in case someone decides to reuse this instance
-  m_pVKeyBoardDlg = NULL;
-  m_hwndMasterPhraseDlg = NULL;
-  m_sBkGrndClassName.clear();
-  m_sDesktopName.clear();
-  m_vMonitorImageInfo.clear();
-
 #ifndef NO_NEW_DESKTOP
   // The following 2 calls must be in this order to ensure the new desktop is
   // correctly deleted when finished with
@@ -381,6 +442,23 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags &= ~NEWDESKTOCREATED;
 #endif
+
+  if (xFlags & KEYBOARDHOOKINSTALLED) {
+    // Remove Low Level Keyboard hook
+    UnhookWindowsHookEx(g_hKeyboardHook);
+    g_hKeyboardHook = NULL;
+
+    // Update Progress
+    xFlags &= ~KEYBOARDHOOKINSTALLED;//En
+  }
+
+  // Clear variables - just in case someone decides to reuse this instance
+  m_pVKeyBoardDlg = NULL;
+  m_hwndMasterPhraseDlg = NULL;
+  m_sBkGrndClassName.clear();
+  m_sDesktopName.clear();
+  m_vMonitorImageInfo.clear();
+
   return m_dwRC;
 
 BadExit:
@@ -419,6 +497,12 @@ BadExit:
   if (xFlags & NEWDESKTOCREATED) {
     // Close the new desktop (subject to programs external to PWS keeping it around!)
     CloseDesktop(m_hNewDesktop);
+  }
+
+  if (xFlags & KEYBOARDHOOKINSTALLED) {
+    // Remove Low Level Keyboard hook
+    UnhookWindowsHookEx(g_hKeyboardHook);
+    g_hKeyboardHook = NULL;
   }
 
   // Clear variables - just in case someone decides to reuse this instance
@@ -818,7 +902,6 @@ INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
       SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
       return TRUE; // Processed
     }  // PWS_MSG_RESETTIMER:
-
   }  // switch (uMsg)
 
   // Anything else is "not processed"
