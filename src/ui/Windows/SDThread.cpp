@@ -25,6 +25,7 @@
 
 #include "resource.h"
 
+#include <psapi.h>
 #include <algorithm>
 
 // Required for Low Level Keyboard hook - can't be a member variable as the hook
@@ -186,6 +187,9 @@ DWORD CSDThread::ThreadProc()
   policy.lowerminlength = policy.upperminlength = policy.digitminlength = 1;
 
 #ifndef NO_NEW_DESKTOP
+  // Take snapshot of cfmon.exe processes
+  GetOrTerminateProcesses(false);
+
   m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
 
   // Ensure we don't use an existing Desktop (very unlikely but....)
@@ -441,6 +445,9 @@ DWORD CSDThread::ThreadProc()
   }
   // Update Progress
   xFlags &= ~NEWDESKTOCREATED;
+
+  // Terminate new cfmon.exe processes
+  GetOrTerminateProcesses(true);
 #endif
 
   if (xFlags & KEYBOARDHOOKINSTALLED) {
@@ -504,6 +511,11 @@ BadExit:
     UnhookWindowsHookEx(g_hKeyboardHook);
     g_hKeyboardHook = NULL;
   }
+
+#ifndef NO_NEW_DESKTOP
+  // Terminate new cfmon.exe processes
+  GetOrTerminateProcesses(true);
+#endif
 
   // Clear variables - just in case someone decides to reuse this instance
   m_pVKeyBoardDlg = NULL;
@@ -1566,4 +1578,73 @@ void CSDThread::DimMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDi
   ::DeleteDC(hdcPWSLogo);
   ::DeleteDC(hdcTiledPWSLogo);
   ::DeleteDC(hdcDimmedScreen);
+}
+
+bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
+{
+  DWORD aProcesses[4096], cbReturned, cProcesses;
+
+  // Initialise vector if not in Terminate mode
+  if (!bTerminate)
+    m_vPIDs.clear();
+
+  if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbReturned)) {
+    DWORD dwError = pws_os::IssueError(L"EnumProcesses", false);
+    return false;
+  }
+
+  // Set default return code
+  bool brc = true;
+
+  // Calculate how many process identifiers were returned.
+  cProcesses = cbReturned / sizeof(DWORD);
+
+  // Note: if cProcesses == (sizeof(aProcesses) / sizeof(DWORD)), it means that the array
+  // of processess was too small.  4096 should be good enough.  If not, there will be some
+  // old Desktops lying around until the user logs off.
+
+  // Calculate how many process identifiers were returned.
+  for (unsigned int i = 0; i < cProcesses; i++) {
+    if (aProcesses[i] != 0) {
+      // Get a handle to the process.
+      HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_TERMINATE,
+        FALSE, aProcesses[i]);
+
+      // Get the process name and save PID for all ctfmon.exe processes
+      if (NULL != hProcess) {
+        HMODULE hMod;
+        DWORD cbNeeded;
+        wchar_t szProcessName[MAX_PATH];
+
+        if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+          GetModuleBaseName(hProcess, hMod, szProcessName,
+            sizeof(szProcessName) / sizeof(wchar_t));
+        }
+
+        if (_wcsicmp(szProcessName, L"ctfmon.exe") == 0) {
+          if (bTerminate) {
+            if (std::find(m_vPIDs.begin(), m_vPIDs.end(), aProcesses[i]) == m_vPIDs.end()) {
+              // If newly found process not there before - terminate it!
+              if (!TerminateProcess(hProcess, 0)) {
+                DWORD dwError = pws_os::IssueError(L"TerminateProcess", false);
+                brc = false;
+              }
+            }
+          } else {
+            // Save initial list of ctfmon.exe processes
+            m_vPIDs.push_back(aProcesses[i]);
+          }
+        }
+      }
+
+      // Release the handle to the process.
+      CloseHandle(hProcess);
+    }
+  }
+
+  // Clear vector if finished in Terminate mode - always in pairs - collect info, use it
+  if (bTerminate)
+    m_vPIDs.clear();
+
+  return brc;
 }

@@ -104,6 +104,7 @@ public:
    void CheckDesktop();
    void CheckWindow();
    void ResetTimer();
+   bool GetOrTerminateProcesses(bool bTerminate = false);
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;
@@ -111,6 +112,7 @@ public:
 
    GetMasterPhrase *m_pGMP;
    CVKeyBoardDlg *m_pVKeyBoardDlg;
+   std::vector<DWORD> m_vPIDs;
 
    // Yubi stuff
    CProgressCtrl m_yubi_timeout;
