@@ -102,45 +102,62 @@ static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lP
 {
   /*
    There are a number of key combinations that can not be intercepted programmatically
-   1. "Ctrl + Alt + Del".  This is Windows' "Secure Attention Sequence" and is handled by the Windows Kernel
-   2. "Win + L" = Windows Lock Workstation.  This is controlled by a Registry Entry
+   1. "Ctrl + Alt + Del".  This is Windows' "Secure Attention Sequence" and is handled by the Windows Kernel.
+      It can NOT be intercepted by any application program.
+   2. "Win + L" = Windows Lock Workstation. This is controlled by a Registry Entry:
         HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableLockWorkstation
-   3. "Ctrl + Shift + Esc" - Start Task Manager.  This is controlled by a Registry Entry.
+   3. "Ctrl + Shift + Esc" - Start Task Manager. This is controlled by a Registry Entry:
         HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskmgr
   */
 
-  if (nCode < 0 || nCode != HC_ACTION)  // do not process message
+  if (nCode < 0 || nCode != HC_ACTION)  // Do not process message
     return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
+
+  /*
+    If one disables the user pressing VK_LWIN/VK_RWIN (by returning immediately RC=1),
+    the other key will go through automatically and is not what the user intended
+    i.e. User pressed "Win + F" (Find), if the "Win" key is suppressed, then it is as if
+    the user just pressed the "F" key into the passphrase.
+
+    If one ignores the Win keys by checking via (GetAsyncKeyState(VK_LWIN or VK_RWIN) & 0x8000),
+    it can leave the Win key in a pressed condition such that all normal key strokes are ignored
+    and the Win key may remain in this state until cleared (either by SendInput in the calling
+    function in PkBaseDlg or by the user pressing it).
+
+    The current approach sets a flag if a Win key has been pressed and only ignores other key presses
+    if the Win key is still in a down state.  However, for some reason, non-existent Windows hotkeys
+    do go through even in this code.  For example, "Win + F" (Find) is blocked but "Win + A" (not a valid
+    hotkey) goes through a "a" into the passphrase.
+
+    This does not have the drawbacks of the first approach but some "Win + key" combinations appear
+    to be "stored up" e.g. "Win + M" (minimize applications).
+ */
+
+  static bool bWinKeyPressed = false;
 
   KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
   switch (wParam) {
+    // Keys down
     case WM_KEYDOWN:
-    case WM_KEYUP:
-    {
-      /*
-        If one disables the user pressing VK_LWIN/VK_RWIN (by returning immediately RC=1),
-        the other key will go through automatically and is not what the user intended
-        i.e. User pressed "Win + F" (Find), if the "Win" key is suppressed, then it is as if
-        the user just pressed the "F" key into the passphrase.
-
-        However, this is better than the other solution of ignoring keys if either of the Win keys
-        are pressed [(GetAsyncKeyState(VK_LWIN) & 0x8000) || (GetAsyncKeyState(VK_RWIN) & 0x8000)]
-        as this can leave the Win key in a pressed condition such that all normal
-        key strokes are ignored and the Win key may remain in this state until cleared (either by
-        SendInput in the calling function in PkBaseDlg or by the user pressing it).  Also, some
-        "Win + key" combinations appear to be "stored up"
-
-        On balance, it is better for the user to enter the wrong passphrase (e.g. "Win + F" -> F) than
-        the keyboard to be in an unusual state and the results of numerous "Win + key" actions suddenly
-        occurring.
-
-        The ignoring of the Win key and the possible impact pon characters in the passphrase should be documented
-        in the Help entry.
-      */
-      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN))
+      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN)) {
+        bWinKeyPressed = true;
+      }
+      // Drop through
+    case WM_SYSKEYDOWN:
+      if (bWinKeyPressed)
         return 1;
       break;
-    }
+
+      // Keys up
+    case WM_KEYUP:
+      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN)) {
+        bWinKeyPressed = false;
+      }
+      // Drop through
+    case WM_SYSKEYUP:
+      if (bWinKeyPressed)
+        return 1;
+      break;
   }
 
   return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
@@ -149,7 +166,7 @@ static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lP
 DWORD CSDThread::ThreadProc()
 {
   // Disable Windows shortcuts
-  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
+  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
   if (g_hKeyboardHook == NULL) {
     ASSERT(0);
   } else {
@@ -1582,14 +1599,14 @@ void CSDThread::DimMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDi
 
 bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
 {
-  DWORD aProcesses[4096], cbReturned, cProcesses;
+  DWORD dwProcesses[4096], dwBytesReturned, dwNumProcesses, dwError;
 
   // Initialise vector if not in Terminate mode
   if (!bTerminate)
     m_vPIDs.clear();
 
-  if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbReturned)) {
-    DWORD dwError = pws_os::IssueError(L"EnumProcesses", false);
+  if (!EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesReturned)) {
+    dwError = pws_os::IssueError(L"EnumProcesses", false);
     return false;
   }
 
@@ -1597,42 +1614,42 @@ bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
   bool brc = true;
 
   // Calculate how many process identifiers were returned.
-  cProcesses = cbReturned / sizeof(DWORD);
+  dwNumProcesses = dwBytesReturned / sizeof(DWORD);
 
   // Note: if cProcesses == (sizeof(aProcesses) / sizeof(DWORD)), it means that the array
   // of processess was too small.  4096 should be good enough.  If not, there will be some
   // old Desktops lying around until the user logs off.
 
   // Calculate how many process identifiers were returned.
-  for (unsigned int i = 0; i < cProcesses; i++) {
-    if (aProcesses[i] != 0) {
+  for (unsigned int i = 0; i < dwNumProcesses; i++) {
+    if (dwProcesses[i] != 0) {
       // Get a handle to the process.
       HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_TERMINATE,
-        FALSE, aProcesses[i]);
+        FALSE, dwProcesses[i]);
 
       // Get the process name and save PID for all ctfmon.exe processes
       if (NULL != hProcess) {
-        HMODULE hMod;
-        DWORD cbNeeded;
+        HMODULE hModule;
+        DWORD dwBytesNeeded;
         wchar_t szProcessName[MAX_PATH];
 
-        if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
-          GetModuleBaseName(hProcess, hMod, szProcessName,
+        if (EnumProcessModules(hProcess, &hModule, sizeof(hModule), &dwBytesNeeded)) {
+          GetModuleBaseName(hProcess, hModule, szProcessName,
             sizeof(szProcessName) / sizeof(wchar_t));
         }
 
         if (_wcsicmp(szProcessName, L"ctfmon.exe") == 0) {
           if (bTerminate) {
-            if (std::find(m_vPIDs.begin(), m_vPIDs.end(), aProcesses[i]) == m_vPIDs.end()) {
+            if (std::find(m_vPIDs.begin(), m_vPIDs.end(), dwProcesses[i]) == m_vPIDs.end()) {
               // If newly found process not there before - terminate it!
               if (!TerminateProcess(hProcess, 0)) {
-                DWORD dwError = pws_os::IssueError(L"TerminateProcess", false);
+                dwError = pws_os::IssueError(L"TerminateProcess", false);
                 brc = false;
               }
             }
           } else {
             // Save initial list of ctfmon.exe processes
-            m_vPIDs.push_back(aProcesses[i]);
+            m_vPIDs.push_back(dwProcesses[i]);
           }
         }
       }
