@@ -26,12 +26,6 @@
 #include "resource.h"
 
 #include <algorithm>
-#include <Imm.h>
-
-#include <atlimage.h>
-#include <Gdiplusimaging.h>
-
-#pragma comment(lib, "Imm32.lib")
 
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
@@ -154,16 +148,24 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= NEWDESKTOCREATED;
 
-  // The following 3 calls must be in this order to ensure correct operation
-  // Need to disable creation of ctfmon.exe in order to close desktop
+  // Windows starts a copy of ctfmon.exe per Desktop for support of Microsoft Text
+  // Services. Also, Microsoft's IMM (Input Method Manager) allows an application to
+  // communicate with an input method editor (IME), which runs as a service.
+  // The IME allows computer users to enter complex characters and symbols, such
+  // as Japanese kanji characters, by using a standard keyboard.
+  // Ctfmon.exe activates the Alternative User Input Text Input Processor(TIP) and
+  // the Microsoft Office Language Bar.  It monitors the active windows and provides
+  // text input service support for speech recognition, handwriting recognition, keyboard,
+  // translation, and other alternative user input technologies.
+
+  // Ctfmon.exe will also prevent a new Desktop closing after all Windows on it have closed.
+
   // On systems running NVIDIA Display Driver Service (nvsvc), CloseDesktop will also
-  // NOT close the new Desktop until the service is stop or stop/restarted
+  // NOT close the new Desktop until the service is stopped or stopped/restarted.
+  // A Bug Report has been raised with NVidia.
+
   // THERE MAY BE OTHER PROGRAMS OR SERVICES THAT WILL STOP NEW DESKTOPS CLOSING
   // UNTIL THEY END (PROGRAMS) OR ARE STOPPED (SERVICES).
-  if (!ImmDisableIME(0)) {
-    dwError = pws_os::IssueError(_T("ImmDisableIME"), false);
-    // No need to ASSERT here
-  }
 
   if (!SetThreadDesktop(m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
