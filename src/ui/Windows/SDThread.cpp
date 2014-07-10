@@ -1616,19 +1616,20 @@ bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
   // Calculate how many process identifiers were returned.
   dwNumProcesses = dwBytesReturned / sizeof(DWORD);
 
-  // Note: if cProcesses == (sizeof(aProcesses) / sizeof(DWORD)), it means that the array
+  // Note: if dwNumProcesses == (sizeof(dwProcesses) / sizeof(DWORD)), it means that the array
   // of processess was too small.  4096 should be good enough.  If not, there will be some
   // old Desktops lying around until the user logs off.
 
   // Calculate how many process identifiers were returned.
   for (unsigned int i = 0; i < dwNumProcesses; i++) {
+    // Note a zero PID means it is a System process and so ignored
     if (dwProcesses[i] != 0) {
-      // Get a handle to the process.
+      // Get a handle to the process.  It will only return a valid handle if we do have terminate authority.
       HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_TERMINATE,
         FALSE, dwProcesses[i]);
 
       // Get the process name and save PID for all ctfmon.exe processes
-      if (NULL != hProcess) {
+      if (hProcess != NULL) {
         HMODULE hModule;
         DWORD dwBytesNeeded;
         wchar_t szProcessName[MAX_PATH];
@@ -1652,10 +1653,10 @@ bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
             m_vPIDs.push_back(dwProcesses[i]);
           }
         }
-      }
 
-      // Release the handle to the process.
-      CloseHandle(hProcess);
+        // Release the handle to the process.
+        CloseHandle(hProcess);
+      }
     }
   }
 
