@@ -579,11 +579,10 @@ bool PasswordSafeFrame::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& name )
+wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
     // Bitmap retrieval
 ////@begin PasswordSafeFrame bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end PasswordSafeFrame bitmap retrieval
 }
@@ -596,7 +595,6 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 {
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
-  wxUnusedVar(name);
   if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
@@ -1846,7 +1844,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case wxID_DELETE:
       evt.Enable(GetSelectedEntry() != NULL);
       break;
-      
+
     default:
       break;
   }
@@ -2987,10 +2985,10 @@ void PasswordSafeFrame::DoExportText()
         if (fd.ShowModal() == wxID_OK) {
           newfile = fd.GetPath();
           CReport rpt;
-          
+
           rpt.StartReport(ExportType::GetTitle(), sx_temp.c_str());
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
-          
+
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
                                       subgroup_function, delimiter, numExported, &orderedItemList, &rpt);
 
@@ -3002,7 +3000,7 @@ void PasswordSafeFrame::DoExportText()
             DisplayFileWriteError(rc, newfile);
           }
           else {
-            if ( wxMessageBox(_T("Export complete.  Do you wish to see a detailed report?"), ExportType::GetTitle(), 
+            if ( wxMessageBox(_T("Export complete.  Do you wish to see a detailed report?"), ExportType::GetTitle(),
                               wxYES_NO|wxICON_QUESTION, this) == wxYES )
               ViewReport(rpt);
           }

@@ -7,7 +7,7 @@
  */
 
 /** \file createshortcutdlg.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -137,7 +137,7 @@ void CreateShortcutDlg::Init()
  */
 
 void CreateShortcutDlg::CreateControls()
-{    
+{
 ////@begin CreateShortcutDlg content construction
   CreateShortcutDlg* itemDialog1 = this;
 
@@ -204,11 +204,10 @@ bool CreateShortcutDlg::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CreateShortcutDlg::GetBitmapResource( const wxString& name )
+wxBitmap CreateShortcutDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin CreateShortcutDlg bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end CreateShortcutDlg bitmap retrieval
 }
@@ -217,11 +216,10 @@ wxBitmap CreateShortcutDlg::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CreateShortcutDlg::GetIconResource( const wxString& name )
+wxIcon CreateShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CreateShortcutDlg icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CreateShortcutDlg icon retrieval
 }
@@ -238,7 +236,7 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
 
     if (!valid)
       return;
-    
+
     CItemData shortcut;
     shortcut.CreateUUID();
     shortcut.SetShortcut();

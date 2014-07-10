@@ -7,7 +7,7 @@
  */
 
 /** \file deleteconfirmation.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -124,7 +124,7 @@ void DeleteConfirmation::Init()
  */
 
 void DeleteConfirmation::CreateControls()
-{    
+{
 ////@begin DeleteConfirmation content construction
   DeleteConfirmation* itemDialog1 = this;
 
@@ -169,11 +169,10 @@ bool DeleteConfirmation::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap DeleteConfirmation::GetBitmapResource( const wxString& name )
+wxBitmap DeleteConfirmation::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin DeleteConfirmation bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end DeleteConfirmation bitmap retrieval
 }
@@ -182,11 +181,10 @@ wxBitmap DeleteConfirmation::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon DeleteConfirmation::GetIconResource( const wxString& name )
+wxIcon DeleteConfirmation::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin DeleteConfirmation icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end DeleteConfirmation icon retrieval
 }
@@ -201,7 +199,7 @@ void DeleteConfirmation::OnNoClick( wxCommandEvent& /* evt */ )
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,
                                      m_confirmdelete);
-    
+
   }
   EndModal(wxID_NO);
 }
@@ -216,7 +214,7 @@ void DeleteConfirmation::OnYesClick( wxCommandEvent& /* evt */ )
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,
                                      !m_confirmdelete);
-    
+
   }
   EndModal(wxID_YES);
 }

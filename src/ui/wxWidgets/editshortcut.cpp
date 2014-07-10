@@ -7,7 +7,7 @@
  */
 
 /** \file editshortcut.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -110,7 +110,7 @@ void EditShortcut::ItemFieldsToDialog()
         m_groupCtrl->SetSelection(reinterpret_cast<int &>(igrp));
         break;
       }
-  
+
   m_title = m_item->GetTitle().c_str();
   m_user = m_item->GetUser().c_str();
   m_created = m_item->GetCTimeL().c_str();
@@ -153,7 +153,7 @@ void EditShortcut::Init()
  */
 
 void EditShortcut::CreateControls()
-{    
+{
 ////@begin EditShortcut content construction
   EditShortcut* itemDialog1 = this;
 
@@ -254,11 +254,10 @@ bool EditShortcut::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap EditShortcut::GetBitmapResource( const wxString& name )
+wxBitmap EditShortcut::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin EditShortcut bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end EditShortcut bitmap retrieval
 }
@@ -267,11 +266,10 @@ wxBitmap EditShortcut::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon EditShortcut::GetIconResource( const wxString& name )
+wxIcon EditShortcut::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin EditShortcut icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end EditShortcut icon retrieval
 }

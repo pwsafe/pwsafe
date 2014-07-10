@@ -297,7 +297,6 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationEntry bitmap retrieval
-  wxUnusedVar(name);
   if (name == _T("graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
@@ -323,11 +322,10 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CSafeCombinationEntry::GetIconResource( const wxString& name )
+wxIcon CSafeCombinationEntry::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CSafeCombinationEntry icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CSafeCombinationEntry icon retrieval
 }

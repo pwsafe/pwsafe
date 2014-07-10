@@ -7,7 +7,7 @@
  */
 
 /** \file ManagePwdPolicies.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -151,7 +151,7 @@ void CManagePasswordPolicies::Init()
  */
 
 void CManagePasswordPolicies::CreateControls()
-{    
+{
 ////@begin CManagePasswordPolicies content construction
   CManagePasswordPolicies* itemDialog1 = this;
 
@@ -285,7 +285,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
-  UpdateDetails(); 
+  UpdateDetails();
 
   m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
@@ -323,7 +323,6 @@ wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CManagePasswordPolicies bitmap retrieval
-  wxUnusedVar(name);
   if (name == _T("graphics/toolbar/new/copypassword.xpm"))
   {
     wxBitmap bitmap(copypassword_xpm);
@@ -342,11 +341,10 @@ wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CManagePasswordPolicies::GetIconResource( const wxString& name )
+wxIcon CManagePasswordPolicies::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CManagePasswordPolicies icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CManagePasswordPolicies icon retrieval
 }
@@ -518,7 +516,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
   // Update lists
   UpdateNames();
   int N = m_PolicyNames->GetNumberRows();
-  for (int row = 0; row < N; row++) 
+  for (int row = 0; row < N; row++)
     if (m_PolicyNames->GetCellValue(row, 0) == polname) {
       m_PolicyNames->SelectRow(row);
       break;
@@ -538,7 +536,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
   ppdlg.SetPolicyData(wxT(""), st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
-    
+
     ppdlg.GetPolicyData(policyname, st_pp);
     UpdatePolicy(policyname, st_pp, CPP_ADD);
   }
@@ -588,7 +586,7 @@ void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE in CManagePasswordPolicies. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE in CManagePasswordPolicies.
 }
 
 
@@ -614,7 +612,7 @@ void CManagePasswordPolicies::OnUndoClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO in CManagePasswordPolicies. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO in CManagePasswordPolicies.
 }
 
 
@@ -627,7 +625,7 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO in CManagePasswordPolicies. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO in CManagePasswordPolicies.
 }
 
 
@@ -648,7 +646,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 
   if (defChanged || namedChanged) {
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-    
+
     if (defChanged) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
@@ -681,7 +679,7 @@ void CManagePasswordPolicies::OnCancelClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
 }
 
 
@@ -694,7 +692,7 @@ void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies.
 }
 
 
@@ -706,7 +704,7 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 {
   UNREFERENCED_PARAMETER(event);
   PWPolicy st_pp = GetSelectedPolicy();
-  
+
   StringX passwd = st_pp.MakeRandomPassword();
   m_passwordCtrl->SetValue(passwd.c_str());
 }

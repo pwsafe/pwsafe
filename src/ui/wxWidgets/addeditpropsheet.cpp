@@ -238,8 +238,6 @@ private:
 void AddEditPropSheet::CreateControls()
 {
 ////@begin AddEditPropSheet content construction
-  AddEditPropSheet* itemPropertySheetDialog1 = this;
-
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   m_BasicPanel->SetSizer(itemBoxSizer3);
@@ -668,11 +666,10 @@ bool AddEditPropSheet::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap AddEditPropSheet::GetBitmapResource( const wxString& name )
+wxBitmap AddEditPropSheet::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin AddEditPropSheet bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end AddEditPropSheet bitmap retrieval
 }
@@ -681,11 +678,10 @@ wxBitmap AddEditPropSheet::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon AddEditPropSheet::GetIconResource( const wxString& name )
+wxIcon AddEditPropSheet::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin AddEditPropSheet icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end AddEditPropSheet icon retrieval
 }
@@ -1766,7 +1762,7 @@ void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
 ////@begin wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet. 
+////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
 }
 
 
@@ -1774,7 +1770,7 @@ void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
  */
 
-void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& event )
+void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
 {
   stringT st_symbols;
   if (m_pwpEasyCtrl->GetValue())

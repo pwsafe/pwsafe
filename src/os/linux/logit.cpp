@@ -43,7 +43,7 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   assert(num_required == num_written+1);
   szBuffer[num_required - 1] = '\0';
 #endif /* UNICODE */
-
+  UNREFERENCED_PARAMETER(num_written); // used only in assert
   const stringT s(szBuffer);
   PWSLog::GetLog()->Add(s);
   delete[] szBuffer;

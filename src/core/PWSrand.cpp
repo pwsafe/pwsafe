@@ -82,6 +82,7 @@ void PWSrand::GetRandomData( void * const buffer, unsigned long length )
     bool status;
     status = pws_os::GetRandomData(buffer, length);
     ASSERT(status);
+    UNREFERENCED_PARAMETER(status); // used only in assert
   }
 
   // If we have an external random source, we'll
@@ -121,13 +122,13 @@ unsigned int PWSrand::RandUInt()
     ibRandomData = 0;
   }
 
-  const unsigned int u = 
+  const unsigned int u =
     *(reinterpret_cast<uint32 *>(rgbRandomData + ibRandomData));
   ibRandomData += sizeof(uint32);
   return u;
 }
 
-/* 
+/*
 *  RangeRand(len)
 *
 *  Returns a random number in the range 0 to (len-1).

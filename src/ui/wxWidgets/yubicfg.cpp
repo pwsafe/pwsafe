@@ -7,7 +7,7 @@
  */
 
 /** \file yubicfg.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -160,7 +160,7 @@ static void HexStr2BinSK(const StringX &str, unsigned char *sk, int len)
  */
 
 void YubiCfgDlg::CreateControls()
-{    
+{
 ////@begin YubiCfgDlg content construction
   YubiCfgDlg* itemDialog1 = this;
 
@@ -231,11 +231,10 @@ bool YubiCfgDlg::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap YubiCfgDlg::GetBitmapResource( const wxString& name )
+wxBitmap YubiCfgDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin YubiCfgDlg bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end YubiCfgDlg bitmap retrieval
 }
@@ -244,11 +243,10 @@ wxBitmap YubiCfgDlg::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon YubiCfgDlg::GetIconResource( const wxString& name )
+wxIcon YubiCfgDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin YubiCfgDlg icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end YubiCfgDlg icon retrieval
 }
@@ -276,7 +274,7 @@ void YubiCfgDlg::OnPollingTimer(wxTimerEvent &evt)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YK_HIDESHOW
  */
 
-void YubiCfgDlg::OnYkHideshowClick( wxCommandEvent& event )
+void YubiCfgDlg::OnYkHideshowClick( wxCommandEvent& WXUNUSED(event) )
 {
   if (m_isSKHidden) {
     ShowSK();
@@ -290,7 +288,7 @@ void YubiCfgDlg::OnYkHideshowClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YK_GENERATE
  */
 
-void YubiCfgDlg::OnYkGenerateClick( wxCommandEvent& event )
+void YubiCfgDlg::OnYkGenerateClick( wxCommandEvent& WXUNUSED(event) )
 {
   unsigned char yubi_sk_bin[YUBI_SK_LEN];
   pws_os::GetRandomData(yubi_sk_bin, YUBI_SK_LEN);
@@ -304,7 +302,7 @@ void YubiCfgDlg::OnYkGenerateClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YK_SET
  */
 
-void YubiCfgDlg::OnYkSetClick( wxCommandEvent& event )
+void YubiCfgDlg::OnYkSetClick( wxCommandEvent& WXUNUSED(event) )
 {
   Validate(); TransferDataFromWindow();
   m_ykstatus->SetLabel(wxT(""));
@@ -366,7 +364,7 @@ void YubiCfgDlg::yubiInserted(void)
   if (m_core.GetYubiSK() != NULL) {
     HideSK();
     m_yksk = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
-  } else 
+  } else
     m_yksk = wxEmptyString;
   ReadYubiSN();
   FindWindow(ID_YK_SERNUM)->SetLabel(m_yksernum);

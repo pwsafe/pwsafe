@@ -7,7 +7,7 @@
  */
 
 /** \file PasswordPolicy.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -92,7 +92,7 @@ bool CPasswordPolicy::Create( wxWindow* parent, wxWindowID id, const wxString& c
 void CPasswordPolicy::SetDefaultSymbolDisplay(bool restore_defaults)
 {
   stringT symset;
-  if (m_pwUseEasyVision) 
+  if (m_pwUseEasyVision)
     symset = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_pwMakePronounceable)
     symset = CPasswordCharPool::GetPronounceableSymbols();
@@ -149,7 +149,7 @@ void CPasswordPolicy::Init()
  */
 
 void CPasswordPolicy::CreateControls()
-{    
+{
 ////@begin CPasswordPolicy content construction
   CPasswordPolicy* itemDialog1 = this;
 
@@ -316,11 +316,10 @@ bool CPasswordPolicy::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CPasswordPolicy::GetBitmapResource( const wxString& name )
+wxBitmap CPasswordPolicy::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin CPasswordPolicy bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end CPasswordPolicy bitmap retrieval
 }
@@ -329,11 +328,10 @@ wxBitmap CPasswordPolicy::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CPasswordPolicy::GetIconResource( const wxString& name )
+wxIcon CPasswordPolicy::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CPasswordPolicy icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CPasswordPolicy icon retrieval
 }
@@ -454,7 +452,7 @@ void CPasswordPolicy::OnCancelClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
 }
 
 
@@ -467,7 +465,7 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy.
 }
 
 void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol)
@@ -565,7 +563,7 @@ void CPasswordPolicy::OnPwPolUseSymbols( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
  */
 
-void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& event )
+void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
 {
   SetDefaultSymbolDisplay(true);
 }
