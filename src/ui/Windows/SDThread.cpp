@@ -15,6 +15,7 @@
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "resource3.h"
 
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
@@ -454,10 +455,14 @@ DWORD CSDThread::ThreadProc()
   // correctly deleted when finished with
 
   // Switch back to the initial desktop
-  if (!SwitchDesktop(m_hOriginalDesk)) {
+  // If session is locked, we need to wait for unlock
+  while (!SwitchDesktop(m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
+  if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
     ASSERT(0);
-    goto BadExit;
+      goto BadExit;
+  }
+  ::Sleep(500);
   }
 
   // Update Progress
@@ -533,7 +538,13 @@ BadExit:
   }
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop
-    SwitchDesktop(m_hOriginalDesk);
+  while (!SwitchDesktop(m_hOriginalDesk)) {
+      dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
+    if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
+      ASSERT(0);
+    }
+    ::Sleep(500);
+    }
   }
   if (xFlags & SETTHREADDESKTOP) {
     // Switch thread back to initial desktop

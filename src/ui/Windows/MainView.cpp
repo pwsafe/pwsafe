@@ -2013,7 +2013,7 @@ static void Hider(CWnd *pWnd)
 
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
-  if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
+  if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked(true)) ||
       (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT &&
        DecrementAndTestIdleLockCounter())) {
     // OK, so we need to lock. If we're not using a system tray,
@@ -2144,12 +2144,12 @@ bool DboxMain::LockDataBase()
 }
 
 // This function determines if the workstation is locked.
-bool DboxMain::IsWorkstationLocked() const
+bool DboxMain::IsWorkstationLocked(bool bAllowSwitchDesktopCheck) const
 {
   bool bResult = false;
   if (m_bWTSRegistered)
     bResult = m_bWSLocked;
-  else {
+  else if (bAllowSwitchDesktopCheck) {
     // Rather not use this as may have impact with multiple desktops
     // but if registering for session change messages failed ...
     HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);

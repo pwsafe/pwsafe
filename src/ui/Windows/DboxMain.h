@@ -494,7 +494,7 @@ public:
 
   // If we have processed it returns 0 else 1
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
-  
+  bool IsWorkstationLocked(bool bAllowSwitchDesktopCheck) const;
  protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
@@ -864,7 +864,6 @@ private:
   void CleanUpAndExit(const bool bNormalExit = true);
 
   void RegisterSessionNotification(const bool bRegister);
-  bool IsWorkstationLocked() const;
   bool LockDataBase();
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
