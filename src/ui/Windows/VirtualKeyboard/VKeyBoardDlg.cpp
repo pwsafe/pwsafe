@@ -575,7 +575,7 @@ INT_PTR CVKeyBoardDlg::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
     case IDC_STATIC_TIMER:
     case IDC_STATIC_TIMERTEXT:
     case IDC_STATIC_SECONDS:
-      if (!IsWindowVisible((HWND)lParam))
+      if (IsWindowVisible((HWND)lParam))
       {
         SetTextColor((HDC)wParam, RGB(255, 0, 0));
         return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);  // Processed
