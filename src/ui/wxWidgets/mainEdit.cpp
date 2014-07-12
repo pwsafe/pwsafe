@@ -362,7 +362,7 @@ void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
  */
 
-void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
 {
   CItemData* item = GetSelectedEntry();
   if (item && !item->IsDependent()) {
@@ -377,7 +377,7 @@ void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& /*evt*/)
 }
 
 // Duplicate selected entry but make title unique
-void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -445,7 +445,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
     CUUID uuid = ci2.GetUUID();
     ItemListIter iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
-
+    wxUnusedVar(iter); // used in assert only
 //    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
 //    FixListIndexes();
     SetChanged(Data);

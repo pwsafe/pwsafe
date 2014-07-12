@@ -328,6 +328,8 @@
 		<Unit filename="../../src/os/dir.h" />
 		<Unit filename="../../src/os/env.h" />
 		<Unit filename="../../src/os/file.h" />
+		<Unit filename="../../src/os/fmtspecs_cvt.h" />
+		<Unit filename="../../src/os/funcwrap.h" />
 		<Unit filename="../../src/os/lib.h" />
 		<Unit filename="../../src/os/linux/KeySend.cpp" />
 		<Unit filename="../../src/os/linux/PWYubi.cpp">

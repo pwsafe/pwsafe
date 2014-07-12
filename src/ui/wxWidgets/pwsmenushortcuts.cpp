@@ -458,7 +458,6 @@ void PWSMenuShortcuts::ApplyEditedShortcuts()
  */
 void PWSMenuShortcuts::SaveUserShortcuts()
 {
-  typedef std::vector<st_prefShortcut> userShortcut_t;
   std::vector<st_prefShortcut> userShortcuts;
   for (MenuItemDataArray::iterator itr = m_midata.begin(); itr != m_midata.end(); ++itr) {
     if (itr->ShouldSave()) {

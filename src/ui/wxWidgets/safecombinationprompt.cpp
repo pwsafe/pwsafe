@@ -7,7 +7,7 @@
  */
 
 /** \file safecombinationprompt.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -137,7 +137,7 @@ void CSafeCombinationPrompt::Init()
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 #endif
-  
+
 ////@end CSafeCombinationPrompt member initialisation
 }
 
@@ -147,7 +147,7 @@ void CSafeCombinationPrompt::Init()
  */
 
 void CSafeCombinationPrompt::CreateControls()
-{    
+{
 ////@begin CSafeCombinationPrompt content construction
   CSafeCombinationPrompt* itemDialog1 = this;
 
@@ -235,7 +235,6 @@ wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationPrompt bitmap retrieval
-  wxUnusedVar(name);
   if (name == _T("./graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
@@ -256,11 +255,10 @@ wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& name )
+wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CSafeCombinationPrompt icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CSafeCombinationPrompt icon retrieval
 }
@@ -323,7 +321,7 @@ void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CANCEL);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
 }
 
 

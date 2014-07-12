@@ -7,7 +7,7 @@
  */
 
 /** \file properties.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -178,7 +178,7 @@ void CProperties::Init()
  */
 
 void CProperties::CreateControls()
-{    
+{
 ////@begin CProperties content construction
   CProperties* itemDialog1 = this;
 
@@ -283,11 +283,10 @@ bool CProperties::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CProperties::GetBitmapResource( const wxString& name )
+wxBitmap CProperties::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin CProperties bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end CProperties bitmap retrieval
 }
@@ -296,11 +295,10 @@ wxBitmap CProperties::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CProperties::GetIconResource( const wxString& name )
+wxIcon CProperties::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CProperties icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CProperties icon retrieval
 }
@@ -315,6 +313,6 @@ void CProperties::OnOkClick( wxCommandEvent& /* evt */ )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
   // Before editing this code, remove the block markers.
   EndModal(wxID_OK);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
 }
 

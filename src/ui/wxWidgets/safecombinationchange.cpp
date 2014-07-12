@@ -243,7 +243,6 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationChange bitmap retrieval
-  wxUnusedVar(name);
   if (name == _T("graphics/Yubikey-button.xpm"))
   {
     wxBitmap bitmap(Yubikey_button_xpm);
@@ -258,11 +257,10 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CSafeCombinationChange::GetIconResource( const wxString& name )
+wxIcon CSafeCombinationChange::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CSafeCombinationChange icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CSafeCombinationChange icon retrieval
 }

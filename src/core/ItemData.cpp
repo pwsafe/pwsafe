@@ -1735,18 +1735,19 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
   if (!bValue)  // date empty - always return false for other comparisons
     return false;
   else {
-    time_t testtime;
+    time_t testtime = time_t(0);
     if (tValue) {
       struct tm st;
       errno_t err;
-      err = localtime_s(&st, &tValue);  // secure version
+      err = localtime_s(&st, &tValue);
       ASSERT(err == 0);
-      st.tm_hour = 0;
-      st.tm_min = 0;
-      st.tm_sec = 0;
-      testtime = mktime(&st);
-    } else
-      testtime = time_t(0);
+      if (!err) {
+        st.tm_hour = 0;
+        st.tm_min = 0;
+        st.tm_sec = 0;
+        testtime = mktime(&st);
+      }
+    }
     return PWSMatch::Match(time1, time2, testtime, iFunction);
   }
 }

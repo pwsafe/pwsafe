@@ -205,8 +205,6 @@ void COptions::Init()
 void COptions::CreateControls()
 {
 ////@begin COptions content construction
-  COptions* itemPropertySheetDialog1 = this;
-
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
@@ -694,11 +692,10 @@ bool COptions::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap COptions::GetBitmapResource( const wxString& name )
+wxBitmap COptions::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
 ////@begin COptions bitmap retrieval
-  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end COptions bitmap retrieval
 }
@@ -707,11 +704,10 @@ wxBitmap COptions::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon COptions::GetIconResource( const wxString& name )
+wxIcon COptions::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin COptions icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end COptions icon retrieval
 }

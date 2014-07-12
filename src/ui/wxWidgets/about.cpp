@@ -204,7 +204,6 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CAbout bitmap retrieval
-  wxUnusedVar(name);
   if (name == _T("graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
@@ -218,11 +217,10 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CAbout::GetIconResource( const wxString& name )
+wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
 ////@begin CAbout icon retrieval
-  wxUnusedVar(name);
   return wxNullIcon;
 ////@end CAbout icon retrieval
 }
@@ -232,7 +230,7 @@ wxIcon CAbout::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
 
-void CAbout::OnCloseClick( wxCommandEvent& /* evt */ )
+void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
   // Before editing this code, remove the block markers.
