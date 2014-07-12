@@ -232,11 +232,18 @@ DWORD CSDThread::ThreadProc()
 
   // Try to create the necessary Security Attributes
   // If successful, it may prevent other tasks grabbing the Desktop (cf. NVidia Service)
-  if (CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID)) {
-    m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, &sa);
-  } else {
-    m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
-  }
+  bool bSA_Created = CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID);
+  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
+
+  // Free security data no longer required
+  if (pEveryoneSID)
+    FreeSid(pEveryoneSID);
+  if (pCurrentUserSID)
+    FreeSid(pCurrentUserSID);
+  if (pACL)
+    LocalFree(pACL);
+  if (pSD)
+    LocalFree(pSD);
 
   if (m_hNewDesktop == NULL) {
     dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
@@ -479,16 +486,6 @@ DWORD CSDThread::ThreadProc()
 
   // Terminate new cfmon.exe processes
   GetOrTerminateProcesses(true);
-
-  // Free security data
-  if (pEveryoneSID)
-    FreeSid(pEveryoneSID);
-  if (pCurrentUserSID)
-    FreeSid(pCurrentUserSID);
-  if (pACL)
-    LocalFree(pACL);
-  if (pSD)
-    LocalFree(pSD);
 #endif
 
   if (xFlags & KEYBOARDHOOKINSTALLED) {
@@ -556,16 +553,6 @@ BadExit:
 #ifndef NO_NEW_DESKTOP
   // Terminate new cfmon.exe processes
   GetOrTerminateProcesses(true);
-
-  // Free Security data
-  if (pEveryoneSID)
-    FreeSid(pEveryoneSID);
-  if (pCurrentUserSID)
-    FreeSid(pCurrentUserSID);
-  if (pACL)
-    LocalFree(pACL);
-  if (pSD)
-    LocalFree(pSD);
 #endif
 
   // Clear variables - just in case someone decides to reuse this instance
