@@ -105,6 +105,8 @@ public:
    void CheckWindow();
    void ResetTimer();
    bool GetOrTerminateProcesses(bool bTerminate = false);
+   bool CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+     PSID &pEveryoneSID, PSID &pCurrentUserSID);
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;

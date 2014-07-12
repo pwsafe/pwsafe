@@ -26,6 +26,7 @@
 #include "resource.h"
 
 #include <psapi.h>
+#include <aclapi.h>
 #include <algorithm>
 
 // Required for Low Level Keyboard hook - can't be a member variable as the hook
@@ -223,7 +224,20 @@ DWORD CSDThread::ThreadProc()
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
 
-  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
+  SECURITY_ATTRIBUTES sa;
+  PSECURITY_DESCRIPTOR pSD(NULL);
+  PACL pACL(NULL);
+  PSID pEveryoneSID(NULL);
+  PSID pCurrentUserSID(NULL);
+
+  // Try to create the necessary Security Attributes
+  // If successful, it may prevent other tasks grabbing the Desktop (cf. NVidia Service)
+  if (CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID)) {
+    m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, &sa);
+  } else {
+    m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
+  }
+
   if (m_hNewDesktop == NULL) {
     dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
     ASSERT(m_hNewDesktop);
@@ -465,6 +479,16 @@ DWORD CSDThread::ThreadProc()
 
   // Terminate new cfmon.exe processes
   GetOrTerminateProcesses(true);
+
+  // Free security data
+  if (pEveryoneSID)
+    FreeSid(pEveryoneSID);
+  if (pCurrentUserSID)
+    FreeSid(pCurrentUserSID);
+  if (pACL)
+    LocalFree(pACL);
+  if (pSD)
+    LocalFree(pSD);
 #endif
 
   if (xFlags & KEYBOARDHOOKINSTALLED) {
@@ -532,6 +556,16 @@ BadExit:
 #ifndef NO_NEW_DESKTOP
   // Terminate new cfmon.exe processes
   GetOrTerminateProcesses(true);
+
+  // Free Security data
+  if (pEveryoneSID)
+    FreeSid(pEveryoneSID);
+  if (pCurrentUserSID)
+    FreeSid(pCurrentUserSID);
+  if (pACL)
+    LocalFree(pACL);
+  if (pSD)
+    LocalFree(pSD);
 #endif
 
   // Clear variables - just in case someone decides to reuse this instance
@@ -1665,4 +1699,80 @@ bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
     m_vPIDs.clear();
 
   return brc;
+}
+
+bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+  PSID &pEveryoneSID, PSID &pCurrentUserSID)
+{
+  DWORD dwResult, dwError;
+  EXPLICIT_ACCESS ea[2];
+  SID_IDENTIFIER_AUTHORITY SIDAuthWorld = SECURITY_WORLD_SID_AUTHORITY;
+  SID_IDENTIFIER_AUTHORITY SIDAuthNT = SECURITY_NT_AUTHORITY;
+
+  // Create a well-known SID for the Everyone group.
+  if (!AllocateAndInitializeSid(&SIDAuthWorld, 1,
+    SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, &pEveryoneSID)) {
+    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - Everyone", false);
+    return false;
+  }
+
+  // Create a SID for the current user.
+  if (!AllocateAndInitializeSid(&SIDAuthNT, 2,
+    SECURITY_LOGON_IDS_RID, 0, 0, 0, 0, 0, 0, 0, &pCurrentUserSID)) {
+    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - Current User", false);
+    return false;
+  }
+
+  // Initialize an EXPLICIT_ACCESS structure for an ACE.
+  // The ACE will DENY Everyone access to the Desktop.
+  ZeroMemory(&ea, 2 * sizeof(EXPLICIT_ACCESS));
+  ea[0].grfAccessPermissions = STANDARD_RIGHTS_ALL | SPECIFIC_RIGHTS_ALL;
+  ea[0].grfAccessMode = DENY_ACCESS;
+  ea[0].grfInheritance = NO_INHERITANCE;
+  ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+  ea[0].Trustee.TrusteeType = TRUSTEE_IS_WELL_KNOWN_GROUP;
+  ea[0].Trustee.ptstrName = (LPTSTR)pEveryoneSID;
+
+  // Initialize an EXPLICIT_ACCESS structure for an ACE.
+  // The ACE will allow the current user group standard access to the Desktop
+  ea[1].grfAccessPermissions = STANDARD_RIGHTS_REQUIRED;
+  ea[1].grfAccessMode = SET_ACCESS;
+  ea[1].grfInheritance = NO_INHERITANCE;
+  ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+  ea[1].Trustee.TrusteeType = TRUSTEE_IS_USER;
+  ea[1].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
+
+  // Create a new ACL that contains the new ACEs.
+  dwResult = SetEntriesInAcl(2, ea, NULL, &pACL);
+  if (dwResult != ERROR_SUCCESS) {
+    dwError = pws_os::IssueError(L"SetEntriesInAcl", false);
+    return false;
+  }
+
+  // Get a security descriptor.
+  pSD = (PSECURITY_DESCRIPTOR)LocalAlloc(LPTR, SECURITY_DESCRIPTOR_MIN_LENGTH);
+  if (pSD == NULL) {
+    dwError = pws_os::IssueError(L"LocalAlloc", false);
+    return false;
+  }
+
+  // Initialise it
+  if (!InitializeSecurityDescriptor(pSD, SECURITY_DESCRIPTOR_REVISION)) {
+    dwError = pws_os::IssueError(L"InitializeSecurityDescriptor", false);
+    return false;
+  }
+
+  // Add the ACL to the security descriptor.
+  if (!SetSecurityDescriptorDacl(pSD, TRUE, pACL, FALSE)) {
+    dwError = pws_os::IssueError(L"SetSecurityDescriptorDacl", false);
+    return false;
+  }
+
+  // Initialize the security attributes structure.
+  sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+  sa.lpSecurityDescriptor = pSD;
+  sa.bInheritHandle = FALSE;
+
+  // Set success - we can use Security Attributes
+  return true;
 }
