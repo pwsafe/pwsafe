@@ -210,13 +210,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   if (m_SelectedDatabase.IsEmpty()) {
     if (m_index == GCP_FIRST) {
+      SetOKButton(true, false);
       if (m_bUseSecureDesktop) {
-        m_pctlPasskey->EnableWindow(FALSE);
-        m_ctlOK.EnableWindow(TRUE);
         m_SelectedDatabase.LoadString(IDS_NOCURRENTSAFE);
       }
-      else
-        m_ctlEnterCombination.EnableWindow(FALSE);
     }
   }
 
@@ -511,15 +508,7 @@ void CPasskeyEntry::UpdateRO()
 void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
-  if (!m_bUseSecureDesktop) {
-    m_pctlPasskey->EnableWindow(TRUE);
-    m_ctlOK.EnableWindow(TRUE);
-  }
-  else
-  {
-    m_ctlEnterCombination.EnableWindow(TRUE);
-  }
-
+  SetOKButton(m_filespec.IsEmpty(), false);
   UpdateRO();
 }
 
@@ -543,19 +532,7 @@ void CPasskeyEntry::OnComboSelChange()
       m_filespec = m_orig_filespec;
   }
 
-  if (!m_bUseSecureDesktop) {
-    m_pctlPasskey->EnableWindow(TRUE);
-    m_pctlPasskey->SetFocus();
-    m_ctlOK.EnableWindow(TRUE);
-  }
-  else
-  {
-    CString csText;
-    csText.LoadString(m_filespec.IsEmpty() ? IDS_OK : IDS_ENTERCOMBINATION);
-
-    m_ctlEnterCombination.SetWindowText(csText);
-    m_ctlEnterCombination.EnableWindow(TRUE);
-  }
+  SetOKButton(m_filespec.IsEmpty(), true);
 
   UpdateRO();
 }
@@ -604,18 +581,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
     m_PKE_ReadOnly = fd.GetReadOnlyPref();
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
-    if (!m_bUseSecureDesktop) {
-      // Normal
-      m_pctlPasskey->EnableWindow(TRUE);
-      if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
-        m_pctlPasskey->SetFocus();
-      }
-      m_ctlOK.EnableWindow(TRUE);
-    }
-    else {
-      // Secure Desktop
-      m_ctlEnterCombination.EnableWindow(TRUE);
-    }
+    SetOKButton(m_filespec.IsEmpty(), true);
     UpdateRO();
   } // rc == IDOK
 }
@@ -747,4 +713,23 @@ void CPasskeyEntry::OnEnterCombination()
   // Just do nothing if no passphrase entered i.e. user pressed cancel
   // Try to get this seen
   SetForegroundWindow();
+}
+
+void CPasskeyEntry::SetOKButton(bool bEmptyDB, bool bSetFocus) {
+  if (!m_bUseSecureDesktop) {
+  m_pctlPasskey->EnableWindow(TRUE);
+  if (bSetFocus)
+    m_pctlPasskey->SetFocus();
+  m_ctlEnterCombination.EnableWindow(FALSE);
+  m_ctlOK.EnableWindow(TRUE);
+  }
+  else {
+    CString csText;
+  csText.LoadString(bEmptyDB ? IDS_OK : IDS_ENTERCOMBINATION);
+
+    m_ctlEnterCombination.SetWindowText(csText);
+  m_pctlPasskey->EnableWindow(FALSE);
+  m_ctlOK.EnableWindow(FALSE);
+    m_ctlEnterCombination.EnableWindow(TRUE);
+  }
 }
