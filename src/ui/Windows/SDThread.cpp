@@ -784,6 +784,8 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
   switch (uMsg) {
     case WM_INITDIALOG:
     {
+      // Perform our intial dialog processing
+      // Note: The dialog has already set up by Windows before this is called.
       self = (CSDThread *)lParam;
       self->m_hwndDlg = hwndDlg;
 
@@ -793,7 +795,16 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
     case WM_WTSSESSION_CHANGE:
     {
+      // Cancel Secure Dialog if workstation gets locked
       self->OnSessionChange(wParam, lParam);
+      return TRUE;
+    }
+    case WM_POWERBROADCAST:
+    {
+      // Cancel Secure Dialog if workstation gets suspended (e.g. Sleep)
+      // Note: The WM_WTSSESSION_CHANGE message 'may' occur befoe this and
+      // so this code may never be executed
+      self->OnPowerBroadcast(wParam, lParam);
       return TRUE;
     }
     case WM_QUIT:
@@ -1809,6 +1820,20 @@ LRESULT CSDThread::OnSessionChange(WPARAM wParam, LPARAM)
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
     case WTS_SESSION_LOGOFF:
+      OnCancel();
+      break;
+    default:
+      break;
+  }
+  return 0L;
+}
+
+LRESULT CSDThread::OnPowerBroadcast(WPARAM wParam, LPARAM)
+{
+  pws_os::Trace(L"CSDThread::OnPowerBroadcast. wParam = %d\n", wParam);
+
+  switch (wParam) {
+    case PBT_APMSUSPEND:
       OnCancel();
       break;
     default:

@@ -98,7 +98,8 @@ public:
    void OnCancel();
    void OnQuit();
    void OnInsertBuffer();
-   LRESULT OnSessionChange(WPARAM wParam, LPARAM);
+   LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
+   LRESULT OnPowerBroadcast(WPARAM wParam, LPARAM lParam);
 
    BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
    BOOL AddTooltip(UINT uiControlID, stringT sText);
