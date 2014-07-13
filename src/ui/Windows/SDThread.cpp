@@ -28,11 +28,12 @@
 
 #include <psapi.h>
 #include <aclapi.h>
+#include <Wtsapi32.h>
 #include <algorithm>
 
 // Required for Low Level Keyboard hook - can't be a member variable as the hook
 // code can't be in this class.
-HHOOK g_hKeyboardHook;
+static HHOOK g_hKeyboardHook;
 
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
@@ -377,6 +378,15 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= MASTERPHRASEDIALOGCREATED;
 
+  if (!WTSRegisterSessionNotification(m_hwndMasterPhraseDlg, NOTIFY_FOR_THIS_SESSION)){
+    dwError = pws_os::IssueError(_T("WTSRegisterSessionNotification"), false);
+    ASSERT(0);
+    goto BadExit;
+  }
+
+  // Update Progress
+  xFlags |= REGISTEREDFORSESSIONCHANGES;
+
   // Use first monitor's background window as owner for virtual keyboard
   m_pVKeyBoardDlg = new CVKeyBoardDlg(m_vMonitorImageInfo[0].hwndBkGrndWindow, m_hwndMasterPhraseDlg);
 
@@ -410,6 +420,13 @@ DWORD CSDThread::ThreadProc()
 
   // Update Progress
   xFlags |= MASTERPHRASEDIALOGENDED;
+
+  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
+    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
+  }
+
+  // Update Progress
+  xFlags &= ~REGISTEREDFORSESSIONCHANGES;
 
   // Destroy Masterphrase window
   if (!DestroyWindow(m_hwndMasterPhraseDlg)) {
@@ -455,14 +472,12 @@ DWORD CSDThread::ThreadProc()
   // correctly deleted when finished with
 
   // Switch back to the initial desktop
-  // If session is locked, we need to wait for unlock
-  while (!SwitchDesktop(m_hOriginalDesk)) {
+  if (!SwitchDesktop(m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
-    if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
+    if (dwError != ERROR_SUCCESS) {
       ASSERT(0);
       goto BadExit;
     }
-    ::Sleep(500);
   }
 
   // Update Progress
@@ -517,6 +532,9 @@ BadExit:
     // Delete Virtual Keyboard instance
     delete m_pVKeyBoardDlg;
   }
+  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
+    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
+  }
   if (xFlags & MASTERPHRASEDIALOGCREATED) {
     // Destroy master phrase dialog window
     DestroyWindow(m_hwndMasterPhraseDlg);
@@ -538,12 +556,9 @@ BadExit:
   }
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop
-    while (!SwitchDesktop(m_hOriginalDesk)) {
+    if (!SwitchDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
-      if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
-        ASSERT(0);
-      }
-      ::Sleep(500);
+      ASSERT(0);
     }
   }
   if (xFlags & SETTHREADDESKTOP) {
@@ -773,7 +788,13 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
       self->m_hwndDlg = hwndDlg;
 
       self->OnInitDialog();
+
       return TRUE; // Processed - special case - focus default control from RC file
+    }
+    case WM_WTSSESSION_CHANGE:
+    {
+      self->OnSessionChange(wParam, lParam);
+      return TRUE;
     }
     case WM_QUIT:
     {
@@ -1773,4 +1794,25 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
 
   // Set success - we can use Security Attributes
   return true;
+}
+
+LRESULT CSDThread::OnSessionChange(WPARAM wParam, LPARAM)
+{
+  // Windows XP and later only
+  // Won't be called if the registration failed (i.e. < Windows XP
+  // or the "Windows Terminal Server" service wasn't active at startup).
+
+  pws_os::Trace(L"CSDThread::OnSessionChange. wParam = %d\n", wParam);
+
+  switch (wParam) {
+    case WTS_CONSOLE_DISCONNECT:
+    case WTS_REMOTE_DISCONNECT:
+    case WTS_SESSION_LOCK:
+    case WTS_SESSION_LOGOFF:
+      OnCancel();
+      break;
+    default:
+      break;
+  }
+  return 0L;
 }

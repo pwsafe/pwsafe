@@ -717,19 +717,17 @@ void CPasskeyEntry::OnEnterCombination()
 
 void CPasskeyEntry::SetOKButton(bool bEmptyDB, bool bSetFocus) {
   if (!m_bUseSecureDesktop) {
-  m_pctlPasskey->EnableWindow(TRUE);
-  if (bSetFocus)
-    m_pctlPasskey->SetFocus();
-  m_ctlEnterCombination.EnableWindow(FALSE);
-  m_ctlOK.EnableWindow(TRUE);
-  }
-  else {
-    CString csText;
-  csText.LoadString(bEmptyDB ? IDS_OK : IDS_ENTERCOMBINATION);
+    m_pctlPasskey->EnableWindow(TRUE);
+    if (bSetFocus)
+      m_pctlPasskey->SetFocus();
+
+    m_ctlEnterCombination.EnableWindow(FALSE);
+    m_ctlOK.EnableWindow(TRUE);
+  } else {
+    CString csText(MAKEINTRESOURCE(bEmptyDB ? IDS_OK : IDS_ENTERCOMBINATION));
 
     m_ctlEnterCombination.SetWindowText(csText);
-  m_pctlPasskey->EnableWindow(FALSE);
-  m_ctlOK.EnableWindow(FALSE);
+    m_ctlOK.EnableWindow(FALSE);
     m_ctlEnterCombination.EnableWindow(TRUE);
   }
 }

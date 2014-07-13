@@ -72,16 +72,17 @@ public:
 
  private:
   enum {
-    KEYBOARDHOOKINSTALLED      = 0x0001,
-    MONITORIMAGESCREATED       = 0x0002,
-    NEWDESKTOCREATED           = 0x0004,
-    SETTHREADDESKTOP           = 0x0008,
-    SWITCHEDDESKTOP            = 0x0010,
-    REGISTEREDWINDOWCLASS      = 0x0020,
-    BACKGROUNDWINDOWSCREATED   = 0x0040,
-    MASTERPHRASEDIALOGCREATED  = 0x0080,
-    VIRTUALKEYBOARDCREATED     = 0x0100,
-    MASTERPHRASEDIALOGENDED    = 0x0200,
+    KEYBOARDHOOKINSTALLED       = 0x0001,
+    MONITORIMAGESCREATED        = 0x0002,
+    NEWDESKTOCREATED            = 0x0004,
+    SETTHREADDESKTOP            = 0x0008,
+    SWITCHEDDESKTOP             = 0x0010,
+    REGISTEREDWINDOWCLASS       = 0x0020,
+    BACKGROUNDWINDOWSCREATED    = 0x0040,
+    MASTERPHRASEDIALOGCREATED   = 0x0080,
+    REGISTEREDFORSESSIONCHANGES = 0x0100,
+    VIRTUALKEYBOARDCREATED      = 0x0200,
+    MASTERPHRASEDIALOGENDED     = 0x0400,
   };
 
    friend class CPKBaseDlg;
@@ -97,6 +98,7 @@ public:
    void OnCancel();
    void OnQuit();
    void OnInsertBuffer();
+   LRESULT OnSessionChange(WPARAM wParam, LPARAM);
 
    BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
    BOOL AddTooltip(UINT uiControlID, stringT sText);
