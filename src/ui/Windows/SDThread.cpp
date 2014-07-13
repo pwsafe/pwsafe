@@ -458,11 +458,11 @@ DWORD CSDThread::ThreadProc()
   // If session is locked, we need to wait for unlock
   while (!SwitchDesktop(m_hOriginalDesk)) {
     dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
-  if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
-    ASSERT(0);
+    if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
+      ASSERT(0);
       goto BadExit;
-  }
-  ::Sleep(500);
+    }
+    ::Sleep(500);
   }
 
   // Update Progress
@@ -538,12 +538,12 @@ BadExit:
   }
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop
-  while (!SwitchDesktop(m_hOriginalDesk)) {
+    while (!SwitchDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
-    if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
-      ASSERT(0);
-    }
-    ::Sleep(500);
+      if ((dwError != ERROR_SUCCESS) || !app.GetMainDlg()->IsWorkstationLocked(false)) {
+        ASSERT(0);
+      }
+      ::Sleep(500);
     }
   }
   if (xFlags & SETTHREADDESKTOP) {
@@ -582,7 +582,7 @@ BOOL CALLBACK CSDThread::DesktopEnumProc(LPTSTR name, LPARAM lParam)
   CSDThread *self = (CSDThread *)lParam;
 
   // If already there, set flag and no need to be called again
-  if (_tcscmp(name, self->m_sDesktopName.c_str()) == 0) {
+  if (_tcsicmp(name, self->m_sDesktopName.c_str()) == 0) {
     self->m_bDesktopPresent = true;
     return FALSE;
   }
@@ -617,7 +617,7 @@ BOOL CALLBACK CSDThread::WindowEnumProc(HWND hwnd, LPARAM lParam)
   }
 
   // If already there, set flag and no need to be called again
-  if (_tcscmp(szClassName, self->m_sBkGrndClassName.c_str()) == 0) {
+  if (_tcsicmp(szClassName, self->m_sBkGrndClassName.c_str()) == 0) {
     self->m_bWindowPresent = true;
     return FALSE;
   }
