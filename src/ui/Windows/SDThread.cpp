@@ -1764,8 +1764,10 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   ea[0].Trustee.ptstrName = (LPTSTR)pEveryoneSID;
 
   // Initialize an EXPLICIT_ACCESS structure for an ACE.
-  // The ACE will allow the current user group standard access to the Desktop
-  ea[1].grfAccessPermissions = STANDARD_RIGHTS_REQUIRED;
+  // The ACE will allow the current user Desktop specific access rights and
+  // standard access to the Desktop
+  ea[1].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
+    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
   ea[1].grfAccessMode = SET_ACCESS;
   ea[1].grfInheritance = NO_INHERITANCE;
   ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
