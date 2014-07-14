@@ -89,6 +89,7 @@ public:
   size_t GetNumItems() const;
   void DeleteItems(int row, size_t numItems);
   void DeleteAllItems();
+  void Clear();
   
 ////@begin PWSGrid event handler declarations
 

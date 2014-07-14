@@ -461,3 +461,11 @@ void PWSGrid::OnDBGUIPrefsChange(wxEvent& evt)
   UNREFERENCED_PARAMETER(evt);
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }
+
+void PWSGrid::Clear()
+{
+  BeginBatch();
+  ClearGrid();
+  EndBatch();
+  DeleteAllItems();
+}
