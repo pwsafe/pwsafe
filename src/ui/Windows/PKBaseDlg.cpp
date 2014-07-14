@@ -359,11 +359,13 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
       // Update progress
       xFlags &= ~THREADRESUMED;
 
-      // Cancel timer
-      if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
-        dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
-        ASSERT(0);
-        goto BadExit;
+      // Cancel timer - note might hanve already been cancelled in the thread
+      if (thrdDlg.m_hWaitableTimer != NULL) {
+        if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
+          dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
+          ASSERT(0);
+          goto BadExit;
+        }
       }
 
       // Update progress
@@ -381,10 +383,13 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
   }  // switch on dwEvent (Wait reason)
 
   // Close the WaitableTimer handle
-  if (!CloseHandle(thrdDlg.m_hWaitableTimer)) {
-    dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
-    ASSERT(0);
-    goto BadExit;
+  if (thrdDlg.m_hWaitableTimer != NULL) {
+    if (!CloseHandle(thrdDlg.m_hWaitableTimer)) {
+      dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
+      ASSERT(0);
+      goto BadExit;
+    }
+    thrdDlg.m_hWaitableTimer = NULL;
   }
 
   // Update Progress
@@ -419,14 +424,21 @@ BadExit:
     // Now wait for thread to complete
     WaitForSingleObject(hThread, INFINITE);
   }
+
   if (xFlags & THREADCREATED) {
   }
-  if (xFlags & WAITABLETIMERSET) {
-    ::CancelWaitableTimer(thrdDlg.m_hWaitableTimer);
+
+  if (thrdDlg.m_hWaitableTimer != NULL) {
+    if (xFlags & WAITABLETIMERSET) {
+      CancelWaitableTimer(thrdDlg.m_hWaitableTimer);
+    }
+
+    if (xFlags & WAITABLETIMERCREATED) {
+      CloseHandle(thrdDlg.m_hWaitableTimer);
+      thrdDlg.m_hWaitableTimer = NULL;
+    }
   }
-  if (xFlags & WAITABLETIMERCREATED) {
-    CloseHandle(thrdDlg.m_hWaitableTimer);
-  }
+
   if (xFlags & WINDOWSHOOKREMOVED) {
     pState->m_hHookOldMsgFilter = SetWindowsHookEx(WH_MSGFILTER, MsgFilter, NULL, GetCurrentThreadId());
   }

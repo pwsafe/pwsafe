@@ -15,6 +15,7 @@
 #include "YubiMixin.h"
 
 #include <vector>
+#include <mutex>
 
 struct st_MonitorImageInfo
 {
@@ -98,8 +99,10 @@ public:
    void OnCancel();
    void OnQuit();
    void OnInsertBuffer();
+
    LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
    LRESULT OnPowerBroadcast(WPARAM wParam, LPARAM lParam);
+   LRESULT OnQueryEndSession(WPARAM, LPARAM lParam);
 
    BOOL AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat = NULL);
    BOOL AddTooltip(UINT uiControlID, stringT sText);
@@ -110,6 +113,7 @@ public:
    bool GetOrTerminateProcesses(bool bTerminate = false);
    bool CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
      PSID &pEveryoneSID, PSID &pCurrentUserSID);
+   void CSDThread::CancelSecureDesktop();
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;
@@ -118,6 +122,7 @@ public:
    GetMasterPhrase *m_pGMP;
    CVKeyBoardDlg *m_pVKeyBoardDlg;
    std::vector<DWORD> m_vPIDs;
+   std::mutex m_mutex;
 
    // Yubi stuff
    CProgressCtrl m_yubi_timeout;

@@ -421,13 +421,6 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= MASTERPHRASEDIALOGENDED;
 
-  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
-    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
-  }
-
-  // Update Progress
-  xFlags &= ~REGISTEREDFORSESSIONCHANGES;
-
   // Destroy Masterphrase window
   if (!DestroyWindow(m_hwndMasterPhraseDlg)) {
     dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDGETPHRASE"), false);
@@ -471,26 +464,31 @@ DWORD CSDThread::ThreadProc()
   // The following 2 calls must be in this order to ensure the new desktop is
   // correctly deleted when finished with
 
-  // Switch back to the initial desktop
-  if (!SwitchDesktop(m_hOriginalDesk)) {
-    dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
-    if (dwError != ERROR_SUCCESS) {
+  if (xFlags & SWITCHEDDESKTOP) {
+    // Switch back to the initial desktop
+    pws_os::Trace(L"ThreadProc SwitchDesktop\n");
+    while (!SwitchDesktop(m_hOriginalDesk)) {
+      dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
+      if (dwError != ERROR_SUCCESS)
+        ASSERT(0);
+
+      ::Sleep(500);
+    }
+
+    // Update Progress
+    xFlags &= ~SWITCHEDDESKTOP;
+  }
+
+  if (xFlags & SETTHREADDESKTOP) {
+    // Switch thread back to initial desktop
+    if (!SetThreadDesktop(m_hOriginalDesk)) {
+      dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
       ASSERT(0);
       goto BadExit;
     }
+    // Update Progress
+    xFlags &= ~SETTHREADDESKTOP;
   }
-
-  // Update Progress
-  xFlags &= ~SWITCHEDDESKTOP;
-
-  // Switch thread back to initial desktop
-  if (!SetThreadDesktop(m_hOriginalDesk)) {
-    dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
-    ASSERT(0);
-    goto BadExit;
-  }
-  // Update Progress
-  xFlags &= ~SETTHREADDESKTOP;
 
   // Now that thread is ending - close new desktop
   if (xFlags & NEWDESKTOCREATED) {
@@ -508,13 +506,20 @@ DWORD CSDThread::ThreadProc()
   GetOrTerminateProcesses(true);
 #endif
 
+  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
+    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
+  }
+
+  // Update Progress
+  xFlags &= ~REGISTEREDFORSESSIONCHANGES;
+
   if (xFlags & KEYBOARDHOOKINSTALLED) {
     // Remove Low Level Keyboard hook
     UnhookWindowsHookEx(g_hKeyboardHook);
     g_hKeyboardHook = NULL;
 
     // Update Progress
-    xFlags &= ~KEYBOARDHOOKINSTALLED;//En
+    xFlags &= ~KEYBOARDHOOKINSTALLED;
   }
 
   // Clear variables - just in case someone decides to reuse this instance
@@ -531,13 +536,22 @@ BadExit:
   if (xFlags & VIRTUALKEYBOARDCREATED) {
     // Delete Virtual Keyboard instance
     delete m_pVKeyBoardDlg;
+
+    // Update Progress
+    xFlags &= ~VIRTUALKEYBOARDCREATED;
   }
   if (xFlags & REGISTEREDFORSESSIONCHANGES) {
     WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
+
+    // Update Progress
+    xFlags &= ~REGISTEREDFORSESSIONCHANGES;
   }
   if (xFlags & MASTERPHRASEDIALOGCREATED) {
     // Destroy master phrase dialog window
     DestroyWindow(m_hwndMasterPhraseDlg);
+
+    // Update Progress
+    xFlags &= ~MASTERPHRASEDIALOGCREATED;
   }
   if (xFlags & BACKGROUNDWINDOWSCREATED || xFlags & MONITORIMAGESCREATED) {
     // Destroy background layered window's, images & monitor DCs
@@ -549,31 +563,53 @@ BadExit:
       if (it->hdcMonitor)
         ::DeleteDC(it->hdcMonitor);
     }
+
+    // Update Progress
+    xFlags &= ~(BACKGROUNDWINDOWSCREATED | MONITORIMAGESCREATED);
   }
   if (xFlags & REGISTEREDWINDOWCLASS) {
     // Unregister background windows' registered class
     UnregisterClass(m_sBkGrndClassName.c_str(), m_hInstance);
+
+    // Update Progress
+    xFlags &= ~REGISTEREDWINDOWCLASS;
   }
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop
-    if (!SwitchDesktop(m_hOriginalDesk)) {
+    while (!SwitchDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
-      ASSERT(0);
+      if (dwError != ERROR_SUCCESS)
+        ASSERT(0);
+
+      ::Sleep(500);
     }
+    // Update Progress
+    xFlags &= ~SWITCHEDDESKTOP;
   }
   if (xFlags & SETTHREADDESKTOP) {
     // Switch thread back to initial desktop
-    SetThreadDesktop(m_hOriginalDesk);
+    if (!SetThreadDesktop(m_hOriginalDesk)) {
+      dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original (bad exit)"), false);
+      ASSERT(0);
+    }
+    // Update Progress
+    xFlags &= ~SETTHREADDESKTOP;
   }
   if (xFlags & NEWDESKTOCREATED) {
     // Close the new desktop (subject to programs external to PWS keeping it around!)
     CloseDesktop(m_hNewDesktop);
+
+    // Update Progress
+    xFlags &= ~NEWDESKTOCREATED;
   }
 
   if (xFlags & KEYBOARDHOOKINSTALLED) {
     // Remove Low Level Keyboard hook
     UnhookWindowsHookEx(g_hKeyboardHook);
     g_hKeyboardHook = NULL;
+
+    // Update Progress
+    xFlags &= ~KEYBOARDHOOKINSTALLED;
   }
 
 #ifndef NO_NEW_DESKTOP
@@ -793,20 +829,33 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
       return TRUE; // Processed - special case - focus default control from RC file
     }
+
+    // WM_ACTIVATEAPP - Cancel Secure Dialog if another application is activated
+    // WM_WTSSESSION_CHANGE - Cancel Secure Dialog if workstation gets locked
+    // WM_POWERBROADCAST - Cancel Secure Dialog if workstation gets suspended (e.g. Sleep)
+    // WM_QUERYENDSESSION - Cancel Secure Dialog if workstation needs to shutdown
+    case WM_ACTIVATEAPP:
+    {
+      pws_os::Trace(L"WM_ACTIVATEAPP. wParam = %d\n", wParam);
+      self->CancelSecureDesktop();
+      return TRUE;
+    }
     case WM_WTSSESSION_CHANGE:
     {
-      // Cancel Secure Dialog if workstation gets locked
       self->OnSessionChange(wParam, lParam);
       return TRUE;
     }
     case WM_POWERBROADCAST:
     {
-      // Cancel Secure Dialog if workstation gets suspended (e.g. Sleep)
-      // Note: The WM_WTSSESSION_CHANGE message 'may' occur befoe this and
-      // so this code may never be executed
       self->OnPowerBroadcast(wParam, lParam);
       return TRUE;
     }
+    case WM_QUERYENDSESSION:
+    {
+      self->OnQueryEndSession(wParam, lParam);
+      return TRUE;
+    }
+
     case WM_QUIT:
     {
       // Special handling for generated WM_QUIT message, which it would NEVER EVER get normally
@@ -1034,7 +1083,7 @@ void CSDThread::OnInitDialog()
     brc = CreateTimerQueueTimer(&(m_hTimer), NULL, (WAITORTIMERCALLBACK)TimerProc,
       this, 0, 100, 0);
 
-    if (brc == NULL) {
+    if (brc == 0) {
       dwError = pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
       ASSERT(brc);
     }
@@ -1135,7 +1184,6 @@ void CSDThread::OnVirtualKeyboard()
 
 void CSDThread::OnOK()
 {
-  BOOL brc;
   DWORD dwError;
   stringT sErrorMsg;
 
@@ -1292,10 +1340,9 @@ void CSDThread::OnOK()
 
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
-    brc = DestroyWindow(m_hwndVKeyBoard);
-    if (brc == NULL) {
+    if (!DestroyWindow(m_hwndVKeyBoard)) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
-      ASSERT(brc);
+      ASSERT(0);
     }
 
     m_hwndVKeyBoard = NULL;
@@ -1307,7 +1354,6 @@ void CSDThread::OnOK()
 
 void CSDThread::OnCancel()
 {
-  BOOL brc;
   DWORD dwError;
 
   // Tell TimerProc to do nothing
@@ -1317,10 +1363,9 @@ void CSDThread::OnCancel()
 
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
-    brc = DestroyWindow(m_hwndVKeyBoard);
-    if (brc == NULL) {
+    if (!DestroyWindow(m_hwndVKeyBoard)) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
-      ASSERT(brc);
+      ASSERT(0);
     }
 
     m_hwndVKeyBoard = NULL;
@@ -1332,15 +1377,13 @@ void CSDThread::OnCancel()
 
 void CSDThread::OnQuit()
 {
-  BOOL brc;
   DWORD dwError;
 
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
-    brc = DestroyWindow(m_hwndVKeyBoard);
-    if (brc == NULL) {
+    if (!DestroyWindow(m_hwndVKeyBoard)) {
       dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);
-      ASSERT(brc);
+      ASSERT(0);
     }
 
     m_hwndVKeyBoard = NULL;
@@ -1359,9 +1402,10 @@ void CSDThread::OnQuit()
     }
 
     // Delete all timers in the timer queue
+    BOOL brc;
     do {
       brc = DeleteTimerQueueTimer(NULL, m_hTimer, hEvent);
-      if (brc == NULL) {
+      if (brc == 0) {
         // No need to call again if error code is ERROR_IO_PENDING.
         // Note description of ERROR_IO_PENDING is "Overlapped I/O operation is in progress"
         if (GetLastError() == ERROR_IO_PENDING)
@@ -1370,7 +1414,7 @@ void CSDThread::OnQuit()
         // Otherwise debug write out other error messages and try again
         dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
       }
-    } while (brc == NULL);
+    } while (brc == 0);
 
     // Wait for timer queue to go
     WaitForSingleObject(hEvent, INFINITE);
@@ -1822,7 +1866,14 @@ LRESULT CSDThread::OnSessionChange(WPARAM wParam, LPARAM)
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
     case WTS_SESSION_LOGOFF:
-      OnCancel();
+      CancelSecureDesktop();
+      break;
+    case WTS_CONSOLE_CONNECT:
+    case WTS_REMOTE_CONNECT:
+    case WTS_SESSION_LOGON:
+    case WTS_SESSION_UNLOCK:
+      pws_os::Trace(L"OnSessionChange Connect/Logon/Unlock\n");
+      // Never seems to get these!
       break;
     default:
       break;
@@ -1835,11 +1886,68 @@ LRESULT CSDThread::OnPowerBroadcast(WPARAM wParam, LPARAM)
   pws_os::Trace(L"CSDThread::OnPowerBroadcast. wParam = %d\n", wParam);
 
   switch (wParam) {
+    case PBT_APMQUERYSUSPEND:   // Windows XP & Windows Server 2003 - removed in Vista +
+    case PBT_APMRESUMECRITICAL: // Windows XP & Windows Server 2003 - removed in Vista +
+    case PBT_APMQUERYSTANDBY:   // No longer supported (probably)
+    case PBT_APMSTANDBY:        // No longer supported (probably)
+
     case PBT_APMSUSPEND:
-      OnCancel();
+      CancelSecureDesktop();
+      break;
+    case PBT_APMRESUMESUSPEND:
+    case PBT_APMRESUMEAUTOMATIC:
+      // Shouldn't need to do anything here
       break;
     default:
       break;
   }
   return 0L;
+}
+
+LRESULT CSDThread::OnQueryEndSession(WPARAM wParam, LPARAM)
+{
+  pws_os::Trace(L"CSDThread::OnQueryEndSession. wParam = %d\n", wParam);
+
+  CancelSecureDesktop();
+  return 0L;
+}
+
+void CSDThread::CancelSecureDesktop()
+{
+  DWORD dwError;
+
+  std::lock_guard<std::mutex> lock(m_mutex);
+
+  if (m_hWaitableTimer != NULL) {
+    // Set flag to stop TimerProc
+    m_bDoTimerProcAction = false;
+
+    // Cancel timer
+    pws_os::Trace(L"CancelSecureDesktop - CancelWaitableTimer\n");
+    if (!CancelWaitableTimer(m_hWaitableTimer)) {
+      dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
+      ASSERT(0);
+    }
+
+    // Close the timer handle
+    if (!CloseHandle(m_hWaitableTimer)) {
+      pws_os::Trace(L"CancelSecureDesktop - CloseHandle\n");
+      dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
+      ASSERT(0);
+    }
+
+    // Clear timer handle to prevent caller trying to cancel it
+    m_hWaitableTimer = NULL;
+
+    // Reset TickCount so no messages should appear (shouldn't anyway as we have told
+    // the TimerProc not do do anything and hopefully the timer has been cancelled above.
+    iStartTime = GetTickCount();
+  }
+
+  // Can't reset thread desktop whilst window is still open otherwise get
+  // error code 170: The requested resource is in use.
+  // Have to wait for the WM_QUIT message and then for WinLogon desktop to deactivate
+
+  // Cancel SD dialog
+  OnCancel();
 }
