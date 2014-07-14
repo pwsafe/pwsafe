@@ -234,8 +234,8 @@ DWORD CSDThread::ThreadProc()
 
   // Try to create the necessary Security Attributes
   // If successful, it may prevent other tasks grabbing the Desktop (cf. NVidia Service)
-  bool bSA_Created = CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID);
-  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
+  CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID);
+  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
 
   // Free security data no longer required
   if (pEveryoneSID)
