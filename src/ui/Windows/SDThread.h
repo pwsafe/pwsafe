@@ -111,8 +111,9 @@ public:
    void CheckWindow();
    void ResetTimer();
    bool GetOrTerminateProcesses(bool bTerminate = false);
+   bool GetLogonSID(PSID &logonSID);
    bool CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
-     PSID &pEveryoneSID, PSID &pCurrentUserSID);
+     PSID &pCurrentUserSID);
    void CSDThread::CancelSecureDesktop();
 
    stringT m_masterphrase;

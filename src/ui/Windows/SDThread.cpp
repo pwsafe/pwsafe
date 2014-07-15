@@ -229,17 +229,16 @@ DWORD CSDThread::ThreadProc()
   SECURITY_ATTRIBUTES sa;
   PSECURITY_DESCRIPTOR pSD(NULL);
   PACL pACL(NULL);
-  PSID pEveryoneSID(NULL);
   PSID pCurrentUserSID(NULL);
 
   // Try to create the necessary Security Attributes
   // If successful, it may prevent other tasks grabbing the Desktop (cf. NVidia Service)
-  CreateSA(sa, pSD, pACL, pEveryoneSID, pCurrentUserSID);
-  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, NULL);
+  bool bSA_Created = CreateSA(sa, pSD, pACL, pCurrentUserSID);
+
+  pws_os::Trace(L"NewDesktop %s\n", m_sDesktopName.c_str());
+  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
 
   // Free security data no longer required
-  if (pEveryoneSID)
-    FreeSid(pEveryoneSID);
   if (pCurrentUserSID)
     FreeSid(pCurrentUserSID);
   if (pACL)
@@ -468,6 +467,7 @@ DWORD CSDThread::ThreadProc()
     // Switch back to the initial desktop
     pws_os::Trace(L"ThreadProc SwitchDesktop\n");
     while (!SwitchDesktop(m_hOriginalDesk)) {
+      pws_os::Trace(L"SwitchDesktop(m_hOriginalDesk)\n");
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
       if (dwError != ERROR_SUCCESS)
         ASSERT(0);
@@ -1775,51 +1775,89 @@ bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
   return brc;
 }
 
-bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
-  PSID &pEveryoneSID, PSID &pCurrentUserSID)
-{
-  DWORD dwResult, dwError;
-  EXPLICIT_ACCESS ea[2];
-  SID_IDENTIFIER_AUTHORITY SIDAuthWorld = SECURITY_WORLD_SID_AUTHORITY;
-  SID_IDENTIFIER_AUTHORITY SIDAuthNT = SECURITY_NT_AUTHORITY;
-
-  // Create a well-known SID for the Everyone group.
-  if (!AllocateAndInitializeSid(&SIDAuthWorld, 1,
-    SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, &pEveryoneSID)) {
-    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - Everyone", false);
+bool CSDThread::GetLogonSID(PSID &logonSID) {
+  HANDLE hToken = NULL;
+  bool res = false;
+  if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)){
+    pws_os::IssueError(_T("OpenProcessToken"), false);
     return false;
   }
 
-  // Create a SID for the current user.
-  if (!AllocateAndInitializeSid(&SIDAuthNT, 2,
-    SECURITY_LOGON_IDS_RID, 0, 0, 0, 0, 0, 0, 0, &pCurrentUserSID)) {
-    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - Current User", false);
+  PTOKEN_GROUPS pTG = NULL;
+  DWORD dwBytesNeeed = 0;
+  DWORD dwError;
+
+  // get buffer size
+  if (!GetTokenInformation(hToken, TokenGroups, pTG, 0,  &dwBytesNeeed)){
+    if (GetLastError() != ERROR_INSUFFICIENT_BUFFER){
+      goto Cleanup;
+    }
+  }
+
+  pTG = (PTOKEN_GROUPS)LocalAlloc(LPTR, dwBytesNeeed);
+
+  if (!pTG) {
+    dwError = pws_os::IssueError(L"LocalAlloc", false);
+    goto Cleanup;
+  }
+
+
+  if (!GetTokenInformation(hToken, TokenGroups, pTG, dwBytesNeeed, &dwBytesNeeed)){
+    dwError = pws_os::IssueError(L"GetTokenInformation", false);
+    goto Cleanup;
+  }
+
+  for (DWORD i=0; i< pTG->GroupCount; i++){
+    if ((pTG->Groups[i].Attributes & SE_GROUP_LOGON_ID) ==  SE_GROUP_LOGON_ID) {
+      dwBytesNeeed = GetLengthSid(pTG->Groups[i].Sid);
+      logonSID = (PSID)LocalAlloc(LPTR, dwBytesNeeed);
+      if (!logonSID) {
+        dwError = pws_os::IssueError(L"LocalAlloc", false);
+        break;
+      }
+      if (!CopySid(dwBytesNeeed, logonSID, pTG->Groups[i].Sid)) {
+        dwError = pws_os::IssueError(L"CopySid", false);
+        break;
+      }
+      res = true;
+      break;
+    }
+  }
+
+Cleanup:
+  if (pTG)
+    LocalFree(pTG);
+  CloseHandle(hToken);
+  return res;
+}
+
+bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+  PSID &pCurrentUserSID)
+{
+  DWORD dwResult, dwError;
+  EXPLICIT_ACCESS ea[1];
+
+  if (!GetLogonSID(pCurrentUserSID)){
+    ASSERT(0);
     return false;
   }
 
   // Initialize an EXPLICIT_ACCESS structure for an ACE.
-  // The ACE will DENY Everyone access to the Desktop.
-  ZeroMemory(&ea, 2 * sizeof(EXPLICIT_ACCESS));
-  ea[0].grfAccessPermissions = STANDARD_RIGHTS_ALL | SPECIFIC_RIGHTS_ALL;
-  ea[0].grfAccessMode = DENY_ACCESS;
-  ea[0].grfInheritance = NO_INHERITANCE;
-  ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-  ea[0].Trustee.TrusteeType = TRUSTEE_IS_WELL_KNOWN_GROUP;
-  ea[0].Trustee.ptstrName = (LPTSTR)pEveryoneSID;
+  ZeroMemory(&ea, sizeof(ea));
 
   // Initialize an EXPLICIT_ACCESS structure for an ACE.
   // The ACE will allow the current user Desktop specific access rights and
   // standard access to the Desktop
-  ea[1].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
+  ea[0].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
-  ea[1].grfAccessMode = SET_ACCESS;
-  ea[1].grfInheritance = NO_INHERITANCE;
-  ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-  ea[1].Trustee.TrusteeType = TRUSTEE_IS_USER;
-  ea[1].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
+  ea[0].grfAccessMode = SET_ACCESS;
+  ea[0].grfInheritance = NO_INHERITANCE;
+  ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+  ea[0].Trustee.TrusteeType = TRUSTEE_IS_USER;
+  ea[0].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
 
   // Create a new ACL that contains the new ACEs.
-  dwResult = SetEntriesInAcl(2, ea, NULL, &pACL);
+  dwResult = SetEntriesInAcl(sizeof(ea)/sizeof(ea[0]), ea, NULL, &pACL);
   if (dwResult != ERROR_SUCCESS) {
     dwError = pws_os::IssueError(L"SetEntriesInAcl", false);
     return false;
