@@ -880,7 +880,7 @@ void COptions::PropSheetToPrefs()
   PwsafeApp *app = dynamic_cast<PwsafeApp *>(wxTheApp);
   uint32 value = MIN_HASH_ITERATIONS;
   if (m_hashIterSlider > 0) {
-    const int step = MAX_USABLE_HASH_ITERS/31;
+    const int step = MAX_USABLE_HASH_ITERS/100;
     value = uint32(m_hashIterSlider*step);
   }
   app->SetHashIters(value);
