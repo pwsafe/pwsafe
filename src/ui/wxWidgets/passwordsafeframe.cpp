@@ -991,9 +991,7 @@ int PasswordSafeFrame::SaveIfChanged()
 
 void PasswordSafeFrame::ClearData()
 {
-  m_grid->BeginBatch();
-  m_grid->ClearGrid();
-  m_grid->EndBatch();
+  m_grid->Clear();
   m_tree->Clear();
   //the grid would have deleted the data in one of its callbacks
   //but only if it was initialized, which might not happen
