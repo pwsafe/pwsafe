@@ -1,5 +1,5 @@
-Password Safe 3.34 Release Notes - Julyy 2014
-================================================
+Password Safe 3.34 Release Notes - July 2014
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -22,9 +22,15 @@ Changes to Existing Features in 3.34
 
 Bugs fixed in 3.34
 ==================
-[1200]	Tweak Yubikey interface to make it easier to use when creating
+[1200] Tweak Yubikey interface to make it easier to use when creating
 or opening a Password Safe database.
-
+[1195] Edit->Find now enabled when a group is selected.
+[1194] Compare, Merge, Sync: Enable action button when password's
+entered via virtual keyboard.
+[1176] Tweak definition of what's considered a 'weak' password.
+[1174] "Open as read-only" check-box now correctly reflects the file's state.
+[1117] Dragging dropbar icon doesn't copy text to clipboard unless
+Control key's pressed when icon's clicked upon.
 
 
 New Features for 3.33
