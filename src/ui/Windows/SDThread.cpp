@@ -46,6 +46,19 @@ extern ThisMfcApp app;
 
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
+template<class T> void  RDLL_LoadAString(HINSTANCE hInstResDLL, T &s, int id)
+{
+  // No MFC (LoadAString)
+  TCHAR *psBuffer;
+  int len = LoadString(hInstResDLL ? hInstResDLL : GetModuleHandle(NULL), id,
+    reinterpret_cast<LPTSTR>(&psBuffer), 0);
+
+  if (len)
+    s = T(psBuffer, len);
+  else
+    s = T();
+}
+
 CSDThread::CSDThread(int iDialogID, GetMasterPhrase *pGMP,
                      HMONITOR hCurrentMonitor, bool bUseSecureDesktop)
   : m_pGMP(pGMP), m_wDialogID((WORD)iDialogID),
@@ -88,6 +101,8 @@ BOOL CSDThread::InitInstance()
   // Clear Low Level Keyboard hook
   g_hKeyboardHook = NULL;
 
+  // Get Resource DLL (if any)
+  m_hInstResDLL = app.GetResourceDLL();
   return TRUE;
 }
 
@@ -363,7 +378,7 @@ DWORD CSDThread::ThreadProc()
   xFlags |= SWITCHEDDESKTOP;
 #endif
 
-  m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstance, MAKEINTRESOURCE(m_wDialogID),
+  m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstResDLL ? m_hInstResDLL : m_hInstance, MAKEINTRESOURCE(m_wDialogID),
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
 
   if (!m_hwndMasterPhraseDlg) {
@@ -376,7 +391,7 @@ DWORD CSDThread::ThreadProc()
   xFlags |= MASTERPHRASEDIALOGCREATED;
 
   // Use first monitor's background window as owner for virtual keyboard
-  m_pVKeyBoardDlg = new CVKeyBoardDlg(m_vMonitorImageInfo[0].hwndBkGrndWindow, m_hwndMasterPhraseDlg);
+  m_pVKeyBoardDlg = new CVKeyBoardDlg(m_hInstResDLL, m_vMonitorImageInfo[0].hwndBkGrndWindow, m_hwndMasterPhraseDlg);
 
   // Update Progress
   xFlags |= VIRTUALKEYBOARDCREATED;
@@ -682,7 +697,7 @@ void CSDThread::YubiControlsUpdate(bool insertedOrRemoved)
     } else {
       hbm = HBITMAP(m_yubiLogoDisabled);
     }
-    LoadAString(sMessage, insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT);
+    RDLL_LoadAString(m_hInstResDLL, sMessage, insertedOrRemoved ? IDS_YUBI_CLICK_PROMPT : IDS_YUBI_INSERT_PROMPT);
 
     if (hwndYstatus != NULL) {
       SetWindowText(hwndYstatus, sMessage.c_str());
@@ -748,14 +763,14 @@ void CSDThread::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE
 
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
     ShowWindow(hwndYprog, SW_HIDE);
-    LoadAString(sMessage, IDS_YUBI_TIMEOUT);
+    RDLL_LoadAString(m_hInstResDLL, sMessage, IDS_YUBI_TIMEOUT);
     SetWindowText(hwndYstatus, sMessage.c_str());
     ShowWindow(hwndYstatus, SW_SHOW);
     break;
 
   default:                // A non-recoverable error has occured
     ShowWindow(hwndYprog, SW_HIDE);
-    LoadAString(sMessage, IDSC_UNKNOWN_ERROR);
+    RDLL_LoadAString(m_hInstResDLL, sMessage, IDSC_UNKNOWN_ERROR);
     SetWindowText(hwndYstatus, sMessage.c_str());
     ShowWindow(hwndYstatus, SW_SHOW);
     break;
@@ -1123,8 +1138,8 @@ void CSDThread::OnVirtualKeyboard()
   // If not already created - do it, otherwise just reset it
   if (m_hwndVKeyBoard == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_hwndVKeyBoard = CreateDialogParam(m_hInstance, MAKEINTRESOURCE(IDD_SDVKEYBOARD), m_hwndMasterPhraseDlg,
-      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
+    m_hwndVKeyBoard = CreateDialogParam(m_hInstResDLL ? m_hInstResDLL : m_hInstance, MAKEINTRESOURCE(IDD_SDVKEYBOARD),
+      m_hwndMasterPhraseDlg, (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
 
     if (m_hwndVKeyBoard == NULL) {
       dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
@@ -1167,7 +1182,7 @@ void CSDThread::OnOK()
     m_pGMP->sPhrase = sxPassKey;
     m_pGMP->bPhraseEntered = true;
   } else if (m_yubiResp[1].empty()) { // not an error if yubikey password change
-    LoadAString(sErrorMsg,
+    RDLL_LoadAString(m_hInstResDLL, sErrorMsg,
                 m_wDialogID == IDD_SDPASSKEYSETUP ? IDS_ENTERKEYANDVERIFY : IDS_CANNOTBEBLANK);
     MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK);
     SetFocus(hwndPassKey);
@@ -1210,7 +1225,7 @@ void CSDThread::OnOK()
       }
 
       if (iMsgID != 0) {
-        LoadAString(sErrorMsg, iMsgID);
+        RDLL_LoadAString(m_hInstResDLL, sErrorMsg, iMsgID);
         MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
         SetFocus(hwndFocus);
         return;
@@ -1222,13 +1237,13 @@ void CSDThread::OnOK()
         Format(sMsg, IDS_WEAKPASSPHRASE, sxErrorMsg.c_str());
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-        LoadAString(sText, IDS_USEITANYWAY);
+        RDLL_LoadAString(m_hInstResDLL, sText, IDS_USEITANYWAY);
         sMsg += sText;
         INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
         if (rc == IDNO)
           return;
 #else
-        LoadAString(sText, IDS_TRYANOTHER);
+        RDLL_LoadAString(m_hInstResDLL, sText, IDS_TRYANOTHER);
         sMsg += sText;
         MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
         return;
@@ -1257,7 +1272,7 @@ void CSDThread::OnOK()
       }
 
       if (iMsgID != 0) {
-        LoadAString(sErrorMsg, iMsgID);
+        RDLL_LoadAString(m_hInstResDLL, sErrorMsg, iMsgID);
         MessageBox(m_hwndDlg, sErrorMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
         SetFocus(hwndFocus);
         return;
@@ -1265,17 +1280,17 @@ void CSDThread::OnOK()
 
       StringX sxErrorMsg;
       if (m_yubiResp[0].empty() && !CPasswordCharPool::CheckPassword(sxNewPassKey0, sxErrorMsg)) {
-        StringX sMsg, sText;
+        stringT sMsg, sText;
         Format(sMsg, IDS_WEAKPASSPHRASE, sErrorMsg.c_str());
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-        LoadAString(sText, IDS_USEITANYWAY);
+        RDLL_LoadAString(m_hInstResDLL, sText, IDS_USEITANYWAY);
         sMsg += sText;
         INT_PTR rc = MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_YESNO | MB_ICONSTOP);
         if (rc == IDNO)
           return;
 #else
-        LoadAString(sText, IDS_TRYANOTHER);
+        RDLL_LoadAString(m_hInstResDLL, sText, IDS_TRYANOTHER);
         sMsg += sText;
         MessageBox(m_hwndDlg, sMsg.c_str(), NULL, MB_OK | MB_ICONSTOP);
         return;
@@ -1500,7 +1515,7 @@ BOOL CSDThread::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
     return FALSE;
 
   stringT sText;
-  LoadAString(sText, uiToolString);
+  RDLL_LoadAString(m_hInstResDLL, sText, uiToolString);
   if (sText.empty())
     return FALSE;
 

@@ -39,7 +39,7 @@ public:
   static wchar_t *ARIALU;
   static wchar_t *LUCIDAUS;
 
-  CVKeyBoardDlg(HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID = NULL);
+  CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
   enum { IDD = IDD_SDVKEYBOARD };
@@ -155,6 +155,8 @@ protected:
   HWND m_hwndVKStaticTimer, m_hwndVKStaticTimerText, m_hwndVKStaticSeconds;
   bool m_bUseSecureDesktop;
   int m_iUserTimeLimit;
+
+  HINSTANCE m_hInstResDLL;
   };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -236,8 +236,9 @@ void CPasskeyChangeDlg::OnVirtualKeyboard()
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
+    HINSTANCE hInstResDLL = app.GetResourceDLL();
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(hInstResDLL, this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
     m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
       (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
 

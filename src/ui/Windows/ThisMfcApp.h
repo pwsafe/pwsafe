@@ -96,6 +96,7 @@ public:
   void GetLanguageFiles();
   void SetLanguage();
   void SetSystemTrayTarget(CWnd *pWnd) {m_pTrayIcon->SetTarget(pWnd);}
+  HINSTANCE GetResourceDLL() { return m_hInstResDLL; }
 
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 

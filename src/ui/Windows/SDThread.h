@@ -118,6 +118,8 @@ public:
    stringT m_sBkGrndClassName;
    stringT m_sDesktopName;
 
+   HINSTANCE m_hInstResDLL;
+
    GetMasterPhrase *m_pGMP;
    CVKeyBoardDlg *m_pVKeyBoardDlg;
    std::vector<DWORD> m_vPIDs;

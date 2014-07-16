@@ -28,6 +28,7 @@ NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED
 
 #include "../stdafx.h"
 
+#include "../ThisMfcApp.h"
 #include "VKeyBoardDlg.h"
 #include "VKShiftState.h"
 #include "VKresource.h"
@@ -211,6 +212,35 @@ wchar_t *CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
 wchar_t *CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
 wchar_t *CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
 
+
+stringT get_window_text(HWND hWnd)
+{
+  const int len = GetWindowTextLength(hWnd) + 1;
+  stringT s(len, 0);
+
+  if (len > 1)
+  {
+    GetWindowText(hWnd, &s[0], len);
+    s.pop_back();  // Remove trailing NULL [C++11 feature]
+  } else
+    s.clear();
+
+  return s;
+}
+
+template<class T> void  RDLL_LoadAString(HINSTANCE hInstResDLL, T &s, int id)
+{
+  // No MFC (LoadAString)
+  TCHAR *psBuffer;
+  int len = LoadString(hInstResDLL ? hInstResDLL : GetModuleHandle(NULL), id,
+    reinterpret_cast<LPTSTR>(&psBuffer), 0);
+
+  if (len)
+    s = T(psBuffer, len);
+  else
+    s = T();
+}
+
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
   /**
@@ -221,6 +251,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
    */
   bool bVKAvailable(false);
   static bool warnedAlready(false); // warn only once per process.
+
+  HINSTANCE hInstResDLL = app.GetResourceDLL();
 
   // Try to load DLL
 #if defined(_DEBUG) || defined(DEBUG)
@@ -248,7 +280,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     } else if (!warnedAlready) {
       warnedAlready = true;
       stringT sText;
-      LoadAString(sText, IDS_OSK_VERSION_MISMATCH);
+      RDLL_LoadAString(hInstResDLL, sText, IDS_OSK_VERSION_MISMATCH);
       MessageBox(NULL, sText.c_str(), NULL, MB_ICONERROR);
     }
 
@@ -325,7 +357,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   if (!warnedAlready) {
     warnedAlready = true;
     stringT sText;
-    LoadAString(sText, IDS_OSK_NO_UNICODE_FONT);
+    RDLL_LoadAString(hInstResDLL, sText, IDS_OSK_NO_UNICODE_FONT);
     MessageBox(NULL, sText.c_str(), NULL, MB_ICONERROR);
   }
 
@@ -334,25 +366,9 @@ exit:
   return bFound;
 }
 
-stringT get_window_text(HWND hWnd)
-{
-  const int len = GetWindowTextLength(hWnd) + 1;
-  stringT s(len, 0);
-
-  if (len > 1)
-  {
-    GetWindowText(hWnd, &s[0], len);
-    s.pop_back();  // Remove trailing NULL [C++11 feature]
-  }
-  else
-    s.clear();
-
-  return s;
-}
-
 //-----------------------------------------------------------------------------
-CVKeyBoardDlg::CVKeyBoardDlg(HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID)
-  : m_hParent(hParent), m_hMasterPhrase(hMasterPhrase),
+CVKeyBoardDlg::CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID)
+  : m_hInstResDLL(hInstResDLL), m_hParent(hParent), m_hMasterPhrase(hMasterPhrase),
     m_PassphraseFont(NULL),
     m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
     m_bShift(false), m_bLCtrl(false), m_bRCtrl(false),
@@ -747,7 +763,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
     for (kbl_iter = m_KBL.begin(); kbl_iter != m_KBL.end(); kbl_iter++) {
       const st_Keyboard_Layout &st_kbl = *kbl_iter;
       stringT stemp;
-      LoadAString(stemp, st_kbl.uiCtrlID);
+      RDLL_LoadAString(m_hInstResDLL, stemp, st_kbl.uiCtrlID);
       int iItem = SendMessage(m_hcbxKeyBoards, CB_ADDSTRING, NULL, (LPARAM)(stemp.c_str()));
       SendMessage(m_hcbxKeyBoards, CB_SETITEMDATA, iItem, (DWORD)st_kbl.uiKLID);
     }
@@ -1411,7 +1427,7 @@ void CVKeyBoardDlg::SetNormalButtons()
 {
   // Set Normal Buttons
   stringT sDeadkey;
-  LoadAString(sDeadkey, IDS_VKDEADKEY);
+  RDLL_LoadAString(m_hInstResDLL, sDeadkey, IDS_VKDEADKEY);
 
   if (m_bAltNum) {
     // Normal keys disbled if using AltNum
@@ -1705,7 +1721,7 @@ void CVKeyBoardDlg::GetAllKeyboardsAvailable()
     m_KBL.push_back(kbl);
 
     if (kbl.uiKLID == m_uiPhysKLID) {
-      LoadAString(m_selectedkb, kbl.uiCtrlID);
+      RDLL_LoadAString(m_hInstResDLL, m_selectedkb, kbl.uiCtrlID);
       SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_CURRENTKBD), m_selectedkb.c_str());
     }
   };
@@ -2100,7 +2116,7 @@ BOOL CVKeyBoardDlg::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiForma
     return FALSE;
 
   stringT sText;
-  LoadAString(sText, uiToolString);
+  RDLL_LoadAString(m_hInstResDLL, sText, uiToolString);
   if (sText.empty())
     return FALSE;
 
@@ -2158,7 +2174,7 @@ BOOL CVKeyBoardDlg::UpdateTooltipText(UINT uiControlID, UINT uiToolString, UINT 
     return FALSE;
 
   stringT sText;
-  LoadAString(sText, uiToolString);
+  RDLL_LoadAString(m_hInstResDLL, sText, uiToolString);
   if (sText.empty())
     return FALSE;
 
