@@ -37,7 +37,7 @@ static HHOOK g_hKeyboardHook;
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
-//#define NO_NEW_DESKTOP
+#define NO_NEW_DESKTOP
 #endif
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
@@ -276,15 +276,6 @@ DWORD CSDThread::ThreadProc()
 
   // Update Progress
   xFlags |= SETTHREADDESKTOP;
-
-  if (!SwitchDesktop(m_hNewDesktop)) {
-    dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
-    ASSERT(0);
-    goto BadExit;
-  }
-
-  // Update Progress
-  xFlags |= SWITCHEDDESKTOP;
 #endif
 
   // Ensure we don't use an existing Window Class Name (very unlikely but....)
@@ -312,6 +303,7 @@ DWORD CSDThread::ThreadProc()
   xFlags |= REGISTEREDWINDOWCLASS;
 
   for (MonitorImageInfoIter it = m_vMonitorImageInfo.begin(); it != m_vMonitorImageInfo.end(); it++) {
+    // Window styles: WS_EX_LAYERED for easy painting, WS_EX_TOOLWINDOW so not to appear in Alt+Tab
     HWND hwndBkGrndWindow = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW,
       m_sBkGrndClassName.c_str(), NULL, WS_POPUP | WS_VISIBLE,
       it->left, it->top, it->width, it->height,
@@ -358,6 +350,18 @@ DWORD CSDThread::ThreadProc()
 
   // Update Progress
   xFlags |= BACKGROUNDWINDOWSCREATED;
+
+
+#ifndef NO_NEW_DESKTOP
+  if (!SwitchDesktop(m_hNewDesktop)) {
+    dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
+    ASSERT(0);
+    goto BadExit;
+  }
+
+  // Update Progress
+  xFlags |= SWITCHEDDESKTOP;
+#endif
 
   m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstance, MAKEINTRESOURCE(m_wDialogID),
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
