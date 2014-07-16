@@ -26,10 +26,8 @@
 
 #include "resource.h"
 
-#include <psapi.h>
 #include <aclapi.h>
 #include <tlhelp32.h>
-#include <Wtsapi32.h>
 #include <algorithm>
 
 // Required for Low Level Keyboard hook - can't be a member variable as the hook
@@ -39,7 +37,7 @@ static HHOOK g_hKeyboardHook;
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
-#define NO_NEW_DESKTOP
+//#define NO_NEW_DESKTOP
 #endif
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
@@ -373,15 +371,6 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= MASTERPHRASEDIALOGCREATED;
 
-  if (!WTSRegisterSessionNotification(m_hwndMasterPhraseDlg, NOTIFY_FOR_THIS_SESSION)){
-    dwError = pws_os::IssueError(_T("WTSRegisterSessionNotification"), false);
-    ASSERT(0);
-    goto BadExit;
-  }
-
-  // Update Progress
-  xFlags |= REGISTEREDFORSESSIONCHANGES;
-
   // Use first monitor's background window as owner for virtual keyboard
   m_pVKeyBoardDlg = new CVKeyBoardDlg(m_vMonitorImageInfo[0].hwndBkGrndWindow, m_hwndMasterPhraseDlg);
 
@@ -502,13 +491,6 @@ DWORD CSDThread::ThreadProc()
   xFlags &= ~NEWDESKTOCREATED;
 #endif
 
-  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
-    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
-  }
-
-  // Update Progress
-  xFlags &= ~REGISTEREDFORSESSIONCHANGES;
-
   if (xFlags & KEYBOARDHOOKINSTALLED) {
     // Remove Low Level Keyboard hook
     UnhookWindowsHookEx(g_hKeyboardHook);
@@ -535,12 +517,6 @@ BadExit:
 
     // Update Progress
     xFlags &= ~VIRTUALKEYBOARDCREATED;
-  }
-  if (xFlags & REGISTEREDFORSESSIONCHANGES) {
-    WTSUnRegisterSessionNotification(m_hwndMasterPhraseDlg);
-
-    // Update Progress
-    xFlags &= ~REGISTEREDFORSESSIONCHANGES;
   }
   if (xFlags & MASTERPHRASEDIALOGCREATED) {
     // Destroy master phrase dialog window
@@ -825,28 +801,11 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     }
 
     // WM_ACTIVATEAPP - Cancel Secure Dialog if another application is activated
-    // WM_WTSSESSION_CHANGE - Cancel Secure Dialog if workstation gets locked
-    // WM_POWERBROADCAST - Cancel Secure Dialog if workstation gets suspended (e.g. Sleep)
-    // WM_QUERYENDSESSION - Cancel Secure Dialog if workstation needs to shutdown
+    // Gets called before WM_WTSSESSION_CHANGE, WM_POWERBROADCAST or WM_QUERYENDSESSION
     case WM_ACTIVATEAPP:
     {
       pws_os::Trace(L"WM_ACTIVATEAPP. wParam = %d\n", wParam);
       self->CancelSecureDesktop();
-      return TRUE;
-    }
-    case WM_WTSSESSION_CHANGE:
-    {
-      self->OnSessionChange(wParam, lParam);
-      return TRUE;
-    }
-    case WM_POWERBROADCAST:
-    {
-      self->OnPowerBroadcast(wParam, lParam);
-      return TRUE;
-    }
-    case WM_QUERYENDSESSION:
-    {
-      self->OnQueryEndSession(wParam, lParam);
       return TRUE;
     }
 
@@ -1816,65 +1775,6 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
 
   // Set success - we can use Security Attributes
   return true;
-}
-
-LRESULT CSDThread::OnSessionChange(WPARAM wParam, LPARAM)
-{
-  // Windows XP and later only
-  // Won't be called if the registration failed (i.e. < Windows XP
-  // or the "Windows Terminal Server" service wasn't active at startup).
-
-  pws_os::Trace(L"CSDThread::OnSessionChange. wParam = %d\n", wParam);
-
-  switch (wParam) {
-    case WTS_CONSOLE_DISCONNECT:
-    case WTS_REMOTE_DISCONNECT:
-    case WTS_SESSION_LOCK:
-    case WTS_SESSION_LOGOFF:
-      CancelSecureDesktop();
-      break;
-    case WTS_CONSOLE_CONNECT:
-    case WTS_REMOTE_CONNECT:
-    case WTS_SESSION_LOGON:
-    case WTS_SESSION_UNLOCK:
-      pws_os::Trace(L"OnSessionChange Connect/Logon/Unlock\n");
-      // Never seems to get these!
-      break;
-    default:
-      break;
-  }
-  return 0L;
-}
-
-LRESULT CSDThread::OnPowerBroadcast(WPARAM wParam, LPARAM)
-{
-  pws_os::Trace(L"CSDThread::OnPowerBroadcast. wParam = %d\n", wParam);
-
-  switch (wParam) {
-    case PBT_APMQUERYSUSPEND:   // Windows XP & Windows Server 2003 - removed in Vista +
-    case PBT_APMRESUMECRITICAL: // Windows XP & Windows Server 2003 - removed in Vista +
-    case PBT_APMQUERYSTANDBY:   // No longer supported (probably)
-    case PBT_APMSTANDBY:        // No longer supported (probably)
-
-    case PBT_APMSUSPEND:
-      CancelSecureDesktop();
-      break;
-    case PBT_APMRESUMESUSPEND:
-    case PBT_APMRESUMEAUTOMATIC:
-      // Shouldn't need to do anything here
-      break;
-    default:
-      break;
-  }
-  return 0L;
-}
-
-LRESULT CSDThread::OnQueryEndSession(WPARAM wParam, LPARAM)
-{
-  pws_os::Trace(L"CSDThread::OnQueryEndSession. wParam = %d\n", wParam);
-
-  CancelSecureDesktop();
-  return 0L;
 }
 
 void CSDThread::CancelSecureDesktop()
