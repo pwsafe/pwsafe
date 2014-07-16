@@ -1009,14 +1009,14 @@ INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     case PWS_MSG_INSERTBUFFER:
     {
       OnInsertBuffer();
-      SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
+      SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, 0);
       return TRUE; // Processed
     }  // PWS_MSG_INSERTBUFFER
 
     case PWS_MSG_RESETTIMER:
     {
       ResetTimer();
-      SetWindowLong(hwndDlg, DWL_MSGRESULT, 0);
+      SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, 0);
       return TRUE; // Processed
     }  // PWS_MSG_RESETTIMER:
   }  // switch (uMsg)
@@ -1509,7 +1509,7 @@ BOOL CSDThread::AddTooltip(UINT uiControlID, stringT sText)
   ti.uId = (UINT_PTR)hwndTool;
   ti.lpszText = (LPWSTR)sText.c_str();
 
-  return SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
+  return (BOOL)SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);//TTM_ADDTOOL returns BOOL
 }
 
 BOOL CSDThread::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
