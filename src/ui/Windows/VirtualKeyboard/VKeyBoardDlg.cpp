@@ -387,6 +387,9 @@ CVKeyBoardDlg::CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPh
   // Get us
   m_hInstance = GetModuleHandle(NULL);
 
+  if (!m_hInstResDLL)
+    m_hInstResDLL = m_hInstance;
+
   m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
   m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
 

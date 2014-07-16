@@ -50,7 +50,7 @@ template<class T> void  RDLL_LoadAString(HINSTANCE hInstResDLL, T &s, int id)
 {
   // No MFC (LoadAString)
   TCHAR *psBuffer;
-  int len = LoadString(hInstResDLL ? hInstResDLL : GetModuleHandle(NULL), id,
+  int len = LoadString(hInstResDLL, id,
     reinterpret_cast<LPTSTR>(&psBuffer), 0);
 
   if (len)
@@ -103,6 +103,9 @@ BOOL CSDThread::InitInstance()
 
   // Get Resource DLL (if any)
   m_hInstResDLL = app.GetResourceDLL();
+  if (!m_hInstResDLL)
+    m_hInstResDLL = m_hInstance;
+
   return TRUE;
 }
 
@@ -378,7 +381,7 @@ DWORD CSDThread::ThreadProc()
   xFlags |= SWITCHEDDESKTOP;
 #endif
 
-  m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstResDLL ? m_hInstResDLL : m_hInstance, MAKEINTRESOURCE(m_wDialogID),
+  m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstResDLL, MAKEINTRESOURCE(m_wDialogID),
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
 
   if (!m_hwndMasterPhraseDlg) {
@@ -1138,7 +1141,7 @@ void CSDThread::OnVirtualKeyboard()
   // If not already created - do it, otherwise just reset it
   if (m_hwndVKeyBoard == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_hwndVKeyBoard = CreateDialogParam(m_hInstResDLL ? m_hInstResDLL : m_hInstance, MAKEINTRESOURCE(IDD_SDVKEYBOARD),
+    m_hwndVKeyBoard = CreateDialogParam(m_hInstResDLL, MAKEINTRESOURCE(IDD_SDVKEYBOARD),
       m_hwndMasterPhraseDlg, (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
 
     if (m_hwndVKeyBoard == NULL) {
