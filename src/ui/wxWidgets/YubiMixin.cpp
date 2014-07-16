@@ -93,19 +93,44 @@ void CYubiMixin::UpdateStatus()
 }
 
 bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
-                                          StringX &response)
+                                          StringX &response, bool oldYubiChallenge)
 {
   bool retval = false;
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(m_prompt2);
   ::wxSafeYield(); // get text to update
   BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
-  BYTE chalLength = BYTE(challenge.length()*sizeof(TCHAR));
   memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
-  if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
-    chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
+  BYTE chalLength;
 
-  memcpy(chalBuf, challenge.c_str(), chalLength);
+  /*
+   * Following mess is to fix BR1201:
+   * Root cause: sizeof(TCHAR) on Windows is 2, but 4 on Linux
+   * This caused a challenge of L"abc" to be {a\0b\0c\0} on Windows,
+   * but {a\0\0\0b\0\0\0c\0\0\0} on Linux.
+   *
+   * Starting with this fix (0.94, 16 July 2014), Linux
+   * will generate the same challenge as Windows UNLESS
+   * oldYubiChallenge is true.
+   * This will allow users to read pre-0.94 databases
+   * but save them in a manner that will be compatible
+   * with Windows.
+   */
+  if (oldYubiChallenge) {
+    chalLength = BYTE(challenge.length() * sizeof(TCHAR));
+    if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
+      chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
+  
+    memcpy(chalBuf, challenge.c_str(), chalLength);
+  } else { // emulate Windows challenge
+    chalLength = BYTE(challenge.length() * 2);
+    if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
+      chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
+    const BYTE *b = reinterpret_cast<const BYTE *>(challenge.c_str());
+    for (BYTE i = 0; i < chalLength; i+=2, b+=sizeof(TCHAR)) {
+      chalBuf[i] = *b; chalBuf[i+1] = *(b+1);
+    }
+  }
 
   PWYubi yubi;
   if (yubi.RequestHMacSHA1(chalBuf, chalLength)) {

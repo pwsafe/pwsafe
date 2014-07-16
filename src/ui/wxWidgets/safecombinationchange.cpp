@@ -346,7 +346,8 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
   m_confirmEntry->AllowEmptyCombinationOnce();
 
   if (Validate() && TransferDataFromWindow()) {
-    if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, m_oldresponse)) {
+    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+    if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, m_oldresponse, oldYubiChallenge)) {
       // Verify the response - a convenience, as we double check in OnYubibtn2Click().
       int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
       if (rc == PWScore::WRONG_PASSWORD) {
@@ -400,7 +401,8 @@ void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& /* event */ )
       }
     }
     StringX response;
-    if (m_yubiMixin2.PerformChallengeResponse(m_newpasswd, response)) {
+    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+    if (m_yubiMixin2.PerformChallengeResponse(m_newpasswd, response, oldYubiChallenge)) {
       m_newpasswd = response;
       EndModal(wxID_OK);
     }

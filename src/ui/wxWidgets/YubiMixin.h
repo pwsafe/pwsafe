@@ -40,7 +40,8 @@ class CYubiMixin {
   void SetPrompt1(const wxString &prompt) { m_prompt1 = prompt; }
   void SetPrompt2(const wxString &prompt) { m_prompt2 = prompt; }
 
-  bool PerformChallengeResponse(const StringX &challenge, StringX &response);
+  bool PerformChallengeResponse(const StringX &challenge, StringX &response,
+                                bool oldYubiChallenge = false);
   StringX Bin2Hex(const unsigned char *buf, int len) const;
 
   // Following should be called in timer event handler of mixed-in class
