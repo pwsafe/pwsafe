@@ -110,11 +110,14 @@ public:
    void CheckDesktop();
    void CheckWindow();
    void ResetTimer();
-   bool GetOrTerminateProcesses(bool bTerminate = false);
+
    bool GetLogonSID(PSID &logonSID);
    bool CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
      PSID &pCurrentUserSID);
-   void CSDThread::CancelSecureDesktop();
+   void CancelSecureDesktop();
+
+   bool TerminateProcesses();
+   bool GetProcessKillList();
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;

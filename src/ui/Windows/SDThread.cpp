@@ -28,6 +28,7 @@
 
 #include <psapi.h>
 #include <aclapi.h>
+#include <tlhelp32.h>
 #include <Wtsapi32.h>
 #include <algorithm>
 
@@ -40,8 +41,6 @@ static HHOOK g_hKeyboardHook;
 #ifdef _DEBUG
 #define NO_NEW_DESKTOP
 #endif
-
-using namespace std;
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
 
@@ -207,9 +206,6 @@ DWORD CSDThread::ThreadProc()
   policy.lowerminlength = policy.upperminlength = policy.digitminlength = 1;
 
 #ifndef NO_NEW_DESKTOP
-  // Take snapshot of cfmon.exe processes
-  GetOrTerminateProcesses(false);
-
   m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
 
   // Ensure we don't use an existing Desktop (very unlikely but....)
@@ -492,6 +488,9 @@ DWORD CSDThread::ThreadProc()
 
   // Now that thread is ending - close new desktop
   if (xFlags & NEWDESKTOCREATED) {
+    // Terminate processes still on new Desktop BEFORE we close it
+    TerminateProcesses();
+
     // Note: There can be a good return code even if it does not close
     // due to programs external to PWS keeping it around!
     if (!CloseDesktop(m_hNewDesktop)) {
@@ -501,9 +500,6 @@ DWORD CSDThread::ThreadProc()
   }
   // Update Progress
   xFlags &= ~NEWDESKTOCREATED;
-
-  // Terminate new cfmon.exe processes
-  GetOrTerminateProcesses(true);
 #endif
 
   if (xFlags & REGISTEREDFORSESSIONCHANGES) {
@@ -596,6 +592,9 @@ BadExit:
     xFlags &= ~SETTHREADDESKTOP;
   }
   if (xFlags & NEWDESKTOCREATED) {
+    // Terminate processes still on new Desktop BEFORE we close it
+    TerminateProcesses();
+
     // Close the new desktop (subject to programs external to PWS keeping it around!)
     CloseDesktop(m_hNewDesktop);
 
@@ -611,11 +610,6 @@ BadExit:
     // Update Progress
     xFlags &= ~KEYBOARDHOOKINSTALLED;
   }
-
-#ifndef NO_NEW_DESKTOP
-  // Terminate new cfmon.exe processes
-  GetOrTerminateProcesses(true);
-#endif
 
   // Clear variables - just in case someone decides to reuse this instance
   m_pVKeyBoardDlg = NULL;
@@ -1705,79 +1699,11 @@ void CSDThread::DimMonitorImage(HDC &hdcMonitor, HDC &hdcCapture, HBITMAP &hbmDi
   ::DeleteDC(hdcDimmedScreen);
 }
 
-bool CSDThread::GetOrTerminateProcesses(bool bTerminate)
+bool CSDThread::GetLogonSID(PSID &logonSID)
 {
-  DWORD dwProcesses[4096], dwBytesReturned, dwNumProcesses, dwError;
-
-  // Initialise vector if not in Terminate mode
-  if (!bTerminate)
-    m_vPIDs.clear();
-
-  if (!EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesReturned)) {
-    dwError = pws_os::IssueError(L"EnumProcesses", false);
-    return false;
-  }
-
-  // Set default return code
-  bool brc = true;
-
-  // Calculate how many process identifiers were returned.
-  dwNumProcesses = dwBytesReturned / sizeof(DWORD);
-
-  // Note: if dwNumProcesses == (sizeof(dwProcesses) / sizeof(DWORD)), it means that the array
-  // of processess was too small.  4096 should be good enough.  If not, there will be some
-  // old Desktops lying around until the user logs off.
-
-  // Calculate how many process identifiers were returned.
-  for (unsigned int i = 0; i < dwNumProcesses; i++) {
-    // Note a zero PID means it is a System process and so ignored
-    if (dwProcesses[i] != 0) {
-      // Get a handle to the process.  It will only return a valid handle if we do have terminate authority.
-      HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_TERMINATE,
-        FALSE, dwProcesses[i]);
-
-      // Get the process name and save PID for all ctfmon.exe processes
-      if (hProcess != NULL) {
-        HMODULE hModule;
-        DWORD dwBytesNeeded;
-        wchar_t szProcessName[MAX_PATH];
-
-        if (EnumProcessModules(hProcess, &hModule, sizeof(hModule), &dwBytesNeeded)) {
-          GetModuleBaseName(hProcess, hModule, szProcessName,
-            sizeof(szProcessName) / sizeof(wchar_t));
-        }
-
-        if (_wcsicmp(szProcessName, L"ctfmon.exe") == 0) {
-          if (bTerminate) {
-            if (std::find(m_vPIDs.begin(), m_vPIDs.end(), dwProcesses[i]) == m_vPIDs.end()) {
-              // If newly found process not there before - terminate it!
-              if (!TerminateProcess(hProcess, 0)) {
-                dwError = pws_os::IssueError(L"TerminateProcess", false);
-                brc = false;
-              }
-            }
-          } else {
-            // Save initial list of ctfmon.exe processes
-            m_vPIDs.push_back(dwProcesses[i]);
-          }
-        }
-
-        // Release the handle to the process.
-        CloseHandle(hProcess);
-      }
-    }
-  }
-
-  // Clear vector if finished in Terminate mode - always in pairs - collect info, use it
-  if (bTerminate)
-    m_vPIDs.clear();
-
-  return brc;
-}
-
-bool CSDThread::GetLogonSID(PSID &logonSID) {
   HANDLE hToken = NULL;
   bool res = false;
+
   if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)){
     pws_os::IssueError(_T("OpenProcessToken"), false);
     return false;
@@ -1807,8 +1733,8 @@ bool CSDThread::GetLogonSID(PSID &logonSID) {
     goto Cleanup;
   }
 
-  for (DWORD i=0; i< pTG->GroupCount; i++){
-    if ((pTG->Groups[i].Attributes & SE_GROUP_LOGON_ID) ==  SE_GROUP_LOGON_ID) {
+  for (DWORD i = 0; i < pTG->GroupCount; i++) {
+    if ((pTG->Groups[i].Attributes & SE_GROUP_LOGON_ID) == SE_GROUP_LOGON_ID) {
       dwBytesNeeed = GetLengthSid(pTG->Groups[i].Sid);
       logonSID = (PSID)LocalAlloc(LPTR, dwBytesNeeed);
       if (!logonSID) {
@@ -1827,6 +1753,7 @@ bool CSDThread::GetLogonSID(PSID &logonSID) {
 Cleanup:
   if (pTG)
     LocalFree(pTG);
+
   CloseHandle(hToken);
   return res;
 }
@@ -1837,7 +1764,7 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   DWORD dwResult, dwError;
   EXPLICIT_ACCESS ea[1];
 
-  if (!GetLogonSID(pCurrentUserSID)){
+  if (!GetLogonSID(pCurrentUserSID)) {
     ASSERT(0);
     return false;
   }
@@ -1988,4 +1915,132 @@ void CSDThread::CancelSecureDesktop()
 
   // Cancel SD dialog
   OnCancel();
+}
+
+bool CSDThread::TerminateProcesses()
+{
+  DWORD dwError;
+
+  // Initialise vector
+  m_vPIDs.clear();
+
+  GetProcessKillList();
+
+  // Set default return code
+  bool brc = true;
+
+  for (size_t i = 0; i < m_vPIDs.size(); i++) {
+    // Get a handle to the process.  It will only return a valid handle if we do have terminate authority.
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_TERMINATE,
+      FALSE, m_vPIDs[i]);
+
+    // Get the process name and save PID for all ctfmon.exe processes
+    if (hProcess != NULL) {
+      // Terminate it!
+      if (!TerminateProcess(hProcess, 0)) {
+        dwError = pws_os::IssueError(L"TerminateProcess", false);
+        brc = false;
+      }
+      // Release the handle to the process.
+      CloseHandle(hProcess);
+    }
+  }
+  return brc;
+}
+
+bool CSDThread::GetProcessKillList()
+{
+  HANDLE hProcessSnap, hThreadSnap;
+  PROCESSENTRY32 pe32;
+  THREADENTRY32 te32;
+
+  std::vector<DWORD> vChildPIDs;
+
+  DWORD dwCurrentPID = GetCurrentProcessId();
+
+  // Take a snapshot of all processes in the system.
+  hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+  if (hProcessSnap == INVALID_HANDLE_VALUE) {
+    pws_os::Trace(L"CreateToolhelp32Snapshot of processes\n");
+    return false;
+  }
+
+  // Set the size of the structure before using it.
+  pe32.dwSize = sizeof(PROCESSENTRY32);
+
+  // Retrieve information about the first process
+  if (!Process32First(hProcessSnap, &pe32)) {
+    pws_os::Trace(L"Process32First\n");
+    CloseHandle(hProcessSnap);
+    return false;
+  }
+
+  // Now walk the snapshot of processes - only keep those that
+  // have PWS as parent
+  do
+  {
+    if (dwCurrentPID == pe32.th32ParentProcessID) {
+      vChildPIDs.push_back(pe32.th32ProcessID);
+    }
+
+  } while (Process32Next(hProcessSnap, &pe32));
+
+  CloseHandle(hProcessSnap);
+
+  // If no child processes - no need to look at threads
+  if (vChildPIDs.empty())
+    return false;
+
+  // Take a snapshot of all running threads
+  hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+  if (hThreadSnap == INVALID_HANDLE_VALUE)
+    return false;
+
+  // Fill in the size of the structure before using it.
+  te32.dwSize = sizeof(THREADENTRY32);
+
+  // Retrieve information about the first thread,
+  // and exit if unsuccessful
+  if (!Thread32First(hThreadSnap, &te32)) {
+    pws_os::Trace(L"Thread32First\n");
+    CloseHandle(hThreadSnap);
+    return false;
+  }
+
+  // Now walk the thread list of the system looking for child processes
+  // using the new Desktop
+  BOOL brc = false;
+  do
+  {
+    // Only check process ID if PWS is its parent
+    if (std::find(vChildPIDs.begin(), vChildPIDs.end(), te32.th32OwnerProcessID) != vChildPIDs.end()) {
+      HDESK hdesk = GetThreadDesktop(te32.th32ThreadID);
+      if (hdesk != 0) {
+        wchar_t buffer[1024];
+        DWORD dwLengthNeeded(0);
+        if (!GetUserObjectInformation(hdesk, UOI_NAME, buffer, sizeof(buffer), &dwLengthNeeded)) {
+          pws_os::IssueError(L"GetUserObjectInformation - Thread Desktop Name", false);
+          continue;
+        }
+        if (_wcsicmp(buffer, m_sDesktopName.c_str()) == 0) {
+          m_vPIDs.push_back(te32.th32OwnerProcessID);
+          pws_os::Trace(L"Found process to terminate\n");
+          brc = true;
+        }
+      } else {
+        pws_os::IssueError(L"GetThreadDesktop", false);
+        pws_os::Trace(L"GetThreadDesktop: ThreadID=%d; OwnerProcessID=%d\n", te32.th32ThreadID, te32.th32OwnerProcessID);
+      }
+    }
+  } while (Thread32Next(hThreadSnap, &te32));
+
+  CloseHandle(hThreadSnap);
+
+  // Sort vector of PIDs and ensure no duplicates
+  std::sort(m_vPIDs.begin(), m_vPIDs.end());
+  std::vector<DWORD>::iterator iNewEnd = std::unique(m_vPIDs.begin(), m_vPIDs.end());
+  m_vPIDs.erase(iNewEnd, m_vPIDs.end());
+
+  return true;
 }
