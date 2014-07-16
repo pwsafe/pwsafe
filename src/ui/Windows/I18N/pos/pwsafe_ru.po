@@ -5108,7 +5108,7 @@ msgstr "Введите ключ для шифрования или дешифр�
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
-msgstr "Укажите текущий пароль, а затем новый пароль. \r\nПовторите новый пароль для подтверждения."
+msgstr "Укажите текущий пароль, а затем новый пароль. \nПовторите новый пароль для подтверждения."
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -6475,8 +6475,9 @@ msgid "This Hotkey value is not available as it is already assigned to the Passw
 msgstr "Выбранная комбинация недоступна, т. к. уже назначена для вызова Password Safe («Управление->Настройки...->Комбинации клавиш»)."
 
 #. Resource IDs: (1507)
+# урезано
 msgid "This Window will close automatically in"
-msgstr "Окно будет автоматически закрыто через"
+msgstr "Окно будет закрыто через"
 
 #. Resource IDs: (344)
 #, c-format
