@@ -25,7 +25,7 @@
       is <b>not</b> kept in the database in any form).</p>
     <p>If you are using <b>Password Safe</b> for the first time, press
       the
-      New Database button. You will be asked to choose the name and
+      "New..." button. You will be asked to choose the name and
       location
       of your password database (the default, "pwsafe.psafe3", is fine).
       Afterwards, you will be prompted to enter a master password that
@@ -53,10 +53,10 @@
     </p>
     <h3>Create a New Database</h3>
     <p>There are two ways that a new database can be created. By
-      clicking <b>New Database</b>
+      clicking <b>New...</b>
       from the <b>Safe Combination Entry</b> dialog when the program is
       started, or from the
-      <b>"File&nbsp;?&nbsp;New Database"</b> menu once <b>Password Safe</b>
+      <b>"File&nbsp;&rarr;&nbsp;New..."</b> menu once <b>Password Safe</b>
       has been opened.
       Using either method causes the <b>Safe Combination Set Up</b>
       dialog to appear.</p>
@@ -70,7 +70,7 @@
       to open, or select it from a File dialog box by pressing on the
       ellipsis ("...") button. Once a database is open, you can change
       to
-      another via the <b>Open Database</b> command from the <b>File
+      another via the <b>Open...</b> command from the <b>File
         Menu</b>.</small>
     <hr>
     <center>
@@ -79,6 +79,14 @@
       <br>
       <img alt="new safe combination prompt" src="images/new_safe.jpg">
     </center>
+	 <hr>
+    <small><b>Note:</b> The padlock graphic in the uper left corner indicates whether or not the "Secure Desktop"
+	feature is enabled. If the padlock is closed, then the "OK" button is replaced with one labelled "Combination...".
+	Clicking on the "Combination..." button will switch the screen to a "Secure Desktop" on which the "Combination" (master passphrase)
+	can be entered in a more secure manner. You can toggle this behavior by clicking on the padlock, or via the
+	"Use Secure Desktop for master passphrase" Preference in the Manage&nbsp;&rarr;&nbsp;Options...&nbsp;&rarr;&nbsp;Security tab,
+	as described <a href="security_tab.html#SecureDesktop">here</a>.</small>
+	<hr />
     <h3>Using YubiKey with PasswordSafe</h3>
 	<p><strong>Password Safe</strong> can work with a <a href="about_pws_yubi.html">YubiKey</a> device 
     to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase),
