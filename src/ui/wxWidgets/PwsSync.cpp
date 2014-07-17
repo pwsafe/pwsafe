@@ -687,10 +687,10 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     const StringX otherTitle = otherItem.GetTitle();
     const StringX otherUser = otherItem.GetUser();
 
-    const StringX sx_updated = StringX(L"\xab") +
-                           otherGroup + StringX(L"\xbb \xab") +
-                           otherTitle + StringX(L"\xbb \xab") +
-                           otherUser  + StringX(L"\xbb");
+    const StringX sx_updated = StringX(wxT("\xab")) +
+                           otherGroup + StringX(wxT("\xbb \xab")) +
+                           otherTitle + StringX(wxT("\xbb \xab")) +
+                           otherUser  + StringX(wxT("\xbb"));
 
     SetProgressText((wxString() << currentIndex << wxT(": ")) + towxstring(sx_updated));
     wxSafeYield();
@@ -710,7 +710,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
       if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        pws_os::Trace(L"Synchronize: Mis-match UUIDs for [%s:%s:%s]\n", otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
+        pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
       bool bUpdated(false);

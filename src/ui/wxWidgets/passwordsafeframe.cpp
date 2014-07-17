@@ -889,7 +889,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
       m_core.SetCurFile(NewName.c_str());
 #if 0
-      m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
+      m_titlebar = PWSUtil::NormalizeTTT(wxT("Password Safe - ") +
                                          m_core.GetCurFile()).c_str();
       SetWindowText(LPCWSTR(m_titlebar));
       app.SetTooltipText(m_core.GetCurFile().c_str());
@@ -1306,7 +1306,7 @@ int PasswordSafeFrame::SaveAs()
 
   m_core.SetCurFile(newfile);
 #if 0
-  m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
+  m_titlebar = PWSUtil::NormalizeTTT(wxT("Password Safe - ") +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
@@ -2151,7 +2151,7 @@ int PasswordSafeFrame::New()
   }
   m_core.ClearChangedNodes();
 
-  SetLabel(PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str());
+  SetLabel(PWSUtil::NormalizeTTT(wxT("Password Safe - ") + cs_newfile).c_str());
 
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   m_RUEList.ClearEntries();

@@ -240,7 +240,7 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     CItemData shortcut;
     shortcut.CreateUUID();
     shortcut.SetShortcut();
-    shortcut.SetPassword(L"[Shortcut]");
+    shortcut.SetPassword(wxT("[Shortcut]"));
     const wxString group = m_groupCtrl->GetValue();
 
     if (!group.empty())

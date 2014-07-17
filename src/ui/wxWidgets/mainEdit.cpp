@@ -426,10 +426,10 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
       if (pbci != NULL) {
         CUUID base_uuid = pbci->GetUUID();
         StringX cs_tmp;
-        cs_tmp = L"[" +
-          pbci->GetGroup() + L":" +
-          pbci->GetTitle() + L":" +
-          pbci->GetUser()  + L"]";
+        cs_tmp = wxT("[") +
+          pbci->GetGroup() + wxT(":") +
+          pbci->GetTitle() + wxT(":") +
+          pbci->GetUser()  + wxT("]");
         ci2.SetPassword(cs_tmp);
         pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
       }
@@ -552,7 +552,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 {
   // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
   // Except for anything involving time (\d, \w, \W) or use older method (\z)
-  StringX sxtmp(L"");
+  StringX sxtmp(wxT(""));
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
 
@@ -611,7 +611,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           // Delay is going to change - send what we have with old delay
           ks.SendString(sxtmp);
           // start collecting new delay
-          sxtmp = L"";
+          sxtmp = wxT("");
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
