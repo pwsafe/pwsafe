@@ -164,7 +164,7 @@ void CProperties::Init()
     if (num == 0)
       m_unknownfields += _("No)");
     else {
-      wls = wxString::Format(_("%d)"), num);
+      wls = wxString::Format(wxT("%d)"), num);
       m_unknownfields += wls;
     }
   } else {
@@ -180,92 +180,92 @@ void CProperties::Init()
 void CProperties::CreateControls()
 {
 ////@begin CProperties content construction
-  CProperties* itemDialog1 = this;
+  CProperties* currDialog = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+  currDialog->SetSizer(mainSizer);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_DATABASE, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* dbPathText = new wxStaticText( currDialog, wxID_DATABASE, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
+  mainSizer->Add(dbPathText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxBoxSizer* horizSizer = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* staticVertSizer = new wxBoxSizer(wxVERTICAL);
+  horizSizer->Add(staticVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText6 = new wxStaticText( currDialog, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Number of Groups:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText7 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Groups:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText8 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText9 = new wxStaticText( currDialog, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText10 = new wxStaticText( itemDialog1, wxID_STATIC, _("Last saved on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText10, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText10 = new wxStaticText( currDialog, wxID_STATIC, _("Last saved on:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText10, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText11 = new wxStaticText( currDialog, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Database Unique ID:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText12 = new wxStaticText( currDialog, wxID_STATIC, _("Database Unique ID:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* itemStaticText13 = new wxStaticText( currDialog, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer4->Add(itemBoxSizer14, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* dataVertSizer = new wxBoxSizer(wxVERTICAL);
+  horizSizer->Add(dataVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_DATABASEFORMAT, _("x.y"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* dbFormatText = new wxStaticText( currDialog, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(dbFormatText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText16 = new wxStaticText( itemDialog1, wxID_NUMGROUPS, _("N"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* numGroupsText = new wxStaticText( currDialog, wxID_NUMGROUPS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(numGroupsText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText17 = new wxStaticText( itemDialog1, wxID_NUMENTRIES, _("N"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText17, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* entriesText = new wxStaticText( currDialog, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(entriesText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_WHOLASTSAVED, _("U"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText18, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* lastSavedUserText = new wxStaticText( currDialog, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(lastSavedUserText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText19 = new wxStaticText( itemDialog1, wxID_WHENLASTSAVED, _("h"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText19, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* lastSavedDateText = new wxStaticText( currDialog, wxID_WHENLASTSAVED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(lastSavedDateText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_WHATLASTSAVED, _("a"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText20, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* lastSavedAppText = new wxStaticText( currDialog, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(lastSavedAppText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText21 = new wxStaticText( itemDialog1, wxID_FILEUUID,
-                                                     _("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
-                                                     wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText21, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* uuidText = new wxStaticText( currDialog, wxID_FILEUUID,
+                                            wxT("12345678-90AB-CDEF-1234-567890ABCDEF"), // need to use different digits/letters to correctly calculate size because of kerning
+                                            wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(uuidText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText22 = new wxStaticText( itemDialog1, wxID_UNKNOWFIELDS, _("x"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer14->Add(itemStaticText22, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* unknownFieldsText = new wxStaticText( currDialog, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(unknownFieldsText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
+  wxStdDialogButtonSizer* buttonsSizer = new wxStdDialogButtonSizer;
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer23, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton24->SetDefault();
-  itemStdDialogButtonSizer23->AddButton(itemButton24);
-
-  itemStdDialogButtonSizer23->Realize();
+  mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxButton* okButton = new wxButton( currDialog, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  okButton->SetDefault();
+  buttonsSizer->AddButton(okButton);
+  buttonsSizer->Realize();
 
   // Set validators
-  itemStaticText3->SetValidator( wxGenericValidator(& m_database) );
-  itemStaticText15->SetValidator( wxGenericValidator(& m_databaseformat) );
-  itemStaticText16->SetValidator( wxGenericValidator(& m_numgroups) );
-  itemStaticText17->SetValidator( wxGenericValidator(& m_numentries) );
-  itemStaticText18->SetValidator( wxGenericValidator(& m_wholastsaved) );
-  itemStaticText19->SetValidator( wxGenericValidator(& m_whenlastsaved) );
-  itemStaticText20->SetValidator( wxGenericValidator(& m_whatlastsaved) );
-  itemStaticText21->SetValidator( wxGenericValidator(& m_file_uuid) );
-  itemStaticText22->SetValidator( wxGenericValidator(& m_unknownfields) );
+  dbPathText->SetValidator( wxGenericValidator(& m_database) );
+  dbFormatText->SetValidator( wxGenericValidator(& m_databaseformat) );
+  numGroupsText->SetValidator( wxGenericValidator(& m_numgroups) );
+  entriesText->SetValidator( wxGenericValidator(& m_numentries) );
+  lastSavedUserText->SetValidator( wxGenericValidator(& m_wholastsaved) );
+  lastSavedDateText->SetValidator( wxGenericValidator(& m_whenlastsaved) );
+  lastSavedAppText->SetValidator( wxGenericValidator(& m_whatlastsaved) );
+  uuidText->SetValidator( wxGenericValidator(& m_file_uuid) );
+  unknownFieldsText->SetValidator( wxGenericValidator(& m_unknownfields) );
+
 ////@end CProperties content construction
 }
 

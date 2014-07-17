@@ -989,7 +989,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   wxString example = m_usrbuprefixTxt->GetValue();
 
   if (example.empty())
-    example = _("pwsafe"); // XXXX get current file's basename!
+    example = wxT("pwsafe"); // XXXX get current file's basename!
 
   m_bumaxinc->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
@@ -1001,18 +1001,18 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
     time(&now);
     wxString datetime = PWSUtil::ConvertToDateTimeString(now,
                                                          PWSUtil::TMC_EXPORT_IMPORT).c_str();
-      example += L"_";
+      example += wxT("_");
       example = example + datetime.Left(4) +  // YYYY
         datetime.Mid(5,2) +  // MM
         datetime.Mid(8,2) +  // DD
-        L"_" +
+        wxT("_") +
         datetime.Mid(11,2) +  // HH
         datetime.Mid(14,2) +  // MM
         datetime.Mid(17,2);   // SS
   }
     break;
   case INC_SFX:
-    example += L"_001";
+    example += wxT("_001");
     break;
   default:
     break;

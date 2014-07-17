@@ -204,7 +204,7 @@ void CSafeCombinationEntry::CreateControls()
   m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
   itemBoxSizer9->Add(m_filenameCB, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
 
-  wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, _("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+  wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -258,10 +258,10 @@ void CSafeCombinationEntry::CreateControls()
   m_combinationEntry->SetValidatorTarget(& m_password);
 
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(_("V%d.%d %s"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d %s"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(_("V%d.%d.%d %s"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%d %s"),
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
@@ -437,7 +437,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   wxString newfile;
   wxString cs_msg, cs_title, cs_temp;
 
-  wxString cf(_("pwsafe")); // reasonable default for first time user
+  wxString cf(wxT("pwsafe")); // reasonable default for first time user
   stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));
   stringT dir = PWSdirs::GetSafeDir();
 

@@ -303,13 +303,13 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
     if (!user.empty())
-      disp += _T(" [") + user + _("]");
+      disp += wxT(" [") + user + wxT("]");
   }
 
   if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
     const wxString passwd = item.GetPassword().c_str();
     if (!passwd.empty())
-      disp += _T(" {") + passwd + _("}");
+      disp += wxT(" {") + passwd + wxT("}");
   }
 
   return disp;
@@ -330,7 +330,7 @@ wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
   for(iter = v.rbegin(); iter != v.rend(); iter++) {
     retval += *iter;
     if ((iter + 1) != v.rend())
-      retval += _(".");
+      retval += wxT(".");
   }
   return retval;
 }
@@ -345,7 +345,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
     if (path.IsEmpty())//parent is root
       return name; //group under root
     else
-      return path + _(".") + name; //sub-group of some (non-root) group
+      return path + wxT(".") + name; //sub-group of some (non-root) group
   }
   else
     return GetPath(item);

@@ -798,7 +798,7 @@ static struct {short pv; wxString name;}
     pcbox->SetClientData(i, reinterpret_cast<void *>(dcaMapping[i].pv));
     if (dcaMapping[i].pv == defDCA) {
       wxString dv = dcaMapping[i].name;
-      dv += _(" ("); dv += _("default"); dv += _(")");
+      dv += wxT(" ("); dv += _("default"); dv += wxT(")");
       pcbox->SetString(i, dv);
     }
     if (iDCA == dcaMapping[i].pv)

@@ -89,7 +89,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   wxString wxbf = wxFileSelector(title,
                                  dir,
                                  currbackup.GetFullName(),
-                                 _("bak"),
+                                 wxT("bak"),
                                  _("Password Safe Backups (*.bak)|*.bak"),
                                  wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
                                  this);
@@ -142,7 +142,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   wxString wxbf = wxFileSelector(_("Please Choose a Backup to restore:"),
                                  dir,
                                  currbackup.GetFullName(),
-                                 _("bak"),
+                                 wxT("bak"),
                                  _("Password Safe Backups (*.bak)|*.bak"),
                                  wxFD_OPEN|wxFD_FILE_MUST_EXIST,
                                  this);

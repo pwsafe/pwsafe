@@ -93,7 +93,7 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
 
     sizer->Add( new wxStaticText(this, wxID_ANY, _("the &following text:")), wxSizerFlags().Border());
 
-    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, _("*"), wxDefaultPosition, wxSize(200, -1));
+    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, wxT("*"), wxDefaultPosition, wxSize(200, -1));
     txtCtrl->SetValidator(wxGenericValidator(&m_criteria->m_subgroupText));
     sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
 

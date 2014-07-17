@@ -67,7 +67,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 
   delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
-  const wxChar* excludes[] = {_("\""), 0};
+  const wxChar* excludes[] = {wxT("\""), 0};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));

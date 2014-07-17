@@ -7,7 +7,7 @@
  */
 
 /** \file PwsSync.cpp
-* 
+*
 */
 
 
@@ -43,7 +43,7 @@
 
 /*!
  * SyncData class declaration
- * 
+ *
  * Sync data and options shared and updated by all pages
  */
 struct SyncData {
@@ -58,7 +58,7 @@ struct SyncData {
 
 /*!
  * SyncWizardPage class declaration
- * 
+ *
  * Base class from which all other Sync wizard pages are derived.  Each page
  * must overload the "SaveData" function
  */
@@ -68,7 +68,7 @@ protected:
   SyncData* m_syncData;
   typedef enum {BACKWARD, FORWARD} PageDirection;
   wxBoxSizer* m_pageSizer;
-  
+
 public:
   SyncWizardPage(wxWizard* parent, SyncData* data, const wxString& pageHeader);
   virtual void SaveData(SyncData* data) = 0;
@@ -87,8 +87,8 @@ public:
 
 /*!
  * SyncStartPage class declaration
- * 
- * First page of the synchronization wizard.  Only displays a 
+ *
+ * First page of the synchronization wizard.  Only displays a
  * welcome message and explains the functionality
  */
 class SyncStartPage : public SyncWizardPage
@@ -101,7 +101,7 @@ public:
 
 /*!
  * DbSelectionPage class declaration
- * 
+ *
  * Second page of the synchronization wizard.  Lets the user chose
  * the DB to synchronize with and enter its combination
  */
@@ -124,7 +124,7 @@ struct SyncFieldSelection {
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
     return false;
   }
-  
+
   static bool IsPreselectedField(CItemData::FieldType /*field*/) {
     return true;
   }
@@ -150,7 +150,7 @@ struct SyncFieldSelection {
 
 /*!
  * SyncFieldSelectionPage class declaration
- * 
+ *
  * Third page of the synchronization wizard.  Lets the user chose
  * which fields to synchronize
  */
@@ -169,7 +169,7 @@ public:
 
 /*!
  * SyncOptionsSummaryPage class declaration
- * 
+ *
  * Fourth page of the synchronization wizard.  Presents the summary of selected
  * options in a language the user would understand
  */
@@ -181,14 +181,14 @@ class SyncOptionsSummaryPage: public SyncWizardPage
 
 public:
   SyncOptionsSummaryPage(wxWizard* parent, SyncData* data);
-  
+
   virtual void OnPageEnter(PageDirection dir);
   virtual void SaveData(SyncData* /*data*/) {}
 };
 
 /*!
  * SyncStatusPage class declaration
- * 
+ *
  * Final page of the synchronization wizard, where all the synchronization happens
  * Either shows a progressbar followed by a success/error message, or an error
  * if the sync couldn't even be started
@@ -196,7 +196,7 @@ public:
 class SyncStatusPage: public SyncWizardPage
 {
   enum {ID_HEADER_TXT = 100, ID_PROGRESS_TXT, ID_GAUGE, ID_FINISH_TXT, ID_SHOW_REPORT};
-  
+
   void SetSyncSummary(const wxString& str);
   void SetProgressText(const wxString& str);
   void SetHeaderText(const wxString& str);
@@ -208,7 +208,7 @@ class SyncStatusPage: public SyncWizardPage
 
 public:
   SyncStatusPage(wxWizard* parent, SyncData* data);
-  
+
   virtual void SaveData(SyncData* /*data*/) {}
   virtual void OnPageEnter(PageDirection dir);
 };
@@ -221,7 +221,7 @@ BEGIN_EVENT_TABLE(PwsSyncWizard, wxWizard)
   EVT_WIZARD_PAGE_CHANGING(wxID_ANY, PwsSyncWizard::OnWizardPageChanging)
 END_EVENT_TABLE()
 
-PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core): 
+PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
                 m_page1(0), m_syncData(new SyncData)
 {
@@ -241,21 +241,21 @@ PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
   m_syncData->showReport = false;
 
   m_page1 = new SyncStartPage(this, m_syncData);
-  
+
   DbSelectionPage*        page2 = new DbSelectionPage(this, m_syncData);
   SyncFieldSelectionPage* page3 = new SyncFieldSelectionPage(this, m_syncData);
   SyncOptionsSummaryPage* page4 = new SyncOptionsSummaryPage(this, m_syncData);
   SyncStatusPage*         page5 = new SyncStatusPage(this, m_syncData);
-  
+
   m_page1->SetNext(page2);
   page2->SetPrev(m_page1);
 
   page3->SetPrev(page2);
   page2->SetNext(page3);
-  
+
   page3->SetNext(page4);
   page4->SetPrev(page3);
-  
+
   page4->SetNext(page5);
 
   GetPageAreaSizer()->Add(m_page1);
@@ -302,7 +302,7 @@ BEGIN_EVENT_TABLE(SyncWizardPage, wxWizardPageSimple)
   EVT_WIZARD_PAGE_CHANGED( wxID_ANY, SyncWizardPage::OnWizardPageChanged)
 END_EVENT_TABLE()
 
-SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data, 
+SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data,
                                   const wxString& pageHeader): wxWizardPageSimple(parent),
                                                                m_syncData(data),
                                                                m_pageSizer(new wxBoxSizer(wxVERTICAL))
@@ -324,7 +324,7 @@ void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
-  
+
   if (!page->OnPageLeave(evt.GetDirection()? FORWARD: BACKWARD))
     evt.Veto();
 
@@ -336,7 +336,7 @@ void SyncWizardPage::OnWizardPageChanged(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
-  
+
   page->OnPageEnter(evt.GetDirection()? FORWARD: BACKWARD);
 
   //must always do this, to let the wizard see the event as well
@@ -360,14 +360,14 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
   sizer->Add(new wxStaticText(this, wxID_ANY, explanation), wxSizerFlags().Expand().Proportion(0).Border());
 
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, _("More Info"));
-  
+
   const wxChar* helpItems[] = {
     _("1. Two entries from different databases match if their Group, Title\nand User fields match."),
     _("2. You can select the fields to update, as well as filter the entries\nfor synchronization."),
     _("3. Only existing entries in your database are updated.  No new entries are\nadded or existing entries removed during this process."),
     _("4. You can undo the operation once it is complete, but won't be\nable to abort it mid-way.")
   };
-  
+
   wxBoxSizer* paneSizer = new wxBoxSizer(wxVERTICAL);
   for (size_t idx = 0; idx < NumberOf(helpItems); ++idx) {
     paneSizer->Add(new wxStaticText(pane->GetPane(), wxID_ANY, helpItems[idx]), wxSizerFlags().Expand().Border().Proportion(1));
@@ -384,7 +384,7 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data):
                              SyncWizardPage(parent, data, _("Select another database"))
 {
-  const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << _("\""));
+  const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << wxT("\""));
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Synchronize with current database"));
 
   wxBoxSizer* sizer = m_pageSizer;
@@ -411,7 +411,7 @@ SyncFieldSelectionPage::SyncFieldSelectionPage(wxWizard* parent, SyncData* data)
                                SyncWizardPage(parent, data, _("Synchronization options"))
 {
   wxBoxSizer* sizer = m_pageSizer;
-  
+
   m_panel = new SyncFieldSelectionPanel(this, &data->selCriteria, false);
   m_panel->CreateControls(this);
   sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
@@ -440,7 +440,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   wxSizerFlags flags = wxSizerFlags().Expand().Proportion(0).Border(wxLEFT+wxRIGHT, SideMargin);
   wxSizerFlags gridFlags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT+wxRIGHT, SideMargin*2);
   wxBoxSizer* sizer = m_pageSizer;
-  
+
   sizer->Add(new wxStaticText(this, ID_DESC, wxEmptyString), flags.Proportion(1));
   sizer->AddSpacer(RowSeparation);
 
@@ -462,7 +462,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   wxStaticText* txtWarn = new wxStaticText(this, wxID_ANY, warning);
   txtWarn->SetForegroundColour(*wxRED);
   sizer->Add(txtWarn, flags.Proportion(0).Bottom());
-  
+
   SetSizerAndFit(sizer);
 }
 
@@ -473,7 +473,7 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
 
   m_updatedFieldsGrid->Clear(true);
   m_notUpdatedFieldsGrid->Clear(true);
-  
+
   wxString description = m_syncData->selCriteria.GetGroupSelectionDescription();
   description << _(" will be updated with corresponding entries from \"")
               << m_syncData->otherDB.GetFullPath() << wxT('"');
@@ -579,7 +579,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
       SetSyncSummary(_("File Read Error"));
     }
   }
-  
+
   GetSizer()->Layout();
 }
 
@@ -588,9 +588,9 @@ void SyncStatusPage::OnSyncStartEvent(wxCommandEvent& evt)
   PWScore* otherCore = reinterpret_cast<PWScore*>(evt.GetClientData());
   wxASSERT_MSG(otherCore, wxT("Sync Start Event did not arrive with the other PWScore"));
   Synchronize(m_syncData->core, otherCore);
-  
+
   SetHeaderText(wxString::Format(_("Your database has been synchronized with \"%s\""), otherCore->GetCurFile().c_str()));
-  SetProgressText(wxString::Format(_("%d %s updated"), m_syncData->numUpdated, 
+  SetProgressText(wxString::Format(_("%d %s updated"), m_syncData->numUpdated,
                       m_syncData->numUpdated == 1? _("entry"): _("entries")));
   SetSyncSummary(_("Synchronization completed successfully"));
 
@@ -665,7 +665,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   pmulticmds->Add(pcmd1);
   const SelectionCriteria& criteria = m_syncData->selCriteria;
   const stringT subgroup_name = tostdstring(criteria.SubgroupSearchText());
-  
+
   wxGauge* gauge = wxDynamicCast(FindWindow(ID_GAUGE), wxGauge);
   gauge->SetRange(int(otherCore->GetNumEntries()));
 
@@ -687,17 +687,17 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     const StringX otherTitle = otherItem.GetTitle();
     const StringX otherUser = otherItem.GetUser();
 
-    const StringX sx_updated = StringX(L"\xab") + 
-                           otherGroup + StringX(L"\xbb \xab") + 
+    const StringX sx_updated = StringX(L"\xab") +
+                           otherGroup + StringX(L"\xbb \xab") +
                            otherTitle + StringX(L"\xbb \xab") +
                            otherUser  + StringX(L"\xbb");
 
     SetProgressText((wxString() << currentIndex << wxT(": ")) + towxstring(sx_updated));
     wxSafeYield();
 
-    if (criteria.HasSubgroupRestriction() && !otherItem.Matches(subgroup_name, criteria.SubgroupObject(), criteria.SubgroupFunctionWithCase())) 
+    if (criteria.HasSubgroupRestriction() && !otherItem.Matches(subgroup_name, criteria.SubgroupObject(), criteria.SubgroupFunctionWithCase()))
       continue;
-    
+
     ItemListConstIter foundPos = currentCore->Find(otherGroup, otherTitle, otherUser);
 
     if (foundPos != currentCore->GetEntryEndIter()) {
@@ -744,7 +744,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     const wxChar* cs_singular_plural_type = (numUpdated == 1 ? _("entry") : _("entries"));
     const wxChar* cs_singular_plural_verb = (numUpdated == 1 ? _("was") : _("were"));
-    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:"), cs_singular_plural_type, 
+    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:"), cs_singular_plural_type,
                                                                 cs_singular_plural_verb);
     rpt.WriteLine(static_cast<const wxChar*>(resultStr));
     for (size_t i = 0; i < vs_updated.size(); i++) {
@@ -757,7 +757,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   currentCore->Execute(pmulticmds);
-      
+
   /* tell the user we're done & provide short merge report */
   const wxChar* cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));
   wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %s updated"), numUpdated, cs_entries);
@@ -773,7 +773,7 @@ void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operati
   line << _(" were ") << operation << _(" with corresponding entries from \"")
               << m_syncData->otherDB.GetFullPath() << wxT('"');
   rpt->WriteLine(static_cast<const wxChar*>(line));
-  
+
   wxArrayString fieldsSelected, fieldsNotSelected;
   const bool allSelected = m_syncData->selCriteria.GetFieldSelection(fieldsSelected, fieldsNotSelected);
   if (allSelected) {

@@ -135,8 +135,8 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxMenuItem* findItem = m_parentFrame->GetMenuBar()->FindItem(wxID_FIND, &editMenu);
   if (findItem && editMenu)  {
       //Is there a way to do this without hard-coding the insert position?
-      editMenu->Insert(FIND_MENU_POSITION, ID_EDITMENU_FIND_NEXT, _("&Find next...\tF3"), _T(""), wxITEM_NORMAL);
-      editMenu->Insert(FIND_MENU_POSITION+1, ID_EDITMENU_FIND_PREVIOUS, _("&Find previous...\tSHIFT+F3"), _T(""), wxITEM_NORMAL);
+      editMenu->Insert(FIND_MENU_POSITION, ID_EDITMENU_FIND_NEXT, _("&Find next...\tF3"), wxT(""), wxITEM_NORMAL);
+      editMenu->Insert(FIND_MENU_POSITION+1, ID_EDITMENU_FIND_PREVIOUS, _("&Find previous...\tSHIFT+F3"), wxT(""), wxITEM_NORMAL);
       editMenu->Delete(findItem);
   }
 }
@@ -203,7 +203,7 @@ void PasswordSafeSearch::HideSearchToolbar()
     if (findPreviousItem)
       editMenu->Delete(findPreviousItem);
 
-    editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
+    editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), wxT(""), wxITEM_NORMAL);
   }
 }
 

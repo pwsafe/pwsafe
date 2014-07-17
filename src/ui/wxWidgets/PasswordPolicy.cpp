@@ -191,10 +191,10 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwpUseUpperCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -207,10 +207,10 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwpUseDigitsCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -223,10 +223,10 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText23 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText25 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText25 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText25, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwpSymCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX6, _("Use symbols (i.e., ., %, $, etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -239,10 +239,10 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText28 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText30 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText30 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_OwnSymbols = new wxTextCtrl( itemDialog1, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxSize(220, -1), 0 );

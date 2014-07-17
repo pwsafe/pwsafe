@@ -34,19 +34,19 @@ BEGIN_EVENT_TABLE( MergeDlg, wxDialog )
 END_EVENT_TABLE()
 
 
-MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) : 
+MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)
 {
-  const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) << 
-                                          towxstring(m_core->GetCurFile()) << _("\""));
+  const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
+                                          towxstring(m_core->GetCurFile()) << wxT("\""));
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Merge into current database"));
-  
+
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
-  
+
   //4th arg = true means the panel validates automatically
   m_dbPanel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, true, core, 2);
-  
+
   dlgSizer->Add(m_dbPanel, wxSizerFlags().Expand().Proportion(1).Border());
 
   dlgSizer->AddSpacer(RowSeparation);
@@ -70,19 +70,19 @@ MergeDlg::~MergeDlg()
 }
 
 SelectionCriteria MergeDlg::GetSelectionCriteria() const
-{ 
-  return *m_selection; 
+{
+  return *m_selection;
 }
 
 struct AdvancedMergeOptions {
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced Merge Options");
   }
-  
+
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
     return false;
   }
-  
+
   static bool IsPreselectedField(CItemData::FieldType /*field*/) {
     wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
     return true;
@@ -110,12 +110,12 @@ void MergeDlg::OnAdvancedSelection(wxCommandEvent& )
   dlg.ShowModal();
 }
 
-wxString MergeDlg::GetOtherSafePath() const 
-{ 
-  return m_dbPanel->m_filepath; 
+wxString MergeDlg::GetOtherSafePath() const
+{
+  return m_dbPanel->m_filepath;
 }
 
 StringX MergeDlg::GetOtherSafeCombination() const
-{ 
-  return m_dbPanel->m_combination; 
+{
+  return m_dbPanel->m_combination;
 }

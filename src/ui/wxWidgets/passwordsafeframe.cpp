@@ -962,10 +962,10 @@ int PasswordSafeFrame::SaveIfChanged()
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
-      prompt += _(": ");
+      prompt += wxT(": ");
       prompt += m_core.GetCurFile().c_str();
     }
-    prompt += _T("?");
+    prompt += wxT("?");
     wxMessageDialog dlg(this, prompt, GetTitle(),
                         (wxICON_QUESTION | wxCANCEL |
                          wxYES_NO | wxYES_DEFAULT));
@@ -1051,7 +1051,7 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 {
   stringT dir = PWSdirs::GetSafeDir();
   //Open-type dialog box
-  wxFileDialog fd(this, title, dir.c_str(), _("pwsafe.psafe3"),
+  wxFileDialog fd(this, title, dir.c_str(), wxT("pwsafe.psafe3"),
                   _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
@@ -1250,7 +1250,7 @@ int PasswordSafeFrame::SaveAs()
 
   StringX cf(m_core.GetCurFile());
   if(cf.empty()) {
-    cf = _("pwsafe"); // reasonable default for first time user
+    cf = wxT("pwsafe"); // reasonable default for first time user
   }
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
 
@@ -2166,7 +2166,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   wxString cs_msg, cs_title, cs_temp;
   wxString cs_text(_("Please choose a name for the new database"));
 
-  wxString cf(_("pwsafe")); // reasonable default for first time user
+  wxString cf(wxT("pwsafe")); // reasonable default for first time user
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(tostdstring(cf), DEFAULT_SUFFIX));
   wxString dir = towxstring(PWSdirs::GetSafeDir());
   int rc;
