@@ -423,8 +423,13 @@ void CWZSelectDB::OnEnterCombination()
   PKBaseDlg.StartThread(IDD_SDGETPHRASE, hCurrentMonitor);
 
   if (PKBaseDlg.m_GMP.bPhraseEntered) {
+    const UINT nID = m_pWZPSH->GetID();
+    const bool bOtherIsDB = nID == ID_MENUITEM_COMPARE ||
+      nID == ID_MENUITEM_MERGE   ||
+      nID == ID_MENUITEM_SYNCHRONIZE;
+    const StringX sxFilename(bOtherIsDB ? m_filespec.GetString() : m_pWZPSH->WZPSHGetCurFile());
     m_passkey = PKBaseDlg.m_GMP.sPhrase.c_str();
-    if (m_passkey.GetLength() > 0 && ProcessPhrase(m_pWZPSH->WZPSHGetCurFile(), m_passkey))
+    if (m_passkey.GetLength() > 0 && ProcessPhrase(sxFilename, m_passkey))
       m_state |= KEYPRESENT;
     else
       m_state &= ~KEYPRESENT;
