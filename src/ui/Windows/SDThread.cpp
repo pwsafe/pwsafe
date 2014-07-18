@@ -48,10 +48,10 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
 template<class T> void  RDLL_LoadAString(HINSTANCE hInstResDLL, T &s, int id)
 {
-  // No MFC (LoadAString)
+  // Load a String from the Application or Resource DLL (can't use MFC approach
+  // or MFC CString class)
   TCHAR *psBuffer;
-  int len = LoadString(hInstResDLL, id,
-    reinterpret_cast<LPTSTR>(&psBuffer), 0);
+  int len = LoadString(hInstResDLL, id, reinterpret_cast<LPTSTR>(&psBuffer), 0);
 
   if (len)
     s = T(psBuffer, len);
@@ -124,8 +124,6 @@ static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lP
       It can NOT be intercepted by any application program.
    2. "Win + L" = Windows Lock Workstation. This is controlled by a Registry Entry:
         HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableLockWorkstation
-   3. "Ctrl + Shift + Esc" - Start Task Manager. This is controlled by a Registry Entry:
-        HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskmgr
   */
 
   if (nCode < 0 || nCode != HC_ACTION)  // Do not process message
@@ -235,6 +233,18 @@ DWORD CSDThread::ThreadProc()
     CheckDesktop();
   } while (m_bDesktopPresent);
 
+  // Windows starts a copy of ctfmon.exe per Desktop for support of Microsoft Text
+  // Services. Ctfmon.exe will also prevent a new Desktop closing after all Windows
+  // on it have closed.
+  // After the thread thread has switched back to the original desktop (but before
+  // the new Desktop is closed), we terminate all processes running on that new
+  // Desktop.  This includes ctfmon.exe.
+
+  // Try to create the necessary Security Attributes i.e. only giving the
+  // current user Desktop specific access rights and standard access to the Desktop
+  // On systems running NVIDIA Display Driver Service (nvsvc), it will normally stop CloseDesktop
+  // completing the close.  By setting these Security Asttributes, nvsvc is prevented from
+  // grabbing the new Desktop.
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
 
@@ -243,8 +253,6 @@ DWORD CSDThread::ThreadProc()
   PACL pACL(NULL);
   PSID pCurrentUserSID(NULL);
 
-  // Try to create the necessary Security Attributes
-  // If successful, it may prevent other tasks grabbing the Desktop (cf. NVidia Service)
   bool bSA_Created = CreateSA(sa, pSD, pACL, pCurrentUserSID);
 
   pws_os::Trace(L"NewDesktop %s\n", m_sDesktopName.c_str());
@@ -267,25 +275,6 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= NEWDESKTOCREATED;
 
-  // Windows starts a copy of ctfmon.exe per Desktop for support of Microsoft Text
-  // Services. Also, Microsoft's IMM (Input Method Manager) allows an application to
-  // communicate with an input method editor (IME), which runs as a service.
-  // The IME allows computer users to enter complex characters and symbols, such
-  // as Japanese kanji characters, by using a standard keyboard.
-  // Ctfmon.exe activates the Alternative User Input Text Input Processor(TIP) and
-  // the Microsoft Office Language Bar.  It monitors the active windows and provides
-  // text input service support for speech recognition, handwriting recognition, keyboard,
-  // translation, and other alternative user input technologies.
-
-  // Ctfmon.exe will also prevent a new Desktop closing after all Windows on it have closed.
-
-  // On systems running NVIDIA Display Driver Service (nvsvc), CloseDesktop will also
-  // NOT close the new Desktop until the service is stopped or stopped/restarted.
-  // A Bug Report has been raised with NVidia.
-
-  // THERE MAY BE OTHER PROGRAMS OR SERVICES THAT WILL STOP NEW DESKTOPS CLOSING
-  // UNTIL THEY END (PROGRAMS) OR ARE STOPPED (SERVICES).
-
   if (!SetThreadDesktop(m_hNewDesktop)) {
     dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
     ASSERT(0);
@@ -298,7 +287,7 @@ DWORD CSDThread::ThreadProc()
 
   // Ensure we don't use an existing Window Class Name (very unlikely but....)
   do {
-    //Create random Modeless Overlayed Background Window Class Name
+    // Create random Modeless Overlayed Background Window Class Name
     sxTemp = sxPrefix.substr(1, 1) + policy.MakeRandomPassword();
 
     m_sBkGrndClassName = sxTemp.c_str();
@@ -467,11 +456,13 @@ DWORD CSDThread::ThreadProc()
   xFlags &= ~REGISTEREDWINDOWCLASS;
 
 #ifndef NO_NEW_DESKTOP
-  // The following 2 calls must be in this order to ensure the new desktop is
-  // correctly deleted when finished with
-
   if (xFlags & SWITCHEDDESKTOP) {
-    // Switch back to the initial desktop
+    // Switch back to the initial desktop - due to the possibility that
+    // the user may have locked the screen (manually or automatically),
+    // or the computer may have gone to sleep/hibernated, we can't switch
+    // back to the original Desktop if the MS WinLogon Desktop has control.
+    // We have to wait (and keep on trying) until the user's original Desktop
+    // is back in control - hence this loop.
     pws_os::Trace(L"ThreadProc SwitchDesktop\n");
     while (!SwitchDesktop(m_hOriginalDesk)) {
       pws_os::Trace(L"SwitchDesktop(m_hOriginalDesk)\n");
@@ -487,7 +478,7 @@ DWORD CSDThread::ThreadProc()
   }
 
   if (xFlags & SETTHREADDESKTOP) {
-    // Switch thread back to initial desktop
+    // Switch thread back to original Desktop
     if (!SetThreadDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
       ASSERT(0);
@@ -497,7 +488,7 @@ DWORD CSDThread::ThreadProc()
     xFlags &= ~SETTHREADDESKTOP;
   }
 
-  // Now that thread is ending - close new desktop
+  // Now that thread is ending - close new Desktop
   if (xFlags & NEWDESKTOCREATED) {
     // Terminate processes still on new Desktop BEFORE we close it
     TerminateProcesses();
@@ -833,7 +824,8 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
     case WM_QUIT:
     {
-      // Special handling for generated WM_QUIT message, which it would NEVER EVER get normally
+      // Special handling for self generated WM_QUIT message, which it would NEVER EVER
+      // get normally as this message cancels the standard Windows Message Loop
       ASSERT(self);
 
       self->OnQuit();
@@ -1110,7 +1102,7 @@ void CSDThread::OnInitDialog()
   int wWidth = wRect.right - wRect.left;
   int wHeight = wRect.bottom - wRect.top;
 
-  // Centre it
+  // Centre it on the current monitor
   int wLeft = mi.rcMonitor.left + (mi.rcMonitor.right - mi.rcMonitor.left - wWidth) / 2;
   int wTop = mi.rcMonitor.top + (mi.rcMonitor.bottom - mi.rcMonitor.top - wHeight) / 2;
 
