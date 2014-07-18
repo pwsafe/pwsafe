@@ -410,7 +410,7 @@ void CWZSelectDB::OnAdvanced()
 
 void CWZSelectDB::OnEnterCombination()
 {
-  // Only needed for its thread processing - never dispays its own dialog (no DoModal etc.)
+  // Only needed for its thread processing - never displays its own dialog (no DoModal etc.)
   CPKBaseDlg PKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
 
   // Avoid polling Yubikey from > 1 thread
@@ -424,7 +424,7 @@ void CWZSelectDB::OnEnterCombination()
 
   if (PKBaseDlg.m_GMP.bPhraseEntered) {
     m_passkey = PKBaseDlg.m_GMP.sPhrase.c_str();
-    if (m_passkey.GetLength() > 0)
+    if (m_passkey.GetLength() > 0 && ProcessPhrase(m_pWZPSH->WZPSHGetCurFile(), m_passkey))
       m_state |= KEYPRESENT;
     else
       m_state &= ~KEYPRESENT;
