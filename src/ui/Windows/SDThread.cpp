@@ -181,15 +181,6 @@ static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lP
 
 DWORD CSDThread::ThreadProc()
 {
-  // Disable Windows shortcuts
-  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
-  if (g_hKeyboardHook == NULL) {
-    ASSERT(0);
-  } else {
-    // Update Progress
-    xFlags |= KEYBOARDHOOKINSTALLED;
-  }
-
   WNDCLASS wc = { 0 };
 
   StringX sxTemp, sxPrefix;
@@ -246,7 +237,8 @@ DWORD CSDThread::ThreadProc()
   // completing the close.  By setting these Security Asttributes, nvsvc is prevented from
   // grabbing the new Desktop.
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
+    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | DESKTOP_HOOKCONTROL |
+    STANDARD_RIGHTS_REQUIRED;
 
   SECURITY_ATTRIBUTES sa;
   PSECURITY_DESCRIPTOR pSD(NULL);
@@ -268,7 +260,7 @@ DWORD CSDThread::ThreadProc()
 
   if (m_hNewDesktop == NULL) {
     dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
-    ASSERT(m_hNewDesktop);
+    ASSERT(0);
     goto BadExit;
   }
 
@@ -318,7 +310,7 @@ DWORD CSDThread::ThreadProc()
 
     if (!hwndBkGrndWindow) {
       dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
-      ASSERT(hwndBkGrndWindow);
+      ASSERT(0);
       goto BadExit;
     }
 
@@ -369,6 +361,16 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags |= SWITCHEDDESKTOP;
 #endif
+
+  // Disable Windows shortcuts
+  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
+  if (g_hKeyboardHook == NULL) {
+    dwError = pws_os::IssueError(_T("SetWindowsHookEx - WH_KEYBOARD_LL"), false);
+    ASSERT(0);
+  } else {
+    // Update Progress
+    xFlags |= KEYBOARDHOOKINSTALLED;
+  }
 
   m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstResDLL, MAKEINTRESOURCE(m_wDialogID),
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
@@ -455,6 +457,15 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags &= ~REGISTEREDWINDOWCLASS;
 
+  if (xFlags & KEYBOARDHOOKINSTALLED) {
+    // Remove Low Level Keyboard hook
+    UnhookWindowsHookEx(g_hKeyboardHook);
+    g_hKeyboardHook = NULL;
+
+    // Update Progress
+    xFlags &= ~KEYBOARDHOOKINSTALLED;
+  }
+
 #ifndef NO_NEW_DESKTOP
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop - due to the possibility that
@@ -498,20 +509,12 @@ DWORD CSDThread::ThreadProc()
     if (!CloseDesktop(m_hNewDesktop)) {
       dwError = pws_os::IssueError(_T("CloseDesktop (new)"), false);
       ASSERT(0);
+    } else {
+      // Update Progress
+      xFlags &= ~NEWDESKTOCREATED;
     }
   }
-  // Update Progress
-  xFlags &= ~NEWDESKTOCREATED;
 #endif
-
-  if (xFlags & KEYBOARDHOOKINSTALLED) {
-    // Remove Low Level Keyboard hook
-    UnhookWindowsHookEx(g_hKeyboardHook);
-    g_hKeyboardHook = NULL;
-
-    // Update Progress
-    xFlags &= ~KEYBOARDHOOKINSTALLED;
-  }
 
   // Clear variables - just in case someone decides to reuse this instance
   m_pVKeyBoardDlg = NULL;
@@ -531,6 +534,7 @@ BadExit:
     // Update Progress
     xFlags &= ~VIRTUALKEYBOARDCREATED;
   }
+
   if (xFlags & MASTERPHRASEDIALOGCREATED) {
     // Destroy master phrase dialog window
     DestroyWindow(m_hwndMasterPhraseDlg);
@@ -538,6 +542,7 @@ BadExit:
     // Update Progress
     xFlags &= ~MASTERPHRASEDIALOGCREATED;
   }
+
   if (xFlags & BACKGROUNDWINDOWSCREATED || xFlags & MONITORIMAGESCREATED) {
     // Destroy background layered window's, images & monitor DCs
     for (MonitorImageInfoIter it = m_vMonitorImageInfo.begin(); it != m_vMonitorImageInfo.end(); it++) {
@@ -552,6 +557,7 @@ BadExit:
     // Update Progress
     xFlags &= ~(BACKGROUNDWINDOWSCREATED | MONITORIMAGESCREATED);
   }
+
   if (xFlags & REGISTEREDWINDOWCLASS) {
     // Unregister background windows' registered class
     UnregisterClass(m_sBkGrndClassName.c_str(), m_hInstance);
@@ -559,6 +565,16 @@ BadExit:
     // Update Progress
     xFlags &= ~REGISTEREDWINDOWCLASS;
   }
+
+  if (xFlags & KEYBOARDHOOKINSTALLED) {
+    // Remove Low Level Keyboard hook
+    UnhookWindowsHookEx(g_hKeyboardHook);
+    g_hKeyboardHook = NULL;
+
+    // Update Progress
+    xFlags &= ~KEYBOARDHOOKINSTALLED;
+  }
+
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop
     while (!SwitchDesktop(m_hOriginalDesk)) {
@@ -571,14 +587,16 @@ BadExit:
     // Update Progress
     xFlags &= ~SWITCHEDDESKTOP;
   }
+
   if (xFlags & SETTHREADDESKTOP) {
     // Switch thread back to initial desktop
     if (!SetThreadDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original (bad exit)"), false);
       ASSERT(0);
+    } else {
+      // Update Progress
+      xFlags &= ~SETTHREADDESKTOP;
     }
-    // Update Progress
-    xFlags &= ~SETTHREADDESKTOP;
   }
   if (xFlags & NEWDESKTOCREATED) {
     // Terminate processes still on new Desktop BEFORE we close it
@@ -589,15 +607,6 @@ BadExit:
 
     // Update Progress
     xFlags &= ~NEWDESKTOCREATED;
-  }
-
-  if (xFlags & KEYBOARDHOOKINSTALLED) {
-    // Remove Low Level Keyboard hook
-    UnhookWindowsHookEx(g_hKeyboardHook);
-    g_hKeyboardHook = NULL;
-
-    // Update Progress
-    xFlags &= ~KEYBOARDHOOKINSTALLED;
   }
 
   // Clear variables - just in case someone decides to reuse this instance
@@ -1749,7 +1758,8 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   // The ACE will allow the current user Desktop specific access rights and
   // standard access to the Desktop
   ea[0].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | STANDARD_RIGHTS_REQUIRED;
+    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | DESKTOP_HOOKCONTROL |
+    STANDARD_RIGHTS_REQUIRED;
   ea[0].grfAccessMode = SET_ACCESS;
   ea[0].grfInheritance = NO_INHERITANCE;
   ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
