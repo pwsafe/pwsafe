@@ -12,6 +12,11 @@ New Features for 3.34
 =====================
 [753] A Password Safe database can be opened by drag & drop to the
 Password Safe application window.
+[750] Password Safe supports Windows' Secure Desktop functionality to
+help protect the master passphrase ("Combination") from being
+intercepted when entered. This feature can be enabled or disabled by
+clicking on the new padlock image in all screens in which the master
+passphrase is entered.
 [749]	Clicking or double-clicking on a previous password in an entry's
 Password History selects it.
 [746]	Password Policy "Special Symbol Set" simplified.
@@ -35,11 +40,6 @@ Control key's pressed when icon's clicked upon.
 
 New Features for 3.33
 =====================
-[750] Password Safe supports Windows' Secure Desktop functionality to
-help protect the master passphrase ("Combination") from being
-intercepted when entered. This feature can be enabled or disabled by
-clicking on the new padlock image in all screens in which the master
-passphrase is entered.
 [728] The default delay between characters on autotype is now
 configurable.
 
