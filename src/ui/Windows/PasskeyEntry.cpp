@@ -730,13 +730,11 @@ void CPasskeyEntry::SetOKButton(bool bEmptyDB, bool bSetFocus) {
     if (bSetFocus)
       m_pctlPasskey->SetFocus();
 
-    m_ctlEnterCombination.EnableWindow(FALSE);
     m_ctlOK.EnableWindow(TRUE);
   } else {
     CString csText(MAKEINTRESOURCE(bEmptyDB ? IDS_OK : IDS_ENTERCOMBINATION));
 
     m_ctlEnterCombination.SetWindowText(csText);
-    m_ctlOK.EnableWindow(FALSE);
     m_ctlEnterCombination.EnableWindow(TRUE);
   }
 }
