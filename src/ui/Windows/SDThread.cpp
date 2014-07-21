@@ -30,10 +30,6 @@
 #include <tlhelp32.h>
 #include <algorithm>
 
-// Required for Low Level Keyboard hook - can't be a member variable as the hook
-// code can't be in this class.
-static HHOOK g_hKeyboardHook;
-
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
@@ -98,9 +94,6 @@ BOOL CSDThread::InitInstance()
   // Clear progress flags
   xFlags = 0;
 
-  // Clear Low Level Keyboard hook
-  g_hKeyboardHook = NULL;
-
   // Get Resource DLL (if any)
   m_hInstResDLL = app.GetResourceDLL();
   if (!m_hInstResDLL)
@@ -114,69 +107,6 @@ DWORD WINAPI CSDThread::SDThreadProc(LPVOID lpParameter)
   CSDThread *self = (CSDThread *)lpParameter;
 
   return self->ThreadProc();
-}
-
-static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-  /*
-   There are a number of key combinations that can not be intercepted programmatically
-   1. "Ctrl + Alt + Del".  This is Windows' "Secure Attention Sequence" and is handled by the Windows Kernel.
-      It can NOT be intercepted by any application program.
-   2. "Win + L" = Windows Lock Workstation. This is controlled by a Registry Entry:
-        HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableLockWorkstation
-  */
-
-  if (nCode < 0 || nCode != HC_ACTION)  // Do not process message
-    return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
-
-  /*
-    If one disables the user pressing VK_LWIN/VK_RWIN (by returning immediately RC=1),
-    the other key will go through automatically and is not what the user intended
-    i.e. User pressed "Win + F" (Find), if the "Win" key is suppressed, then it is as if
-    the user just pressed the "F" key into the passphrase.
-
-    If one ignores the Win keys by checking via (GetAsyncKeyState(VK_LWIN or VK_RWIN) & 0x8000),
-    it can leave the Win key in a pressed condition such that all normal key strokes are ignored
-    and the Win key may remain in this state until cleared (either by SendInput in the calling
-    function in PkBaseDlg or by the user pressing it).
-
-    The current approach sets a flag if a Win key has been pressed and only ignores other key presses
-    if the Win key is still in a down state.  However, for some reason, non-existent Windows hotkeys
-    do go through even in this code.  For example, "Win + F" (Find) is blocked but "Win + A" (not a valid
-    hotkey) goes through a "a" into the passphrase.
-
-    This does not have the drawbacks of the first approach but some "Win + key" combinations appear
-    to be "stored up" e.g. "Win + M" (minimize applications).
- */
-
-  static bool bWinKeyPressed = false;
-
-  KBDLLHOOKSTRUCT *p = (KBDLLHOOKSTRUCT *)lParam;
-  switch (wParam) {
-    // Keys down
-    case WM_KEYDOWN:
-      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN)) {
-        bWinKeyPressed = true;
-      }
-      // Drop through
-    case WM_SYSKEYDOWN:
-      if (bWinKeyPressed)
-        return 1;
-      break;
-
-      // Keys up
-    case WM_KEYUP:
-      if ((p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN)) {
-        bWinKeyPressed = false;
-      }
-      // Drop through
-    case WM_SYSKEYUP:
-      if (bWinKeyPressed)
-        return 1;
-      break;
-  }
-
-  return CallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
 }
 
 DWORD CSDThread::ThreadProc()
@@ -236,8 +166,11 @@ DWORD CSDThread::ThreadProc()
   // On systems running NVIDIA Display Driver Service (nvsvc), it will normally stop CloseDesktop
   // completing the close.  By setting these Security Asttributes, nvsvc is prevented from
   // grabbing the new Desktop.
+
+  // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
+  // passphrase and/or record mouse clicks on the Virtual Keyboard.
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | DESKTOP_HOOKCONTROL |
+    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
     STANDARD_RIGHTS_REQUIRED;
 
   SECURITY_ATTRIBUTES sa;
@@ -362,16 +295,6 @@ DWORD CSDThread::ThreadProc()
   xFlags |= SWITCHEDDESKTOP;
 #endif
 
-  // Disable Windows shortcuts
-  g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)LowLevelKeyboardProc, GetModuleHandle(NULL), 0);
-  if (g_hKeyboardHook == NULL) {
-    dwError = pws_os::IssueError(_T("SetWindowsHookEx - WH_KEYBOARD_LL"), false);
-    ASSERT(0);
-  } else {
-    // Update Progress
-    xFlags |= KEYBOARDHOOKINSTALLED;
-  }
-
   m_hwndMasterPhraseDlg = CreateDialogParam(m_hInstResDLL, MAKEINTRESOURCE(m_wDialogID),
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
 
@@ -457,15 +380,6 @@ DWORD CSDThread::ThreadProc()
   // Update Progress
   xFlags &= ~REGISTEREDWINDOWCLASS;
 
-  if (xFlags & KEYBOARDHOOKINSTALLED) {
-    // Remove Low Level Keyboard hook
-    UnhookWindowsHookEx(g_hKeyboardHook);
-    g_hKeyboardHook = NULL;
-
-    // Update Progress
-    xFlags &= ~KEYBOARDHOOKINSTALLED;
-  }
-
 #ifndef NO_NEW_DESKTOP
   if (xFlags & SWITCHEDDESKTOP) {
     // Switch back to the initial desktop - due to the possibility that
@@ -527,6 +441,9 @@ DWORD CSDThread::ThreadProc()
 
 BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
+  // First clear anything the user has entered
+  m_pGMP->clear();
+
   if (xFlags & VIRTUALKEYBOARDCREATED) {
     // Delete Virtual Keyboard instance
     delete m_pVKeyBoardDlg;
@@ -564,15 +481,6 @@ BadExit:
 
     // Update Progress
     xFlags &= ~REGISTEREDWINDOWCLASS;
-  }
-
-  if (xFlags & KEYBOARDHOOKINSTALLED) {
-    // Remove Low Level Keyboard hook
-    UnhookWindowsHookEx(g_hKeyboardHook);
-    g_hKeyboardHook = NULL;
-
-    // Update Progress
-    xFlags &= ~KEYBOARDHOOKINSTALLED;
   }
 
   if (xFlags & SWITCHEDDESKTOP) {
@@ -948,6 +856,10 @@ INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 
       case IDC_SD_TOGGLE:
         if (iNotificationCode == BN_CLICKED) {
+          // Clear user input
+          m_pGMP->clear();
+
+          // Tell caller to toggle SD
           PostQuitMessage(INT_MAX);
           m_dwRC = INT_MAX;
           return TRUE; // Processed
@@ -1335,6 +1247,7 @@ void CSDThread::OnCancel()
   // Tell TimerProc to do nothing
   m_bDoTimerProcAction = false;
 
+  // Clear user input
   m_pGMP->clear();
 
   if (m_hwndVKeyBoard != NULL) {
@@ -1756,9 +1669,12 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
 
   // Initialize an EXPLICIT_ACCESS structure for an ACE.
   // The ACE will allow the current user Desktop specific access rights and
-  // standard access to the Desktop
+  // standard access to the Desktop.
+
+  // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
+  // passphrase and/or record mouse clicks on the Virtual Keyboard.
   ea[0].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP | DESKTOP_HOOKCONTROL |
+    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
     STANDARD_RIGHTS_REQUIRED;
   ea[0].grfAccessMode = SET_ACCESS;
   ea[0].grfInheritance = NO_INHERITANCE;
