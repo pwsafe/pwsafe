@@ -700,6 +700,14 @@ void CPasskeyEntry::OnEnterCombination()
     return;
   }
 
+  CGeneralMsgBox gmb;
+  if (!pws_os::FileExists(m_filespec.GetString())) {
+    gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
+    if (m_MRU_combo.IsWindowVisible())
+      m_MRU_combo.SetFocus();
+    return;
+  }
+
   // Get passphrase from Secure Desktop
   StartThread(IDD_SDGETPHRASE);
 
