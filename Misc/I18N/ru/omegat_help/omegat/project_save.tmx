@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.2" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.3" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2588,6 +2588,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T220825Z">
         <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Имя политики должно быть не больше 255 символов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; The padlock graphic in the uper left corner indicates whether or not the "Secure Desktop" feature is enabled.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T163514Z" creationid="pm_kan" creationdate="20140721T160504Z">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Изображение замка в левом верхнем углу показывает, включён ли «Защищённый рабочий стол».</seg>
       </tuv>
     </tu>
     <tu>
@@ -5321,6 +5329,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Although we have a solution for this (we send a Tab followed by a Shift+Tab to return to the selected window &lt;u1&gt;only&lt;/u1&gt; when using this Dragbar AutoType image), the side-effect is that you can only use the Dragbar AutoType image to replace any existing string in that window by the expanded AutoType string.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134825Z" creationid="pm_kan" creationdate="20140716T134825Z">
+        <seg>Поэтому &lt;u1&gt;только&lt;/u1&gt; при автонаборе с панели «Dragbar» сначала посылается символ табуляции, а затем Shift+Tab (чтобы обратно вернуться в поле ввода). Побочный эффект этого трюка приводит к тому, что автонабор с панели «Dragbar» заменяет значение поля, а не добавляет ввод к нему.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Although we have a solution for this (we send a Tab followed by a Shift+Tab to return to the selected window &lt;u3&gt;only&lt;/u3&gt; when using this Dragbar AutoType image), the side-effect is that you can only use the Dragbar AutoType image to replace any existing string in that window by the expanded AutoType string.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T115355Z">
@@ -6073,6 +6089,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>By clicking &lt;b0&gt;New...&lt;/b0&gt; from the &lt;b1&gt;Safe Combination Entry&lt;/b1&gt; dialog when the program is started, or from the &lt;b2&gt;"File → New..."&lt;/b2&gt; menu once &lt;b3&gt;Password Safe&lt;/b3&gt; has been opened.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T164117Z" creationid="pm_kan" creationdate="20140721T160235Z">
+        <seg>Щёлкнув по кнопке &lt;b0&gt;Новый...&lt;/b0&gt; в диалоге &lt;b1&gt;Пароль для контейнера&lt;/b1&gt;, выводимом при запуске программы, или через меню &lt;b2&gt;Файл → Создать...&lt;/b2&gt;, которое доступно, если &lt;b3&gt;Password Safe&lt;/b3&gt; уже открыт.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>By clicking &lt;b0&gt;New Database&lt;/b0&gt; from the &lt;b1&gt;Safe Combination Entry&lt;/b1&gt; dialog when the program is started, or from the &lt;b2&gt;File &gt; New Database&lt;/b2&gt; menu once &lt;b3&gt;Password Safe&lt;/b3&gt; has been opened.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113657Z">
@@ -6649,10 +6673,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Clicking on the "Combination..." button will switch the screen to a "Secure Desktop" on which the "Combination" (master passphrase) can be entered in a more secure manner.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T160738Z" creationid="pm_kan" creationdate="20140721T160701Z">
+        <seg>После нажатия на  кнопку «Ввод пароля» произойдёт переключение на «Защищённый рабочий стол», который обеспечивает дополнительную защиту при вводе мастер-пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Clicking on the checkbox enables/disables the row.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T173538Z">
         <seg>Щелчок в поле устанавливает/снимает флажок.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Clicking on the padlock icon will also switch between "secure desktop" and "regular" modes.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T163733Z" creationid="pm_kan" creationdate="20140721T163733Z">
+        <seg>Щелчок по изображению замка позволяет переключаться между «обычным» режимом и режимом «Защищённого рабочего стола».</seg>
       </tuv>
     </tu>
     <tu>
@@ -8890,6 +8930,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>For &lt;s0&gt;YubiKey&lt;/s0&gt; users: In addition to changing the master password as described above, this window allows you to add or remove YubiKey authentication, add or remove additional password authentication, as well as switch the YubiKey that is used to access the current database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T163931Z" creationid="pm_kan" creationdate="20140721T155925Z">
+        <seg>Для тех, кто использует &lt;s0&gt;YubiKey&lt;/s0&gt;: в дополнение к функции смены мастер-пароля, этот диалог позволяет добавить или убрать аутентификацию при помощи YubiKey, установить или убрать пароль, используемый вместе с YubiKey, или привязать к контейнеру другой ключ YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>For English, these would be Alt+F (&lt;u0&gt;F&lt;/u0&gt;ile), Alt+E (&lt;u1&gt;E&lt;/u1&gt;dit), Alt+V (&lt;u2&gt;V&lt;/u2&gt;iew), Alt+M (&lt;u3&gt;M&lt;/u3&gt;anage) and Alt+H (&lt;u4&gt;H&lt;/u4&gt;elp).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T175411Z">
@@ -10162,6 +10210,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If dropped in a window of another application the result will depend on how that application processes the Tab and Shift+Tab characters.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134851Z" creationid="pm_kan" creationdate="20140716T134851Z">
+        <seg>В окнах других приложений результат зависит от того, как обрабатываются символы Tab и Shift+Tab.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If dropped in a window of another application the result will depend on how that application processes the Tab and Shift+Tab characters.&lt;/i1&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T210818Z">
@@ -10434,6 +10490,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If the &lt;i0&gt;control&lt;/i0&gt; key is pressed while clicking on a dragbar icon, the relevant text is copied to the clipboard &lt;e1&gt;in addition&lt;/e1&gt; to being pasted when the mouse button is released.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T135110Z" creationid="pm_kan" creationdate="20140716T135110Z">
+        <seg>Если при щелчке на значке панели «Dragbar» нажата клавиша &lt;i0&gt;Сontrol&lt;/i0&gt;, соответствующий текст &lt;e1&gt;дополнительно&lt;/e1&gt; будет помещён в буфер обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If the AutoType variable is present in the Run Command, AutoType will be performed once the target window is active.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T213209Z">
@@ -10526,6 +10590,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T213843Z">
         <seg>Чтобы отредактировать/просмотреть ссылающийся элемент, щёлкните по нему дважды.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the padlock is closed, then the "OK" button is replaced with one labelled "Combination...".</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T160704Z" creationid="pm_kan" creationdate="20140721T160638Z">
+        <seg>Если замок закрыт, кнопка «ОК» заменяется на «Ввод пароля».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the padlock is closed, then the window is displayed on a "Secure Desktop" on which the "Combination" (master passphrase) can be entered in a more secure manner.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T155125Z" creationid="pm_kan" creationdate="20140721T155125Z">
+        <seg>Если замок закрыт, текущее окно отображено на «Защищённом рабочем столе», который обеспечивает дополнительную защиту при вводе мастер-пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10734,6 +10814,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113628Z">
         <seg>Если вы затрудняетесь в выборе, нажмите кнопку «Продолжить» и используйте пункт меню «Файл»→«Сравнить» для определения различий между текущим контейнером и аварийной резервной копией.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you are using &lt;b0&gt;Password Safe&lt;/b0&gt; for the first time, press the "New..." button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T160126Z" creationid="pm_kan" creationdate="20140721T160126Z">
+        <seg>Если вы используете &lt;b0&gt;Password Safe&lt;/b0&gt; впервые, нажмите на кнопку «Новый...».</seg>
       </tuv>
     </tu>
     <tu>
@@ -13226,6 +13314,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note that the state of this is indicated by an open or closed padlock in the upper left side of the windows that prompt for the master passphrase (e.g., opening a database, unlocking one, changing the master passphrase, etc.).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T163425Z" creationid="pm_kan" creationdate="20140721T163425Z">
+        <seg>Режим работы при вводе мастер-пароля обозначается изображением открытого или закрытого замка в левом верхнем углу окна ввода пароля (при открытии/разблокировании контейнера, смене мастер-пароля, и т. д.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note that this font must be able to display Unicode characters.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152557Z">
@@ -13278,6 +13374,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T203501Z">
         <seg>Заметьте, что последовательность для автонабора может быть переопределена на вкладке &lt;s3&gt;&lt;a4&gt;Разное&lt;/a4&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that you can click on the image to toggle it.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T161027Z" creationid="pm_kan" creationdate="20140721T161027Z">
+        <seg>Вы можете переключить режим ввода пароля, щёлкнув на изображении замка.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13670,6 +13774,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T180651Z">
         <seg>Если контейнер уже открыт, можно открыть другой, нажав &lt;b2&gt;Открыть контейнер&lt;/b2&gt; в меню &lt;b3&gt;Файл&lt;/b3&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Once a database is open, you can change to another via the &lt;b2&gt;Open...&lt;/b2&gt; command from the &lt;b3&gt;File Menu&lt;/b3&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T164130Z" creationid="pm_kan" creationdate="20140721T160430Z">
+        <seg>Если какой-либо контейнер уже открыт, можно открыть другой, нажав &lt;b2&gt;Открыть...&lt;/b2&gt; в меню &lt;b3&gt;Файл&lt;/b3&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15587,6 +15699,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>See also the description of &lt;b3&gt;PWS_PREFSDIR&lt;/b3&gt; in the &lt;a4&gt;Preferences&lt;/a4&gt; Section.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T120118Z" creationid="pm_kan" creationdate="20140716T120118Z">
+        <seg>См. также описание переменной окружения &lt;b3&gt;PWS_PREFSDIR&lt;/b3&gt; в разделе &lt;a4&gt;Настройки Password Safe&lt;/a4&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>See note &lt;a0&gt;2&lt;/a0&gt; below.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T211340Z">
@@ -16365,6 +16485,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Since this effectively disables all applications, it will automatically timeout after about two minutes of inactivity.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T161658Z" creationid="pm_kan" creationdate="20140721T161658Z">
+        <seg>Т. к. после переключения на «Защищённый рабочий стол» блокируется возможность взаимодействия с другими приложениями, «Защищённый рабочий стол» автоматически закрывается при отсутствии активности в течение двух минут.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Size of the columns in the &lt;a0&gt;Manage → Options → Shortcuts&lt;/a0&gt; tab</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T191455Z">
@@ -16992,6 +17120,14 @@
         <seg>The Dragbar will disable ("grey out") icons for fields that are empty for the selected entry.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T205222Z">
+        <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The Dragbar will disable ("grey out") icons for fields that are empty in the selected entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134657Z" creationid="pm_kan" creationdate="20140716T134657Z">
         <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).</seg>
       </tuv>
     </tu>
@@ -18205,6 +18341,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The padlock graphic in the uper left corner indicates whether or not the "Secure Desktop" feature is enabled.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T163434Z" creationid="pm_kan" creationdate="20140721T154752Z">
+        <seg>Изображение замка в левом верхнем углу показывает, включён ли «Защищённый рабочий стол».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The padlock image on the right indicates if Secure Desktop is enabled for entering the master passphrase.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T160916Z" creationid="pm_kan" creationdate="20140721T160916Z">
+        <seg>Изображение замка справа показывает, будет ли использован «Защищённый рабочий стол» для ввода мастер-пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The password in the clipboard can then be used by some other application.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T091610Z">
@@ -18589,6 +18741,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>There appears to be an issue using the new AutoType Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134752Z" creationid="pm_kan" creationdate="20140716T134752Z">
+        <seg>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>There are a number of options available to the user if differences are detected:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T180808Z">
@@ -18845,6 +19005,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This "dims out" the background screen and all other open windows.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T161421Z" creationid="pm_kan" creationdate="20140721T161421Z">
+        <seg>В этом случае изображение фона рабочего стола и других окон будет затемнено.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This action displays a window that allows you to specify which characters of a password to display.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T210624Z">
@@ -19029,6 +19197,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This can be useful in cases where the drop "missed" by a pixel or two, allowing you to perform a paste operation, rather than trying to drag again.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T135744Z" creationid="pm_kan" creationdate="20140716T135744Z">
+        <seg>Это может быть удобно, если при перетаскивании вы «промахнулись» на пару пикселей: в этом случае вместо повторного перетаскивания вы можете скопировать данные из буфера обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This can be useful, for example, if the change failed to take effect at the site associated with this entry.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T181138Z">
@@ -19097,6 +19273,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T183410Z">
         <seg>Здесь отображаются несколько предыдущих паролей, связанных с данным элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This does &lt;u0&gt;NOT&lt;/u0&gt; occur with Firefox and Chrome browsers.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134807Z" creationid="pm_kan" creationdate="20140716T134807Z">
+        <seg>Этого &lt;u0&gt;не происходит&lt;/u0&gt; с браузерами Firefox и Chrome.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19326,6 +19510,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted (See also the description of the &lt;b0&gt;-g&lt;/b0&gt; option in the &lt;a1&gt;Command Line Arguments&lt;/a1&gt; Section).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134515Z" creationid="pm_kan" creationdate="20140716T134515Z">
+        <seg>Может пригодится если доступ к каталогу, в котором установлен pwsafe.exe ограничен (см. также описание параметра &lt;b0&gt;-g&lt;/b0&gt; в разделе &lt;a1&gt;Параметры командной строки&lt;/a1&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted (See also the descrption of the &lt;b0&gt;-g&lt;/b0&gt; option in the &lt;a1&gt;Command Line Arguments&lt;/a1&gt; Section).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T134352Z" creationid="pm_kan" creationdate="20140716T134352Z">
+        <seg>Может пригодится если доступ к каталогу, в который установлен pwsafe.exe ограничен (См. также ).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T172214Z">
@@ -19422,6 +19622,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This is useful in a "wrapper" script/batch file on a portable device (e.g., disk-on-key), setting the config dir as needed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T120952Z" creationid="pm_kan" creationdate="20140716T115653Z">
+        <seg>Параметр может пригодиться при написании скриптов для запуска с портативного устройства (например, флеш-накопителя).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This is useful to show compliance with password policies as required in some workplaces, and to revert to a previous password if a change did not take effect for some reason.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T183100Z">
@@ -19498,6 +19706,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T145429Z">
         <seg>Эта строка создаётся автоматически при &lt;a2&gt;экспорте из Password Safe&lt;/a2&gt;. Для файлов, созданных вручную (или с помощью других утилит), её нужно заполнить или отредактировать в соответствии с форматом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This makes it more difficult for malicious software to intercept the user input.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T164758Z" creationid="pm_kan" creationdate="20140721T161526Z">
+        <seg>Усложнение перехвата пароля вредоносными программами обеспечивается благодаря использованию дополнительных механизмов изоляции приложений.</seg>
       </tuv>
     </tu>
     <tu>
@@ -20758,6 +20974,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Use Secure Desktop for master passphrase</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T161108Z" creationid="pm_kan" creationdate="20140721T161057Z">
+        <seg>Использовать «Защищённый рабочий стол»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Use a delimiter to replace the 'newline' character in a multi-line Notes field and the period ('.') if present in the Title field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162210Z">
@@ -21815,6 +22039,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>When this option is selected, Password Safe will switch to a Secure Desktop whenever the master passphrase ("Safe Combination") need to be entered.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T161215Z" creationid="pm_kan" creationdate="20140721T161102Z">
+        <seg>Если включено, Password Safe будет переключаться на «Защищённый рабочий стол» при запросе мастер-пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>When this option is selected, all the groups will be displayed first (in alphabetical order), followed by all top-level entries.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T194706Z">
@@ -22219,6 +22451,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204605Z">
         <seg>Здесь можно выбрать режим отображения элементов: в виде простого списка (&lt;b1&gt;Простой список&lt;/b1&gt;) или сгруппированного по категориям (&lt;b2&gt;Древовидный список&lt;/b2&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You can toggle this behavior by clicking on the padlock, or via the "Use Secure Desktop for master passphrase" Preference in the Manage → Options... → Security tab, as described &lt;a1&gt;here&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T160800Z" creationid="pm_kan" creationdate="20140721T160800Z">
+        <seg>Вы можете переключить режим ввода пароля, щёлкнув на значке замка, или изменив параметр "Использовать «Защищённый рабочий стол»" в диалоге &lt;a1&gt;Управление→Настройки→Безопасность&lt;/a1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You can toggle this behavior by clicking on the padlock, or via the "Use Secure Desktop for master passphrase" Preference in the Manage➙Options...➙Security tab, as described &lt;a0&gt;here&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T155507Z" creationid="pm_kan" creationdate="20140721T155507Z">
+        <seg>Вы можете переключить режим ввода пароля, щёлкнув на значке замка, или изменив параметр "Использовать «Защищённый рабочий стол»" в диалоге &lt;a0&gt;Управление→Настройки→Безопасность&lt;/a0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -25419,6 +25667,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150327Z">
         <seg>security_tab.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>security_tab.html#SecureDesktop</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140721T154600Z" creationid="pm_kan" creationdate="20140721T154600Z">
+        <seg>security_tab.html#SecureDesktop</seg>
       </tuv>
     </tu>
     <tu>
