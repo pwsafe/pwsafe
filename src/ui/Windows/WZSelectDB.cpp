@@ -59,6 +59,10 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
 
   m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
   m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
+
+  // Just to check - SD only in Vista and later despite what the user wants!
+  if (!pws_os::IsWindowsVistaOrGreater())
+    m_bUseSecureDesktop = false;
 }
 
 CWZSelectDB::~CWZSelectDB()
@@ -164,6 +168,12 @@ BOOL CWZSelectDB::OnInitDialog()
 
   // Configure dialog for Secure Dialog
   ConfigureDialog();
+
+  // If not Vista or later, disable and hide SD toggle
+  if (!pws_os::IsWindowsVistaOrGreater()) {
+    m_ctlSDToggle.EnableWindow(FALSE);
+    m_ctlSDToggle.ShowWindow(SW_HIDE);
+  }
 
   const UINT nID = m_pWZPSH->GetID();
   CString cs_text,cs_temp;
@@ -344,8 +354,7 @@ void CWZSelectDB::ConfigureDialog()
   m_ctlSDToggle.SetBitmapMaskAndID(RGB(255, 255, 255), m_bUseSecureDesktop ? IDB_USING_SD : IDB_NOT_USING_SD);
   m_ctlSDToggle.Invalidate();
 
-  if (!m_bUseSecureDesktop)
-  {
+  if (!m_bUseSecureDesktop) {
     Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
     m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
@@ -367,9 +376,7 @@ void CWZSelectDB::ConfigureDialog()
       GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(TRUE);
     }
-  }
-  else
-  {
+  } else {
     GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
