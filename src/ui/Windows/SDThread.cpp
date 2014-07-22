@@ -398,6 +398,9 @@ DWORD CSDThread::ThreadProc()
     // not be for us and so we wait for the next notification etc.
     // Eventually, it should allow us to switch back.
 
+    // "WinSta0" is the "... the only window station that can display a user interface or receive user input."
+    // "WinSta0_DesktopSwitch" is a kernel event that we hook and wait for.
+
     HANDLE hDesktopSwitch = OpenEvent(SYNCHRONIZE, false, _T("WinSta0_DesktopSwitch"));
     if (!hDesktopSwitch)
       dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch"), false);
