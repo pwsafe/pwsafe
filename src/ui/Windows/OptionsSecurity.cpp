@@ -16,6 +16,7 @@
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
+#include "os/env.h"
 
 #include "resource.h"
 #include "resource3.h"  // String resources
@@ -108,8 +109,12 @@ BOOL COptionsSecurity::OnInitDialog()
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
   pslider->SetRange(MinHIslider, MaxHIslider);
 
-  return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
+  if (!pws_os::IsWindowsVistaOrGreater()) {
+    GetDlgItem(IDC_USESECUREDESKTOP)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USESECUREDESKTOP)->ShowWindow(SW_HIDE);
+  }
+
+  return TRUE;
 }
 
 void COptionsSecurity::UpdateHashIter()
