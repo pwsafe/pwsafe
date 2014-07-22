@@ -1156,7 +1156,7 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
   }
   CloseClipboard();
 
-  CString cs_text, cs_oldtext;;
+  CString cs_text, cs_oldtext;
   GetWindowText(cs_text);
   cs_oldtext = cs_text;
 

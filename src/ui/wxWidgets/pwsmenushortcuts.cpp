@@ -351,7 +351,7 @@ PWSMenuShortcuts* PWSMenuShortcuts::CreateShortcutsManager(wxMenuBar* menubar)
 
 PWSMenuShortcuts* PWSMenuShortcuts::GetShortcutsManager()
 {
-  wxASSERT_MSG(g_pShortcutsManager, wxT("Shortcuts manager being used before creation or after destruction"));;
+  wxASSERT_MSG(g_pShortcutsManager, wxT("Shortcuts manager being used before creation or after destruction"));
   return g_pShortcutsManager;
 }
 

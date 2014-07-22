@@ -308,7 +308,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   size_t passlen = 0;
   FILE *out = NULL;
 
-  FILE *in = pws_os::FOpen(fn, _T("rb"));;
+  FILE *in = pws_os::FOpen(fn, _T("rb"));
   if (in == NULL) {
     status = false; goto exit;
   }

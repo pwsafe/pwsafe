@@ -458,7 +458,7 @@ YKLIB_RC CYkLib::readStatus(STATUS *status)
 	status->versionMinor = buf[3];
 	status->versionBuild = buf[4];
 	status->pgmSeq = buf[5];
-	status->touchLevel = buf[6] + ((WORD) buf[7] << 8U);;
+	status->touchLevel = buf[6] + ((WORD) buf[7] << 8U);
 
     return (buf[FEATURE_RPT_SIZE - 1]) ? YKLIB_NOT_READY : YKLIB_OK;
 }
