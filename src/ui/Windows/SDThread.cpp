@@ -386,8 +386,15 @@ DWORD CSDThread::ThreadProc()
     // the user may have locked the screen (manually or automatically),
     // or the computer may have gone to sleep/hibernated, we can't switch
     // back to the original Desktop if the MS WinLogon Desktop has control.
-    // We have to wait (and keep on trying) until the user's original Desktop
-    // is back in control - hence this loop.
+    // We ask to be informed when there is a desktop switch and so we can try again.
+    // However, for example if the user switches to another account, it might
+    // not be for us and so we wait for the next notification etc.
+    // Eventually, it should allow us to switch back.
+
+    HANDLE hDesktopSwitch = OpenEvent(SYNCHRONIZE, false, _T("WinSta0_DesktopSwitch"));
+    if (!hDesktopSwitch)
+      dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch"), false);
+
     pws_os::Trace(L"ThreadProc SwitchDesktop\n");
     while (!SwitchDesktop(m_hOriginalDesk)) {
       pws_os::Trace(L"SwitchDesktop(m_hOriginalDesk)\n");
@@ -395,8 +402,18 @@ DWORD CSDThread::ThreadProc()
       if (dwError != ERROR_SUCCESS)
         ASSERT(0);
 
+      if (hDesktopSwitch) {
+        WaitForSingleObject(hDesktopSwitch, INFINITE);
+        pws_os::Trace(_T("Wait for WinSta0_DesktopSwitch signalled\n"));
+      }
+
+      // Try again soon
       ::Sleep(500);
     }
+
+    // Close Handle
+    if (hDesktopSwitch)
+      CloseHandle(hDesktopSwitch);
 
     // Update Progress
     xFlags &= ~SWITCHEDDESKTOP;
@@ -484,14 +501,29 @@ BadExit:
   }
 
   if (xFlags & SWITCHEDDESKTOP) {
-    // Switch back to the initial desktop
+    // Switch back to the initial desktop - see comments above
+    HANDLE hDesktopSwitch = OpenEvent(SYNCHRONIZE, false, _T("WinSta0_DesktopSwitch"));
+    if (!hDesktopSwitch)
+      dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch (bad exit)"), false);
+
     while (!SwitchDesktop(m_hOriginalDesk)) {
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
       if (dwError != ERROR_SUCCESS)
         ASSERT(0);
 
+      if (hDesktopSwitch) {
+        WaitForSingleObject(hDesktopSwitch, INFINITE);
+        pws_os::Trace(_T("Wait for WinSta0_DesktopSwitch signalled (bad exit)\n"));
+      }
+
+      // Try again soon
       ::Sleep(500);
     }
+
+    // Close Handle
+    if (hDesktopSwitch)
+      CloseHandle(hDesktopSwitch);
+
     // Update Progress
     xFlags &= ~SWITCHEDDESKTOP;
   }
