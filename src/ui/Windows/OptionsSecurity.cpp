@@ -111,7 +111,6 @@ BOOL COptionsSecurity::OnInitDialog()
 
   if (!pws_os::IsWindowsVistaOrGreater()) {
     GetDlgItem(IDC_USESECUREDESKTOP)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USESECUREDESKTOP)->ShowWindow(SW_HIDE);
   }
 
   return TRUE;
