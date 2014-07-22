@@ -33,7 +33,7 @@
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
-//#define NO_NEW_DESKTOP
+#define NO_NEW_DESKTOP
 #endif
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
@@ -142,6 +142,9 @@ DWORD CSDThread::ThreadProc()
 
 #ifndef NO_NEW_DESKTOP
   m_hOriginalDesk = GetThreadDesktop(GetCurrentThreadId());
+
+  // Find existing processes
+  GetChildProcesses(true);
 
   // Ensure we don't use an existing Desktop (very unlikely but....)
   do {
@@ -436,6 +439,9 @@ DWORD CSDThread::ThreadProc()
 
   // Now that thread is ending - close new Desktop
   if (xFlags & NEWDESKTOCREATED) {
+    // Get new child processes
+    GetChildProcesses(false);
+
     // Terminate processes still on new Desktop BEFORE we close it
     TerminateProcesses();
 
@@ -543,6 +549,9 @@ BadExit:
     }
   }
   if (xFlags & NEWDESKTOCREATED) {
+    // Get new child processes
+    GetChildProcesses(false);
+
     // Terminate processes still on new Desktop BEFORE we close it
     TerminateProcesses();
 
@@ -1693,7 +1702,7 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_
   PSID &pOwnerSID, PSID &pCurrentUserSID)
 {
   DWORD dwResult, dwError;
-  /* We need to forbid WRITE_DAC and WRITE_OWNER to prevent DAC changes by malicious process*/
+  // We need to forbid WRITE_DAC and WRITE_OWNER to prevent DAC changes by malicious process
   DWORD dwForbidden = WRITE_DAC | WRITE_OWNER;
 
   EXPLICIT_ACCESS ea[2];
@@ -1703,6 +1712,7 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_
     dwError = pws_os::IssueError(L"AllocateAndInitializeSid - CREATOR_OWNER_RIGHTS", false);
     return false;
   }
+
   if (!GetLogonSID(pCurrentUserSID)) {
     ASSERT(0);
     return false;
@@ -1816,12 +1826,6 @@ bool CSDThread::TerminateProcesses()
 {
   DWORD dwError;
 
-  // Initialise vector
-  m_vPIDs.clear();
-
-  if (!GetProcessKillList())
-    return false;
-
   pws_os::Trace(_T("TerminateProcesses - found %d unique process%s to terminate\n"),
     m_vPIDs.size(), m_vPIDs.size() == 1 ? _T("") : _T("es"));
 
@@ -1847,11 +1851,23 @@ bool CSDThread::TerminateProcesses()
   return brc;
 }
 
-bool CSDThread::GetProcessKillList()
+// Functor for remove_if to see if PID is pre-existing
+struct IsPreExisting {
+  IsPreExisting(std::vector<DWORD>& vPIDs) : m_vPIDs(vPIDs) {}
+
+  bool operator()(DWORD const & dwPID) const
+  {
+    // Delete (return true) if in original list
+    return (std::find(m_vPIDs.begin(), m_vPIDs.end(), dwPID) != m_vPIDs.end());
+  }
+
+  std::vector<DWORD> m_vPIDs;
+};
+
+bool CSDThread::GetChildProcesses(const bool bStart)
 {
-  HANDLE hProcessSnap, hThreadSnap;
+  HANDLE hProcessSnap;
   PROCESSENTRY32 pe32;
-  THREADENTRY32 te32;
 
   std::vector<DWORD> vChildPIDs;
 
@@ -1861,7 +1877,7 @@ bool CSDThread::GetProcessKillList()
   hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
   if (hProcessSnap == INVALID_HANDLE_VALUE) {
-    pws_os::Trace(_T("CreateToolhelp32Snapshot of processes\n"));
+    pws_os::Trace(_T("GetChildProcesses - CreateToolhelp32Snapshot of processes\n"));
     return false;
   }
 
@@ -1870,7 +1886,7 @@ bool CSDThread::GetProcessKillList()
 
   // Retrieve information about the first process
   if (!Process32First(hProcessSnap, &pe32)) {
-    pws_os::Trace(_T("Process32First\n"));
+    pws_os::Trace(_T("GetChildProcesses - Process32First\n"));
     CloseHandle(hProcessSnap);
     return false;
   }
@@ -1887,59 +1903,23 @@ bool CSDThread::GetProcessKillList()
 
   CloseHandle(hProcessSnap);
 
-  // If no child processes - no need to look at threads
-  if (vChildPIDs.empty())
-    return false;
+  if (bStart) {
+    // Return current child processes
+    m_vPIDs = vChildPIDs;
+    return true;
+  } else {
+    //// Now get just the new ones
+    //// Sort them first
+    //std::sort(m_vPIDs.begin(), m_vPIDs.end());
+    //std::sort(vChildPIDs.begin(), vChildPIDs.end());
 
-  // Take a snapshot of all running threads
-  hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-  if (hThreadSnap == INVALID_HANDLE_VALUE)
-    return false;
+    // Remove pre-existing PIDs
+    IsPreExisting PE(m_vPIDs);
 
-  // Fill in the size of the structure before using it.
-  te32.dwSize = sizeof(THREADENTRY32);
+    vChildPIDs.erase(std::remove_if(vChildPIDs.begin(), vChildPIDs.end(), PE), vChildPIDs.end());
 
-  // Retrieve information about the first thread,
-  // and exit if unsuccessful
-  if (!Thread32First(hThreadSnap, &te32)) {
-    pws_os::IssueError(_T("Thread32First"), false);
-    CloseHandle(hThreadSnap);
-    return false;
+    // Return only new child processes
+    m_vPIDs = vChildPIDs;
+    return m_vPIDs.size() > 0;
   }
-
-  // Now walk the thread list of the system looking for child processes
-  // using the new Desktop
-  BOOL brc = false;
-  do
-  {
-    // Only check process ID if PWS is its parent
-    if (std::find(vChildPIDs.begin(), vChildPIDs.end(), te32.th32OwnerProcessID) != vChildPIDs.end()) {
-      HDESK hdesk = GetThreadDesktop(te32.th32ThreadID);
-      if (hdesk != 0) {
-        wchar_t buffer[1024];
-        DWORD dwLengthNeeded(0);
-        if (!GetUserObjectInformation(hdesk, UOI_NAME, buffer, sizeof(buffer), &dwLengthNeeded)) {
-          pws_os::IssueError(_T("GetUserObjectInformation - Thread Desktop Name"), false);
-          continue;
-        }
-        if (_wcsicmp(buffer, m_sDesktopName.c_str()) == 0) {
-          m_vPIDs.push_back(te32.th32OwnerProcessID);
-          pws_os::Trace(_T("Found process to terminate\n"));
-          brc = true;
-        }
-      } else {
-        pws_os::IssueError(_T("GetThreadDesktop"), false);
-        pws_os::Trace(_T("GetThreadDesktop: ThreadID=%d; OwnerProcessID=%d\n"), te32.th32ThreadID, te32.th32OwnerProcessID);
-      }
-    }
-  } while (Thread32Next(hThreadSnap, &te32));
-
-  CloseHandle(hThreadSnap);
-
-  // Sort vector of PIDs and ensure no duplicates
-  std::sort(m_vPIDs.begin(), m_vPIDs.end());
-  std::vector<DWORD>::iterator iNewEnd = std::unique(m_vPIDs.begin(), m_vPIDs.end());
-  m_vPIDs.erase(iNewEnd, m_vPIDs.end());
-
-  return true;
 }

@@ -110,8 +110,8 @@ public:
      PSID &pOwnerSID, PSID &pCurrentUserSID);
    void CancelSecureDesktop();
 
-   bool TerminateProcesses();
-   bool GetProcessKillList();
+   bool TerminateProcesses();;
+   bool GetChildProcesses(const bool bStart);
 
    stringT m_masterphrase;
    stringT m_sBkGrndClassName;
