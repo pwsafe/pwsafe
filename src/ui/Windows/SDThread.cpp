@@ -33,7 +33,7 @@
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
-#define NO_NEW_DESKTOP
+//#define NO_NEW_DESKTOP
 #endif
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
@@ -169,21 +169,25 @@ DWORD CSDThread::ThreadProc()
 
   // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
   // passphrase and/or record mouse clicks on the Virtual Keyboard.
-  DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
-    DELETE | READ_CONTROL | WRITE_DAC;
+  DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
+    DELETE | READ_CONTROL;
+#ifdef _DEBUG
+  dwDesiredAccess |= DESKTOP_ENUMERATE;
+#endif
 
   SECURITY_ATTRIBUTES sa;
   PSECURITY_DESCRIPTOR pSD(NULL);
   PACL pACL(NULL);
   PSID pCurrentUserSID(NULL);
-
-  bool bSA_Created = CreateSA(sa, pSD, pACL, pCurrentUserSID);
+  PSID pOwnerSID(NULL);
+  bool bSA_Created = CreateSA(sa, dwDesiredAccess, pSD, pACL, pOwnerSID, pCurrentUserSID);
 
   pws_os::Trace(_T("NewDesktop %s\n"), m_sDesktopName.c_str());
   m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
 
   // Free security data no longer required
+  if (pOwnerSID)
+    FreeSid(pOwnerSID);
   if (pCurrentUserSID)
     FreeSid(pCurrentUserSID);
   if (pACL)
@@ -1685,15 +1689,29 @@ Cleanup:
   return res;
 }
 
-bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
-  PSID &pCurrentUserSID)
+bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+  PSID &pOwnerSID, PSID &pCurrentUserSID)
 {
   DWORD dwResult, dwError;
-  EXPLICIT_ACCESS ea[1];
+  /* We need to forbid WRITE_DAC and WRITE_OWNER to prevent DAC changes by malicious process*/
+  DWORD dwForbidden = WRITE_DAC | WRITE_OWNER;
 
+  EXPLICIT_ACCESS ea[2];
+  SID_IDENTIFIER_AUTHORITY SIDAuthCreator = SECURITY_CREATOR_SID_AUTHORITY;
+  // Create a SID for CREATOR_OWNER_RIGHTS (don't confuse with CREATOR_OWNER!)
+  if (!AllocateAndInitializeSid(&SIDAuthCreator, 1, SECURITY_CREATOR_OWNER_RIGHTS_RID, 0, 0, 0, 0, 0, 0, 0, &pOwnerSID)) {
+    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - CREATOR_OWNER_RIGHTS", false);
+    return false;
+  }
   if (!GetLogonSID(pCurrentUserSID)) {
     ASSERT(0);
     return false;
+  }
+
+  // Exclude forbidden rights from mask
+  if (dwAccessMask & dwForbidden){
+    dwAccessMask &= ~dwForbidden;
+    pws_os::Trace(_T("Forbidden rights were removed from access mask\n"));
   }
 
   // Initialize an EXPLICIT_ACCESS structure for an ACE.
@@ -1703,20 +1721,25 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   // The ACE will allow the current user Desktop specific access rights and
   // standard access to the Desktop.
 
-  // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
-  // passphrase and/or record mouse clicks on the Virtual Keyboard.
-  ea[0].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
-    DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
-    DELETE | READ_CONTROL | WRITE_DAC;
+  ea[0].grfAccessPermissions = dwAccessMask;
   ea[0].grfAccessMode = SET_ACCESS;
   ea[0].grfInheritance = NO_INHERITANCE;
   ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
   ea[0].Trustee.TrusteeType = TRUSTEE_IS_USER;
   ea[0].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
 
+  // We need to explicitely forbid it for owner, otherwise it will have them implicitly
+  ea[1].grfAccessPermissions = dwForbidden;
+  ea[1].grfAccessMode = DENY_ACCESS;
+  ea[1].grfInheritance = NO_INHERITANCE;
+  ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+  ea[1].Trustee.TrusteeType = TRUSTEE_IS_USER;
+  ea[1].Trustee.ptstrName = (LPTSTR)pOwnerSID;
+
   // Create a new ACL that contains the new ACEs.
   dwResult = SetEntriesInAcl(sizeof(ea) / sizeof(ea[0]), ea, NULL, &pACL);
   if (dwResult != ERROR_SUCCESS) {
+    SetLastError(dwResult); // to be caught by GetLastError()
     dwError = pws_os::IssueError(_T("SetEntriesInAcl"), false);
     return false;
   }

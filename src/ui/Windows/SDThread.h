@@ -106,8 +106,8 @@ public:
    void ResetTimer();
 
    bool GetLogonSID(PSID &logonSID);
-   bool CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
-     PSID &pCurrentUserSID);
+   bool CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+     PSID &pOwnerSID, PSID &pCurrentUserSID);
    void CancelSecureDesktop();
 
    bool TerminateProcesses();
