@@ -180,7 +180,7 @@ DWORD CSDThread::ThreadProc()
 
   bool bSA_Created = CreateSA(sa, pSD, pACL, pCurrentUserSID);
 
-  pws_os::Trace(L"NewDesktop %s\n", m_sDesktopName.c_str());
+  pws_os::Trace(_T("NewDesktop %s\n"), m_sDesktopName.c_str());
   m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
 
   // Free security data no longer required
@@ -395,9 +395,9 @@ DWORD CSDThread::ThreadProc()
     if (!hDesktopSwitch)
       dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch"), false);
 
-    pws_os::Trace(L"ThreadProc SwitchDesktop\n");
+    pws_os::Trace(_T("ThreadProc SwitchDesktop\n"));
     while (!SwitchDesktop(m_hOriginalDesk)) {
-      pws_os::Trace(L"SwitchDesktop(m_hOriginalDesk)\n");
+      pws_os::Trace(_T("SwitchDesktop(m_hOriginalDesk)\n"));
       dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
       if (dwError != ERROR_SUCCESS)
         ASSERT(0);
@@ -739,7 +739,7 @@ static StringX GetControlText(const HWND hwnd)
     s.pop_back();  // Remove trailing NULL [C++11 feature]
     return s;
   }
-  return L"";
+  return _T("");
 }
 
 INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -766,7 +766,7 @@ INT_PTR CSDThread::MPDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
     // Gets called before WM_WTSSESSION_CHANGE, WM_POWERBROADCAST or WM_QUERYENDSESSION
     case WM_ACTIVATEAPP:
     {
-      pws_os::Trace(L"WM_ACTIVATEAPP. wParam = %d\n", wParam);
+      pws_os::Trace(_T("WM_ACTIVATEAPP. wParam = %d\n"), wParam);
       self->CancelSecureDesktop();
       return TRUE;
     }
@@ -1650,13 +1650,13 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
   pTG = (PTOKEN_GROUPS)LocalAlloc(LPTR, dwBytesNeeed);
 
   if (!pTG) {
-    dwError = pws_os::IssueError(L"LocalAlloc", false);
+    dwError = pws_os::IssueError(_T("LocalAlloc"), false);
     goto Cleanup;
   }
 
 
   if (!GetTokenInformation(hToken, TokenGroups, pTG, dwBytesNeeed, &dwBytesNeeed)){
-    dwError = pws_os::IssueError(L"GetTokenInformation", false);
+    dwError = pws_os::IssueError(_T("GetTokenInformation"), false);
     goto Cleanup;
   }
 
@@ -1665,11 +1665,11 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
       dwBytesNeeed = GetLengthSid(pTG->Groups[i].Sid);
       logonSID = (PSID)LocalAlloc(LPTR, dwBytesNeeed);
       if (!logonSID) {
-        dwError = pws_os::IssueError(L"LocalAlloc", false);
+        dwError = pws_os::IssueError(_T("LocalAlloc"), false);
         break;
       }
       if (!CopySid(dwBytesNeeed, logonSID, pTG->Groups[i].Sid)) {
-        dwError = pws_os::IssueError(L"CopySid", false);
+        dwError = pws_os::IssueError(_T("CopySid"), false);
         break;
       }
       res = true;
@@ -1715,28 +1715,28 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   ea[0].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
 
   // Create a new ACL that contains the new ACEs.
-  dwResult = SetEntriesInAcl(sizeof(ea)/sizeof(ea[0]), ea, NULL, &pACL);
+  dwResult = SetEntriesInAcl(sizeof(ea) / sizeof(ea[0]), ea, NULL, &pACL);
   if (dwResult != ERROR_SUCCESS) {
-    dwError = pws_os::IssueError(L"SetEntriesInAcl", false);
+    dwError = pws_os::IssueError(_T("SetEntriesInAcl"), false);
     return false;
   }
 
   // Get a security descriptor.
   pSD = (PSECURITY_DESCRIPTOR)LocalAlloc(LPTR, SECURITY_DESCRIPTOR_MIN_LENGTH);
   if (pSD == NULL) {
-    dwError = pws_os::IssueError(L"LocalAlloc", false);
+    dwError = pws_os::IssueError(_T("LocalAlloc"), false);
     return false;
   }
 
   // Initialise it
   if (!InitializeSecurityDescriptor(pSD, SECURITY_DESCRIPTOR_REVISION)) {
-    dwError = pws_os::IssueError(L"InitializeSecurityDescriptor", false);
+    dwError = pws_os::IssueError(_T("InitializeSecurityDescriptor"), false);
     return false;
   }
 
   // Add the ACL to the security descriptor.
   if (!SetSecurityDescriptorDacl(pSD, TRUE, pACL, FALSE)) {
-    dwError = pws_os::IssueError(L"SetSecurityDescriptorDacl", false);
+    dwError = pws_os::IssueError(_T("SetSecurityDescriptorDacl"), false);
     return false;
   }
 
@@ -1760,7 +1760,7 @@ void CSDThread::CancelSecureDesktop()
     m_bDoTimerProcAction = false;
 
     // Cancel timer
-    pws_os::Trace(L"CancelSecureDesktop - CancelWaitableTimer\n");
+    pws_os::Trace(_T("CancelSecureDesktop - CancelWaitableTimer\n"));
     if (!CancelWaitableTimer(m_hWaitableTimer)) {
       dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
       ASSERT(0);
@@ -1768,7 +1768,7 @@ void CSDThread::CancelSecureDesktop()
 
     // Close the timer handle
     if (!CloseHandle(m_hWaitableTimer)) {
-      pws_os::Trace(L"CancelSecureDesktop - CloseHandle\n");
+      pws_os::Trace(_T("CancelSecureDesktop - CloseHandle\n"));
       dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
       ASSERT(0);
     }
@@ -1799,8 +1799,8 @@ bool CSDThread::TerminateProcesses()
   if (!GetProcessKillList())
     return false;
 
-  pws_os::Trace(L"TerminateProcesses - found %d unique process%s to terminate\n",
-    m_vPIDs.size(), m_vPIDs.size() == 1 ? L"" : L"es");
+  pws_os::Trace(_T("TerminateProcesses - found %d unique process%s to terminate\n"),
+    m_vPIDs.size(), m_vPIDs.size() == 1 ? _T("") : _T("es"));
 
   // Set default return code
   bool brc = true;
@@ -1814,7 +1814,7 @@ bool CSDThread::TerminateProcesses()
     if (hProcess != NULL) {
       // Terminate it!
       if (!TerminateProcess(hProcess, 0)) {
-        dwError = pws_os::IssueError(L"TerminateProcess", false);
+        dwError = pws_os::IssueError(_T("TerminateProcess"), false);
         brc = false;
       }
       // Release the handle to the process.
@@ -1838,7 +1838,7 @@ bool CSDThread::GetProcessKillList()
   hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
   if (hProcessSnap == INVALID_HANDLE_VALUE) {
-    pws_os::Trace(L"CreateToolhelp32Snapshot of processes\n");
+    pws_os::Trace(_T("CreateToolhelp32Snapshot of processes\n"));
     return false;
   }
 
@@ -1847,7 +1847,7 @@ bool CSDThread::GetProcessKillList()
 
   // Retrieve information about the first process
   if (!Process32First(hProcessSnap, &pe32)) {
-    pws_os::Trace(L"Process32First\n");
+    pws_os::Trace(_T("Process32First\n"));
     CloseHandle(hProcessSnap);
     return false;
   }
@@ -1879,7 +1879,7 @@ bool CSDThread::GetProcessKillList()
   // Retrieve information about the first thread,
   // and exit if unsuccessful
   if (!Thread32First(hThreadSnap, &te32)) {
-    pws_os::Trace(L"Thread32First\n");
+    pws_os::IssueError(_T("Thread32First"), false);
     CloseHandle(hThreadSnap);
     return false;
   }
@@ -1896,17 +1896,17 @@ bool CSDThread::GetProcessKillList()
         wchar_t buffer[1024];
         DWORD dwLengthNeeded(0);
         if (!GetUserObjectInformation(hdesk, UOI_NAME, buffer, sizeof(buffer), &dwLengthNeeded)) {
-          pws_os::IssueError(L"GetUserObjectInformation - Thread Desktop Name", false);
+          pws_os::IssueError(_T("GetUserObjectInformation - Thread Desktop Name"), false);
           continue;
         }
         if (_wcsicmp(buffer, m_sDesktopName.c_str()) == 0) {
           m_vPIDs.push_back(te32.th32OwnerProcessID);
-          pws_os::Trace(L"Found process to terminate\n");
+          pws_os::Trace(_T("Found process to terminate\n"));
           brc = true;
         }
       } else {
-        pws_os::IssueError(L"GetThreadDesktop", false);
-        pws_os::Trace(L"GetThreadDesktop: ThreadID=%d; OwnerProcessID=%d\n", te32.th32ThreadID, te32.th32OwnerProcessID);
+        pws_os::IssueError(_T("GetThreadDesktop"), false);
+        pws_os::Trace(_T("GetThreadDesktop: ThreadID=%d; OwnerProcessID=%d\n"), te32.th32ThreadID, te32.th32OwnerProcessID);
       }
     }
   } while (Thread32Next(hThreadSnap, &te32));
