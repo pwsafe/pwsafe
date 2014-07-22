@@ -171,7 +171,7 @@ DWORD CSDThread::ThreadProc()
   // passphrase and/or record mouse clicks on the Virtual Keyboard.
   DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
-    STANDARD_RIGHTS_REQUIRED;
+    DELETE | READ_CONTROL | WRITE_DAC;
 
   SECURITY_ATTRIBUTES sa;
   PSECURITY_DESCRIPTOR pSD(NULL);
@@ -1675,7 +1675,7 @@ bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PAC
   // passphrase and/or record mouse clicks on the Virtual Keyboard.
   ea[0].grfAccessPermissions = DESKTOP_CREATEWINDOW | DESKTOP_ENUMERATE |
     DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
-    STANDARD_RIGHTS_REQUIRED;
+    DELETE | READ_CONTROL | WRITE_DAC;
   ea[0].grfAccessMode = SET_ACCESS;
   ea[0].grfInheritance = NO_INHERITANCE;
   ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
@@ -1764,7 +1764,11 @@ bool CSDThread::TerminateProcesses()
   // Initialise vector
   m_vPIDs.clear();
 
-  GetProcessKillList();
+  if (!GetProcessKillList())
+    return false;
+
+  pws_os::Trace(L"TerminateProcesses - found %d unique process%s to terminate\n",
+    m_vPIDs.size(), m_vPIDs.size() == 1 ? L"" : L"es");
 
   // Set default return code
   bool brc = true;

@@ -41,6 +41,10 @@ CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop)
 
   // Call it as it also performs important initilisation
   m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
+
+  // Just to check - SD only in Vista and later despite what the user wants!
+  if (!pws_os::IsWindowsVistaOrGreater())
+    m_bUseSecureDesktop = false;
 }
 
 CPKBaseDlg::~CPKBaseDlg()
@@ -139,6 +143,12 @@ BOOL CPKBaseDlg::OnInitDialog(void)
       ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
       m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
     }
+  }
+
+  // If not Vista or later, disable and hide SD toggle
+  if (!pws_os::IsWindowsVistaOrGreater()) {
+    m_ctlSDToggle.EnableWindow(FALSE);
+    m_ctlSDToggle.ShowWindow(SW_HIDE);
   }
 
   return TRUE;
