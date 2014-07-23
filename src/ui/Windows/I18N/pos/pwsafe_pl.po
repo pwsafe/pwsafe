@@ -911,7 +911,7 @@ msgstr "(Dwukliknij na wpisie by go zmodyfikowaćDouble-click an entry to edit i
 
 #. Resource IDs: (373)
 msgid "(Empty)"
-msgstr ""
+msgstr "(Puste)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -1236,7 +1236,7 @@ msgstr "9"
 
 #. Resource IDs: (1506)
 msgid "99:99"
-msgstr ""
+msgstr "99:99"
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1916,7 +1916,7 @@ msgstr "Wyczyść historię haseł dla WSZYSTKICH wpisów"
 
 #. Resource IDs: (376, 1457)
 msgid "Click button, then touch your YubiKey"
-msgstr ""
+msgstr "Kliknij przycisk, potem dotknij YubiKey"
 
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
@@ -1932,11 +1932,11 @@ msgstr "Kliknij by zmienić wielkość liter."
 
 #. Resource IDs: (373)
 msgid "Click to change to database combination entry via Secure Desktop"
-msgstr ""
+msgstr "Kliknij by zmienić hasło bazy danych przez Bezpieczny Pulpit"
 
 #. Resource IDs: (373)
 msgid "Click to change to old database combination entry method"
-msgstr ""
+msgstr "Kliknij by zmienić hasło na to ze starej bazy danych"
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2050,7 +2050,7 @@ msgstr "Wiersz nagłówka kolumny nie rozpoznany jako pierwszy rekord. Nie impor
 
 #. Resource IDs: (373, 1505)
 msgid "Combination..."
-msgstr ""
+msgstr "Hasło..."
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -3545,7 +3545,7 @@ msgstr "ID:32005:V C +S"
 
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
-msgstr ""
+msgstr "ID:32021:V C +Q"
 
 #. Accelerator Entry for Menu ID:32051; 'Add &Entry'
 msgid "ID:32051:V C +A"
@@ -4744,11 +4744,11 @@ msgstr "Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*|
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Kopie bezpieczeństwa Password Safe (*.bak)|*.bak|Pośrednie kopie bezpieczeństwa Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -4899,7 +4899,7 @@ msgstr "Wprowadź klucz szyfrujący lub deszyfrujący"
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
-msgstr ""
+msgstr "Proszę podać aktualne hasło, a potem nowe hasło. \r\ni jeszcze raz nowe hasło dla potwierdzenia."
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -6179,7 +6179,7 @@ msgstr "Skrót klawiszowy '%s' jest już używany przez:\n\t«%s» «%s» «%s»
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
-msgstr "Pole notatki dla tego pola ma więcej tekstu niż można wyświetlić. Przy zmienie pole i zapisaniu wpis pole zostanie obcięte do %d znaków.  By zobaczyć pełną zawartość, skopiuj to poprzez schowek, lub eyeksportuj ten wpis do XML przed zmianą."
+msgstr "Pole notatki dla tego pola ma więcej tekstu niż można wyświetlić. Przy zmienie pole i zapisaniu wpis pole zostanie obcięte do %d znaków.  By zobaczyć pełną zawartość, skopiuj to poprzez schowek, lub wyeksportuj ten wpis do XML przed zmianą."
 
 #. Resource IDs: (331)
 msgid "The old safe combination is not correct"
@@ -6188,12 +6188,12 @@ msgstr "Stare hasło jest niepoprawne"
 #. Resource IDs: (333)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
+msgstr "Originalna baza, \"%s\", jest w formacie sprzed-3.0. Nie zostanie zmieniona.\nTwoje zmiany będą zapisane jako \"%s\" w nowym formacie, który jest nie do użycia przez starsze wersje PasswordSafe. By zapisac zmiany w starym formacie użyj komendy \"Plik->Eksport do->Stary format (1.x lub 2) \" ."
 
 #. Resource IDs: (333)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
+msgstr "Originalna baza danych, \"%s\", jest w formacie przed-3.0. Dane będą zapisane w nowym formacie, którego nie mogą używać starsze wersje PasswordSafe. By zapisać dane w starym formacie użyj komendy \"Plik->Eksport do->Stary format (1.x lub 2)\"."
 
 #. Resource IDs: (342)
 #, c-format
@@ -6203,7 +6203,7 @@ msgstr "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest
 #. Resource IDs: (373)
 #, c-format
 msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
+msgstr "Bezpieczne hasło zostało wprowadzone: %d razy bez sukcesu:\n- Czy Caps Lock jest wyłączony?\n- Czy język jest prawidłowy (w systemach wielojęzykowych)?\n- Czy wybrano dobrą bazę danych?\n- Może plik jest uszkodzony. Spróbuj skorzystac z kopii zapasowej."
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -6239,7 +6239,7 @@ msgstr "Ten Hotkey nie jest dostępny jako że jest już przydzielony do Passwor
 
 #. Resource IDs: (1507)
 msgid "This Window will close automatically in"
-msgstr ""
+msgstr "Te okno zamknie się automatycznie"
 
 #. Resource IDs: (344)
 #, c-format
@@ -6652,7 +6652,7 @@ msgstr "Użyj małych &liter"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols"
-msgstr ""
+msgstr "Użyj &symboli"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
@@ -6672,7 +6672,7 @@ msgstr "Użyj nazwanej polityki"
 
 #. Resource IDs: (1503)
 msgid "Use Secure Desktop for master passphrase"
-msgstr ""
+msgstr "Uzyj Bezpiecznego Pulpitu dla hasła głównego"
 
 #. Resource IDs: (369)
 msgid "Use count"
@@ -7796,7 +7796,7 @@ msgstr "pwsafe"
 
 #. Resource IDs: (1509)
 msgid "seconds"
-msgstr ""
+msgstr "sekund"
 
 #. Resource IDs: (344)
 msgid "shortcut"
