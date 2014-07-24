@@ -12,9 +12,10 @@
 #include "SDThread.h"
 #include "Fonts.h"
 #include "VirtualKeyboard/VKeyBoardDlg.h"
+#include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"
 
 #include "resource.h"
-
 
 #include "core/pwsprefs.h"
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
@@ -43,8 +44,12 @@ CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop)
   m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
 
   // Just to check - SD only in Vista and later despite what the user wants!
-  if (!pws_os::IsWindowsVistaOrGreater())
+  // May be not allowed if previous error in this session
+  if (!pws_os::IsSecureDesktopAllowed())
     m_bUseSecureDesktop = false;
+
+  m_dwRC = m_dwError = 0;  // SD Thread Exit and Error code
+  m_irc = m_irc2 = 0;
 }
 
 CPKBaseDlg::~CPKBaseDlg()
@@ -145,8 +150,9 @@ BOOL CPKBaseDlg::OnInitDialog(void)
     }
   }
 
-  // If not Vista or later, disable and hide SD toggle
-  if (!pws_os::IsWindowsVistaOrGreater()) {
+  // Just to check - SD only in Vista and later despite what the user wants!
+  // May be not allowed if previous error in this session
+  if (!pws_os::IsSecureDesktopAllowed()) {
     m_ctlSDToggle.EnableWindow(FALSE);
     m_ctlSDToggle.ShowWindow(SW_HIDE);
   }
@@ -243,7 +249,7 @@ void CPKBaseDlg::OnSwitchSecureDesktop()
   EndDialog(INT_MAX);
 }
 
-void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
+int CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 {
   // SetThreadDesktop fails in MFC because _AfxMsgFilterHook is used in every
   // Thread. Need to unhook and before calling SetThreadDesktop
@@ -254,9 +260,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
   HANDLE hThread(0);
   DWORD dwError, dwThreadID, dwEvent;
   bool bTimerPopped(false);
-
-  // Set good return code
-  m_dwRC = 0;
 
   // Clear progress flags
   BYTE xFlags = 0;
@@ -269,7 +272,7 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
     // goto BadExit; nothing to cleanup, don't use goto in order
     // not to skip on CSDThread c'tor
     m_dwRC = (DWORD)-1; // Set bad return code
-    return;
+    return CSDThread::FAILED;
   }
 
   // Update progress
@@ -279,7 +282,6 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
 
   // Get current Monitor if not supplied (only from Wizard)
   if (hCurrentMonitor == NULL) {
-    ASSERT(this->GetSafeHwnd());
     hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
   }
 
@@ -369,6 +371,9 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
       // Update progress
       xFlags &= ~THREADRESUMED;
 
+      // Get Thread return/error codes
+      thrdDlg.GetThreadErrorCodes(m_irc, m_irc2, m_dwError);
+
       // Cancel timer - note might hanve already been cancelled in the thread
       if (thrdDlg.m_hWaitableTimer != NULL) {
         if (!CancelWaitableTimer(thrdDlg.m_hWaitableTimer)) {
@@ -423,7 +428,7 @@ void CPKBaseDlg::StartThread(int iDialogType, HMONITOR hCurrentMonitor)
     xFlags &= ~WINDOWSHOOKREMOVED;
   }
 
-  return;
+  return m_dwRC;
 
 BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
@@ -454,5 +459,18 @@ BadExit:
   }
 
   // Set bad return code
-  m_dwRC = (DWORD)-1;
+  m_dwRC = (DWORD)CSDThread::FAILED;
+  return m_dwRC;
+}
+
+void CPKBaseDlg::IssueSDMessage()
+{
+  // Use m_irc, m_irc2 (if non-zero) and m_dwError to issue message to user
+  pws_os::Trace(_T("m_irc= %d, m_irc2 = %d, m_dwError = %d(0x%08x)\n"), m_irc, m_irc2, m_dwError, m_dwError);
+
+  CGeneralMsgBox gmb;
+  gmb.MessageBox(
+    _T("Some error message as to where what happened and\nsaying not again in this session (SD toggle not shown!)"),
+    _T("Could not invoke a more secure environment for entering passphrase"),
+    MB_OK | MB_ICONERROR);
 }

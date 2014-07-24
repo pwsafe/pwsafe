@@ -27,6 +27,7 @@
 
 #include "os/dir.h"
 #include "os/rand.h"
+#include "os/env.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -85,9 +86,19 @@ BOOL CPasskeySetup::OnInitDialog()
     // We need a dialog but we don't want to show it - sneeky code here
     ShowWindow(SW_HIDE);
 
-    StartThread(IDD_SDPASSKEYSETUP);
+    int irc = StartThread(IDD_SDPASSKEYSETUP);
 
-    if (m_GMP.bPhraseEntered) {
+    if (irc != 0) {
+      pws_os::SetSecureDesktopPermission(false);
+
+      // Issue message
+      IssueSDMessage();
+
+      // Get out
+      EndDialog(INT_MAX);
+    }
+
+    if (irc == 0 && m_GMP.bPhraseEntered) {
       m_passkey = m_GMP.sPhrase.c_str();
     }
 

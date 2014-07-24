@@ -61,7 +61,8 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
   m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
 
   // Just to check - SD only in Vista and later despite what the user wants!
-  if (!pws_os::IsWindowsVistaOrGreater())
+  // May be not allowed if previous error in this session
+  if (!pws_os::IsSecureDesktopAllowed())
     m_bUseSecureDesktop = false;
 }
 
@@ -169,8 +170,9 @@ BOOL CWZSelectDB::OnInitDialog()
   // Configure dialog for Secure Dialog
   ConfigureDialog();
 
-  // If not Vista or later, disable and hide SD toggle
-  if (!pws_os::IsWindowsVistaOrGreater()) {
+  // Just to check - SD only in Vista and later despite what the user wants!
+  // May be not allowed if previous error in this session
+  if (!pws_os::IsSecureDesktopAllowed()) {
     m_ctlSDToggle.EnableWindow(FALSE);
     m_ctlSDToggle.ShowWindow(SW_HIDE);
   }
@@ -427,9 +429,19 @@ void CWZSelectDB::OnEnterCombination()
   HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
 
   // Get passphrase from Secure Desktop
-  PKBaseDlg.StartThread(IDD_SDGETPHRASE, hCurrentMonitor);
+  int irc = PKBaseDlg.StartThread(IDD_SDGETPHRASE, hCurrentMonitor);
 
-  if (PKBaseDlg.m_GMP.bPhraseEntered) {
+  if (irc != 0) {
+    pws_os::SetSecureDesktopPermission(false);
+
+    // Issue message
+    PKBaseDlg.IssueSDMessage();
+
+    // Toggle SD to no.
+    OnSwitchSecureDesktop();
+  }
+
+  if (irc == 0 && PKBaseDlg.m_GMP.bPhraseEntered) {
     const UINT nID = m_pWZPSH->GetID();
     const bool bOtherIsDB = nID == ID_MENUITEM_COMPARE ||
       nID == ID_MENUITEM_MERGE   ||

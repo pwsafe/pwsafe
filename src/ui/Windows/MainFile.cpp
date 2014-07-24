@@ -45,6 +45,7 @@
 #include "os/file.h"
 #include "os/dir.h"
 #include "os/logit.h"
+#include "os/env.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -415,6 +416,12 @@ int DboxMain::NewFile(StringX &newfilename)
   }
 
   bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+
+  if (!pws_os::IsSecureDesktopAllowed()) {
+    // Don't care about preference  - not allowed
+    bUseSecureDesktop = false;
+  }
+
   CSecString sPasskey;
 
   do
@@ -426,12 +433,19 @@ int DboxMain::NewFile(StringX &newfilename)
     {
       sPasskey = pksetup.GetPassKey();
 
-      // Update preference
-      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
-    }
+      if (bUseSecureDesktop && !pws_os::IsSecureDesktopAllowed()) {
+        // We may have had a problem
+        // Make sure now non-SD and simulate Toggle
+        bUseSecureDesktop = false;
+        rc = INT_MAX;
+      } else  {
+        // In case user wanted to toggle Secure Desktop
+        bUseSecureDesktop = !bUseSecureDesktop;
 
-    // In case user wanted to toggle Secure Desktop
-    bUseSecureDesktop = !bUseSecureDesktop;
+        // Update preference
+        PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
+      }
+    }
   } while (rc == INT_MAX);
 
   if (rc == IDCANCEL)
@@ -2313,6 +2327,11 @@ void DboxMain::ChangeMode(bool promptUser)
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
     bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+    if (!pws_os::IsSecureDesktopAllowed()) {
+      // Don't care about preference  - not allowed
+      bUseSecureDesktop = false;
+    }
+
     INT_PTR rc;
     do
     {
@@ -2320,15 +2339,22 @@ void DboxMain::ChangeMode(bool promptUser)
         m_core.GetCurFile().c_str(),
         GCP_CHANGEMODE, true, false, true, bUseSecureDesktop);
 
-        rc = PasskeyEntryDlg.DoModal();
+      rc = PasskeyEntryDlg.DoModal();
 
-        if (rc == IDOK) {
-          // Update preference
-          PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
-        }
+      if (bUseSecureDesktop && !pws_os::IsSecureDesktopAllowed()) {
+        // We must have had a problem
+        // Make sure now non-SD and simulate Toggle
+        bUseSecureDesktop = false;
+        rc = INT_MAX;
+      } else  {
+        // In case user wanted to toggle Secure Desktop
+        bUseSecureDesktop = !bUseSecureDesktop;
+      }
 
-      // In case user wanted to toggle Secure Desktop
-      bUseSecureDesktop = !bUseSecureDesktop;
+      if (rc == IDOK) {
+        // Update preference
+        PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
+      }
     } while (rc == INT_MAX);
 
     if (rc != IDOK)

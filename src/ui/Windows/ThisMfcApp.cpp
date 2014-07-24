@@ -151,6 +151,9 @@ ThisMfcApp::ThisMfcApp() :
   //                                                 (for XML and Yubikeyprocessing)
   AfxEnableControlContainer();
   AfxOleInit();
+
+  // Secure Desktop permission (initially this session)
+  pws_os::SetSecureDesktopPermission(pws_os::IsWindowsVistaOrGreater());
 }
 
 ThisMfcApp::~ThisMfcApp()

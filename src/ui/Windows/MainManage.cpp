@@ -39,6 +39,7 @@
 
 #include "os/dir.h"
 #include "os/logit.h"
+#include "os/env.h"
 
 using namespace std;
 
@@ -55,6 +56,10 @@ void DboxMain::OnPassphraseChange()
     return;
 
   bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  if (!pws_os::IsSecureDesktopAllowed()) {
+    // Don't care about preference  - not allowed
+    bUseSecureDesktop = false;
+  }
   INT_PTR rc;
 
   do
@@ -62,6 +67,13 @@ void DboxMain::OnPassphraseChange()
     CPasskeyChangeDlg changeDlg(this, bUseSecureDesktop);
 
     rc = changeDlg.DoModal();
+
+    if (bUseSecureDesktop && !pws_os::IsSecureDesktopAllowed()) {
+      // We must have had a problem
+      // Make sure now non-SD and simulate Toggle
+      bUseSecureDesktop = false;
+      rc = INT_MAX;
+    }
 
     if (rc == IDOK) {
       m_core.ChangePasskey(changeDlg.m_newpasskey);

@@ -21,6 +21,7 @@
 #include "core/pwsprefs.h"
 
 #include "os/dir.h"
+#include "os/env.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -86,14 +87,20 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
 
-  if (m_bUseSecureDesktop)
-  {
+  if (m_bUseSecureDesktop) {
     // We need a dialog but we don't want to show it - sneeky code here
     ShowWindow(SW_HIDE);
 
-    StartThread(IDD_SDKEYCHANGE);
+    int irc = StartThread(IDD_SDKEYCHANGE);
 
-    if (m_GMP.bPhraseEntered && m_GMP.bNewPhraseEntered) {
+    if (irc != 0) {
+      pws_os::SetSecureDesktopPermission(false);
+
+      // Issue message
+      IssueSDMessage();
+    }
+
+    if (irc == 0 && m_GMP.bPhraseEntered && m_GMP.bNewPhraseEntered) {
       m_passkey = m_GMP.sPhrase.c_str();
       m_newpasskey = m_GMP.sNewPhrase.c_str();
     }

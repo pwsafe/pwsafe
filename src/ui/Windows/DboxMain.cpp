@@ -1114,8 +1114,15 @@ BOOL DboxMain::OnInitDialog()
           if (rc == IDOK)
             sPasskey = dbox_pksetup.GetPassKey();
 
-          // In case user wanted to toggle Secure Desktop
-          bUseSecureDesktop = !bUseSecureDesktop;
+          if (!pws_os::IsSecureDesktopAllowed()) {
+            // We may have had a problem
+            // Make sure now non-SD and simulate Toggle
+            bUseSecureDesktop = false;
+            rc = INT_MAX;
+          } else  {
+            // In case user wanted to toggle Secure Desktop
+            bUseSecureDesktop = !bUseSecureDesktop;
+          }
         } while (rc == INT_MAX);
 
         if (rc == IDCANCEL) {
@@ -1690,6 +1697,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   ASSERT(m_pPasskeyEntryDlg == NULL); // should have been taken care of above
 
   bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
+  if (!pws_os::IsSecureDesktopAllowed()) {
+    // Don't care about preference  - not allowed
+    bUseSecureDesktop = false;
+  }
 
 tryagain:
   m_pPasskeyEntryDlg = new CPasskeyEntry(this,
@@ -1704,10 +1715,18 @@ tryagain:
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
-  if (rc == INT_MAX)
-  {
-    // User wanted to toggle Secure Desktop
+  if (bUseSecureDesktop && !pws_os::IsSecureDesktopAllowed()) {
+    // We must have had a problem
+    // Make sure now non-SD and simulate Toggle
+    bUseSecureDesktop = false;
+    rc = INT_MAX;
+  } else  {
+    // In case user wanted to toggle Secure Desktop
     bUseSecureDesktop = !bUseSecureDesktop;
+  }
+
+  if (rc == INT_MAX) {
+    // User wanted to toggle Secure Desktop
     delete m_pPasskeyEntryDlg;
     goto tryagain;
   }

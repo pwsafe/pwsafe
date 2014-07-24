@@ -41,6 +41,11 @@ public:
 
   const CSecString &GetPassKey() const {return m_passkey;}
 
+  void GetThreadErrorCodes(int &irc, int &irc2, DWORD &dwError)
+  {
+    irc = m_irc; irc2 = m_irc2;  dwError = m_dwError;
+  }
+
 protected:
   friend class CWZSelectDB;
 
@@ -67,9 +72,11 @@ protected:
   HWND m_hwndVKeyBoard;
 
   // Secure Desktop
-  void StartThread(int iDialogType, HMONITOR hCurrentMonitor = NULL);
+  int StartThread(int iDialogType, HMONITOR hCurrentMonitor = NULL);
+  void IssueSDMessage();
   GetMasterPhrase m_GMP;
-  DWORD m_dwRC;  // SD Thread exit code
+  DWORD m_dwRC, m_dwError;  // SD Thread Exit and Error code
+  int m_irc, m_irc2;
   bool m_bUseSecureDesktop;
 
   virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
