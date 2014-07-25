@@ -1050,7 +1050,7 @@ void CSDThread::OnInitDialog()
       this, 0, 100, 0);
 
     if (brc == 0) {
-      m_dwError = pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
+      pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
       ASSERT(brc);
     }
 
@@ -1134,7 +1134,7 @@ void CSDThread::OnVirtualKeyboard()
       m_hwndMasterPhraseDlg, (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
 
     if (m_hwndVKeyBoard == NULL) {
-      m_dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
       ASSERT(m_hwndVKeyBoard);
     }
   } else {
@@ -1304,7 +1304,7 @@ void CSDThread::OnOK()
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      m_dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
+      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
       ASSERT(0);
     }
 
@@ -1326,7 +1326,7 @@ void CSDThread::OnCancel()
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      m_dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
+      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
       ASSERT(0);
     }
 
@@ -1342,7 +1342,7 @@ void CSDThread::OnQuit()
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      m_dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);
+      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);
       ASSERT(0);
     }
 
@@ -1357,7 +1357,7 @@ void CSDThread::OnQuit()
     // Create an event for timer deletion
     HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (hEvent == NULL) {
-      m_dwError = pws_os::IssueError(_T("CreateEvent in MPDialogProc"), false);
+      pws_os::IssueError(_T("CreateEvent in MPDialogProc"), false);
       ASSERT(hEvent);
     }
 
@@ -1372,7 +1372,7 @@ void CSDThread::OnQuit()
           break;
 
         // Otherwise debug write out other error messages and try again
-        m_dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
+        pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
       }
     } while (brc == 0);
 
@@ -1468,7 +1468,7 @@ void CSDThread::ResetTimer()
   liDueTime.QuadPart = -(iUserTimeLimit * 10000000);
 
   if (!SetWaitableTimer(m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
-    m_dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
+    pws_os::IssueError(_T("SetWaitableTimer"), false);
     ASSERT(0);
   }
 
@@ -1670,7 +1670,7 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
   bool res = false;
 
   if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)){
-    pws_os::IssueError(_T("OpenProcessToken"), false);
+    m_dwError = pws_os::IssueError(_T("OpenProcessToken"), false);
     return false;
   }
 
@@ -1817,14 +1817,14 @@ void CSDThread::CancelSecureDesktop()
     // Cancel timer
     pws_os::Trace(_T("CancelSecureDesktop - CancelWaitableTimer\n"));
     if (!CancelWaitableTimer(m_hWaitableTimer)) {
-      m_dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
+      pws_os::IssueError(_T("CancelWaitableTimer"), false);
       ASSERT(0);
     }
 
     // Close the timer handle
     if (!CloseHandle(m_hWaitableTimer)) {
       pws_os::Trace(_T("CancelSecureDesktop - CloseHandle\n"));
-      m_dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
+      pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
       ASSERT(0);
     }
 
@@ -1861,7 +1861,7 @@ bool CSDThread::TerminateProcesses()
     if (hProcess != NULL) {
       // Terminate it!
       if (!TerminateProcess(hProcess, 0)) {
-        m_dwError = pws_os::IssueError(_T("TerminateProcess"), false);
+        pws_os::IssueError(_T("TerminateProcess"), false);
         brc = false;
       }
       // Release the handle to the process.
@@ -1928,11 +1928,7 @@ bool CSDThread::GetChildProcesses(const bool bStart)
     m_vPIDs = vChildPIDs;
     return true;
   } else {
-    //// Now get just the new ones
-    //// Sort them first
-    //std::sort(m_vPIDs.begin(), m_vPIDs.end());
-    //std::sort(vChildPIDs.begin(), vChildPIDs.end());
-
+    // Now get just the new ones
     // Remove pre-existing PIDs
     IsPreExisting PE(m_vPIDs);
 
