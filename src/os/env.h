@@ -23,11 +23,7 @@ namespace pws_os {
 
 #if defined(_MSC_VER)
   // Windows only - MFC or wxWidgts
-  extern bool IsWindowsVistaOrGreater();
-
-  extern bool bSecureDesktopAllowed;
-  extern void SetSecureDesktopPermission(const bool bState);
-  extern bool IsSecureDesktopAllowed();
+  extern bool    IsWindowsVistaOrGreater();
 #endif
 }
 #endif /* __ENV_H */

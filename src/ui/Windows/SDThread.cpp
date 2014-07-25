@@ -72,17 +72,6 @@ CSDThread::~CSDThread()
 
 BOOL CSDThread::InitInstance()
 {
-  // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
-  // passphrase and/or record mouse clicks on the Virtual Keyboard.
-  m_dwAccessMask = DESKTOP_CREATEWINDOW | DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
-    DELETE | READ_CONTROL;
-#ifdef _DEBUG
-  m_dwAccessMask |= DESKTOP_ENUMERATE;
-#endif
-
-  // We need to forbid WRITE_DAC and WRITE_OWNER to prevent DAC changes by malicious process
-  m_dwForbidden = WRITE_DAC | WRITE_OWNER;
-
   // Get us
   m_hInstance = GetModuleHandle(NULL);
 
@@ -110,9 +99,6 @@ BOOL CSDThread::InitInstance()
   if (!m_hInstResDLL)
     m_hInstResDLL = m_hInstance;
 
-  m_irc = m_irc2 = 0;
-  m_dwError = 0;
-
   return TRUE;
 }
 
@@ -128,11 +114,9 @@ DWORD CSDThread::ThreadProc()
   WNDCLASS wc = { 0 };
 
   StringX sxTemp, sxPrefix;
-
-  // Initialise Thread return code
+  DWORD dwError;
   m_dwRC = (DWORD)-1;
 
-  // Clear master passphrase
   m_pGMP->clear();
   m_hwndVKeyBoard = NULL;
 
@@ -186,18 +170,23 @@ DWORD CSDThread::ThreadProc()
   // completing the close.  By setting these Security Asttributes, nvsvc is prevented from
   // grabbing the new Desktop.
 
+  // DO NOT add access DESKTOP_HOOKCONTROL as it will allow other processes to grap the
+  // passphrase and/or record mouse clicks on the Virtual Keyboard.
+  DWORD dwDesiredAccess = DESKTOP_CREATEWINDOW | DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS | DESKTOP_SWITCHDESKTOP |
+    DELETE | READ_CONTROL;
+#ifdef _DEBUG
+  dwDesiredAccess |= DESKTOP_ENUMERATE;
+#endif
+
   SECURITY_ATTRIBUTES sa;
   PSECURITY_DESCRIPTOR pSD(NULL);
   PACL pACL(NULL);
   PSID pCurrentUserSID(NULL);
   PSID pOwnerSID(NULL);
+  bool bSA_Created = CreateSA(sa, dwDesiredAccess, pSD, pACL, pOwnerSID, pCurrentUserSID);
 
-  m_irc = CreateSA(sa, pSD, pACL, pOwnerSID, pCurrentUserSID);
-
-  if (m_irc == SUCCESS) {
-    pws_os::Trace(_T("Creating New Desktop %s\n"), m_sDesktopName.c_str());
-    m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, m_dwAccessMask, &sa);
-  }
+  pws_os::Trace(_T("NewDesktop %s\n"), m_sDesktopName.c_str());
+  m_hNewDesktop = CreateDesktop(m_sDesktopName.c_str(), NULL, NULL, 0, dwDesiredAccess, bSA_Created ? &sa : NULL);
 
   // Free security data no longer required
   if (pOwnerSID)
@@ -209,15 +198,8 @@ DWORD CSDThread::ThreadProc()
   if (pSD)
     LocalFree(pSD);
 
-  if (m_irc != SUCCESS) {
-    m_irc2 = m_irc; // Detailed sub-error code
-    m_irc = CREATE_SA_FAILED;
-    goto BadExit;
-  }
-
   if (m_hNewDesktop == NULL) {
-    m_dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
-    m_irc = CREATE_NEW_DESKTOP_FAILED;
+    dwError = pws_os::IssueError(_T("CreateDesktop (new)"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -226,8 +208,7 @@ DWORD CSDThread::ThreadProc()
   xFlags |= NEWDESKTOCREATED;
 
   if (!SetThreadDesktop(m_hNewDesktop)) {
-    m_dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
-    m_irc = SET_THREAD_TO_NEW_DESKTOP_FAILED;
+    dwError = pws_os::IssueError(_T("SetThreadDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -252,8 +233,7 @@ DWORD CSDThread::ThreadProc()
   wc.hInstance = m_hInstance;
   wc.lpszClassName = m_sBkGrndClassName.c_str();
   if (!RegisterClass(&wc)) {
-    m_dwError = pws_os::IssueError(_T("RegisterClass - Background Window"), false);
-    m_irc = REGISTER_BACKGROUND_WINDOW_CLASS_FAILED;
+    dwError = pws_os::IssueError(_T("RegisterClass - Background Window"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -269,8 +249,7 @@ DWORD CSDThread::ThreadProc()
       NULL, NULL, m_hInstance, NULL);
 
     if (!hwndBkGrndWindow) {
-      m_dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
-      m_irc = CREATE_BACKGROUND_WINDOW_FAILED;
+      dwError = pws_os::IssueError(_T("CreateWindowEx - Background"), false);
       ASSERT(0);
       goto BadExit;
     }
@@ -314,8 +293,7 @@ DWORD CSDThread::ThreadProc()
 
 #ifndef NO_NEW_DESKTOP
   if (!SwitchDesktop(m_hNewDesktop)) {
-    m_dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
-    m_irc = SWITCH_DESKTOP_TO_NEW_DESKTOP_FAILED;
+    dwError = pws_os::IssueError(_T("SwitchDesktop to new"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -328,8 +306,7 @@ DWORD CSDThread::ThreadProc()
     HWND_DESKTOP, (DLGPROC)MPDialogProc, reinterpret_cast<LPARAM>(this));
 
   if (!m_hwndMasterPhraseDlg) {
-    m_dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDGETPHRASE"), false);
-    m_irc = CREATE_MASTER_PHRASE_DIALOG_FAILED;
+    dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -373,8 +350,7 @@ DWORD CSDThread::ThreadProc()
 
   // Destroy Masterphrase window
   if (!DestroyWindow(m_hwndMasterPhraseDlg)) {
-    m_dwError = pws_os::IssueError(_T("DestroyWindow - Master Phrase Entry"), false);
-    m_irc = DESTROY_MASTER_PHRASE_DIALOG_FAILED;
+    dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDGETPHRASE"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -403,8 +379,7 @@ DWORD CSDThread::ThreadProc()
 
   // Unregister it
   if (!UnregisterClass(m_sBkGrndClassName.c_str(), m_hInstance)) {
-    m_dwError = pws_os::IssueError(_T("UnregisterClass - Background"), false);
-    m_irc = UNREGISTER_BACKGROUND_WINDOW_CLASS_FAILED;
+    dwError = pws_os::IssueError(_T("UnregisterClass - Background"), false);
     ASSERT(0);
     goto BadExit;
   }
@@ -428,13 +403,13 @@ DWORD CSDThread::ThreadProc()
 
     HANDLE hDesktopSwitch = OpenEvent(SYNCHRONIZE, false, _T("WinSta0_DesktopSwitch"));
     if (!hDesktopSwitch)
-      m_dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch"), false);
+      dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch"), false);
 
     pws_os::Trace(_T("ThreadProc SwitchDesktop\n"));
     while (!SwitchDesktop(m_hOriginalDesk)) {
       pws_os::Trace(_T("SwitchDesktop(m_hOriginalDesk)\n"));
-      m_dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
-      if (m_dwError != ERROR_SUCCESS)
+      dwError = pws_os::IssueError(_T("SwitchDesktop - back to original"), false);
+      if (dwError != ERROR_SUCCESS)
         ASSERT(0);
 
       if (hDesktopSwitch) {
@@ -457,8 +432,7 @@ DWORD CSDThread::ThreadProc()
   if (xFlags & SETTHREADDESKTOP) {
     // Switch thread back to original Desktop
     if (!SetThreadDesktop(m_hOriginalDesk)) {
-      m_dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
-      m_irc = SET_THREAD_TO_ORIGINAL_DESKTOP_FAILED;
+      dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original"), false);
       ASSERT(0);
       goto BadExit;
     }
@@ -477,10 +451,8 @@ DWORD CSDThread::ThreadProc()
     // Note: There can be a good return code even if it does not close
     // due to programs external to PWS keeping it around!
     if (!CloseDesktop(m_hNewDesktop)) {
-      m_dwError = pws_os::IssueError(_T("CloseDesktop (new)"), false);
-      m_irc = CLOSE_NEW_DESKTOP_FAILED;
+      dwError = pws_os::IssueError(_T("CloseDesktop (new)"), false);
       ASSERT(0);
-      goto BadExit;
     } else {
       // Update Progress
       xFlags &= ~NEWDESKTOCREATED;
@@ -501,8 +473,6 @@ BadExit:
   // Need to tidy up what was done in reverse order - ignoring what wasn't and ignore errors
   // First clear anything the user has entered
   m_pGMP->clear();
-
-  // Don't use m_dwError as this will overwrite previous information
 
   if (xFlags & VIRTUALKEYBOARDCREATED) {
     // Delete Virtual Keyboard instance
@@ -547,10 +517,10 @@ BadExit:
     // Switch back to the initial desktop - see comments above
     HANDLE hDesktopSwitch = OpenEvent(SYNCHRONIZE, false, _T("WinSta0_DesktopSwitch"));
     if (!hDesktopSwitch)
-      pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch (bad exit)"), false);
+      dwError = pws_os::IssueError(_T("OpenEvent - SYNCHRONIZE - WinSta0_DesktopSwitch (bad exit)"), false);
 
     while (!SwitchDesktop(m_hOriginalDesk)) {
-      DWORD dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
+      dwError = pws_os::IssueError(_T("SwitchDesktop - back to original (bad exit)"), false);
       if (dwError != ERROR_SUCCESS)
         ASSERT(0);
 
@@ -574,14 +544,13 @@ BadExit:
   if (xFlags & SETTHREADDESKTOP) {
     // Switch thread back to initial desktop
     if (!SetThreadDesktop(m_hOriginalDesk)) {
-      pws_os::IssueError(_T("SetThreadDesktop - back to original (bad exit)"), false);
+      dwError = pws_os::IssueError(_T("SetThreadDesktop - back to original (bad exit)"), false);
       ASSERT(0);
     } else {
       // Update Progress
       xFlags &= ~SETTHREADDESKTOP;
     }
   }
-
   if (xFlags & NEWDESKTOCREATED) {
     // Get new child processes
     GetChildProcesses(false);
@@ -603,7 +572,7 @@ BadExit:
   m_sDesktopName.clear();
   m_vMonitorImageInfo.clear();
 
-  return (DWORD)FAILED;
+  return (DWORD)-1;
 }
 
 // Is Desktop there?
@@ -1020,6 +989,7 @@ INT_PTR CSDThread::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 void CSDThread::OnInitDialog()
 {
   BOOL brc;
+  DWORD dwError;
 
   m_hwndStaticTimer = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMER);
   m_hwndStaticTimerText = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMERTEXT);
@@ -1050,7 +1020,7 @@ void CSDThread::OnInitDialog()
       this, 0, 100, 0);
 
     if (brc == 0) {
-      pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
+      dwError = pws_os::IssueError(_T("CreateTimerQueueTimer"), false);
       ASSERT(brc);
     }
 
@@ -1113,6 +1083,8 @@ void CSDThread::OnInitDialog()
 
 void CSDThread::OnVirtualKeyboard()
 {
+  DWORD dwError;
+
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
   if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
@@ -1134,7 +1106,7 @@ void CSDThread::OnVirtualKeyboard()
       m_hwndMasterPhraseDlg, (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
 
     if (m_hwndVKeyBoard == NULL) {
-      pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
+      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
       ASSERT(m_hwndVKeyBoard);
     }
   } else {
@@ -1148,6 +1120,7 @@ void CSDThread::OnVirtualKeyboard()
 
 void CSDThread::OnOK()
 {
+  DWORD dwError;
   stringT sErrorMsg;
 
   /*
@@ -1304,7 +1277,7 @@ void CSDThread::OnOK()
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
+      dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDOK"), false);
       ASSERT(0);
     }
 
@@ -1317,6 +1290,8 @@ void CSDThread::OnOK()
 
 void CSDThread::OnCancel()
 {
+  DWORD dwError;
+
   // Tell TimerProc to do nothing
   m_bDoTimerProcAction = false;
 
@@ -1326,7 +1301,7 @@ void CSDThread::OnCancel()
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
+      dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - IDCANCEL"), false);
       ASSERT(0);
     }
 
@@ -1339,10 +1314,12 @@ void CSDThread::OnCancel()
 
 void CSDThread::OnQuit()
 {
+  DWORD dwError;
+
   if (m_hwndVKeyBoard != NULL) {
     ::SendMessage(m_hwndVKeyBoard, WM_QUIT, 0, 0);
     if (!DestroyWindow(m_hwndVKeyBoard)) {
-      pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);
+      dwError = pws_os::IssueError(_T("DestroyWindow - IDD_SDVKEYBOARD - WM_QUIT"), false);
       ASSERT(0);
     }
 
@@ -1357,7 +1334,7 @@ void CSDThread::OnQuit()
     // Create an event for timer deletion
     HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (hEvent == NULL) {
-      pws_os::IssueError(_T("CreateEvent in MPDialogProc"), false);
+      dwError = pws_os::IssueError(_T("CreateEvent in MPDialogProc"), false);
       ASSERT(hEvent);
     }
 
@@ -1372,7 +1349,7 @@ void CSDThread::OnQuit()
           break;
 
         // Otherwise debug write out other error messages and try again
-        pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
+        dwError = pws_os::IssueError(_T("DeleteTimerQueueTimer"), false);
       }
     } while (brc == 0);
 
@@ -1459,6 +1436,7 @@ void CALLBACK CSDThread::TimerProc(LPVOID lpParameter, BOOLEAN /* TimerOrWaitFir
 void CSDThread::ResetTimer()
 {
   LARGE_INTEGER liDueTime;
+  DWORD dwError;
 
   if (m_hWaitableTimer == NULL)
     return;
@@ -1468,7 +1446,7 @@ void CSDThread::ResetTimer()
   liDueTime.QuadPart = -(iUserTimeLimit * 10000000);
 
   if (!SetWaitableTimer(m_hWaitableTimer, &liDueTime, 0, NULL, NULL, 0)) {
-    pws_os::IssueError(_T("SetWaitableTimer"), false);
+    dwError = pws_os::IssueError(_T("SetWaitableTimer"), false);
     ASSERT(0);
   }
 
@@ -1670,12 +1648,13 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
   bool res = false;
 
   if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)){
-    m_dwError = pws_os::IssueError(_T("OpenProcessToken"), false);
+    pws_os::IssueError(_T("OpenProcessToken"), false);
     return false;
   }
 
   PTOKEN_GROUPS pTG = NULL;
   DWORD dwBytesNeeed = 0;
+  DWORD dwError;
 
   // get buffer size
   if (!GetTokenInformation(hToken, TokenGroups, pTG, 0,  &dwBytesNeeed)){
@@ -1687,13 +1666,13 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
   pTG = (PTOKEN_GROUPS)LocalAlloc(LPTR, dwBytesNeeed);
 
   if (!pTG) {
-    m_dwError = pws_os::IssueError(_T("LocalAlloc"), false);
+    dwError = pws_os::IssueError(_T("LocalAlloc"), false);
     goto Cleanup;
   }
 
 
   if (!GetTokenInformation(hToken, TokenGroups, pTG, dwBytesNeeed, &dwBytesNeeed)){
-    m_dwError = pws_os::IssueError(_T("GetTokenInformation"), false);
+    dwError = pws_os::IssueError(_T("GetTokenInformation"), false);
     goto Cleanup;
   }
 
@@ -1702,11 +1681,11 @@ bool CSDThread::GetLogonSID(PSID &logonSID)
       dwBytesNeeed = GetLengthSid(pTG->Groups[i].Sid);
       logonSID = (PSID)LocalAlloc(LPTR, dwBytesNeeed);
       if (!logonSID) {
-        m_dwError = pws_os::IssueError(_T("LocalAlloc"), false);
+        dwError = pws_os::IssueError(_T("LocalAlloc"), false);
         break;
       }
       if (!CopySid(dwBytesNeeed, logonSID, pTG->Groups[i].Sid)) {
-        m_dwError = pws_os::IssueError(_T("CopySid"), false);
+        dwError = pws_os::IssueError(_T("CopySid"), false);
         break;
       }
       res = true;
@@ -1722,28 +1701,29 @@ Cleanup:
   return res;
 }
 
-int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+bool CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
   PSID &pOwnerSID, PSID &pCurrentUserSID)
 {
-  m_dwError = 0;
+  DWORD dwResult, dwError;
+  // We need to forbid WRITE_DAC and WRITE_OWNER to prevent DAC changes by malicious process
+  DWORD dwForbidden = WRITE_DAC | WRITE_OWNER;
 
   EXPLICIT_ACCESS ea[2];
   SID_IDENTIFIER_AUTHORITY SIDAuthCreator = SECURITY_CREATOR_SID_AUTHORITY;
-
   // Create a SID for CREATOR_OWNER_RIGHTS (don't confuse with CREATOR_OWNER!)
   if (!AllocateAndInitializeSid(&SIDAuthCreator, 1, SECURITY_CREATOR_OWNER_RIGHTS_RID, 0, 0, 0, 0, 0, 0, 0, &pOwnerSID)) {
-    m_dwError = pws_os::IssueError(L"AllocateAndInitializeSid - CREATOR_OWNER_RIGHTS", false);
-    return CREATE_SA_ALLOCATEANDINITIALIZESID_FAILED;
+    dwError = pws_os::IssueError(L"AllocateAndInitializeSid - CREATOR_OWNER_RIGHTS", false);
+    return false;
   }
 
   if (!GetLogonSID(pCurrentUserSID)) {
     ASSERT(0);
-    return CREATE_SA_GETLOGONSID_CURRENTUSERSID_FAILED;
+    return false;
   }
 
   // Exclude forbidden rights from mask
-  if (m_dwAccessMask & m_dwForbidden){
-    m_dwAccessMask &= ~m_dwForbidden;
+  if (dwAccessMask & dwForbidden){
+    dwAccessMask &= ~dwForbidden;
     pws_os::Trace(_T("Forbidden rights were removed from access mask\n"));
   }
 
@@ -1754,7 +1734,7 @@ int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL
   // The ACE will allow the current user Desktop specific access rights and
   // standard access to the Desktop.
 
-  ea[0].grfAccessPermissions = m_dwAccessMask;
+  ea[0].grfAccessPermissions = dwAccessMask;
   ea[0].grfAccessMode = SET_ACCESS;
   ea[0].grfInheritance = NO_INHERITANCE;
   ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
@@ -1762,7 +1742,7 @@ int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL
   ea[0].Trustee.ptstrName = (LPTSTR)pCurrentUserSID;
 
   // We need to explicitely forbid it for owner, otherwise it will have them implicitly
-  ea[1].grfAccessPermissions = m_dwForbidden;
+  ea[1].grfAccessPermissions = dwForbidden;
   ea[1].grfAccessMode = DENY_ACCESS;
   ea[1].grfInheritance = NO_INHERITANCE;
   ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
@@ -1770,30 +1750,30 @@ int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL
   ea[1].Trustee.ptstrName = (LPTSTR)pOwnerSID;
 
   // Create a new ACL that contains the new ACEs.
-  m_dwError = SetEntriesInAcl(sizeof(ea) / sizeof(ea[0]), ea, NULL, &pACL);
-  if (m_dwError != ERROR_SUCCESS) {
-    SetLastError(m_dwError); // to be caught by GetLastError()
-    m_dwError = pws_os::IssueError(_T("SetEntriesInAcl"), false);
-    return CREATE_SA_SETENTRIESINACL_FAILED;
+  dwResult = SetEntriesInAcl(sizeof(ea) / sizeof(ea[0]), ea, NULL, &pACL);
+  if (dwResult != ERROR_SUCCESS) {
+    SetLastError(dwResult); // to be caught by GetLastError()
+    dwError = pws_os::IssueError(_T("SetEntriesInAcl"), false);
+    return false;
   }
 
   // Get a security descriptor.
   pSD = (PSECURITY_DESCRIPTOR)LocalAlloc(LPTR, SECURITY_DESCRIPTOR_MIN_LENGTH);
   if (pSD == NULL) {
-    m_dwError = pws_os::IssueError(_T("LocalAlloc"), false);
-    return CREATE_SA_GETSECURITYDESCRIPTOR_LOCALALLOC_FAILED;
+    dwError = pws_os::IssueError(_T("LocalAlloc"), false);
+    return false;
   }
 
   // Initialise it
   if (!InitializeSecurityDescriptor(pSD, SECURITY_DESCRIPTOR_REVISION)) {
-    m_dwError = pws_os::IssueError(_T("InitializeSecurityDescriptor"), false);
-    return CREATE_SA_INITIALIZESECURITYDESCRIPTOR_FAILED;
+    dwError = pws_os::IssueError(_T("InitializeSecurityDescriptor"), false);
+    return false;
   }
 
   // Add the ACL to the security descriptor.
   if (!SetSecurityDescriptorDacl(pSD, TRUE, pACL, FALSE)) {
-    m_dwError = pws_os::IssueError(_T("SetSecurityDescriptorDacl"), false);
-    return CREATE_SA_SETSECURITYDESCRIPTORDACL_FAILED;
+    dwError = pws_os::IssueError(_T("SetSecurityDescriptorDacl"), false);
+    return false;
   }
 
   // Initialize the security attributes structure.
@@ -1802,11 +1782,13 @@ int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL
   sa.bInheritHandle = FALSE;
 
   // Set success - we can use Security Attributes
-  return SUCCESS;
+  return true;
 }
 
 void CSDThread::CancelSecureDesktop()
 {
+  DWORD dwError;
+
   std::lock_guard<std::mutex> lock(m_mutex);
 
   if (m_hWaitableTimer != NULL) {
@@ -1816,14 +1798,14 @@ void CSDThread::CancelSecureDesktop()
     // Cancel timer
     pws_os::Trace(_T("CancelSecureDesktop - CancelWaitableTimer\n"));
     if (!CancelWaitableTimer(m_hWaitableTimer)) {
-      pws_os::IssueError(_T("CancelWaitableTimer"), false);
+      dwError = pws_os::IssueError(_T("CancelWaitableTimer"), false);
       ASSERT(0);
     }
 
     // Close the timer handle
     if (!CloseHandle(m_hWaitableTimer)) {
       pws_os::Trace(_T("CancelSecureDesktop - CloseHandle\n"));
-      pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
+      dwError = pws_os::IssueError(_T("CloseHandle - hWaitableTimer"), false);
       ASSERT(0);
     }
 
@@ -1845,6 +1827,8 @@ void CSDThread::CancelSecureDesktop()
 
 bool CSDThread::TerminateProcesses()
 {
+  DWORD dwError;
+
   pws_os::Trace(_T("TerminateProcesses - found %d unique process%s to terminate\n"),
     m_vPIDs.size(), m_vPIDs.size() == 1 ? _T("") : _T("es"));
 
@@ -1860,7 +1844,7 @@ bool CSDThread::TerminateProcesses()
     if (hProcess != NULL) {
       // Terminate it!
       if (!TerminateProcess(hProcess, 0)) {
-        pws_os::IssueError(_T("TerminateProcess"), false);
+        dwError = pws_os::IssueError(_T("TerminateProcess"), false);
         brc = false;
       }
       // Release the handle to the process.
@@ -1927,7 +1911,11 @@ bool CSDThread::GetChildProcesses(const bool bStart)
     m_vPIDs = vChildPIDs;
     return true;
   } else {
-    // Now get just the new ones
+    //// Now get just the new ones
+    //// Sort them first
+    //std::sort(m_vPIDs.begin(), m_vPIDs.end());
+    //std::sort(vChildPIDs.begin(), vChildPIDs.end());
+
     // Remove pre-existing PIDs
     IsPreExisting PE(m_vPIDs);
 

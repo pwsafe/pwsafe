@@ -34,7 +34,6 @@ down the streetsky.  [Groucho Marx]
 
 #include "os/file.h"
 #include "os/dir.h"
-#include "os/env.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -363,28 +362,17 @@ void CPasskeyEntry::OnCreateDb()
 
   // 2. Get a password
   bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  if (!pws_os::IsSecureDesktopAllowed()) {
-    // Don't care about preference  - not allowed
-    bUseSecureDesktop = false;
-  }
 
   do
   {
     CPasskeySetup pksetup(this, *app.GetCore(), bUseSecureDesktop);
     rc = pksetup.DoModal();
 
-    if (bUseSecureDesktop && !pws_os::IsSecureDesktopAllowed()) {
-      // We must have had a problem
-      // Make sure now non-SD and simulate Toggle
-      bUseSecureDesktop = false;
-      rc = INT_MAX;
-    } else {
-      // In case user wanted to toggle Secure Desktop
-      bUseSecureDesktop = !bUseSecureDesktop;
-    }
-
     if (rc == IDOK)
       m_passkey = pksetup.GetPassKey();
+
+    // In case user wanted to toggle Secure Desktop
+    bUseSecureDesktop = !bUseSecureDesktop;
   } while (rc == INT_MAX);
 
   if (rc != IDOK)
@@ -721,20 +709,12 @@ void CPasskeyEntry::OnEnterCombination()
   }
 
   // Get passphrase from Secure Desktop
-  int irc = StartThread(IDD_SDGETPHRASE);
-
-  if (irc != 0) {
-    pws_os::SetSecureDesktopPermission(false);
-
-    // Issue message
-    IssueSDMessage();
-
-    EndDialog(INT_MAX);
-  }
+  StartThread(IDD_SDGETPHRASE);
 
   ShowWindow(SW_SHOW);
 
   if (m_GMP.bPhraseEntered) {
+    ShowWindow(SW_SHOW);
     m_passkey = m_GMP.sPhrase.c_str();
     ProcessPhrase();
   }

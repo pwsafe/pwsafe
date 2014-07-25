@@ -20,8 +20,6 @@
 #include <LMCONS.H> // for UNLEN definition
 #include "../env.h"
 
-bool pws_os::bSecureDesktopAllowed;
-
 stringT pws_os::getenv(const char *env, bool is_path)
 {
   ASSERT(env != NULL);
@@ -109,7 +107,6 @@ stringT pws_os::getprocessid()
   return os.str();
 }
 
-#if defined(_MSC_VER)
   /*
   * Versions supported by current PasswordSafe
   *   Operating system       Version  Other
@@ -158,14 +155,3 @@ bool pws_os::IsWindowsVistaOrGreater()
 
   return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION, dwlConditionMask) != FALSE;
 }
-
-void pws_os::SetSecureDesktopPermission(const bool bState)
-{
-  bSecureDesktopAllowed = bState;
-}
-
-bool pws_os::IsSecureDesktopAllowed()
-{
-  return bSecureDesktopAllowed;
-}
-#endif

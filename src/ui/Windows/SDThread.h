@@ -60,41 +60,6 @@ public:
   virtual ~CSDThread();
 
   StringX GetPhrase() const { return m_pGMP->sPhrase; }
-  void GetThreadErrorCodes(int &irc, int &irc2, DWORD &dwError)
-  {
-    irc = m_irc; irc2 = m_irc2;  dwError = m_dwError;
-  }
-
-  enum {
-    SUCCESS = 0,
-    FAILED = -1,
-
-    /*
-      Thread can also return IDOK (1) or IDCANCEL (2) depending on user's
-      response on main dialog shown on new Desktop
-    */
-
-    // Main error codes
-    CREATE_SA_FAILED                          = 10,
-    CREATE_NEW_DESKTOP_FAILED                 = 11,
-    SET_THREAD_TO_NEW_DESKTOP_FAILED          = 12,
-    REGISTER_BACKGROUND_WINDOW_CLASS_FAILED   = 13,
-    CREATE_BACKGROUND_WINDOW_FAILED           = 14,
-    SWITCH_DESKTOP_TO_NEW_DESKTOP_FAILED      = 15,
-    CREATE_MASTER_PHRASE_DIALOG_FAILED        = 16,
-    DESTROY_MASTER_PHRASE_DIALOG_FAILED       = 17,
-    UNREGISTER_BACKGROUND_WINDOW_CLASS_FAILED = 18,
-    SET_THREAD_TO_ORIGINAL_DESKTOP_FAILED     = 19,
-    CLOSE_NEW_DESKTOP_FAILED                  = 20,
-
-    // Detailed error codes for (currently) Create Security Attributes only
-    CREATE_SA_ALLOCATEANDINITIALIZESID_FAILED         = 1,
-    CREATE_SA_GETLOGONSID_CURRENTUSERSID_FAILED       = 2,
-    CREATE_SA_SETENTRIESINACL_FAILED                  = 3,
-    CREATE_SA_GETSECURITYDESCRIPTOR_LOCALALLOC_FAILED = 4,
-    CREATE_SA_INITIALIZESECURITYDESCRIPTOR_FAILED     = 5,
-    CREATE_SA_SETSECURITYDESCRIPTORDACL_FAILED        = 6,
-  };
 
  protected:
    BOOL InitInstance();
@@ -141,7 +106,7 @@ public:
    void ResetTimer();
 
    bool GetLogonSID(PSID &logonSID);
-   int CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
+   bool CreateSA(SECURITY_ATTRIBUTES &sa, DWORD dwAccessMask, PSECURITY_DESCRIPTOR &pSD, PACL &pACL,
      PSID &pOwnerSID, PSID &pCurrentUserSID);
    void CancelSecureDesktop();
 
@@ -158,8 +123,6 @@ public:
    CVKeyBoardDlg *m_pVKeyBoardDlg;
    std::vector<DWORD> m_vPIDs;
    std::mutex m_mutex;
-   DWORD m_dwAccessMask, m_dwForbidden, m_dwError;
-   int m_irc, m_irc2;
 
    // Yubi stuff
    CProgressCtrl m_yubi_timeout;
@@ -207,6 +170,7 @@ public:
    MonitorImageInfo m_vMonitorImageInfo;
 
    // Secure Desktop related
+   void StartThread();
    int m_iLastFocus;
 
    // Thread return code
