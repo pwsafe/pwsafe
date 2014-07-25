@@ -33,7 +33,7 @@
 // Following makes debugging SD UI changes feasible
 // Of course, remove if/when debugging the Secure Desktop funtionality itself...
 #ifdef _DEBUG
-//#define NO_NEW_DESKTOP
+#define NO_NEW_DESKTOP
 #endif
 
 int iStartTime;  // Start time for SD timer - does get reset by edit changes or mouse clicks (VK)
@@ -1802,8 +1802,7 @@ int CSDThread::CreateSA(SECURITY_ATTRIBUTES &sa, PSECURITY_DESCRIPTOR &pSD, PACL
   sa.bInheritHandle = FALSE;
 
   // Set success - we can use Security Attributes
-  return CREATE_SA_SETENTRIESINACL_FAILED;
-  //return SUCCESS;
+  return SUCCESS;
 }
 
 void CSDThread::CancelSecureDesktop()
