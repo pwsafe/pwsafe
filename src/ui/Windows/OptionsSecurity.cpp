@@ -45,7 +45,6 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_LockOnWindowLock = M_LockOnWindowLock();
   m_LockOnIdleTimeout = M_LockOnIdleTimeout();
   m_CopyPswdBrowseURL = M_CopyPswdBrowseURL();
-  m_UseSecureDesktop = M_UseSecureDesktop();
   m_IdleTimeOut = M_IdleTimeOut();
   SetHashIter(M_HashIters());
 }
@@ -67,7 +66,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
-  DDX_Check(pDX, IDC_USESECUREDESKTOP, m_UseSecureDesktop);
 
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
@@ -108,10 +106,6 @@ BOOL COptionsSecurity::OnInitDialog()
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
   pslider->SetRange(MinHIslider, MaxHIslider);
-
-  if (!pws_os::IsWindowsVistaOrGreater()) {
-    GetDlgItem(IDC_USESECUREDESKTOP)->EnableWindow(FALSE);
-  }
 
   return TRUE;
 }
@@ -158,8 +152,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_LockOnIdleTimeout()        != m_LockOnIdleTimeout        ||
           M_CopyPswdBrowseURL()        != m_CopyPswdBrowseURL        ||
           (m_LockOnIdleTimeout         == TRUE &&
-           M_IdleTimeOut()             != m_IdleTimeOut)             ||
-          M_UseSecureDesktop()         != m_UseSecureDesktop)
+           M_IdleTimeOut()             != m_IdleTimeOut))
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -206,7 +199,6 @@ BOOL COptionsSecurity::OnApply()
   M_LockOnWindowLock() = m_LockOnWindowLock;
   M_LockOnIdleTimeout() = m_LockOnIdleTimeout;
   M_CopyPswdBrowseURL() = m_CopyPswdBrowseURL;
-  M_UseSecureDesktop() = m_UseSecureDesktop;
   M_IdleTimeOut() = m_IdleTimeOut;
   UpdateHashIter();
   M_HashIters() = m_HashIter;

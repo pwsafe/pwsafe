@@ -22,7 +22,6 @@ down the streetsky.  [Groucho Marx]
 #include "DboxMain.h" // for CheckPasskey()
 #include "PWSversion.h"
 #include "GeneralMsgBox.h"
-#include "SDThread.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
@@ -54,19 +53,12 @@ int CPasskeyEntry::dialog_lookup[10] = {
   IDD_PASSKEYENTRY,                // GCP_RESTORE
   IDD_PASSKEYENTRY_WITHEXIT,       // GCP_WITHEXIT
   IDD_PASSKEYENTRY,                // GCP_CHANGEMODE
-  // Secure Desktop dialogs
-  IDD_PASSKEYENTRY_FIRST_SD,       // GCP_FIRST_SD
-  IDD_PASSKEYENTRY_SD,             // GCP_NORMAL_SD
-  IDD_PASSKEYENTRY_SD,             // GCP_RESTORE_SD
-  IDD_PASSKEYENTRY_WITHEXIT_SD,    // GCP_WITHEXIT_SD
-  IDD_PASSKEYENTRY_SD              // GCP_CHANGEMODE_SD
 };
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
-                             bool bUseSecureDesktop)
-  : CPKBaseDlg(dialog_lookup[index + (bUseSecureDesktop ? NUM_PER_ENVIRONMENT : 0)], pParent, bUseSecureDesktop),
+                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
+  : CPKBaseDlg(dialog_lookup[index], pParent),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
@@ -119,11 +111,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
   DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
   DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
-
-  if (!m_bUseSecureDesktop)
-    DDX_Control(pDX, IDOK, m_ctlOK);
-  else
-    DDX_Control(pDX, IDC_ENTERCOMBINATION, m_ctlEnterCombination);
+  DDX_Control(pDX, IDOK, m_ctlOK);
   //}}AFX_DATA_MAP
 }
 
@@ -140,7 +128,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -161,11 +148,8 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 {
   CPKBaseDlg::OnInitDialog();
 
-  if (!m_bUseSecureDesktop) {
-    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-
-    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-  }
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   switch (m_index) {
   case GCP_FIRST:
@@ -203,7 +187,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!m_bUseSecureDesktop && !m_bVKAvailable) {
+  if (!m_bVKAvailable) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -211,9 +195,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   if (m_SelectedDatabase.IsEmpty()) {
     if (m_index == GCP_FIRST) {
       SetOKButton(true, false);
-      if (m_bUseSecureDesktop) {
-        m_SelectedDatabase.LoadString(IDS_NOCURRENTSAFE);
-      }
     }
   }
 
@@ -267,7 +248,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   if (m_index == GCP_FIRST) {
     m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
-    m_ctlLogo.ReloadBitmap(m_bUseSecureDesktop ? IDB_CLOGO_SMALL : IDB_CLOGO);
+    m_ctlLogo.ReloadBitmap(IDB_CLOGO);
   } else {
     m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
   }
@@ -287,8 +268,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     SetActiveWindow();
     SetForegroundWindow();
-    if (!m_bUseSecureDesktop)
-      m_pctlPasskey->SetFocus();
+    m_pctlPasskey->SetFocus();
     return FALSE;
   }
 
@@ -299,8 +279,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   // a password:
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
-    if (!m_bUseSecureDesktop)
-      m_pctlPasskey->SetFocus();
+    m_pctlPasskey->SetFocus();
     return FALSE;
   }
 
@@ -361,27 +340,18 @@ void CPasskeyEntry::OnCreateDb()
   }
 
   // 2. Get a password
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
 
-  do
-  {
-    CPasskeySetup pksetup(this, *app.GetCore(), bUseSecureDesktop);
-    rc = pksetup.DoModal();
+  CPasskeySetup pksetup(this, *app.GetCore());
+  rc = pksetup.DoModal();
 
-    if (rc == IDOK)
-      m_passkey = pksetup.GetPassKey();
-
-    // In case user wanted to toggle Secure Desktop
-    bUseSecureDesktop = !bUseSecureDesktop;
-  } while (rc == INT_MAX);
-
-  if (rc != IDOK)
+  if (rc == IDOK)
+    m_passkey = pksetup.GetPassKey();
+  else
     return;  //User cancelled password entry
 
   // 3. Set m_filespec && m_passkey to returned value!
   m_filespec = newfile;
-  if (!m_bUseSecureDesktop)
-    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
+  ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
 
   m_status = TAR_NEW;
   CPWDialog::OnOK();
@@ -457,10 +427,8 @@ void CPasskeyEntry::ProcessPhrase()
     else { // try again
       gmb.AfxMessageBox(m_index == GCP_CHANGEMODE ? IDS_BADPASSKEY : IDS_INCORRECTKEY);
     }
-    if (!m_bUseSecureDesktop) {
-      m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
-      m_pctlPasskey->SetFocus();
-    }
+    m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
+    m_pctlPasskey->SetFocus();
     break;
   case PWScore::READ_FAIL:
     gmb.AfxMessageBox(IDSC_FILE_UNREADABLE);
@@ -614,7 +582,6 @@ void CPasskeyEntry::SetHeight(const int num)
 
 void CPasskeyEntry::OnVirtualKeyboard()
 {
-  // This is used if Secure Desktop isn't!
   DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
 
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
@@ -650,8 +617,6 @@ void CPasskeyEntry::OnVirtualKeyboard()
 
 LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
 {
-  // This is used if Secure Desktop isn't!
-
   // Update the variables
   UpdateData(TRUE);
 
@@ -692,49 +657,10 @@ void CPasskeyEntry::OnYubikeyBtn()
   yubiRequestHMACSha1(m_passkey);
 }
 
-void CPasskeyEntry::OnEnterCombination()
-{
-  if (m_filespec.IsEmpty()) {
-    m_status = TAR_OPEN_NODB;
-    CPWDialog::OnCancel();
-    return;
-  }
-
-  CGeneralMsgBox gmb;
-  if (!pws_os::FileExists(m_filespec.GetString())) {
-    gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
-    if (m_MRU_combo.IsWindowVisible())
-      m_MRU_combo.SetFocus();
-    return;
-  }
-
-  // Get passphrase from Secure Desktop
-  StartThread(IDD_SDGETPHRASE);
-
-  ShowWindow(SW_SHOW);
-
-  if (m_GMP.bPhraseEntered) {
-    ShowWindow(SW_SHOW);
-    m_passkey = m_GMP.sPhrase.c_str();
-    ProcessPhrase();
-  }
-
-  // Just do nothing if no passphrase entered i.e. user pressed cancel
-  // Try to get this seen
-  SetForegroundWindow();
-}
-
 void CPasskeyEntry::SetOKButton(bool bEmptyDB, bool bSetFocus) {
-  if (!m_bUseSecureDesktop) {
-    m_pctlPasskey->EnableWindow(TRUE);
-    if (bSetFocus)
-      m_pctlPasskey->SetFocus();
+  m_pctlPasskey->EnableWindow(TRUE);
+  if (bSetFocus)
+    m_pctlPasskey->SetFocus();
 
-    m_ctlOK.EnableWindow(TRUE);
-  } else {
-    CString csText(MAKEINTRESOURCE(bEmptyDB ? IDS_OK : IDS_ENTERCOMBINATION));
-
-    m_ctlEnterCombination.SetWindowText(csText);
-    m_ctlEnterCombination.EnableWindow(TRUE);
-  }
+  m_ctlOK.EnableWindow(bEmptyDB ? TRUE : FALSE);
 }

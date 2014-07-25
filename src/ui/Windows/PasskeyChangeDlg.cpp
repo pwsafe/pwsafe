@@ -38,10 +38,10 @@ static char THIS_FILE[] = __FILE__;
 extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 
 //-----------------------------------------------------------------------------
-CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent, bool bUseSecureDesktop)
-  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent, bUseSecureDesktop),
+CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
+  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
-    m_oldpasskeyConfirmed(false), m_bUseSecureDesktop(bUseSecureDesktop)
+    m_oldpasskeyConfirmed(false)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";
@@ -79,28 +79,11 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_WM_TIMER()
-  ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
-
-  if (m_bUseSecureDesktop)
-  {
-    // We need a dialog but we don't want to show it - sneeky code here
-    ShowWindow(SW_HIDE);
-
-    StartThread(IDD_SDKEYCHANGE);
-
-    if (m_GMP.bPhraseEntered && m_GMP.bNewPhraseEntered) {
-      m_passkey = m_GMP.sPhrase.c_str();
-      m_newpasskey = m_GMP.sNewPhrase.c_str();
-    }
-
-    EndDialog((int)m_dwRC);  // Use Thread RC
-    return TRUE;
-  }
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
@@ -123,15 +106,6 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   }
 
   return TRUE;
-}
-
-void CPasskeyChangeDlg::OnWindowPosChanging(WINDOWPOS *lpwndpos)
-{
-  // Stop dialog showing
-  if (m_bUseSecureDesktop && (lpwndpos->flags & SWP_SHOWWINDOW)) {
-    lpwndpos->flags |= SWP_HIDEWINDOW;
-    lpwndpos->flags &= ~SWP_SHOWWINDOW;
-  }
 }
 
 void CPasskeyChangeDlg::yubiInserted(void)
@@ -221,7 +195,6 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 
 void CPasskeyChangeDlg::OnVirtualKeyboard()
 {
-  // This is used if Secure Desktop isn't!
   DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
 
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
@@ -258,8 +231,6 @@ void CPasskeyChangeDlg::OnVirtualKeyboard()
 
 LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
 {
-  // This is used if Secure Desktop isn't!
-
   // Update the variables
   UpdateData(TRUE);
 

@@ -54,26 +54,13 @@ void DboxMain::OnPassphraseChange()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  INT_PTR rc;
-
-  do
-  {
-    CPasskeyChangeDlg changeDlg(this, bUseSecureDesktop);
-
-    rc = changeDlg.DoModal();
-
-    if (rc == IDOK) {
-      m_core.ChangePasskey(changeDlg.m_newpasskey);
-      ChangeOkUpdate();
-
-      // Update preference
-      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
-    }
-
-    // In case user wanted to toggle Secure Desktop
-    bUseSecureDesktop = !bUseSecureDesktop;
-  } while (rc == INT_MAX);
+  CPasskeyChangeDlg changeDlg(this);
+  INT_PTR rc = changeDlg.DoModal();
+  
+  if (rc == IDOK) {
+    m_core.ChangePasskey(changeDlg.m_newpasskey);
+    ChangeOkUpdate();
+  }
 }
 
 void DboxMain::OnBackupSafe()

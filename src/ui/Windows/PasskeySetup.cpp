@@ -43,8 +43,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 //-----------------------------------------------------------------------------
-CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core, bool bUseSecureDesktop)
-  : CPKBaseDlg(bUseSecureDesktop ? CPasskeySetup::IDD_SD : CPasskeySetup::IDD, pParent, bUseSecureDesktop),
+CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
+  : CPKBaseDlg(CPasskeySetup::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_verify = L"";
@@ -80,21 +80,6 @@ BOOL CPasskeySetup::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
 
-  if (m_bUseSecureDesktop)
-  {
-    // We need a dialog but we don't want to show it - sneeky code here
-    ShowWindow(SW_HIDE);
-
-    StartThread(IDD_SDPASSKEYSETUP);
-
-    if (m_GMP.bPhraseEntered) {
-      m_passkey = m_GMP.sPhrase.c_str();
-    }
-
-    EndDialog((int)m_dwRC);  // Use Thread RC
-    return TRUE;
-  }
-
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
@@ -107,15 +92,6 @@ BOOL CPasskeySetup::OnInitDialog()
   }
 
   return TRUE;
-}
-
-void CPasskeySetup::OnWindowPosChanging(WINDOWPOS *lpwndpos)
-{
-  // Stop dialog showing
-  if (m_bUseSecureDesktop && (lpwndpos->flags & SWP_SHOWWINDOW)) {
-    lpwndpos->flags |= SWP_HIDEWINDOW;
-    lpwndpos->flags &= ~SWP_SHOWWINDOW;
-  }
 }
 
 void CPasskeySetup::OnCancel() 
@@ -187,7 +163,6 @@ void CPasskeySetup::OnVerifykeySetfocus()
 
 void CPasskeySetup::OnVirtualKeyboard()
 {
-  // This is used if Secure Desktop isn't!
   DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
 
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden

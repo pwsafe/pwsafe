@@ -390,9 +390,6 @@ CVKeyBoardDlg::CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPh
   if (!m_hInstResDLL)
     m_hInstResDLL = m_hInstance;
 
-  m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
-
   // Initialise numbers
   for (int i = 0; i < NUM_DIGITS; i++) {
     m_pnumbers[i] = _wcsdup(pXdefnumbers[i]);
@@ -588,21 +585,6 @@ INT_PTR CVKeyBoardDlg::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
     // Default white background
     SetBkColor((HDC)wParam, RGB(255, 255, 255));
 
-    // Red text for Timer static controls
-    switch (GetWindowLong((HWND)lParam, GWL_ID))
-    {
-    case IDC_STATIC_TIMER:
-    case IDC_STATIC_TIMERTEXT:
-    case IDC_STATIC_SECONDS:
-      if (IsWindowVisible((HWND)lParam))
-      {
-        SetTextColor((HDC)wParam, RGB(255, 0, 0));
-        return (INT_PTR)(HBRUSH)GetStockObject(HOLLOW_BRUSH);  // Processed
-      }
-      else
-        return FALSE;  // Not processed
-    }
-
     // Black text
     SetTextColor((HDC)wParam, RGB(0, 0, 0));
     return (INT_PTR)(m_hBkBrush);  // Processed
@@ -633,10 +615,6 @@ INT_PTR CVKeyBoardDlg::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
 
 BOOL CVKeyBoardDlg::OnInitDialog()
 {
-  m_hwndVKStaticTimer = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMER);
-  m_hwndVKStaticTimerText = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMERTEXT);
-  m_hwndVKStaticSeconds = GetDlgItem(m_hwndDlg, IDC_STATIC_SECONDS);
-
   // Set up buttons button
   for (int i = 0; i < NUM_DIGITS; i++) {
     m_vkbb_Numbers[i].m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_N0 + i);
@@ -806,22 +784,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   // Set number of characters in the buffer
   SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), L"0");
-
-  HWND hwndStaticTimer = GetDlgItem(m_hwndDlg, IDC_STATIC_TIMER);
-
-  if (m_bUseSecureDesktop) {
-    // Set User Time Limit in Winodw
-    int iMinutes = m_iUserTimeLimit / 60;
-    int iSeconds = m_iUserTimeLimit - (60 * iMinutes);
-    stringT sTime;
-    Format(sTime, _T("%02d:%02d"), iMinutes, iSeconds);
-    SetWindowText(hwndStaticTimer, sTime.c_str());
-  }
-  else
-  {
-    // Hide it if not using Secure Desktop
-    ShowWindow(hwndStaticTimer, SW_HIDE);
-  }
 
   // Set the tooltip
   // Note naming convention: string IDS_VKxxx corresponds to control IDC_xxx

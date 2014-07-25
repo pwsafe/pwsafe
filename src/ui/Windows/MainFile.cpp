@@ -388,7 +388,7 @@ int DboxMain::NewFile(StringX &newfilename)
                      DEFAULT_SUFFIX,
                      v3FileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                      this);
 
@@ -414,27 +414,14 @@ int DboxMain::NewFile(StringX &newfilename)
       return PWScore::USER_CANCEL;
   }
 
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
   CSecString sPasskey;
 
-  do
-  {
-    CPasskeySetup pksetup(this, m_core, bUseSecureDesktop);
-    rc = pksetup.DoModal();
+  CPasskeySetup pksetup(this, m_core);
+  rc = pksetup.DoModal();
 
-    if (rc == IDOK)
-    {
-      sPasskey = pksetup.GetPassKey();
-
-      // Update preference
-      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
-    }
-
-    // In case user wanted to toggle Secure Desktop
-    bUseSecureDesktop = !bUseSecureDesktop;
-  } while (rc == INT_MAX);
-
-  if (rc == IDCANCEL)
+  if (rc == IDOK)
+    sPasskey = pksetup.GetPassKey();
+  else
     return PWScore::USER_CANCEL;  //User cancelled password entry
 
   // Reset core
@@ -2312,25 +2299,10 @@ void DboxMain::ChangeMode(bool promptUser)
   } else if (promptUser) {
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-    INT_PTR rc;
-    do
-    {
-      CPasskeyEntry PasskeyEntryDlg(this,
-        m_core.GetCurFile().c_str(),
-        GCP_CHANGEMODE, true, false, true, bUseSecureDesktop);
+    CPasskeyEntry PasskeyEntryDlg(this, m_core.GetCurFile().c_str(),
+                                  GCP_CHANGEMODE, true, false, true);
 
-        rc = PasskeyEntryDlg.DoModal();
-
-        if (rc == IDOK) {
-          // Update preference
-          PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
-        }
-
-      // In case user wanted to toggle Secure Desktop
-      bUseSecureDesktop = !bUseSecureDesktop;
-    } while (rc == INT_MAX);
-
+    INT_PTR rc = PasskeyEntryDlg.DoModal();
     if (rc != IDOK)
       return;
   }

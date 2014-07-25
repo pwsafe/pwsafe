@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -394,9 +394,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SDThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
@@ -801,9 +798,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GetMasterPhrase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SDThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="YubiMixin.h">
@@ -1641,15 +1635,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\Yubikey-button-disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="graphics\PWS-SD.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="graphics\Using_SD.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="graphics\Not_Using_SD.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

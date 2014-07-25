@@ -18,7 +18,7 @@ class CPasskeyChangeDlg : public CPKBaseDlg
 {
   // Construction
 public:
-  CPasskeyChangeDlg(CWnd* pParent = NULL, bool bUseSecureDesktop = false);   // standard constructor
+  CPasskeyChangeDlg(CWnd* pParent = NULL);   // standard constructor
   ~CPasskeyChangeDlg();
 
   // Dialog Data
@@ -56,7 +56,6 @@ protected:
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   afx_msg void OnYubikey2Btn();
   afx_msg void OnYubikeyBtn();
-  afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   //}}AFX_MSG
 
   void ProcessPhrase();
@@ -74,8 +73,6 @@ private:
   bool m_Yubi1pressed; // implies old password was Yubi-based
   bool m_Yubi2pressed; // implies new password to be -"-.
   bool m_oldpasskeyConfirmed;
-
-  bool m_bUseSecureDesktop;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -56,13 +56,6 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
 
   // Call it as it also performs important initilisation
   m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
-
-  m_bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-  m_iUserTimeLimit = PWSprefs::GetInstance()->GetPref(PWSprefs::SecureDesktopTimeout);
-
-  // Just to check - SD only in Vista and later despite what the user wants!
-  if (!pws_os::IsWindowsVistaOrGreater())
-    m_bUseSecureDesktop = false;
 }
 
 CWZSelectDB::~CWZSelectDB()
@@ -148,9 +141,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
-  ON_BN_CLICKED(IDC_ENTERCOMBINATION, OnEnterCombination)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_SD_TOGGLE, OnSwitchSecureDesktop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -166,9 +157,6 @@ BOOL CWZSelectDB::OnInitDialog()
   // Setup a timer to poll YubiKey every 250 ms
   SetTimer(1, 250, 0);
 
-  // Configure dialog for Secure Dialog
-  ConfigureDialog();
-
   // If not Vista or later, disable and hide SD toggle
   if (!pws_os::IsWindowsVistaOrGreater()) {
     m_ctlSDToggle.EnableWindow(FALSE);
@@ -180,24 +168,24 @@ BOOL CWZSelectDB::OnInitDialog()
 
   bool bWARNINGTEXT(true);
   switch (nID) {
-    case ID_MENUITEM_SYNCHRONIZE:
-      cs_text.LoadString(IDS_WZSLCT_WARNING_SYNC);
-      break;
-    case ID_MENUITEM_EXPORT2PLAINTEXT:
-    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-    case ID_MENUITEM_EXPORT2XML:
-    case ID_MENUITEM_EXPORTENT2XML:
-      cs_temp.LoadString((nID == ID_MENUITEM_EXPORT2PLAINTEXT || nID == ID_MENUITEM_EXPORT2XML) ?
-                              IDS_WSSLCT_ALL : IDS_WSSLCT_ENTRY);
-      cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
-      break;
-    case ID_MENUITEM_COMPARE:
-    case ID_MENUITEM_MERGE:
-      bWARNINGTEXT = false;
-      break;
-    default:
-      bWARNINGTEXT = false;
-      ASSERT(0);
+  case ID_MENUITEM_SYNCHRONIZE:
+    cs_text.LoadString(IDS_WZSLCT_WARNING_SYNC);
+    break;
+  case ID_MENUITEM_EXPORT2PLAINTEXT:
+  case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+  case ID_MENUITEM_EXPORT2XML:
+  case ID_MENUITEM_EXPORTENT2XML:
+    cs_temp.LoadString((nID == ID_MENUITEM_EXPORT2PLAINTEXT || nID == ID_MENUITEM_EXPORT2XML) ?
+                       IDS_WSSLCT_ALL : IDS_WSSLCT_ENTRY);
+    cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
+    break;
+  case ID_MENUITEM_COMPARE:
+  case ID_MENUITEM_MERGE:
+    bWARNINGTEXT = false;
+    break;
+  default:
+    bWARNINGTEXT = false;
+    ASSERT(0);
   }
 
   if (bWARNINGTEXT) {
@@ -219,29 +207,29 @@ BOOL CWZSelectDB::OnInitDialog()
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
   switch (nID) {
-    case ID_MENUITEM_EXPORT2XML:
-    case ID_MENUITEM_EXPORTENT2XML:
-        GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
-        // Drop though intentionally
-    case ID_MENUITEM_EXPORT2PLAINTEXT:
-    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-        ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
-            (nID == ID_MENUITEM_EXPORT2XML || nID == ID_MENUITEM_EXPORTENT2XML) ?
-               L"xml" : L"txt");
-        m_pctlDB->SetWindowText(ExportFileName.c_str());
-        m_filespec = ExportFileName.c_str();
-        uifilemsg = IDS_WZFILE;
-      break;
-    case ID_MENUITEM_SYNCHRONIZE:
-    case ID_MENUITEM_COMPARE:
-    case ID_MENUITEM_MERGE:
-      GetDlgItem(IDC_STATIC_WZEXPDLM1)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
-      break;
-    default:
-      ASSERT(0);
+  case ID_MENUITEM_EXPORT2XML:
+  case ID_MENUITEM_EXPORTENT2XML:
+    GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
+    // Drop though intentionally
+  case ID_MENUITEM_EXPORT2PLAINTEXT:
+  case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
+                                             (nID == ID_MENUITEM_EXPORT2XML || nID == ID_MENUITEM_EXPORTENT2XML) ?
+                                             L"xml" : L"txt");
+    m_pctlDB->SetWindowText(ExportFileName.c_str());
+    m_filespec = ExportFileName.c_str();
+    uifilemsg = IDS_WZFILE;
+    break;
+  case ID_MENUITEM_SYNCHRONIZE:
+  case ID_MENUITEM_COMPARE:
+  case ID_MENUITEM_MERGE:
+    GetDlgItem(IDC_STATIC_WZEXPDLM1)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
+    break;
+  default:
+    ASSERT(0);
   }
   cs_text.LoadString(uifilemsg);
   GetDlgItem(IDC_STATIC_WZFILE)->SetWindowText(cs_text);
@@ -252,7 +240,7 @@ BOOL CWZSelectDB::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-   // Disable Next until fields set
+  // Disable Next until fields set
   m_pWZPSH->SetWizardButtons(0);
 
   CString cs_tmp(MAKEINTRESOURCE(m_pWZPSH->GetButtonID()));
@@ -264,35 +252,33 @@ BOOL CWZSelectDB::OnInitDialog()
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
 
-  if (!m_bUseSecureDesktop) {
-    // Disable passphrase until database name filled in
-    m_pctlPasskey->EnableWindow(TRUE);
+  // Disable passphrase until database name filled in
+  m_pctlPasskey->EnableWindow(TRUE);
 
-    CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
+  CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
 
-    if (YubiExists()) {
-      ybn->ShowWindow(SW_SHOW);
-      m_yubi_status.ShowWindow(SW_SHOW);
-    }
-    else {
-      ybn->ShowWindow(SW_HIDE);
-      m_yubi_status.ShowWindow(SW_HIDE);
-    }
-    m_yubi_timeout.ShowWindow(SW_HIDE);
-    m_yubi_timeout.SetRange(0, 15);
-    bool bYubiInserted = IsYubiInserted();
-    // MFC has ancient bug: can't render diasbled version of bitmap,
-    // so instead of showing drek, we roll our own, and leave enabled.
-    ybn->EnableWindow(TRUE);
+  if (YubiExists()) {
+    ybn->ShowWindow(SW_SHOW);
+    m_yubi_status.ShowWindow(SW_SHOW);
+  }
+  else {
+    ybn->ShowWindow(SW_HIDE);
+    m_yubi_status.ShowWindow(SW_HIDE);
+  }
+  m_yubi_timeout.ShowWindow(SW_HIDE);
+  m_yubi_timeout.SetRange(0, 15);
+  bool bYubiInserted = IsYubiInserted();
+  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // so instead of showing drek, we roll our own, and leave enabled.
+  ybn->EnableWindow(TRUE);
 
-    if (bYubiInserted) {
-      ((CButton*)ybn)->SetBitmap(m_yubiLogo);
-      m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-    }
-    else {
-      ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
-      m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
-    }
+  if (bYubiInserted) {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogo);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
+  }
+  else {
+    ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
 
   return FALSE;
@@ -341,60 +327,6 @@ HBRUSH CWZSelectDB::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   return hbr;
 }
 
-void CWZSelectDB::OnSwitchSecureDesktop()
-{
-  m_bUseSecureDesktop = !m_bUseSecureDesktop;
-
-  ConfigureDialog();
-}
-
-void CWZSelectDB::ConfigureDialog()
-{
-  // This bit makes the background come out right on the bitmaps - these 2 bitmaps use white as the mask
-  m_ctlSDToggle.SetBitmapMaskAndID(RGB(255, 255, 255), m_bUseSecureDesktop ? IDB_USING_SD : IDB_NOT_USING_SD);
-  m_ctlSDToggle.Invalidate();
-
-  if (!m_bUseSecureDesktop) {
-    Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-
-    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_SHOW);
-
-    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_PASSKEY)->EnableWindow(TRUE);
-    GetDlgItem(IDC_VKB)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_VKB)->EnableWindow(TRUE);
-
-    if (IsYubiInserted())
-    {
-      GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
-      GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(TRUE);
-      GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(TRUE);
-    }
-  } else {
-    GetDlgItem(IDC_ENTERCOMBINATION)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_ENTERCOMBINATION)->EnableWindow(TRUE);
-    GetDlgItem(IDC_STATIC_ENTERCOMBINATION)->ShowWindow(SW_HIDE);
-
-    GetDlgItem(IDC_PASSKEY)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
-
-    GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
-    GetDlgItem(IDC_YUBI_PROGRESS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBI_PROGRESS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_YUBI_STATUS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_YUBI_STATUS)->EnableWindow(FALSE);
-  }
-}
-
 BOOL CWZSelectDB::OnSetActive()
 {
   CWZPropertyPage::OnSetActive();
@@ -413,39 +345,6 @@ void CWZSelectDB::OnAdvanced()
                                         IDS_WZNEXT));
 
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
-}
-
-void CWZSelectDB::OnEnterCombination()
-{
-  // Only needed for its thread processing - never displays its own dialog (no DoModal etc.)
-  CPKBaseDlg PKBaseDlg(IDD_PASSKEYENTRY_SD, this, true);
-
-  // Avoid polling Yubikey from > 1 thread
-  m_yubiPollDisable = true;
-
-  // Get current monitor - not possible in PKBaseDlg as its dialog is not shown
-  HMONITOR hCurrentMonitor = MonitorFromWindow(this->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
-
-  // Get passphrase from Secure Desktop
-  PKBaseDlg.StartThread(IDD_SDGETPHRASE, hCurrentMonitor);
-
-  if (PKBaseDlg.m_GMP.bPhraseEntered) {
-    const UINT nID = m_pWZPSH->GetID();
-    const bool bOtherIsDB = nID == ID_MENUITEM_COMPARE ||
-      nID == ID_MENUITEM_MERGE   ||
-      nID == ID_MENUITEM_SYNCHRONIZE;
-    const StringX sxFilename(bOtherIsDB ? m_filespec.GetString() : m_pWZPSH->WZPSHGetCurFile());
-    m_passkey = PKBaseDlg.m_GMP.sPhrase.c_str();
-    if (m_passkey.GetLength() > 0 && ProcessPhrase(sxFilename, m_passkey))
-      m_state |= KEYPRESENT;
-    else
-      m_state &= ~KEYPRESENT;
-
-    m_pWZPSH->SetWizardButtons(m_state == BOTHPRESENT ? PSWIZB_NEXT : 0);
-  }
-
-  ShowWindow(SW_SHOW);
-  UpdateData(FALSE);
 }
 
 void CWZSelectDB::OnPassKeyChange()
@@ -679,12 +578,10 @@ void CWZSelectDB::OnOpenFileBrowser()
   if (rc == IDOK) {
     m_filespec = fd.GetPathName();
     m_pctlDB->SetWindowText(m_filespec);
-    if (!m_bUseSecureDesktop) {
       m_pctlPasskey->EnableWindow(TRUE);
       if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
         m_pctlPasskey->SetFocus();
       }
-    }
     // If the file exists and we are doing a save, CFileDialog
     // would have prompted the user
     if (bTYPE_OPEN == FALSE && pws_os::FileExists(m_filespec.GetString()))
@@ -694,7 +591,6 @@ void CWZSelectDB::OnOpenFileBrowser()
 
 void CWZSelectDB::OnVirtualKeyboard()
 {
-  // This is used if Secure Desktop isn't!
   DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
 
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
@@ -837,10 +733,6 @@ void CWZSelectDB::OnYubikeyBtn()
 
 void CWZSelectDB::OnTimer(UINT_PTR)
 {
-  // Ignore if Secure Desktop
-  if (m_bUseSecureDesktop)
-    return;
-
   // If an operation is pending, check if it has completed
   if (m_pending) {
     yubiCheckCompleted();

@@ -33,7 +33,7 @@ class CVKeyBoardDlg;
 
 class CPKBaseDlg : public CPWDialog , public CYubiMixin {
 public:
-  CPKBaseDlg(int id, CWnd *pParent, bool bUseSecureDesktop);
+  CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -44,7 +44,6 @@ public:
 protected:
   friend class CWZSelectDB;
 
-  CButtonBitmapExtn m_ctlSDToggle;
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
@@ -56,21 +55,13 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(CPKBaseDlg)
-  afx_msg void OnSwitchSecureDesktop();
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
-  // non-Secure Desktop use of the virtual keyboard
   HWND m_hwndVKeyBoard;
-
-  // Secure Desktop
-  void StartThread(int iDialogType, HMONITOR hCurrentMonitor = NULL);
-  GetMasterPhrase m_GMP;
-  DWORD m_dwRC;  // SD Thread exit code
-  bool m_bUseSecureDesktop;
 
   virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
   virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf);
@@ -83,14 +74,4 @@ protected:
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
   CBitmap m_yubiLogoDisabled;
-
-private:
-  enum {
-     WINDOWSHOOKREMOVED         = 0x01,
-     WAITABLETIMERCREATED       = 0x02,
-     WAITABLETIMERSET           = 0x03,
-     THREADCREATED              = 0x08,
-     THREADRESUMED              = 0x10,
-   };
-
 };

@@ -56,8 +56,6 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnEnterCombination();
-  afx_msg void OnSwitchSecureDesktop();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -76,7 +74,6 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   bool m_bVKAvailable;
 
-  // non-Secure Desktop use of the virtual keyboard
   HWND m_hwndVKeyBoard;
 
   st_SaveAdvValues *m_pst_SADV;
@@ -85,11 +82,6 @@ private:
   // Following should be private inheritance of CPKBaseDlg,
   // but MFC doesn't allow us to do this. So much for OOD.
   static const wchar_t PSSWDCHAR;
-
-  // Secure Desktop
-  int m_iUserTimeLimit;
-  bool m_bUseSecureDesktop;
-  void ConfigureDialog();
 
   // Yubico-related:
   // Callbacks:

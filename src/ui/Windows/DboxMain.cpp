@@ -1103,22 +1103,13 @@ BOOL DboxMain::OnInitDialog()
       if (pws_os::FileExists(fname)) 
         bOOI = OpenOnInit();
       else { // really first install!
-        bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-        INT_PTR rc;
         CSecString sPasskey;
-        do
-        {
-          CPasskeySetup dbox_pksetup(this, m_core, bUseSecureDesktop);
-          rc = dbox_pksetup.DoModal();
+        CPasskeySetup dbox_pksetup(this, m_core);
+        INT_PTR rc = dbox_pksetup.DoModal();
 
-          if (rc == IDOK)
-            sPasskey = dbox_pksetup.GetPassKey();
-
-          // In case user wanted to toggle Secure Desktop
-          bUseSecureDesktop = !bUseSecureDesktop;
-        } while (rc == INT_MAX);
-
-        if (rc == IDCANCEL) {
+        if (rc == IDOK)
+          sPasskey = dbox_pksetup.GetPassKey();
+        else {
           PostQuitMessage(0);
           return FALSE;
         }
@@ -1644,8 +1635,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   //  GCP_WITHEXIT      (3) OK, CANCEL, EXIT & HELP buttons
   //  GCB_CHANGEMODE    (4) OK, CANCEL & HELP buttons
 
-  // +  NUM_PER_ENVIRONMENT for Secure Desktop
-
   // for adv_type values, see enum in AdvancedDlg.h
 
   // Called for an existing database. Prompt user
@@ -1689,14 +1678,11 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   ASSERT(m_pPasskeyEntryDlg == NULL); // should have been taken care of above
 
-  bool bUseSecureDesktop = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSecureDesktop);
-
-tryagain:
   m_pPasskeyEntryDlg = new CPasskeyEntry(this,
                                    filename.c_str(),
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
-                                   bHideReadOnly, bUseSecureDesktop);
+                                   bHideReadOnly);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
@@ -1704,19 +1690,8 @@ tryagain:
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
-  if (rc == INT_MAX)
-  {
-    // User wanted to toggle Secure Desktop
-    bUseSecureDesktop = !bUseSecureDesktop;
-    delete m_pPasskeyEntryDlg;
-    goto tryagain;
-  }
-
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
-
-    // Update preference
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSecureDesktop, bUseSecureDesktop);
 
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
     pcore->SetCurFile(curFile);

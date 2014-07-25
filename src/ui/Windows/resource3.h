@@ -741,8 +741,6 @@
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
 #define IDS_ENTERCOMBINATION            5959
-#define IDS_TOGGLE_SECURE_DESKTOP_ON    5960
-#define IDS_TOGGLE_SECURE_DESKTOP_OFF   5961
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

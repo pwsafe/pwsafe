@@ -21,14 +21,13 @@ class CPasskeySetup : public CPKBaseDlg
 {
   // Construction
 public:
-  CPasskeySetup(CWnd* pParent, PWScore &core, bool bUseSecureDesktop);   // standard constructor
+  CPasskeySetup(CWnd* pParent, PWScore &core);   // standard constructor
   ~CPasskeySetup();
 
 protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
-  enum { IDD_SD = IDD_SDPASSKEYSETUP };
   CSecString m_verify;
   //}}AFX_DATA
 
@@ -51,7 +50,6 @@ protected:
   void YubiFailed(); // If YubiKey failed, offer to initialize it.
   void YubiInitialize(); // called if YubiFailed and user confirmed
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
-  afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

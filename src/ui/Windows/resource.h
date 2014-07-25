@@ -365,16 +365,10 @@
 #define IDB_YUBI_LOGO                   525
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
-#define IDD_PASSKEYENTRY_SD             528
-#define IDD_PASSKEYENTRY_FIRST_SD       529
-#define IDD_PASSKEYENTRY_WITHEXIT_SD    530
-#define IDD_SDBACKGROUND                531
 #define IDD_SDVKEYBOARD                 532
 #define IDD_SDGETPHRASE                 533
 #define IDD_SDKEYCHANGE                 534
 #define IDD_SDPASSKEYSETUP              535
-#define IDB_USING_SD                    536
-#define IDB_NOT_USING_SD                537
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -792,13 +786,8 @@
 #define IDC_DB_DEF_AUTOTYPE_DELAY       1500
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
-#define IDC_USESECUREDESKTOP            1503
-#define IDC_STATIC_SECUREDESKTOPSECS    1504
 #define IDC_ENTERCOMBINATION            1505
-#define IDC_STATIC_TIMER                1506
-#define IDC_STATIC_TIMERTEXT            1507
 #define IDC_STATIC_ENTERCOMBINATION     1508
-#define IDC_STATIC_SECONDS              1509
 #define IDC_SD_TOGGLE                   1510
 
 // Next default values for new objects
@@ -807,7 +796,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        538
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1511
+#define _APS_NEXT_CONTROL_VALUE         1503
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
