@@ -1,59 +1,43 @@
 /*
-* Copyright (c) 2014 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+// It is Unicode ONLY.
+
 /// \file VKeyBoard.cpp
 //-----------------------------------------------------------------------------
 
-/*
-
-NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-
-*/
-
-// It is Unicode ONLY.
-
-#ifndef UNICODE
-  #error On Screen Virtual Keyboard requires a UNICODE configuration
-#endif
-
-// Required for ToolTips to work on non-MFC dialogs (SD & Virtual Keyboard)
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-
 #include "../stdafx.h"
 
-#include "../ThisMfcApp.h"
 #include "VKeyBoardDlg.h"
 #include "VKShiftState.h"
 #include "VKresource.h"
 #include "VKresource3.h"
 
-#include "../resource3.h"  // String resources
+#include "../PasswordSafe.h" // for app extern declaration
+#include "../ThisMfcApp.h" // for NoSysEnvWarnings()
+#include "../GeneralMsgBox.h"
 
+#include "../../../os/dir.h"
 #include "../../../os/lib.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
-#include "../../../core/PWSprefs.h"
 #include "../../../core/PWSrand.h"
+#include "../../../core/PWSprefs.h"
 
 #include <sstream>
 #include <iomanip>  // For setbase and setw
 #include <algorithm>
+#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-using namespace std;
-
-extern int iStartTime;
 
 /*
 
@@ -97,7 +81,7 @@ const BYTE defscancodes106[] = {
            0x00, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28,
            0x00, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x00};
 
-const wchar_t *pXdefnumbers[] = {
+const wchar_t *pdefnumbers[] = {
            L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9"};
 
 // Keyboards with 101 keys by default (user can change)
@@ -212,35 +196,6 @@ wchar_t *CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
 wchar_t *CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
 wchar_t *CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
 
-
-stringT get_window_text(HWND hWnd)
-{
-  const int len = GetWindowTextLength(hWnd) + 1;
-  stringT s(len, 0);
-
-  if (len > 1)
-  {
-    GetWindowText(hWnd, &s[0], len);
-    s.pop_back();  // Remove trailing NULL [C++11 feature]
-  } else
-    s.clear();
-
-  return s;
-}
-
-template<class T> void  RDLL_LoadAString(HINSTANCE hInstResDLL, T &s, int id)
-{
-  // No MFC (LoadAString)
-  TCHAR *psBuffer;
-  int len = LoadString(hInstResDLL ? hInstResDLL : GetModuleHandle(NULL), id,
-    reinterpret_cast<LPTSTR>(&psBuffer), 0);
-
-  if (len)
-    s = T(psBuffer, len);
-  else
-    s = T();
-}
-
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
   /**
@@ -252,20 +207,21 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   bool bVKAvailable(false);
   static bool warnedAlready(false); // warn only once per process.
 
-  HINSTANCE hInstResDLL = app.GetResourceDLL();
-
   // Try to load DLL
 #if defined(_DEBUG) || defined(DEBUG)
-  wchar_t *dll_name = L"pws_osk_D.dll";
+  TCHAR *dll_name = _T("pws_osk_D.dll");
 #else
-  wchar_t *dll_name = L"pws_osk.dll";
+  TCHAR *dll_name = _T("pws_osk.dll");
 #endif
   HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
   if (OSK_module == NULL) {
-    OutputDebugString(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
     return false;
   } else {
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
+
+
     LP_OSK_GetKeyboardData pGetKBData =
       LP_OSK_GetKeyboardData(pws_os::GetFunction(OSK_module, "OSK_GetKeyboardData"));
     LP_OSK_ListKeyboards pListKBs =
@@ -273,19 +229,27 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     LP_OSK_GetVersion pOSKVersion =
       LP_OSK_GetVersion(pws_os::GetFunction(OSK_module, "OSK_GetVersion"));
 
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetVersion: %s\n",
+                  pOSKVersion != NULL ? L"OK" : L"FAILED");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_ListKeyboards: %s\n",
+                  pListKBs != NULL ? L"OK" : L"FAILED");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetKeyboardData: %s\n",
+                  pGetKBData != NULL ? L"OK" : L"FAILED");
+
     if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
-      OutputDebugString(L"CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n");
+      pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n");
     else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
-    } else if (!warnedAlready) {
+    } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
+      CGeneralMsgBox gmb;
       warnedAlready = true;
-      stringT sText;
-      RDLL_LoadAString(hInstResDLL, sText, IDS_OSK_VERSION_MISMATCH);
-      MessageBox(NULL, sText.c_str(), NULL, MB_ICONERROR);
+      gmb.AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     }
 
-    pws_os::FreeLibrary(OSK_module);
-   }
+    BOOL brc = pws_os::FreeLibrary(OSK_module);
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n",
+                  brc == TRUE ? L"OK" : L"FAILED");
+  }
 
   if (!bVKAvailable)
     return false;
@@ -298,7 +262,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   HDC hDC = ::GetDC(NULL);
 
   // First check user's font (if any)
- stringT cs_VKeyboardFont = L"";
+  StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
   if (cs_VKeyboardFont.length() != 0 &&
       cs_VKeyboardFont.length() <= LF_FACESIZE) {
     m_bUserSpecifiedFont = true;
@@ -353,12 +318,11 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     goto exit;
   }
 
-  OutputDebugString(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
-  if (!warnedAlready) {
+  pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
+  if (!warnedAlready && !app.NoSysEnvWarnings()) {
+    CGeneralMsgBox gmb;
     warnedAlready = true;
-    stringT sText;
-    RDLL_LoadAString(hInstResDLL, sText, IDS_OSK_NO_UNICODE_FONT);
-    MessageBox(NULL, sText.c_str(), NULL, MB_ICONERROR);
+    gmb.AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
   }
 
 exit:
@@ -367,43 +331,36 @@ exit:
 }
 
 //-----------------------------------------------------------------------------
-CVKeyBoardDlg::CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPhrase, LPCWSTR wcKLID)
-  : m_hInstResDLL(hInstResDLL), m_hParent(hParent), m_hMasterPhrase(hMasterPhrase),
-    m_PassphraseFont(NULL),
+CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
+  : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
+    m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
     m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
     m_bShift(false), m_bLCtrl(false), m_bRCtrl(false),
     m_bAltGr(false), m_bAltNum(false),
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
-    m_bSaveKLID(BST_CHECKED)
+    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);
   ASSERT(_countof(defscancodes102) == NUM_KEYS);
   ASSERT(_countof(defscancodes106) == NUM_KEYS);
-  ASSERT(_countof(pXdefnumbers) == NUM_DIGITS);
-
-  // Get us
-  m_hInstance = GetModuleHandle(NULL);
-
-  if (!m_hInstResDLL)
-    m_hInstResDLL = m_hInstance;
+  ASSERT(_countof(pdefnumbers) == NUM_DIGITS);
 
   // Initialise numbers
-  for (int i = 0; i < NUM_DIGITS; i++) {
-    m_pnumbers[i] = _wcsdup(pXdefnumbers[i]);
-  }
+  for (int i = 0; i < NUM_DIGITS; i++)
+    m_pnumbers[i] = NULL;
 
   // Set background colour for for dialog as white
-  m_hBkBrush = CreateSolidBrush(RGB(255, 255, 255));
+  m_pBkBrush.CreateSolidBrush(RGB(255, 255, 255));
 
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
 #if defined(_DEBUG) || defined(DEBUG)
-  wchar_t *dll_name = L"pws_osk_D.dll";
+  TCHAR *dll_name = _T("pws_osk_D.dll");
 #else
-  wchar_t *dll_name = L"pws_osk.dll";
+  TCHAR *dll_name = _T("pws_osk.dll");
 #endif
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
@@ -416,17 +373,19 @@ CVKeyBoardDlg::CVKeyBoardDlg(HINSTANCE hInstResDLL, HWND hParent, HWND hMasterPh
   m_uiKLID = 0;
   if (wcKLID != NULL) {
     const wchar_t *wc_hex = L"0123456789ABCDEFabcdef";
-   stringT sKLID(wcKLID);
+    std::wstring sKLID(wcKLID);
     size_t non_hex = sKLID.find_first_not_of(wc_hex);
 
     // Make sure it is 8 hex characters and convert to a UINT
-    if (sKLID.length() == 8 && non_hex ==stringT::npos) {
-     stringT s(L"0x");
+    if (sKLID.length() == 8 && non_hex == std::wstring::npos) {
+      std::wstring s(L"0x");
       s += sKLID;
       std::wistringstream iss(s);
       iss >> std::setbase(0) >> m_uiKLID;
     }
   }
+  // Get current SYSTEM-WIDE mouse double click time interval
+  m_uiMouseDblClkTime = GetDoubleClickTime();
 }
 
 CVKeyBoardDlg::~CVKeyBoardDlg()
@@ -438,250 +397,120 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
   }
 
   // Delete the passphrase font
-  if (m_PassphraseFont != NULL) {
-    DeleteObject(m_PassphraseFont);
-    m_PassphraseFont = NULL;
+  if (m_pPassphraseFont != NULL) {
+    m_pPassphraseFont->DeleteObject();
+    delete m_pPassphraseFont;
+    m_pPassphraseFont = NULL;
   }
+
+  delete m_pToolTipCtrl;
 
   pws_os::FreeLibrary(m_OSK_module);
+
+  // Reset double click mouse interval
+  BOOL brc;
+  brc = SetDoubleClickTime(m_uiMouseDblClkTime);
+  ASSERT(brc != 0);
 }
 
-INT_PTR CVKeyBoardDlg::VKDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+void CVKeyBoardDlg::OnPostNcDestroy()
 {
-  static CVKeyBoardDlg *self;
+  delete this;
+}
 
-  if (uMsg != WM_INITDIALOG && self == NULL)
-    return FALSE;
+void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
 
-  switch (uMsg) {
-    case WM_INITDIALOG:
-    {
-      self = (CVKeyBoardDlg *)lParam;
-      self->m_hwndDlg = hwndDlg;
-      self->OnInitDialog();
-      return TRUE; // Processed - special case - focus default control from RC file
-    }
-    case WM_QUIT:
-    {
-      // Special handling for genreated WM_QUIT message, which it would NEVER EVER get normally
-      ASSERT(self);
+  //{{AFX_DATA_MAP(CVKeyBoardDlg)
+  DDX_Text(pDX, IDC_VKSTATIC_COUNT, m_phrasecount);
+  DDX_Text(pDX, IDC_VKSTATIC_CURRENTKBD, m_selectedkb);
 
-      // Don't need it any more
-      self = NULL;
+  DDX_Control(pDX, IDC_VKEYBOARDS, m_cbxKeyBoards);
+  DDX_Radio(pDX, IDC_VK101, m_iKeyboard); // only first!
+  DDX_Control(pDX, IDC_VKRANDOMIZE, m_vkbb_Randomize);
+  DDX_Control(pDX, IDC_VKCANCEL, m_vkbb_Cancel);
+  DDX_Control(pDX, IDC_VKINSERT, m_vkbb_Insert);
+  DDX_Control(pDX, IDC_VKCLEARBUFFER, m_vkbb_ClearBuffer);
+  DDX_Control(pDX, IDC_VKBACKSPACE, m_vkbb_BackSpace);
+  DDX_Control(pDX, IDC_VKBBTN_LSHIFT, m_vkbb_LShift);
+  DDX_Control(pDX, IDC_VKBBTN_RSHIFT, m_vkbb_RShift);
+  DDX_Control(pDX, IDC_VKBBTN_LCTRL, m_vkbb_LCtrl);
+  DDX_Control(pDX, IDC_VKBBTN_RCTRL, m_vkbb_RCtrl);
+  DDX_Control(pDX, IDC_VKBBTN_RHCTRL, m_vkbb_RHCtrl);
+  DDX_Control(pDX, IDC_VKBBTN_ALT, m_vkbb_Alt);
+  DDX_Control(pDX, IDC_VKBBTN_ALTGR, m_vkbb_AltGr);
+  DDX_Control(pDX, IDC_VKBBTN_ALTNUM, m_vkbb_AltNum);
+  DDX_Control(pDX, IDC_VKBBTN_CAPSLOCK, m_vkbb_CapsLock);
 
-      return TRUE;
-    }  // WM_QUIT
+  DDX_Control(pDX, IDC_VKBBTN_SPACEBAR, m_vkbb_SpaceBar);
+
+  // 106 keyboard
+  DDX_Control(pDX, IDC_VKBBTN_SMALLSPACEBAR, m_vkbb_SmallSpaceBar);
+  DDX_Control(pDX, IDC_VKBBTN_SIZE, m_vkbb_Size);
+  DDX_Control(pDX, IDC_VKBBTN_HIRAGANA, m_vkbb_Hiragana);
+
+  // Save last used keyboard
+  DDX_Check(pDX, IDC_SAVEKLID, m_bSaveKLID);
+  //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
+  //{{AFX_MSG_MAP(CVKeyBoardDlg)
+  ON_WM_CTLCOLOR()
+  ON_WM_LBUTTONDOWN()
+  ON_WM_ACTIVATE()
+  ON_CBN_SELCHANGE(IDC_VKEYBOARDS, OnChangeKeyboard)
+  ON_BN_CLICKED(IDC_VK101, OnChangeKeyboardType)
+  ON_BN_CLICKED(IDC_VK102, OnChangeKeyboardType)
+  ON_BN_CLICKED(IDC_VKCANCEL, OnCancel)
+  ON_BN_CLICKED(IDC_VKINSERT, OnInsert)
+  ON_BN_CLICKED(IDC_VKCLEARBUFFER, OnClearBuffer)
+  ON_BN_CLICKED(IDC_VKBACKSPACE, OnBackSpace)
+  ON_BN_CLICKED(IDC_VKBBTN_LSHIFT, OnShift)
+  ON_BN_CLICKED(IDC_VKBBTN_RSHIFT, OnShift)
+  ON_BN_CLICKED(IDC_VKBBTN_LCTRL, OnLCtrl)
+  ON_BN_CLICKED(IDC_VKBBTN_RCTRL, OnRCtrl)
+  ON_BN_CLICKED(IDC_VKBBTN_RHCTRL, OnRHCtrl)
+  ON_BN_CLICKED(IDC_VKBBTN_ALTGR, OnAltGr)
+  ON_BN_CLICKED(IDC_VKBBTN_ALTNUM, OnAltNum)
+  ON_BN_CLICKED(IDC_VKBBTN_CAPSLOCK, OnCapsLock)
+  ON_BN_CLICKED(IDC_VKBBTN_SPACEBAR, OnSpaceBar)
+  ON_BN_CLICKED(IDC_VKBBTN_SMALLSPACEBAR, OnSpaceBar)
+  ON_BN_CLICKED(IDC_VKBBTN_SIZE, OnKeySize)
+  ON_BN_CLICKED(IDC_VKBBTN_HIRAGANA, OnHiragana)
+  ON_BN_CLICKED(IDC_VKRANDOMIZE, OnRandomize)
+  ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_N0, IDC_VKBBTN_N9, OnNumerics)
+  ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
+  ON_BN_CLICKED(IDC_SAVEKLID, OnSaveKLID)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CVKeyBoardDlg::OnActivate(UINT nState, CWnd* , BOOL )
+{
+  BOOL brc;
+  if (nState == WA_INACTIVE) {
+    brc = SetDoubleClickTime(m_uiMouseDblClkTime);
+  } else {
+    brc = SetDoubleClickTime(1);
   }
-  return self->DialogProc(hwndDlg, uMsg, wParam, lParam);
-}
-
-INT_PTR CVKeyBoardDlg::DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  /**
-    MS documentation is contradictory.
-
-    DialogProc documentation http://msdn.microsoft.com/en-gb/library/windows/desktop/ms645469(v=vs.85).aspx states:
-      Typically, the dialog box procedure should return TRUE if it processed the message and
-      FALSE if it did not. If the dialog box procedure returns FALSE, the dialog manager
-      performs the default dialog operation in response to the message.
-
-    However, individual Windows Message documentation often state something different and
-    we have used the above rules except for the special cases below.
-
-    WM_CTLCOLORSTATIC (special case)
-      If an application processes this message, the return value is a handle to a brush
-      that the system uses to paint the background of the static control (cast to INT_PTR)
-      otherwise return FALSE.
-    PWS_MSG_INSERTBUFFER
-      Set return code to caller via: SetWindowLong (hwndDlg, DWL_MSGRESULT, lResult);
-      Return TRUE if it processed the message and FALSE if it did not.
-    PWS_MSG_RESETTIMER
-     Set return code to caller via: SetWindowLong (hwndDlg, DWL_MSGRESULT, lResult);
-     Return TRUE if it processed the message and FALSE if it did not.
-
-  **/
-
-  switch (uMsg) {
-  case WM_COMMAND:
-  {
-    const int iControlID = LOWORD(wParam);
-    const int iNotificationCode = HIWORD(wParam);
-    // lParam == handle to the control window
-    switch (iNotificationCode) {
-    case BN_CLICKED:
-    {
-      // Need to reset waitable timer in SDThread!
-      SendMessage(m_hMasterPhrase, PWS_MSG_RESETTIMER, 0, 0);
-
-      // All button clicks are processed (return TRUE) unless not caught by the a particular
-      // case statement or in the default section
-      switch (iControlID) {
-      case IDC_VKCANCEL:
-      {
-        // If pressed when a Dead Key is active, just cancel this
-        if (m_bDeadKeyActive)
-        {
-          SetDeadKeyEnvironment(false);
-          SetButtons();
-          return TRUE;
-        }
-
-        // Cancel dialog - modeless - just hide & disable
-        ShowWindow(hwndDlg, SW_HIDE);
-
-        return TRUE;
-      }
-      case IDC_VK101: { OnChangeKeyboardType(); return TRUE; }
-      case IDC_VK102: { OnChangeKeyboardType(); return TRUE; }
-      case IDC_VKINSERT: { OnInsertBuffer(); return TRUE; }
-      case IDC_VKCLEARBUFFER: { OnClearBuffer(); return TRUE; }
-      case IDC_VKBACKSPACE: { OnBackSpace(); return TRUE; }
-      case IDC_VKBBTN_LSHIFT: { OnShift(); return TRUE; }
-      case IDC_VKBBTN_RSHIFT: { OnShift(); return TRUE; }
-      case IDC_VKBBTN_LCTRL: { OnLCtrl(); return TRUE; }
-      case IDC_VKBBTN_RCTRL: { OnRCtrl(); return TRUE; }
-      case IDC_VKBBTN_RHCTRL: { OnRHCtrl(); return TRUE; }
-      case IDC_VKBBTN_ALTGR: { OnAltGr(); return TRUE; }
-      case IDC_VKBBTN_ALTNUM: { OnAltNum(); return TRUE; }
-      case IDC_VKBBTN_CAPSLOCK: { OnCapsLock(); return TRUE; }
-      case IDC_VKBBTN_SPACEBAR: { OnSpaceBar(); return TRUE; }
-      case IDC_VKBBTN_SMALLSPACEBAR: { OnSpaceBar(); return TRUE; }
-      case IDC_VKBBTN_SIZE: { OnKeySize(); return TRUE; }
-      case IDC_VKBBTN_HIRAGANA: { OnHiragana(); return TRUE; }
-      case IDC_VKRANDOMIZE: { OnRandomize(); return TRUE; }
-      case IDC_SAVEKLID: { OnSaveKLID(); return TRUE; }
-      default:
-      {
-        if (iControlID >= IDC_VKBBTN_N0 && iControlID <= IDC_VKBBTN_N9)
-        {
-          OnNumerics(iControlID);
-          return TRUE;
-        }
-        if (iControlID >= IDC_VKBBTN_KBD01 && iControlID <= IDC_VKBBTN_KBD51)
-        {
-          OnKeys(iControlID);
-          return TRUE;
-        }
-      }
-      }
-    }  // BN_CLICKED
-    case  CBN_SELCHANGE:
-    {
-      if (iControlID == IDC_VKEYBOARDS) {
-        OnChangeKeyboard();
-        return TRUE;
-      }
-    }  // CBN_SELCHANGE
-    }  // switch (iNotificationCode)
-    break;
-  } // WM_COMMAND
-
-  case WM_CTLCOLORSTATIC:
-  case WM_CTLCOLORDLG:
-  {
-    if (!IsWindowEnabled(hwndDlg))
-      return FALSE;  // Not processed
-
-    // Default white background
-    SetBkColor((HDC)wParam, RGB(255, 255, 255));
-
-    // Black text
-    SetTextColor((HDC)wParam, RGB(0, 0, 0));
-    return (INT_PTR)(m_hBkBrush);  // Processed
-  }  // WM_CTLCOLORSTATIC & WM_CTLCOLORDLG
-
-  case WM_LBUTTONDOWN:
-  {
-    PostMessage(hwndDlg, WM_NCLBUTTONDOWN, HTCAPTION, lParam);
-    return TRUE;  // Processed
-  }  // WM_LBUTTONDOWN
-
-  case WM_DRAWITEM:
-  {
-    const int iControlID = LOWORD(wParam);
-    // Need to get the handle for this control and then the corresponding CXKBButton
-    Iter_Map_ID_XButton id = m_Map_ID2XButton.find(iControlID);
-    if (id != m_Map_ID2XButton.end())
-    {
-      id->second->DrawItem((LPDRAWITEMSTRUCT)lParam);
-    }
-    return TRUE;  // Processed
-  } // WM_DRAWITEM
-
-  } // switch (uMsg)
-
-  return FALSE;  // Not processed
+  ASSERT(brc != 0);
 }
 
 BOOL CVKeyBoardDlg::OnInitDialog()
 {
-  // Set up buttons button
+  CPWDialog::OnInitDialog();
+
+  // Subclass the buttons - default is a 'flat' button
   for (int i = 0; i < NUM_DIGITS; i++) {
-    m_vkbb_Numbers[i].m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_N0 + i);
-    m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_N0 + i, &m_vkbb_Numbers[i]));
+    m_vkbb_Numbers[i].SubclassDlgItem(IDC_VKBBTN_N0 + i, this);
+    m_vkbb_Numbers[i].ModifyStyle(0, BS_CENTER | BS_VCENTER);
   }
 
   for (int i = 0; i < NUM_KEYS; i++) {
-    m_vkbb_Keys[i].m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_KBD01 + i);
-    m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_KBD01 + i, &m_vkbb_Keys[i]));
+    m_vkbb_Keys[i].SubclassDlgItem(IDC_VKBBTN_KBD01 + i, this);
+    m_vkbb_Keys[i].ModifyStyle(0, BS_CENTER | BS_VCENTER);
   }
-
-  m_vkbb_Randomize.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKRANDOMIZE);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKRANDOMIZE, &m_vkbb_Randomize));
-
-  m_vkbb_InsertClose.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_N0);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_KBD01, &m_vkbb_InsertClose));
-
-  m_vkbb_Insert.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKINSERT);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKINSERT, &m_vkbb_Insert));
-
-  m_vkbb_Cancel.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKCANCEL);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKCANCEL, &m_vkbb_Cancel));
-
-  m_vkbb_ClearBuffer.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKCLEARBUFFER);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKCLEARBUFFER, &m_vkbb_ClearBuffer));
-
-  m_vkbb_BackSpace.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBACKSPACE);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBACKSPACE, &m_vkbb_BackSpace));
-
-  m_vkbb_SpaceBar.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_SPACEBAR);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_SPACEBAR, &m_vkbb_SpaceBar));
-
-  m_vkbb_SmallSpaceBar.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_SMALLSPACEBAR);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_SMALLSPACEBAR, &m_vkbb_SmallSpaceBar));
-
-  m_vkbb_LShift.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_LSHIFT);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_LSHIFT, &m_vkbb_LShift));
-
-  m_vkbb_RShift.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_RSHIFT);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_RSHIFT, &m_vkbb_RShift));
-
-  m_vkbb_LCtrl.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_LCTRL);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_LCTRL, &m_vkbb_LCtrl));
-
-  m_vkbb_RCtrl.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_RCTRL);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_RCTRL, &m_vkbb_RCtrl));
-
-  m_vkbb_RHCtrl.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_RHCTRL);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_RHCTRL, &m_vkbb_RHCtrl));
-
-  m_vkbb_Alt.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_ALT);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_ALT, &m_vkbb_Alt));
-
-  m_vkbb_AltGr.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_ALTGR);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_ALTGR, &m_vkbb_AltGr));
-
-  m_vkbb_AltNum.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_ALTNUM);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_ALTNUM, &m_vkbb_AltNum));
-
-  m_vkbb_CapsLock.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_CAPSLOCK);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_CAPSLOCK, &m_vkbb_CapsLock));
-
-  m_vkbb_Size.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_SIZE);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_SIZE, &m_vkbb_Size));
-
-  m_vkbb_Hiragana.m_hWnd = GetDlgItem(m_hwndDlg, IDC_VKBBTN_HIRAGANA);
-  m_Map_ID2XButton.insert(pair<UINT, CVKBButton *>(IDC_VKBBTN_HIRAGANA, &m_vkbb_Hiragana));
 
   // Remove flat style from 'real' buttons
   m_vkbb_Randomize.SetFlatState(false);
@@ -697,7 +526,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_vkbb_AltGr.SetFlatState(false);
   m_vkbb_AltNum.SetFlatState(false);
   m_vkbb_CapsLock.SetFlatState(false);
-  m_vkbb_BackSpace.SetFlatState(false);
 
   // Make Japanese button push style but not to change colour when pushed
   m_vkbb_Size.SetFlatState(false);
@@ -706,27 +534,22 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_vkbb_Hiragana.ChangePushColour(false);
 
   // Alt, Left & Right-Half Control always disabled, as is the 106-key radio button
-  EnableWindow(m_vkbb_Alt.m_hWnd, FALSE);
-  EnableWindow(m_vkbb_LCtrl.m_hWnd, FALSE);
-  EnableWindow(m_vkbb_RHCtrl.m_hWnd, FALSE);
-  EnableWindow(GetDlgItem(m_hParent, IDC_VK106), FALSE);
+  m_vkbb_Alt.EnableWindow(FALSE);
+  m_vkbb_LCtrl.EnableWindow(FALSE);
+  m_vkbb_RHCtrl.EnableWindow(FALSE);
+  GetDlgItem(IDC_VK106)->EnableWindow(FALSE);
 
   // Initially nothing to reset
-  EnableWindow(m_vkbb_Insert.m_hWnd, FALSE);
-  EnableWindow(m_vkbb_ClearBuffer.m_hWnd, FALSE);
+  m_vkbb_Insert.EnableWindow(FALSE);
+  m_vkbb_ClearBuffer.EnableWindow(FALSE);
 
-  // Get window handle for keyboard combobox
-  m_hcbxKeyBoards = GetDlgItem(m_hwndDlg, IDC_VKEYBOARDS);
-
-  int nKeyboards = SendMessage(m_hcbxKeyBoards, CB_GETCOUNT, NULL, NULL);
-
-  if (nKeyboards == 0) {
+  if (m_cbxKeyBoards.GetCount() == 0) {
     // Get current Keyboard layout name
-    wchar_t wcKLID[KL_NAMELENGTH + 1];
+    wchar_t wcKLID[KL_NAMELENGTH  + 1];
     VERIFY(GetKeyboardLayoutName(wcKLID));
 
     // Convert from hex string to integer
-   stringT s(L"0x");
+    std::wstring s(L"0x");
     s += wcKLID;
     std::wistringstream iss(s);
     iss >> std::setbase(0) >> m_uiPhysKLID;
@@ -743,115 +566,110 @@ BOOL CVKeyBoardDlg::OnInitDialog()
     KBL_citer kbl_iter;
     for (kbl_iter = m_KBL.begin(); kbl_iter != m_KBL.end(); kbl_iter++) {
       const st_Keyboard_Layout &st_kbl = *kbl_iter;
-      stringT stemp;
-      RDLL_LoadAString(m_hInstResDLL, stemp, st_kbl.uiCtrlID);
-      int iItem = SendMessage(m_hcbxKeyBoards, CB_ADDSTRING, NULL, (LPARAM)(stemp.c_str()));
-      SendMessage(m_hcbxKeyBoards, CB_SETITEMDATA, iItem, (DWORD)st_kbl.uiKLID);
+      CString cs_temp(MAKEINTRESOURCE(st_kbl.uiCtrlID));
+      int iItem = m_cbxKeyBoards.AddString(cs_temp);
+      m_cbxKeyBoards.SetItemData(iItem, (DWORD)st_kbl.uiKLID);
     }
   }
 
   int cbx_index(0);
   if (m_uiKLID != 0) {
     // Select last used - but first find it, as ComboBox is sorted by name
-    for (int i = 0; i < nKeyboards; i++) {
-      if ((UINT)SendMessage(m_hcbxKeyBoards, CB_SETITEMDATA, i, NULL) == m_uiKLID) {
+    for (int i = 0; i < m_cbxKeyBoards.GetCount(); i++) {
+      if ((UINT)m_cbxKeyBoards.GetItemData(i) == m_uiKLID) {
         cbx_index = i;
         break;
       }
     }
-  }
-  else {
+  } else {
     m_uiKLID = m_uiPhysKLID;
   }
 
-  SendMessage(m_hcbxKeyBoards, CB_SETCURSEL, cbx_index, NULL);
+  m_cbxKeyBoards.SetCurSel(cbx_index);
 
   if (m_uiKLID == JAPANESE_KBD) {
     SetJapaneseKeyboard();
-  }
-  else if (m_uiKLID == KOREAN_KBD) {
+  } else if (m_uiKLID == KOREAN_KBD) {
     SetKoreanKeyboard();
-  }
-  else {
+  } else {
     SetStandardKeyboard();
   }
 
-  // Set to save keyboard
-  SendMessage(GetDlgItem(m_hParent, IDC_SAVEKLID), BM_SETCHECK, BST_CHECKED, NULL);
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+    pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+    return TRUE;
+  }
 
-  // Set keyboard type
-  CheckRadioButton(m_hwndDlg, IDC_VK101, IDC_VK106, IDC_VK101);
+  // Tooltips
+  EnableToolTips();
 
-  // Set number of characters in the buffer
-  SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), L"0");
+  // Activate the tooltip control.
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
+  // Quadruple the time to allow reading by user
+  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
   // Note naming convention: string IDS_VKxxx corresponds to control IDC_xxx
-
-  // Create the tooltip. g_hInst is the global instance handle.
-  m_hwndTooltip = CreateWindowEx(NULL, TOOLTIPS_CLASS, NULL,
-    WS_POPUP | WS_EX_TOOLWINDOW | TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX,
-    CW_USEDEFAULT, CW_USEDEFAULT,
-    CW_USEDEFAULT, CW_USEDEFAULT,
-    m_hwndDlg, NULL,
-    m_hInstance, NULL);
-
-  if (!m_hwndTooltip)
-    ASSERT(0);
-
-  SendMessage(m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, (LPARAM)300);
-
-  //int iTime = SendMessage(m_hwndTooltip, TTM_GETDELAYTIME, TTDT_AUTOPOP, NULL);
-  SendMessage(m_hwndTooltip, TTM_SETDELAYTIME, TTDT_INITIAL, 1000);       // Default  500 ms
-  SendMessage(m_hwndTooltip, TTM_SETDELAYTIME, TTDT_AUTOPOP, 5000);       // Default 5000 ms
-  SendMessage(m_hwndTooltip, TTM_SETDELAYTIME, TTDT_RESHOW,  1000);       // Default  100 ms
-
-  AddTooltip(IDC_VKCLEARBUFFER, IDS_VKCLEARBUFFER);
-  AddTooltip(IDC_VKBBTN_CAPSLOCK, IDS_VKSTATIC_CAPSLOCK);
-  AddTooltip(IDC_VKBBTN_LSHIFT, IDS_VKSTATIC_SHIFT);
-  AddTooltip(IDC_VKBBTN_RSHIFT, IDS_VKSTATIC_SHIFT);
-  AddTooltip(IDC_VKBBTN_LCTRL, IDS_VKLCTRL, IDS_VKSTATIC_SPECIAL);
-  AddTooltip(IDC_VKBBTN_RCTRL, IDS_VKRCTRL, IDS_VKSTATIC_SPECIAL);
-  AddTooltip(IDC_VKBBTN_ALTGR, IDS_VKALTGR, IDS_VKSTATIC_SPECIAL);
-  AddTooltip(IDC_VKBBTN_ALT, IDS_VKSTATIC_ALT);
-  AddTooltip(IDC_VKBBTN_ALTNUM, IDS_VKSTATIC_ALTNUM);
-  AddTooltip(IDC_VKRANDOMIZE, IDS_VKSTATIC_RANDOMIZE);
+  CString cs_ToolTip, cs_temp;
+  cs_ToolTip.LoadString(IDS_VKCLEARBUFFER);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKCLEARBUFFER), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_VKSTATIC_CAPSLOCK);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_CAPSLOCK), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_VKSTATIC_SHIFT);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LSHIFT), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RSHIFT), cs_ToolTip);
+  cs_temp.LoadString(IDS_VKLCTRL);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LCTRL), cs_ToolTip);
+  cs_temp.LoadString(IDS_VKRCTRL);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RCTRL), cs_ToolTip);
+  cs_temp.LoadString(IDS_VKALTGR);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTGR), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_VKSTATIC_ALT);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALT), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_VKSTATIC_ALTNUM);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTNUM), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_VKSTATIC_RANDOMIZE);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKRANDOMIZE), cs_ToolTip);
 
   // If not using the user specified font, show the warning.
   if (m_iFont != USER_FONT && m_bUserSpecifiedFont) {
-   stringT cs_VKeyboardFont = L"";
-    ShowWindow(GetDlgItem(m_hParent, IDC_INFO), SW_SHOW);
-    EnableWindow(GetDlgItem(m_hParent, IDC_INFO), TRUE);
+    StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
+    GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
     wchar_t * pszFont(NULL);
     switch (m_iFont) {
-    case ARIALMS_FONT:
-      pszFont = ARIALUMS;
-      break;
-    case ARIAL_FONT:
-      pszFont = ARIALU;
-      break;
-    case LUCIDA_FONT:
-      pszFont = LUCIDAUS;
-      break;
-    default:
-      ASSERT(0);
+      case ARIALMS_FONT:
+        pszFont = ARIALUMS;
+        break;
+      case ARIAL_FONT:
+        pszFont = ARIALU;
+        break;
+      case LUCIDA_FONT:
+        pszFont = LUCIDAUS;
+        break;
+      default:
+        ASSERT(0);
     }
     if (pszFont != NULL) {
-      stringT sTemp;
-      Format(sTemp, IDS_USRFONT, cs_VKeyboardFont.c_str(), pszFont);
-      AddTooltip(IDC_INFO, sTemp);
+      cs_ToolTip.Format(IDS_USRFONT, cs_VKeyboardFont.c_str(), pszFont);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
     }
+  } else
+  if (m_iFont == LUCIDA_FONT) {
+    GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
+    cs_ToolTip.LoadString(IDS_OSKFONT);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
   }
-  else
-  {
-    if (m_iFont == LUCIDA_FONT) {
-      ShowWindow(GetDlgItem(m_hParent, IDC_INFO), SW_SHOW);
-      EnableWindow(GetDlgItem(m_hParent, IDC_INFO), TRUE);
-      AddTooltip(IDC_INFO, IDS_OSKFONT);
-    }
-  }
-  // Activate tooltips
-  SendMessage(m_hwndTooltip, TTM_ACTIVATE, TRUE, NULL);
 
   // Set up characters
   ProcessKeyboard(m_uiKLID);
@@ -861,34 +679,42 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   // Apply Uincode font to all that need it
   for (int i = 0; i < NUM_DIGITS; i++) {
-    ApplyUnicodeFont(GetDlgItem(m_hwndDlg, IDC_VKBBTN_N0 + i));
+    ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_N0 + i));
   }
 
   for (int i = 0; i < NUM_KEYS; i++) {
-    ApplyUnicodeFont(GetDlgItem(m_hwndDlg, IDC_VKBBTN_KBD01 + i));
+    ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_KBD01 + i));
   }
 
   // Make sure we can see the Japanese charatcers - if needed
-  ApplyUnicodeFont(GetDlgItem(m_hwndDlg, IDC_VKBBTN_HIRAGANA));
-  ApplyUnicodeFont(GetDlgItem(m_hwndDlg, IDC_VKBBTN_SIZE));
+  ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_HIRAGANA));
+  ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_SIZE));
 
   if (m_phrasecount == 1) {
-    EnableWindow(m_vkbb_Insert.m_hWnd, TRUE);
-    EnableWindow(m_vkbb_ClearBuffer.m_hWnd, TRUE);
+    m_vkbb_Insert.EnableWindow(TRUE);
+    m_vkbb_ClearBuffer.EnableWindow(TRUE);
   }
+
+  UpdateData(FALSE);
+
   return TRUE;
 }
 
-void CVKeyBoardDlg::OnInsertBuffer()
+void CVKeyBoardDlg::OnInsert()
 {
+  if (!UpdateData(TRUE))
+    return;
+
   if (m_bAltNum)
     OnAltNum();
 
-  // Return OK - modeless - just hide
-  ShowWindow(m_hwndDlg, SW_HIDE);
+  UpdateData(FALSE);
+
+  // Return OK - modeless type
+  ShowWindow(SW_HIDE);
 
   // Send data to caller
-  SendMessage(m_hMasterPhrase, PWS_MSG_INSERTBUFFER, 0, 0);
+  m_pParent->SendMessage(PWS_MSG_INSERTBUFFER,0, 0);
 
   // Clear buffer!
   // Must make the user type the phrase in twice to confirm what they have
@@ -896,24 +722,35 @@ void CVKeyBoardDlg::OnInsertBuffer()
   OnClearBuffer();
 }
 
-void CVKeyBoardDlg::OnNumerics(/* HWND hwnd, */ UINT nID)
+void CVKeyBoardDlg::OnCancel()
+{
+  // If pressed when a Dead Key is active, just cancel this
+  if (m_bDeadKeyActive) {
+    SetDeadKeyEnvironment(false);
+    SetButtons();
+    return;
+  }
+
+  // Cancel dialog - modeless - just hide
+  ShowWindow(SW_HIDE);
+}
+
+void CVKeyBoardDlg::OnNumerics(UINT nID)
 {
   if (m_bAltNum) {
     // Alt + Numeric pad
     m_altchar = (m_altchar * 10) + (nID - IDC_VKBBTN_N0);
   } else {
-    stringT stxt;
-    stxt = get_window_text(m_vkbb_Numbers[nID - IDC_VKBBTN_N0].m_hWnd);
-    m_phrase += stxt.c_str();
+    CString cs_wtxt;
+    m_vkbb_Numbers[nID - IDC_VKBBTN_N0].GetWindowText(cs_wtxt);
+    m_phrase += CSecString(cs_wtxt);
     m_phrasecount++;
     if (m_phrasecount == 1) {
-      EnableWindow(m_vkbb_Insert.m_hWnd, TRUE);
-      EnableWindow(m_vkbb_ClearBuffer.m_hWnd, TRUE);
+      m_vkbb_Insert.EnableWindow(TRUE);
+      m_vkbb_ClearBuffer.EnableWindow(TRUE);
     }
 
-    stringT stemp;
-    Format(stemp, L"%d", m_phrasecount);
-    SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), stemp.c_str());
+    UpdateData(FALSE);
   }
 }
 
@@ -921,10 +758,10 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
 {
   Iter_Map_st_SC2CHAR iter_sc;
   bool bDeadKeyPressed(false);
-  stringT stxt;
+  CString cs_wtxt;
 
   // Get character
-  stxt = get_window_text(m_vkbb_Keys[nID - IDC_VKBBTN_KBD01].m_hWnd);
+  m_vkbb_Keys[nID - IDC_VKBBTN_KBD01].GetWindowText(cs_wtxt);
 
   // We don't support double deadkeys.  So if already active,
   // don't bother checking for another.
@@ -932,12 +769,12 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     iter_sc = m_map_stSC2Char.find(m_scancodes[nID - IDC_VKBBTN_KBD01]);
     if (iter_sc != m_map_stSC2Char.end()) {
       if (state2index[m_State] < 0) {
-        OutputDebugString(L"OnKeys; Unknown state!\n");
+        pws_os::Trace(L"OnKeys; Unknown state!");
         ASSERT(0);
       }
       bDeadKeyPressed = iter_sc->second.bsDeadKey.test(state2index[m_State]);
     } else {
-      OutputDebugString(L"OnKeys: Unknown scancode pressed!\n");
+      pws_os::Trace(L"OnKeys: Unknown scancode pressed!");
       ASSERT(0);
     }
   }
@@ -945,11 +782,13 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
   if (bDeadKeyPressed) {
   // Get the DeadKey and setup the DeadKey environment and combination keys
     wchar_t wc_temp;
-    wc_temp = stxt.c_str()[0];
+    LPCWSTR lpwtxt = cs_wtxt.GetBuffer(2);
+    wc_temp = lpwtxt[0];
+    cs_wtxt.ReleaseBuffer();
 
     Iter_MMap_DK2SCSSCC iter_DK2SCSSCC = m_stKBImpl.pmmapDK2SCSSCC->find(wc_temp);
     if (iter_DK2SCSSCC == m_stKBImpl.pmmapDK2SCSSCC->end()) {
-      OutputDebugString(L"OnKeys; Unknown deadkey pressed!\n");
+      pws_os::Trace(L"OnKeys; Unknown deadkey pressed!");
       ASSERT(0);
     } else {
       m_wcDeadKey = wc_temp;
@@ -958,20 +797,17 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     }
   } else {
     // Not a DeadKey
-    m_phrase += stxt.c_str();
+    m_phrase += CSecString(cs_wtxt);
     m_phrasecount++;
     if (m_phrasecount == 1) {
-      EnableWindow(m_vkbb_Insert.m_hWnd, TRUE);
-      EnableWindow(m_vkbb_ClearBuffer.m_hWnd, TRUE);
+      m_vkbb_Insert.EnableWindow(TRUE);
+      m_vkbb_ClearBuffer.EnableWindow(TRUE);
     }
-    stringT stemp;
-    Format(stemp, L"%d", m_phrasecount);
-    SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), stemp.c_str());
 
     bool bNeedToSetButtons(false);
     if (m_bDeadKeyActive) {
       // Was a deadkey combination character - reset back to normal keys
-      m_wcDeadKey = (wchar_t)0;
+      m_wcDeadKey= (wchar_t)0;
       SetDeadKeyEnvironment(false);
       bNeedToSetButtons = true;
     }
@@ -985,19 +821,21 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     if (bNeedToSetButtons)
       SetButtons();
   }
+
+  UpdateData(FALSE);
 }
 
 void CVKeyBoardDlg::OnSpaceBar()
 {
   // SpaceBar key - if a DeadKey is active, this adds the original character
-  stringT stxt;
-  stxt = get_window_text(m_vkbb_SpaceBar.m_hWnd);
-  m_phrase += stxt.c_str();
+  CString cs_wtxt;
+  m_vkbb_SpaceBar.GetWindowText(cs_wtxt);
+  m_phrase += CSecString(cs_wtxt);
   m_phrasecount++;
 
   if (m_phrasecount == 1) {
-    EnableWindow(m_vkbb_Insert.m_hWnd, TRUE);
-    EnableWindow(m_vkbb_ClearBuffer.m_hWnd, TRUE);
+    m_vkbb_Insert.EnableWindow(TRUE);
+    m_vkbb_ClearBuffer.EnableWindow(TRUE);
   }
 
   if (m_bDeadKeyActive) {
@@ -1006,9 +844,7 @@ void CVKeyBoardDlg::OnSpaceBar()
     SetButtons();
   }
 
-  stringT stemp;
-  Format(stemp, L"%d", m_phrasecount);
-  SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), stemp.c_str());
+  UpdateData(FALSE);
 }
 
 void CVKeyBoardDlg::OnAltNum()
@@ -1024,15 +860,14 @@ void CVKeyBoardDlg::OnAltNum()
     if (m_altchar > 0 && m_altchar < 32768) {
       wchar_t c[2] = {0, 0};
       c[0] = (wchar_t)m_altchar;
-      m_phrase += c;
+      m_phrase += CSecString(c);
       m_phrasecount++;
       if (m_phrasecount == 1) {
-        EnableWindow(m_vkbb_Insert.m_hWnd, TRUE);
-        EnableWindow(m_vkbb_ClearBuffer.m_hWnd, TRUE);
+        m_vkbb_Insert.EnableWindow(TRUE);
+        m_vkbb_ClearBuffer.EnableWindow(TRUE);
       }
-      stringT stemp;
-      Format(stemp, L"%d", m_phrasecount);
-      SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), stemp.c_str());
+
+      UpdateData(FALSE);
     }
   }
 
@@ -1063,7 +898,7 @@ void CVKeyBoardDlg::OnAltNum()
 
   // Enable the Numeric Key Pad
   for (int i = 0; i < NUM_KEYS; i++) {
-    EnableWindow(m_vkbb_Keys[i].m_hWnd, m_bAltNum ? FALSE : TRUE);
+    m_vkbb_Keys[i].EnableWindow(m_bAltNum ? FALSE : TRUE);
   }
 
   // Set Shift/Caps Lock buttons availability
@@ -1087,51 +922,48 @@ void CVKeyBoardDlg::OnAltNum()
       bEnableC = m_bAllow_rC ? TRUE : FALSE;
     }
   }
-  EnableWindow(m_vkbb_LShift.m_hWnd, bEnableS);
-  EnableWindow(m_vkbb_RShift.m_hWnd, bEnableS);
-  EnableWindow(m_vkbb_CapsLock.m_hWnd, bEnableC);
+  m_vkbb_LShift.EnableWindow(bEnableS);
+  m_vkbb_RShift.EnableWindow(bEnableS);
+  m_vkbb_CapsLock.EnableWindow(bEnableC);
 
   bEnable = m_bAltNum ? FALSE : TRUE;
 
   // Don't touch the Left/Right Control keys if Japanese keyboard
   if (m_bLCtrlChars && m_uiKLID != JAPANESE_KBD)
-    EnableWindow(m_vkbb_LCtrl.m_hWnd, bEnable);
+    m_vkbb_LCtrl.EnableWindow(bEnable);
   if (m_bRCtrlChars && m_uiKLID != JAPANESE_KBD)
-    EnableWindow(m_vkbb_RCtrl.m_hWnd, bEnable);
+    m_vkbb_RCtrl.EnableWindow(bEnable);
 
   if (m_bAltGrChars)
-    EnableWindow(m_vkbb_AltGr.m_hWnd, bEnable);
+    m_vkbb_AltGr.EnableWindow(bEnable);
 
   // Don't allow changing keyboards in AltNum mode (don't worry about 106-keyboard)
   // And other keys active in the Japanese keyboard
   if (m_uiKLID != JAPANESE_KBD) {
-    EnableWindow(GetDlgItem(m_hParent, IDC_VK101), bEnable);
-    EnableWindow(GetDlgItem(m_hParent, IDC_VK102), bEnable);
+    GetDlgItem(IDC_VK101)->EnableWindow(bEnable);
+    GetDlgItem(IDC_VK102)->EnableWindow(bEnable);
   } else {
     if (m_Kana == JAPANESE) {
-      EnableWindow(m_vkbb_SmallSpaceBar.m_hWnd, bEnable);
-      EnableWindow(m_vkbb_Hiragana.m_hWnd, bEnable);
+      m_vkbb_SmallSpaceBar.EnableWindow(bEnable);
+      m_vkbb_Hiragana.EnableWindow(bEnable);
       if (m_Hiragana == KATAKANA)
-        EnableWindow(m_vkbb_Size.m_hWnd, bEnable);
+        m_vkbb_Size.EnableWindow(bEnable);
     }
   }
 
   // Allow/deny other controls
-  EnableWindow(m_hcbxKeyBoards, bEnable);
-  EnableWindow(m_vkbb_Randomize.m_hWnd, bEnable);
+  m_cbxKeyBoards.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
   if (m_uiKLID != JAPANESE_KBD || (m_uiKLID == JAPANESE_KBD && m_Kana == ENGLISH))
-    EnableWindow(m_vkbb_SpaceBar.m_hWnd, bEnable);
+    m_vkbb_SpaceBar.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::OnBackSpace()
 {
   if (m_phrasecount > 0) {
-    m_phrase.erase(m_phrasecount - 1, 1);
+    m_phrase.Delete(m_phrasecount - 1, 1);
     m_phrasecount--;
-
-    stringT stemp;
-    Format(stemp, L"%d", m_phrasecount);
-    SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), stemp.c_str());
+    UpdateData(FALSE);
   }
 }
 
@@ -1141,8 +973,8 @@ void CVKeyBoardDlg::OnShift()
 
   m_vkbb_LShift.SetPushedState(m_bShift);
   m_vkbb_RShift.SetPushedState(m_bShift);
-  InvalidateRect(m_vkbb_LShift.m_hWnd, NULL, FALSE);
-  InvalidateRect(m_vkbb_RShift.m_hWnd, NULL, FALSE);
+  m_vkbb_LShift.Invalidate();
+  m_vkbb_RShift.Invalidate();
 
   if (m_bShift)
     m_State |= VST_SHIFT;
@@ -1159,23 +991,26 @@ void CVKeyBoardDlg::OnAltGr()
   m_vkbb_AltGr.SetPushedState(m_bAltGr);
 
   // Korean & Japanese
+  CString cs_ToolTip;
   switch (m_uiKLID) {
     case KOREAN_KBD:
       m_State = 0;
-      SetWindowText(m_vkbb_AltGr.m_hWnd, m_bAltGr ? L"Kor" : L"Eng");
-      UpdateTooltipText(IDC_VKBBTN_ALTGR, m_bAltGr ? IDS_VK_SW_ENGLISH : IDS_VK_SW_KOREAN);
+      m_vkbb_AltGr.SetWindowText(m_bAltGr ? L"Kor" : L"Eng");
+      cs_ToolTip.LoadString(m_bAltGr ? IDS_VK_SW_ENGLISH : IDS_VK_SW_KOREAN);
+      m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);
       break;
     case JAPANESE_KBD:
       m_State = 0;
-      SetWindowText(m_vkbb_AltGr.m_hWnd, m_bAltGr ? L"Kana" : L"Eng");
+      m_vkbb_AltGr.SetWindowText(m_bAltGr ? L"Kana" : L"Eng");
       m_Kana = m_bAltGr ? JAPANESE : ENGLISH;
       SetSpecialKeys();
-
-      UpdateTooltipText(IDC_VKBBTN_ALTGR, m_bAltGr ? IDS_VK_SW_ENGLISH : IDS_VK_SW_KANA);
+      cs_ToolTip.LoadString(m_bAltGr ? IDS_VK_SW_ENGLISH : IDS_VK_SW_KANA);
+      m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);
       if (m_bAltGr) {
-        AddTooltip(IDC_VKBBTN_HIRAGANA, IDS_VK_SW_KATAKANA);
+        cs_ToolTip.LoadString(IDS_VK_SW_KATAKANA);
+        m_pToolTipCtrl->AddTool((CWnd *)&m_vkbb_Hiragana, cs_ToolTip);
       } else {
-        DeleteTooltip(IDC_VKBBTN_HIRAGANA);
+        m_pToolTipCtrl->DelTool((CWnd *)&m_vkbb_Hiragana);
       }
       break;
   }
@@ -1186,16 +1021,16 @@ void CVKeyBoardDlg::OnAltGr()
     m_State &= ~VST_ALTGR;
 
   if (m_bRCtrlChars)
-    EnableWindow(m_vkbb_RCtrl.m_hWnd, m_bAltGr ? FALSE : TRUE);
+    m_vkbb_RCtrl.EnableWindow(m_bAltGr ? FALSE : TRUE);
 
   if (m_bAltGr) {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_gS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_gS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_gC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_gS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_gS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_gC ? TRUE : FALSE);
   } else {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_bC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_bC ? TRUE : FALSE);
   }
 
   SetButtons();
@@ -1228,13 +1063,13 @@ void CVKeyBoardDlg::OnLCtrl()
     m_State &= ~VST_LCTRL;
 
   if (m_bLCtrl) {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_lS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_lS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_lC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_lS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_lS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_lC ? TRUE : FALSE);
   } else {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_bC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_bC ? TRUE : FALSE);
   }
 
   SetButtons();
@@ -1267,21 +1102,21 @@ void CVKeyBoardDlg::DoRCtrl(const bool bDoFull)
   else
     m_State &= ~VST_RCTRL;
 
-  EnableWindow(m_vkbb_AltNum.m_hWnd, m_bRCtrl ? FALSE : TRUE);
+  m_vkbb_AltNum.EnableWindow(m_bRCtrl ? FALSE : TRUE);
   if (m_bAltGrChars)
-    EnableWindow(m_vkbb_AltGr.m_hWnd, m_bRCtrl ? FALSE : TRUE);
+    m_vkbb_AltGr.EnableWindow(m_bRCtrl ? FALSE : TRUE);
 
   if (m_bLCtrlChars)
-    EnableWindow(m_vkbb_LCtrl.m_hWnd, m_bRCtrl ? FALSE : TRUE);
+    m_vkbb_LCtrl.EnableWindow(m_bRCtrl ? FALSE : TRUE);
 
   if (m_bRCtrl) {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_rS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_rS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_rC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_rS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_rS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_rC ? TRUE : FALSE);
   } else {
-    EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-    EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_bC ? TRUE : FALSE);
+    m_vkbb_LShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_RShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+    m_vkbb_CapsLock.EnableWindow(m_bAllow_bC ? TRUE : FALSE);
   }
 
   SetButtons();
@@ -1293,16 +1128,19 @@ void CVKeyBoardDlg::OnKeySize()
   // 0 == Half-width; 1 = Full-width
   m_Size = 1 - m_Size;
 
-  stringT sSize;
-  sSize = m_Size == HALF ? wcHalfWidth : wcFullWidth;
-  SetWindowText(m_vkbb_Size.m_hWnd, sSize.c_str());
+  CString cs_Size;
+  cs_Size = m_Size == HALF ? wcHalfWidth : wcFullWidth;
+  m_vkbb_Size.SetWindowText(cs_Size);
 
-  UpdateTooltipText(IDC_VKBBTN_SIZE, m_Size == HALF ? IDS_VK_SW_FULLWIDTH : IDS_VK_SW_HALFWIDTH);
-  SendMessage(m_hwndTooltip, TTM_UPDATE, 0, 0);
+  CString cs_ToolTip;
+  UINT uiTT =  m_Size == HALF ? IDS_VK_SW_FULLWIDTH : IDS_VK_SW_HALFWIDTH;
+  cs_ToolTip.LoadString(uiTT);
+  m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_Size);
+  m_pToolTipCtrl->Update();
 
   SetButtons();
 
-  UpdateWindow(m_vkbb_Size.m_hWnd);
+  m_vkbb_Size.UpdateWindow();
 }
 
 void CVKeyBoardDlg::OnHiragana()
@@ -1311,25 +1149,29 @@ void CVKeyBoardDlg::OnHiragana()
   // 0 == Hiragana; 1 = Katakana
   m_Hiragana = 1 - m_Hiragana;
 
-  stringT s_HK = m_Hiragana == HIRAGANA ? wcHiragana : wcKatakana;
-  SetWindowText(m_vkbb_Hiragana.m_hWnd, s_HK.c_str());
+  CString cs_HK = m_Hiragana == HIRAGANA ? wcHiragana : wcKatakana;
+  m_vkbb_Hiragana.SetWindowText(cs_HK);
 
-  UpdateTooltipText(IDC_VKBBTN_HIRAGANA, m_Hiragana == HIRAGANA ? IDS_VK_SW_KATAKANA : IDS_VK_SW_HIRAGANA);
+  CString cs_ToolTip;
+  UINT uiTT =  m_Hiragana == HIRAGANA ? IDS_VK_SW_KATAKANA : IDS_VK_SW_HIRAGANA;
+  cs_ToolTip.LoadString(uiTT);
+  m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_Hiragana);
 
   if (m_Hiragana == HIRAGANA) {
-    DeleteTooltip(IDC_VKBBTN_SIZE);
+    m_pToolTipCtrl->DelTool((CWnd *)&m_vkbb_Size);
   } else {
     m_Size = 0;
-    AddTooltip(IDC_VKBBTN_SIZE, IDS_VK_SW_FULLWIDTH);
+    cs_ToolTip.LoadString(IDS_VK_SW_FULLWIDTH);
+    m_pToolTipCtrl->AddTool((CWnd *)&m_vkbb_Size, cs_ToolTip);
   }
 
-  SendMessage(m_hwndTooltip, TTM_UPDATE, 0, 0);
+  m_pToolTipCtrl->Update();
 
   SetSpecialKeys();
 
   SetButtons();
 
-  UpdateWindow(m_vkbb_Hiragana.m_hWnd);
+  m_vkbb_Hiragana.UpdateWindow();
 }
 
 void CVKeyBoardDlg::OnRandomize()
@@ -1367,7 +1209,7 @@ void CVKeyBoardDlg::OnRandomize()
   }
 
   for (int i = 0; i < NUM_DIGITS; i++) {
-    SetWindowText(m_vkbb_Numbers[i].m_hWnd, m_pnumbers[i]);
+    m_vkbb_Numbers[i].SetWindowText(m_pnumbers[i]);
   }
 
   // Reset table of valid scancodes - order IS VERY important!
@@ -1391,21 +1233,20 @@ void CVKeyBoardDlg::SetButtons()
 void CVKeyBoardDlg::SetNormalButtons()
 {
   // Set Normal Buttons
-  stringT sDeadkey;
-  RDLL_LoadAString(m_hInstResDLL, sDeadkey, IDS_VKDEADKEY);
-
+  CString cs_ToolTip;
+  cs_ToolTip.LoadString(IDS_VKDEADKEY);
   if (m_bAltNum) {
     // Normal keys disbled if using AltNum
     for (int i = 0; i < NUM_KEYS; i++) {
-      SetWindowText(m_vkbb_Keys[i].m_hWnd, L"");
-      EnableWindow(m_vkbb_Keys[i].m_hWnd, FALSE);
+      m_vkbb_Keys[i].SetWindowText(L"");
+      m_vkbb_Keys[i].EnableWindow(FALSE);
       m_vkbb_Keys[i].SetDeadKeyState(false);
     }
   } else {
     // Normal keys
     Iter_Map_st_SC2CHAR iter_sc;
     CIter_Map_SCSS2MC citer_scss;
-    stringT sTemp;
+    CString cs_temp;
     wchar_t wc_temp;
     int index;
     bool bDeadKey;
@@ -1430,26 +1271,26 @@ void CVKeyBoardDlg::SetNormalButtons()
       index = state2index[m_State];
 
     if (state2index[m_State] < 0) {
-      OutputDebugString(L"SetButtons: Unknown state! (1)\n");
+      pws_os::Trace(L"SetButtons: Unknown state! (1)");
       ASSERT(0);
     }
 
     // Now put the character on the keys
     for (int i = 0; i < NUM_KEYS; i++) {
       bDeadKey = false;
-      sTemp.clear();
+      cs_temp.Empty();
       if (m_scancodes[i] == 0 ||
           m_map_stSC2Char.find(m_scancodes[i]) == m_map_stSC2Char.end()) {
         // Zero scancode or not in our map to a character
         //     == unused key - disable/don't show
-        SetWindowText(m_vkbb_Keys[i].m_hWnd, sTemp.c_str());
-        EnableWindow(m_vkbb_Keys[i].m_hWnd, FALSE);
-        ShowWindow(m_vkbb_Keys[i].m_hWnd, SW_HIDE);
+        m_vkbb_Keys[i].SetWindowText(cs_temp);
+        m_vkbb_Keys[i].EnableWindow(FALSE);
+        m_vkbb_Keys[i].ShowWindow(SW_HIDE);
       } else {
         iter_sc = m_map_stSC2Char.find(m_scancodes[i]);
         if (iter_sc != m_map_stSC2Char.end()) {
           if (index < 0) {
-            OutputDebugString(L"SetButtons: Unknown state! (2)\n");
+            pws_os::Trace(L"SetButtons: Unknown state! (2)");
             ASSERT(0);
           } else {
             // Get scancode + shiftstate value
@@ -1457,7 +1298,7 @@ void CVKeyBoardDlg::SetNormalButtons()
 
             // Get the wchar_t character
             wc_temp = iter_sc->second.wcChar[index];
-            sTemp = wc_temp;
+            cs_temp = wc_temp;
 
             // If negative, it MAY be a multi-character value - although some Asian languages do
             // use Unicode values greater than 0x7FFF.
@@ -1469,41 +1310,41 @@ void CVKeyBoardDlg::SetNormalButtons()
                 if (citer_scss != m_stKBImpl.pmapSCSS2MC2->end()) {
                   wchar_t pctemp2[3] = {0, 0, 0};
                   memcpy((void *)&pctemp2[0], (void *)&m_stKBImpl.wcMC2[citer_scss->second * 2 * sizeof(wchar_t)], 2 * sizeof(wchar_t));
-                  sTemp = pctemp2;
+                  cs_temp = pctemp2;
                 } else
-                  sTemp = wc_temp;
+                  cs_temp = wc_temp;
                 break;
               case -3:
                 citer_scss = m_stKBImpl.pmapSCSS2MC3->find(uiSCSS);
                 if (citer_scss != m_stKBImpl.pmapSCSS2MC3->end()) {
                   wchar_t pctemp3[4] = {0, 0, 0, 0};
                   memcpy((void *)&pctemp3[0], (void *)&m_stKBImpl.wcMC3[citer_scss->second * 3 * sizeof(wchar_t)], 3 * sizeof(wchar_t));
-                  sTemp = pctemp3;
+                  cs_temp = pctemp3;
                 } else
-                  sTemp = wc_temp;
+                  cs_temp = wc_temp;
                 break;
               case -4:
                 citer_scss = m_stKBImpl.pmapSCSS2MC4->find(uiSCSS);
                 if (citer_scss != m_stKBImpl.pmapSCSS2MC4->end()) {
                   wchar_t pctemp4[5] = {0, 0, 0, 0, 0};
                   memcpy((void *)&pctemp4[0], (void *)&m_stKBImpl.wcMC4[citer_scss->second * 4 * sizeof(wchar_t)], 4 * sizeof(wchar_t));
-                  sTemp = pctemp4;
+                  cs_temp = pctemp4;
                 } else
-                  sTemp = wc_temp;
+                  cs_temp = wc_temp;
                 break;
             }
             bDeadKey = iter_sc->second.bsDeadKey.test(index);
           }
           // Now set character on key
-          SetWindowText(m_vkbb_Keys[i].m_hWnd, sTemp.c_str());
-          EnableWindow(m_vkbb_Keys[i].m_hWnd, sTemp.empty() ? FALSE : TRUE);
-          ShowWindow(m_vkbb_Keys[i].m_hWnd, SW_SHOW);
+          m_vkbb_Keys[i].SetWindowText(cs_temp);
+          m_vkbb_Keys[i].EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
+          m_vkbb_Keys[i].ShowWindow(SW_SHOW);
           m_vkbb_Keys[i].SetDeadKeyState(bDeadKey);
           // If DeadKey - add a ToolTip, if not - remove it
           if (bDeadKey) {
-            AddTooltip(IDC_VKBBTN_KBD01 + i, IDS_VKDEADKEY);
+            m_pToolTipCtrl->AddTool((CWnd *)&m_vkbb_Keys[i], cs_ToolTip);
           } else {
-            DeleteTooltip(IDC_VKBBTN_KBD01 + i);
+            m_pToolTipCtrl->DelTool((CWnd *)&m_vkbb_Keys[i]);
           }
         }
       }
@@ -1513,34 +1354,35 @@ void CVKeyBoardDlg::SetNormalButtons()
     bDeadKey = false;
     iter_sc = m_map_stSC2Char.find(0x39);
     if (iter_sc == m_map_stSC2Char.end()) {
-      sTemp.clear();
+      cs_temp.Empty();
     } else {
       if (index < 0) {
         wc_temp = (wchar_t)0;
-        OutputDebugString(L"SetButtons: Unknown state! (3)\n");
+        pws_os::Trace(L"SetButtons: Unknown state! (3)");
         ASSERT(0);
       } else {
         wc_temp = iter_sc->second.wcChar[index];
         bDeadKey = iter_sc->second.bsDeadKey.test(index);
       }
       if (wc_temp == 0)
-        sTemp.clear();
+        cs_temp.Empty();
       else
-        sTemp = wc_temp;
+        cs_temp = wc_temp;
     }
 
-    if (IsWindowEnabled(m_vkbb_SpaceBar.m_hWnd)) {
-      SetWindowText(m_vkbb_SpaceBar.m_hWnd, sTemp.c_str());
-      EnableWindow(m_vkbb_SpaceBar.m_hWnd, sTemp.empty() ? FALSE : TRUE);
+    if (m_vkbb_SpaceBar.IsWindowEnabled()) {
+      m_vkbb_SpaceBar.SetWindowText(cs_temp);
+      m_vkbb_SpaceBar.EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
       m_vkbb_SpaceBar.SetDeadKeyState(bDeadKey);
     } else {
-      SetWindowText(m_vkbb_SmallSpaceBar.m_hWnd, sTemp.c_str());
-      EnableWindow(m_vkbb_SmallSpaceBar.m_hWnd, sTemp.empty() ? FALSE : TRUE);
+      m_vkbb_SmallSpaceBar.SetWindowText(cs_temp);
+      m_vkbb_SmallSpaceBar.EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
       m_vkbb_SmallSpaceBar.SetDeadKeyState(bDeadKey);
     }
   }
 
-  InvalidateRect(m_hwndDlg, NULL, FALSE);
+  UpdateData(FALSE);
+  Invalidate();
 }
 
 void CVKeyBoardDlg::SetDeadKeyButtons()
@@ -1549,19 +1391,19 @@ void CVKeyBoardDlg::SetDeadKeyButtons()
 
   // Clear out buttons
   for (int i = 0; i < NUM_KEYS; i++) {
-    SetWindowText(m_vkbb_Keys[i].m_hWnd, L"");
-    EnableWindow(m_vkbb_Keys[i].m_hWnd, FALSE);
+    m_vkbb_Keys[i].SetWindowText(L"");
+    m_vkbb_Keys[i].EnableWindow(FALSE);
     m_vkbb_Keys[i].SetDeadKeyState(false);
   }
 
   // And the Space Bar which allows user to type in the DeadKey
   // in its own right
-  SetWindowText(m_vkbb_SpaceBar.m_hWnd, L"");
-  EnableWindow(m_vkbb_SpaceBar.m_hWnd, FALSE);
+  m_vkbb_SpaceBar.SetWindowText(L"");
+  m_vkbb_SpaceBar.EnableWindow(FALSE);
   m_vkbb_SpaceBar.SetDeadKeyState(false);
 
   // Now put back associated combination values
-  stringT sTemp;
+  CString cs_temp;
   Iter_MMap_DK2SCSSCC iter_mm, iter_low, iter_up;
 
   iter_low = m_stKBImpl.pmmapDK2SCSSCC->lower_bound(m_wcDeadKey);
@@ -1584,20 +1426,21 @@ void CVKeyBoardDlg::SetDeadKeyButtons()
       continue;
 
     std::vector<BYTE>::size_type index = iter_sc - m_vsc.begin();
-    sTemp = iter_mm->second.wcCC;
+    cs_temp = iter_mm->second.wcCC;
 
     if (m_vsc[index] == 0x39) {
       // Space Bar
-      SetWindowText(m_vkbb_SpaceBar.m_hWnd, sTemp.c_str());
-      EnableWindow(m_vkbb_SpaceBar.m_hWnd, TRUE);
+      m_vkbb_SpaceBar.SetWindowText(cs_temp);
+      m_vkbb_SpaceBar.EnableWindow(TRUE);
     } else {
       // Other character
-      SetWindowText(m_vkbb_Keys[index].m_hWnd, sTemp.c_str());
-      EnableWindow(m_vkbb_Keys[index].m_hWnd, TRUE);
+      m_vkbb_Keys[index].SetWindowText(cs_temp);
+      m_vkbb_Keys[index].EnableWindow(TRUE);
     }
   }
 
-  InvalidateRect(m_hwndDlg, NULL, FALSE);
+  UpdateData(FALSE);
+  Invalidate();
 }
 
 void CVKeyBoardDlg::OnClearBuffer()
@@ -1606,47 +1449,47 @@ void CVKeyBoardDlg::OnClearBuffer()
   m_phrasecount = 0;
   m_phrase = L"";
 
-  SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), L"0");
+  m_vkbb_Insert.EnableWindow(FALSE);
+  m_vkbb_ClearBuffer.EnableWindow(FALSE);
 
-  EnableWindow(m_vkbb_Insert.m_hWnd, FALSE);
-  EnableWindow(m_vkbb_ClearBuffer.m_hWnd, FALSE);
+  UpdateData(FALSE);
 }
 
 void CVKeyBoardDlg::OnChangeKeyboard()
 {
-  int isel = SendMessage(m_hcbxKeyBoards, CB_GETCURSEL, NULL, NULL);
+  int isel = m_cbxKeyBoards.GetCurSel();
 
   if (isel == CB_ERR)
     return;
 
   // Get the requested layout
-  UINT uiKLID = (UINT)SendMessage(m_hcbxKeyBoards, CB_GETITEMDATA, isel, NULL);
+  UINT uiKLID = (UINT)m_cbxKeyBoards.GetItemData(isel);
   if (uiKLID == m_uiKLID)
     return;
 
   // Remove old tooltips
   if (m_uiKLID == JAPANESE_KBD) {
-    if (IsWindowEnabled(m_vkbb_Size.m_hWnd)) {
-      DeleteTooltip(IDC_VKBBTN_SIZE);
+    if (m_vkbb_Size.IsWindowEnabled()) {
+      m_pToolTipCtrl->DelTool((CWnd *)&m_vkbb_Size);
     }
-    if (IsWindowEnabled(m_vkbb_Hiragana.m_hWnd)) {
-      DeleteTooltip(IDC_VKBBTN_HIRAGANA);
+    if (m_vkbb_Hiragana.IsWindowEnabled()) {
+      m_pToolTipCtrl->DelTool((CWnd *)&m_vkbb_Hiragana);
     }
   }
 
   // Now make it the current keyboard
   m_uiKLID = uiKLID;
-  UINT uiToolString, uiSpecial(0);
+  CString cs_ToolTip, cs_temp;
   if (m_uiKLID == JAPANESE_KBD) {
-    uiToolString = IDS_VK_SW_KANA;
+    cs_ToolTip.LoadString(IDS_VK_SW_KANA);
   } else if (m_uiKLID == KOREAN_KBD) {
-    uiToolString = IDS_VK_SW_KOREAN;
+    cs_ToolTip.LoadString(IDS_VK_SW_KOREAN);
   } else {
-    uiToolString = IDS_VKALTGR;
-    uiSpecial = IDS_VKSTATIC_SPECIAL;
+    cs_temp.LoadString(IDS_VKALTGR);
+    cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
   }
 
-  UpdateTooltipText(IDC_VKBBTN_ALTGR, uiToolString, uiSpecial);
+  m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);
 
   // Set up characters
   ProcessKeyboard(m_uiKLID);
@@ -1657,6 +1500,8 @@ void CVKeyBoardDlg::OnChangeKeyboard()
 
 void CVKeyBoardDlg::OnChangeKeyboardType()
 {
+  UpdateData(TRUE);
+
   // Set up characters
   ProcessKeyboard(m_uiKLID, false);
 
@@ -1664,7 +1509,7 @@ void CVKeyBoardDlg::OnChangeKeyboardType()
   SetButtons();
 
   // Lose focus
-  SetFocus(m_vkbb_Cancel.m_hWnd);
+  m_vkbb_Cancel.SetFocus();
 }
 
 void CVKeyBoardDlg::GetAllKeyboardsAvailable()
@@ -1685,10 +1530,8 @@ void CVKeyBoardDlg::GetAllKeyboardsAvailable()
     kbl.uiKLID = uiKLID;
     m_KBL.push_back(kbl);
 
-    if (kbl.uiKLID == m_uiPhysKLID) {
-      RDLL_LoadAString(m_hInstResDLL, m_selectedkb, kbl.uiCtrlID);
-      SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_CURRENTKBD), m_selectedkb.c_str());
-    }
+    if (kbl.uiKLID == m_uiPhysKLID)
+      m_selectedkb.LoadString(kbl.uiCtrlID);
   };
 }
 
@@ -1714,9 +1557,9 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
     m_bRCtrlChars = m_stKBImpl.stVKBD.bsValidSpecials.test(r);
   }
 
-  EnableWindow(m_vkbb_LCtrl.m_hWnd, m_bLCtrlChars ? TRUE : FALSE);
-  EnableWindow(m_vkbb_AltGr.m_hWnd, m_bAltGrChars ? TRUE : FALSE);
-  EnableWindow(m_vkbb_RCtrl.m_hWnd, m_bRCtrlChars ? TRUE : FALSE);
+  m_vkbb_LCtrl.EnableWindow(m_bLCtrlChars ? TRUE : FALSE);
+  m_vkbb_AltGr.EnableWindow(m_bAltGrChars ? TRUE : FALSE);
+  m_vkbb_RCtrl.EnableWindow(m_bRCtrlChars ? TRUE : FALSE);
 
   // Determine if the shift/Caps Lock keys are meaningful here
   m_bAllow_bC = m_stKBImpl.stVKBD.bsValidSpecials.test(bC) ||
@@ -1736,9 +1579,9 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
   m_bAllow_rS = m_stKBImpl.stVKBD.bsValidSpecials.test(sr) ||
                 m_stKBImpl.stVKBD.bsValidSpecials.test(srC);
 
-  EnableWindow(m_vkbb_LShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-  EnableWindow(m_vkbb_RShift.m_hWnd, m_bAllow_bS ? TRUE : FALSE);
-  EnableWindow(m_vkbb_CapsLock.m_hWnd, m_bAllow_bC ? TRUE : FALSE);
+  m_vkbb_LShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+  m_vkbb_RShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
+  m_vkbb_CapsLock.EnableWindow(m_bAllow_bC ? TRUE : FALSE);
 
   // Set keyboard type radio button
   if (bSetType) {
@@ -1754,17 +1597,16 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
       m_iKeyboard = 1;  // 102 keyboard
       uiButton = IDC_VK102;
     }
-    CheckRadioButton(m_hwndDlg, IDC_VK101, IDC_VK106, uiButton);
-
+    ((CButton *)GetDlgItem(uiButton))->SetCheck(BST_CHECKED);
   }
 
   // Need to do this prior to call to ResetKeys
   bool bJapanese = (m_uiKLID == JAPANESE_KBD);
-  EnableWindow(GetDlgItem(m_hParent, IDC_VK101), bJapanese ? FALSE : TRUE);
-  ShowWindow(GetDlgItem(m_hParent, IDC_VK101), bJapanese ? SW_HIDE : SW_SHOW);
-  EnableWindow(GetDlgItem(m_hParent, IDC_VK102), bJapanese ? FALSE : TRUE);
-  ShowWindow(GetDlgItem(m_hParent, IDC_VK102), bJapanese ? SW_HIDE : SW_SHOW);
-  ShowWindow(GetDlgItem(m_hParent, IDC_VK106), bJapanese ? SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_VK101)->EnableWindow(bJapanese ? FALSE : TRUE);
+  GetDlgItem(IDC_VK101)->ShowWindow(bJapanese ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_VK102)->EnableWindow(bJapanese ? FALSE : TRUE);
+  GetDlgItem(IDC_VK102)->ShowWindow(bJapanese ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_VK106)->ShowWindow(bJapanese ? SW_SHOW : SW_HIDE);
 
   // Reset Keys
   ResetKeys();
@@ -1819,10 +1661,10 @@ void CVKeyBoardDlg::ResetKeyboard()
   m_wcDeadKey = (wchar_t)0;
   SetButtons();
 
-  SetWindowText(GetDlgItem(m_hwndDlg, IDC_VKSTATIC_COUNT), L"0");
+  m_vkbb_Insert.EnableWindow(FALSE);
+  m_vkbb_ClearBuffer.EnableWindow(FALSE);
 
-  EnableWindow(m_vkbb_Insert.m_hWnd, FALSE);
-  EnableWindow(m_vkbb_ClearBuffer.m_hWnd, FALSE);
+  UpdateData(FALSE);
 }
 
 void CVKeyBoardDlg::ResetKeys()
@@ -1850,7 +1692,7 @@ void CVKeyBoardDlg::ResetKeys()
   // Reset the NumPad numbers
   for (int i = 0; i < NUM_DIGITS; i++) {
     free(m_pnumbers[i]);
-    m_pnumbers[i] = _wcsdup(pXdefnumbers[i]);
+    m_pnumbers[i] = _wcsdup(pdefnumbers[i]);
   }
 
   // Make normal
@@ -1873,7 +1715,7 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
 
   // If Dead Key active - need to disable some buttons:
   for (int i = 0; i < NUM_DIGITS; i++) {
-    EnableWindow(m_vkbb_Numbers[i].m_hWnd, bEnable);
+    m_vkbb_Numbers[i].EnableWindow(bEnable);
   }
 
   // Save current state and reset it until the user presses the DeadKey combination character
@@ -1900,46 +1742,46 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
     m_bCapsLock = m_bSaveCapsLock;
   }
 
-  EnableWindow(m_hcbxKeyBoards, bEnable);
-  EnableWindow(m_vkbb_Randomize.m_hWnd, bEnable);
-  EnableWindow(m_vkbb_Insert.m_hWnd, bEnable);
-  EnableWindow(m_vkbb_ClearBuffer.m_hWnd, bEnable);
+  m_cbxKeyBoards.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
 
   if (m_bLCtrlChars)
-    EnableWindow(m_vkbb_LCtrl.m_hWnd, m_bLCtrl ? TRUE : FALSE);
+    m_vkbb_LCtrl.EnableWindow(m_bLCtrl ? TRUE : FALSE);
   if (m_bRCtrlChars)
-    EnableWindow(m_vkbb_RCtrl.m_hWnd, m_bRCtrl ? TRUE : FALSE);
+    m_vkbb_RCtrl.EnableWindow(m_bRCtrl ? TRUE : FALSE);
   if (m_bAltGrChars)
-    EnableWindow(m_vkbb_AltGr.m_hWnd, m_bAltGr ? TRUE : FALSE);
+    m_vkbb_AltGr.EnableWindow(m_bAltGr ? TRUE : FALSE);
 
-  EnableWindow(m_vkbb_AltNum.m_hWnd, bEnable);
-  EnableWindow(GetDlgItem(m_hParent, IDC_VK101), bEnable);
-  EnableWindow(GetDlgItem(m_hParent, IDC_VK102), bEnable);
+  m_vkbb_AltNum.EnableWindow(bEnable);
+  GetDlgItem(IDC_VK101)->EnableWindow(bEnable);
+  GetDlgItem(IDC_VK102)->EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::SetJapaneseKeyboard()
 {
   bool bHiragana;
-  stringT sKana, sHK, sSize;
+  CString cs_Kana, cs_HK, cs_Size;
 
   if (m_Kana == ENGLISH) {
     bHiragana = false;
-    sKana = L"Eng";
-    sHK = L"";
-    sSize = L"";
+    cs_Kana = L"Eng";
+    cs_HK = L"";
+    cs_Size = L"";
   } else {
     bHiragana = (m_Hiragana == HIRAGANA);
-    sKana = L"Kana";
-    sHK = bHiragana ? wcHiragana : wcKatakana;
-    sSize = m_Size == HALF ? wcHalfWidth : wcFullWidth;
+    cs_Kana = L"Kana";
+    cs_HK = bHiragana ? wcHiragana : wcKatakana;
+    cs_Size = m_Size == HALF ? wcHalfWidth : wcFullWidth;
   }
 
-  SetWindowText(m_vkbb_Hiragana.m_hWnd, sHK.c_str());
-  SetWindowText(m_vkbb_Size.m_hWnd, sSize.c_str());
+  m_vkbb_Hiragana.SetWindowText(cs_HK);
+  m_vkbb_Size.SetWindowText(cs_Size);
 
   // Set Japanese (Eng to start with) label and stop it showing pushed state
-  SetWindowText(m_vkbb_AltGr.m_hWnd, sKana.c_str());
-  EnableWindow(m_vkbb_AltGr.m_hWnd, TRUE);
+  m_vkbb_AltGr.SetWindowText(cs_Kana);
+  m_vkbb_AltGr.EnableWindow(TRUE);
   m_vkbb_AltGr.ChangePushColour(false);
 
   SetSpecialKeys();
@@ -1948,8 +1790,8 @@ void CVKeyBoardDlg::SetJapaneseKeyboard()
 void CVKeyBoardDlg::SetKoreanKeyboard()
 {
   // Set Korean (Eng to start with) label and stop it showing pushed state
-  SetWindowText(m_vkbb_AltGr.m_hWnd, L"Eng");
-  EnableWindow(m_vkbb_AltGr.m_hWnd, TRUE);
+  m_vkbb_AltGr.SetWindowText(L"Eng");
+  m_vkbb_AltGr.EnableWindow(TRUE);
   m_vkbb_AltGr.ChangePushColour(false);
 
   SetSpecialKeys();
@@ -1958,7 +1800,7 @@ void CVKeyBoardDlg::SetKoreanKeyboard()
 void CVKeyBoardDlg::SetStandardKeyboard()
 {
   // Put back standard label and make it show pushed state
-  SetWindowText(m_vkbb_AltGr.m_hWnd, L"Alt Gr");
+  m_vkbb_AltGr.SetWindowText(L"Alt Gr");
   m_vkbb_AltGr.ChangePushColour(true);
 
   SetSpecialKeys();
@@ -1979,42 +1821,69 @@ void CVKeyBoardDlg::SetSpecialKeys()
     bEnableHK = true;
   }
   if (m_uiKLID == JAPANESE_KBD) {
-    EnableWindow(m_vkbb_LCtrl.m_hWnd, FALSE);
-    EnableWindow(m_vkbb_RCtrl.m_hWnd, FALSE);
+    m_vkbb_LCtrl.EnableWindow(FALSE);
+    m_vkbb_RCtrl.EnableWindow(FALSE);
   }
 
-  EnableWindow(m_vkbb_SpaceBar.m_hWnd, bEnableSpaceBar ? TRUE : FALSE);
-  ShowWindow(m_vkbb_SpaceBar.m_hWnd, bEnableSpaceBar ? SW_SHOW : SW_HIDE);
+  m_vkbb_SpaceBar.EnableWindow(bEnableSpaceBar ? TRUE : FALSE);
+  m_vkbb_SpaceBar.ShowWindow(bEnableSpaceBar ? SW_SHOW : SW_HIDE);
 
-  EnableWindow(m_vkbb_SmallSpaceBar.m_hWnd, bEnableSpaceBar ? FALSE : TRUE);
-  ShowWindow(m_vkbb_SmallSpaceBar.m_hWnd, bEnableSpaceBar ? SW_HIDE : SW_SHOW);
+  m_vkbb_SmallSpaceBar.EnableWindow(bEnableSpaceBar ? FALSE : TRUE);
+  m_vkbb_SmallSpaceBar.ShowWindow(bEnableSpaceBar ? SW_HIDE : SW_SHOW);
 
-  ShowWindow(m_vkbb_RCtrl.m_hWnd, bShowRCtrl ? SW_SHOW : SW_HIDE);
-  ShowWindow(m_vkbb_RHCtrl.m_hWnd, bShowRCtrl ? SW_HIDE : SW_SHOW);
+  m_vkbb_RCtrl.ShowWindow(bShowRCtrl ? SW_SHOW : SW_HIDE);
+  m_vkbb_RHCtrl.ShowWindow(bShowRCtrl ? SW_HIDE : SW_SHOW);
 
-  EnableWindow(m_vkbb_Size.m_hWnd, bShowRCtrl ? FALSE : TRUE);
-  ShowWindow(m_vkbb_Size.m_hWnd, bShowRCtrl ? SW_HIDE : SW_SHOW);
-  SetWindowText(m_vkbb_Size.m_hWnd, wcHalfWidth);
+  m_vkbb_Size.EnableWindow(bShowRCtrl ? FALSE : TRUE);
+  m_vkbb_Size.ShowWindow(bShowRCtrl ? SW_HIDE : SW_SHOW);
+  m_vkbb_Size.SetWindowText(wcHalfWidth);
 
-  EnableWindow(m_vkbb_Hiragana.m_hWnd, bEnableHK ? TRUE : FALSE);
-  ShowWindow(m_vkbb_Hiragana.m_hWnd, bEnableHK ? SW_SHOW : SW_HIDE);
-  SetWindowText(m_vkbb_Hiragana.m_hWnd, wcHiragana);
+  m_vkbb_Hiragana.EnableWindow(bEnableHK  ? TRUE : FALSE);
+  m_vkbb_Hiragana.ShowWindow(bEnableHK ? SW_SHOW : SW_HIDE);
+  m_vkbb_Hiragana.SetWindowText(wcHiragana);
 
-  InvalidateRect(m_hwndDlg, NULL, FALSE);
+  Invalidate();
 }
 
-void CVKeyBoardDlg::ApplyUnicodeFont(HWND hDlgItem)
+// Override PreTranslateMessage() so RelayEvent() can be
+// called to pass a mouse message to CPWSOptions's
+// tooltip control for processing.
+BOOL CVKeyBoardDlg::PreTranslateMessage(MSG* pMsg)
 {
-  ASSERT(hDlgItem != NULL);
-  if (hDlgItem == NULL)
+  if (pMsg->message >= WM_MOUSEFIRST && pMsg->message <= WM_MOUSELAST) {
+    if (m_pToolTipCtrl != NULL) {
+      // Change to allow tooltip on disabled controls
+      MSG msg = *pMsg;
+      msg.hwnd = (HWND)m_pToolTipCtrl->SendMessage(TTM_WINDOWFROMPOINT, 0,
+                                                  (LPARAM)&msg.pt);
+      CPoint pt = pMsg->pt;
+      ::ScreenToClient(msg.hwnd, &pt);
+
+      msg.lParam = MAKELONG(pt.x, pt.y);
+
+      // Let the ToolTip process this message.
+      m_pToolTipCtrl->RelayEvent(&msg);
+    }
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}
+
+void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
+{
+  ASSERT(pDlgItem != NULL);
+  if (pDlgItem == NULL)
     return;
 
-  if (m_PassphraseFont == NULL) {
-    wchar_t *pszFont(NULL);
-    stringT sVKeyboardFont = L"";
+  if (m_pPassphraseFont == NULL) {
+    m_pPassphraseFont = new CFont;
+
+    wchar_t * pszFont(NULL);
+    StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
     switch (m_iFont) {
       case USER_FONT:
-        pszFont = (wchar_t *)sVKeyboardFont.c_str();
+        pszFont = (wchar_t *)cs_VKeyboardFont.c_str();
         break;
       case ARIALMS_FONT:
         pszFont = ARIALUMS;
@@ -2041,112 +1910,41 @@ void CVKeyBoardDlg::ApplyUnicodeFont(HWND hDlgItem)
     lf.lfCharSet = DEFAULT_CHARSET;
     wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, wcslen(pszFont));
 
-    m_PassphraseFont = CreateFontIndirect(&lf);
+    m_pPassphraseFont->CreateFontIndirect(&lf);
   }
 
-  SendMessage(hDlgItem, WM_SETFONT, (WPARAM)m_PassphraseFont, TRUE);
+  pDlgItem->SetFont(m_pPassphraseFont);
 }
+
+HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  if (!this->IsWindowEnabled())
+    return (HBRUSH)NULL;
+
+  HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  switch (nCtlColor) {
+    case CTLCOLOR_STATIC:
+    case CTLCOLOR_DLG:
+      // Black text on white background
+      pDC->SetTextColor(RGB(0, 0, 0));
+      pDC->SetBkColor(RGB(255, 255, 255));
+      return (HBRUSH)(m_pBkBrush.GetSafeHandle());
+    default:
+      return hbr;
+  }
+}
+
+void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+  // Allow draging without the caption bar!
+  CPWDialog::OnLButtonDown(nFlags, point);
+
+  PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x,point.y));
+}
+
 
 void CVKeyBoardDlg::OnSaveKLID()
 {
-  m_bSaveKLID = SendMessage(GetDlgItem(m_hParent, IDC_SAVEKLID), BM_GETCHECK, NULL, NULL);
-}
-
-// Modified from MSDN: http://msdn.microsoft.com/en-us/library/bb760252(v=vs.85).aspx
-
-BOOL CVKeyBoardDlg::AddTooltip(UINT uiControlID,stringT sText)
-{
-  if (!uiControlID || sText.empty())
-    return FALSE;
-
-  // Get the window of the tool.
-  HWND hwndTool = GetDlgItem(m_hwndDlg, uiControlID);
-
-  // Associate the tooltip with the tool.
-  TOOLINFO ti = { 0 };
-  ti.cbSize = sizeof(ti);
-  ti.hwnd = m_hwndDlg;
-  ti.uFlags = TTF_IDISHWND | TTF_SUBCLASS | TTF_CENTERTIP | TTF_TRANSPARENT;
-  ti.uId = (UINT_PTR)hwndTool;
-  ti.lpszText = (LPWSTR)sText.c_str();
-
-  BOOL brc = SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
-
-  return brc;
-}
-
-BOOL CVKeyBoardDlg::AddTooltip(UINT uiControlID, UINT uiToolString, UINT uiFormat)
-{
-  if (!uiControlID || !uiToolString)
-    return FALSE;
-
-  stringT sText;
-  RDLL_LoadAString(m_hInstResDLL, sText, uiToolString);
-  if (sText.empty())
-    return FALSE;
-
-  if (uiFormat != NULL)
-  {
-    Format(sText, uiFormat, sText.c_str());
-  }
-
-  return AddTooltip(uiControlID, sText);
-}
-
-BOOL CVKeyBoardDlg::DeleteTooltip(UINT uiControlID)
-{
-  if (!uiControlID)
-    return FALSE;
-
-  // Get the window of the tool.
-  HWND hwndTool = GetDlgItem(m_hwndDlg, uiControlID);
-
-  // Delete the tooltip.
-  TOOLINFO ti = { 0 };
-  ti.cbSize = sizeof(ti);
-  ti.hwnd = m_hwndDlg;
-  ti.uId = (UINT_PTR)hwndTool;
-
-  BOOL brc = SendMessage(m_hwndTooltip, TTM_DELTOOL, 0, (LPARAM)&ti);
-
-  return brc;
-}
-
-BOOL CVKeyBoardDlg::UpdateTooltipText(UINT uiControlID,stringT sText)
-{
-  if (!uiControlID || sText.empty())
-    return FALSE;
-
-  // Get the window of the tool.
-  HWND hwndTool = GetDlgItem(m_hwndDlg, uiControlID);
-
-  // Delete the tooltip.
-  TOOLINFO ti = { 0 };
-  ti.cbSize = sizeof(ti);
-  ti.hinst = m_hInstance;
-  ti.hwnd = m_hwndDlg;
-  ti.uId = (UINT_PTR)hwndTool;
-  ti.lpszText = (LPWSTR)sText.c_str();
-
-  BOOL brc = SendMessage(m_hwndTooltip, TTM_UPDATETIPTEXT, 0, (LPARAM)&ti);
-
-  return brc;
-}
-
-BOOL CVKeyBoardDlg::UpdateTooltipText(UINT uiControlID, UINT uiToolString, UINT uiFormat)
-{
-  if (!uiControlID || !uiToolString)
-    return FALSE;
-
-  stringT sText;
-  RDLL_LoadAString(m_hInstResDLL, sText, uiToolString);
-  if (sText.empty())
-    return FALSE;
-
-  if (uiFormat != NULL)
-  {
-    Format(sText, uiFormat, sText.c_str());
-  }
-
-  return UpdateTooltipText(uiControlID, sText);
+  m_bSaveKLID = ((CButton *)GetDlgItem(IDC_SAVEKLID))->GetCheck();
 }

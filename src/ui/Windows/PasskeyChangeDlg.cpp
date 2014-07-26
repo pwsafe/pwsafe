@@ -100,7 +100,7 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   ybn2->SetBitmap(IsYubiInserted() ? m_yubiLogo : m_yubiLogoDisabled);
  
   // Only show virtual Keyboard menu if we can load DLL
-  if (!m_bVKAvailable) {
+  if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -195,38 +195,29 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 
 void CPasskeyChangeDlg::OnVirtualKeyboard()
 {
-  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
-
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!m_bVKAvailable)
+  if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
-  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
     // Already there - move to top
-    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
-    HINSTANCE hInstResDLL = app.GetResourceDLL();
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(hInstResDLL, this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
-    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
-      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
-
-    if (m_hwndVKeyBoard == NULL) {
-      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
-      ASSERT(m_hwndVKeyBoard);
-    }
-  }
-  else {
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
+  } else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top & enable it
-  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-  ::EnableWindow(m_hwndVKeyBoard, TRUE);
+  // Now show it and make it top
+  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+
+  return;
 }
 
 LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)

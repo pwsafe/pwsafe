@@ -24,7 +24,6 @@ public:
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
   enum { IDD = IDD_KEYCHANGE_DIALOG };
-  enum { IDDSD = IDD_SDKEYCHANGE };
 
   CSecString m_oldpasskey;
   CSecString m_newpasskey;

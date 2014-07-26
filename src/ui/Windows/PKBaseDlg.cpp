@@ -32,7 +32,7 @@ extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
   : CPWDialog(id, pParent),
     m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
-    m_pVKeyBoardDlg(NULL), m_hwndVKeyBoard(NULL)
+    m_pVKeyBoardDlg(NULL)
 {
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
@@ -55,7 +55,7 @@ CPKBaseDlg::~CPKBaseDlg()
     StringX cs_KLID = os.str().c_str();
     PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
 
-    ::DestroyWindow(m_hwndVKeyBoard);
+    m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;
   }
 }
@@ -101,8 +101,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   if (YubiExists()) {
     ybn->ShowWindow(SW_SHOW);
     m_yubi_status.ShowWindow(SW_SHOW);
-  }
-  else {
+  } else {
     ybn->ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_HIDE);
   }
@@ -118,8 +117,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   if (b_yubiInserted) {
     ((CButton*)ybn)->SetBitmap(m_yubiLogo);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-  }
-  else {
+  } else {
     ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }

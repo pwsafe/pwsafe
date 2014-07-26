@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2014 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,29 +9,14 @@
 // VKBButton.cpp
 //
 
-/*
-
-  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!  NO MFC CLASSES ALLOWED!!!!!
-
-*/
-
 #include "../stdafx.h"
-
 #include "VKBButton.h"
-
-#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-using namespace std;
-
-extern std::wstring get_window_text(HWND hWnd);
 
 // Special Flat button for Virtual Keyboards
 // Also, if a Push button, will show pushed state by change of colour (unless disabled)
@@ -42,7 +27,7 @@ const COLORREF crefOrange = (RGB(255, 208, 192));  // Light Orange
 const COLORREF crefPink   = (RGB(255, 222, 222));  // Light Pink
 
 CVKBButton::CVKBButton()
-  : /*m_bMouseInWindow(false), */ m_bDeadKey(false),
+  : m_bMouseInWindow(false), m_bDeadKey(false),
   m_bFlat(true), m_bPushed(false), m_bChangePushColour(true)
 {
 }
@@ -51,92 +36,93 @@ CVKBButton::~CVKBButton()
 {
 }
 
+BEGIN_MESSAGE_MAP(CVKBButton, CButton)
+  //{{AFX_MSG_MAP(CVKBButton)
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 /////////////////////////////////////////////////////////////////////////////
 // CVKBButton message handlers
 
 void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-  BOOL brc;
-  const HDC hdc = lpDrawItemStruct->hDC;
-  const UINT state = lpDrawItemStruct->itemState;
-  RECT rect = lpDrawItemStruct->rcItem;
+  CDC* pDC   = CDC::FromHandle(lpDrawItemStruct->hDC);
+  CRect rect = lpDrawItemStruct->rcItem;
+  UINT state = lpDrawItemStruct->itemState;
 
-  wstring stxt;
-  stxt = get_window_text(m_hWnd);
+  CString strText;
+  GetWindowText(strText);
 
   // draw the control edges (DrawFrameControl is handy!)
-  if (state & ODS_SELECTED) {
-    brc = DrawFrameControl(hdc, &rect, DFC_BUTTON, DFCS_BUTTONPUSH | DFCS_PUSHED |
-    (m_bFlat ? DFCS_FLAT : 0));
-  }
+  if (state & ODS_SELECTED)
+    pDC->DrawFrameControl(rect, DFC_BUTTON, DFCS_BUTTONPUSH | DFCS_PUSHED |
+                                (m_bFlat ? DFCS_FLAT : 0));
   else
-  {
-    brc = DrawFrameControl(hdc, &rect, DFC_BUTTON, DFCS_BUTTONPUSH |
-    (m_bFlat ? DFCS_FLAT : 0));
-    ASSERT(brc);
-  }
+    pDC->DrawFrameControl(rect, DFC_BUTTON, DFCS_BUTTONPUSH |
+                                (m_bFlat ? DFCS_FLAT : 0));
 
   // Fill the interior colour if necessary
-  const SIZE sz = { GetSystemMetrics(SM_CXEDGE), GetSystemMetrics(SM_CYEDGE) };
-
-  rect.bottom -= sz.cy;
-  rect.right -= sz.cx;
-
-  rect.top += sz.cy;
-  rect.left += sz.cx;
-
+  rect.DeflateRect(CSize(GetSystemMetrics(SM_CXEDGE), GetSystemMetrics(SM_CYEDGE)));
   if (m_bDeadKey) {
-    brc = FillRect(hdc, &rect, CreateSolidBrush(crefOrange));
-    ASSERT(brc);
+    pDC->FillSolidRect(rect, crefOrange);
   } else {
     COLORREF crefColour;
-    DWORD mdw = GetMessagePos();
-    POINT mpt = { GET_X_LPARAM(mdw), GET_Y_LPARAM (mdw) };  // In Screen co-ordinates
-
-    RECT wrect;
-    GetWindowRect(m_hWnd, &wrect); // In Screen co-ordinates
-    BOOL bMouseInWindow = PtInRect(&wrect, mpt);
-
     if (m_bPushed)
-      crefColour = bMouseInWindow ? crefGreen : (m_bChangePushColour ? crefPink : crefYellow);
+      crefColour = m_bMouseInWindow ? crefGreen : (m_bChangePushColour ? crefPink : crefYellow);
     else
-      crefColour = bMouseInWindow ? crefGreen : crefYellow;
+      crefColour = m_bMouseInWindow ? crefGreen : crefYellow;
 
-    brc = FillRect(hdc, &rect, CreateSolidBrush(crefColour));
-    ASSERT(brc);
+    pDC->FillSolidRect(rect, crefColour);
   }
 
   // Draw the text
-  if (!stxt.empty()) {
-    RECT rExtent;
-    SIZE szExtent;
-    DrawText(hdc, stxt.c_str(), -1, &rExtent, DT_CALCRECT);
-    szExtent.cx = abs(rExtent.left - rExtent.right);
-    szExtent.cy = abs(rExtent.top - rExtent.bottom);
-
-    POINT pt = { ((rect.left + rect.right) - szExtent.cx) / 2,
-      ((rect.top + rect.bottom) - szExtent.cy) / 2 };
+  if (!strText.IsEmpty()) {
+    CSize Extent = pDC->GetTextExtent(strText);
+    CPoint pt(rect.CenterPoint().x - Extent.cx / 2, rect.CenterPoint().y - Extent.cy / 2);
 
     if (state & ODS_SELECTED)
-    {
-      pt.x += 1;
-      pt.y += 1;
-    }
+      pt.Offset(1, 1);
 
-    int nMode = SetBkMode(hdc, TRANSPARENT);
+    int nMode = pDC->SetBkMode(TRANSPARENT);
 
     if (state & ODS_DISABLED)
-    {
-      brc = DrawState(hdc, (HBRUSH)NULL, NULL, (LPARAM)stxt.c_str(), NULL, pt.x, pt.y, szExtent.cx, szExtent.cy, DST_TEXT | DSS_DISABLED);
-      ASSERT(brc);
-    }
+      pDC->DrawState(pt, Extent, strText, DSS_DISABLED, TRUE, 0, (HBRUSH)NULL);
     else
-    {
-      brc = TextOut(hdc, pt.x, pt.y, stxt.c_str(), stxt.length());
-      ASSERT(brc);
-    }
+      pDC->TextOut(pt.x, pt.y, strText);
 
-    SetBkMode(hdc, nMode);
+    pDC->SetBkMode(nMode);
   }
 }
 
+void CVKBButton::PreSubclassWindow()
+{
+  CButton::PreSubclassWindow();
+
+  ModifyStyle(0, BS_OWNERDRAW);  // make the button owner drawn
+}
+
+void CVKBButton::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    Invalidate();
+    UpdateWindow();
+
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  CButton::OnMouseMove(nFlags, point);
+}
+
+LRESULT CVKBButton::OnMouseLeave(WPARAM, LPARAM)
+{
+  m_bMouseInWindow = false;
+  // Reset background
+  Invalidate();
+  UpdateWindow();
+
+  return 0L;
+}

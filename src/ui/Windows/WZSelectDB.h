@@ -10,7 +10,6 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
-#include "GetMasterPhrase.h"
 #include "YubiMixin.h"
 
 #include "resource.h"

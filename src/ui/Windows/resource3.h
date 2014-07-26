@@ -740,7 +740,6 @@
 #define IDS_ENTRYKBST_OVERRIDE          5956
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
-#define IDS_ENTERCOMBINATION            5959
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

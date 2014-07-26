@@ -53,9 +53,6 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
-
-  // Call it as it also performs important initilisation
-  m_bVKAvailable = CVKeyBoardDlg::IsOSKAvailable();
 }
 
 CWZSelectDB::~CWZSelectDB()
@@ -72,6 +69,7 @@ CWZSelectDB::~CWZSelectDB()
     StringX cs_KLID = os.str().c_str();
     PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
 
+    m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;
   }
 }
@@ -85,7 +83,6 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-  DDX_Control(pDX, IDC_SD_TOGGLE, m_ctlSDToggle);
 
   // Can't use DDX_Text for CSecEditExtn
   m_pctlPasskey->DoDDX(pDX, m_passkey);
@@ -153,39 +150,33 @@ void CWZSelectDB::OnHelp()
 BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
-
-  // Setup a timer to poll YubiKey every 250 ms
-  SetTimer(1, 250, 0);
-
-  // If not Vista or later, disable and hide SD toggle
-  if (!pws_os::IsWindowsVistaOrGreater()) {
-    m_ctlSDToggle.EnableWindow(FALSE);
-    m_ctlSDToggle.ShowWindow(SW_HIDE);
-  }
+  SetTimer(1, 250, 0); // Setup a timer to poll YubiKey every 250 ms
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   const UINT nID = m_pWZPSH->GetID();
   CString cs_text,cs_temp;
 
   bool bWARNINGTEXT(true);
   switch (nID) {
-  case ID_MENUITEM_SYNCHRONIZE:
-    cs_text.LoadString(IDS_WZSLCT_WARNING_SYNC);
-    break;
-  case ID_MENUITEM_EXPORT2PLAINTEXT:
-  case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-  case ID_MENUITEM_EXPORT2XML:
-  case ID_MENUITEM_EXPORTENT2XML:
-    cs_temp.LoadString((nID == ID_MENUITEM_EXPORT2PLAINTEXT || nID == ID_MENUITEM_EXPORT2XML) ?
-                       IDS_WSSLCT_ALL : IDS_WSSLCT_ENTRY);
-    cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
-    break;
-  case ID_MENUITEM_COMPARE:
-  case ID_MENUITEM_MERGE:
-    bWARNINGTEXT = false;
-    break;
-  default:
-    bWARNINGTEXT = false;
-    ASSERT(0);
+    case ID_MENUITEM_SYNCHRONIZE:
+      cs_text.LoadString(IDS_WZSLCT_WARNING_SYNC);
+      break;
+    case ID_MENUITEM_EXPORT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    case ID_MENUITEM_EXPORT2XML:
+    case ID_MENUITEM_EXPORTENT2XML:
+      cs_temp.LoadString((nID == ID_MENUITEM_EXPORT2PLAINTEXT || nID == ID_MENUITEM_EXPORT2XML) ?
+                              IDS_WSSLCT_ALL : IDS_WSSLCT_ENTRY);
+      cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
+      break;
+    case ID_MENUITEM_COMPARE:
+    case ID_MENUITEM_MERGE:
+      bWARNINGTEXT = false;
+      break;
+    default:
+      bWARNINGTEXT = false;
+      ASSERT(0);
   }
 
   if (bWARNINGTEXT) {
@@ -207,29 +198,29 @@ BOOL CWZSelectDB::OnInitDialog()
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
   switch (nID) {
-  case ID_MENUITEM_EXPORT2XML:
-  case ID_MENUITEM_EXPORTENT2XML:
-    GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
-    // Drop though intentionally
-  case ID_MENUITEM_EXPORT2PLAINTEXT:
-  case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-    ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
-                                             (nID == ID_MENUITEM_EXPORT2XML || nID == ID_MENUITEM_EXPORTENT2XML) ?
-                                             L"xml" : L"txt");
-    m_pctlDB->SetWindowText(ExportFileName.c_str());
-    m_filespec = ExportFileName.c_str();
-    uifilemsg = IDS_WZFILE;
-    break;
-  case ID_MENUITEM_SYNCHRONIZE:
-  case ID_MENUITEM_COMPARE:
-  case ID_MENUITEM_MERGE:
-    GetDlgItem(IDC_STATIC_WZEXPDLM1)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
-    break;
-  default:
-    ASSERT(0);
+    case ID_MENUITEM_EXPORT2XML:
+    case ID_MENUITEM_EXPORTENT2XML:
+        GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
+        // Drop though intentionally
+    case ID_MENUITEM_EXPORT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+        ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
+            (nID == ID_MENUITEM_EXPORT2XML || nID == ID_MENUITEM_EXPORTENT2XML) ?
+               L"xml" : L"txt");
+        m_pctlDB->SetWindowText(ExportFileName.c_str());
+        m_filespec = ExportFileName.c_str();
+        uifilemsg = IDS_WZFILE;
+      break;
+    case ID_MENUITEM_SYNCHRONIZE:
+    case ID_MENUITEM_COMPARE:
+    case ID_MENUITEM_MERGE:
+      GetDlgItem(IDC_STATIC_WZEXPDLM1)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
+      break;
+    default:
+      ASSERT(0);
   }
   cs_text.LoadString(uifilemsg);
   GetDlgItem(IDC_STATIC_WZFILE)->SetWindowText(cs_text);
@@ -260,8 +251,7 @@ BOOL CWZSelectDB::OnInitDialog()
   if (YubiExists()) {
     ybn->ShowWindow(SW_SHOW);
     m_yubi_status.ShowWindow(SW_SHOW);
-  }
-  else {
+  } else {
     ybn->ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_HIDE);
   }
@@ -275,8 +265,7 @@ BOOL CWZSelectDB::OnInitDialog()
   if (bYubiInserted) {
     ((CButton*)ybn)->SetBitmap(m_yubiLogo);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
-  }
-  else {
+  } else {
     ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
@@ -591,38 +580,29 @@ void CWZSelectDB::OnOpenFileBrowser()
 
 void CWZSelectDB::OnVirtualKeyboard()
 {
-  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
-
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
   if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
-  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
     // Already there - move to top
-    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
-    HINSTANCE hInstResDLL = app.GetResourceDLL();
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(hInstResDLL, this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
-    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
-      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
-
-    if (m_hwndVKeyBoard == NULL) {
-      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
-      ASSERT(m_hwndVKeyBoard);
-    }
-  }
-  else {
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
+  } else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top & enable it
-  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-  ::EnableWindow(m_hwndVKeyBoard, TRUE);
+  // Now show it and make it top
+  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+
+  return;
 }
 
 LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
@@ -646,7 +626,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
 
   // Put cursor at end of inserted text
   m_pctlPasskey->SetSel(nStartChar + vkbuffer.GetLength(),
-    nStartChar + vkbuffer.GetLength());
+                        nStartChar + vkbuffer.GetLength());
 
   // Update the dialog
   UpdateData(FALSE);

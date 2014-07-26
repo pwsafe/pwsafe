@@ -46,8 +46,7 @@ down the streetsky.  [Groucho Marx]
 #include <iomanip>  // For setbase and setw
 
 // See DboxMain.h for the relevant enum
-int CPasskeyEntry::dialog_lookup[10] = {
-  // Normal dialogs
+int CPasskeyEntry::dialog_lookup[5] = {
   IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
   IDD_PASSKEYENTRY,                // GCP_NORMAL
   IDD_PASSKEYENTRY,                // GCP_RESTORE
@@ -63,7 +62,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_tries(0),
   m_status(TAR_INVALID),
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
-  m_bForceReadOnly(bForceReadOnly), m_bHideReadOnly(bHideReadOnly),
+  m_bForceReadOnly(bForceReadOnly),
+    m_bHideReadOnly(bHideReadOnly),
   m_yubi_sk(NULL)
 {
   m_index = index;
@@ -151,43 +151,42 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
-  switch (m_index) {
-  case GCP_FIRST:
-    // At start up - give the user the option unless file is R-O
-    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
-#ifdef DEMO
-    GetDlgItem(IDC_SPCL_TXT)->
-      SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
-#endif
-    break;
-  case GCP_NORMAL:
-    // otherwise during open - user can - again unless file is R-O
-    if (m_bHideReadOnly) {
-      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-    }
-    else {
+  switch(m_index) {
+    case GCP_FIRST:
+      // At start up - give the user the option unless file is R-O
       GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-    }
-    break;
-  case GCP_RESTORE:
-  case GCP_WITHEXIT:
-    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-    break;
-  case GCP_CHANGEMODE:
-    GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-    break;
-  default:
-    ASSERT(FALSE);
+      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
+#ifdef DEMO
+      GetDlgItem(IDC_SPCL_TXT)->
+         SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
+#endif
+      break;
+    case GCP_NORMAL:
+      // otherwise during open - user can - again unless file is R-O
+      if (m_bHideReadOnly) {
+        GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+        GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+      } else {
+        GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+        GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      }
+      break;
+    case GCP_RESTORE:
+    case GCP_WITHEXIT:
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      break;
+    case GCP_CHANGEMODE:
+      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+      break;
+    default:
+      ASSERT(FALSE);
   }
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!m_bVKAvailable) {
+  if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -582,37 +581,27 @@ void CPasskeyEntry::SetHeight(const int num)
 
 void CPasskeyEntry::OnVirtualKeyboard()
 {
-  DWORD dwError; //  Define it here to stop warning that local variable is initialized but not referenced later on
-
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!m_bVKAvailable)
+  if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
-  if (m_hwndVKeyBoard != NULL && ::IsWindowVisible(m_hwndVKeyBoard)) {
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
     // Already there - move to top
-    ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
-    HINSTANCE hInstResDLL = app.GetResourceDLL();
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(hInstResDLL, this->GetSafeHwnd(), this->GetSafeHwnd(), cs_LUKBD.c_str());
-    m_hwndVKeyBoard = CreateDialogParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_SDVKEYBOARD), this->GetSafeHwnd(),
-      (DLGPROC)(m_pVKeyBoardDlg->VKDialogProc), (LPARAM)(m_pVKeyBoardDlg));
-
-    if (m_hwndVKeyBoard == NULL) {
-      dwError = pws_os::IssueError(_T("CreateDialogParam - IDD_SDVKEYBOARD"), false);
-      ASSERT(m_hwndVKeyBoard);
-    }
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
   } else {
     m_pVKeyBoardDlg->ResetKeyboard();
   }
 
-  // Now show it and make it top & enable it
-  ::SetWindowPos(m_hwndVKeyBoard, HWND_TOP, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-  ::EnableWindow(m_hwndVKeyBoard, TRUE);
+  // Now show it and make it top
+  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 }
 
 LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)

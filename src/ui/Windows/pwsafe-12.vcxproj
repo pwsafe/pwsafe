@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugM|Win32">
@@ -945,7 +945,6 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FontsDialog.h" />
     <ClInclude Include="GeneralMsgBox.h" />
-    <ClInclude Include="GetMasterPhrase.h" />
     <ClInclude Include="HKModifiers.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
@@ -1018,7 +1017,6 @@
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="ThisMfcApp.h" />
     <ClInclude Include="ViewReport.h" />
-    <ClInclude Include="VirtualKeyboard\VKDefinitions.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />
     <ClInclude Include="VirtualKeyboard\VKShiftState.h" />

@@ -93,7 +93,7 @@
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
 #define IDB_PWSDB                       224
-#define IDB_PWSBITMAP                   225
+
 #define IDB_ALIAS                       230
 #define IDB_ABASE                       231
 #define IDB_ABASE_EXPIRED               232
@@ -365,10 +365,6 @@
 #define IDB_YUBI_LOGO                   525
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
-#define IDD_SDVKEYBOARD                 532
-#define IDD_SDGETPHRASE                 533
-#define IDD_SDKEYCHANGE                 534
-#define IDD_SDPASSKEYSETUP              535
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -786,17 +782,15 @@
 #define IDC_DB_DEF_AUTOTYPE_DELAY       1500
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
-#define IDC_ENTERCOMBINATION            1505
-#define IDC_STATIC_ENTERCOMBINATION     1508
-#define IDC_SD_TOGGLE                   1510
+#define IDC_STATIC_ENTERCOMBINATION     1503
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        538
+#define _APS_NEXT_RESOURCE_VALUE        528
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1503
+#define _APS_NEXT_CONTROL_VALUE         1504
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

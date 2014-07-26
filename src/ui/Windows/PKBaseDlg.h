@@ -15,7 +15,6 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "GetMasterPhrase.h"
 #include "YubiMixin.h"
 
 #include <limits>
@@ -60,8 +59,6 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-  HWND m_hwndVKeyBoard;
 
   virtual void yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
   virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf);
