@@ -6929,10 +6929,9 @@ msgstr "Использовать политику"
 msgid "Use Named Policy"
 msgstr "Использовать политику"
 
-# урезано
 #. Resource IDs: (1503)
 msgid "Use Secure Desktop for master passphrase"
-msgstr "Использовать «Защищённый рабочий стол»"
+msgstr "Использовать «Защищённый рабочий стол» для ввода мастер-пароля"
 
 # столбец в информации о политике
 #. Resource IDs: (369)
