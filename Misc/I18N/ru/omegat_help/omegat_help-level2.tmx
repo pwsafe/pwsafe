@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.2" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.3" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2120,14 +2120,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Note:<ept i="0">&lt;/b0&gt;</ept><it pos="begin" x="1">&lt;i1&gt;</it>There appears to be an issue using the new AutoType Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120809T115327Z">
-        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Примечание.<ept i="0">&lt;/b0&gt;</ept> <it pos="begin" x="1">&lt;i1&gt;</it>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Note<ept i="0">&lt;/b0&gt;</ept> that this is a convenient way to support autotyping for applications that require a second password or other arbitrary text as part of the authentication process.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110207T203528Z">
@@ -3897,10 +3889,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Although we have a solution for this (we send a Tab followed by a Shift+Tab to return to the selected window <bpt i="3" x="3">&lt;u3&gt;</bpt>only<ept i="3">&lt;/u3&gt;</ept> when using this Dragbar AutoType image), the side-effect is that you can only use the Dragbar AutoType image to replace any existing string in that window by the expanded AutoType string.</seg>
+        <seg>Although we have a solution for this (we send a Tab followed by a Shift+Tab to return to the selected window <bpt i="1" x="1">&lt;u1&gt;</bpt>only<ept i="1">&lt;/u1&gt;</ept> when using this Dragbar AutoType image), the side-effect is that you can only use the Dragbar AutoType image to replace any existing string in that window by the expanded AutoType string.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120809T115355Z">
-        <seg>Поэтому <bpt i="3" x="3">&lt;u3&gt;</bpt>только<ept i="3">&lt;/u3&gt;</ept> при автонаборе с панели «Dragbar» сначала посылается символ табуляции, а затем Shift+Tab (чтобы обратно вернуться в поле ввода). Побочный эффект этого трюка приводит к тому, что автонабор с панели «Dragbar» заменяет значение поля, а не добавляет ввод к нему.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134825Z" creationid="pm_kan" creationdate="20140716T134825Z">
+        <seg>Поэтому <bpt i="1" x="1">&lt;u1&gt;</bpt>только<ept i="1">&lt;/u1&gt;</ept> при автонаборе с панели «Dragbar» сначала посылается символ табуляции, а затем Shift+Tab (чтобы обратно вернуться в поле ввода). Побочный эффект этого трюка приводит к тому, что автонабор с панели «Dragbar» заменяет значение поля, а не добавляет ввод к нему.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4473,10 +4465,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>By clicking <bpt i="0" x="0">&lt;b0&gt;</bpt>New Database<ept i="0">&lt;/b0&gt;</ept> from the <bpt i="1" x="1">&lt;b1&gt;</bpt>Safe Combination Entry<ept i="1">&lt;/b1&gt;</ept> dialog when the program is started, or from the <bpt i="2" x="2">&lt;b2&gt;</bpt>"File ? New Database"<ept i="2">&lt;/b2&gt;</ept> menu once <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> has been opened.</seg>
+        <seg>By clicking <bpt i="0" x="0">&lt;b0&gt;</bpt>New...<ept i="0">&lt;/b0&gt;</ept> from the <bpt i="1" x="1">&lt;b1&gt;</bpt>Safe Combination Entry<ept i="1">&lt;/b1&gt;</ept> dialog when the program is started, or from the <bpt i="2" x="2">&lt;b2&gt;</bpt>"File ? New..."<ept i="2">&lt;/b2&gt;</ept> menu once <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> has been opened.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T114523Z" creationid="pm_kan" creationdate="20140113T114523Z">
-        <seg>Щёлкнув <bpt i="0" x="0">&lt;b0&gt;</bpt>Новый контейнер<ept i="0">&lt;/b0&gt;</ept> в диалоге <bpt i="1" x="1">&lt;b1&gt;</bpt>Пароль для контейнера<ept i="1">&lt;/b1&gt;</ept>, выводимом при запуске программы, или через меню <bpt i="2" x="2">&lt;b2&gt;</bpt>Файл→Новый контейнер<ept i="2">&lt;/b2&gt;</ept>, которое доступно, если <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> уже открыт.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140728T060050Z" creationid="pm_kan" creationdate="20140728T060050Z">
+        <seg>Щёлкнув по кнопке <bpt i="0" x="0">&lt;b0&gt;</bpt>Новый...<ept i="0">&lt;/b0&gt;</ept> в диалоге <bpt i="1" x="1">&lt;b1&gt;</bpt>Пароль для контейнера<ept i="1">&lt;/b1&gt;</ept>, выводимом при запуске программы, или через меню <bpt i="2" x="2">&lt;b2&gt;</bpt>Файл → Создать...<ept i="2">&lt;/b2&gt;</ept>, если <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> уже открыт.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6882,6 +6874,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>For <bpt i="0" x="0">&lt;s0&gt;</bpt>YubiKey<ept i="0">&lt;/s0&gt;</ept> users: In addition to changing the master password as described above, this window allows you to add or remove YubiKey authentication, add or remove additional password authentication, as well as switch the YubiKey that is used to access the current database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140721T163931Z" creationid="pm_kan" creationdate="20140721T155925Z">
+        <seg>Для тех, кто использует <bpt i="0" x="0">&lt;s0&gt;</bpt>YubiKey<ept i="0">&lt;/s0&gt;</ept>: в дополнение к функции смены мастер-пароля, этот диалог позволяет добавить или убрать аутентификацию при помощи YubiKey, установить или убрать пароль, используемый вместе с YubiKey, или привязать к контейнеру другой ключ YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>For English, these would be Alt+F (<bpt i="0" x="0">&lt;u0&gt;</bpt>F<ept i="0">&lt;/u0&gt;</ept>ile), Alt+E (<bpt i="1" x="1">&lt;u1&gt;</bpt>E<ept i="1">&lt;/u1&gt;</ept>dit), Alt+V (<bpt i="2" x="2">&lt;u2&gt;</bpt>V<ept i="2">&lt;/u2&gt;</ept>iew), Alt+M (<bpt i="3" x="3">&lt;u3&gt;</bpt>M<ept i="3">&lt;/u3&gt;</ept>anage) and Alt+H (<bpt i="4" x="4">&lt;u4&gt;</bpt>H<ept i="4">&lt;/u4&gt;</ept>elp).</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20101105T175411Z">
@@ -6902,14 +6902,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T185350Z">
         <seg>Для XML-файлов KeePass V2 используется команда:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>For YubiKey users: In addition to changing the master password as described above, this window allows you to add or remove YubiKey authentication, add or remove additional password authentication, as well as switch the YubiKey that is used to access the current database.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T112638Z" creationid="pm_kan" creationdate="20140113T112638Z">
-        <seg>Для владельцев YubiKey: кроме изменения мастер-пароля, здесь же можно добавить или удалить привязку контейнера к YubiKey и добавить или удалить аутентификацию по паролю. Кроме того, здесь вы можете изменить YubiKey, привязанный к контейнеру.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7874,10 +7866,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>If dropped in a window of another application the result will depend on how that application processes the Tab and Shift+Tab characters.<it pos="end" x="1">&lt;/i1&gt;</it></seg>
+        <seg>If dropped in a window of another application the result will depend on how that application processes the Tab and Shift+Tab characters.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T210818Z">
-        <seg>В окнах других приложений результат зависит от того, как обрабатываются символы Tab и Shift+Tab.<it pos="end" x="1">&lt;/i1&gt;</it></seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134851Z" creationid="pm_kan" creationdate="20140716T134851Z">
+        <seg>В окнах других приложений результат зависит от того, как обрабатываются символы Tab и Shift+Tab.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8078,6 +8070,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T202849Z">
         <seg>Если установлен флажок <bpt i="0" x="0">&lt;b0&gt;</bpt>Отображать значок в области уведомлений<ept i="0">&lt;/b0&gt;</ept>, вы можете щёлкнуть правой кнопкой мыши на значке и выбрать один из недавно использованных элементов без отображения главного окна программы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>If the <bpt i="0" x="0">&lt;i0&gt;</bpt>control<ept i="0">&lt;/i0&gt;</ept> key is pressed while clicking on a dragbar icon, the relevant text is copied to the clipboard <bpt i="1" x="1">&lt;e1&gt;</bpt>in addition<ept i="1">&lt;/e1&gt;</ept> to being pasted when the mouse button is released.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T135110Z" creationid="pm_kan" creationdate="20140716T135110Z">
+        <seg>Если при щелчке на значке панели «Dragbar» нажата клавиша <bpt i="0" x="0">&lt;i0&gt;</bpt>Сontrol<ept i="0">&lt;/i0&gt;</ept>, соответствующий текст <bpt i="1" x="1">&lt;e1&gt;</bpt>дополнительно<ept i="1">&lt;/e1&gt;</ept> будет помещён в буфер обмена.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8322,10 +8322,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>If you are using <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> for the first time, press the New Database button.</seg>
+        <seg>If you are using <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> for the first time, press the "New..." button.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110209T175908Z">
-        <seg>Если вы используете <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> впервые, нажмите кнопку «Новый контейнер».</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140721T160126Z" creationid="pm_kan" creationdate="20140721T160126Z">
+        <seg>Если вы используете <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> впервые, нажмите на кнопку «Новый...».</seg>
       </tuv>
     </tu>
     <tu>
@@ -8818,9 +8818,9 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> (assuming you permit multiple instances via <bpt i="1" x="1">&lt;a1&gt;</bpt>"Manage ? Options ? System"<ept i="1">&lt;/a1&gt;</ept> tab) and create a new database, whilst having your normal database open in another instance.</seg>
+        <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> (assuming you permit multiple instances via <bpt i="1" x="1">&lt;a1&gt;</bpt>"Manage → Options → System"<ept i="1">&lt;/a1&gt;</ept> tab) and create a new database, whilst having your normal database open in another instance.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T141444Z" creationid="pm_kan" creationdate="20140113T141444Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T142653Z">
         <seg>Чтобы экспортировать элементы в другой контейнер <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept>, запустите ещё одну копию <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> (должен быть разрешён запуск нескольких экземпляров на вкладке <bpt i="1" x="1">&lt;a1&gt;</bpt>Управление→Настройки→Система<ept i="1">&lt;/a1&gt;</ept>) и создайте новый контейнер.</seg>
       </tuv>
     </tu>
@@ -10634,10 +10634,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Once a database is open, you can change to another via the <bpt i="2" x="2">&lt;b2&gt;</bpt>Open Database<ept i="2">&lt;/b2&gt;</ept> command from the <bpt i="3" x="3">&lt;b3&gt;</bpt>File Menu<ept i="3">&lt;/b3&gt;</ept>.</seg>
+        <seg>Once a database is open, you can change to another via the <bpt i="2" x="2">&lt;b2&gt;</bpt>Open...<ept i="2">&lt;/b2&gt;</ept> command from the <bpt i="3" x="3">&lt;b3&gt;</bpt>File Menu<ept i="3">&lt;/b3&gt;</ept>.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110209T180651Z">
-        <seg>Если контейнер уже открыт, можно открыть другой, нажав <bpt i="2" x="2">&lt;b2&gt;</bpt>Открыть контейнер<ept i="2">&lt;/b2&gt;</ept> в меню <bpt i="3" x="3">&lt;b3&gt;</bpt>Файл<ept i="3">&lt;/b3&gt;</ept>.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140721T164130Z" creationid="pm_kan" creationdate="20140721T160430Z">
+        <seg>Если какой-либо контейнер уже открыт, можно открыть другой, нажав <bpt i="2" x="2">&lt;b2&gt;</bpt>Открыть...<ept i="2">&lt;/b2&gt;</ept> в меню <bpt i="3" x="3">&lt;b3&gt;</bpt>Файл<ept i="3">&lt;/b3&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12283,6 +12283,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>See also the description of <bpt i="3" x="3">&lt;b3&gt;</bpt>PWS_PREFSDIR<ept i="3">&lt;/b3&gt;</ept> in the <bpt i="4" x="4">&lt;a4&gt;</bpt>Preferences<ept i="4">&lt;/a4&gt;</ept> Section.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T120118Z" creationid="pm_kan" creationdate="20140716T120118Z">
+        <seg>См. также описание переменной окружения <bpt i="3" x="3">&lt;b3&gt;</bpt>PWS_PREFSDIR<ept i="3">&lt;/b3&gt;</ept> в разделе <bpt i="4" x="4">&lt;a4&gt;</bpt>Настройки Password Safe<ept i="4">&lt;/a4&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>See note <bpt i="0" x="0">&lt;a0&gt;</bpt>2<ept i="0">&lt;/a0&gt;</ept> below.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20101104T211340Z">
@@ -13453,9 +13461,9 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The Dragbar will disable ("grey out") icons for fields that are empty for the selected entry.</seg>
+        <seg>The Dragbar will disable ("grey out") icons for fields that are empty in the selected entry.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T205222Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134657Z" creationid="pm_kan" creationdate="20140716T134657Z">
         <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).</seg>
       </tuv>
     </tu>
@@ -14765,6 +14773,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>There appears to be an issue using the new AutoType Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134752Z" creationid="pm_kan" creationdate="20140716T134752Z">
+        <seg>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>There are a number of options available to the user if differences are detected:</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120808T180808Z">
@@ -15085,6 +15101,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>This can be useful in cases where the drop "missed" by a pixel or two, allowing you to perform a paste operation, rather than trying to drag again.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T135744Z" creationid="pm_kan" creationdate="20140716T135744Z">
+        <seg>Это может быть удобно, если при перетаскивании вы «промахнулись» на пару пикселей: в этом случае вместо повторного перетаскивания вы можете скопировать данные из буфера обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>This can be useful, for example, if the change failed to take effect at the site associated with this entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20101104T181138Z">
@@ -15133,10 +15157,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This does <bpt i="2" x="2">&lt;u2&gt;</bpt>NOT<ept i="2">&lt;/u2&gt;</ept> occur with Firefox and Chrome browsers.</seg>
+        <seg>This does <bpt i="0" x="0">&lt;u0&gt;</bpt>NOT<ept i="0">&lt;/u0&gt;</ept> occur with Firefox and Chrome browsers.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T205855Z">
-        <seg>Этого <bpt i="2" x="2">&lt;u2&gt;</bpt>не происходит<ept i="2">&lt;/u2&gt;</ept> с браузерами Firefox и Chrome.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134807Z" creationid="pm_kan" creationdate="20140716T134807Z">
+        <seg>Этого <bpt i="0" x="0">&lt;u0&gt;</bpt>не происходит<ept i="0">&lt;/u0&gt;</ept> с браузерами Firefox и Chrome.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15286,10 +15310,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted.</seg>
+        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted (See also the description of the <bpt i="0" x="0">&lt;b0&gt;</bpt>-g<ept i="0">&lt;/b0&gt;</ept> option in the <bpt i="1" x="1">&lt;a1&gt;</bpt>Command Line Arguments<ept i="1">&lt;/a1&gt;</ept> Section).</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T172214Z">
-        <seg>Это может быть использовано в случае, если у пользователя нет прав на изменение файлов в каталоге установки pwsafe.exe.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134515Z" creationid="pm_kan" creationdate="20140716T134515Z">
+        <seg>Может пригодится если доступ к каталогу, в котором установлен pwsafe.exe ограничен (см. также описание параметра <bpt i="0" x="0">&lt;b0&gt;</bpt>-g<ept i="0">&lt;/b0&gt;</ept> в разделе <bpt i="1" x="1">&lt;a1&gt;</bpt>Параметры командной строки<ept i="1">&lt;/a1&gt;</ept>).</seg>
       </tuv>
     </tu>
     <tu>
@@ -15354,6 +15378,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110215T111521Z">
         <seg>Это удобно, если нужно использовать некоторый набор фильтров во всех контейнерах, и нет желания загружать их вручную каждый раз.<it pos="begin" x="4">&lt;br4&gt;</it></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>This is useful in a "wrapper" script/batch file on a portable device (e.g., disk-on-key), setting the config dir as needed.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T120952Z" creationid="pm_kan" creationdate="20140716T115653Z">
+        <seg>Параметр может пригодиться при написании скриптов для запуска с портативного устройства (например, флеш-накопителя).</seg>
       </tuv>
     </tu>
     <tu>

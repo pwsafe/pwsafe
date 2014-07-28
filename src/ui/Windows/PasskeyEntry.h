@@ -110,7 +110,7 @@ private:
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();
-  void SetOKButton(bool bEmptyDB, bool bSetFocus);
+  void SetOKButton(bool bSetFocus);
   static int dialog_lookup[5];
 
   unsigned char *m_yubi_sk;

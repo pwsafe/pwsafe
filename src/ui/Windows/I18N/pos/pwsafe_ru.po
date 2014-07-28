@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-07-16 12:00+0400\n"
+"PO-Revision-Date: 2014-07-28 09:30+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1317,10 +1317,6 @@ msgstr "8"
 msgid "9"
 msgstr "9"
 
-#. Resource IDs: (1506)
-msgid "99:99"
-msgstr "99:99"
-
 #. Resource IDs: (1156)
 msgid "<"
 msgstr "<"
@@ -1940,7 +1936,7 @@ msgstr "Изменить исходный"
 msgid "Change Date"
 msgstr "Дата изменения"
 
-#. Resource IDs: (127, 534)
+#. Resource IDs: (127)
 msgid "Change Safe Combination"
 msgstr "Изменить пароль для контейнера"
 
@@ -2037,14 +2033,6 @@ msgstr "Нажмите для выбора поля"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Нажмите для изменения регистра"
-
-#. Resource IDs: (373)
-msgid "Click to change to database combination entry via Secure Desktop"
-msgstr "Нажмите, чтобы использовать «Защищённый рабочий стол» для ввода мастер-пароля"
-
-#. Resource IDs: (373)
-msgid "Click to change to old database combination entry method"
-msgstr "Нажмите для переключения к обычному способу ввода мастер-пароля"
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
@@ -2160,11 +2148,6 @@ msgstr "Выбор столбца"
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Невозможно определить строку заголовков по первой записи. Записи не были импортированы."
-
-#. Resource IDs: (373, 1505)
-# урезано
-msgid "Combination..."
-msgstr "Ввод пароля"
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2931,7 +2914,7 @@ msgstr "Конец отчёта"
 msgid "Enter Key:"
 msgstr "Ключ:"
 
-#. Resource IDs: (130, 132, 528, 530)
+#. Resource IDs: (130, 132)
 msgid "Enter Safe Combination"
 msgstr "Введите пароль для контейнера"
 
@@ -5543,16 +5526,16 @@ msgstr "Ошибка разбора SAX при выполнении %s\n%s."
 msgid "SAX Parse60 Error 0x%08X during %s."
 msgstr "Ошибка разбора SAX Parse60 0x%08X при выполнении операции «%s»."
 
-#. Resource IDs: (131, 529, 533)
+#. Resource IDs: (131)
 msgid "Safe Combination Entry"
 msgstr "Пароль для контейнера"
 
-#. Resource IDs: (133, 535)
+#. Resource IDs: (133)
 msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
 
 # В метке мало места, поэтому сокращено до "пароль"
-#. Resource IDs: (1508, 65535)
+#. Resource IDs: (1503, 65535)
 msgid "Safe Combination:"
 msgstr "Пароль:"
 
@@ -6474,11 +6457,6 @@ msgstr "Эти документы были сохранены позднее п�
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr "Выбранная комбинация недоступна, т. к. уже назначена для вызова Password Safe («Управление->Настройки...->Комбинации клавиш»)."
 
-#. Resource IDs: (1507)
-# урезано
-msgid "This Window will close automatically in"
-msgstr "Окно будет закрыто через"
-
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -6928,10 +6906,6 @@ msgstr "Использовать политику"
 #. Resource IDs: (1481)
 msgid "Use Named Policy"
 msgstr "Использовать политику"
-
-#. Resource IDs: (1503)
-msgid "Use Secure Desktop for master passphrase"
-msgstr "Использовать «Защищённый рабочий стол» для ввода мастер-пароля"
 
 # столбец в информации о политике
 #. Resource IDs: (369)
@@ -8084,10 +8058,6 @@ msgstr "предыдущих паролей для элемента"
 #. Resource IDs: (338)
 msgid "pwsafe"
 msgstr "pwsafe"
-
-#. Resource IDs: (1509)
-msgid "seconds"
-msgstr "секунд"
 
 #. Resource IDs: (205)
 msgid "shortcut"
