@@ -1,5 +1,5 @@
-Password Safe 3.34 Release Notes - July 2014
-============================================
+Password Safe 3.34.1 Release Notes - July 2014
+==============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,20 +8,22 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.34
-=====================
+New Features for 3.34.1
+=======================
 [753] A Password Safe database can be opened by drag & drop to the
 Password Safe application window.
 [749]	Clicking or double-clicking on a previous password in an entry's
 Password History selects it.
 [746]	Password Policy "Special Symbol Set" simplified.
 
-Changes to Existing Features in 3.34
-====================================
+Changes to Existing Features in 3.34.1
+======================================
 [397] Clarified use of -g and PWS_PREFSDIR.
 
-Bugs fixed in 3.34
-==================
+Bugs fixed in 3.34.1
+====================
+[1205] 3.34.1 fixes a bug that crept into 3.34: The OK button was
+disabled when a database was selected on the opening window.
 [1200] Tweak Yubikey interface to make it easier to use when creating
 or opening a Password Safe database.
 [1195] Edit->Find now enabled when a group is selected.
