@@ -17,11 +17,12 @@ my ($WinMajor, $WinMinor, $WinBuild, $WinRevision);
 my ($LinMajor, $LinMinor, $LinBuild, $LinRevision);
 
 while (<>) {
-    if (/#define\sPRODUCTVER/) {
+    if (/#define\sSTRPRODUCTVER/) {
         s/,/ /g;
         @verline = split;
         shift @verline; shift @verline;
         ($WinMajor, $WinMinor, $WinBuild, $WinRevision) = @verline;
+        $WinMajor =~ s/\"//; $WinRevision =~ s/\\0\"//;
     } elsif (/#define\sLINUXPRODVER/) {
         s/,/ /g;
         @verline = split;
@@ -35,8 +36,6 @@ print " <Product name=\"PasswordSafe\" variant=\"PC\"";
 print " major=\"$WinMajor\" minor=\"$WinMinor\" build=\"$WinBuild\" rev=\"$WinRevision\" />\n";
 print " <Product name=\"PasswordSafe\" variant=\"PPc\"";
 print " major=\"1\" minor=\"9\" build=\"2\" rev=\"100\" />\n";
-print " <Product name=\"PasswordSafe\" variant=\"U3\"";
-print " major=\"$WinMajor\" minor=\"$WinMinor\" build=\"$WinBuild\" rev=\"$WinRevision\" />\n";
 print " <Product name=\"PasswordSafe\" variant=\"Linux\"";
 print " major=\"$LinMajor\" minor=\"$LinMinor\" build=\"$LinBuild\" rev=\"$LinRevision\" />\n";
 print "</VersionInfo>\n";
