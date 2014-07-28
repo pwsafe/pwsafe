@@ -191,12 +191,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  if (m_SelectedDatabase.IsEmpty()) {
-    if (m_index == GCP_FIRST) {
-      SetOKButton(false);
-    }
-  }
-
   if (m_index == GCP_FIRST) {
     GetDlgItem(IDC_SELECTED_DATABASE)->ShowWindow(SW_HIDE);
 
@@ -475,7 +469,6 @@ void CPasskeyEntry::UpdateRO()
 void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
-  SetOKButton(false);
   UpdateRO();
 }
 
@@ -499,8 +492,7 @@ void CPasskeyEntry::OnComboSelChange()
       m_filespec = m_orig_filespec;
   }
 
-  SetOKButton(true);
-
+  m_pctlPasskey->SetFocus();
   UpdateRO();
 }
 
@@ -548,7 +540,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
     m_PKE_ReadOnly = fd.GetReadOnlyPref();
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
-    SetOKButton(true);
+    m_pctlPasskey->SetFocus();
     UpdateRO();
   } // rc == IDOK
 }
@@ -646,8 +638,3 @@ void CPasskeyEntry::OnYubikeyBtn()
   yubiRequestHMACSha1(m_passkey);
 }
 
-void CPasskeyEntry::SetOKButton(bool bSetFocus) {
-  m_pctlPasskey->EnableWindow(TRUE);
-  if (bSetFocus)
-    m_pctlPasskey->SetFocus();
-}
