@@ -82,6 +82,13 @@ BOOL CProperties::OnInitDialog()
     int ytop = btnRect.top;
     int xleft = (dlgRect.Width() / 2) - (btnRect.Width() / 2);
     GetDlgItem(IDOK)->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
+
+    // Now hide the opportunity to change the Name & Description
+    GetDlgItem(IDC_CHANGE_NAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CHANGE_NAME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_CHANGE_DESCRIPTION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
+
   }
 
   return TRUE;
