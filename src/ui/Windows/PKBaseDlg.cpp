@@ -27,8 +27,6 @@ using namespace std;
 
 const wchar_t CPKBaseDlg::PSSWDCHAR = L'*';
 
-extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
-
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
   : CPWDialog(id, pParent),
     m_passkey(L""), m_pctlPasskey(new CSecEditExtn),

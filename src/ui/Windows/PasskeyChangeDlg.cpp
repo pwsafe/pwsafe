@@ -35,8 +35,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern LRESULT CALLBACK MsgFilter(int code, WPARAM wParam, LPARAM lParam);
-
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
