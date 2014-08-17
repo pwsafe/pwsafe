@@ -105,7 +105,9 @@ typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 
-typedef errno_t error_t;
+#ifndef _ERRNO_T
+typedef int errno_t;
+#endif
 
 #ifdef UNICODE
 #ifndef _T
