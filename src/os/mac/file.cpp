@@ -161,7 +161,18 @@ bool pws_os::DeleteAFile(const stringT &filename)
 
 static string filterString;
 
+#if defined(__x86_64__) || defined(__x86_64) || defined(__amd64) || defined(__amd64__)
+#define build_is_64_bit
+#endif
+
+// I don't even know the platform/sdk where scandir() requires this new signature of filterfunc, so I'm trying to
+// deduce if we are building 64-bit with Xcode 5.  May be this is more of a SDK-dependent thing,
+// but I'm not sure right now.  Also note that this has nothing to do with wxWidgets
+#if defined(__PWS_MACINTOSH__) && defined(__clang__) && (__clang_major__ >= 5) && defined(build_is_64_bit)
+static int filterFunc(const struct dirent *de)
+#else
 static int filterFunc(struct dirent *de)
+#endif
 {
   return fnmatch(filterString.c_str(), de->d_name, 0) == 0;
 }
