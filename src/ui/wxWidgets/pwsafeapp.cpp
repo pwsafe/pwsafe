@@ -50,6 +50,8 @@ using namespace std;
 #include "../../core/PWSLog.h"
 #include "./pwsmenushortcuts.h"
 
+#include <wx/spinctrl.h>
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
