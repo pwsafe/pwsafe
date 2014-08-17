@@ -34,7 +34,7 @@
  * in case of failure.  Returns PWScore::SUCCESS on success
  */
 
-int ReadCore(PWSAuxCore& othercore, const wxString& file, const StringX& combination,
+int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
              bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
         bool setupCopy /*= false*/)
 {

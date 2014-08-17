@@ -520,8 +520,11 @@ stringT PWScore::Merge(PWScore *pothercore,
           oth_pwp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
         else
           otherItem.GetPWPolicy(oth_pwp);
-        if (cur_pwp != oth_pwp)
+        if (cur_pwp != oth_pwp) {
           diff_flags |= MRG_POLICY;
+          LoadAString(str_temp, IDSC_FLDNMPWPOLICY);
+          str_diffs += str_temp + _T(", ");
+        }
       }
 
       otherItem.GetXTime(oxt);

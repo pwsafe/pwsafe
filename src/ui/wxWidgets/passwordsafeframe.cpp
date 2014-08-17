@@ -50,9 +50,8 @@
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
 #include "../../os/sleep.h"
-#include "../../core/XML/XMLDefs.h"
 #include "./ViewReport.h"
-#include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "../../core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include <wx/fontdlg.h>
 #include "./PWSDragBar.h"
 #include "./MergeDlg.h"
@@ -61,6 +60,7 @@
 #include "./SystemTrayMenuId.h"
 #include "./CompareDlg.h"
 #include "../../core/core.h"
+#include "../../core/PWScore.h"
 #include "./SelectionCriteria.h"
 
 // main toolbar images
@@ -3035,12 +3035,26 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
   UNREFERENCED_PARAMETER(evt);
   MergeDlg dlg(this, &m_core);
   if (dlg.ShowModal() == wxID_OK) {
-    PWSAuxCore othercore;
-    if (ReadCore(othercore,
-                 dlg.GetOtherSafePath(),
-                 dlg.GetOtherSafeCombination(),
-                 true,
-                 this) == PWScore::SUCCESS) {
+    PWScore othercore; // NOT PWSAuxCore, as we handle db prefs explicitly
+    // Reading a new file changes the preferences as they are instance dependent
+    // not core dependent
+    PWSprefs *prefs =  PWSprefs::GetInstance();
+
+    const StringX sxSavePrefString(prefs->Store());
+    const bool bSaveIfDBPrefsChanged = prefs->IsDBprefsChanged();
+
+    // Save all the 'other core' preferences in the copy - to use for
+    // 'other' default Password Policy when needed in Compare, Merge & Sync
+    prefs->SetupCopyPrefs();
+
+    int rc = ReadCore(othercore, dlg.GetOtherSafePath(),
+                      dlg.GetOtherSafeCombination(), true, this);
+
+    // Reset database preferences - first to defaults then add saved changes!
+    prefs->Load(sxSavePrefString);
+    prefs->SetDBprefsChanged(bSaveIfDBPrefsChanged);
+
+    if (rc == PWScore::SUCCESS) {
         Merge(tostringx(dlg.GetOtherSafePath()), &othercore, dlg.GetSelectionCriteria());
     }
   }

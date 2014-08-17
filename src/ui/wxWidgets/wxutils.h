@@ -107,8 +107,8 @@ public:
   }
 };
 
-class PWSAuxCore;
-int ReadCore(PWSAuxCore& othercore, const wxString& file, const StringX& combination, 
+class PWScore;
+int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
                 bool showMsgbox = true, wxWindow* msgboxParent = NULL, bool setupCopy = false);
 
 inline const wxChar* ToStr(const wxString& s) {
