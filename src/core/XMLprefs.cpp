@@ -53,16 +53,8 @@ bool CXMLprefs::CreateXML(bool bLoad)
   
   if (!bLoad && m_pXMLDoc != NULL) {
     // Insert
-    // <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
     // <Pwsafe_Settings>
     // </ Pwsafe_Settings>
-    pugi::xml_node decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
-    if (decl == NULL)
-      return false;
-
-    decl.append_attribute(_T("version")) = _T("1.0");
-    decl.append_attribute(_T("encoding")) = _T("utf-8");
-    decl.append_attribute(_T("standalone")) = _T("yes");
     
     pugi::xml_node node = m_pXMLDoc->append_child(_T("Pwsafe_Settings"));
     return node != NULL;
