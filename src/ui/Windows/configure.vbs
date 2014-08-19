@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
-Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir
+Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir, strWDKDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -53,6 +53,7 @@ strGitDir = "C:\Program Files (x86)\Git"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-10.0"
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-10.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
+strWDKDir = "C:\WinDDK\7600.16385.1"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
@@ -86,6 +87,10 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/WXDIR") 
   If Not Node Is Nothing Then
     strWXDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/WDKDIR")
+  If Not Node Is Nothing Then
+    strWDKDir = Node.text
   End If
 
   Set Node = Nothing
@@ -159,6 +164,11 @@ If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
 
 objOutputFile.WriteLine("    <WXDIR>" & strFileLocation & "</WXDIR>")
 
+strFileLocation = InputBox(str1 & "Windows Driver Kit" & str2 & strWDKDir & str3, "WDK Location", strWDKDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strWDKDir
+
+objOutputFile.WriteLine("    <WDKDIR>" & strFileLocation & "</WDKDIR>")
+
 objOutputFile.WriteLine("    <PWSBin>..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
 objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
 objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
@@ -205,6 +215,10 @@ objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""WXDIR"">")
 objOutputFile.WriteLine("      <Value>$(WXDIR)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""WDKDIR"">")
+objOutputFile.WriteLine("      <Value>$(WDKDIR)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("  </ItemGroup>")
