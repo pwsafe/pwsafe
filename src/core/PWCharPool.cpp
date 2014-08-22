@@ -67,8 +67,10 @@ CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
   : m_pwlen(policy.length),
     m_numlowercase(policy.lowerminlength), m_numuppercase(policy.upperminlength),
     m_numdigits(policy.digitminlength), m_numsymbols(policy.symbolminlength),
-    m_uselowercase(m_numlowercase > 0), m_useuppercase(m_numuppercase > 0),
-    m_usedigits(m_numdigits > 0), m_usesymbols(m_numsymbols > 0),
+    m_uselowercase(policy.flags & PWPolicy::UseLowercase ? true : false),
+    m_useuppercase(policy.flags & PWPolicy::UseUppercase ? true : false),
+    m_usedigits(policy.flags & PWPolicy::UseDigits ? true : false),
+    m_usesymbols(policy.flags & PWPolicy::UseSymbols ? true : false),
     m_usehexdigits(policy.flags & PWPolicy::UseHexDigits ? true : false),
     m_pronounceable(policy.flags & PWPolicy::MakePronounceable ? true : false),
     m_bDefaultSymbols(false)

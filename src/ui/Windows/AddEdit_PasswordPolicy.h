@@ -80,6 +80,7 @@ protected:
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnOwnSymbolsChanged();
   afx_msg void OnNamesComboChanged();
+  afx_msg void OnSymbolReset();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -94,7 +95,7 @@ private:
   void do_hex(const bool bHex);                 // bHex == true enable hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
   enum UseX {USELOWER = 0, USEUPPER = 1, USEDIGITS = 2, USESYM = 3};
-  void do_useX(UseX x, size_t &minlength); // used by OnUse{LowerCase,UpperCase,Digits,Symbols}
+  void do_useX(UseX x); // used by OnUse{LowerCase,UpperCase,Digits,Symbols}
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};
   static const UINT nonHex[N_NOHEX];                  // IDs of said checkboxes
@@ -108,8 +109,7 @@ private:
   bool m_bInitdone;
 
   int m_policy_radibtn;  // Can't use M_policy() anymore
-public:
-    afx_msg void OnSymbolReset();
+
 };
 //-----------------------------------------------------------------------------
 // Local variables:

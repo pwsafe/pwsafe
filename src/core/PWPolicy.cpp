@@ -132,33 +132,9 @@ StringX PWPolicy::MakeRandomPassword() const
   PWPolicy pol(*this); // small price to keep constness
   if (flags == 0)
     pol = PWSprefs::GetInstance()->GetDefaultPolicy();
-  else
-    pol.Normalize(); // just in case
 
   CPasswordCharPool pwchars(pol);
   return pwchars.MakePassword();
-}
-
-inline void NormalizeField(int bitset, int &value)
-{
-  if (bitset != 0) {
-    if (value == 0)
-      value = 1;
-  } else
-    value = 0;
-}
-
-void PWPolicy::Normalize()
-{
-  /**
-   * Protect agains inconsistent policy:
-   * Make sure that if a Use* bit is set, the corresponding
-   * min length is > 0.
-   */
-  NormalizeField((flags & PWPolicy::UseLowercase), lowerminlength);
-  NormalizeField((flags & PWPolicy::UseUppercase), upperminlength);
-  NormalizeField((flags & PWPolicy::UseDigits), digitminlength);
-  NormalizeField((flags & PWPolicy::UseSymbols), symbolminlength);
 }
 
 static stringT PolValueString(int flag, bool override, int count)

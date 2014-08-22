@@ -96,8 +96,8 @@ protected:
   afx_msg void OnNamesComboChanged();
   afx_msg void OnUseNamedPolicy();
   afx_msg void OnENOwnSymbols();
-  //}}AFX_MSG
   afx_msg void OnSymbolReset();
+  //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
@@ -112,7 +112,7 @@ private:
   void do_reset_symbols(bool restore_defaults);
   
   enum UseX {USELOWER = 0, USEUPPER = 1, USEDIGITS = 2, USESYM = 3};
-  void do_useX(UseX x, int &minlength); // used by OnUse{LowerCase,UpperCase,Digits,Symbols}
+  void do_useX(UseX x); // used by OnUse{LowerCase,UpperCase,Digits,Symbols}
 
   // This must correspond to the order in the following UINT arrays
   enum {SAVE_LOWERCASE = 0, SAVE_UPPERCASE, SAVE_DIGITS, SAVE_SYMBOLS, SAVE_EASYVISION, SAVE_PRONOUNCEABLE};

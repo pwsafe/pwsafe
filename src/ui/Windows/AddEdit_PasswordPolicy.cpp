@@ -329,10 +329,6 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
     return false;
   }
 
-  if ((m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable))
-    m_pwdigitminlength = m_pwlowerminlength =
-      m_pwsymbolminlength = m_pwupperminlength = 1;
-
   return true;
 }
 
@@ -499,7 +495,7 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
   OnSymbolReset();
 }
 
-void CAddEdit_PasswordPolicy::do_useX(UseX x, size_t &minlength)
+void CAddEdit_PasswordPolicy::do_useX(UseX x)
 {
   const struct { int cb; int edit; int spin; int left; int right;} controls[] = {
     {IDC_USELOWERCASE, IDC_MINLOWERLENGTH,  IDC_SPINLOWERCASE, IDC_STATIC_LC1, IDC_STATIC_LC2},
@@ -507,11 +503,14 @@ void CAddEdit_PasswordPolicy::do_useX(UseX x, size_t &minlength)
     {IDC_USEDIGITS,    IDC_MINDIGITLENGTH,  IDC_SPINDIGITS,    IDC_STATIC_DG1, IDC_STATIC_DG2},
     {IDC_USESYMBOLS,   IDC_MINSYMBOLLENGTH, IDC_SPINSYMBOLS,   IDC_STATIC_SY1, IDC_STATIC_SY2},
   };
+
   UpdateData(TRUE);
+
   m_ae_psh->SetChanged(true);
 
   BOOL bEnable = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED &&
                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
+
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
 
   GetDlgItem(controls[x].edit)->EnableWindow(bEnable);
@@ -526,28 +525,28 @@ void CAddEdit_PasswordPolicy::do_useX(UseX x, size_t &minlength)
     GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
   }
-  minlength = IsDlgButtonChecked(controls[x].cb);  // Based on FALSE=0 & TRUE=1
+
   UpdateData(FALSE);
 }
 
 void CAddEdit_PasswordPolicy::OnUseLowerCase()
 {
-  do_useX(USELOWER, m_pwlowerminlength);
+  do_useX(USELOWER);
 }
 
 void CAddEdit_PasswordPolicy::OnUseUpperCase()
 {
-  do_useX(USEUPPER, m_pwupperminlength);
+  do_useX(USEUPPER);
 }
 
 void CAddEdit_PasswordPolicy::OnUseDigits()
 {
-  do_useX(USEDIGITS, m_pwdigitminlength);
+  do_useX(USEDIGITS);
 }
 
 void CAddEdit_PasswordPolicy::OnUseSymbols()
 {
-  do_useX(USESYM, m_pwsymbolminlength);
+  do_useX(USESYM);
 }
 
 void CAddEdit_PasswordPolicy::OnUseHexdigits()
@@ -807,15 +806,6 @@ void CAddEdit_PasswordPolicy::SetVariablesFromPolicy()
   m_pwlowerminlength = M_pwp().lowerminlength;
   m_pwsymbolminlength = M_pwp().symbolminlength;
   m_pwupperminlength = M_pwp().upperminlength;
-
-  if (m_pwuselowercase == TRUE && m_pwlowerminlength == 0)
-    m_pwlowerminlength = 1;
-  if (m_pwuseuppercase == TRUE && m_pwupperminlength == 0)
-    m_pwupperminlength = 1;
-  if (m_pwusedigits == TRUE && m_pwdigitminlength == 0)
-    m_pwdigitminlength = 1;
-  if (m_pwusesymbols == TRUE && m_pwsymbolminlength == 0)
-    m_pwsymbolminlength = 1;
 }
 
 void CAddEdit_PasswordPolicy::DisablePolicy()

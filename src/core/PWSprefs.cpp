@@ -444,36 +444,32 @@ PWPolicy PWSprefs::GetDefaultPolicy(const bool bUseCopy) const
   pwp.symbolminlength = GetPref(PWSymbolMinLength, bUseCopy);
   pwp.upperminlength = GetPref(PWUppercaseMinLength, bUseCopy);
   pwp.symbols = GetPref(DefaultSymbols, bUseCopy);
-  pwp.Normalize();
   return pwp;
 }
 
 void PWSprefs::SetDefaultPolicy(const PWPolicy &pol, const bool bUseCopy)
 {
-  PWPolicy nc_pol(pol); // non-const copy that we can Normalize;
-  nc_pol.Normalize();
-
   SetPref(PWUseLowercase,
-          (nc_pol.flags & PWPolicy::UseLowercase) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseLowercase) != 0, bUseCopy);
   SetPref(PWUseUppercase,
-          (nc_pol.flags & PWPolicy::UseUppercase) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseUppercase) != 0, bUseCopy);
   SetPref(PWUseDigits,
-          (nc_pol.flags & PWPolicy::UseDigits) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseDigits) != 0, bUseCopy);
   SetPref(PWUseSymbols,
-          (nc_pol.flags & PWPolicy::UseSymbols) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseSymbols) != 0, bUseCopy);
   SetPref(PWUseHexDigits,
-          (nc_pol.flags & PWPolicy::UseHexDigits) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseHexDigits) != 0, bUseCopy);
   SetPref(PWUseEasyVision,
-          (nc_pol.flags & PWPolicy::UseEasyVision) != 0, bUseCopy);
+          (pol.flags & PWPolicy::UseEasyVision) != 0, bUseCopy);
   SetPref(PWMakePronounceable,
-          (nc_pol.flags & PWPolicy::MakePronounceable) != 0, bUseCopy);
+          (pol.flags & PWPolicy::MakePronounceable) != 0, bUseCopy);
 
-  SetPref(PWDefaultLength, nc_pol.length, bUseCopy);
-  SetPref(PWDigitMinLength, nc_pol.digitminlength, bUseCopy);
-  SetPref(PWLowercaseMinLength, nc_pol.lowerminlength, bUseCopy);
-  SetPref(PWSymbolMinLength, nc_pol.symbolminlength, bUseCopy);
-  SetPref(PWUppercaseMinLength, nc_pol.upperminlength, bUseCopy);
-  SetPref(DefaultSymbols, nc_pol.symbols, bUseCopy);
+  SetPref(PWDefaultLength, pol.length, bUseCopy);
+  SetPref(PWDigitMinLength, pol.digitminlength, bUseCopy);
+  SetPref(PWLowercaseMinLength, pol.lowerminlength, bUseCopy);
+  SetPref(PWSymbolMinLength, pol.symbolminlength, bUseCopy);
+  SetPref(PWUppercaseMinLength, pol.upperminlength, bUseCopy);
+  SetPref(DefaultSymbols, pol.symbols, bUseCopy);
 }
 
 void PWSprefs::SetupCopyPrefs()

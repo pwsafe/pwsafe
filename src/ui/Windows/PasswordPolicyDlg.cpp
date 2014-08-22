@@ -350,15 +350,6 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   m_save[SAVE_EASYVISION] = m_PWEasyVision;
   m_save[SAVE_PRONOUNCEABLE] = m_PWMakePronounceable;
 
-  if (m_PWUseLowercase == TRUE && m_PWLowerMinLength == 0)
-    m_PWLowerMinLength = 1;
-  if (m_PWUseUppercase == TRUE && m_PWUpperMinLength == 0)
-    m_PWUpperMinLength = 1;
-  if (m_PWUseDigits == TRUE && m_PWDigitMinLength == 0)
-    m_PWDigitMinLength = 1;
-  if (m_PWUseSymbols == TRUE && m_PWSymbolMinLength == 0)
-    m_PWSymbolMinLength = 1;
-
   m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
   m_savelen[SAVE_UPPERCASE] = m_PWUpperMinLength;
   m_savelen[SAVE_DIGITS] = m_PWDigitMinLength;
@@ -670,7 +661,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
 }
 
 // Following from AddEdit_PasswordPolicy - TBD - move to common mixin class
-void CPasswordPolicyDlg::do_useX(UseX x, int &minlength)
+void CPasswordPolicyDlg::do_useX(UseX x)
 {
   const struct { int cb; int edit; int spin; int left; int right;} controls[] = {
     {IDC_USELOWERCASE, IDC_MINLOWERLENGTH,  IDC_SPINLOWERCASE, IDC_STATIC_LC1, IDC_STATIC_LC2},
@@ -678,8 +669,10 @@ void CPasswordPolicyDlg::do_useX(UseX x, int &minlength)
     {IDC_USEDIGITS,    IDC_MINDIGITLENGTH,  IDC_SPINDIGITS,    IDC_STATIC_DG1, IDC_STATIC_DG2},
     {IDC_USESYMBOLS,   IDC_MINSYMBOLLENGTH, IDC_SPINSYMBOLS,   IDC_STATIC_SY1, IDC_STATIC_SY2},
   };
+
   UnselectNamedPolicy();
   UpdateData(TRUE);
+
   BOOL bChecked = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED) ? TRUE : FALSE;
 
   GetDlgItem(controls[x].edit)->EnableWindow(bChecked);
@@ -690,28 +683,28 @@ void CPasswordPolicyDlg::do_useX(UseX x, int &minlength)
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bChecked);
     GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bChecked);
   }
-  minlength = bChecked;  // Based on FALSE=0 & TRUE=1
+
   UpdateData(FALSE);
 }
 
 void CPasswordPolicyDlg::OnUseLowerCase()
 {
-  do_useX(USELOWER, m_PWLowerMinLength);
+  do_useX(USELOWER);
 }
 
 void CPasswordPolicyDlg::OnUseUpperCase()
 {
-  do_useX(USEUPPER, m_PWUpperMinLength);
+  do_useX(USEUPPER);
 }
 
 void CPasswordPolicyDlg::OnUseDigits()
 {
-  do_useX(USEDIGITS, m_PWDigitMinLength);
+  do_useX(USEDIGITS);
 }
 
 void CPasswordPolicyDlg::OnUseSymbols()
 {
-  do_useX(USESYM, m_PWSymbolMinLength);
+  do_useX(USESYM);
   UpdateData(FALSE);
 }
 
@@ -971,6 +964,15 @@ void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
     for (int i = 0; i < N_HEX_LENGTHS; i++) {
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
     }
+
+    for (int i = 0; i < N_HEX_LENGTHS; i++) {
+      GetDlgItem(nonHex[i])->EnableWindow(FALSE);
+    }
+
+    GetDlgItem(IDC_EASYVISION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PRONOUNCEABLE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(FALSE);
 
     // Disable Symbols
     m_SymbolsEdit.EnableWindow(FALSE);
