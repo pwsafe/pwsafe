@@ -13,6 +13,12 @@ Bugs fixed in 3.34.2
 [1210] CurrentFile preference is updated sooner rather than later, so
 last database is set as default for next invocation.
 
+Changes to Existing Features in 3.34.2
+======================================
+[760] Password Policy: You can now choose a character set without
+requiring at least one character from that set (i.e., minimum required
+can be zero).
+
 New Features for 3.34.1
 =======================
 [753] A Password Safe database can be opened by drag & drop to the
