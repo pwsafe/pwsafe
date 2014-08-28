@@ -6,10 +6,13 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#include "test.h"
+#ifdef WIN32
+#include "../ui/Windows/stdafx.h"
+#endif
+
 #include "core/ItemField.h"
 #include "core/BlowFish.h"
-
+#include "gtest/gtest.h"
 
 class NullFish : public Fish
 {
@@ -25,7 +28,7 @@ virtual unsigned int GetBlockSize() const {return 8;}
   {memcpy(pt, ct, GetBlockSize());}
 };
 
-class ItemFieldTest : public Test
+class ItemFieldTest : public ::testing::Test
 {
 
 public:
@@ -53,29 +56,23 @@ public:
 #endif 
   }
   ~ItemFieldTest() {delete m_bf;}
-
-  void run()
-  {
-    // The tests to run:
-    testMe();
-  }
-
-  void testMe()
-  {
-    unsigned char v1[16] = {0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7,
-                            0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf};
-    unsigned char v2[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,};
-    size_t lenV2 = sizeof(v2);
-    
-    CItemField i1(1);
-    _test(i1.IsEmpty());
-    _test(i1.GetType() == 1);
-    i1.Set(v1, sizeof(v1), m_bf);
-    i1.Get(v2, lenV2, m_bf);
-    _test(lenV2 == sizeof(v1));
-    _test(memcmp(v1, v2, sizeof(v1)) == 0);
-  }
- private:
+ protected:
   Fish *m_bf;
 };
+
+TEST_F(ItemFieldTest, testMe)
+{
+  unsigned char v1[16] = {0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7,
+                          0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf};
+  unsigned char v2[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,};
+  size_t lenV2 = sizeof(v2);
+    
+  CItemField i1(1);
+  EXPECT_TRUE(i1.IsEmpty());
+  EXPECT_EQ(1, i1.GetType());
+  i1.Set(v1, sizeof(v1), m_bf);
+  i1.Get(v2, lenV2, m_bf);
+  EXPECT_EQ(sizeof(v1), lenV2);
+  EXPECT_TRUE(memcmp(v1, v2, sizeof(v1)) == 0);
+}
