@@ -7,8 +7,8 @@
 '
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
-' This script is for setting up Visual Studio 2010 (MSVS10). For Visual
-' Studio 2005 (MSVS8), please use configure8.vbs
+' This script is for setting up Visual Studio 2010 (MSVS10) and 2012
+' (MSVS11). For Visual Studio 2005 (MSVS8), please use configure8.vbs
 
 Dim objFileSystem, objOutputFile
 Dim strOutputFile, strPre2010
@@ -18,6 +18,7 @@ Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
 Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir, strWDKDir
+Dim strGtestIncDir, GtestLibDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -54,6 +55,8 @@ strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-v
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-10.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
 strWDKDir = "C:\WinDDK\7600.16385.1"
+strGtestIncDir = "C:\...\include"
+strGtestLibDir = "C:\...\build"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
@@ -91,6 +94,14 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/WDKDIR")
   If Not Node Is Nothing Then
     strWDKDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/GtestIncDir")
+  If Not Node Is Nothing Then
+    strGtestIncDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/GtestLibDir")
+  If Not Node Is Nothing Then
+    strGtestLibDir = Node.text
   End If
 
   Set Node = Nothing
@@ -169,6 +180,16 @@ If (Len(strFileLocation) = 0) Then strFileLocation = strWDKDir
 
 objOutputFile.WriteLine("    <WDKDIR>" & strFileLocation & "</WDKDIR>")
 
+strFileLocation = InputBox(str1 & "Google Test (gtest) include directory" & str2 & strGtestIncDir & str3, "Gtest Inc Location", strGtestIncDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strGtestIncDir
+
+objOutputFile.WriteLine("    <GtestIncDir>" & strFileLocation & "</GtestIncDir>")
+
+strFileLocation = InputBox(str1 & "Google Test (gtest) library directory" & str2 & strGtestLibDir & str3, "Gtest Lib Location", strGtestLibDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strGtestLibDir
+
+objOutputFile.WriteLine("    <GtestLibDir>" & strFileLocation & "</GtestLibDir>")
+
 objOutputFile.WriteLine("    <PWSBin>..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
 objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
 objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
@@ -219,6 +240,14 @@ objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""WDKDIR"">")
 objOutputFile.WriteLine("      <Value>$(WDKDIR)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""GtestIncDir"">")
+objOutputFile.WriteLine("      <Value>$(GtestIncDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""GtestLibDir"">")
+objOutputFile.WriteLine("      <Value>$(GtestLibDir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("  </ItemGroup>")
