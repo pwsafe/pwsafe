@@ -6,9 +6,14 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// BlowFishTest.h: Unit test for BlowFish implementation
-#include "test.h"
+// BlowFishTest.cpp: Unit test for BlowFish implementation
+
+#ifdef WIN32
+#include "../ui/Windows/stdafx.h"
+#endif
+
 #include "core/BlowFish.h"
+#include "gtest/gtest.h"
 
 /*
  * Test vectors from http://www.schneier.com/code/vectors.txt
@@ -24,7 +29,7 @@
 #define NUM_VARIABLE_KEY_TESTS 34
 
 // key bytes
-unsigned char variable_key[NUM_VARIABLE_KEY_TESTS][8] = {
+static unsigned char variable_key[NUM_VARIABLE_KEY_TESTS][8] = {
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
   {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF},
   {0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
@@ -61,7 +66,7 @@ unsigned char variable_key[NUM_VARIABLE_KEY_TESTS][8] = {
   {0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54, 0x32, 0x10},
 };
 // clear bytes
-unsigned char plaintext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
+static unsigned char plaintext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
 //  0     1     2     3     4     5     6     7    
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, },
   {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, },
@@ -99,7 +104,7 @@ unsigned char plaintext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
   {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, },
 };
 // cipher bytes
-unsigned char ciphertext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
+static unsigned char ciphertext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
 //  0     1     2     3     4     5     6     7    
   {0x45, 0x97, 0xF9, 0x4E, 0x78, 0xDD, 0x98, 0x61, },
   {0xD5, 0x6F, 0x86, 0x51, 0x8A, 0xCB, 0x5E, 0xB8, },
@@ -138,7 +143,7 @@ unsigned char ciphertext_vk[NUM_VARIABLE_KEY_TESTS][8] = {
 };
 #if 0
 // set_key test data
-unsigned char data[8]= {0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54, 0x32, 0x10};
+static unsigned char data[8]= {0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54, 0x32, 0x10};
 
 c=F9AD597C49DB005E k[ 1]=F0
 c=E91D21C1D961A6D6 k[ 2]=F0E1
@@ -166,47 +171,27 @@ c=80C7D7D45A5479AD k[23]=F0E1D2C3B4A5968778695A4B3C2D1E0F00112233445566
 c=05044B62FA52D080 k[24]=F0E1D2C3B4A5968778695A4B3C2D1E0F0011223344556677
 #endif
 
-class CBlowFishTest : public Test
-{
-public:
-  CBlowFishTest()
-  {
-  }
+  TEST(BlowFishTest, Null1Ktest) {
+  unsigned char key[] = {0xF0, 0xE1, 0xD2, 0xC3, 0xB4, 0xA5, 0x96, 0x87,
+                         0x78, 0x69, 0x5A, 0x4B, 0x3C, 0x2D, 0x1E, 0x0F,
+                         0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77};
+  unsigned char tmp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  unsigned char zero[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  int i;
+  BlowFish bf(key, sizeof(key));
+  for (i = 0; i < 1000; i++) bf.Encrypt(tmp, tmp);
+  for (i = 0; i < 1000; i++) bf.Decrypt(tmp, tmp);
+  EXPECT_TRUE(memcmp(tmp, zero, 8) == 0);
+}
 
-  void run()
-  {
-    null1ktest();
-    vktests();
-    sktests();
-  }
-
-  void null1ktest() {
-    unsigned char key[] = {0xF0, 0xE1, 0xD2, 0xC3, 0xB4, 0xA5, 0x96, 0x87,
-                           0x78, 0x69, 0x5A, 0x4B, 0x3C, 0x2D, 0x1E, 0x0F,
-                           0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77};
-    unsigned char tmp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    unsigned char zero[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    int i;
-    BlowFish bf(key, sizeof(key));
-    for (i = 0; i < 1000; i++) bf.Encrypt(tmp, tmp);
-    for (i = 0; i < 1000; i++) bf.Decrypt(tmp, tmp);
-    _test(memcmp(tmp, zero, 8) == 0);
-  }
-
-  void vktests(void)
-  {
+  TEST(BlowFishTest, VKtests) {
     unsigned char tmp[8];
     for (int i = 0; i < NUM_VARIABLE_KEY_TESTS; i++) {
       BlowFish bf(variable_key[i], 8);
       bf.Encrypt(plaintext_vk[i], tmp);
-      _test(memcmp(tmp, ciphertext_vk[i], 8) == 0);
+      EXPECT_TRUE(memcmp(tmp, ciphertext_vk[i], 8) == 0) << "Test vector " << i;
       bf.Decrypt(ciphertext_vk[i], tmp);
-      _test(memcmp(tmp, plaintext_vk[i], 8) == 0);
+      EXPECT_TRUE(memcmp(tmp, plaintext_vk[i], 8) == 0) << "Test vector " << i;
     }
   }
-
-  void sktests(void)
-  {
-  }
-};
 

@@ -128,6 +128,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -243,6 +244,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlowFishTest.cpp" />
     <ClCompile Include="coretest.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
@@ -253,15 +255,11 @@
       <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessSuppressLineNumbers>
       <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessSuppressLineNumbers>
     </ClCompile>
-    <ClCompile Include="test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BlowFishTest.h" />
-    <ClInclude Include="HMAC_SHA256Test.h" />
-    <ClInclude Include="SHA256Test.h" />
-    <ClInclude Include="StringXTest.h" />
-    <ClInclude Include="test.h" />
-    <ClInclude Include="TwoFishTest.h" />
+    <ClCompile Include="HMAC_SHA256Test.cpp" />
+    <ClCompile Include="ItemFieldTest.cpp" />
+    <ClCompile Include="SHA256Test.cpp" />
+    <ClCompile Include="StringXTest.cpp" />
+    <ClCompile Include="TwoFishTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\core.vcxproj">
