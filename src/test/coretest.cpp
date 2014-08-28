@@ -12,6 +12,8 @@
 #include <cstring>
 #endif
 
+#include "gtest/gtest.h"
+
 using namespace std;
 
 #define TEST_BLOWFISH
@@ -51,8 +53,9 @@ using namespace std;
 #include <iostream>
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
+  testing::InitGoogleTest(&argc, argv);
 #ifdef TEST_BLOWFISH
   CBlowFishTest t0;
   t0.setStream(&cout);
@@ -108,4 +111,5 @@ int main()
   t8.report();
 #endif
   return 0;
+  return RUN_ALL_TESTS();
 }
