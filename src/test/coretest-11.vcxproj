@@ -244,6 +244,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AESTest.cpp" />
     <ClCompile Include="BlowFishTest.cpp" />
     <ClCompile Include="coretest.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
@@ -257,6 +258,7 @@
     </ClCompile>
     <ClCompile Include="HMAC_SHA256Test.cpp" />
     <ClCompile Include="ItemFieldTest.cpp" />
+    <ClCompile Include="KeyWrapTest.cpp" />
     <ClCompile Include="SHA256Test.cpp" />
     <ClCompile Include="StringXTest.cpp" />
     <ClCompile Include="TwoFishTest.cpp" />

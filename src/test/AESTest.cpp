@@ -6,30 +6,21 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// AESTest.h: Unit test for AES implementation
-#include "test.h"
+// AESTest.cpp: Unit test for AES implementation
+
+#ifdef WIN32
+#include "../ui/Windows/stdafx.h"
+#endif
+
 #include "core/AES.h"
+#include "gtest/gtest.h"
 
-class CAESTest : public Test
+TEST(AESTest, aes_test)
 {
-
-public:
-  CAESTest()
-  {
-  }
-
-  void run()
-  {
-    _test(aes_test() == 0);
-  }
-
-
-  int aes_test(void)
-  {
-    static const struct { 
-      int keylen;
-      unsigned char key[32], pt[16], ct[16];
-    } tests[] = {
+  static const struct { 
+    int keylen;
+    unsigned char key[32], pt[16], ct[16];
+  } tests[] = {
     { 16,
       { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 
         0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f }, 
@@ -57,31 +48,29 @@ public:
       { 0x8e, 0xa2, 0xb7, 0xca, 0x51, 0x67, 0x45, 0xbf, 
         0xea, 0xfc, 0x49, 0x90, 0x4b, 0x49, 0x60, 0x89 }
     }
-    };
+  };
 
-    AES *tf;
+  AES *tf;
 
-    unsigned char tmp[2][16];
-    size_t i;
-    int y;
+  unsigned char tmp[2][16];
+  size_t i;
+  int y;
 
-    for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
-      tf = new AES(tests[i].key, tests[i].keylen);
+  for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
+    tf = new AES(tests[i].key, tests[i].keylen);
 
-      tf->Encrypt(tests[i].pt, tmp[0]);
-      tf->Decrypt(tmp[0], tmp[1]);
-      if (memcmp(tmp[0], tests[i].ct, 16) != 0 || memcmp(tmp[1], tests[i].pt, 16) != 0) {
-        delete tf;
-        return 1;
-      }
-      /* now see if we can encrypt all zero bytes 1000 times, decrypt and come back where we started */
-      for (y = 0; y < 16; y++) tmp[0][y] = 0;
-      for (y = 0; y < 1000; y++) tf->Encrypt(tmp[0], tmp[0]);
-      for (y = 0; y < 1000; y++) tf->Decrypt(tmp[0], tmp[0]);
-      for (y = 0; y < 16; y++) if (tmp[0][y] != 0) {delete tf; return 2;}
+    tf->Encrypt(tests[i].pt, tmp[0]);
+    tf->Decrypt(tmp[0], tmp[1]);
+    if (memcmp(tmp[0], tests[i].ct, 16) != 0 || memcmp(tmp[1], tests[i].pt, 16) != 0) {
       delete tf;
+      FAIL() << "Test vector " << i;
     }
-    return 0;
+    /* now see if we can encrypt all zero bytes 1000 times, decrypt and come back where we started */
+    for (y = 0; y < 16; y++) tmp[0][y] = 0;
+    for (y = 0; y < 1000; y++) tf->Encrypt(tmp[0], tmp[0]);
+    for (y = 0; y < 1000; y++) tf->Decrypt(tmp[0], tmp[0]);
+    for (y = 0; y < 16; y++) if (tmp[0][y] != 0) {delete tf; FAIL() << "Encrypt/Decrypt zeros failed";}
+    delete tf;
   }
-};
-
+  SUCCEED();
+}
