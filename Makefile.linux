@@ -14,7 +14,7 @@ RELEASE_SPECIAL := ALPHA
 
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
-	dist sha1sums upload upload-src git-tag I18N help
+	dist sha1sums upload upload-src git-tag I18N help test
 
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -116,6 +116,9 @@ I18N:
 
 help:
 	$(MAKE) -C help
+
+test:
+	$(MAKE) -C src/test test
 
 # Local variables:
 # mode: makefile

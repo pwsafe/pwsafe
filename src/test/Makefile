@@ -3,12 +3,17 @@
 
 BUILD			:= unicodedebug
 
-TESTSRC         := coretest.cpp test.cpp
+TESTSRC         := coretest.cpp $(wildcard *Test.cpp)
 
 OBJPATH         = ../../obj/$(BUILD)
 LIBPATH         = ../../lib/$(BUILD)
 BINPATH         = ./bin
 INCPATH         = ..
+
+# libgtest: Packages do not include a compiled library.
+# Debian's package installs source in /usr/src/gtest
+# I built the package there using cmake in /usr/src/gtest/build
+LIBGTESTPATH = /usr/src/gtest/build
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
@@ -16,10 +21,10 @@ TEST	 = $(BINPATH)/coretest
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH)
-LDFLAGS   = -L$(LIBPATH) -lcore -los
+LDFLAGS   = -L$(LIBPATH) -L$(LIBGTESTPATH) -lcore -los -lgtest -pthread
 
 # rules
-.PHONY: all clean test setup
+.PHONY: all clean test run setup
 
 $(OBJPATH)/%.o : %.c
 	$(CC) -g  $(CFLAGS)   -c $< -o $@
@@ -29,7 +34,8 @@ $(OBJPATH)/%.o : %.cpp
 
 all : setup test
 
-test : $(TEST)
+run test : $(TEST)
+	$(TEST)
 
 $(TEST): $(LIB) $(TESTOBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) -o $@
