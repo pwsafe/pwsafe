@@ -21,6 +21,7 @@ fakeroot
 g++
 gettext
 git
+libgtest-dev
 libuuid1
 libwxgtk3.0-dbg (See note 1 below)
 libwxgtk3.0-dev (See note 1 below)
