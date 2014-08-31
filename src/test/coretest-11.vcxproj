@@ -119,7 +119,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;gtest.lib;%(AdditionalDependencies);Rpcrt4.lib</AdditionalDependencies>
       <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(PWSLib);$(GtestLibDir)\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -196,7 +196,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;gtest.lib;%(AdditionalDependencies);Rpcrt4.lib</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -257,6 +257,7 @@
       <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessSuppressLineNumbers>
     </ClCompile>
     <ClCompile Include="HMAC_SHA256Test.cpp" />
+    <ClCompile Include="ItemDataTest.cpp" />
     <ClCompile Include="ItemFieldTest.cpp" />
     <ClCompile Include="KeyWrapTest.cpp" />
     <ClCompile Include="SHA256Test.cpp" />
