@@ -109,6 +109,62 @@ void CItemData::Clear()
   m_entrystatus = ES_CLEAN;
 }
 
+bool CItemData::CompareFields(const CItemField &fthis,
+                              const CItemData &that, const CItemField &fthat) const
+{
+  if (fthis.GetLength() != fthat.GetLength() ||
+      fthis.GetType() != fthat.GetType())
+    return false;
+  size_t flength = fthis.GetLength() + BlowFish::BLOCKSIZE;
+  unsigned char *dthis = new unsigned char[flength];
+  unsigned char *dthat = new unsigned char[flength];
+  GetField(fthis, dthis, flength);
+  that.GetField(fthat, dthat, flength);
+  bool retval = (memcmp(dthis, dthat, flength - BlowFish::BLOCKSIZE) == 0);
+  delete[] dthis; delete[] dthat;
+  return retval;
+}
+
+bool CItemData::operator==(const CItemData &that) const
+{
+  if (m_entrytype == that.m_entrytype &&
+      m_entrystatus == that.m_entrystatus &&
+      m_fields.size() == that.m_fields.size() &&
+      m_URFL.size() == that.m_URFL.size()) {
+    /**
+     * It would be nice to be able to compare the m_fields
+     * and m_URFL directly, but the fields would be
+     * encrypted with different salts, making byte-wise
+     * field comparisons infeasible.
+     */
+    FieldConstIter ithis, ithat;
+    for (ithis = m_fields.begin(), ithat = that.m_fields.begin();
+         ithis != m_fields.end();
+         ithis++, ithat++) {
+      if (ithis->first != ithat->first)
+        return false;
+      const CItemField &fthis = ithis->second;
+      const CItemField &fthat = ithat->second;
+      if (!CompareFields(fthis, that, fthat))
+        return false;
+    } // for m_fields
+  } else
+    return false;
+
+  // If we made it so far, now compare the unknown record fields
+  // (We already know their sizes are equal)
+  if (!m_URFL.empty()) {
+    UnknownFieldsConstIter ithis, ithat;
+    for (ithis = m_URFL.begin(), ithat = that.m_URFL.begin();
+         ithis != m_URFL.end();
+         ithis++, ithat++) {
+      if (!CompareFields(*ithis, that, *ithat))
+        return false;
+    } // for m_URFL
+  }
+  return true;
+}
+
 void CItemData::ParseSpecialPasswords()
 {
   // For V3 records, the Base UUID and dependent type (shortcut or alias)

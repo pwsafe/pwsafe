@@ -279,6 +279,9 @@ public:
   void Clear();
   void ClearField(FieldType ft) {m_fields.erase(ft);}
 
+  // For unit tests:
+  bool operator==(const CItemData &that) const;
+
   // Check record for correct password history
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
 
@@ -403,6 +406,11 @@ private:
   void SetField(FieldType ft, const StringX &value);
   void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(int type, const unsigned char *data, size_t len);
+
+  // Helper function for operator==
+  bool CItemData::CompareFields(const CItemField &fthis,
+                                const CItemData &that, const CItemField &fthat) const;
+
 
   bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
 
