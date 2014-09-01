@@ -20,11 +20,11 @@
 class ItemDataEnv : public ::testing::Environment
 {
 public:
-  ItemDataEnv() { ::testing::AddGlobalTestEnvironment(this); }
+  ItemDataEnv() { }
   virtual void SetUp() { CItemData::SetSessionKey(); }
 };
 
-static ItemDataEnv env;
+static ::testing::Environment *const env = ::testing::AddGlobalTestEnvironment(new ItemDataEnv);
 
 // And now the tests...
 
