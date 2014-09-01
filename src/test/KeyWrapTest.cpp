@@ -7,6 +7,7 @@
 */
 // KeyWrapTest.cpp: Unit test for KeyWrap implementation
 
+#include <cstring>
 #ifdef WIN32
 #include "../ui/Windows/stdafx.h"
 #endif

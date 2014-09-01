@@ -408,8 +408,8 @@ private:
   bool SetField(int type, const unsigned char *data, size_t len);
 
   // Helper function for operator==
-  bool CItemData::CompareFields(const CItemField &fthis,
-                                const CItemData &that, const CItemField &fthat) const;
+  bool CompareFields(const CItemField &fthis,
+                     const CItemData &that, const CItemField &fthat) const;
 
 
   bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}

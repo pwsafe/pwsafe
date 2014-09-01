@@ -20,8 +20,8 @@ TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
 TEST	 = $(BINPATH)/coretest
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
-CXXFLAGS += -DUNICODE -Wall -I$(INCPATH)
-LDFLAGS   = -L$(LIBPATH) -L$(LIBGTESTPATH) -lcore -los -lgtest -pthread
+CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -std=c++11
+LDFLAGS   = -L$(LIBPATH) -L$(LIBGTESTPATH) -lcore -luuid -los -lcore -lgtest -pthread
 
 # rules
 .PHONY: all clean test run setup
