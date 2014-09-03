@@ -31,7 +31,21 @@ static ::testing::Environment *const env = ::testing::AddGlobalTestEnvironment(n
 TEST(ItemDataTest, EmptyItems)
 {
   CItemData di1, di2;
+  const StringX t(L"title");
+  EXPECT_TRUE(di1 == di2);
+  di1.SetTitle(t);
+  EXPECT_FALSE(di1 == di2);  
+  di2.SetTitle(t);
   EXPECT_TRUE(di1 == di2);
 }
 
-
+#if 0
+TEST(ItemDataTest, CopyCtor)
+{
+  CItemData di1;
+  di1.SetTitle(StringX(_T("title")));
+  di1.SetPassword(_T("password!"));
+  CItemData di2(di1);
+  EXPECT_TRUE(di1 == di2);
+}
+#endif
