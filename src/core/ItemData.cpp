@@ -119,8 +119,9 @@ bool CItemData::CompareFields(const CItemField &fthis,
   unsigned char *dthis = new unsigned char[flength];
   unsigned char *dthat = new unsigned char[flength];
   GetField(fthis, dthis, flength);
+  flength = fthis.GetLength() + BlowFish::BLOCKSIZE; // GetField updates length, reset
   that.GetField(fthat, dthat, flength);
-  bool retval = (memcmp(dthis, dthat, flength - BlowFish::BLOCKSIZE) == 0);
+  bool retval = (memcmp(dthis, dthat, flength) == 0);
   delete[] dthis; delete[] dthat;
   return retval;
 }
