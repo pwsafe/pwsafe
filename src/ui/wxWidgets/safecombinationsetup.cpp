@@ -155,7 +155,7 @@ void CSafeCombinationSetup::CreateControls()
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe safe combination will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxGridSizer* itemGridSizer4 = new wxGridSizer(2, 2, 0, -50);
+  wxGridSizer* itemGridSizer4 = new wxGridSizer(2, 0, -50);
   itemBoxSizer2->Add(itemGridSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
