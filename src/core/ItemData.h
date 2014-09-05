@@ -185,21 +185,21 @@ public:
   StringX GetXTimeXML() const {return GetTime(XTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetPMTimeXML() const {return GetTime(PMTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetRMTimeXML() const {return GetTime(RMTIME, PWSUtil::TMC_XML);}  // V30
-  //  These populate the time structure instead of giving a character string
-  void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
-  void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
-  void GetXTime(time_t &t) const {GetTime(XTIME, t);}  // V30
-  void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
-  void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
+  //  These populate (and return) time_t instead of giving a character string
+  time_t GetATime(time_t &t) const {GetTime(ATIME, t); return t;}  // V30
+  time_t GetCTime(time_t &t) const {GetTime(CTIME, t); return t;}  // V30
+  time_t GetXTime(time_t &t) const {GetTime(XTIME, t); return t;}  // V30
+  time_t GetPMTime(time_t &t) const {GetTime(PMTIME, t); return t;}  // V30
+  time_t GetRMTime(time_t &t) const {GetTime(RMTIME, t); return t;}  // V30
   void GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const {return GetField(POLICY);}
   StringX GetRunCommand() const {return GetField(RUNCMD);}
-  void GetDCA(int16 &iDCA, const bool bShift = false) const;
+  int16 GetDCA(int16 &iDCA, const bool bShift = false) const;
   StringX GetDCA(const bool bShift = false) const;
-  void GetShiftDCA(int16 &iDCA) const { GetDCA(iDCA, true); }
+  int16 GetShiftDCA(int16 &iDCA) const {return GetDCA(iDCA, true);}
   StringX GetShiftDCA() const {return GetDCA(true);}
   StringX GetEmail() const {return GetField(EMAIL);}
   StringX GetProtected() const;
@@ -207,7 +207,7 @@ public:
   bool IsProtected() const;
   StringX GetSymbols() const    {return GetField(SYMBOLS);}
   StringX GetPolicyName() const {return GetField(POLICYNAME);}
-  void GetKBShortcut(int32 &iKBShortcut) const;
+  int32 GetKBShortcut(int32 &iKBShortcut) const;
   StringX GetKBShortcut() const;
 
   StringX GetFieldValue(FieldType ft) const;
