@@ -742,7 +742,7 @@ bool CItemData::IsProtected() const
   return ucprotected != 0;
 }
 
-void CItemData::GetDCA(int16 &iDCA, const bool bShift) const
+int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
   FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
@@ -758,6 +758,7 @@ void CItemData::GetDCA(int16 &iDCA, const bool bShift) const
     }
   } else // fiter == m_fields.end()
     iDCA = -1;
+  return iDCA;
 }
 
 StringX CItemData::GetDCA(const bool bShift) const
@@ -769,7 +770,7 @@ StringX CItemData::GetDCA(const bool bShift) const
   return os.str();
 }
 
-void CItemData::GetKBShortcut(int32 &iKBShortcut) const
+int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 {
   FieldConstIter fiter = m_fields.find(KBSHORTCUT);
   if (fiter != m_fields.end()) {
@@ -785,6 +786,7 @@ void CItemData::GetKBShortcut(int32 &iKBShortcut) const
     }
   } else // fiter == m_fields.end()
     iKBShortcut = 0;
+  return iKBShortcut;
 }
 
 StringX CItemData::GetKBShortcut() const

@@ -39,7 +39,6 @@ TEST(ItemDataTest, EmptyItems)
   EXPECT_TRUE(di1 == di2);
 }
 
-#if 0
 TEST(ItemDataTest, CopyCtor)
 {
   CItemData di1;
@@ -48,4 +47,67 @@ TEST(ItemDataTest, CopyCtor)
   CItemData di2(di1);
   EXPECT_TRUE(di1 == di2);
 }
-#endif
+
+TEST(ItemDataTest, Getters_n_Setters)
+{
+  CItemData di;
+  const StringX title(_T("a-title"));
+  const StringX password(_T("b-password!?"));
+  const StringX user(_T("C-UserR-ינור")); // non-English
+  const StringX notes(_T("N is for notes\nwhich can span lines\r\nin several ways."));
+  const StringX group(_T("Groups.are.nested.by.dots"));
+  const StringX url(_T("http://pwsafe.org/"));
+  const StringX at(_T("\\u\\t\\t\\n\\p\\t\\n"));
+  const StringX email(_T("joe@spammenot.com"));
+  const StringX polname(_T("liberal"));
+  const StringX symbols(_T("<-_+=@?>"));
+  const time_t aTime = 1409901292; // time test was first added, from http://www.unixtimestamp.com/
+  const time_t cTime = 1409901293;
+  const time_t xTime = 1409901294;
+  const time_t pmTime = 1409901295;
+  const time_t rmTime = 1409901296;
+  time_t tVal(0);
+  const int16 iDCA = 3;
+  const int16 iSDCA = 8;
+  const int32 kbs = 0x12345678;
+  int16 iVal16(-1);
+  int32 iVal32(-1);
+
+  di.SetTitle(title);
+  di.SetPassword(password);
+  di.SetUser(user);
+  di.SetNotes(notes);
+  di.SetGroup(group);
+  di.SetURL(url);
+  di.SetAutoType(at);
+  di.SetEmail(email);
+  di.SetPolicyName(polname);
+  di.SetSymbols(symbols);
+  di.SetATime(aTime);
+  di.SetCTime(cTime);
+  di.SetXTime(xTime);
+  di.SetPMTime(pmTime);
+  di.SetRMTime(rmTime);
+  di.SetDCA(iDCA);
+  di.SetShiftDCA(iSDCA);
+  di.SetKBShortcut(kbs);
+
+  EXPECT_EQ(title, di.GetTitle());
+  EXPECT_EQ(password, di.GetPassword());
+  EXPECT_EQ(user, di.GetUser());
+  EXPECT_EQ(notes, di.GetNotes());
+  EXPECT_EQ(group, di.GetGroup());
+  EXPECT_EQ(url, di.GetURL());
+  EXPECT_EQ(at, di.GetAutoType());
+  EXPECT_EQ(email, di.GetEmail());
+  EXPECT_EQ(polname, di.GetPolicyName());
+  EXPECT_EQ(symbols, di.GetSymbols());
+  EXPECT_EQ(aTime, di.GetATime(tVal));
+  EXPECT_EQ(cTime, di.GetCTime(tVal));
+  EXPECT_EQ(xTime, di.GetXTime(tVal));
+  EXPECT_EQ(pmTime, di.GetPMTime(tVal));
+  EXPECT_EQ(rmTime, di.GetRMTime(tVal));
+  EXPECT_EQ(iDCA, di.GetDCA(iVal16));
+  EXPECT_EQ(iSDCA, di.GetShiftDCA(iVal16));
+  EXPECT_EQ(kbs, di.GetKBShortcut(iVal32));
+}
