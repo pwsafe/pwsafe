@@ -533,7 +533,7 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         else
           tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_normal),
                               wxBitmap(PwsToolbarButtons[idx].bitmap_disabled), wxITEM_NORMAL,
-                              PwsToolbarButtons[idx].tooltip);
+                              wxGetTranslation(PwsToolbarButtons[idx].tooltip) );
       }
     }
     else {
@@ -542,7 +542,7 @@ void PasswordSafeFrame::RefreshToolbarButtons()
           tb->AddSeparator();
         else
           tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_classic),
-                          PwsToolbarButtons[idx].tooltip);
+                          wxGetTranslation(PwsToolbarButtons[idx].tooltip) );
       }
     }
   }
