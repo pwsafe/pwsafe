@@ -26,88 +26,115 @@ public:
 
 static ::testing::Environment *const env = ::testing::AddGlobalTestEnvironment(new ItemDataEnv);
 
+// A fixture for factoring common code across tests
+class ItemDataTest : public ::testing::Test
+{
+protected:
+  ItemDataTest(); // to init members
+  CItemData emptyItem, fullItem;
+  void SetUp();
+
+  // members used to populate and test fullItem:
+  const StringX title, password, user, notes, group;
+  const StringX url, at, email, polname, symbols, runcmd;
+  const time_t aTime, cTime, xTime, pmTime, rmTime;
+  const int16 iDCA, iSDCA;
+  const int32 kbs;
+  time_t tVal;
+  int16 iVal16;
+  int32 iVal32;
+};
+
+ItemDataTest::ItemDataTest()
+  : title(_T("a-title")), password(_T("b-password!?")),
+    user(_T("C-UserR-ינור")), // non-English
+    notes(_T("N is for notes\nwhich can span lines\r\nin several ways.")),
+    group(_T("Groups.are.nested.by.dots")), url(_T("http://pwsafe.org/")),
+    at(_T("\\u\\t\\t\\n\\p\\t\\n")), email(_T("joe@spammenot.com")),
+    polname(_T("liberal")), symbols(_T("<-_+=@?>")), runcmd(_T("Run 4 your life")),
+    aTime(1409901292), // time test was first added, from http://www.unixtimestamp.com/
+    cTime(1409901293), xTime(1409901294), pmTime(1409901295), rmTime(1409901296),
+    iDCA(3), iSDCA(8), kbs(0x12345678),
+    tVal(0), iVal16(-1), iVal32(-1)
+{}
+
+void ItemDataTest::SetUp()
+{
+  fullItem.SetTitle(title);
+  fullItem.SetPassword(password);
+  fullItem.SetUser(user);
+  fullItem.SetNotes(notes);
+  fullItem.SetGroup(group);
+  fullItem.SetURL(url);
+  fullItem.SetAutoType(at);
+  fullItem.SetEmail(email);
+  fullItem.SetPolicyName(polname);
+  fullItem.SetSymbols(symbols);
+  fullItem.SetRunCommand(runcmd);
+  fullItem.SetATime(aTime);
+  fullItem.SetCTime(cTime);
+  fullItem.SetXTime(xTime);
+  fullItem.SetPMTime(pmTime);
+  fullItem.SetRMTime(rmTime);
+  fullItem.SetDCA(iDCA);
+  fullItem.SetShiftDCA(iSDCA);
+  fullItem.SetKBShortcut(kbs);
+}
+
 // And now the tests...
 
-TEST(ItemDataTest, EmptyItems)
+TEST_F(ItemDataTest, EmptyItems)
 {
-  CItemData di1, di2;
+  CItemData di2;
   const StringX t(L"title");
-  EXPECT_TRUE(di1 == di2);
-  di1.SetTitle(t);
-  EXPECT_FALSE(di1 == di2);  
+  EXPECT_TRUE(emptyItem == di2);
+  emptyItem.SetTitle(t);
+  EXPECT_FALSE(emptyItem == di2);  
   di2.SetTitle(t);
-  EXPECT_TRUE(di1 == di2);
+  EXPECT_TRUE(emptyItem == di2);
 }
 
-TEST(ItemDataTest, CopyCtor)
+TEST_F(ItemDataTest, CopyCtor)
 {
-  CItemData di1;
-  di1.SetTitle(StringX(_T("title")));
-  di1.SetPassword(_T("password!"));
-  CItemData di2(di1);
-  EXPECT_TRUE(di1 == di2);
+  emptyItem.SetTitle(_T("title"));
+  emptyItem.SetPassword(_T("password!"));
+  CItemData di2(emptyItem);
+  EXPECT_TRUE(emptyItem == di2);
 }
 
-TEST(ItemDataTest, Getters_n_Setters)
+TEST_F(ItemDataTest, Getters_n_Setters)
 {
+  // Setters called in SetUp()
+  EXPECT_EQ(title, fullItem.GetTitle());
+  EXPECT_EQ(password, fullItem.GetPassword());
+  EXPECT_EQ(user, fullItem.GetUser());
+  EXPECT_EQ(notes, fullItem.GetNotes());
+  EXPECT_EQ(group, fullItem.GetGroup());
+  EXPECT_EQ(url, fullItem.GetURL());
+  EXPECT_EQ(at, fullItem.GetAutoType());
+  EXPECT_EQ(email, fullItem.GetEmail());
+  EXPECT_EQ(polname, fullItem.GetPolicyName());
+  EXPECT_EQ(symbols, fullItem.GetSymbols());
+  EXPECT_EQ(runcmd, fullItem.GetRunCommand());
+  EXPECT_EQ(aTime, fullItem.GetATime(tVal));
+  EXPECT_EQ(cTime, fullItem.GetCTime(tVal));
+  EXPECT_EQ(xTime, fullItem.GetXTime(tVal));
+  EXPECT_EQ(pmTime, fullItem.GetPMTime(tVal));
+  EXPECT_EQ(rmTime, fullItem.GetRMTime(tVal));
+  EXPECT_EQ(iDCA, fullItem.GetDCA(iVal16));
+  EXPECT_EQ(iSDCA, fullItem.GetShiftDCA(iVal16));
+  EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
+}
+
+TEST_F(ItemDataTest, PlainTextSerialization)
+{
+  std::vector<char> v;
+  emptyItem.SerializePlainText(v);
   CItemData di;
-  const StringX title(_T("a-title"));
-  const StringX password(_T("b-password!?"));
-  const StringX user(_T("C-UserR-ינור")); // non-English
-  const StringX notes(_T("N is for notes\nwhich can span lines\r\nin several ways."));
-  const StringX group(_T("Groups.are.nested.by.dots"));
-  const StringX url(_T("http://pwsafe.org/"));
-  const StringX at(_T("\\u\\t\\t\\n\\p\\t\\n"));
-  const StringX email(_T("joe@spammenot.com"));
-  const StringX polname(_T("liberal"));
-  const StringX symbols(_T("<-_+=@?>"));
-  const time_t aTime = 1409901292; // time test was first added, from http://www.unixtimestamp.com/
-  const time_t cTime = 1409901293;
-  const time_t xTime = 1409901294;
-  const time_t pmTime = 1409901295;
-  const time_t rmTime = 1409901296;
-  time_t tVal(0);
-  const int16 iDCA = 3;
-  const int16 iSDCA = 8;
-  const int32 kbs = 0x12345678;
-  int16 iVal16(-1);
-  int32 iVal32(-1);
+  EXPECT_TRUE(di.DeSerializePlainText(v));
+  EXPECT_EQ(emptyItem, di);
 
-  di.SetTitle(title);
-  di.SetPassword(password);
-  di.SetUser(user);
-  di.SetNotes(notes);
-  di.SetGroup(group);
-  di.SetURL(url);
-  di.SetAutoType(at);
-  di.SetEmail(email);
-  di.SetPolicyName(polname);
-  di.SetSymbols(symbols);
-  di.SetATime(aTime);
-  di.SetCTime(cTime);
-  di.SetXTime(xTime);
-  di.SetPMTime(pmTime);
-  di.SetRMTime(rmTime);
-  di.SetDCA(iDCA);
-  di.SetShiftDCA(iSDCA);
-  di.SetKBShortcut(kbs);
-
-  EXPECT_EQ(title, di.GetTitle());
-  EXPECT_EQ(password, di.GetPassword());
-  EXPECT_EQ(user, di.GetUser());
-  EXPECT_EQ(notes, di.GetNotes());
-  EXPECT_EQ(group, di.GetGroup());
-  EXPECT_EQ(url, di.GetURL());
-  EXPECT_EQ(at, di.GetAutoType());
-  EXPECT_EQ(email, di.GetEmail());
-  EXPECT_EQ(polname, di.GetPolicyName());
-  EXPECT_EQ(symbols, di.GetSymbols());
-  EXPECT_EQ(aTime, di.GetATime(tVal));
-  EXPECT_EQ(cTime, di.GetCTime(tVal));
-  EXPECT_EQ(xTime, di.GetXTime(tVal));
-  EXPECT_EQ(pmTime, di.GetPMTime(tVal));
-  EXPECT_EQ(rmTime, di.GetRMTime(tVal));
-  EXPECT_EQ(iDCA, di.GetDCA(iVal16));
-  EXPECT_EQ(iSDCA, di.GetShiftDCA(iVal16));
-  EXPECT_EQ(kbs, di.GetKBShortcut(iVal32));
+  fullItem.SerializePlainText(v);
+  EXPECT_TRUE(di.DeSerializePlainText(v));
+  EXPECT_EQ(fullItem, di);
 }
