@@ -2344,10 +2344,13 @@ void CItemData::SerializePlainText(vector<char> &v,
   unsigned char uc = 0;
 
   v.clear();
-  GetUUID(uuid_array);
-  v.push_back(UUID);
-  push_length(v, sizeof(uuid_array_t));
-  v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+  if (IsFieldSet(UUID)) {
+    GetUUID(uuid_array);
+    v.push_back(UUID);
+    push_length(v, sizeof(uuid_array_t));
+    v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+  }
+
   push_string(v, GROUP, GetGroup());
   push_string(v, TITLE, GetTitle());
   push_string(v, USER, GetUser());
@@ -2381,8 +2384,8 @@ void CItemData::SerializePlainText(vector<char> &v,
   push_string(v, PWHIST, GetPWHistory());
 
   push_string(v, RUNCMD, GetRunCommand());
-  GetDCA(i16);   push_int16(v, DCA, i16);
-  GetShiftDCA(i16);   push_int16(v, SHIFTDCA, i16);
+  GetDCA(i16); if (i16 != -1) push_int16(v, DCA, i16);
+  GetShiftDCA(i16); if (i16 != -1) push_int16(v, SHIFTDCA, i16);
   push_string(v, EMAIL, GetEmail());
   GetProtected(uc); push_uchar(v, PROTECTED, uc);
   push_string(v, SYMBOLS, GetSymbols());
