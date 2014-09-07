@@ -138,3 +138,22 @@ TEST_F(ItemDataTest, PlainTextSerialization)
   EXPECT_TRUE(di.DeSerializePlainText(v));
   EXPECT_EQ(fullItem, di);
 }
+
+TEST_F(ItemDataTest, UnknownFields)
+{
+  unsigned char u1t = 100, u2t = 200, u3t = 100;
+  unsigned char u1v[] = {10, 11, 33, 57};
+  unsigned char u2v[] = {92, 77, 76, 40, 65, 66};
+  unsigned char u3v[] = {1};
+
+  ASSERT_EQ(0, emptyItem.NumberUnknownFields());
+  emptyItem.SetUnknownField(u1t, sizeof(u1v), u1v);
+  emptyItem.SetUnknownField(u2t, sizeof(u2v), u2v);
+  emptyItem.SetUnknownField(u3t, sizeof(u3v), u3v);
+  EXPECT_EQ(3, emptyItem.NumberUnknownFields());
+
+  // Getting Unknown Fields is done by private
+  // member functions, which make sense considering
+  // how they're processed. Worth exposing an API
+  // just for testing, TBD.
+}
