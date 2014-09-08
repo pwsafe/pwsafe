@@ -99,14 +99,21 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   } else
     iAfterIndex = 0;
 
-  // Now add it
-  ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                PWS_MSG_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
+  // Now add it but only if not trying to place to the left of the icon
+  BOOL brc = TRUE;
+  HDITEM hdi = {0};
+  hdi.mask = HDI_LPARAM;
+  GetItem(0, &hdi);
+  if (hdi.lParam == CItemData::UUID && iAfterIndex == 0)
+    brc = FALSE;
+  else
+    ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
+                  PWS_MSG_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
 
   GlobalUnlock(hGlobal);
 
   GetParent()->SetFocus();
-  return TRUE;
+  return brc;
 }
 
 void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)

@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.34.2
 ====================
+[1212] In the Flattened List view, keep the icon column, if present,
+as leftmost, to ensure proper display.
 [1210] CurrentFile preference is updated sooner rather than later, so
 last database is set as default for next invocation.
 
