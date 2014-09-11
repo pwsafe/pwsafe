@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-06 02:16+0200\n"
-"PO-Revision-Date: 2014-09-06 02:00+0100\n"
-"Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
+"POT-Creation-Date: 2014-09-12 00:25+0200\n"
+"PO-Revision-Date: 2014-09-11 23:51+0100\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,10 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-Basepath: /mnt/psafe/src\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: wxWidgets\n"
+"X-Poedit-SearchPath-0: ui/wxWidgets\n"
+"X-Poedit-SearchPath-1: core\n"
 
+# no translation needed
 #: ../../../ui/wxWidgets/about.cpp:141
 msgid "Password Safe vx.yy (abcd)"
 msgstr ""
@@ -53,6 +55,7 @@ msgstr "PasswordSafe Webseite"
 msgid "See LICENSE for open souce details."
 msgstr "Siehe LICENSE für Open Source Details."
 
+# no translation needed
 #: ../../../ui/wxWidgets/about.cpp:171
 msgid "Copyright (c) 2003-2014 by Rony Shapiro"
 msgstr ""
@@ -82,6 +85,7 @@ msgstr "Schließen-Dialog bestätigen"
 msgid "Trying to contact server..."
 msgstr "Versuche einen Server zu kontaktieren..."
 
+# no translation needed
 #: ../../../ui/wxWidgets/about.cpp:285
 msgid "http://pwsafe.org/latest.xml"
 msgstr ""
@@ -152,7 +156,7 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:286
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1050
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1049
 msgid "&Hide"
 msgstr "&Ausblenden"
 
@@ -164,6 +168,7 @@ msgstr "&Generieren"
 msgid "Confirm:"
 msgstr "Bestätigung:"
 
+# no translation needed
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:302
 msgid "URL:"
 msgstr ""
@@ -180,24 +185,24 @@ msgstr "E-Mail:"
 msgid "Send"
 msgstr "Senden"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:331
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:330
 msgid "Notes:"
 msgstr "Notizen:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:338
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:337
 #: ../../../ui/wxWidgets/helpmap.h:44
 msgid "Basic"
 msgstr "Basis"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:346
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:345
 msgid "Autotype:"
 msgstr "Autom. Eingabe:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:352
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:351
 msgid "Run Cmd:"
 msgstr "Ausführen:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:357
 msgid ""
 "Double-Click\n"
 "Action:"
@@ -205,63 +210,63 @@ msgstr ""
 "Doppelklick\n"
 "Aktion:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:362
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:378
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:770
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:361
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:377
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:769
 msgid "Auto Type"
 msgstr "Autom. Eingabe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:363
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:379
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:771
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:362
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:378
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:770
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:290
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:451
 msgid "Browse"
 msgstr "Suchen"
 
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:363
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:379
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:771
+msgid "Browse + Auto Type"
+msgstr "Gehe zu URL + Autom. Eingabe"
+
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:364
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:380
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:772
-msgid "Browse + Auto Type"
-msgstr "Gehe zu URL + Autom. Eingabe"
+msgid "Copy Notes"
+msgstr "Notizen in Zwischenablage kopieren"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:365
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:773
-msgid "Copy Notes"
-msgstr "Notizen in Zwischenablage kopieren"
+msgid "Copy Password"
+msgstr "Passwort in Zwischenablage kopieren"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:366
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:774
-msgid "Copy Password"
-msgstr "Passwort in Zwischenablage kopieren"
+msgid "Copy Password + Minimize"
+msgstr "Passwort in Zwischenablage kopieren + minimieren"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:367
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:775
-msgid "Copy Password + Minimize"
-msgstr "Passwort in Zwischenablage kopieren + minimieren"
+msgid "Copy Username"
+msgstr "Benutzername in Zwischenablage kopieren"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:368
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:776
-msgid "Copy Username"
-msgstr "Benutzername in Zwischenablage kopieren"
+msgid "Edit/View Entry"
+msgstr "Eintrag bearbeiten/anzeigen"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:369
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:777
-msgid "Edit/View Entry"
-msgstr "Eintrag bearbeiten/anzeigen"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:778
 msgid "Execute Run command"
 msgstr "Kommando ausführen"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:374
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:373
 msgid ""
 "Shift-Double-Click\n"
 "Action:"
@@ -269,129 +274,129 @@ msgstr ""
 "Umschalt + Doppelklick\n"
 "Aktion:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:390
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:502
 #: ../../../ui/wxWidgets/helpmap.h:39
 msgid "Password History"
 msgstr "Passworthistorie"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:395
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
 msgid "Keep"
 msgstr "Behalte"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
 msgid "last passwords"
 msgstr "der letzten Passwörter"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:415
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:414
 msgid "Clear History"
 msgstr "Historie löschen"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:420
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:419
 msgid "Copy All"
 msgstr "Alles kopieren"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:423
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:422
 #: ../../../ui/wxWidgets/helpmap.h:47
 msgid "Additional"
 msgstr "Zusätzlich"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:429
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:428
 msgid "Password Expiry"
 msgstr "Passwortablaufdatum"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:436
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:435
 msgid "On"
 msgstr "Am"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:445
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:444
 msgid "In"
-msgstr "In"
+msgstr "Nach"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:454
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:453
 msgid "days"
-msgstr "Tagen"
+msgstr "Tag(en)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:457
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:456
 msgid "Recurring"
 msgstr "Periodisch"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:463
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:919
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:462
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:918
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1420
 msgid "Never"
 msgstr "Niemals"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:469
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:468
 msgid "Original Value:"
 msgstr "Ursprünglicher Wert:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:475
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:474
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:480
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:479
 #: ../../../ui/wxWidgets/editshortcut.cpp:195
 msgid "Created on:"
 msgstr "Erstellt am:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:486
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:485
 msgid "Password last changed on:"
 msgstr "Passwort zuletzt geändert am:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:489
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:501
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:488
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:500
 #: ../../../ui/wxWidgets/properties.cpp:188
 msgid "Static text"
 msgstr "Statischer Text"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:492
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:491
 #: ../../../ui/wxWidgets/editshortcut.cpp:207
 msgid "Last accessed on:"
 msgstr "Letzter Zugriff am:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:495
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:494
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
 msgid "N/A"
 msgstr "n. a."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:498
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:497
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 msgid "Any field last changed on:"
 msgstr "Irgendein Feld zuletzt geändert am:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:504
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:503
 #: ../../../ui/wxWidgets/helpmap.h:45
 msgid "Dates and Times"
 msgstr "Datum und Uhrzeit"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:507
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:168
 msgid "Random password generation rules"
 msgstr "Regeln zur Generierung von Zufallspasswörtern"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:513
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
 msgid "Use Database Policy"
 msgstr "Verwende Datenbankrichtlinie"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:523
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:522
 msgid "Use the policy below:"
 msgstr "Verwende die unten aufgeführte Richtlinie:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:532
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:531
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:175
 msgid "Password length: "
 msgstr "Passwortlänge: "
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:540
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:539
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:184
 msgid "Use lowercase letters"
 msgstr "Benutze Kleinbuchstaben"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:546
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:561
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:576
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:591
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:545
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:560
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:575
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:590
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:191
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:207
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:223
@@ -399,34 +404,35 @@ msgstr "Benutze Kleinbuchstaben"
 msgid "(At least "
 msgstr "(mindestens"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:552
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:567
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:582
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:597
+# no translation needed
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:551
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:566
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:581
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:596
 msgid ")"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:555
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:554
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:200
 msgid "Use UPPERCASE letters"
 msgstr "Benutze Großbuchstaben"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:570
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:569
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:216 ../../../core/core_st.cpp:250
 msgid "Use digits"
 msgstr "Verwende Ziffern"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:585
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:584
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:232
 msgid "Use symbols (i.e., ., %, $, etc.)"
 msgstr "Benutze Symbole (z.B. ., %, $, usw.)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:603
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:602
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:251
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:606
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:605
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:254
 msgid ""
 "Use only easy-to-read characters\n"
@@ -435,47 +441,47 @@ msgstr ""
 "Benutze nur leicht zu lesende Zeichen\n"
 "(z.B. kein 'l', '1', usw.)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:612
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:611
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
 msgid "Generate pronounceable passwords"
 msgstr "Generiere aussprechbare Passwörter"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:618
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:617
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:266 ../../../core/core_st.cpp:243
 msgid "Or"
 msgstr "oder"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:621
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:620
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:269
 msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr "Benutze nur Hexadezimalzahlen (0-9, a-f)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:625
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1464
 #: ../../../ui/wxWidgets/helpmap.h:38 ../../../ui/wxWidgets/helpmap.h:46
 #: ../../../ui/wxWidgets/PasswordPolicy.h:66 ../../../core/core_st.cpp:136
 msgid "Password Policy"
 msgstr "Passwortrichtlinie"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:650
 msgid "Set Date/Time"
 msgstr "Datum/Uhrzeit setzen"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:652
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
 #: ../../../core/core_st.cpp:132
 msgid "Password"
 msgstr "Passwort"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:804 ../../../core/core_st.cpp:75
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:803 ../../../core/core_st.cpp:75
 msgid "default"
 msgstr "Standard"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:861
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:860
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notizen sind versteckt - Klicken Sie hier um diese anzuzeigen]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:965
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:989
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:964
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:988
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1243
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1712
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:392
@@ -484,11 +490,11 @@ msgstr "[Notizen sind versteckt - Klicken Sie hier um diese anzuzeigen]"
 msgid "Default Policy"
 msgstr "Standard Richtlinie"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1018
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1017
 msgid "Couldn't generate password - invalid policy"
 msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1019
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1018
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1126
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1133
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1617
@@ -521,13 +527,14 @@ msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 msgid "Error"
 msgstr "Fehler"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1075
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1074
 msgid "&Show"
 msgstr "&Anzeigen"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1125
-msgid "This entry must have a "
-msgstr "Dieser Eintrag benötigt ein(en) "
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1124
+#, c-format
+msgid "This entry must have a %s"
+msgstr "Dieser Eintrag benötigt ein(en) %s"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1125
 msgid "title"
@@ -566,6 +573,7 @@ msgstr ""
 "Tut uns Leid, aber \"aussprechbar\" und \"leicht lesbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
+# no translation needed
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1696
 msgid "mailto:"
 msgstr ""
@@ -676,6 +684,7 @@ msgstr "Synchronisieren"
 msgid "selected "
 msgstr "Ausgewählt "
 
+# no translation needed
 #: ../../../ui/wxWidgets/CompareDlg.cpp:442
 msgid "..."
 msgstr ""
@@ -761,6 +770,7 @@ msgstr ""
 "Bitte spezifizieren sie Namen und Gruppe\n"
 " für die Verknüpfung zu "
 
+# no translation needed
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:175
 #: ../../../ui/wxWidgets/editshortcut.cpp:222
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
@@ -896,6 +906,7 @@ msgstr ""
 msgid "Date/Time Information"
 msgstr "Datum/Zeit Information"
 
+# no translation needed
 #: ../../../ui/wxWidgets/editshortcut.cpp:198
 #: ../../../ui/wxWidgets/editshortcut.cpp:204
 #: ../../../ui/wxWidgets/editshortcut.cpp:210
@@ -941,7 +952,7 @@ msgid "Advanced..."
 msgstr "Erweitert..."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
-msgid "Could not launch xvkbd.  Please make sure its in your PATH"
+msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr "Konnte xvkbd nicht starten. Bitte überprüfen Sie die PATH-Variable."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:74
@@ -951,8 +962,7 @@ msgstr "Konnte externe Bildschirmtastatur nicht starten."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:78
 msgid ""
-"Could not launch a new process for xvkbd.  Simultaneous execution is "
-"disabled?"
+"Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 "Konnte einen neuen Prozess von xvkbd nicht starten. Ist die simultane "
 "Ausführung deaktiviert?"
@@ -1245,6 +1255,7 @@ msgstr "Bitte wählen Sie eine gültige Datei aus"
 msgid "None"
 msgstr "Keine"
 
+# no translation needed
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:92
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:252
 msgid "YYYYMMMDD_HHMMSS"
@@ -1548,7 +1559,7 @@ msgstr "Passwortdatenbank sperren nach"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:537
 msgid "minutes idle"
-msgstr "Minuten Leerlauf"
+msgstr "Minute(n) Leerlauf"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:542
 msgid "Unlock Difficulty:"
@@ -2277,7 +2288,10 @@ msgid "Completed but ...."
 msgstr "Fertig aber ...."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2549
-msgid "Do you want to see a detailed report?"
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2631
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3086
+msgid "Do you wish to see a detailed report?"
 msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2561
@@ -2355,12 +2369,6 @@ msgstr "Einträge"
 #, c-format
 msgid "Imported %d %s"
 msgstr "Importiert %d %s"
-
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2631
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2776
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3086
-msgid "Do you wish to see a detailed report?"
-msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2649
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2696
@@ -3077,6 +3085,7 @@ msgstr "Das aktuelle Master-Passwort ist nicht korrekt"
 msgid "The combination cannot be blank."
 msgstr "Das Master-Passwort darf nicht leer sein."
 
+# no translation needed
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:194
 msgid "VX.YY"
 msgstr ""
@@ -3420,6 +3429,7 @@ msgstr "Passwortrichtlinien verwalten"
 msgid "Options"
 msgstr "Optionen"
 
+# no translation needed
 #: ../../../ui/wxWidgets/passwordsafeframe.h:104
 #: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
 msgid "PasswordSafe"
@@ -3755,9 +3765,10 @@ msgstr ""
 msgid "End Report"
 msgstr "Bericht Ende"
 
+# no translation needed
 #: ../../../core/core_st.cpp:90
 msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
+msgstr ""
 
 #: ../../../core/core_st.cpp:93
 #, c-format
@@ -4878,6 +4889,9 @@ msgstr "Ja - Aussprechbare Symbole: %s"
 msgid "Yes - At least %d from %s: %s"
 msgstr "Ja - mindestens %d von %s: %s"
 
+#~ msgid "Do you want to see a detailed report?"
+#~ msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
+
 #~ msgid "Default set"
 #~ msgstr "Standardsatz"
 
@@ -5369,9 +5383,6 @@ msgstr "Ja - mindestens %d von %s: %s"
 
 #~ msgid "- Physical -"
 #~ msgstr "- Physisch -"
-
-#~ msgid "...."
-#~ msgstr "...."
 
 #~ msgid "....."
 #~ msgstr "....."
