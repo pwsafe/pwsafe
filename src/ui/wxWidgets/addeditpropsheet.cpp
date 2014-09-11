@@ -1121,8 +1121,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       else
         m_PasswordCtrl->SetFocus();
 
-      wxMessageBox(wxString(_("This entry must have a ")) << (m_title.IsEmpty() ? _("title"): _("password")),
-                    _("Error"), wxOK|wxICON_INFORMATION, this);
+      wxMessageBox(wxString::Format(wxString(_("This entry must have a %s")),
+                                    (m_title.IsEmpty() ? _("title"): _("password"))),
+                   _("Error"), wxOK|wxICON_INFORMATION, this);
       return;
     }
 

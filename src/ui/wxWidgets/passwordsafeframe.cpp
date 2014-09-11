@@ -2546,7 +2546,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   rpt.EndReport();
 
   const int iconType = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
-  cs_temp << wxT("\n\n") << _("Do you want to see a detailed report?");
+  cs_temp << wxT("\n\n") << _("Do you wish to see a detailed report?");
   if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType, this) == wxYES) {
     ViewReport(rpt);
   }
