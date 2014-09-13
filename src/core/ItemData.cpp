@@ -2169,7 +2169,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
   int emergencyExit = 255;
 
   while (iter != v.end()) {
-    int type = (*iter++ & 0xff); // required since enum is an int
+    unsigned char type = *iter++;
     if (static_cast<uint32>(distance(v.end(), iter)) < sizeof(uint32)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
@@ -2193,7 +2193,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
   return false; // END tag not found!
 }
 
-bool CItemData::SetField(int type, const unsigned char *data, size_t len)
+bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t len)
 {
   StringX str;
   time_t t;

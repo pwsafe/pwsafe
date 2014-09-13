@@ -405,7 +405,7 @@ private:
 
   void SetField(FieldType ft, const StringX &value);
   void SetField(FieldType ft, const unsigned char *value, size_t length);
-  bool SetField(int type, const unsigned char *data, size_t len);
+  bool SetField(unsigned char type, const unsigned char *data, size_t len);
 
   // Helper function for operator==
   bool CompareFields(const CItemField &fthis,
