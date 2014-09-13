@@ -33,6 +33,7 @@ down the streetsky.  [Groucho Marx]
 
 #include "os/file.h"
 #include "os/dir.h"
+#include "os/env.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -124,6 +125,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
   ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
   ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
+  ON_BN_CLICKED(IDC_READONLY, OnBnClickedReadonly)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
@@ -448,20 +450,17 @@ void CPasskeyEntry::OnHelp()
 
 void CPasskeyEntry::UpdateRO()
 {
-  if (!m_bForceReadOnly) { // if allowed, changed r-o state to reflect file's permission
+  if (!m_bForceReadOnly) {
+    // If allowed, change R-O state to reflect file's permission - only if file is R-O
     bool fro;
     if (pws_os::FileExists(LPCWSTR(m_filespec), fro) && fro) {
       m_PKE_ReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-    } else { // no file or write-enabled
-      if (m_index == GCP_FIRST)
-        m_PKE_ReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
-      else
-        m_PKE_ReadOnly = FALSE;
+      ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(BST_CHECKED);
+    } else {
       GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
     }
-    ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE ? 
-                                                    BST_CHECKED : BST_UNCHECKED);
+
     UpdateData(FALSE);
   } // !m_bForceReadOnly
 }
@@ -470,6 +469,12 @@ void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
   UpdateRO();
+}
+
+
+void CPasskeyEntry::OnBnClickedReadonly()
+{
+  m_PKE_ReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -510,10 +515,13 @@ void CPasskeyEntry::OnOpenFileBrowser()
 
   fd.m_ofn.lpstrTitle = cs_text;
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
+  if (!pws_os::IsWindowsVistaOrGreater()) {
+    // Read-only checkbox only available up to Windows XP
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
       fd.m_ofn.Flags |= OFN_READONLY;
     else
       fd.m_ofn.Flags &= ~OFN_READONLY;
+  }
 
   std::wstring dir;
   if (GetMainDlg()->GetCurFile().empty())
@@ -537,7 +545,13 @@ void CPasskeyEntry::OnOpenFileBrowser()
     return;
   }
   if (rc == IDOK) {
-    m_PKE_ReadOnly = fd.GetReadOnlyPref();
+    if (!pws_os::IsWindowsVistaOrGreater()) {
+      // Read-only checkbox only available up to Windows XP
+      // In XP, the checkbox setting overrides the main dialog checkbox
+      // but the user can then change it in the main dialog if they want
+      m_PKE_ReadOnly = fd.GetReadOnlyPref();
+    }
+
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
     m_pctlPasskey->SetFocus();
@@ -637,4 +651,3 @@ void CPasskeyEntry::OnYubikeyBtn()
   }
   yubiRequestHMACSha1(m_passkey);
 }
-

@@ -12,6 +12,9 @@ Bugs fixed in 3.34.2
 ====================
 [1212] In the Flattened List view, keep the icon column, if present,
 as leftmost, to ensure proper display.
+[1211] The Read-Only checkbox no longer clears itself after returning
+from the file selection dialog. Also, the read-only checkbox in XP
+file selection dialog is handled correctly.
 [1210] CurrentFile preference is updated sooner rather than later, so
 last database is set as default for next invocation.
 

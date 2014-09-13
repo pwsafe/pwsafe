@@ -98,6 +98,7 @@ protected:
   afx_msg void OnCreateDb();
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();
+  afx_msg void OnBnClickedReadonly();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
