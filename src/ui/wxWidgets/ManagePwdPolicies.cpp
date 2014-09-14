@@ -650,6 +650,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
     if (defChanged) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
+      PWSprefs::GetInstance()->SetupCopyPrefs();
       PWSprefs::GetInstance()->SetDefaultPolicy(m_st_default_pp, true);
 
       // Now get new DB preferences String value
