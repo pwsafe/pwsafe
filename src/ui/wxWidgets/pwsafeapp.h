@@ -110,12 +110,13 @@ public:
     wxIconBundle m_appIcons;
     wxLocale *m_locale; // set in initLanguageSupport(), deleted in d'tor, unused elsewhere
     void initLanguageSupport();
+    void activateLanguage(wxLanguage language);
     
  public:
     CRecentDBList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
     void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
-
+    void ChangeLanguage(wxLanguage language);
 };
 
 /*!

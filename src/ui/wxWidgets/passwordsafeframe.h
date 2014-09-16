@@ -99,6 +99,7 @@ class PasswordSafeSearch;
 #define ID_RESTORE 10058
 #define ID_PWDPOLSM 10215
 #define ID_YUBIKEY_MNG 10010
+#define ID_LANGUAGEMENU 10011
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -107,7 +108,7 @@ class PasswordSafeSearch;
 #define SYMBOL_PASSWORDSAFEFRAME_POSITION wxDefaultPosition
 ////@end control identifiers
 enum {
-  ID_EDITMENU_FIND_NEXT  = 10200,
+  ID_EDITMENU_FIND_NEXT  = 10220,
   ID_EDITMENU_FIND_PREVIOUS,
   ID_PASSWORDSUBSET,
   ID_COPYEMAIL,
@@ -128,8 +129,135 @@ enum {
   ID_TOOLBAR_NEW,
   ID_TOOLBAR_CLASSIC,
   ID_SYNCHRONIZE,
+
+  // languages
+  ID_LANGUAGE_BEGIN,
+  ID_LANGUAGE_DEFAULT,
+  ID_LANGUAGE_CHINESE,
+  ID_LANGUAGE_DANISH,
+  ID_LANGUAGE_DUTCH, // Netherland
+  ID_LANGUAGE_ENGLISH,
+  ID_LANGUAGE_FRENCH,
+  ID_LANGUAGE_GERMAN,
+  ID_LANGUAGE_ITALIAN,
+  ID_LANGUAGE_KOREAN,
+  ID_LANGUAGE_POLISH,
+  ID_LANGUAGE_RUSSIAN,
+  ID_LANGUAGE_SPANISH,
+  ID_LANGUAGE_SWEDISH,
+  ID_LANGUAGE_END
 };
 
+/*
+ * The map associates menu item id's with language specific data represented by a pair.
+ * The pair consists of the wxWidgets language identifier for wxLocale
+ * and the language name as wxString as it should appear in the menu.
+ */
+static std::map<int, std::pair<wxLanguage, wxString> > s_languages = {
+  {
+    ID_LANGUAGE_DEFAULT,
+    {
+      wxLANGUAGE_DEFAULT,
+      _T("Default")
+    }
+  },
+  {
+    ID_LANGUAGE_CHINESE,
+    {
+      wxLANGUAGE_CHINESE,
+      _("Chinese")
+    }
+    /* code: 'zh' */
+  },
+  {
+    ID_LANGUAGE_DANISH,
+    {
+      wxLANGUAGE_DANISH,
+      _("Danish")
+    }
+    /* code: 'da' */
+  },
+  {
+    ID_LANGUAGE_DUTCH,
+    {
+      wxLANGUAGE_DUTCH,
+      _("Dutch")
+    }
+    /* code: 'nl' */
+  },
+  {
+    ID_LANGUAGE_ENGLISH,
+    {
+      wxLANGUAGE_ENGLISH,
+      _("English")
+    }
+    /* code: 'en' */
+  },
+  {
+    ID_LANGUAGE_FRENCH,
+    {
+      wxLANGUAGE_FRENCH,
+      _("French")
+    }
+    /* code: 'fr' */
+  },
+  {
+    ID_LANGUAGE_GERMAN,
+    {
+      wxLANGUAGE_GERMAN,
+      _("German")
+    }
+    /* code: 'de' */
+  },
+  {
+    ID_LANGUAGE_ITALIAN,
+    {
+      wxLANGUAGE_ITALIAN,
+      _("Italian")
+    }
+    /* code: 'it' */
+  },
+  {
+    ID_LANGUAGE_KOREAN,
+    {
+      wxLANGUAGE_KOREAN,
+      _("Korean")
+    }
+    /* code: 'ko' */
+  },
+  {
+    ID_LANGUAGE_POLISH,
+    {
+      wxLANGUAGE_POLISH,
+      _("Polish")
+    }
+    /* code: 'pl' */
+  },
+  {
+    ID_LANGUAGE_RUSSIAN,
+    {
+      wxLANGUAGE_RUSSIAN,
+      _("Russian")
+    }
+    /* code: 'ru' */
+  },
+  {
+    ID_LANGUAGE_SPANISH,
+    {
+      wxLANGUAGE_SPANISH,
+      _("Spansih")
+    }
+    /* code: 'es' */
+  },
+  {
+    ID_LANGUAGE_SWEDISH,
+    {
+      wxLANGUAGE_SWEDISH,
+      _("Swedish")
+    }
+    /* code: 'sv' */
+  }
+};
 
 /*!
  * PasswordSafeFrame class declaration
@@ -156,6 +284,9 @@ public:
 
     /// Creates the controls and sizers
     void CreateControls();
+
+    /// Adds a sub menu with all supported languages to a given wxMenu
+    void AddLanguageMenu(wxMenu* parent);
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
@@ -237,6 +368,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
   void OnPwdPolsMClick( wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LANGUAGEMENU 
+  void OnLanguageClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& evt);

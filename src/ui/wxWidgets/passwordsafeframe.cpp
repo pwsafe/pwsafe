@@ -139,6 +139,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_YUBIKEY_MNG, PasswordSafeFrame::OnYubikeyMngClick )
 #endif
 
+  EVT_MENU_RANGE( ID_LANGUAGE_BEGIN, ID_LANGUAGE_END, PasswordSafeFrame::OnLanguageClick )
+
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
@@ -458,6 +460,9 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
 #endif
+  itemMenu72->AppendSeparator();
+  AddLanguageMenu( itemMenu72 );
+
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
@@ -499,6 +504,31 @@ void PasswordSafeFrame::CreateControls()
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
+}
+
+/*!
+ * Creates the language sub menu.
+ *
+ * \param parent the parent to which the sub-menu should be added
+ */
+void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
+{
+  if (parent == nullptr)
+    return;
+
+  wxMenu* child = new wxMenu;
+
+  for (auto item : s_languages)
+  {
+    child->Append( 
+        item.first,          /* The key of the map that holds menu item id's*/
+        item.second.second,  /* The value of the map is a pair. The second element of the pair holds the language name as wxString */
+        _T(""),              /* The menu items tooltip */
+        wxITEM_NORMAL
+        );
+  }
+
+  parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
 }
 
 /*
@@ -1374,6 +1404,14 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   }
 }
 
+void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
+{
+    auto id = evt.GetId();
+#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+    std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << s_languages[id].second << std::endl;
+#endif
+    wxGetApp().ChangeLanguage( s_languages[id].first );
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
