@@ -31,6 +31,8 @@ UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 UPLOAD_DST := $(UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
+export CXXFLAGS=-std=c++11
+
 all: I18N unicodedebug unicoderelease
 
 unicodedebug unicoderelease:

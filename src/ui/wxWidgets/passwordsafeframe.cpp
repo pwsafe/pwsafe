@@ -518,14 +518,15 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 
   wxMenu* child = new wxMenu;
 
-  for (auto item : s_languages)
-  {
-    child->Append( 
-        item.first,          /* The key of the map that holds menu item id's*/
-        item.second.second,  /* The value of the map is a pair. The second element of the pair holds the language name as wxString */
-        _T(""),              /* The menu items tooltip */
-        wxITEM_NORMAL
-        );
+  for (auto item : s_languages) {
+    child->Append(
+                  item.first,          /* The key of the map that holds menu item id's*/
+                  item.second.second,  /* The value of the map is a pair.
+                                          The second element of the pair holds the
+                                          language name as wxString */
+                  _T(""),              /* The menu items tooltip */
+                  wxITEM_NORMAL
+                  );
   }
 
   parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);

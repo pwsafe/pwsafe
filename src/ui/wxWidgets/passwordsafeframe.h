@@ -369,7 +369,7 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
   void OnPwdPolsMClick( wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LANGUAGEMENU 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LANGUAGEMENU
   void OnLanguageClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
