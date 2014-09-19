@@ -262,12 +262,12 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ASSERT(pci != NULL);
 
   CItemData ci_temp;
-  ci_temp.CreateUUID(CItemData::SHORTCUTUUID);
   ci_temp.SetGroup(cs_group);
   ci_temp.SetTitle(cs_title);
   ci_temp.SetUser(cs_user);
   ci_temp.SetPassword(L"[Shortcut]");
   ci_temp.SetShortcut();
+  ci_temp.CreateUUID(); // call after setting to shortcut!
   ci_temp.SetBaseUUID(pci->GetUUID());
 
   time_t t;
@@ -1364,32 +1364,18 @@ void DboxMain::OnDuplicateEntry()
     // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
     ci2.SetKBShortcut(0);
 
-    Command *pcmd = NULL;
     if (pci->IsDependent()) {
-      if (pci->IsAlias()) {
-        ci2.SetAlias();
-      } else {
-        ci2.SetShortcut();
-      }
-
       const CItemData *pbci = GetBaseEntry(pci);
-      if (pbci != NULL) {
-        StringX sxtmp;
-        sxtmp = L"[" +
-                  pbci->GetGroup() + L":" +
-                  pbci->GetTitle() + L":" +
-                  pbci->GetUser()  +
-                L"]";
-        ci2.SetPassword(sxtmp);
-        ci2.SetBaseUUID(pbci->GetUUID());
-        pcmd = AddEntryCommand::Create(&m_core, ci2);
-      }
-    } else { // not alias or shortcut
-      ci2.SetNormal();
-      pcmd = AddEntryCommand::Create(&m_core, ci2);
+      ASSERT(pbci != NULL);
+      const StringX sxtmp = L"[" +
+        pbci->GetGroup() + L":" +
+        pbci->GetTitle() + L":" +
+        pbci->GetUser()  +
+        L"]";
+      ci2.SetPassword(sxtmp);
     }
 
-    Execute(pcmd);
+    Execute(AddEntryCommand::Create(&m_core, ci2));
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 

@@ -226,7 +226,7 @@ public:
   size_t NumberUnknownFields() const {return m_URFL.size();}
   void ClearUnknownFields() {return m_URFL.clear();}
 
-  void CreateUUID(FieldType ft = CItemData::UUID); // V20 - generate UUID for new item
+  void CreateUUID(FieldType ft = CItemData::END); // V20 - generate UUID for new item
   void SetName(const StringX &name,
                const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
   void SetTitle(const StringX &title, TCHAR delimiter = 0);
