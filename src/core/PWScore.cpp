@@ -463,46 +463,20 @@ void PWScore::NewFile(const StringX &passkey)
 // functor object type for for_each:
 // Writes out all records to a PasswordSafe database of any version
 struct RecordWriter {
-  RecordWriter(PWSfile *pout, PWScore *pcore, PWSfile::VERSION version)
-    : m_pout(pout), m_pcore(pcore), m_version(version) {}
-
+  RecordWriter(PWSfile *pout) : m_pout(pout) {}
   void operator()(std::pair<CUUID const, CItemData> &p)
   {
-    StringX savePassword = p.second.GetPassword();
-    StringX uuid_str(savePassword);
-    CUUID base_uuid(CUUID::NullUUID());
-    CUUID item_uuid = p.second.GetUUID();
-
-    if (p.second.IsAlias()) {
-      if (m_version < PWSfile::V30) {
-        // Pre V30 does not support aliases.  Write as a normal record
-        // with the base record's password
-        CItemData ci = p.second;
-        CItemData *pbase = m_pcore->GetBaseEntry(&(p.second));
-        ci.SetPassword(pbase->GetPassword());
-        m_pout->WriteRecord(ci);
-        return;
-      } else {
-        m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
-        uuid_str = _T("[[");
-        uuid_str += base_uuid;
-        uuid_str += _T("]]");
-      }
-    } else if (p.second.IsShortcut()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
-      if (m_version < PWSfile::V30) {
-        // Pre V30 does not support shortcuts at all - ignore completely
-        return;
-      } else {
-        uuid_str = _T("[~");
-        uuid_str += base_uuid;
-        uuid_str += _T("~]");
-      }
+    if (p.second.IsAlias() && m_version < PWSfile::V30) {
+      // Pre V30 does not support aliases.  Write as a normal record
+      // with the base record's password
+      // XXX check how to work this into V4 refactoring...
+      ASSERT(0);
+    } else if (p.second.IsShortcut() && m_version < PWSfile::V30) {
+      // Pre V30 does not support shortcuts at all - ignore completely
+      // XXX check how to work this into V4 refactoring...
+      ASSERT(0);
     }
-
-    p.second.SetPassword(uuid_str);
     m_pout->WriteRecord(p.second);
-    p.second.SetPassword(savePassword);
     p.second.ClearStatus();
   }
 
@@ -1639,30 +1613,18 @@ void PWScore::ParseDependants()
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
 
+  // Get all possible Aliases/Shortcuts for future checking if base entries exist
   for (ItemListIter iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     const CItemData &ci = iter->second;
-    // Get all possible Aliases/Shortcuts for future checking if base entries exist
-    const StringX csMyPassword = ci.GetPassword();
-    if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
-      StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
-      ToLower(cs_possibleUUID);
-      if (((csMyPassword.substr(0,2) == _T("[[") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-           (csMyPassword.substr(0, 2) == _T("[~") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-          cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        CUUID buuid(cs_possibleUUID.c_str());
-        if (csMyPassword.substr(0, 2) == _T("[[")) {
-          m_alias2base_map[ci.GetUUID()] = buuid;
-          Possible_Aliases.push_back(ci.GetUUID());
-        } else {
-          m_shortcut2base_map[ci.GetUUID()] = buuid;
-          Possible_Shortcuts.push_back(ci.GetUUID());
-        }
-      }
+    if (ci.IsAlias()) {
+      m_alias2base_map[ci.GetUUID()] = ci.GetBaseUUID();
+      Possible_Aliases.push_back(ci.GetUUID());
+    } else if (ci.IsShortcut()) {
+      m_shortcut2base_map[ci.GetUUID()] = ci.GetBaseUUID();
+      Possible_Shortcuts.push_back(ci.GetUUID());
     }
-
   } // iter over m_pwlist
+
   if (!Possible_Aliases.empty()) {
     DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
   }

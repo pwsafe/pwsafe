@@ -157,6 +157,7 @@ public:
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
   const pws_os::CUUID GetUUID(FieldType ft = END) const; // V20 - see comment in .cpp re return type
+  const pws_os::CUUID GetBaseUUID() const {return GetUUID(CItemData::BASEUUID);}
   StringX GetGroup() const {return GetField(GROUP);} // V20
   StringX GetURL() const {return GetField(URL);} // V30
   StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30
@@ -225,7 +226,7 @@ public:
   size_t NumberUnknownFields() const {return m_URFL.size();}
   void ClearUnknownFields() {return m_URFL.clear();}
 
-  void CreateUUID(); // V20 - generate UUID for new item
+  void CreateUUID(FieldType ft = CItemData::UUID); // V20 - generate UUID for new item
   void SetName(const StringX &name,
                const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
   void SetTitle(const StringX &title, TCHAR delimiter = 0);
@@ -233,8 +234,9 @@ public:
   void SetPassword(const StringX &password);
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
-  void SetUUID(const uuid_array_t &uuid); // V20
+  void SetUUID(const uuid_array_t &uuid, FieldType ft = CItemData::UUID); // V20
   void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
+  void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
   void SetGroup(const StringX &group); // V20
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
