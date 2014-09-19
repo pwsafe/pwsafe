@@ -462,15 +462,6 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                                  const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
-  ASSERT(!ci.IsDependent()); // use other c'tor for dependent entries!
-  if (pcmd != NULL)
-    m_bNotifyGUI = pcmd->GetGUINotify();
-}
-
-AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 const CUUID &base_uuid, const Command *pcmd)
-  : Command(pcomInt), m_ci(ci), m_base_uuid(base_uuid)
-{
   if (pcmd != NULL)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
@@ -490,7 +481,7 @@ int AddEntryCommand::Execute()
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
   if (m_ci.IsDependent()) {
-    m_pcomInt->DoAddDependentEntry(m_base_uuid, m_ci.GetUUID(),
+    m_pcomInt->DoAddDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
                                    m_ci.GetEntryType());
   }
 
@@ -515,7 +506,7 @@ void AddEntryCommand::Undo()
   dec.Execute();
 
   if (m_ci.IsDependent()) {
-    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_ci.GetUUID(),
+    m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
                                       m_ci.GetEntryType());
   }
 
@@ -596,7 +587,7 @@ void DeleteEntryCommand::Undo()
 {
   CUUID uuid = m_ci.GetUUID();
   if (m_ci.IsDependent()) {
-    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
+    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, this);
     pcmd->Execute();
     delete pcmd;
   } else {
@@ -605,7 +596,7 @@ void DeleteEntryCommand::Undo()
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter);
         pcmd->Execute();
         delete pcmd;
       }
@@ -617,7 +608,7 @@ void DeleteEntryCommand::Undo()
            iter != m_dependents.end(); iter++) {
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }

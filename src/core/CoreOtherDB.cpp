@@ -847,7 +847,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     if (foundPos != GetEntryEndIter())
       continue;
 
-    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp, new_base_uuid);
+    ci_temp.SetBaseUUID(new_base_uuid);
+    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 

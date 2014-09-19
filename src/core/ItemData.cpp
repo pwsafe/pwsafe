@@ -212,22 +212,20 @@ bool CItemData::HasUUID() const
 
 void CItemData::SetSpecialPasswords()
 {
-  // Meant to be used for writing a record
-  // in V3 format
+  // For writing a record in V3 format
 
   if (IsDependent()) {
     ASSERT(IsFieldSet(BASEUUID));
-    CUUID base_uuid(GetUUID(BASEUUID));
+    const CUUID base_uuid(GetUUID(BASEUUID));
     ASSERT(base_uuid != CUUID::NullUUID());
+    ASSERT(base_uuid != GetUUID()); // not self-referential!
     StringX uuid_str;
 
     if (IsAlias()) {
-      base_uuid = GetUUID(ALIASUUID);
       uuid_str = _T("[[");
       uuid_str += base_uuid;
       uuid_str += _T("]]");
     } else if (IsShortcut()) {
-      base_uuid = GetUUID(SHORTCUTUUID);
       uuid_str = _T("[~");
       uuid_str += base_uuid;
       uuid_str += _T("~]");
@@ -1322,10 +1320,10 @@ void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length
     m_fields.erase(static_cast<FieldType>(ft));
 }
 
-void CItemData::CreateUUID()
+void CItemData::CreateUUID(FieldType ft)
 {
   CUUID uuid;
-  SetUUID(*uuid.GetARep());
+  SetUUID(*uuid.GetARep(), ft);
 }
 
 void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
@@ -1522,9 +1520,9 @@ void CItemData::SetGroup(const StringX &group)
   SetField(GROUP, group);
 }
 
-void CItemData::SetUUID(const uuid_array_t &uuid)
+void CItemData::SetUUID(const uuid_array_t &uuid, FieldType ft)
 {
-  SetField(UUID, static_cast<const unsigned char *>(uuid), sizeof(uuid));
+  SetField(ft, static_cast<const unsigned char *>(uuid), sizeof(uuid));
 }
 
 void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
@@ -2207,14 +2205,17 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       ASSERT(0); // not serialized, or in v3 format
       return false;
     case UUID:
-    {
-      uuid_array_t uuid_array;
-      ASSERT(len == sizeof(uuid_array_t));
-      for (size_t i = 0; i < sizeof(uuid_array_t); i++)
-        uuid_array[i] = data[i];
-      SetUUID(uuid_array);
-      break;
-    }
+    case BASEUUID:
+    case ALIASUUID:
+    case SHORTCUTUUID:
+      {
+        uuid_array_t uuid_array;
+        ASSERT(len == sizeof(uuid_array_t));
+        for (size_t i = 0; i < sizeof(uuid_array_t); i++)
+          uuid_array[i] = data[i];
+        SetUUID(uuid_array, ft);
+        break;
+      }
     case GROUP:
     case TITLE:
     case USER:
