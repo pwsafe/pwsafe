@@ -199,11 +199,6 @@ public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
                                  const Command *pcmd = NULL)
   { return new AddEntryCommand(pcomInt, ci, pcmd); }
-  // Following for adding an alias or shortcut
-  static AddEntryCommand *Create(CommandInterface *pcomInt,
-                                 const CItemData &ci, const pws_os::CUUID &base_uuid,
-                                 const Command *pcmd = NULL)
-  { return new AddEntryCommand(pcomInt, ci, base_uuid, pcmd); }
   ~AddEntryCommand();
   int Execute();
   void Undo();
@@ -212,10 +207,7 @@ public:
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, const Command *pcmd = NULL);
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                  const pws_os::CUUID &base_uuid, const Command *pcmd = NULL);
   const CItemData m_ci;
-  pws_os::CUUID m_base_uuid;
   bool m_bExpired;
 };
 
