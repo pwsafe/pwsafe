@@ -534,9 +534,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
     // info for undo
     if (ci.IsDependent()) {
       // For aliases or shortcuts, we just need the uuid of the base entry
-      const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
-                             pcomInt->GetShortcuts2BaseMap());
-      m_base_uuid = imap.find(uuid)->second;
+      m_base_uuid = ci.GetBaseUUID();
     } else if (ci.IsBase()) {
       /**
        * When a shortcut base is deleted, we need to save all
@@ -566,6 +564,21 @@ DeleteEntryCommand::~DeleteEntryCommand()
 
 int DeleteEntryCommand::Execute()
 {
+  // There's at least one case where we may get here with an entry
+  // that's already been deleted: Consider a base and its shortcut
+  // both in the same group, and the group's being deleted:
+  // Each has its own delete command in the group-generated
+  // multicommand, but the shortcut will have been deleted as
+  // part of the base's dependency deletion...
+  // Easiest solution is to check here that we don't delete
+  // something that's no longer in the system. Should be OK for
+  // undo's.
+
+  if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter())
+    return 1;
+
+  // Here if we actually have an entry to delete:
+
   SaveState();
 
   if (m_pcomInt->IsReadOnly())
@@ -585,8 +598,14 @@ int DeleteEntryCommand::Execute()
 
 void DeleteEntryCommand::Undo()
 {
-  CUUID uuid = m_ci.GetUUID();
   if (m_ci.IsDependent()) {
+    // We can't add the dependent as part of an undo if it's base doesn't exist
+    // This can happen if both were deleted together, e.g., as part of a
+    // group delete.
+    // In this case, the dependent will be added again as part of the base's undo
+    if (m_pcomInt->Find(m_ci.GetBaseUUID()) == m_pcomInt->GetEntryEndIter())
+      return;
+
     Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, this);
     pcmd->Execute();
     delete pcmd;
@@ -887,10 +906,8 @@ int AddDependentEntriesCommand::Execute()
 
   if (m_type == CItemData::ET_ALIAS) {
     m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-    m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
   } else { // if !alias, assume shortcut
     m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
-    m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
   }
 
   if (m_pcomInt->IsReadOnly())
@@ -911,10 +928,8 @@ void AddDependentEntriesCommand::Undo()
   m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
   if (m_type == CItemData::ET_ALIAS) {
     m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-    m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
   } else { // if !alias, assume shortcut
     m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
-    m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
   }
 
   RestoreState();

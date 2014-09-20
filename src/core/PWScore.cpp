@@ -397,9 +397,7 @@ void PWScore::ClearData(void)
 
   // Clear out out dependents mappings
   m_base2aliases_mmap.clear();
-  m_alias2base_map.clear();
   m_base2shortcuts_mmap.clear();
-  m_shortcut2base_map.clear();
 
   // Clear out unknown fields
   m_UHFL.clear();
@@ -1614,10 +1612,8 @@ void PWScore::ParseDependants()
   for (ItemListIter iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     const CItemData &ci = iter->second;
     if (ci.IsAlias()) {
-      m_alias2base_map[ci.GetUUID()] = ci.GetBaseUUID();
       Possible_Aliases.push_back(ci.GetUUID());
     } else if (ci.IsShortcut()) {
-      m_shortcut2base_map[ci.GetUUID()] = ci.GetBaseUUID();
       Possible_Shortcuts.push_back(ci.GetUUID());
     }
   } // iter over m_pwlist
@@ -1775,7 +1771,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   // See if we have any entries with passwords that imply they are an alias
   // but there is no equivalent base entry
   for (size_t ipa = 0; ipa < Possible_Aliases.size(); ipa++) {
-    if (m_pwlist.find(m_alias2base_map[Possible_Aliases[ipa]]) == m_pwlist.end()) {
+    if (/* no base entry for ipa exists in m_pwlist */) {
       ItemListIter iter = m_pwlist.find(Possible_Aliases[ipa]);
       if (iter != m_pwlist.end()) {
         StringX sxgroup = iter->second.GetGroup();
@@ -1790,7 +1786,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   // See if we have any entries with passwords that imply they are a shortcut
   // but there is no equivalent base entry
   for (size_t ips = 0; ips < Possible_Shortcuts.size(); ips++) {
-    if (m_pwlist.find(m_shortcut2base_map[Possible_Shortcuts[ips]]) == m_pwlist.end()) {
+    if (/* no base entry for ips exists in m_pwlist */) {
       ItemListIter iter = m_pwlist.find(Possible_Shortcuts[ips]);
       if (iter != m_pwlist.end()) {
         StringX sxgroup = iter->second.GetGroup();
@@ -2098,15 +2094,14 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
                                   const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
@@ -2126,9 +2121,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
       GUIRefreshEntry(iter->second);
   }
 
-  // Add to both the base->type multimap and the type->base map
+  // Add to the base->type multimap
   pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
-  pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
 }
 
 void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
@@ -2136,18 +2130,14 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
-
-  // Remove from entry -> base map
-  pmap->erase(entry_uuid);
+  }
 
   // Remove from base -> entry multimap
   ItemMMapIter mmiter;
@@ -2182,15 +2172,14 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
                                           const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   // Remove from entry -> base map for each entry
   ItemMMapIter itr;
@@ -2201,11 +2190,6 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
     return;
 
   lastElement = pmmap->upper_bound(base_uuid);
-
-  for ( ; itr != lastElement; itr++) {
-    // Remove from entry -> base map
-    pmap->erase(itr->second);
-  }
 
   // Remove from base -> entry multimap
   pmmap->erase(base_uuid);
@@ -2221,15 +2205,14 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
@@ -2243,10 +2226,6 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
   for ( ; from_itr != lastfromElement; from_itr++) {
     // Add to new base in base -> entry multimap
     pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
-    // Remove from entry -> base map
-    pmap->erase(from_itr->second);
-    // Add to entry -> base map (new base)
-    pmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));
   }
 
   // Now delete all old base entries
@@ -2275,13 +2254,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
   if (pmapSaveTypePW != NULL)
     pmapSaveTypePW->clear();
 
-  ItemMap *pmap;
   ItemMMap *pmmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
     return -1;
@@ -2306,9 +2282,6 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
       CItemData *pci_curitem = &iter->second;
       CUUID entry_uuid = pci_curitem->GetUUID();
       base_uuid = pci_curitem->GetBaseUUID();
-
-      // Delete it - we will put it back if it is an alias/shortcut
-      pmap->erase(entry_uuid);
 
       if (iVia == CItemData::UUID) {
         iter = m_pwlist.find(base_uuid);
@@ -2422,7 +2395,6 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         }
 
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
-        pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
         if (type == CItemData::ET_ALIAS) {
           if (pmapSaveTypePW != NULL) {
             st_typepw.et = iter->second.GetEntryType();

@@ -127,17 +127,21 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       }
       break;
     case UpdateGUICommand::GUI_ADD_ENTRY:
+      ASSERT(pci != NULL);
       AddToGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
+      ASSERT(pci != NULL);
       RemoveFromGUI(*pci, bUpdateGUI);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       // Only used when group, title, username or password changed via in place
       // Edit in TreeView
+      ASSERT(pci != NULL);
       RefreshEntryFieldInGUI(*pci, ft);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
     case UpdateGUICommand::GUI_REDO_IMPORT:
@@ -161,6 +165,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Refesh one entry ListView row and in the tree if the Title/Username/Password
       // has changed and visible in the tree when entry has been edited
+      ASSERT(pci != NULL);
       UpdateEntryinGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
