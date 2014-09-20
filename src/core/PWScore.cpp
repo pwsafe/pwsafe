@@ -300,10 +300,9 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
-    CItemData::EntryType entrytype = item.GetEntryType();
-    CUUID base_uuid(CUUID::NullUUID());
     if (item.IsDependent()) {
-      GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
+      CUUID base_uuid = item.GetBaseUUID();
+      CItemData::EntryType entrytype = item.GetEntryType();
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
     } else if (item.IsAliasBase()) {
       ResetAllAliasPasswords(entry_uuid);
@@ -2308,7 +2307,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
 
       CItemData *pci_curitem = &iter->second;
       CUUID entry_uuid = pci_curitem->GetUUID();
-      GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
+      base_uuid = pci_curitem->GetBaseUUID();
 
       // Delete it - we will put it back if it is an alias/shortcut
       pmap->erase(entry_uuid);
@@ -2384,7 +2383,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
             CUUID temp_uuid = iter->second.GetUUID();
-            GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
+            base_uuid = iter->second.GetBaseUUID(); // ??? used here ???
             if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
@@ -2624,8 +2623,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       pl.TargetType = iter->second.GetEntryType();
       if (pl.InputType == CItemData::ET_ALIAS && pl.TargetType == CItemData::ET_ALIAS) {
         // Check if base is already an alias, if so, set this entry -> real base entry
-        CUUID temp_uuid = iter->second.GetUUID();
-        GetDependentEntryBaseUUID(temp_uuid, pl.base_uuid, CItemData::ET_ALIAS);
+        pl.base_uuid = iter->second.GetBaseUUID();
       } else {
         // This may not be a valid combination of source+target entries - sorted out by caller
         pl.base_uuid = iter->second.GetUUID();
@@ -2652,48 +2650,15 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
 {
   // Alas, we need both a const and non-const version.
   ASSERT(pAliasOrSC != NULL);
-  CItemData::EntryType et = pAliasOrSC->GetEntryType();
-  if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
-    //pws_os::Trace(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
-    return NULL;
+  if (pAliasOrSC->IsDependent()) {
+    const CUUID base_uuid = pAliasOrSC->GetBaseUUID();
+    ItemListIter iter = Find(base_uuid);
+    if (iter != GetEntryEndIter())
+      return &iter->second;
+    else
+      pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
   }
-
-  CUUID base_uuid(CUUID::NullUUID());
-  CUUID dep_uuid = pAliasOrSC->GetUUID();
-  if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
-   // pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
-    return NULL;
-  }
-
-  ItemListIter iter = Find(base_uuid);
-  if (iter == GetEntryEndIter()) {
-    //pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
-    return NULL;
-  }
-  return &iter->second;
-}
-
-bool PWScore::GetDependentEntryBaseUUID(const CUUID &entry_uuid,
-                                        CUUID &base_uuid,
-                                        const CItemData::EntryType type) const
-{
-  base_uuid = CUUID::NullUUID();
-
-  const ItemMap *pmap;
-  if (type == CItemData::ET_ALIAS)
-    pmap = &m_alias2base_map;
-  else if (type == CItemData::ET_SHORTCUT)
-    pmap = &m_shortcut2base_map;
-  else
-    return false;
-
-  ItemMapConstIter iter = pmap->find(entry_uuid);
-  if (iter != pmap->end()) {
-    base_uuid = iter->second;
-    return true;
-  } else {
-    return false;
-  }
+  return NULL;
 }
 
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
