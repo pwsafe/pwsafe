@@ -79,10 +79,6 @@ class CommandInterface {
   virtual void SetBase2AliasesMmap(ItemMMap &) = 0;
   virtual const ItemMMap &GetBase2ShortcutsMmap() const = 0;
   virtual void SetBase2ShortcutsMmap(ItemMMap &) = 0;
-  virtual const ItemMap &GetAlias2BaseMap() const = 0;
-  virtual void SetAlias2BaseMap(const ItemMap &) = 0;
-  virtual const ItemMap &GetShortcuts2BaseMap() const = 0;
-  virtual void SetShortcuts2BaseMap(const ItemMap &) = 0;
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       const pws_os::CUUID &,

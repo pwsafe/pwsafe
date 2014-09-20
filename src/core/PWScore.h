@@ -523,19 +523,11 @@ private:
   ItemMMap m_base2aliases_mmap;
   ItemMMap m_base2shortcuts_mmap;
 
-  // Permanent Map: since an alias only has one base
-  //  Key = alias/shortcut uuid; Value = base uuid
-  ItemMap m_alias2base_map;
-  ItemMap m_shortcut2base_map;
   // Following are private in PWScore, public in CommandInterface:
   const ItemMMap &GetBase2AliasesMmap() const {return m_base2aliases_mmap;}
   void SetBase2AliasesMmap(ItemMMap &b2amm) {m_base2aliases_mmap = b2amm;}
   const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
-  const ItemMap &GetAlias2BaseMap() const {return m_alias2base_map;}
-  void SetAlias2BaseMap(const ItemMap &a2bm) {m_alias2base_map = a2bm;}
-  const ItemMap &GetShortcuts2BaseMap() const {return m_shortcut2base_map;}
-  void SetShortcuts2BaseMap(const ItemMap &s2bm) {m_shortcut2base_map = s2bm;}
   
   // Changed groups
   std::vector<StringX> m_vnodes_modified;
