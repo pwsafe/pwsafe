@@ -317,9 +317,6 @@ public:
   void GetAllDependentEntries(const pws_os::CUUID &base_uuid,
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
-  bool GetDependentEntryBaseUUID(const pws_os::CUUID &entry_uuid,
-                                 pws_os::CUUID &base_uuid, 
-                                 const CItemData::EntryType type) const;
   // Takes apart a 'special' password into its components:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
 
