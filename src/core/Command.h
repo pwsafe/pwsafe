@@ -347,11 +347,6 @@ private:
   //  Key = base uuid; Value = multiple alias/shortcut uuids
   ItemMMap m_saved_base2aliases_mmap;
   ItemMMap m_saved_base2shortcuts_mmap;
-
-  // Permanent Map: since an alias only has one base
-  //  Key = alias/shortcut uuid; Value = base uuid
-  ItemMap m_saved_alias2base_map;
-  ItemMap m_saved_shortcut2base_map;
 };
 
 class RemoveDependentEntryCommand : public Command
