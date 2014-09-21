@@ -148,117 +148,6 @@ enum {
   ID_LANGUAGE_END
 };
 
-/*
- * The map associates menu item id's with language specific data represented by a pair.
- * The pair consists of the wxWidgets language identifier for wxLocale
- * and the language name as wxString as it should appear in the menu.
- */
-static std::map<int, std::pair<wxLanguage, wxString> > s_languages = {
-  {
-    ID_LANGUAGE_DEFAULT,
-    {
-      wxLANGUAGE_DEFAULT,
-      _T("Default")
-    }
-  },
-  {
-    ID_LANGUAGE_CHINESE,
-    {
-      wxLANGUAGE_CHINESE,
-      _("Chinese")
-    }
-    /* code: 'zh' */
-  },
-  {
-    ID_LANGUAGE_DANISH,
-    {
-      wxLANGUAGE_DANISH,
-      _("Danish")
-    }
-    /* code: 'da' */
-  },
-  {
-    ID_LANGUAGE_DUTCH,
-    {
-      wxLANGUAGE_DUTCH,
-      _("Dutch")
-    }
-    /* code: 'nl' */
-  },
-  {
-    ID_LANGUAGE_ENGLISH,
-    {
-      wxLANGUAGE_ENGLISH,
-      _("English")
-    }
-    /* code: 'en' */
-  },
-  {
-    ID_LANGUAGE_FRENCH,
-    {
-      wxLANGUAGE_FRENCH,
-      _("French")
-    }
-    /* code: 'fr' */
-  },
-  {
-    ID_LANGUAGE_GERMAN,
-    {
-      wxLANGUAGE_GERMAN,
-      _("German")
-    }
-    /* code: 'de' */
-  },
-  {
-    ID_LANGUAGE_ITALIAN,
-    {
-      wxLANGUAGE_ITALIAN,
-      _("Italian")
-    }
-    /* code: 'it' */
-  },
-  {
-    ID_LANGUAGE_KOREAN,
-    {
-      wxLANGUAGE_KOREAN,
-      _("Korean")
-    }
-    /* code: 'ko' */
-  },
-  {
-    ID_LANGUAGE_POLISH,
-    {
-      wxLANGUAGE_POLISH,
-      _("Polish")
-    }
-    /* code: 'pl' */
-  },
-  {
-    ID_LANGUAGE_RUSSIAN,
-    {
-      wxLANGUAGE_RUSSIAN,
-      _("Russian")
-    }
-    /* code: 'ru' */
-  },
-  {
-    ID_LANGUAGE_SPANISH,
-    {
-      wxLANGUAGE_SPANISH,
-      _("Spansih")
-    }
-    /* code: 'es' */
-  },
-  {
-    ID_LANGUAGE_SWEDISH,
-    {
-      wxLANGUAGE_SWEDISH,
-      _("Swedish")
-    }
-    /* code: 'sv' */
-  }
-};
-
 /*!
  * PasswordSafeFrame class declaration
  */
@@ -284,9 +173,6 @@ public:
 
     /// Creates the controls and sizers
     void CreateControls();
-
-    /// Adds a sub menu with all supported languages to a given wxMenu
-    void AddLanguageMenu(wxMenu* parent);
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
@@ -620,7 +506,13 @@ public:
 
   template <class ExportType>
   void DoExportText();
-  
+
+  /// Adds a sub menu with all supported languages to a given wxMenu
+  void AddLanguageMenu(wxMenu* parent);
+
+  /// Adds a language to internal list of supported languages by this application
+  void AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name);
+
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   PasswordSafeSearch* m_search;
@@ -634,6 +526,13 @@ public:
   // top-level windows that we hid while locking the UI
   wxWindowList hiddenWindows;
   bool m_bUnlocking;
+
+  /*
+   * The map associates menu item id's with language specific data represented by a pair.
+   * The pair consists of the wxWidgets language identifier for wxLocale
+   * and the language name as wxString as it should appear in the menu.
+   */
+  std::map<int, std::pair<wxLanguage, wxString> > m_languages;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

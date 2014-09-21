@@ -347,6 +347,20 @@ void PasswordSafeFrame::Init()
   m_grid = NULL;
   m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
+
+  AddLanguage( ID_LANGUAGE_DEFAULT, wxLANGUAGE_DEFAULT, _("Default") );
+  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese") );  /* code: 'zh' */
+  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish") );   /* code: 'da' */
+  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch") );    /* code: 'nl' */
+  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _T("English") ); /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French") );   /* code: 'fr' */
+  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German") );   /* code: 'de' */
+  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian") );  /* code: 'it' */
+  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean") );   /* code: 'ko' */
+  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish") );   /* code: 'pl' */
+  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian") );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spansih") );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish") );  /* code: 'sv' */
 }
 
 
@@ -518,7 +532,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 
   wxMenu* child = new wxMenu;
 
-  for (auto item : s_languages) {
+  for (auto &item : m_languages) {
     child->Append(
                   item.first,          /* The key of the map that holds menu item id's*/
                   item.second.second,  /* The value of the map is a pair.
@@ -530,6 +544,12 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
   }
 
   parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
+}
+
+
+void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
+{
+    m_languages[menu_id] = std::make_pair(lang_id, lang_name);
 }
 
 /*
