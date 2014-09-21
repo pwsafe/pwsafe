@@ -424,14 +424,13 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
       const CItemData *pbci = m_core.GetBaseEntry(pci);
       if (pbci != NULL) {
-        CUUID base_uuid = pbci->GetUUID();
         StringX cs_tmp;
         cs_tmp = wxT("[") +
           pbci->GetGroup() + wxT(":") +
           pbci->GetTitle() + wxT(":") +
           pbci->GetUser()  + wxT("]");
         ci2.SetPassword(cs_tmp);
-        pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
+        pcmd = AddEntryCommand::Create(&m_core, ci2);
       }
     } else { // not alias or shortcut
       ci2.SetNormal();
