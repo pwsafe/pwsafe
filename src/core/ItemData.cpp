@@ -49,11 +49,13 @@ static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
 
 void CItemData::SetSessionKey()
 {
-  // must be called once per session, no more, no less
-  ASSERT(!IsSessionKeySet);
-  pws_os::mlock(SessionKey, sizeof(SessionKey));
-  PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
-  IsSessionKeySet = true;
+  // meant to be called once per session, no more, no less
+  // but for the test framework, we relax this
+  if (!IsSessionKeySet) {
+    pws_os::mlock(SessionKey, sizeof(SessionKey));
+    PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
+    IsSessionKeySet = true;
+  }
 }
 
 //-----------------------------------------------------------------------------
