@@ -348,12 +348,12 @@ public:
   bool IsBase() const {return IsAliasBase() || IsShortcutBase();}
   bool IsDependent() const {return IsAlias() || IsShortcut();}
 
-  void SetEntryType(EntryType et) {m_entrytype = et;}
-  void SetNormal() {m_entrytype = ET_NORMAL;}
-  void SetAliasBase() {m_entrytype = ET_ALIASBASE;}
-  void SetShortcutBase() {m_entrytype = ET_SHORTCUTBASE;}
-  void SetAlias() {m_entrytype = ET_ALIAS;}
-  void SetShortcut() {m_entrytype = ET_SHORTCUT;}
+  void SetEntryType(EntryType et);
+  void SetNormal() {SetEntryType(ET_NORMAL);}
+  void SetAliasBase() {SetEntryType(ET_ALIASBASE);}
+  void SetShortcutBase() {SetEntryType(ET_SHORTCUTBASE);}
+  void SetAlias() {SetEntryType(ET_ALIAS);}
+  void SetShortcut() {SetEntryType(ET_SHORTCUT);}
 
   EntryStatus GetStatus() const {return m_entrystatus;}
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
