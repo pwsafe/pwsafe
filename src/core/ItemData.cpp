@@ -2280,6 +2280,29 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
   return true;
 }
 
+void CItemData::SetEntryType(EntryType et)
+{
+  /**
+   * When changing between NORMAL (default) and shortcut/alias
+   * we need to move the UUID to the correct field.
+   * In other cases we leave the UUID untouched.
+   */
+  if (m_entrytype == ET_NORMAL) {
+    if (et == ET_ALIAS || et == ET_SHORTCUT) {
+      const CUUID uuid = GetUUID(UUID);
+      SetUUID(uuid, et == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+      m_fields.erase(UUID);
+    }
+  } else if (et == ET_NORMAL) {
+    if (m_entrytype == ET_ALIAS || m_entrytype == ET_SHORTCUT) {
+      const CUUID uuid = GetUUID(et == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+      SetUUID(uuid, UUID);
+      m_fields.erase(m_entrytype == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+    }
+  }
+  m_entrytype = et;
+}
+
 static void push_length(vector<char> &v, uint32 s)
 {
   v.insert(v.end(),
