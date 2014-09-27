@@ -359,7 +359,7 @@ void PasswordSafeFrame::Init()
   AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean") );   /* code: 'ko' */
   AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish") );   /* code: 'pl' */
   AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian") );  /* code: 'ru' */
-  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spansih") );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish") );  /* code: 'es' */
   AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish") );  /* code: 'sv' */
 }
 
@@ -1429,9 +1429,9 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
     auto id = evt.GetId();
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-    std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << s_languages[id].second << std::endl;
+    std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << m_languages[id].second << std::endl;
 #endif
-    wxGetApp().ChangeLanguage( s_languages[id].first );
+    wxGetApp().ChangeLanguage( m_languages[id].first );
 }
 
 /*!

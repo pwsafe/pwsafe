@@ -110,7 +110,7 @@ public:
     wxIconBundle m_appIcons;
     wxLocale *m_locale; // set in initLanguageSupport(), deleted in d'tor, unused elsewhere
     void initLanguageSupport();
-    void activateLanguage(wxLanguage language);
+    bool activateLanguage(wxLanguage language);
     
  public:
     CRecentDBList &recentDatabases();
