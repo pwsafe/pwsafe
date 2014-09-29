@@ -95,7 +95,7 @@
     </ClCompile>
     <Lib>
       <AdditionalDependencies>hid.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WDKDIR)\lib\win7\i386;$(WDKDIR)\Lib\winv6.3\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WDKDIR)\Lib\winv6.3\um\x86;$(WDKDIR)\lib\win7\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -135,7 +135,7 @@
     <Lib>
       <AdditionalDependencies>hid.lib</AdditionalDependencies>
       <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
-      <AdditionalLibraryDirectories>$(WDKDIR)\lib\win7\i386;$(WDKDIR)\Lib\winv6.3\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WDKDIR)\Lib\winv6.3\um\x86;$(WDKDIR)\lib\win7\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Lib>
   </ItemDefinitionGroup>
