@@ -1,12 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core_wx.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core_wx-11.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\wxWidgets\pwsafe_wx.vcxproj", "{45779F00-D0DD-477B-B1E1-F624B6C86AB9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\wxWidgets\pwsafe_wx-11.vcxproj", "{45779F00-D0DD-477B-B1E1-F624B6C86AB9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os_wx.vcxproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os_wx-11.vcxproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22_wx.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22_wx-11.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -59,7 +59,7 @@ str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
 str3 = CRLF & CRLF & "See README.DEVELOPERS.txt for more information."
 
-strOutputFile = "UserVariables.props"
+strOutputFile = "UserVariables-11.props"
 strPre2010 = "UserVariables.vsprops"
 
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
@@ -227,6 +227,6 @@ objOutputFile.WriteLine("</Project>")
 objOutputFile.Close
 Set objFileSystem = Nothing
 
-Call MsgBox("File UserVariables.props created successfully", 0, "Configure User Variables")
+Call MsgBox("File UserVariables-11.props created successfully", 0, "Configure User Variables")
 
 WScript.Quit(0)

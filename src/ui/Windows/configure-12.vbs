@@ -194,6 +194,6 @@ objOutputFile.WriteLine("</Project>")
 objOutputFile.Close
 Set objFileSystem = Nothing
 
-Call MsgBox("File UserVariables.props created successfully", 0, "Configure User Variables")
+Call MsgBox("File UserVariables-12.props created successfully", 0, "Configure User Variables")
 
 WScript.Quit(0)

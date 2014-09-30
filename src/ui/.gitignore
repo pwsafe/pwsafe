@@ -1,3 +1,3 @@
 *.aps
-UserVariables.props
+UserVariables*.props
 version.h
