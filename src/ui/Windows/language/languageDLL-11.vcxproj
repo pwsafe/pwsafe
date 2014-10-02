@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>languageDLL</ProjectName>
     <ProjectGuid>{FC821168-0D64-45EA-881D-4842A3A670CC}</ProjectGuid>
     <RootNamespace>languageDLL</RootNamespace>
     <Keyword>Win32Proj</Keyword>

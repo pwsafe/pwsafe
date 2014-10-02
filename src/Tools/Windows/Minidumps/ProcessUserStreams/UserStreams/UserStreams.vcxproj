@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>UserStreams</ProjectName>
     <ProjectGuid>{359E40BF-8008-4720-B315-127DA9521B0A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>UserStreams</RootNamespace>

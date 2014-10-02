@@ -15,6 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>ResText</ProjectName>
     <ProjectGuid>{72EFB681-1397-4193-BBF9-CA05AC52B75D}</ProjectGuid>
     <RootNamespace>ResText</RootNamespace>
     <Keyword>Win32Proj</Keyword>

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectName>ResPWSL</ProjectName>
     <ProjectGuid>{87690EA5-5625-4744-80F4-DA96662C1C82}</ProjectGuid>
     <RootNamespace>ResPWSL</RootNamespace>
     <Keyword>MFCProj</Keyword>
