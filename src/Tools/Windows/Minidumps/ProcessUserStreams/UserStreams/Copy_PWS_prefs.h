@@ -13,6 +13,9 @@
   THIS IS A COPY OF "A SUBSET" OF THE PREFERENCES OUT OF CORE'S PWSPREFS.CPP
 
   THIS IS NEEDED "ONLY" TO GET THE PREFERENCE "NAME"
+
+  COPY TAKEN V3.34.2 - LAST CHANGED 2014-07-25
+    SHA-1: 6086623d66adcae1c959097118f438fc3662d3cc
 */
 
 class PWSprefs
@@ -51,15 +54,18 @@ public:
     HighlightChanges, HideSystemTray,
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
+    UseAltAutoType,  //Only under X-Windows
     NumBoolPrefs};
+
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
     DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
     NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
-    OptShortcutColumnWidth, ShiftDoubleClickAction,
+    OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     NumIntPrefs};
+
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,

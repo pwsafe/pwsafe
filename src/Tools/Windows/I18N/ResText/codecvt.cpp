@@ -1,5 +1,7 @@
 #include "codecvt.h"
 
+#include <algorithm>
+
 using namespace std;
 
 ucs2_conversion::result
@@ -9,7 +11,7 @@ ucs2_conversion::do_in(mbstate_t&,
 {
 	size_t max_input = (from_end - from) & ~1;
 	size_t max_output = (to_limit - to);
-	size_t count = min(max_input/2, max_output);
+  size_t count = std::min(max_input/2, max_output);
 
 	result res = ok;
 
@@ -30,7 +32,7 @@ ucs2_conversion::do_out(mbstate_t&,
 {
 	size_t max_input = (from_end - from);
 	size_t max_output = (to_limit - to) & ~1;
-	size_t count = min(max_input, max_output/2);
+  size_t count = std::min(max_input, max_output/2);
 
 	from_next = from;
 	to_next = to;

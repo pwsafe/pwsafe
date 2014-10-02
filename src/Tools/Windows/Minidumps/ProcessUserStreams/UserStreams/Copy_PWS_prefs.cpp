@@ -10,6 +10,15 @@
   THIS IS A COPY OF "A SUBSET" OF THE PREFERENCES OUT OF CORE'S PWSPREFS.CPP
 
   THIS IS NEEDED "ONLY" TO GET THE PREFERENCE "NAME"
+
+    COPY TAKEN V3.34.2 - LAST CHANGED 2014-08-20
+      SHA-1: 855071b427bc31e7bfb4ddda4043cd9d9ea26c1f
+
+  Note when copying from the core version of PWSprefs.cpp, remove the prefix 'm_' in the following:
+  PWSprefs::m_bool_prefs[NumIntPrefs] to PWSprefs::bool_prefs[NumIntPrefs]
+  PWSprefs::m_int_prefs[NumIntPrefs] to PWSprefs::int_prefs[NumIntPrefs]
+  PWSprefs::m_string_prefs[NumIntPrefs] to PWSprefs::string_prefs[NumIntPrefs]
+
 */
 
 #include "stdafx.h"
@@ -86,7 +95,8 @@ const PWSprefs::boolPref PWSprefs::bool_prefs[NumBoolPrefs] = {
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
-  {_T("CopyPasswordWhenBrowseToURL"), true, ptDatabase},    // database
+  {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
+  {_T("UseAltAutoType"), false, ptApplication},             //application
 };
 
 // Default value = -1 means set at runtime
@@ -122,6 +132,8 @@ const PWSprefs::intPref PWSprefs::int_prefs[NumIntPrefs] = {
   {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
   {_T("ShiftDoubleClickAction"), DoubleClickCopyUsername, ptApplication,
                             minDCA, maxDCA},                        // application
+  {_T("DefaultAutotypeDelay"), 10, ptApplication,
+                            1, 60000},                              // application
 };
 
 const PWSprefs::stringPref PWSprefs::string_prefs[NumStringPrefs] = {
