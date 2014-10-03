@@ -1,12 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        pwsafeapp.h
-// Purpose:     
+// Purpose:
 // Author:      Rony Shapiro
-// Modified by: 
+// Modified by:
 // Created:     Wed 14 Jan 2009 10:11:39 PM IST
-// RCS-ID:      
+// RCS-ID:
 // Copyright:   Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>
-// Licence:     
+// Licence:
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _PWSAFEAPP_H_
@@ -47,7 +47,7 @@ class wxLocale;
  */
 
 class PwsafeApp: public wxApp
-{    
+{
     DECLARE_CLASS( PwsafeApp )
     DECLARE_EVENT_TABLE()
 
@@ -88,18 +88,18 @@ public:
 
   void SaveFrameCoords(void);
   void RestoreFrameCoords(void);
-  
+
   //virtual override from some ancestor, to handle Help commands from all windows
   virtual int FilterEvent(wxEvent& evt);
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
-  
+
  private:
     PWScore m_core;
     wxTimer* m_idleTimer;
     bool m_idleFlag; // true unless an event happened in the idle lock interval;
     PasswordSafeFrame* m_frame;
-    enum { IDLE_TIMER_ID = 33 } ; 
+    enum { IDLE_TIMER_ID = 33 } ;
     CRecentDBList *m_recentDatabases;
 
     //A map of dialog titles (or tab names) vs help sections
@@ -108,19 +108,18 @@ public:
     wxHtmlHelpController* m_controller;
 
     wxIconBundle m_appIcons;
-    wxLocale *m_locale; // set in initLanguageSupport(), deleted in d'tor, unused elsewhere
-    void initLanguageSupport();
-    bool activateLanguage(wxLanguage language);
-    
+    wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
+
  public:
     CRecentDBList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
     void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
-    void ChangeLanguage(wxLanguage language);
+    bool ActivateLanguage(wxLanguage language);
+    wxLanguage GetSystemLanguage();
 };
 
 /*!
- * Application instance declaration 
+ * Application instance declaration
  */
 
 ////@begin declare app

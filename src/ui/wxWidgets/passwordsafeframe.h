@@ -135,7 +135,7 @@ enum {
   ID_LANGUAGE_DEFAULT,
   ID_LANGUAGE_CHINESE,
   ID_LANGUAGE_DANISH,
-  ID_LANGUAGE_DUTCH, // Netherland
+  ID_LANGUAGE_DUTCH,
   ID_LANGUAGE_ENGLISH,
   ID_LANGUAGE_FRENCH,
   ID_LANGUAGE_GERMAN,
@@ -330,13 +330,13 @@ public:
 
   /// called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
   void OnCopyEmailClick( wxCommandEvent& evt);
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
-  
+
   /// wxEVT_UPDATE_UI event handler for ID_MENU_CLEAR_MRU
   void OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt);
 
@@ -345,7 +345,7 @@ public:
 
   /// wxEVT_ICONIZE event handler
   void OnIconize(wxIconizeEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_UNDO
   void OnUndo(wxCommandEvent& evt);
 
@@ -367,7 +367,7 @@ public:
   void OnMergeAnotherSafe(wxCommandEvent& evt);
   void OnSynchronize(wxCommandEvent& evt);
   void OnCompare(wxCommandEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
 
@@ -383,70 +383,70 @@ public:
   wxIcon GetIconResource( const wxString& name );
 ////@end PasswordSafeFrame member function declarations
 
-    /// Should we show tooltips?
-    static bool ShowToolTips();
+/// Should we show tooltips?
+  static bool ShowToolTips();
 
-    // Overriden virtuals
-    virtual bool Show(bool show = true);
-    virtual void SetTitle(const wxString& title);
-    virtual void SetFocus();
-    
-    // PasswordSafe specifics:
-    int Load(const StringX &passwd);
-    
-    // Hilites the item.  Used for search
-    void SelectItem(const pws_os::CUUID& uuid);
+  // Overriden virtuals
+  virtual bool Show(bool show = true);
+  virtual void SetTitle(const wxString& title);
+  virtual void SetFocus();
 
-    ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
-    ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
+  // PasswordSafe specifics:
+  int Load(const StringX &passwd);
 
-    void Execute(Command *pcmd, PWScore *pcore = NULL);
+  // Hilites the item.  Used for search
+  void SelectItem(const pws_os::CUUID& uuid);
 
-    bool IsTreeView() const {return m_currentView == TREE;}
-    void RefreshViews();
-    void FlattenTree(OrderedItemList& olist);
+  ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
+  ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
 
-    void DispatchDblClickAction(CItemData &item); //called by grid/tree
+  void Execute(Command *pcmd, PWScore *pcore = NULL);
 
-    /// Centralized handling of right click in the grid or the tree view
-    void OnContextMenu(const CItemData* item);
+  bool IsTreeView() const {return m_currentView == TREE;}
+  void RefreshViews();
+  void FlattenTree(OrderedItemList& olist);
 
-    /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
-    void UnlockSafe(bool restoreUI);
+  void DispatchDblClickAction(CItemData &item); //called by grid/tree
 
-    /// Called by app when the inactivity timer arrives
-    void HideUI(bool lock);
+  /// Centralized handling of right click in the grid or the tree view
+  void OnContextMenu(const CItemData* item);
 
-    /// Called by system tray unlock the UI (and optionally restore the main window)
-    void UnlockUI(bool restoreFrame);
-    
-    /// Returns true if the user enters the correct safe combination and presses OK
-    bool VerifySafeCombination(StringX& password);
+  /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
+  void UnlockSafe(bool restoreUI);
 
-    void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
-    void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
+  /// Called by app when the inactivity timer arrives
+  void HideUI(bool lock);
 
-    void ClearRUEList() { m_RUEList.ClearEntries(); }
-    void OnUpdateClearRecentHistory();
+  /// Called by system tray unlock the UI (and optionally restore the main window)
+  void UnlockUI(bool restoreFrame);
 
-    void ViewReport(CReport& rpt);
+  /// Returns true if the user enters the correct safe combination and presses OK
+  bool VerifySafeCombination(StringX& password);
+
+  void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
+  void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
+
+  void ClearRUEList() { m_RUEList.ClearEntries(); }
+  void OnUpdateClearRecentHistory();
+
+  void ViewReport(CReport& rpt);
 
   CItemData *GetSelectedEntry() const;
-    wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+  wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
-    void SetTrayStatus(bool locked);
-    
-////@begin PasswordSafeFrame member variables
+  void SetTrayStatus(bool locked);
+
+  ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
-////@end PasswordSafeFrame member variables
+  ////@end PasswordSafeFrame member variables
  private:
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   //we need to restrict the size of individual text fields, to prevent creating
   //enormous databases.  See the comments in DboxMain.h
-  enum {MAXTEXTCHARS = 30000};  
+  enum {MAXTEXTCHARS = 30000};
 
   int New();
   int NewFile(StringX &fname);
@@ -489,7 +489,7 @@ public:
                               std::vector<StringX> &vs_added);
   BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
-  
+
   // Do* member functions for right-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);

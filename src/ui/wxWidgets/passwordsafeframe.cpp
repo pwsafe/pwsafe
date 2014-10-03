@@ -285,7 +285,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   m_search = new PasswordSafeSearch(this);
   CreateMainToolbar();
   CreateDragBar();
-    return true;
+  return true;
 }
 
 void PasswordSafeFrame::CreateDragBar()
@@ -348,19 +348,19 @@ void PasswordSafeFrame::Init()
   m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
 
-  AddLanguage( ID_LANGUAGE_DEFAULT, wxLANGUAGE_DEFAULT, _("Default") );
-  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese") );  /* code: 'zh' */
-  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish") );   /* code: 'da' */
-  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch") );    /* code: 'nl' */
-  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _T("English") ); /* code: 'en' */
-  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French") );   /* code: 'fr' */
-  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German") );   /* code: 'de' */
-  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian") );  /* code: 'it' */
-  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean") );   /* code: 'ko' */
-  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish") );   /* code: 'pl' */
-  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian") );  /* code: 'ru' */
-  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish") );  /* code: 'es' */
-  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish") );  /* code: 'sv' */
+  AddLanguage( ID_LANGUAGE_DEFAULT, wxLANGUAGE_DEFAULT, _("Default")  );
+  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese")  );  /* code: 'zh' */
+  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish")   );  /* code: 'da' */
+  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch")    );  /* code: 'nl' */
+  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _T("English") );  /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French")   );  /* code: 'fr' */
+  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German")   );  /* code: 'de' */
+  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian")  );  /* code: 'it' */
+  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean")   );  /* code: 'ko' */
+  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish")   );  /* code: 'pl' */
+  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian")  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish")  );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish")  );  /* code: 'sv' */
 }
 
 
@@ -514,13 +514,14 @@ void PasswordSafeFrame::CreateControls()
   }
 
   GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true);
+  GetMenuBar()->Check( ID_LANGUAGE_DEFAULT, true );
 
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
 
-/*!
+/**
  * Creates the language sub menu.
  *
  * \param parent the parent to which the sub-menu should be added
@@ -539,7 +540,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
                                           The second element of the pair holds the
                                           language name as wxString */
                   _T(""),              /* The menu items tooltip */
-                  wxITEM_NORMAL
+                  wxITEM_CHECK
                   );
   }
 
@@ -547,6 +548,14 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 }
 
 
+/**
+ * Adds language specific data to internal map
+ * for language switching functionality.
+ *
+ * \param menu_id the id of the language menu item
+ * \param lang_id the wx framework specific language id
+ * \param lang_name the textual language representation on the menu
+ */
 void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
 {
     m_languages[menu_id] = std::make_pair(lang_id, lang_name);
@@ -1427,11 +1436,32 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 
 void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
-    auto id = evt.GetId();
+  auto id = evt.GetId();
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-    std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << m_languages[id].second << std::endl;
+  std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << m_languages[id].second << std::endl;
 #endif
-    wxGetApp().ChangeLanguage( m_languages[id].first );
+
+  if (wxGetApp().ActivateLanguage( m_languages[id].first )) {
+
+    // First, uncheck all language menu items, hence also the previously selected one
+    for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
+      GetMenuBar()->Check( menu_id, false );
+
+    // Check the selected language within the language menu
+    GetMenuBar()->Check( id, true );
+  }
+  /*
+   * TODO: Change language at main frame on-the-fly
+   * re-create the menu bar and toolbar
+   *
+   * - wxMenuBar* menuBar = GetMenuBar();
+   * - menuBar->Freeze();
+   * - while( menuBar->GetMenuCount() ) delete menuBar->Remove( 0 );
+   * - re-create all menu items
+   * - menuBar->Thaw();
+   * - SetMenuBar( menuBar );
+   * - menuBar->Refresh();
+   */
 }
 
 /*!

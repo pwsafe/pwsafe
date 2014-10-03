@@ -143,75 +143,6 @@ IMPLEMENT_CLASS( PwsafeApp, wxApp )
   END_EVENT_TABLE()
 
 
-/*!
- * Initializing the language support means currently
- * to determine the system default language and
- * activate this one for the application.
- */
-void PwsafeApp::initLanguageSupport()
-{
-  int language = wxLocale::GetSystemLanguage();
-
-#if defined(__UNIX__) && !defined(__WXMAC__) && wxCHECK_VERSION( 2, 8, 0 )
-  // Workaround for wx bug 15006 that has been fixed in wxWidgets 2.8
-  if (language == wxLANGUAGE_UNKNOWN) {
-    std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables." << std::endl;
-    // Undefine empty environment variables and try again
-    wxString langFull;
-    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_ALL"));
-      std::wcerr << L"Empty LC_ALL variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_MESSAGES"));
-      std::wcerr << L"Empty LC_MESSAGES variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LANG"));
-      std::wcerr << L"Empty LANG variable was dropped" << std::endl;
-    }
-    language = wxLocale::GetSystemLanguage();
-  }
-#endif
-
-  m_locale = new wxLocale( wxLANGUAGE_DEFAULT );
-  activateLanguage( static_cast<wxLanguage>(language) );
-}
-
-/*!
- * Activates a language.
- *
- * \param language the wxWidgets specific enumeration of type wxLanguage representing a supported language
- * \see http://docs.wxwidgets.org/trunk/language_8h.html#a7d1c74ce43b2fb7acf7a6fa438c0ee86
- */
-bool PwsafeApp::activateLanguage(wxLanguage language)
-{
-  static const wxString DOMAIN_("pwsafe");
-  static const wxLanguage ENGLISH = wxLANGUAGE_ENGLISH;
-
-  wxTranslations *translations = new wxTranslations;
-  translations->SetLanguage( language );
-  translations->AddStdCatalog();
-  wxTranslations::Set( translations ); // takes care of occupied memory by wxTranslations
-
-  if ( language == ENGLISH ) {
-    translations->SetLanguage( ENGLISH );
-    return true;
-  }
-
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  wxLocale::AddCatalogLookupPathPrefix( wxT("../I18N/mos") );
-#endif
-
-  if ( !translations->AddCatalog( DOMAIN_ ) ) {
-    std::wcerr << L"Couldn't load language catalog for " << wxLocale::GetLanguageName(language) << std::endl;
-    translations->SetLanguage( ENGLISH );
-  }
-
-  return translations->IsLoaded( DOMAIN_ );
-}
 /*
 bool PwsafeApp::activateLanguageX(wxLanguage language)
 {
@@ -279,38 +210,6 @@ bool PwsafeApp::activateLanguageX(wxLanguage language)
 }
 */
 /*!
- * Changes the language of the UI.
- *
- * \param language the wxWidgets specific enumeration of type wxLanguage representing a supported language
- * \see http://docs.wxwidgets.org/trunk/language_8h.html#a7d1c74ce43b2fb7acf7a6fa438c0ee86
- */
-void PwsafeApp::ChangeLanguage(wxLanguage language)
-{
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  std::cout << "[DEBUG] PwsafeApp::ChangeLanguage lang-wx-id=" << language << std::endl;
-#endif
-
-  /*
-   * TODO: Change language at main frame on-the-fly
-   * re-create the menu bar and toolbar
-   *
-   * - wxMenuBar* menuBar = GetMenuBar();
-   * - menuBar->Freeze();
-   * - while( menuBar->GetMenuCount() ) delete menuBar->Remove( 0 );
-   * - re-create all menu items
-   * - menuBar->Thaw();
-   * - SetMenuBar( menuBar );
-   * - menuBar->Refresh();
-   */
-  if (activateLanguage( language ) ) {
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-    std::cout << "[DEBUG] PwsafeApp::ChangeLanguage Activated language " << wxLocale::GetLanguageName(language) << std::endl;
-#endif
-  }
-  //m_frame->Refresh();
-}
-
-/*!
  * Constructor for PwsafeApp
  */
 
@@ -343,7 +242,7 @@ PwsafeApp::~PwsafeApp()
 
 void PwsafeApp::Init()
 {
-  initLanguageSupport();
+  m_locale = new wxLocale;
 ////@begin PwsafeApp member initialisation
 ////@end PwsafeApp member initialisation
 }
@@ -367,6 +266,9 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 
 bool PwsafeApp::OnInit()
 {
+  m_locale->Init( GetSystemLanguage() );
+  ActivateLanguage( GetSystemLanguage() );
+
   SetAppName(pwsafeAppName);
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
@@ -513,6 +415,74 @@ bool PwsafeApp::OnInit()
   } else
     SetTopWindow(m_frame);
   return true;
+}
+
+/*!
+ * Initializing the language support means currently
+ * to determine the system default language and
+ * activate this one for the application.
+ */
+wxLanguage PwsafeApp::GetSystemLanguage()
+{
+  int language = wxLocale::GetSystemLanguage();
+
+#if defined(__UNIX__) && !defined(__WXMAC__) && wxCHECK_VERSION( 2, 8, 0 )
+  // Workaround for wx bug 15006 that has been fixed in wxWidgets 2.8
+  if (language == wxLANGUAGE_UNKNOWN) {
+    std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables." << std::endl;
+    // Undefine empty environment variables and try again
+    wxString langFull;
+    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull) {
+      wxUnsetEnv(wxT("LC_ALL"));
+      std::wcerr << L"Empty LC_ALL variable was dropped" << std::endl;
+    }
+    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull) {
+      wxUnsetEnv(wxT("LC_MESSAGES"));
+      std::wcerr << L"Empty LC_MESSAGES variable was dropped" << std::endl;
+    }
+    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull) {
+      wxUnsetEnv(wxT("LANG"));
+      std::wcerr << L"Empty LANG variable was dropped" << std::endl;
+    }
+    language = wxLocale::GetSystemLanguage();
+  }
+#endif
+
+  return static_cast<wxLanguage>(language);
+}
+
+/*!
+ * Activates a language.
+ *
+ * \param language the wxWidgets specific enumeration of type wxLanguage representing a supported language
+ * \see http://docs.wxwidgets.org/trunk/language_8h.html#a7d1c74ce43b2fb7acf7a6fa438c0ee86
+ */
+bool PwsafeApp::ActivateLanguage(wxLanguage language)
+{
+  static wxString DOMAIN_("pwsafe");
+
+  wxTranslations *translations = new wxTranslations;
+  translations->SetLanguage( language );
+  translations->AddStdCatalog();
+  wxTranslations::Set( translations ); // takes care of occupied memory by wxTranslations
+
+  if ( language == wxLANGUAGE_ENGLISH) {
+    translations->SetLanguage( wxLANGUAGE_ENGLISH );
+    return true;
+  }
+
+  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
+  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
+#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+  wxLocale::AddCatalogLookupPathPrefix( wxT("../I18N/mos") );
+#endif
+
+  if ( !translations->AddCatalog( DOMAIN_ ) ) {
+    std::wcerr << L"Couldn't load language catalog for " << wxLocale::GetLanguageName(language) << std::endl;
+    translations->SetLanguage( wxLANGUAGE_ENGLISH );
+  }
+
+  return translations->IsLoaded( DOMAIN_ );
 }
 
 /*!
