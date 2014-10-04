@@ -422,7 +422,7 @@ bool CPasswordPolicy::UpdatePolicy()
     m_st_pp.lowerminlength = m_pwLowerMinLength;
     m_st_pp.symbolminlength = m_pwSymbolMinLength;
     m_st_pp.upperminlength = m_pwUpperMinLength;
-    m_st_pp.symbols = m_Symbols;
+    m_st_pp.symbols = m_Symbols.c_str();
     return true;
   }
   return false;

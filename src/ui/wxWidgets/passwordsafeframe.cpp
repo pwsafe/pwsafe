@@ -2004,7 +2004,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(_("Couldn't find uuid %s"),
+    pws_os::Trace(wxT("Couldn't find uuid %s"),
                   StringX(CUUID(entry_uuid)).c_str());
   }
 
@@ -2237,7 +2237,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
     rc = fd.ShowModal();
 
     if (rc == wxID_OK) {
-      fname = fd.GetPath();
+      fname = fd.GetPath().c_str();
       wxFileName wxfn(fname.c_str());
       if (wxfn.GetExt().empty()) {
         wxfn.SetExt(DEFAULT_SUFFIX);
@@ -2517,7 +2517,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   if (dlg.ShowModal() != wxID_OK)
     return;
 
-  StringX ImportedPrefix(dlg.groupName);
+  StringX ImportedPrefix(dlg.groupName.c_str());
   TCHAR fieldSeparator = dlg.FieldSeparator();
 
   std::wstring strError;
@@ -2528,7 +2528,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_("Import_Text"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Import_Text").c_str(), m_core.GetCurFile().c_str());
   wxString header;
   header.Printf(_("%s file being imported: %s"), _("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
@@ -2631,11 +2631,11 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
 
   if (ImportType == KeePassCSV)
-    rpt.StartReport(_("Import_KeePassV1_CSV"), m_core.GetCurFile().c_str());
+    rpt.StartReport(_("Import_KeePassV1_CSV").c_str(), m_core.GetCurFile().c_str());
   else
-    rpt.StartReport(_("Import_KeePassV1_TXT"), m_core.GetCurFile().c_str());
+    rpt.StartReport(_("Import_KeePassV1_TXT").c_str(), m_core.GetCurFile().c_str());
 
-  rpt.WriteLine(static_cast<const TCHAR *>(wxString::Format(_("Text file being imported: %s"), static_cast<const TCHAR *>(KPsFileName))));
+  rpt.WriteLine(wxString::Format(_("Text file being imported: %s").c_str(), KPsFileName.c_str()));
   rpt.WriteLine();
 
   int numImported, numSkipped, numRenamed;
@@ -2683,7 +2683,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       rpt.WriteLine();
       wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
       wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
-      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg));
+      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg.c_str()));
       rpt.EndReport();
       wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
       int icon = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
@@ -2737,7 +2737,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_("Import_XML"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Import_XML").c_str(), m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString::Format(_("%s file being imported: %s"), _("XML"), XMLFilename.c_str())));
   rpt.WriteLine();
   std::vector<StringX> vgroups;
@@ -2811,8 +2811,8 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
 
       } else {
-        const TCHAR* cs_validate = numValidated == 1 ? _("entry") : _("entries");
-        const TCHAR* cs_imported = numImported == 1 ? _("entry") : _("entries");
+        const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
+        const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
         cs_temp.Printf(_("Validated %d %s\n\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
       }
 
@@ -3040,10 +3040,10 @@ void PasswordSafeFrame::DoExportText()
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
         if (fd.ShowModal() == wxID_OK) {
-          newfile = fd.GetPath();
+          newfile = fd.GetPath().c_str();
           CReport rpt;
 
-          rpt.StartReport(ExportType::GetTitle(), sx_temp.c_str());
+          rpt.StartReport(ExportType::GetTitle().c_str(), sx_temp.c_str());
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
@@ -3127,7 +3127,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   /* Create report as we go */
   CReport rpt;
 
-  rpt.StartReport(_("Merge"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Merge").c_str(), m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
 
   stringT result = m_core.Merge(pothercore,

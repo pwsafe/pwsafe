@@ -116,7 +116,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
 
   if (FindField(ft, selected? m_lbSelected: m_lbAvailable) != wxNOT_FOUND) {
     wxLogDebug(wxT("%s already in %s list, not adding it again"),
-                    static_cast<const TCHAR*>(fieldName),
+                    fieldName,
                     selected? wxT("selected"): wxT("available"));
     return;
   }
@@ -125,7 +125,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
   const int index = FindField(ft, selected? m_lbAvailable: m_lbSelected);
   if (index != wxNOT_FOUND) {
     wxLogDebug(wxT("%s already in %s list, moving it to %s"),
-                    static_cast<const TCHAR*>(fieldName),
+                    fieldName,
                     selected? wxT("available"): wxT("selected"),
                     selected? wxT("selected"): wxT("available"));
     MoveItem(index, selected? m_lbAvailable: m_lbSelected, selected? m_lbSelected: m_lbAvailable);

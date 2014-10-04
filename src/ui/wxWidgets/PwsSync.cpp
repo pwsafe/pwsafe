@@ -361,7 +361,7 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, _("More Info"));
 
-  const wxChar* helpItems[] = {
+  const wxString helpItems[] = {
     _("1. Two entries from different databases match if their Group, Title\nand User fields match."),
     _("2. You can select the fields to update, as well as filter the entries\nfor synchronization."),
     _("3. Only existing entries in your database are updated.  No new entries are\nadded or existing entries removed during this process."),
@@ -573,8 +573,8 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
       }
     }
     else {
-      SetProgressText(wxString::Format(static_cast<const wxChar*>(GetReadErrorMessageTemplate(rc)),
-                        static_cast<const wxChar*>(otherDBPath)));
+      SetProgressText(wxString::Format(GetReadErrorMessageTemplate(rc),
+                                       otherDBPath));
       SetHeaderText(_("There was an error during synchronization"));
       SetSyncSummary(_("File Read Error"));
     }
@@ -650,9 +650,9 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 {
   CReport& rpt = m_syncData->syncReport;
 
-  rpt.StartReport(_("Synchronize"), currentCore->GetCurFile().c_str());
-  wxString line = wxString::Format(_("Synchronizing from database: %s\n"), otherCore->GetCurFile().c_str());
-  rpt.WriteLine(static_cast<const wxChar*>(line));
+  rpt.StartReport(_("Synchronize").c_str(), currentCore->GetCurFile().c_str());
+  wxString line = wxString::Format(_("Synchronizing from database: %s\n").c_str(), otherCore->GetCurFile().c_str());
+  rpt.WriteLine(line.c_str());
 
   ReportAdvancedOptions(&rpt, _("synchronized"));
 
@@ -742,14 +742,14 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 
   if (numUpdated > 0) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
-    const wxChar* cs_singular_plural_type = (numUpdated == 1 ? _("entry") : _("entries"));
-    const wxChar* cs_singular_plural_verb = (numUpdated == 1 ? _("was") : _("were"));
-    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:"), cs_singular_plural_type,
-                                                                cs_singular_plural_verb);
-    rpt.WriteLine(static_cast<const wxChar*>(resultStr));
+    const wxString cs_singular_plural_type = (numUpdated == 1 ? _("entry") : _("entries"));
+    const wxString cs_singular_plural_verb = (numUpdated == 1 ? _("was") : _("were"));
+    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:").c_str(), cs_singular_plural_type,
+                                                cs_singular_plural_verb);
+    rpt.WriteLine(resultStr.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
       const wxString fieldName = wxString::Format(wxT("\t%s"), vs_updated[i].c_str());
-      rpt.WriteLine(static_cast<const wxChar*>(fieldName));
+      rpt.WriteLine(fieldName.c_str());
     }
   }
 
@@ -759,9 +759,9 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   currentCore->Execute(pmulticmds);
 
   /* tell the user we're done & provide short merge report */
-  const wxChar* cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));
-  wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %s updated"), numUpdated, cs_entries);
-  rpt.WriteLine(static_cast<const wxChar*>(resultStr));
+  const wxString cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));
+  wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %s updated").c_str(), numUpdated, cs_entries);
+  rpt.WriteLine(resultStr.c_str());
   rpt.EndReport();
 
   m_syncData->numUpdated = numUpdated;
@@ -772,20 +772,20 @@ void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operati
   wxString line = m_syncData->selCriteria.GetGroupSelectionDescription();
   line << _(" were ") << operation << _(" with corresponding entries from \"")
               << m_syncData->otherDB.GetFullPath() << wxT('"');
-  rpt->WriteLine(static_cast<const wxChar*>(line));
+  rpt->WriteLine(line.c_str());
 
   wxArrayString fieldsSelected, fieldsNotSelected;
   const bool allSelected = m_syncData->selCriteria.GetFieldSelection(fieldsSelected, fieldsNotSelected);
   if (allSelected) {
-    line.Printf(_("All fields in matching entries were %s"), static_cast<const wxChar*>(operation));
-    rpt->WriteLine(static_cast<const wxChar*>(line));
+    line.Printf(_("All fields in matching entries were %s").c_str(), operation);
+    rpt->WriteLine(line.c_str());
   }
   else {
-    line.Printf(_("The following fields were %s"), static_cast<const wxChar*>(operation));
-    rpt->WriteLine(static_cast<const wxChar*>(line));
+    line.Printf(_("The following fields were %s").c_str(), operation);
+    rpt->WriteLine(line.c_str());
     for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
-      line.Printf(_("\t* %s"), static_cast<const wxChar*>(fieldsSelected[idx]));
-      rpt->WriteLine(static_cast<const wxChar*>(line));
+      line.Printf(wxT("\t* %s"), fieldsSelected[idx]);
+      rpt->WriteLine(line.c_str());
     }
   }
 }

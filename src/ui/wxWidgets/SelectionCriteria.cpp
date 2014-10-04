@@ -31,7 +31,7 @@ CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                   } ;
 
 struct _subgroupFunctions {
-  const charT* name;
+  const wxString name;
   PWSMatch::MatchRule function;
 
 } subgroupFunctions[] = {                         {_("equals"),              PWSMatch::MR_EQUALS},

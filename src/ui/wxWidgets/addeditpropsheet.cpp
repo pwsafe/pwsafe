@@ -1036,7 +1036,7 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
 {
-  m_password = m_PasswordCtrl->GetValue(); // save visible password
+  m_password = m_PasswordCtrl->GetValue().c_str(); // save visible password
   if (m_isPWHidden) {
     ShowPassword();
   } else {
@@ -1714,7 +1714,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
     policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
     if (!m_core.GetPolicyFromName(tostringx(polName), policy)) {
-      pws_os::Trace(_("Couldn't find policy %s\n"), ToStr(polName));
+      pws_os::Trace(wxT("Couldn't find policy %s\n"), ToStr(polName));
       return;
     }
   }

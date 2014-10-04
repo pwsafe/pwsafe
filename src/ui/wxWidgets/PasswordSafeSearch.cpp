@@ -474,7 +474,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   for ( Iter itr = begin; itr != end; ++itr) {
 
     const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
-    if (fUseSubgroups && !afn(itr).Matches(static_cast<const charT *>(subgroupText), subgroupObject, fn))
+    if (fUseSubgroups && !afn(itr).Matches(subgroupText, subgroupObject, fn))
         continue;
 
     bool found = false;
@@ -520,7 +520,7 @@ SearchPointer& SearchPointer::operator++()
     m_currentIndex++;
     if (m_currentIndex == m_indices.end()) {
       m_currentIndex = m_indices.begin();
-      PrintLabel(_("Search hit bottom, continuing at top"));
+      PrintLabel(_("Search hit bottom, continuing at top").c_str());
     }
     else {
       PrintLabel();
@@ -538,7 +538,7 @@ SearchPointer& SearchPointer::operator--()
   if (!m_indices.empty()) {
     if (m_currentIndex == m_indices.begin()) {
       m_currentIndex = --m_indices.end();
-      PrintLabel(_("Search hit top, continuing at bottom"));
+      PrintLabel(_("Search hit top, continuing at bottom").c_str());
     }
     else {
       m_currentIndex--;
@@ -560,7 +560,7 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
   else {
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
-    m_label.Printf(_("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    m_label.Printf(_("%d/%d matches").c_str(), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
     if (prefix)
       m_label = wxString(prefix) + wxT(".  ") + m_label;
   }

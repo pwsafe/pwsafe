@@ -167,11 +167,11 @@ enum {ID_SEPARATOR = -1};
                                 wxCONCAT(wxCONCAT(n, _disabled), _xpm),         \
                                 wxCONCAT(wxCONCAT(classic_, n), _xpm),          \
                                 wxCONCAT(wxCONCAT(classic_, n), _disabled_xpm)
-#define SEPARATOR {ID_SEPARATOR, NULL, NULL, NULL, NULL, NULL}
+#define SEPARATOR {ID_SEPARATOR, wxT(""), NULL, NULL, NULL, NULL}
 
 struct _PwsToolbarInfo{
   int id;
-  const wxChar* tooltip;
+  const wxString tooltip;
   const char** bitmap_normal;
   const char** bitmap_disabled;
   const char** bitmap_classic;

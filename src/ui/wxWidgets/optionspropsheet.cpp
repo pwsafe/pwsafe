@@ -87,7 +87,7 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
 END_EVENT_TABLE()
 
-const wxChar *BUSuffix[] = {
+const wxString BUSuffix[] = {
   _("None"),
   _("YYYYMMMDD_HHMMSS"),
   _("Incremented Number [001-999]"),
@@ -96,7 +96,7 @@ const wxChar *BUSuffix[] = {
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
 // Following in enum order (see PWSprefs.h)
-const wxChar *DCAStrings[] = {
+const wxString DCAStrings[] = {
   _("Copy password to clipboard"),
   _("Edit/View selected entry"),
   _("Autotype"),
