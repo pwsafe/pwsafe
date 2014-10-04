@@ -173,6 +173,7 @@ public:
 
     /// Creates the controls and sizers
     void CreateControls();
+    void CreateMenubar();
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 

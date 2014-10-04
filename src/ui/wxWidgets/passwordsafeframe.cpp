@@ -263,6 +263,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     m_bUnlocking(false)
 {
     Init();
+    m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
@@ -278,6 +279,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 ////@begin PasswordSafeFrame creation
   wxFrame::Create( parent, id, caption, pos, size, style );
 
+  CreateMenubar();
   CreateControls();
   SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
   Centre();
@@ -364,20 +366,27 @@ void PasswordSafeFrame::Init()
 }
 
 
-/*!
- * Control creation for PasswordSafeFrame
+/**
+ * Menu bar creation for PasswordSafeFrame
  */
 
-void PasswordSafeFrame::CreateControls()
+void PasswordSafeFrame::CreateMenubar()
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  const StringX lastView = prefs->GetPref(PWSprefs::LastView);
-  m_currentView = (lastView == _T("list")) ? GRID : TREE;
+  wxMenuBar* menuBar = GetMenuBar();
 
+  // Create a new menu bar if none has been created so far
+  if (menuBar == nullptr)
+    menuBar = new wxMenuBar;
+
+  menuBar->Freeze();
+
+  // Removing all existing menu items is necessary for language switching
+  while( menuBar->GetMenuCount() )
+    delete menuBar->Remove( 0 );
+
+  // Create all menu items
+  // Recreating the menu items updates also their translation
 ////@begin PasswordSafeFrame content construction
-  PasswordSafeFrame* itemFrame1 = this;
-
-  wxMenuBar* menuBar = new wxMenuBar;
   wxMenu* itemMenu3 = new wxMenu;
   itemMenu3->Append(wxID_NEW);
   itemMenu3->Append(wxID_OPEN);
@@ -484,20 +493,35 @@ void PasswordSafeFrame::CreateControls()
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
 ////@end PasswordSafeFrame content construction
-  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager(menuBar);
+
+  menuBar->Thaw();
+
+  // If there was no previous menu bar then we set the new created one
+  // otherwise the already existing one is triggered to refresh
+  if (GetMenuBar() == nullptr)
+    SetMenuBar(menuBar);
+  else
+    menuBar->Refresh();
+}
+
+/**
+ * Control creation for PasswordSafeFrame
+ */
+void PasswordSafeFrame::CreateControls()
+{
+  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager( GetMenuBar() );
   scmgr->ReadApplyUserShortcuts();
-  itemFrame1->SetMenuBar(menuBar);
 
   wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
   mainsizer->Add(itemBoxSizer83, 1, wxEXPAND | wxALIGN_CENTER);
-  itemFrame1->SetSizer(mainsizer);
+  SetSizer(mainsizer);
 
-  m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new PWSGrid( this, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
@@ -509,11 +533,8 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  if (m_currentView == TREE) {
-    itemMenu47->Check(ID_TREE_VIEW, true);
-  }
-
-  GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true);
+  GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
   GetMenuBar()->Check( ID_LANGUAGE_DEFAULT, true );
 
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
@@ -535,7 +556,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 
   for (auto &item : m_languages) {
     child->Append(
-                  item.first,          /* The key of the map that holds menu item id's*/
+                  item.first,          /* The key of the map that holds menu item id's */
                   item.second.second,  /* The value of the map is a pair.
                                           The second element of the pair holds the
                                           language name as wxString */
@@ -546,7 +567,6 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 
   parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
 }
-
 
 /**
  * Adds language specific data to internal map
@@ -1441,8 +1461,12 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << m_languages[id].second << std::endl;
 #endif
 
+  // If a new language has been selected successfully we have to 
+  // recreate the UI so that the language change takes effect
   if (wxGetApp().ActivateLanguage( m_languages[id].first )) {
 
+    CreateMenubar();
+    //RefreshToolbarButtons();
     // First, uncheck all language menu items, hence also the previously selected one
     for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
       GetMenuBar()->Check( menu_id, false );
@@ -1450,18 +1474,6 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
     // Check the selected language within the language menu
     GetMenuBar()->Check( id, true );
   }
-  /*
-   * TODO: Change language at main frame on-the-fly
-   * re-create the menu bar and toolbar
-   *
-   * - wxMenuBar* menuBar = GetMenuBar();
-   * - menuBar->Freeze();
-   * - while( menuBar->GetMenuCount() ) delete menuBar->Remove( 0 );
-   * - re-create all menu items
-   * - menuBar->Thaw();
-   * - SetMenuBar( menuBar );
-   * - menuBar->Refresh();
-   */
 }
 
 /*!
