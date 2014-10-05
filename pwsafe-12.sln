@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_osk", "src\os\windows\p
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22-12.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coretest", "src\test\coretest-12.vcxproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -131,6 +133,26 @@ Global
 		{326058EE-494B-4E51-BB34-1F4505E368B7}.ReleaseM|Win32.Build.0 = Release|Win32
 		{326058EE-494B-4E51-BB34-1F4505E368B7}.ReleaseM|x64.ActiveCfg = Release|x64
 		{326058EE-494B-4E51-BB34-1F4505E368B7}.ReleaseM|x64.Build.0 = Release|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.Build.0 = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|x64.ActiveCfg = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|x64.Build.0 = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|Win32.ActiveCfg = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|Win32.Build.0 = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.ActiveCfg = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.Build.0 = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.ActiveCfg = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.Build.0 = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|x64.ActiveCfg = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|x64.Build.0 = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.ActiveCfg = Release|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.Build.0 = Release|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|x64.ActiveCfg = Release|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|x64.Build.0 = Release|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|Win32.ActiveCfg = Release|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|Win32.Build.0 = Release|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|x64.ActiveCfg = Release|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
