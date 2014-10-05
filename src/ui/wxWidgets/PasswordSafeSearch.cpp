@@ -474,7 +474,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   for ( Iter itr = begin; itr != end; ++itr) {
 
     const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
-    if (fUseSubgroups && !afn(itr).Matches(subgroupText, subgroupObject, fn))
+    if (fUseSubgroups && !afn(itr).Matches(stringT(subgroupText.c_str()), subgroupObject, fn))
         continue;
 
     bool found = false;

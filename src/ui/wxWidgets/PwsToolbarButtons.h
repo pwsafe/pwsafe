@@ -176,6 +176,13 @@ struct _PwsToolbarInfo{
   const char** bitmap_disabled;
   const char** bitmap_classic;
   const char** bitmap_classic_disabled;
+  // Following ctor's required to shut up some compier warnings
+_PwsToolbarInfo() : id(0), tooltip(wxT("")), bitmap_normal(NULL), bitmap_disabled(NULL),
+    bitmap_classic(NULL), bitmap_classic_disabled(NULL) {}
+_PwsToolbarInfo(int aid, const wxString &atooltip, const char** abitmap_normal,
+                const char** abitmap_disabled, const char** abitmap_classic, const char** abitmap_classic_disabled) :
+  id(aid), tooltip(atooltip), bitmap_normal(abitmap_normal), bitmap_disabled(abitmap_disabled),
+    bitmap_classic(abitmap_classic), bitmap_classic_disabled(abitmap_classic_disabled) {}
 } PwsToolbarButtons[] =
 
 {
