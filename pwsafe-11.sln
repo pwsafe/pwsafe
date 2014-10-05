@@ -18,7 +18,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_osk", "src\os\windows\p
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22-11.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coretest", "src\test\coretest.vcxproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coretest", "src\test\coretest-11.vcxproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,8 +169,8 @@ Global
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|x64.Build.0 = Debug|x64
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|Win32.ActiveCfg = DebugM|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|Win32.Build.0 = DebugM|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.ActiveCfg = Debug|x64
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.Build.0 = Debug|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.ActiveCfg = DebugM|x64
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.DebugM|x64.Build.0 = DebugM|x64
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.ActiveCfg = Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.Build.0 = Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|x64.ActiveCfg = Debug|x64
