@@ -502,6 +502,10 @@ void PasswordSafeFrame::CreateMenubar()
     SetMenuBar(menuBar);
   else
     menuBar->Refresh();
+
+  // Update menu selections
+  GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
 }
 
 /**
@@ -533,8 +537,6 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
-  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
   GetMenuBar()->Check( ID_LANGUAGE_DEFAULT, true );
 
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
