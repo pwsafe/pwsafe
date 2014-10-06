@@ -399,6 +399,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -507,6 +508,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AES.cpp" />
     <ClCompile Include="BlowFish.cpp" />
     <ClCompile Include="CheckVersion.cpp" />
     <ClCompile Include="Command.cpp" />
@@ -556,6 +558,7 @@
     <ClCompile Include="XML\XERCES\XSecMemMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AES.h" />
     <ClInclude Include="BlowFish.h" />
     <ClInclude Include="CheckVersion.h" />
     <ClInclude Include="Command.h" />
