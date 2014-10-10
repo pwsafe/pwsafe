@@ -36,9 +36,6 @@
 using namespace std;
 using pws_os::CUUID;
 
-bool CItemData::IsSessionKeySet = false;
-unsigned char CItemData::SessionKey[64];
-
 // some fwd declarations:
 static bool pull_string(StringX &str, const unsigned char *data, size_t len);
 static bool pull_time(time_t &t, const unsigned char *data, size_t len);
@@ -62,110 +59,43 @@ void CItemData::SetSessionKey()
 // Constructors
 
 CItemData::CItemData()
-  : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
-    m_display_info(NULL)
+  : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
-  m_fields(that.m_fields),
-  m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
-  m_display_info(that.m_display_info == NULL ?
-                      NULL : that.m_display_info->clone())
+  CItem(that), m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus)
 {
   memcpy(m_salt, that.m_salt, SaltLength);
-  m_URFL = that.m_URFL;
 }
 
 CItemData::~CItemData()
 {
-  delete m_display_info;
 }
 
 CItemData& CItemData::operator=(const CItemData &that)
 {
-  // Check for self-assignment
-  if (this != &that) {
-    m_fields = that.m_fields;
-
-    delete m_display_info;
-    m_display_info = that.m_display_info == NULL ?
-      NULL : that.m_display_info->clone();
-
-    m_URFL = that.m_URFL;
-
+  if (this != &that) { // Check for self-assignment
+    CItem::operator=(that);
     m_entrytype = that.m_entrytype;
     m_entrystatus = that.m_entrystatus;
-    memcpy(m_salt, that.m_salt, SaltLength);
   }
-
   return *this;
 }
 
 void CItemData::Clear()
 {
-  m_fields.clear();
-  m_URFL.clear();
+  CItem::Clear();
   m_entrytype = ET_NORMAL;
   m_entrystatus = ES_CLEAN;
 }
 
-bool CItemData::CompareFields(const CItemField &fthis,
-                              const CItemData &that, const CItemField &fthat) const
-{
-  if (fthis.GetLength() != fthat.GetLength() ||
-      fthis.GetType() != fthat.GetType())
-    return false;
-  size_t flength = fthis.GetLength() + BlowFish::BLOCKSIZE;
-  unsigned char *dthis = new unsigned char[flength];
-  unsigned char *dthat = new unsigned char[flength];
-  GetField(fthis, dthis, flength);
-  flength = fthis.GetLength() + BlowFish::BLOCKSIZE; // GetField updates length, reset
-  that.GetField(fthat, dthat, flength);
-  bool retval = (memcmp(dthis, dthat, flength) == 0);
-  delete[] dthis; delete[] dthat;
-  return retval;
-}
-
 bool CItemData::operator==(const CItemData &that) const
 {
-  if (m_entrytype == that.m_entrytype &&
-      m_entrystatus == that.m_entrystatus &&
-      m_fields.size() == that.m_fields.size() &&
-      m_URFL.size() == that.m_URFL.size()) {
-    /**
-     * It would be nice to be able to compare the m_fields
-     * and m_URFL directly, but the fields would be
-     * encrypted with different salts, making byte-wise
-     * field comparisons infeasible.
-     */
-    FieldConstIter ithis, ithat;
-    for (ithis = m_fields.begin(), ithat = that.m_fields.begin();
-         ithis != m_fields.end();
-         ithis++, ithat++) {
-      if (ithis->first != ithat->first)
-        return false;
-      const CItemField &fthis = ithis->second;
-      const CItemField &fthat = ithat->second;
-      if (!CompareFields(fthis, that, fthat))
-        return false;
-    } // for m_fields
-  } else
-    return false;
-
-  // If we made it so far, now compare the unknown record fields
-  // (We already know their sizes are equal)
-  if (!m_URFL.empty()) {
-    UnknownFieldsConstIter ithis, ithat;
-    for (ithis = m_URFL.begin(), ithat = that.m_URFL.begin();
-         ithis != m_URFL.end();
-         ithis++, ithat++) {
-      if (!CompareFields(*ithis, that, *ithat))
-        return false;
-    } // for m_URFL
-  }
-  return true;
+  return (m_entrytype == that.m_entrytype &&
+          m_entrystatus == that.m_entrystatus &&
+          CItem::operator==(that));
 }
 
 void CItemData::ParseSpecialPasswords()
@@ -297,7 +227,7 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
     ASSERT(!field.IsEmpty());
     size_t flength = field.GetLength() + BlowFish::BLOCKSIZE;
     unsigned char *pdata = new unsigned char[flength];
-    GetField(field, pdata, flength);
+    CItem::GetField(field, pdata, flength);
     if (isUTF8) {
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
       size_t srclen = field.GetLength()/sizeof(TCHAR);
@@ -494,13 +424,6 @@ StringX CItemData::GetField(const CItemField &field) const
   return retval;
 }
 
-void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &length) const
-{
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(value, length, bf);
-  delete bf;
-}
-
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
   if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&
@@ -566,21 +489,6 @@ StringX CItemData::GetFieldValue(FieldType ft) const
   }
 }
 
-size_t CItemData::GetSize() const
-{
-  size_t length(0);
-
-  for (FieldConstIter fiter = m_fields.begin(); fiter != m_fields.end(); fiter++)
-    length += fiter->second.GetLength();
-
-
-  for (UnknownFieldsConstIter ufiter = m_URFL.begin();
-       ufiter != m_URFL.end(); ufiter++)
-    length += ufiter->GetLength();
-
-  return length;
-}
-
 static void CleanNotes(StringX &s, TCHAR delimiter)
 {
   if (delimiter != 0) {
@@ -617,7 +525,7 @@ void CItemData::GetTime(int whichtime, time_t &t) const
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
 
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
     // time field's store in native time_t size, regardless of
     // the representation on file
@@ -657,7 +565,8 @@ void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
     pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!"));
     memset(uuid_array, 0, length);
   } else
-    GetField(fiter->second, static_cast<unsigned char *>(uuid_array), length);
+    CItem::GetField(fiter->second,
+                    static_cast<unsigned char *>(uuid_array), length);
 }
 
 const CUUID CItemData::GetUUID(FieldType ft) const
@@ -688,7 +597,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
 
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
       memcpy(&xint, in, sizeof(int32));
@@ -718,7 +627,7 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   else {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(char));
       ucprotected = in[0];
@@ -749,7 +658,7 @@ int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int16));
@@ -777,7 +686,7 @@ int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
@@ -838,7 +747,7 @@ void CItemData::GetUnknownField(unsigned char &type, size_t &length,
   length = flength;
   flength += BlowFish::BLOCKSIZE; // ensure that we've enough for at least one block
   pdata = new unsigned char[flength];
-  GetField(item, pdata, flength);
+  CItem::GetField(item, pdata, flength);
 }
 
 StringX CItemData::GetPWHistory() const
@@ -1314,12 +1223,7 @@ void CItemData::SetField(FieldType ft, const StringX &value)
 void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length)
 {
   ASSERT(ft != END);
-  if (length != 0) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
-    delete bf;
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
+  CItem::SetField(ft, value, length);
 }
 
 void CItemData::CreateUUID(FieldType ft)
@@ -1617,22 +1521,6 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
-void CItemData::SetUnknownField(unsigned char type,
-                                size_t length,
-                                const unsigned char *ufield)
-{
-  /**
-     TODO - check that this unknown field from the XML Import file is now
-     known and it should be added as that instead!
-  **/
-
-  CItemField unkrfe(type);
-  BlowFish *bf = MakeBlowFish(false);
-  unkrfe.Set(ufield, length, bf);
-  delete bf;
-  m_URFL.push_back(unkrfe);
-}
-
 void CItemData::SetPWHistory(const StringX &PWHistory)
 {
   StringX pwh = PWHistory;
@@ -1822,18 +1710,6 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     default:
       ASSERT(0);     /* Not supported */
   }
-}
-
-BlowFish *CItemData::MakeBlowFish(bool noData) const
-{
-  ASSERT(IsSessionKeySet);
-  // Creating a BlowFish object's relatively expensive. No reason
-  // to bother if we don't have any data to process.
-  if (noData)
-    return NULL;
-  else
-    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                  m_salt, SaltLength);
 }
 
 bool CItemData::ValidatePWHistory()

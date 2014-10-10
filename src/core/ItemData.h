@@ -13,7 +13,7 @@
 
 #include "Util.h"
 #include "Match.h"
-#include "ItemField.h"
+#include "Item.h"
 #include "PWSprefs.h"
 #include "PWPolicy.h"
 #include "os/UUID.h"
@@ -24,9 +24,6 @@
 #include <vector>
 #include <string>
 #include <map>
-
-typedef std::vector<CItemField> UnknownFields;
-typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 //-----------------------------------------------------------------------------
 
@@ -50,15 +47,7 @@ class BlowFish;
 class PWSfile;
 class PWSfileV4;
 
-struct DisplayInfoBase
-{
-  // Following used by display methods of the GUI
-  DisplayInfoBase() {}
-  virtual ~DisplayInfoBase() {}
-  virtual DisplayInfoBase *clone() const = 0; // virtual c'tor idiom
-};
-
-class CItemData
+class CItemData : public CItem
 {
 public:
   // field types, per formatV{2,3}.txt. Any value > 0xff is internal only!
@@ -221,11 +210,6 @@ public:
                      const CItemData *pcibase, bool bforce_normal_entry,
                      bool &bXMLErrorsFound) const;
 
-  void SetUnknownField(unsigned char type, size_t length,
-                       const unsigned char *ufield);
-  size_t NumberUnknownFields() const {return m_URFL.size();}
-  void ClearUnknownFields() {return m_URFL.clear();}
-
   void CreateUUID(FieldType ft = CItemData::END); // V20 - generate UUID for new item
   void SetName(const StringX &name,
                const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
@@ -275,11 +259,8 @@ public:
   void SetFieldValue(FieldType ft, const StringX &value);
 
   CItemData& operator=(const CItemData& second);
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
-  void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
+
   void Clear();
-  void ClearField(FieldType ft) {m_fields.erase(ft);}
 
   // For unit tests:
   bool operator==(const CItemData &that) const;
@@ -362,32 +343,9 @@ public:
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
 
-  size_t GetSize() const;
-  void GetSize(size_t &isize) const {isize = GetSize();}
-
-
 private:
-  typedef std::map<FieldType, CItemField> FieldMap;
-  typedef FieldMap::const_iterator FieldConstIter;
-  typedef FieldMap::iterator FieldIter;
-
-  FieldMap   m_fields;
-
-  // Save unknown record fields on read to put back on write unchanged
-  UnknownFields m_URFL;
-
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
-
-  // random key for storing stuff in memory, just to remove dependence
-  // on passphrase
-  static bool IsSessionKeySet;
-  static unsigned char SessionKey[64];
-  //The salt value
-  unsigned char m_salt[SaltLength];
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *m_display_info;
-
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
@@ -397,24 +355,13 @@ private:
   void SetTime(const int whichtime, time_t t); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
-  // Create local Encryption/Decryption object
-  BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
   StringX GetField(FieldType ft) const;
   StringX GetField(const CItemField &field) const;
-  void GetField(const CItemField &field, unsigned char *value,
-                size_t &length) const;
 
   void SetField(FieldType ft, const StringX &value);
   void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
-
-  // Helper function for operator==
-  bool CompareFields(const CItemField &fthis,
-                     const CItemData &that, const CItemField &fthat) const;
-
-
-  bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
 
   // for V3 Alias or Shortcut, the base UUID is encoded in password
   void ParseSpecialPasswords();
