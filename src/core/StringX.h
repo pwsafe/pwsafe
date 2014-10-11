@@ -99,6 +99,9 @@ namespace S_Alloc
         return p;
       }
 
+#ifdef _WIN32
+#pragma optimize("", off)
+#endif
       // Free raw memory.
       // Note that C++ standard defines this function as:
       //   deallocate(pointer p, size_type n).
@@ -118,6 +121,9 @@ namespace S_Alloc
         }
         std::free(p);
       }
+#ifdef _WIN32
+#pragma optimize("", on)
+#endif
 
     private:
       // No data
