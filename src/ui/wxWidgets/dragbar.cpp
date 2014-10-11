@@ -29,11 +29,11 @@
 #include <wx/dnd.h>
 ////@end includes
 
+#include <algorithm>
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
-
-#include <algorithm>
 
 BEGIN_EVENT_TABLE( CDragBar, wxControl )
   EVT_LEFT_DOWN(CDragBar::OnLeftDown)

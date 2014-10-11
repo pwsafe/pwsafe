@@ -36,10 +36,11 @@
 #include "pwsclip.h"
 #include "./wxutils.h"
 
+#include <algorithm>
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
-#include <algorithm>
 
 ////@begin XPM images
 ////@end XPM images
