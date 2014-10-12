@@ -33,12 +33,12 @@ class FileV3Test : public ::testing::Test
 {
 protected:
   FileV3Test(); // to init members
-  CItemData smallItem, fullItem;
+  CItemData smallItem, fullItem, item;
   void SetUp();
   void TearDown();
 
   const StringX passphrase;
-  stringT emptyfname;
+  stringT fname;
   // members used to populate and test fullItem:
   const StringX title, password, user, notes, group;
   const StringX url, at, email, polname, symbols, runcmd;
@@ -53,7 +53,7 @@ protected:
 FileV3Test::FileV3Test()
   : passphrase(_T("enchilada-sonol")),
     title(_T("a-title")), password(_T("b-password!?")),
-    emptyfname(_T("empty.psafe3")),
+    fname(_T("V3test.psafe3")),
     user(_T("C-UserR-ינור")), // non-English
     notes(_T("N is for notes\nwhich can span lines\r\nin several ways.")),
     group(_T("Groups.are.nested.by.dots")), url(_T("http://pwsafe.org/")),
@@ -93,25 +93,52 @@ void FileV3Test::SetUp()
 
 void FileV3Test::TearDown()
 {
-  ASSERT_TRUE(pws_os::DeleteAFile(emptyfname));
-  ASSERT_FALSE(pws_os::FileExists(emptyfname));
+  ASSERT_TRUE(pws_os::DeleteAFile(fname));
+  ASSERT_FALSE(pws_os::FileExists(fname));
 }
 
 // And now the tests...
 
 TEST_F(FileV3Test, EmptyFile)
 {
-  CItemData it;
-
-  PWSfileV3 fw(emptyfname.c_str(), PWSfile::Write, PWSfile::V30);
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
-  ASSERT_TRUE(pws_os::FileExists(emptyfname));
+  ASSERT_TRUE(pws_os::FileExists(fname));
 
-  PWSfileV3 fr(emptyfname.c_str(), PWSfile::Read, PWSfile::V30);
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
   // Try opening with wrong passphrasse, check failure
   EXPECT_EQ(PWSfile::WRONG_PASSWORD, fr.Open(_T("x")));
   // Now open with correct one, check emptiness
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
-  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(it));
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV3Test, HeaderTest)
+{
+  // header is written when file's opened for write.
+  PWSfile::HeaderRecord hdr1, hdr2;
+  hdr1.m_prefString = _T("aPrefString");
+  hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
+  hdr1.m_lastsavedby = _T("aUser");
+  hdr1.m_lastsavedon = _T("aMachine");
+  hdr1.m_whatlastsaved = _T("PasswordSafe test framework");
+  hdr1.m_dbname = fname.c_str();
+  hdr1.m_dbdesc = _T("Test the header's persistency");
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  fw.SetHeader(hdr1);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  hdr1 = fw.GetHeader(); // Some fields set by Open()
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  hdr2 = fr.GetHeader();
+  // We need the following to read past the termination block!
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  ASSERT_EQ(hdr1, hdr2);
 }

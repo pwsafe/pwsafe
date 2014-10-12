@@ -158,6 +158,31 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
   return *this;
 }
 
+bool PWSfile::HeaderRecord::operator==(const PWSfile::HeaderRecord &h) const
+{
+  bool retval = (m_nCurrentMajorVersion == h.m_nCurrentMajorVersion &&
+                 m_nCurrentMinorVersion == h.m_nCurrentMinorVersion &&
+                 m_file_uuid == h.m_file_uuid &&
+                 m_displaystatus == h.m_displaystatus &&
+                 m_prefString == h.m_prefString &&
+                 m_whenlastsaved == h.m_whenlastsaved &&
+                 m_lastsavedby == h.m_lastsavedby &&
+                 m_lastsavedon == h.m_lastsavedon &&
+                 m_whatlastsaved == h.m_whatlastsaved &&
+                 m_dbname == h.m_dbname &&
+                 m_dbdesc == h.m_dbdesc &&
+                 m_RUEList == h.m_RUEList);
+  if (!retval)
+    return false;
+  if (m_yubi_sk == NULL && h.m_yubi_sk == NULL)
+    return true;
+  if ((m_yubi_sk == NULL && h.m_yubi_sk != NULL) ||
+      (m_yubi_sk != NULL && h.m_yubi_sk == NULL))
+    return false;
+  // here iff both m_yubi_sk's != NULL
+  return (memcmp(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN) == 0);
+}
+
 void PWSfile::FOpen()
 {
   ASSERT(!m_filename.empty());

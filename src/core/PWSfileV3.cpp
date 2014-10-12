@@ -464,8 +464,9 @@ int PWSfileV3::WriteHeader()
   // Write out time of this update
   time_t time_now;
   time(&time_now);
+  // V3 still uses 32 bit time, so we truncate ruthlessly...
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
-                        reinterpret_cast<unsigned char *>(&time_now), sizeof(time_t));
+                        reinterpret_cast<unsigned char *>(&time_now), 4);
   if (numWritten <= 0) { m_status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
