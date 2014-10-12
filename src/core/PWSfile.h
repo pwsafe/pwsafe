@@ -183,6 +183,7 @@ protected:
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
+  int m_status;
   HeaderRecord m_hdr;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
