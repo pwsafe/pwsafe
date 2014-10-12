@@ -254,7 +254,6 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 
 int CItemData::WriteCommon(PWSfile *out) const
 {
-  int status = PWSfile::SUCCESS;
   int i;
 
   const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
@@ -314,10 +313,12 @@ int CItemData::WriteCommon(PWSfile *out) const
   WriteIfSet(PROTECTED, out, false);
 
   WriteUnknowns(out);
-  // Assume that if previous write failed, last one will too for same reason
-  status = out->WriteField(END, _T(""));
-
-  return status;
+  // Assume that if previous write failed, last one will too.
+  if (out->WriteField(END, _T("")) > 0) {
+    return PWSfile::SUCCESS;
+  } else {
+    return PWSfile::FAILURE;
+  }
 }
 
 int CItemData::Write(PWSfile *out) const
