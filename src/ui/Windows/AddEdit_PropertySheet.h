@@ -17,6 +17,7 @@ class ItemData;
 #include "AddEdit_Additional.h"
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PasswordPolicy.h"
+#include "AddEdit_Attachment.h"
 #include "SecString.h"
 
 class CAddEdit_PropertySheet : public CPWPropertySheet
@@ -80,6 +81,7 @@ private:
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
+  CAddEdit_Attachment      *m_pp_attachment;
 
   bool m_bIsModified, m_bChanged, m_bNotesChanged, m_bSymbolsChanged;
 };
