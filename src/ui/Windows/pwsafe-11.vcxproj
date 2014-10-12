@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugM|Win32">
@@ -770,6 +770,7 @@
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="AddEdit_Additional.cpp" />
+    <ClCompile Include="AddEdit_Attachment.cpp" />
     <ClCompile Include="AddEdit_Basic.cpp" />
     <ClCompile Include="AddEdit_DateTimes.cpp" />
     <ClCompile Include="AddEdit_PasswordPolicy.cpp" />
@@ -900,6 +901,7 @@
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="AddEdit_Additional.h" />
+    <ClInclude Include="AddEdit_Attachment.h" />
     <ClInclude Include="AddEdit_Basic.h" />
     <ClInclude Include="AddEdit_DateTimes.h" />
     <ClInclude Include="AddEdit_PasswordPolicy.h" />
