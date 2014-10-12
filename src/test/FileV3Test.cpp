@@ -67,6 +67,7 @@ FileV3Test::FileV3Test()
 
 void FileV3Test::SetUp()
 {
+  fullItem.CreateUUID();
   fullItem.SetTitle(title);
   fullItem.SetPassword(password);
   fullItem.SetUser(user);
@@ -87,6 +88,7 @@ void FileV3Test::SetUp()
   fullItem.SetShiftDCA(iSDCA);
   fullItem.SetKBShortcut(kbs);
 
+  smallItem.CreateUUID();
   smallItem.SetTitle(_T("picollo"));
   smallItem.SetPassword(_T("tiny-passw"));
 }
@@ -141,4 +143,23 @@ TEST_F(FileV3Test, HeaderTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   ASSERT_EQ(hdr1, hdr2);
+}
+
+TEST_F(FileV3Test, ItemTest)
+{
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(smallItem, item);
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(fullItem, item);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
