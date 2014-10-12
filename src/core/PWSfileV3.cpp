@@ -76,7 +76,7 @@ int PWSfileV3::Open(const StringX &passkey)
 {
   PWS_LOGIT;
 
-  int status = SUCCESS;
+  m_status = SUCCESS;
 
   ASSERT(m_curversion == V30);
   if (passkey.empty()) { // Can happen if db 'locked'
@@ -90,15 +90,15 @@ int PWSfileV3::Open(const StringX &passkey)
     return CANT_OPEN_FILE;
 
   if (m_rw == Write) {
-    status = WriteHeader();
+    m_status = WriteHeader();
   } else { // open for read
-    status = ReadHeader();
-    if (status != SUCCESS) {
+    m_status = ReadHeader();
+    if (m_status != SUCCESS) {
       Close();
-      return status;
+      return m_status;
     }
   }
-  return status;
+  return m_status;
 }
 
 int PWSfileV3::Close()
@@ -107,6 +107,12 @@ int PWSfileV3::Close()
 
   if (m_fd == NULL)
     return SUCCESS; // idempotent
+
+  // If we're here as part of failure handling,
+  // no sense to work on digests, we might even
+  // assert there...
+  if (m_status != SUCCESS)
+    return PWSfile::Close();
 
   unsigned char digest[SHA256::HASHLEN];
   m_hmac.Final(digest);
@@ -331,7 +337,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
-    if (_ret != cnt) { status = FAILURE; goto end;} \
+    if (_ret != cnt) { m_status = FAILURE; goto end;} \
   }
 
 int PWSfileV3::WriteHeader()
@@ -341,9 +347,10 @@ int PWSfileV3::WriteHeader()
   // Following code is divided into {} blocks to
   // prevent "uninitialized" compile errors, as we use
   // goto for error handling
-  int status = SUCCESS;
   size_t numWritten;
   unsigned char salt[PWSaltLength];
+
+  m_status = SUCCESS;
 
   // See formatV3.txt for explanation of what's written here and why
   uint32 NumHashIters;
@@ -426,7 +433,7 @@ int PWSfileV3::WriteHeader()
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
 
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
   // Write UUID
   if (m_hdr.m_file_uuid == pws_os::CUUID::NullUUID()) {
@@ -437,11 +444,11 @@ int PWSfileV3::WriteHeader()
 
   numWritten = WriteCBC(HDR_UUID, *m_hdr.m_file_uuid.GetARep(),
                         sizeof(uuid_array_t));
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
   // Write (non default) user preferences
   numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString.c_str());
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
   // Write out display status
   if (!m_hdr.m_displaystatus.empty()) {
@@ -451,7 +458,7 @@ int PWSfileV3::WriteHeader()
          iter != m_hdr.m_displaystatus.end(); iter++)
       ds += (*iter) ? _T("1") : _T("0");
     numWritten = WriteCBC(HDR_DISPSTAT, ds);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   // Write out time of this update
@@ -459,7 +466,7 @@ int PWSfileV3::WriteHeader()
   time(&time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
                         reinterpret_cast<unsigned char *>(&time_now), sizeof(time_t));
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
   // Write out who saved it!
@@ -470,7 +477,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
       numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
     m_hdr.m_lastsavedby = user.c_str();
     m_hdr.m_lastsavedon = sysname.c_str();
   }
@@ -478,15 +485,15 @@ int PWSfileV3::WriteHeader()
   // Write out what saved it!
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION,
                         m_hdr.m_whatlastsaved);
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
   if (!m_hdr.m_dbname.empty()) {
     numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
   if (!m_hdr.m_dbdesc.empty()) {
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
   if (!m_MapFilters.empty()) {
     coStringXStream oss;  // XML is always char not wchar_t
@@ -494,7 +501,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   if (!m_hdr.m_RUEList.empty()) {
@@ -515,7 +522,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_RUE,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   // Named Policies
@@ -549,13 +556,13 @@ int PWSfileV3::WriteHeader()
     }
 
     numWritten = WriteCBC(HDR_PSWDPOLICIES, StringX(oss.str().c_str()));
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   // Empty Groups
   for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
     numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   for (UnknownFieldList::iterator vi_IterUHFE = m_UHFL.begin();
@@ -563,22 +570,22 @@ int PWSfileV3::WriteHeader()
     UnknownFieldEntry &unkhfe = *vi_IterUHFE;
     numWritten = WriteCBC(unkhfe.uc_Type,
                           unkhfe.uc_pUField, static_cast<unsigned int>(unkhfe.st_length));
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   if (m_hdr.m_yubi_sk != NULL) {
     numWritten = WriteCBC(HDR_YUBI_SK, m_hdr.m_yubi_sk, HeaderRecord::YUBI_SK_LEN);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
 
   // Write zero-length end-of-record type item
   numWritten = WriteCBC(HDR_END, NULL, 0);
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
  end:
-  if (status != SUCCESS)
+  if (m_status != SUCCESS)
     Close();
-  return status;
+  return m_status;
 }
 
 int PWSfileV3::ReadHeader()
@@ -586,12 +593,12 @@ int PWSfileV3::ReadHeader()
   PWS_LOGIT;
 
   unsigned char Ptag[SHA256::HASHLEN];
-  int status = CheckPasskey(m_filename, m_passkey, m_fd,
-                            Ptag, &m_nHashIters);
+  m_status = CheckPasskey(m_filename, m_passkey, m_fd,
+                          Ptag, &m_nHashIters);
 
-  if (status != SUCCESS) {
+  if (m_status != SUCCESS) {
     Close();
-    return status;
+    return m_status;
   }
 
   unsigned char B1B2[sizeof(m_key)];
