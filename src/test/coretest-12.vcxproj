@@ -372,6 +372,7 @@
       <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessSuppressLineNumbers>
       <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessSuppressLineNumbers>
     </ClCompile>
+    <ClCompile Include="FileV3Test.cpp" />
     <ClCompile Include="HMAC_SHA256Test.cpp" />
     <ClCompile Include="ItemDataTest.cpp" />
     <ClCompile Include="ItemFieldTest.cpp" />
