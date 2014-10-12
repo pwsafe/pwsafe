@@ -99,6 +99,7 @@ public:
     HeaderRecord();
     HeaderRecord(const HeaderRecord &hdr);
     HeaderRecord &operator =(const HeaderRecord &hdr);
+    bool operator==(const HeaderRecord &hdr) const; // for unit tests
     ~HeaderRecord();
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     pws_os::CUUID m_file_uuid;         // Unique DB ID
