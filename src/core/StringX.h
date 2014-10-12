@@ -18,20 +18,6 @@
  *
  */
 
-/*
- * In Visual Studio and wxWidgets 3.0.x, <wx/msw/msvcrt.h> redefines
- * the 'new' operator, which causes a compiler error C2059
- * "syntax error : 'reinterpret_cast')" with the in-place construction
- * member (construct) of StringX.
-
- * To prevent this in this environment, push & pop the 'new' macro.
- */
-
-#ifdef __WXMSW__
-#pragma push_macro("new")
-#undef new
-#endif
-
 #include <string>
 #include <memory>
 #include <limits>
@@ -119,9 +105,6 @@ namespace S_Alloc
       // Free raw memory.
       // Note that C++ standard defines this function as:
       //   deallocate(pointer p, size_type n).
-#ifdef _WIN32
-#pragma optimize("",off)
-#endif
       void deallocate(pointer p, size_type n) {
         // assert(p != NULL);
         // The standard states that p must not be NULL. However, some
@@ -196,10 +179,6 @@ template<class T> void LoadAString(T &s, int id);
 
 inline stringT stringx2std(const StringX &str) { return stringT(str.data(), str.size()); }
 inline StringX std2stringx(const stringT& str)   { return StringX(str.data(), str.size()); }
-
-#ifdef __WXMSW__
-#pragma pop_macro("new")
-#endif
 
 #endif /* __STRINGX_H */
 //-----------------------------------------------------------------------------
