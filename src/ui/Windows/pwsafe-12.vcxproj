@@ -770,6 +770,7 @@
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="AddEdit_Additional.cpp" />
+    <ClCompile Include="AddEdit_Attachment.cpp" />
     <ClCompile Include="AddEdit_Basic.cpp" />
     <ClCompile Include="AddEdit_DateTimes.cpp" />
     <ClCompile Include="AddEdit_PasswordPolicy.cpp" />
@@ -900,6 +901,7 @@
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="AddEdit_Additional.h" />
+    <ClInclude Include="AddEdit_Attachment.h" />
     <ClInclude Include="AddEdit_Basic.h" />
     <ClInclude Include="AddEdit_DateTimes.h" />
     <ClInclude Include="AddEdit_PasswordPolicy.h" />
