@@ -13,30 +13,32 @@ For VS2010, the parameter xxxxx below should be vc100.
 For VS2012, the parameter xxxxx below should be vc110.
 For VS2013, the parameter xxxxx below should be vc120.
 
-For the 32-bit versions, you should issue the following commands in a command window in this order:
+For the 32-bit versions, you should issue the following commands in a command
+window in this order:
 
  wxBuild_wxWidgets xxxxx NULL LIB_DEBUG_UNICODE
  wxBuild_wxWidgets xxxxx NULL LIB_RELEASE_UNICODE
  wxBuild_wxWidgets xxxxx NULL DLL_DEBUG_UNICODE
  wxBuild_wxWidgets xxxxx NULL DLL_RELEASE_UNICODE
 
-The resulting libraries will be vc10_lib and vc10_dll for VS2010, vc11_lib and vc11_dll for VS2012 and
-vc12_lib and vc12_dll for VS2013.
+The resulting libraries will be vc100_lib and vc100_dll for VS2010, vc110_lib and
+vc110_dll for VS2012 and vc120_lib and vc120_dll for VS2013.
 
-For the 64-bit versions, you should issue the following commands in a command window in this order:
+For the 64-bit versions, you should issue the following commands in a command window
+in this order:
 
  wxBuild_wxWidgets xxxxx_64 NULL LIB_DEBUG_UNICODE
  wxBuild_wxWidgets xxxxx_64 NULL LIB_RELEASE_UNICODE
  wxBuild_wxWidgets xxxxx_64 NULL DLL_DEBUG_UNICODE
  wxBuild_wxWidgets xxxxx_64 NULL DLL_RELEASE_UNICODE
 
-The resulting libraries will be vc10_lib and vc10_dll for VS2010, vc11_lib and vc11_dll for VS2012 and
-vc12_lib and vc12_dll for VS2013.
+The resulting libraries will be vc100_x64_lib and vc100_x64_dll for VS2010, vc110_x64_lib
+and vc110_x64_dll for VS2012 and vc120_x64_lib and vc120_x64_dll for VS2013.
 
 The PasswordSafe VS projects expect the static libraries to be in the wxWidgets sub-directories
-\lib\vcxx_lib and \lib64\vcxx_lib for the 32-bit and 64-bit compilations respectively, where the xx
-is 10, 11 or 12.  PasswordSafe does not use the DLL libraries and so there is no need to build them
-for this project.
+\lib\vcxxx_lib and \lib\vcxxx_x64_lib for the 32-bit and 64-bit compilations respectively,
+where the xxx is 100, 110 or 120.  PasswordSafe does not use the DLL libraries and so there
+is no need to build them for this project.
 
 VS2005
 ======
