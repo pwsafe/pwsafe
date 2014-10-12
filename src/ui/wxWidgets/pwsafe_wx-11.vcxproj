@@ -167,7 +167,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -205,7 +205,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -244,7 +244,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/lib/vc110_lib/mswud;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -283,7 +283,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/lib/vc110_lib/mswud;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -323,7 +323,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -359,7 +359,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -396,7 +396,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -432,7 +432,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc110_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0501;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
