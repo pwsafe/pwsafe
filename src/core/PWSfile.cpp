@@ -14,7 +14,7 @@
 #include "os/file.h"
 
 #include "sha1.h" // for simple encrypt/decrypt
-#include "PWSrand.h" // ditto
+#include "PWSrand.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -92,6 +92,22 @@ PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
 PWSfile::~PWSfile()
 {
   Close(); // idempotent
+}
+
+void PWSfile::HashRandom256(unsigned char *p256)
+{
+  /**
+   * This is for random data that will be written to the file directly.
+   * The idea is to avoid directly exposing our generated randomness
+   * to the attacker, since this might expose state of the RNG.
+   * Therefore, we'll hash the randomness.
+   *
+   * As the names imply, this works on 256 bit (32 byte) arrays.
+   */
+  PWSrand::GetInstance()->GetRandomData(p256, 32);
+  SHA256 salter;
+  salter.Update(p256, 32);
+  salter.Final(p256);
 }
 
 PWSfile::HeaderRecord::HeaderRecord()
