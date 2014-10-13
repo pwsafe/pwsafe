@@ -51,6 +51,9 @@
     <ClCompile Include="FileV3Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileV4Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HMAC_SHA256Test.h">
