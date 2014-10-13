@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <iomanip>
+#include <type_traits> // for static_assert
 
 using namespace std;
 using pws_os::CUUID;
@@ -361,19 +362,11 @@ int PWSfileV3::WriteHeader()
 
   SAFE_FWRITE(V3TAG, 1, sizeof(V3TAG), m_fd);
 
-  // According to the spec, salt is just random data. I don't think though,
-  // that it's good practice to directly expose the generated randomness
-  // to the attacker. Therefore, we'll hash the salt.
-  // The following takes shameless advantage of the fact that
-  // PWSaltLength == SHA256::HASHLEN
-  ASSERT(int(PWSaltLength) == int(SHA256::HASHLEN)); // if false, have to recode
-  { // in a block to protect against goto
-    PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
-    SHA256 salter;
-    salter.Update(salt, sizeof(salt));
-    salter.Final(salt);
-    SAFE_FWRITE(salt, 1, sizeof(salt), m_fd);
-  }
+  static_assert(int(PWSaltLength) == int(SHA256::HASHLEN),
+                "can't call HashRandom256");
+
+  HashRandom256(salt);
+  SAFE_FWRITE(salt, 1, sizeof(salt), m_fd);
 
   unsigned char Nb[sizeof(NumHashIters)];
   putInt32(Nb, NumHashIters);
@@ -408,14 +401,12 @@ int PWSfileV3::WriteHeader()
     m_hmac.Init(L, sizeof(L));
   }
   {
-    // See discussion on Salt to understand why we hash
+    // See discussion in HashRandom256 to understand why we hash
     // random data instead of writing it directly
     unsigned char ip_rand[SHA256::HASHLEN];
-    PWSrand::GetInstance()->GetRandomData(ip_rand, sizeof(ip_rand));
-    SHA256 ipHash;
-    ipHash.Update(ip_rand, sizeof(ip_rand));
-    ipHash.Final(ip_rand);
-    ASSERT(sizeof(ip_rand) >= sizeof(m_ipthing)); // compilation assumption
+    HashRandom256(ip_rand);
+    static_assert(sizeof(ip_rand) >= sizeof(m_ipthing),
+                  "m_ipthing can't be more that 32 bytes to use HashRandom256");
     memcpy(m_ipthing, ip_rand, sizeof(m_ipthing));
   }
   SAFE_FWRITE(m_ipthing, 1, sizeof(m_ipthing), m_fd);
