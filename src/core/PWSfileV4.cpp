@@ -51,6 +51,8 @@ PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
 
 PWSfileV4::~PWSfileV4()
 {
+  trashMemory(m_key, sizeof(m_key));
+  trashMemory(m_ell, sizeof(m_ell));
 }
 
 int PWSfileV4::Open(const StringX &passkey)
@@ -354,7 +356,7 @@ void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
     if (_ret != cnt) { status = FAILURE; goto end;} \
   }
 
-struct KeyBlockWriter
+struct PWSfileV4::KeyBlockWriter
 {
   KeyBlockWriter(FILE *fd) : m_ok(true), m_fd(fd)
   {}
@@ -760,6 +762,72 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
     }
   }
   return status;
+}
+
+bool PWSfileV4::AddKeyBlock(const StringX &passkey, uint nHashIters)
+{
+  // Empty m_keyblocks is a proxy for m_key and m_ell being unset,
+  // in which case we can't add a new keyblock
+  if (m_keyblocks.empty())
+    return false;
+
+  unsigned char Ptag[SHA256::HASHLEN];
+  KeyBlock kb;
+
+  kb.m_nHashIters = nHashIters;
+  HashRandom256(kb.m_salt);
+  StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
+             Ptag, sizeof(Ptag));
+    
+  TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+
+  KeyWrap kwK(&Fish);
+  kwK.Wrap(m_key, kb.m_kw_k, sizeof(m_key));
+      
+  KeyWrap kwL(&Fish);
+  kwL.Wrap(m_ell, kb.m_kw_l, sizeof(m_ell));
+
+  m_keyblocks.push_back(kb);
+  return true;
+}
+
+struct PWSfileV4::KeyBlockFinder {
+  KeyBlockFinder(const StringX &passkey) : found(false), passkey(passkey) {}
+  bool operator()(const PWSfileV4::KeyBlock &kb) {
+    unsigned char Ptag[SHA256::HASHLEN];
+    unsigned char K[PWSfileV4::KLEN];
+    PWSfileV4::StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
+                          Ptag, sizeof(Ptag));
+    // Try to unwrap K
+    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+    KeyWrap kwK(&Fish);
+    
+    bool retval = kwK.Unwrap(kb.m_kw_k, K, sizeof(kb.m_kw_k));
+    if (retval) {
+      trashMemory(Ptag, sizeof(Ptag));
+      trashMemory(K, sizeof(K));
+      found = true;
+    }
+    return retval;
+  }
+  bool found;
+private:
+  const StringX &passkey;
+};
+
+bool PWSfileV4::RemoveKeyBlock(const StringX &passkey)
+{
+  // fails if m_keyblocks.size() <= 1...
+  // ... or if passkey doesn't match any keyblock
+  if (m_keyblocks.size() <= 1)
+    return false;
+
+  KeyBlockFinder find_kb(passkey);
+  m_keyblocks.erase(remove_if(m_keyblocks.begin(),
+                              m_keyblocks.end(), find_kb),
+                    m_keyblocks.end());
+
+  return find_kb.found;
 }
 
 int PWSfileV4::ReadHeader()

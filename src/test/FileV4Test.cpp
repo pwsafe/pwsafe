@@ -163,3 +163,27 @@ TEST_F(FileV4Test, ItemTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
+
+TEST_F(FileV4Test, MulitKeysTest)
+{
+  const StringX pw2(_T("Mellow Yellowerer")), pw3(_T("spr1ngtime~nAplam"));
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_FALSE(fw.RemoveKeyBlock(passphrase));
+  EXPECT_TRUE(fw.AddKeyBlock(pw2));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(pw2));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(smallItem, item);
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(fullItem, item);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
