@@ -22,7 +22,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 
 /*!
  * Forward declarations
@@ -121,7 +121,7 @@ private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key
 ////@end YubiCfgDlg member variables
-  enum {YUBI_SK_LEN = PWSfile::HeaderRecord::YUBI_SK_LEN};
+  enum {YUBI_SK_LEN = PWSfileHeader::YUBI_SK_LEN};
   void ReadYubiSN();
   bool IsYubiInserted() const;
   void yubiInserted(void); // called when Yubikey's inserted

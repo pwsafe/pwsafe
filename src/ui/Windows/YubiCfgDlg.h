@@ -12,14 +12,14 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 
 class PWScore;
 
 class CYubiCfgDlg : public CPWDialog
 {
 public:
-  enum {YUBI_SK_LEN = PWSfile::HeaderRecord::YUBI_SK_LEN};
+  enum {YUBI_SK_LEN = PWSfileHeader::YUBI_SK_LEN};
   CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
   virtual ~CYubiCfgDlg();
 
