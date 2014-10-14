@@ -61,7 +61,7 @@ public:
 
  private:
   // Format constants:
-  enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8)};
+  enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8), NONCELEN = 32};
   struct KeyBlock { // See formatV4.txt
   KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
     unsigned char m_salt[PWSaltLength];
@@ -69,8 +69,10 @@ public:
     unsigned char m_kw_k[KWLEN];
     unsigned char m_kw_l[KWLEN];
   };
+  const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
   std::vector<KeyBlock> m_keyblocks;
   unsigned m_current_keyblock; // index
+  unsigned char m_nonce[NONCELEN]; // 256 bit nonce
   ulong64 m_effectiveFileLength; // for read = fileLength - |HMAC|
   Cipher m_cipher;
   friend struct KeyBlockWriter;
@@ -83,7 +85,9 @@ public:
   int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
   int TryKeyBlock(unsigned index, const StringX &passkey,
                   unsigned char K[KLEN], unsigned char L[KLEN]);
-  void ComputeEndKB(unsigned char digest[SHA256::HASHLEN]);
+  void ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
+                    unsigned char digest[SHA256::HASHLEN]);
+  bool EndKeyBlocks(const unsigned char calc_hnonce[SHA256::HASHLEN]);
   bool VerifyKeyBlocks();
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
@@ -91,8 +95,9 @@ public:
 
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          size_t &length);
+
   void SetupKeyBlocksForWrite();
-  size_t WriteKeyBlocks();
+  bool WriteKeyBlocks();
   int WriteHeader();
   int ReadHeader();
   PWSFilters m_MapFilters;

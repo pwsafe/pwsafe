@@ -35,6 +35,7 @@
 #include <errno.h>
 #include <iomanip>
 #include <algorithm>
+#include <type_traits> // for static_assert
 
 using namespace std;
 using pws_os::CUUID;
@@ -45,6 +46,7 @@ PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
 {
   m_IV = m_ipthing;
   m_terminal = NULL;
+  memset(m_nonce, 0, NONCELEN);
 }
 
 PWSfileV4::~PWSfileV4()
@@ -70,11 +72,10 @@ int PWSfileV4::Open(const StringX &passkey)
   m_passkey = passkey;
   if (m_rw == Write) {
     SetupKeyBlocksForWrite();
-    size_t numWritten = WriteKeyBlocks();
-    if (numWritten != (PWSaltLength + sizeof(uint32) + 2 * KWLEN) * m_keyblocks.size() + SHA256::HASHLEN) {
-      status = WRITE_FAIL;
-    } else {
+    if (WriteKeyBlocks()) {
       status = WriteHeader();
+    } else {
+      status = WRITE_FAIL;
     }
   } else { // open for read
     status = ParseKeyBlocks(passkey);
@@ -286,20 +287,20 @@ void PWSfileV4::SetupKeyBlocksForWrite()
   ASSERT(!m_keyblocks.empty()); // PWSfileV4's c'tor assures us that we'll have at least one.
   ASSERT(m_current_keyblock < m_keyblocks.size());
 
+  // Nonce is used to detect end of keyblocks, so we
+  // set it up here:
+  static_assert(int(NONCELEN) == int(SHA256::HASHLEN),
+                "can't call HashRandom256");
+  HashRandom256(m_nonce); // Generate nonce
+
   KeyBlock &kb = m_keyblocks[m_current_keyblock];
   unsigned char Ptag[SHA256::HASHLEN];
 
   if (m_keyblocks.size() == 1) {
-    // According to the spec, salt is just random data. I don't think though,
-    // that it's good practice to directly expose the generated randomness
-    // to the attacker. Therefore, we'll hash the salt.
-    // The following takes shameless advantage of the fact that
-    // PWSaltLength == SHA256::HASHLEN
-    ASSERT(int(PWSaltLength) == int(SHA256::HASHLEN)); // if false, have to recode
-    PWSrand::GetInstance()->GetRandomData(kb.m_salt, sizeof(kb.m_salt));
-    SHA256 salter;
-    salter.Update(kb.m_salt, sizeof(kb.m_salt));
-    salter.Final(kb.m_salt);
+    static_assert(int(PWSaltLength) == int(SHA256::HASHLEN),
+                  "can't call HashRandom256");
+
+    HashRandom256(kb.m_salt);
 
     StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
                Ptag, sizeof(Ptag));
@@ -327,7 +328,8 @@ void PWSfileV4::SetupKeyBlocksForWrite()
   }
 }
 
-void PWSfileV4::ComputeEndKB(unsigned char digest[SHA256::HASHLEN])
+void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
+                             unsigned char digest[SHA256::HASHLEN])
 {
   m_hmac.Init(m_ell, sizeof(m_ell));
   // Iterate over all KeyBlocks, calculate endKB
@@ -340,6 +342,8 @@ void PWSfileV4::ComputeEndKB(unsigned char digest[SHA256::HASHLEN])
     m_hmac.Update(iter->m_kw_k, KWLEN);
     m_hmac.Update(iter->m_kw_l, KWLEN);
   }
+  // Add hash of nonce
+  m_hmac.Update(hnonce, SHA256::HASHLEN);
   m_hmac.Final(digest);
 }
 
@@ -352,8 +356,7 @@ void PWSfileV4::ComputeEndKB(unsigned char digest[SHA256::HASHLEN])
 
 struct KeyBlockWriter
 {
-  KeyBlockWriter(FILE *fd, size_t &numWritten)
-    : m_numWritten(numWritten), m_ok(true), m_fd(fd)
+  KeyBlockWriter(FILE *fd) : m_ok(true), m_fd(fd)
   {}
   void operator()(const PWSfileV4::KeyBlock &kb)
   {
@@ -364,34 +367,46 @@ struct KeyBlockWriter
     write(kb.m_kw_k, sizeof(kb.m_kw_k));
     write(kb.m_kw_l, sizeof(kb.m_kw_l));
   }
-  size_t &m_numWritten;
   bool m_ok;
 private:
   FILE *m_fd;
   void write(const void *p, size_t size)
   {
+    // First time we fail, m_ok goes to false and we stop trying.
     if (m_ok) {
       size_t nw = fwrite(p, size, 1, m_fd);
-      if (nw == 1)
-        m_numWritten += size;
-      else
+      if (nw != 1)
         m_ok = false; // first time this is false, we stop writing!
     }
   }
 };
 
-size_t PWSfileV4::WriteKeyBlocks()
+bool PWSfileV4::WriteKeyBlocks()
 {
-  size_t numWritten = 0;
-  KeyBlockWriter kbw(m_fd, numWritten);
+  size_t nw;
+
+  nw = fwrite(m_nonce, NONCELEN, 1, m_fd);
+  if (nw != 1)
+    return false;
+
+  KeyBlockWriter kbw(m_fd);
   for_each(m_keyblocks.begin(), m_keyblocks.end(), kbw);
+  if (!kbw.m_ok)
+    return false;
+
+  // Mark end of keyblocks
+  unsigned char hnonce[SHA256::HASHLEN];
+  SHA256 noncehasher;
+  noncehasher.Update(m_nonce, NONCELEN);
+  noncehasher.Final(hnonce);
+  nw = fwrite(hnonce, sizeof(hnonce), 1, m_fd);
+  if (nw != 1)
+    return false;
 
   unsigned char digest[SHA256::HASHLEN];
-  ComputeEndKB(digest);
-  size_t fret = fwrite(digest, sizeof(digest), 1, m_fd);
-  if (fret == 1)
-    numWritten += SHA256::HASHLEN;
-  return numWritten;
+  ComputeEndKB(hnonce, digest);
+  nw = fwrite(digest, sizeof(digest), 1, m_fd);
+  return (nw == 1);
 }
 
 int PWSfileV4::WriteHeader()
@@ -405,14 +420,12 @@ int PWSfileV4::WriteHeader()
   size_t numWritten = 0;
   m_hmac.Init(m_ell, sizeof(m_ell)); // re-init for header & data integrity
   {
-    // See discussion on Salt to understand why we hash
+    // See discussion in HashRandom256 to understand why we hash
     // random data instead of writing it directly
     unsigned char ip_rand[SHA256::HASHLEN];
-    PWSrand::GetInstance()->GetRandomData(ip_rand, sizeof(ip_rand));
-    SHA256 ipHash;
-    ipHash.Update(ip_rand, sizeof(ip_rand));
-    ipHash.Final(ip_rand);
-    ASSERT(sizeof(ip_rand) >= sizeof(m_ipthing)); // compilation assumption
+    HashRandom256(ip_rand);
+    static_assert(sizeof(ip_rand) >= sizeof(m_ipthing),
+                  "m_ipthing can't be more that 32 bytes to use HashRandom256");
     memcpy(m_ipthing, ip_rand, sizeof(m_ipthing));
   }
   SAFE_FWRITE(m_ipthing, 1, sizeof(m_ipthing), m_fd);
@@ -655,8 +668,7 @@ int PWSfileV4::ReadKeyBlock()
 int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
                            unsigned char K[KLEN], unsigned char L[KLEN])
 {
-  ASSERT(index < m_keyblocks.size());
-  KeyBlock &kb = m_keyblocks[index];
+  KeyBlock &kb = m_keyblocks.at(index);
   unsigned char Ptag[SHA256::HASHLEN];
 
   StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
@@ -678,47 +690,73 @@ int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
 
 bool PWSfileV4::VerifyKeyBlocks()
 {
+  unsigned char hnonce[SHA256::HASHLEN];
   unsigned char ReadEndKB[SHA256::HASHLEN];
   unsigned char CalcEndKB[SHA256::HASHLEN];
 
-  int nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  int nRead = fread(hnonce, sizeof(hnonce), 1, m_fd);
   if (nRead != 1)
-    return false; // will catch EOF later
-  ComputeEndKB(CalcEndKB);
-
-  if (memcmp(CalcEndKB, ReadEndKB, SHA256::HASHLEN) == 0)
-    return true;
-  else {
-    fseek(m_fd, -long(sizeof(ReadEndKB)), SEEK_CUR);
     return false;
-  }
+  nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  if (nRead != 1)
+    return false;
+
+  ComputeEndKB(hnonce, CalcEndKB);
+  return (memcmp(CalcEndKB, ReadEndKB, SHA256::HASHLEN) == 0);
+}
+
+bool PWSfileV4::EndKeyBlocks(const unsigned char calc_hnonce[SHA256::HASHLEN])
+{
+  unsigned char read_hnonce[SHA256::HASHLEN];
+  size_t nr = fread(read_hnonce, sizeof(read_hnonce), 1, m_fd);
+  if (nr != 1)
+    return false; // EOF will be hit again and reported later
+  // go back regardless of success/failure
+  fseek(m_fd, -long(sizeof(read_hnonce)), SEEK_CUR);
+  return (memcmp(calc_hnonce, read_hnonce, SHA256::HASHLEN) == 0);
 }
 
 int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
 {
   PWS_LOGIT;
+  /**
+   * We need to read in all keyblocks,
+   * and find one that works.
+   * "All" means running until Hash(m_nonce) detected
+   * or EOF.
+   * "works" means TryKeyBlock returns true.
+   * Once we have a working keyblock, we can verify the integrity
+   * of all keyblocks.
+   * Consider that we'll hit EOF if file's wrong type/corrupt
+   */
   int status;
+  unsigned char calc_hnonce[SHA256::HASHLEN];
+  SHA256 noncehasher;
+
+  // Start by reading in nonce
+  size_t nr = fread(m_nonce, NONCELEN, 1, m_fd);
+  if (nr != 1)
+    return READ_FAIL;
+
+  noncehasher.Update(m_nonce, NONCELEN);
+  noncehasher.Final(calc_hnonce);
+
   do {
     status = ReadKeyBlock();
     // status is either SUCESS or END_OF_FILE
-    if (status != SUCCESS) {
+    if (status == END_OF_FILE) {
       Close();
       return status;
     }
+  } while (!EndKeyBlocks(calc_hnonce));
 
-    status = TryKeyBlock(m_keyblocks.size() - 1, passkey, m_key, m_ell);
-    // status is either SUCCESS or WRONG_PASSWORD
-  } while (status != SUCCESS);
-
-  // here iff we found a good keyblock
-  m_current_keyblock = m_keyblocks.size() - 1;
-
-  // Question is, is the the last keyblock?
-  while (!VerifyKeyBlocks()) {
-    status = ReadKeyBlock();
-    // status is either SUCESS or END_OF_FILE
-    if (status != SUCCESS) {
-      Close();
+  for (unsigned i = 0; i < m_keyblocks.size(); i++) {
+    status = TryKeyBlock(i, passkey, m_key, m_ell);
+    if (status == SUCCESS) {
+      m_current_keyblock = i;
+      if (!VerifyKeyBlocks())
+        status = BAD_DIGEST;
+      break;
     }
   }
   return status;
