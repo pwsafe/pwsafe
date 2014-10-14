@@ -14,7 +14,7 @@ DEPDIR= ./deps
 NOTSRC          = PWSclipboard.cpp
 
 LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
-                  ItemData.cpp ItemField.cpp  PWPolicy.cpp \
+                  Item.cpp ItemData.cpp ItemField.cpp  PWPolicy.cpp \
                   Match.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \
