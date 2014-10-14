@@ -371,8 +371,9 @@ public:
   const std::vector<bool> &GetDisplayStatus() const;
   bool WasDisplayStatusChanged() const;
 
-  const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetHeader(const PWSfile::HeaderRecord &hdr) { m_hdr = hdr; }
+  const PWSfileHeader &GetHeader() const {return m_hdr;}
+  void SetHeader(const PWSfileHeader::HeaderRecord &hdr) { m_hdr = hdr; }
+
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
 
@@ -510,7 +511,7 @@ private:
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 
-  PWSfile::HeaderRecord m_hdr;
+  PWSfileHeader m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
 
   // THE password database

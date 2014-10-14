@@ -13,7 +13,6 @@
 //-----------------------------------------------------------------------------
 
 #include "PWSfile.h"
-#include "PWSFilters.h"
 #include "TwoFish.h"
 #include "sha256.h"
 #include "hmac.h"
@@ -40,17 +39,8 @@ public:
 
   virtual uint32 GetNHashIters() const {return m_nHashIters;}
   virtual void SetNHashIters(uint32 N) {m_nHashIters = N;}
-  
-  virtual void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
-  const PWSFilters *GetFilters() const {return &m_MapFilters;}
 
-  virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
-  const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
-
-  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
-  const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
-
-private:
+ private:
   enum {PWSaltLength = 32}; // per format spec
   uint32 m_nHashIters;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
@@ -65,11 +55,6 @@ private:
                          size_t &length);
   int WriteHeader();
   int ReadHeader();
-  PWSFilters m_MapFilters;
-  PSWDPolicyMap m_MapPSWDPLC;
-
-  // EmptyGroups
-  std::vector<StringX> m_vEmptyGroups;
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

@@ -523,6 +523,7 @@
     <ClCompile Include="Match.cpp" />
     <ClCompile Include="pbkdf2.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="PWSfileHeader.cpp" />
     <ClCompile Include="PWSfileV4.cpp" />
     <ClCompile Include="PWSLog.cpp" />
     <ClCompile Include="PWStime.cpp" />
@@ -578,6 +579,7 @@
     <ClInclude Include="pbkdf2.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="PWSfileHeader.h" />
     <ClInclude Include="PWSfileV4.h" />
     <ClInclude Include="PWSLog.h" />
     <ClInclude Include="PWStime.h" />

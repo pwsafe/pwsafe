@@ -770,7 +770,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
       return;
   } // while (1)
 
-  PWSfile::HeaderRecord hdr = m_core.GetHeader();
+  PWSfileHeader hdr = m_core.GetHeader();
   StringX currentfile = m_core.GetCurFile();
   rc = Filters.WriteFilterXMLFile(LPCWSTR(cs_newfile), hdr, currentfile);
 
