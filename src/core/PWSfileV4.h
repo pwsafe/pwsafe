@@ -13,10 +13,7 @@
 //-----------------------------------------------------------------------------
 
 
-// XXX Stub interface of V4, started as a copy of V3.
-
 #include "PWSfile.h"
-#include "PWSFilters.h"
 #include "TwoFish.h"
 #include "sha256.h"
 #include "hmac.h"
@@ -47,15 +44,6 @@ public:
   uint32 GetNHashIters() const; // for current keyblock
   void SetNHashIters(uint32 N); // for current keyblock
   
-  void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
-  const PWSFilters *GetFilters() const {return &m_MapFilters;}
-
-  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
-  const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
-
-  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
-  const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
-
   // Following for low-level details that changed between format versions
   virtual size_t timeFieldLen() const {return 5;} // Experimental
 
@@ -100,11 +88,6 @@ public:
   bool WriteKeyBlocks();
   int WriteHeader();
   int ReadHeader();
-  PWSFilters m_MapFilters;
-  PSWDPolicyMap m_MapPSWDPLC;
-
-  // EmptyGroups
-  std::vector<StringX> m_vEmptyGroups;
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

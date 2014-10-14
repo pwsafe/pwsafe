@@ -19,7 +19,9 @@
 #include "ItemData.h"
 #include "os/UUID.h"
 #include "UnknownField.h"
+#include "PWSFilters.h"
 #include "StringX.h"
+#include "PWSfileHeader.h"
 #include "Proxy.h"
 #include "sha256.h"
 
@@ -40,8 +42,6 @@
 
 class Fish;
 class Asker;
-
-class PWSFilters;
 
 class PWSfile
 {
@@ -95,26 +95,6 @@ public:
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
-  struct HeaderRecord {
-    HeaderRecord();
-    HeaderRecord(const HeaderRecord &hdr);
-    HeaderRecord &operator =(const HeaderRecord &hdr);
-    bool operator==(const HeaderRecord &hdr) const; // for unit tests
-    ~HeaderRecord();
-    unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-    pws_os::CUUID m_file_uuid;         // Unique DB ID
-    std::vector<bool> m_displaystatus; // Tree expansion state vector
-    StringX m_prefString;              // Prefererences stored in the file
-    time_t m_whenlastsaved; // When last saved
-    StringX m_lastsavedby; // and by whom
-    StringX m_lastsavedon; // and by which machine
-    StringX m_whatlastsaved; // and by what application
-    StringX m_dbname, m_dbdesc;        // Descriptive name, Description
-    UUIDList m_RUEList;
-    unsigned char *m_yubi_sk;  // YubiKey HMAC key, added in 0x030a / 3.27Y
-    enum {YUBI_SK_LEN = 20};
-  };
-
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
                               RWmode mode, int &status, 
                               Asker *pAsker = NULL, Reporter *pReporter = NULL);
@@ -135,8 +115,8 @@ public:
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
 
-  const HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetHeader(const HeaderRecord &h) {m_hdr = h;}
+  const PWSfileHeader &GetHeader() const {return m_hdr;}
+  void SetHeader(const PWSfileHeader &h) {m_hdr = h;}
 
   void SetDefUsername(const StringX &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
@@ -148,12 +128,15 @@ public:
   // Following implemented in V3 and later
   virtual uint32 GetNHashIters() const {return 0;}
   virtual void SetNHashIters(uint32 ) {}
-  virtual const PWSFilters *GetFilters() const {return NULL;}
-  virtual void SetFilters(const PWSFilters &) {}
-  virtual const PSWDPolicyMap *GetPasswordPolicies() const {return NULL;}
-  virtual void SetPasswordPolicies(const PSWDPolicyMap &) {}
-  virtual const std::vector<StringX> *GetEmptyGroups() const {return NULL;}
-  virtual void SetEmptyGroups(const std::vector<StringX> &) {}
+
+  void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
+  const PWSFilters *GetFilters() const {return &m_MapFilters;}
+
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
+  const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
+
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
+  const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
 
   // Following for low-level details that changed between format versions
   virtual size_t timeFieldLen() const {return 4;} // changed in V4
@@ -188,10 +171,15 @@ protected:
   Fish *m_fish;
   unsigned char *m_terminal;
   int m_status;
-  HeaderRecord m_hdr;
+
+  // Following are only used by V3 and later
+  PWSfileHeader m_hdr;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
+  PWSFilters m_MapFilters;
+  PSWDPolicyMap m_MapPSWDPLC;
+  std::vector<StringX> m_vEmptyGroups;
   ulong64 m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;
