@@ -47,6 +47,12 @@ public:
   // Following for low-level details that changed between format versions
   virtual size_t timeFieldLen() const {return 5;} // Experimental
 
+  // Following unique to V4
+  bool AddKeyBlock(const StringX &passkey,
+                   uint nHashIters = MIN_HASH_ITERATIONS); // fails if m_keyblocks.empty()
+  bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...
+  // ... or if passkey doesn't match.
+
  private:
   // Format constants:
   enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8), NONCELEN = 32};
@@ -57,13 +63,14 @@ public:
     unsigned char m_kw_k[KWLEN];
     unsigned char m_kw_l[KWLEN];
   };
+  struct KeyBlockWriter;
+  struct KeyBlockFinder;
   const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
   std::vector<KeyBlock> m_keyblocks;
   unsigned m_current_keyblock; // index
   unsigned char m_nonce[NONCELEN]; // 256 bit nonce
   ulong64 m_effectiveFileLength; // for read = fileLength - |HMAC|
   Cipher m_cipher;
-  friend struct KeyBlockWriter;
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[KLEN]; // K
   unsigned char m_ell[KLEN]; // L
