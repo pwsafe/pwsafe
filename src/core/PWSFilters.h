@@ -17,7 +17,6 @@
 
 #include "StringX.h"
 #include "StringXStream.h"
-#include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
 #include "Proxy.h"
@@ -327,16 +326,15 @@ struct ltfk {
   }
 };
 
+struct PWSfileHeader;
+
 class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
   typedef std::pair<st_Filterkey, st_filters> Pair;
   
-  std::string GetFilterXMLHeader(const StringX &currentfile,
-                                 const PWSfile::HeaderRecord &hdr);
-
-  int WriteFilterXMLFile(const StringX &filename, const PWSfile::HeaderRecord hdr,
+  int WriteFilterXMLFile(const StringX &filename, const PWSfileHeader &hdr,
                          const StringX &currentfile);
-  int WriteFilterXMLFile(coStringXStream &os, PWSfile::HeaderRecord hdr,
+  int WriteFilterXMLFile(coStringXStream &os, const PWSfileHeader &hdr,
                          const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
                           const StringX &strXMLData,
@@ -345,6 +343,9 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
                           Asker *pAsker);
 
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
+ private:
+  std::string GetFilterXMLHeader(const StringX &currentfile,
+                                 const PWSfileHeader &hdr);
 };
 
 #endif  /* __PWSFILTERS_H */

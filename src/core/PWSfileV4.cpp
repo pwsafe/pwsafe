@@ -620,7 +620,7 @@ int PWSfileV4::WriteHeader()
   }
 
   if (m_hdr.m_yubi_sk != NULL) {
-    numWritten = WriteCBC(HDR_YUBI_SK, m_hdr.m_yubi_sk, HeaderRecord::YUBI_SK_LEN);
+    numWritten = WriteCBC(HDR_YUBI_SK, m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
@@ -956,13 +956,13 @@ int PWSfileV4::ReadHeader()
       }
 
     case HDR_YUBI_SK:
-      if (utf8Len != HeaderRecord::YUBI_SK_LEN) {
+      if (utf8Len != PWSfileHeader::YUBI_SK_LEN) {
         delete[] utf8;
         Close();
         return FAILURE;
       }
-      m_hdr.m_yubi_sk = new unsigned char[HeaderRecord::YUBI_SK_LEN];
-      memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
+      m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
+      memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
       break;
 
     case HDR_PSWDPOLICIES:

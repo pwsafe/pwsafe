@@ -7,6 +7,7 @@
 */
 
 #include "PWSFilters.h"
+#include "PWSfileHeader.h"
 #include "PWHistory.h"
 #include "PWSprefs.h"
 #include "core.h"
@@ -489,7 +490,7 @@ private:
 };
 
 int PWSFilters::WriteFilterXMLFile(const StringX &filename,
-                                   const PWSfile::HeaderRecord hdr,
+                                   const PWSfileHeader &hdr,
                                    const StringX &currentfile)
 {
   FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wt"));
@@ -508,7 +509,7 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
 }
 
 int PWSFilters::WriteFilterXMLFile(coStringXStream &oss,
-                                   const PWSfile::HeaderRecord hdr,
+                                   const PWSfileHeader &hdr,
                                    const StringX &currentfile,
                                    const bool bWithFormatting)
 {
@@ -524,7 +525,7 @@ int PWSFilters::WriteFilterXMLFile(coStringXStream &oss,
 }
 
 std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
-                                           const PWSfile::HeaderRecord &hdr)
+                                           const PWSfileHeader &hdr)
 {
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;

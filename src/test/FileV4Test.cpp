@@ -120,7 +120,7 @@ TEST_F(FileV4Test, EmptyFile)
 TEST_F(FileV4Test, HeaderTest)
 {
   // header is written when file's opened for write.
-  PWSfile::HeaderRecord hdr1, hdr2;
+  PWSfileHeader hdr1, hdr2;
   hdr1.m_prefString = _T("aPrefString");
   hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
   hdr1.m_lastsavedby = _T("aUser");

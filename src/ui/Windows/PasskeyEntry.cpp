@@ -27,7 +27,7 @@ down the streetsky.  [Groucho Marx]
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 #include "core/Util.h"
 #include "core/core.h"
 
@@ -94,7 +94,7 @@ CPasskeyEntry::~CPasskeyEntry()
   ::DestroyIcon(m_hIcon);
 
   if (m_yubi_sk != NULL) {
-    trashMemory(m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+    trashMemory(m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
     delete[] m_yubi_sk;
   }
 }
