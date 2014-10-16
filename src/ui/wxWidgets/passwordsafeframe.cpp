@@ -350,7 +350,6 @@ void PasswordSafeFrame::Init()
   m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
 
-  AddLanguage( ID_LANGUAGE_DEFAULT, wxLANGUAGE_DEFAULT, _("Default")  );
   AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese")  );  /* code: 'zh' */
   AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish")   );  /* code: 'da' */
   AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch")    );  /* code: 'nl' */
@@ -363,6 +362,20 @@ void PasswordSafeFrame::Init()
   AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian")  );  /* code: 'ru' */
   AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish")  );  /* code: 'es' */
   AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish")  );  /* code: 'sv' */
+
+  wxLanguage system_language = wxGetApp().GetSystemLanguage();
+
+  for (auto &item : m_languages) {
+    // Mark the system language
+    if (std::get<0>(item.second) == system_language) {
+      std::get<1>(item.second) = wxT("[ ") + std::get<1>(item.second) + wxT(" ]");
+      m_selectedLanguage = item.first;
+    }
+    // Check which languages can be activated
+    if (wxGetApp().ActivateLanguage(std::get<0>(item.second)) == false)
+      std::get<2>(item.second) = false;
+  }
+  wxGetApp().ActivateLanguage( system_language );
 }
 
 
@@ -506,6 +519,7 @@ void PasswordSafeFrame::CreateMenubar()
   // Update menu selections
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
+  GetMenuBar()->Check( m_selectedLanguage, true );
 }
 
 /**
@@ -537,8 +551,6 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  GetMenuBar()->Check( ID_LANGUAGE_DEFAULT, true );
-
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
@@ -555,16 +567,23 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
     return;
 
   wxMenu* child = new wxMenu;
+  wxMenuItem* menu_item = nullptr;
 
   for (auto &item : m_languages) {
-    child->Append(
-                  item.first,          /* The key of the map that holds menu item id's */
-                  item.second.second,  /* The value of the map is a pair.
-                                          The second element of the pair holds the
-                                          language name as wxString */
-                  _T(""),              /* The menu items tooltip */
-                  wxITEM_CHECK
-                  );
+    menu_item = child->Append(
+        item.first,               /* The key of the map that holds menu item id's */
+        std::get<1>(item.second), /* The value of the map is a tuple.
+                                     The tuple consists of three elements.
+                                     Index 0: the language id as wxLanguage
+                                     Index 1: the language literal as wxString
+                                     Index 2: the indicator whether the language can be activated
+                                     */
+        _T(""),                   /* The menu items tooltip */
+        wxITEM_CHECK
+        );
+
+    if (menu_item != nullptr)
+      menu_item->Enable(std::get<2>(item.second));
   }
 
   parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
@@ -580,7 +599,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
  */
 void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
 {
-    m_languages[menu_id] = std::make_pair(lang_id, lang_name);
+    m_languages[menu_id] = std::make_tuple(lang_id, lang_name, true);
 }
 
 /*
@@ -1460,21 +1479,22 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
   auto id = evt.GetId();
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << m_languages[id].second << std::endl;
+  std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << std::get<1>(m_languages[id]) << std::endl;
 #endif
+
+  // First, uncheck all language menu items, hence the previously selected but also the new one
+  for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
+    GetMenuBar()->Check( menu_id, false );
 
   // If a new language has been selected successfully we have to 
   // recreate the UI so that the language change takes effect
-  if (wxGetApp().ActivateLanguage( m_languages[id].first )) {
+  if (wxGetApp().ActivateLanguage( std::get<0>(m_languages[id]) )) {
+    m_selectedLanguage = id;
 
     CreateMenubar();
     //RefreshToolbarButtons();
-    // First, uncheck all language menu items, hence also the previously selected one
-    for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
-      GetMenuBar()->Check( menu_id, false );
-
-    // Check the selected language within the language menu
-    GetMenuBar()->Check( id, true );
+  } else {
+    GetMenuBar()->Check( m_selectedLanguage, true );
   }
 }
 

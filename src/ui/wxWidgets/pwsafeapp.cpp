@@ -243,6 +243,12 @@ PwsafeApp::~PwsafeApp()
 void PwsafeApp::Init()
 {
   m_locale = new wxLocale;
+  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
+  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
+#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+  wxLocale::AddCatalogLookupPathPrefix( wxT("../I18N/mos") );
+#endif
+
 ////@begin PwsafeApp member initialisation
 ////@end PwsafeApp member initialisation
 }
@@ -470,12 +476,6 @@ bool PwsafeApp::ActivateLanguage(wxLanguage language)
     translations->SetLanguage( wxLANGUAGE_ENGLISH );
     return true;
   }
-
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  wxLocale::AddCatalogLookupPathPrefix( wxT("../I18N/mos") );
-#endif
 
   if ( !translations->AddCatalog( DOMAIN_ ) ) {
     std::wcerr << L"Couldn't load language catalog for " << wxLocale::GetLanguageName(language) << std::endl;

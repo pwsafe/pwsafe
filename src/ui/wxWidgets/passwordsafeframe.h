@@ -28,6 +28,7 @@
 #include "core/UIinterface.h"
 #include "RUEList.h"
 #include "./wxutils.h"
+#include <tuple>
 
 /*!
  * Forward declarations
@@ -132,7 +133,6 @@ enum {
 
   // languages
   ID_LANGUAGE_BEGIN,
-  ID_LANGUAGE_DEFAULT,
   ID_LANGUAGE_CHINESE,
   ID_LANGUAGE_DANISH,
   ID_LANGUAGE_DUTCH,
@@ -529,11 +529,15 @@ public:
   bool m_bUnlocking;
 
   /*
-   * The map associates menu item id's with language specific data represented by a pair.
-   * The pair consists of the wxWidgets language identifier for wxLocale
-   * and the language name as wxString as it should appear in the menu.
+   * The map associates menu item id's with language specific data represented by a tuple.
+   * The tuple consists of the wxWidgets language identifier, the language name as wxString 
+   * as it should appear in the menu and of an indicator whether the language can be
+   * activated or not.
    */
-  std::map<int, std::pair<wxLanguage, wxString> > m_languages;
+  std::map<int, std::tuple<wxLanguage, wxString, bool> > m_languages;
+
+  // The selected language menu id
+  int m_selectedLanguage;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
