@@ -178,6 +178,7 @@ int CItemData::Read(PWSfile *in)
   int emergencyExit = 255; // to avoid endless loop.
   signed long fieldLen; // <= 0 means end of file reached
 
+  Clear();
   do {
     unsigned char *utf8 = NULL;
     size_t utf8Len = 0;
