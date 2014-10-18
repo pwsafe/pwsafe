@@ -159,7 +159,7 @@ protected:
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          size_t &length);
   
-  void HashRandom256(unsigned char *p256); // when we don't want to expose our RNG
+  static void HashRandom256(unsigned char *p256); // when we don't want to expose our RNG
 
   const StringX m_filename;
   StringX m_passkey;

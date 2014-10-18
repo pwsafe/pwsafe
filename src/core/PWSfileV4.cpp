@@ -18,6 +18,7 @@
 #include "pbkdf2.h"
 #include "KeyWrap.h"
 #include "PWStime.h"
+#include "TwoFish.h"
 
 #include "os/debug.h"
 #include "os/file.h"
@@ -40,12 +41,56 @@
 using namespace std;
 using pws_os::CUUID;
 
+PWSfileV4::CKeyBlocks::KeyBlock::KeyBlock(const KeyBlock &kb)
+{
+  memcpy(m_salt, kb.m_salt, PWSaltLength);
+  m_nHashIters = kb.m_nHashIters;
+  memcpy(m_kw_k, kb.m_kw_k, KWLEN);
+  memcpy(m_kw_l, kb.m_kw_l, KWLEN);
+}
+
+PWSfileV4::CKeyBlocks::KeyBlock &
+PWSfileV4::CKeyBlocks::KeyBlock::operator=(const KeyBlock &kb)
+{
+  if (this != &kb) {
+    memcpy(m_salt, kb.m_salt, PWSaltLength);
+    m_nHashIters = kb.m_nHashIters;
+    memcpy(m_kw_k, kb.m_kw_k, KWLEN);
+    memcpy(m_kw_l, kb.m_kw_l, KWLEN);
+  }
+  return *this;
+}
+
+PWSfileV4::CKeyBlocks::CKeyBlocks()
+{
+}
+
+PWSfileV4::CKeyBlocks::CKeyBlocks(const PWSfileV4::CKeyBlocks &ckb)
+  : m_kbs(ckb.m_kbs)
+{
+}
+
+PWSfileV4::CKeyBlocks::~CKeyBlocks()
+{
+}
+
+PWSfileV4::CKeyBlocks PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlocks &that)
+{
+  if (this != &that) {
+    m_kbs = that.m_kbs;
+  }
+  return *this;
+}
+
+
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
-: PWSfile(filename, mode, version), m_keyblocks(1), m_current_keyblock(0),
-  m_effectiveFileLength(0)
+  : PWSfile(filename, mode, version),
+    m_effectiveFileLength(0), m_nHashIters(MIN_HASH_ITERATIONS)
 {
   m_IV = m_ipthing;
   m_terminal = NULL;
+  memset(m_key, 0, KLEN);
+  memset(m_ell, 0, KLEN);
   memset(m_nonce, 0, NONCELEN);
 }
 
@@ -73,7 +118,13 @@ int PWSfileV4::Open(const StringX &passkey)
 
   m_passkey = passkey;
   if (m_rw == Write) {
-    SetupKeyBlocksForWrite();
+    // Nonce is used to detect end of keyblocks
+    static_assert(int(NONCELEN) == int(SHA256::HASHLEN), "can't call HashRandom256");
+    HashRandom256(m_nonce); // Generate nonce
+    if (!m_keyblocks.GetKeys(passkey, m_nHashIters, m_key, m_ell)) {
+      PWSfile::Close();
+      return WRONG_PASSWORD;
+    }
     if (WriteKeyBlocks()) {
       status = WriteHeader();
     } else {
@@ -103,6 +154,8 @@ int PWSfileV4::Close()
   if (!m_hmac.IsInited()) {
     // Here if we're closing before starting to work on hmac
     // e.g., wrong password
+    // Clear keyblocks, in case we re-open for read
+    m_keyblocks.m_kbs.clear();
     return PWSfile::Close();
   }
 
@@ -119,7 +172,9 @@ int PWSfileV4::Close()
     }
     return PWSfile::Close();
   } else { // Read
-    // and detected (by _readcbc) - just read hmac & verify
+    // Clear keyblocks, in case we re-open for read
+    m_keyblocks.m_kbs.clear();
+    // read hmac & verify
     unsigned char d[SHA256::HASHLEN];
     fret = fread(d, sizeof(d), 1, m_fd);
     if (fret != 1) {
@@ -260,74 +315,55 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
 const short VersionNum = 0x0400;
 
-uint32 PWSfileV4::GetNHashIters() const
-{
-  // Using "at" to check bounds
-  return m_keyblocks.at(m_current_keyblock).m_nHashIters;
-}
-
-void PWSfileV4::SetNHashIters(uint32 N)
-{
-  // Using "at" to check bounds
-  m_keyblocks.at(m_current_keyblock).m_nHashIters = N;
-}
-
-
-void PWSfileV4::SetupKeyBlocksForWrite()
-{
-  /*
-   * We only need to deal with the current KeyBlock, as
-   * the rest are read in and written out verbatim.
-   * 
-   * If we have exactly one KeyBlock, we can regenerate Salt, K, L and wrapped keys.
-   * If we have > 1, we get K and L from the current KeyBlock.
-   *
-   * Once we have these, we iterate over all 
-   * KeyBlocks and calculate endKB.
-   */
-
-  ASSERT(!m_keyblocks.empty()); // PWSfileV4's c'tor assures us that we'll have at least one.
-  ASSERT(m_current_keyblock < m_keyblocks.size());
-
-  // Nonce is used to detect end of keyblocks, so we
-  // set it up here:
-  static_assert(int(NONCELEN) == int(SHA256::HASHLEN),
-                "can't call HashRandom256");
-  HashRandom256(m_nonce); // Generate nonce
-
-  KeyBlock &kb = m_keyblocks[m_current_keyblock];
-  unsigned char Ptag[SHA256::HASHLEN];
-
-  if (m_keyblocks.size() == 1) {
-    static_assert(int(PWSaltLength) == int(SHA256::HASHLEN),
-                  "can't call HashRandom256");
-
-    HashRandom256(kb.m_salt);
-
-    StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
-               Ptag, sizeof(Ptag));
+struct PWSfileV4::CKeyBlocks::KeyBlockFinder {
+  KeyBlockFinder(const StringX &passkey) : passkey(passkey) {}
+  bool operator()(const KeyBlock &kb) {
+    unsigned char Ptag[SHA256::HASHLEN];
+    unsigned char K[PWSfileV4::KLEN];
+    PWSfileV4::StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
+                          Ptag, sizeof(Ptag));
+    // Try to unwrap K
+    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+    KeyWrap kwK(&Fish);
     
-    PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key)); // K
-    // Wrap K
-    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
-    KeyWrap kwK(&Fish);
-
-    kwK.Wrap(m_key, kb.m_kw_k, sizeof(m_key));
-      
-    PWSrand::GetInstance()->GetRandomData(m_ell, sizeof(m_ell));
-    KeyWrap kwL(&Fish);
-    kwL.Wrap(m_ell, kb.m_kw_l, sizeof(m_ell));
-  } else { // we've more than one KeyBlock, get current values
-    StretchKey(kb.m_salt, sizeof(kb.m_salt), m_passkey, kb.m_nHashIters,
-               Ptag, sizeof(Ptag));
-    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
-    KeyWrap kwK(&Fish);
-    if (!kwK.Unwrap(kb.m_kw_k, m_key, sizeof(kb.m_kw_k)))
-      ASSERT(0);
-    KeyWrap kwL(&Fish);
-    if (!kwL.Unwrap(kb.m_kw_l, m_ell, sizeof(kb.m_kw_l)))
-      ASSERT(0);
+    bool retval = kwK.Unwrap(kb.m_kw_k, K, sizeof(kb.m_kw_k));
+    if (retval) {
+      trashMemory(Ptag, sizeof(Ptag));
+      trashMemory(K, sizeof(K));
+    }
+    return retval;
   }
+private:
+  const StringX &passkey;
+};
+
+bool PWSfileV4::CKeyBlocks::GetKeys(const StringX &passkey, uint32 nHashIters,
+                                     unsigned char K[KLEN], unsigned char L[KLEN])
+{
+  // Note that nHashIters is only used if m_kbs is empty
+  // Which will happen if this file is used 'single user'
+  // and not with an externally managed CKeyBlocks.
+  
+  if (m_kbs.empty())
+    AddKeyBlock(passkey, passkey, nHashIters);
+
+  KeyBlockFinder find_kb(passkey);
+  auto kb_iter = find_if(m_kbs.begin(), m_kbs.end(), find_kb);
+  if (kb_iter == m_kbs.end())
+    return false;
+
+  unsigned char Ptag[SHA256::HASHLEN];
+  PWSfileV4::StretchKey(kb_iter->m_salt, sizeof(kb_iter->m_salt),
+                        passkey, kb_iter->m_nHashIters,
+                        Ptag, sizeof(Ptag));
+  TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+  KeyWrap kwK(&Fish);
+  if (!kwK.Unwrap(kb_iter->m_kw_k, K, sizeof(kb_iter->m_kw_k)))
+    ASSERT(0);
+  KeyWrap kwL(&Fish);
+  if (!kwL.Unwrap(kb_iter->m_kw_l, L, sizeof(kb_iter->m_kw_l)))
+    ASSERT(0);
+  return true;
 }
 
 void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
@@ -335,14 +371,13 @@ void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
 {
   m_hmac.Init(m_ell, sizeof(m_ell));
   // Iterate over all KeyBlocks, calculate endKB
-  vector<KeyBlock>::iterator iter;
-  for (iter = m_keyblocks.begin(); iter != m_keyblocks.end(); iter++) {
-    m_hmac.Update(iter->m_salt, PWSaltLength);
+  for (auto iter = m_keyblocks.m_kbs.begin(); iter != m_keyblocks.m_kbs.end(); iter++) {
+    m_hmac.Update(iter->m_salt, CKeyBlocks::PWSaltLength);
     unsigned char Nb[sizeof(iter->m_nHashIters)];
     putInt32(Nb, iter->m_nHashIters);
     m_hmac.Update(Nb, sizeof(Nb));
-    m_hmac.Update(iter->m_kw_k, KWLEN);
-    m_hmac.Update(iter->m_kw_l, KWLEN);
+    m_hmac.Update(iter->m_kw_k, CKeyBlocks::KWLEN);
+    m_hmac.Update(iter->m_kw_l, CKeyBlocks::KWLEN);
   }
   // Add hash of nonce
   m_hmac.Update(hnonce, SHA256::HASHLEN);
@@ -360,7 +395,7 @@ struct PWSfileV4::KeyBlockWriter
 {
   KeyBlockWriter(FILE *fd) : m_ok(true), m_fd(fd)
   {}
-  void operator()(const PWSfileV4::KeyBlock &kb)
+  void operator()(const PWSfileV4::CKeyBlocks::KeyBlock &kb)
   {
     write(kb.m_salt, sizeof(kb.m_salt));
     unsigned char Nb[sizeof(kb.m_nHashIters)];
@@ -392,7 +427,7 @@ bool PWSfileV4::WriteKeyBlocks()
     return false;
 
   KeyBlockWriter kbw(m_fd);
-  for_each(m_keyblocks.begin(), m_keyblocks.end(), kbw);
+  for_each(m_keyblocks.m_kbs.begin(), m_keyblocks.m_kbs.end(), kbw);
   if (!kbw.m_ok)
     return false;
 
@@ -642,7 +677,7 @@ int PWSfileV4::ReadKeyBlock()
    * If couldn't read anything, returns END_OF_FILE
    * without pushing.
    */
-  KeyBlock kb;
+  CKeyBlocks::KeyBlock kb;
   size_t nRead;
   nRead = fread(kb.m_salt, sizeof(kb.m_salt), 1, m_fd);
   if (nRead == 0) return END_OF_FILE;
@@ -652,25 +687,22 @@ int PWSfileV4::ReadKeyBlock()
   if (nRead == 0) return END_OF_FILE;
   kb.m_nHashIters = getInt32(Nb);
 
-  nRead = fread(kb.m_kw_k, KWLEN, 1, m_fd);
+  nRead = fread(kb.m_kw_k, CKeyBlocks::KWLEN, 1, m_fd);
   if (nRead == 0) return END_OF_FILE;
 
-  nRead = fread(kb.m_kw_l, KWLEN, 1, m_fd);
+  nRead = fread(kb.m_kw_l, CKeyBlocks::KWLEN, 1, m_fd);
   if (nRead == 0) return END_OF_FILE;
-  
-  // m_keyblocks created size(1), push back iff > 1 keyblocks
-  if (m_keyblocks.size() == 1)
-    m_keyblocks[0] = kb;
-  else
-    m_keyblocks.push_back(kb);
+
+  m_keyblocks.m_kbs.push_back(kb);
 
   return SUCCESS;
 }
 
 int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
-                           unsigned char K[KLEN], unsigned char L[KLEN])
+                           unsigned char K[KLEN], unsigned char L[KLEN],
+                           uint32 &nHashIters)
 {
-  KeyBlock &kb = m_keyblocks.at(index);
+  CKeyBlocks::KeyBlock &kb = m_keyblocks.at(index);
   unsigned char Ptag[SHA256::HASHLEN];
 
   StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
@@ -687,6 +719,7 @@ int PWSfileV4::TryKeyBlock(unsigned index, const StringX &passkey,
     ASSERT(0); // Shouln't happen if K unwrapped OK
     return WRONG_PASSWORD;
   }
+  nHashIters = kb.m_nHashIters;
   return SUCCESS;
 }
 
@@ -753,9 +786,8 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
   } while (!EndKeyBlocks(calc_hnonce));
 
   for (unsigned i = 0; i < m_keyblocks.size(); i++) {
-    status = TryKeyBlock(i, passkey, m_key, m_ell);
+    status = TryKeyBlock(i, passkey, m_key, m_ell, m_nHashIters);
     if (status == SUCCESS) {
-      m_current_keyblock = i;
       if (!VerifyKeyBlocks())
         status = BAD_DIGEST;
       break;
@@ -764,70 +796,69 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
   return status;
 }
 
-bool PWSfileV4::AddKeyBlock(const StringX &passkey, uint nHashIters)
+bool PWSfileV4::CKeyBlocks::AddKeyBlock(const StringX &current_passkey,
+                                        const StringX &new_passkey,
+                                        uint nHashIters)
 {
-  // Empty m_keyblocks is a proxy for m_key and m_ell being unset,
-  // in which case we can't add a new keyblock
-  if (m_keyblocks.empty())
-    return false;
-
   unsigned char Ptag[SHA256::HASHLEN];
+  unsigned char K[KLEN];
+  unsigned char L[KLEN];
   KeyBlock kb;
-
   kb.m_nHashIters = nHashIters;
   HashRandom256(kb.m_salt);
-  StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
-             Ptag, sizeof(Ptag));
+
+  if (m_kbs.empty()) { // we get to generate new K and L
+    PWSrand::GetInstance()->GetRandomData(K, KLEN);
+    PWSrand::GetInstance()->GetRandomData(L, KLEN);
+
+    StretchKey(kb.m_salt, sizeof(kb.m_salt), current_passkey, kb.m_nHashIters,
+               Ptag, sizeof(Ptag));
+  } else { // we need to get K & L from current
+    KeyBlockFinder find_kb(current_passkey);
+    auto kb_iter = find_if(m_kbs.begin(), m_kbs.end(), find_kb);
+    if (kb_iter == m_kbs.end())
+      return false;
+    PWSfileV4::StretchKey(kb_iter->m_salt, sizeof(kb_iter->m_salt),
+                          current_passkey, kb_iter->m_nHashIters,
+                          Ptag, sizeof(Ptag));
+    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
+    KeyWrap kwK(&Fish);
+    kwK.Unwrap(kb_iter->m_kw_k, K, sizeof(kb_iter->m_kw_k));
+    KeyWrap kwL(&Fish);
+    kwL.Unwrap(kb_iter->m_kw_l, L, sizeof(kb_iter->m_kw_l));
+
+    StretchKey(kb.m_salt, sizeof(kb.m_salt), new_passkey, kb.m_nHashIters,
+               Ptag, sizeof(Ptag));
+  }
     
   TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
 
   KeyWrap kwK(&Fish);
-  kwK.Wrap(m_key, kb.m_kw_k, sizeof(m_key));
-      
-  KeyWrap kwL(&Fish);
-  kwL.Wrap(m_ell, kb.m_kw_l, sizeof(m_ell));
+  kwK.Wrap(K, kb.m_kw_k, KLEN);
 
-  m_keyblocks.push_back(kb);
+  KeyWrap kwL(&Fish);
+  kwL.Wrap(L, kb.m_kw_l, KLEN);
+
+  trashMemory(Ptag, sizeof(Ptag));
+  trashMemory(K, KLEN);
+  trashMemory(L, KLEN);
+  m_kbs.push_back(kb);
   return true;
 }
 
-struct PWSfileV4::KeyBlockFinder {
-  KeyBlockFinder(const StringX &passkey) : found(false), passkey(passkey) {}
-  bool operator()(const PWSfileV4::KeyBlock &kb) {
-    unsigned char Ptag[SHA256::HASHLEN];
-    unsigned char K[PWSfileV4::KLEN];
-    PWSfileV4::StretchKey(kb.m_salt, sizeof(kb.m_salt), passkey, kb.m_nHashIters,
-                          Ptag, sizeof(Ptag));
-    // Try to unwrap K
-    TwoFish Fish(Ptag, sizeof(Ptag)); // XXX generalize to support AES as well
-    KeyWrap kwK(&Fish);
-    
-    bool retval = kwK.Unwrap(kb.m_kw_k, K, sizeof(kb.m_kw_k));
-    if (retval) {
-      trashMemory(Ptag, sizeof(Ptag));
-      trashMemory(K, sizeof(K));
-      found = true;
-    }
-    return retval;
-  }
-  bool found;
-private:
-  const StringX &passkey;
-};
-
-bool PWSfileV4::RemoveKeyBlock(const StringX &passkey)
+bool PWSfileV4::CKeyBlocks::RemoveKeyBlock(const StringX &passkey)
 {
   // fails if m_keyblocks.size() <= 1...
   // ... or if passkey doesn't match any keyblock
-  if (m_keyblocks.size() <= 1)
+  if (m_kbs.size() <= 1)
     return false;
 
   KeyBlockFinder find_kb(passkey);
-  m_keyblocks.erase(remove_if(m_keyblocks.begin(),
-                              m_keyblocks.end(), find_kb),
-                    m_keyblocks.end());
+  const unsigned old_size = m_kbs.size();
+  m_kbs.erase(remove_if(m_kbs.begin(), m_kbs.end(), find_kb),
+               m_kbs.end());
 
-  return find_kb.found;
+  return (m_kbs.size() != old_size);
 }
 
 int PWSfileV4::ReadHeader()

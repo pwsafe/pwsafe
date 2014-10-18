@@ -25,6 +25,7 @@ class PWSfileV4 : public PWSfile
 {
 public:
   enum Cipher {PWTwoFish, PWAES};
+  enum  {KLEN = 32};
   
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
@@ -41,45 +42,77 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
-  uint32 GetNHashIters() const; // for current keyblock
-  void SetNHashIters(uint32 N); // for current keyblock
+  uint32 GetNHashIters() const {return m_nHashIters;}
+  void SetNHashIters(uint32 N) {m_nHashIters = N;}
   
   // Following for low-level details that changed between format versions
   virtual size_t timeFieldLen() const {return 5;} // Experimental
 
   // Following unique to V4
-  bool AddKeyBlock(const StringX &passkey,
-                   uint nHashIters = MIN_HASH_ITERATIONS); // fails if m_keyblocks.empty()
-  bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...
-  // ... or if passkey doesn't match.
+
+  // Following needs to be public so that we can mainpulate it
+  // prior to writing the database.
+  class CKeyBlocks {
+  public:
+    CKeyBlocks();
+    CKeyBlocks(const CKeyBlocks &ckb);
+    ~CKeyBlocks();
+    CKeyBlocks operator=(const CKeyBlocks &that);
+    bool AddKeyBlock(const StringX &current_passkey, const StringX &new_passkey,
+                     uint nHashIters = MIN_HASH_ITERATIONS);
+    bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...
+    // ... or if passkey doesn't match.
+  private:
+    friend class PWSfileV4;
+    struct KeyBlockFinder; // fwd decl for functor
+    // V4 Format constants:
+    enum {PWSaltLength = 32,KWLEN = (KLEN + 8)};
+    struct KeyBlock { // See formatV4.txt
+    KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
+      KeyBlock(const KeyBlock &kb);
+      KeyBlock &operator=(const KeyBlock &kb);
+      unsigned char m_salt[PWSaltLength];
+      uint32 m_nHashIters;
+      unsigned char m_kw_k[KWLEN];
+      unsigned char m_kw_l[KWLEN];
+    };
+    std::vector<KeyBlock> m_kbs;
+    
+    bool GetKeys(const StringX &passkey, uint32 nHashIters,
+                 unsigned char K[KLEN], unsigned char L[KLEN]); // not const
+
+    KeyBlock &operator[](unsigned i) {return m_kbs[i];}
+    const KeyBlock &operator[](unsigned i) const {return m_kbs[i];}
+    KeyBlock &at(unsigned i) {return m_kbs.at(i);}
+    const KeyBlock &at(unsigned i) const {return m_kbs.at(i);}
+    bool empty() const {return m_kbs.empty();}
+    unsigned size() const {return m_kbs.size();}
+    const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
+  };
+
+  void SetKeyBlocks(const CKeyBlocks &keyblocks) {m_keyblocks = keyblocks;}
+  CKeyBlocks GetKeyBlocks() const {return m_keyblocks;}
 
  private:
-  // Format constants:
-  enum {PWSaltLength = 32, KLEN = 32, KWLEN = (KLEN + 8), NONCELEN = 32};
-  struct KeyBlock { // See formatV4.txt
-  KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
-    unsigned char m_salt[PWSaltLength];
-    uint32 m_nHashIters;
-    unsigned char m_kw_k[KWLEN];
-    unsigned char m_kw_l[KWLEN];
-  };
-  struct KeyBlockWriter;
-  struct KeyBlockFinder;
-  const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
-  std::vector<KeyBlock> m_keyblocks;
-  unsigned m_current_keyblock; // index
+  enum  {NONCELEN = 32};
+  CKeyBlocks m_keyblocks;
+  // Following set by CKeyBlocks::GetKeys(), call before writing database
+  unsigned char m_key[KLEN]; // K
+  unsigned char m_ell[KLEN]; // L
   unsigned char m_nonce[NONCELEN]; // 256 bit nonce
   ulong64 m_effectiveFileLength; // for read = fileLength - |HMAC|
   Cipher m_cipher;
+  uint32 m_nHashIters; // mainly for single-user compatibility.
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
-  unsigned char m_key[KLEN]; // K
-  unsigned char m_ell[KLEN]; // L
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_hmac; // L
   CUTF8Conv m_utf8conv;
+  // Forward declaration of functors:
+  struct KeyBlockWriter;
   int ParseKeyBlocks(const StringX &passkey);
   int ReadKeyBlock(); // can return SUCCESS or END_OF_FILE
   int TryKeyBlock(unsigned index, const StringX &passkey,
-                  unsigned char K[KLEN], unsigned char L[KLEN]);
+                  unsigned char K[KLEN], unsigned char L[KLEN],
+                  uint32 &nHashIters);
   void ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
                     unsigned char digest[SHA256::HASHLEN]);
   bool EndKeyBlocks(const unsigned char calc_hnonce[SHA256::HASHLEN]);
@@ -91,7 +124,7 @@ public:
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          size_t &length);
 
-  void SetupKeyBlocksForWrite();
+  void GetCurrentKeys();
   bool WriteKeyBlocks();
   int WriteHeader();
   int ReadHeader();
