@@ -363,19 +363,31 @@ void PasswordSafeFrame::Init()
   AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish")  );  /* code: 'es' */
   AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish")  );  /* code: 'sv' */
 
+  m_selectedLanguage = ID_LANGUAGE_ENGLISH;
   wxLanguage system_language = wxGetApp().GetSystemLanguage();
 
+  std::cout << "[DEBUG] PasswordSafeFrame::Init -> system locale=" << wxLocale::GetLanguageCanonicalName(system_language) << std::endl;
   for (auto &item : m_languages) {
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> wx-menu-id=" << item.first << " / wx-lang-id=" << std::get<0>(item.second) << " / lang=" << std::get<1>(item.second) << std::endl;
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> language canonical name=" << wxLocale::GetLanguageCanonicalName(std::get<0>(item.second)) << std::endl;
     // Mark the system language
     if (std::get<0>(item.second) == system_language) {
       std::get<1>(item.second) = wxT("[ ") + std::get<1>(item.second) + wxT(" ]");
       m_selectedLanguage = item.first;
+      std::cout << "[DEBUG] PasswordSafeFrame::Init -> selected system language with wx-menu-id=" << item.first << std::endl;
     }
-    // Check which languages can be activated
-    if (wxGetApp().ActivateLanguage(std::get<0>(item.second)) == false)
-      std::get<2>(item.second) = false;
+    // Mark whether language can be activated
+    std::get<2>(item.second) = wxGetApp().ActivateLanguage(std::get<0>(item.second));
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> language can be activated? " << std::get<2>(item.second) << std::endl;
   }
-  wxGetApp().ActivateLanguage( system_language );
+  if (!wxGetApp().ActivateLanguage( std::get<0>(m_languages[m_selectedLanguage]) )) {
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activation of system language failed :-(" << std::endl;
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> choosen English as activated language for language menu -> " << std::get<1>(m_languages[m_selectedLanguage]) << std::endl;
+    m_selectedLanguage = ID_LANGUAGE_ENGLISH;
+  } else {
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activated system language successfully :-)" << std::endl;
+    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activated language=" << std::get<1>(m_languages[m_selectedLanguage]) << std::endl;
+  }
 }
 
 
@@ -519,7 +531,8 @@ void PasswordSafeFrame::CreateMenubar()
   // Update menu selections
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
-  GetMenuBar()->Check( m_selectedLanguage, true );
+  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
+    GetMenuBar()->Check( m_selectedLanguage, true );
 }
 
 /**
@@ -599,7 +612,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
  */
 void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
 {
-    m_languages[menu_id] = std::make_tuple(lang_id, lang_name, true);
+    m_languages[menu_id] = std::make_tuple(lang_id, lang_name, false);
 }
 
 /*
