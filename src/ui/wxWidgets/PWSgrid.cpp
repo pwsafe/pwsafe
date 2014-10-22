@@ -132,7 +132,7 @@ void PWSGrid::CreateControls()
 {
 ////@begin PWSGrid content construction
 ////@end PWSGrid content construction
-  CreateGrid(0, 2, wxGrid::wxGridSelectRows);
+  CreateGrid(0, PWSGridTable::GetNumHeaderCols(), wxGrid::wxGridSelectRows);
   SetColLabelValue(0, _("Title"));
   SetColLabelValue(1, _("User"));
   SetRowLabelSize(0);

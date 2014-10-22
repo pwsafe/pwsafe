@@ -76,6 +76,7 @@ public:
 
   static int GetColumnFieldType(int colID);
   static int Field2Column(int fieldType);
+  static int GetNumHeaderCols();
   void SaveSettings(void) const;
   void RestoreSettings(void) const;
 
