@@ -366,27 +366,18 @@ void PasswordSafeFrame::Init()
   m_selectedLanguage = ID_LANGUAGE_ENGLISH;
   wxLanguage system_language = wxGetApp().GetSystemLanguage();
 
-  std::cout << "[DEBUG] PasswordSafeFrame::Init -> system locale=" << wxLocale::GetLanguageCanonicalName(system_language) << std::endl;
   for (auto &item : m_languages) {
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> wx-menu-id=" << item.first << " / wx-lang-id=" << std::get<0>(item.second) << " / lang=" << std::get<1>(item.second) << std::endl;
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> language canonical name=" << wxLocale::GetLanguageCanonicalName(std::get<0>(item.second)) << std::endl;
     // Mark the system language
     if (std::get<0>(item.second) == system_language) {
       std::get<1>(item.second) = wxT("[ ") + std::get<1>(item.second) + wxT(" ]");
       m_selectedLanguage = item.first;
-      std::cout << "[DEBUG] PasswordSafeFrame::Init -> selected system language with wx-menu-id=" << item.first << std::endl;
     }
     // Mark whether language can be activated
     std::get<2>(item.second) = wxGetApp().ActivateLanguage(std::get<0>(item.second));
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> language can be activated? " << std::get<2>(item.second) << std::endl;
   }
-  if (!wxGetApp().ActivateLanguage( std::get<0>(m_languages[m_selectedLanguage]) )) {
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activation of system language failed :-(" << std::endl;
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> choosen English as activated language for language menu -> " << std::get<1>(m_languages[m_selectedLanguage]) << std::endl;
+  // Activate the systems default language
+  if (!wxGetApp().ActivateLanguage(std::get<0>(m_languages[m_selectedLanguage]))) {
     m_selectedLanguage = ID_LANGUAGE_ENGLISH;
-  } else {
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activated system language successfully :-)" << std::endl;
-    std::cout << "[DEBUG] PasswordSafeFrame::Init -> activated language=" << std::get<1>(m_languages[m_selectedLanguage]) << std::endl;
   }
 }
 
@@ -615,10 +606,9 @@ void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxStr
     m_languages[menu_id] = std::make_tuple(lang_id, lang_name, false);
 }
 
-/*
+/**
  * Creates the main toolbar
  */
-
 void PasswordSafeFrame::CreateMainToolbar()
 {
   wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
@@ -634,11 +624,40 @@ void PasswordSafeFrame::CreateMainToolbar()
   GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
 }
 
+/**
+ * Recreates the main toolbar.
+ *
+ * This assumes that the main toolbar has already been created.
+ * If this is the case all existing elements are removed and
+ * added again to the toolbar instance.
+ */
+void PasswordSafeFrame::ReCreateMainToolbar()
+{
+    wxToolBar* toolbar = GetToolBar();
+    wxCHECK_RET(toolbar, wxT("Couldn't find toolbar"));
+    toolbar->ClearTools();
+    RefreshToolbarButtons();
+}
+
+/**
+ * Recreates the dragbar.
+ *
+ * This assumes that the dragbar has already been created.
+ * If this is the case all existing elements are removed and
+ * re-added.
+ */
+void PasswordSafeFrame::ReCreateDragToolbar()
+{
+    PWSDragBar* dragbar = GetDragBar();
+    wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
+    dragbar->ClearTools();
+    dragbar->RefreshButtons();
+}
+
 void PasswordSafeFrame::RefreshToolbarButtons()
 {
   wxToolBar* tb = GetToolBar();
   wxASSERT(tb);
-
   if (tb->GetToolsCount() == 0) {  //being created?
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
       for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
@@ -1488,6 +1507,11 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   }
 }
 
+/**
+ * Changes the language on the fly to one of the supported languages.
+ *
+ * \see PasswordSafeFrame::Init() for currently supported languages.
+ */
 void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
   auto id = evt.GetId();
@@ -1504,8 +1528,18 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   if (wxGetApp().ActivateLanguage( std::get<0>(m_languages[id]) )) {
     m_selectedLanguage = id;
 
+    // Recreate menubar
     CreateMenubar();
-    //RefreshToolbarButtons();
+
+    // Recreate toolbar
+    ReCreateMainToolbar();
+
+    // Recreate dragbar
+    ReCreateDragToolbar();
+
+    // Recreate search bar
+    wxCHECK_RET(m_search, wxT("Search object not created so far"));
+    m_search->ReCreateSearchBar();
   } else {
     GetMenuBar()->Check( m_selectedLanguage, true );
   }

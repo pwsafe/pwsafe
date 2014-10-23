@@ -320,6 +320,29 @@ void PasswordSafeSearch::RefreshButtons(void)
   }
 }
 
+/**
+ * Recreates the search bar with the last state 
+ * regarding its visibility on the UI.
+ */
+void PasswordSafeSearch::ReCreateSearchBar(void)
+{
+  if (m_toolbar != nullptr) {
+    // remember last status of search bar
+    bool show = m_toolbar->IsShown();
+
+    // destroy the existing search bar
+    wxDELETE(m_toolbar);
+
+    // here a new search bar is going to be created
+    // right after creation it appears on the UI
+    CreateSearchBar();
+
+    // if the previous searc bar was hidden then
+    // hide also the new one
+    if (show == false)
+      HideSearchToolbar();
+  }
+}
 
 /*!
  * Creates the search bar and keeps it hidden
@@ -327,7 +350,6 @@ void PasswordSafeSearch::RefreshButtons(void)
 void PasswordSafeSearch::CreateSearchBar()
 {
   wxASSERT(m_toolbar == 0);
-
   m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
 
   wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());

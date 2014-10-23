@@ -469,6 +469,8 @@ public:
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void CreateMainToolbar();
+  void ReCreateMainToolbar();
+  void ReCreateDragToolbar();
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
