@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2014-07-28 09:30+0400\n"
+"PO-Revision-Date: 2014-10-26 15:45+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -121,7 +121,7 @@ msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr "  Недопустимое значение статуса: %d (должно быть 0 или 1)"
 
 #. Resource IDs: (336)
-msgid " 'Autotype'"
+msgid " 'AutoType'"
 msgstr " 'Автонабор'"
 
 #. Resource IDs: (336)
@@ -621,12 +621,8 @@ msgstr "П&родолжить"
 msgid "&Copy"
 msgstr "&Копировать"
 
-#. Resource IDs: (32066)
+#. Resource IDs: (332, 32066)
 msgid "&Copy Password to Clipboard"
-msgstr "&Копировать пароль в буфер обмена"
-
-#. Resource IDs: (332)
-msgid "&Copy Password to clipboard"
 msgstr "&Копировать пароль в буфер обмена"
 
 #. Resource IDs: (1344, 1405, 2132, 32055)
@@ -1760,12 +1756,19 @@ msgid "Browse to URL"
 msgstr "Перейти по ссылке"
 
 #. Resource IDs: (355, 32073)
-msgid "Browse to URL + &Autotype"
+msgid "Browse to URL + &AutoType"
 msgstr "Перейти по ссылке и выполнить &автонабор"
 
 # урезано (в настройках вып. меню для двойного клика)
 # пункт в меню "Изменить" (конфликт падежей?)
-#. Resource IDs: (251, 32073)
+#. Resource IDs: (32073)
+#, fuzzy
+msgid "Browse to URL + AutoType"
+msgstr "Переход по ссылке и автонабор"
+
+# урезано (в настройках вып. меню для двойного клика)
+# пункт в меню "Изменить" (конфликт падежей?)
+#. Resource IDs: (251)
 #, fuzzy
 msgid "Browse to URL + Autotype"
 msgstr "Переход по ссылке и автонабор"
@@ -2280,20 +2283,12 @@ msgstr "Продолжить"
 msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
 msgstr "Копировать пароль\n\n«%s»\n\nв буфер обмена."
 
-#. Resource IDs: (32069)
+#. Resource IDs: (332, 32069)
 msgid "Copy &Notes to Clipboard"
 msgstr "Копировать &заметки в буфер обмена"
 
-#. Resource IDs: (332)
-msgid "Copy &Notes to clipboard"
-msgstr "Копировать &заметки в буфер обмена"
-
-#. Resource IDs: (32068)
+#. Resource IDs: (332, 32068)
 msgid "Copy &Username to Clipboard"
-msgstr "Копировать &имя пользователя в буфер обмена"
-
-#. Resource IDs: (332)
-msgid "Copy &Username to clipboard"
 msgstr "Копировать &имя пользователя в буфер обмена"
 
 #. Resource IDs: (1174)
@@ -2312,25 +2307,17 @@ msgstr "Копировать команду в буфер обмена"
 msgid "Copy UR&L to Clipboard"
 msgstr "Копировать &ссылку в буфер обмена"
 
-#. Resource IDs: (329, 32070)
+#. Resource IDs: (329, 332, 32070)
 msgid "Copy URL to Clipboard"
 msgstr "Копировать &ссылку в буфер обмена"
-
-#. Resource IDs: (332)
-msgid "Copy URL to clipboard"
-msgstr "Копировать ссылку в буфер обмена"
 
 #. Resource IDs: (32223)
 #, fuzzy
 msgid "Copy all entries to Original"
 msgstr "Копировать все элементы в исходный"
 
-#. Resource IDs: (32071)
+#. Resource IDs: (358, 32071)
 msgid "Copy email to Clipboard"
-msgstr "Копировать E-mail в буфер обмена"
-
-#. Resource IDs: (358)
-msgid "Copy email to clipboard"
 msgstr "Копировать E-mail в буфер обмена"
 
 #. Resource IDs: (251)
@@ -3264,7 +3251,7 @@ msgid "Failed to launch help."
 msgstr "Не удалось запустить справку."
 
 #. Resource IDs: (354)
-msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
 msgstr "Невозможно загрузить DLL для автонабора, или она имеет неверную версию.\n\n Автонабор в браузере и при выполнении команды отключён."
 
 #. Resource IDs: (208)
@@ -3732,7 +3719,7 @@ msgstr "ID:32070:VAC +L"
 msgid "ID:32072:V C +L"
 msgstr "ID:32072:V C +L"
 
-#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &Autotype'
+#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
@@ -3740,7 +3727,7 @@ msgstr "ID:32073:VA  +L"
 msgid "ID:32074:V C +E"
 msgstr "ID:32074:V C +E"
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto &Type'
+#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
 msgid "ID:32075:V C +T"
 msgstr "ID:32075:V C +T"
 
@@ -4994,16 +4981,8 @@ msgstr "В Password Safe V%d.%d.%d (Сборка %s) обнаружена оши
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr "Password Safe: элементы с истекающим или просроченным паролем"
 
-#. Resource IDs: (32075)
-msgid "Perform Auto &Type"
-msgstr "&Автонабор"
-
-#. Resource IDs: (332)
+#. Resource IDs: (332, 32075)
 msgid "Perform Auto&Type"
-msgstr "&Автонабор"
-
-#. Resource IDs: (32075)
-msgid "Perform Auto&type"
 msgstr "&Автонабор"
 
 #. Resource IDs: (515)
@@ -5535,7 +5514,7 @@ msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
 
 # В метке мало места, поэтому сокращено до "пароль"
-#. Resource IDs: (1503, 65535)
+#. Resource IDs: (65535)
 msgid "Safe Combination:"
 msgstr "Пароль:"
 
@@ -7304,7 +7283,7 @@ msgid "\nBrowse to URL"
 msgstr "\nПерейти по ссылке"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
+msgid "\nBrowse to URL + AutoType"
 msgstr "\nПерейти по ссылке и выполнить автонабор"
 
 #. Resource IDs: (2020)
@@ -7482,7 +7461,7 @@ msgid "\nPassword Policies"
 msgstr "\nПолитики создания паролей"
 
 #. Resource IDs: (2005)
-msgid "\nPerform Autotype"
+msgid "\nPerform AutoType"
 msgstr "\nАвтонабор"
 
 #. Resource IDs: (331)
