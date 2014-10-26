@@ -653,7 +653,6 @@ void CWZSelectDB::yubiRemoved(void)
   ((CButton*)GetDlgItem(IDC_YUBIKEY_BTN))->SetBitmap(m_yubiLogoDisabled);
   m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 }
-  BYTE respBuf[SHA1_DIGEST_SIZE];
 
 void CWZSelectDB::yubiShowChallengeSent()
 {
