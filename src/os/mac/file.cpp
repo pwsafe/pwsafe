@@ -168,7 +168,7 @@ static string filterString;
 // I don't even know the platform/sdk where scandir() requires this new signature of filterfunc, so I'm trying to
 // deduce if we are building 64-bit with Xcode 5.  May be this is more of a SDK-dependent thing,
 // but I'm not sure right now.  Also note that this has nothing to do with wxWidgets
-#if defined(__PWS_MACINTOSH__) && defined(__clang__) && (__clang_major__ >= 5) && defined(build_is_64_bit)
+#if defined(__PWS_MACINTOSH__) && defined(__clang__) && (__clang_major__ >= 5)
 static int filterFunc(const struct dirent *de)
 #else
 static int filterFunc(struct dirent *de)
