@@ -1,0 +1,7 @@
+build*
+*.xcconfig
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.perspectivev3
+
