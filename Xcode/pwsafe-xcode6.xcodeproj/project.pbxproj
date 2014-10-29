@@ -167,8 +167,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E6069D0419FE1CDF0055040F /* pwsafe-xcode6-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-xcode6-release.xcconfig"; sourceTree = "<group>"; };
-		E6069D0519FE1CDF0055040F /* pwsafe-xcode6-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-xcode6-debug.xcconfig"; sourceTree = "<group>"; };
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
@@ -198,6 +196,8 @@
 		E6919C631298FB25001F96D9 /* pwsafe.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pwsafe.icns; path = ../src/ui/wxWidgets/graphics/pwsafe.icns; sourceTree = SOURCE_ROOT; };
 		E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectionpanel.cpp; sourceTree = "<group>"; };
 		E691FB56140D551F00925F96 /* fieldselectionpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectionpanel.h; sourceTree = "<group>"; };
+		E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-debug.xcconfig"; sourceTree = "<group>"; };
+		E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-release.xcconfig"; sourceTree = "<group>"; };
 		E698273C14C01ABC0043C243 /* logit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logit.h; sourceTree = "<group>"; };
 		E698273D14C01ABC0043C243 /* logit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logit.cpp; path = mac/logit.cpp; sourceTree = "<group>"; };
 		E698275814C01B7D0043C243 /* PWSLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSLog.cpp; sourceTree = "<group>"; };
@@ -654,8 +654,8 @@
 		E6069D0319FE1CCA0055040F /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				E6069D0419FE1CDF0055040F /* pwsafe-xcode6-release.xcconfig */,
-				E6069D0519FE1CDF0055040F /* pwsafe-xcode6-debug.xcconfig */,
+				E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */,
+				E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */,
 			);
 			name = Configs;
 			sourceTree = "<group>";
@@ -1718,7 +1718,7 @@
 		};
 		E6ADB9A11195706B004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6069D0519FE1CDF0055040F /* pwsafe-xcode6-debug.xcconfig */;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -1744,7 +1744,7 @@
 		};
 		E6ADB9A21195706B004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6069D0419FE1CDF0055040F /* pwsafe-xcode6-release.xcconfig */;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
