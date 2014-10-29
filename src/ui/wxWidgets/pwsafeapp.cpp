@@ -69,6 +69,22 @@ using namespace std;
 #define STR(s) wxT(s)
 #endif
 
+
+// wx debug messages (a) don't really interest us, and
+// (b) manage to crash wx 3.0.2 under Windows due to some
+// odd initialization sequence error, so we just shut them up.
+// Need to do this in a global as well, as we die in another
+// global trace in Release Windows build
+
+class RestrainLog {
+public:
+  RestrainLog(wxLogLevel level) {
+    wxLog::SetComponentLevel(wxT("wx"), level);
+  }
+};
+
+static RestrainLog restLog(wxLOG_Info);
+
 static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_SWITCH, STR("?"), STR("help"),
    STR("displays command line usage"),
