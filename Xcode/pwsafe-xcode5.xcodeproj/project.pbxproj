@@ -1640,6 +1640,7 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
 		};
