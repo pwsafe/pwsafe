@@ -173,8 +173,6 @@
 		E6112A62131D720E00AA1454 /* ExpiredList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpiredList.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
-		E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-debug.xcconfig"; sourceTree = "<group>"; };
-		E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-release.xcconfig"; sourceTree = "<group>"; };
 		E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsmenushortcuts.cpp; sourceTree = "<group>"; };
 		E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsmenushortcuts.h; sourceTree = "<group>"; };
 		E66C16A216731E2100C996B1 /* SelectionCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionCriteria.h; sourceTree = "<group>"; };
@@ -978,8 +976,6 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
-				E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */,
-				E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */,
 				E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */,
 				E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */,
 				E690B1031297D76E007EA508 /* Resources */,
