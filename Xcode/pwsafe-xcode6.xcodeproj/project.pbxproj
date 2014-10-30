@@ -1360,7 +1360,7 @@
 		E6ADB7F0119569CC004E2BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Open Source Software";
 			};
 			buildConfigurationList = E6ADB7F3119569CC004E2BE5 /* Build configuration list for PBXProject "pwsafe-xcode6" */;
@@ -1655,7 +1655,7 @@
 		E6ADB80511956A93004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -1672,7 +1672,7 @@
 		E6ADB80611956A93004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1688,7 +1688,7 @@
 		E6ADB91D11956DD0004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -1704,7 +1704,7 @@
 		E6ADB91E11956DD0004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1720,7 +1720,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1746,7 +1746,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
