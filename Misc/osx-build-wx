@@ -212,7 +212,8 @@ else
                               --with-osx_cocoa                  \
                               --disable-shared                  \
                               --disable-compat24                \
-                              --enable-unicode
+                              --enable-unicode                  \
+                              --enable-universal-binary=i386,x86_64
 	fi
 fi
 
