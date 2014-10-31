@@ -320,6 +320,29 @@ void PasswordSafeSearch::RefreshButtons(void)
   }
 }
 
+/**
+ * Recreates the search bar with the last state 
+ * regarding its visibility on the UI.
+ */
+void PasswordSafeSearch::ReCreateSearchBar(void)
+{
+  if (m_toolbar != nullptr) {
+    // remember last status of search bar
+    bool show = m_toolbar->IsShown();
+
+    // destroy the existing search bar
+    wxDELETE(m_toolbar);
+
+    // here a new search bar is going to be created
+    // right after creation it appears on the UI
+    CreateSearchBar();
+
+    // if the previous searc bar was hidden then
+    // hide also the new one
+    if (show == false)
+      HideSearchToolbar();
+  }
+}
 
 /*!
  * Creates the search bar and keeps it hidden
@@ -327,7 +350,6 @@ void PasswordSafeSearch::RefreshButtons(void)
 void PasswordSafeSearch::CreateSearchBar()
 {
   wxASSERT(m_toolbar == 0);
-
   m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
 
   wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
@@ -474,7 +496,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   for ( Iter itr = begin; itr != end; ++itr) {
 
     const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
-    if (fUseSubgroups && !afn(itr).Matches(static_cast<const charT *>(subgroupText), subgroupObject, fn))
+    if (fUseSubgroups && !afn(itr).Matches(stringT(subgroupText.c_str()), subgroupObject, fn))
         continue;
 
     bool found = false;
@@ -520,7 +542,7 @@ SearchPointer& SearchPointer::operator++()
     m_currentIndex++;
     if (m_currentIndex == m_indices.end()) {
       m_currentIndex = m_indices.begin();
-      PrintLabel(_("Search hit bottom, continuing at top"));
+      PrintLabel(_("Search hit bottom, continuing at top").c_str());
     }
     else {
       PrintLabel();
@@ -538,7 +560,7 @@ SearchPointer& SearchPointer::operator--()
   if (!m_indices.empty()) {
     if (m_currentIndex == m_indices.begin()) {
       m_currentIndex = --m_indices.end();
-      PrintLabel(_("Search hit top, continuing at bottom"));
+      PrintLabel(_("Search hit top, continuing at bottom").c_str());
     }
     else {
       m_currentIndex--;
@@ -560,7 +582,7 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
   else {
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
-    m_label.Printf(_("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    m_label.Printf(_("%d/%d matches").c_str(), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
     if (prefix)
       m_label = wxString(prefix) + wxT(".  ") + m_label;
   }

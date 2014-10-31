@@ -140,6 +140,7 @@ public:
   void Activate(void);
   void RefreshButtons(void);
   void Invalidate(void) { m_searchPointer.Clear(); }
+  void ReCreateSearchBar(void);
 
 private:
   template <class Iter, class Accessor>

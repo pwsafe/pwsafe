@@ -139,6 +139,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_YUBIKEY_MNG, PasswordSafeFrame::OnYubikeyMngClick )
 #endif
 
+  EVT_MENU_RANGE( ID_LANGUAGE_BEGIN, ID_LANGUAGE_END, PasswordSafeFrame::OnLanguageClick )
+
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
@@ -261,6 +263,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     m_bUnlocking(false)
 {
     Init();
+    m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
@@ -276,6 +279,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 ////@begin PasswordSafeFrame creation
   wxFrame::Create( parent, id, caption, pos, size, style );
 
+  CreateMenubar();
   CreateControls();
   SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
   Centre();
@@ -283,7 +287,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   m_search = new PasswordSafeSearch(this);
   CreateMainToolbar();
   CreateDragBar();
-    return true;
+  return true;
 }
 
 void PasswordSafeFrame::CreateDragBar()
@@ -345,23 +349,60 @@ void PasswordSafeFrame::Init()
   m_grid = NULL;
   m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
+
+  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese")  );  /* code: 'zh' */
+  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish")   );  /* code: 'da' */
+  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch")    );  /* code: 'nl' */
+  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _T("English") );  /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French")   );  /* code: 'fr' */
+  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German")   );  /* code: 'de' */
+  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian")  );  /* code: 'it' */
+  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean")   );  /* code: 'ko' */
+  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish")   );  /* code: 'pl' */
+  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian")  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish")  );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish")  );  /* code: 'sv' */
+
+  m_selectedLanguage = ID_LANGUAGE_ENGLISH;
+  wxLanguage system_language = wxGetApp().GetSystemLanguage();
+
+  for (auto &item : m_languages) {
+    // Mark the system language
+    if (std::get<0>(item.second) == system_language) {
+      std::get<1>(item.second) = wxT("[ ") + std::get<1>(item.second) + wxT(" ]");
+      m_selectedLanguage = item.first;
+    }
+    // Mark whether language can be activated
+    std::get<2>(item.second) = wxGetApp().ActivateLanguage(std::get<0>(item.second));
+  }
+  // Activate the systems default language
+  if (!wxGetApp().ActivateLanguage(std::get<0>(m_languages[m_selectedLanguage]))) {
+    m_selectedLanguage = ID_LANGUAGE_ENGLISH;
+  }
 }
 
 
-/*!
- * Control creation for PasswordSafeFrame
+/**
+ * Menu bar creation for PasswordSafeFrame
  */
 
-void PasswordSafeFrame::CreateControls()
+void PasswordSafeFrame::CreateMenubar()
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  const StringX lastView = prefs->GetPref(PWSprefs::LastView);
-  m_currentView = (lastView == _T("list")) ? GRID : TREE;
+  wxMenuBar* menuBar = GetMenuBar();
 
+  // Create a new menu bar if none has been created so far
+  if (menuBar == nullptr)
+    menuBar = new wxMenuBar;
+
+  menuBar->Freeze();
+
+  // Removing all existing menu items is necessary for language switching
+  while( menuBar->GetMenuCount() )
+    delete menuBar->Remove( 0 );
+
+  // Create all menu items
+  // Recreating the menu items updates also their translation
 ////@begin PasswordSafeFrame content construction
-  PasswordSafeFrame* itemFrame1 = this;
-
-  wxMenuBar* menuBar = new wxMenuBar;
   wxMenu* itemMenu3 = new wxMenu;
   itemMenu3->Append(wxID_NEW);
   itemMenu3->Append(wxID_OPEN);
@@ -458,6 +499,9 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
 #endif
+  itemMenu72->AppendSeparator();
+  AddLanguageMenu( itemMenu72 );
+
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
@@ -465,20 +509,41 @@ void PasswordSafeFrame::CreateControls()
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
 ////@end PasswordSafeFrame content construction
-  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager(menuBar);
+
+  menuBar->Thaw();
+
+  // If there was no previous menu bar then we set the new created one
+  // otherwise the already existing one is triggered to refresh
+  if (GetMenuBar() == nullptr)
+    SetMenuBar(menuBar);
+  else
+    menuBar->Refresh();
+
+  // Update menu selections
+  GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
+  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
+    GetMenuBar()->Check( m_selectedLanguage, true );
+}
+
+/**
+ * Control creation for PasswordSafeFrame
+ */
+void PasswordSafeFrame::CreateControls()
+{
+  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager( GetMenuBar() );
   scmgr->ReadApplyUserShortcuts();
-  itemFrame1->SetMenuBar(menuBar);
 
   wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
   mainsizer->Add(itemBoxSizer83, 1, wxEXPAND | wxALIGN_CENTER);
-  itemFrame1->SetSizer(mainsizer);
+  SetSizer(mainsizer);
 
-  m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new PWSGrid( this, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
@@ -490,21 +555,60 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  if (m_currentView == TREE) {
-    itemMenu47->Check(ID_TREE_VIEW, true);
-  }
-
-  GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true);
-
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
 
-/*
+/**
+ * Creates the language sub menu.
+ *
+ * \param parent the parent to which the sub-menu should be added
+ */
+void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
+{
+  if (parent == nullptr)
+    return;
+
+  wxMenu* child = new wxMenu;
+  wxMenuItem* menu_item = nullptr;
+
+  for (auto &item : m_languages) {
+    menu_item = child->Append(
+        item.first,               /* The key of the map that holds menu item id's */
+        std::get<1>(item.second), /* The value of the map is a tuple.
+                                     The tuple consists of three elements.
+                                     Index 0: the language id as wxLanguage
+                                     Index 1: the language literal as wxString
+                                     Index 2: the indicator whether the language can be activated
+                                     */
+        _T(""),                   /* The menu items tooltip */
+        wxITEM_CHECK
+        );
+
+    if (menu_item != nullptr)
+      menu_item->Enable(std::get<2>(item.second));
+  }
+
+  parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
+}
+
+/**
+ * Adds language specific data to internal map
+ * for language switching functionality.
+ *
+ * \param menu_id the id of the language menu item
+ * \param lang_id the wx framework specific language id
+ * \param lang_name the textual language representation on the menu
+ */
+void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
+{
+    m_languages[menu_id] = std::make_tuple(lang_id, lang_name, false);
+}
+
+/**
  * Creates the main toolbar
  */
-
 void PasswordSafeFrame::CreateMainToolbar()
 {
   wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
@@ -520,11 +624,40 @@ void PasswordSafeFrame::CreateMainToolbar()
   GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
 }
 
+/**
+ * Recreates the main toolbar.
+ *
+ * This assumes that the main toolbar has already been created.
+ * If this is the case all existing elements are removed and
+ * added again to the toolbar instance.
+ */
+void PasswordSafeFrame::ReCreateMainToolbar()
+{
+    wxToolBar* toolbar = GetToolBar();
+    wxCHECK_RET(toolbar, wxT("Couldn't find toolbar"));
+    toolbar->ClearTools();
+    RefreshToolbarButtons();
+}
+
+/**
+ * Recreates the dragbar.
+ *
+ * This assumes that the dragbar has already been created.
+ * If this is the case all existing elements are removed and
+ * re-added.
+ */
+void PasswordSafeFrame::ReCreateDragToolbar()
+{
+    PWSDragBar* dragbar = GetDragBar();
+    wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
+    dragbar->ClearTools();
+    dragbar->RefreshButtons();
+}
+
 void PasswordSafeFrame::RefreshToolbarButtons()
 {
   wxToolBar* tb = GetToolBar();
   wxASSERT(tb);
-
   if (tb->GetToolsCount() == 0) {  //being created?
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
       for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
@@ -1374,6 +1507,43 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   }
 }
 
+/**
+ * Changes the language on the fly to one of the supported languages.
+ *
+ * \see PasswordSafeFrame::Init() for currently supported languages.
+ */
+void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
+{
+  auto id = evt.GetId();
+#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+  std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << std::get<1>(m_languages[id]) << std::endl;
+#endif
+
+  // First, uncheck all language menu items, hence the previously selected but also the new one
+  for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
+    GetMenuBar()->Check( menu_id, false );
+
+  // If a new language has been selected successfully we have to 
+  // recreate the UI so that the language change takes effect
+  if (wxGetApp().ActivateLanguage( std::get<0>(m_languages[id]) )) {
+    m_selectedLanguage = id;
+
+    // Recreate menubar
+    CreateMenubar();
+
+    // Recreate toolbar
+    ReCreateMainToolbar();
+
+    // Recreate dragbar
+    ReCreateDragToolbar();
+
+    // Recreate search bar
+    wxCHECK_RET(m_search, wxT("Search object not created so far"));
+    m_search->ReCreateSearchBar();
+  } else {
+    GetMenuBar()->Check( m_selectedLanguage, true );
+  }
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
@@ -1945,7 +2115,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(_("Couldn't find uuid %s"),
+    pws_os::Trace(wxT("Couldn't find uuid %s"),
                   StringX(CUUID(entry_uuid)).c_str());
   }
 
@@ -2178,7 +2348,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
     rc = fd.ShowModal();
 
     if (rc == wxID_OK) {
-      fname = fd.GetPath();
+      fname = fd.GetPath().c_str();
       wxFileName wxfn(fname.c_str());
       if (wxfn.GetExt().empty()) {
         wxfn.SetExt(DEFAULT_SUFFIX);
@@ -2458,7 +2628,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   if (dlg.ShowModal() != wxID_OK)
     return;
 
-  StringX ImportedPrefix(dlg.groupName);
+  StringX ImportedPrefix(dlg.groupName.c_str());
   TCHAR fieldSeparator = dlg.FieldSeparator();
 
   std::wstring strError;
@@ -2469,7 +2639,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_("Import_Text"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Import_Text").c_str(), m_core.GetCurFile().c_str());
   wxString header;
   header.Printf(_("%s file being imported: %s"), _("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
@@ -2572,11 +2742,11 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
 
   if (ImportType == KeePassCSV)
-    rpt.StartReport(_("Import_KeePassV1_CSV"), m_core.GetCurFile().c_str());
+    rpt.StartReport(_("Import_KeePassV1_CSV").c_str(), m_core.GetCurFile().c_str());
   else
-    rpt.StartReport(_("Import_KeePassV1_TXT"), m_core.GetCurFile().c_str());
+    rpt.StartReport(_("Import_KeePassV1_TXT").c_str(), m_core.GetCurFile().c_str());
 
-  rpt.WriteLine(static_cast<const TCHAR *>(wxString::Format(_("Text file being imported: %s"), static_cast<const TCHAR *>(KPsFileName))));
+  rpt.WriteLine(wxString::Format(_("Text file being imported: %s").c_str(), KPsFileName.c_str()));
   rpt.WriteLine();
 
   int numImported, numSkipped, numRenamed;
@@ -2624,7 +2794,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       rpt.WriteLine();
       wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
       wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
-      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg));
+      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg.c_str()));
       rpt.EndReport();
       wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
       int icon = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
@@ -2678,7 +2848,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_("Import_XML"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Import_XML").c_str(), m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString::Format(_("%s file being imported: %s"), _("XML"), XMLFilename.c_str())));
   rpt.WriteLine();
   std::vector<StringX> vgroups;
@@ -2752,8 +2922,8 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
 
       } else {
-        const TCHAR* cs_validate = numValidated == 1 ? _("entry") : _("entries");
-        const TCHAR* cs_imported = numImported == 1 ? _("entry") : _("entries");
+        const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
+        const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
         cs_temp.Printf(_("Validated %d %s\n\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
       }
 
@@ -2981,10 +3151,10 @@ void PasswordSafeFrame::DoExportText()
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
         if (fd.ShowModal() == wxID_OK) {
-          newfile = fd.GetPath();
+          newfile = fd.GetPath().c_str();
           CReport rpt;
 
-          rpt.StartReport(ExportType::GetTitle(), sx_temp.c_str());
+          rpt.StartReport(ExportType::GetTitle().c_str(), sx_temp.c_str());
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
@@ -3068,7 +3238,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   /* Create report as we go */
   CReport rpt;
 
-  rpt.StartReport(_("Merge"), m_core.GetCurFile().c_str());
+  rpt.StartReport(_("Merge").c_str(), m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
 
   stringT result = m_core.Merge(pothercore,

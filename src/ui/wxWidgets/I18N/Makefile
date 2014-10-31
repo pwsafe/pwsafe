@@ -10,7 +10,7 @@ SRCS := $(wildcard $(SRC_BASE)/ui/wxWidgets/*.cpp) \
 	$(wildcard $(SRC_BASE)/os/linux/*.cpp) \
 	$(wildcard $(SRC_BASE)/os/linux/*.h)
 
-LANGS := de dk es fr it kr nl pl ru sv zh
+LANGS := de da es fr it ko nl pl ru sv zh
 
 POS := $(patsubst %,pos/pwsafe_%.po,$(LANGS))
 

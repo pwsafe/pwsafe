@@ -49,7 +49,7 @@ IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
 
 typedef StringX (CItemData::*ItemDataFuncT)() const;
 
-struct PWSGridCellDataType {
+static struct PWSGridCellDataType {
     CItemData::FieldType ft;
     bool visible;
     int width;
@@ -335,3 +335,11 @@ void PWSGridTable::RestoreSettings(void) const
     }
   }
 }
+
+int PWSGridTable::GetNumHeaderCols()
+{
+  // XXX Should probably reflect number of columns
+  // as selected by user
+  return NumberOf(PWSGridCellData);
+}
+

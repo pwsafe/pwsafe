@@ -28,6 +28,7 @@
 #include "core/UIinterface.h"
 #include "RUEList.h"
 #include "./wxutils.h"
+#include <tuple>
 
 /*!
  * Forward declarations
@@ -99,6 +100,7 @@ class PasswordSafeSearch;
 #define ID_RESTORE 10058
 #define ID_PWDPOLSM 10215
 #define ID_YUBIKEY_MNG 10010
+#define ID_LANGUAGEMENU 10011
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -107,7 +109,7 @@ class PasswordSafeSearch;
 #define SYMBOL_PASSWORDSAFEFRAME_POSITION wxDefaultPosition
 ////@end control identifiers
 enum {
-  ID_EDITMENU_FIND_NEXT  = 10200,
+  ID_EDITMENU_FIND_NEXT  = 10220,
   ID_EDITMENU_FIND_PREVIOUS,
   ID_PASSWORDSUBSET,
   ID_COPYEMAIL,
@@ -128,8 +130,23 @@ enum {
   ID_TOOLBAR_NEW,
   ID_TOOLBAR_CLASSIC,
   ID_SYNCHRONIZE,
-};
 
+  // languages
+  ID_LANGUAGE_BEGIN,
+  ID_LANGUAGE_CHINESE,
+  ID_LANGUAGE_DANISH,
+  ID_LANGUAGE_DUTCH,
+  ID_LANGUAGE_ENGLISH,
+  ID_LANGUAGE_FRENCH,
+  ID_LANGUAGE_GERMAN,
+  ID_LANGUAGE_ITALIAN,
+  ID_LANGUAGE_KOREAN,
+  ID_LANGUAGE_POLISH,
+  ID_LANGUAGE_RUSSIAN,
+  ID_LANGUAGE_SPANISH,
+  ID_LANGUAGE_SWEDISH,
+  ID_LANGUAGE_END
+};
 
 /*!
  * PasswordSafeFrame class declaration
@@ -156,6 +173,7 @@ public:
 
     /// Creates the controls and sizers
     void CreateControls();
+    void CreateMenubar();
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
@@ -238,6 +256,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
   void OnPwdPolsMClick( wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LANGUAGEMENU
+  void OnLanguageClick( wxCommandEvent& evt);
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& evt);
 
@@ -310,13 +331,13 @@ public:
 
   /// called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
   void OnCopyEmailClick( wxCommandEvent& evt);
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
-  
+
   /// wxEVT_UPDATE_UI event handler for ID_MENU_CLEAR_MRU
   void OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt);
 
@@ -325,7 +346,7 @@ public:
 
   /// wxEVT_ICONIZE event handler
   void OnIconize(wxIconizeEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_UNDO
   void OnUndo(wxCommandEvent& evt);
 
@@ -347,7 +368,7 @@ public:
   void OnMergeAnotherSafe(wxCommandEvent& evt);
   void OnSynchronize(wxCommandEvent& evt);
   void OnCompare(wxCommandEvent& evt);
-  
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
 
@@ -363,70 +384,70 @@ public:
   wxIcon GetIconResource( const wxString& name );
 ////@end PasswordSafeFrame member function declarations
 
-    /// Should we show tooltips?
-    static bool ShowToolTips();
+/// Should we show tooltips?
+  static bool ShowToolTips();
 
-    // Overriden virtuals
-    virtual bool Show(bool show = true);
-    virtual void SetTitle(const wxString& title);
-    virtual void SetFocus();
-    
-    // PasswordSafe specifics:
-    int Load(const StringX &passwd);
-    
-    // Hilites the item.  Used for search
-    void SelectItem(const pws_os::CUUID& uuid);
+  // Overriden virtuals
+  virtual bool Show(bool show = true);
+  virtual void SetTitle(const wxString& title);
+  virtual void SetFocus();
 
-    ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
-    ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
+  // PasswordSafe specifics:
+  int Load(const StringX &passwd);
 
-    void Execute(Command *pcmd, PWScore *pcore = NULL);
+  // Hilites the item.  Used for search
+  void SelectItem(const pws_os::CUUID& uuid);
 
-    bool IsTreeView() const {return m_currentView == TREE;}
-    void RefreshViews();
-    void FlattenTree(OrderedItemList& olist);
+  ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
+  ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
 
-    void DispatchDblClickAction(CItemData &item); //called by grid/tree
+  void Execute(Command *pcmd, PWScore *pcore = NULL);
 
-    /// Centralized handling of right click in the grid or the tree view
-    void OnContextMenu(const CItemData* item);
+  bool IsTreeView() const {return m_currentView == TREE;}
+  void RefreshViews();
+  void FlattenTree(OrderedItemList& olist);
 
-    /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
-    void UnlockSafe(bool restoreUI);
+  void DispatchDblClickAction(CItemData &item); //called by grid/tree
 
-    /// Called by app when the inactivity timer arrives
-    void HideUI(bool lock);
+  /// Centralized handling of right click in the grid or the tree view
+  void OnContextMenu(const CItemData* item);
 
-    /// Called by system tray unlock the UI (and optionally restore the main window)
-    void UnlockUI(bool restoreFrame);
-    
-    /// Returns true if the user enters the correct safe combination and presses OK
-    bool VerifySafeCombination(StringX& password);
+  /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
+  void UnlockSafe(bool restoreUI);
 
-    void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
-    void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
+  /// Called by app when the inactivity timer arrives
+  void HideUI(bool lock);
 
-    void ClearRUEList() { m_RUEList.ClearEntries(); }
-    void OnUpdateClearRecentHistory();
+  /// Called by system tray unlock the UI (and optionally restore the main window)
+  void UnlockUI(bool restoreFrame);
 
-    void ViewReport(CReport& rpt);
+  /// Returns true if the user enters the correct safe combination and presses OK
+  bool VerifySafeCombination(StringX& password);
+
+  void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
+  void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
+
+  void ClearRUEList() { m_RUEList.ClearEntries(); }
+  void OnUpdateClearRecentHistory();
+
+  void ViewReport(CReport& rpt);
 
   CItemData *GetSelectedEntry() const;
-    wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+  wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
-    void SetTrayStatus(bool locked);
-    
-////@begin PasswordSafeFrame member variables
+  void SetTrayStatus(bool locked);
+
+  ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
-////@end PasswordSafeFrame member variables
+  ////@end PasswordSafeFrame member variables
  private:
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   //we need to restrict the size of individual text fields, to prevent creating
   //enormous databases.  See the comments in DboxMain.h
-  enum {MAXTEXTCHARS = 30000};  
+  enum {MAXTEXTCHARS = 30000};
 
   int New();
   int NewFile(StringX &fname);
@@ -448,6 +469,8 @@ public:
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void CreateMainToolbar();
+  void ReCreateMainToolbar();
+  void ReCreateDragToolbar();
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
@@ -469,7 +492,7 @@ public:
                               std::vector<StringX> &vs_added);
   BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
-  
+
   // Do* member functions for right-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);
@@ -486,7 +509,13 @@ public:
 
   template <class ExportType>
   void DoExportText();
-  
+
+  /// Adds a sub menu with all supported languages to a given wxMenu
+  void AddLanguageMenu(wxMenu* parent);
+
+  /// Adds a language to internal list of supported languages by this application
+  void AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name);
+
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   PasswordSafeSearch* m_search;
@@ -500,6 +529,17 @@ public:
   // top-level windows that we hid while locking the UI
   wxWindowList hiddenWindows;
   bool m_bUnlocking;
+
+  /*
+   * The map associates menu item id's with language specific data represented by a tuple.
+   * The tuple consists of the wxWidgets language identifier, the language name as wxString 
+   * as it should appear in the menu and of an indicator whether the language can be
+   * activated or not.
+   */
+  std::map<int, std::tuple<wxLanguage, wxString, bool> > m_languages;
+
+  // The selected language menu id
+  int m_selectedLanguage;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
