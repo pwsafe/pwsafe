@@ -13,12 +13,12 @@ g++
 gettext
 make (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
-libwxgtk2.8-dev
-libwxgtk2.8-dbg
+libwxgtk3.0-dev (See note 1 below)
+libwxgtk3.0-dbg (See note 1 below)
 libxerces-c-dev
 libxt-dev
 libxtst-dev
-libykpers-1-dev (see note below)
+libykpers-1-dev (see note 2 below)
 libyubikey-dev
 git
 uuid-dev
@@ -30,7 +30,7 @@ git
 libXt-devel
 libXtst-devel
 libuuid-devel
-ykpers-devel (see note below)
+ykpers-devel (see note 2 below)
 libyubikey-devel
 xerces-c-devel
 wxGTK-devel
@@ -41,6 +41,28 @@ for make, e.g.,
 $ NO_YUBI=1 make
 (In this case, you don't need the libyubikey or libykpers-1
 development packages)
+
+--------------------
+Note #1 - wxWidgets 3.0
+
+Some distributions still don't provide wxWidgets 3.0. In this case,
+you can either:
+(a) Get the packages from another repository, as described here:
+http://codelite.org/LiteEditor/WxWidgets30Binaries
+or
+(b) Download the sources from here
+http://www.wxwidgets.org/downloads/
+and build the libraries yourself. If you do so:
+1. Configure the build using the following:
+$ ./configure --disable-shared --enable-stl --enable-utf8only \
+  --enable-intl --enable-xlocale --enable-debug_gdb 
+2. Set the WX_CONFIG environment variable to point to the correct
+location, e.g. add the following to you .bashrc file:
+export WX_CONFIG=$(HOME)/src/wxWidgets-3.0.2/wx-config
+
+Note that we use a static build of wxWidgets in order to simplify the
+distribution, not requiring users to get the wx3 package, and avoiding
+potential conflicts with 2.8.
 
 --------------------
 

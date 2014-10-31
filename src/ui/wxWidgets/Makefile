@@ -26,7 +26,6 @@ endif
 ifeq ($(CONFIG),debug)
 #Override - debug isn't standard
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
-WX_CONFIG=$(WXWIN)/GCCBuildDebugGTK2/wx-config
 TOOLCHAINNAME=gtk2d
 WXVERSION:=$(shell echo `$(WX_CONFIG) --version`)
 CXX=g++
@@ -47,7 +46,6 @@ DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/debug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
 GCCFLAGS=
-LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2/lib/wx/include/gtk2-ansi-debug-static-2.6"
 MACPACKAGEINFO=
 
@@ -75,7 +73,6 @@ DEBUGFLAGS=
 LIBPATH=../../../lib/release
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags` -DNDEBUG
 GCCFLAGS=
-LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
 MACPACKAGEINFO=
 
@@ -105,7 +102,6 @@ CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=
-LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2Unicode/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
 
