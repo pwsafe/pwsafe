@@ -58,7 +58,7 @@ $ ./configure --disable-shared --enable-stl --enable-utf8only \
   --enable-intl --enable-xlocale --enable-debug_gdb 
 2. Set the WX_CONFIG environment variable to point to the correct
 location, e.g. add the following to you .bashrc file:
-export WX_CONFIG=$(HOME)/src/wxWidgets-3.0.2/wx-config
+export WX_CONFIG=$HOME/src/wxWidgets-3.0.2/wx-config
 
 Note that we use a static build of wxWidgets in order to simplify the
 distribution, not requiring users to get the wx3 package, and avoiding
