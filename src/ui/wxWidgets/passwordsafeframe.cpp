@@ -1515,10 +1515,6 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
   auto id = evt.GetId();
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  std::cout << "[DEBUG] PasswordSafeFrame::OnLanguageClick: lang-menu-id=" << id << " / lang-name=" << std::get<1>(m_languages[id]) << std::endl;
-#endif
-
   // First, uncheck all language menu items, hence the previously selected but also the new one
   for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
     GetMenuBar()->Check( menu_id, false );

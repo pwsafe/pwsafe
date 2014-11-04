@@ -158,73 +158,6 @@ IMPLEMENT_CLASS( PwsafeApp, wxApp )
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
   END_EVENT_TABLE()
 
-
-/*
-bool PwsafeApp::activateLanguageX(wxLanguage language)
-{
-  wxLanguage lang = wxLANGUAGE_ENGLISH;
-
-  // for the English language there is no translation file available and
-  // needed. The locale should be available but English is also our fall
-  // back language, hence we don't care.
-  if ( language == wxLANGUAGE_ENGLISH ) {
-    lang = wxLANGUAGE_ENGLISH;
-    wxDELETE (m_locale);
-    return false;
-  }
-
-  // the selected language was not English and the corresponding
-  // locale does not exist
-  else if ( !wxLocale::IsAvailable(language) ) {
-    std::wcerr <<
-      L"The selected language is not supported by your system. "
-      L"Try installing support for this language." << std::endl;
-
-    // should we use wxLANGUAGE_SYSTEM which garanties us the
-    // corresponding locale but not a translation?
-    //lang = wxLANGUAGE_ENGLISH;
-    lang = language;
-  }
-
-  // if the language package resp. locale for the desired language
-  // is available on the system we take this one and try to load
-  // the corresponding translation file
-  else if ( wxLocale::IsAvailable(language) ) {
-    lang = language;
-  }
-
-  // we are going to create a new locale so the old one is not needed anymore
-  wxDELETE( m_locale );
-
-#if wxCHECK_VERSION( 2, 9, 0 )
-  m_locale = new wxLocale( lang );
-#else
-  m_locale = new wxLocale( lang, wxLOCALE_CONV_ENCODING );
-#endif
-
-  // add locale search paths
-  m_locale->AddCatalogLookupPathPrefix(wxT("/usr"));
-  m_locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  m_locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
-#endif
-
-  if ( language != wxLANGUAGE_ENGLISH ) {
-    // add translation file
-    if ( !m_locale->AddCatalog(wxT("pwsafe")))
-      std::wcerr << L"Couldn't load text for "
-        << m_locale->GetLanguageName(language).c_str() << std::endl;
-  }
-
-  // let's check the state of our new locale instance
-  if ( !m_locale->IsOk() )
-    std::wcerr << L"Failed to set locale for selected language." << std::endl;
-
-  return true;
-  //add translation for standard resources
-  //m_locale->AddStdCatalog();
-}
-*/
 /*!
  * Constructor for PwsafeApp
  */
@@ -259,6 +192,7 @@ PwsafeApp::~PwsafeApp()
 void PwsafeApp::Init()
 {
   m_locale = new wxLocale;
+  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/share/locale") );
   wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
   wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
