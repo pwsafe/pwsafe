@@ -23,7 +23,6 @@ RELEASEDIR := ./Releases/
 MKDIR := mkdir -p
 RM := /bin/rm -rf
 GIT := git
-TAR := tar
 GZIP := gzip
 ECHO := /bin/echo
 
@@ -79,7 +78,7 @@ deb:	release tar
 	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
 	$(MAKE) signatures sha1sums
 
-rpm:	release I18N
+rpm:	I18N tar
 	@$(MKDIR) $(RELEASEDIR)
 	$(MAKE) -C install/$@ \
 	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
