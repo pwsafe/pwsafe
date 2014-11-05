@@ -3728,6 +3728,14 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
 
 bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
 {
+/*
+ *  Use of CInfoDisplay to replace MS's broken ToolTips support.
+ *  Based on CInfoDisplay class taken from Asynch Explorer by
+ *  Joseph M. Newcomer [MVP]; http://www.flounder.com
+ *  Additional enhancements to the use of this code have been made to 
+ *  allow for delayed showing of the display and for a limited period.
+ */
+
   const CItemData *pci(NULL);
   CPoint ptScreen(ptClient);
   StringX sx_notes(L"");
@@ -3775,7 +3783,7 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
   }
 
   // move window
-  CString cs_oldnotes;
+  CSecString cs_oldnotes;
   m_pNotesDisplay->GetWindowText(cs_oldnotes);
   if (LPCWSTR(cs_oldnotes) != sx_notes)
     m_pNotesDisplay->SetWindowText(sx_notes.c_str());

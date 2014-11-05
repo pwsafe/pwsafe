@@ -50,6 +50,7 @@ CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pPa
 
 CShowCompareDlg::~CShowCompareDlg()
 {
+  delete m_pNotesDisplay;
 }
 
 void CShowCompareDlg::DoDataExchange(CDataExchange *pDX)
@@ -94,7 +95,7 @@ BOOL CShowCompareDlg::OnInitDialog()
   return TRUE;
 }
 
-void CShowCompareDlg::PopulateResults(const bool bShowAll)
+void CShowCompareDlg::PopulateResults(bool bShowAll)
 {
   // Populate List view
   // Our preferred field order
@@ -526,7 +527,7 @@ void CShowCompareDlg::OnShowIdenticalFields()
   PopulateResults(m_ShowIdenticalFields == BST_CHECKED);
 }
 
-CString CShowCompareDlg::GetDCAString(const int iValue, const bool isShift)
+CString CShowCompareDlg::GetDCAString(int iValue, bool isShift) const
 {
   UINT ui(0);
   if (iValue == -1)
@@ -541,7 +542,7 @@ CString CShowCompareDlg::GetDCAString(const int iValue, const bool isShift)
   return cs;
 }
 
-CString CShowCompareDlg::GetEntryTypeString(CItemData::EntryType et)
+CString CShowCompareDlg::GetEntryTypeString(CItemData::EntryType et) const
 {
   UINT ui(IDSC_UNKNOWN);
   switch (et) {
@@ -609,7 +610,7 @@ bool CShowCompareDlg::SetNotesWindow(const CPoint ptClient, const bool bVisible)
   }
 
   // move window
-  CString cs_oldnotes;
+  CSecString cs_oldnotes;
   m_pNotesDisplay->GetWindowText(cs_oldnotes);
   if (LPCWSTR(cs_oldnotes) != sx_notes)
     m_pNotesDisplay->SetWindowText(sx_notes.c_str());

@@ -6,20 +6,11 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-/*
-*  Use of CInfoDisplay to replace MS's broken ToolTips support.
-*  Based on CInfoDisplay class taken from Asynch Explorer by
-*  Joseph M. Newcomer [MVP]; http://www.flounder.com
-*  Additional enhancements to the use of this code have been made to 
-*  allow for delayed showing of the display and for a limited period.
-*/
-
 #include "stdafx.h"
 #include "PWTreeCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
 #include "DDSupport.h"
-#include "InfoDisplay.h"
 #include "SecString.h"
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"

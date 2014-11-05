@@ -10,7 +10,6 @@
 #include "PWListCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
-#include "InfoDisplay.h"
 
 using namespace std;
 

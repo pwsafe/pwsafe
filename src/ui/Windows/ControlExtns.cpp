@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "ControlExtns.h"
+#include "InfoDisplay.h"      // for Listbox Tooltips
 
 #include "core/ItemField.h" // for CSecEditExtn
 #include "core/BlowFish.h"  // ditto

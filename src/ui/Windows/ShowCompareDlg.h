@@ -47,9 +47,9 @@ protected:
   int m_ShowIdenticalFields;
 
 private:
-  void PopulateResults(const bool bShowAll);
-  CString GetDCAString(const int iValue, const bool isShift);
-  CString GetEntryTypeString(CItemData::EntryType et);
+  void PopulateResults(bool bShowAll);
+  CString GetDCAString(int iValue, bool isShift) const;
+  CString GetEntryTypeString(CItemData::EntryType et) const;
 
   CSCWListCtrl m_ListCtrl;
   CItemData *m_pci, *m_pci_other;

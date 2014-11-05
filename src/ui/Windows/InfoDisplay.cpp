@@ -18,6 +18,7 @@
 
 #include "stdafx.h"
 #include "InfoDisplay.h"
+#include "SecString.h"
 
 // CInfoDisplay
 
@@ -52,7 +53,7 @@ void CInfoDisplay::OnPaint()
 
   // First, we compute the maximum line width, and set the rectangle wide enough to
   // hold this.  Then we use DrawText/DT_CALCRECT to compute the height
-  CString text;
+  CSecString text;
   GetWindowText(text);
   CSize box = CSize(0, 0);
 
@@ -66,9 +67,9 @@ void CInfoDisplay::OnPaint()
   int inf; // inflation factor
 
   { /* compute box size */
-    CString s = text;
+    CSecString s = text;
     while(TRUE) { /* scan string */
-      CString line;
+      CSecString line;
       int p = s.Find(L"\n");
       if (p < 0)
         line = s;
@@ -170,10 +171,10 @@ void CInfoDisplay::OnPaint()
 
   dc.SetBkMode(TRANSPARENT);
    
-  CString s = text;
+  CSecString s = text;
   int y = r.top;
   while(TRUE) { /* scan string */
-    CString line;
+    CSecString line;
     int p = s.Find(L"\n");
     if (p < 0) {
       line = s;

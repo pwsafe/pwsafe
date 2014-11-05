@@ -9,7 +9,6 @@
 #pragma once
 
 #include "SecString.h"        // for CSecEditExtn
-#include "InfoDisplay.h"      // for Listbox Tooltips
 #include <vector>             // for Listbox Tooltips & EditExtn menus
 
 // ControlExtns.h : header file
@@ -224,6 +223,7 @@ private:
 };
 
 class CComboBoxExtn;
+class CInfoDisplay;
 
 class CListBoxExtn : public CListBox
 {
