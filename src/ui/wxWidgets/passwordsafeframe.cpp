@@ -77,6 +77,15 @@
 
 using pws_os::CUUID;
 
+#ifdef __WXMAC__
+using std::tr1::get;
+using std::tr1::make_tuple;
+#else
+using std::get;
+using std::make_tuple;
+#endif
+
+
 /*!
  * PasswordSafeFrame type definition
  */
@@ -368,15 +377,15 @@ void PasswordSafeFrame::Init()
 
   for (auto &item : m_languages) {
     // Mark the system language
-    if (std::get<0>(item.second) == system_language) {
-      std::get<1>(item.second) = wxT("[ ") + std::get<1>(item.second) + wxT(" ]");
+    if (get<0>(item.second) == system_language) {
+      get<1>(item.second) = wxT("[ ") + get<1>(item.second) + wxT(" ]");
       m_selectedLanguage = item.first;
     }
     // Mark whether language can be activated
-    std::get<2>(item.second) = wxGetApp().ActivateLanguage(std::get<0>(item.second));
+    get<2>(item.second) = wxGetApp().ActivateLanguage(get<0>(item.second));
   }
   // Activate the systems default language
-  if (!wxGetApp().ActivateLanguage(std::get<0>(m_languages[m_selectedLanguage]))) {
+  if (!wxGetApp().ActivateLanguage(get<0>(m_languages[m_selectedLanguage]))) {
     m_selectedLanguage = ID_LANGUAGE_ENGLISH;
   }
 }
@@ -576,7 +585,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
   for (auto &item : m_languages) {
     menu_item = child->Append(
         item.first,               /* The key of the map that holds menu item id's */
-        std::get<1>(item.second), /* The value of the map is a tuple.
+        get<1>(item.second), /* The value of the map is a tuple.
                                      The tuple consists of three elements.
                                      Index 0: the language id as wxLanguage
                                      Index 1: the language literal as wxString
@@ -587,7 +596,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
         );
 
     if (menu_item != nullptr)
-      menu_item->Enable(std::get<2>(item.second));
+      menu_item->Enable(get<2>(item.second));
   }
 
   parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
@@ -603,7 +612,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
  */
 void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name)
 {
-    m_languages[menu_id] = std::make_tuple(lang_id, lang_name, false);
+    m_languages[menu_id] = make_tuple(lang_id, lang_name, false);
 }
 
 /**
@@ -1521,7 +1530,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 
   // If a new language has been selected successfully we have to 
   // recreate the UI so that the language change takes effect
-  if (wxGetApp().ActivateLanguage( std::get<0>(m_languages[id]) )) {
+  if (wxGetApp().ActivateLanguage( get<0>(m_languages[id]) )) {
     m_selectedLanguage = id;
 
     // Recreate menubar

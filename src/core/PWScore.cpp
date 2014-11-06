@@ -38,7 +38,6 @@
 #include <set>
 #include <iterator>
 
-using namespace std;
 using pws_os::CUUID;
 
 unsigned char PWScore::m_session_key[32];
@@ -404,7 +403,7 @@ void PWScore::NewFile(const StringX &passkey)
 // functor object type for for_each:
 struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
-  void operator()(pair<CUUID const, CItemData> &p)
+  void operator()(std::pair<CUUID const, CItemData> &p)
   {
     StringX savePassword = p.second.GetPassword();
     StringX uuid_str(savePassword);
@@ -812,12 +811,12 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
-           m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
+           m_pwlist.insert(std::make_pair(CUUID(uuid), ci_temp));
          } else {
            limited = true;
          }
 #else
-         m_pwlist.insert(make_pair(ci_temp.GetUUID(), ci_temp));
+         m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
 #endif
 
          time_t tttXTime;
@@ -932,6 +931,8 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     maxnumincbackups = 998;
   }
 
+
+  using std::vector;
 
   stringT cs_filenamemask(cs_filenamebase);
   vector<stringT> files;
@@ -1079,7 +1080,7 @@ void PWScore::ChangePasskey(const StringX &newPasskey)
 
 // functor object type for find_if:
 struct FieldsMatch {
-  bool operator()(pair<CUUID, CItemData> p) {
+  bool operator()(std::pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return (m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
@@ -1108,7 +1109,7 @@ ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
 }
 
 struct TitleMatch {
-  bool operator()(pair<CUUID, CItemData> p) {
+  bool operator()(std::pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
@@ -1151,7 +1152,7 @@ ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 }
 
 struct GroupTitle_TitleUserMatch {
-  bool operator()(pair<CUUID, CItemData> p) {
+  bool operator()(std::pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
@@ -1285,7 +1286,7 @@ StringX PWScore::GetPassKey() const
   return retval;
 }
 
-void PWScore::SetDisplayStatus(const vector<bool> &s)
+void PWScore::SetDisplayStatus(const std::vector<bool> &s)
 {
   PWS_LOGIT;
 
@@ -1296,7 +1297,7 @@ void PWScore::SetDisplayStatus(const vector<bool> &s)
   m_hdr.m_displaystatus = s;
 }
 
-const vector<bool> &PWScore::GetDisplayStatus() const
+const std::vector<bool> &PWScore::GetDisplayStatus() const
 {
   PWS_LOGIT;
 
@@ -1311,10 +1312,10 @@ bool PWScore::WasDisplayStatusChanged() const
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
-void PWScore::GetUniqueGroups(vector<stringT> &vUniqueGroups) const
+void PWScore::GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const
 {
   // use the fact that set eliminates dups for us
-  set<stringT> setGroups;
+  std::set<stringT> setGroups;
 
   ItemListConstIter iter;
 
@@ -1330,7 +1331,7 @@ void PWScore::GetUniqueGroups(vector<stringT> &vUniqueGroups) const
 
 // GetPolicyNames - returns an array of all password policy names
 // They are in sort order as a map is always sorted by its key
-void PWScore::GetPolicyNames(vector<stringT> &vNames) const
+void PWScore::GetPolicyNames(std::vector<stringT> &vNames) const
 {
   vNames.clear();
 
@@ -2559,7 +2560,7 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
   if (numsupported == UIInterFace::NUM_SUPPORTED) {
     m_bsSupportedFunctions = bsSupportedFunctions;
   } else {
-    size_t minsupported = min(numsupported, size_t(UIInterFace::NUM_SUPPORTED));
+    size_t minsupported = std::min(numsupported, size_t(UIInterFace::NUM_SUPPORTED));
     for (size_t i = 0; i < minsupported; i++) {
       m_bsSupportedFunctions.set(i, bsSupportedFunctions.test(i));
     }
@@ -2963,7 +2964,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   else {
     CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true for canonical format
     ostringstreamT os;
-    os << uppercase << huuid;
+    os << std::uppercase << huuid;
     st_dbp.file_uuid = os.str().c_str();
   }
 
@@ -3212,7 +3213,7 @@ void PWScore::RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPat
 
 bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
 {
-  pair< map<int, pws_os::CUUID>::iterator, bool > pr;
+  std::pair< std::map<int, pws_os::CUUID>::iterator, bool > pr;
   pr = m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, uuid));
 
   return pr.second;
