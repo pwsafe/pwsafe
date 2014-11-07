@@ -135,7 +135,7 @@ msgstr " 'Czas zmiany hasła'"
 #. Resource IDs: (345)
 #, fuzzy
 msgid " 'Password Policy'"
-msgstr " 'Polityka Haseł'"
+msgstr " 'Polityka haseł'"
 
 #. Resource IDs: (336)
 msgid " 'Password'"
@@ -225,7 +225,7 @@ msgstr " Importuj # %d"
 #. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
-msgstr " [ID Procesu=%s]"
+msgstr " [ID procesu=%s]"
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
@@ -450,7 +450,7 @@ msgstr "%sZ serwera nie można odczytać informacji o wersji.%s"
 #. Resource IDs: (342)
 #, c-format
 msgid "%sCouldn't contact server.%s"
-msgstr "%sNie można połączyć sie z serwerem.%s"
+msgstr "%sNie można połączyć się z serwerem.%s"
 
 #. Resource IDs: (343)
 #, c-format
