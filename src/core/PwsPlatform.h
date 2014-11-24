@@ -52,6 +52,11 @@
 #ifndef __PWSPLATFORM_H
 #define __PWSPLATFORM_H
 
+#if (defined(_WIN32) || defined (_WIN64))
+// Make sure Windows.h does not define min & max macros
+#define NOMINMAX
+#endif
+
 #if (defined(_WIN32) || defined (_WIN64)) && !defined(__WX__)
 // ONLY place in core which refers to parent. Ugh.
 #include "../ui/Windows/stdafx.h"
@@ -551,11 +556,6 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
   ((x)<<(static_cast<ulong64>(64-((y)&CONST64(63)))))) & CONST64(0xFFFFFFFFFFFFFFFF))
 
 #endif
-
-#undef MAX
-#undef MIN
-#define MAX(x, y) ( ((x)>(y))?(x):(y) )
-#define MIN(x, y) ( ((x)<(y))?(x):(y) )
 
 /* extract a byte portably */
 #ifdef _MSC_VER

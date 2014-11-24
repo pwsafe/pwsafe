@@ -738,7 +738,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
       case PWSfile::SUCCESS:
         if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
           numlarge++;
-          uimaxsize = MAX(uimaxsize, ci_temp.GetSize());
+          uimaxsize = std::max(uimaxsize, ci_temp.GetSize());
         }
 
         /*
@@ -1613,7 +1613,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         }
       }
       if (bEntryHasBigField) {
-        uimaxsize = MAX(uimaxsize, ci.GetSize());
+        uimaxsize = std::max(uimaxsize, ci.GetSize());
         vGTU_TEXT.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
         st_vr.num_excessivetxt_found++;
       }
