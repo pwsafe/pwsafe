@@ -30,24 +30,13 @@
 // Supported Configurations:
 // -------------------------
 //
-// Pocket PC:
-//
-//    2000 ARM
-//    2000 MIPS
-//    2000 SH3
-//    2000 x86 Emulator
-//    2002 ARM
-//    2002 x86 Emulator
-//    2003 ARM (untested)
-//    2003 x86 Emulator (untested)
-//
 // Windows
 //
 //    Win32 X86
-//    Win32 and Win64 x64
+//    Win32 and Win64 x64 (unofficial)
 //
-// Linux - work in progress
-// Cygwin - work in progress
+// Linux
+// MacOS (unofficial)
 
 #ifndef __PWSPLATFORM_H
 #define __PWSPLATFORM_H
@@ -97,48 +86,10 @@
 #define PWS_LITTLE_ENDIAN
 #endif
 
-#if defined(_WIN32_WCE_PSPC)
-// **********************************************
-// * Pocket PC 2000                             *
-// **********************************************
-#if (WIN32_PLATFORM_PSPC == 1)
-#define PWS_PLATFORM "Pocket PC"
-#define PWS_PLATFORM_EX "Pocket PC 2000"
-#define POCKET_PC_VER 2000
-#define POCKET_PC
-#if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
-#if defined(ARM) || defined(_ARM)
-#define PWS_LITTLE_ENDIAN
-#elif defined(MIPS) || defined(_MIPS)
-#define PWS_LITTLE_ENDIAN
-#elif defined(SH3) || defined(_SH3)
-#define PWS_LITTLE_ENDIAN
-#elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
-#define PWS_LITTLE_ENDIAN
-#endif
-#endif
-// **********************************************
-// * Pocket PC 2002 and later                   *
-// **********************************************
-#elif (WIN32_PLATFORM_PSPC >= 310)
-#define PWS_PLATFORM "Pocket PC"
-#define PWS_PLATFORM_EX "Pocket PC 2002"
-#define POCKET_PC_VER 2002
-#define POCKET_PC
-#if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
-#if defined(ARM) || defined(_ARM)
-#define PWS_LITTLE_ENDIAN
-#elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
-#define PWS_LITTLE_ENDIAN
-#endif
-#endif
-#else
-#error Only Pocket PC 2000 and later are supported
-#endif
 // **********************************************
 // * Windows 32                                 *
 // **********************************************
-#elif defined(_WIN32)
+#if defined(_WIN32)
 #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
 #define PWS_PLATFORM "Windows"
 #define PWS_LITTLE_ENDIAN
