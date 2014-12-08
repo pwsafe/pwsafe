@@ -15,6 +15,7 @@
 
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
+#include "Fonts.h"
 
 #include "resource.h"
 #include "resource2.h"
@@ -144,16 +145,6 @@ CPWFindToolBar::CPWFindToolBar()
          _countof(m_FindToolBarNewBMs));
 
   m_iNum_Bitmaps = _countof(m_FindToolBarClassicBMs);
-
-  LOGFONT lf = {0};
- 
-  // Since design guide says toolbars are fixed height so is the font.
-  lf.lfHeight = -11;
-  lf.lfWeight = FW_LIGHT;
-  lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-  CString strDefaultFont = L"MS Sans Serif";
-  wcscpy_s(lf.lfFaceName, LF_FACESIZE, strDefaultFont);
-  VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
 }
 
 CPWFindToolBar::~CPWFindToolBar()
@@ -263,6 +254,7 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
   if (NumBits >= 32) {
     m_bitmode = 2;
   }
+
 
   CBitmap bmTemp;
   m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
@@ -377,8 +369,6 @@ void CPWFindToolBar::AddExtraControls()
   m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
                           SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
-  m_findedit.SetFont(&m_FindTextFont);
-
   // Add find search results CStatic control
   // Get the index of the placeholder's position in the toolbar
   index = CommandToIndex(ID_TOOLBUTTON_FINDRESULTS);
@@ -403,8 +393,6 @@ void CPWFindToolBar::AddExtraControls()
   m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
                              SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
-  m_findresults.SetFont(&m_FindTextFont);
-
   ModifyStyle(0, WS_CLIPCHILDREN);
 }
 
@@ -413,15 +401,25 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
   if (this->GetSafeHwnd() == NULL)
     return;
 
-  ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
-  ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
-
   if (bShow) {
+    LOGFONT lf = {0};
+
+    // Bjorne's suggestion: Set Find fonts to tree/list
+    //  XXX TODO: Adjust controls accordingly
+    // Currently looks OK for 'reasonable' fonts.
+    m_FindTextFont.DeleteObject();
+    Fonts::GetInstance()->GetCurrentFont(&lf);
+    VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+
+    m_findedit.SetFont(&m_FindTextFont);
     m_findedit.ChangeColour();
     m_findedit.SetFocus();
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
+    m_findresults.SetFont(&m_FindTextFont);
   }
+  ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
+  ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
   m_bVisible = bShow;
 }
 
