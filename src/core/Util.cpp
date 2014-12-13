@@ -678,7 +678,7 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
   va_list ar;
   va_copy(ar, args);
   // Linux doesn't do this correctly :-(
-  int guess = 16;
+  int guess = 64;
   while (1) {
     len = guess;
     buffer = new TCHAR[len];
