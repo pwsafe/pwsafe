@@ -23,7 +23,7 @@
 
 #define MAJORVERSION 0
 #define MINORVERSION 94
-#define REVISION     0
+#define REVISION     1
 
 // LINUXPRODVER and VCS_VERSION set by mkversion.pl
 // LINUXPRODVER is for Misc/make-latest-xml.pl
