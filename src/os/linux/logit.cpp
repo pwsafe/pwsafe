@@ -15,22 +15,19 @@
 #include <stdarg.h>
 
 
-void pws_os::Logit(LPCTSTR lpszHdrFormat, ...)
+void pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
   va_list args;
-  va_start(args, lpszHdrFormat);
+  va_start(args, lpszFormat);
 
   int num_required, num_written;
 
 #ifdef UNICODE
-  stringT format(lpszHdrFormat); // header format is not converted
-  const stringT format2(FormatStr(va_arg(args, LPCTSTR)));
-  format += format2;
+  const stringT format(FormatStr(lpszFormat));
 
   num_required = GetStringBufSize(format.c_str(), args);
   va_end(args);  // after using args we should reset list
-  va_start(args, lpszHdrFormat);
-  va_arg(args, LPCTSTR); // throw away - we alread have it.
+  va_start(args, lpszFormat);
 
   wchar_t *szBuffer = new wchar_t[num_required];
   num_written = vswprintf(szBuffer, num_required, format.c_str(), args);

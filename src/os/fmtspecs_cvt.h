@@ -34,12 +34,8 @@
 template <typename T>
 inline void ConvertFormatSpecs(T& specs)
 {
-  int skip = 2;
   for(typename T::size_type pos = 0; (pos = specs.find(L"%s", pos)) != T::npos; pos += 2) {
-    if (skip > 0)
-      skip--;
-    else
-      specs[pos+1] = L'S';
+    specs[pos+1] = L'S';
   }
 }
 
@@ -50,6 +46,8 @@ inline T ConvertFormatSpecs(const wchar_t* fmt)
   ConvertFormatSpecs(specs);
   return specs;
 }
+
+#define _FMT(s) ConvertFormatSpecs<stringT>(_T(s)).c_str()
 
 /* not available unless UNICODE is defined */
 inline stringT FormatStr(const wchar_t* s) { return ConvertFormatSpecs<stringT>(s); }
@@ -62,6 +60,8 @@ inline void ConvertFormatSpecs(T& /*specs*/) {}
 
 template <typename T>
 inline T ConvertFormatSpecs(const wchar_t* fmt) { return T(fmt); }
+
+#define _FMT(s) _T(s)
 
 inline wstringT FormatStr(const wchar_t* str) { return wstringT(str); }
 inline cstringT FormatStr(const char* str) { return cstringT(str); }
