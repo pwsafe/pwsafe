@@ -53,14 +53,8 @@ const TCHAR *GROUPTITLEUSERINCHEVRONS = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
 using namespace std;
 using pws_os::CUUID;
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
 typedef std::vector<stringT>::iterator viter;
 
 struct ExportTester {
@@ -1676,12 +1670,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         if (str_ctime.length() != 19)
           continue;
         str_ctime.replace(10, 1, "T");
-#ifdef UNICODE
         std::wstring time_temp(str_ctime.length(), L' ');
         std::copy(str_ctime.begin(), str_ctime.end(), time_temp.begin());
-#else
-        std::string time_temp = str_ctime;
-#endif
         VerifyXMLDateTimeString(time_temp, ctime);
       }
 
@@ -1690,12 +1680,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         if (str_atime.length() != 19)
           continue;
         str_atime.replace(10, 1, "T");
-#ifdef UNICODE
         std::wstring time_temp(str_atime.length(), L' ');
         std::copy(str_atime.begin(), str_atime.end(), time_temp.begin());
-#else
-        std::string time_temp = str_atime;
-#endif
         VerifyXMLDateTimeString(time_temp, atime);
       }
 
@@ -1704,12 +1690,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         if (str_mtime.length() != 19)
           continue;
         str_mtime.replace(10, 1, "T");
-#ifdef UNICODE
         std::wstring time_temp(str_mtime.length(), L' ');
         std::copy(str_mtime.begin(), str_mtime.end(), time_temp.begin());
-#else
-        std::string time_temp = str_mtime;
-#endif
         VerifyXMLDateTimeString(time_temp, mtime);
       }
 
@@ -1718,12 +1700,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         if (str_xtime.length() != 19)
           continue;
         str_xtime.replace(10, 1, "T");
-#ifdef UNICODE
         std::wstring time_temp(str_xtime.length(), L' ');
         std::copy(str_xtime.begin(), str_xtime.end(), time_temp.begin());
-#else
-        std::string time_temp = str_xtime;
-#endif
         VerifyXMLDateTimeString(time_temp, xtime);
       }
 
@@ -2191,12 +2169,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       if (sx_ctime.length() != 19)
         continue;
       sx_ctime.replace(10, 1, _T("T"));
-#ifdef UNICODE
       std::wstring time_temp(sx_ctime.length(), L' ');
       std::copy(sx_ctime.begin(), sx_ctime.end(), time_temp.begin());
-#else
-      std::string time_temp = sx_ctime;
-#endif
       VerifyXMLDateTimeString(time_temp, ctime);
     }
 
@@ -2205,12 +2179,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       if (sx_atime.length() != 19)
         continue;
       sx_atime.replace(10, 1, _T("T"));
-#ifdef UNICODE
       std::wstring time_temp(sx_atime.length(), L' ');
       std::copy(sx_atime.begin(), sx_atime.end(), time_temp.begin());
-#else
-      std::string time_temp = sx_atime;
-#endif
       VerifyXMLDateTimeString(time_temp, atime);
     }
 
@@ -2219,12 +2189,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       if (sx_mtime.length() != 19)
         continue;
       sx_mtime.replace(10, 1, _T("T"));
-#ifdef UNICODE
       std::wstring time_temp(sx_mtime.length(), L' ');
       std::copy(sx_mtime.begin(), sx_mtime.end(), time_temp.begin());
-#else
-      std::string time_temp = sx_mtime;
-#endif
       VerifyXMLDateTimeString(time_temp, mtime);
     }
 
@@ -2233,12 +2199,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       if (sx_xtime.length() != 19)
         continue;
       sx_xtime.replace(10, 1, _T("T"));
-#ifdef UNICODE
       std::wstring time_temp(sx_xtime.length(), L' ');
       std::copy(sx_xtime.begin(), sx_xtime.end(), time_temp.begin());
-#else
-      std::string time_temp = sx_xtime;
-#endif
       VerifyXMLDateTimeString(time_temp, xtime);
     }
 

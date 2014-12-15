@@ -91,13 +91,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   }
   catch (const XMLException& toCatch)
   {
-#ifdef UNICODE
     m_strXMLErrors = stringT(_X2ST(toCatch.getMessage()));
-#else
-    char *szData = XMLString::transcode(toCatch.getMessage());
-    strResultText = stringT(szData);
-    XMLString::release(&szData);
-#endif
     return false;
   }
 
@@ -138,20 +132,13 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
       pSAX2Parser->parse(_W2X(strXMLFileName.c_str()));
     } else {
       const char *szID = "database_filters";
-#ifdef UNICODE
       const char *buffer = XMLString::transcode(_W2X(strXMLData.c_str()));
-#else
-      const char *buffer = strXMLData.c_str();
-#endif
       MemBufInputSource* memBufIS = new MemBufInputSource(
                     reinterpret_cast<const XMLByte*>(buffer),
                     strXMLData.length(),
                     szID, false);
       pSAX2Parser->parse(*memBufIS);
       delete memBufIS;
-#ifdef UNICODE
-      XMLString::release(const_cast<char**>(&buffer));
-#endif
     }
   }
   catch (const OutOfMemoryException&)
@@ -161,13 +148,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   }
   catch (const XMLException& e)
   {
-#ifdef UNICODE
     strResultText = stringT(_X2ST(e.getMessage()));
-#else
-    char *szData = XMLString::transcode(e.getMessage());
-    strResultText = stringT(szData);
-    XMLString::release(&szData);
-#endif
     bErrorOccurred = true;
   }
 

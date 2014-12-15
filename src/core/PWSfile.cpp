@@ -362,9 +362,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   ConvertString(passwd, pwd, passlen);
   fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
-#ifdef UNICODE
-  delete[] pwd; // gross - ConvertString allocates only if UNICODE.
-#endif
+  delete[] pwd; // gross - ConvertString allocates.
   try {
     _writecbc(out, buf, slen, 0, fish, ipthing);
   } catch (...) { // _writecbc throws an exception if it fails to write
@@ -429,9 +427,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
-#ifdef UNICODE
-    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
-#endif
+    delete[] pwd; // gross - ConvertString allocates.
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] NULL, which is OK

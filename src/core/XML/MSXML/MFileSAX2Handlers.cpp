@@ -75,12 +75,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::error(struct ISAXLocator * pLoc
   TCHAR szFormatString[MAX_PATH * 2] = {0};
   int iLineNumber, iCharacter;
 
-#ifdef _UNICODE
   _tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
-#endif
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
 
@@ -187,14 +182,8 @@ TCHAR * FileProcessAttributes(
 
     pAttributes->getQName(i, &QName, &QName_length);
     pAttributes->getValue(i, &Value, &Value_length);
-#ifdef _UNICODE
     _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
     _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else
-    size_t num_converted;
-    wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
-    wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#endif
     if (_tcscmp(szQName, lpName) == 0) {
       return _tcsdup(szValue);
     }
@@ -267,12 +256,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
 
   TCHAR* szData = new TCHAR[cchChars + 2];
 
-#ifdef _UNICODE
   _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
-#endif
 
   szData[cchChars] = 0;
   m_sxElemContent += szData;

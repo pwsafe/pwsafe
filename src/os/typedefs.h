@@ -26,15 +26,9 @@
 typedef std::wstring wstringT;
 typedef std::string  cstringT;
 
-#ifdef UNICODE
 typedef std::wstring stringT;
 typedef wchar_t charT;
 #define _S(x) L ## x
-#else
-typedef std::string stringT;
-typedef char charT;
-#define _S(x) x
-#endif
 
 #include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 
@@ -109,16 +103,10 @@ typedef uint64_t uint64;
 typedef int errno_t;
 #endif
 
-#ifdef UNICODE
 #ifndef _T
 #define _T(x) L ## x
 #endif
 typedef wchar_t TCHAR;
-#else
-#define _T(x) x
-typedef char TCHAR;
-typedef wchar_t WCHAR;
-#endif /* UNICODE */
 
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;

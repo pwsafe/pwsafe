@@ -76,13 +76,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
       // Only interested in the delimiter attribute
       const XMLCh *szValue = attrs.getValue(_A2X("delimiter"));
       if (szValue != NULL) {
-#ifdef UNICODE
         m_delimiter = szValue[0];
-#else
-        char *szDelim = XMLString::transcode(szValue);
-        m_delimiter = szDelim[0];
-        XMLString::release(&szDelim);
-#endif
       }
     }
   }
@@ -125,13 +119,7 @@ void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t len
   XMLCh *xmlchData = new XMLCh[length + 1];
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
-#ifdef UNICODE
   m_sxElemContent += StringX(_X2SX(xmlchData));
-#else
-  char *szData = XMLString::transcode(xmlchData);
-  m_sxElemContent += StringX(szData);
-  XMLString::release(&szData);
-#endif
   delete [] xmlchData;
 }
 
@@ -146,13 +134,7 @@ void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLCh *xmlchData = new XMLCh[length + 1];
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
-#ifdef UNICODE
   m_sxElemContent += StringX(_X2SX(xmlchData));
-#else
-  char *szData = XMLString::transcode(xmlchData);
-  m_sxElemContent += StringX(szData);
-  XMLString::release(&szData);
-#endif
   delete [] xmlchData;
 }
 
@@ -183,11 +165,7 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   stringT FormatString;
   int iLineNumber, iCharacter;
 
-#ifdef UNICODE
   const XMLCh *szErrorMessage = e.getMessage();
-#else
-  char *szErrorMessage = XMLString::transcode(e.getMessage());
-#endif
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
@@ -211,9 +189,6 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
          cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
 
   m_strValidationResult += FormatString + _T("\r\n");
-#ifndef UNICODE
-  XMLString::release(&szErrorMessage);
-#endif
 }
 
 void XFileSAX2Handlers::error(const SAXParseException& e)

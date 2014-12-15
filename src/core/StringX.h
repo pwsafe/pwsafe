@@ -145,15 +145,9 @@ namespace S_Alloc
 
 } // end namespace S_Alloc
 
-#ifdef UNICODE
 typedef std::basic_string<wchar_t,
                           std::char_traits<wchar_t>,
                           S_Alloc::SecureAlloc<wchar_t> > StringX;
-#else
-typedef std::basic_string<char,
-                          std::char_traits<char>,
-                          S_Alloc::SecureAlloc<char> > StringX;
-#endif
 
 // Following should really be StringX member functions, but there's no 
 // elegant way of extending a template class without public inheritance, 

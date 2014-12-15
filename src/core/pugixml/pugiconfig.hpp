@@ -14,9 +14,8 @@
 /*
  *
  * Modified by DK for PasswordSafe
- * The ONLY changes are for this configuration:
- *  a. To place the definition of PUGIXML_WCHAR_MODE within a ifdef depending on UNICODE
- *  b. Disable XPath as we do not need it.
+ * The ONLY change for this configuration:
+ *  Disable XPath as we do not need it.
  *
  * NO changes made to the package's source files pugixml.cpp and pugixml.hpp
  *
@@ -28,9 +27,7 @@
 #define HEADER_PUGICONFIG_HPP
 
 // Uncomment this to enable wchar_t mode
-#ifdef UNICODE
 #define PUGIXML_WCHAR_MODE
-#endif
 
 // Uncomment this to disable XPath
 #define PUGIXML_NO_XPATH

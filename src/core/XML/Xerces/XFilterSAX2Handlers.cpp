@@ -82,29 +82,15 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
   if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
     if (m_pSchema_Version == NULL) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
-#ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
-#else
-      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
-#endif
       SAXParseException(message, *m_pLocator);
-#ifndef UNICODE
-      XMLString::release((XMLCh **)&message);
-#endif
       return;
     }
 
     if (m_iSchemaVersion <= 0) {
       LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA_VER);
-#ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
-#else
-      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
-#endif
       SAXParseException(message, *m_pLocator);
-#ifndef UNICODE
-      XMLString::release((XMLCh **)&message);
-#endif
       return;
     }
 
@@ -137,13 +123,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     if (bfilter) {
       const XMLCh * xmlchValue = attrs.getValue(_A2X("filtername"));
       if (xmlchValue != NULL) {
-#ifdef UNICODE
         cur_filter->fname = stringT(_X2ST(xmlchValue));
-#else
-        char *szValue = XMLString::transcode(xmlchValue);
-        cur_filter->fname = stringT(szValue);
-        XMLString::release(&szValue);
-#endif
       }
     }
 
@@ -168,13 +148,7 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
   XMLCh *xmlchData = new XMLCh[length + 1];
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
-#ifdef UNICODE
   m_sxElemContent += StringX(_X2SX(xmlchData));
-#else
-  char *szData = XMLString::transcode(xmlchData);
-  m_sxElemContent += StringX(szData);
-  XMLString::release(&szData);
-#endif
   delete [] xmlchData;
 }
 
@@ -189,13 +163,7 @@ void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLCh *xmlchData = new XMLCh[length + 1];
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
-#ifdef UNICODE
   m_sxElemContent += StringX(_X2SX(xmlchData));
-#else
-  char *szData = XMLString::transcode(xmlchData);
-  m_sxElemContent += StringX(szData);
-  XMLString::release(&szData);
-#endif
   delete [] xmlchData;
 }
 
@@ -211,43 +179,22 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     // b. it is less than or equal to the version supported by this PWS
     if (m_iXMLVersion < 0) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_XML_VER);
-#ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
-#else
-      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
-#endif
       SAXParseException(message, *m_pLocator);
-#ifndef UNICODE
-      XMLString::release((XMLCh **)&message);
-#endif
-      return ;
+      return;
     }
     if (m_iXMLVersion > m_iSchemaVersion) {
       Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
-#ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
-#else
-      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
-#endif
       SAXParseException(message, *m_pLocator);
-#ifndef UNICODE
-      XMLString::release((XMLCh **)&message);
-#endif
-      return ;
+      return;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
       Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
-#ifdef UNICODE
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
-#else
-      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
-#endif
       SAXParseException(message, *m_pLocator);
-#ifndef UNICODE
-      XMLString::release((XMLCh **)&message);
-#endif
       return;
     }
   }
@@ -654,11 +601,7 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
   stringT FormatString;
   int iLineNumber, iCharacter;
 
-#ifdef UNICODE
   const XMLCh *szErrorMessage = e.getMessage();
-#else
-  char *szErrorMessage = XMLString::transcode(e.getMessage());
-#endif
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
@@ -682,9 +625,6 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
          cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
 
   m_strValidationResult += FormatString;
-#ifndef UNICODE
-  XMLString::release(&szErrorMessage);
-#endif
 }
 
 void XFilterSAX2Handlers::error(const SAXParseException& e)

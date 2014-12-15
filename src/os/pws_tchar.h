@@ -15,7 +15,6 @@
 #ifdef _WIN32
 #include <tchar.h>
 #else
-#ifdef UNICODE
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)
 #define _istalnum(x) iswalnum(x)
@@ -61,38 +60,6 @@
 #include "./file.h"
 #define _tfopen(f,m) pws_os::FOpen(f,m)
 #endif
-#else /* !UNICODE */
-#include <ctype.h>
-#define _istalpha(x) isalpha(x)
-#define _istalnum(x) isalnum(x)
-#define _totupper(x) toupper(x)
-#define _totlower(x) tolower(x)
-#define _istlower(x) islower(x)
-#define _istupper(x) isupper(x)
-#define _istdigit(x) isdigit(x)
-#define _istspace(x) isspace(x)
-#include <string.h>
-#define _tcsncpy(t, s, sc) strncpy(t, s, sc)
-#define _tcslen(s) strlen(s)
-#define _tcsclen(s) strlen(s)
-#define _tcsicmp(s1, s2) strcasecmp(s1, s2)
-#define _tcscmp(s1, s2) strcmp(s1, s2)
-#define _tcsncmp(s1, s2, n) strncmp(s1, s2, n)
-#define _tcschr(s, c) strchr(s, c)
-#define _tcsdup(s) strdup(s)
-#include <time.h>
-#define _tcsftime strftime
-#define _tasctime_s(s, N, st) (asctime_r(st, s) != NULL ? 0 : 1)
-#define _vsctprintf(fmt, args) vsnprintf(NULL, 0, fmt, args)
-#define _vstprintf_s(str, size, fmt, args) vsnprintf(str, size, fmt, args)
-#define _ftprintf fprintf
-#define _stprintf_s snprintf
-#define _stscanf sscanf
-#define _tstoi(s) atoi(s)
-#define _ttoi(s) atoi(s)
-#define _tstof(s) atof(s)
-#define _tfopen(s) fopen(s)
-#endif /* UNICODE */
 #define _itot(i, buf, base) pws_os::pws_itot(i, buf, base)
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */

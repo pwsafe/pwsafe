@@ -27,13 +27,8 @@
 #include <map>
 #include <algorithm>
 
-#ifdef UNICODE
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
 typedef std::vector<stringT>::const_iterator vciter;
 typedef std::vector<stringT>::iterator viter;
 
@@ -92,12 +87,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pL
   TCHAR szFormatString[MAX_PATH*2] = {0};
   int iLineNumber, iCharacter;
 
-#ifdef _UNICODE
   _tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
-#endif
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
 
@@ -200,12 +190,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
 {
   TCHAR szCurElement[MAX_PATH + 1] = {0};
 
-#ifdef _UNICODE
   _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
-#endif
 
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
     int iAttribs = 0;
@@ -229,13 +214,8 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
 
       pAttributes->getQName(i, &QName, &QName_length);
       pAttributes->getValue(i, &Value, &Value_length);
-#ifdef _UNICODE
       _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
       _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else  // UNICODE
-      wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
-      wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#endif  // UNICODE
       if (QName_length == 7 && memcmp(szQName, _T("version"), 7 * sizeof(TCHAR)) == 0) {
         m_iXMLVersion = _ttoi(szValue);
       }
@@ -271,13 +251,8 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
 
       pAttributes->getQName(i, &QName, &QName_length);
       pAttributes->getValue(i, &Value, &Value_length);
-#ifdef _UNICODE
       _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
       _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else  // UNICODE
-      wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
-      wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
-#endif  // UNICODE
 
       if (bfilter && QName_length == 10 && memcmp(szQName, _T("filtername"), 10 * sizeof(TCHAR)) == 0)
         cur_filter->fname = szValue;
@@ -304,12 +279,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::characters(
 
   TCHAR* szData = new TCHAR[cchChars + 2];
 
-#ifdef _UNICODE
   _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
-#endif
 
   szData[cchChars]=0;
   m_sxElemContent += szData;
@@ -331,12 +301,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
 {
   TCHAR szCurElement[MAX_PATH + 1] = {0};
 
-#ifdef _UNICODE
   _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchQName, cchQName);
-#else
-  size_t num_converted;
-  wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchQName, cchQName);
-#endif
 
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
     // Check that the XML file version is present and that

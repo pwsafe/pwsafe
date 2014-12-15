@@ -99,23 +99,12 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }
   catch (const XMLException& toCatch)
   {
-#ifdef UNICODE
     strResultText = stringT(_X2ST(toCatch.getMessage()));
-#else
-    char *szData = XMLString::transcode(toCatch.getMessage());
-    strResultText = stringT(szData);
-    XMLString::release(&szData);
-#endif
     return false;
   }
 
-#ifdef UNICODE
   const XMLCh* xmlfilename = _W2X(strXMLFileName.c_str());
   const XMLCh* schemafilename = _W2X(strXSDFileName.c_str());
-#else
-  const XMLCh* xmlfilename = XMLString::transcode(strXMLFileName.c_str());
-  const XMLCh* schemafilename = XMLString::transcode(strXSDFileName.c_str());
-#endif
 
   //  Create a SAX2 parser object.
   SAX2XMLReader* pSAX2Parser = XMLReaderFactory::createXMLReader(&sec_mm);
@@ -161,13 +150,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     bErrorOccurred = true;
   }
   catch (const XMLException& e) {
-#ifdef UNICODE
     strResultText = stringT(_X2ST(e.getMessage()));
-#else
-    char *szData = XMLString::transcode(e.getMessage());
-    strResultText = stringT(szData);
-    XMLString::release(&szData);
-#endif
     bErrorOccurred = true;
   }
 
@@ -211,11 +194,6 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       }
     }
   }
-
-#ifndef UNICODE
-  XMLString::release((XMLCh **)&xmlfilename);
-  XMLString::release((XMLCh **)&schemafilename);
-#endif
 
   //  Delete the pSAX2Parser itself.  Must be done prior to calling Terminate, below.
   delete pSAX2Parser;

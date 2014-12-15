@@ -32,7 +32,6 @@ stringT pws_os::getenv(const char *env, bool is_path)
     ASSERT(value);
     if (value != NULL) {
       getenv_s(&requiredSize, value, requiredSize, env);
-#ifdef UNICODE
       int wsize;
       wchar_t wvalue;
       char *p = value;
@@ -44,9 +43,6 @@ stringT pws_os::getenv(const char *env, bool is_path)
         p += wsize;
         requiredSize -= wsize;
       } while (requiredSize != 1);
-#else
-      retval = value;
-#endif
       delete[] value;
       if (is_path) {
         // make sure path has trailing '\'
@@ -95,11 +91,7 @@ stringT pws_os::gethostname()
 
 stringT pws_os::getprocessid()
 {
-#ifdef UNICODE
   std::wostringstream os;
-#else
-  std::ostringstream os;
-#endif
   os.width(8);
   os.fill(charT('0'));
   os << GetCurrentProcessId();

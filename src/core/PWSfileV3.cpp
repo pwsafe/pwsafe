@@ -282,10 +282,8 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   H0.Update(salt, saltLen);
   H0.Final(X);
 
-#ifdef UNICODE
   trashMemory(pstr, passLen);
   delete[] pstr;
-#endif
 
   ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {

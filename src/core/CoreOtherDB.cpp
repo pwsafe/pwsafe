@@ -32,14 +32,8 @@ using namespace std;
 
 using pws_os::CUUID;
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
 typedef std::vector<stringT>::iterator viter;
 
 extern const TCHAR *GROUPTITLEUSERINCHEVRONS;

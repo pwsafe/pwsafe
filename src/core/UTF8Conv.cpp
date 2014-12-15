@@ -42,32 +42,9 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     utf8Len = 0;
     return true;
   }
-  wchar_t *wcPtr; // to hide UNICODE differences
-  size_t wcLen; // number of wide chars needed
-#ifndef UNICODE
-  // first get needed wide char buffer size
-  wcLen = pws_os::mbstowcs(NULL, 0, data.c_str(), size_t(-1), false);
-  if (wcLen == 0) { // uh-oh
-    ASSERT(0);
-    m_utf8Len = 0;
-    return false;
-  }
-  // Allocate buffer (if previous allocation was smaller)
-  if (wcLen > m_wcMaxLen) {
-    if (m_wc != NULL)
-      trashMemory(m_wc, m_wcMaxLen * sizeof(m_wc[0]));
-    delete[] m_wc;
-    m_wc = new wchar_t[wcLen];
-    m_wcMaxLen = wcLen;
-  }
-  // next translate to buffer
-  wcLen = pws_os::mbstowcs(m_wc, wcLen, data.c_str(), size_t(-1), false);
-  ASSERT(wcLen != 0);
-  wcPtr = m_wc;
-#else
-  wcPtr = const_cast<wchar_t *>(data.c_str());
-  wcLen = data.length()+1;
-#endif
+
+  wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
+  size_t wcLen = data.length()+1;
   // first get needed utf8 buffer size
   size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, wcLen);
 
@@ -163,35 +140,10 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   }
   ASSERT(wcLen != 0);
 #endif /* _WIN32 */
-#ifdef UNICODE
   if (wcLen != 0) {
     m_wc[wcLen - 1] = TCHAR('\0');
     data = m_wc;
     return true;
   } else
     return false;
-#else /* Go from Unicode to Locale encoding */
-  // first get needed utf8 buffer size
-  size_t mbLen = pws_os::wcstombs(NULL, 0, m_wc, size_t(-1), false);
-  if (mbLen == 0) { // uh-oh
-    ASSERT(0);
-    data = _T("");
-    return false;
-  }
-  // Allocate buffer (if previous allocation was smaller)
-  if (mbLen > m_tmpMaxLen) {
-    if (m_tmp != NULL)
-      trashMemory(m_tmp, m_tmpMaxLen);
-    delete[] m_tmp;
-    m_tmp = new unsigned char[mbLen];
-    m_tmpMaxLen = mbLen;
-  }
-  // Finally get result
-  size_t tmpLen = pws_os::wcstombs((char *)m_tmp, mbLen, m_wc, size_t(-1), false);
-  ASSERT(tmpLen == mbLen);
-  m_tmp[mbLen - 1] = '\0'; // char, no need to _T()...
-  data = (char *)m_tmp;
-  ASSERT(!data.empty());
-  return true;
-#endif /* !UNICODE */
 }

@@ -91,11 +91,7 @@ bool CXMLprefs::Load()
     // An XML load error occurred so display the reason
     // Note: "result.description()" returns char* even in Unicode builds.
     stringT sErrorDesc;
-#ifdef UNICODE
     sErrorDesc = pugi::as_wide(result.description());
-#else
-    sErrorDesc = result.description();
-#endif
     Format(m_Reason, IDSC_XMLFILEERROR,
            sErrorDesc.c_str(), m_csConfigFile.c_str(), result.offset);
     delete m_pXMLDoc;

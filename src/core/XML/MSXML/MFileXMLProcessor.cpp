@@ -135,11 +135,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
     //  Let's begin the parsing now
     wchar_t wcURL[MAX_PATH] = {0};
-#ifdef _UNICODE
     _tcscpy_s(wcURL, MAX_PATH, strXMLFileName.c_str());
-#else
-    mbstowcs(wcURL, strXMLFileName.c_str(), strXMLFileName.length());
-#endif
     hr = pSAX2Reader->parseURL(wcURL);
 
     if (!FAILED(hr)) {  // Check for parsing errors

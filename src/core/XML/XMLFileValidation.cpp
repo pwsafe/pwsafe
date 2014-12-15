@@ -126,26 +126,11 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
   USES_XMLCH_STR
 #endif
 
-#ifdef UNICODE
 #if USE_XML_LIBRARY == XERCES
   const stringT strValue(_X2ST(name));
 #else
   const stringT strValue(name);
 #endif
-#else   // NON-UNICODE
-#if USE_XML_LIBRARY == MSXML
-  size_t numchars = wcslen(name);
-  char* szData = new char[numchars + 2];
-  size_t num_converted;
-  wcstombs_s(&num_converted, szData, numchars + 2, name, numchars);
-  const stringT strValue(szData);
-  delete szData;
-#elif USE_XML_LIBRARY == XERCES
-  char *szData = XMLString::transcode(name);
-  const stringT strValue(szData);
-  XMLString::release(&szData);
-#endif  // MSXML or XERCES
-#endif  // NON-UNICODE
 
   if (strValue.length() == 0)
     return false;

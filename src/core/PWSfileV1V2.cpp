@@ -125,7 +125,6 @@ int PWSfileV1V2::Open(const StringX &passkey)
   size_t passLen = passkey.length();
   unsigned char *pstr;
 
-#ifdef UNICODE
   size_t pstr_len = 3 * passLen;
   pstr = new unsigned char[pstr_len];
   size_t len = pws_os::wcstombs(reinterpret_cast<char *>(pstr), 3 * passLen, passstr, passLen, false);
@@ -133,9 +132,6 @@ int PWSfileV1V2::Open(const StringX &passkey)
   // hack around OS-dependent semantics - too widespread to fix systematically :-(
   pstr[len < pstr_len ? len : pstr_len - 1] = '\0';
   passLen = strlen(reinterpret_cast<const char *>(pstr));
-#else
-  pstr = reinterpret_cast<unsigned char *>(passstr);
-#endif
 
   if (m_rw == Write) {
     // Following used to verify passkey against file's passkey
@@ -164,10 +160,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
   } else { // open for read
     status = CheckPasskey(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
-#ifdef UNICODE
       trashMemory(pstr, pstr_len);
       delete[] pstr;
-#endif
       Close();
       return status;
     }
@@ -182,10 +176,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
  exit:
   if (status != SUCCESS)
     Close();
-#ifdef UNICODE
   trashMemory(pstr, pstr_len);
   delete[] pstr;
-#endif
   return status;
 }
 
@@ -245,11 +237,6 @@ static StringX ReMergeNotes(const CItemData &item)
 
 size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 {
-#ifndef UNICODE
-  const unsigned char *datastr = (const unsigned char *)data.c_str();
-
-  return PWSfile::WriteCBC(type, datastr, data.length());
-#else
   wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
   size_t wcLen = data.length() + 1;
   size_t mbLen = 3 * wcLen;
@@ -262,7 +249,6 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
   trashMemory(acp, mbLen);
   delete[] acp;
   return retval;
-#endif
 }
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
@@ -391,7 +377,6 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-#ifdef UNICODE
     wchar_t *wc = new wchar_t[buffer_len+1];
 
     size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
@@ -405,10 +390,6 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
     data = wc;
     trashMemory(wc, wcLen);
     delete[] wc;
-#else
-    StringX str((const char *)buffer, buffer_len);
-    data = str;
-#endif
     trashMemory(buffer, buffer_len);
     delete[] buffer;
   } else {

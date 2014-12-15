@@ -19,11 +19,7 @@
 
 #include "core/sha256.h"
 
-#if defined(UNICODE)
 #define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
-#else
-#define CLIPBOARD_TEXT_FORMAT CF_TEXT
-#endif
 
 #include "core/StringX.h"
 

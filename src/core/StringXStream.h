@@ -55,31 +55,17 @@ typedef std::basic_stringstream<char,
                                 std::char_traits<char>,
                                 S_Alloc::SecureAlloc<char> > cStringXStream;
 
-#ifdef UNICODE
 typedef wStringXBuf      StringXBuf;
 typedef wiStringXStream iStringXStream;
 typedef woStringXStream oStringXStream;
 typedef wStringXStream   StringXStream;
-#else
-typedef cStringXBuf      StringXBuf;
-typedef ciStringXStream iStringXStream;
-typedef coStringXStream oStringXStream;
-typedef cStringXStream   StringXStream;
-#endif
 
 // Following not related to StringX, but putting it here
 // is the lesser of two evils (other is creating a new file
 // just for this)
-// hide w_char/char differences where possible:
-#ifdef UNICODE
 typedef std::wistringstream istringstreamT;
 typedef std::wostringstream ostringstreamT;
 typedef std::wstringstream   stringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-typedef std::stringstream   stringstreamT;
-#endif
 
 #endif /* __STRINGXSTREAM_H */
 //-----------------------------------------------------------------------------

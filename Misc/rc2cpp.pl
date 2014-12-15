@@ -166,12 +166,7 @@ sub WriteCPPFile {
 
 #if !defined(_WIN32) || defined(__WX__)
 
-#ifdef UNICODE
 #define _(x) L ## x
-#else
-#define _(x) x
-#endif
-
 #include "./${BASE}_st.h"
 #include <utility>
 ${include}

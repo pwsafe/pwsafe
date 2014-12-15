@@ -96,16 +96,14 @@ bool CReport::SaveToDisk()
   }
 
   // **** MOST LIKELY ACTION ****
-  // If file is new/emtpy AND we are UNICODE, write BOM, as some text editors insist!
+  // If file is new/empty, write BOM, as some text editors insist!
 
   // **** LEAST LIKELY ACTIONS as it requires the user to use both U & NU versions ****
   // Text editors really don't like files with both UNICODE and ASCII characters, so -
   // If we are UNICODE and file is not, convert file to UNICODE before appending
-  // If we are not UNICODE but file is, convert file to ASCII before appending
 
   bool bFileIsUnicode = isFileUnicode(m_cs_filename);
 
-#ifdef UNICODE
   const unsigned int iBOM = 0xFEFF;
   if (pws_os::fileLength(fd) == 0) {
     // File is empty - write BOM
@@ -156,54 +154,6 @@ bool CReport::SaveToDisk()
         return false;
       }
     }
-#else
-  if (bFileIsUnicode) {
-    // Convert UNICODE contents to ASCII
-    // Close original first
-    fclose(fd);
-
-    // Open again to read
-    FILE *f_in = pws_os::FOpen(m_cs_filename, "rb");
-
-    // Open new file
-    stringT cs_out = m_cs_filename + _T(".tmp");
-    FILE *f_out = pws_os::FOpen(cs_out, "wb");
-
-    UINT nBytesRead;
-    WCHAR inwbuffer[4096];
-    unsigned char outbuffer[4096];
-
-    // Skip over BOM
-    fseek(f_in, 2, SEEK_SET);
-
-    // Now copy
-    do {
-      nBytesRead = fread(inwbuffer, sizeof(inwbuffer), 1, f_in);
-
-      if (nBytesRead > 0) {
-        size_t len = pws_os::wcstombs((char *)outbuffer, 4096,
-                                      inwbuffer, nBytesRead);
-        if (len != 0)
-          fwrite(outbuffer, len, 1, f_out);
-      } else
-        break;
-
-    } while(nBytesRead > 0);
-
-    // Close files
-    fclose(f_in);
-    fclose(f_out);
-
-    // Swap them
-    pws_os::RenameFile(cs_out, m_cs_filename);
-
-    // Re-open file
-    if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
-      pws_os::IssueError(_T("StartReport: Opening log file"));
-      return false;
-    }
-  }
-#endif
   // Convert LF to CRLF
   StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   StringX sx = m_osxs.rdbuf()->str();

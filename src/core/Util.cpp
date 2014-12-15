@@ -86,9 +86,6 @@ void ConvertString(const StringX &text,
   LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
-#ifndef UNICODE
-  txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
-#else
 #ifdef _WIN32
   txt = new unsigned char[3 * txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, static_cast<int>(txtlen),
@@ -104,7 +101,6 @@ void ConvertString(const StringX &text,
 #endif
   txtlen = len;
   txt[len] = '\0';
-#endif /* UNICODE */
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
@@ -124,10 +120,8 @@ void GenRandhash(const StringX &a_passkey,
   keyHash.Update(a_randstuff, StuffSize);
   keyHash.Update(pstr, reinterpret_cast<int &>(pkeyLen));
 
-#ifdef UNICODE
   trashMemory(pstr, pkeyLen);
   delete[] pstr;
-#endif
 
   unsigned char tempSalt[20]; // HashSize
   keyHash.Final(tempSalt);

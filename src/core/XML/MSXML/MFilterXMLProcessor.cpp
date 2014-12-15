@@ -152,11 +152,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     //  Let's begin the parsing now
     if (!strXMLFileName.empty()) {
       wchar_t wcURL[MAX_PATH]={0};
-#ifdef _UNICODE
       _tcscpy_s(wcURL, MAX_PATH, strXMLFileName.c_str());
-#else
-      mbstowcs(wcURL, strXMLFileName.c_str(), strXMLFileName.length());
-#endif
       hr = pSAX2Reader->parseURL(wcURL);
     } else {
       CComVariant cvXMLData = strXMLData.c_str();
