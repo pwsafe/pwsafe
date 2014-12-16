@@ -8,7 +8,7 @@
 #ifndef __FMTSPECS_CVT_H__
 #define __FMTSPECS_CVT_H__
 
-#if defined(__GNUC__)  && (defined(UNICODE) || defined(_UNICODE))
+#if defined(__GNUC__)
 #define CONVERT_GLIBC_FORMATSPECS
 #endif
 
@@ -52,8 +52,7 @@ inline T ConvertFormatSpecs(const wchar_t* fmt)
 /* not available unless UNICODE is defined */
 inline stringT FormatStr(const wchar_t* s) { return ConvertFormatSpecs<stringT>(s); }
 
-#else
-// Not GNU, or not UNICODE
+#else /* Not GNU */
 
 template <typename T>
 inline void ConvertFormatSpecs(T& /*specs*/) {}

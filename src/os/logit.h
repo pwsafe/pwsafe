@@ -32,39 +32,21 @@
 // in UNICODE.This is a Microsoft specific extension to "printf Type Field Characters"
 // and is not ANSI compatible.
 // Implies Windows!
-#ifdef UNICODE
 #define PWS_LOGIT_HEADER L"%S;\t%S; "
-#else
-#define PWS_LOGIT_HEADER  "%s;\t%s; "
-#endif
 #endif
 
 #if defined(__GNUC__)
 // As __FILE__ and __FUNCTION__ are character strings, GCC treats %s as single-character
 // strings when in UNICODE.
 // Could be Windows or non-Windows!
-#ifdef UNICODE
-// UNICODE
 #ifdef _WIN32
 #define PWS_LOGIT_HEADER L"%s;\t%s; "
 #else
 #define PWS_LOGIT_HEADER L"PWSLOG %s;\t%s; "
 #endif
-#else
-// Not UNICODE
-#ifdef _WIN32
-#define PWS_LOGIT_HEADER  "%s;\t%s; "
-#else
-#define PWS_LOGIT_HEADER  "PWSLOG %s;\t%s; "
-#endif
-#endif
 #endif
 
-#ifdef UNICODE
 #define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER L ## str
-#else
-#define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER   ## str
-#endif
 
 // Now the actual logging macros
 #define PWS_LOGIT pws_os::Logit(PWS_LOGIT_HEADER, __FILE__, __FUNCTION__)

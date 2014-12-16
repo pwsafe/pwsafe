@@ -29,11 +29,7 @@ stringT pws_os::getenv(const char *env, bool is_path)
   stringT retval;
   char *value = std::getenv(env);
   if (value != NULL) {
-#ifdef UNICODE
     retval = pws_os::towc(value);
-#else
-    retval = value;
-#endif
     if (is_path) {
       // make sure path has trailing '\'
       if (retval[retval.length()-1] != charT('/'))
@@ -54,11 +50,7 @@ stringT pws_os::getusername()
   stringT retval;
   struct passwd *pw_s = ::getpwuid(::getuid());
   const char *user = (pw_s != NULL) ? pw_s->pw_name : "?";
-#ifdef UNICODE
   retval = pws_os::towc(user);
-#else
-  retval = user;
-#endif
   return retval;
 }
 
@@ -70,21 +62,13 @@ stringT pws_os::gethostname()
     assert(0);
     name[0] = '?'; name[1] = '\0';
   }
-#ifdef UNICODE
   retval = pws_os::towc(name);
-#else
-  retval = name;
-#endif
   return retval;
 }
 
 stringT pws_os::getprocessid()
 {
-#ifdef UNICODE
   std::wostringstream os;
-#else
-  std::ostringstream os;
-#endif
   os.width(8);
   os.fill(charT('0'));
   os << getpid();

@@ -82,7 +82,6 @@ wstring pws_os::towc(const char *val)
   return retval;
 }
 
-#ifdef UNICODE
 std::string pws_os::tomb(const stringT& val)
 {
   if (!val.empty()) {
@@ -97,11 +96,5 @@ std::string pws_os::tomb(const stringT& val)
   } else
     return string();
 }
-#else
-std::string pws_os::tomb(const stringT& val)
-{
-  return val;
-}
-#endif
 
 

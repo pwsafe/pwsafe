@@ -22,7 +22,6 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
 
   int num_required, num_written;
 
-#ifdef UNICODE
   const stringT format(FormatStr(lpszFormat));
 
   num_required = GetStringBufSize(format.c_str(), args);
@@ -33,16 +32,6 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   num_written = vswprintf(szBuffer, num_required, format.c_str(), args);
   assert(num_required == num_written + 1);
   szBuffer[num_required - 1] = L'\0';
-#else
-  num_required = GetStringBufSize(lpszFormat, args);
-  va_end(args);  // after using args we should reset list
-  va_start(args, lpszFormat);
-
-  char *szBuffer = new char[num_required];
-  num_written = vsnprintf(szBuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written+1);
-  szBuffer[num_required - 1] = '\0';
-#endif /* UNICODE */
   UNREFERENCED_PARAMETER(num_written); // used only in assert
   const stringT s(szBuffer);
   PWSLog::GetLog()->Add(s);

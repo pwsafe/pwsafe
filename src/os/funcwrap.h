@@ -75,12 +75,10 @@ inline errno_t _gmtime64_s(struct tm* _tm, const __time64_t* time)
   return gmtime64_r(time, _tm) ? 0 : EINVAL;
 }
 
-#ifdef UNICODE
 #include <cwchar>
 
 #ifndef _TRUNCATE
 #define _TRUNCATE static_cast<size_t>(-1)
-#endif
 
 inline errno_t wcsncpy_s(wchar_t *dst, size_t dst_size, const wchar_t *src, size_t cnt)
 {

@@ -28,7 +28,6 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 
   int num_required, num_written;
 
-#ifdef UNICODE
   stringT format = FormatStr(lpszFormat);
   num_required = GetStringBufSize(format.c_str(), args);
   va_end(args);//after using args we should reset list
@@ -43,16 +42,6 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, wcbuffer, N);
   delete[] wcbuffer;
-#else
-  num_required = GetStringBufSize(lpszFormat, args);
-  va_end(args);//after using args we should reset list
-  va_start(args, lpszFormat);
-
-  char *szbuffer = new char[num_required];
-  num_written = vsnprintf(szbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written+1);
-  szbuffer[num_required-1] = '\0';
-#endif
   syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
@@ -65,7 +54,6 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 {
   openlog("pwsafe:", LOG_PID|LOG_PERROR, LOG_USER);
 
-#ifdef UNICODE
   size_t N = wcstombs(NULL, lpszFormat, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
@@ -73,10 +61,6 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
-#else
-  syslog(LOG_DEBUG, "%s", lpszFormat);
-#endif
-
   closelog();
 }
 #else   /* _DEBUG || DEBUG */

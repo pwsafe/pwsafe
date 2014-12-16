@@ -27,11 +27,7 @@ stringT pws_os::getexecdir()
   if (::readlink("/proc/self/exe", path, PATH_MAX) < 0)
     return _T("?");
   else {
-#ifdef UNICODE
     stringT retval(pws_os::towc(path));
-#else
-    stringT retval(path);
-#endif
     stringT::size_type last_slash = retval.find_last_of(_T("/"));
     return retval.substr(0, last_slash + 1);
   }
@@ -43,11 +39,7 @@ stringT pws_os::getcwd()
   if (::getcwd(curdir, PATH_MAX) == NULL) {
     curdir[0] = '?'; curdir[1] = '\0';
   }
-#ifdef UNICODE
   stringT CurDir(pws_os::towc(curdir));
-#else
-  stringT CurDir(curdir);
-#endif
   return CurDir;
 }
 
@@ -55,18 +47,12 @@ bool pws_os::chdir(const stringT &dir)
 {
   assert(!dir.empty());
   const char *szdir = NULL;
-#ifdef UNICODE
   size_t N = std::wcstombs(NULL, dir.c_str(), 0) + 1;
   assert(N > 0);
   szdir = new char[N];
   std::wcstombs(const_cast<char *>(szdir), dir.c_str(), N);
-#else
-  szdir = dir.c_str();
-#endif
   bool retval = (::chdir(szdir) == 0);
-#ifdef UNICODE
   delete[] szdir;
-#endif
   return retval;
 }
 
