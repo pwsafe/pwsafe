@@ -11,7 +11,6 @@
 #include <cstdarg>
 #include "StringX.h"
 #include "Util.h"
-#include "../os/fmtspecs_cvt.h"
 
 #include "PwsPlatform.h"
 #include "os/pws_tchar.h"
@@ -165,15 +164,13 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   va_list args;
   va_start(args, fmt);
 
-  stringT fmt_s = FormatStr(fmt);
-
-  int len = GetStringBufSize(fmt_s.c_str(), args);
+  int len = GetStringBufSize(fmt, args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 
   TCHAR *buffer = new TCHAR[len];
 
-  _vstprintf_s(buffer, len, fmt_s.c_str(), args);
+  _vstprintf_s(buffer, len, fmt, args);
   s = buffer;
   delete[] buffer;
   va_end(args);
@@ -186,8 +183,6 @@ template<class T> void Format(T &s, int fmt, ...)
   va_start(args, fmt);
   T fmt_str;
   LoadAString(fmt_str, fmt);
-
-  ConvertFormatSpecs(fmt_str);
 
   int len = GetStringBufSize(fmt_str.c_str(), args);
   va_end(args);//after using args we should reset list

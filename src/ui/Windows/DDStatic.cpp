@@ -567,9 +567,9 @@ bad_return:
   } else {
     pws_os::Trace(L"CDDStatic::OnRenderGlobalData - D&D Data:");
     if (lpFormatEtc->cfFormat == CF_UNICODETEXT) {
-      pws_os::Trace(L"\"%s\"\n", (LPWSTR)lpData);  // we are Unicode, data is Unicode
+      pws_os::Trace(L"\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
-      pws_os::Trace(L"\"%S\"\n", (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
+      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
     }
   }
   // Unlock our buffer
