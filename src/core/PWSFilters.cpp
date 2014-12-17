@@ -564,7 +564,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
       stringT wls(_T(""));
       Format(wls,
-             _T("%s on %s"),
+             L"%ls on %ls",
              hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
       utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhoSaved=\"";
@@ -680,22 +680,22 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   switch (st_fldata.mtype) {
     case PWSMatch::MT_PASSWORD:
       if (st_fldata.rule == PWSMatch::MR_EXPIRED) {
-        Format(cs_criteria, _T("%s"), cs_rule.c_str());
+        Format(cs_criteria, L"%ls", cs_rule.c_str());
         break;
       } else if (st_fldata.rule == PWSMatch::MR_WILLEXPIRE) {
-        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+        Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case PWSMatch::MT_STRING:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        Format(cs_criteria, _T("%s"), cs_rule.c_str());
+        Format(cs_criteria, L"%ls", cs_rule.c_str());
       else {
-        stringT cs_delim(_T(""));
-        if (cs1.find(_T(" ")) != stringT::npos)
-          cs_delim = _T("'");
-        Format(cs_criteria, _T("%s %s%s%s %s"), 
+        stringT cs_delim(L"");
+        if (cs1.find(L" ") != stringT::npos)
+          cs_delim = L"'";
+        Format(cs_criteria, L"%ls %ls%ls%ls %ls", 
                cs_rule.c_str(), cs_delim.c_str(), 
                cs1.c_str(), cs_delim.c_str(), cs2.c_str());
       }
@@ -705,14 +705,14 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
     case PWSMatch::MT_DATE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        Format(cs_criteria, _T("%s"), cs_rule.c_str());
+        Format(cs_criteria, L"%ls", cs_rule.c_str());
       else
       if (st_fldata.rule == PWSMatch::MR_BETWEEN) {  // Date or Integer only
         LoadAString(cs_and, IDSC_AND);
-        Format(cs_criteria, _T("%s %s %s %s"), 
+        Format(cs_criteria, L"%ls %ls %ls %ls", 
                cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
       } else {
-        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+        Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       }
       if (st_fldata.mtype == PWSMatch::MT_DATE &&
           st_fldata.fdatetype == 1 /* Relative */) {
@@ -749,13 +749,13 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       break;
     case PWSMatch::MT_DCA:
     case PWSMatch::MT_SHIFTDCA:
-      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYSTATUS:
-      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     default:
       ASSERT(0);

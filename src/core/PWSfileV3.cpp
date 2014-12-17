@@ -225,7 +225,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
   size_t utf8Len;
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
-    pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
+    pws_os::Trace(_T("ToUTF8(%ls) failed\n"), data.c_str());
   return WriteCBC(type, utf8, utf8Len);
 }
 
@@ -739,7 +739,7 @@ int PWSfileV3::ReadHeader()
           // No filter schema => user won't be able to access stored filters
           // Inform her of the fact (probably an installation problem).
           stringT message, message2;
-          Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+          Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
           LoadAString(message2, IDSC_FILTERSKEPT);
           message += stringT(_T("\n\n")) + message2;
           if (m_pReporter != NULL)

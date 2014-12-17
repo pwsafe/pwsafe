@@ -600,7 +600,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         // have a match on group/title/user, but not on other fields
         // add an entry suffixed with -merged-YYYYMMDD-HHMMSS
         StringX sx_newTitle;
-        Format(sx_newTitle, _T("%s-%s-%s"), sx_otherTitle.c_str(), sx_merged.c_str(),
+        Format(sx_newTitle, L"%ls-%ls-%ls", sx_otherTitle.c_str(), sx_merged.c_str(),
                             str_timestring.c_str());
 
         // note it as an issue for the user
@@ -734,7 +734,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                     str_singular_plural_verb.c_str());
     pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_added.size(); i++) {
-      Format(str_results, _T("\t%s"), vs_added[i].c_str());
+      Format(str_results, L"\t%ls", vs_added[i].c_str());
       pRpt->WriteLine(str_results.c_str());
     }
   }
@@ -748,7 +748,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                     str_singular_plural_verb.c_str());
     pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
-      Format(str_results, _T("\t%s"), vs_AliasesAdded[i].c_str());
+      Format(str_results, _T("\t%ls"), vs_AliasesAdded[i].c_str());
       pRpt->WriteLine(str_results.c_str());
     }
   }
@@ -762,7 +762,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                     str_singular_plural_verb.c_str());
     pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
-      Format(str_results, _T("\t%s"), vs_ShortcutsAdded[i].c_str());
+      Format(str_results, L"\t%ls", vs_ShortcutsAdded[i].c_str());
       pRpt->WriteLine(str_results.c_str());
     }
   }
@@ -837,7 +837,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     StringX sx_newTitle = ci_temp.GetTitle();
     if (bTitleRenamed) {
       StringX sx_otherTitle(sx_newTitle);
-      Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(),
+      Format(sx_newTitle, L"%ls%ls%ls", sx_otherTitle.c_str(),
                           sx_merged.c_str(), str_timestring.c_str());
       ci_temp.SetTitle(sx_newTitle);
     }
@@ -944,7 +944,7 @@ void PWScore::Synchronize(PWScore *pothercore,
       updItem.SetDisplayInfo(NULL);
 
       if (curItem.GetUUID() != otherItem.GetUUID()) {
-        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"),
+        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"),
              sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       }
 
@@ -1003,7 +1003,7 @@ void PWScore::Synchronize(PWScore *pothercore,
                     str_singular_plural_verb.c_str());
     pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
-      Format(str_results, _T("\t%s"), vs_updated[i].c_str());
+      Format(str_results, L"\t%ls", vs_updated[i].c_str());
       pRpt->WriteLine(str_results.c_str());
     }
   }

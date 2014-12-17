@@ -269,9 +269,9 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
     call the SetSettingString method.
   */
   int iRetVal = 0;
-  stringT csValue = _T("");
+  stringT csValue = L"";
 
-  Format(csValue, _T("%d"), iValue);
+  Format(csValue, L"%d", iValue);
 
   iRetVal = Set(csBaseKeyName, csValueName, csValue);
 

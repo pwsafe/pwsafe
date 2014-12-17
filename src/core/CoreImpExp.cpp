@@ -48,7 +48,7 @@
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
-const TCHAR *GROUPTITLEUSERINCHEVRONS = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
+const TCHAR *GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
 
 using namespace std;
 using pws_os::CUUID;
@@ -976,7 +976,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         const string &sHdr = vs_Header.at(i);
         StringX sh2;
         conv.FromUTF8(reinterpret_cast<const unsigned char *>(sHdr.c_str()), sHdr.length(), sh2);
-        Format(cs_error, _T(" %s,"), sh2.c_str());
+        Format(cs_error, L" %ls,", sh2.c_str());
         rpt.WriteLine(cs_error, false);
       }
     }
@@ -2007,7 +2007,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     rpt.WriteLine(strError);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
-        Format(strError, _T(" %s,"), vs_Header[i].c_str());
+        Format(strError, L" %ls,", vs_Header[i].c_str());
         rpt.WriteLine(strError, false);
       }
     }

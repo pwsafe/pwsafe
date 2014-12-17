@@ -107,7 +107,7 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
 {
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
-  Format(m_AppNameAndVersion, _T("%s V%d.%02d"), appName.c_str(),
+  Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
          nMajor, nMinor);
 }
 
@@ -436,7 +436,7 @@ private:
 int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
                        PWSfile::VERSION version)
 {
-  PWS_LOGIT_ARGS("bUpdateSig=%s", bUpdateSig ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
@@ -620,8 +620,8 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
                       const bool bValidate, const size_t iMAXCHARS,
                       CReport *pRpt)
 {
-  PWS_LOGIT_ARGS("bValidate=%s; iMAXCHARS=%d; pRpt=%p",
-                 bValidate ? _T("true") : _T("false"), iMAXCHARS,
+  PWS_LOGIT_ARGS("bValidate=%ls; iMAXCHARS=%d; pRpt=%p",
+                 bValidate ? L"true" : L"false", iMAXCHARS,
                  pRpt);
 
   int status;
@@ -978,18 +978,18 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
         file_nums[x] = next <= 999 ? next++ : m++;
   }
 
-  Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
+  Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
 
   int i = 0;
   size_t num_found = file_nums.size();
   stringT excess_file;
   while (num_found >= maxnumincbackups) {
     nnn = file_nums[i];
-    Format(excess_file, _T("%s_%03d.ibak"), cs_filenamebase.c_str(), nnn);
+    Format(excess_file, L"%ls_%03d.ibak", cs_filenamebase.c_str(), nnn);
     i++;
     num_found--;
     if (!pws_os::DeleteAFile(excess_file)) {
-      pws_os::Trace(_T("DeleteFile(%s) failed"), excess_file.c_str());
+      pws_os::Trace(L"DeleteFile(%ls) failed", excess_file.c_str());
       continue;
     }
   }
@@ -1785,7 +1785,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         units++;
       }
       Format(cs_Error, IDSC_VALIDATE_TEXT, iMAXCHARS, uimaxsize,
-             units == 0 ? _T("KB") : _T("MB"));
+             units == 0 ? L"KB" : L"MB");
       pRpt->WriteLine(cs_Error);
 
       for (size_t iv = 0; iv < vGTU_TEXT.size(); iv++) {
@@ -2727,7 +2727,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   HistoryUpdateResetOn(int &num_altered, int new_default_max,
                        SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
     : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected)
-  {Format(m_text, _T("1%02x00"), new_default_max);}
+  {Format(m_text, L"1%02x00", new_default_max);}
 
   void operator()(CItemData &ci) {
     if (!ci.IsProtected() ||
@@ -2762,7 +2762,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
                       SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
     : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected),
     m_new_default_max(new_default_max)
-  {Format(m_text, _T("1%02x"), new_default_max);}
+  {Format(m_text, L"1%02x", new_default_max);}
 
   void operator()(CItemData &ci) {
     if (!ci.IsProtected() ||
@@ -2928,14 +2928,14 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 {
   st_dbp.database = m_currfile;
 
-  Format(st_dbp.databaseformat, _T("%d.%02d"),
+  Format(st_dbp.databaseformat, L"%d.%02d",
                           m_hdr.m_nCurrentMajorVersion,
                           m_hdr.m_nCurrentMinorVersion);
 
   std::vector<std::wstring> aryGroups;
   GetUniqueGroups(aryGroups);
-  Format(st_dbp.numgroups, _T("%d"), aryGroups.size());
-  Format(st_dbp.numentries, _T("%d"), m_pwlist.size());
+  Format(st_dbp.numgroups, L"%d", aryGroups.size());
+  Format(st_dbp.numentries, L"%d", m_pwlist.size());
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {
@@ -2978,12 +2978,12 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     Format(st_dbp.unknownfields, IDSC_UNKNOWNFIELDS, cs_HdrYesNo.c_str());
     if (num == 0) {
       st_dbp.unknownfields += cs_No;
-      st_dbp.unknownfields += _T(")");
+      st_dbp.unknownfields += L")";
     } else {
       StringX wls;
-      Format(wls, _T("%d"), num);
+      Format(wls, L"%d", num);
       st_dbp.unknownfields += wls;
-      st_dbp.unknownfields += _T(")");
+      st_dbp.unknownfields += L")";
     }
   } else {
     LoadAString(st_dbp.unknownfields, IDSC_NONE);

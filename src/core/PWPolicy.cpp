@@ -35,7 +35,7 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   if (str.empty() || str.length() != POL_STR_ENC_LEN) {
     if (!str.empty()) {
       ASSERT(str.length() == POL_STR_ENC_LEN);
-      pws_os::Trace(_T("Malformed policy string: %s\n"), str.c_str());
+      pws_os::Trace(_T("Malformed policy string: %ls\n"), str.c_str());
     }
     PWPolicy emptyPol;
     *this = emptyPol;
@@ -233,28 +233,28 @@ StringX PWPolicy::GetDisplayString()
     if (flags & PWPolicy::UseLowercase) {
       st_pwp += _T("L");
       if (lowerminlength > 1) {
-        Format(st_text, _T("(%d)"), lowerminlength);
+        Format(st_text, L"(%d)", lowerminlength);
         st_pwp += st_text;
       }
     }
     if (flags & PWPolicy::UseUppercase) {
       st_pwp += _T("U");
       if (upperminlength > 1) {
-        Format(st_text, _T("(%d)"), upperminlength);
+        Format(st_text, L"(%d)", upperminlength);
         st_pwp += st_text;
       }
     }
     if (flags & PWPolicy::UseDigits) {
       st_pwp += _T("D");
       if (digitminlength > 1) {
-        Format(st_text, _T("(%d)"), digitminlength);
+        Format(st_text, L"(%d)", digitminlength);
         st_pwp += st_text;
       }
     }
     if (flags & PWPolicy::UseSymbols) {
       st_pwp += _T("S");
         if (symbolminlength > 1) {
-        Format(st_text, _T("(%d)"), symbolminlength);
+        Format(st_text, L"(%d)", symbolminlength);
           st_pwp += st_text;
       }
     }

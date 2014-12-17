@@ -589,7 +589,7 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value, const bool b
 
 void PWSprefs::ResetPref(BoolPrefs pref_enum)
 {
-  PWS_LOGIT_ARGS("BoolPref: %s", m_bool_prefs[pref_enum].name);
+  PWS_LOGIT_ARGS("BoolPref: %ls", m_bool_prefs[pref_enum].name);
 
   m_boolValues[pref_enum] = m_bool_prefs[pref_enum].defVal;
   m_boolChanged[pref_enum] = true;
@@ -598,7 +598,7 @@ void PWSprefs::ResetPref(BoolPrefs pref_enum)
 
 void PWSprefs::ResetPref(IntPrefs pref_enum)
 {
-  PWS_LOGIT_ARGS("IntegerPref: %s", m_int_prefs[pref_enum].name);
+  PWS_LOGIT_ARGS("IntegerPref: %ls", m_int_prefs[pref_enum].name);
 
   m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
   m_intChanged[pref_enum] = true;
@@ -607,7 +607,7 @@ void PWSprefs::ResetPref(IntPrefs pref_enum)
 
 void PWSprefs::ResetPref(StringPrefs pref_enum)
 {
-  PWS_LOGIT_ARGS("StringPref: %s", m_string_prefs[pref_enum].name);
+  PWS_LOGIT_ARGS("StringPref: %ls", m_string_prefs[pref_enum].name);
 
   m_stringValues[pref_enum] = m_string_prefs[pref_enum].defVal;
   m_stringChanged[pref_enum] = true;
@@ -616,7 +616,7 @@ void PWSprefs::ResetPref(StringPrefs pref_enum)
 
 bool PWSprefs::WritePref(const StringX &name, bool val)
 {
-  PWS_LOGIT_ARGS("Bool Name: %s", name.c_str());
+  PWS_LOGIT_ARGS("Bool Name: %ls", name.c_str());
 
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
@@ -639,7 +639,7 @@ bool PWSprefs::WritePref(const StringX &name, bool val)
 
 bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
-  PWS_LOGIT_ARGS("Integer Name: %s", name.c_str());
+  PWS_LOGIT_ARGS("Integer Name: %ls", name.c_str());
 
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
@@ -661,7 +661,7 @@ bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 
 bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
-  PWS_LOGIT_ARGS("String Name: %s", name.c_str());
+  PWS_LOGIT_ARGS("String Name: %ls", name.c_str());
 
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
@@ -684,7 +684,7 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 
 bool PWSprefs::DeletePref(const StringX &name)
 {
-  PWS_LOGIT_ARGS("Name: %s", name.c_str());
+  PWS_LOGIT_ARGS("Name: %ls", name.c_str());
 
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -771,7 +771,7 @@ void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
 
 StringX PWSprefs::Store(bool bUseCopy)
 {
-  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bUseCopy=%ls", bUseCopy ? _T("true") : _T("false"));
   /*
   * Create a string of values that are (1) different from the defaults, &&
   * (2) are storage in the database (ptype == ptDatabase)
@@ -860,7 +860,7 @@ StringX PWSprefs::Store(bool bUseCopy)
 
 void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
 {
-  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bUseCopy=%ls", bUseCopy ? _T("true") : _T("false"));
 
   bool *p_boolValues;
   unsigned int *p_intValues;
@@ -1108,10 +1108,10 @@ void PWSprefs::InitializePreferences()
       isRO = false;
     }
   }
-  pws_os::Trace(_T("PWSprefs - using %s config file: %s [%s]\n"),
-            configFileExists ? _T("existing") : _T(""),
+  pws_os::Trace(_T("PWSprefs - using %ls config file: %ls [%ls]\n"),
+            configFileExists ? L"existing" : L"",
             m_configfilename.c_str(),
-            isRO ? _T("R/O") : _T("R/W"));
+            isRO ? L"R/O" : L"R/W");
 
 
   // Does the registry entry exist for this user?
@@ -1178,7 +1178,7 @@ void PWSprefs::InitializePreferences()
 
 void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 {
-  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bUseCopy=%ls", bUseCopy ? L"true" : L"false");
 
   // Set Database prefs to hardcoded values
   int i;
@@ -1446,8 +1446,8 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Load most recently used file list
   for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
-    Format(csSubkey, _T("Safe%02d"), i);
-    m_MRUitems[i-1] = m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
+    Format(csSubkey, L"Safe%02d", i);
+    m_MRUitems[i-1] = m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, L"");
   }
 
   m_vShortcuts = m_pXML_Config->GetShortcuts(m_csHKCU_SHCT);
@@ -1547,14 +1547,14 @@ void PWSprefs::SaveApplicationPreferences()
       case CF_FILE_RW_NEW:
       {
         stringT obuff;
-        Format(obuff, _T("%d"), m_rect.top);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-        Format(obuff, _T("%d"), m_rect.bottom);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-        Format(obuff, _T("%d"), m_rect.left);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-        Format(obuff, _T("%d"), m_rect.right);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+        Format(obuff, L"%d", m_rect.top);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"top", obuff) == 0);
+        Format(obuff, L"%d", m_rect.bottom);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", obuff) == 0);
+        Format(obuff, L"%d", m_rect.left);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", obuff) == 0);
+        Format(obuff, L"%d", m_rect.right);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", obuff) == 0);
         break;
       }
       case CF_FILE_RO:
@@ -1581,14 +1581,14 @@ void PWSprefs::SaveApplicationPreferences()
       case CF_FILE_RW_NEW:
       {
         stringT obuff;
-        Format(obuff, _T("%d"), m_PSSrect.top);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_top"), obuff) == 0);
-        Format(obuff, _T("%d"), m_PSSrect.bottom);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_bottom"), obuff) == 0);
-        Format(obuff, _T("%d"), m_PSSrect.left);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_left"), obuff) == 0);
-        Format(obuff, _T("%d"), m_PSSrect.right);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_right"), obuff) == 0);
+        Format(obuff, L"%d", m_PSSrect.top);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_top", obuff) == 0);
+        Format(obuff, L"%d", m_PSSrect.bottom);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_bottom", obuff) == 0);
+        Format(obuff, L"%d", m_PSSrect.left);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_left", obuff) == 0);
+        Format(obuff, L"%d", m_PSSrect.right);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_right", obuff) == 0);
         break;
       }
       case CF_FILE_RO:
@@ -1609,7 +1609,7 @@ void PWSprefs::SaveApplicationPreferences()
     stringT csSubkey;
     for (j = 0; j < n; j++) {
       if (!m_MRUitems[j].empty()) {
-        Format(csSubkey, _T("Safe%02d"), j + 1);
+        Format(csSubkey, L"Safe%02d", j + 1);
         m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[j]);
       }
     }

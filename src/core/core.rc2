@@ -66,19 +66,19 @@ BEGIN
   IDSC_IMPORTLINESKIPPED  "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
   IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
-  IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
+  IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%ls"" field. It has been ignored."
   IDSC_IMPORTNOPASSWORD   "Line %d skipped: Empty mandatory Password field."
   IDSC_IMPORTNOTITLE      "Line %d skipped: Empty mandatory Title field."
   IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
-  IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
-  IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\n"
-  IDSC_IMPORTRECSKIPPED   "%s has an empty %s.\n"
+  IDSC_IMPORTENTRY        "Entry %ls%d with Group=""%ls"", Title=""%ls"", User=""%ls"""
+  IDSC_IMPORTRECNOTFOUND  "%ls not found. Cannot update entry's password.\n"
+  IDSC_IMPORTRECSKIPPED   "%ls has an empty %ls.\n"
   IDSC_IMPORT_ON_LINE     "on line "
   IDSC_IMPORT_ENTRY_ID    "id="
-  IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s"".\n"
-  IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"""
+  IDSC_IMPORTCONFLICTS0   "%ls, Title=""%ls"", User=""%ls"" already exists in your database or in the Import file. Added imported entry with title=""%ls"".\n"
+  IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%ls"""
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
-  IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%s"""
+  IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%ls"""
   IDSC_IMPORTCONFLICTSX2  "Entry with no group"
   IDSC_IMPORTABORTED      "Import aborted. Please see report."
   IDSC_IMPORTMISSINGTITLE "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
@@ -102,14 +102,14 @@ BEGIN
   IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
   IDSC_CANTUPDATEXMLCFG   "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
   IDSC_CANTDETERMINECFG   "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-  IDSC_CANTUSECONFIGFILE  "%s\n\nThe configuration file will not be used."
+  IDSC_CANTUSECONFIGFILE  "%ls\n\nThe configuration file will not be used."
 END
 
 STRINGTABLE
 BEGIN
-  IDSC_PWHERROR           "Error in a Password History %s:"
+  IDSC_PWHERROR           "Error in a Password History %ls:"
   IDSC_PWHERRORTEXT       "sub-field starting at position %d (within the History field): "
-  IDSC_INVALIDHEADER      "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+  IDSC_INVALIDHEADER      "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
   IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d (must be either 0 or 1)."
   IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d."
   IDSC_INVALIDDATETIME    "  Invalid date/time value."
@@ -125,27 +125,27 @@ END
 STRINGTABLE
 BEGIN
   IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-  IDSC_MSXMLPARSEERROR    "SAX Parse60 Error 0x%08X during %s."
-  IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache60 Error 0x%08X during %s."
+  IDSC_MSXMLPARSEERROR    "SAX Parse60 Error 0x%08X during %ls."
+  IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache60 Error 0x%08X during %ls."
   IDSC_NOMSXMLREADER      "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-  IDSC_XERCESPARSEERROR   "SAX Parse Error during %s\n%s."
+  IDSC_XERCESPARSEERROR   "SAX Parse Error during %ls\n%ls."
   IDCS_XERCESEXCEPTION    "\nUnexpected exception during parsing."
   IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
-  IDSC_XMLFILEERROR       "Configuration file error:\n%s\n%s\noffset approximately at %d"
+  IDSC_XMLFILEERROR       "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
   IDSC_XMLLOADFAILURE     "Unable to load configuration file"
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"
   IDSC_XMLCREATE_CFG_FAILED "Internal error: Couldn't initialize config file XML structure"
-  IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
+  IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%ls\xbb%ls\xbb%ls\xbb: "
   IDSC_XMLCHARACTERERRORS "*** Invalid XML characters found - see exported XML file for more details ***"
 END
 
 STRINGTABLE
 BEGIN
-  IDSC_MSXMLSAXGENERROR   "Error (%08X): line %d character %d %s"
-  IDSC_XERCESSAXGENERROR  "XML %s: line %d character %d: %s"
+  IDSC_MSXMLSAXGENERROR   "Error (%08X): line %d character %d %ls"
+  IDSC_XERCESSAXGENERROR  "XML %ls: line %d character %d: %ls"
   IDSC_SAX2FATALERROR     "Fatal Error"
   IDSC_SAX2ERROR          "Error"
   IDSC_SAX2WARNING        "Warning"
@@ -185,18 +185,18 @@ END
 STRINGTABLE
 BEGIN
   IDSC_READ_ERROR          "Read Error"
-  IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
+  IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
   IDSC_RPTVALIDATE         "Validate"
-  IDSC_VALIDATE_ENTRY      "\tGroup='%s', Title='%s', User='%s' %s"
-  IDSC_VALIDATE_ENTRY2     "- Its title has been changed to:'%s'"
+  IDSC_VALIDATE_ENTRY      "\tGroup='%ls', Title='%ls', User='%ls' %ls"
+  IDSC_VALIDATE_ENTRY2     "- Its title has been changed to:'%ls'"
   IDSC_VALIDATE_BADUUID    "The following entries had an invalid UUID field.  This has been corrected."
   IDSC_VALIDATE_DUPUUID    "The following entries had a duplicate UUID field.  This has been corrected."
   IDSC_VALIDATE_PWH        "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
   IDSC_VALIDATE_DUPLICATES "The following entries were duplicates of an existing entry."
   IDSC_VALIDATE_EMPTYTITLE "The following entries had an empty Title field, which is not permitted."
-  IDSC_VALIDATE_EMPTYPSWD  "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
-  IDSC_VALIDATE_TEXT       "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
-  IDSC_VALIDATE_DEPS       "The following entries have passwords in the correct form for %s, but the base entry does not exist."
+  IDSC_VALIDATE_EMPTYPSWD  "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
+  IDSC_VALIDATE_TEXT       "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
+  IDSC_VALIDATE_DEPS       "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
   IDSC_MISSINGPASSWORD     "MISSING PASSWORD"
   IDSC_MISSINGTITLE        "MISSING TITLE # %d"
   IDSC_VALIDATE_ERRORS     "The following ERRORS were detected and were FIXED."
@@ -205,9 +205,9 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_REPORTFILENAME      "%s%s%s_Report.txt"
-  IDSC_REPORT_TITLE1       "Report of %s function started at %s"
-  IDSC_REPORT_TITLE2       "on database %s"
+  IDSC_REPORTFILENAME      "%ls%ls%ls_Report.txt"
+  IDSC_REPORT_TITLE1       "Report of %ls function started at %ls"
+  IDSC_REPORT_TITLE2       "on database %ls"
   IDSC_START_REPORT        "Start Report"
   IDSC_END_REPORT1         "End Report"
   IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
@@ -216,11 +216,11 @@ END
 STRINGTABLE
 BEGIN
   IDSC_IMPORTWARNINGHDR    "Entry import warnings"
-  IDSC_IMPORTWARNING1      "Entry ""%s, %s, %s"" has a password in the correct form for an alias, but the base entry is already an alias."
+  IDSC_IMPORTWARNING1      "Entry ""%ls, %ls, %ls"" has a password in the correct form for an alias, but the base entry is already an alias."
   IDSC_IMPORTWARNING1A     "\tThis entry has been made an alias of associated base entry."
-  IDSC_IMPORTWARNING2      "Entry ""%s, %s, %s"" has a password in the correct form for an alias, but the base entry does not exist."
+  IDSC_IMPORTWARNING2      "Entry ""%ls, %ls, %ls"" has a password in the correct form for an alias, but the base entry does not exist."
   IDSC_IMPORTWARNING2A     "\tThis entry remains a normal entry and the password has not been changed."
-  IDSC_IMPORTWARNING3      "The %s entry ""%s, %s, %s"" doesn't point to a normal or existing %s base entry. It cannot be imported."
+  IDSC_IMPORTWARNING3      "The %ls entry ""%ls, %ls, %ls"" doesn't point to a normal or existing %ls base entry. It cannot be imported."
 END
 
 STRINGTABLE
@@ -294,9 +294,9 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_FILTEREXISTS        "Filter %s already exists in the database, do you wish to replace it with this?"
+  IDSC_FILTEREXISTS        "Filter %ls already exists in the database, do you wish to replace it with this?"
   IDSC_CANTVALIDATEXML     "Missing XSD File"
-  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
 END
 
 STRINGTABLE
@@ -316,7 +316,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_CURRENTDEFAULTDCA   " Current default (%s)"  // NOTE: Leading blank to make first in sort
+  IDSC_CURRENTDEFAULTDCA   " Current default (%ls)"  // NOTE: Leading blank to make first in sort
   IDSC_DCAAUTOTYPE         "Autotype"
   IDSC_DCABROWSE           "Browse to URL"
   IDSC_DCABROWSEPLUS       "Browse to URL + Autotype"
@@ -347,24 +347,24 @@ BEGIN
   IDSC_UNKNOWNFUNCTION     "Unknown function"
   IDSC_UNKNOWNOBJECT       "Unknown object"
   IDSC_XMLEXP_POLICIES     "Note: These Password Policies will not replace existing policies with the same name in the current database."
-  IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%s' is not in the database."
+  IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%ls' is not in the database."
   IDSC_MISSINGPOLICYNAMES  "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
   IDSC_RENAMEDPOLICYNAMES  "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-  IDSC_IMPORTPOLICY        "%s  - Imported %s"
-  IDSC_MERGEPOLICY         "%s - Merged %s"
-  IDSC_SYNCPOLICY          "%s - Sync'd %s"
-  IDSC_COPYPOLICY          "%s - Copied %s"
-  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
-  IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
-  IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
-  IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+  IDSC_IMPORTPOLICY        "%ls  - Imported %ls"
+  IDSC_MERGEPOLICY         "%ls - Merged %ls"
+  IDSC_SYNCPOLICY          "%ls - Sync'd %ls"
+  IDSC_COPYPOLICY          "%ls - Copied %ls"
+  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
+  IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
+  IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
+  IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
 END
 
 STRINGTABLE
 BEGIN
   IDSC_DELETEBASET         "Delete Base Entry Confirmation"
-  IDSC_DELETEABASE         "This entry has the following %d %s:\n%s\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-  IDSC_DELETESBASE         "This entry has the following %d %s:\n%s\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+  IDSC_DELETEABASE         "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+  IDSC_DELETESBASE         "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
 END
 
 STRINGTABLE
@@ -372,20 +372,20 @@ BEGIN
   IDSC_YES                 "Yes"
   IDSC_NO                  "No"
   IDSC_NONE                "None"
-  IDSC_USERONHOST          "%s on %s"
-  IDSC_UNKNOWNFIELDS       "In Headers(%s)/In Entries("
+  IDSC_USERONHOST          "%ls on %ls"
+  IDSC_UNKNOWNFIELDS       "In Headers(%ls)/In Entries("
   IDSC_WAS                 "was"
   IDSC_WERE                "were"
-  IDSC_SYNCHUPDATED        "\nThe following %s %s updated:"
-  IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %s updated"
-  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\n  Adding merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\n    Differing field(s): %s"
-  IDSC_MERGECOMPLETED      "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+  IDSC_SYNCHUPDATED        "\nThe following %ls %ls updated:"
+  IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %ls updated"
+  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n  Adding merged entry as \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n    Differing field(s): %ls"
+  IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
   IDSC_MERGED              "merged"
   IDSC_IMPORTED            "imported"
   IDSC_COPIED              "copied"
-  IDSC_MERGEADDED          "\nThe following new %s %s merged into this database:"
+  IDSC_MERGEADDED          "\nThe following new %ls %ls merged into this database:"
 END
 
 STRINGTABLE
@@ -396,9 +396,9 @@ BEGIN
   IDSC_PUSEDIGITS          "Use digits"
   IDSC_PUSESYMBOL          "Use symbols"
   IDSC_YESNUMBER           "Yes (at least %d)"
-  IDSC_YESEASYVISON        "Yes - EasyVision Symbols: %s"
-  IDSC_YESPRONOUNCEABLE    "Yes - Pronounceable Symbols: %s"
-  IDSC_YESSYMBOLS          "Yes - At least %d from %s: %s"
+  IDSC_YESEASYVISON        "Yes - EasyVision Symbols: %ls"
+  IDSC_YESPRONOUNCEABLE    "Yes - Pronounceable Symbols: %ls"
+  IDSC_YESSYMBOLS          "Yes - At least %d from %ls: %ls"
   IDSC_PLENGTH             "Password length"
   IDSC_DEFAULTSYMBOLS      "default symbol set"
   IDSC_SPECFICSYMBOLS      "policy specific symbols"

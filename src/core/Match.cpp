@@ -342,16 +342,16 @@ void PWSMatch::GetMatchType(MatchType mtype,
       LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);
       break;
     case MT_INTEGER:
-      Format(cs1, _T("%d"), fnum1);
+      Format(cs1, L"%d", fnum1);
       if (bBetween)
-        Format(cs2, _T("%d"), fnum2);
+        Format(cs2, L"%d", fnum2);
       break;
     case MT_DATE:
     {
       if (fdatetype == 1 /* Relative */) {
-        Format(cs1, _T("%d"), fnum1);
+        Format(cs1, L"%d", fnum1);
         if (bBetween)
-          Format(cs2, _T("%d"), fnum2);
+          Format(cs2, L"%d", fnum2);
       } else {
         struct tm st_s;
         errno_t err;
@@ -424,9 +424,9 @@ void PWSMatch::GetMatchType(MatchType mtype,
       break;
     case MT_ENTRYSIZE:
       {
-        Format(cs1, _T("%d"), fnum1 >> (funit * 10));
+        Format(cs1, L"%d", fnum1 >> (funit * 10));
         if (bBetween)
-          Format(cs2, _T("%d"), fnum2 >> (funit * 10));
+          Format(cs2, L"%d", fnum2 >> (funit * 10));
       }
       break;
     default:

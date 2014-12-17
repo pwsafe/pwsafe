@@ -1218,11 +1218,11 @@ void CItemData::UpdatePasswordHistory()
   // Now create string version!
   StringX new_PWHistory, buffer;
 
-  Format(new_PWHistory, _T("1%02x%02x"), pwh_max, num);
+  Format(new_PWHistory, L"1%02x%02x", pwh_max, num);
 
   PWHistList::iterator iter;
   for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-    Format(buffer, _T("%08x%04x%s"),
+    Format(buffer, L"%08x%04x%ls",
            static_cast<long>(iter->changetttdate), iter->password.length(),
            iter->password.c_str());
     new_PWHistory += buffer;
@@ -1606,7 +1606,7 @@ bool CItemData::ValidatePWHistory()
 
   PWHistList::const_iterator citer;
   for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
-    Format(sxBuffer, _T("%08x%04x%s"),
+    Format(sxBuffer, L"%08x%04x%ls",
              static_cast<long>(citer->changetttdate), citer->password.length(),
              citer->password.c_str());
       sxNewHistory += sxBuffer;
@@ -2033,7 +2033,7 @@ static void push_string(vector<char> &v, char type,
       v.insert(v.end(), reinterpret_cast<const char *>(utf8),
                reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
-      pws_os::Trace(_T("ItemData.cpp: push_string(%s): ToUTF8 failed!\n"), str.c_str());
+      pws_os::Trace(_T("ItemData.cpp: push_string(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
 
