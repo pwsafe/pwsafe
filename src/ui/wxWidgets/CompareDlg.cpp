@@ -416,11 +416,11 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
       wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, wxT("Selection indexes not in expected order"));
-      wxLogDebug(wxT("Removing index %d from selection at index %u\n"), menuContext.selectedItems.Item(idx), idx);
+      wxLogDebug( wxString() << wxT("Removing index ") << menuContext.selectedItems.Item(idx) << wxT(" from selection at index ") << idx << wxT('\n'));
       menuContext.selectedItems.RemoveAt(idx, 1);
     }
     for( size_t idx = 0; idx < selectionCount; ++idx) {
-      wxLogDebug(wxT("Found index %d from selection at %u\n"), menuContext.selectedItems.Item(idx), idx);
+      wxLogDebug(wxString() << wxT("Found index ") << menuContext.selectedItems.Item(idx) << wxT(" from selection at ") << idx << wxT('\n'));
       wxCHECK_RET(menuContext.selectedItems[idx]%2 == 0, wxT("Conflicts grid selection should only have even indexes after normalization"));
       menuContext.selectedItems[idx] /= 2;
     }
