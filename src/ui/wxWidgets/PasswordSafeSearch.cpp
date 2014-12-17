@@ -27,6 +27,7 @@
 #include "./graphics/findtoolbar/new/findcase_i.xpm"
 #include "./graphics/findtoolbar/new/findcase_s.xpm"
 #include "./graphics/findtoolbar/new/findclear.xpm"
+#include "./graphics/findtoolbar/new/findclose.xpm"
 //-- classic bitmaps...
 #include "./graphics/findtoolbar/classic/find.xpm"
 #include "./graphics/findtoolbar/classic/findreport.xpm"
@@ -35,6 +36,7 @@
 #include "./graphics/findtoolbar/classic/findcase_i.xpm"
 #include "./graphics/findtoolbar/classic/findcase_s.xpm"
 #include "./graphics/findtoolbar/classic/findclear.xpm"
+#include "./graphics/findtoolbar/classic/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h>
 #include <wx/valgen.h>
@@ -78,6 +80,14 @@ PasswordSafeSearch::~PasswordSafeSearch(void)
   delete m_criteria;
   m_criteria = 0;
 }
+
+
+void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& evt)
+{
+  wxSearchCtrl *srchCtrl = wxDynamicCast(evt.GetEventObject(), wxSearchCtrl);
+  srchCtrl->SetModified(true);
+}
+
 
 /*!
  * wxEVT_COMMAND_TEXT_ENTER event handler for ID_FIND_EDITBOX
@@ -294,6 +304,7 @@ void PasswordSafeSearch::RefreshButtons(void)
     const char** bitmap_classic;
     const char** bitmap_classic_disabled;
   } SearchBarButtons[] = {
+          { ID_FIND_CLOSE,            findclose_xpm,    NULL,               classic_findclose_xpm,    NULL                      },
           { ID_FIND_NEXT,             find_xpm,         find_disabled_xpm,  classic_find_xpm,         classic_find_disabled_xpm },
           { ID_FIND_IGNORE_CASE,      findcase_i_xpm,   findcase_s_xpm,     classic_findcase_i_xpm,   classic_findcase_s_xpm    },
           { ID_FIND_ADVANCED_OPTIONS, findadvanced_xpm, NULL,               classic_findadvanced_xpm, NULL                      },
@@ -350,8 +361,13 @@ void PasswordSafeSearch::ReCreateSearchBar(void)
 void PasswordSafeSearch::CreateSearchBar()
 {
   wxASSERT(m_toolbar == 0);
-  m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
+  wxPanel *panel = new wxPanel(m_parentFrame, wxID_ANY);
+  wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(panelSizer);
+  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
+  panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());
 
+  m_toolbar->AddTool(ID_FIND_CLOSE, wxT(""), wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
   wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
   wxSearchCtrl* srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, srchCtrlSize, wxTE_PROCESS_ENTER);
   srchCtrl->ShowCancelButton(true);
@@ -363,7 +379,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_CHECK, _("Advanced Find Options"));
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
-  m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
+  m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, srchCtrlSize.Scale(3,1), wxTE_READONLY));
 
   RefreshButtons();
 
@@ -374,7 +390,7 @@ void PasswordSafeSearch::CreateSearchBar()
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
-  origSizer->Add(m_toolbar, 0, wxEXPAND | wxALIGN_CENTER);
+  origSizer->Add(panel, 0, wxEXPAND | wxALIGN_CENTER);
   origSizer->Layout();
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(_("Could not display searchbar"));
@@ -395,6 +411,7 @@ void PasswordSafeSearch::CreateSearchBar()
       }
     }
   }
+  srchCtrl->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(PasswordSafeSearch::OnSearchTextChanged), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
@@ -582,7 +599,8 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
   else {
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
-    m_label.Printf(_("%d/%d matches").c_str(), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    m_label.Clear();
+    m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << wxT(" matches");
     if (prefix)
       m_label = wxString(prefix) + wxT(".  ") + m_label;
   }

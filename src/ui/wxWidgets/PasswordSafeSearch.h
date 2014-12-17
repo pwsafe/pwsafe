@@ -136,6 +136,7 @@ public:
   void FindPrevious(void);
   void UpdateView();
   void OnSearchBarTextChar(wxKeyEvent& evt);
+  void OnSearchTextChanged(wxCommandEvent& evt);
 
   void Activate(void);
   void RefreshButtons(void);
