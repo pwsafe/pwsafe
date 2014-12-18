@@ -7,7 +7,6 @@
 */
 
 #include "../debug.h"
-#include "../fmtspecs_cvt.h"
 #include "../core/Util.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -28,13 +27,12 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 
   int num_required, num_written;
 
-  stringT format = FormatStr(lpszFormat);
-  num_required = GetStringBufSize(format.c_str(), args);
+  num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
 
   wchar_t *wcbuffer = new wchar_t[num_required];
-  num_written = vswprintf(wcbuffer, num_required, format.c_str(), args);
+  num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
   assert(num_required == num_written+1);
   wcbuffer[num_required-1] = L'\0';
 
@@ -42,7 +40,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, wcbuffer, N);
   delete[] wcbuffer;
-  syslog(LOG_DEBUG, "%s", szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer); // NOT %ls!
 
   delete[] szbuffer;
   closelog();
@@ -58,7 +56,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 
-  syslog(LOG_DEBUG, "%s", szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer); // NOT %ls!
 
   delete[] szbuffer;
   closelog();
@@ -105,7 +103,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
     // Show offset for this line.
     cs_charbuff.clear();
     cs_hexbuff.clear();
-    Format(cs_outbuff, _T("%s: %08x *"), cs_prefix.c_str(), pmem);
+    Format(cs_outbuff, _T("%ls: %08x *"), cs_prefix.c_str(), pmem);
 
     // Format hex portion of line and save chars for ascii portion
     if (len > maxnum)
@@ -152,7 +150,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
     len -= maxnum;
 
     _stprintf_s(szBuffer, sizeof(szBuffer) / sizeof(TCHAR),
-                _T("%s\n"), cs_outbuff.c_str());
+                _T("%ls\n"), cs_outbuff.c_str());
     Trace0(szBuffer);
   };
 }
