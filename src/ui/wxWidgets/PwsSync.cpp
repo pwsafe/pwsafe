@@ -589,8 +589,8 @@ void SyncStatusPage::OnSyncStartEvent(wxCommandEvent& evt)
   wxASSERT_MSG(otherCore, wxT("Sync Start Event did not arrive with the other PWScore"));
   Synchronize(m_syncData->core, otherCore);
 
-  SetHeaderText(wxString::Format(_("Your database has been synchronized with \"%s\""), otherCore->GetCurFile().c_str()));
-  SetProgressText(wxString::Format(_("%d %s updated"), m_syncData->numUpdated,
+  SetHeaderText(wxString::Format(_("Your database has been synchronized with \"%ls\""), otherCore->GetCurFile().c_str()));
+  SetProgressText(wxString::Format(_("%d %ls updated"), m_syncData->numUpdated,
                       m_syncData->numUpdated == 1? _("entry"): _("entries")));
   SetSyncSummary(_("Synchronization completed successfully"));
 
@@ -606,9 +606,9 @@ wxString SyncStatusPage::GetReadErrorMessageTemplate(int rc)
 {
   switch (rc) {
     case PWScore::CANT_OPEN_FILE:
-      return _("%s\n\nCould not open file for reading!");
+      return _("%ls\n\nCould not open file for reading!");
     case PWScore::BAD_DIGEST:
-      return _("%s\n\nFile corrupt or truncated!\nData may have been lost or modified.");
+      return _("%ls\n\nFile corrupt or truncated!\nData may have been lost or modified.");
 #ifdef DEMO
     case PWScore::LIMIT_REACHED:
       cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
@@ -617,7 +617,7 @@ wxString SyncStatusPage::GetReadErrorMessageTemplate(int rc)
       break;
 #endif
     default:
-      return _("%s\n\nUnknown error");
+      return _("%ls\n\nUnknown error");
   }
 }
 
@@ -629,7 +629,7 @@ bool SyncStatusPage::DbHasNoDuplicates(PWScore* core)
   if (!core->GetUniqueGTUValidated() && !core->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     SetSyncSummary(_("Synchronization failed"));
-    SetProgressText(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), core->GetCurFile().c_str()));
+    SetProgressText(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), core->GetCurFile().c_str()));
     FindWindow(ID_GAUGE)->Hide();
     return false;
   }
@@ -651,7 +651,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   CReport& rpt = m_syncData->syncReport;
 
   rpt.StartReport(_("Synchronize").c_str(), currentCore->GetCurFile().c_str());
-  wxString line = wxString::Format(_("Synchronizing from database: %s\n").c_str(), otherCore->GetCurFile().c_str());
+  wxString line = wxString::Format(_("Synchronizing from database: %ls\n"), otherCore->GetCurFile().c_str());
   rpt.WriteLine(line.c_str());
 
   ReportAdvancedOptions(&rpt, _("synchronized"));
@@ -710,7 +710,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
       if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
+        pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
       bool bUpdated(false);
@@ -744,11 +744,11 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     const wxString cs_singular_plural_type = (numUpdated == 1 ? _("entry") : _("entries"));
     const wxString cs_singular_plural_verb = (numUpdated == 1 ? _("was") : _("were"));
-    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:").c_str(), cs_singular_plural_type,
+    const wxString resultStr = wxString::Format(_("\nThe following %ls %ls updated:"), cs_singular_plural_type,
                                                 cs_singular_plural_verb);
     rpt.WriteLine(resultStr.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
-      const wxString fieldName = wxString::Format(wxT("\t%s"), vs_updated[i].c_str());
+      const wxString fieldName = wxString::Format(wxT("\t%ls"), vs_updated[i].c_str());
       rpt.WriteLine(fieldName.c_str());
     }
   }
@@ -760,7 +760,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 
   /* tell the user we're done & provide short merge report */
   const wxString cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));
-  wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %s updated").c_str(), numUpdated, cs_entries);
+  wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %ls updated"), numUpdated, cs_entries);
   rpt.WriteLine(resultStr.c_str());
   rpt.EndReport();
 
@@ -777,14 +777,14 @@ void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operati
   wxArrayString fieldsSelected, fieldsNotSelected;
   const bool allSelected = m_syncData->selCriteria.GetFieldSelection(fieldsSelected, fieldsNotSelected);
   if (allSelected) {
-    line.Printf(_("All fields in matching entries were %s").c_str(), operation);
+    line.Printf(_("All fields in matching entries were %ls"), operation);
     rpt->WriteLine(line.c_str());
   }
   else {
-    line.Printf(_("The following fields were %s").c_str(), operation);
+    line.Printf(_("The following fields were %ls"), operation);
     rpt->WriteLine(line.c_str());
     for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
-      line.Printf(wxT("\t* %s"), fieldsSelected[idx]);
+      line.Printf(wxT("\t* %ls"), fieldsSelected[idx]);
       rpt->WriteLine(line.c_str());
     }
   }

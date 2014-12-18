@@ -1122,7 +1122,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       else
         m_PasswordCtrl->SetFocus();
 
-      wxMessageBox(wxString::Format(wxString(_("This entry must have a %s")),
+      wxMessageBox(wxString::Format(wxString(_("This entry must have a %ls")),
                                     (m_title.IsEmpty() ? _("title"): _("password"))),
                    _("Error"), wxOK|wxICON_INFORMATION, this);
       return;
@@ -1185,7 +1185,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       PWHistList::iterator iter;
       for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
         StringX buffer;
-        Format(buffer, _T("%08x%04x%s"),
+        Format(buffer, _T("%08x%04x%ls"),
                static_cast<long>(iter->changetttdate), iter->password.length(),
                iter->password.c_str());
         m_PWHistory += towxstring(buffer);
@@ -1714,7 +1714,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
     policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
     if (!m_core.GetPolicyFromName(tostringx(polName), policy)) {
-      pws_os::Trace(wxT("Couldn't find policy %s\n"), ToStr(polName));
+      pws_os::Trace(wxT("Couldn't find policy %ls\n"), ToStr(polName));
       return;
     }
   }

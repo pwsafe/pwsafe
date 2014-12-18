@@ -219,7 +219,7 @@ bool UniSafeCompareGridTable::IsEmptyCell(int row, int col)
     const CItemData& item = itr->second;
     AvailableFunction available = col == 0? &CItemData::IsGroupSet: m_colFields[col-2].available;
     const bool empty = !(item.*available)();
-//    wxLogDebug(wxT("UniSafeCompareGridTable::IsEmptyCell returning %s for %d, %d"), ToStr(retval), row, col);
+//    wxLogDebug(wxT("UniSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d"), ToStr(retval), row, col);
     return empty;
   }
   return true;
@@ -248,7 +248,7 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
       }
     }
   }
-//  wxLogDebug(wxT("UniSafeCompareGridTable::GetValue returning %s for %d, %d"), ToStr(retval), row, col);
+//  wxLogDebug(wxT("UniSafeCompareGridTable::GetValue returning %ls for %d, %d"), ToStr(retval), row, col);
   return retval;
 }
 
@@ -390,7 +390,7 @@ bool MultiSafeCompareGridTable::IsEmptyCell(int row, int col)
     const CItemData& item = itr->second;
     AvailableFunction available = col == 0? &CItemData::IsGroupSet: m_colFields[col-2].available;
     bool empty = !(item.*available)();
-//    wxLogDebug(wxT("MultiSafeCompareGridTable::IsEmptyCell returning %s for %d, %d"), ToStr(retval), row, col);
+//    wxLogDebug(wxT("MultiSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d"), ToStr(retval), row, col);
     return empty;
   }
 
@@ -426,7 +426,7 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
       }
     }
   }
-//  wxLogDebug(wxT("MultiSafeCompareGridTable::GetValue returning %s for %d, %d"), ToStr(retval), row, col);
+//  wxLogDebug(wxT("MultiSafeCompareGridTable::GetValue returning %ls for %d, %d"), ToStr(retval), row, col);
   return retval;
 }
 

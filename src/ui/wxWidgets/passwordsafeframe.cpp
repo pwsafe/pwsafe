@@ -1024,7 +1024,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
       // file version mis-match
       stringT NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(), DEFAULT_SUFFIX);
 
-      wxString msg( wxString::Format(_("The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."),
+      wxString msg( wxString::Format(_("The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."),
                                      m_core.GetCurFile().c_str(), NewName.c_str()));
       if (wxMessageBox(msg, _("File version warning"), wxOK|wxCANCEL|wxICON_INFORMATION, this) == wxID_CANCEL)
         return PWScore::USER_CANCEL;
@@ -1383,7 +1383,7 @@ int PasswordSafeFrame::SaveAs()
 {
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-    if (wxMessageBox( wxString::Format(_("The original database, '%s', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
+    if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"),
                                         wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxCANCEL) {
       return PWScore::USER_CANCEL;
@@ -1417,7 +1417,7 @@ int PasswordSafeFrame::SaveAs()
   std::wstring locker(L""); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
-    wxMessageBox(wxString::Format(_("%s\n\nFile is currently locked by %s"), newfile.c_str(), locker.c_str()),
+    wxMessageBox(wxString::Format(_("%ls\n\nFile is currently locked by %ls"), newfile.c_str(), locker.c_str()),
                     _("File lock error"), wxOK | wxICON_ERROR, this);
     return PWScore::CANT_OPEN_FILE;
   }
@@ -2120,7 +2120,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(wxT("Couldn't find uuid %s"),
+    pws_os::Trace(wxT("Couldn't find uuid %ls"),
                   StringX(CUUID(entry_uuid)).c_str());
   }
 
@@ -2646,7 +2646,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   CReport rpt;
   rpt.StartReport(_("Import_Text").c_str(), m_core.GetCurFile().c_str());
   wxString header;
-  header.Printf(_("%s file being imported: %s"), _("Text"), TxtFileName.c_str());
+  header.Printf(_("%ls file being imported: %ls"), _("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
   rpt.WriteLine();
 
@@ -2751,7 +2751,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   else
     rpt.StartReport(_("Import_KeePassV1_TXT").c_str(), m_core.GetCurFile().c_str());
 
-  rpt.WriteLine(wxString::Format(_("Text file being imported: %s").c_str(), KPsFileName.c_str()));
+  rpt.WriteLine(wxString::Format(_("Text file being imported: %ls"), KPsFileName.c_str()));
   rpt.WriteLine();
 
   int numImported, numSkipped, numRenamed;
@@ -2768,7 +2768,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   switch (rc) {
     case PWScore::CANT_OPEN_FILE:
     {
-      wxMessageBox( wxString::Format(_("%s\n\nCould not open file for reading!"), KPsFileName.GetData()),
+      wxMessageBox( wxString::Format(_("%ls\n\nCould not open file for reading!"), KPsFileName.GetData()),
                     _("File open error"), wxOK | wxICON_ERROR, this);
       delete [] pcmd;
       break;
@@ -2783,7 +2783,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
         msg = towxstring(s);
       }
       else
-        msg = wxString::Format(_("%s\n\nInvalid format"), KPsFileName.GetData());
+        msg = wxString::Format(_("%ls\n\nInvalid format"), KPsFileName.GetData());
       wxMessageBox(msg, _("Import failed"), wxOK | wxICON_ERROR, this);
       delete [] pcmd;
       break;
@@ -2798,7 +2798,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 #endif
       rpt.WriteLine();
       wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
-      wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
+      wxString cs_msg = wxString::Format(_("Imported %d %ls"), numImported, cs_type.GetData());
       rpt.WriteLine(static_cast<const TCHAR*>(cs_msg.c_str()));
       rpt.EndReport();
       wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
@@ -2820,7 +2820,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   GTUSet setGTU;
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    wxMessageBox(wxString::Format( _("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."),
+    wxMessageBox(wxString::Format( _("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."),
                                     m_core.GetCurFile().c_str()), _("Import XML failed"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -2831,7 +2831,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
-    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()),
+    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()),
                           wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -2854,7 +2854,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   /* Create report as we go */
   CReport rpt;
   rpt.StartReport(_("Import_XML").c_str(), m_core.GetCurFile().c_str());
-  rpt.WriteLine(tostdstring(wxString::Format(_("%s file being imported: %s"), _("XML"), XMLFilename.c_str())));
+  rpt.WriteLine(tostdstring(wxString::Format(_("%ls file being imported: %ls"), _("XML"), XMLFilename.c_str())));
   rpt.WriteLine();
   std::vector<StringX> vgroups;
   Command *pcmd = NULL;
@@ -2874,13 +2874,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
       rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp = wxString::Format(_("File: %s failed validation against XML Schema:\n\n%s"),
+      cs_temp = wxString::Format(_("File: %ls failed validation against XML Schema:\n\n%ls"),
                                         dlg.filepath.c_str(), wxT(""));
       delete pcmd;
       break;
     case PWScore::XML_FAILED_IMPORT:
       rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp = wxString::Format(_("File: %s passed Validation but had the following errors during import:\n\n%s"),
+      cs_temp = wxString::Format(_("File: %ls passed Validation but had the following errors during import:\n\n%ls"),
                               dlg.filepath.c_str(), wxT(""));
       delete pcmd;
       break;
@@ -2922,14 +2922,14 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
           rpt.WriteLine();
         }
 
-        cs_temp.Printf(_("File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."),
+        cs_temp.Printf(_("File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for details."),
                        dlg.filepath.c_str(), numValidated, numImported,
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
 
       } else {
         const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
         const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
-        cs_temp.Printf(_("Validated %d %s\n\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
+        cs_temp.Printf(_("Validated %d %ls\n\nImported %d %ls"), numValidated, cs_validate, numImported, cs_imported);
       }
 
       RefreshViews();

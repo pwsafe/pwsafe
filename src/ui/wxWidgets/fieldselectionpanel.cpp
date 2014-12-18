@@ -115,7 +115,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
   const wxString fieldName(towxstring(CItemData::FieldName(ft)));
 
   if (FindField(ft, selected? m_lbSelected: m_lbAvailable) != wxNOT_FOUND) {
-    wxLogDebug(wxT("%s already in %s list, not adding it again"),
+    wxLogDebug(wxT("%ls already in %ls list, not adding it again"),
                     fieldName,
                     selected? wxT("selected"): wxT("available"));
     return;
@@ -124,7 +124,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
   //if the field is already in another listbox, just move it
   const int index = FindField(ft, selected? m_lbAvailable: m_lbSelected);
   if (index != wxNOT_FOUND) {
-    wxLogDebug(wxT("%s already in %s list, moving it to %s"),
+    wxLogDebug(wxT("%ls already in %ls list, moving it to %ls"),
                     fieldName,
                     selected? wxT("available"): wxT("selected"),
                     selected? wxT("selected"): wxT("available"));

@@ -135,7 +135,7 @@ void CProperties::Init()
       _T("?") : m_core.GetHeader().m_lastsavedby.c_str();
     wxString host = m_core.GetHeader().m_lastsavedon.empty() ?
       _T("?") : m_core.GetHeader().m_lastsavedon.c_str();
-    m_wholastsaved = wxString::Format(_("%s on %s"), user.c_str(), host.c_str());
+    m_wholastsaved = wxString::Format(_("%ls on %ls"), user.c_str(), host.c_str());
   }
 
   wxString wls = m_core.GetHeader().m_whatlastsaved.c_str();
@@ -159,7 +159,7 @@ void CProperties::Init()
   if (num != 0 || m_core.HasHeaderUnknownFields()) {
     const wxString cs_HdrYesNo = m_core.HasHeaderUnknownFields() ? _("Yes") : _("No");
 
-    m_unknownfields = wxString::Format(_("In Headers(%s)/In Entries("),
+    m_unknownfields = wxString::Format(_("In Headers(%ls)/In Entries("),
                                        cs_HdrYesNo.c_str());
     if (num == 0)
       m_unknownfields += _("No)");

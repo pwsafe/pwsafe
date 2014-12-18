@@ -730,7 +730,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
   GTUSet setGTU;
   if (!m_currentCore->GetUniqueGTUValidated() && !m_currentCore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    wxMessageBox(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), m_currentCore->GetCurFile().c_str()),
+    wxMessageBox(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), m_currentCore->GetCurFile().c_str()),
                   _("Synchronization failed"), wxOK|wxICON_EXCLAMATION, this);
     return;
   }
