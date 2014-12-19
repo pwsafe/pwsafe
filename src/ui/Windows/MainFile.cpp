@@ -203,8 +203,8 @@ BOOL DboxMain::OpenOnInit()
 
   bool go_ahead = false;
   /*
-   * If file's corrupted, read error or LIMIT_REACHED (demo),
-   * the we prompt the user, and continue or not per user's input.
+   * If file's corrupted or read error
+   * we prompt the user, and continue or not per user's input.
    * A bit too subtle for switch/case on rc2...
    */
   if (rc2 == PWScore::BAD_DIGEST ||
@@ -219,19 +219,6 @@ BOOL DboxMain::OpenOnInit()
     }
     go_ahead = true;
   } // read error
-#ifdef DEMO
-  if (rc2 == PWScore::LIMIT_REACHED) {
-    CGeneralMsgBox gmb;
-    CString cs_msg;
-    cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
-    CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-    if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING) == IDNO) {
-      CDialog::OnCancel();
-      goto exit;
-    }
-    go_ahead = true;
-  } // LIMIT_REACHED
-#endif /* DEMO */
 
   if (rc2 == PWScore::OK_WITH_VALIDATION_ERRORS) {
     rc2 = PWScore::SUCCESS;
@@ -846,21 +833,6 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
         break;
       } else
         goto exit;
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-    {
-      CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE)), cs_msg;
-      cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
-      const int yn = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING);
-      if (yn == IDNO) {
-        rc = PWScore::USER_CANCEL;
-        goto exit;
-      }
-      rc = PWScore::SUCCESS;
-      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, FALSE);
-      break;
-    }
-#endif
     default:
       cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);

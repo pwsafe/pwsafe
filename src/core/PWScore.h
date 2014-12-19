@@ -136,7 +136,7 @@ public:
     USER_EXIT,                                //  15
     XML_FAILED_VALIDATION,                    //  16
     XML_FAILED_IMPORT,                        //  17
-    LIMIT_REACHED,                            //  18
+    LIMIT_REACHED,                            //  18 - OBSOLETE (for demo)
     UNIMPLEMENTED,                            //  19
     NO_ENTRIES_EXPORTED,                      //  20
     DB_HAS_DUPLICATES,                        //  21

@@ -1297,20 +1297,6 @@ int PasswordSafeFrame::Open(const wxString &fname)
       } else
         return rc;
     }
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-    {
-      CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
-      CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-      const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONWARNING);
-      if (yn == IDNO) {
-        return PWScore::USER_CANCEL;
-      }
-      rc = PWScore::SUCCESS;
-      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, FALSE);
-      break;
-    }
-#endif
     default:
       temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
       MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);

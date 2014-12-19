@@ -440,7 +440,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
   ON_COMMAND(ID_MENUITEM_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
-  ON_COMMAND(ID_MENUITEM_U3SHOP_WEBSITE, OnU3ShopWebsite)
   ON_COMMAND(ID_MENUITEM_HELP, OnHelp)
   ON_COMMAND(ID_HELP, OnHelp)
 
@@ -657,7 +656,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
-  {ID_MENUITEM_U3SHOP_WEBSITE, true, true, true, true},
   {ID_MENUITEM_HELP, true, true, true, true},
   {ID_HELP, true, true, true, true},
   // Column popup menu
@@ -1568,18 +1566,6 @@ void DboxMain::ChangeOkUpdate()
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
       (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) ? TRUE : FALSE);
   }
-#ifdef DEMO
-  int update = OnUpdateMenuToolbar(ID_MENUITEM_ADD);
-  // Cheat, as we know that the logic for ADD applies to others, in DEMO mode
-  // see OnUpdateMenuToolbar
-  if (m_MainToolBar.GetSafeHwnd() != NULL && update != -1) {
-    BOOL state = update ? TRUE : FALSE;
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_PLAINTEXT, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_XML, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MERGE, state);
-  }
-#endif
   UpdateStatusBar();
 }
 
@@ -1599,15 +1585,6 @@ void DboxMain::OnPasswordSafeWebsite()
     gmb.AfxMessageBox(L"oops");
 #endif
   }
-}
-
-void DboxMain::OnU3ShopWebsite()
-{
-#ifdef DEMO
-  ::ShellExecute(NULL, NULL,
-                 L"https://www.plimus.com/jsp/dev_store1.jsp?developerId=320534",
-                 NULL, L".", SW_SHOWNORMAL);
-#endif
 }
 
 int DboxMain::CheckPasskey(const StringX &filename, const StringX &passkey,
@@ -3264,29 +3241,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     default:
       break;
   }
-  // Last but not least, DEMO build support:
-#ifdef DEMO
-  if (!m_core.IsReadOnly()) {
-    bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
-    if (isLimited) {
-      switch (nID) {
-        case ID_MENUITEM_ADD:
-        case ID_MENUITEM_ADDGROUP:
-        case ID_MENUITEM_DUPLICATEGROUP:
-        case ID_MENUITEM_DUPLICATEENTRY:
-        case ID_MENUITEM_IMPORT_KEEPASSV1TXT:
-        case ID_MENUITEM_IMPORT_KEEPASSV1CSV:
-        case ID_MENUITEM_IMPORT_PLAINTEXT:
-        case ID_MENUITEM_IMPORT_XML:
-        case ID_MENUITEM_MERGE:
-          iEnable = FALSE;
-          break;
-        default:
-          break;
-      }
-    }
-  }
-#endif
   return iEnable;
 }
 

@@ -258,13 +258,6 @@ int CWZFinish::ExecuteAction()
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
         break;
-#ifdef DEMO
-      case PWScore::LIMIT_REACHED:
-        cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
-        cs_title.LoadString(IDS_LIMIT_TITLE);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-        break;
-#endif
       default:
         cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
         cs_title.LoadString(IDS_FILEREADERROR);

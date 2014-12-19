@@ -167,10 +167,10 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 		<Affiliates_Osolis_Vendor_ID />
 		<Affiliates_Osolis_Product_ID />
 		<Affiliates_Osolis_Maximum_Commission_Rate />
-		<Affiliates_Plimus_Order_Page>https://www.plimus.com/jsp/buynow.jsp?contractId=2880062</Affiliates_Plimus_Order_Page>
-		<Affiliates_Plimus_Vendor_ID>PasswordSafe</Affiliates_Plimus_Vendor_ID>
-		<Affiliates_Plimus_Product_ID>PasswordSafe2Go</Affiliates_Plimus_Product_ID>
-		<Affiliates_Plimus_Maximum_Commission_Rate>15%</Affiliates_Plimus_Maximum_Commission_Rate>
+		<Affiliates_Plimus_Order_Page />
+		<Affiliates_Plimus_Vendor_ID />
+		<Affiliates_Plimus_Product_ID />
+		<Affiliates_Plimus_Maximum_Commission_Rate />
 		<Affiliates_Regnet_Order_Page />
 		<Affiliates_Regnet_Vendor_ID />
 		<Affiliates_Regnet_Product_ID />

@@ -609,13 +609,6 @@ wxString SyncStatusPage::GetReadErrorMessageTemplate(int rc)
       return _("%ls\n\nCould not open file for reading!");
     case PWScore::BAD_DIGEST:
       return _("%ls\n\nFile corrupt or truncated!\nData may have been lost or modified.");
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-      cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
-      cs_title.LoadString(IDS_LIMIT_TITLE);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      break;
-#endif
     default:
       return _("%ls\n\nUnknown error");
   }

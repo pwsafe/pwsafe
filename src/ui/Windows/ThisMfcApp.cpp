@@ -631,15 +631,6 @@ void ThisMfcApp::SetupMenu()
   pMenu1 = m_pMainMenu->GetSubMenu(pos1);
   minfo.dwMenuData = ID_HELPMENU;
   pMenu1->SetMenuInfo(&minfo);
-
-#ifdef DEMO
-  // add specific menu item for demo version
-  // relies on last pMenu -> Help Menu
-  if (pMenu1 != NULL) {
-    pMenu1->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
-                       CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
-  }
-#endif /* DEMO */
 }
 
 void ThisMfcApp::SetLanguage()

@@ -808,16 +808,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
              }
            }
          }
-
-#ifdef DEMO
-         if (m_pwlist.size() < MAXDEMO) {
-           m_pwlist.insert(std::make_pair(CUUID(uuid), ci_temp));
-         } else {
-           limited = true;
-         }
-#else
          m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
-#endif
 
          time_t tttXTime;
          ci_temp.GetXTime(tttXTime);
@@ -840,10 +831,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
   int closeStatus = in->Close(); // in V3 this checks integrity
-#ifdef DEMO
-  if (closeStatus == PWSfile::SUCCESS && limited)
-    closeStatus = LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
-#endif
   delete in;
 
   // Write out error heading

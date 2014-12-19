@@ -64,14 +64,6 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
       }
       break;
 
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-      if( showMsgbox)
-        wxMessageBox(wxString::Format(_("This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"), MAXDEMO),
-                        _("Trial Version Limitation"), wxOK | wxICON_WARNING, msgboxParent);
-      break;
-#endif
-
     default:
       if (showMsgbox)
         wxMessageBox( wxString(file) << wxT("\n\n") << _("Unknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);

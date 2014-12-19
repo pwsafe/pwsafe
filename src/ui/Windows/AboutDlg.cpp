@@ -85,10 +85,6 @@ BOOL CAboutDlg::OnInitDialog()
   m_appversion += L" [D]";
 #endif
 
-#ifdef DEMO
-  m_appversion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
-#endif
-
   CString builtOnPrefix;
   GetDlgItem(IDC_APPBUILTON)->GetWindowText(builtOnPrefix);
   const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn();
