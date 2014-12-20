@@ -1,5 +1,5 @@
-Password Safe 3.34.2 Release Notes - August 2014
-================================================
+Password Safe 3.34.2 Release Notes - December 2014
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.34.2
 ====================
+[1221] Support newer YubiKeys in all modes.
 [1212] In the Flattened List view, keep the icon column, if present,
 as leftmost, to ensure proper display.
 [1211] The Read-Only checkbox no longer clears itself after returning

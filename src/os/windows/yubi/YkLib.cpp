@@ -257,9 +257,8 @@ unsigned short CYkLib::enumPorts(void)
 				// Get HID attributes
 
 				if (HidD_GetAttributes(m_handle, &devInfo)) {
-					if (devInfo.VendorID == YUBICO_VID && (devInfo.ProductID == YUBIKEY_PID || 
-                        devInfo.ProductID == NEO_OTP_PID || devInfo.ProductID == NEO_OTP_CCID_PID)) {
-
+					if (devInfo.VendorID == YUBICO_VID) {
+            // Assume every Yubico device is good for us...
                         // Keep full path of device found
 
                         tmp = new tagPORT_LIST;
