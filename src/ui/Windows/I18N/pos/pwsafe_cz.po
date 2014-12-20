@@ -76,8 +76,8 @@ msgstr " Chybný separátor polí - je povolena jen prázdná mezera"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr " Chybná hlavička: '%s' (smí být 5 hexadecimalních znaků)."
+msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
@@ -98,8 +98,8 @@ msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr "  Invalid status value: %d (must be either 0 or 1)."
 
 #. Resource IDs: (336)
-msgid " 'Autotype'"
-msgstr " 'Autotype'"
+msgid " 'AutoType'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
@@ -215,8 +215,8 @@ msgstr " Copy # %d"
 
 #. Resource IDs: (251)
 #, c-format
-msgid " Current default (%s)"
-msgstr " Current default (%s)"
+msgid " Current default (%ls)"
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -354,8 +354,53 @@ msgstr "%d z/ze %d odpovídá."
 
 #. Resource IDs: (215)
 #, c-format
-msgid "%s  - Imported %s"
-msgstr "%s  - Imported %s"
+msgid "%ls  - Imported %ls"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%ls - Copied %ls"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "%ls - Merged %ls"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%ls - Sync'd %ls"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls has an empty %ls.\n"
+msgstr ""
+
+#. Resource IDs: (211)
+#, c-format
+msgid "%ls not found. Cannot update entry's password.\n"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls on %ls"
+msgstr ""
+
+#. Resource IDs: (204)
+#, c-format
+msgid "%ls%ls%ls_Report.txt"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import file. Added imported entry with title=\"%ls\".\n"
+msgstr ""
+
+#. Resource IDs: (190)
+#, c-format
+msgid "%ls\n\nThe configuration file will not be used."
+msgstr ""
 
 #. Resource IDs: (371)
 #, c-format
@@ -367,25 +412,10 @@ msgstr ""
 msgid "%s (database-specific)"
 msgstr "%s (database-specific)"
 
-#. Resource IDs: (216)
-#, c-format
-msgid "%s - Copied %s"
-msgstr ""
-
 #. Resource IDs: (370)
 #, c-format
 msgid "%s - Drag & Drop %s"
 msgstr "%s - Drag & Drop %s"
-
-#. Resource IDs: (215)
-#, c-format
-msgid "%s - Merged %s"
-msgstr "%s - Spojeno %s"
-
-#. Resource IDs: (216)
-#, c-format
-msgid "%s - Sync'd %s"
-msgstr ""
 
 #. Resource IDs: (363)
 #, c-format
@@ -417,35 +447,10 @@ msgstr "%s souborů bylo exportováno: %s"
 msgid "%s file being imported: %s"
 msgstr "%s souborů bylo importováno: %s"
 
-#. Resource IDs: (212)
-#, c-format
-msgid "%s has an empty %s.\n"
-msgstr "%s prázdný %s.\n"
-
 #. Resource IDs: (326)
 #, c-format
 msgid "%s is a directory"
 msgstr "%sje adresář"
-
-#. Resource IDs: (211)
-#, c-format
-msgid "%s not found. Cannot update entry's password.\n"
-msgstr "%s nenalezen. Nemohu aktualizovat heslo.\n"
-
-#. Resource IDs: (212)
-#, c-format
-msgid "%s on %s"
-msgstr "%s on %s"
-
-#. Resource IDs: (204)
-#, c-format
-msgid "%s%s%s_Report.txt"
-msgstr "%s%s%s_Report.txt"
-
-#. Resource IDs: (212)
-#, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\n"
-msgstr "%s, Title=\"%s\", User=\"%s\" existuje v databázi nebo importu.Přidej záznam s názvem =\"%s\".\n"
 
 #. Resource IDs: (343)
 #, c-format
@@ -491,11 +496,6 @@ msgstr "%s\n\nSoubor je uzamčen %s"
 #, c-format
 msgid "%s\n\nInvalid format"
 msgstr "%s\n\nVadný formát"
-
-#. Resource IDs: (190)
-#, c-format
-msgid "%s\n\nThe configuration file will not be used."
-msgstr "%s\n\nNastavení nelze použít."
 
 #. Resource IDs: (333)
 #, c-format
@@ -568,10 +568,6 @@ msgstr "&Kopírovat"
 
 #. Resource IDs: (32066)
 msgid "&Copy Password to Clipboard"
-msgstr "&Kopíruj heslo do schránky"
-
-#. Resource IDs: (332)
-msgid "&Copy Password to clipboard"
 msgstr "&Kopíruj heslo do schránky"
 
 #. Resource IDs: (1344, 1405, 2132, 32055)
@@ -958,7 +954,7 @@ msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
-msgid "- Its title has been changed to:'%s'"
+msgid "- Its title has been changed to:'%ls'"
 msgstr ""
 
 #. Resource IDs: (513)
@@ -1244,10 +1240,6 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
-
-#. Resource IDs: (1506)
-msgid "99:99"
-msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1676,8 +1668,12 @@ msgid "Browse to URL"
 msgstr "Jdi na adresu"
 
 #. Resource IDs: (355, 32073)
-msgid "Browse to URL + &Autotype"
-msgstr "Browse to URL + &Autotype"
+msgid "Browse to URL + &AutoType"
+msgstr ""
+
+#. Resource IDs: (32073)
+msgid "Browse to URL + AutoType"
+msgstr ""
 
 #. Resource IDs: (251, 32073)
 msgid "Browse to URL + Autotype"
@@ -1748,9 +1744,9 @@ msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Upozorni na změnu hesla 1 až 30 předem"
 
 #. Resource IDs: (210)
-#, fuzzy, c-format
-msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+#, c-format
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgstr ""
 
 #. Resource IDs: (208)
 #, fuzzy
@@ -1936,14 +1932,6 @@ msgstr "Klinkni pro označení pole"
 msgid "Click to change case."
 msgstr "Klikni pro změnu"
 
-#. Resource IDs: (373)
-msgid "Click to change to database combination entry via Secure Desktop"
-msgstr ""
-
-#. Resource IDs: (373)
-msgid "Click to change to old database combination entry method"
-msgstr ""
-
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
 msgstr "Klikni ke zkopírování vytvořeného hesla do schránky."
@@ -2056,10 +2044,6 @@ msgstr "Column Picker"
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "Hlavička nebyla rozpoznána jako záznam - neimkportuji."
 
-#. Resource IDs: (373, 1505)
-msgid "Combination..."
-msgstr ""
-
 #. Resource IDs: (1080)
 msgid "Comma"
 msgstr "Čárka"
@@ -2136,7 +2120,7 @@ msgstr "Konfigurační informace"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
 msgstr ""
 
 #. Resource IDs: (367)
@@ -2176,7 +2160,7 @@ msgstr "Potvrzení:"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\n  Adding merged entry as «%s» «%s» «%s».\n    Differing field(s): %s"
+msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
 msgstr ""
 
 #. Resource IDs: (1)
@@ -2192,16 +2176,8 @@ msgstr ""
 msgid "Copy &Notes to Clipboard"
 msgstr "Kopíruj poznámku do schránky"
 
-#. Resource IDs: (332)
-msgid "Copy &Notes to clipboard"
-msgstr "Kopíruj &poznámku do schránky"
-
 #. Resource IDs: (32068)
 msgid "Copy &Username to Clipboard"
-msgstr "Kopíruj &jméno do schránky"
-
-#. Resource IDs: (332)
-msgid "Copy &Username to clipboard"
 msgstr "Kopíruj &jméno do schránky"
 
 #. Resource IDs: (1174)
@@ -2224,20 +2200,12 @@ msgstr "Kopíruj "
 msgid "Copy URL to Clipboard"
 msgstr "Kopíruj adresu"
 
-#. Resource IDs: (332)
-msgid "Copy URL to clipboard"
-msgstr "Kopíruj adresu"
-
 #. Resource IDs: (32223)
 msgid "Copy all entries to Original"
 msgstr ""
 
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
-msgstr "Kopíruj email"
-
-#. Resource IDs: (358)
-msgid "Copy email to clipboard"
 msgstr "Kopíruj email"
 
 #. Resource IDs: (251)
@@ -2318,7 +2286,7 @@ msgstr "Vytvoř &odkaz"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgid "Create SchemaCache60 Error 0x%08X during %ls."
 msgstr ""
 
 #. Resource IDs: (117, 32272)
@@ -2882,7 +2850,7 @@ msgstr ""
 
 #. Resource IDs: (211)
 #, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
 msgstr ""
 
 #. Resource IDs: (522)
@@ -2903,12 +2871,12 @@ msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry does not exist."
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry does not exist."
 msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry is already an alias."
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry is already an alias."
 msgstr ""
 
 #. Resource IDs: (205)
@@ -2917,12 +2885,12 @@ msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
 msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
 msgstr ""
 
 #. Resource IDs: (373)
@@ -2936,12 +2904,12 @@ msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
+msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
 msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry on line %d with Group=\"%s\""
+msgid "Entry on line %d with Group=\"%ls\""
 msgstr ""
 
 #. Resource IDs: (205)
@@ -2967,7 +2935,7 @@ msgstr ""
 
 #. Resource IDs: (212)
 #, c-format
-msgid "Entry with Group=\"%s\""
+msgid "Entry with Group=\"%ls\""
 msgstr ""
 
 #. Resource IDs: (212)
@@ -2980,7 +2948,7 @@ msgstr ""
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Error (%08X): line %d character %d %s"
+msgid "Error (%08X): line %d character %d %ls"
 msgstr ""
 
 #. Resource IDs: (190)
@@ -2994,7 +2962,7 @@ msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History %s:"
+msgid "Error in a Password History %ls:"
 msgstr ""
 
 #. Resource IDs: (354)
@@ -3115,7 +3083,7 @@ msgid "Failed to launch help."
 msgstr ""
 
 #. Resource IDs: (354)
-msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
 msgstr ""
 
 #. Resource IDs: (208)
@@ -3254,7 +3222,7 @@ msgstr ""
 
 #. Resource IDs: (209)
 #, c-format
-msgid "Filter %s already exists in the database, do you wish to replace it with this?"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3766,7 +3734,7 @@ msgstr ""
 
 #. Resource IDs: (212)
 #, c-format
-msgid "In Headers(%s)/In Entries("
+msgid "In Headers(%ls)/In Entries("
 msgstr ""
 
 #. Resource IDs: (350)
@@ -4773,16 +4741,8 @@ msgstr ""
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr ""
 
-#. Resource IDs: (32075)
-msgid "Perform Auto &Type"
-msgstr "Vyplň &výchozí text"
-
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
-msgstr "Vyplň &výchozí text"
-
-#. Resource IDs: (32075)
-msgid "Perform Auto&type"
 msgstr "Vyplň &výchozí text"
 
 #. Resource IDs: (515)
@@ -5172,7 +5132,7 @@ msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
-msgid "Report of %s function started at %s"
+msgid "Report of %ls function started at %ls"
 msgstr ""
 
 #. Resource IDs: (366)
@@ -5283,12 +5243,12 @@ msgstr ""
 
 #. Resource IDs: (192)
 #, c-format
-msgid "SAX Parse Error during %s\n%s."
+msgid "SAX Parse Error during %ls\n%ls."
 msgstr ""
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse60 Error 0x%08X during %s."
+msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr ""
 
 #. Resource IDs: (131)
@@ -5875,10 +5835,6 @@ msgstr ""
 msgid "Sz"
 msgstr ""
 
-#. Resource IDs: (338)
-msgid "TRIAL"
-msgstr ""
-
 #. Resource IDs: (1079)
 msgid "Tab"
 msgstr ""
@@ -5949,7 +5905,7 @@ msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base entry. It cannot be imported."
+msgid "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. It cannot be imported."
 msgstr ""
 
 #. Resource IDs: (510)
@@ -6064,12 +6020,12 @@ msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
+msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
 msgstr ""
 
 #. Resource IDs: (215)
@@ -6086,12 +6042,12 @@ msgstr ""
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "The following entries have passwords in the correct form for %s, but the base entry does not exist."
+msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6195,10 +6151,6 @@ msgstr ""
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr ""
 
-#. Resource IDs: (1507)
-msgid "This Window will close automatically in"
-msgstr ""
-
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -6216,19 +6168,19 @@ msgstr ""
 msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr ""
 
+#. Resource IDs: (213)
+#, c-format
+msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+
+#. Resource IDs: (213)
+#, c-format
+msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "This entry has the following %d %s:\n%s"
-msgstr ""
-
-#. Resource IDs: (213)
-#, c-format
-msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-
-#. Resource IDs: (213)
-#, c-format
-msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
 
 #. Resource IDs: (1429)
@@ -6281,16 +6233,6 @@ msgstr ""
 #. Resource IDs: (344)
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr ""
-
-#. Resource IDs: (338)
-#, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nDo you want to open this database anyway?\n(Saving this database will result in the removal of unread entries!)"
-msgstr ""
-
-#. Resource IDs: (338)
-#, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"
 msgstr ""
 
 #. Resource IDs: (320)
@@ -6358,17 +6300,13 @@ msgstr ""
 msgid "Tree1"
 msgstr ""
 
-#. Resource IDs: (338)
-msgid "Trial Version Limitation"
-msgstr ""
-
 #. Resource IDs: (208)
 msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr ""
 
 #. Resource IDs: (203)
 #, c-format
-msgid "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
+msgid "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
 msgstr ""
 
 #. Resource IDs: (343)
@@ -6624,10 +6562,6 @@ msgstr ""
 msgid "Use Named Policy"
 msgstr "Umožni více pravidel "
 
-#. Resource IDs: (1503)
-msgid "Use Secure Desktop for master passphrase"
-msgstr ""
-
 #. Resource IDs: (369)
 #, fuzzy
 msgid "Use count"
@@ -6880,8 +6814,8 @@ msgstr "XML"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "XML %s: line %d character %d: %s"
-msgstr "XML %s: line %d character %d: %s"
+msgid "XML %ls: line %d character %d: %ls"
+msgstr ""
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
@@ -6908,19 +6842,19 @@ msgstr "Ano"
 msgid "Yes (at least %d)"
 msgstr ""
 
-#. Resource IDs: (370)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - At least %d from %s: %s"
+msgid "Yes - At least %d from %ls: %ls"
 msgstr ""
 
-#. Resource IDs: (369)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - EasyVision Symbols: %s"
+msgid "Yes - EasyVision Symbols: %ls"
 msgstr ""
 
-#. Resource IDs: (369)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - Pronounceable Symbols: %s"
+msgid "Yes - Pronounceable Symbols: %ls"
 msgstr ""
 
 #. Resource IDs: (1084)
@@ -7005,7 +6939,7 @@ msgid "\nBrowse to URL"
 msgstr ""
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
+msgid "\nBrowse to URL + AutoType"
 msgstr ""
 
 #. Resource IDs: (2020)
@@ -7098,7 +7032,7 @@ msgstr ""
 
 #. Resource IDs: (191)
 #, c-format
-msgid "\nError in Password History for entry: »%s»%s»%s»: "
+msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
 msgstr ""
 
 #. Resource IDs: (2007)
@@ -7163,7 +7097,7 @@ msgstr ""
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
 msgstr ""
 
 #. Resource IDs: (2002)
@@ -7183,7 +7117,7 @@ msgid "\nPassword Policies"
 msgstr ""
 
 #. Resource IDs: (2005)
-msgid "\nPerform Autotype"
+msgid "\nPerform AutoType"
 msgstr ""
 
 #. Resource IDs: (331)
@@ -7258,17 +7192,17 @@ msgstr ""
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\nSynchronize completed: %d %s updated"
+msgid "\nSynchronize completed: %d %ls updated"
 msgstr ""
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\nThe following %s %s updated:"
+msgid "\nThe following %ls %ls updated:"
 msgstr ""
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\nThe following new %s %s merged into this database:"
+msgid "\nThe following new %ls %ls merged into this database:"
 msgstr ""
 
 #. Resource IDs: (341)
@@ -7349,7 +7283,7 @@ msgstr ""
 
 #. Resource IDs: (212)
 #, c-format
-msgid "\tGroup='%s', Title='%s', User='%s' %s"
+msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr ""
 
 #. Resource IDs: (347)
@@ -7367,12 +7301,12 @@ msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
 msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "\tPassword policy name '%s' is not in the database."
+msgid "\tPassword policy name '%ls' is not in the database."
 msgstr ""
 
 #. Resource IDs: (347)
@@ -7706,8 +7640,8 @@ msgstr "záznam s tímto názvem neexistuje=%s."
 
 #. Resource IDs: (204)
 #, c-format
-msgid "on database %s"
-msgstr "v databázi  %s"
+msgid "on database %ls"
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "on line "
@@ -7728,10 +7662,6 @@ msgstr "předchozí hesla"
 #. Resource IDs: (338)
 msgid "pwsafe"
 msgstr "pwsafe"
-
-#. Resource IDs: (1509)
-msgid "seconds"
-msgstr ""
 
 #. Resource IDs: (205)
 msgid "shortcut"

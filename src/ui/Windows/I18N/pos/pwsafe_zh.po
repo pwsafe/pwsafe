@@ -63,7 +63,7 @@ msgstr "  无效字段分隔符建立 - 在字段之间只允许一个空格！"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
 msgstr ""
 
 #. Resource IDs: (190)
@@ -85,8 +85,8 @@ msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr ""
 
 #. Resource IDs: (336)
-msgid " 'Autotype'"
-msgstr " '自动输入'"
+msgid " 'AutoType'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
@@ -198,8 +198,8 @@ msgstr " 复制 # %d"
 
 #. Resource IDs: (251)
 #, c-format
-msgid " Current default (%s)"
-msgstr " 当前默认 (%s)"
+msgid " Current default (%ls)"
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -337,7 +337,52 @@ msgstr "%d 中 %d 个相匹配！"
 
 #. Resource IDs: (215)
 #, c-format
-msgid "%s  - Imported %s"
+msgid "%ls  - Imported %ls"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%ls - Copied %ls"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "%ls - Merged %ls"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%ls - Sync'd %ls"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls has an empty %ls.\n"
+msgstr ""
+
+#. Resource IDs: (211)
+#, c-format
+msgid "%ls not found. Cannot update entry's password.\n"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls on %ls"
+msgstr ""
+
+#. Resource IDs: (204)
+#, c-format
+msgid "%ls%ls%ls_Report.txt"
+msgstr ""
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import file. Added imported entry with title=\"%ls\".\n"
+msgstr ""
+
+#. Resource IDs: (190)
+#, c-format
+msgid "%ls\n\nThe configuration file will not be used."
 msgstr ""
 
 #. Resource IDs: (371)
@@ -350,24 +395,9 @@ msgstr ""
 msgid "%s (database-specific)"
 msgstr ""
 
-#. Resource IDs: (216)
-#, c-format
-msgid "%s - Copied %s"
-msgstr ""
-
 #. Resource IDs: (370)
 #, c-format
 msgid "%s - Drag & Drop %s"
-msgstr ""
-
-#. Resource IDs: (215)
-#, c-format
-msgid "%s - Merged %s"
-msgstr ""
-
-#. Resource IDs: (216)
-#, c-format
-msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (363)
@@ -400,35 +430,10 @@ msgstr "%s 文件被导出: %s"
 msgid "%s file being imported: %s"
 msgstr "%s 文件被导入: %s"
 
-#. Resource IDs: (212)
-#, c-format
-msgid "%s has an empty %s.\n"
-msgstr "%s 有一个空白 %s。\n"
-
 #. Resource IDs: (326)
 #, c-format
 msgid "%s is a directory"
 msgstr "%s 是一个目录！"
-
-#. Resource IDs: (211)
-#, c-format
-msgid "%s not found. Cannot update entry's password.\n"
-msgstr "%s 未找到，无法更新项目的密码！\n"
-
-#. Resource IDs: (212)
-#, c-format
-msgid "%s on %s"
-msgstr "%s 在 %s 上"
-
-#. Resource IDs: (204)
-#, c-format
-msgid "%s%s%s_Report.txt"
-msgstr "%s%s%s_Report.txt"
-
-#. Resource IDs: (212)
-#, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\n"
-msgstr "%s, 标题=“%s”，用户=“%s”已存在你的数据库或导入文件中。添加导入项目标题=“%s”。\n"
 
 #. Resource IDs: (343)
 #, c-format
@@ -474,11 +479,6 @@ msgstr "%s\n\n文件当前被锁定在 %s！"
 #, c-format
 msgid "%s\n\nInvalid format"
 msgstr "%s\n\n无效格式！"
-
-#. Resource IDs: (190)
-#, c-format
-msgid "%s\n\nThe configuration file will not be used."
-msgstr "%s\n\n配置文件将不能再使用！"
 
 #. Resource IDs: (333)
 #, c-format
@@ -551,10 +551,6 @@ msgstr "复制(&C)"
 
 #. Resource IDs: (32058)
 msgid "&Copy Password to Clipboard"
-msgstr "复制密码到剪贴板(&C)"
-
-#. Resource IDs: (332)
-msgid "&Copy Password to clipboard"
 msgstr "复制密码到剪贴板(&C)"
 
 #. Resource IDs: (1344)
@@ -939,8 +935,8 @@ msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
-msgid "- Its title has been changed to:'%s'"
-msgstr "- 其名称已更改为:“%s”"
+msgid "- Its title has been changed to:'%ls'"
+msgstr ""
 
 #. Resource IDs: (513)
 msgid "- Physical -"
@@ -1225,10 +1221,6 @@ msgstr "8"
 #. Resource IDs: (8029)
 msgid "9"
 msgstr "9"
-
-#. Resource IDs: (1506)
-msgid "99:99"
-msgstr ""
 
 #. Resource IDs: (1156)
 msgid "<"
@@ -1652,9 +1644,13 @@ msgstr "浏览"
 msgid "Browse to URL"
 msgstr "浏览网址"
 
+#. Resource IDs: (355, 32073)
+msgid "Browse to URL + &AutoType"
+msgstr ""
+
 #. Resource IDs: (32073)
-msgid "Browse to URL + &Autotype"
-msgstr "浏览网址+自动输入(&A)"
+msgid "Browse to URL + AutoType"
+msgstr ""
 
 #. Resource IDs: (32073)
 msgid "Browse to URL + Autotype"
@@ -1726,8 +1722,8 @@ msgstr "只能在 1 和 30 天之前提醒密码失效时间！"
 
 #. Resource IDs: (210)
 #, c-format
-msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "未能找到 XML 模式定义文件 (%s) 在你的应用程序目录，\n请从你的安装文件复制它或重新安装本应用程序！"
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgstr ""
 
 #. Resource IDs: (208)
 msgid "Can't obtain the schema version."
@@ -1910,14 +1906,6 @@ msgstr "单击这里选择字段"
 msgid "Click to change case."
 msgstr "单击更改大小写"
 
-#. Resource IDs: (373)
-msgid "Click to change to database combination entry via Secure Desktop"
-msgstr ""
-
-#. Resource IDs: (373)
-msgid "Click to change to old database combination entry method"
-msgstr ""
-
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
 msgstr ""
@@ -2026,10 +2014,6 @@ msgstr "栏目选择器"
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "栏目标题行不认可为首记录，无记录导入！"
 
-#. Resource IDs: (373, 1505)
-msgid "Combination..."
-msgstr ""
-
 #. Resource IDs: (1080)
 msgid "Comma"
 msgstr "逗号"
@@ -2106,7 +2090,7 @@ msgstr "配置信息"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
 msgstr ""
 
 #. Resource IDs: (367)
@@ -2146,7 +2130,7 @@ msgstr "确认:"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\n  Adding merged entry as «%s» «%s» «%s».\n    Differing field(s): %s"
+msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
 msgstr ""
 
 #. Resource IDs: (1, 347)
@@ -2162,16 +2146,8 @@ msgstr ""
 msgid "Copy &Notes to Clipboard"
 msgstr "复制备注到剪贴板(&N)"
 
-#. Resource IDs: (332)
-msgid "Copy &Notes to clipboard"
-msgstr "复制备注到剪贴板(&N)"
-
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
-msgstr "复制用户名到剪贴板(&U)"
-
-#. Resource IDs: (332)
-msgid "Copy &Username to clipboard"
 msgstr "复制用户名到剪贴板(&U)"
 
 #. Resource IDs: (1174)
@@ -2194,20 +2170,12 @@ msgstr "复制网址到剪贴板(&L)"
 msgid "Copy URL to Clipboard"
 msgstr "复制网址到剪贴板"
 
-#. Resource IDs: (332)
-msgid "Copy URL to clipboard"
-msgstr "复制网址到剪贴板"
-
 #. Resource IDs: (32223)
 msgid "Copy all entries to Original"
 msgstr ""
 
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
-msgstr "复制邮箱到剪贴板"
-
-#. Resource IDs: (358)
-msgid "Copy email to clipboard"
 msgstr "复制邮箱到剪贴板"
 
 #. Resource IDs: (325)
@@ -2284,7 +2252,7 @@ msgstr "创建快捷方式(&S)"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgid "Create SchemaCache60 Error 0x%08X during %ls."
 msgstr ""
 
 #. Resource IDs: (117, 32272)
@@ -2842,8 +2810,8 @@ msgstr "项目使用的一个密码到期"
 
 #. Resource IDs: (211)
 #, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-msgstr "项目 %s%d 与组=“%s”，标题=“%s”，用户=“%s”。"
+msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
+msgstr ""
 
 #. Resource IDs: (522)
 msgid "Entry Comparison"
@@ -2863,13 +2831,13 @@ msgstr "项目唯一 ID:"
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry does not exist."
-msgstr "项目“%s、%s、%s”有一个密码在为一个别名做格式校正，但基本项目不存在！"
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry does not exist."
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry is already an alias."
-msgstr "项目“%s、%s、%s”有一个密码在为一个别名做格式校正，但基本项目已有一个别名！"
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry is already an alias."
+msgstr ""
 
 #. Resource IDs: (205)
 msgid "Entry import warnings"
@@ -2877,12 +2845,12 @@ msgstr "项目导入警告"
 
 #. Resource IDs: (216)
 #, c-format
-msgid "Entry keyboard shortcut %s entry %s is already allocated to entry %s. It has been removed from the %s entry."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
 msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
 msgstr ""
 
 #. Resource IDs: (373)
@@ -2896,13 +2864,13 @@ msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-msgstr "项目行 %d 有一个无效“%s”字段，它已经被忽略！"
+msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry on line %d with Group=\"%s\""
-msgstr "项目在行 %d 与组=“%s”。"
+msgid "Entry on line %d with Group=\"%ls\""
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
@@ -2927,8 +2895,8 @@ msgstr "项目类型"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "Entry with Group=\"%s\""
-msgstr "项目与组=“%s”。"
+msgid "Entry with Group=\"%ls\""
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "Entry with no group"
@@ -2940,8 +2908,8 @@ msgstr "错误"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Error (%08X): line %d character %d %s"
-msgstr "错误 (%08X): 行 %d 字符 %d %s"
+msgid "Error (%08X): line %d character %d %ls"
+msgstr ""
 
 #. Resource IDs: (190)
 msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -2954,7 +2922,7 @@ msgstr "错误在栏目%d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History %s:"
+msgid "Error in a Password History %ls:"
 msgstr ""
 
 #. Resource IDs: (354)
@@ -3075,7 +3043,7 @@ msgid "Failed to launch help."
 msgstr "未能运行帮助！"
 
 #. Resource IDs: (354)
-msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
 msgstr ""
 
 #. Resource IDs: (208)
@@ -3214,8 +3182,8 @@ msgstr "文件: %s 被导入 (项目验证 %d / 导入 %d%s%s%s)。请参阅报�
 
 #. Resource IDs: (209)
 #, c-format
-msgid "Filter %s already exists in the database, do you wish to replace it with this?"
-msgstr "筛选 %s 已存在数据库中，你是否需要使用它代替？"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Filter name:"
@@ -3724,10 +3692,10 @@ msgstr "导入"
 msgid "Imported %d %s"
 msgstr "导入 %d %s"
 
-#. Resource IDs: (340)
+#. Resource IDs: (212)
 #, c-format
-msgid "In Headers(%s)/In Entries("
-msgstr "在标题(%s)/在项目("
+msgid "In Headers(%ls)/In Entries("
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Inactive"
@@ -4733,17 +4701,9 @@ msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr ""
 
-#. Resource IDs: (32075)
-msgid "Perform Auto &Type"
-msgstr "执行自动输入(&T)"
-
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
 msgstr "执行自动输入(&T)"
-
-#. Resource IDs: (32075)
-msgid "Perform Auto&type"
-msgstr "执行自动输入(&t)"
 
 #. Resource IDs: (515)
 msgid "Persian"
@@ -5130,8 +5090,8 @@ msgstr "创建报告"
 
 #. Resource IDs: (204)
 #, c-format
-msgid "Report of %s function started at %s"
-msgstr "%s 的报告函数开始于 %s"
+msgid "Report of %ls function started at %ls"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
@@ -5241,12 +5201,12 @@ msgstr "同步(&Y)..."
 
 #. Resource IDs: (192)
 #, c-format
-msgid "SAX Parse Error during %s\n%s."
-msgstr "在 %s 期间 SAX 分析错误\n%s。"
+msgid "SAX Parse Error during %ls\n%ls."
+msgstr ""
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse60 Error 0x%08X during %s."
+msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr ""
 
 #. Resource IDs: (131)
@@ -5833,10 +5793,6 @@ msgstr "系统托盘"
 msgid "Sz"
 msgstr "Sz"
 
-#. Resource IDs: (338)
-msgid "TRIAL"
-msgstr "试用版本"
-
 #. Resource IDs: (1079)
 msgid "Tab"
 msgstr "标记"
@@ -5907,8 +5863,8 @@ msgstr "文件已经打开！"
 
 #. Resource IDs: (205)
 #, c-format
-msgid "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base entry. It cannot be imported."
-msgstr "“%s” 项目 “%s， %s， %s”未表明一个正常或现有的 “%s” 项目位置，所以它不能被导入！"
+msgid "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. It cannot be imported."
+msgstr ""
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
@@ -6022,12 +5978,12 @@ msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
+msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
 msgstr ""
 
 #. Resource IDs: (215)
@@ -6044,12 +6000,12 @@ msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "The following entries have passwords in the correct form for %s, but the base entry does not exist."
+msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6153,10 +6109,6 @@ msgstr "这是最近保存比当前打开还新的包含了应用程序关闭之
 msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
 msgstr ""
 
-#. Resource IDs: (1507)
-msgid "This Window will close automatically in"
-msgstr ""
-
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -6174,20 +6126,20 @@ msgstr "该数据库与当前数据库相同！"
 msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr "该项目已被更改，你是否确认需要取消它？"
 
+#. Resource IDs: (213)
+#, c-format
+msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+
+#. Resource IDs: (213)
+#, c-format
+msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "This entry has the following %d %s:\n%s"
 msgstr "该项目已有下列 %d %s:\n%s"
-
-#. Resource IDs: (213)
-#, c-format
-msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-
-#. Resource IDs: (213)
-#, c-format
-msgid "This entry has the following %d %s:\n%s\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr ""
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -6240,16 +6192,6 @@ msgstr "该程序必需的文件 %s，未被建立在这个系统上！"
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
 msgstr "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
-
-#. Resource IDs: (338)
-#, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nDo you want to open this database anyway?\n(Saving this database will result in the removal of unread entries!)"
-msgstr "该版本的 PasswordSafe 数据库不支持大于 %d 个项目！\n需要获得一个无限制版本运行于 U3 平台请访问 http://software.u3.com\n你是否需要总是打开该数据库？\n(保存该数据库将导致不能读出项目被移除！)"
-
-#. Resource IDs: (338)
-#, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"
-msgstr "该版本的 PasswordSafe 数据库不支持大于 %d 个项目！\n需要获得一个无限制版本运行于 U3 平台请访问 http://software.u3.com\n你是否需要总是打开该数据库？\n注意:保存该数据库将导致不能读出项目被移除！"
 
 #. Resource IDs: (320)
 msgid "This will allow you to migrate your settings from the configuration file in the PasswordSafe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -6316,18 +6258,14 @@ msgstr "视字段只有包含“空白”时为空"
 msgid "Tree1"
 msgstr "Tree1"
 
-#. Resource IDs: (338)
-msgid "Trial Version Limitation"
-msgstr "试用版本受限！"
-
 #. Resource IDs: (208)
 msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr "读取存储筛选困难(版本配合不当？)。筛选将不可用！"
 
 #. Resource IDs: (203)
 #, c-format
-msgid "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“%s”- 请小心校验数据！"
+msgid "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
+msgstr ""
 
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
@@ -6582,10 +6520,6 @@ msgstr ""
 msgid "Use Named Policy"
 msgstr ""
 
-#. Resource IDs: (1503)
-msgid "Use Secure Desktop for master passphrase"
-msgstr ""
-
 #. Resource IDs: (369)
 msgid "Use count"
 msgstr ""
@@ -6837,8 +6771,8 @@ msgstr "XML"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "XML %s: line %d character %d: %s"
-msgstr "XML %s: 行 %d 字符 %d: %s"
+msgid "XML %ls: line %d character %d: %ls"
+msgstr ""
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
@@ -6865,19 +6799,19 @@ msgstr "是"
 msgid "Yes (at least %d)"
 msgstr ""
 
-#. Resource IDs: (370)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - At least %d from %s: %s"
+msgid "Yes - At least %d from %ls: %ls"
 msgstr ""
 
-#. Resource IDs: (369)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - EasyVision Symbols: %s"
+msgid "Yes - EasyVision Symbols: %ls"
 msgstr ""
 
-#. Resource IDs: (369)
+#. Resource IDs: (257)
 #, c-format
-msgid "Yes - Pronounceable Symbols: %s"
+msgid "Yes - Pronounceable Symbols: %ls"
 msgstr ""
 
 #. Resource IDs: (1084)
@@ -6962,8 +6896,8 @@ msgid "\nBrowse to URL"
 msgstr "\n浏览网址"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
-msgstr "\n浏览网址+自动输入"
+msgid "\nBrowse to URL + AutoType"
+msgstr ""
 
 #. Resource IDs: (2020)
 msgid "\nCase insensitive search"
@@ -7055,8 +6989,8 @@ msgstr "\n编辑一个项目"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "\nError in Password History for entry: »%s»%s»%s»: "
-msgstr "\n历史密码错误作为项目: »%s»%s»%s»: "
+msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
+msgstr ""
 
 #. Resource IDs: (2007)
 msgid "\nExpand All"
@@ -7120,8 +7054,8 @@ msgstr "\n管理筛选器"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr "\n合并完成: 已增加 %d 个 %s (%d %s, %d %s, %d %s)"
+msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
+msgstr ""
 
 #. Resource IDs: (2002)
 msgid "\nMerge into Database"
@@ -7139,9 +7073,9 @@ msgstr "\n选项"
 msgid "\nPassword Policies"
 msgstr ""
 
-#. Resource IDs: (2004)
-msgid "\nPerform Autotype"
-msgstr "\n执行自动输入"
+#. Resource IDs: (2005)
+msgid "\nPerform AutoType"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "\nPlease try another"
@@ -7213,20 +7147,20 @@ msgstr "\n跳过 %d %s"
 msgid "\nSynchronize Databases"
 msgstr "\n同步数据库"
 
-#. Resource IDs: (360)
+#. Resource IDs: (214)
 #, c-format
-msgid "\nSynchronize completed: %d %s updated"
-msgstr "\n同步完成: %d %s 被更新！"
+msgid "\nSynchronize completed: %d %ls updated"
+msgstr ""
 
-#. Resource IDs: (360)
+#. Resource IDs: (214)
 #, c-format
-msgid "\nThe following %s %s updated:"
-msgstr "\n下列 %s %s 已更新:"
+msgid "\nThe following %ls %ls updated:"
+msgstr ""
 
-#. Resource IDs: (357)
+#. Resource IDs: (214)
 #, c-format
-msgid "\nThe following new %s %s merged into this database:"
-msgstr "\n新建 %s %s 合并到下面数据库中:"
+msgid "\nThe following new %ls %ls merged into this database:"
+msgstr ""
 
 #. Resource IDs: (341)
 msgid "\nThis field is being edited in your\ndefault text editor."
@@ -7306,8 +7240,8 @@ msgstr "\t组:'%s'; 标题:'%s'; 用户:'%s'"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "\tGroup='%s', Title='%s', User='%s' %s"
-msgstr "\t组='%s', 标题='%s', 用户='%s' %s"
+msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
@@ -7324,12 +7258,12 @@ msgstr ""
 
 #. Resource IDs: (216)
 #, c-format
-msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %s entries."
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
 msgstr ""
 
 #. Resource IDs: (215)
 #, c-format
-msgid "\tPassword policy name '%s' is not in the database."
+msgid "\tPassword policy name '%ls' is not in the database."
 msgstr ""
 
 #. Resource IDs: (347)
@@ -7663,8 +7597,8 @@ msgstr "没有项目存在使用 标题=%s."
 
 #. Resource IDs: (204)
 #, c-format
-msgid "on database %s"
-msgstr "在数据库 %s"
+msgid "on database %ls"
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "on line "
@@ -7685,10 +7619,6 @@ msgstr "个早期每项目密码"
 #. Resource IDs: (338)
 msgid "pwsafe"
 msgstr "pwsafe"
-
-#. Resource IDs: (1509)
-msgid "seconds"
-msgstr ""
 
 #. Resource IDs: (344)
 msgid "shortcut"
