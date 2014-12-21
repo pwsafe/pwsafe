@@ -191,34 +191,35 @@ int CItemData::Write(PWSfile *out) const
     WriteIfSet(TextFields[i], out, true);
 
   int32 i32;
+  
   for (i = 0; TimeFields[i] != END; i++) {
     time_t t = 0;
     GetTime(TimeFields[i], t);
     if (t != 0) {
-      i32 = static_cast<int>(t);
+      i32 = static_cast<int32>(t);
       out->WriteField(static_cast<unsigned char>(TimeFields[i]),
-                      reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+                      reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
     }
   }
 
   GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
-    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(int32));
+    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
 
   GetKBShortcut(i32);
   if (i32 != 0) {
     out->WriteField(KBSHORTCUT, reinterpret_cast<unsigned char *>(&i32),
-                    sizeof(int32));
+                    sizeof(i32));
   }
 
-  short i16;
+  int16 i16;
   GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+    out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
   GetShiftDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+    out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
 
   WriteIfSet(PROTECTED, out, false);
 
@@ -300,7 +301,7 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       return GetATimeL();
     case XTIME:      /* 0a */
       {
-        int xint(0);
+        int32 xint(0);
         str = GetXTimeL();
         GetXTimeInt(xint);
         if (xint != 0)
@@ -391,7 +392,7 @@ void CItemData::GetTime(int whichtime, time_t &t) const
     GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
-      int t32;
+      int32 t32;
       ASSERT(tlen == sizeof(t32));
       memcpy(&t32, in, sizeof(t32));
       t = t32;
@@ -496,7 +497,7 @@ bool CItemData::IsProtected() const
   return ucprotected != 0;
 }
 
-void CItemData::GetDCA(short &iDCA, const bool bShift) const
+void CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
   FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
@@ -505,8 +506,8 @@ void CItemData::GetDCA(short &iDCA, const bool bShift) const
     GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
-      ASSERT(tlen == sizeof(short));
-      memcpy(&iDCA, in, sizeof(short));
+      ASSERT(tlen == sizeof(int16));
+      memcpy(&iDCA, in, sizeof(int16));
     } else {
       iDCA = -1;
     }
@@ -516,7 +517,7 @@ void CItemData::GetDCA(short &iDCA, const bool bShift) const
 
 StringX CItemData::GetDCA(const bool bShift) const
 {
-  short dca;
+  int16 dca;
   GetDCA(dca, bShift);
   oStringXStream os;
   os << dca;
@@ -857,8 +858,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   oss << "\t\t<uuid><![CDATA[" << GetUUID() << "]]></uuid>" << endl;
 
   time_t t;
-  int i32;
-  short i16;
+  int32 i32;
+  int16 i16;
 
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && t)
@@ -1150,7 +1151,7 @@ void CItemData::UpdatePassword(const StringX &password)
   time(&t);
   SetPMTime(t);
 
-  int xint;
+  int32 xint;
   GetXTimeInt(xint);
   if (xint != 0) {
     // convert days to seconds for time_t
@@ -1297,7 +1298,7 @@ void CItemData::SetTime(int whichtime)
 
 void CItemData::SetTime(int whichtime, time_t t)
 {
-  int t32 = static_cast<int>(t);
+  int t32 = static_cast<int32>(t);
   SetField(static_cast<FieldType>(whichtime),
            reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
 }
@@ -1334,7 +1335,7 @@ void CItemData::SetXTimeInt(int32 &xint)
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
 {
-  int xint(0);
+  int32 xint(0);
 
   if (xint_str.empty()) {
     SetXTimeInt(xint);
@@ -1426,15 +1427,15 @@ void CItemData::SetPolicyName(const StringX &sx_PolicyName)
   SetField(POLICYNAME, sx_PolicyName);
 }
 
-void CItemData::SetDCA(const short &iDCA, const bool bShift)
+void CItemData::SetDCA(const int16 &iDCA, const bool bShift)
 {
    SetField(bShift ? SHIFTDCA : DCA,
-            reinterpret_cast<const unsigned char *>(&iDCA), sizeof(short));
+            reinterpret_cast<const unsigned char *>(&iDCA), sizeof(int16));
 }
 
 bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
 {
-  short iDCA(-1);
+  int16 iDCA(-1);
 
   if (cs_DCA.empty()) {
     SetDCA(iDCA, bShift);
@@ -1689,9 +1690,9 @@ bool CItemData::Matches(int num1, int num2, int iObject,
     return PWSMatch::Match(num1, num2, iValue, iFunction);
 }
 
-bool CItemData::Matches(short dca, int iFunction, const bool bShift) const
+bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
 {
-  short iDCA;
+  int16 iDCA;
   GetDCA(iDCA, bShift);
   if (iDCA < 0)
     iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(bShift ?
@@ -1884,10 +1885,10 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_int16(short &i16, const unsigned char *data, size_t len)
+static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
 {
-  if (len == sizeof(short)) {
-    i16 = *reinterpret_cast<const short *>(data);
+  if (len == sizeof(int16)) {
+    i16 = *reinterpret_cast<const int16 *>(data);
   } else {
     ASSERT(0);
     return false;
@@ -1940,8 +1941,8 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
 {
   StringX str;
   time_t t;
-  int i32;
-  short i16;
+  int32 i32;
+  int16 i16;
   unsigned char uc;
 
   FieldType ft = static_cast<FieldType>(type);
@@ -2058,13 +2059,13 @@ static void push_int32(vector<char> &v, char type, int32 i)
   }
 }
 
-static void push_int16(vector<char> &v, char type, short i)
+static void push_int16(vector<char> &v, char type, int16 i)
 {
   if (i != 0) {
     v.push_back(type);
-    push_length(v, sizeof(short));
+    push_length(v, sizeof(int16));
     v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(short));
+      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int16));
   }
 }
 
@@ -2084,7 +2085,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   uuid_array_t uuid_array;
   time_t t = 0;
   int32 i32 = 0;
-  short i16 = 0;
+  int16 i16 = 0;
   unsigned char uc = 0;
 
   v.clear();

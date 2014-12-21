@@ -763,7 +763,7 @@ void XMLFileHandlers::AddXMLEntries()
       ci_temp.SetXTime(cur_entry->xtime.c_str());
 
     if (!cur_entry->xtime_interval.empty()) {
-      int numdays = _ttoi(cur_entry->xtime_interval.c_str());
+      int32 numdays = _ttoi(cur_entry->xtime_interval.c_str());
       if (numdays > 0 && numdays <= 3650)
         ci_temp.SetXTimeInt(numdays);
     }
