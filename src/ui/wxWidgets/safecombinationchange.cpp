@@ -108,7 +108,7 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
   m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
+  m_pollingTimer->Start(500); // check for Yubikey every 500ms (250 is too often when we have 2 yubiMixins)
 #endif
   return true;
 }
@@ -274,7 +274,8 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
-    int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd);
+    const StringX old = m_oldresponse.empty() ? m_oldpasswd : m_oldresponse;
+    int rc = m_core.CheckPasskey(m_core.GetCurFile(), old);
     if (rc == PWScore::WRONG_PASSWORD) {
       wxMessageDialog err(this, _("The old safe combination is not correct"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
@@ -337,7 +338,7 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
-  // Here we just need to get the existing c/r. We verify it as a curtesy to the user,
+  // Here we just need to get the existing c/r. We verify it as a courtesy to the user,
   // that is, to indicate asap that it's incorrect.
   m_oldresponse.clear();
   // Allow blank password when Yubi's used
