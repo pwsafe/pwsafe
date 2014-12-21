@@ -655,20 +655,35 @@ int PWSfileV3::ReadHeader()
       break;
 
     case HDR_LASTUPDATETIME: /* When last saved */
+      m_hdr.m_whenlastsaved = 0;
       if (utf8Len == 8) {
         // Handle pre-3.09 implementations that mistakenly
         // stored this as a hex value
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (!utf8status)
+        if (!utf8status){
           pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) failed\n"));
-        iStringXStream is(text);
-        is >> hex >> m_hdr.m_whenlastsaved;
+        }
+        else{
+          iStringXStream is(text);
+          is >> hex >> m_hdr.m_whenlastsaved;
+          if (is.fail()) {
+            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) invalid hex string\n"));
+            m_hdr.m_whenlastsaved = 0;
+          }
+        }
+        if (m_hdr.m_whenlastsaved == 0) {
+          // can't read time as hex string, maybe it's 64-bit time (saved on 64-bit *nix)
+          // additional casting to prevent warning when sizeof(time_t)==32
+          m_hdr.m_whenlastsaved = static_cast<time_t>(*reinterpret_cast<int64*>(utf8));
+          if (m_hdr.m_whenlastsaved < 0)
+            m_hdr.m_whenlastsaved = 0;
+          else
+            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) time parsed as 64-bit\n"));
+        }
       } else if (utf8Len == 4) {
-        // retrieve time_t
-        m_hdr.m_whenlastsaved = *reinterpret_cast< time_t*>(utf8);
-      } else {
-        m_hdr.m_whenlastsaved = 0;
+        // retrieve time_t (casting to int32 because time_t may be 64-bit)
+        m_hdr.m_whenlastsaved = *reinterpret_cast<int32*>(utf8);
       }
       break;
 

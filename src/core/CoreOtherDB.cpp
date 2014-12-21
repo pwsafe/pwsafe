@@ -196,7 +196,7 @@ void PWScore::Compare(PWScore *pothercore,
         CompareField(CItemData::RMTIME, bsFields, currentItem, compItem, bsConflicts);
 
         if (bsFields.test(CItemData::XTIME_INT)) {
-          int current_xint, comp_xint;
+          int32 current_xint, comp_xint;
           currentItem.GetXTimeInt(current_xint);
           compItem.GetXTimeInt(comp_xint);
           if (current_xint != comp_xint)
@@ -470,7 +470,7 @@ stringT PWScore::Merge(PWScore *pothercore,
 
       stringT str_diffs(_T("")), str_temp;
       int diff_flags = 0;
-      int cxtint, oxtint;
+      int32 cxtint, oxtint;
       time_t cxt, oxt;
       if (otherItem.GetPassword() != curItem.GetPassword()) {
         diff_flags |= MRG_PASSWORD;

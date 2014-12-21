@@ -190,9 +190,9 @@ public:
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const {return GetField(POLICY);}
   StringX GetRunCommand() const {return GetField(RUNCMD);}
-  void GetDCA(short &iDCA, const bool bShift = false) const;
+  void GetDCA(int16 &iDCA, const bool bShift = false) const;
   StringX GetDCA(const bool bShift = false) const;
-  void GetShiftDCA(short &iDCA) const {GetDCA(iDCA, true);}
+  void GetShiftDCA(int16 &iDCA) const { GetDCA(iDCA, true); }
   StringX GetShiftDCA() const {return GetDCA(true);}
   StringX GetEmail() const {return GetField(EMAIL);}
   StringX GetProtected() const;
@@ -246,15 +246,15 @@ public:
   void SetRMTime() {SetTime(RMTIME);}  // V30
   void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
   bool SetRMTime(const stringT &time_str) {return SetTime(RMTIME, time_str);}  // V30
-  void SetXTimeInt(int &xint); // V30
+  void SetXTimeInt(int32 &xint); // V30
   bool SetXTimeInt(const stringT &xint_str); // V30
   void SetPWHistory(const StringX &PWHistory);  // V30
   void SetPWPolicy(const PWPolicy &pwp);
   bool SetPWPolicy(const stringT &cs_pwp);
   void SetRunCommand(const StringX &cs_RunCommand);
-  void SetDCA(const short &iDCA, const bool bShift = false);
+  void SetDCA(const int16 &iDCA, const bool bShift = false);
   bool SetDCA(const stringT &cs_DCA, const bool bShift = false);
-  void SetShiftDCA(const short &iDCA) {SetDCA(iDCA, true);}
+  void SetShiftDCA(const int16 &iDCA) { SetDCA(iDCA, true); }
   bool SetShiftDCA(const stringT &cs_DCA) {return SetDCA(cs_DCA, true);}
   void SetEmail(const StringX &sx_email);
   void SetProtected(bool bOnOff);
@@ -285,7 +285,7 @@ public:
                int iFunction) const;  // integer values
   bool Matches(time_t time1, time_t time2, int iObject,
                int iFunction) const;  // time values
-  bool Matches(short dca, int iFunction, const bool bShift = false) const;  // DCA values
+  bool Matches(int16 dca, int iFunction, const bool bShift = false) const;  // DCA values
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
   bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
