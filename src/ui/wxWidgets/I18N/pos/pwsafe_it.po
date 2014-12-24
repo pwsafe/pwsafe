@@ -1,20 +1,20 @@
 # Italian translation of PasswordSafe
 # This file is distributed under the same license as the PasswordSafe package.
 # Luca Mariot <rymoah@users.sourceforge.net>, 2014.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PasswordSafe ITA v0.94\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-20 16:44+0200\n"
+"POT-Creation-Date: 2014-12-24 10:01+0200\n"
 "PO-Revision-Date: 2014-06-28 14:48+0200\n"
 "Last-Translator: Luca Mariot <rymoah@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 
 #: ../../../ui/wxWidgets/about.cpp:141
 msgid "Password Safe vx.yy (abcd)"
@@ -60,11 +60,14 @@ msgstr "&Chiudi"
 
 #: ../../../ui/wxWidgets/about.cpp:260
 msgid ""
-"For security, the database must be closed before connecting to the Internet.\n"
+"For security, the database must be closed before connecting to the "
+"Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Per sicurezza, il database deve essere chiuso prima di connettersi a Internet.\n"
-"Premere OK per chiudere il database e continuare (i cambiamenti saranno salvati)"
+"Per sicurezza, il database deve essere chiuso prima di connettersi a "
+"Internet.\n"
+"Premere OK per chiudere il database e continuare (i cambiamenti saranno "
+"salvati)"
 
 #: ../../../ui/wxWidgets/about.cpp:261
 msgid "Confirm Close Dialog"
@@ -109,11 +112,13 @@ msgstr "Impossibile leggere i dati di versione dal server."
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:247
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and a\n"
-"password are required. If you have set a default username, it will appear in the\n"
+"password are required. If you have set a default username, it will appear in "
+"the\n"
 "username field."
 msgstr ""
 "Per inserire una nuova voce, riempire i campi sottostanti. Occorre inserire\n"
-" almeno il titolo e la password. Se si è impostato un nome utente predefinito,\n"
+" almeno il titolo e la password. Se si è impostato un nome utente "
+"predefinito,\n"
 "esso apparirà nel campo relativo al nome utente."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:252
@@ -486,11 +491,11 @@ msgstr "Impossibile generare la password - metodo non valido"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:583
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:603
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1782
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:280
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:284
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:288
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:304
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:310
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:281
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:285
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:289
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:305
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:311
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:73
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:343
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:350
@@ -720,13 +725,15 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Please fix by validating database."
+"has duplicate entries with the same group/title/user combination. Please fix "
+"by validating database."
 msgstr ""
 "Il database:\n"
 "\n"
 "%ls\n"
 "\n"
-"ha voci duplicate con la stessa combinazione di gruppo/titolo/nome utente. Correggere validando il database."
+"ha voci duplicate con la stessa combinazione di gruppo/titolo/nome utente. "
+"Correggere validando il database."
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:734
 #: ../../../ui/wxWidgets/PwsSync.cpp:624
@@ -779,12 +786,12 @@ msgstr "A&iuto"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1197
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe "
-"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All"
-" files (*.*; *)|*.*;*"
+"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 msgstr ""
 "Database Password Safe (*.psafe3; *.dat)|*.psafe3;*dat|Backup Password Safe "
-"(*.bak)|*.bak|Backup Intermedi Password Safe (*.ibak)|*.ibak|Tutti i file "
-"(*.*; *)|*.*;*"
+"(*.bak)|*.bak|Backup Intermedi Password Safe (*.ibak)|*.ibak|Tutti i file (*."
+"*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:62
@@ -889,18 +896,23 @@ msgstr "Data ultima modifica destinazione:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:52
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the "
+"passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
-"Attenzione! Questa operazione creerà una copia non protetta di TUTTE le password\n"
-"nel database. La cancellazione di questa copia dopo il suo utilizzo NON è sufficiente."
+"Attenzione! Questa operazione creerà una copia non protetta di TUTTE le "
+"password\n"
+"nel database. La cancellazione di questa copia dopo il suo utilizzo NON è "
+"sufficiente."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:53
 msgid ""
-"Please do not use this option unless you understand and accept the risks. This option\n"
+"Please do not use this option unless you understand and accept the risks. "
+"This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Non usare questa opzione a meno che si siano compresi ed accettati i rischi derivanti dal suo utilizzo.\n"
+"Non usare questa opzione a meno che si siano compresi ed accettati i rischi "
+"derivanti dal suo utilizzo.\n"
 "Questa opzione aggira la sicurezza fornita da questo programma."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
@@ -984,8 +996,8 @@ msgstr "Selezionare un file di testo da importare:"
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
 msgstr ""
-"File di testo (*.txt)|*.txt|File CSV (*.csv)|*.csv|Tutti i file (*.*; "
-"*)|*.*; *"
+"File di testo (*.txt)|*.txt|File CSV (*.csv)|*.csv|Tutti i file (*.*; *)|*."
+"*; *"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:27
 msgid "Import XML Settings"
@@ -1020,8 +1032,8 @@ msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
 msgstr ""
-"Errore durante il passaggio ad un'altra applicazione prima della digitazione"
-" automatica. Cambiare manualmente entro 5 secondi"
+"Errore durante il passaggio ad un'altra applicazione prima della digitazione "
+"automatica. Cambiare manualmente entro 5 secondi"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:708
 msgid "Unable to send email"
@@ -1596,10 +1608,13 @@ msgstr "Usa il metodo alternativo di Digitazione Automatica"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some applications."
+"XSendEvent can handle more control keys, but may be blocked by some "
+"applications."
 msgstr ""
-"Quando impostato, usa XTEST per la Digitazione Automatica invece di XSendEvent.\n"
-"XSendEvent può gestire più tasti di controllo, ma potrebbe essere bloccato da alcune applicazioni."
+"Quando impostato, usa XTEST per la Digitazione Automatica invece di "
+"XSendEvent.\n"
+"XSendEvent può gestire più tasti di controllo, ma potrebbe essere bloccato "
+"da alcune applicazioni."
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:623
 msgid "If AutoType doesn't work, setting this may help."
@@ -1651,8 +1666,7 @@ msgstr "La password deve essere lunga almeno 4 e al massimo 1024 caratteri"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:371
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr ""
-"La lunghezza della password è minore della somma imposta dai vincoli "
-"'almeno'"
+"La lunghezza della password è minore della somma imposta dai vincoli 'almeno'"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
 msgid "Policy name cannot be blank"
@@ -1969,11 +1983,13 @@ msgstr "Imposta carattere password"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1004
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with "
+"another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
-"Impossibile creare il backup intermedio.  Salvare il database da un'altra parte o con un altro nome?\n"
+"Impossibile creare il backup intermedio.  Salvare il database da un'altra "
+"parte o con un altro nome?\n"
 "\n"
 "Cliccare 'No' per uscire senza salvare."
 
@@ -1986,10 +2002,16 @@ msgstr "Impossibile creare il backup intermedio."
 #, fuzzy, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable "
+"by old versions of PasswordSafe. To save your changes in the old format, use "
+"the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Il database originale, \"%ls\", è in un formato precedente alla versione 3.0,\n"
-"e rimarrà inalterato. I cambiamenti verranno scritti come \"%ls\" nel nuovo formato, che è inutilizzabile dalle vecchie versioni di PasswordSafe. Per salvare i cambiamenti nel formato vecchio, utilizzare il comando \"File->Esporta in-> Formato (v1.x oppure v2.x)\"."
+"Il database originale, \"%ls\", è in un formato precedente alla versione "
+"3.0,\n"
+"e rimarrà inalterato. I cambiamenti verranno scritti come \"%ls\" nel nuovo "
+"formato, che è inutilizzabile dalle vecchie versioni di PasswordSafe. Per "
+"salvare i cambiamenti nel formato vecchio, utilizzare il comando \"File-"
+">Esporta in-> Formato (v1.x oppure v2.x)\"."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1029
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1373
@@ -2014,8 +2036,8 @@ msgstr "Apri database"
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
 "written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To->"
-" Old (1.x or 2) format' command."
+"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
+"Old (1.x or 2) format' command."
 msgstr ""
 "Il database originale, '%ls', è in un formato precedente alla versione 3.0. "
 "I dati verranno ora salvati nel nuovo formato, che è inutilizzabile da "
@@ -2033,8 +2055,8 @@ msgstr "Scegliere un nuovo nome per il database corrente:"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1394
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2967
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
-"*)|*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
+"*.*;*"
 msgstr ""
 "Database Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Tutti i file (*.*; "
 "*)|*.*;*"
@@ -2302,8 +2324,8 @@ msgstr "Selezionare un file di testo KeePass da importare"
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
-"File di testo (*.txt)|*.txt|File CSV (*.csv)|*.csv|Tutti i file (*.*; "
-"*)|*.*;*"
+"File di testo (*.txt)|*.txt|File CSV (*.csv)|*.csv|Tutti i file (*.*; *)|*.*;"
+"*"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2736
 msgid "Import_KeePassV1_CSV"
@@ -2379,10 +2401,12 @@ msgstr "Importazione XML fallita"
 #: ../../../core/core_st.cpp:226
 #, fuzzy, c-format
 msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
+"Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Impossibile trovare il file di Definizoine di Schema XML (%ls) nella cartella di PasswordSafe.\n"
+"Impossibile trovare il file di Definizoine di Schema XML (%ls) nella "
+"cartella di PasswordSafe.\n"
 "Copiarlo dal file di installazione, oppure reinstallare PasswordSafe."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2821
@@ -2419,7 +2443,8 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"Il File: %ls ha passato la validazione ma aveva i seguenti errori durante l'importazione:\n"
+"Il File: %ls ha passato la validazione ma aveva i seguenti errori durante "
+"l'importazione:\n"
 "\n"
 "%ls"
 
@@ -2539,8 +2564,7 @@ msgid "Exporting database: "
 msgstr "Esportazione database: "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3173
-msgid ""
-"No entries satisfied your selection criteria and so none were exported!"
+msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 "Nessuna voce soddisfa i criteri di selezione impostati, e quindi nessuna "
 "voce è stata esportata!"
@@ -2738,8 +2762,7 @@ msgstr "Aiuto non definito"
 
 #: ../../../ui/wxWidgets/PWSDragBar.cpp:111
 msgid "Drag this image onto another window to paste the '"
-msgstr ""
-"Trascinare questa immagine in un'altra finestra per copiare il campo '"
+msgstr "Trascinare questa immagine in un'altra finestra per copiare il campo '"
 
 #: ../../../ui/wxWidgets/PWSDragBar.cpp:112
 msgid "' field."
@@ -2810,8 +2833,10 @@ msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
 msgstr ""
-"3. Solo le voci esistenti nel database corrente vengono aggiornate. Nessuna nuova\n"
-"voce viene aggiunta e nessuna voce esistente viene rimossa durante questo processo."
+"3. Solo le voci esistenti nel database corrente vengono aggiornate. Nessuna "
+"nuova\n"
+"voce viene aggiunta e nessuna voce esistente viene rimossa durante questo "
+"processo."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:368
 msgid ""
@@ -3033,47 +3058,45 @@ msgstr "Conferma:"
 msgid "Please insert your YubiKey"
 msgstr "Inserire la YubiKey"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:279
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:280
 msgid "The old safe combination is not correct"
 msgstr "La vecchia combinazione di sicurezza non è corretta"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:283
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:284
 msgid "Cannot verify old safe combination - file gone?"
 msgstr ""
-"Impossibile verificare la vecchia combinazione di sicurezza - file "
-"scomparso?"
+"Impossibile verificare la vecchia combinazione di sicurezza - file scomparso?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:287
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:288
 msgid "New safe combination and confirmation do not match"
-msgstr ""
-"La nuova combinazione di sicurezza e la sua conferma non corrispondono"
+msgstr "La nuova combinazione di sicurezza e la sua conferma non corrispondono"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:297
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:298
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:272
 msgid "Weak passphrase:"
 msgstr "Passphrase debole:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:302
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:303
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:277
 msgid "Use it anyway?"
 msgstr "Utilizzarla comunque?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:356
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:391
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:357
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:392
 msgid "YubiKey safe combination incorrect"
 msgstr "Combinazione di sicurezza della YubiKey errata"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:358
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:359
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 "Inserire la nuova combinazione di sicurezza (se definita) e premere il "
 "pulsante inferiore della YubiKey"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:382
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:383
 msgid "Please confirm existing combination"
 msgstr "Confermare combinazione esistente"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:399
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:400
 msgid "Current safe combination incorrect"
 msgstr "Combinazione di sicurezza corrente errata"
 
@@ -3115,8 +3138,8 @@ msgstr "Tre tentativi errati - bloccato!"
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:416
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:447
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; "
-"*)|*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
+"*.*;*"
 msgstr ""
 "Database Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat| Tutti i file (*.*; "
 "*)|"
@@ -3541,11 +3564,14 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:38
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an "
+"existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry on this computer.\n"
+"All application configuration settings will be saved in your registry entry "
+"on this computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
 msgstr ""
 
 #: ../../../core/core_st.cpp:39
@@ -3554,13 +3580,13 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
 msgstr ""
 
 #: ../../../core/core_st.cpp:40
 msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be "
-"unusable."
+"Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr ""
 
 #: ../../../core/core_st.cpp:41
@@ -3572,9 +3598,11 @@ msgstr "Impossibile inviare l'email"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no "
+"changes will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
 msgstr ""
 
 #: ../../../core/core_st.cpp:43
@@ -3645,7 +3673,7 @@ msgid "copied"
 msgstr ""
 
 #: ../../../core/core_st.cpp:58
-#, fuzzy, c-format
+#, c-format
 msgid "%ls - Copied %ls"
 msgstr ""
 
@@ -3668,7 +3696,8 @@ msgstr ""
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+"Please confirm to continue (alias entry's passwords will be replaced by this "
+"entry's password)?"
 msgstr ""
 
 #: ../../../core/core_st.cpp:74
@@ -3702,8 +3731,8 @@ msgstr "&Duplica Voce"
 #: ../../../core/core_st.cpp:83
 #, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
-" data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
+"data carefully."
 msgstr ""
 
 #: ../../../core/core_st.cpp:84
@@ -3712,15 +3741,16 @@ msgid "End Report"
 msgstr "Report"
 
 #: ../../../core/core_st.cpp:85
-msgid ""
-"--------------------------------------------------------------------------------"
+msgid "--------------------------------------------------------------------------------"
 msgstr ""
 
 #: ../../../core/core_st.cpp:88
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) appended:%ls"
+"The following entries had a policy name that already existed in this "
+"database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) "
+"appended:%ls"
 msgstr ""
 
 #: ../../../core/core_st.cpp:91
@@ -3997,7 +4027,8 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:155
 msgid ""
-"The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n"
+"The TXT or CSV file was not exported as required as entry records span "
+"multiple lines in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
@@ -4087,8 +4118,8 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:172
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be"
-" within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be "
+"within square brackets)."
 msgstr ""
 
 #: ../../../core/core_st.cpp:173
@@ -4126,8 +4157,8 @@ msgstr "%ls - Importato %ls"
 #: ../../../core/core_st.cpp:180
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no"
-" entries have been updated."
+"present: Group/Title, Username and Password.  One or more are missing and no "
+"entries have been updated."
 msgstr ""
 
 #: ../../../core/core_st.cpp:181
@@ -4143,8 +4174,8 @@ msgstr ""
 #: ../../../core/core_st.cpp:183
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
-" the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
+"the base entry is already an alias."
 msgstr ""
 
 #: ../../../core/core_st.cpp:184
@@ -4154,8 +4185,8 @@ msgstr ""
 #: ../../../core/core_st.cpp:185
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
-" the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
+"the base entry does not exist."
 msgstr ""
 
 #: ../../../core/core_st.cpp:186
@@ -4466,7 +4497,7 @@ msgid "Use uppercase characters"
 msgstr "Usa lettere minuscole"
 
 #: ../../../core/core_st.cpp:249
-#, fuzzy, c-format
+#, c-format
 msgid "Error in a Password History %ls:"
 msgstr ""
 
@@ -4524,7 +4555,7 @@ msgid "Fatal Error"
 msgstr "Errore di scrittura"
 
 #: ../../../core/core_st.cpp:262
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Error in Password History for entry: \"%ls\"%ls\"%ls\": "
@@ -4615,8 +4646,7 @@ msgid ""
 msgstr ""
 
 #: ../../../core/core_st.cpp:285
-msgid ""
-"The following entries had an empty Title field, which is not permitted."
+msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 
 #: ../../../core/core_st.cpp:286
@@ -4670,8 +4700,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:297
 msgid ""
-"*** Invalid XML characters found - see exported XML file for more details "
-"***"
+"*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
 
 #: ../../../core/core_st.cpp:298
@@ -4778,13 +4807,18 @@ msgstr ""
 #~ msgstr "\t* %s"
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a "
+#~ "database.\n"
+#~ "To get an unlimited version for the U3 platform, please visit http://"
+#~ "software.u3.com\n"
 #~ "Note: Saving this database will result in the removal of unread entries!"
 #~ msgstr ""
-#~ "Questa versione di PasswordSafe non supporta più di %d voci in un database.\n"
-#~ "Per ottenere una versione completa della piattaforma U3, visitare http://software.u3.com\n"
-#~ "Nota: Il salvataggio di questo database risulterà nella rimozione delle voci non lette!"
+#~ "Questa versione di PasswordSafe non supporta più di %d voci in un "
+#~ "database.\n"
+#~ "Per ottenere una versione completa della piattaforma U3, visitare http://"
+#~ "software.u3.com\n"
+#~ "Nota: Il salvataggio di questo database risulterà nella rimozione delle "
+#~ "voci non lette!"
 
 #~ msgid "Trial Version Limitation"
 #~ msgstr "Limitazione Versione di Prova"
