@@ -92,13 +92,15 @@ void CYubiMixin::UpdateStatus()
     yubiRemoved();
 }
 
-bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
-                                          StringX &response, bool oldYubiChallenge)
+bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
+					  const StringX &challenge,
+					  StringX &response,
+					  bool oldYubiChallenge)
 {
   bool retval = false;
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(m_prompt2);
-  ::wxSafeYield(); // get text to update
+  ::wxSafeYield(win); // get text to update
   BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
   memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
   BYTE chalLength;
@@ -140,7 +142,7 @@ bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
       status = yubi.GetResponse(hmac);
       if (status == PWYubi::PENDING)
         pws_os::sleep_ms(250); // Ugh.
-      ::wxSafeYield(); // so as not to totally freeze the app...
+      ::wxSafeYield(win); // so as not to totally freeze the app...
     } while (status == PWYubi::PENDING);
     if (status == PWYubi::DONE) {
 #if 0

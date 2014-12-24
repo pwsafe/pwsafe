@@ -20,6 +20,7 @@
 
 #include "core/StringX.h"
 class wxTimer;
+class wxWindow;
 
 class CYubiMixin {
  public:
@@ -40,7 +41,8 @@ class CYubiMixin {
   void SetPrompt1(const wxString &prompt) { m_prompt1 = prompt; }
   void SetPrompt2(const wxString &prompt) { m_prompt2 = prompt; }
 
-  bool PerformChallengeResponse(const StringX &challenge, StringX &response,
+  bool PerformChallengeResponse(wxWindow *win,
+				const StringX &challenge, StringX &response,
                                 bool oldYubiChallenge = false);
   StringX Bin2Hex(const unsigned char *buf, int len) const;
 

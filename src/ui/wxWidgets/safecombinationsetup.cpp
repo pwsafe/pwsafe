@@ -330,7 +330,7 @@ void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& /* event */ )
     }
     StringX response;
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(tostringx(m_password), response, oldYubiChallenge)) {
+    if (PerformChallengeResponse(this, tostringx(m_password), response, oldYubiChallenge)) {
       m_password = response.c_str();
       EndModal(wxID_OK);
     }
