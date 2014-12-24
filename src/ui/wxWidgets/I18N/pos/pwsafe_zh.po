@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -12,10 +12,10 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: ../../../ui/wxWidgets/about.cpp:141
 #, fuzzy
@@ -68,8 +68,7 @@ msgstr "关闭(&C)"
 #: ../../../ui/wxWidgets/about.cpp:260
 #, fuzzy
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
 "为了安全起见，数据库必须在连接到因特网之前关闭；\n"
@@ -127,12 +126,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and a\n"
-"password are required. If you have set a default username, it will appear in "
-"the\n"
+"password are required. If you have set a default username, it will appear in the\n"
 "username field."
-msgstr ""
-"对于添加一个新项目，仅需填写下列字段相关内容，至少需要一个标题和密码；如果你"
-"已经设定了一个默认用户名，它将出现在用户名字段中。"
+msgstr "对于添加一个新项目，仅需填写下列字段相关内容，至少需要一个标题和密码；如果你已经设定了一个默认用户名，它将出现在用户名字段中。"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:252
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:153
@@ -558,7 +554,7 @@ msgstr "显示(&S)"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1125
 #, fuzzy, c-format
 msgid "This entry must have a %ls"
-msgstr "该项目必须有一个标题！"
+msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1126
 #, fuzzy
@@ -793,12 +789,11 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Please fix "
-"by validating database."
+"has duplicate entries with the same group/title/user combination. Please fix by validating database."
 msgstr ""
 "数据库:\n"
 "\n"
-"%s\n"
+"%ls\n"
 "\n"
 "有重复项目相同的 组/标题/用户 密码。请调整确认数据库！"
 
@@ -855,11 +850,11 @@ msgstr "帮助(&H)"
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe "
-"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
-"files (*.*; *)|*.*;*"
+"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All"
+" files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe 备份 (*."
-"bak)|*.bak|Password Safe 中间备份 (*.ibak)|*.ibak|所有文件 (*.*)|*.*||"
+"Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe 备份 "
+"(*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*.ibak|所有文件 (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:62
@@ -966,15 +961,13 @@ msgstr "目标最后更改时间:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:52
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:53
 msgid ""
-"Please do not use this option unless you understand and accept the risks. "
-"This option\n"
+"Please do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
 
@@ -1718,8 +1711,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:623
@@ -1761,8 +1753,7 @@ msgstr ""
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
-msgstr ""
-"至少需要输入一个字符(小写字母，大写字母，数字，符号，十六进制)才被许可！"
+msgstr "至少需要输入一个字符(小写字母，大写字母，数字，符号，十六进制)才被许可！"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:363
 #, fuzzy
@@ -2117,8 +2108,7 @@ msgstr "设定密码显示字体"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1004
 #, fuzzy
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr "%s. 选择尝试保存数据库为其它名称或退出不保存！"
@@ -2132,9 +2122,7 @@ msgstr "不能创建中间备份！"
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1029
@@ -2161,8 +2149,8 @@ msgstr "打开数据库"
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
 "written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"PasswordSafe. To save the data in the old format, use the 'File->Export To->"
+" Old (1.x or 2) format' command."
 msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1385
@@ -2177,10 +2165,9 @@ msgstr "请选择作为当前数据库的新名称"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2967
 #, fuzzy
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
-msgstr ""
-"Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
+"*)|*.*;*"
+msgstr "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1406
 #, fuzzy, c-format
@@ -2189,9 +2176,9 @@ msgid ""
 "\n"
 "File is currently locked by %ls"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
-"文件当前被锁定在 %s！"
+"文件当前被锁定在 %ls！"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1407
 msgid "File lock error"
@@ -2401,7 +2388,7 @@ msgstr "Import_Text"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2843
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
-msgstr "%s 文件被导入: %s"
+msgstr "%ls 文件被导入: %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2635
 msgid "Text"
@@ -2500,7 +2487,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2740
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
-msgstr "%s 文件被导入: %s"
+msgstr "Text 文件被导入: %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2757
 #: ../../../ui/wxWidgets/PwsSync.cpp:609
@@ -2510,7 +2497,7 @@ msgid ""
 "\n"
 "Could not open file for reading!"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "不能读取打开的文件！"
 
@@ -2525,7 +2512,7 @@ msgid ""
 "\n"
 "Invalid format"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "无效格式！"
 
@@ -2552,7 +2539,7 @@ msgstr "个项目"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2787
 #, fuzzy, c-format
 msgid "Imported %d %ls"
-msgstr "导入 %d %s"
+msgstr "导入 %d %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2810
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2857
@@ -2563,11 +2550,10 @@ msgstr "导入 XML 失败！"
 #: ../../../core/core_st.cpp:226
 #, fuzzy, c-format
 msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
-"Directory.\n"
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"未能找到 XML 模式定义文件 (%s) 在你的应用程序目录，\n"
+"未能找到 XML 模式定义文件 (%ls) 在你的应用程序目录，\n"
 "请从你的安装文件复制它或重新安装本应用程序！"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2821
@@ -2594,9 +2580,9 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"文件: %s 验证失败，违反 XML 规划:\n"
+"文件: %ls 验证失败，违反 XML 规划:\n"
 "\n"
-"%s！"
+"%ls！"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2869
 #, fuzzy, c-format
@@ -2605,9 +2591,9 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"文件: %s 已通过验证，但在导入数据时存在下列错误:\n"
+"文件: %ls 已通过验证，但在导入数据时存在下列错误:\n"
 "\n"
-"%s！"
+"%ls！"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2890
 msgid "The following records were skipped:"
@@ -2643,7 +2629,7 @@ msgstr " / 重命名 %d"
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
 "report for details."
-msgstr "文件: %s 被导入 (项目验证 %d / 导入 %d%s%s%s)。请参阅报告的细节。"
+msgstr "文件: %ls 被导入 (项目验证 %d / 导入 %d%ls%ls%ls)。请参阅报告的细节。"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2918
 #, fuzzy, c-format
@@ -2652,9 +2638,9 @@ msgid ""
 "\n"
 "Imported %d %ls"
 msgstr ""
-"验证 %d %s\n"
+"验证 %d %ls\n"
 "\n"
-"导入 %d %s"
+"导入 %d %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2924
 msgid "XML import not supported in this release"
@@ -2724,7 +2710,8 @@ msgid "Exporting database: "
 msgstr "合并数据库: %s\n"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3173
-msgid "No entries satisfied your selection criteria and so none were exported!"
+msgid ""
+"No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3186
@@ -2845,7 +2832,7 @@ msgstr "找到 1 个匹配项！"
 #: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:279
 #, fuzzy, c-format
 msgid "%ls on %ls"
-msgstr "%s 在 %s 上"
+msgstr "%ls 在 %ls 上"
 
 #: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:311
 msgid "Yes"
@@ -2858,7 +2845,7 @@ msgstr "否"
 #: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:276
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
-msgstr "在标题(%s)/在项目("
+msgstr "在标题(%ls)/在项目("
 
 #: ../../../ui/wxWidgets/properties.cpp:165
 #, fuzzy
@@ -3103,7 +3090,7 @@ msgid ""
 "File corrupt or truncated!\n"
 "Data may have been lost or modified."
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "文件被破坏或被删节其中部份，数据可能已经丢失或被修改！\n"
 "仍然继续吗？"
@@ -3115,14 +3102,14 @@ msgid ""
 "\n"
 "Unknown error"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "未知错误！"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:647
 #, fuzzy, c-format
 msgid "Synchronizing from database: %ls\n"
-msgstr "同步的数据库源: %s\n"
+msgstr "同步的数据库源: %ls\n"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:650
 msgid "synchronized"
@@ -3143,7 +3130,7 @@ msgid ""
 "The following %ls %ls updated:"
 msgstr ""
 "\n"
-"下列 %s %s 已更新:"
+"下列 %ls %ls 已更新:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:756 ../../../core/core_st.cpp:270
 #, fuzzy, c-format
@@ -3152,7 +3139,7 @@ msgid ""
 "Synchronize completed: %d %ls updated"
 msgstr ""
 "\n"
-"同步完成: %d %s 被更新！"
+"同步完成: %d %ls 被更新！"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:766
 #, fuzzy
@@ -3171,7 +3158,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PwsSync.cpp:777
 #, fuzzy, c-format
 msgid "The following fields were %ls"
-msgstr "下列记录被跳过:"
+msgstr ""
 
 #: ../../../ui/wxWidgets/PWStree.cpp:630
 msgid "New Group"
@@ -3204,9 +3191,7 @@ msgstr ""
 msgid ""
 "Please enter the current combination, followed by a new combination.\n"
 "Type the new combination once again to confirm it."
-msgstr ""
-"首先请输入当前保险箱旧密码，接着输入新密码，再确认输入一遍新密码，最后单击确"
-"定按钮完成更改。"
+msgstr "首先请输入当前保险箱旧密码，接着输入新密码，再确认输入一遍新密码，最后单击确定按钮完成更改。"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:174
 #, fuzzy
@@ -3321,10 +3306,9 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:447
 #, fuzzy
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
-msgstr ""
-"Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; "
+"*)|*.*;*"
+msgstr "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:166
 msgid "Please enter the safe combination for this password database."
@@ -3347,9 +3331,7 @@ msgid ""
 "A new password database will be created.\n"
 "The safe combination will be used to encrypt the password database file.\n"
 "You can use any keyboard character. The combination is case-sensitive."
-msgstr ""
-"即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用"
-"所有键盘上区分大小写的字符。"
+msgstr "即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用所有键盘上区分大小写的字符。"
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:167
 msgid "Verify:"
@@ -3801,19 +3783,15 @@ msgstr "之间"
 
 #: ../../../core/core_st.cpp:38
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
 "未能创建一个新 XML 配置文件或添加你的设置到一个现有 XML 配置文件；\n"
 "所有应用程序配置设定将被保存在你的计算机注册表项目里；\n"
-"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被"
-"存储。"
+"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被存储。"
 
 #: ../../../core/core_st.cpp:39
 msgid ""
@@ -3821,16 +3799,15 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
 "错误 - 不能确定所设配置，应用程序配置将不被保存；\n"
-"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被"
-"存储！"
+"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被存储！"
 
 #: ../../../core/core_st.cpp:40
 msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+"Trouble reading stored filters (version mismatch?). Filters will be "
+"unusable."
 msgstr "读取存储筛选困难(版本配合不当？)。筛选将不可用！"
 
 #: ../../../core/core_st.cpp:41
@@ -3841,16 +3818,12 @@ msgstr "不读取保险箱？"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
-"未能更新你的现有 XML 项目配置文件，所有应用程序配置设置将从该文件加载，未更改"
-"的设置将被保存；\n"
-"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被"
-"存储。"
+"未能更新你的现有 XML 项目配置文件，所有应用程序配置设置将从该文件加载，未更改的设置将被保存；\n"
+"如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被存储。"
 
 #: ../../../core/core_st.cpp:43
 #, fuzzy, c-format
@@ -3859,7 +3832,7 @@ msgid ""
 "\n"
 "The configuration file will not be used."
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "配置文件将不能再使用！"
 
@@ -3921,12 +3894,12 @@ msgstr "复制网址"
 #: ../../../core/core_st.cpp:58
 #, fuzzy, c-format
 msgid "%ls - Copied %ls"
-msgstr "导入 %d %s"
+msgstr "%ls - 复制网址 %ls"
 
 #: ../../../core/core_st.cpp:59
 #, fuzzy, c-format
 msgid " Current default (%ls)"
-msgstr " 当前默认 (%s)"
+msgstr " 当前默认 (%ls)"
 
 #: ../../../core/core_st.cpp:69
 msgid "View/Edit selected entry"
@@ -3942,8 +3915,7 @@ msgstr "默认用户名"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
 
 #: ../../../core/core_st.cpp:74
@@ -3977,25 +3949,25 @@ msgstr " 复制 # %d"
 #: ../../../core/core_st.cpp:83
 #, fuzzy, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
-msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“%s”- 请小心校验数据！"
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
+" data carefully."
+msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“%ls”- 请小心校验数据！"
 
 #: ../../../core/core_st.cpp:84
 msgid "End Report"
 msgstr "结束报告"
 
 #: ../../../core/core_st.cpp:85
-msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
+msgid ""
+"--------------------------------------------------------------------------------"
+msgstr ""
+"--------------------------------------------------------------------------------"
 
 #: ../../../core/core_st.cpp:88
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
 
 #: ../../../core/core_st.cpp:91
@@ -4106,7 +4078,7 @@ msgstr "写入文件时错误，尝试保存在一个不同的位置！"
 msgid ""
 "Filter %ls already exists in the database, do you wish to replace it with "
 "this?"
-msgstr "筛选 %s 已存在数据库中，你是否需要使用它代替？"
+msgstr "筛选 %ls 已存在数据库中，你是否需要使用它代替？"
 
 #: ../../../core/core_st.cpp:117
 msgid "Stored filters will be unusable until the file's restored."
@@ -4252,8 +4224,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:155
 msgid ""
-"The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
@@ -4263,14 +4234,12 @@ msgstr ""
 msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%ls\".\n"
-msgstr ""
-"%s, 标题=“%s”，用户=“%s”已存在你的数据库或导入文件中。添加导入项目标题"
-"=“%s”。\n"
+msgstr "%ls, 标题=“%ls”，用户=“%ls”已存在你的数据库或导入文件中。添加导入项目标题=“%ls”。\n"
 
 #: ../../../core/core_st.cpp:157
 #, fuzzy, c-format
 msgid "Entry on line %d with Group=\"%ls\""
-msgstr "项目在行 %d 与组=“%s”。"
+msgstr "项目在行 %d 与组=“%ls”。"
 
 #: ../../../core/core_st.cpp:158
 #, c-format
@@ -4280,7 +4249,7 @@ msgstr "项目在行 %d 上没有组。"
 #: ../../../core/core_st.cpp:159
 #, fuzzy, c-format
 msgid "Entry with Group=\"%ls\""
-msgstr "项目与组=“%s”。"
+msgstr "项目与组=“%ls”。"
 
 #: ../../../core/core_st.cpp:160
 msgid "Entry with no group"
@@ -4299,7 +4268,7 @@ msgstr "跳过空行 %d"
 #: ../../../core/core_st.cpp:163
 #, fuzzy, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
-msgstr "项目 %s%d 与组=“%s”，标题=“%s”，用户=“%s”。"
+msgstr "项目 %ls%d 与组=“%ls”，标题=“%ls”，用户=“%ls”。"
 
 #: ../../../core/core_st.cpp:164
 msgid "id="
@@ -4317,7 +4286,7 @@ msgstr "找到 %d 已知栏目标题:"
 #: ../../../core/core_st.cpp:167
 #, fuzzy, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
-msgstr "项目行 %d 有一个无效“%s”字段，它已经被忽略！"
+msgstr "项目行 %d 有一个无效“%ls”字段，它已经被忽略！"
 
 #: ../../../core/core_st.cpp:168
 msgid "The following columns will be processed: "
@@ -4344,8 +4313,8 @@ msgstr "组/标题或密码栏目缺少，没有导入记录！"
 
 #: ../../../core/core_st.cpp:172
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be"
+" within square brackets)."
 msgstr ""
 
 #: ../../../core/core_st.cpp:173
@@ -4378,34 +4347,31 @@ msgstr "在线"
 #: ../../../core/core_st.cpp:179
 #, fuzzy, c-format
 msgid "%ls  - Imported %ls"
-msgstr "导入 %d %s"
+msgstr ""
 
 #: ../../../core/core_st.cpp:180
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
-msgstr ""
-"需要替换现有项目密码，所有下列栏目必须存在: 组/标题、用户名和密码。一个或更多"
-"缺少并且没有项目被更新！"
+"present: Group/Title, Username and Password.  One or more are missing and no"
+" entries have been updated."
+msgstr "需要替换现有项目密码，所有下列栏目必须存在: 组/标题、用户名和密码。一个或更多缺少并且没有项目被更新！"
 
 #: ../../../core/core_st.cpp:181
 #, fuzzy, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
-msgstr "%s 未找到，无法更新项目的密码！\n"
+msgstr "%ls 未找到，无法更新项目的密码！\n"
 
 #: ../../../core/core_st.cpp:182
 #, fuzzy, c-format
 msgid "%ls has an empty %ls.\n"
-msgstr "%s 有一个空白 %s。\n"
+msgstr "%ls 有一个空白 %ls。\n"
 
 #: ../../../core/core_st.cpp:183
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
-msgstr ""
-"项目“%s、%s、%s”有一个密码在为一个别名做格式校正，但基本项目已有一个别名！"
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry is already an alias."
+msgstr "项目“%ls、%ls、%ls”有一个密码在为一个别名做格式校正，但基本项目已有一个别名！"
 
 #: ../../../core/core_st.cpp:184
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -4414,9 +4380,9 @@ msgstr "\t该项目已生成关联基本项目的一个别名！"
 #: ../../../core/core_st.cpp:185
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
-msgstr "项目“%s、%s、%s”有一个密码在为一个别名做格式校正，但基本项目不存在！"
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry does not exist."
+msgstr "项目“%ls、%ls、%ls”有一个密码在为一个别名做格式校正，但基本项目不存在！"
 
 #: ../../../core/core_st.cpp:186
 msgid ""
@@ -4428,9 +4394,7 @@ msgstr "\t该项目剩余一个正常条目并且密码未经改变！"
 msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
 "base entry. It cannot be imported."
-msgstr ""
-"“%s” 项目 “%s， %s， %s”未表明一个正常或现有的 “%s” 项目位置，所以它不能被导"
-"入！"
+msgstr "“%ls” 项目 “%ls， %ls， %ls”未表明一个正常或现有的 “%ls” 项目位置，所以它不能被导入！"
 
 #: ../../../core/core_st.cpp:188
 msgid "Entry import warnings"
@@ -4564,7 +4528,7 @@ msgid ""
 "The following new %ls %ls merged into this database:"
 msgstr ""
 "\n"
-"新建 %s %s 合并到下面数据库中:"
+"新建 %ls %ls 合并到下面数据库中:"
 
 #: ../../../core/core_st.cpp:216
 #, fuzzy, c-format
@@ -4573,7 +4537,7 @@ msgid ""
 "Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
 msgstr ""
 "\n"
-"合并完成: 已增加 %d 个 %s (%d %s, %d %s, %d %s)"
+"合并完成: 已增加 %d 个 %ls (%d %ls, %d %ls, %d %ls)"
 
 #: ../../../core/core_st.cpp:217
 #, fuzzy, c-format
@@ -4582,9 +4546,9 @@ msgid ""
 "  Adding merged entry as \"%ls\" \"%ls\" \"%ls\".\n"
 "    Differing field(s): %ls"
 msgstr ""
-"冲突项目为 «%s» «%s» «%s».\n"
-"  增加的合并项目为 «%s» «%s» «%s».\n"
-"    不一致字段: %s"
+"冲突项目为 «%ls» «%ls» «%ls».\n"
+"  增加的合并项目为 «%ls» «%ls» «%ls».\n"
+"    不一致字段: %ls"
 
 #: ../../../core/core_st.cpp:218
 #, fuzzy
@@ -4594,7 +4558,7 @@ msgstr "合并"
 #: ../../../core/core_st.cpp:219
 #, fuzzy, c-format
 msgid "%ls - Merged %ls"
-msgstr "导入 %d %s"
+msgstr "%ls - 合并 %ls"
 
 #: ../../../core/core_st.cpp:220
 msgid "MISSING PASSWORD"
@@ -4627,17 +4591,17 @@ msgstr "缺少筛选 XML 版本！"
 #: ../../../core/core_st.cpp:227
 #, fuzzy, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %ls."
-msgstr "创建计划缓存%2d 发生错误 0x%08X 在 %s 期间！"
+msgstr "创建计划缓存%2d 发生错误 0x%08X 在 %ls 期间！"
 
 #: ../../../core/core_st.cpp:228
 #, fuzzy, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
-msgstr "SAX 分析%2d 错误 0x%08X 在 %s 期间！"
+msgstr "SAX 分析%2d 错误 0x%08X 在 %ls 期间！"
 
 #: ../../../core/core_st.cpp:229
 #, fuzzy, c-format
 msgid "Error (%08X): line %d character %d %ls"
-msgstr "错误 (%08X): 行 %d 字符 %d %s"
+msgstr "错误 (%08X): 行 %d 字符 %d %ls"
 
 #: ../../../core/core_st.cpp:231
 msgid ""
@@ -4658,8 +4622,7 @@ msgstr "内部错误: 文件句柄溢出！"
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
-msgstr ""
-"不能使用一个 MS XML 阅读器在你的系统，MS XML V3, V4 或 V6 好像也都不可用！"
+msgstr "不能使用一个 MS XML 阅读器在你的系统，MS XML V3, V4 或 V6 好像也都不可用！"
 
 #: ../../../core/core_st.cpp:236
 msgid "is not set"
@@ -4746,8 +4709,6 @@ msgstr "最少大写字母字符"
 #, fuzzy, c-format
 msgid "Error in a Password History %ls:"
 msgstr ""
-"\n"
-"历史密码错误作为项目: »%s»%s»%s»: "
 
 #: ../../../core/core_st.cpp:250
 #, c-format
@@ -4778,17 +4739,17 @@ msgstr ""
 #: ../../../core/core_st.cpp:255
 #, fuzzy, c-format
 msgid "%ls%ls%ls_Report.txt"
-msgstr "%s%s%s_Report.txt"
+msgstr "%ls%ls%ls_Report.txt"
 
 #: ../../../core/core_st.cpp:256
 #, fuzzy, c-format
 msgid "Report of %ls function started at %ls"
-msgstr "%s 的报告函数开始于 %s"
+msgstr "%ls 的报告函数开始于 %ls"
 
 #: ../../../core/core_st.cpp:257
 #, fuzzy, c-format
 msgid "on database %ls"
-msgstr "在数据库 %s"
+msgstr "在数据库 %ls"
 
 #: ../../../core/core_st.cpp:258
 msgid "Validate"
@@ -4805,7 +4766,7 @@ msgid ""
 "Error in Password History for entry: \"%ls\"%ls\"%ls\": "
 msgstr ""
 "\n"
-"历史密码错误作为项目: »%s»%s»%s»: "
+"历史密码错误作为项目: »%ls»%ls»%ls»: "
 
 #: ../../../core/core_st.cpp:263
 msgid "See Password History filters"
@@ -4838,7 +4799,7 @@ msgstr "开始报告"
 #: ../../../core/core_st.cpp:272
 #, fuzzy, c-format
 msgid "%ls - Sync'd %ls"
-msgstr "导入 %d %s"
+msgstr ""
 
 #: ../../../core/core_st.cpp:273
 msgid "System error: No more file handles available"
@@ -4866,7 +4827,7 @@ msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
 "base entry does not exist."
-msgstr "项目“%s、%s、%s”有一个密码在为一个别名做格式校正，但基本项目不存在！"
+msgstr ""
 
 #: ../../../core/core_st.cpp:282
 msgid "The following entries were duplicates of an existing entry."
@@ -4883,22 +4844,23 @@ msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
-msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
+msgstr ""
 
 #: ../../../core/core_st.cpp:285
 #, fuzzy
-msgid "The following entries had an empty Title field, which is not permitted."
+msgid ""
+"The following entries had an empty Title field, which is not permitted."
 msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
 #: ../../../core/core_st.cpp:286
 #, fuzzy, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
-msgstr "\t组='%s', 标题='%s', 用户='%s' %s"
+msgstr "\t组='%ls', 标题='%ls', 用户='%ls' %ls"
 
 #: ../../../core/core_st.cpp:287
 #, fuzzy, c-format
 msgid "- Its title has been changed to:'%ls'"
-msgstr "- 其名称已更改为:“%s”"
+msgstr "- 其名称已更改为:“%ls”"
 
 #: ../../../core/core_st.cpp:288
 msgid "The following ERRORS were detected and were FIXED."
@@ -4908,9 +4870,7 @@ msgstr ""
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
-msgstr ""
-"下列项目有一个无效历史密码，该密码已重建于现有数据上，可能存在部分历史密码损"
-"失！"
+msgstr "下列项目有一个无效历史密码，该密码已重建于现有数据上，可能存在部分历史密码损失！"
 
 #: ../../../core/core_st.cpp:290
 #, c-format
@@ -4935,17 +4895,18 @@ msgid ""
 "SAX Parse Error during %ls\n"
 "%ls."
 msgstr ""
-"在 %s 期间 SAX 分析错误\n"
-"%s。"
+"在 %ls 期间 SAX 分析错误\n"
+"%ls。"
 
 #: ../../../core/core_st.cpp:296
 #, fuzzy, c-format
 msgid "XML %ls: line %d character %d: %ls"
-msgstr "XML %s: 行 %d 字符 %d: %s"
+msgstr "XML %ls: 行 %d 字符 %d: %ls"
 
 #: ../../../core/core_st.cpp:297
 msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
+"*** Invalid XML characters found - see exported XML file for more details "
+"***"
 msgstr ""
 
 #: ../../../core/core_st.cpp:298
@@ -4991,8 +4952,8 @@ msgid ""
 "offset approximately at %d"
 msgstr ""
 "配置文件错误:\n"
-"%s\n"
-"%s\n"
+"%ls\n"
+"%ls\n"
 "行 %d 栏目 %d"
 
 #: ../../../core/core_st.cpp:306
@@ -5035,21 +4996,17 @@ msgstr ""
 #: ../../../core/core_st.cpp:315
 #, fuzzy, c-format
 msgid "Yes - At least %d from %ls: %ls"
-msgstr "至少必须 %d！"
+msgstr ""
 
-#, fuzzy
 #~ msgid "Do you want to see a detailed report?"
 #~ msgstr "你是否需要替换它？"
 
-#, fuzzy
 #~ msgid "%d/%d matches"
 #~ msgstr "%d 中 %d 个相匹配！"
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
+#~ "To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
 #~ "Note: Saving this database will result in the removal of unread entries!"
 #~ msgstr ""
 #~ "该版本的 PasswordSafe 数据库不支持大于 %d 个项目！\n"
@@ -5060,34 +5017,28 @@ msgstr "至少必须 %d！"
 #~ msgid "Trial Version Limitation"
 #~ msgstr "试用版本受限！"
 
-#, fuzzy
 #~ msgid "Default set"
 #~ msgstr "默认用户名"
 
-#, fuzzy
 #~ msgid "pwsafe.psafe3"
 #~ msgstr "pwsafe"
 
 #~ msgid "pwsafe"
 #~ msgstr "pwsafe"
 
-#, fuzzy
 #~ msgid "%d)"
 #~ msgstr "%d"
 
-#, fuzzy
 #~ msgid "N"
 #~ msgstr "否"
 
-#, fuzzy
 #~ msgid "U"
 #~ msgstr "美国"
 
 #~ msgid ""
 #~ "At least one type of character (lowercase, uppercase, digits,\n"
 #~ "symbols, hexadecimal) must be permitted."
-#~ msgstr ""
-#~ "至少需要输入一个字符(小写字母，大写字母，数字，符号，十六进制)才被许可！"
+#~ msgstr "至少需要输入一个字符(小写字母，大写字母，数字，符号，十六进制)才被许可！"
 
 #~ msgid "Shortcut Key"
 #~ msgstr "快捷键"
@@ -5095,14 +5046,12 @@ msgstr "至少必须 %d！"
 #~ msgid "Menu Item"
 #~ msgstr "菜单项"
 
-#, fuzzy
 #~ msgid "&Reset All"
 #~ msgstr "全部重置"
 
 #~ msgid "-merged-"
 #~ msgstr "-合并-"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "\n"
@@ -5112,17 +5061,14 @@ msgstr "至少必须 %d！"
 #~ "\n"
 #~ "不能写入打开的文件！"
 
-#, fuzzy
 #~ msgid "View/Edit Entry"
 #~ msgstr "编辑项目"
 
-#, fuzzy
 #~ msgid ""
 #~ "New\n"
 #~ "Database"
 #~ msgstr "新建数据库"
 
-#, fuzzy
 #~ msgid "Minimum password length"
 #~ msgstr "密码长度:"
 
@@ -5132,15 +5078,12 @@ msgstr "至少必须 %d！"
 #~ msgid "Whenever"
 #~ msgstr "Whenever"
 
-#, fuzzy
 #~ msgid "Current Value:"
 #~ msgstr "请求的值:"
 
-#, fuzzy
 #~ msgid "&Clear"
 #~ msgstr "清除查找"
 
-#, fuzzy
 #~ msgid "Reset to Database Defaults"
 #~ msgstr "重置为默认数据库(&T)"
 
@@ -5156,7 +5099,6 @@ msgstr "至少必须 %d！"
 #~ msgid "&Open..."
 #~ msgstr "打开(&O)..."
 
-#, fuzzy
 #~ msgid "&Save..."
 #~ msgstr "保存(&S)"
 
@@ -5172,7 +5114,6 @@ msgstr "至少必须 %d！"
 #~ msgid "Undo"
 #~ msgstr "撤销"
 
-#, fuzzy
 #~ msgid "Get &Help"
 #~ msgstr "获取帮助(&H)\tF1"
 
@@ -5180,8 +5121,7 @@ msgstr "至少必须 %d！"
 #~ msgstr "数据库存在部分大项目！"
 
 #~ msgid ""
-#~ "Warning - %d %s in your database may have one or more fields too large to "
-#~ "display or edit.\n"
+#~ "Warning - %d %s in your database may have one or more fields too large to display or edit.\n"
 #~ "\n"
 #~ "The largest entry size found was ~%d %s.\n"
 #~ "\n"
@@ -5425,30 +5365,21 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "'\n"
 #~ "\n"
-#~ "If you would like to report this error, please reply 'Yes' below and "
-#~ "upload this file to your Bug Report. If you reply 'No', the file will be "
-#~ "deleted.\n"
+#~ "If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
 #~ "\n"
-#~ "The diagnostic information in this file does not include any of your "
-#~ "personal data nor any information from the database open at the time of "
-#~ "the error.\n"
+#~ "The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
 #~ "\n"
-#~ "However, if you prefer (and the problem is repeatable with a test "
-#~ "database), you may send us that minidump file as well as the test "
-#~ "database.\n"
+#~ "However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
 #~ "\n"
 #~ "Thank you for your help to improve PasswordSafe."
 #~ msgstr ""
 #~ "“\n"
 #~ "\n"
-#~ "如果你想报告该错误，请在下面单击“是”并上传该文件报告你的错误；如果单"
-#~ "击“否”该文件将被删除。\n"
+#~ "如果你想报告该错误，请在下面单击“是”并上传该文件报告你的错误；如果单击“否”该文件将被删除。\n"
 #~ "\n"
-#~ "该诊断信息文件中不会包含你的任何个人数据，也不会包含任何在打开错误时的数据"
-#~ "库信息。\n"
+#~ "该诊断信息文件中不会包含你的任何个人数据，也不会包含任何在打开错误时的数据库信息。\n"
 #~ "\n"
-#~ "无论如何，如果只要你愿意（上传的数据库问题可被重复测试），你可以发送很小的"
-#~ "内存映像文件给我们测试数据库。\n"
+#~ "无论如何，如果只要你愿意（上传的数据库问题可被重复测试），你可以发送很小的内存映像文件给我们测试数据库。\n"
 #~ "\n"
 #~ "对你给予帮助改善 PasswordSafe 的功能深表感谢！”"
 
@@ -5780,14 +5711,10 @@ msgstr "至少必须 %d！"
 #~ msgid "An alias cannot refer to itself!"
 #~ msgstr "不能引用别名自身！"
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already "
-#~ "exists."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
 #~ msgstr "项目所用组“%s”，标题“%s”和用户名“%s”已经存在！"
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and empty User Name already "
-#~ "exists."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
 #~ msgstr "项目组 \"%s\", 标题 \"%s\" 和空用户名已存在！"
 
 #~ msgid ""
@@ -5825,12 +5752,10 @@ msgstr "至少必须 %d！"
 #~ msgstr "亚美尼亚(西部)"
 
 #~ msgid ""
-#~ "As the double quotation character is used to delimit the whole notes "
-#~ "field, it cannot be used within it to delimit multiple lines. Please "
-#~ "enter another character."
-#~ msgstr ""
-#~ "双引号字符已用于分界整个备注字段，它不能被超范围用于多行分界。请输入其它字"
-#~ "符！"
+#~ "As the double quotation character is used to delimit the whole notes field, "
+#~ "it cannot be used within it to delimit multiple lines. Please enter another "
+#~ "character."
+#~ msgstr "双引号字符已用于分界整个备注字段，它不能被超范围用于多行分界。请输入其它字符！"
 
 #~ msgid "Attempted an unsupported operation."
 #~ msgstr "尝试一个未被支持的操作！"
@@ -5928,8 +5853,7 @@ msgstr "至少必须 %d！"
 #~ msgid "Cannot be more than %d"
 #~ msgstr "不能大于 %d！"
 
-#~ msgid ""
-#~ "Cannot process as this entry has been deleted from the open database."
+#~ msgid "Cannot process as this entry has been deleted from the open database."
 #~ msgstr "不能从打开的数据库删除该项目！"
 
 #~ msgid "Caps Lock"
@@ -5948,14 +5872,10 @@ msgstr "至少必须 %d！"
 #~ msgstr "更改这些"
 
 #~ msgid ""
-#~ "Change the maximum number of saved passwords for entries currently saving "
-#~ "password history to the new maximum, if currently saving fewer.\n"
+#~ "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n"
 #~ "\n"
-#~ "Entries with more than this new maximum already saved will remain "
-#~ "unchanged."
-#~ msgstr ""
-#~ "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保"
-#~ "存大于该新建值的项目历史密码将保留不被更改！"
+#~ "Entries with more than this new maximum already saved will remain unchanged."
+#~ msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不被更改！"
 
 #~ msgid "Changes to existing entries will be applied on pressing OK"
 #~ msgstr "点击“确定”将更改应用到现有项目！"
@@ -5986,8 +5906,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "单击启用/禁止该行"
 
 #~ msgid ""
-#~ "Click to enter a character code via virtual numeric keypad. The character "
-#~ "is added when this button is clicked again."
+#~ "Click to enter a character code via virtual numeric keypad. The character is"
+#~ " added when this button is clicked again."
 #~ msgstr "单击虚拟数字键盘输入一个字符代码。当再次单击该按钮字符将被添加"
 
 #~ msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
@@ -6083,8 +6003,7 @@ msgstr "至少必须 %d！"
 #~ msgstr "配置信息"
 
 #~ msgid ""
-#~ "Confirm that you wish to copy this entry from the %s database to the %s "
-#~ "database?\n"
+#~ "Confirm that you wish to copy this entry from the %s database to the %s database?\n"
 #~ "\n"
 #~ "If already present in the target database, it will be replaced!"
 #~ msgstr ""
@@ -6172,13 +6091,11 @@ msgstr "至少必须 %d！"
 #~ msgstr "数据库唯一ID"
 
 #~ msgid ""
-#~ "Database is read-only. Sorry, cannot save changed any database "
-#~ "preferences."
+#~ "Database is read-only. Sorry, cannot save changed any database preferences."
 #~ msgstr "抱歉，数据库当前为只读模式，无法保存任何数据库首选项的更改！"
 
 #~ msgid ""
-#~ "Default number of saved password history entries must be between 1 and "
-#~ "255."
+#~ "Default number of saved password history entries must be between 1 and 255."
 #~ msgstr "默认保存项目历史密码数量必须在 1 和 255 之间！"
 
 #~ msgid "Delete a filter"
@@ -6279,8 +6196,7 @@ msgstr "至少必须 %d！"
 #~ msgstr "双击项目查看/编辑"
 
 #~ msgid ""
-#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
-#~ "alias.\n"
+#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
 #~ "\n"
 #~ "The dropped entry now references that entry's base entry."
 #~ msgstr ""
@@ -6301,13 +6217,11 @@ msgstr "至少必须 %d！"
 #~ msgstr "编辑项目:   «%s» «%s» «%s»"
 
 #~ msgid ""
-#~ "Either unable to load the necessary DLL, or it is the incorrect version, "
-#~ "to support Autotype during Launch of a Browser or Run a command.\n"
+#~ "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n"
 #~ "\n"
 #~ "Autotype for these functions is disabled."
 #~ msgstr ""
-#~ "支持自动输入时运行的浏览器或运行命令必需的 DLL 无法加载，也许这是一个不正"
-#~ "确的版本！\n"
+#~ "支持自动输入时运行的浏览器或运行命令必需的 DLL 无法加载，也许这是一个不正确的版本！\n"
 #~ "\n"
 #~ "自动输入功能被禁用！"
 
@@ -6375,8 +6289,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "输入一个不大于 %1 字符"
 
 #~ msgid ""
-#~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons:"
+#~ "Enter positions of password characters separated by spaces, commas or semi-"
+#~ "colons:"
 #~ msgstr "密码字符输入位置以空格、逗号或分号隔开:"
 
 #~ msgid "Enter your Sample Text below"
@@ -6721,16 +6635,14 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "If enabled, a 'snapshot' will be taken before every save, and named "
 #~ "according to the options listed below."
-#~ msgstr ""
-#~ "如果启用该选项，在每次保存之前和根据下面指定的列表选项，一个数据库快照将被"
-#~ "记录。"
+#~ msgstr "如果启用该选项，在每次保存之前和根据下面指定的列表选项，一个数据库快照将被记录。"
 
 #~ msgid "If requested, then a delimiter character must be entered!"
 #~ msgstr "如被请求，则必须输入一个定界符！"
 
 #~ msgid ""
-#~ "If the passphrase is the same as the currently opened database, "
-#~ "properties of this backup are shown."
+#~ "If the passphrase is the same as the currently opened database, properties "
+#~ "of this backup are shown."
 #~ msgstr "如果密码是与当前打开的数据库一样，则本备份属性显示"
 
 #~ msgid ""
@@ -6738,12 +6650,11 @@ msgstr "至少必须 %d！"
 #~ "PasswordSafe will exit.  If not, the new open will be cancelled and the "
 #~ "existing opened database, if any, will remain open."
 #~ msgstr ""
-#~ "如果这是 PasswordSafe 启动时被打开的第一个数据库，PasswordSafe将退出；如果"
-#~ "不是，新打开的数据库将被取消并打开现有数据库。如果有的话，将保持开启。"
+#~ "如果这是 PasswordSafe "
+#~ "启动时被打开的第一个数据库，PasswordSafe将退出；如果不是，新打开的数据库将被取消并打开现有数据库。如果有的话，将保持开启。"
 
 #~ msgid ""
-#~ "If this keyboard supports characters via the %s, then this key will be "
-#~ "enabled and can be used to select them.\n"
+#~ "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
 #~ "\n"
 #~ "You may need to also select the Shift key to see them."
 #~ msgstr ""
@@ -6837,8 +6748,7 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "Left click here to change. Right click here to reset or remove it. After "
 #~ "selecting the shortcut key combination, press Enter to set it."
-#~ msgstr ""
-#~ "在这里单击左键更改，右击则重置或删除。选择组合快捷键后，按回车设定。"
+#~ msgstr "在这里单击左键更改，右击则重置或删除。选择组合快捷键后，按回车设定。"
 
 #~ msgid ""
 #~ "Length of passwords generated in hexadecimal format must be even\n"
@@ -6910,10 +6820,9 @@ msgstr "至少必须 %d！"
 #~ msgstr "移动这里"
 
 #~ msgid ""
-#~ "NOTE: Changing this entry's own password will make this a normal entry "
-#~ "and break the link with its base?"
-#~ msgstr ""
-#~ "注意: 改变此项目的密码将生成另一个常规项目并中断与它的基本项目的链接？"
+#~ "NOTE: Changing this entry's own password will make this a normal entry and "
+#~ "break the link with its base?"
+#~ msgstr "注意: 改变此项目的密码将生成另一个常规项目并中断与它的基本项目的链接？"
 
 #~ msgid "Name"
 #~ msgstr "名称"
@@ -6992,11 +6901,9 @@ msgstr "至少必须 %d！"
 
 #~ msgid ""
 #~ "Note that if you choose to recover the auto-saved documents, you must "
-#~ "explicitly save them to overwrite the original documents.  If you choose "
-#~ "to not recover the auto-saved versions, they will be deleted."
-#~ msgstr ""
-#~ "请注意，如果你选择恢复自动保存的文档，必须明确保存它们覆盖原始文档；如果选"
-#~ "择不恢复自动保存的版本，它们将被删除！"
+#~ "explicitly save them to overwrite the original documents.  If you choose to "
+#~ "not recover the auto-saved versions, they will be deleted."
+#~ msgstr "请注意，如果你选择恢复自动保存的文档，必须明确保存它们覆盖原始文档；如果选择不恢复自动保存的版本，它们将被删除！"
 
 #~ msgid "Notes copied "
 #~ msgstr "复制备注"
@@ -7024,8 +6931,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "该项目数量设置已经更改为不保存历史密码:%d"
 
 #~ msgid ""
-#~ "Number of entries that had their settings changed to save password "
-#~ "history was: %d"
+#~ "Number of entries that had their settings changed to save password history "
+#~ "was: %d"
 #~ msgstr "该项目数量设置已经更改为保存历史密码:%d"
 
 #~ msgid "Number of unknown fields:"
@@ -7041,19 +6948,16 @@ msgstr "至少必须 %d！"
 #~ msgstr "关"
 
 #~ msgid ""
-#~ "One of more preferences have been changed. Are you sure you wish to "
-#~ "cancel?"
+#~ "One of more preferences have been changed. Are you sure you wish to cancel?"
 #~ msgstr "多个首选项中的一个已被更改，你是否确认想要取消？"
 
 #~ msgid "One or more auto-saved documents were found."
 #~ msgstr "找到一个或多个自动保存的文档！"
 
 #~ msgid ""
-#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both "
-#~ "(differences): %d; In both (identical): %d"
-#~ msgstr ""
-#~ "仅在原始数据库: %d; 仅在比较数据库: %d; 在两者 (差异): %d; 在两者 (相同): "
-#~ "%d"
+#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): "
+#~ "%d; In both (identical): %d"
+#~ msgstr "仅在原始数据库: %d; 仅在比较数据库: %d; 在两者 (差异): %d; 在两者 (相同): %d"
 
 #~ msgid "Open"
 #~ msgstr "打开"
@@ -7104,15 +7008,13 @@ msgstr "至少必须 %d！"
 #~ msgstr "忽略密码策略"
 
 #~ msgid ""
-#~ "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-#~ "ibak)|*.ibak||"
-#~ msgstr ""
-#~ "Password Safe 备份 (*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*.ibak||"
+#~ "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
+#~ "(*.ibak)|*.ibak||"
+#~ msgstr "Password Safe 备份 (*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*.ibak||"
 
 #~ msgid ""
 #~ "Password Safe has been compiled as %s but CPU is really %s.\n"
-#~ "You may not be able to open files or saved files may be incompatible with "
-#~ "other platforms."
+#~ "You may not be able to open files or saved files may be incompatible with other platforms."
 #~ msgstr ""
 #~ "Password Safe 已被编译为 %s 但 CPU 实际上 %s！\n"
 #~ "你也许不能打开文件或保存文件可能不兼容其它平台！"
@@ -7156,8 +7058,7 @@ msgstr "至少必须 %d！"
 #~ msgid "Please specify the sub-directory to contain all backups."
 #~ msgstr "请指定包含所有备份文件的子目录！"
 
-#~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr "请访问 <a href=\"http://pwsafe.org/\">PasswordSafe 站点</a>"
 
 #~ msgid "Polish (Programmers)"
@@ -7173,13 +7074,11 @@ msgstr "至少必须 %d！"
 #~ msgstr "单击删除所有已添加的字符"
 
 #~ msgid ""
-#~ "Pressing OK will copy the password of the selected item to the clipboard. "
-#~ "The clipboard will be securely cleared when Password Safe is closed.\n"
+#~ "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
 #~ "\n"
 #~ "Pressing Cancel stops the password being copied."
 #~ msgstr ""
-#~ "单击“确定”将复制所选项目密码到剪贴板。当关闭 Password Safe 时剪贴板将被安"
-#~ "全的清除。\n"
+#~ "单击“确定”将复制所选项目密码到剪贴板。当关闭 Password Safe 时剪贴板将被安全的清除。\n"
 #~ "\n"
 #~ "单击“取消”停止复制存在的密码。"
 
@@ -7239,8 +7138,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "相对"
 
 #~ msgid ""
-#~ "Relative dates are in days relative to today e.g. '-1' is yesterday and "
-#~ "'1' is tomorrow"
+#~ "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
+#~ "is tomorrow"
 #~ msgstr "相对日期是以今天为相对天数(如:“-1”是昨天；“1”是明天)"
 
 #~ msgid "Remove PasswordSafe configuration from Registry"
@@ -7444,8 +7343,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "显示具有失效日期的项目(&X)"
 
 #~ msgid ""
-#~ "Show entries with identical compared fields (Note: Unknown fields were "
-#~ "not compared.)"
+#~ "Show entries with identical compared fields (Note: Unknown fields were not "
+#~ "compared.)"
 #~ msgstr "显示项目使用同一比较字段 (注意: 未知字段不能比较！)"
 
 #~ msgid "Show grid lines in List View"
@@ -7475,15 +7374,12 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "Some characters may be missing or not be displayed correctly, as we were "
 #~ "unable to find the Arial Unicode MS font."
-#~ msgstr ""
-#~ "某些字符可能会丢失或显示不正确，因为我们无法找到的 Arial Unicode MS 字体！"
+#~ msgstr "某些字符可能会丢失或显示不正确，因为我们无法找到的 Arial Unicode MS 字体！"
 
 #~ msgid ""
-#~ "Some of the entries in this database have passwords that have expired or "
-#~ "are about to.  Do you wish to list them and possibly update them?"
-#~ msgstr ""
-#~ "在该数据库中的部分项目具有到期或涉及失效的密码！你是否希望列出它们并尽可能"
-#~ "更新它们？"
+#~ "Some of the entries in this database have passwords that have expired or are"
+#~ " about to.  Do you wish to list them and possibly update them?"
+#~ msgstr "在该数据库中的部分项目具有到期或涉及失效的密码！你是否希望列出它们并尽可能更新它们？"
 
 #~ msgid "Sorbian Standard (Legacy)"
 #~ msgstr "标准索布人语(传统)"
@@ -7512,10 +7408,9 @@ msgstr "至少必须 %d！"
 #~ "\t'"
 
 #~ msgid ""
-#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' "
-#~ "or 'easy-to-read' options. Specified values ignored."
-#~ msgstr ""
-#~ "抱歉！不能指定一个最小数值的“可发音”字符或“易读”选项，指定的值将被忽略！"
+#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' or "
+#~ "'easy-to-read' options. Specified values ignored."
+#~ msgstr "抱歉！不能指定一个最小数值的“可发音”字符或“易读”选项，指定的值将被忽略！"
 
 #~ msgid "Source"
 #~ msgstr "来源"
@@ -7537,11 +7432,8 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "Stop saving password history for all entries.\n"
 #~ "\n"
-#~ "Saved histories will not be touched, but password changes will no longer "
-#~ "be stored by default."
-#~ msgstr ""
-#~ "为所有项目停止保存历史密码，保存的历史密码将不被触犯，但更改密码将不再默认"
-#~ "存储！"
+#~ "Saved histories will not be touched, but password changes will no longer be stored by default."
+#~ msgstr "为所有项目停止保存历史密码，保存的历史密码将不被触犯，但更改密码将不再默认存储！"
 
 #~ msgid "String value:"
 #~ msgstr "字串值:"
@@ -7600,16 +7492,13 @@ msgstr "至少必须 %d！"
 #~ msgstr "泰语 Pattachote (无-ShiftLock)"
 
 #~ msgid ""
-#~ "The ALT key is not used on any keyboard to select characters. Use the "
-#~ "'Alt Num' key to enter a character via its decimal value."
-#~ msgstr ""
-#~ "选择字符时 ALT 键不用于任何键盘。使用 “Alt Num” 键通过其十进制值输入一个字"
-#~ "符。"
+#~ "The ALT key is not used on any keyboard to select characters. Use the 'Alt "
+#~ "Num' key to enter a character via its decimal value."
+#~ msgstr "选择字符时 ALT 键不用于任何键盘。使用 “Alt Num” 键通过其十进制值输入一个字符。"
 
 #~ msgid ""
 #~ "The database %s couldn't be opened.\n"
-#~ "Do you wish to look for it elsewhere (Search), create a new database "
-#~ "(New), or Exit?"
+#~ "Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 #~ msgstr ""
 #~ "不能打开数据库“%s”！\n"
 #~ "你是否需要在别处查找它(单击查找)，创建一个新数据库(单击新建)或退出？"
@@ -7644,8 +7533,7 @@ msgstr "至少必须 %d！"
 #~ "\n"
 #~ "Open the database for Read-Only, Read-Write, or Exit?\n"
 #~ "\n"
-#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in "
-#~ "fact not being used by anyone else,\n"
+#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
 #~ "including another copy of Password Safe running on your machine."
 #~ msgstr ""
 #~ "数据库:\n"
@@ -7656,8 +7544,7 @@ msgstr "至少必须 %d！"
 #~ "\n"
 #~ "打开数据库为只读，存取或退出？\n"
 #~ "\n"
-#~ "注意: 选定“存取”仅在假设你肯定文件事实上不存在已用于其他任何人，包括其它 "
-#~ "Password Safe 副本运行在你的计算机上！"
+#~ "注意: 选定“存取”仅在假设你肯定文件事实上不存在已用于其他任何人，包括其它 Password Safe 副本运行在你的计算机上！"
 
 #~ msgid "The entered passwords do not match.  Please re-enter them."
 #~ msgstr "输入密码不匹配，请重新输入！"
@@ -7672,19 +7559,16 @@ msgstr "至少必须 %d！"
 #~ msgstr "下列项目被复制到 %s 数据库: '%s:%s:%s'"
 
 #~ msgid ""
-#~ "The notes field of this entry has more text than can be displayed. "
-#~ "Changing this field and saving the entry will result in this field being "
-#~ "truncated after %d characters.  To view the full contents, either copy it "
-#~ "to an editor via the clipboard or export this entry to XML before "
-#~ "changing it."
+#~ "The notes field of this entry has more text than can be displayed. Changing "
+#~ "this field and saving the entry will result in this field being truncated "
+#~ "after %d characters.  To view the full contents, either copy it to an editor"
+#~ " via the clipboard or export this entry to XML before changing it."
 #~ msgstr ""
-#~ "该项目的备注字段已超过可被显示的文字数量。所更改字段和保存的项目将导致该字"
-#~ "段在 %d 字符之后被截去的结果。要查看完全的内容，在更改它们之前通过剪贴板复"
-#~ "制到外部编辑器或导出这些内容为 XML 文件。"
+#~ "该项目的备注字段已超过可被显示的文字数量。所更改字段和保存的项目将导致该字段在 %d "
+#~ "字符之后被截去的结果。要查看完全的内容，在更改它们之前通过剪贴板复制到外部编辑器或导出这些内容为 XML 文件。"
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is "
-#~ "itself an alias.\n"
+#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
@@ -7707,11 +7591,9 @@ msgstr "至少必须 %d！"
 
 #~ msgid ""
 #~ "The safe combination has been entered three times without success. If you "
-#~ "don't know the safe combination, you can either try to open another "
-#~ "password database, or create a new blank password database."
-#~ msgstr ""
-#~ "保险箱数据库密码已被输入三次均未成功，如果你不知道该密码，你可以尝试打开其"
-#~ "它密码数据库或创建一个新空白密码数据库两者任选其一！"
+#~ "don't know the safe combination, you can either try to open another password"
+#~ " database, or create a new blank password database."
+#~ msgstr "保险箱数据库密码已被输入三次均未成功，如果你不知道该密码，你可以尝试打开其它密码数据库或创建一个新空白密码数据库两者任选其一！"
 
 #~ msgid ""
 #~ "The selected Failsafe Backup file will be opened instead of selected "
@@ -7724,10 +7606,9 @@ msgstr "至少必须 %d！"
 #~ msgstr "这里存在大于符合你选定的一个项目，请具体选定更多项目！"
 
 #~ msgid ""
-#~ "These are more recently saved than the currently open documents and "
-#~ "contain changes that were made before the application closed."
-#~ msgstr ""
-#~ "这是最近保存比当前打开还新的包含了应用程序关闭之前作出过更改的文档。"
+#~ "These are more recently saved than the currently open documents and contain "
+#~ "changes that were made before the application closed."
+#~ msgstr "这是最近保存比当前打开还新的包含了应用程序关闭之前作出过更改的文档。"
 
 #~ msgid ""
 #~ "This alias' target [%s:%s:%s] is not a normal entry or already an alias "
@@ -7735,10 +7616,9 @@ msgstr "至少必须 %d！"
 #~ msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基本别名存在！"
 
 #~ msgid ""
-#~ "This allows you to keep backups in a separate location. Make sure that "
-#~ "you have write permission to the directory you specify."
-#~ msgstr ""
-#~ "该选项允许你保存备份在一个单独位置，确保你有权限写入数据到你所指定的目录。"
+#~ "This allows you to keep backups in a separate location. Make sure that you "
+#~ "have write permission to the directory you specify."
+#~ msgstr "该选项允许你保存备份在一个单独位置，确保你有权限写入数据到你所指定的目录。"
 
 #~ msgid "This database is the same as the current database!"
 #~ msgstr "该数据库与当前数据库相同！"
@@ -7766,8 +7646,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "该筛选已经存在！"
 
 #~ msgid ""
-#~ "This is a DeadKey. Press it and then one of the combined keys then shown "
-#~ "to add that new character to the Passphrase."
+#~ "This is a DeadKey. Press it and then one of the combined keys then shown to "
+#~ "add that new character to the Passphrase."
 #~ msgstr "这是一个无用键，按住它，然后组合一个键则显示添加新的密码字符。"
 
 #~ msgid "This is a shortcut base entry."
@@ -7780,25 +7660,21 @@ msgstr "至少必须 %d！"
 #~ msgstr "这是一个: '%s'的别名！"
 
 #~ msgid ""
-#~ "This program is linked to the missing export %s in the file %s. This "
-#~ "machine may have an incompatible version of %s."
+#~ "This program is linked to the missing export %s in the file %s. This machine"
+#~ " may have an incompatible version of %s."
 #~ msgstr "该程序链接缺少导出 %s 在文件 %s，本机器可能有一个不兼容版本的 %s！"
 
-#~ msgid ""
-#~ "This program requires the file %s, which was not found on this system."
+#~ msgid "This program requires the file %s, which was not found on this system."
 #~ msgstr "该程序必需的文件 %s，未被建立在这个系统上！"
 
 #~ msgid ""
 #~ "This shortcut's target [%s:%s:%s] is not a normal entry or already a "
 #~ "shortcut base."
-#~ msgstr ""
-#~ "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
+#~ msgstr "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
+#~ "To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
 #~ "Do you want to open this database anyway?\n"
 #~ "(Saving this database will result in the removal of unread entries!)"
 #~ msgstr ""
@@ -7808,20 +7684,18 @@ msgstr "至少必须 %d！"
 #~ "(保存该数据库将导致不能读出项目被移除！)"
 
 #~ msgid ""
-#~ "This will allow you to migrate your settings from the configuration file "
-#~ "in the PasswordSafe installation directory into a file in your own local "
+#~ "This will allow you to migrate your settings from the configuration file in "
+#~ "the PasswordSafe installation directory into a file in your own local "
 #~ "Application Data directory at the next invocation of PasswordSafe."
 #~ msgstr ""
-#~ "该操作将允许你从 PasswordSafe 安装目录里，迁移一个在你的本地应用程序数据目"
-#~ "录下的配置文件。操作将在下次 PasswordSafe 启动时被调用。"
+#~ "该操作将允许你从 PasswordSafe 安装目录里，迁移一个在你的本地应用程序数据目录下的配置文件。操作将在下次 PasswordSafe "
+#~ "启动时被调用。"
 
 #~ msgid ""
-#~ "This will clear all traces of Password Safe from the machine's registry. "
-#~ "It may also cause previous versions of Password Safe to revert to default "
+#~ "This will clear all traces of Password Safe from the machine's registry. It "
+#~ "may also cause previous versions of Password Safe to revert to default "
 #~ "values for some settings."
-#~ msgstr ""
-#~ "该项将从计算机注册表清除所有本程序使用痕迹，同时也可能导致本应用程序早期版"
-#~ "本部份设置恢复为默认值！"
+#~ msgstr "该项将从计算机注册表清除所有本程序使用痕迹，同时也可能导致本应用程序早期版本部份设置恢复为默认值！"
 
 #~ msgid ""
 #~ "This will delete %d entries which are within this group and its subgroups."
@@ -7841,8 +7715,8 @@ msgstr "至少必须 %d！"
 #~ msgstr "复制标题"
 
 #~ msgid ""
-#~ "To unprotect this entry, click on Close, use the Edit menu or right-click "
-#~ "on the entry and select Unprotect."
+#~ "To unprotect this entry, click on Close, use the Edit menu or right-click on"
+#~ " the entry and select Unprotect."
 #~ msgstr "要解除保护该项目，单击关闭，利用编辑菜单或右击项目并选择解除保护！"
 
 #~ msgid "Treat fields that only contain 'whitespace' as empty"
@@ -7980,16 +7854,12 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "Use the application specified here to browse when an entry's URL field "
 #~ "starts with [alt], e.g., '[alt]http://foo.com'"
-#~ msgstr ""
-#~ "使用应用程序在这里浏览一个项目网址字段以 [alt] 开始时，例如:“[alt]http://"
-#~ "foo.com”"
+#~ msgstr "使用应用程序在这里浏览一个项目网址字段以 [alt] 开始时，例如:“[alt]http://foo.com”"
 
 #~ msgid ""
 #~ "Use the application specified here to edit an entry's Notes field via the "
 #~ "right-click context menu during Add/Edit."
-#~ msgstr ""
-#~ "使用应用程序指定这里编辑一个项目的备注字段，通过在 添加/编辑 时右击上下文"
-#~ "菜单。"
+#~ msgstr "使用应用程序指定这里编辑一个项目的备注字段，通过在 添加/编辑 时右击上下文菜单。"
 
 #~ msgid "User copied "
 #~ msgstr "复制用户"
@@ -8027,8 +7897,7 @@ msgstr "至少必须 %d！"
 #~ msgstr "查看一个筛选"
 
 #~ msgid ""
-#~ "WARNING: Use of an external editor may leave sensitive data on your hard "
-#~ "disk.\n"
+#~ "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
 #~ "\n"
 #~ "Do you wish to continue?"
 #~ msgstr ""
@@ -8063,16 +7932,14 @@ msgstr "至少必须 %d！"
 #~ msgid ""
 #~ "Would you like to set \"%s\" as your default username?\n"
 #~ "\n"
-#~ "It would then automatically be put in the dialog each time you add a new "
-#~ "item."
+#~ "It would then automatically be put in the dialog each time you add a new item."
 #~ msgstr ""
 #~ "你是否愿意设定“%s”为你的默认用户名？\n"
 #~ "\n"
 #~ "它将在每次你添加一个新项目时自动插入在对话中！"
 
 #~ msgid ""
-#~ "Write when an entry was accessed in the database. Ignored in read-only "
-#~ "mode."
+#~ "Write when an entry was accessed in the database. Ignored in read-only mode."
 #~ msgstr "当写入一个项目需要存取在数据库时，只读模式将被忽略！"
 
 #~ msgid "X"

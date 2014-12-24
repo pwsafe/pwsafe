@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -12,10 +12,10 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: ../../../ui/wxWidgets/about.cpp:141
 #, fuzzy
@@ -69,12 +69,10 @@ msgstr "Zamknij"
 #: ../../../ui/wxWidgets/about.cpp:260
 #, fuzzy
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Ze względów bezpieczeństwa baza danych musi zostać zamknięta przed "
-"połączeniem z internetem.\n"
+"Ze względów bezpieczeństwa baza danych musi zostać zamknięta przed połączeniem z internetem.\n"
 "Naciśnij OK by zamknąć bazę danych i kontynuować (Zmiany zostaną zapisane)"
 
 #: ../../../ui/wxWidgets/about.cpp:261
@@ -128,8 +126,7 @@ msgstr "Z serwera nie można odczytać informacji o wersji."
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:247
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and a\n"
-"password are required. If you have set a default username, it will appear in "
-"the\n"
+"password are required. If you have set a default username, it will appear in the\n"
 "username field."
 msgstr ""
 "By dodać wpis, wypełnij poniższe pola. Co najmniej tytuł\n"
@@ -570,7 +567,7 @@ msgstr "&Pokaż"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1125
 #, fuzzy, c-format
 msgid "This entry must have a %ls"
-msgstr "Ten wpis musi mieć "
+msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1126
 #, fuzzy
@@ -804,15 +801,13 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Please fix "
-"by validating database."
+"has duplicate entries with the same group/title/user combination. Please fix by validating database."
 msgstr ""
 "Baza danych:\n"
 "\n"
-"%s\n"
+"%ls\n"
 "\n"
-"ma duplikaty wpisów z taką zamą kombinacją grupy, tytułu i użytkownia. "
-"Proszę to naprawić przez walidację bazy danych."
+"ma duplikaty wpisów z taką zamą kombinacją grupy, tytułu i użytkownia. Proszę to naprawić przez walidację bazy danych."
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:734
 #: ../../../ui/wxWidgets/PwsSync.cpp:624
@@ -867,11 +862,11 @@ msgstr "Pomoc"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1197
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe "
-"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
-"files (*.*; *)|*.*;*"
+"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All"
+" files (*.*; *)|*.*;*"
 msgstr ""
-"Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *."
-"dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Tymczasowe kopie zapasowe "
+"Bazy danych Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; "
+"*.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Tymczasowe kopie zapasowe "
 "Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
@@ -981,8 +976,7 @@ msgstr "Element docelowy ostatnio zmieniony:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:52
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
 "Uwaga! Ta operacja stworzy niechronione kopie WSZYSTKICH haseł\n"
@@ -990,12 +984,10 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:53
 msgid ""
-"Please do not use this option unless you understand and accept the risks. "
-"This option\n"
+"Please do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Proszę używac tej opcji jedynie jeśli rozumiesz i akceptujesz ryzyko. Ta "
-"opcja\n"
+"Proszę używac tej opcji jedynie jeśli rozumiesz i akceptujesz ryzyko. Ta opcja\n"
 "omija bezpieczeństwo zapewniane przez ten program."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
@@ -1743,8 +1735,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:623
@@ -1786,7 +1777,8 @@ msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
 msgstr ""
-"Co najmniej jeden znak (mała, duża litera, cyfra, symbol) musi zostać wybrany"
+"Co najmniej jeden znak (mała, duża litera, cyfra, symbol) musi zostać "
+"wybrany"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:363
 msgid "Password must be between 4 and 1024 characters"
@@ -2121,13 +2113,11 @@ msgstr "Ustaw font wyświetlania hasła"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1004
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
-"Nie można stworzyc tymczasowej kopii.  Zapisać bazę gdzieś indziej lub z "
-"inną nazwą?\n"
+"Nie można stworzyc tymczasowej kopii.  Zapisać bazę gdzieś indziej lub z inną nazwą?\n"
 "\n"
 "Wybierz 'Nie' by wyjść bez zapisu."
 
@@ -2140,15 +2130,10 @@ msgstr "Nie udało się utworzyć tymczasowej kopii zapasowej."
 #, fuzzy, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Oryginalna baza danych: \"%s\" jest w starym formacie. To nie będzie "
-"zmienione.\n"
-"Twoje zmiany zostaną zapisane jako \"%s\" w nowym formacie, który nie może "
-"być użyty przez starsze wersje PasswordSafe. By zapisać zmiany w starym "
-"formacie użyj komendy \"Plik->Eksportuj do -> Stary formatd (1.x lub 2)\"."
+"Oryginalna baza danych: \"%ls\" jest w starym formacie. To nie będzie zmienione.\n"
+"Twoje zmiany zostaną zapisane jako \"%ls\" w nowym formacie, który nie może być użyty przez starsze wersje PasswordSafe. By zapisać zmiany w starym formacie użyj komendy \"Plik->Eksportuj do -> Stary formatd (1.x lub 2)\"."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1029
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1373
@@ -2173,13 +2158,13 @@ msgstr "Otwórz bazę danych"
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
 "written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"PasswordSafe. To save the data in the old format, use the 'File->Export To->"
+" Old (1.x or 2) format' command."
 msgstr ""
-"Oryginalna baza danych: '%s' jest w starym formacie. Dane zostaną zapisane w "
-"nowym formacie, z którego nie mogą skorzystać starsze wersje  PasswordSafe. "
-"By zapisać dane w starym formacie użyj komendy 'Plik->Eksport do-> Stary "
-"format (1.x lub 2)'."
+"Oryginalna baza danych: '%ls' jest w starym formacie. Dane zostaną zapisane "
+"w nowym formacie, z którego nie mogą skorzystać starsze wersje  "
+"PasswordSafe. By zapisać dane w starym formacie użyj komendy 'Plik->Eksport "
+"do-> Stary format (1.x lub 2)'."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1385
 msgid "Please choose a name for the current (Untitled) database:"
@@ -2192,8 +2177,8 @@ msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1394
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2967
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Wszystkie pliki "
 "(*.*; *)|*.*;*"
@@ -2205,9 +2190,9 @@ msgid ""
 "\n"
 "File is currently locked by %ls"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
-"Plik jest obecnie używany przez %s"
+"Plik jest obecnie używany przez %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1407
 msgid "File lock error"
@@ -2398,7 +2383,7 @@ msgstr "Import_Text"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2843
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
-msgstr "%s plik importowany: %s"
+msgstr "%ls plik importowany: %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2635
 msgid "Text"
@@ -2482,7 +2467,7 @@ msgstr "Import_KeePassV1_TXT"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2740
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
-msgstr "Plik tekstowy do zaimportowania: %s"
+msgstr "Plik tekstowy do zaimportowania: %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2757
 #: ../../../ui/wxWidgets/PwsSync.cpp:609
@@ -2492,7 +2477,7 @@ msgid ""
 "\n"
 "Could not open file for reading!"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "Nie można otworzyć pliku do odczytu!"
 
@@ -2508,7 +2493,7 @@ msgid ""
 "\n"
 "Invalid format"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "Nieprawidłowy format"
 
@@ -2535,7 +2520,7 @@ msgstr "wpisy"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2787
 #, fuzzy, c-format
 msgid "Imported %d %ls"
-msgstr "Zaimportowano %d %s"
+msgstr "Zaimportowano %d %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2810
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2857
@@ -2546,12 +2531,10 @@ msgstr "Import XML nie powiódł się"
 #: ../../../core/core_st.cpp:226
 #, fuzzy, c-format
 msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
-"Directory.\n"
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Nie można znaleźć pliku definicji ze schematem XML (%s) w katalogu "
-"PasswordSafe.\n"
+"Nie można znaleźć pliku definicji ze schematem XML (%ls) w katalogu PasswordSafe.\n"
 "Skopiuj go z pliku instalacyjnego lub przeinstaluj PasswordSafe. ."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2821
@@ -2577,9 +2560,9 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"Plik: %s nie potwierdzono zgodności ze schematem XML:\n"
+"Plik: %ls nie potwierdzono zgodności ze schematem XML:\n"
 "\n"
-"%s"
+"%ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2869
 #, fuzzy, c-format
@@ -2588,10 +2571,9 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"Plik: %s potwierdzono zgodność ale wystąpiły następujące błędy przy "
-"imporcie:\n"
+"Plik: %ls potwierdzono zgodność ale wystąpiły następujące błędy przy imporcie:\n"
 "\n"
-"%s"
+"%ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2890
 msgid "The following records were skipped:"
@@ -2630,8 +2612,8 @@ msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
 "report for details."
 msgstr ""
-"Plik: %s został zaimportowany (wpisy sprawdzone %d / zaimportowano %d%s%s"
-"%s). Zobacz raport szczegółowy."
+"Plik: %ls został zaimportowany (wpisy sprawdzone %d / zaimportowano "
+"%d%ls%ls%ls). Zobacz raport szczegółowy."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2918
 #, fuzzy, c-format
@@ -2640,9 +2622,9 @@ msgid ""
 "\n"
 "Imported %d %ls"
 msgstr ""
-"Potwierdzone %d %s\n"
+"Potwierdzone %d %ls\n"
 "\n"
-"Zaimportowane %d %s"
+"Zaimportowane %d %ls"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2924
 msgid "XML import not supported in this release"
@@ -2708,7 +2690,8 @@ msgid "Exporting database: "
 msgstr "Eksport bazy danych: "
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3173
-msgid "No entries satisfied your selection criteria and so none were exported!"
+msgid ""
+"No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 "Nie ma wpisów pasujących do podanych kryteriów i nic nie zostało "
 "wyeksportowane!"
@@ -2827,7 +2810,7 @@ msgstr "Znaleziono 1 odpowiednik."
 #: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:279
 #, fuzzy, c-format
 msgid "%ls on %ls"
-msgstr "%s na %s"
+msgstr "%ls na %ls"
 
 #: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:311
 msgid "Yes"
@@ -2840,7 +2823,7 @@ msgstr "Nie"
 #: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:276
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
-msgstr "W nagłówkach(%s)/We wpisach("
+msgstr "W nagłówkach(%ls)/We wpisach("
 
 #: ../../../ui/wxWidgets/properties.cpp:165
 #, fuzzy
@@ -2985,8 +2968,7 @@ msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
 msgstr ""
-"3. Tylko wpisy istniejące w bazie danych zostaną zaktualizowane. Podczas "
-"operacji nie zostaną\n"
+"3. Tylko wpisy istniejące w bazie danych zostaną zaktualizowane. Podczas operacji nie zostaną\n"
 "dodane żadne nowe ani nie zostaną usuniętw wpisy istniejące."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:368
@@ -3064,12 +3046,12 @@ msgstr "Podczas sychronizacji wystąpił błąd"
 #: ../../../ui/wxWidgets/PwsSync.cpp:592
 #, fuzzy, c-format
 msgid "Your database has been synchronized with \"%ls\""
-msgstr "Twoja baza danych została zsynchronizowana z \"%s\""
+msgstr "Twoja baza danych została zsynchronizowana z \"%ls\""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:593
 #, fuzzy, c-format
 msgid "%d %ls updated"
-msgstr "%d %s zaktulizowano"
+msgstr "%d %ls zaktulizowano"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:595
 msgid "Synchronization completed successfully"
@@ -3083,7 +3065,7 @@ msgid ""
 "File corrupt or truncated!\n"
 "Data may have been lost or modified."
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "Plik popsuty lub przycięty!\n"
 "Dane mogły zostać stracone lub zmienione."
@@ -3095,14 +3077,14 @@ msgid ""
 "\n"
 "Unknown error"
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "Nieznany błąd"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:647
 #, fuzzy, c-format
 msgid "Synchronizing from database: %ls\n"
-msgstr "Synchronizacja aktualnej bazy: %s\n"
+msgstr "Synchronizacja aktualnej bazy: %ls\n"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:650
 msgid "synchronized"
@@ -3123,7 +3105,7 @@ msgid ""
 "The following %ls %ls updated:"
 msgstr ""
 "\n"
-"Następujące %s %s zostały uaktualnione:"
+"Następujące %ls %ls zostały uaktualnione:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:756 ../../../core/core_st.cpp:270
 #, fuzzy, c-format
@@ -3132,7 +3114,7 @@ msgid ""
 "Synchronize completed: %d %ls updated"
 msgstr ""
 "\n"
-"Synchronizacja zakończona: %d %s uaktualniono"
+"Synchronizacja zakończona: %d %ls uaktualniono"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:766
 msgid " were "
@@ -3145,12 +3127,12 @@ msgstr " z odpowiednimi wpisami z \""
 #: ../../../ui/wxWidgets/PwsSync.cpp:773
 #, fuzzy, c-format
 msgid "All fields in matching entries were %ls"
-msgstr "Wszystkie pola z pasujących wpisów były %s"
+msgstr "Wszystkie pola z pasujących wpisów były %ls"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:777
 #, fuzzy, c-format
 msgid "The following fields were %ls"
-msgstr "Następujące pola były %s"
+msgstr "Następujące pola były %ls"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:630
 msgid "New Group"
@@ -3288,8 +3270,8 @@ msgstr "Three strikes - yer out!"
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:416
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:447
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Baza danych Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat| Wszystkie pliki "
 "(*.*; *)|*.*;*"
@@ -3756,23 +3738,17 @@ msgstr "między"
 
 #: ../../../core/core_st.cpp:38
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
-"Niemożliwe utworzenie nowego pliku konfiguracyjnego XML lub dodanie ustawień "
-"do istniejącego pliku konfiguracyjnego XML.\n"
+"Niemożliwe utworzenie nowego pliku konfiguracyjnego XML lub dodanie ustawień do istniejącego pliku konfiguracyjnego XML.\n"
 "\n"
 "Ustawienia konfiguracyjne aplikacji zostaną zapisane w rejestrze.\n"
 "\n"
-"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej "
-"zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie "
-"jest zablokowana przez innego użytkownika."
+"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie jest zablokowana przez innego użytkownika."
 
 #: ../../../core/core_st.cpp:39
 msgid ""
@@ -3780,20 +3756,18 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
 "Błąd - nie można określić konfiguracji ustawień!\n"
 "\n"
 "Ustawienia programu nie będą zapisane.\n"
 "\n"
-"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej "
-"zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie "
-"jest zablokowana przez innego użytkownika."
+"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie jest zablokowana przez innego użytkownika."
 
 #: ../../../core/core_st.cpp:40
 msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+"Trouble reading stored filters (version mismatch?). Filters will be "
+"unusable."
 msgstr ""
 "Problem podczas odczytu zapisanych filtrów (inna wersja?). Filtry nie będą "
 "użyte."
@@ -3806,20 +3780,15 @@ msgstr "Niemożliwe odczytanie blokady?"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
 "Niemożliwa aktualizacji wpisów w istniejącym pliku konfiguracyjnym XML\n"
 "\n"
-"Ustawienia konfiguracyjne aplikacji zostaną załodowane z tego pliku ale "
-"żadne zmiany nie zostaną zapisane.\n"
+"Ustawienia konfiguracyjne aplikacji zostaną załodowane z tego pliku ale żadne zmiany nie zostaną zapisane.\n"
 "\n"
-"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej "
-"zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie "
-"jest zablokowana przez innego użytkownika."
+"Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie jest zablokowana przez innego użytkownika."
 
 #: ../../../core/core_st.cpp:43
 #, fuzzy, c-format
@@ -3828,7 +3797,7 @@ msgid ""
 "\n"
 "The configuration file will not be used."
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "Plik konfiguracyjny nie zostanie użyty."
 
@@ -3893,12 +3862,12 @@ msgstr "skopiowano"
 #: ../../../core/core_st.cpp:58
 #, fuzzy, c-format
 msgid "%ls - Copied %ls"
-msgstr "%s - Skopiowano %s"
+msgstr "%ls - Skopiowano %ls"
 
 #: ../../../core/core_st.cpp:59
 #, fuzzy, c-format
 msgid " Current default (%ls)"
-msgstr " Aktualna wartość domyślna (%s)"
+msgstr " Aktualna wartość domyślna (%ls)"
 
 #: ../../../core/core_st.cpp:69
 msgid "View/Edit selected entry"
@@ -3914,13 +3883,11 @@ msgstr "domyślny zestaw symboli"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
-"Ten wpis ma następujące %d %s:\n"
-"%s\n"
-"Proszę potwiedzić by kontunuować (hasła do aliasu zostaną zamienione przez "
-"hasło tego wpisu)?"
+"Ten wpis ma następujące %d %ls:\n"
+"%ls\n"
+"Proszę potwiedzić by kontunuować (hasła do aliasu zostaną zamienione przez hasło tego wpisu)?"
 
 #: ../../../core/core_st.cpp:74
 #, fuzzy
@@ -3934,10 +3901,9 @@ msgid ""
 "%ls\n"
 "Please confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
-"Ten wpis ma następujące %d %s:\n"
-"%s\n"
-"Proszę potwiedzić by kontunuować (wszystkie skróty do tego wpisu będą "
-"usunięte)?"
+"Ten wpis ma następujące %d %ls:\n"
+"%ls\n"
+"Proszę potwiedzić by kontunuować (wszystkie skróty do tego wpisu będą usunięte)?"
 
 #: ../../../core/core_st.cpp:78
 msgid "does not contain all of"
@@ -3955,32 +3921,30 @@ msgstr " Duplikat # %d"
 #: ../../../core/core_st.cpp:83
 #, fuzzy, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
+" data carefully."
 msgstr ""
-"Problem z nietekstowym (np. czas) polem w rekordzie '%s - sprawdź dokładnie "
-"dane."
+"Problem z nietekstowym (np. czas) polem w rekordzie '%ls - sprawdź dokładnie"
+" dane."
 
 #: ../../../core/core_st.cpp:84
 msgid "End Report"
 msgstr "Koniec Raportu"
 
 #: ../../../core/core_st.cpp:85
-msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
+msgid ""
+"--------------------------------------------------------------------------------"
+msgstr ""
+"--------------------------------------------------------------------------------"
 
 #: ../../../core/core_st.cpp:88
 #, fuzzy, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
-"Następujące wpisy mają nazwę polityki która już jest w bazie danych, ale z "
-"innymi ustawieniami.\n"
-"Nowa nazwana polityka została stworzona z dodaniem aktualnej daty i czasu "
-"(%s): %s"
+"Następujące wpisy mają nazwę polityki która już jest w bazie danych, ale z innymi ustawieniami.\n"
+"Nowa nazwana polityka została stworzona z dodaniem aktualnej daty i czasu (%ls): %ls"
 
 #: ../../../core/core_st.cpp:91
 #, fuzzy
@@ -4093,7 +4057,7 @@ msgstr "Błąd podczas zapisu pliku! Spróbuj zachować w innym miejscu"
 msgid ""
 "Filter %ls already exists in the database, do you wish to replace it with "
 "this?"
-msgstr "Filtr %s już istnieje w bazie danych, zastąpić?"
+msgstr "Filtr %ls już istnieje w bazie danych, zastąpić?"
 
 #: ../../../core/core_st.cpp:117
 msgid "Stored filters will be unusable until the file's restored."
@@ -4221,8 +4185,8 @@ msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr ""
-"Nieprawidłowe dane wejściowe na linii %d.  Liczba pól rozdzielonych '%c' nie "
-"jest taka jak oczekiwana."
+"Nieprawidłowe dane wejściowe na linii %d.  Liczba pól rozdzielonych '%c' nie"
+" jest taka jak oczekiwana."
 
 #: ../../../core/core_st.cpp:152
 #, c-format
@@ -4243,13 +4207,11 @@ msgstr "Import przerwany. Proszę zobaczyć raport."
 
 #: ../../../core/core_st.cpp:155
 msgid ""
-"The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
-"Plik TXT lub CSV nie został wyeksportowany jak należy, gdyż rekordy wpisów "
-"są wieloliniowe w pliku CSV.\n"
+"Plik TXT lub CSV nie został wyeksportowany jak należy, gdyż rekordy wpisów są wieloliniowe w pliku CSV.\n"
 "\n"
 "Import przerwany."
 
@@ -4259,13 +4221,13 @@ msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
-"%s, nazwa=\"%s\", użytkownik=\"%s\" już jest w Twojej bazie danych lub w "
-"pliku importu. Dodano zaimportowany wpis z tytułem=\"%s\".\n"
+"%ls, nazwa=\"%ls\", użytkownik=\"%ls\" już jest w Twojej bazie danych lub w "
+"pliku importu. Dodano zaimportowany wpis z tytułem=\"%ls\".\n"
 
 #: ../../../core/core_st.cpp:157
 #, fuzzy, c-format
 msgid "Entry on line %d with Group=\"%ls\""
-msgstr "Wpis w linii %d z grupą=\"%s\""
+msgstr "Wpis w linii %d z grupą=\"%ls\""
 
 #: ../../../core/core_st.cpp:158
 #, c-format
@@ -4275,7 +4237,7 @@ msgstr "Wpis w linii %d bez grupy"
 #: ../../../core/core_st.cpp:159
 #, fuzzy, c-format
 msgid "Entry with Group=\"%ls\""
-msgstr "Wpis z grupą==\"%s\""
+msgstr "Wpis z grupą==\"%ls\""
 
 #: ../../../core/core_st.cpp:160
 msgid "Entry with no group"
@@ -4294,7 +4256,7 @@ msgstr "Opuszczono pustą linię %d"
 #: ../../../core/core_st.cpp:163
 #, fuzzy, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
-msgstr "Wpis %s%d z grupą=\"%s\", nazwą=\"%s\", użytkownikiem=\"%s\""
+msgstr "Wpis %ls%d z grupą=\"%ls\", nazwą=\"%ls\", użytkownikiem=\"%ls\""
 
 #: ../../../core/core_st.cpp:164
 msgid "id="
@@ -4312,7 +4274,7 @@ msgstr "Znaleziono %d znanych nagłówków kolumn:"
 #: ../../../core/core_st.cpp:167
 #, fuzzy, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
-msgstr "Wpis linii %d ma nieprawidłowe \"%s\" pole. Został zignorowany."
+msgstr "Wpis linii %d ma nieprawidłowe \"%ls\" pole. Został zignorowany."
 
 #: ../../../core/core_st.cpp:168
 msgid "The following columns will be processed: "
@@ -4345,8 +4307,8 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:172
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be"
+" within square brackets)."
 msgstr ""
 "Nie można znaleźć tytułu następnego pola w KeePass V1 TXT (powinien być w "
 "nawiasach kwadratowych)."
@@ -4354,8 +4316,8 @@ msgstr ""
 #: ../../../core/core_st.cpp:173
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
-"Wiersz nagłówka kolumny nie rozpoznany jako pierwszy rekord. Nie importowano "
-"żadnych rekordów."
+"Wiersz nagłówka kolumny nie rozpoznany jako pierwszy rekord. Nie importowano"
+" żadnych rekordów."
 
 #: ../../../core/core_st.cpp:174
 msgid "No records in import file!"
@@ -4383,36 +4345,36 @@ msgstr "w linii "
 #: ../../../core/core_st.cpp:179
 #, fuzzy, c-format
 msgid "%ls  - Imported %ls"
-msgstr "%s  - Zaimportowano %s"
+msgstr "%ls  - Zaimportowano %ls"
 
 #: ../../../core/core_st.cpp:180
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
+"present: Group/Title, Username and Password.  One or more are missing and no"
+" entries have been updated."
 msgstr ""
-"Do wymiany haseł istniejących wpisów, wszystkie wymienione kolumny muszą być "
-"obecne: Grypa/Tytuł, nazwa użytkownika i hasło.  Brakuje tych danych i żaden "
-"wpis nie został zaktualizowany."
+"Do wymiany haseł istniejących wpisów, wszystkie wymienione kolumny muszą być"
+" obecne: Grypa/Tytuł, nazwa użytkownika i hasło.  Brakuje tych danych i "
+"żaden wpis nie został zaktualizowany."
 
 #: ../../../core/core_st.cpp:181
 #, fuzzy, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
-msgstr "%s nie znaleziony. Nie można uaktualnić hasła.\n"
+msgstr "%ls nie znaleziony. Nie można uaktualnić hasła.\n"
 
 #: ../../../core/core_st.cpp:182
 #, fuzzy, c-format
 msgid "%ls has an empty %ls.\n"
-msgstr "%s ma pusty %s.\n"
+msgstr "%ls ma pusty %ls.\n"
 
 #: ../../../core/core_st.cpp:183
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry is already an alias."
 msgstr ""
-"Wpis \"%s, %s, %s\" ma hasło w poprawnej formie dla aliasu, ale wpis bazowy "
-"jest już aliasem."
+"Wpis \"%ls, %ls, %ls\" ma hasło w poprawnej formie dla aliasu, ale wpis "
+"bazowy jest już aliasem."
 
 #: ../../../core/core_st.cpp:184
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -4421,11 +4383,11 @@ msgstr "\tWpis jest aliasem powiązanego wpisu bazowego."
 #: ../../../core/core_st.cpp:185
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry does not exist."
 msgstr ""
-"Wpis \"%s, %s, %s\" ma hasło w poprawnej formie dla aliasu, ale wpis bazowy "
-"nie istnieje."
+"Wpis \"%ls, %ls, %ls\" ma hasło w poprawnej formie dla aliasu, ale wpis "
+"bazowy nie istnieje."
 
 #: ../../../core/core_st.cpp:186
 msgid ""
@@ -4438,8 +4400,8 @@ msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
 "base entry. It cannot be imported."
 msgstr ""
-"Wpis %s \"%s, %s, %s\" nie wskazuje na normalny lub istniejący wpis bazowy "
-"%s. Nie może zostać zaimportowany."
+"Wpis %ls \"%ls, %ls, %ls\" nie wskazuje na normalny lub istniejący wpis "
+"bazowy %ls. Nie może zostać zaimportowany."
 
 #: ../../../core/core_st.cpp:188
 msgid "Entry import warnings"
@@ -4469,7 +4431,8 @@ msgstr "Błąd wewnętrzny: Wybrano nieprawidłową flagę"
 #: ../../../core/core_st.cpp:194
 #, fuzzy, c-format
 msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
-msgstr "  Nieprawidłowy nagłówek: '%s' (powinno być 5 znaków szesnastkowych)."
+msgstr ""
+"  Nieprawidłowy nagłówek: '%ls' (powinno być 5 znaków szesnastkowych)."
 
 #: ../../../core/core_st.cpp:195
 #, fuzzy, c-format
@@ -4552,8 +4515,8 @@ msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
 "has been removed from the %ls entry."
 msgstr ""
-"Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Został on "
-"usunięty z wpisu %s."
+"Skrót klawiszowy %ls wpisu %ls jest już przydzielowny do wpisu %ls. Został "
+"on usunięty z wpisu %ls."
 
 #: ../../../core/core_st.cpp:211
 #, fuzzy, c-format
@@ -4561,8 +4524,6 @@ msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the "
 "PasswordSafe application. It has been removed from the entry."
 msgstr ""
-"Skrót klawiszowy %s wpisu %s jest już przydzielowny do wpisu %s. Został on "
-"usunięty z wpisu %s."
 
 #: ../../../core/core_st.cpp:212
 msgid "less than"
@@ -4584,7 +4545,7 @@ msgid ""
 "The following new %ls %ls merged into this database:"
 msgstr ""
 "\n"
-"Następujące nowe %s %s scalone z tą bazą danych:"
+"Następujące nowe %ls %ls scalone z tą bazą danych:"
 
 #: ../../../core/core_st.cpp:216
 #, fuzzy, c-format
@@ -4593,7 +4554,7 @@ msgid ""
 "Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
 msgstr ""
 "\n"
-"Scalanie zakończone: %d %s dodano (%d %s, %d %s, %d %s)"
+"Scalanie zakończone: %d %ls dodano (%d %ls, %d %ls, %d %ls)"
 
 #: ../../../core/core_st.cpp:217
 #, fuzzy, c-format
@@ -4602,9 +4563,9 @@ msgid ""
 "  Adding merged entry as \"%ls\" \"%ls\" \"%ls\".\n"
 "    Differing field(s): %ls"
 msgstr ""
-"Skonfilkowanye wpisy dla \"%s\" \"%s\" \"%s\".\n"
-"  Dodano scalone wpisy jako \"%s\" \"%s\" \"%s\".\n"
-"    Pola które sie różniły: %s"
+"Skonfilkowanye wpisy dla \"%ls\" \"%ls\" \"%ls\".\n"
+"  Dodano scalone wpisy jako \"%ls\" \"%ls\" \"%ls\".\n"
+"    Pola które sie różniły: %ls"
 
 #: ../../../core/core_st.cpp:218
 #, fuzzy
@@ -4614,7 +4575,7 @@ msgstr "połączono"
 #: ../../../core/core_st.cpp:219
 #, fuzzy, c-format
 msgid "%ls - Merged %ls"
-msgstr "%s - Połączony %s"
+msgstr "%ls - Połączony %ls"
 
 #: ../../../core/core_st.cpp:220
 msgid "MISSING PASSWORD"
@@ -4623,7 +4584,7 @@ msgstr "BRAKUJĄCE HASŁO"
 #: ../../../core/core_st.cpp:221
 #, fuzzy, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
-msgstr "\tNazwy polityki haseł '%s' nie ma w bazie danych."
+msgstr "\tNazwy polityki haseł '%ls' nie ma w bazie danych."
 
 #: ../../../core/core_st.cpp:222
 msgid ""
@@ -4649,17 +4610,17 @@ msgstr "Brak wersji XML filtra."
 #: ../../../core/core_st.cpp:227
 #, fuzzy, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %ls."
-msgstr "Błąd twozenia SchemaCache60 0x%08X podczas %s."
+msgstr "Błąd twozenia SchemaCache60 0x%08X podczas %ls."
 
 #: ../../../core/core_st.cpp:228
 #, fuzzy, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
-msgstr "Błąd SAX Parse60 0x%08X podczas %s."
+msgstr "Błąd SAX Parse60 0x%08X podczas %ls."
 
 #: ../../../core/core_st.cpp:229
 #, fuzzy, c-format
 msgid "Error (%08X): line %d character %d %ls"
-msgstr "Błąd (%08X): linia %d znak %d %s"
+msgstr "Błąd (%08X): linia %d znak %d %ls"
 
 #: ../../../core/core_st.cpp:231
 msgid ""
@@ -4778,7 +4739,7 @@ msgstr "Użyć dużych liter"
 #: ../../../core/core_st.cpp:249
 #, fuzzy, c-format
 msgid "Error in a Password History %ls:"
-msgstr "Błąd w historii hasła %s:"
+msgstr "Błąd w historii hasła %ls:"
 
 #: ../../../core/core_st.cpp:250
 #, c-format
@@ -4800,7 +4761,7 @@ msgid ""
 "this database. They have been removed from the %ls entries."
 msgstr ""
 "\tJeden lub więcej skrótów klawiszowych były już przydzielone do wpisów w "
-"tej bazie danych. Zostały one usunięte z %s wpisów."
+"tej bazie danych. Zostały one usunięte z %ls wpisów."
 
 #: ../../../core/core_st.cpp:254
 msgid ""
@@ -4813,17 +4774,17 @@ msgstr ""
 #: ../../../core/core_st.cpp:255
 #, fuzzy, c-format
 msgid "%ls%ls%ls_Report.txt"
-msgstr "%s%s%s_Report.txt"
+msgstr "%ls%ls%ls_Report.txt"
 
 #: ../../../core/core_st.cpp:256
 #, fuzzy, c-format
 msgid "Report of %ls function started at %ls"
-msgstr "Raport z wywołania funkcji %s rozpoczętej %s"
+msgstr "Raport z wywołania funkcji %ls rozpoczętej %ls"
 
 #: ../../../core/core_st.cpp:257
 #, fuzzy, c-format
 msgid "on database %ls"
-msgstr "na bazie danych %s"
+msgstr "na bazie danych %ls"
 
 #: ../../../core/core_st.cpp:258
 msgid "Validate"
@@ -4838,7 +4799,7 @@ msgstr "Błąd krytyczny"
 msgid ""
 "\n"
 "Error in Password History for entry: \"%ls\"%ls\"%ls\": "
-msgstr "Błąd w historii hasła %s:"
+msgstr ""
 
 #: ../../../core/core_st.cpp:263
 msgid "See Password History filters"
@@ -4871,7 +4832,7 @@ msgstr "Początek Raportu"
 #: ../../../core/core_st.cpp:272
 #, fuzzy, c-format
 msgid "%ls - Sync'd %ls"
-msgstr "%s - Zsynchronizowano %s"
+msgstr "%ls - Zsynchronizowano %ls"
 
 #: ../../../core/core_st.cpp:273
 msgid "System error: No more file handles available"
@@ -4900,7 +4861,7 @@ msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
 "base entry does not exist."
 msgstr ""
-"Następujące wpisy mają hasła w prawidłowej postaci dla %s, ale wpis bazowy "
+"Następujące wpisy mają hasła w prawidłowej postaci dla %ls, ale wpis bazowy "
 "nie istnieje."
 
 #: ../../../core/core_st.cpp:282
@@ -4920,22 +4881,23 @@ msgid ""
 "The password has been set to '%ls'"
 msgstr ""
 "Następujące wpisy mają puste pole z hasłem, co nie jest dozwolone. Zostało "
-"ustawione hasło '%s'"
+"ustawione hasło '%ls'"
 
 #: ../../../core/core_st.cpp:285
 #, fuzzy
-msgid "The following entries had an empty Title field, which is not permitted."
+msgid ""
+"The following entries had an empty Title field, which is not permitted."
 msgstr "Następujące wpisy mają puste pole z tytułem, co nie jest dozwolone."
 
 #: ../../../core/core_st.cpp:286
 #, fuzzy, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
-msgstr "\tGrupa='%s', Nazwa='%s', Użytkownik='%s' %s"
+msgstr "\tGrupa='%ls', Nazwa='%ls', Użytkownik='%ls' %ls"
 
 #: ../../../core/core_st.cpp:287
 #, fuzzy, c-format
 msgid "- Its title has been changed to:'%ls'"
-msgstr "- Nazwa została zmieniona na:'%s'"
+msgstr "- Nazwa została zmieniona na:'%ls'"
 
 #: ../../../core/core_st.cpp:288
 msgid "The following ERRORS were detected and were FIXED."
@@ -4946,8 +4908,8 @@ msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
 msgstr ""
-"Następujące wpisy miały nieprawidłową historię haseł.  Zostało to odbudowane "
-"z dostępnych danych.  Część historii może być utracona."
+"Następujące wpisy miały nieprawidłową historię haseł.  Zostało to odbudowane"
+" z dostępnych danych.  Część historii może być utracona."
 
 #: ../../../core/core_st.cpp:290
 #, fuzzy, c-format
@@ -4956,8 +4918,8 @@ msgid ""
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 "Następujące wpisy mają jedno lub więcej pól zbyt długich by je wyświetlić "
-"lub edytować (ponad %d znaków).  Największy rozmiar wpisu jaki znaleziono to "
-"~%d %s."
+"lub edytować (ponad %d znaków).  Największy rozmiar wpisu jaki znaleziono to"
+" ~%d %ls."
 
 #: ../../../core/core_st.cpp:291
 msgid ""
@@ -4978,17 +4940,18 @@ msgid ""
 "SAX Parse Error during %ls\n"
 "%ls."
 msgstr ""
-"Błąd parsowania SAX podczas %s\n"
-"%s."
+"Błąd parsowania SAX podczas %ls\n"
+"%ls."
 
 #: ../../../core/core_st.cpp:296
 #, fuzzy, c-format
 msgid "XML %ls: line %d character %d: %ls"
-msgstr "XML %s: wiersz %d znak %d: %s"
+msgstr "XML %ls: wiersz %d znak %d: %ls"
 
 #: ../../../core/core_st.cpp:297
 msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
+"*** Invalid XML characters found - see exported XML file for more details "
+"***"
 msgstr ""
 "*** Nieprawidłowe znaki XML - więcej szczegułów w wyeksportowanym pliku XML "
 "***"
@@ -5042,8 +5005,8 @@ msgid ""
 "offset approximately at %d"
 msgstr ""
 "Błąd pliku konfiguracyjnego:\n"
-"%s\n"
-"%s\n"
+"%ls\n"
+"%ls\n"
 "przybliżone przesunięcie w %d"
 
 #: ../../../core/core_st.cpp:306
@@ -5074,7 +5037,7 @@ msgstr "sprawdzenie"
 #: ../../../core/core_st.cpp:312
 #, fuzzy, c-format
 msgid "Yes - EasyVision Symbols: %ls"
-msgstr "Tak - symbole EasyVision: %s"
+msgstr "Tak - symbole EasyVision: %ls"
 
 #: ../../../core/core_st.cpp:313
 #, fuzzy, c-format
@@ -5084,12 +5047,12 @@ msgstr "Tak (co najmniej %d)"
 #: ../../../core/core_st.cpp:314
 #, fuzzy, c-format
 msgid "Yes - Pronounceable Symbols: %ls"
-msgstr "Tak - wymiawialne symbole: %s"
+msgstr "Tak - wymiawialne symbole: %ls"
 
 #: ../../../core/core_st.cpp:315
 #, fuzzy, c-format
 msgid "Yes - At least %d from %ls: %ls"
-msgstr "Tak - co najwyżej %d z %s: %s"
+msgstr "Tak - co najwyżej %d z %ls: %ls"
 
 #~ msgid "Couldn't find policy %s\n"
 #~ msgstr "Nie można znaleźć polityki %s\n"
@@ -5100,7 +5063,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Do you want to see a detailed report?"
 #~ msgstr "Czy chcesz zobaczyć dokładny raport?"
 
-#, fuzzy
 #~ msgid "%d/%d matches"
 #~ msgstr "%d z %d jest identycznych."
 
@@ -5108,20 +5070,14 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "\t* %s"
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
+#~ "To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
 #~ "Note: Saving this database will result in the removal of unread entries!"
 #~ msgstr ""
-#~ "Ta wersja PasswordSafe umożliwia zapis nie więcej niż %d wpisów w bazie "
-#~ "danych.\n"
-#~ "Żeby uzyskać nielimitowaną wersję na platformę U3, odwiedź http://"
-#~ "software.u3.com\n"
-#~ "Uwaga: Zapisanie tej bazy danej będzie skutkować usunięciem "
-#~ "nieodczytanych wpisów!"
+#~ "Ta wersja PasswordSafe umożliwia zapis nie więcej niż %d wpisów w bazie danych.\n"
+#~ "Żeby uzyskać nielimitowaną wersję na platformę U3, odwiedź http://software.u3.com\n"
+#~ "Uwaga: Zapisanie tej bazy danej będzie skutkować usunięciem nieodczytanych wpisów!"
 
-#, fuzzy
 #~ msgid "Trial Version Limitation"
 #~ msgstr "Ograniczenie wersji testowej"
 
@@ -5131,19 +5087,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Special set"
 #~ msgstr "Ustawienia specjane"
 
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
 #~ msgid ": "
 #~ msgstr ": "
 
@@ -5156,7 +5099,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "\""
 #~ msgstr "\""
 
-#, fuzzy
 #~ msgid "%d)"
 #~ msgstr "%d)"
 
@@ -5218,14 +5160,12 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Menu Item"
 #~ msgstr "Menu pozycji"
 
-#, fuzzy
 #~ msgid "&Reset All"
 #~ msgstr "Resetuj wszystko"
 
 #~ msgid "-merged-"
 #~ msgstr "-scalone-"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "\n"
@@ -5233,7 +5173,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "\n"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "\n"
@@ -5243,17 +5182,14 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "Nie można otworzyć pliku do zapisu!"
 
-#, fuzzy
 #~ msgid "View/Edit Entry"
 #~ msgstr "Edytuj wpis"
 
-#, fuzzy
 #~ msgid ""
 #~ "New\n"
 #~ "Database"
 #~ msgstr "Nowa baza danych"
 
-#, fuzzy
 #~ msgid "Minimum password length"
 #~ msgstr "Długość hasła:"
 
@@ -5266,21 +5202,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid ":"
 #~ msgstr ":"
 
-#, fuzzy
 #~ msgid "Current Value:"
 #~ msgstr "Szukane wartości:"
 
 #~ msgid "&Set"
 #~ msgstr "U&staw"
 
-#, fuzzy
 #~ msgid "&Clear"
 #~ msgstr "Wy&czyść"
 
 #~ msgid "10/06/2009 23:19:25"
 #~ msgstr "10/06/2009 23:19:25"
 
-#, fuzzy
 #~ msgid "Reset to Database Defaults"
 #~ msgstr "Wróc do war&tości domyślnych dla bazy danych"
 
@@ -5296,7 +5229,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "&Open..."
 #~ msgstr "&Otwórz..."
 
-#, fuzzy
 #~ msgid "&Save..."
 #~ msgstr "Zapi&sz"
 
@@ -5312,7 +5244,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Undo"
 #~ msgstr "Cofnij zmiany"
 
-#, fuzzy
 #~ msgid "Get &Help"
 #~ msgstr "Pomoc\tF1"
 
@@ -5320,21 +5251,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "W bazie danych jest kilka sporych wpisów!"
 
 #~ msgid ""
-#~ "Warning - %d %s in your database may have one or more fields too large to "
-#~ "display or edit.\n"
+#~ "Warning - %d %s in your database may have one or more fields too large to display or edit.\n"
 #~ "\n"
 #~ "The largest entry size found was ~%d %s.\n"
 #~ "\n"
 #~ "You can use the Filter to selectively display these record(s)."
 #~ msgstr ""
-#~ "Uwaga - %d %s w Twojej bazie danych może mieć pola zbyt duże by je "
-#~ "pokazać lub edytować.\n"
+#~ "Uwaga - %d %s w Twojej bazie danych może mieć pola zbyt duże by je pokazać lub edytować.\n"
 #~ "\n"
 #~ "Największy rozmiar znalezionego wpisu to ~%d %s.\n"
 #~ "\n"
 #~ "Możesz użyć filtra, by wybrać rekordzy do pokazania."
 
-#, fuzzy
 #~ msgid " 'Autotype'"
 #~ msgstr " 'Autouzupełnianie'"
 
@@ -5356,26 +5284,21 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid " 'Password Expiry Time Interval'"
 #~ msgstr " 'Czas wygaśnięcia hasła'"
 
-#, fuzzy
 #~ msgid " 'Password Expiry Time'"
 #~ msgstr " 'Termin wygaśnięcia hasła'"
 
-#, fuzzy
 #~ msgid " 'Password History'"
 #~ msgstr " 'Historia Haseł'"
 
-#, fuzzy
 #~ msgid " 'Password Modification Time'"
 #~ msgstr " 'Czas zmiany hasła'"
 
-#, fuzzy
 #~ msgid " 'Password Policy'"
 #~ msgstr " 'Polityka Haseł'"
 
 #~ msgid " 'Password'"
 #~ msgstr " 'Hasło'"
 
-#, fuzzy
 #~ msgid " 'Record Modification Time'"
 #~ msgstr " 'Data Modyfikacji Rekordu'"
 
@@ -5397,7 +5320,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid " 'symbols'"
 #~ msgstr " 'symbole'"
 
-#, fuzzy
 #~ msgid " Drag # %d"
 #~ msgstr " Przeciągnij # %d"
 
@@ -5425,7 +5347,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "#name"
 #~ msgstr "#nazwa"
 
-#, fuzzy
 #~ msgid "#unkflds"
 #~ msgstr "#unkflds"
 
@@ -5447,7 +5368,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "%1 contains an incorrect path."
 #~ msgstr "%1 zawiera nieprawidłową ścieżkę."
 
-#, fuzzy
 #~ msgid "%1 contains an incorrect schema."
 #~ msgstr "%1 zawiera nieprawidłowy schemat."
 
@@ -5473,7 +5393,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Nie mozna znaleźć tego pliku.\n"
 #~ "Sprawdź poprawność ścieżki i pliku."
 
-#, fuzzy
 #~ msgid "%d (%d) items"
 #~ msgstr "%d (%d) pozycje"
 
@@ -5489,7 +5408,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "%s [Recovered]"
 #~ msgstr "%s [Odzyskany]"
 
-#, fuzzy
 #~ msgid ""
 #~ "%s \n"
 #~ "\n"
@@ -5620,31 +5538,21 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid ""
 #~ "'\n"
 #~ "\n"
-#~ "If you would like to report this error, please reply 'Yes' below and "
-#~ "upload this file to your Bug Report. If you reply 'No', the file will be "
-#~ "deleted.\n"
+#~ "If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
 #~ "\n"
-#~ "The diagnostic information in this file does not include any of your "
-#~ "personal data nor any information from the database open at the time of "
-#~ "the error.\n"
+#~ "The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
 #~ "\n"
-#~ "However, if you prefer (and the problem is repeatable with a test "
-#~ "database), you may send us that minidump file as well as the test "
-#~ "database.\n"
+#~ "However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
 #~ "\n"
 #~ "Thank you for your help to improve PasswordSafe."
 #~ msgstr ""
 #~ "'\n"
 #~ "\n"
-#~ "Jeśli chcesz zgłosić ten błąd odpowiedź na poniższe pytanie 'Tak' i dodaj "
-#~ "ten plik do twojego raportu błędu. Jeśli odpowiesz 'Nie', plik zostanie "
-#~ "skasowany.\n"
+#~ "Jeśli chcesz zgłosić ten błąd odpowiedź na poniższe pytanie 'Tak' i dodaj ten plik do twojego raportu błędu. Jeśli odpowiesz 'Nie', plik zostanie skasowany.\n"
 #~ "\n"
-#~ "Informacja diagnostyczna w tym pliku nie zawiera żadnych informacji "
-#~ "osobistych z bazy danych otwartej gdy wystąpił błąd.\n"
+#~ "Informacja diagnostyczna w tym pliku nie zawiera żadnych informacji osobistych z bazy danych otwartej gdy wystąpił błąd.\n"
 #~ "\n"
-#~ "Jednakowoż, jeśli wolisz (i problem jest powtarzanlu na testowej bazie "
-#~ "danych), możesz nam wysłać plik minizrzutu wraz z testową bazą danych.\n"
+#~ "Jednakowoż, jeśli wolisz (i problem jest powtarzanlu na testowej bazie danych), możesz nam wysłać plik minizrzutu wraz z testową bazą danych.\n"
 #~ "\n"
 #~ "Dziękujemy za pomoc w ulepszaniu PasswordSafe."
 
@@ -5919,11 +5827,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Absolute"
 #~ msgstr "Absolutny"
 
-#, fuzzy
 #~ msgid "Access to %1 was denied."
 #~ msgstr "Dostęp do %1 został zabroniony."
 
-#, fuzzy
 #~ msgid "Active"
 #~ msgstr "Aktywny"
 
@@ -5963,7 +5869,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "All Files (*.*)"
 #~ msgstr "Wszystkie pliki (*.*)"
 
-#, fuzzy
 #~ msgid "All available columns are being displayed."
 #~ msgstr "Wszystkie dostępne kolumny są wyświetlane."
 
@@ -5993,29 +5898,21 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "An alias cannot refer to itself!"
 #~ msgstr "Alias nie może odwoływać się do siebie!"
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already "
-#~ "exists."
-#~ msgstr ""
-#~ "Wpis z grupą \"%s\", nazwą \"%s\" i nazwą użytkownika \"%s\" już istnieje."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
+#~ msgstr "Wpis z grupą \"%s\", nazwą \"%s\" i nazwą użytkownika \"%s\" już istnieje."
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and empty User Name already "
-#~ "exists."
-#~ msgstr ""
-#~ "Wpis z grupą \"%s\", nazwą \"%s\" i pustą nazwą użytkownika już istnieje."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
+#~ msgstr "Wpis z grupą \"%s\", nazwą \"%s\" i pustą nazwą użytkownika już istnieje."
 
 #~ msgid ""
 #~ "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already "
 #~ "exists."
-#~ msgstr ""
-#~ "Wpis z pustą grupą, nazwą \"%s\" i nazwą użytkownika \"%s\" już istnieje."
+#~ msgstr "Wpis z pustą grupą, nazwą \"%s\" i nazwą użytkownika \"%s\" już istnieje."
 
 #~ msgid ""
 #~ "An entry with an empty Group, Title \"%s\" and empty User Name already "
 #~ "exists."
-#~ msgstr ""
-#~ "Wpis z pustą grupą, nazwą \"%s\" i pusta nazwą użytkownika już istnieje."
+#~ msgstr "Wpis z pustą grupą, nazwą \"%s\" i pusta nazwą użytkownika już istnieje."
 
 #~ msgid "An incorrect file handle was associated with %1."
 #~ msgstr "Nieprawidłowy uchwyt pliku został skojarzony z %1."
@@ -6042,12 +5939,12 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Armeński zachodninian"
 
 #~ msgid ""
-#~ "As the double quotation character is used to delimit the whole notes "
-#~ "field, it cannot be used within it to delimit multiple lines. Please "
-#~ "enter another character."
+#~ "As the double quotation character is used to delimit the whole notes field, "
+#~ "it cannot be used within it to delimit multiple lines. Please enter another "
+#~ "character."
 #~ msgstr ""
-#~ "znak podwójnego cudzysłowia jest używany jako delimiter pola notatek i "
-#~ "nie może być używany wewnątrz pola. Wybierz inny znak."
+#~ "znak podwójnego cudzysłowia jest używany jako delimiter pola notatek i nie "
+#~ "może być używany wewnątrz pola. Wybierz inny znak."
 
 #~ msgid "Attempted an unsupported operation."
 #~ msgstr "Próba wykonania nieobsługiwanej operacji."
@@ -6146,23 +6043,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Canadian Multilingual Standard"
 #~ msgstr "Kanadyjski standard wielojęzykowy"
 
-#, fuzzy
 #~ msgid "Cannot be less than zero."
 #~ msgstr "Nie może być mniejszy od zera."
 
-#, fuzzy
 #~ msgid "Cannot be more than %d"
 #~ msgstr "Nie może być większe niż %d"
 
 #~ msgid "Cannot create missing directories in path to the export file."
-#~ msgstr ""
-#~ "Nie można stworzyć brakującego katalogu na ścieżce do pliku eksportu."
+#~ msgstr "Nie można stworzyć brakującego katalogu na ścieżce do pliku eksportu."
 
-#~ msgid ""
-#~ "Cannot process as this entry has been deleted from the open database."
+#~ msgid "Cannot process as this entry has been deleted from the open database."
 #~ msgstr ""
-#~ "Nie można kontynuować ponieważ wpis został usunięty z otwartej bazy "
-#~ "danych."
+#~ "Nie można kontynuować ponieważ wpis został usunięty z otwartej bazy danych."
 
 #~ msgid "Caps Lock"
 #~ msgstr "Caps Lock"
@@ -6189,15 +6081,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Zmienić tryb bazy danych?"
 
 #~ msgid ""
-#~ "Change the maximum number of saved passwords for entries currently saving "
-#~ "password history to the new maximum, if currently saving fewer.\n"
+#~ "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n"
 #~ "\n"
-#~ "Entries with more than this new maximum already saved will remain "
-#~ "unchanged."
+#~ "Entries with more than this new maximum already saved will remain unchanged."
 #~ msgstr ""
-#~ "Zmień maksymalną liczbę zapisanych haseł dla wpisów aktualnie "
-#~ "zapisujących historię haseł do nowego maksimum jeśli aktualnie zapisują "
-#~ "mniej.\n"
+#~ "Zmień maksymalną liczbę zapisanych haseł dla wpisów aktualnie zapisujących historię haseł do nowego maksimum jeśli aktualnie zapisują mniej.\n"
 #~ "\n"
 #~ "Wpisy z większą liczbą niż nowe maksimum pozostaną niezmienione."
 
@@ -6228,23 +6116,23 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid ""
 #~ "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
 #~ msgstr ""
-#~ "Kliknij by skopiować do schowka, Ctrl+Click by ustawić także pole URL na "
-#~ "tę wartość"
+#~ "Kliknij by skopiować do schowka, Ctrl+Click by ustawić także pole URL na tę "
+#~ "wartość"
 
 #~ msgid "Click to enable/disable this row"
 #~ msgstr "Kliknij aktywować/dezaktywować ten wiersz"
 
 #~ msgid ""
-#~ "Click to enter a character code via virtual numeric keypad. The character "
-#~ "is added when this button is clicked again."
+#~ "Click to enter a character code via virtual numeric keypad. The character is"
+#~ " added when this button is clicked again."
 #~ msgstr ""
 #~ "Kliknij by wprowadzić znak przez klawiaturę wirtualną. Znak będzie "
 #~ "wprowadzony gdy ten przycisk zostanie ponownie kliknięty."
 
 #~ msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
 #~ msgstr ""
-#~ "Kliknij by rozwinąć i skopiowac do schowka, Ctrl+kliknięcie by skopiować "
-#~ "bez rozwijania"
+#~ "Kliknij by rozwinąć i skopiowac do schowka, Ctrl+kliknięcie by skopiować bez"
+#~ " rozwijania"
 
 #~ msgid "Click to go to link, Ctrl+Click to go and Autotype"
 #~ msgstr "Kliknij by iść do łącza, Ctrl+klik by iść z autouzupełnianiem"
@@ -6261,7 +6149,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Click to send email to this address"
 #~ msgstr "Kliknij by wysłąć email do tego adresu"
 
-#, fuzzy
 #~ msgid "Click to set criteria for matching the field"
 #~ msgstr "Kliknij by ustanowić kryteria pasujące do pola."
 
@@ -6298,7 +6185,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Close Find Bar"
 #~ msgstr "Zamknij pasek szukanioa"
 
-#, fuzzy
 #~ msgid "Column Picker"
 #~ msgstr "Wybór kolumn"
 
@@ -6308,7 +6194,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Compare"
 #~ msgstr "Porównaj"
 
-#, fuzzy
 #~ msgid "Compare Database Results"
 #~ msgstr "Wyniki porównania Bazy Danych"
 
@@ -6342,8 +6227,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Status pliku konfiguracyjnego"
 
 #~ msgid ""
-#~ "Confirm that you wish to copy this entry from the %s database to the %s "
-#~ "database?\n"
+#~ "Confirm that you wish to copy this entry from the %s database to the %s database?\n"
 #~ "\n"
 #~ "If already present in the target database, it will be replaced!"
 #~ msgstr ""
@@ -6378,7 +6262,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Couldn't save database - Please save manually"
 #~ msgstr "Nie można zapisać bazy danych - Proszę zapisać ręcznie"
 
-#, fuzzy
 #~ msgid "Created"
 #~ msgstr "Utworzono"
 
@@ -6432,15 +6315,14 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Unikalny identyfikator w bazie"
 
 #~ msgid ""
-#~ "Database is read-only. Changes to DB preferences will not be saved and "
-#~ "are only valid for this session."
+#~ "Database is read-only. Changes to DB preferences will not be saved and are "
+#~ "only valid for this session."
 #~ msgstr ""
-#~ "Baza danych jest w trybie tylko do odczytu. Zmiana ustawień bazy nie "
-#~ "będzie zachowana i będzie obowiązywała tylko w czasie tej sesji."
+#~ "Baza danych jest w trybie tylko do odczytu. Zmiana ustawień bazy nie będzie "
+#~ "zachowana i będzie obowiązywała tylko w czasie tej sesji."
 
 #~ msgid ""
-#~ "Database is read-only. Sorry, cannot save changed any database "
-#~ "preferences."
+#~ "Database is read-only. Sorry, cannot save changed any database preferences."
 #~ msgstr ""
 #~ "Baza danych tylko do odczytu. Nie można zapisać zmian właściwości bazy "
 #~ "danych."
@@ -6453,8 +6335,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "(Dwuklik zmieni tryb)"
 
 #~ msgid ""
-#~ "Default number of saved password history entries must be between 1 and "
-#~ "255."
+#~ "Default number of saved password history entries must be between 1 and 255."
 #~ msgstr ""
 #~ "Domyślna liczba zapisanych wpisów historii haseł musi być między 1 i 255."
 
@@ -6464,18 +6345,15 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Description:"
 #~ msgstr "Opis:"
 
-#, fuzzy
 #~ msgid "Deselect all entries"
 #~ msgstr "Odznacz wszystko"
 
-#, fuzzy
 #~ msgid "Deselect some entries"
 #~ msgstr "Odznacz niektóre wpisy"
 
 #~ msgid "Destination disk drive is full."
 #~ msgstr "Dysk docelowy jest pełny."
 
-#, fuzzy
 #~ msgid "Destination location does not exist or is not accessible."
 #~ msgstr "Folder docelowy nie istnieje lub jest niedostępny."
 
@@ -6491,7 +6369,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Disk full while accessing %1."
 #~ msgstr "Dysk pełny przy dostępie do %1."
 
-#, fuzzy
 #~ msgid "Dispatch exception: %1"
 #~ msgstr "Przydziel wyjątek: %1"
 
@@ -6548,8 +6425,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Kliknij dwa razy na wpisie żeby skopiować hasło"
 
 #~ msgid "Double-Click on entry to Copy Password and Minimize"
-#~ msgstr ""
-#~ "Kliknij dwa razy na wpisie żeby skopiować hasło i zminimalizować okno"
+#~ msgstr "Kliknij dwa razy na wpisie żeby skopiować hasło i zminimalizować okno"
 
 #~ msgid "Double-Click on entry to Copy Username"
 #~ msgstr "Kliknij dwa razy na wpisie żeby skopiować nazwę użytkownika"
@@ -6572,13 +6448,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "2012-05-21uzupełnianie."
 
 #~ msgid ""
-#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
-#~ "alias.\n"
+#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
 #~ "\n"
 #~ "The dropped entry now references that entry's base entry."
 #~ msgstr ""
-#~ "Opuszczono wpis '%s:%s:%s' hasło wskazuje na wpis, który też jest "
-#~ "aliasem.\n"
+#~ "Opuszczono wpis '%s:%s:%s' hasło wskazuje na wpis, który też jest aliasem.\n"
 #~ "\n"
 #~ "Opuszczony wpis odnosi się teraz do wpisu bazowego tego wpisu."
 
@@ -6595,14 +6469,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Edytuj wpis:   «%s» «%s» «%s»"
 
 #~ msgid ""
-#~ "Either unable to load the necessary DLL, or it is the incorrect version, "
-#~ "to support Autotype during Launch of a Browser or Run a command.\n"
+#~ "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n"
 #~ "\n"
 #~ "Autotype for these functions is disabled."
 #~ msgstr ""
-#~ "Nie można załadować niezbędnej biblioteki DLL, lub jest ona w "
-#~ "nieprawidłowej wersji by wspierać autouzupełnianie podczas uruchamioania "
-#~ "przeglądarki lub wykoywania komendy.\n"
+#~ "Nie można załadować niezbędnej biblioteki DLL, lub jest ona w nieprawidłowej wersji by wspierać autouzupełnianie podczas uruchamioania przeglądarki lub wykoywania komendy.\n"
 #~ "\n"
 #~ "Autouzupełnianie dla tej funkcji jest wyłączone."
 
@@ -6624,11 +6495,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Encountered an unexpected error while writing %1."
 #~ msgstr "Napotkano niespodziewany błąd podczas zapisu %1."
 
-#, fuzzy
 #~ msgid "Encrypt/Decrypt"
 #~ msgstr "Szyfruj/Odszyfruj"
 
-#, fuzzy
 #~ msgid "Encryption failed"
 #~ msgstr "Szyfrowanie nie powiodło się"
 
@@ -6672,8 +6541,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Wprowadź nie więcej niż %1 znaków."
 
 #~ msgid ""
-#~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons:"
+#~ "Enter positions of password characters separated by spaces, commas or semi-"
+#~ "colons:"
 #~ msgstr ""
 #~ "Wprowadź pozycje znaków w haśle odzdzielając je spacją, przecinkiem lub "
 #~ "średnikiem:"
@@ -6681,7 +6550,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Enter your Sample Text below"
 #~ msgstr "Wprowadź przykładowy tekst poniżej"
 
-#, fuzzy
 #~ msgid "Entries in both databases but with differences:"
 #~ msgstr "Wpisy istnieją w w obydwu bazach danych ale z różnicami:"
 
@@ -6724,7 +6592,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Expiring Passwords"
 #~ msgstr "Wygasające hasła"
 
-#, fuzzy
 #~ msgid "Export"
 #~ msgstr "Eksportuj"
 
@@ -6768,7 +6635,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Failed to create empty document."
 #~ msgstr "Nie udało się utworzyć pustego dokumentu."
 
-#, fuzzy
 #~ msgid "Failed to launch help."
 #~ msgstr "Nie udało się uruchomić pomocy."
 
@@ -6782,29 +6648,27 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Nie udało się zapisać dokumentu."
 
 #~ msgid ""
-#~ "Failed to switch from R-O to R/W because database is already open in R/W "
-#~ "mode by:\n"
+#~ "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 #~ "%s %s\n"
 #~ "(Only one R/W access at a time is allowed)"
 #~ msgstr ""
-#~ "Zawiodła zmiana z R-O na R/W ponieważ baza danych jest już otwarta w "
-#~ "trybie R/W przez:\n"
+#~ "Zawiodła zmiana z R-O na R/W ponieważ baza danych jest już otwarta w trybie R/W przez:\n"
 #~ "%s %s\n"
 #~ "(W danej chwili jest dostępny tylko jeden dostęp R/W)"
 
 #~ msgid ""
-#~ "Failed to switch from R-O to R/W: Could not open the database. It may "
-#~ "have been deleted or renamed or there may be a problem with its drive."
+#~ "Failed to switch from R-O to R/W: Could not open the database. It may have "
+#~ "been deleted or renamed or there may be a problem with its drive."
 #~ msgstr ""
-#~ "Zawiodała zmiana z R-O na R/W: Nie można otworzyć bazy danych. Mogła "
-#~ "zostać skasowana, zmieniono jej nazwę, lub jest problem w dyskiem."
+#~ "Zawiodała zmiana z R-O na R/W: Nie można otworzyć bazy danych. Mogła zostać "
+#~ "skasowana, zmieniono jej nazwę, lub jest problem w dyskiem."
 
 #~ msgid ""
-#~ "Failed to switch from R-O to R/W: The file appears to be too short to be "
-#~ "a valid database."
+#~ "Failed to switch from R-O to R/W: The file appears to be too short to be a "
+#~ "valid database."
 #~ msgstr ""
-#~ "Zawiodła zmiana z R-O na R/W: plik wygląda na zbyt krótki by być "
-#~ "prawidłową bazą danych."
+#~ "Zawiodła zmiana z R-O na R/W: plik wygląda na zbyt krótki by być prawidłową "
+#~ "bazą danych."
 
 #~ msgid ""
 #~ "Failed to switch from R/W to R-O: Could not release database lock.\n"
@@ -6828,11 +6692,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Field present"
 #~ msgstr "Pole istnieje"
 
-#, fuzzy
 #~ msgid "File In Use"
 #~ msgstr "Plik jest używany"
 
-#, fuzzy
 #~ msgid "File open error."
 #~ msgstr "Błąd przy otwieraniu pliku."
 
@@ -6884,7 +6746,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "German (IBM)"
 #~ msgstr "Niemiecki (IBM)"
 
-#, fuzzy
 #~ msgid "Given path is a directory or file is read-only"
 #~ msgstr "Podana ścieżka prowadzi do katalogu lub plik jest tylko do odczytu"
 
@@ -6951,11 +6812,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Hindi Traditional"
 #~ msgstr "Hindi tradycyjny"
 
-#, fuzzy
 #~ msgid "Hot Key"
 #~ msgstr "Hot Key"
 
-#, fuzzy
 #~ msgid "HotKey1"
 #~ msgstr "HotKey1"
 
@@ -7074,13 +6933,12 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Jeśli zaznaczone, przed każdym zapisem zostanie wykonany 'zrzut' oraz "
 #~ "nazwany wg opcji poniżej."
 
-#, fuzzy
 #~ msgid "If requested, then a delimiter character must be entered!"
 #~ msgstr "Znak określający ogranicznik musi zostać wprowadzony!"
 
 #~ msgid ""
-#~ "If the passphrase is the same as the currently opened database, "
-#~ "properties of this backup are shown."
+#~ "If the passphrase is the same as the currently opened database, properties "
+#~ "of this backup are shown."
 #~ msgstr ""
 #~ "Jeśli fraza hasła jest taka sama jak do aktualnie otworzonej bazy danych, "
 #~ "właściwości tej kopii zapasowej są pokazane."
@@ -7090,19 +6948,16 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "PasswordSafe will exit.  If not, the new open will be cancelled and the "
 #~ "existing opened database, if any, will remain open."
 #~ msgstr ""
-#~ "Jeśli jest to pierwsza otworzona baza danych w czasie uruchamiania "
-#~ "Password Safa, Passowrd safe zakończy pracę.  Jesli nie, nowe "
-#~ "otworzonenie zostanie anulowane, a istniejąca, otworzona baza danych "
-#~ "pozostanie otwarta."
+#~ "Jeśli jest to pierwsza otworzona baza danych w czasie uruchamiania Password "
+#~ "Safa, Passowrd safe zakończy pracę.  Jesli nie, nowe otworzonenie zostanie "
+#~ "anulowane, a istniejąca, otworzona baza danych pozostanie otwarta."
 
 #~ msgid ""
-#~ "If this keyboard supports characters via the %s, then this key will be "
-#~ "enabled and can be used to select them.\n"
+#~ "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
 #~ "\n"
 #~ "You may need to also select the Shift key to see them."
 #~ msgstr ""
-#~ "Jeśli ta klawiatura obsługuje znaki poprzez %s, wtedy ten klawisz "
-#~ "zostanie włąćzony i może być użyty do wyboru.\n"
+#~ "Jeśli ta klawiatura obsługuje znaki poprzez %s, wtedy ten klawisz zostanie włąćzony i może być użyty do wyboru.\n"
 #~ "\n"
 #~ "Możesz także potrzebować klawisza Shift, by je zobaczyć."
 
@@ -7113,8 +6968,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Ignore all Failsafe Backup files and continue with the currently selected "
 #~ "database."
 #~ msgstr ""
-#~ "Ignoruj wszystkie kopie zapasowe Failsafe i kontynuuj z obecnie wybraną "
-#~ "bazą danych."
+#~ "Ignoruj wszystkie kopie zapasowe Failsafe i kontynuuj z obecnie wybraną bazą"
+#~ " danych."
 
 #~ msgid "Import KeePass V1 CSV"
 #~ msgstr "Import KeePass V1 CSV"
@@ -7210,16 +7065,13 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Kliknij lewym klawiszem by zmienić. Prawym by zresetować lub usunąć. Po "
 #~ "wybraniu kombinacji klawiszy dla skrótu naciśnij Enter by go ustawić."
 
-#, fuzzy
 #~ msgid ""
 #~ "Length of passwords generated in hexadecimal format must be even\n"
 #~ "as each byte is two hexadecimal digits."
 #~ msgstr ""
-#~ "Liczba znaków w haśle generowanym w formacie szesnastkowym musi być "
-#~ "parzysta\n"
+#~ "Liczba znaków w haśle generowanym w formacie szesnastkowym musi być parzysta\n"
 #~ "Każdy bajt odpowiada dwóm znakow szesnastkowym."
 
-#, fuzzy
 #~ msgid "List1"
 #~ msgstr "Lista1"
 
@@ -7247,7 +7099,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Marathi"
 #~ msgstr "Maratki"
 
-#, fuzzy
 #~ msgid ""
 #~ "Maximum number of backups kept using incremented number suffix\n"
 #~ "must be between 1 and 999."
@@ -7258,7 +7109,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "Maksymalna liczba dni która może być określona wynosi %d"
 
-#, fuzzy
 #~ msgid "Maximum number stored"
 #~ msgstr "Maksymalna liczba zapisanych"
 
@@ -7277,7 +7127,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Minimum symbol characters"
 #~ msgstr "Minimalna liczba znaków zawierających symbole"
 
-#, fuzzy
 #~ msgid "Mixed"
 #~ msgstr "Mieszane"
 
@@ -7288,8 +7137,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Przenieś tu"
 
 #~ msgid ""
-#~ "NOTE: Changing this entry's own password will make this a normal entry "
-#~ "and break the link with its base?"
+#~ "NOTE: Changing this entry's own password will make this a normal entry and "
+#~ "break the link with its base?"
 #~ msgstr ""
 #~ "Uwaga: zmiana własnego hasła tego wpisu spowoduje, że będzie to normalny "
 #~ "wpis z link z wpisem bazowym zostanie stracony."
@@ -7333,21 +7182,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "No fields selected to compare!"
 #~ msgstr "Nie zaznaczono pól do porównania!"
 
-#, fuzzy
 #~ msgid "No fields selected to filter the display!"
 #~ msgstr "Nie zaznaczono pól do filtrowania!"
 
 #~ msgid "No fields selected to synchronize!"
 #~ msgstr "Żadne pole nie zostało wybrano do synchronizacji!"
 
-#, fuzzy
 #~ msgid "No function selected for basing your restrictions."
 #~ msgstr "No function selected for basing your restrictions."
 
 #~ msgid "No items matched your filter"
 #~ msgstr "Brak pozycji spełniających kryteria"
 
-#, fuzzy
 #~ msgid "No object selected for basing your restrictions."
 #~ msgstr "No object selected for basing your restrictions."
 
@@ -7377,22 +7223,20 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 
 #~ msgid ""
 #~ "Note that if you choose to recover the auto-saved documents, you must "
-#~ "explicitly save them to overwrite the original documents.  If you choose "
-#~ "to not recover the auto-saved versions, they will be deleted."
+#~ "explicitly save them to overwrite the original documents.  If you choose to "
+#~ "not recover the auto-saved versions, they will be deleted."
 #~ msgstr ""
-#~ "Uwaga: jeżeli wybierzesz odzyskiwanie automatycznie zachowanych "
-#~ "dokumentów, to musisz zapisywać je samodzielnie by nadpisac oryginalne "
-#~ "documenty.  Jeśli wybierzesz by nie odzyskiwać automatycznie zachowanych "
-#~ "dokumentów, zostaną one skasowane."
+#~ "Uwaga: jeżeli wybierzesz odzyskiwanie automatycznie zachowanych dokumentów, "
+#~ "to musisz zapisywać je samodzielnie by nadpisac oryginalne documenty.  Jeśli"
+#~ " wybierzesz by nie odzyskiwać automatycznie zachowanych dokumentów, zostaną "
+#~ "one skasowane."
 
 #~ msgid "Notes copied "
 #~ msgstr "Notatki skopiowano "
 
-#, fuzzy
 #~ msgid "Number is set to the maximum value.  'Greater than' is not allowed."
 #~ msgstr "Liczba ma maksymalną wartość.  'Większa niż' jest niedostępna."
 
-#, fuzzy
 #~ msgid "Number is set to the minimum value.  'Less than' is not allowed."
 #~ msgstr "Liczba ma minimalną wartość.  'Mniejsza niż' jest niedostępna."
 
@@ -7412,8 +7256,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Number of entries that had their 'maximum saved passwords' changed to the "
 #~ "new default was %d"
 #~ msgstr ""
-#~ "Liczba wpisów których 'maksymalna ilość zapisanych haseł' została "
-#~ "zmieniona na nową wartość domyślną: %d"
+#~ "Liczba wpisów których 'maksymalna ilość zapisanych haseł' została zmieniona "
+#~ "na nową wartość domyślną: %d"
 
 #~ msgid ""
 #~ "Number of entries that had their settings changed to not save password "
@@ -7423,11 +7267,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "historii haseł: %d"
 
 #~ msgid ""
-#~ "Number of entries that had their settings changed to save password "
-#~ "history was: %d"
+#~ "Number of entries that had their settings changed to save password history "
+#~ "was: %d"
 #~ msgstr ""
-#~ "Liczba wpisów których ustawienia zostały zmienione, żeby zapisywać "
-#~ "historię haseł: %d"
+#~ "Liczba wpisów których ustawienia zostały zmienione, żeby zapisywać historię "
+#~ "haseł: %d"
 
 #~ msgid "Number of unknown fields:"
 #~ msgstr "Liczba nieznanych pól:"
@@ -7442,29 +7286,25 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Wył."
 
 #~ msgid ""
-#~ "One of more preferences have been changed. Are you sure you wish to "
-#~ "cancel?"
-#~ msgstr ""
-#~ "Preferencja została zmieniona. Jesteś pewien, że chcesz to odrzucić?"
+#~ "One of more preferences have been changed. Are you sure you wish to cancel?"
+#~ msgstr "Preferencja została zmieniona. Jesteś pewien, że chcesz to odrzucić?"
 
 #~ msgid "One or more auto-saved documents were found."
 #~ msgstr "Znaleziono automatycznie zachowany dokument."
 
 #~ msgid ""
-#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both "
-#~ "(differences): %d; In both (identical): %d"
+#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): "
+#~ "%d; In both (identical): %d"
 #~ msgstr ""
-#~ "Tylko w oryginalnej BD: %d; Tylko w porównywanej BD: %d; W obydwu "
-#~ "(różnice): %d; W obydwu (identyczne): %d"
+#~ "Tylko w oryginalnej BD: %d; Tylko w porównywanej BD: %d; W obydwu (różnice):"
+#~ " %d; W obydwu (identyczne): %d"
 
 #~ msgid "Open"
 #~ msgstr "Otwórz"
 
-#, fuzzy
 #~ msgid "Original"
 #~ msgstr "Oryginał"
 
-#, fuzzy
 #~ msgid "Original Database:"
 #~ msgstr "Pierwotna baza danych:"
 
@@ -7474,7 +7314,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Other: "
 #~ msgstr "Inny: "
 
-#, fuzzy
 #~ msgid "Out of memory."
 #~ msgstr "Brak pamięci."
 
@@ -7504,7 +7343,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Password Length"
 #~ msgstr "Długość hasła"
 
-#, fuzzy
 #~ msgid "Password Modified"
 #~ msgstr "Haslo zmodyfikowano"
 
@@ -7515,20 +7353,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Ignoruj właściwości haseł"
 
 #~ msgid ""
-#~ "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-#~ "ibak)|*.ibak||"
+#~ "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
+#~ "(*.ibak)|*.ibak||"
 #~ msgstr ""
-#~ "Kopie zapasowe Password Safe(*.bak)|*.bak|Pośrednie kopie zapasowe "
-#~ "Password Safe (*.ibak)|*.ibak||"
+#~ "Kopie zapasowe Password Safe(*.bak)|*.bak|Pośrednie kopie zapasowe Password "
+#~ "Safe (*.ibak)|*.ibak||"
 
 #~ msgid ""
 #~ "Password Safe has been compiled as %s but CPU is really %s.\n"
-#~ "You may not be able to open files or saved files may be incompatible with "
-#~ "other platforms."
+#~ "You may not be able to open files or saved files may be incompatible with other platforms."
 #~ msgstr ""
 #~ "Password Safe został skompilowany jako %s ale CPU jest %s.\n"
-#~ "Pliki mogą się nie otwierać lub zapisane pliku mogą być niekompatybilne z "
-#~ "innymi platformami."
+#~ "Pliki mogą się nie otwierać lub zapisane pliku mogą być niekompatybilne z innymi platformami."
 
 #~ msgid "Password [Mandatory Field]"
 #~ msgstr "Hasło [Pole Wymagane]"
@@ -7537,12 +7373,10 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Hasło wskazuje, że wpis jest aliasem, ale "
 
 #~ msgid ""
-#~ "Password implies this is an alias entry, but specifies a base entry with "
-#~ "no title.\n"
+#~ "Password implies this is an alias entry, but specifies a base entry with no title.\n"
 #~ "Every entry must have a title."
 #~ msgstr ""
-#~ "Hasło wskazuje, że jest to alias wpisu, ale specyfikuje wpis bazowy bez "
-#~ "tytułu.\n"
+#~ "Hasło wskazuje, że jest to alias wpisu, ale specyfikuje wpis bazowy bez tytułu.\n"
 #~ "Każdy wpis musi mieć tytuł."
 
 #~ msgid "Password minimum length"
@@ -7565,18 +7399,15 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Wybierz plik tekstowy do zaimportowania"
 
 #~ msgid ""
-#~ "Please confirm that you wish to delete current user's PasswordSafe "
-#~ "configuration information from the Windows registry.\n"
+#~ "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Proszę potwierdzić, że należy skasować informacje konfiguracyjne "
-#~ "aktualnego użytkownika PasswordSafe z rejestrów Windows.\n"
+#~ "Proszę potwierdzić, że należy skasować informacje konfiguracyjne aktualnego użytkownika PasswordSafe z rejestrów Windows.\n"
 #~ "\n"
 
 #~ msgid "Please confirm you wish to delete the %s filter %s?"
 #~ msgstr "Potwierdź: Czy chcesz skasować %s filtra %s?"
 
-#, fuzzy
 #~ msgid "Please enter a search string"
 #~ msgstr "Wprowadź szukaną frazę"
 
@@ -7595,14 +7426,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Please specify the destination location to contain all backups."
 #~ msgstr "Wybierz folder docelowy dla kopii zapasowych."
 
-#, fuzzy
 #~ msgid "Please specify the sub-directory to contain all backups."
 #~ msgstr "Wybierz podkatalog dla kopii bezpieczeństwa."
 
-#~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-#~ msgstr ""
-#~ "Proszę odwiedzić <a href=\"http://pwsafe.org/\">stronę PasswordSafe.</a>"
+#~ msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgstr "Proszę odwiedzić <a href=\"http://pwsafe.org/\">stronę PasswordSafe.</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Polski (programisty)"
@@ -7617,13 +7445,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Naciśnij by skasować wszystkie dodane znaki."
 
 #~ msgid ""
-#~ "Pressing OK will copy the password of the selected item to the clipboard. "
-#~ "The clipboard will be securely cleared when Password Safe is closed.\n"
+#~ "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
 #~ "\n"
 #~ "Pressing Cancel stops the password being copied."
 #~ msgstr ""
-#~ "Wybranie OK skopiuje hasła wybranego wpisu do schowka. Schowek zostanie w "
-#~ "bezpieczny sposób wyczyszczony kiedy Password Safe będzie zamykany.\n"
+#~ "Wybranie OK skopiuje hasła wybranego wpisu do schowka. Schowek zostanie w bezpieczny sposób wyczyszczony kiedy Password Safe będzie zamykany.\n"
 #~ "\n"
 #~ "Wybranie Anuluj zatrzyma kopiowanie hasła."
 
@@ -7689,11 +7515,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Względny"
 
 #~ msgid ""
-#~ "Relative dates are in days relative to today e.g. '-1' is yesterday and "
-#~ "'1' is tomorrow"
+#~ "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
+#~ "is tomorrow"
 #~ msgstr ""
-#~ "Daty względne są datami zależnymi od dzisiejszego dnia, np. '-1' to "
-#~ "wczoraj, a '1' to jutro"
+#~ "Daty względne są datami zależnymi od dzisiejszego dnia, np. '-1' to wczoraj,"
+#~ " a '1' to jutro"
 
 #~ msgid "Remove PasswordSafe configuration from Registry"
 #~ msgstr "Usuń konfigurację PasswordSafe z rejestrów"
@@ -7792,18 +7618,15 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Sc&ript:"
 #~ msgstr "Sk&rypt:"
 
-#, fuzzy
 #~ msgid "Second date must be later than first"
 #~ msgstr "Druga data musi być późniejsza niż pierwsza"
 
 #~ msgid "Second number must be more than first"
 #~ msgstr "Druga liczba musi być większa niż pierwsza"
 
-#, fuzzy
 #~ msgid "Seek failed on %1"
 #~ msgstr "Szukanie nie powiodło się %1"
 
-#, fuzzy
 #~ msgid "Select"
 #~ msgstr "Wybierz"
 
@@ -7828,7 +7651,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Select and apply a filter"
 #~ msgstr "Wybierz i zastosuj filtr"
 
-#, fuzzy
 #~ msgid "Select some entries"
 #~ msgstr "Zaznacz niektóre wpisy"
 
@@ -7868,7 +7690,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "Set Password Policy Filters: %d Added; %d Active"
 #~ msgstr "Filtry Ustawień Haseł: %d dodano; %d aktywnych"
 
-#, fuzzy
 #~ msgid "Set Sample &Text"
 #~ msgstr "Ustaw Przykład & Tekst"
 
@@ -7918,8 +7739,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Pokaż wpisy z datą wygaśnięcia"
 
 #~ msgid ""
-#~ "Show entries with identical compared fields (Note: Unknown fields were "
-#~ "not compared.)"
+#~ "Show entries with identical compared fields (Note: Unknown fields were not "
+#~ "compared.)"
 #~ msgstr ""
 #~ "Pokaż wpisy z identycznymi polami (Nieznane pola nie zostały porównane)"
 
@@ -7955,8 +7776,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "ponieważ nie można znaleźć fontu MS Arial Unicode."
 
 #~ msgid ""
-#~ "Some of the entries in this database have passwords that have expired or "
-#~ "are about to.  Do you wish to list them and possibly update them?"
+#~ "Some of the entries in this database have passwords that have expired or are"
+#~ " about to.  Do you wish to list them and possibly update them?"
 #~ msgstr ""
 #~ "Niektóre wpisy w tej bazie danych mają hasła które wygasły, lub wkrótce "
 #~ "wygasną.  Czy chcesz je wylistować i ewentualnie zaktualizować?"
@@ -7991,8 +7812,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\t'"
 
 #~ msgid ""
-#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' "
-#~ "or 'easy-to-read' options. Specified values ignored."
+#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' or "
+#~ "'easy-to-read' options. Specified values ignored."
 #~ msgstr ""
 #~ "Nie można podać minimalnej liczby znaków w trybie 'wymawialne' lub 'łatwe-"
 #~ "do-czytania'. Podane wartości zostały zignorowane."
@@ -8007,8 +7828,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Start saving password history for all entries, to the above number of "
 #~ "entries."
 #~ msgstr ""
-#~ "Zacznij zapisywać historię haseł dla wszystkich wpisów, do powyższej "
-#~ "liczby wpisów."
+#~ "Zacznij zapisywać historię haseł dla wszystkich wpisów, do powyższej liczby "
+#~ "wpisów."
 
 #~ msgid "Static_Static"
 #~ msgstr "Static_Static"
@@ -8019,15 +7840,12 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid ""
 #~ "Stop saving password history for all entries.\n"
 #~ "\n"
-#~ "Saved histories will not be touched, but password changes will no longer "
-#~ "be stored by default."
+#~ "Saved histories will not be touched, but password changes will no longer be stored by default."
 #~ msgstr ""
 #~ "Zakończ zapisywanie historii haseł dla wszystkich wpisów.\n"
 #~ "\n"
-#~ "Zapisane historie nie zostaną usunięte, ale zmiany haseł nie będą już "
-#~ "domyślnie zapisywane."
+#~ "Zapisane historie nie zostaną usunięte, ale zmiany haseł nie będą już domyślnie zapisywane."
 
-#, fuzzy
 #~ msgid "String value:"
 #~ msgstr "Wartość łańcucha znaków:"
 
@@ -8094,29 +7912,25 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Tajski Pattachote (bez ShiftLock)"
 
 #~ msgid ""
-#~ "The ALT key is not used on any keyboard to select characters. Use the "
-#~ "'Alt Num' key to enter a character via its decimal value."
+#~ "The ALT key is not used on any keyboard to select characters. Use the 'Alt "
+#~ "Num' key to enter a character via its decimal value."
 #~ msgstr ""
 #~ "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. Użyj "
 #~ "'Aln Num' by wprowadzić znak poprzez jego wartość numeryczną."
 
 #~ msgid ""
 #~ "The database %s couldn't be opened.\n"
-#~ "Do you wish to look for it elsewhere (Search), create a new database "
-#~ "(New), or Exit?"
+#~ "Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 #~ msgstr ""
 #~ "Baza danych %s nie mogła zostać otwarta.\n"
-#~ "Czy chcesz poszukać jej gdzie indziej (Szukaj), utworzyć nową bazę danych "
-#~ "(New), czy zakończyć program?"
+#~ "Czy chcesz poszukać jej gdzie indziej (Szukaj), utworzyć nową bazę danych (New), czy zakończyć program?"
 
 #~ msgid ""
-#~ "The database has been changed since you opened it in R-O mode, so it is "
-#~ "not possible to switch to R/W mode.\n"
+#~ "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
 #~ "\n"
 #~ "Please close the database and re-open it in R/W mode."
 #~ msgstr ""
-#~ "Baza danych została zmieniona, ale ponieważ otworzona jest w trybie R-O, "
-#~ "nie jest możliwe przejście na tryb R/W.\n"
+#~ "Baza danych została zmieniona, ale ponieważ otworzona jest w trybie R-O, nie jest możliwe przejście na tryb R/W.\n"
 #~ "\n"
 #~ "Prosze zamknąć bazę i otworzyc ją ponownie w trybie R/W."
 
@@ -8150,8 +7964,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "Open the database for Read-Only, Read-Write, or Exit?\n"
 #~ "\n"
-#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in "
-#~ "fact not being used by anyone else,\n"
+#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
 #~ "including another copy of Password Safe running on your machine."
 #~ msgstr ""
 #~ "Baza danych:\n"
@@ -8160,17 +7973,14 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "jest używana przez:\n"
 #~ "%s%s.\n"
 #~ "\n"
-#~ "Otworzyć bazę w trybie tylko do odczytu, do odczytu i zapisu, czy "
-#~ "zakończyć?\n"
+#~ "Otworzyć bazę w trybie tylko do odczytu, do odczytu i zapisu, czy zakończyć?\n"
 #~ "\n"
-#~ "Uwaga: wybierz \"odczyt i zapis\" tylko jeśli jesteś pewien, że plik nie "
-#~ "jest używany przez innych,\n"
+#~ "Uwaga: wybierz \"odczyt i zapis\" tylko jeśli jesteś pewien, że plik nie jest używany przez innych,\n"
 #~ "włączając inne kopie Password Safe pracujące na Twoim komputerze."
 
 #~ msgid "The entered passwords do not match.  Please re-enter them."
 #~ msgstr "Wprowadzone hasła nie są identyczne.  Spróbuj ponownie."
 
-#, fuzzy
 #~ msgid "The file is too large to open."
 #~ msgstr "Plik jest zbyt duży żeby go otworzyć."
 
@@ -8181,11 +7991,10 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
 
 #~ msgid ""
-#~ "The notes field of this entry has more text than can be displayed. "
-#~ "Changing this field and saving the entry will result in this field being "
-#~ "truncated after %d characters.  To view the full contents, either copy it "
-#~ "to an editor via the clipboard or export this entry to XML before "
-#~ "changing it."
+#~ "The notes field of this entry has more text than can be displayed. Changing "
+#~ "this field and saving the entry will result in this field being truncated "
+#~ "after %d characters.  To view the full contents, either copy it to an editor"
+#~ " via the clipboard or export this entry to XML before changing it."
 #~ msgstr ""
 #~ "Pole notatki dla tego pola ma więcej tekstu niż można wyświetlić. Przy "
 #~ "zmienie pole i zapisaniu wpis pole zostanie obcięte do %d znaków.  By "
@@ -8193,13 +8002,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "wpis do XML przed zmianą."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is "
-#~ "itself an alias.\n"
+#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest "
-#~ "aliasem.\n"
+#~ "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest aliasem.\n"
 #~ "\n"
 #~ "Czy ten wpis ma wskazywać do właściwego wpisu bazowego?"
 
@@ -8218,8 +8025,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 
 #~ msgid ""
 #~ "The safe combination has been entered three times without success. If you "
-#~ "don't know the safe combination, you can either try to open another "
-#~ "password database, or create a new blank password database."
+#~ "don't know the safe combination, you can either try to open another password"
+#~ " database, or create a new blank password database."
 #~ msgstr ""
 #~ "Hasło zostało wprowadzone niepoprawnie trzy razy. Jeśli nie znasz hasła "
 #~ "możesz otworzyć inną bazę danych lub utworzyć nową bazę danych."
@@ -8228,8 +8035,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "The selected Failsafe Backup file will be opened instead of selected "
 #~ "database."
 #~ msgstr ""
-#~ "Wybrana kopia zapasowa Failsafe będzie otwarta zamiast wybranej bazy "
-#~ "danych."
+#~ "Wybrana kopia zapasowa Failsafe będzie otwarta zamiast wybranej bazy danych."
 
 #~ msgid ""
 #~ "There are more than one entry that fits your selection. Please be more "
@@ -8238,18 +8044,18 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 
 #~ msgid ""
 #~ "There does not appear to be a Recycle Bin on the media containing this "
-#~ "Failsafe Backup file. You will not be able to undo deletes. Do you wish "
-#~ "to continue?"
+#~ "Failsafe Backup file. You will not be able to undo deletes. Do you wish to "
+#~ "continue?"
 #~ msgstr ""
-#~ "Wygląda na to, że nie dysk zawierający kopię zapasową Failsafe nie ma "
-#~ "Kosza. Nie będzie można przywrócić rzeczy skasowanych. Czy kontynuować?"
+#~ "Wygląda na to, że nie dysk zawierający kopię zapasową Failsafe nie ma Kosza."
+#~ " Nie będzie można przywrócić rzeczy skasowanych. Czy kontynuować?"
 
 #~ msgid ""
-#~ "These are more recently saved than the currently open documents and "
-#~ "contain changes that were made before the application closed."
+#~ "These are more recently saved than the currently open documents and contain "
+#~ "changes that were made before the application closed."
 #~ msgstr ""
-#~ "Są nowsze dokumenty niż aktualnie otwarte i zawierają zmiany dokonane "
-#~ "przed zamknięciem aplikacji."
+#~ "Są nowsze dokumenty niż aktualnie otwarte i zawierają zmiany dokonane przed "
+#~ "zamknięciem aplikacji."
 
 #~ msgid ""
 #~ "This alias' target [%s:%s:%s] is not a normal entry or already an alias "
@@ -8259,11 +8065,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "bazą dla aliasu."
 
 #~ msgid ""
-#~ "This allows you to keep backups in a separate location. Make sure that "
-#~ "you have write permission to the directory you specify."
+#~ "This allows you to keep backups in a separate location. Make sure that you "
+#~ "have write permission to the directory you specify."
 #~ msgstr ""
-#~ "Pozwala na zachowanie kopii zapasowych w osobnym katalogu. Upewnij się, "
-#~ "że masz uprawnienia zapisu do wybranego katalogu."
+#~ "Pozwala na zachowanie kopii zapasowych w osobnym katalogu. Upewnij się, że "
+#~ "masz uprawnienia zapisu do wybranego katalogu."
 
 #~ msgid "This database is the same as the current database!"
 #~ msgstr "Baza danych jest taka sama jak bieżąca baza danych!"
@@ -8291,8 +8097,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Filtr już isnieje"
 
 #~ msgid ""
-#~ "This is a DeadKey. Press it and then one of the combined keys then shown "
-#~ "to add that new character to the Passphrase."
+#~ "This is a DeadKey. Press it and then one of the combined keys then shown to "
+#~ "add that new character to the Passphrase."
 #~ msgstr ""
 #~ "To jest DeadKey. Naciśnij go i potem jeden z klawiszy które sie pokażą by "
 #~ "dodać nowy znak do frazy hasła."
@@ -8306,19 +8112,16 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "This is an alias of: '%s'"
 #~ msgstr "To jest alias: '%s'"
 
-#, fuzzy
 #~ msgid ""
-#~ "This program is linked to the missing export %s in the file %s. This "
-#~ "machine may have an incompatible version of %s."
+#~ "This program is linked to the missing export %s in the file %s. This machine"
+#~ " may have an incompatible version of %s."
 #~ msgstr ""
-#~ "This program is linked to the missing export %s in the file %s. This "
-#~ "machine may have an incompatible version of %s."
+#~ "This program is linked to the missing export %s in the file %s. This machine"
+#~ " may have an incompatible version of %s."
 
-#~ msgid ""
-#~ "This program requires the file %s, which was not found on this system."
+#~ msgid "This program requires the file %s, which was not found on this system."
 #~ msgstr "Program wymaga pliku %s, którego nie odnaleziono w systemie."
 
-#, fuzzy
 #~ msgid ""
 #~ "This shortcut's target [%s:%s:%s] is not a normal entry or already a "
 #~ "shortcut base."
@@ -8326,33 +8129,28 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Element docelowy skrótu [%s:%s:%s] jest normalnym wpisem lub bazą skrótu."
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
+#~ "To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
 #~ "Do you want to open this database anyway?\n"
 #~ "(Saving this database will result in the removal of unread entries!)"
 #~ msgstr ""
-#~ "Ta wersja PasswordSafe umożliwia zapis nie więcej niż %d wpisów w bazie "
-#~ "danych.\n"
-#~ "Żeby uzyskać nielimitowaną wersję na platformę U3, odwiedź http://"
-#~ "software.u3.com\n"
+#~ "Ta wersja PasswordSafe umożliwia zapis nie więcej niż %d wpisów w bazie danych.\n"
+#~ "Żeby uzyskać nielimitowaną wersję na platformę U3, odwiedź http://software.u3.com\n"
 #~ "Otworzyć bazę danych mimo to?\n"
-#~ "(Zapisanie tej bazy danej będzie skutkować usunięciem nieodczytanych "
-#~ "wpisów!)"
+#~ "(Zapisanie tej bazy danej będzie skutkować usunięciem nieodczytanych wpisów!)"
 
 #~ msgid ""
-#~ "This will allow you to migrate your settings from the configuration file "
-#~ "in the PasswordSafe installation directory into a file in your own local "
+#~ "This will allow you to migrate your settings from the configuration file in "
+#~ "the PasswordSafe installation directory into a file in your own local "
 #~ "Application Data directory at the next invocation of PasswordSafe."
 #~ msgstr ""
-#~ "To pozwoli przy następnym uruchomioeniu PasswordSafe przenieść ustawienia "
-#~ "z pliku konfiguracyjnego z katalogu instalacyjnego PasswordSafe do pliku "
-#~ "w katalogu osobistym Dane Aplikacji."
+#~ "To pozwoli przy następnym uruchomioeniu PasswordSafe przenieść ustawienia z "
+#~ "pliku konfiguracyjnego z katalogu instalacyjnego PasswordSafe do pliku w "
+#~ "katalogu osobistym Dane Aplikacji."
 
 #~ msgid ""
-#~ "This will clear all traces of Password Safe from the machine's registry. "
-#~ "It may also cause previous versions of Password Safe to revert to default "
+#~ "This will clear all traces of Password Safe from the machine's registry. It "
+#~ "may also cause previous versions of Password Safe to revert to default "
 #~ "values for some settings."
 #~ msgstr ""
 #~ "Zostaną usunięte wszelki dane Password Safe z rejestru komputera. Może to "
@@ -8387,11 +8185,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Nazwa skopiowana "
 
 #~ msgid ""
-#~ "To unprotect this entry, click on Close, use the Edit menu or right-click "
-#~ "on the entry and select Unprotect."
+#~ "To unprotect this entry, click on Close, use the Edit menu or right-click on"
+#~ " the entry and select Unprotect."
 #~ msgstr ""
-#~ "By zdjąć blokadę tego wpisu klikni na Zamknij, użyj menu Edycja lub "
-#~ "kliknij prawym klawiszem myszy na wpisie i wybierz Zdejmij ochronę."
+#~ "By zdjąć blokadę tego wpisu klikni na Zamknij, użyj menu Edycja lub kliknij "
+#~ "prawym klawiszem myszy na wpisie i wybierz Zdejmij ochronę."
 
 #~ msgid "Treat fields that only contain 'whitespace' as empty"
 #~ msgstr "Traktuj pola zawierające tylko odstępy jako puste."
@@ -8426,7 +8224,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "%s"
 
-#, fuzzy
 #~ msgid "Unable to load mail system support."
 #~ msgstr "Niemożliwe załadowanie wsparcia dla systemu pocztowego."
 
@@ -8518,29 +8315,25 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "  -r = otwórz w trybie tylko do odczytu\n"
 #~ "  -v = sprawdź i napraw\n"
 #~ "  -e/d = zaszyfruj/odszyfruj plik\n"
-#~ "  -c = uruchom w trybie zamkniętym, tj. bez otwartej bazy danych z "
-#~ "hasłami\n"
+#~ "  -c = uruchom w trybie zamkniętym, tj. bez otwartej bazy danych z hasłami\n"
 #~ "  -s = uruchom cichaczem (zminimalizowany)\n"
 #~ "  -m = uruchom zminimalizowany w trybie zamkniętym\n"
 #~ "\n"
 #~ "Dodatkowo następujące opcje mogą być użyte:\n"
-#~ " -u użytkownik (użyj ustawień użytkownika zamiast ustawień wynikających z "
-#~ "nazwy użytkownika zalogowanego)\n"
-#~ " -h host (użyj komputera host by znaleźć ustawienia zamiast "
-#~ "ustawieńwynikających z nazwy komputera)\n"
+#~ " -u użytkownik (użyj ustawień użytkownika zamiast ustawień wynikających z nazwy użytkownika zalogowanego)\n"
+#~ " -h host (użyj komputera host by znaleźć ustawienia zamiast ustawieńwynikających z nazwy komputera)\n"
 #~ " -g plik_konfiguracyjny (użyj plik_konfiguracyjny zamiast pwsafe.cfg)\n"
 #~ " -q (nie narzekaj o brakujących fontach, bibliotekach dll itp.)"
 
 #~ msgid "Use &Symbols (i.e. &&, %, $, etc.)"
 #~ msgstr "Użyj &symboli (np. &&, %, $, itd.))"
 
-#, fuzzy
 #~ msgid ""
 #~ "Use the application specified here to browse when an entry's URL field "
 #~ "starts with [alt], e.g., '[alt]http://foo.com'"
 #~ msgstr ""
-#~ "Użyj wskazanej aplikacji do przejścia pod adres URL gdy pole wpisu "
-#~ "zaczyna się na [alt], e.g., '[alt]http://foo.com'"
+#~ "Użyj wskazanej aplikacji do przejścia pod adres URL gdy pole wpisu zaczyna "
+#~ "się na [alt], e.g., '[alt]http://foo.com'"
 
 #~ msgid ""
 #~ "Use the application specified here to edit an entry's Notes field via the "
@@ -8565,8 +8358,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "Version mismatch with On Screen Keyboard DLL. Please install version that "
 #~ "came with this version of Password Safe."
 #~ msgstr ""
-#~ "Niezgodność wersji z On Screen Keyboard DLL. Prosze zainstalować wersję "
-#~ "jaka towarzyszy tej wersji Password Safe."
+#~ "Niezgodność wersji z On Screen Keyboard DLL. Prosze zainstalować wersję jaka"
+#~ " towarzyszy tej wersji Password Safe."
 
 #~ msgid "Vietnamese"
 #~ msgstr "Wietnamski"
@@ -8587,13 +8380,11 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Pokaż filtr"
 
 #~ msgid ""
-#~ "WARNING: Use of an external editor may leave sensitive data on your hard "
-#~ "disk.\n"
+#~ "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
 #~ "\n"
 #~ "Do you wish to continue?"
 #~ msgstr ""
-#~ "UWAGA: Użycie zewnętrznego edytora może pozostawić poufne dane na twardym "
-#~ "dysku.\n"
+#~ "UWAGA: Użycie zewnętrznego edytora może pozostawić poufne dane na twardym dysku.\n"
 #~ "\n"
 #~ "Kontynuować?"
 
@@ -8624,18 +8415,14 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid ""
 #~ "Would you like to set \"%s\" as your default username?\n"
 #~ "\n"
-#~ "It would then automatically be put in the dialog each time you add a new "
-#~ "item."
+#~ "It would then automatically be put in the dialog each time you add a new item."
 #~ msgstr ""
 #~ "Czy chcesz ustawić \"%s\" jako domyślną nazwę użytkownika?\n"
 #~ "\n"
-#~ "Nazwa użytkownika byłaby automatycznie uzupełniana przy dodawaniu nowego "
-#~ "wpisu."
+#~ "Nazwa użytkownika byłaby automatycznie uzupełniana przy dodawaniu nowego wpisu."
 
-#, fuzzy
 #~ msgid ""
-#~ "Write when an entry was accessed in the database. Ignored in read-only "
-#~ "mode."
+#~ "Write when an entry was accessed in the database. Ignored in read-only mode."
 #~ msgstr ""
 #~ "Zapis w czasie gdy wpis był udostępniany. Ignorowane w trybie tylko do "
 #~ "odczytu."
@@ -8650,10 +8437,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgstr "Joruba"
 
 #~ msgid ""
-#~ "You have chosen not to save your changes, which will be lost. Do you wish "
-#~ "to continue?"
-#~ msgstr ""
-#~ "Wybrano, by nie zachować zmian i będą one stracone. Czy kontynuować?"
+#~ "You have chosen not to save your changes, which will be lost. Do you wish to"
+#~ " continue?"
+#~ msgstr "Wybrano, by nie zachować zmian i będą one stracone. Czy kontynuować?"
 
 #~ msgid "You must save this database before it can be exported."
 #~ msgstr "Musisz zachować tę bazę danych przed jej wyeksportowanie,."
@@ -8811,7 +8597,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "Exportowanie wpisu do czystego tekstu..."
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "Export to Text"
@@ -8896,7 +8681,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "Scal z bazą danych"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "Program will terminate."
@@ -8960,7 +8744,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "Wyślij email"
 
-#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "Set/Clear Filters"
@@ -9033,8 +8816,7 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "\n"
 #~ "\n"
 #~ "Nie można otworzyć bazy danych. Prawdopobnie nie istnieje.\n"
-#~ "Proszę wybrać otwarcie innej bazy danych, stworzenie nowej bazy lub "
-#~ "anulowac operację."
+#~ "Proszę wybrać otwarcie innej bazy danych, stworzenie nowej bazy lub anulowac operację."
 
 #~ msgid ""
 #~ "\n"
@@ -9133,7 +8915,6 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "bottom"
 #~ msgstr "poniżej"
 
-#, fuzzy
 #~ msgid "day(s)"
 #~ msgstr "dzień(dni)"
 
@@ -9153,8 +8934,8 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ "multiple entries exist with title=%s and username=%s or with group=%s and "
 #~ "title=%s."
 #~ msgstr ""
-#~ "istnieje kilka wpisów o nazwie=%s i nazwie użytkownika=%s lub z grupą=%s "
-#~ "i nazwą=%s."
+#~ "istnieje kilka wpisów o nazwie=%s i nazwie użytkownika=%s lub z grupą=%s i "
+#~ "nazwą=%s."
 
 #~ msgid "multiple entries exist with title=%s."
 #~ msgstr "istnieje kilka wpisów o nazwie=%s."
@@ -9182,11 +8963,9 @@ msgstr "Tak - co najwyżej %d z %s: %s"
 #~ msgid "shortcut to %s"
 #~ msgstr "skrót do %s"
 
-#, fuzzy
 #~ msgid "static"
 #~ msgstr "statyczny"
 
-#, fuzzy
 #~ msgid "subset: '%s' field '%s' '%s' %s"
 #~ msgstr "podzbiór: '%s' pole '%s' '%s' %s"
 
