@@ -1888,12 +1888,12 @@ msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Solo puede avisarse entre 1 y 30 días antes de la caducidad"
 
 #. Resource IDs: (210)
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"No se puede encontrar el archivo de definición de esquema XML (% s) en su directorio de aplicaciones PasswordSafe.\n"
+"No se puede encontrar el archivo de definición de esquema XML (%ls) en su directorio de aplicaciones PasswordSafe.\n"
 "Copielo de su archivo de instalación o reinstale PasswordSafe."
 
 #. Resource IDs: (208)
