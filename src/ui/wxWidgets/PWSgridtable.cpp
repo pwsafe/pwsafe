@@ -209,13 +209,7 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
   size_t curNumRows = m_pwsgrid->GetNumItems();
   
   if (pos >= curNumRows) {
-    wxFAIL_MSG( wxString::Format
-                (
-                 wxT("Called PWSGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
-                 static_cast<unsigned int>(pos),
-                 static_cast<unsigned int>(numRows),
-                 static_cast<unsigned int>(curNumRows)
-                 ) );
+    wxFAIL_MSG( wxString(wxT("PWSGridTable::DeleteRows(")) << "pos= " << pos << ", numRows= " << numRows << ") call is invalid\nPos value is invalid for present table with " << curNumRows << " rows");
     return false;
   }
 

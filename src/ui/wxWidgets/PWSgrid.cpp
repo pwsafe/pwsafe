@@ -464,8 +464,10 @@ void PWSGrid::OnDBGUIPrefsChange(wxEvent& evt)
 
 void PWSGrid::Clear()
 {
-  BeginBatch();
-  ClearGrid();
-  EndBatch();
+  if (GetNumberRows() > 0) {
+    BeginBatch();
+    DeleteRows(0, GetNumberRows());
+    EndBatch();
+  }
   DeleteAllItems();
 }
