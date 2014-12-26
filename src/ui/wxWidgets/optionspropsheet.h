@@ -340,6 +340,7 @@ public:
   wxCheckBox* m_sysusesystrayCB;
   wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
+  wxStaticText *m_systrayWarning;
 private:
   bool m_alwaysontop;
   wxString m_autotypeStr;

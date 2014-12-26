@@ -30,6 +30,8 @@
 #if defined(__X__) || defined(__WXGTK__)
 #include <wx/clipbrd.h>
 #endif
+#include <wx/taskbar.h>
+
 
 #include "passwordsafeframe.h"
 #include "optionspropsheet.h"
@@ -194,6 +196,7 @@ void COptions::Init()
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
   m_sysmaxREitemsSB = NULL;
+  m_systrayWarning = NULL;
 ////@end COptions member initialisation
 }
 
@@ -583,6 +586,11 @@ void COptions::CreateControls()
   itemCheckBox112->SetValue(false);
   itemStaticBoxSizer106->Add(itemCheckBox112, 0, wxALIGN_LEFT|wxALL, 5);
 
+  m_systrayWarning = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer106->Add(m_systrayWarning, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  m_systrayWarning->SetForegroundColour(*wxRED);
+  m_systrayWarning->Hide();
+
   wxStaticBox* itemStaticBoxSizer113Static = new wxStaticBox(itemPanel104, wxID_ANY, _("Recent PasswordSafe Databases"));
   wxStaticBoxSizer* itemStaticBoxSizer113 = new wxStaticBoxSizer(itemStaticBoxSizer113Static, wxVERTICAL);
   itemBoxSizer105->Add(itemStaticBoxSizer113, 0, wxGROW|wxALL, 5);
@@ -798,6 +806,10 @@ void COptions::PrefsToPropSheet()
   // System preferences
   m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
   m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
+  if (!wxTaskBarIcon::IsAvailable()) {
+	  m_systrayWarning->Show();
+	  Layout();
+  }
   m_sysstartup = false; // XXX TBD
   m_sysmaxmru = prefs->GetPref(PWSprefs::MaxMRUItems);
   m_sysmruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
