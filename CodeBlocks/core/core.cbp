@@ -13,6 +13,8 @@
 				<Option object_output="obj/Debug64/" />
 				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option host_application="CodeBlocks/pwsafe/bin/Debug64wx28/pwsafe" />
+				<Option run_host_application_in_terminal="1" />
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-Wshadow" />
@@ -22,10 +24,12 @@
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
@@ -73,10 +77,11 @@
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
@@ -120,9 +125,9 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-Winit-self" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-Wpedantic" />
@@ -155,9 +160,9 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-Winit-self" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-Wpedantic" />
@@ -194,10 +199,11 @@
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
@@ -244,10 +250,11 @@
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
@@ -290,9 +297,9 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-Winit-self" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-Wpedantic" />
@@ -324,9 +331,9 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-Winit-self" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-Wpedantic" />
@@ -347,6 +354,9 @@
 				</ExtraCommands>
 			</Target>
 		</Build>
+		<VirtualTargets>
+			<Add alias="Debug64wx28" targets="Debug_L64;" />
+		</VirtualTargets>
 		<Compiler>
 			<Add option="-DUNICODE" />
 		</Compiler>

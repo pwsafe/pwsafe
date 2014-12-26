@@ -24,9 +24,9 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="`wx-config --unicode=yes --debug=yes --inplace --cxxflags`" />
 					<Add option="-fPIC" />
@@ -71,7 +71,9 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
@@ -112,9 +114,9 @@
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
@@ -144,9 +146,9 @@
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
@@ -180,9 +182,9 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="`wx-config --unicode=yes --debug=yes --inplace --cxxflags`" />
 					<Add option="-fPIC" />
@@ -197,7 +199,7 @@
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-unused-local-typedefs" />
-					<Add option="-I/usr/include/ykpers-1" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -227,7 +229,7 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
@@ -242,7 +244,7 @@
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-unused-local-typedefs" />
-					<Add option="-I/usr/include/ykpers-1" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -268,16 +270,16 @@
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wno-unused-local-typedefs" />
-					<Add option="-I/usr/include/ykpers-1" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
 					<Add directory="../../src" />
 					<Add directory="../../src/core" />
@@ -300,22 +302,69 @@
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wswitch-default" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wno-unused-local-typedefs" />
-					<Add option="-I/usr/include/ykpers-1" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
 					<Add directory="../../src" />
 					<Add directory="../../src/core" />
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
+				</Linker>
+			</Target>
+			<Target title="Debug_L64_wx28">
+				<Option platforms="Unix;" />
+				<Option output="os64wx28d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug64wx28/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wcast-align" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="`wx-config --unicode=yes --debug=yes --inplace --cxxflags --version=2.8`" />
+					<Add option="-fPIC" />
+					<Add option="-fsanitize=address" />
+					<Add option="-fno-omit-frame-pointer" />
+					<Add option="-m64" />
+					<Add option="-Wpedantic" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wunused" />
+					<Add option="-Wuninitialized" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wlogical-op" />
+					<Add option="-Winvalid-pch" />
+					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add option="-D__WXDEBUG__" />
+					<Add option="-DNO_YUBI" />
+					<Add directory="../../src" />
+					<Add directory="../../src/core" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+					<Add option="-fsanitize=address" />
 				</Linker>
 			</Target>
 		</Build>
