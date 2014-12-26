@@ -51,6 +51,7 @@ using namespace std;
 #include "./pwsmenushortcuts.h"
 
 #include <wx/spinctrl.h>
+#include <wx/taskbar.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -325,8 +326,15 @@ bool PwsafeApp::OnInit()
     m_core.SetCurFile(wxT(""));
   }
   if (cmd_silent) {
-    // start silent implies use system tray.
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
+    if ( wxTaskBarIcon::IsAvailable() ) {
+      // start silent implies use system tray.
+      // Note that if UseSystemTray is already true, then pwsafe will try to run silently anyway
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
+    }
+    else {
+      // We don't want to bring up a UI if running silently
+      std::wcerr << L"There appears to be no system tray support in your current environment.  pwsafe may not work as expected in silent mode." << std::endl;;
+    }
   }
 
   //Initialize help subsystem
