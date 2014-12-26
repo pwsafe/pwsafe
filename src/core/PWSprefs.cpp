@@ -88,7 +88,11 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("DontAskSaveMinimize"), false, ptObsolete},           // obsolete in 3.02
   {_T("QuerySetDef"), true, ptApplication},                 // application
   {_T("UseNewToolbar"), true, ptApplication},               // application
+  #ifdef __linux__
+  {_T("UseSystemTray"), false, ptApplication},               // application
+  #else
   {_T("UseSystemTray"), true, ptApplication},               // application
+  #endif
   {_T("LockOnWindowLock"), true, ptApplication},            // application
   {_T("LockOnIdleTimeout"), true, ptObsolete},              // obsolete in 3.19 - replaced by Database equivalent
   {_T("EscExits"), true, ptApplication},                    // application
