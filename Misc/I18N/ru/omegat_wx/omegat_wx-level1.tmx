@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.2" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.8" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
-    <tu>
-      <tuv lang="EN-US">
-        <seg>"</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112053Z">
-        <seg>"</seg>
-      </tuv>
-    </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>" of "</seg>
@@ -22,106 +14,162 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%d %s updated</seg>
+        <seg>%d %ls updated</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T161421Z">
-        <seg>%d %s обновлено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>%d)</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125228Z">
-        <seg>%d)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152147Z" creationid="pm_kan" creationdate="20141226T152147Z">
+        <seg>%d %ls обновлено</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%d/%d matches</seg>
+        <seg>%ls
+
+Could not open file for reading!</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T150053Z">
-        <seg>%d из %d совпадений</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>%s  - Imported %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134334Z">
-        <seg>%s — Импортировано %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151243Z" creationid="pm_kan" creationdate="20141226T151243Z">
+        <seg>%ls
+
+Невозможно открыть файл для чтения!</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s - Copied %s</seg>
+        <seg>%ls
+
+File corrupt or truncated!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152204Z" creationid="pm_kan" creationdate="20141226T152204Z">
+        <seg>%ls
+
+Файл повреждён или усечён!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls
+
+File is currently locked by %ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150731Z" creationid="pm_kan" creationdate="20141226T150731Z">
+        <seg>%ls
+
+Файл заблокирован %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls
+
+Invalid format</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151253Z" creationid="pm_kan" creationdate="20141226T151253Z">
+        <seg>%ls
+
+Недопустимый формат</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls
+
+The configuration file will not be used.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>%s — скопировано %s</seg>
+        <seg>%ls
+
+Файл настроек не будет использоваться.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s - Merged %s</seg>
+        <seg>%ls
+
+Unknown error</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134724Z">
-        <seg>%s — объединено %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152212Z" creationid="pm_kan" creationdate="20141226T152212Z">
+        <seg>%ls
+
+Неопознанная ошибка</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s - Sync'd %s</seg>
+        <seg>%ls  - Imported %ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152409Z" creationid="pm_kan" creationdate="20141226T152409Z">
+        <seg>%ls — Импортировано %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls - Copied %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>%s — синхронизовано %s</seg>
+        <seg>%ls — скопировано %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s file being imported: %s</seg>
+        <seg>%ls - Merged %ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152631Z" creationid="pm_kan" creationdate="20141226T152631Z">
+        <seg>%ls — объединено %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls - Sync'd %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>%s файл импортирован: %s</seg>
+        <seg>%ls — синхронизировано %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s has an empty %s.</seg>
+        <seg>%ls file being imported: %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T151045Z">
-        <seg>у %s пустой %s.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>%s not found.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T140526Z">
-        <seg>Файл %s не найден.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150810Z" creationid="pm_kan" creationdate="20141226T150810Z">
+        <seg>%ls файл импортирован: %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s on %s</seg>
+        <seg>%ls has an empty %ls.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152433Z" creationid="pm_kan" creationdate="20141226T152433Z">
+        <seg>у %ls пустой %ls.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls not found.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152421Z" creationid="pm_kan" creationdate="20141226T152421Z">
+        <seg>Файл %ls не найден.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>%ls on %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>%s на %s</seg>
+        <seg>%ls на %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s%s%s_Report.txt</seg>
+        <seg>%ls%ls%ls_Report.txt</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>%s%s%s_Report.txt</seg>
+        <seg>%ls%ls%ls_Report.txt</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>%s, Title="%s", User="%s" already exists in your database or in the Import file.</seg>
+        <seg>%ls, Title="%ls", User="%ls" already exists in your database or in the Import file.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134153Z">
-        <seg>%s, c заголовком «%s» и именем пользователя «%s» уже существует в контейнере или импортируемом файле.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152325Z" creationid="pm_kan" creationdate="20141226T152325Z">
+        <seg>%ls, c заголовком «%ls» и именем пользователя «%ls» уже существует в контейнере или импортируемом файле.</seg>
       </tuv>
     </tu>
     <tu>
@@ -782,14 +830,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>(</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104531Z">
-        <seg>(</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>(At least</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104417Z">
@@ -838,22 +878,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>*</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T105313Z">
-        <seg>*</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>* %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132220Z">
-        <seg>* %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>*** Invalid XML characters found - see exported XML file for more details ***</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -862,10 +886,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>- Its title has been changed to:'%s'</seg>
+        <seg>- Its title has been changed to:'%ls'</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>— Его заголовок был изменён на: «%s»</seg>
+        <seg>— Его заголовок был изменён на: «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -878,608 +902,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132237Z">
-        <seg>.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>...</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:158
-The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103739Z" creationid="pm_kan" creationdate="20140705T103739Z">
-        <seg>При экспорте TXT- или CSV-файла не были соблюдены все требования, так как данные элемента разбиты на несколько строк.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:218
-
-The following new %s %s merged into this database:</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113812Z">
-        <seg>
-Новые %s %s добавлены в данный контейнер:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:219
-
-Merge completed: %d %s added (%d %s, %d %s, %d %s)</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113819Z">
-        <seg>
-Слияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:220
-Conflicting entries for "%s" "%s" "%s".</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103747Z" creationid="pm_kan" creationdate="20140705T103747Z">
-        <seg>Конфликт элементов для «%s» «%s» «%s».</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:234
-Unable to get configuration file lock.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103805Z" creationid="pm_kan" creationdate="20140705T103805Z">
-        <seg>Невозможно заблокировать файл настроек.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:240
-Number of entries processed: %d
-
-Number of invalid UUIDs fixed: %d
-
-Number of duplicate UUIDs fixed: %d
-
-Number of non-unique Group/Title/User fixed: %d
-
-Number of Password Histories fixed: %d
-
-Number of Alias warnings issued: %d
-
-Number of Shortcut warnings issued: %d
-
-Number of entries with fields that cannot be fully displayed: %d.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103850Z" creationid="pm_kan" creationdate="20140705T103850Z">
-        <seg>Обработано элементов: %d
-
-Исправлено некорректных UUID-значений: %d
-
-Исправлено дублирующихся UUID-значений: %d
-
-Исправлено неуникальных комбинаций Группа/Заголовок/Имя пользователя: %d
-
-Исправлено элементов истории паролей: %d
-
-Количество предупреждений о псевдонимах: %d
-
-Количество предупреждений о ярлыках %d
-
-Количество элементов с полями, которые не могут быть полностью отображены: %d.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:265
-
-Error in Password History for entry: "%s"%s"%s":</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113921Z" creationid="pm_kan" creationdate="20140705T103907Z">
-        <seg>
-Ошибка в истории паролей для элемента: «%s» «%s» «%s»:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:298
-SAX Parse Error during %s
-%s.</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Ошибка разбора SAX при выполнении %s
-%s.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:308
-Configuration file error:
-%s
-%s
-offset approximately at %d</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Ошибка в файле настроек:
-%s
-%s
-примерная позиция: %d</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:32
-
-Unexpected exception during parsing.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113639Z">
-        <seg>
-Непредусмотренное исключение при разборе.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:43
-Unable to create a new XML configuration file or add your settings to an existing XML configuration file.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103658Z" creationid="pm_kan" creationdate="20140705T103658Z">
-        <seg>Невозможно создать новый XML-файл с настройками или добавить параметры в уже существующий.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:44
-Error - unable to determine settings configuration!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103706Z" creationid="pm_kan" creationdate="20140705T103706Z">
-        <seg>Ошибка: невозможно загрузить файл настроек!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:47
-Unable to update your entries in the existing XML configuration file.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103714Z" creationid="pm_kan" creationdate="20140705T103714Z">
-        <seg>Невозможно обновить записи в существующем XML-файле с настройками.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:48
-%s
-
-The configuration file will not be used.</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>%s
-
-Файл настроек не будет использоваться.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:78
-This entry has the following %d %s:
-%s
-Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>У данного элемента есть %d %s:
-%s
-Продолжить выполнение (пароли для псевдонимов будут заменены на пароль этого элемента)?</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:80
-This entry has the following %d %s:
-%s
-Please confirm to continue (All shortcuts to this entry will be deleted)?</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>У данного элемента есть %d подчинённых типа «%s»:
-%s
-Продолжить выполнение (все ярлыки для этого элемента будут удалены)?</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/core/core_st.cpp:93
-The following entries had a policy name that already existed in this database but with different settings.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103724Z" creationid="pm_kan" creationdate="20140705T103724Z">
-        <seg>Указанные элементы были связаны с политиками, которые уже есть в данном контейнере, но имеют другие настройки.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/CompareDlg.cpp:733
-../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2652
-../../../../src/ui/wxWidgets/PwsSync.cpp:632
-The database:
-
-%s
-
-has duplicate entries with the same group/title/user combination.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102136Z" creationid="pm_kan" creationdate="20140705T102136Z">
-        <seg>Контейнер:
-
-%s
-
- содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/ExportTextWarningDlg.cpp:52
-Warning!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102223Z" creationid="pm_kan" creationdate="20140705T102223Z">
-        <seg>Внимание!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/ExportTextWarningDlg.cpp:53
-Please do not use this option unless you understand and accept the risks.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102246Z" creationid="pm_kan" creationdate="20140705T102246Z">
-        <seg>Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:359
-Synchronizing with another database will update the entries in your
-database with matching entries from the other database.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103328Z" creationid="pm_kan" creationdate="20140705T103328Z">
-        <seg>Синхронизация с другим контейнером приведёт к обновлению элементов текущего контейнера данными из соответствующих элементов другого контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:365
-1.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103337Z" creationid="pm_kan" creationdate="20140705T103337Z">
-        <seg>1.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:366
-2.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103342Z" creationid="pm_kan" creationdate="20140705T103342Z">
-        <seg>2.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:367
-3.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103344Z" creationid="pm_kan" creationdate="20140705T103344Z">
-        <seg>3.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:368
-4.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103347Z" creationid="pm_kan" creationdate="20140705T103347Z">
-        <seg>4.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:461
-WARNING!!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T112929Z" creationid="pm_kan" creationdate="20140705T103358Z">
-        <seg>ВНИМАНИЕ!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:611
-%s
-
-File corrupt or truncated!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103418Z" creationid="pm_kan" creationdate="20140705T103418Z">
-        <seg>%s
-
-Файл повреждён или усечён!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:620
-%s
-
-Unknown error</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>%s
-
-Неопознанная ошибка</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:747
-../../../../src/core/core_st.cpp:274
-
-The following %s %s updated:</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113144Z">
-        <seg>
-Следующие %s %s обновлены:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/PwsSync.cpp:763
-../../../../src/core/core_st.cpp:273
-
-Synchronize completed: %d %s updated</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113314Z">
-        <seg>
-Синхронизация завершена: %d %s обновлено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/about.cpp:262
-For security, the database must be closed before connecting to the Internet.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T101853Z" creationid="pm_kan" creationdate="20140705T101853Z">
-        <seg>Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/addeditpropsheet.cpp:247
-To add a new entry, simply fill in the fields below.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T101904Z" creationid="pm_kan" creationdate="20140705T101904Z">
-        <seg>Заполните поля для добавления нового элемента.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/addeditpropsheet.cpp:357
-Double-Click
-Action:</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102032Z" creationid="pm_kan" creationdate="20140705T102032Z">
-        <seg>Действие по двойному клику:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/addeditpropsheet.cpp:373
-Shift-Double-Click
-Action:</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T104652Z" creationid="pm_kan" creationdate="20140705T102041Z">
-        <seg>Действие по Shift + двойной клик:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/addeditpropsheet.cpp:605
-../../../../src/ui/wxWidgets/PasswordPolicy.cpp:254
-Use only easy-to-read characters
-(i.e., no 'l', '1', etc.)</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102104Z" creationid="pm_kan" creationdate="20140705T102104Z">
-        <seg>Только удобочитаемые символы (не исп. «l», «1» и т. п.)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/createshortcutdlg.cpp:147
-Please specify the name &amp; group</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102148Z" creationid="pm_kan" creationdate="20140705T102148Z">
-        <seg>Укажите имя и группу</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/editshortcut.cpp:163
-Please specify the name and group for this shortcut
-to the base entry</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102204Z" creationid="pm_kan" creationdate="20140705T102204Z">
-        <seg>Укажите имя и группу для ярлыка на исходный элемент</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/optionspropsheet.cpp:623
-When set, use XTEST for AutoType instead of XSendEvent.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102703Z" creationid="pm_kan" creationdate="20140705T102703Z">
-        <seg>Если выбрано, для автонабора будет использован XTEST вместо XSendEvent.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:1282
-%s
-
-File is currently locked by %s</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>%s
-
-Файл заблокирован %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2090
-Write operation failed!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102942Z" creationid="pm_kan" creationdate="20140705T102942Z">
-        <seg>Сбой при записи!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2600
-../../../../src/ui/wxWidgets/PwsSync.cpp:609
-%s
-
-Could not open file for reading!</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>%s
-
-Невозможно открыть файл для чтения!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2615
-%s
-
-Invalid format</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>%s
-
-Недопустимый формат</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2663
-../../../../src/core/core_st.cpp:229
-Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103044Z" creationid="pm_kan" creationdate="20140705T102954Z">
-        <seg>Невозможно найти файл с определением XML-схемы (%s) в каталоге Password Safe.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2706
-File: %s failed validation against XML Schema:
-
-%s</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Файл %s не соответствует XML-схеме:
-
-%s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2712
-File: %s passed Validation but had the following errors during import:
-
-%s</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Файл %s прошёл проверку, но при импорте произошли следующие ошибки:
-
-%s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:2761
-Validated %d %s
-
-Imported %d %s</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Проверено %d %s
-
-Импортировано %d %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:864
-Unable to create intermediate backup.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102909Z" creationid="pm_kan" creationdate="20140705T102909Z">
-        <seg>Невозможно создать промежуточную резервную копию.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/passwordsafeframe.cpp:887
-The original database, "%s", is in pre-3.0 format.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102922Z" creationid="pm_kan" creationdate="20140705T102922Z">
-        <seg>Формат исходного контейнера «%s», имеет версию ниже 3.0.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/safecombinationchange.cpp:162
-Please enter the current combination, followed by a new combination.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103426Z" creationid="pm_kan" creationdate="20140705T103426Z">
-        <seg>Укажите текущий пароль, а затем новый пароль.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/safecombinationprompt.cpp:175
-Safe
-combination:</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T113507Z" creationid="pm_kan" creationdate="20140705T103600Z">
-        <seg>Пароль:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/safecombinationsetup.cpp:155
-A new password database will be created.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103616Z" creationid="pm_kan" creationdate="20140705T103616Z">
-        <seg>Будет создан новый контейнер.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/wxutils.cpp:61
-File corrupt or truncated!</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103627Z" creationid="pm_kan" creationdate="20140705T103627Z">
-        <seg>Файл повреждён или усечён!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>../../../../src/ui/wxWidgets/wxutils.cpp:70
-This version of PasswordSafe does not support more than %d entries in a database.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103649Z" creationid="pm_kan" creationdate="20140705T103649Z">
-        <seg>Данная версия Password Safe поддерживает не более %d элементов в контейнере.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1516,10 +942,34 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>:</seg>
+        <seg>1.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120134Z">
-        <seg>:</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T130603Z">
+        <seg>1.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>2.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T130720Z">
+        <seg>2.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>3.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T130824Z">
+        <seg>3.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>4.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T131125Z">
+        <seg>4.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1540,10 +990,18 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>A new named policy has been created with the current date/time (%s) appended:%s</seg>
+        <seg>A new named policy has been created with the current date/time (%ls) appended:%ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T150948Z">
-        <seg>Для них были созданы новые политики, к имени которых добавлены текущие дата и время (%s): %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152303Z" creationid="pm_kan" creationdate="20141226T152303Z">
+        <seg>Для них были созданы новые политики, к имени которых добавлены текущие дата и время (%ls): %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A new password database will be created.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133047Z">
+        <seg>Будет создан новый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1604,18 +1062,18 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Added imported entry with title="%s".</seg>
+        <seg>Added imported entry with title="%ls".</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T151031Z">
-        <seg>Импортированный элемент добавлен с заголовком «%s».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152334Z" creationid="pm_kan" creationdate="20141226T152334Z">
+        <seg>Импортированный элемент добавлен с заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Adding merged entry as "%s" "%s" "%s".</seg>
+        <seg>Adding merged entry as "%ls" "%ls" "%ls".</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T151106Z">
-        <seg>При слиянии элемент был добавлен как «%s» «%s» «%s».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152616Z" creationid="pm_kan" creationdate="20141226T152616Z">
+        <seg>При слиянии элемент был добавлен как «%ls» «%ls» «%ls».</seg>
       </tuv>
     </tu>
     <tu>
@@ -1708,10 +1166,10 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>All fields in matching entries were %s</seg>
+        <seg>All fields in matching entries were %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132159Z">
-        <seg>Все поля соответствующих элементов были %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152227Z" creationid="pm_kan" creationdate="20141226T152227Z">
+        <seg>Все поля соответствующих элементов были %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -1776,6 +1234,14 @@ This version of PasswordSafe does not support more than %d entries in a database
       </tuv>
       <tuv lang="RU-RU">
         <seg>Изменено хотя бы одно поле:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Any related functionality may not work as expected.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150401Z" creationid="pm_kan" creationdate="20141226T150305Z">
+        <seg>Связанные с ней функции могут работать некорректно.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1997,6 +1463,14 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151317Z" creationid="pm_kan" creationdate="20141226T151317Z">
+        <seg>Невозможно найти файл с определением XML-схемы (%ls) в каталоге Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Can't obtain the schema version.</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2073,6 +1547,14 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Символы после индекса (между «]» и «}») недопустимы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Chinese</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150507Z" creationid="pm_kan" creationdate="20141226T150507Z">
+        <seg>Китайская</seg>
       </tuv>
     </tu>
     <tu>
@@ -2173,6 +1655,14 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Close SearchBar</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152123Z" creationid="pm_kan" creationdate="20141226T152123Z">
+        <seg>Закрыть панель поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Collapse All</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2229,6 +1719,20 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Configuration file error:
+%ls
+%ls
+offset approximately at %d</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Ошибка в файле настроек:
+%ls
+%ls
+примерная позиция: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Confirm Close Dialog</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2265,6 +1769,14 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Подтверждение:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Conflicting entries for "%ls" "%ls" "%ls".</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152605Z" creationid="pm_kan" creationdate="20141226T152605Z">
+        <seg>Конфликт элементов для «%ls» «%ls» «%ls».</seg>
       </tuv>
     </tu>
     <tu>
@@ -2653,22 +2165,6 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Couldn't find policy %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T105310Z">
-        <seg>Невозможно найти политику %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Couldn't find uuid %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120424Z">
-        <seg>Невозможно найти UUID %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Couldn't generate password - invalid policy</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104727Z">
@@ -2685,10 +2181,10 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Create SchemaCache60 Error 0x%08X during %s.</seg>
+        <seg>Create SchemaCache60 Error 0x%08X during %ls.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Создание SchemaCache60 завершилось ошибкой 0x%08X (выполнение операции «%s»).</seg>
+        <seg>Создание SchemaCache60 завершилось ошибкой 0x%08X (выполнение операции «%ls»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -2773,10 +2269,10 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Current default (%s)</seg>
+        <seg>Current default (%ls)</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Текущие умолчания (%s)</seg>
+        <seg>Текущие умолчания (%ls)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2825,6 +2321,14 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T111813Z">
         <seg>DDD DD MMM YYYY HH:MM:SS XM ZZZ</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Danish</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Датская</seg>
       </tuv>
     </tu>
     <tu>
@@ -2973,10 +2477,10 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Differing field(s): %s</seg>
+        <seg>Differing field(s): %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134715Z">
-        <seg>Различающиеся поля: %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152623Z" creationid="pm_kan" creationdate="20141226T152623Z">
+        <seg>Различающиеся поля: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -3013,14 +2517,6 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Do you want to see a detailed report?</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T143038Z">
-        <seg>Открыть подробный отчёт?</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Do you wish to see a detailed report?</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T123307Z">
@@ -3041,6 +2537,15 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T150744Z">
         <seg>Использование точек в имени группы запрещено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Double-Click
+Action:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T103746Z">
+        <seg>Действие по двойному клику:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3073,6 +2578,14 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>(дубликат № %d)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Dutch</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Голландская</seg>
       </tuv>
     </tu>
     <tu>
@@ -3205,26 +2718,26 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry "%s, %s, %s" has a password in the correct form for an alias, but the base entry does not exist.</seg>
+        <seg>Entry "%ls, %ls, %ls" has a password in the correct form for an alias, but the base entry does not exist.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Пароль для элемента «%s, %s, %s» имеет вид псевдонима, но исходный элемент не найден.</seg>
+        <seg>Пароль для элемента «%ls, %ls, %ls» имеет вид псевдонима, но исходный элемент не найден.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry "%s, %s, %s" has a password in the correct form for an alias, but the base entry is already an alias.</seg>
+        <seg>Entry "%ls, %ls, %ls" has a password in the correct form for an alias, but the base entry is already an alias.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Пароль для элемента «%s, %s, %s» имеет вид псевдонима, но исходный элемент является псевдонимом.</seg>
+        <seg>Пароль для элемента «%ls, %ls, %ls» имеет вид псевдонима, но исходный элемент является псевдонимом.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry %s%d with Group="%s", Title="%s", User="%s"</seg>
+        <seg>Entry %ls%d with Group="%ls", Title="%ls", User="%ls"</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Элемент %s%d с группой «%s», заголовком «%s» и именем пользователя «%s»</seg>
+        <seg>Элемент %ls%d с группой «%ls», заголовком «%ls» и именем пользователя «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -3237,34 +2750,34 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry keyboard shortcut %s entry %s is already allocated to entry %s.</seg>
+        <seg>Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T182152Z">
-        <seg>Горячая клавиша для %s элемента %s уже назначена элементу %s.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Entry keyboard shortcut %s entry %s is already allocated to the PasswordSafe application.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T182939Z">
-        <seg>Горячая клавиша для %s элемента %s уже назначена для вызова Password Safe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152456Z" creationid="pm_kan" creationdate="20141226T152456Z">
+        <seg>Горячая клавиша для %ls элемента %ls уже назначена элементу %ls.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry of line %d has an invalid "%s" field.</seg>
+        <seg>Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134253Z">
-        <seg>Элемент в строке %d содержит недопустимое поле «%s».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152551Z" creationid="pm_kan" creationdate="20141226T152551Z">
+        <seg>Горячая клавиша для %ls элемента %ls уже назначена для вызова Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry on line %d with Group="%s"</seg>
+        <seg>Entry of line %d has an invalid "%ls" field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152402Z" creationid="pm_kan" creationdate="20141226T152402Z">
+        <seg>Элемент в строке %d содержит недопустимое поле «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Entry on line %d with Group="%ls"</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Элемент, описанный в строке %d, из группы «%s»</seg>
+        <seg>Элемент, описанный в строке %d, из группы «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -3277,10 +2790,10 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Entry with Group="%s"</seg>
+        <seg>Entry with Group="%ls"</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Элемент из группы «%s»</seg>
+        <seg>Элемент из группы «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -3301,10 +2814,18 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Error (%08X): line %d character %d %s</seg>
+        <seg>Error (%08X): line %d character %d %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Ошибка (%08X): строка %d символ %d %s</seg>
+        <seg>Ошибка (%08X): строка %d символ %d %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Error - unable to determine settings configuration!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133654Z">
+        <seg>Ошибка: невозможно загрузить файл настроек!</seg>
       </tuv>
     </tu>
     <tu>
@@ -3317,10 +2838,18 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Error in a Password History %s:</seg>
+        <seg>Error in Password History for entry: "%ls"%ls"%ls":</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T135025Z">
-        <seg>Ошибка в поле истории паролей %s:</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152732Z" creationid="pm_kan" creationdate="20141226T152732Z">
+        <seg>Ошибка в истории паролей для элемента: »%ls»%ls»%ls»:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Error in a Password History %ls:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152639Z" creationid="pm_kan" creationdate="20141226T152639Z">
+        <seg>Ошибка в поле истории паролей %ls:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3541,10 +3070,34 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>File corrupt or truncated!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133407Z">
+        <seg>Файл повреждён или усечён!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>File ends on line %d before ending double quote of last entry's note field.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Обнаружен конец файла в строке %d до того как была найдена закрывающая двойная кавычка для последнего поля с заметками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>File is too big.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Слишком большой файл.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>File is too short.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Недостаточный размер файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3605,18 +3158,42 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>File: %s was imported (entries validated %d / imported %d%s%s%s).</seg>
+        <seg>File: %ls failed validation against XML Schema:
+
+%ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T123743Z">
-        <seg>Файл %s был импортирован (проверено элементов %d / импортировано %d%s%s%s).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151346Z" creationid="pm_kan" creationdate="20141226T151346Z">
+        <seg>Файл %ls не соответствует XML-схеме:
+
+%ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Filter %s already exists in the database, do you wish to replace it with this?</seg>
+        <seg>File: %ls passed Validation but had the following errors during import:
+
+%ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151405Z" creationid="pm_kan" creationdate="20141226T151405Z">
+        <seg>Файл %ls прошёл проверку, но при импорте произошли следующие ошибки:
+
+%ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>File: %ls was imported (entries validated %d / imported %d%ls%ls%ls).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151420Z" creationid="pm_kan" creationdate="20141226T151420Z">
+        <seg>Файл %ls был импортирован (проверено элементов %d / импортировано %d%ls%ls%ls).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Filter %ls already exists in the database, do you wish to replace it with this?</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Фильтр %s уже существует в контейнере. Заменить его?</seg>
+        <seg>Фильтр %ls уже существует в контейнере. Заменить его?</seg>
       </tuv>
     </tu>
     <tu>
@@ -3669,10 +3246,26 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>For security, the database must be closed before connecting to the Internet.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092818Z">
+        <seg>Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Found %d known column headers:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Обнаружено %d известных заголовков столбцов:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>French</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Французская</seg>
       </tuv>
     </tu>
     <tu>
@@ -3689,6 +3282,14 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104518Z">
         <seg>Создавать произносимые пароли</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>German</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Немецкая</seg>
       </tuv>
     </tu>
     <tu>
@@ -3733,10 +3334,10 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Group='%s', Title='%s', User='%s' %s</seg>
+        <seg>Group='%ls', Title='%ls', User='%ls' %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Группа=«%s», Заголовок=«%s», Имя пользователя=«%s» %s</seg>
+        <seg>Группа=«%ls», Заголовок=«%ls», Имя пользователя=«%ls» %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -4008,10 +3609,10 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Imported %d %s</seg>
+        <seg>Imported %d %ls</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Импортировано %d %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151259Z" creationid="pm_kan" creationdate="20141226T151259Z">
+        <seg>Импортировано %d %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -4024,10 +3625,10 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>In Headers(%s)/In Entries(</seg>
+        <seg>In Headers(%ls)/In Entries(</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>В заголовках(%s)/в элементах(</seg>
+        <seg>В заголовках(%ls)/в элементах(</seg>
       </tuv>
     </tu>
     <tu>
@@ -4192,10 +3793,10 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Invalid header: '%s' (must be 5 hexadecimal characters).</seg>
+        <seg>Invalid header: '%ls' (must be 5 hexadecimal characters).</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Недопустимый заголовок: «%s» (должен состоять из 5 шестнадцатеричных цифр).</seg>
+        <seg>Недопустимый заголовок: «%ls» (должен состоять из 5 шестнадцатеричных цифр).</seg>
       </tuv>
     </tu>
     <tu>
@@ -4264,10 +3865,10 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>It has been removed from the %s entry.</seg>
+        <seg>It has been removed from the %ls entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T182948Z">
-        <seg>Она была отвязана от %s элемента.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152538Z" creationid="pm_kan" creationdate="20141226T152538Z">
+        <seg>Она была отвязана от %ls элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4288,6 +3889,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Italian</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Итальянская</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Keep</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -4300,6 +3909,14 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Горячая клавиша</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Korean</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Корейская</seg>
       </tuv>
     </tu>
     <tu>
@@ -4512,6 +4129,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls)</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Слияние завершено: %d %ls добавлено (%d %ls, %d %ls, %d %ls)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Merge...</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -4612,14 +4237,6 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T111103Z">
         <seg>Успешно перемещено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>N</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125323Z">
-        <seg>N</seg>
       </tuv>
     </tu>
     <tu>
@@ -4877,6 +4494,42 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Количество групп:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Number of entries processed: %d
+
+Number of invalid UUIDs fixed: %d
+
+Number of duplicate UUIDs fixed: %d
+
+Number of non-unique Group/Title/User fixed: %d
+
+Number of Password Histories fixed: %d
+
+Number of Alias warnings issued: %d
+
+Number of Shortcut warnings issued: %d
+
+Number of entries with fields that cannot be fully displayed: %d.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T135012Z">
+        <seg>Обработано элементов: %d
+
+Исправлено некорректных UUID-значений: %d
+
+Исправлено дублирующихся UUID-значений: %d
+
+Исправлено неуникальных комбинаций Группа/Заголовок/Имя пользователя: %d
+
+Исправлено элементов истории паролей: %d
+
+Количество предупреждений о псевдонимах: %d
+
+Количество предупреждений о ярлыках %d
+
+Количество элементов с полями, которые не могут быть полностью отображены: %d.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5257,10 +4910,10 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Password policy name '%s' is not in the database.</seg>
+        <seg>Password policy name '%ls' is not in the database.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Политика создания паролей «%s» отсутствует в контейнере.</seg>
+        <seg>Политика создания паролей «%ls» отсутствует в контейнере.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5441,6 +5094,22 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Please do not use this option unless you understand and accept the risks.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112033Z">
+        <seg>Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please enter the current combination, followed by a new combination.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132258Z">
+        <seg>Укажите текущий пароль, а затем новый пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Please enter the key and verify it.</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -5481,9 +5150,9 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Please make sure its in your PATH</seg>
+        <seg>Please make sure it's in your PATH</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112244Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T145941Z" creationid="pm_kan" creationdate="20141226T145941Z">
         <seg>Проверьте, что файл доступен по путям, указанным в PATH</seg>
       </tuv>
     </tu>
@@ -5525,6 +5194,23 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T142656Z">
         <seg>Укажите подходящий файл</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please specify the name &amp; group</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T110554Z">
+        <seg>Укажите имя и группу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please specify the name and group for this shortcut
+to the base entry</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T111753Z">
+        <seg>Укажите имя и группу для ярлыка на исходный элемент</seg>
       </tuv>
     </tu>
     <tu>
@@ -5609,6 +5295,14 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Polish</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150516Z" creationid="pm_kan" creationdate="20141226T150516Z">
+        <seg>Польская</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Press OK to close database and continue (Changes will be saved)</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092830Z">
@@ -5619,8 +5313,8 @@ added or existing entries removed during this process.</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-07-05 14:13+0400
-PO-Revision-Date: 2014-07-04 14:40+0400
+POT-Creation-Date: 2014-12-26 17:54+0300
+PO-Revision-Date: 2014-12-25 13:52+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5628,14 +5322,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T104625Z" creationid="pm_kan" creationdate="20140705T101449Z">
-        <seg>sProject-Id-Version: PACKAGE VERSION
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T154155Z" creationid="pm_kan" creationdate="20141226T145744Z">
+        <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-01-22 13:11+0400
-PO-Revision-Date: 2014-07-05 14:20+0400
+POT-Creation-Date: 2014-12-26 18:40+0300
+PO-Revision-Date: 2014-12-26 18:40+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-Language-Team: LANGUAGE &lt;LL@li.org&gt;
-Language: 
+Language-Team: 
+Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
@@ -5787,10 +5481,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Report of %s function started at %s</seg>
+        <seg>Report of %ls function started at %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Отчёт «%s» начат %s</seg>
+        <seg>Отчёт «%ls» начат %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -5827,6 +5521,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Russian</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Русская</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>S&amp;ynchronize...</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -5835,10 +5537,20 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>SAX Parse60 Error 0x%08X during %s.</seg>
+        <seg>SAX Parse Error during %ls
+%ls.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Ошибка разбора SAX Parse60 0x%08X при выполнении операции «%s».</seg>
+        <seg>Ошибка разбора SAX при выполнении %ls
+%ls.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>SAX Parse60 Error 0x%08X during %ls.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Ошибка разбора SAX Parse60 0x%08X при выполнении операции «%ls».</seg>
       </tuv>
     </tu>
     <tu>
@@ -5847,6 +5559,15 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125130Z">
         <seg>SHIFT+F3</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Safe
+combination:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133021Z">
+        <seg>Пароль:</seg>
       </tuv>
     </tu>
     <tu>
@@ -5984,6 +5705,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T123747Z">
         <seg>Подробная информация находится в отчёте.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Select Language</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150606Z" creationid="pm_kan" creationdate="20141226T150606Z">
+        <seg>Выбрать язык (Select Language)</seg>
       </tuv>
     </tu>
     <tu>
@@ -6140,6 +5869,15 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Shift-Double-Click
+Action:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104139Z">
+        <seg>Действие по Shift + двойной клик:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Shortcut #</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T150355Z">
@@ -6204,9 +5942,9 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Simultaneous execution is disabled?</seg>
+        <seg>Simultaneous execution disabled?</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112458Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T145946Z" creationid="pm_kan" creationdate="20141226T145946Z">
         <seg>Запрещено одновременное исполнение?</seg>
       </tuv>
     </tu>
@@ -6248,6 +5986,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T142356Z">
         <seg>Пробел</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Spanish</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Испанская</seg>
       </tuv>
     </tu>
     <tu>
@@ -6332,6 +6078,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Swedish</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Шведская</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Switch manually within 5 seconds</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T142523Z">
@@ -6404,6 +6158,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Synchronize completed: %d %ls updated</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Синхронизация завершена: %d %ls обновлено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Synchronize this item...</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T110234Z">
@@ -6412,10 +6174,19 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Synchronizing from database: %s</seg>
+        <seg>Synchronizing from database: %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T103054Z">
-        <seg>Синхронизация с контейнером: %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152217Z" creationid="pm_kan" creationdate="20141226T152217Z">
+        <seg>Синхронизация с контейнером: %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Synchronizing with another database will update the entries in your
+database with matching entries from the other database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T130541Z">
+        <seg>Синхронизация с другим контейнером приведёт к обновлению элементов текущего контейнера данными из соответствующих элементов другого контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -6476,10 +6247,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Text file being imported: %s</seg>
+        <seg>Text file being imported: %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120750Z">
-        <seg>Текстовый файл импортирован: %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151212Z" creationid="pm_kan" creationdate="20141226T151212Z">
+        <seg>Текстовый файл импортирован: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -6508,10 +6279,18 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The %s entry "%s, %s, %s" doesn't point to a normal or existing %s base entry.</seg>
+        <seg>The %ls entry "%ls, %ls, %ls" doesn't point to a normal or existing %ls base entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134629Z">
-        <seg>Элемент %s «%s, %s, %s» не указывает на нормальный или существующий %s исходный элемент.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152444Z" creationid="pm_kan" creationdate="20141226T152444Z">
+        <seg>Элемент %ls «%ls, %ls, %ls» не указывает на нормальный или существующий %ls исходный элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T151016Z">
+        <seg>При экспорте TXT- или CSV-файла не были соблюдены все требования, так как данные элемента разбиты на несколько строк.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6564,6 +6343,22 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The database:
+
+%ls
+
+has duplicate entries with the same group/title/user combination.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T145931Z" creationid="pm_kan" creationdate="20141226T145931Z">
+        <seg>Контейнер:
+
+%ls
+
+содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The file was not found.</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -6592,6 +6387,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Не указана версия XML-фильтра.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The following %ls %ls updated:</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Следующие %ls %ls обновлены:</seg>
       </tuv>
     </tu>
     <tu>
@@ -6636,6 +6439,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The following entries had a policy name that already existed in this database but with different settings.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T150910Z">
+        <seg>Указанные элементы были связаны с политиками, которые уже есть в данном контейнере, но имеют другие настройки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The following entries had an empty Password field, which is not permitted.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T135253Z">
@@ -6676,10 +6487,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The following entries have passwords in the correct form for %s, but the base entry does not exist.</seg>
+        <seg>The following entries have passwords in the correct form for %ls, but the base entry does not exist.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Следующие элементы содержат указатель на пароль из элемента %s, но исходный элемент не существует.</seg>
+        <seg>Следующие элементы содержат указатель на пароль из элемента %ls, но исходный элемент не существует.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6692,10 +6503,18 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The following fields were %s</seg>
+        <seg>The following fields were %ls</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132214Z">
-        <seg>Следующие поля были %s</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152234Z" creationid="pm_kan" creationdate="20141226T152234Z">
+        <seg>Следующие поля были %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The following new %ls %ls merged into this database:</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Новые %ls %ls добавлены в данный контейнер:</seg>
       </tuv>
     </tu>
     <tu>
@@ -6724,10 +6543,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The largest entry size found was ~%d %s.</seg>
+        <seg>The largest entry size found was ~%d %ls.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T140409Z">
-        <seg>Наибольший обнаруженный размер ~%d %s.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152748Z" creationid="pm_kan" creationdate="20141226T152748Z">
+        <seg>Наибольший обнаруженный размер ~%d %ls.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6740,18 +6559,26 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The original database, '%s', is in pre-3.0 format.</seg>
+        <seg>The original database, "%ls", is in pre-3.0 format.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120153Z">
-        <seg>Формат исходного контейнера «%s», имеет версию ниже 3.0.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150631Z" creationid="pm_kan" creationdate="20141226T150631Z">
+        <seg>Формат исходного контейнера «%ls», имеет версию ниже 3.0.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>The password has been set to '%s'</seg>
+        <seg>The original database, '%ls', is in pre-3.0 format.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T135257Z">
-        <seg>Был установлен пароль «%s»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150719Z" creationid="pm_kan" creationdate="20141226T150719Z">
+        <seg>Формат исходного контейнера «%ls», имеет версию ниже 3.0.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The password has been set to '%ls'</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152740Z" creationid="pm_kan" creationdate="20141226T152740Z">
+        <seg>Был установлен пароль «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -6776,6 +6603,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Пользователь исключил следующие столбцы из экспорта:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>There appears to be no system tray support in your current environment.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150317Z" creationid="pm_kan" creationdate="20141226T150214Z">
+        <seg>Похоже, текущее окружение не поддерживает работу с областью уведомлений.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6820,10 +6655,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>They have been removed from the %s entries.</seg>
+        <seg>They have been removed from the %ls entries.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T183205Z">
-        <seg>Они были убраны из %s элементов.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152657Z" creationid="pm_kan" creationdate="20141226T152657Z">
+        <seg>Она была отвязана от %ls элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6844,10 +6679,34 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>This entry must have a</seg>
+        <seg>This entry has the following %d %ls:
+%ls
+Please confirm to continue (All shortcuts to this entry will be deleted)?</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104736Z">
-        <seg>Элемент должен</seg>
+      <tuv lang="RU-RU">
+        <seg>У данного элемента есть %d подчинённых типа «%ls»:
+%ls
+Продолжить выполнение (все ярлыки для этого элемента будут удалены)?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This entry has the following %d %ls:
+%ls
+Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>У данного элемента есть %d %ls:
+%ls
+Продолжить выполнение (пароли для псевдонимов будут заменены на пароль этого элемента)?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This entry must have a %ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T145853Z" creationid="pm_kan" creationdate="20141226T145853Z">
+        <seg>Элемент должен содержать %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -6934,12 +6793,10 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>To get an unlimited version for the U3 platform, please visit http://software.u3.com
-Note: Saving this database will result in the removal of unread entries!</seg>
+        <seg>To add a new entry, simply fill in the fields below.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133544Z">
-        <seg>Для получения полноценной версии для платформы U3 посетите http://software.u3.com.
-Примечание: Сохранение контейнера приведёт к удалению непрочитанных элементов!</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T093045Z">
+        <seg>Заполните поля для добавления нового элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6976,14 +6833,6 @@ Note: Saving this database will result in the removal of unread entries!</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Trial Version Limitation</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Ограничение пробной версии</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Trouble reading stored filters (version mismatch?).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133718Z">
@@ -6992,10 +6841,10 @@ Note: Saving this database will result in the removal of unread entries!</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully.</seg>
+        <seg>Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully.</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Проблемы с нетекстовыми полями (напр., время) в записи «%s». Проверьте корректность данных.</seg>
+        <seg>Проблемы с нетекстовыми полями (напр., время) в записи «%ls». Проверьте корректность данных.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7033,14 +6882,6 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>U</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125325Z">
-        <seg>U</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>URL</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7065,6 +6906,14 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Unable to create a new XML configuration file or add your settings to an existing XML configuration file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133601Z">
+        <seg>Невозможно создать новый XML-файл с настройками или добавить параметры в уже существующий.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Unable to create intermediate backup.</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7077,6 +6926,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Невозможно перейти по ссылке</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unable to get configuration file lock.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134818Z">
+        <seg>Невозможно заблокировать файл настроек.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7113,6 +6970,14 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Unable to update your entries in the existing XML configuration file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133833Z">
+        <seg>Невозможно обновить записи в существующем XML-файле с настройками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Unable to use a MS XML reader on your system.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134912Z">
@@ -7125,6 +6990,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>На вашей системе невозможно проверить XML-файл с помощью XML Schema (XSD).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unexpected exception during parsing.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Непредусмотренное исключение при разборе.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7289,6 +7162,15 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Use only easy-to-read characters
+(i.e., no 'l', '1', etc.)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104513Z">
+        <seg>Только удобочитаемые символы (не исп. «l», «1» и т. п.)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Use symbols</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7361,22 +7243,6 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>V%d.%d %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132324Z">
-        <seg>V%d.%d %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>V%d.%d.%d %s</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132327Z">
-        <seg>V%d.%d.%d %s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>VX.YY</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132317Z">
@@ -7389,6 +7255,18 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Проверить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Validated %d %ls
+
+Imported %d %ls</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T151430Z" creationid="pm_kan" creationdate="20141226T151430Z">
+        <seg>Проверено %d %ls
+
+Импортировано %d %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -7465,6 +7343,14 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>WARNING!!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T131441Z">
+        <seg>ВНИМАНИЕ!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Warn</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7481,10 +7367,26 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Warning!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T111824Z">
+        <seg>Предупреждение!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Weak passphrase:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132314Z">
         <seg>Слабый пароль:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When set, use XTEST for AutoType instead of XSendEvent.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150453Z" creationid="pm_kan" creationdate="20141226T150453Z">
+        <seg>Если выбрано, для автонабора будет использован XTEST вместо XSendEvent.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7513,6 +7415,14 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Write operation failed!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120525Z">
+        <seg>Сбой при записи!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>XML</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7521,10 +7431,10 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>XML %s: line %d character %d: %s</seg>
+        <seg>XML %ls: line %d character %d: %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>XML %s: строка %d символ %d: %s</seg>
+        <seg>XML %ls: строка %d символ %d: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -7601,26 +7511,26 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Yes - At least %d from %s: %s</seg>
+        <seg>Yes - At least %d from %ls: %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Да: не менее %d из %s: %s</seg>
+        <seg>Да: не менее %d из %ls: %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Yes - EasyVision Symbols: %s</seg>
+        <seg>Yes - EasyVision Symbols: %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Да: удобочитаемые символы: %s</seg>
+        <seg>Да: удобочитаемые символы: %ls</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Yes - Pronounceable Symbols: %s</seg>
+        <seg>Yes - Pronounceable Symbols: %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Да: произносимые символы: %s</seg>
+        <seg>Да: произносимые символы: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -7683,18 +7593,18 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Your changes will be written as "%s" in the new format, which is unusable by old versions of PasswordSafe.</seg>
+        <seg>Your changes will be written as "%ls" in the new format, which is unusable by old versions of PasswordSafe.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120051Z">
-        <seg>Изменения будут записаны в «%s» с использованием нового формата, который несовместим с предыдущими версиями Password Safe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150649Z" creationid="pm_kan" creationdate="20141226T150649Z">
+        <seg>Изменения будут записаны в «%ls» с использованием нового формата, который несовместим с предыдущими версиями Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Your database has been synchronized with "%s"</seg>
+        <seg>Your database has been synchronized with "%ls"</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T131932Z">
-        <seg>Контейнер был синхронизирован с «%s»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152132Z" creationid="pm_kan" creationdate="20141226T152132Z">
+        <seg>Контейнер был синхронизирован с «%ls»</seg>
       </tuv>
     </tu>
     <tu>
@@ -7759,22 +7669,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>[Заметки скрыты — кликните для отображения]</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>]</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132222Z">
-        <seg>]</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>a</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125328Z">
-        <seg>a</seg>
       </tuv>
     </tu>
     <tu>
@@ -7863,14 +7757,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>автонабор:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>bak</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112840Z">
-        <seg>bak</seg>
       </tuv>
     </tu>
     <tu>
@@ -8172,14 +8058,6 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>h</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125326Z">
-        <seg>h</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T142920Z">
@@ -8415,10 +8293,10 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>on database %s</seg>
+        <seg>on database %ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>в контейнере %s</seg>
+        <seg>в контейнере %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -8459,22 +8337,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120647Z">
         <seg>Контейнеры Password Safe (*.psafe3)|*.psafe3|Все файлы (*.*; *)|*.*;*</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>pwsafe</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>pwsafe</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>pwsafe.psafe3</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T120139Z">
-        <seg>pwsafe.psafe3</seg>
       </tuv>
     </tu>
     <tu>
@@ -8652,38 +8514,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>в течение %d дней</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>x</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125332Z">
-        <seg>x</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>x.y</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125232Z">
-        <seg>x.y</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125329Z">
-        <seg>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>}</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T132223Z">
-        <seg>}</seg>
       </tuv>
     </tu>
 <!-- Alternative translations -->
