@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 
@@ -32,18 +32,15 @@
 /*!
  * Control identifiers
  */
-#ifndef wxDIALOG_MODAL
-#define wxDIALOG_MODAL 0
-#endif
 
 
 ////@begin control identifiers
 #define ID_CABOUT 10078
 #define wxID_VERSIONSTR 10079
-#define ID_HYPERLINKCTRL1 10081
-#define ID_HYPERLINKCTRL 10080
+#define ID_CHECKNEW 10081
+#define ID_SITEHYPERLINK 10080
 #define ID_TEXTCTRL 10082
-#define SYMBOL_CABOUT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_CABOUT_STYLE wxCAPTION|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #define SYMBOL_CABOUT_TITLE _("About Password Safe")
 #define SYMBOL_CABOUT_IDNAME ID_CABOUT
 #define SYMBOL_CABOUT_SIZE wxSize(400, 300)
@@ -56,7 +53,7 @@
  */
 
 class CAbout: public wxDialog
-{    
+{
   DECLARE_CLASS( CAbout )
   DECLARE_EVENT_TABLE()
 
@@ -77,11 +74,17 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
+  void CheckNewVersion();
 ////@begin CAbout event handler declarations
 
-  /// wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
-  void OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event );
+  /// event handler for ID_CHECKNEW
+#if wxCHECK_VERSION(2,9,2)
+  void OnCheckNewClicked(wxCommandEvent& WXUNUSED(event)) { CheckNewVersion(); };
+#else
+  void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); };
+#endif
 
+  void OnVisitSiteClicked(wxHyperlinkEvent& event);
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
 

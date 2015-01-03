@@ -53,7 +53,12 @@ IMPLEMENT_CLASS( CAbout, wxDialog )
 BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
 ////@begin CAbout event table entries
-  EVT_HYPERLINK( ID_HYPERLINKCTRL1, CAbout::OnHyperlinkctrl1HyperlinkClicked )
+#if wxCHECK_VERSION(2,9,2)
+  EVT_BUTTON( ID_CHECKNEW, CAbout::OnCheckNewClicked )
+#else
+  EVT_HYPERLINK( ID_CHECKNEW, CAbout::OnCheckNewClicked )
+#endif
+  EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked )
   EVT_BUTTON( wxID_CLOSE, CAbout::OnCloseClick )
 ////@end CAbout event table entries
 
@@ -90,6 +95,10 @@ bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, c
   if (GetSizer())
   {
     GetSizer()->SetSizeHints(this);
+    // currently (wx 3.0.2 GTK+) after SetSizeHints() style flags are ignored
+    // and maximize/minimize buttons reappear, so we need to force max size
+    // to remove maximize and minimize buttons
+    SetMaxSize(GetSize());
   }
   Centre();
 ////@end CAbout creation
@@ -109,14 +118,14 @@ CAbout::~CAbout()
 
 
 /*!
- * Member initialisation
+ * Member initialization
  */
 
 void CAbout::Init()
 {
-////@begin CAbout member initialisation
+////@begin CAbout member initialization
   m_newVerStatus = NULL;
-////@end CAbout member initialisation
+////@end CAbout member initialization
 }
 
 
@@ -127,63 +136,73 @@ void CAbout::Init()
 void CAbout::CreateControls()
 {
 ////@begin CAbout content construction
-  CAbout* itemDialog1 = this;
+  CAbout* aboutDialog = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
+  aboutDialog->SetSizer(mainSizer);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("./graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 37)), 0 );
-  itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
+  mainSizer->Add(logoBitmap, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
+  mainSizer->Add(rightSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_VERSIONSTR, _("Password Safe vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
-  itemBoxSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  rightSizer->Add(versionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Build date: "), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date: Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
+  rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer7, 0, wxALIGN_LEFT|wxALL, 0);
+  wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
+  rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* latestStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
+  verCheckSizer->Add(latestStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+#if wxCHECK_VERSION(2,9,2)
+  // using simple button to prevent Gtk-WARNING and other link processing overhead
+  wxButton* latestCheckButton = new wxButton(aboutDialog, ID_CHECKNEW, _("here"), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE|wxBU_EXACTFIT);
+  wxString markup = wxString(L"<span color='blue'><u>") + _("here") + L"</u></span>";
+  latestCheckButton->SetLabelMarkup(markup);
+#else
+  wxHyperlinkCtrl* latestCheckButton = new wxHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxHL_ALIGN_LEFT);
+  // Force empty URL, because wxHyperlinkCtrl constructor set URL to label if ti's empty
+  // This doesn't prevent "Gtk-WARNING **: Unable to show ", but at lease we don't try to open label text
+  latestCheckButton->SetURL(wxEmptyString);
+#endif
+  verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* itemHyperlinkCtrl9 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL1, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-  itemBoxSizer7->Add(itemHyperlinkCtrl9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0);
+  verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText10 = new wxStaticText( itemDialog1, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer7->Add(itemStaticText10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
+  rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxBoxSizer* itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer11, 0, wxALIGN_LEFT|wxALL, 0);
+  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
+  visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer11->Add(itemStaticText12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"http://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* itemHyperlinkCtrl13 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL, _("PasswordSafe website"), _T("http://pwsafe.org/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
-  itemBoxSizer11->Add(itemHyperlinkCtrl13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  rightSizer->Add(visitSiteStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("See LICENSE for open souce details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
-  itemBoxSizer4->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2015 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2014 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
-  itemBoxSizer4->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALL, 5);
-
-  m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
+  m_newVerStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxNO_BORDER); //wxSize(aboutDialog->ConvertDialogToPixels(wxSize(120, -1)).x, -1)
   m_newVerStatus->SetBackgroundColour(wxColour(230, 231, 232));
-  itemBoxSizer4->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL, 5);
+  rightSizer->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL|wxEXPAND|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5);
+  m_newVerStatus->Hide();
 
-  wxButton* itemButton17 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemButton17, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
+  rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
 ////@end CAbout content construction
-  const wxString vstring = pwsafeAppName + _T(" ") + pwsafeVersionString;
-  itemStaticText5->SetLabel(vstring);
-  const wxString d(_T(__DATE__)), t(_T(__TIME__));
-  const wxString dstring = _("Build date: ") + d + _T(" ") + t;
-  itemStaticText6->SetLabel(dstring);
+  const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
+  versionStaticText->SetLabel(vstring);
+  const wxString d(__DATE__), t(__TIME__);
+  const wxString dstring = _("Build date:") + L" " + d + L" " + t;
+  buildStaticText->SetLabel(dstring);
 }
 
 
@@ -204,7 +223,7 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CAbout bitmap retrieval
-  if (name == _T("graphics/cpane.xpm"))
+  if (name == L"./graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
@@ -245,10 +264,10 @@ void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
  */
 
 /*!
- * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
+ * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCHECK
  */
 
-void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
+void CAbout::CheckNewVersion()
 {
   // Get the latest.xml file from our site, compare to version,
   // and notify the user
@@ -282,7 +301,7 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
   *m_newVerStatus << _("Trying to contact server...");
   m_newVerStatus->Show();
   stringT latext_xml;
-  wxURL url(_("http://pwsafe.org/latest.xml"));
+  wxURL url(L"http://pwsafe.org/latest.xml");
   wxInputStream *in_stream = url.GetInputStream();
   unsigned char buff[BUFSIZ+1];
   StringX chunk;
@@ -325,9 +344,9 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
     case CheckVersion::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
-      newer += pwsafeVersionString + wxT("\n");
+      newer += pwsafeVersionString + L"\n";
       newer += _("Latest version:\t"); newer += latest.c_str();
-      newer += wxT("\n\n");
+      newer += L"\n\n";
       newer += _("Please visit the PasswordSafe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
       *m_newVerStatus << cs_title;
@@ -344,3 +363,13 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
   m_newVerStatus->Show();
 }
 
+void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& event) {
+  // Do nothing to prevent double open, because GTK control opens URL by itself,
+  // otherwise default handler will call xdg-open to open URL
+#ifndef __WXGTK__
+  // skip this hook and leave default processing for non-GTK builds
+  event.Skip();
+#else
+  wxUnusedVar(event);
+#endif
+}
