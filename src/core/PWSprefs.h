@@ -13,8 +13,8 @@
 
 /*
 * A class to abstract away the persistent storage mechanism used to store and
-* retrieve user preferences. Pre-2.03 implementations used the Windows 
-* registry. People have asked for preferences to be stored along with the 
+* retrieve user preferences. Pre-2.03 implementations used the Windows
+* registry. People have asked for preferences to be stored along with the
 * database, so that the same preferences can be shared across computers
 * (e.g., using disk-on-key).
 *
@@ -73,7 +73,7 @@ public:
                      CF_FILE_RO, CF_FILE_RW, CF_FILE_RW_NEW};
 
   static const stringT cfgFileName; // one place for the config filename
-  
+
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
   static bool SetConfigFile(const stringT &fn);
@@ -100,13 +100,13 @@ public:
     DontAskMinimizeClearYesNo, // Obsoleted in 3.13 - replaced by 2 separate
     DatabaseClear,
     DontAskSaveMinimize, // Obsoleted in 3.02
-    QuerySetDef, UseNewToolbar, UseSystemTray, 
-    LockOnWindowLock, 
+    QuerySetDef, UseNewToolbar, UseSystemTray,
+    LockOnWindowLock,
     LockOnIdleTimeout, // Obsoleted in 3.19 - replaced by Database equivalent
     EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
     DisplayExpandedAddEditDlg, // Obsoleted in 3.18
     MaintainDateTimeStamps,
-    SavePasswordHistory, 
+    SavePasswordHistory,
     FindWraps, // Obsoleted in 3.11
     ShowNotesDefault,
     BackupBeforeEverySave, PreExpiryWarn,
@@ -121,6 +121,7 @@ public:
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     UseAltAutoType,  //Only under X-Windows
+    IgnoreHelpLoadError, //Only under WX
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -144,7 +145,7 @@ public:
   // NOTE: When adding items, update the pwsafe.xsd & pwsafe_filter.xsd schemas
   //       to increase the maximum value in "dcaType"
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
-    DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
+    DoubleClickAutoType = 2, DoubleClickBrowse = 3,
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
     DoubleClickCopyPasswordMinimize = 6,
     DoubleClickBrowsePlus = 7, DoubleClickRun = 8,

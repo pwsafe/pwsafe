@@ -56,7 +56,9 @@ using namespace std;
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
-
+#if wxCHECK_VERSION(2,9,2)
+#include <wx/richmsgdlg.h>
+#endif
 ////@begin XPM images
 #include "./graphics/pwsafe16.xpm"
 #include "./graphics/pwsafe32.xpm"
@@ -333,7 +335,7 @@ bool PwsafeApp::OnInit()
     }
     else {
       // We don't want to bring up a UI if running silently
-      std::wcerr << L"There appears to be no system tray support in your current environment.  pwsafe may not work as expected in silent mode." << std::endl;;
+      std::wcerr << L"There appears to be no system tray support in your current environment.  pwsafe may not work as expected in silent mode." << std::endl;
     }
   }
 
@@ -341,9 +343,26 @@ bool PwsafeApp::OnInit()
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
   wxString helpfile(wxFileName(towxstring(pws_os::gethelpdir()), wxT("help.zip")).GetFullPath());
-  if (!m_controller->Initialize(helpfile))
-    wxMessageBox(_("Could not initialize help subsystem. Help will not be available"),
-    _("Error initializing help"), wxOK | wxICON_ERROR);
+
+  if (!m_controller->Initialize(helpfile)){
+    std::wcerr << L"Could not initialize help subsystem." << std::endl;
+    if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
+#if wxCHECK_VERSION( 2, 9, 2 )
+      wxRichMessageDialog dlg(NULL,
+        _("Could not initialize help subsystem. Help will not be available"),
+        _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
+      dlg.ShowCheckBox(_("Don't show again"));
+      dlg.ShowModal();
+      if (dlg.IsCheckBoxChecked()) {
+        prefs->SetPref(PWSprefs::IgnoreHelpLoadError, true);
+        prefs->SaveApplicationPreferences();
+      }
+#else
+      wxMessageBox(_("Could not initialize help subsystem. Help will not be available"),
+      _("Password Safe: Error initializing help"), wxOK | wxICON_ERROR);
+#endif
+    }
+  }
   m_controller->SetParentWindow(NULL); // try to de-modalize. Partially (?) successful
 
   m_appIcons.AddIcon(pwsafe16);
