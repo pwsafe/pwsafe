@@ -57,7 +57,7 @@ msgstr "Siehe LICENSE für Open Source Details."
 
 # no translation needed
 #: ../../../ui/wxWidgets/about.cpp:171
-msgid "Copyright (c) 2003-2014 by Rony Shapiro"
+msgid "Copyright (c) 2003-2015 by Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/about.cpp:178

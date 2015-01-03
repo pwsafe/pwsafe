@@ -49,7 +49,7 @@ msgid "See LICENSE for open souce details."
 msgstr "Per dettagli sul codice sorgente, si veda la LICENZA."
 
 #: ../../../ui/wxWidgets/about.cpp:171
-msgid "Copyright (c) 2003-2014 by Rony Shapiro"
+msgid "Copyright (c) 2003-2015 by Rony Shapiro"
 msgstr "Copyright (c) 2003-2014 di Rony Shapiro"
 
 #: ../../../ui/wxWidgets/about.cpp:178
