@@ -1558,7 +1558,7 @@ msgstr "Minute(n) Leerlauf"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:545
 msgid "Unlock Difficulty:"
-msgstr "Entsperrschwierigkeitsgrad"
+msgstr "Entsperrschwierigkeitsgrad:"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:553
 msgid "Standard"
@@ -1904,7 +1904,7 @@ msgstr "Filter &neu/bearbeiten..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:481
 msgid "&Apply current"
-msgstr "Aktuelles anwenden"
+msgstr "&Aktuelles anwenden"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:482
 msgid "&Manage..."
@@ -2068,7 +2068,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1385
 msgid "Please choose a name for the current (Untitled) database:"
-msgstr "Bitte wählen Sie einen Namen für die aktuell unbenannte Datenbank aus"
+msgstr "Bitte wählen Sie einen Namen für die aktuell unbenannte Datenbank aus:"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1386
 msgid "Please choose a new name for the current database:"
@@ -2113,7 +2113,7 @@ msgstr "&Gruppe hinzufügen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1816
 msgid "&Rename Group"
-msgstr "Gruppe umbenennen"
+msgstr "&Gruppe umbenennen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1817
 msgid "&Delete Group"
@@ -2248,7 +2248,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2603
 msgid "Import text"
-msgstr "&Text importieren"
+msgstr "Text importieren"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2611
 msgid "The database:"
@@ -3376,7 +3376,7 @@ msgstr "YubiKey Geheimschlüssel (20 Byte Hex)"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:193 ../../../ui/wxWidgets/yubicfg.cpp:330
 msgid "Hide"
-msgstr "&Ausblenden"
+msgstr "Ausblenden"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 msgid "Set YubiKey"
@@ -3384,7 +3384,7 @@ msgstr "YubiKey übernehmen"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:339
 msgid "Show"
-msgstr "&Anzeigen"
+msgstr "Anzeigen"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:32
 msgid "<- Click on button to the left"
@@ -4318,7 +4318,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:199
 msgid "Invalid Filter schema."
-msgstr "Ungültiges Filterschema"
+msgstr "Ungültiges Filterschema."
 
 #: ../../../core/core_st.cpp:200
 msgid "Schema does not have a version number."
@@ -4744,7 +4744,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:285
 msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
-"Folgende Einträge hatten ein leeres Titelfeld Titel, was nicht erlaubt ist. "
+"Folgende Einträge hatten ein leeres Titelfeld Titel, was nicht erlaubt ist."
 
 #: ../../../core/core_st.cpp:286
 #, fuzzy, c-format
@@ -4785,7 +4785,7 @@ msgid ""
 "manually."
 msgstr ""
 "Folgende WARNUNGEN wurden festgestellt - Sie sollten sich diese anschauen "
-"und händisch bereinigen"
+"und händisch bereinigen."
 
 #: ../../../core/core_st.cpp:294
 msgid "will expire"
