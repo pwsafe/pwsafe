@@ -108,7 +108,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/about.cpp:331
 #, fuzzy
 msgid "Please visit the PasswordSafe website to download the latest version."
-"Besøg venligst PasswordSafe hjemmesiden for at hente den seneste version."
+msgstr "Besøg venligst PasswordSafe hjemmesiden for at hente den seneste version."
 
 #: ../../../ui/wxWidgets/about.cpp:332
 #, fuzzy
