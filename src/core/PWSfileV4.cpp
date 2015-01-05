@@ -587,8 +587,8 @@ int PWSfileV4::WriteHeader()
     size_t totlen = 1; // 1 byte for num of policies
     for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
       size_t polNameLen = pws_os::wcstombs(NULL, 0, iter->first.c_str(), iter->first.length());
-      size_t symSetLen = pws_os::wcstombs(NULL, 0,
-                                          iter->second.symbols.c_str(), iter->second.symbols.length());
+      size_t symSetLen = ((iter->second.symbols.empty()) ?
+                          0 : pws_os::wcstombs(NULL, 0, iter->second.symbols.c_str(), iter->second.symbols.length()));
       totlen +=
         1 +                            // length of policy name
         polNameLen +
