@@ -149,10 +149,10 @@ void CAbout::CreateControls()
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
   mainSizer->Add(rightSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe")+L" vx.yy (abcd)", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(versionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date: Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+L" Mon dd yyyy hh:mm:ss", wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
