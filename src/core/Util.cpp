@@ -762,3 +762,33 @@ bool operator==(const std::string& str1, const stringT& str2)
     return stringx2std(xstr) == str2;
 }
 
+bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
+{
+  // len can be either 4, 5 or 8...
+  // len == 5 is new for V4
+  ASSERT(len == 4 || len == 5 || len == 8);
+  if (!(len == 4 || len == 5 || len == 8))
+    return false;
+  // sizeof(time_t) is either 4 or 8
+  if (len == sizeof(time_t)) { // 4 == 4 or 8 == 8
+    t = getInt<time_t>(data);
+  } else if (len < sizeof(time_t)) { // 4 < 8 or 5 < 8
+    unsigned char buf[sizeof(time_t)] = {0};
+    memcpy(buf, data, len);
+    t = getInt<time_t>(buf);
+  } else { // convert from 40 or 64 bit time to 32 bit
+    // XXX Change to use localtime, not GMT
+    unsigned char buf[sizeof(__time64_t)] = {0};
+    memcpy(buf, data, len); // not needed if len == 8, but no harm
+    struct tm ts;
+    const __time64_t t64 = getInt<__time64_t>(buf);
+    if (_gmtime64_s(&ts, &t64) != 0) {
+      ASSERT(0); return false;
+    }
+    t = _mkgmtime32(&ts);
+    if (t == time_t(-1)) { // time is past 2038!
+      t = 0; return false;
+    }
+  }
+  return true;
+}

@@ -249,6 +249,8 @@ namespace PWSUtil {
 
   StringX DeDupString(StringX &in_string);
   stringT GetSafeXMLString(const StringX &sxInString);
+
+  bool pull_time(time_t &t, const unsigned char *data, size_t len);
 }
 
 ///////////////////////////////////////////////////////
