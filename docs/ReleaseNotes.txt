@@ -1,5 +1,5 @@
-Password Safe 3.34.2 Release Notes - December 2014
-==================================================
+Password Safe 3.35 Release Notes - December 2014
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.34.2
-====================
+Bugs fixed in 3.35
+==================
 [1221] Support newer YubiKeys in all modes.
 [1212] In the Flattened List view, keep the icon column, if present,
 as leftmost, to ensure proper display.
@@ -19,8 +19,8 @@ file selection dialog is handled correctly.
 [1210] CurrentFile preference is updated sooner rather than later, so
 last database is set as default for next invocation.
 
-Changes to Existing Features in 3.34.2
-======================================
+Changes to Existing Features in 3.35
+====================================
 [760] Password Policy: You can now choose a character set without
 requiring at least one character from that set (i.e., minimum required
 can be zero).

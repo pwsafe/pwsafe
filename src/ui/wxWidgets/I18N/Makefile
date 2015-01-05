@@ -16,7 +16,7 @@ POS := $(patsubst %,pos/pwsafe_%.po,$(LANGS))
 
 MOS := $(patsubst %,mos/%/LC_MESSAGES/pwsafe.mo,$(LANGS))
 
-.PHONY:  help pot pos mos
+.PHONY:  help pot pos mos check
 
 help:
 	@echo "pot - update po template $(POT) from source code"
@@ -40,3 +40,6 @@ $(POS) : $(POT)
 mos/%/LC_MESSAGES/pwsafe.mo : pos/pwsafe_%.po
 	@mkdir -p $(dir $@)
 	@msgfmt --check --output-file=$@ $^
+
+check:
+	POFileChecker --ignore-fuzzy $(POS)
