@@ -389,7 +389,9 @@ void PasswordSafeFrame::Init()
   }
   // Don't activate language here!
   // 1st - selected language already activated
-  // 2nd - when we called form constructor, it's caption parameter points to string located inside previously selected global translation object (lead to crash in Release, but work in Debug)
+  // 2nd - when we called from constructor, its caption parameter points
+  //       to string located inside previously selected global translation object
+  //       (leads to crash in Release, but works in Debug)
   pws_os::Trace(L"Selected language: menu id= %d\n", m_selectedLanguage);
 }
 
