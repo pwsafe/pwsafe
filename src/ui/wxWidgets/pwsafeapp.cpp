@@ -195,11 +195,11 @@ PwsafeApp::~PwsafeApp()
 void PwsafeApp::Init()
 {
   m_locale = new wxLocale;
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/share/locale") );
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr") );
-  wxLocale::AddCatalogLookupPathPrefix( wxT("/usr/local") );
+  wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
+  wxLocale::AddCatalogLookupPathPrefix(L"/usr");
+  wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-  wxLocale::AddCatalogLookupPathPrefix( wxT("../I18N/mos") );
+  wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
 #endif
 
 ////@begin PwsafeApp member initialisation
@@ -225,8 +225,9 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 
 bool PwsafeApp::OnInit()
 {
-  m_locale->Init( GetSystemLanguage() );
-  ActivateLanguage( GetSystemLanguage() );
+  wxLanguage selectedLang = GetSelectedLanguage();
+  m_locale->Init(selectedLang);
+  ActivateLanguage(selectedLang, false);
 
   SetAppName(pwsafeAppName);
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
@@ -434,32 +435,66 @@ wxLanguage PwsafeApp::GetSystemLanguage()
   return static_cast<wxLanguage>(language);
 }
 
+/* Get selected language (user preference or system) */
+wxLanguage PwsafeApp::GetSelectedLanguage() {
+  StringX sxUserLang=PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
+  const wxLanguageInfo* langInfo=wxLocale::FindLanguageInfo(towxstring(sxUserLang));
+  if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)){
+    pws_os::Trace(L"Found user-preferred language: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
+    return static_cast<wxLanguage>(langInfo->Language);
+  }
+  else{
+      // language settings found, but wasn't activated
+#ifdef DEBUG
+      if (langInfo) {
+        pws_os::Trace(L"User-preferred language can't be activated: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
+      }
+#endif
+    return GetSystemLanguage();
+  }
+}
+
+
 /*!
  * Activates a language.
  *
  * \param language the wxWidgets specific enumeration of type wxLanguage representing a supported language
  * \see http://docs.wxwidgets.org/trunk/language_8h.html#a7d1c74ce43b2fb7acf7a6fa438c0ee86
+ * \param tryOnly only try to load locale without resettings global instance
  */
-bool PwsafeApp::ActivateLanguage(wxLanguage language)
+bool PwsafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 {
-  static wxString DOMAIN_("pwsafe");
+  static wxString DOMAIN_(L"pwsafe");
 
-  wxTranslations *translations = new wxTranslations;
-  translations->SetLanguage( language );
-  translations->AddStdCatalog();
-  wxTranslations::Set( translations ); // takes care of occupied memory by wxTranslations
-
-  if ( language == wxLANGUAGE_ENGLISH) {
-    translations->SetLanguage( wxLANGUAGE_ENGLISH );
+  if (tryOnly && language == wxLANGUAGE_ENGLISH) {
     return true;
   }
 
-  if ( !translations->AddCatalog( DOMAIN_ ) ) {
-    std::wcerr << L"Couldn't load language catalog for " << wxLocale::GetLanguageName(language) << std::endl;
-    translations->SetLanguage( wxLANGUAGE_ENGLISH );
+  bool bRes = true;
+
+  wxTranslations *translations = new wxTranslations;
+  translations->SetLanguage(language);
+
+  if (language != wxLANGUAGE_ENGLISH) {
+    if ( !translations->AddStdCatalog() ) {
+      pws_os::Trace(L"Couldn't load default language catalog for %ls\n", ToStr(wxLocale::GetLanguageName(language)));
+    }
+
+    if ( !translations->AddCatalog(DOMAIN_) ) {
+      pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxLocale::GetLanguageName(language)));
+      translations->SetLanguage(wxLANGUAGE_ENGLISH);
+    }
+    bRes = translations->IsLoaded(DOMAIN_);
   }
 
-  return translations->IsLoaded( DOMAIN_ );
+  if (tryOnly) {
+    delete translations;
+  }
+  else {
+    // (re)set global translation and take care of occupied memory by wxTranslations
+    wxTranslations::Set(translations);
+  }
+  return bRes;
 }
 
 /*!

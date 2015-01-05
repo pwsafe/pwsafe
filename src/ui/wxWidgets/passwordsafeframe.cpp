@@ -285,7 +285,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
 
 bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin PasswordSafeFrame creation
+  ////@begin PasswordSafeFrame creation
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateMenubar();
@@ -362,7 +362,7 @@ void PasswordSafeFrame::Init()
   AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese")  );  /* code: 'zh' */
   AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish")   );  /* code: 'da' */
   AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch")    );  /* code: 'nl' */
-  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _T("English") );  /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _("English")+L" (English)");  /* code: 'en' */
   AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French")   );  /* code: 'fr' */
   AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German")   );  /* code: 'de' */
   AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian")  );  /* code: 'it' */
@@ -374,20 +374,23 @@ void PasswordSafeFrame::Init()
 
   m_selectedLanguage = ID_LANGUAGE_ENGLISH;
   wxLanguage system_language = wxGetApp().GetSystemLanguage();
-
+  wxLanguage current_language = wxGetApp().GetSelectedLanguage();
   for (auto &item : m_languages) {
-    // Mark the system language
+    if (get<0>(item.second) == current_language) {
+      m_selectedLanguage = item.first;
+      pws_os::Trace(L"Found user-preferred language: menu id= %d, lang id= %d\n", m_selectedLanguage, current_language);
+    }
+
     if (get<0>(item.second) == system_language) {
       get<1>(item.second) = wxT("[ ") + get<1>(item.second) + wxT(" ]");
-      m_selectedLanguage = item.first;
     }
     // Mark whether language can be activated
-    get<2>(item.second) = wxGetApp().ActivateLanguage(get<0>(item.second));
+    get<2>(item.second) = wxGetApp().ActivateLanguage(get<0>(item.second), true);
   }
-  // Activate the systems default language
-  if (!wxGetApp().ActivateLanguage(get<0>(m_languages[m_selectedLanguage]))) {
-    m_selectedLanguage = ID_LANGUAGE_ENGLISH;
-  }
+  // Don't activate language here!
+  // 1st - selected language already activated
+  // 2nd - when we called form constructor, it's caption parameter points to string located inside previously selected global translation object (lead to crash in Release, but work in Debug)
+  pws_os::Trace(L"Selected language: menu id= %d\n", m_selectedLanguage);
 }
 
 
@@ -1514,10 +1517,16 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
     GetMenuBar()->Check( menu_id, false );
 
-  // If a new language has been selected successfully we have to 
+  // If a new language has been selected successfully we have to
   // recreate the UI so that the language change takes effect
-  if (wxGetApp().ActivateLanguage( get<0>(m_languages[id]) )) {
+  wxLanguage userLang=get<0>(m_languages[id]);
+  if (wxGetApp().ActivateLanguage(userLang, false)) {
     m_selectedLanguage = id;
+    wxString userLangName=wxLocale::GetLanguageCanonicalName(userLang);
+    if (!userLangName.IsEmpty()){
+      PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, tostringx(userLangName));
+      pws_os::Trace(L"Saved user-preferred language: name= %ls\n", ToStr(userLangName));
+    }
 
     // Recreate menubar
     CreateMenubar();
