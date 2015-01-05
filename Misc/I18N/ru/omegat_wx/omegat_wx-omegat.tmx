@@ -1553,8 +1553,8 @@ password are required.</seg>
       <tuv lang="EN-US">
         <seg>Chinese</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150507Z" creationid="pm_kan" creationdate="20141226T150507Z">
-        <seg>Китайская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T134926Z" creationid="pm_kan" creationdate="20141226T150507Z">
+        <seg>Китайский</seg>
       </tuv>
     </tu>
     <tu>
@@ -2021,10 +2021,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Copyright (c) 2003-2014 by Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2015 by Rony Shapiro</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T090803Z">
-        <seg>Copyright (c) 2003-2014 by Rony Shapiro</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T162645Z" creationid="pm_kan" creationdate="20150105T162645Z">
+        <seg>Copyright (c) 2003-2015 by Rony Shapiro</seg>
       </tuv>
     </tu>
     <tu>
@@ -2327,8 +2327,8 @@ offset approximately at %d</seg>
       <tuv lang="EN-US">
         <seg>Danish</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Датская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T134950Z">
+        <seg>Датский</seg>
       </tuv>
     </tu>
     <tu>
@@ -2584,8 +2584,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Dutch</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Голландская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135034Z">
+        <seg>Голландский</seg>
       </tuv>
     </tu>
     <tu>
@@ -2674,6 +2674,14 @@ Action:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Конец отчёта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>English</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T162653Z" creationid="pm_kan" creationdate="20150105T162653Z">
+        <seg>Английский</seg>
       </tuv>
     </tu>
     <tu>
@@ -2850,14 +2858,6 @@ Action:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152639Z" creationid="pm_kan" creationdate="20141226T152639Z">
         <seg>Ошибка в поле истории паролей %ls:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Error initializing help</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T125635Z">
-        <seg>Ошибка при инициализации справочной подсистемы</seg>
       </tuv>
     </tu>
     <tu>
@@ -3264,8 +3264,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>French</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Французская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135039Z">
+        <seg>Французский</seg>
       </tuv>
     </tu>
     <tu>
@@ -3288,8 +3288,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>German</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Немецкая</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135041Z">
+        <seg>Немецкий</seg>
       </tuv>
     </tu>
     <tu>
@@ -3891,8 +3891,8 @@ username field.</seg>
       <tuv lang="EN-US">
         <seg>Italian</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Итальянская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135043Z">
+        <seg>Итальянский</seg>
       </tuv>
     </tu>
     <tu>
@@ -3915,8 +3915,8 @@ username field.</seg>
       <tuv lang="EN-US">
         <seg>Korean</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Корейская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135045Z">
+        <seg>Корейский</seg>
       </tuv>
     </tu>
     <tu>
@@ -4854,10 +4854,10 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Password Safe vx.yy (abcd)</seg>
+        <seg>Password Safe: Error initializing help</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092119Z">
-        <seg>Password Safe vx.yy (abcd)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150103T101423Z" creationid="pm_kan" creationdate="20150103T101423Z">
+        <seg>Password Safe: Ошибка при инициализации справочной подсистемы</seg>
       </tuv>
     </tu>
     <tu>
@@ -5297,8 +5297,8 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Polish</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150516Z" creationid="pm_kan" creationdate="20141226T150516Z">
-        <seg>Польская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135053Z" creationid="pm_kan" creationdate="20141226T150516Z">
+        <seg>Польский</seg>
       </tuv>
     </tu>
     <tu>
@@ -5313,7 +5313,7 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-12-26 17:54+0300
+POT-Creation-Date: 2015-01-05 19:26+0300
 PO-Revision-Date: 2014-12-25 13:52+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -5322,17 +5322,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T154155Z" creationid="pm_kan" creationdate="20141226T145744Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T162637Z" creationid="pm_kan" creationdate="20150105T162637Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2014-12-26 18:40+0300
-PO-Revision-Date: 2014-12-26 18:40+0300
+POT-Creation-Date: 2015-01-05 19:30+0300
+PO-Revision-Date: 2015-01-05 19:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: 
 Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit</seg>
+Content-Transfer-Encoding: 8bitr</seg>
       </tuv>
     </tu>
     <tu>
@@ -5523,8 +5523,8 @@ Content-Transfer-Encoding: 8bit</seg>
       <tuv lang="EN-US">
         <seg>Russian</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Русская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135055Z">
+        <seg>Русский</seg>
       </tuv>
     </tu>
     <tu>
@@ -5668,9 +5668,9 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>See LICENSE for open souce details.</seg>
+        <seg>See LICENSE for open source details.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092725Z">
+      <tuv lang="RU-RU">
         <seg>См. LICENSE, чтобы узнать подробности
 о распространении исходного кода.</seg>
       </tuv>
@@ -5992,8 +5992,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Spanish</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Испанская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135057Z">
+        <seg>Испанский</seg>
       </tuv>
     </tu>
     <tu>
@@ -6080,8 +6080,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Swedish</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Шведская</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150105T135101Z">
+        <seg>Шведский</seg>
       </tuv>
     </tu>
     <tu>
@@ -8078,14 +8078,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092245Z">
         <seg>здесь</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>http://pwsafe.org/latest.xml</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092840Z">
-        <seg>http://pwsafe.org/latest.xml</seg>
       </tuv>
     </tu>
     <tu>
