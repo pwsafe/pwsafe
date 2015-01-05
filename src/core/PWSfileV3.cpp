@@ -456,8 +456,9 @@ int PWSfileV3::WriteHeader()
   time_t time_now;
   time(&time_now);
   // V3 still uses 32 bit time, so we truncate ruthlessly...
-  numWritten = WriteCBC(HDR_LASTUPDATETIME,
-                        reinterpret_cast<unsigned char *>(&time_now), 4);
+  unsigned char buf[4];
+  putInt32(buf, static_cast<int32>(time_now));
+  numWritten = WriteCBC(HDR_LASTUPDATETIME, buf, sizeof(buf));
   if (numWritten <= 0) { m_status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
@@ -688,88 +689,80 @@ int PWSfileV3::ReadHeader()
         // stored this as a hex value
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (!utf8status){
-          pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) failed\n"));
-        }
-        else{
+        if (utf8status) {
           iStringXStream is(text);
           is >> hex >> m_hdr.m_whenlastsaved;
           if (is.fail()) {
-            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) invalid hex string\n"));
+            // Perhaps 8 byte time_t representation?
             m_hdr.m_whenlastsaved = 0;
+          } else {
+            pws_os::Trace0(_T("Pre-3.09 HDR_LASTUPDATETIME - hex string found\n"));
           }
         }
-        if (m_hdr.m_whenlastsaved == 0) {
-          // can't read time as hex string, maybe it's 64-bit time (saved on 64-bit *nix)
-          // additional casting to prevent warning when sizeof(time_t)==32
-          m_hdr.m_whenlastsaved = static_cast<time_t>(*reinterpret_cast<int64*>(utf8));
-          if (m_hdr.m_whenlastsaved < 0)
-            m_hdr.m_whenlastsaved = 0;
-          else
-            pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) time parsed as 64-bit\n"));
-        }
-      } else if (utf8Len == 4) {
-        // retrieve time_t (casting to int32 because time_t may be 64-bit)
-        m_hdr.m_whenlastsaved = *reinterpret_cast<int32*>(utf8);
+      }
+      if (m_hdr.m_whenlastsaved == 0) {
+        // Here if 8 byte non-hex or != 8 byte
+        if (!PWSUtil::pull_time(m_hdr.m_whenlastsaved, utf8, utf8Len))
+          pws_os::Trace0(_T("Failed to pull_time(m_whenlastsaved)\n"));
       }
       break;
 
-    case HDR_LASTUPDATEUSERHOST: /* and by whom */
-      // DEPRECATED, but we still know how to read this
-      if (!found0302UserHost) { // if new fields also found, don't overwrite
+      case HDR_LASTUPDATEUSERHOST: /* and by whom */
+        // DEPRECATED, but we still know how to read this
+        if (!found0302UserHost) { // if new fields also found, don't overwrite
+          if (utf8 != NULL) utf8[utf8Len] = '\0';
+          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+          if (utf8status) {
+            StringX tlen = text.substr(0, 4);
+            iStringXStream is(tlen);
+            int ulen = 0;
+            is >> hex >> ulen;
+            StringX uh = text.substr(4);
+            m_hdr.m_lastsavedby = uh.substr(0, ulen);
+            m_hdr.m_lastsavedon = uh.substr(ulen);
+          } else
+            pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
+        }
+        break;
+
+      case HDR_LASTUPDATEAPPLICATION: /* and by what */
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          StringX tlen = text.substr(0, 4);
-          iStringXStream is(tlen);
-          int ulen = 0;
-          is >> hex >> ulen;
-          StringX uh = text.substr(4);
-          m_hdr.m_lastsavedby = uh.substr(0, ulen);
-          m_hdr.m_lastsavedon = uh.substr(ulen);
-        } else
-          pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
-      }
-      break;
+        m_hdr.m_whatlastsaved = text;
+        if (!utf8status)
+          pws_os::Trace0(_T("FromUTF8(m_whatlastsaved) failed\n"));
+        break;
 
-    case HDR_LASTUPDATEAPPLICATION: /* and by what */
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_whatlastsaved = text;
-      if (!utf8status)
-        pws_os::Trace0(_T("FromUTF8(m_whatlastsaved) failed\n"));
-      break;
+      case HDR_LASTUPDATEUSER:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+        m_hdr.m_lastsavedby = text;
+        break;
 
-    case HDR_LASTUPDATEUSER:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-      m_hdr.m_lastsavedby = text;
-      break;
+      case HDR_LASTUPDATEHOST:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+        m_hdr.m_lastsavedon = text;
+        break;
 
-    case HDR_LASTUPDATEHOST:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-      m_hdr.m_lastsavedon = text;
-      break;
+      case HDR_DBNAME:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        m_hdr.m_dbname = text;
+        break;
 
-    case HDR_DBNAME:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_dbname = text;
-      break;
-
-    case HDR_DBDESC:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_dbdesc = text;
-      break;
+      case HDR_DBDESC:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        m_hdr.m_dbdesc = text;
+        break;
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-      // Don't support importing XML from non-Windows platforms
-      // using Microsoft XML libraries
-      // Will be treated as an 'unknown header field' by the 'default' clause below
+        // Don't support importing XML from non-Windows platforms
+        // using Microsoft XML libraries
+        // Will be treated as an 'unknown header field' by the 'default' clause below
 #else
     case HDR_FILTERS:
       if (utf8 != NULL) utf8[utf8Len] = '\0';
@@ -816,173 +809,215 @@ int PWSfileV3::ReadHeader()
     case HDR_RUE:
       {
         if (utf8 != NULL) utf8[utf8Len] = '\0';
-        // All data is character representation of hex - i.e. 0-9a-f
-        // No need to convert from char.
-        std::string temp = reinterpret_cast<char *>(utf8);
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8Len > 0) {
+          stringT strErrors;
+          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+          if (!pws_os::FileExists(XSDFilename)) {
+            // No filter schema => user won't be able to access stored filters
+            // Inform her of the fact (probably an installation problem).
+            stringT message, message2;
+            Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+            LoadAString(message2, IDSC_FILTERSKEPT);
+            message += stringT(_T("\n\n")) + message2;
+            if (m_pReporter != NULL)
+              (*m_pReporter)(message);
 
-        // Get number of entries
-        int num(0);
-        std::istringstream is(temp.substr(0, 2));
-        is >> hex >> num;
-
-        // verify we have enough data
-        if (utf8Len != num * sizeof(uuid_array_t) * 2 + 2)
-          break;
-
-        // Get the entries and save them
-        size_t j = 2;
-        for (int n = 0; n < num; n++) {
-          unsigned int x(0);
-          uuid_array_t tmp_ua;
-          for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
-            stringstream ss;
-            ss.str(temp.substr(j, 2));
-            ss >> hex >> x;
-            tmp_ua[i] = static_cast<unsigned char>(x);
+            // Treat it as an Unknown field!
+            // Maybe user used a later version of PWS
+            // and we don't want to lose anything
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
+            break;
           }
-          const CUUID uuid(tmp_ua);
-          if (uuid != CUUID::NullUUID())
-            m_hdr.m_RUEList.push_back(uuid);
+          int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+                                                    XSDFilename.c_str(),
+                                                    strErrors, m_pAsker);
+          if (rc != PWScore::SUCCESS) {
+            // Can't parse it - treat as an unknown field,
+            // Notify user that filter won't be available
+            stringT message;
+            LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
+            if (m_pReporter != NULL)
+              (*m_pReporter)(message);
+
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
+          }
         }
         break;
-      }
+#endif
 
-    case HDR_YUBI_SK:
-      if (utf8Len != PWSfileHeader::YUBI_SK_LEN) {
-        delete[] utf8;
-        Close();
-        return FAILURE;
-      }
-      m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
-      memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
-      break;
+      case HDR_RUE:
+        {
+          if (utf8 != NULL) utf8[utf8Len] = '\0';
+          // All data is character representation of hex - i.e. 0-9a-f
+          // No need to convert from char.
+          std::string temp = reinterpret_cast<char *>(utf8);
 
-    case HDR_PSWDPOLICIES:
-      /**
-       * Very sad situation here: this field code was also assigned to
-       * YUBI_SK in 3.27Y. Here we try to infer the actual type based
-       * on the actual value stored in the field.
-       * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
-       * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
-       * digits.
-       */
-      if (utf8Len != PWSfileHeader::YUBI_SK_LEN ||
-          (utf8Len >= 4 &&
-           isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
-           isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          const size_t recordlength = text.length();
-          StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
-          StringX sxTemp;
-
-          // Get number of polices
-          sxTemp = text.substr(0, 2) + sxBlank;
-          size_t j = 2;  // Skip over # name entries
-          iStringXStream is(sxTemp);
+          // Get number of entries
           int num(0);
+          std::istringstream is(temp.substr(0, 2));
           is >> hex >> num;
 
-          // Get the policies and save them
+          // verify we have enough data
+          if (utf8Len != num * sizeof(uuid_array_t) * 2 + 2)
+            break;
+
+          // Get the entries and save them
+          size_t j = 2;
           for (int n = 0; n < num; n++) {
-            if (j > recordlength) break;  // Error
-
-            int namelength, symbollength;
-
-            sxTemp = text.substr(j, 2) + sxBlank;
-            iStringXStream tmp_is(sxTemp);
-            j += 2;  // Skip over name length
-
-            tmp_is >> hex >> namelength;
-            if (j + namelength > recordlength) break;  // Error
-
-            StringX sxPolicyName = text.substr(j, namelength);
-            j += namelength;  // Skip over name
-            if (j + 19 > recordlength) break;  // Error
-
-            StringX cs_pwp(text.substr(j, 19));
-            PWPolicy pwp(cs_pwp);
-            j += 19;  // Skip over pwp
-
-            if (j + 2 > recordlength) break;  // Error
-            sxTemp = text.substr(j, 2) + sxBlank;
-            tmp_is.str(sxTemp);
-            j += 2;  // Skip over symbols length
-            tmp_is >> hex >> symbollength;
-
-            StringX sxSymbols;
-            if (symbollength != 0) {
-              if (j + symbollength > recordlength) break;  // Error
-              sxSymbols = text.substr(j, symbollength);
-              j += symbollength;  // Skip over symbols
+            unsigned int x(0);
+            uuid_array_t tmp_ua;
+            for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
+              stringstream ss;
+              ss.str(temp.substr(j, 2));
+              ss >> hex >> x;
+              tmp_ua[i] = static_cast<unsigned char>(x);
             }
-            pwp.symbols = sxSymbols;
-
-            pair< map<StringX, PWPolicy>::iterator, bool > pr;
-            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-            if (pr.second == false) break; // Error
+            const CUUID uuid(tmp_ua);
+            if (uuid != CUUID::NullUUID())
+              m_hdr.m_RUEList.push_back(uuid);
           }
+          break;
         }
-      } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
-        //        and at least one non-hex character in first 4 of field.
+
+      case HDR_YUBI_SK:
+        if (utf8Len != PWSfileHeader::YUBI_SK_LEN) {
+          delete[] utf8;
+          Close();
+          return FAILURE;
+        }
         m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
         memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
-      }
-      break;
+        break;
 
-    case HDR_EMPTYGROUP:
-      {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          m_vEmptyGroups.push_back(text);
+      case HDR_PSWDPOLICIES:
+        /**
+         * Very sad situation here: this field code was also assigned to
+         * YUBI_SK in 3.27Y. Here we try to infer the actual type based
+         * on the actual value stored in the field.
+         * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
+         * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
+         * digits.
+         */
+        if (utf8Len != PWSfileHeader::YUBI_SK_LEN ||
+            (utf8Len >= 4 &&
+             isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
+             isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
+          if (utf8 != NULL) utf8[utf8Len] = '\0';
+          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+          if (utf8status) {
+            const size_t recordlength = text.length();
+            StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
+            StringX sxTemp;
+
+            // Get number of polices
+            sxTemp = text.substr(0, 2) + sxBlank;
+            size_t j = 2;  // Skip over # name entries
+            iStringXStream is(sxTemp);
+            int num(0);
+            is >> hex >> num;
+
+            // Get the policies and save them
+            for (int n = 0; n < num; n++) {
+              if (j > recordlength) break;  // Error
+
+              int namelength, symbollength;
+
+              sxTemp = text.substr(j, 2) + sxBlank;
+              iStringXStream tmp_is(sxTemp);
+              j += 2;  // Skip over name length
+
+              tmp_is >> hex >> namelength;
+              if (j + namelength > recordlength) break;  // Error
+
+              StringX sxPolicyName = text.substr(j, namelength);
+              j += namelength;  // Skip over name
+              if (j + 19 > recordlength) break;  // Error
+
+              StringX cs_pwp(text.substr(j, 19));
+              PWPolicy pwp(cs_pwp);
+              j += 19;  // Skip over pwp
+
+              if (j + 2 > recordlength) break;  // Error
+              sxTemp = text.substr(j, 2) + sxBlank;
+              tmp_is.str(sxTemp);
+              j += 2;  // Skip over symbols length
+              tmp_is >> hex >> symbollength;
+
+              StringX sxSymbols;
+              if (symbollength != 0) {
+                if (j + symbollength > recordlength) break;  // Error
+                sxSymbols = text.substr(j, symbollength);
+                j += symbollength;  // Skip over symbols
+              }
+              pwp.symbols = sxSymbols;
+
+              pair< map<StringX, PWPolicy>::iterator, bool > pr;
+              pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
+              if (pr.second == false) break; // Error
+            }
+          }
+        } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
+          //        and at least one non-hex character in first 4 of field.
+          m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
+          memcpy(m_hdr.m_yubi_sk, utf8, PWSfileHeader::YUBI_SK_LEN);
         }
         break;
-      }
 
-    case HDR_END: /* process END so not to treat it as 'unknown' */
-      break;
+      case HDR_EMPTYGROUP:
+        {
+          if (utf8 != NULL) utf8[utf8Len] = '\0';
+          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+          if (utf8status) {
+            m_vEmptyGroups.push_back(text);
+          }
+          break;
+        }
 
-    default:
-      // Save unknown fields that may be addded by future versions
-      UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+      case HDR_END: /* process END so not to treat it as 'unknown' */
+        break;
 
-      m_UHFL.push_back(unkhfe);
+      default:
+        // Save unknown fields that may be addded by future versions
+        UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+
+        m_UHFL.push_back(unkhfe);
 #if 0
 #ifdef _DEBUG
-      stringT stimestamp;
-      PWSUtil::GetTimeStamp(stimestamp);
-      pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"),
-                    fieldType, utf8Len, utf8Len);
-      pws_os::HexDump(utf8, utf8Len, stimestamp);
+        stringT stimestamp;
+        PWSUtil::GetTimeStamp(stimestamp);
+        pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"),
+                      fieldType, utf8Len, utf8Len);
+        pws_os::HexDump(utf8, utf8Len, stimestamp);
 #endif
 #endif
-      break;
-    }
-    delete[] utf8; utf8 = NULL; utf8Len = 0;
-  } while (fieldType != HDR_END);
+        break;
+      }
+      delete[] utf8; utf8 = NULL; utf8Len = 0;
+    } while (fieldType != HDR_END);
 
-  return SUCCESS;
-}
-
-bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
-{
-  // This is written so as to support V30, V31, V3x...
-
-  ASSERT(pws_os::FileExists(filename.c_str()));
-  FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
-
-  ASSERT(fd != NULL);
-  char tag[sizeof(V3TAG)];
-  fread(tag, 1, sizeof(tag), fd);
-  fclose(fd);
-
-  if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
-    v = V30;
-    return true;
-  } else {
-    v = UNKNOWN_VERSION;
-    return false;
+    return SUCCESS;
   }
-}
+
+  bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
+  {
+    // This is written so as to support V30, V31, V3x...
+
+    ASSERT(pws_os::FileExists(filename.c_str()));
+    FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
+
+    ASSERT(fd != NULL);
+    char tag[sizeof(V3TAG)];
+    fread(tag, 1, sizeof(tag), fd);
+    fclose(fd);
+
+    if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
+      v = V30;
+      return true;
+    } else {
+      v = UNKNOWN_VERSION;
+      return false;
+    }
+  }
