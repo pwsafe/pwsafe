@@ -52,7 +52,6 @@ IMPLEMENT_CLASS( CAbout, wxDialog )
 
 BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
-////@begin CAbout event table entries
 #if wxCHECK_VERSION(2,9,2)
   EVT_BUTTON( ID_CHECKNEW, CAbout::OnCheckNewClicked )
 #else
@@ -60,7 +59,6 @@ BEGIN_EVENT_TABLE( CAbout, wxDialog )
 #endif
   EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked )
   EVT_BUTTON( wxID_CLOSE, CAbout::OnCloseClick )
-////@end CAbout event table entries
 
 END_EVENT_TABLE()
 
@@ -87,7 +85,6 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
 
 bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CAbout creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -103,7 +100,6 @@ bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, c
     }
   }
   Centre();
-////@end CAbout creation
   return true;
 }
 
@@ -125,9 +121,7 @@ CAbout::~CAbout()
 
 void CAbout::Init()
 {
-////@begin CAbout member initialization
   m_newVerStatus = NULL;
-////@end CAbout member initialization
 }
 
 
@@ -137,7 +131,6 @@ void CAbout::Init()
 
 void CAbout::CreateControls()
 {
-////@begin CAbout content construction
   CAbout* aboutDialog = this;
 
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -199,7 +192,6 @@ void CAbout::CreateControls()
   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-////@end CAbout content construction
   const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
   versionStaticText->SetLabel(vstring);
   const wxString d(__DATE__), t(__TIME__);
@@ -224,14 +216,12 @@ bool CAbout::ShowToolTips()
 wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CAbout bitmap retrieval
   if (name == L"./graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
   return wxNullBitmap;
-////@end CAbout bitmap retrieval
 }
 
 /*!
