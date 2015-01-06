@@ -337,7 +337,6 @@ PasswordSafeFrame::~PasswordSafeFrame()
   m_core.ClearData();
 }
 
-
 /*!
  * Member initialisation
  */
@@ -358,31 +357,33 @@ void PasswordSafeFrame::Init()
   m_grid = NULL;
   m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
+  RegisterLanguageMenuItems();
+}
 
-  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, _("Chinese")  );  /* code: 'zh' */
-  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  _("Danish")   );  /* code: 'da' */
-  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   _("Dutch")    );  /* code: 'nl' */
-  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, _("English")+L" (English)");  /* code: 'en' */
-  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  _("French")   );  /* code: 'fr' */
-  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  _("German")   );  /* code: 'de' */
-  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, _("Italian")  );  /* code: 'it' */
-  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  _("Korean")   );  /* code: 'ko' */
-  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  _("Polish")   );  /* code: 'pl' */
-  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, _("Russian")  );  /* code: 'ru' */
-  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, _("Spanish")  );  /* code: 'es' */
-  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, _("Swedish")  );  /* code: 'sv' */
+/**
+ Register menu items for available languages
+*/
+void PasswordSafeFrame::RegisterLanguageMenuItems() {
+  // Using unlocalized language names here, it will be translated in AddLanguageMenu
+  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, L"Chinese"  );  /* code: 'zh' */
+  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  L"Danish"   );  /* code: 'da' */
+  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   L"Dutch"    );  /* code: 'nl' */
+  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, L"English"  );  /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  L"French"   );  /* code: 'fr' */
+  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  L"German"   );  /* code: 'de' */
+  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, L"Italian"  );  /* code: 'it' */
+  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  L"Korean"   );  /* code: 'ko' */
+  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  L"Polish"   );  /* code: 'pl' */
+  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, L"Russian"  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, L"Spanish"  );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, L"Swedish"  );  /* code: 'sv' */
 
   m_selectedLanguage = ID_LANGUAGE_ENGLISH;
-  wxLanguage system_language = wxGetApp().GetSystemLanguage();
   wxLanguage current_language = wxGetApp().GetSelectedLanguage();
   for (auto &item : m_languages) {
     if (get<0>(item.second) == current_language) {
       m_selectedLanguage = item.first;
       pws_os::Trace(L"Found user-preferred language: menu id= %d, lang id= %d\n", m_selectedLanguage, current_language);
-    }
-
-    if (get<0>(item.second) == system_language) {
-      get<1>(item.second) = wxT("[ ") + get<1>(item.second) + wxT(" ]");
     }
     // Mark whether language can be activated
     get<2>(item.second) = wxGetApp().ActivateLanguage(get<0>(item.second), true);
@@ -394,7 +395,6 @@ void PasswordSafeFrame::Init()
   //       (leads to crash in Release, but works in Debug)
   pws_os::Trace(L"Selected language: menu id= %d\n", m_selectedLanguage);
 }
-
 
 /**
  * Menu bar creation for PasswordSafeFrame
@@ -583,28 +583,37 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
 {
   if (parent == nullptr)
     return;
-
   wxMenu* child = new wxMenu;
   wxMenuItem* menu_item = nullptr;
+  wxLanguage system_language = wxGetApp().GetSystemLanguage();
 
   for (auto &item : m_languages) {
+    wxString lang_name = _(get<1>(item.second));
+    if (get<0>(item.second) == system_language) {
+      lang_name = L"[ " + lang_name + L" ]";
+    }
+    if (m_selectedLanguage != ID_LANGUAGE_ENGLISH && item.first == ID_LANGUAGE_ENGLISH) {
+      // duplicate English label to simplify switching to it  in case of wrong selection
+      lang_name += L" (English)";
+    }
+
     menu_item = child->Append(
         item.first,               /* The key of the map that holds menu item id's */
-        get<1>(item.second), /* The value of the map is a tuple.
+        lang_name, /* The value of the map is a tuple.
                                      The tuple consists of three elements.
                                      Index 0: the language id as wxLanguage
                                      Index 1: the language literal as wxString
                                      Index 2: the indicator whether the language can be activated
                                      */
-        _T(""),                   /* The menu items tooltip */
+        L"",                   /* The menu items tooltip */
         wxITEM_CHECK
         );
 
     if (menu_item != nullptr)
       menu_item->Enable(get<2>(item.second));
   }
-
-  parent->Append(ID_LANGUAGEMENU, _("Select Language"), child);
+  // duplicate English label to simplify switching language in case of wrong selection
+  parent->Append(ID_LANGUAGEMENU, _("Select Language") + L" (Select Language)", child);
 }
 
 /**
