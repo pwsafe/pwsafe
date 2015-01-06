@@ -167,7 +167,7 @@ IMPLEMENT_CLASS( PwsafeApp, wxApp )
 
 PwsafeApp::PwsafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
                          m_idleFlag(true), m_frame(0), m_recentDatabases(0),
-       m_controller(new wxHtmlHelpController), m_locale(NULL)
+       m_helpController(nullptr), m_locale(nullptr)
 {
   Init();
 }
@@ -184,7 +184,8 @@ PwsafeApp::~PwsafeApp()
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
 
-  delete m_controller;
+  if (m_helpController)
+    delete m_helpController;
   delete m_locale;
 }
 
@@ -219,12 +220,56 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 }
 #endif
 
+
+/** Activate help subsystem for given language
+* @param language help language for activation (if not found, default will be used)
+*/
+bool PwsafeApp::ActivateHelp(wxLanguage language) {
+  wxString fileNameBase = L"help", fileExt=L".zip", defaultSuffix=L"EN"+fileExt;
+  wxString langSuffix = wxLocale::GetLanguageCanonicalName(language);
+  // Get only two letters
+  if (langSuffix.length() >= 2) {
+    langSuffix = langSuffix.substr(0, 2).Upper() + fileExt;
+  }
+  else { // English is default
+    langSuffix = defaultSuffix;
+  }
+
+  // Destroy current instance if any
+  if (m_helpController) {
+    m_helpController->Quit();
+    delete m_helpController;
+    m_helpController = nullptr;
+  }
+
+  wxFileName helpFileName = wxFileName(towxstring(pws_os::gethelpdir()), fileNameBase+langSuffix);
+  if (!helpFileName.IsFileReadable()) {
+    pws_os::Trace(L"Help file for selected language %ls unavailable. Will retry with default.", ToStr(helpFileName.GetFullPath()));
+    helpFileName = wxFileName(towxstring(pws_os::gethelpdir()), fileNameBase+defaultSuffix);
+    if (!helpFileName.IsFileReadable()) {
+      pws_os::Trace(L"Help file for default language %ls unavailable.", ToStr(helpFileName.GetFullPath()));
+      return false;
+    }
+  }
+
+  m_helpController = new wxHtmlHelpController(wxHF_DEFAULT_STYLE|wxHF_FRAME, nullptr);
+  if (!m_helpController->Initialize(helpFileName.GetFullPath())){
+    delete m_helpController;
+    m_helpController = NULL;
+    return false;
+  }
+  return true;
+}
+
 /*!
  * Initialisation for PwsafeApp
  */
 
 bool PwsafeApp::OnInit()
 {
+  //Used by help subsystem
+  wxFileSystem::AddHandler(new wxArchiveFSHandler);
+
   wxLanguage selectedLang = GetSelectedLanguage();
   m_locale->Init(selectedLang);
   ActivateLanguage(selectedLang, false);
@@ -340,15 +385,15 @@ bool PwsafeApp::OnInit()
     }
   }
 
-  //Initialize help subsystem
-  wxFileSystem::AddHandler(new wxArchiveFSHandler);
+  m_appIcons.AddIcon(pwsafe16);
+  m_appIcons.AddIcon(pwsafe32);
+  m_appIcons.AddIcon(pwsafe48);
 
-  wxString helpfile(wxFileName(towxstring(pws_os::gethelpdir()), wxT("help.zip")).GetFullPath());
 
-  if (!m_controller->Initialize(helpfile)){
+  if (!m_helpController){ // helpController (re)created  on language activation
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
     if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
-#if wxCHECK_VERSION( 2, 9, 2 )
+#if wxCHECK_VERSION(2,9,2)
       wxRichMessageDialog dlg(NULL,
         _("Could not initialize help subsystem. Help will not be available"),
         _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
@@ -364,17 +409,13 @@ bool PwsafeApp::OnInit()
 #endif
     }
   }
-  m_controller->SetParentWindow(NULL); // try to de-modalize. Partially (?) successful
-
-  m_appIcons.AddIcon(pwsafe16);
-  m_appIcons.AddIcon(pwsafe32);
-  m_appIcons.AddIcon(pwsafe48);
 
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
     CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(NULL, m_core);
     int returnValue = initWindow->ShowModal();
+
     initWindow->Destroy();
 
     if (returnValue != wxID_OK) {
@@ -493,6 +534,7 @@ bool PwsafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
   else {
     // (re)set global translation and take care of occupied memory by wxTranslations
     wxTranslations::Set(translations);
+    ActivateHelp(language);
   }
   return bRes;
 }
@@ -690,11 +732,13 @@ int PwsafeApp::FilterEvent(wxEvent& evt) {
 
 void PwsafeApp::OnHelp(wxCommandEvent& evt)
 {
+  if (!m_helpController)
+    return;
   wxWindow* win = wxDynamicCast(evt.GetEventObject(), wxWindow);
   if (win) {
     //The window associated with the event is typically the Help button.  Fail if
     //we can't get to its parent
-    if (win->GetId() == wxID_HELP && ((win = win->GetParent()) == NULL))
+    if (win->GetId() == wxID_HELP && ((win = win->GetParent()) == nullptr))
       return;
 
     wxString keyName, msg;
@@ -715,8 +759,9 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
 
     StringToStringMap& helpmap = GetHelpMap();
     StringToStringMap::iterator itr = helpmap.find(keyName);
-    if (itr != helpmap.end())
-      m_controller->DisplaySection(itr->second);
+    if (itr != helpmap.end()) {
+      m_helpController->DisplaySection(itr->second);
+    }
     else {
 #ifdef __WXDEBUG__
       msg << _("Please inform the developers.");
@@ -726,7 +771,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
   } else {
     //just display the main page.  Could happen if the click came from a menu instead of
     //a button, like for the top-level frame
-    m_controller->DisplayContents();
+    m_helpController->DisplayContents();
   }
 }
 

@@ -28,7 +28,7 @@ DOCS := ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
 	$(DOCSDIR)/ChangeLog.txt
 MANPAGE := $(DOCSDIR)/pwsafe.1
 XMLFILES := $(wildcard $(XMLDIR)/*.*)
-HELPFILES := $(HELPDIR)/help.zip
+HELPFILES := $(HELPDIR)/helpEN.zip
 TARBALL := ../../Releases/pwsafe-$(RELEASENAME)-src.tgz
 
 

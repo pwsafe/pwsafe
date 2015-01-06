@@ -43,7 +43,7 @@ PKGNAME=${PRGNAM}-${VERSION/-/.}-$ARCH-$BUILD_ID$BUILDER_ID
 ##
 PREFIX="/usr"
 DOCDIR=$PREFIX/share/doc/$PRGNAM-$VERSION
-HELPDIR=$PREFIX/share/doc/$PRGNAM-$VERSION/help
+HELPDIR=$PREFIX/share/doc/passwordsafe/help
 XMLDIR=$PREFIX/share/$PRGNAM/xml
 MANDIR=$PREFIX/man
 PIXMAPDIR=$PREFIX/share/pixmaps
@@ -145,7 +145,7 @@ find $PKG -type f -print0 | xargs -0 --no-run-if-empty chmod 644
 chmod 755 $PKG/$PREFIX/bin/*
 
 # compress doc files > 4 kB
-find $PKG/$DOCDIR -type f -size +4k ! -iname *.htm ! -iname *.html ! -iname *.sh -print0 |
+find $PKG/$DOCDIR -type f -size +4k ! -iname *.htm ! -iname *.html ! -iname *.sh ! -iname *.zip -print0 |
 	xargs -0 --no-run-if-empty /bin/gzip --verbose --best
 # Compress and link manpages, if any:
 if [ -d $PKG/$PREFIX/man ]; then

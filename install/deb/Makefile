@@ -31,7 +31,7 @@ MANPAGE := $(DOCSDIR)/pwsafe.1
 XMLFILES := $(foreach i,\
 						  pwsafe.xsd pwsafe_filter.xsd pwsafe.xsl KPV1_to_PWS.xslt,\
 				  		$(XMLDIR)/$i)
-HELPFILES = $(HELPDIR)/help.zip
+HELPFILES = $(HELPDIR)/helpEN.zip
 
 INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)
 
