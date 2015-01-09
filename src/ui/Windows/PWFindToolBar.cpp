@@ -34,7 +34,7 @@
 /*
 * Note: Bad coding but if you change the position of the Case Sensitive button
 * in the Find Toolbar, you must update the "m_iCase_Insensitive_BM_offset" variable
-* with its new offest in the bitmap arrays.
+* with its new offset in the bitmap arrays.
 * Also, the Case Sensitive bitmap must be the last bitmap in the arrays.
 
 */
@@ -141,15 +141,15 @@ CPWFindToolBar::CPWFindToolBar()
   m_iMaxNumButtons = _countof(m_FindToolBarIDs);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
 
-  ASSERT(_countof(m_FindToolBarClassicBMs) ==
-         _countof(m_FindToolBarNewBMs));
+  static_assert(_countof(m_FindToolBarClassicBMs) == _countof(m_FindToolBarNewBMs),
+                "FindToolBar bitmap array mismatch");
 
   m_iNum_Bitmaps = _countof(m_FindToolBarClassicBMs);
 }
 
 CPWFindToolBar::~CPWFindToolBar()
 {
-  delete [] m_pOriginalTBinfo;
+  delete[] m_pOriginalTBinfo;
   m_findedit.DestroyWindow();
 }
 
@@ -209,12 +209,11 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
         return TRUE;
       }
       if (pMsg->wParam == VK_DELETE) {
-        int iTextLen, iStartChar, iEndChar, iCaret, iCharIndex;
-        CPoint pt_cursor;
-        pt_cursor = m_findedit.GetCaretPos();
-        iCaret = m_findedit.CharFromPos(pt_cursor);
-        iCharIndex = LOWORD(iCaret);
-        iTextLen = m_findedit.GetWindowTextLength();
+        CPoint pt_cursor = m_findedit.GetCaretPos();
+        int iCaret = m_findedit.CharFromPos(pt_cursor);
+        int iCharIndex = LOWORD(iCaret);
+        int iTextLen = m_findedit.GetWindowTextLength();
+        int iStartChar, iEndChar;
         m_findedit.GetSel(iStartChar, iEndChar);
         if (iCharIndex == iStartChar && iCharIndex == iEndChar) {
           // Nothing selected - forward backspace
@@ -329,18 +328,17 @@ void CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
   tbCtrl.SetButtonInfo(ID_TOOLBUTTON_FINDADVANCED, &tbinfo);
 
   AddExtraControls();
-
   tbCtrl.AutoSize();
-  tbCtrl.SetMaxTextRows(0);
 }
 
 void CPWFindToolBar::AddExtraControls()
 {
   CRect rect, rt;
-  int index, iBtnHeight;
+  int index;
 
   GetItemRect(0, &rt);
-  iBtnHeight = rt.Height();
+  const int iBtnHeight = rt.Height();
+  const int iHeight = 8 + iBtnHeight;
 
   // Add find search text CEdit control (CEditExtn)
   // Get the index of the placeholder's position in the toolbar
@@ -358,15 +356,14 @@ void CPWFindToolBar::AddExtraControls()
   // Note: "ES_WANTRETURN | ES_MULTILINE".  This is to allow the return key to be
   // trapped by PreTranslateMessage and treated as if the Find button had been
   // pressed
-  rect = CRect(0, 0, EDITCTRL_WIDTH, iBtnHeight);
+  rect = CRect(0, 0, EDITCTRL_WIDTH, iHeight);
   VERIFY(m_findedit.Create(WS_CHILD | WS_VISIBLE |
                            ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
                            CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
                            this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  rect.top += max((rect.top - rt.top) / 2, 0);
-  m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
+  m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top /* + 2 */, 0, 0,
                           SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
   // Add find search results CStatic control
@@ -382,18 +379,15 @@ void CPWFindToolBar::AddExtraControls()
   // Convert that button to a separator
   SetButtonInfo(index, ID_TOOLBUTTON_FINDRESULTS, TBBS_SEPARATOR, FINDRESULTS_WIDTH);
 
-  rect = CRect(0, 0, FINDRESULTS_WIDTH, iBtnHeight);
+  rect = CRect(0, 0, FINDRESULTS_WIDTH, iHeight);
   VERIFY(m_findresults.Create(L"", WS_CHILD | WS_VISIBLE |
                               SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
                               CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
                               this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  rect.top += max((rect.top - rt.top) / 2, 0);
   m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
                              SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
-
-  ModifyStyle(0, WS_CLIPCHILDREN);
 }
 
 void CPWFindToolBar::ShowFindToolBar(bool bShow)
@@ -402,24 +396,49 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     return;
 
   if (bShow) {
-    LOGFONT lf = {0};
+    CRect rt;
+    GetItemRect(0, &rt);
+    const int iBtnHeight = rt.Height();
+    const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
+    const int iHeight = 8 + iBtnHeight;
+    bool switchFont = (iFontHeight <= (iBtnHeight + 3));
 
-    // Bjorne's suggestion: Set Find fonts to tree/list
-    //  XXX TODO: Adjust controls accordingly
-    // Currently looks OK for 'reasonable' fonts.
-    m_FindTextFont.DeleteObject();
-    Fonts::GetInstance()->GetCurrentFont(&lf);
-    VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+    /**
+     *
+     * Bjorne's suggestion: Set Find fonts to tree/list
+     * Unfortunately, I couldn't get the edit or text (results) controls
+     * to change size to fit the new font.
+     * Therefore we'll only change the font if it's going to fit in
+     * the controls, letting it be a little larger than the current size.
+     */
+    if (switchFont) {
+      m_FindTextFont.DeleteObject();
+      LOGFONT lf = {0};
+      Fonts::GetInstance()->GetCurrentFont(&lf);
+      VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+    }
 
-    m_findedit.SetFont(&m_FindTextFont);
+    SetHeight(iHeight);
+
+    if (switchFont)
+      m_findedit.SetFont(&m_FindTextFont);
     m_findedit.ChangeColour();
-    m_findedit.SetFocus();
+    m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight + 4,
+                            SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
+
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
-    m_findresults.SetFont(&m_FindTextFont);
+    if (switchFont)
+      m_findresults.SetFont(&m_FindTextFont);
+    m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight + 4,
+                               SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }
+
+  GetToolBarCtrl().AutoSize();
+
   ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
   ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
+  m_findedit.SetFocus();
   m_bVisible = bShow;
 }
 

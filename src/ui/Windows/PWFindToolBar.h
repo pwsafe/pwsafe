@@ -16,9 +16,6 @@
 
 class CFindEditCtrl : public CEditExtn
 {
-    // Construction
-public:
-
 protected:
   // Needed to trap Entry Keyboard Shortcuts if we are in control
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -36,19 +33,17 @@ public:
   void LoadDefaultToolBar(const int toolbarMode);
   void AddExtraControls();
   void ChangeImages(const int toolbarMode);
-  void Reset();
 
   void ShowFindToolBar(bool bShow);
-  bool IsVisible() {return m_bVisible;}
-  bool EntriesFound() {return !m_indices.empty();}
+  bool IsVisible() {return m_bVisible;} // virt function, can't constify
+  bool EntriesFound() const {return !m_indices.empty();}
   void GetSearchText(CString &csFindString)
   {m_findedit.GetWindowText(csFindString);}
   void Find();
   void ClearFind();
   void ShowFindAdvanced();
   void ToggleToolBarFindCase();
-  BOOL IsFindCaseSet()
-  {return m_bCaseSensitive ? TRUE : FALSE;}
+  BOOL IsFindCaseSet() const {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
   void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
@@ -58,7 +53,7 @@ public:
    subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
    subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
 
-  std::vector<int> * GetSearchResults() {return &m_indices;}
+  std::vector<int> *GetSearchResults() {return &m_indices;}
   void SetStatus(CString cs_status) {m_findresults.SetWindowText(cs_status);}
 
   CFindEditCtrl m_findedit;
@@ -103,6 +98,6 @@ private:
   size_t m_numFound; // number of matched items, as returned by DboxMain::FindAll
 
   int m_iCase_Insensitive_BM_offset, m_iAdvanced_BM_offset;
-  int m_iCase_Sensitive_BM_offset,m_iAdvancedOn_BM_offset;
+  int m_iCase_Sensitive_BM_offset, m_iAdvancedOn_BM_offset;
   st_SaveAdvValues *m_pst_SADV;
 };
