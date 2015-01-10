@@ -132,7 +132,7 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
 
     DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_SymbolsEdit);
 
-    // Because we can show the generated password when used from Mangage->Generate
+    // Because we can show the generated password when used from Manage->Generate
     DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
 
     DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
@@ -175,9 +175,7 @@ END_MESSAGE_MAP()
 // Following copied from AddEdit_PasswordPolicy.cpp. Move to common mixin?
 static void setupBuddy(CWnd *p, int spinid, int id, int &length, short min = 0)
 {
-  CSpinButtonCtrl* pspin;
-
-  pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
   pspin->SetBuddy(p->GetDlgItem(id));
   pspin->SetRange(min, 1024);
   pspin->SetBase(10);
@@ -331,7 +329,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     }
 
     m_PolicyNameEdit.SetWindowText(m_policyname);
-    // Max. length of policy name is 255 - only 2 hex digits used for length
+    // Max. length of policy name is 255 - only one byte used for length
     // in database header
     m_PolicyNameEdit.SetLimitText(255);
     break;
@@ -463,7 +461,7 @@ void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
   m_iter = m_policyname.IsEmpty() ? m_MapPSWDPLC.end() :
                                     m_MapPSWDPLC.find(StringX((LPCWSTR)m_policyname));
 
-  // Check the find worked above - if PolicyName not empty, it must be in the map!
+  // Check the find() worked above - if PolicyName not empty, it must be in the map!
   if (!m_policyname.IsEmpty())
     ASSERT(m_iter != m_MapPSWDPLC.end());
 
@@ -995,6 +993,7 @@ void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
 
     // Set up the correct controls (enabled/disabled)
     do_hex(m_PWUseHexdigits == TRUE);
+    GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(TRUE);
 
     int iSet = EVPR_NONE;
     if (m_PWEasyVision == TRUE)
