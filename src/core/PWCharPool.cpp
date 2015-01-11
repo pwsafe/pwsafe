@@ -80,6 +80,17 @@ CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
          m_usedigits    || m_usesymbols   || 
          m_usehexdigits || m_pronounceable);
 
+  // Following "normalization" needed to keep MakePassword()
+  // from going into an infinite loop if we manage to become inconsistent (BR1228)
+  if (!m_uselowercase)
+    m_numlowercase = 0;
+  if (!m_useuppercase)
+    m_numuppercase = 0;
+  if (!m_usedigits)
+    m_numdigits = 0;
+  if (!m_usesymbols)
+    m_numsymbols = 0;
+
   if (policy.flags & PWPolicy::UseEasyVision) {
     m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
     m_char_arrays[UPPERCASE] = easyvision_uppercase_chars;

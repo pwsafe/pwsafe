@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.35.1
 ====================
 [1229] Hex digits checkbox can be selected in Generate Passwords.
+[1228] Fixed incompatability with Password Policies generated with
+previous versions.
 [1226] Fixed regression in Find toolbar functionality.
 
 

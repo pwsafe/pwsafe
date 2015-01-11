@@ -87,10 +87,10 @@ private:
 
   // Following state vars set by ctor, used by MakePassword()
   const uint m_pwlen;
-  const uint m_numlowercase;
-  const uint m_numuppercase;
-  const uint m_numdigits;
-  const uint m_numsymbols;
+  uint m_numlowercase;
+  uint m_numuppercase;
+  uint m_numdigits;
+  uint m_numsymbols;
   const bool m_uselowercase;
   const bool m_useuppercase;
   const bool m_usedigits;
