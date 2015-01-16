@@ -15,6 +15,8 @@
 #include "StringX.h"
 #include "PWPolicy.h"
 
+#include <algorithm>
+
 /*
  * This class is used to create a random password based on the policy
  * defined in the constructor.
@@ -50,7 +52,9 @@ private:
   // select a chartype with weighted probability
   CharType GetRandomCharType(unsigned int rand) const;
   charT GetRandomChar(CharType t, unsigned int rand) const;
+  charT GetRandomChar(CharType t) const;
   StringX MakePronounceable() const;
+  StringX MakeHex() const;
 
   // here are all the character types, in both full and "easyvision" versions
   static const charT std_lowercase_chars[];
@@ -99,6 +103,18 @@ private:
   const bool m_pronounceable;
 
   bool m_bDefaultSymbols;
+
+  // helper struct for MakePassword
+  struct typeFreq_s {
+    uint numchars;
+    StringX vchars;
+  typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc)
+  : numchars(nc) {
+    vchars.resize(parent->m_pwlen);
+    std::generate(vchars.begin(), vchars.end(),
+                  [this, parent, ct] () {return parent->GetRandomChar(ct);});
+  }
+  };
 
   CPasswordCharPool &operator=(const CPasswordCharPool &);
 };

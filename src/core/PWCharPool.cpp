@@ -20,7 +20,6 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -203,6 +202,18 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
   return retval;
 }
 
+charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
+{
+  PWSrand *ri = PWSrand::GetInstance();
+  uint r = ri->RangeRand(static_cast<uint>(m_lengths[t]));
+  return GetRandomChar(t, r);
+}
+
+struct RandomWrapper {
+  unsigned int operator()(unsigned int i)
+  {return PWSrand::GetInstance()->RangeRand(i);}
+};
+
 StringX CPasswordCharPool::MakePassword() const
 {
   // We don't care if the policy is inconsistent e.g. 
@@ -212,96 +223,72 @@ StringX CPasswordCharPool::MakePassword() const
   // Saves an awful amount of bother with setting values to zero and
   // back as the user changes their minds!
 
-  // Order of priority:
-  // pronouceable, hex, easyvision/normal
-
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
          m_usesymbols   || m_usehexdigits || m_pronounceable);
 
-  int lowercaseneeded, uppercaseneeded, digitsneeded, symbolsneeded;
-  int hexdigitsneeded;
 
-  StringX password = _T("");
-
-  // pronounceable passwords are handled separately:
+  // pronounceable and hex passwords are handled separately:
   if (m_pronounceable)
     return MakePronounceable();
+  if (m_usehexdigits)
+    return MakeHex();
 
-  bool pwRulesMet;
+  vector<typeFreq_s> typeFreqs;
+
+  if (m_uselowercase)
+    typeFreqs.push_back(typeFreq_s(this, LOWERCASE, m_numlowercase));
+
+  if (m_useuppercase)
+    typeFreqs.push_back(typeFreq_s(this, UPPERCASE, m_numuppercase));
+
+  if (m_usedigits)
+    typeFreqs.push_back(typeFreq_s(this, DIGIT, m_numdigits));
+
+  if (m_usesymbols)
+    typeFreqs.push_back(typeFreq_s(this, SYMBOL, m_numsymbols));
+
+  // Sort requested char type in decreasing order
+  // of requested (at least) frequency:
+  sort(typeFreqs.begin(), typeFreqs.end(),
+       [](const typeFreq_s &a, const typeFreq_s &b)
+       {
+         return a.numchars > b.numchars;
+       });
+
   StringX temp;
-
-  do {
-    charT ch;
-    CharType type;
-
-    hexdigitsneeded = (m_usehexdigits) ? m_pwlen : 0;
-    lowercaseneeded = (m_usehexdigits) ? 0 : m_numlowercase;
-    uppercaseneeded = (m_usehexdigits) ? 0 : m_numuppercase;
-    digitsneeded    = (m_usehexdigits) ? 0 : m_numdigits;
-    symbolsneeded   = (m_usehexdigits) ? 0 : m_numsymbols;
-
-    // If following assertion doesn't hold, we'll never exit the do loop!
-    ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
-               digitsneeded + symbolsneeded + hexdigitsneeded);
-
-    temp = _T("");    // empty the password string
-
-    for (uint x = 0; x < m_pwlen; x++) {
-      unsigned int rand = PWSrand::GetInstance()->RangeRand(static_cast<unsigned int>(m_sumlengths));
-      // The only reason for passing rand as a parameter is to
-      // avoid having to generate two random numbers for each
-      // character. Alternately, we could have had a m_rand
-      // data member. Which solution is uglier is debatable.
-      type = (m_usehexdigits) ? HEXDIGIT : GetRandomCharType(rand);
-      ch = GetRandomChar(type, rand);
-      temp += ch;
-      /*
-      **  Decrement the appropriate needed character type count.
-      */
-      switch (type) {
-        case LOWERCASE:
-          lowercaseneeded--;
-          break;
-
-        case UPPERCASE:
-          uppercaseneeded--;
-          break;
-
-        case DIGIT:
-          digitsneeded--;
-          break;
-
-        case SYMBOL:
-          symbolsneeded--;
-          break;
-
-        case HEXDIGIT:
-          hexdigitsneeded--;
-          break;
-
-        default:
-          ASSERT(0); // should never happen!
-          break;
+  // First meet the 'at least' constraints
+  for (auto iter = typeFreqs.begin(); iter != typeFreqs.end(); iter++)
+    for (uint j = 0; j < iter->numchars; j++) {
+      if (!iter->vchars.empty()) {
+        temp.push_back(iter->vchars.back());
+        iter->vchars.pop_back();
+        if (temp.length() == m_pwlen)
+          goto do_shuffle; // break out of two loops, goto needed
       }
-    } // for
-
-    /*
-    * Make sure we have at least one representative of each required type
-    * after the for loop. If not, try again. Arguably, recursion would have
-    * been more elegant than a do loop, but this takes less stack...
-    */
-    pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
-                  digitsneeded <= 0 && symbolsneeded <= 0 && 
-                  hexdigitsneeded <= 0);
-
-    if (pwRulesMet) {
-      password = temp;
     }
-    // Otherwise, do not exit, do not collect $200, try again...
-  } while (!pwRulesMet);
-  ASSERT(password.length() == size_t(m_pwlen));
-  return password;
+
+
+  // Now fill in the rest
+  PWSrand *ri = PWSrand::GetInstance();
+  while (temp.length() != m_pwlen) {
+    uint i = ri->RangeRand(typeFreqs.size());
+    if (!typeFreqs[i].vchars.empty()) {
+      temp.push_back(typeFreqs[i].vchars.back());
+      typeFreqs[i].vchars.pop_back();
+      if (temp.length() == m_pwlen)
+        goto do_shuffle; // break out of two loops, goto needed
+    }
+  }
+
+ do_shuffle:
+  // If 'at least' values were non-zero, we have some unwanted order,
+  // se we mix things up a bit:
+  RandomWrapper rnw;
+  random_shuffle(temp.begin(), temp.end(), rnw);
+
+  ASSERT(temp.length() == size_t(m_pwlen));
+  return temp;
 }
 
 static const struct {
@@ -341,11 +328,6 @@ private:
   vector<int> &m_sc;
   bool m_digits, m_symbols;
   int m_i;
-};
-
-struct RandomWrapper {
-  unsigned int operator()(unsigned int i)
-  {return PWSrand::GetInstance()->RangeRand(i);}
 };
 
 static void leet_replace(stringT &password, unsigned int i,
@@ -466,6 +448,17 @@ StringX CPasswordCharPool::MakePronounceable() const
     }
 
   return password.c_str();
+}
+
+StringX CPasswordCharPool::MakeHex() const
+{
+  StringX password = _T("");
+  for (uint i = 0; i < m_pwlen; i++) {
+      unsigned int rand = PWSrand::GetInstance()->RangeRand(static_cast<unsigned int>(m_sumlengths));
+      charT ch = GetRandomChar(HEXDIGIT, rand);
+      password += ch;
+  }
+  return password;
 }
 
 bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
