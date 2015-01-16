@@ -270,9 +270,8 @@ StringX CPasswordCharPool::MakePassword() const
 
 
   // Now fill in the rest
-  PWSrand *ri = PWSrand::GetInstance();
   while (temp.length() != m_pwlen) {
-    uint i = ri->RangeRand(typeFreqs.size());
+    uint i = PWSrand::GetInstance()->RangeRand(typeFreqs.size());
     if (!typeFreqs[i].vchars.empty()) {
       temp.push_back(typeFreqs[i].vchars.back());
       typeFreqs[i].vchars.pop_back();
