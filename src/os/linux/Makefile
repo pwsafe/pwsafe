@@ -7,7 +7,12 @@
 CONFIG?=unicodedebug
 #CONFIG=unicoderelease
 
-WX_CONFIG?=/usr/bin/wx-config
+# Following sets WX_CONFIG to 3.0 version if found, else 2.x:
+WX2=/usr/bin/wx-config
+WX3=/usr/bin/wx-config-3.0
+
+WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
+
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags`
 
 DEPDIR= ./deps

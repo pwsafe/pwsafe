@@ -33,7 +33,7 @@ libuuid-devel
 ykpers-devel (see note 2 below)
 libyubikey-devel
 xerces-c-devel
-wxGTK-devel
+wxGTK3-devel
 make
 
 To compile without Yubikey support, set the NO_YUBI flag
