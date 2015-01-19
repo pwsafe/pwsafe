@@ -322,8 +322,10 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
   }
 
   if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
-      (m_pwdigitminlength + m_pwlowerminlength +
-       m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
+      ((m_pwusedigits ? m_pwdigitminlength : 0) +
+       (m_pwuselowercase ? m_pwlowerminlength : 0) +
+       (m_pwusesymbols ? m_pwsymbolminlength : 0) +
+       (m_pwuseuppercase ? m_pwupperminlength : 0)) > m_pwdefaultlength) {
     gmb.AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
     return false;

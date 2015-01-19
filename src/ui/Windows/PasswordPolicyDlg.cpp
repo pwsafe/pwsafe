@@ -796,8 +796,10 @@ BOOL CPasswordPolicyDlg::Validate()
   }
 
   if (!(m_PWUseHexdigits || m_PWEasyVision || m_PWMakePronounceable) &&
-      (m_PWDigitMinLength + m_PWLowerMinLength +
-       m_PWSymbolMinLength + m_PWUpperMinLength) > m_PWDefaultLength) {
+      ((m_PWUseDigits ? m_PWDigitMinLength : 0) +
+       (m_PWUseLowercase ? m_PWLowerMinLength : 0) +
+       (m_PWUseSymbols ? m_PWSymbolMinLength : 0) +
+       (m_PWUseUppercase ? m_PWUpperMinLength : 0)) > m_PWDefaultLength) {
     gmb.AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
