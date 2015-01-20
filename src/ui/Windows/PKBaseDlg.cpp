@@ -76,6 +76,7 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
+  ON_WM_CTLCOLOR()
 //{{AFX_MSG_MAP(CPKBaseDlg)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -126,6 +127,13 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
 {
   RelayToolTipEvent(pMsg);
+
+  // Show/hide caps lock indicator
+  CWnd *capslock = GetDlgItem(IDC_CAPSLOCK);
+  if (capslock != NULL) {
+    capslock->ShowWindow(((GetKeyState(VK_CAPITAL) & 0x0001) == 0x0001) ?
+                         SW_SHOW : SW_HIDE);
+  }
 
   return CPWDialog::PreTranslateMessage(pMsg);
 }
@@ -203,3 +211,16 @@ void CPKBaseDlg::OnTimer(UINT_PTR )
     YubiPoll();
 }
 
+HBRUSH CPKBaseDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  if (nCtlColor == CTLCOLOR_STATIC) {
+    UINT nID = pWnd->GetDlgCtrlID();
+    if (nID == IDC_CAPSLOCK) {
+      pDC->SetTextColor(RGB(255, 0, 0));
+      pDC->SetBkMode(TRANSPARENT);
+    }
+  }
+  return hbr;
+}
