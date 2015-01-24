@@ -321,7 +321,7 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
     return false;
   }
 
-  if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
+  if (!(m_pwusehexdigits || m_pwmakepronounceable) &&
       ((m_pwusedigits ? m_pwdigitminlength : 0) +
        (m_pwuselowercase ? m_pwlowerminlength : 0) +
        (m_pwusesymbols ? m_pwsymbolminlength : 0) +
@@ -456,7 +456,7 @@ void CAddEdit_PasswordPolicy::do_hex(const bool bHex)
 void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
 {
   // Can't have any minimum lengths set!
-  if ((m_pweasyvision == TRUE  || m_pwmakepronounceable == TRUE) &&
+  if ((m_pwmakepronounceable == TRUE) &&
       (m_pwdigitminlength  > 1 || m_pwlowerminlength > 1 ||
        m_pwsymbolminlength > 1 || m_pwupperminlength > 1)) {
     CGeneralMsgBox gmb;
@@ -466,32 +466,23 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
   CString cs_value;
   int i;
   if (bSet) {
-    // Hide lengths
+    // Disable lengths
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       m_save_enabled[i][0] = GetDlgItem(nonHexLengths[i])->IsWindowEnabled();
       m_save_visible[i] = GetDlgItem(nonHexLengths[i])->IsWindowVisible();
       GetDlgItem(nonHexLengths[i])->EnableWindow(FALSE);
-      GetDlgItem(nonHexLengths[i])->ShowWindow(SW_HIDE);
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
-      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_HIDE);
       GetDlgItem(LenTxts[i * 2])->EnableWindow(FALSE);
-      GetDlgItem(LenTxts[i * 2])->ShowWindow(SW_HIDE);
       GetDlgItem(LenTxts[i * 2 + 1])->EnableWindow(FALSE);
-      GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(SW_HIDE);
     }
 
   } else {
     // Show lengths
     for (i = 0; i < N_HEX_LENGTHS; i++) {
-      const int iShow = m_save_visible[i] == TRUE ? SW_SHOW : SW_HIDE;
       GetDlgItem(nonHexLengths[i])->EnableWindow(m_save_enabled[i][0]);
-      GetDlgItem(nonHexLengths[i])->ShowWindow(iShow);
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(m_save_enabled[i][0]);
-      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(iShow);
       GetDlgItem(LenTxts[i * 2])->EnableWindow(m_save_enabled[i][0]);
-      GetDlgItem(LenTxts[i * 2])->ShowWindow(iShow);
       GetDlgItem(LenTxts[i * 2 + 1])->EnableWindow(m_save_enabled[i][0]);
-      GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(iShow);
     }
   }
   OnSymbolReset();
@@ -511,18 +502,12 @@ void CAddEdit_PasswordPolicy::do_useX(UseX x)
   m_ae_psh->SetChanged(true);
 
   BOOL bEnable = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED &&
-                  m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
-
-  int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
+                  m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
 
   GetDlgItem(controls[x].edit)->EnableWindow(bEnable);
-  GetDlgItem(controls[x].edit)->ShowWindow(iShow);
   GetDlgItem(controls[x].spin)->EnableWindow(bEnable);
-  GetDlgItem(controls[x].spin)->ShowWindow(iShow);
   GetDlgItem(controls[x].left)->EnableWindow(bEnable);
-  GetDlgItem(controls[x].left)->ShowWindow(iShow);
   GetDlgItem(controls[x].right)->EnableWindow(bEnable);
-  GetDlgItem(controls[x].right)->ShowWindow(iShow);
   if (x == USESYM) {
     GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable == TRUE);
@@ -572,7 +557,7 @@ void CAddEdit_PasswordPolicy::OnEasyVision()
     m_pweasyvision = FALSE;
   }
 
-  do_easyorpronounceable(IsDlgButtonChecked(IDC_EASYVISION) == BST_CHECKED);
+  OnSymbolReset();
   UpdateData(FALSE);
 }
 

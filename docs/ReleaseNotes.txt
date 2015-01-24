@@ -16,6 +16,8 @@ Bugs fixed in 3.35.1
 ====================
 [1233] Don't count unchecked character types in password policies when
 checking for consistency.
+[1231] Relax restriction on easy-vision password policy + more
+consistent UI.
 [1229] Hex digits checkbox can be selected in Generate Passwords.
 [1228] Fixed incompatability with Password Policies generated with
 previous versions.

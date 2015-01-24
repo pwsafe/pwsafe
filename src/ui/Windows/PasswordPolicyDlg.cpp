@@ -39,6 +39,7 @@ static char THIS_FILE[] = __FILE__;
   
 */
 
+// nonHex* are irrelevant and disabled when hex is selected
 const UINT CPasswordPolicyDlg::nonHex[CPasswordPolicyDlg::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
   IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE};
@@ -614,8 +615,8 @@ void CPasswordPolicyDlg::do_hex(const bool bHex)
 
 void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
 {
-  // Can't have minimum lengths!
-  if ((m_PWEasyVision == TRUE  || m_PWMakePronounceable == TRUE) &&
+  // Can't have at-least for Pronounceables!
+  if ((m_PWMakePronounceable == TRUE) &&
       (m_PWDigitMinLength > 1  || m_PWLowerMinLength > 1 ||
        m_PWSymbolMinLength > 1 || m_PWUpperMinLength > 1)) {
     CGeneralMsgBox gmb;
@@ -624,37 +625,32 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
 
   CString cs_value;
   int i;
-  if (iSet != EVPR_NONE) {
-    // Make EasyVision or Pronounceable
+  if (iSet == EVPR_PR) {
+    // Don't support at-least for Pronounceables
     for (i = 0; i < N_HEX_LENGTHS; i++) {
-      GetDlgItem(nonHexLengths[i])->ShowWindow(SW_HIDE);
-      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_HIDE);
-      GetDlgItem(LenTxts[2 * i])->ShowWindow(SW_HIDE);
-      GetDlgItem(LenTxts[2 * i + 1])->ShowWindow(SW_HIDE);
+      GetDlgItem(nonHexLengths[i])->EnableWindow(FALSE);
+      GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
+      GetDlgItem(LenTxts[2 * i])->EnableWindow(FALSE);
+      GetDlgItem(LenTxts[2 * i + 1])->EnableWindow(FALSE);
     }
 
     m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
     m_savelen[SAVE_UPPERCASE] = m_PWUpperMinLength;
     m_savelen[SAVE_DIGITS] = m_PWDigitMinLength;
     m_savelen[SAVE_SYMBOLS] = m_PWSymbolMinLength;
-  } else {
-    // Unmake EasyVision or Pronounceable
+  } else { // we're good for at-least
     for (i = 0; i < N_HEX_LENGTHS; i++) {
-      GetDlgItem(nonHexLengths[i])->ShowWindow(SW_SHOW);
-      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_SHOW);
-      GetDlgItem(LenTxts[2 * i])->ShowWindow(SW_SHOW);
-      GetDlgItem(LenTxts[2 * i + 1])->ShowWindow(SW_SHOW);
+      GetDlgItem(nonHexLengths[i])->EnableWindow(TRUE);
+      GetDlgItem(nonHexLengthSpins[i])->EnableWindow(TRUE);
+      GetDlgItem(LenTxts[2 * i])->EnableWindow(TRUE);
+      GetDlgItem(LenTxts[2 * i + 1])->EnableWindow(TRUE);
     }
-
+  }
+  if (iSet != EVPR_NONE) {
     BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
     GetDlgItem(IDC_USESYMBOLS)->EnableWindow(TRUE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_RESET_SYMBOLS)->EnableWindow(bEnable);
-
-    m_PWLowerMinLength = m_savelen[SAVE_LOWERCASE];
-    m_PWUpperMinLength = m_savelen[SAVE_UPPERCASE];
-    m_PWDigitMinLength = m_savelen[SAVE_DIGITS];
-    m_PWSymbolMinLength = m_savelen[SAVE_SYMBOLS];
   }
 }
 
@@ -804,10 +800,6 @@ BOOL CPasswordPolicyDlg::Validate()
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
   }
-
-  if ((m_PWUseHexdigits || m_PWEasyVision || m_PWMakePronounceable))
-    m_PWDigitMinLength = m_PWLowerMinLength =
-       m_PWSymbolMinLength = m_PWUpperMinLength = 1;
 
   if (m_uicaller == IDS_PSWDPOLICY) {
     // Only need to check if policy name is empty or it has been changed
