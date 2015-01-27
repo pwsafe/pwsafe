@@ -395,16 +395,16 @@ bool PwsafeApp::OnInit()
     if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
 #if wxCHECK_VERSION(2,9,2)
       wxRichMessageDialog dlg(NULL,
-        _("Could not initialize help subsystem. Help will not be available"),
+        _("Could not initialize help subsystem. Help will not be available."),
         _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
-      dlg.ShowCheckBox(_("Don't ask me again"));
+      dlg.ShowCheckBox(_("Don't show this warning again"));
       dlg.ShowModal();
       if (dlg.IsCheckBoxChecked()) {
         prefs->SetPref(PWSprefs::IgnoreHelpLoadError, true);
         prefs->SaveApplicationPreferences();
       }
 #else
-      wxMessageBox(_("Could not initialize help subsystem. Help will not be available"),
+      wxMessageBox(_("Could not initialize help subsystem. Help will not be available."),
       _("Password Safe: Error initializing help"), wxOK | wxICON_ERROR);
 #endif
     }
