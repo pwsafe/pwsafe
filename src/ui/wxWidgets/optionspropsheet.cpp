@@ -90,25 +90,25 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 END_EVENT_TABLE()
 
 const wxString BUSuffix[] = {
-  _("None"),
-  _("YYYYMMMDD_HHMMSS"),
-  _("Incremented Number [001-999]"),
+  L"None",
+  L"YYYYMMMDD_HHMMSS",
+  L"Incremented Number [001-999]",
 };
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
 // Following in enum order (see PWSprefs.h)
 const wxString DCAStrings[] = {
-  _("Copy password to clipboard"),
-  _("Edit/View selected entry"),
-  _("Autotype"),
-  _("Browse to URL"),
-  _("Copy notes to clipboard"),
-  _("Copy username to clipboard"),
-  _("Copy password to clipboard, minimize"),
-  _("Browse to URL + Autotype"),
-  _("Run Command"),
-  _("Send email"),
+  L"Copy password to clipboard",
+  L"Edit/View selected entry",
+  L"Autotype",
+  L"Browse to URL",
+  L"Copy notes to clipboard",
+  L"Copy username to clipboard",
+  L"Copy password to clipboard, minimize",
+  L"Browse to URL + Autotype",
+  L"Run Command",
+  L"Send email",
 };
 
 /*!
@@ -251,9 +251,9 @@ void COptions::CreateControls()
   wxBoxSizer* itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
   wxArrayString m_busuffixCBStrings;
-  m_busuffixCBStrings.Add(_("None"));
-  m_busuffixCBStrings.Add(_("YYYYMMMDD_HHMMSS"));
-  m_busuffixCBStrings.Add(_("Incremented Number [001-999]"));
+  for (int i = 0; i < int(sizeof(BUSuffix)/sizeof(BUSuffix[0])); ++i) {
+    m_busuffixCBStrings.Add(_(BUSuffix[i]));
+  }
   m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -376,18 +376,16 @@ void COptions::CreateControls()
 
   itemBoxSizer49->Add(20, 13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+  // Prepare strings for DblClick & Shift+DblClick combos
   wxArrayString m_DCACBStrings;
-  m_DCACBStrings.Add(_("Autotype"));
-  m_DCACBStrings.Add(_("Browse to URL"));
-  m_DCACBStrings.Add(_("Browse to URL + Autotype"));
-  m_DCACBStrings.Add(_("Copy notes to clipboard"));
-  m_DCACBStrings.Add(_("Copy password to clipboard"));
-  m_DCACBStrings.Add(_("Copy password to clipboard, minimize"));
-  m_DCACBStrings.Add(_("Copy username to clipboard"));
-  m_DCACBStrings.Add(_("Run Command"));
-  m_DCACBStrings.Add(_("Send email"));
-  m_DCACBStrings.Add(_("Edit/View selected entry"));
-  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
+  wxArrayString m_SDCACBStrings;
+  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
+    wxString tmp = _(DCAStrings[i]);
+    m_DCACBStrings.Add(tmp);
+    m_SDCACBStrings.Add(tmp);
+  }
+
+  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY|wxCB_SORT );
   itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer53 = new wxBoxSizer(wxHORIZONTAL);
@@ -395,18 +393,7 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer53->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString m_SDCACBStrings;
-  m_SDCACBStrings.Add(_("Autotype"));
-  m_SDCACBStrings.Add(_("Browse to URL"));
-  m_SDCACBStrings.Add(_("Browse to URL + Autotype"));
-  m_SDCACBStrings.Add(_("Copy notes to clipboard"));
-  m_SDCACBStrings.Add(_("Copy password to clipboard"));
-  m_SDCACBStrings.Add(_("Copy password to clipboard, minimize"));
-  m_SDCACBStrings.Add(_("Copy username to clipboard"));
-  m_SDCACBStrings.Add(_("Run Command"));
-  m_SDCACBStrings.Add(_("Send email"));
-  m_SDCACBStrings.Add(_("Edit/View selected entry"));
-  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, wxCB_READONLY );
+  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, wxCB_READONLY|wxCB_SORT );
   itemBoxSizer53->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
@@ -764,12 +751,12 @@ void COptions::PrefsToPropSheet()
   if (m_doubleclickaction < 0 ||
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
-  m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
+  m_DCACB->SetValue(_(DCAStrings[m_doubleclickaction]));
   m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
   if (m_shiftdoubleclickaction < 0 ||
       m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_shiftdoubleclickaction = 0;
-  m_SDCACB->SetValue(DCAStrings[m_shiftdoubleclickaction]);
+  m_SDCACB->SetValue(_(DCAStrings[m_shiftdoubleclickaction]));
   m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_autotypeStr.empty())
@@ -824,7 +811,7 @@ void COptions::PrefsToPropSheet()
 static int DCAStr2Int(const wxString &str)
 {
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (str == DCAStrings[i]) {
+    if (str == _(DCAStrings[i])) {
       return i;
     }
   ASSERT(0);
@@ -851,7 +838,7 @@ void COptions::PropSheetToPrefs()
 
   // display-related preferences
   prefs->SetPref(PWSprefs::AlwaysOnTop, m_alwaysontop);
-  // set/clear wxSTAY_ON_TOP flag accrdingly:
+  // set/clear wxSTAY_ON_TOP flag accordingly:
   long flags = GetParent()->GetWindowStyleFlag();
   if (m_alwaysontop)
     flags |= wxSTAY_ON_TOP;

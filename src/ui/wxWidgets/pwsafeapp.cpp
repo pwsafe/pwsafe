@@ -270,10 +270,6 @@ bool PwsafeApp::OnInit()
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
-  wxLanguage selectedLang = GetSelectedLanguage();
-  m_locale->Init(selectedLang);
-  ActivateLanguage(selectedLang, false);
-
   SetAppName(pwsafeAppName);
   m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
@@ -338,6 +334,13 @@ bool PwsafeApp::OnInit()
   m_core.SetReadOnly(cmd_ro);
   // OK to load prefs now
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Initialize language only after parsing cmd_cfg and instantiating prefs,
+  // otherwise GetSelectedLanguage()&Co will instantiate prefs singleton and it
+  // will ignore config file parameter
+  wxLanguage selectedLang = GetSelectedLanguage();
+  m_locale->Init(selectedLang);
+  ActivateLanguage(selectedLang, false);
 
   // if filename passed in command line, it takes precedence
   // over that in preference:
