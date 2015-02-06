@@ -338,7 +338,7 @@ void CPWFindToolBar::AddExtraControls()
 
   GetItemRect(0, &rt);
   const int iBtnHeight = rt.Height();
-  const int iHeight = 8 + iBtnHeight;
+  const int iHeight = iBtnHeight;
 
   // Add find search text CEdit control (CEditExtn)
   // Get the index of the placeholder's position in the toolbar
@@ -359,11 +359,11 @@ void CPWFindToolBar::AddExtraControls()
   rect = CRect(0, 0, EDITCTRL_WIDTH, iHeight);
   VERIFY(m_findedit.Create(WS_CHILD | WS_VISIBLE |
                            ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
-                           CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
+                           CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
                            this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top /* + 2 */, 0, 0,
+  m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top , 0, 0,
                           SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
   // Add find search results CStatic control
@@ -382,11 +382,11 @@ void CPWFindToolBar::AddExtraControls()
   rect = CRect(0, 0, FINDRESULTS_WIDTH, iHeight);
   VERIFY(m_findresults.Create(L"", WS_CHILD | WS_VISIBLE |
                               SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
-                              CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
+                              CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
                               this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
+  m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top, 0, 0,
                              SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 }
 
@@ -400,7 +400,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     GetItemRect(0, &rt);
     const int iBtnHeight = rt.Height();
     const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
-    const int iHeight = 8 + iBtnHeight;
+    const int iHeight = iBtnHeight;
     bool switchFont = (iFontHeight <= (iBtnHeight + 3));
 
     /**
@@ -423,14 +423,14 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     if (switchFont)
       m_findedit.SetFont(&m_FindTextFont);
     m_findedit.ChangeColour();
-    m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight + 4,
+    m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
     if (switchFont)
       m_findresults.SetFont(&m_FindTextFont);
-    m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight + 4,
+    m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
                                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }
 
