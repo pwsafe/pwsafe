@@ -1804,6 +1804,10 @@ msgstr "Eski kasa kombinasyonu onaylanamıyor - dosya kayıp mı?"
 msgid "Caps Lock"
 msgstr "Caps Lock"
 
+#. Resource IDs: (1503)
+msgid "Caps Lock is ON"
+msgstr ""
+
 #. Resource IDs: (1162, 1310)
 msgid "Case Sensitive"
 msgstr "Büyük Küçük Harfe Duyarlı"
@@ -5675,8 +5679,8 @@ msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Üzgünüz, 'telaffuz edilebilir' ve 'kolay okunur' beraber desteklenmiyor"
 
 #. Resource IDs: (345)
-msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
-msgstr "Üzgünüz, 'telaffuz edilebilir' ve 'kolay okunur' seçenekleriyle birlikte minimum karakter sayısı belirtilemiyor. Belirtilen değerler yoksayıldı."
+msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' option. Specified values ignored."
+msgstr ""
 
 #. Resource IDs: (372)
 msgid "Sorry, couldn't find help file - help unavailable."
