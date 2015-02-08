@@ -98,10 +98,11 @@ signatures:
 upload:
 	$(UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
+	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)*) \
 	$(UPLOAD_DST)
 
 # Uploading source is a separate target as we only want to do this once,
-# as oppoed to uploading the complied package, which we need to do per distro.
+# as oppoded to uploading the compiled package, which we need to do per distro.
 upload-src:
 	$(UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
