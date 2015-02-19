@@ -94,25 +94,12 @@ public:
 
   // SubGroup Object - same as FieldType
 
-  // Status returns from "ProcessInputRecordField"
-  enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
-
   // Entry type (note: powers of 2)
   enum EntryType {ET_INVALID      = -1,
                   ET_NORMAL       =  0, 
                   ET_ALIASBASE    =  1, ET_ALIAS    = 2, 
                   ET_SHORTCUTBASE =  4, ET_SHORTCUT = 8,
                   ET_LAST};
-
-  // Entry status (note: powers of 2)
-  // A status can (currently) have values:
-  //   0 (normal), 1 (added), 2 (modified) or 4 (deleted).
-  enum EntryStatus {ES_INVALID      = -1,
-                    ES_CLEAN        =  0,
-                    ES_ADDED        =  1,  // Added    but not yet saved to disk copy
-                    ES_MODIFIED     =  2,  // Modified but not yet saved to disk copy
-                    ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
-                    ES_LAST};
 
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
