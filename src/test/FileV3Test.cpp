@@ -51,9 +51,8 @@ protected:
 };
 
 FileV3Test::FileV3Test()
-  : passphrase(_T("enchilada-sonol")),
+  : passphrase(_T("enchilada-sonol")), fname(_T("V3test.psafe3")),
     title(_T("a-title")), password(_T("b-password!?")),
-    fname(_T("V3test.psafe3")),
     user(_T("C-UserR-ינור")), // non-English
     notes(_T("N is for notes\nwhich can span lines\r\nin several ways.")),
     group(_T("Groups.are.nested.by.dots")), url(_T("http://pwsafe.org/")),
