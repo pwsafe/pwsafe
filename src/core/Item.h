@@ -57,6 +57,19 @@ public:
   typedef std::vector<CItemField> UnknownFields;
   typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
+  // Status returns from "ProcessInputRecordField"
+  enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
+
+  // Entry status (note: powers of 2)
+  // A status can (currently) have values:
+  //   0 (normal), 1 (added), 2 (modified) or 4 (deleted).
+  enum EntryStatus {ES_INVALID      = -1,
+                    ES_CLEAN        =  0,
+                    ES_ADDED        =  1,  // Added    but not yet saved to disk copy
+                    ES_MODIFIED     =  2,  // Modified but not yet saved to disk copy
+                    ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
+                    ES_LAST};
+
 
   //Construction
   CItem();
@@ -107,6 +120,7 @@ protected:
   BlowFish *MakeBlowFish(bool noData = false) const;
 
   void SetField(int ft, const unsigned char *value, size_t length);
+  void SetField(int ft, const StringX &value);
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
 

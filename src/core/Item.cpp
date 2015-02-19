@@ -21,9 +21,9 @@ CItem::CItem() :
 
 CItem::CItem(const CItem &that) :
   m_fields(that.m_fields),
+  m_URFL(that.m_URFL),
   m_display_info(that.m_display_info == NULL ?
-                 NULL : that.m_display_info->clone()),
-  m_URFL(that.m_URFL)
+                 NULL : that.m_display_info->clone())
 {
 }
 
@@ -154,6 +154,16 @@ void CItem::SetField(int ft, const unsigned char *value, size_t length)
   if (length != 0) {
     BlowFish *bf = MakeBlowFish(false);
     m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
+    delete bf;
+  } else
+    m_fields.erase(ft);
+}
+
+void CItem::SetField(int ft, const StringX &value)
+{
+  if (!value.empty()) {
+    BlowFish *bf = MakeBlowFish(false);
+    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
     delete bf;
   } else
     m_fields.erase(ft);

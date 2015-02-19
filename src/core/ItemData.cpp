@@ -1213,12 +1213,7 @@ void CItemData::SplitName(const StringX &name,
 void CItemData::SetField(FieldType ft, const StringX &value)
 {
   ASSERT(ft != END);
-  if (!value.empty()) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
-    delete bf;
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
+  CItem::SetField(ft, value);
 }
 
 void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length)
