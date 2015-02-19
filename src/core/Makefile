@@ -14,15 +14,15 @@ DEPDIR= ./deps
 NOTSRC          = PWSclipboard.cpp
 
 LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
-                  Item.cpp ItemData.cpp ItemField.cpp  PWPolicy.cpp \
+                  Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp  \
                   Match.cpp PWCharPool.cpp CoreImpExp.cpp \
-                  PWHistory.cpp PWSAuxParse.cpp \
+                  PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp PWSfileV4.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
-									pbkdf2.cpp KeyWrap.cpp \
+		  pbkdf2.cpp KeyWrap.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
