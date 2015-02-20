@@ -48,13 +48,24 @@ void ItemAttTest::SetUp()
 
 TEST_F(ItemAttTest, EmptyItems)
 {
-  CItemAtt di2;
+  CItemAtt ai2;
   const StringX t(L"title");
-  EXPECT_TRUE(emptyItem == di2);
+  EXPECT_TRUE(emptyItem == ai2);
   emptyItem.SetTitle(t);
-  EXPECT_FALSE(emptyItem == di2);  
-  di2.SetTitle(t);
-  EXPECT_TRUE(emptyItem == di2);
+  EXPECT_FALSE(emptyItem == ai2);  
+  ai2.SetTitle(t);
+  EXPECT_TRUE(emptyItem == ai2);
+}
+
+TEST_F(ItemAttTest, UUIDs)
+{
+  CItemAtt ai1, ai2;
+  EXPECT_FALSE(ai1.HasUUID());
+  ai1.CreateUUID();
+  ai2.CreateUUID();
+  EXPECT_FALSE(ai1 == ai2);
+  ai2.SetUUID(ai1.GetUUID());
+  EXPECT_TRUE(ai1 == ai2);
 }
 
 #if 0
@@ -62,8 +73,8 @@ TEST_F(ItemAttTest, CopyCtor)
 {
   emptyItem.SetTitle(_T("title"));
   emptyItem.SetPassword(_T("password!"));
-  CItemAtt di2(emptyItem);
-  EXPECT_TRUE(emptyItem == di2);
+  CItemAtt ai2(emptyItem);
+  EXPECT_TRUE(emptyItem == ai2);
 }
 
 TEST_F(ItemAttTest, Getters_n_Setters)
