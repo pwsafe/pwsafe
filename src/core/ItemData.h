@@ -205,7 +205,6 @@ public:
   void SetPassword(const StringX &password);
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
-  void SetUUID(const uuid_array_t &uuid, FieldType ft = CItemData::UUID); // V20
   void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
   void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
   void SetGroup(const StringX &group); // V20

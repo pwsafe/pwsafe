@@ -1233,7 +1233,7 @@ void CItemData::CreateUUID(FieldType ft)
     default: ASSERT(0); ft = UUID; break;
     }
   }
-  SetUUID(*uuid.GetARep(), ft);
+  SetUUID(uuid, ft);
 }
 
 void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
@@ -1428,11 +1428,6 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 void CItemData::SetGroup(const StringX &group)
 {
   SetField(GROUP, group);
-}
-
-void CItemData::SetUUID(const uuid_array_t &uuid, FieldType ft)
-{
-  SetField(ft, static_cast<const unsigned char *>(uuid), sizeof(uuid));
 }
 
 void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
