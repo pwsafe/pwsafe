@@ -80,10 +80,9 @@ public:
 
   StringX GetFieldValue(FieldType ft) const;
 
-  void CreateUUID(FieldType ft = CItemAtt::END); // V20 - generate UUID for new item
-  void SetTitle(const StringX &title);
-  void SetUUID(const uuid_array_t &uuid);
+  void CreateUUID(); // for new
   void SetUUID(const pws_os::CUUID &uuid);
+  void SetTitle(const StringX &title);
   void SetCTime() {SetTime(CTIME);}  // V30
   void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
   bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
@@ -98,7 +97,7 @@ public:
   bool operator==(const CItemAtt &that) const;
 
 
-  bool HasUUID() const; // UUID type matches entry type and is set
+  bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
 
