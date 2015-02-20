@@ -57,6 +57,39 @@ void CItemAtt::SetTitle(const StringX &title)
   CItem::SetField(TITLE, title);
 }
 
+void CItemAtt::CreateUUID()
+{
+  CUUID uuid;
+  SetUUID(uuid);
+}
+
+
+void CItemAtt::SetUUID(const CUUID &uuid)
+{
+  CItem::SetField(ATTUUID, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
+}
+
+void CItemAtt::GetUUID(uuid_array_t &uuid_array) const
+{
+  size_t length = sizeof(uuid_array_t);
+  FieldConstIter fiter = m_fields.find(ATTUUID);
+  if (fiter != m_fields.end()) {
+    CItem::GetField(fiter->second,
+                    static_cast<unsigned char *>(uuid_array), length);
+  } else {
+    ASSERT(0);
+    pws_os::Trace(_T("CItemAtt::GetUUID(uuid_array_t) - no UUID found!"));
+    memset(uuid_array, 0, length);
+  }
+}
+
+const CUUID CItemAtt::GetUUID() const
+{
+  uuid_array_t ua;
+  GetUUID(ua);
+  return CUUID(ua);
+}
+
 #if 0
 int CItemAtt::Read(PWSfile *in)
 {
@@ -410,76 +443,8 @@ void CItemAtt::GetTime(int whichtime, time_t &t) const
     t = 0;
 }
 
-void CItemAtt::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
-{
-  size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.end();
-  if (ft != END) { // END means "infer correct UUID from entry type"
-    // anything != END is used as-is, no questions asked
-    fiter = m_fields.find(ft);
-  } else switch (m_entrytype) {
-    case ET_NORMAL:
-    case ET_ALIASBASE:
-    case ET_SHORTCUTBASE:
-      fiter = m_fields.find(UUID);
-      break;
-    case ET_ALIAS:
-      fiter = m_fields.find(ALIASUUID);
-      break;
-    case ET_SHORTCUT:
-      fiter = m_fields.find(SHORTCUTUUID);
-      break;
-    default:
-      ASSERT(0);
-    }
-  if (fiter == m_fields.end()) {
-    pws_os::Trace(_T("CItemAtt::GetUUID(uuid_array_t) - no UUID found!"));
-    memset(uuid_array, 0, length);
-  } else
-    CItem::GetField(fiter->second,
-                    static_cast<unsigned char *>(uuid_array), length);
-}
-
-const CUUID CItemAtt::GetUUID(FieldType ft) const
-{
-  // Ideally we'd like to return a uuid_array_t, but C++ doesn't
-  // allow array return values.
-  // If we returned the uuid_array_t pointer, we'd have a scope problem,
-  // as the pointer's owner would be deleted too soon.
-  // Frustrating, but that's life...
-
-  uuid_array_t ua;
-  GetUUID(ua, ft);
-  return CUUID(ua);
-}
-
 //-----------------------------------------------------------------------------
 // Setters
-
-void CItemAtt::CreateUUID(FieldType ft)
-{
-  CUUID uuid;
-  if (ft == END) {
-    switch (m_entrytype) {
-    case ET_NORMAL: ft = UUID; break;
-    case ET_ALIAS: ft = ALIASUUID; break;
-    case ET_SHORTCUT: ft = SHORTCUTUUID; break;
-    default: ASSERT(0); ft = UUID; break;
-    }
-  }
-  SetUUID(*uuid.GetARep(), ft);
-}
-
-
-void CItemAtt::SetUUID(const uuid_array_t &uuid, FieldType ft)
-{
-  SetField(ft, static_cast<const unsigned char *>(uuid), sizeof(uuid));
-}
-
-void CItemAtt::SetUUID(const CUUID &uuid, FieldType ft)
-{
-  SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
-}
 
 void CItemAtt::SetTime(int whichtime)
 {
