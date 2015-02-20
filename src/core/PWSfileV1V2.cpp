@@ -10,6 +10,7 @@
 #include "core.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
+#include "os/UUID.h"
 
 #ifdef _WIN32
 #include <io.h>
