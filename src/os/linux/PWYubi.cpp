@@ -126,7 +126,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
     if (ykey == NULL)
       goto done;
     if (!yk_get_status(ykey, st) ||
-        !ykp_set_tktflag_CHAL_RESP(cfg,true) ||
+        (ykp_configure_version(cfg, st), !ykp_set_tktflag_CHAL_RESP(cfg,true)) ||
         !ykp_set_cfgflag_CHAL_HMAC(cfg, true) ||
         !ykp_set_cfgflag_HMAC_LT64(cfg, true) ||
         !ykp_set_cfgflag_CHAL_BTN_TRIG(cfg, true) ||
@@ -135,17 +135,12 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
       m_ykerrstr = _S("Internal error: couldn't set configuration");
       goto done;
     }
-    // not sure we need the following, comment in ykpers.h hints it is
-    ykp_configure_version(cfg, st);
     if (!ykp_configure_command(cfg, SLOT_CONFIG2)) { // _UPDATE2?
       m_ykerrstr = _S("Internal error: couldn't configure command");
       goto done;
     }
 
-    ostringstream os;
-    for (size_t i = 0; i < sklen; i++)
-      os << setfill('0') << setw(2) << hex << int(yubi_sk_bin[i]);
-    if (!ykp_HMAC_key_from_hex(cfg, os.str().c_str())) {
+    if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
       m_ykerrstr = _S("Internal error: couldn't configure key");
       goto done;
     }
