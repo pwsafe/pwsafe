@@ -417,7 +417,7 @@ public:
   void OnContextMenu(const CItemData* item);
 
   /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
-  void UnlockSafe(bool restoreUI);
+  void UnlockSafe(bool restoreUI, bool iconizeOnFailure);
 
   /// Called by app when the inactivity timer arrives
   void HideUI(bool lock);
@@ -532,7 +532,6 @@ public:
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   // top-level windows that we hid while locking the UI
   wxWindowList hiddenWindows;
-  bool m_bUnlocking;
 
   /*
    * The map associates menu item id's with language specific data represented by a tuple.
@@ -551,6 +550,9 @@ public:
   // The selected language menu id
   int m_selectedLanguage;
   void RegisterLanguageMenuItems();
+  // we need to prevent multiple call to db (un)locker and UI hider
+  // These mutexes must not be recursive!
+  wxMutex m_dblockMutex, m_hideUIMutex;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

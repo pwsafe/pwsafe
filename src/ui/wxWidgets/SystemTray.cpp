@@ -241,7 +241,7 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
     switch(id) {
 
       case ID_SYSTRAY_RESTORE:
-        m_frame->UnlockSafe(true); // true => restore UI
+        m_frame->UnlockSafe(true, false); // true => restore UI
         break;
 
       case ID_SYSTRAY_LOCK:
@@ -249,7 +249,7 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
         break;
 
       case ID_SYSTRAY_UNLOCK:
-        m_frame->UnlockSafe(false); // false => don't restore UI
+        m_frame->UnlockSafe(false, false); // false => don't restore UI
         break;
 
       case ID_SYSTRAY_CLEAR_RUE:
@@ -276,5 +276,5 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& /*evt*/)
 {
   EventHandlerDisabler ehd(this);
-  m_frame->UnlockSafe(true); //true => restore UI
+  m_frame->UnlockSafe(true, false); //true => restore UI
 }

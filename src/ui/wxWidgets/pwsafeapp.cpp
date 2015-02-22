@@ -310,9 +310,12 @@ bool PwsafeApp::OnInit()
   bool cmd_user = cmdParser.Found(wxT("u"), &user);
   bool cmd_host = cmdParser.Found(wxT("h"), &host);
   bool cmd_cfg = cmdParser.Found(wxT("g"), &cfg_file);
+  bool file_in_cmd = false;
   size_t count = cmdParser.GetParamCount();
-  if (count == 1)
+  if (count == 1) {
     filename = cmdParser.GetParam();
+    file_in_cmd = true;
+  }
   else if (count > 1) {
     cmdParser.Usage();
     return false;
@@ -436,12 +439,20 @@ bool PwsafeApp::OnInit()
   RestoreFrameCoords();
   m_frame->Show();
   if (cmd_minimized)
-    m_frame->Iconize(true);
+    m_frame->Iconize();
   else if (cmd_silent) {
-    m_frame->SetTrayStatus(true);
-    m_frame->HideUI(true);
-  } else
+    // Hide UI enumerates top-level windows and its children and hide them,
+    // so we need to set top windows first and only then call hideUI
     SetTopWindow(m_frame);
+    wxSafeYield();
+    m_frame->HideUI(false);
+    if (file_in_cmd) {
+       // set locked status if file was passed from command line
+       m_frame->SetTrayStatus(true);
+    }
+  } else {
+    SetTopWindow(m_frame);
+  }
   return true;
 }
 
@@ -591,8 +602,9 @@ void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty()) {
-      if (m_idleFlag) // cleared if a user event occurred via FilterEvent()
+      if (m_idleFlag) {// cleared if a user event occurred via FilterEvent()
         m_frame->HideUI(true);  //true => lock
+      }
       else
         m_idleFlag = true; // arm for next interval
     }

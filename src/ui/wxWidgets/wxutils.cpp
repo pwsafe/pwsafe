@@ -78,7 +78,6 @@ void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
 {
   if (!win)
     return;
-
   wxWindowList& children = win->GetChildren();
   for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
     if ((*itr)->IsTopLevel() && (*itr)->IsShown()) {

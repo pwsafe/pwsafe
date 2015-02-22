@@ -7,7 +7,7 @@
  */
 
 ////////////////////////////////////////////////////////////////////
-// wxutils.h - file for various wxWidgets related utility functions, 
+// wxutils.h - file for various wxWidgets related utility functions,
 // macros, classes, etc
 
 
@@ -16,6 +16,7 @@
 
 #include "../../core/StringX.h"
 #include "../../core/PWSprefs.h"
+#include <set>
 
 inline wxString& operator << ( wxString& str, const wxPoint& pt) {
   return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');
@@ -107,8 +108,34 @@ public:
   }
 };
 
+/* Skip events passed to constructor while object exists
+*/
+#if wxCHECK_VERSION(2,9,3)
+class EventSkipper: public wxEventFilter {
+  std::set<wxEventType> m_events;
+public:
+  EventSkipper(std::set<wxEventType> events): m_events(events) {
+    wxEvtHandler::AddFilter(this);
+  }
+
+  ~EventSkipper() {
+    wxEvtHandler::RemoveFilter(this);
+  }
+
+  virtual int FilterEvent(wxEvent& evt) {
+    if (m_events.find(evt.GetEventType()) != m_events.end()) {
+      pws_os::Trace(L"Event %d was ignored", evt.GetEventType());
+      return Event_Ignore;
+    }
+    else {
+      return Event_Skip; // here skip means normal processing
+    }
+  }
+};
+#endif
+
 class PWScore;
-int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
+int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
                 bool showMsgbox = true, wxWindow* msgboxParent = NULL, bool setupCopy = false);
 
 inline const wxChar* ToStr(const wxString& s) {
@@ -175,8 +202,8 @@ public:
                                           m_eventType(evtType),
                                           m_windowId(winid),
                                           m_oneShot(oneShot)
-  {    
-    evtSource->Connect(winid, evtType, 
+  {
+    evtSource->Connect(winid, evtType,
                   evtType,
                   (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
                   NULL, //this is for wxWidgets' private use only
@@ -211,6 +238,58 @@ public:
   {
     m_ref = m_oldVal;
   }
+};
+
+/* Try to acquire critical section lock.
+  If it's not possible, return immediately. Status could be checked by calling
+  IsAcquired() */
+#if wxCHECK_VERSION(2,9,3)
+class wxCriticalSectionTryLocker {
+public:
+  wxCriticalSectionTryLocker(wxCriticalSection& cs): m_critsect(cs) {
+    m_entered = m_critsect.TryEnter();
+  }
+  ~wxCriticalSectionTryLocker() {
+    if (m_entered)
+      m_critsect.Leave();
+  }
+
+  bool IsEntered() const {
+    return m_entered;
+  }
+private:
+  bool m_entered;
+  wxCriticalSection& m_critsect;
+  // no assignment operator nor copy ctor
+  wxCriticalSectionTryLocker(const wxCriticalSectionTryLocker&);
+  wxCriticalSectionTryLocker& operator=(const wxCriticalSectionTryLocker&);
+};
+#endif
+
+/* Try to acquire mutex lock.
+  If it's not possible, return immediately. Status could be checked by calling
+  IsAcquired() */
+class wxMutexTryLocker {
+public:
+  wxMutexTryLocker(wxMutex& mutex): m_mutex(mutex) {
+    m_acquired = ( m_mutex.TryLock() == wxMUTEX_NO_ERROR );
+  }
+
+  bool IsAcquired() const {
+    return m_acquired;
+  }
+
+  ~wxMutexTryLocker() {
+    if (m_acquired)
+      m_mutex.Unlock();
+  }
+
+private:
+  bool m_acquired;
+  wxMutex& m_mutex;
+  // no assignment operator nor copy ctor
+  wxMutexTryLocker(const wxMutexTryLocker&);
+  wxMutexTryLocker& operator=(const wxMutexTryLocker&);
 };
 
 #endif

@@ -257,8 +257,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-  m_bUnlocking(false)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
 {
     Init();
 }
@@ -268,8 +267,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bUnlocking(false)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
 {
     Init();
     m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
@@ -1512,7 +1510,11 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   }
   else {
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+#if wxCHECK_VERSION(2,9,5)
+    CallAfter(&PasswordSafeFrame::HideUI, lockOnMinimize);
+#else
     HideUI(lockOnMinimize);
+#endif
   }
 }
 
@@ -1781,7 +1783,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     break;
   case PWSprefs::DoubleClickCopyPasswordMinimize:
     DoCopyPassword(item);
-    Iconize(true);
+    Iconize();
     break;
   case PWSprefs::DoubleClickViewEdit:
     DoEdit(item);
@@ -2432,11 +2434,22 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
   m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
 }
 
-void PasswordSafeFrame::UnlockSafe(bool restoreUI)
+/**
+ * Unlock database
+ * @param restoreUI restore opened windows after unlock
+ * @param iconizeOnFailure will iconize if this parameters set to true and
+ *   VerifySafeCombination() failed
+*/
+void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 {
+  wxMutexTryLocker unlockMutex(m_dblockMutex);
+  if (!unlockMutex.IsAcquired()){
+    // Another (un)lock in progress, no need to process
+    pws_os::Trace0(L"Skipped parallel attempt to unlock DB");
+    return;
+  }
   StringX password;
   if (m_sysTray->IsLocked()) {
-    AutoRestore<bool> unlocking(m_bUnlocking,true);
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -2447,6 +2460,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
       }
     }
     else {
+      if (!IsIconized() && iconizeOnFailure)
+        Iconize();
       return;
     }
     if (m_savedDBPrefs != wxEmptyString) {
@@ -2496,52 +2511,43 @@ void PasswordSafeFrame::SetFocus()
     m_grid->SetFocus();
 }
 
-void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
-{
-  const bool beingRestored =
+void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
+  const bool beingIconized =
 #if wxCHECK_VERSION(2,9,0)
-    !evt.IsIconized();
+    evt.IsIconized();
 #else
-    !evt.Iconized();
+    evt.Iconized();
 #endif
-
-  if (beingRestored) {
-    if (m_sysTray->IsLocked() && !m_bUnlocking) {
-      /*
-       * the frame is automatically un-iconized by gtk when the Safe Combination Entry dialog comes up
-       * which causes the code here to throw up a second SCE dialog.  This ugly hack (m_bUnlocking) is
-       *  the only way I could come up with to prevent that
-       */
-      StringX password;
-      if (VerifySafeCombination(password)) {
-        if (ReloadDatabase(password)) {
-          ShowWindowRecursively(hiddenWindows);
-          m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
-          Show(true); //show the tree/grid
-          m_guiInfo->Restore(this);
-        }
-        else {
-          CleanupAfterReloadFailure(true);
-        }
-      }
-      else {
-        // Make sure the window remains iconized
-        Iconize();
-      }
-    }
-  }
-  else {
+  pws_os::Trace(L"OnIconize: beingIconized=%d\n", beingIconized);
+  // Because  LockDB and UnlockSafe hide/update main or "icon" window, they may
+  // produce new iconize events before current processing finished, so to
+  // prevent multiple calls we use CallAfter if available
+  if (beingIconized) {
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
     // if not already locked, lock it if "lock on minimize" is set
     if (m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED && lockOnMinimize) {
+      pws_os::Trace0(L"OnIconize: will LockDb()\n");
+#if wxCHECK_VERSION(2,9,5)
+      CallAfter(&PasswordSafeFrame::LockDb);
+#else
       LockDb();
+#endif
     }
   }
+  else{
+#if wxCHECK_VERSION(2,9,5)
+      CallAfter(&PasswordSafeFrame::UnlockSafe, true, true);
+#else
+      UnlockSafe(true, true);
+#endif
+  }
 }
+
 
 void PasswordSafeFrame::TryIconize(int attempts)
 {
   while ( !IsIconized() && attempts-- ) {
+    pws_os::Trace0(L"TryIconize attempt\n");
     //don't loop here infinitely while IsIconized
     //"The window manager may choose to ignore the [gdk_window_iconify] request, but normally will honor it."
     Iconize();
@@ -2551,6 +2557,12 @@ void PasswordSafeFrame::TryIconize(int attempts)
 
 void PasswordSafeFrame::HideUI(bool lock)
 {
+  wxMutexTryLocker hideMutex(m_hideUIMutex);
+  if (!hideMutex.IsAcquired()) {
+    // UI hide is in progress, no need to process
+    pws_os::Trace0(L"Skipped parallel attempt to hide UI");
+    return;
+  }
   m_guiInfo->Save(this);
   wxGetApp().SaveFrameCoords();
 
@@ -2560,9 +2572,9 @@ void PasswordSafeFrame::HideUI(bool lock)
 
   wxClipboard().Clear();
 
-#ifndef __WXMAC__
-  TryIconize();
-#endif
+  // Don't call (try)iconize() here, otherwise we'll have two iconization events
+  // (iconize and restore few moments after) [wxgtk 3.0.2]
+  // skipping wxEVT_ICONIZE while we are here doesn't help
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     //We should not have to show up the icon manually if m_sysTray
@@ -2570,11 +2582,19 @@ void PasswordSafeFrame::HideUI(bool lock)
     m_sysTray->ShowIcon();
     hiddenWindows.clear();
     HideWindowRecursively(this, hiddenWindows);
+
   }
 }
 
 void PasswordSafeFrame::LockDb()
 {
+  wxMutexTryLocker lockMutex(m_dblockMutex);
+  if (!lockMutex.IsAcquired()){
+    // Another (un)lock in progress, no need to process
+    pws_os::Trace0(L"Skipped parallel attempt to lock DB");
+    return;
+  }
+
   m_guiInfo->Save(this);
   if (SaveAndClearDatabase())
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
