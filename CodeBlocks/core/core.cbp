@@ -185,7 +185,7 @@
 			</Target>
 			<Target title="Debug_L64Y">
 				<Option platforms="Unix;" />
-				<Option output="core64d" prefix_auto="1" extension_auto="1" />
+				<Option output="core64yd" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug64Y/" />
 				<Option type="2" />
@@ -236,7 +236,7 @@
 			</Target>
 			<Target title="Debug_L32Y">
 				<Option platforms="Unix;" />
-				<Option output="core32d" prefix_auto="1" extension_auto="1" />
+				<Option output="core32yd" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug32Y/" />
 				<Option type="2" />
@@ -287,7 +287,7 @@
 			</Target>
 			<Target title="Release_L64Y">
 				<Option platforms="Unix;" />
-				<Option output="core64" prefix_auto="1" extension_auto="1" />
+				<Option output="core64y" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release64Y/" />
 				<Option type="2" />
@@ -321,7 +321,7 @@
 			</Target>
 			<Target title="Release_L32Y">
 				<Option platforms="Unix;" />
-				<Option output="core32" prefix_auto="1" extension_auto="1" />
+				<Option output="core32y" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release32Y/" />
 				<Option type="2" />

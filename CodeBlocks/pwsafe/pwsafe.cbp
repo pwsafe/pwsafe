@@ -12,6 +12,7 @@
 				<Option object_output="obj/Debug64/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="-s" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-Wshadow" />
@@ -236,8 +237,8 @@
 					<Add option="-m64" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
-					<Add library="core64d" />
-					<Add library="os64d" />
+					<Add library="core64yd" />
+					<Add library="os64yd" />
 					<Add library="uuid" />
 					<Add library="Xtst" />
 					<Add library="X11" />
@@ -290,8 +291,8 @@
 					<Add option="-m32" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
-					<Add library="core32d" />
-					<Add library="os32d" />
+					<Add library="core32yd" />
+					<Add library="os32yd" />
 					<Add library="uuid" />
 					<Add library="Xtst" />
 					<Add library="X11" />
@@ -333,8 +334,8 @@
 					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace --cxxflags`" />
 					<Add option="-m64" />
 					<Add option="`pkg-config --libs ykpers-1`" />
-					<Add library="core64" />
-					<Add library="os64" />
+					<Add library="core64y" />
+					<Add library="os64y" />
 					<Add library="uuid" />
 					<Add library="Xtst" />
 					<Add library="X11" />
@@ -377,8 +378,8 @@
 					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace --cxxflags`" />
 					<Add option="-m32" />
 					<Add option="`pkg-config --libs ykpers-1`" />
-					<Add library="core32" />
-					<Add library="os32" />
+					<Add library="core32y" />
+					<Add library="os32y" />
 					<Add library="uuid" />
 					<Add library="Xtst" />
 					<Add library="X11" />
@@ -574,7 +575,9 @@
 		<Extensions>
 			<envvars />
 			<code_completion />
-			<debugger />
+			<debugger>
+				<search_path add="../../../wxWidgets-3.0.2" />
+			</debugger>
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
