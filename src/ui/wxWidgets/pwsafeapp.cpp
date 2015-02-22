@@ -166,7 +166,7 @@ IMPLEMENT_CLASS( PwsafeApp, wxApp )
  */
 
 PwsafeApp::PwsafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
-                         m_idleFlag(true), m_frame(0), m_recentDatabases(0),
+                         m_frame(0), m_recentDatabases(0),
        m_helpController(nullptr), m_locale(nullptr)
 {
   Init();
@@ -602,11 +602,7 @@ void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty()) {
-      if (m_idleFlag) {// cleared if a user event occurred via FilterEvent()
-        m_frame->HideUI(true);  //true => lock
-      }
-      else
-        m_idleFlag = true; // arm for next interval
+      m_frame->HideUI(true);  //true => lock
     }
   }
 }
@@ -733,9 +729,9 @@ int PwsafeApp::FilterEvent(wxEvent& evt) {
       (et == wxEVT_COMMAND_RIGHT_DCLICK) ||
       (et == wxEVT_COMMAND_ENTER) ||
       (et == wxEVT_HELP) ||
-      (et == wxEVT_DETAILED_HELP))
-    m_idleFlag = false; // for lock on idle timer
-
+      (et == wxEVT_DETAILED_HELP)) {
+    RestartIdleTimer();
+  }
   if (evt.IsCommandEvent() && evt.GetId() == wxID_HELP &&
       (et == wxEVT_COMMAND_BUTTON_CLICKED ||
        et == wxEVT_COMMAND_MENU_SELECTED)) {
@@ -808,3 +804,14 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
   return helpMap;
 }
 
+/**
+ * Restart timer using the same notification interval
+*/
+void PwsafeApp::RestartIdleTimer()
+{
+  if (m_idleTimer->IsRunning()) {
+    int interval = m_idleTimer->GetInterval();
+    m_idleTimer->Stop();
+    m_idleTimer->Start(interval, wxTIMER_CONTINUOUS);
+  }
+}

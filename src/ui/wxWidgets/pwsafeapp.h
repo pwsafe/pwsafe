@@ -83,6 +83,7 @@ public:
 
   void OnIdleTimer(wxTimerEvent& timerEvent);
   void ConfigureIdleTimer();
+  void RestartIdleTimer();
   void OnHelp(wxCommandEvent& evt);
   void OnDBGUIPrefsChange(wxEvent& evt);
 
@@ -97,7 +98,6 @@ public:
  private:
     PWScore m_core;
     wxTimer* m_idleTimer;
-    bool m_idleFlag; // true unless an event happened in the idle lock interval;
     PasswordSafeFrame* m_frame;
     enum { IDLE_TIMER_ID = 33 } ;
     CRecentDBList *m_recentDatabases;
