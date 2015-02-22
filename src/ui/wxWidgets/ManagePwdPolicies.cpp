@@ -717,7 +717,7 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
 {
-  PWSclip::SetData(tostringx(m_passwordCtrl->GetValue()));
+  PWSclipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
 }
 
 

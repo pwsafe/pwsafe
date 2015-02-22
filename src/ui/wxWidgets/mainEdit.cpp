@@ -254,7 +254,7 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
-  PWSclip::ClearData();
+  PWSclipboard::GetInstance()->ClearData();
 }
 
 
@@ -272,7 +272,7 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
-  PWSclip::SetData(item.GetPassword());
+  PWSclipboard::GetInstance()->SetData(item.GetPassword());
   UpdateAccessTime(item);
 }
 
@@ -290,7 +290,7 @@ void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
 {
-  PWSclip::SetData(item.GetRunCommand());
+  PWSclipboard::GetInstance()->SetData(item.GetRunCommand());
   UpdateAccessTime(item);
 }
 
@@ -310,7 +310,7 @@ void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 {
-  PWSclip::SetData(item.GetUser());
+  PWSclipboard::GetInstance()->SetData(item.GetUser());
   UpdateAccessTime(item);
 }
 
@@ -329,7 +329,7 @@ void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyNotes(CItemData &item)
 {
-  PWSclip::SetData(item.GetNotes());
+  PWSclipboard::GetInstance()->SetData(item.GetNotes());
   UpdateAccessTime(item);
 }
 
@@ -461,7 +461,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::DoCopyURL(CItemData &item)
 {
-  PWSclip::SetData(item.GetURL());
+  PWSclipboard::GetInstance()->SetData(item.GetURL());
   UpdateAccessTime(item);
 }
 
@@ -472,7 +472,7 @@ void PasswordSafeFrame::DoCopyEmail(CItemData &item)
                       : item.GetEmail();
 
   if (!mailto.empty()) {
-    PWSclip::SetData(mailto);
+    PWSclipboard::GetInstance()->SetData(mailto);
     UpdateAccessTime(item);
   }
 }

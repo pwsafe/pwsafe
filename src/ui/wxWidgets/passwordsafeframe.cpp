@@ -1501,6 +1501,10 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
       }
     }
 
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
+      PWSclipboard::GetInstance()->ClearData();
+    }
+
     // Don't leave dangling locks!
     if (!m_core.GetCurFile().empty())
       m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -1510,6 +1514,10 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   }
   else {
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
+      PWSclipboard::GetInstance()->ClearData();
+    }
 #if wxCHECK_VERSION(2,9,5)
     CallAfter(&PasswordSafeFrame::HideUI, lockOnMinimize);
 #else
@@ -2532,6 +2540,9 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 #else
       LockDb();
 #endif
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
+        PWSclipboard::GetInstance()->ClearData();
+      }
     }
   }
   else{
@@ -2563,14 +2574,18 @@ void PasswordSafeFrame::HideUI(bool lock)
     pws_os::Trace0(L"Skipped parallel attempt to hide UI");
     return;
   }
+
+  // As HideUI doesn't produce iconize event we need to process clear clipboard options
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
+    PWSclipboard::GetInstance()->ClearData();
+  }
+
   m_guiInfo->Save(this);
   wxGetApp().SaveFrameCoords();
 
   if (lock && m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED) {
     LockDb();
   }
-
-  wxClipboard().Clear();
 
   // Don't call (try)iconize() here, otherwise we'll have two iconization events
   // (iconize and restore few moments after) [wxgtk 3.0.2]

@@ -27,11 +27,7 @@
 #include "wx/dirdlg.h"
 #include "wx/msgdlg.h"
 #include "wx/debug.h"
-#if defined(__X__) || defined(__WXGTK__)
-#include <wx/clipbrd.h>
-#endif
 #include <wx/taskbar.h>
-
 
 #include "passwordsafeframe.h"
 #include "optionspropsheet.h"
@@ -41,6 +37,9 @@
 #include "./wxutils.h"
 #include "./pwsmenushortcuts.h"
 #include "pwsafeapp.h" // for set/get hashIter
+#if defined(__X__) || defined(__WXGTK__)
+#include "pwsclip.h"
+#endif
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -894,7 +893,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::MultipleInstances, m_sysmultinst);
 #if defined(__X__) || defined(__WXGTK__)
   prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_usePrimarySelection);
-  wxTheClipboard->UsePrimarySelection(m_usePrimarySelection);
+  PWSclipboard::GetInstance()->UsePrimarySelection(m_usePrimarySelection);
   prefs->SetPref(PWSprefs::UseAltAutoType, m_useAltAutoType);
 #endif
 

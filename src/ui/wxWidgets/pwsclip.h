@@ -13,11 +13,29 @@
 
 #ifndef _PWSCLIP_H_
 #define _PWSCLIP_H_
+#include "core/sha256.h"
 #include "core/StringX.h"
-namespace PWSclip {
-  bool SetData(const StringX &text);
-  bool ClearData(); // clears clipboard iff last set by us
-}
+class PWSclipboard
+{
+public:
+  static PWSclipboard *self; //*< singleton pointer
+  static PWSclipboard *GetInstance();
+  static void DeleteInstance();
+  bool SetData(const StringX &data);
+  bool ClearData();
+#if defined(__X__) || defined(__WXGTK__)
+  void UsePrimarySelection(bool primary, bool clearOnChange=true);
+#endif
+private:
+  PWSclipboard();
+  ~PWSclipboard() {};
+  PWSclipboard(const PWSclipboard &);
+  PWSclipboard &operator=(const PWSclipboard &);
+
+  bool m_set;//<* true if we stored our data
+  unsigned char m_digest[SHA256::HASHLEN];//*< our data hash
+  wxMutex m_clipboardMutex;//*< mutex for clipboard access
+};
 
 #endif /* _PWSCLIP_H_ */
 

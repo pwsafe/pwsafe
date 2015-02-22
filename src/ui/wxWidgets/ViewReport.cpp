@@ -17,28 +17,28 @@
 
 #include "../../core/Report.h"
 
-#include <wx/clipbrd.h>
+#include "pwsclip.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
-CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) : 
-                wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize, 
+CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
+                wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
   wxASSERT(pRpt);
-  
+
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
-  
-  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, towxstring(pRpt->GetString()), 
+
+  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, towxstring(pRpt->GetString()),
                                       wxDefaultPosition, wxSize(640,480), wxTE_MULTILINE|wxTE_READONLY);
   dlgSizer->Add(textCtrl, wxSizerFlags().Border(wxALL).Expand().Proportion(1));
-  
+
   wxStdDialogButtonSizer* bs = CreateStdDialogButtonSizer(0);
-  
+
   wxASSERT_MSG(bs, wxT("Could not create an empty wxStdDlgButtonSizer"));
-  
+
   bs->Add(new wxButton(this, wxID_SAVE, _("&Save to Disk")));
   bs->AddSpacer(ColSeparation);
   bs->Add(new wxButton(this, wxID_COPY, _("&Copy to Clipboard")));
@@ -54,7 +54,7 @@ CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
   Connect(wxID_CLOSE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CViewReport::OnClose) );
 
   dlgSizer->Add(bs, wxSizerFlags().Border(wxLEFT|wxRIGHT|wxBOTTOM).Expand());
-  
+
   SetSizerAndFit(dlgSizer);
 }
 
@@ -62,25 +62,21 @@ CViewReport::~CViewReport()
 {
 }
 
-void CViewReport::OnSave(wxCommandEvent& evt) 
+void CViewReport::OnSave(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   m_pRpt->SaveToDisk();
 }
 
-void CViewReport::OnClose(wxCommandEvent& evt) 
+void CViewReport::OnClose(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   EndModal(0);
 }
 
-void CViewReport::OnCopy(wxCommandEvent& evt) 
+void CViewReport::OnCopy(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  if (wxTheClipboard->Open())
-  {
-    wxTheClipboard->SetData( new wxTextDataObject(towxstring(m_pRpt->GetString())) );
-    wxTheClipboard->Close();
-  }
+  PWSclipboard::GetInstance()->SetData(m_pRpt->GetString());
 }
 
