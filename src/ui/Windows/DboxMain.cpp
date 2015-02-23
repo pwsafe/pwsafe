@@ -3134,9 +3134,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
           }
         }
       }
-      // Create shortcut is only within the same instance
-      if (ID_MENUITEM_RCREATESHORTCUT && !m_ctlItemTree.IsDropOnMe())
-        iEnable = FALSE;      
+      // No need to check IsDropOnMe here -- it'll be checked inside OnDrop's context menu
+      // If we disable shortcut creation when IsDropOnMe() is false, we'll also disable normal
+      // shortcut creation for this instance when something was dragged from this instance and then cancelled
       break;
     // Undo/Redo
     case ID_MENUITEM_UNDO:
