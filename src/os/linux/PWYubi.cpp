@@ -139,11 +139,21 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
       m_ykerrstr = _S("Internal error: couldn't configure command");
       goto done;
     }
-
+    // ykp_HMAC_key_from_raw() was added in version 1.15.0 of ykpers
+#if ((YKPERS_VERSION_MAJOR >= 1) && (YKPERS_VERSION_MINOR >= 15))
     if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
       m_ykerrstr = _S("Internal error: couldn't configure key");
       goto done;
     }
+#else
+    ostringstream os;
+    for (size_t i = 0; i < sklen; i++)
+      os << setfill('0') << setw(2) << hex << int(yubi_sk_bin[i]);
+    if (ykp_HMAC_key_from_hex(cfg, os.str().c_str())) {
+      m_ykerrstr = _S("Internal error: couldn't configure key");
+      goto done;
+    }
+#endif
 
     if (!yk_write_command(ykey,
                           ykp_core_config(cfg), ykp_command(cfg),
