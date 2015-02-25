@@ -375,20 +375,13 @@
     <ClCompile Include="FileV3Test.cpp" />
     <ClCompile Include="FileV4Test.cpp" />
     <ClCompile Include="HMAC_SHA256Test.cpp" />
+    <ClCompile Include="ItemAttTest.cpp" />
     <ClCompile Include="ItemDataTest.cpp" />
     <ClCompile Include="ItemFieldTest.cpp" />
     <ClCompile Include="KeyWrapTest.cpp" />
     <ClCompile Include="SHA256Test.cpp" />
     <ClCompile Include="StringXTest.cpp" />
     <ClCompile Include="TwoFishTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BlowFishTest.h" />
-    <ClInclude Include="HMAC_SHA256Test.h" />
-    <ClInclude Include="SHA256Test.h" />
-    <ClInclude Include="StringXTest.h" />
-    <ClInclude Include="test.h" />
-    <ClInclude Include="TwoFishTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\core-12.vcxproj">
