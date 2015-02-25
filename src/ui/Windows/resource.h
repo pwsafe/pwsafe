@@ -803,14 +803,16 @@
 #define IDC_ATT_NAME                    1511
 #define IDC_ATT_FILE                    1512
 #define IDC_ATT_ADD                     1513
-
+#define IDC_ATT_EXPORT                  1514
+#define IDC_ATT_IMPORT                  1515
+>>>>>>> AddEdit_Attachment works again
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1514
+#define _APS_NEXT_CONTROL_VALUE         1516
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif
