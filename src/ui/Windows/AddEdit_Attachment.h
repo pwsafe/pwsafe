@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,6 +12,8 @@
 
 #include "AddEdit_PropertyPage.h"
 #include "resource.h"
+#include "afxwin.h"
+#include "atlimage.h" // for CImage
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage
 {
@@ -40,6 +42,7 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
+	afx_msg void OnPaint();
   //}}AFX_VIRTUAL
 
   // Generated message map functions
@@ -52,9 +55,18 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void SetXTime();
-  void UpdateTimes();
   bool m_bInitdone;
+
+  afx_msg void OnBnClickedAttImport();
+  afx_msg void OnBnClickedAttExport();
+  afx_msg void OnBnClickedAttRemove();
+  void UpdateControls();
+
+  CString m_AttName;
+  CString m_AttFile;
+  CImage m_AttImage;
+  // Visible counterpart of CImage
+  CStatic m_AttStatic;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
