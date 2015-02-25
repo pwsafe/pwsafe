@@ -54,25 +54,8 @@
     <ClCompile Include="FileV4Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="HMAC_SHA256Test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SHA256Test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringXTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TwoFishTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BlowFishTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="ItemAttTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
