@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2014 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,7 +26,7 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-  m_bInitdone(false)
+  m_bInitdone(false), m_AttName(_T("")), m_AttFile(_T(""))
 {
 }
 
@@ -36,10 +36,14 @@ CAddEdit_Attachment::~CAddEdit_Attachment()
 
 void CAddEdit_Attachment::DoDataExchange(CDataExchange* pDX)
 {
-  CAddEdit_PropertyPage::DoDataExchange(pDX);
+    CAddEdit_PropertyPage::DoDataExchange(pDX);
 
-  //{{AFX_DATA_MAP(CAddEdit_Attachment)
-  //}}AFX_DATA_MAP
+    //{{AFX_DATA_MAP(CAddEdit_Attachment)
+    //}}AFX_DATA_MAP
+    DDX_Text(pDX, IDC_ATT_NAME, m_AttName);
+    DDX_Text(pDX, IDC_ATT_FILE, m_AttFile);
+    if (pDX->m_bSaveAndValidate == 0)
+      DDX_Control(pDX, IDC_ATT_IMAGE, m_AttStatic);
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
@@ -49,6 +53,10 @@ BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
+  ON_WM_PAINT()
+  ON_BN_CLICKED(IDC_ATT_IMPORT, &CAddEdit_Attachment::OnBnClickedAttImport)
+  ON_BN_CLICKED(IDC_ATT_EXPORT, &CAddEdit_Attachment::OnBnClickedAttExport)
+  ON_BN_CLICKED(IDC_ATT_REMOVE, &CAddEdit_Attachment::OnBnClickedAttRemove)
 END_MESSAGE_MAP()
 
 BOOL CAddEdit_Attachment::PreTranslateMessage(MSG* pMsg)
@@ -63,6 +71,8 @@ BOOL CAddEdit_Attachment::PreTranslateMessage(MSG* pMsg)
 
 BOOL CAddEdit_Attachment::OnInitDialog()
 {
+  // TBD  load from attachment record
+  UpdateControls();
   return TRUE;
 }
 
@@ -96,3 +106,87 @@ void CAddEdit_Attachment::OnHelp()
   ShowHelp(L"::/html/attachments.html");
 }
 
+void CAddEdit_Attachment::OnPaint()
+{
+  CAddEdit_PropertyPage::OnPaint();
+  if (!m_AttImage.IsNull()) {
+    CRect rect;
+    m_AttStatic.GetClientRect(rect);
+    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
+                          rect.Width(), rect.Height(), SRCCOPY);
+  }
+}
+
+void CAddEdit_Attachment::OnBnClickedAttImport()
+{
+  CString filter;
+	CSimpleArray<GUID> aguidFileTypes;
+	HRESULT hResult;
+
+	hResult = m_AttImage.GetImporterFilterString(filter,aguidFileTypes);
+	if (FAILED(hResult))
+		return;
+
+  CFileDialog fileDlg(TRUE, NULL, NULL, 0, filter, this);
+  if (fileDlg.DoModal() == IDOK) {
+    m_AttFile = fileDlg.GetPathName();
+    hResult = m_AttImage.Load(m_AttFile);
+    if (FAILED(hResult)) {
+      const CString errmess(L"Failed to load image");
+      ::AfxMessageBox(errmess);
+      return;
+    }
+    Invalidate();
+    UpdateControls();
+    UpdateData(FALSE);
+    UpdateWindow();
+  }
+}
+
+void CAddEdit_Attachment::OnBnClickedAttExport()
+{
+  CString filter;
+	CSimpleArray<GUID> aguidFileTypes;
+	HRESULT hResult;
+
+  if (m_AttImage.IsNull())
+    return;
+
+	hResult = m_AttImage.GetExporterFilterString(filter,aguidFileTypes);
+	if (FAILED(hResult))
+		return;
+
+  CFileDialog fileDlg(FALSE, NULL, NULL, 0, filter, this);
+  if (fileDlg.DoModal() == IDOK) {
+    const CString sfile = fileDlg.GetPathName();
+    hResult = m_AttImage.Save(sfile);
+    if (FAILED(hResult)) {
+      const CString errmess(L"Failed to save image");
+      ::AfxMessageBox(errmess);
+      return;
+    }
+  }
+}
+
+void CAddEdit_Attachment::OnBnClickedAttRemove()
+{
+  if (!m_AttImage.IsNull()) {
+    CRect rect;
+    m_AttStatic.GetClientRect(rect);
+    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
+                          rect.Width(), rect.Height(), SRCERASE);
+    m_AttImage.Destroy();
+  }
+  m_AttFile = m_AttName = L"";
+  UpdateControls();
+  UpdateData(FALSE);
+  UpdateWindow();
+}
+
+ void CAddEdit_Attachment::UpdateControls()
+ {
+   bool hasImage = !m_AttImage.IsNull();
+   GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!hasImage);
+   GetDlgItem(IDC_ATT_EXPORT)->EnableWindow(hasImage);
+   GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(hasImage);
+ }
