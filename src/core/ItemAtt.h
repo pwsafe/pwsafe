@@ -75,10 +75,9 @@ public:
   StringX GetTitle() const {return GetField(TITLE);}
   void GetUUID(uuid_array_t &) const;
   const pws_os::CUUID GetUUID() const;
+  StringX GetFileName() const {return GetField(FILENAME);}
   StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
   time_t GetCTime(time_t &t) const {GetTime(CTIME, t); return t;}  // V30
-
-  StringX GetFieldValue(FieldType ft) const;
 
   void CreateUUID(); // for new
   void SetUUID(const pws_os::CUUID &uuid);
@@ -87,11 +86,7 @@ public:
   void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
   bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
 
-  void SetFieldValue(FieldType ft, const StringX &value);
-
   CItemAtt& operator=(const CItemAtt& second);
-
-  void Clear();
 
   // For unit tests:
   bool operator==(const CItemAtt &that) const;
@@ -114,20 +109,6 @@ private:
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
-
-  // Laziness is a Virtue:
-  StringX GetField(FieldType ft) const;
-  StringX GetField(const CItemField &field) const;
-
-  void SetField(FieldType ft, const StringX &value);
-  void SetField(FieldType ft, const unsigned char *value, size_t length);
-  bool SetField(unsigned char type, const unsigned char *data, size_t len);
-
-
-  void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata, const CItemField &item) const;
-  int WriteUnknowns(PWSfile *out) const;
-  size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 };
 
 #endif /* __ITEMATT_H */

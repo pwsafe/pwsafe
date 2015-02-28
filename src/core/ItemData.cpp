@@ -410,21 +410,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
 //-----------------------------------------------------------------------------
 // Accessors
 
-StringX CItemData::GetField(const FieldType ft) const
-{
-  FieldConstIter fiter = m_fields.find(ft);
-  return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
-}
-
-StringX CItemData::GetField(const CItemField &field) const
-{
-  StringX retval;
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(retval, bf);
-  delete bf;
-  return retval;
-}
-
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
   if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&

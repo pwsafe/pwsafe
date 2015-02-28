@@ -342,9 +342,6 @@ private:
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Laziness is a Virtue:
-  StringX GetField(FieldType ft) const;
-  StringX GetField(const CItemField &field) const;
-
   void SetField(FieldType ft, const StringX &value);
   void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
