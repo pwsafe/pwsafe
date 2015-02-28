@@ -176,3 +176,18 @@ void CItem::GetField(const CItemField &field,
   field.Get(value, length, bf);
   delete bf;
 }
+
+StringX CItem::GetField(const int ft) const
+{
+  FieldConstIter fiter = m_fields.find(ft);
+  return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
+}
+
+StringX CItem::GetField(const CItemField &field) const
+{
+  StringX retval;
+  BlowFish *bf = MakeBlowFish(field.IsEmpty());
+  field.Get(retval, bf);
+  delete bf;
+  return retval;
+}
