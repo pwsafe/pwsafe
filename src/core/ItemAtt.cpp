@@ -13,9 +13,11 @@
 #include "TwoFish.h"
 #include "PWSrand.h"
 #include "PWSfile.h"
+#include "PWScore.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
+#include "os/file.h"
 
 using namespace std;
 using pws_os::CUUID;
@@ -89,6 +91,75 @@ const CUUID CItemAtt::GetUUID() const
   GetUUID(ua);
   return CUUID(ua);
 }
+
+int CItemAtt::Import(const stringT &fname)
+{
+  int status = PWScore::SUCCESS;
+
+  ASSERT(!fname.empty());
+  if (!pws_os::FileExists(fname))
+    return PWScore::CANT_OPEN_FILE;
+  std::FILE *fhandle = pws_os::FOpen(fname, L"rb");
+  if (!fhandle)
+    return PWScore::CANT_OPEN_FILE;
+  size_t flen = static_cast<size_t>(pws_os::fileLength(fhandle));
+  unsigned char *data = new unsigned char[flen];
+  if (data == NULL)
+    return PWScore::FAILURE;
+  size_t nread = fread(data, flen, 1, fhandle);
+  if (nread != 1) {
+    fclose(fhandle);
+    status = PWScore::READ_FAIL;
+    goto done;
+  }
+  if (fclose(fhandle) != 0) {
+    status = PWScore::READ_FAIL;
+    goto done;
+  }
+  SetField(CONTENT, data, flen);
+  SetField(FILENAME, fname.c_str());
+ done:
+  trashMemory(data, flen);
+  delete[] data;
+  return status;
+}
+
+int CItemAtt::Export(const stringT &fname) const
+{
+  int status = PWScore::SUCCESS;
+
+  ASSERT(!fname.empty());
+  ASSERT(IsFieldSet(CONTENT));
+  // fail safely @runtime:
+  if (!IsFieldSet(CONTENT))
+    return PWScore::FAILURE;
+
+  const CItemField &field = m_fields.find(CONTENT)->second;
+  std::FILE *fhandle = pws_os::FOpen(fname, L"wb");
+  if (!fhandle)
+    return PWScore::CANT_OPEN_FILE;
+  size_t flen = field.GetLength();
+  unsigned char *value = new unsigned char[flen];
+  if (value == NULL) {
+    fclose(fhandle);
+    return PWScore::FAILURE;
+  }
+  CItem::GetField(field, value, flen);
+  size_t nwritten = fwrite(value, flen, 1, fhandle);
+  if (nwritten != 1) {
+    status = PWScore::WRITE_FAIL;
+    goto done;
+  }
+  if (fclose(fhandle) != 0) {
+    status = PWScore::WRITE_FAIL;
+    goto done;
+  }
+ done:
+  trashMemory(value, flen);
+  delete[] value;
+  return status;
+}
+
 
 #if 0
 int CItemAtt::Read(PWSfile *in)
