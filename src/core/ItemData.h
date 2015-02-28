@@ -356,9 +356,6 @@ private:
   // Create local Encryption/Decryption object
   const BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
-  StringX GetField(FieldType ft) const;
-  StringX GetField(const CItemField &field) const;
-
   void SetField(FieldType ft, const StringX &value);
   void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(unsigned char type, const unsigned char *data, size_t len);

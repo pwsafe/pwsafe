@@ -123,6 +123,9 @@ protected:
   void SetField(int ft, const StringX &value);
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
+  StringX GetField(int ft) const;
+  StringX GetField(const CItemField &field) const;
+
 
   // Helper function for operator==
   bool CompareFields(const CItemField &fthis,
