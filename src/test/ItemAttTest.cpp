@@ -12,6 +12,9 @@
 #endif
 
 #include "core/ItemAtt.h"
+#include "core/PWScore.h"
+#include "os/file.h"
+
 #include "gtest/gtest.h"
 
 #include <vector>
@@ -66,6 +69,42 @@ TEST_F(ItemAttTest, UUIDs)
   EXPECT_FALSE(ai1 == ai2);
   ai2.SetUUID(ai1.GetUUID());
   EXPECT_TRUE(ai1 == ai2);
+}
+
+TEST_F(ItemAttTest, ImpExp)
+{
+  const stringT testImpFile(L"../../help/default/html/images/edit_menu.jpg");
+  const stringT testExpFile(L"output.tmp");
+  CItemAtt ai;
+  int status = ai.Import(L"nosuchfile");
+  EXPECT_EQ(PWScore::CANT_OPEN_FILE, status);
+  EXPECT_EQ(L"", ai.GetFileName());
+
+  status = ai.Import(testImpFile);
+  EXPECT_EQ(PWScore::SUCCESS, status);
+  EXPECT_STREQ(testImpFile.c_str(), ai.GetFileName().c_str());
+
+  status = ai.Export(testExpFile);
+  EXPECT_EQ(PWScore::SUCCESS, status);
+  EXPECT_TRUE(pws_os::FileExists(testExpFile));
+
+  FILE *f1 = pws_os::FOpen(testImpFile, L"rb");
+  FILE *f2 = pws_os::FOpen(testExpFile, L"rb");
+
+  EXPECT_EQ(pws_os::fileLength(f1), pws_os::fileLength(f2));
+
+  size_t flen = static_cast<size_t>(pws_os::fileLength(f1));
+
+  unsigned char *m1 = new unsigned char[flen];
+  unsigned char *m2 = new unsigned char[flen];
+
+  ASSERT_EQ(1, fread(m1, flen, 1, f1));
+  ASSERT_EQ(1, fread(m2, flen, 1, f2));
+  fclose(f1); fclose(f2);
+
+  EXPECT_EQ(0, memcmp(m1, m2, flen));
+  delete[] m1; delete[] m2;
+  pws_os::DeleteAFile(testExpFile);
 }
 
 #if 0

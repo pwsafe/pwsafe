@@ -138,13 +138,13 @@ int CItemAtt::Export(const stringT &fname) const
   std::FILE *fhandle = pws_os::FOpen(fname, L"wb");
   if (!fhandle)
     return PWScore::CANT_OPEN_FILE;
-  size_t flen = field.GetLength();
+  size_t flen = field.GetLength() + 8; // Add 8 for block size
   unsigned char *value = new unsigned char[flen];
   if (value == NULL) {
     fclose(fhandle);
     return PWScore::FAILURE;
   }
-  CItem::GetField(field, value, flen);
+  CItem::GetField(field, value, flen); // flen adjusted to real value
   size_t nwritten = fwrite(value, flen, 1, fhandle);
   if (nwritten != 1) {
     status = PWScore::WRITE_FAIL;
