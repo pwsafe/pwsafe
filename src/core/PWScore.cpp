@@ -789,6 +789,65 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 
 #define MRE_FS _T("\xbb")
 
+static void TestAndFixNullUUID(CItemData &ci_temp,
+                               std::vector<st_GroupTitleUser> vGTU_INVALID_UUID,
+                               st_ValidateResults &st_vr)
+{
+  /*
+   * If, for some reason, we're reading in an invalid UUID,
+   * we will change the UUID before adding it to the list.
+   *
+   * To date, we know that databases of format 0x0200 and 0x0300 have a UUID
+   * problem if records were duplicated.  Databases of format 0x0100 did not
+   * have the duplicate function and it has been fixed in databases in format
+   * 0x0301 and so not an issue in V1 (0x0100) or V3.03 (0x0301) or later
+   *
+   * But a Null CUUID is invalid even if another application using core.lib
+   * does it and they could have got the version wrong - so fix it anyway
+   */
+  if (ci_temp.GetUUID() == CUUID::NullUUID()) {
+    vGTU_INVALID_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
+                                                  ci_temp.GetTitle(), ci_temp.GetUser()));
+    st_vr.num_invalid_UUIDs++;
+    ci_temp.CreateUUID(); // replace invalid UUID
+    ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
+  } // UUID invalid
+}
+
+static void TestAndFixDupUUID(CItemData &ci_temp, const PWScore &core,
+                              std::vector<st_GroupTitleUser> vGTU_DUPLICATE_UUID,
+                              st_ValidateResults &st_vr)
+{
+  /*
+   * If, for some reason, we're reading in a UUID that we already have
+   * we will change the UUID, rather than overwrite an entry.
+   * This is to protect the user from possible bugs that break
+   * the uniqueness requirement of UUIDs.
+   */
+  if (core.Find(ci_temp.GetUUID()) != core.GetEntryEndIter()) {
+    vGTU_DUPLICATE_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
+                                                    ci_temp.GetTitle(), ci_temp.GetUser()));
+    st_vr.num_duplicate_UUIDs++;
+    ci_temp.CreateUUID(); // replace duplicated UUID
+    ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
+  } // UUID duplicate
+}
+
+static void ProcessPasswordPolicy(CItemData &ci_temp, PWScore &core)
+{
+  if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
+    // Error: can't have both - clear Password Policy Name
+    ci_temp.ClearField(CItemData::POLICYNAME);
+  }
+
+  if (ci_temp.IsPolicyNameSet()) {
+    if (!core.IncrementPasswordPolicy(ci_temp.GetPolicyName())) {
+      // Map name not present in database - clear it!
+      ci_temp.ClearField(CItemData::POLICYNAME);
+    }
+  }
+}
+
 int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
                       const bool bValidate, const size_t iMAXCHARS,
                       CReport *pRpt)
@@ -871,7 +930,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   CItemData ci_temp;
   bool go = true;
-  bool limited = false;
 
   m_hashIters = in->GetNHashIters();
   if (in->GetFilters() != NULL) m_MapFilters = *in->GetFilters();
@@ -884,8 +942,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     pRpt->StartReport(cs_title.c_str(), m_currfile.c_str());
   }
 
-  size_t uimaxsize(0);
-  int numlarge(0);
   do {
     ci_temp.Clear(); // Rather than creating a new one each time.
     status = in->ReadRecord(ci_temp);
@@ -905,84 +961,33 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
-        if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
-          numlarge++;
-          uimaxsize = std::max(uimaxsize, ci_temp.GetSize());
+        TestAndFixNullUUID(ci_temp, vGTU_INVALID_UUID, st_vr);
+        TestAndFixDupUUID(ci_temp, *this, vGTU_DUPLICATE_UUID, st_vr);
+        ProcessPasswordPolicy(ci_temp, *this);
+
+        int32 iKBShortcut;
+        ci_temp.GetKBShortcut(iKBShortcut);
+        if (iKBShortcut != 0) {
+          // Entry can't have same shortcut as the Application's HotKey
+          if (m_iAppHotKey == iKBShortcut) {
+            ci_temp.SetKBShortcut(0);
+          } else { // non-zero shortcut != app hotkey
+            if (!ValidateKBShortcut(iKBShortcut)) {
+              m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
+            } else {
+              ci_temp.SetKBShortcut(0);
+            }
+          }
+        } // non-zero shortcut
+
+        m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
+
+        time_t tttXTime;
+        ci_temp.GetXTime(tttXTime);
+        if (tttXTime != time_t(0)) {
+          m_ExpireCandidates.push_back(ExpPWEntry(ci_temp));
         }
-
-        /*
-         * If, for some reason, we're reading in an invalid UUID,
-         * we will change the UUID before adding it to the list.
-         *
-         * To date, we know that databases of format 0x0200 and 0x0300 have a UUID
-         * problem if records were duplicated.  Databases of format 0x0100 did not
-         * have the duplicate function and it has been fixed in databases in format
-         * 0x0301 and so not an issue in V1 (0x0100) or V3.03 (0x0301) or later
-         *
-         * But a Null CUUID is invalid even if another application using core.lib
-         * does it and they could have got the version wrong - so fix it anyway
-         */
-         if (ci_temp.GetUUID() == CUUID::NullUUID()) {
-           vGTU_INVALID_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
-                                       ci_temp.GetTitle(), ci_temp.GetUser()));
-           st_vr.num_invalid_UUIDs++;
-           ci_temp.CreateUUID(); // replace invalid UUID
-           ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
-         } // UUID invalid
-
-        /*
-         * If, for some reason, we're reading in a UUID that we already have
-         * we will change the UUID, rather than overwrite an entry.
-         * This is to protect the user from possible bugs that break
-         * the uniqueness requirement of UUIDs.
-         */
-         if (m_pwlist.find(ci_temp.GetUUID()) != m_pwlist.end()) {
-           vGTU_DUPLICATE_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
-                                         ci_temp.GetTitle(), ci_temp.GetUser()));
-           st_vr.num_duplicate_UUIDs++;
-           ci_temp.CreateUUID(); // replace duplicated UUID
-           ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
-         } // UUID duplicate
-
-         if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
-           // Error can't have both - clear Password Policy Name
-           ci_temp.ClearField(CItemData::POLICYNAME);
-         }
-
-         if (ci_temp.IsPolicyNameSet()) {
-           const StringX sxPolicyName = ci_temp.GetPolicyName();
-           PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
-           if (iter == m_MapPSWDPLC.end()) {
-             // Map name not present in database - clear it!
-             ci_temp.ClearField(CItemData::POLICYNAME);
-           } else {
-             // Increase use count
-             iter->second.usecount++;
-           }
-         }
-
-         int32 iKBShortcut;
-         ci_temp.GetKBShortcut(iKBShortcut);
-
-         // Entry can't have same HotKey as the Application
-         if (m_iAppHotKey == iKBShortcut) {
-           ci_temp.SetKBShortcut(0);
-         } else if (iKBShortcut != 0) {
-           if (!ValidateKBShortcut(iKBShortcut)) {
-             m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
-           } else {
-             ci_temp.SetKBShortcut(0);
-           }
-         }
-         m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
-
-         time_t tttXTime;
-         ci_temp.GetXTime(tttXTime);
-         if (!limited && tttXTime != time_t(0)) {
-           ExpPWEntry ee(ci_temp);
-           m_ExpireCandidates.push_back(ee);
-         }
-         break;
+        break;
       case PWSfile::END_OF_FILE:
         go = false;
         break;
