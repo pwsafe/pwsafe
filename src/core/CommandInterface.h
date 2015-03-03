@@ -103,6 +103,9 @@ class CommandInterface {
   virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual const std::vector<StringX> & GetEmptyGroups() = 0;
   
+  virtual void DoAddAtt(const CItemAtt &att) = 0;
+  virtual void DoDeleteAtt(const CItemAtt &att) = 0;
+  
   virtual ~CommandInterface() {}
 };
 
