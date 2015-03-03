@@ -13,7 +13,9 @@
 #include <set>
 #include <list>
 
+#include "os/UUID.h"
 #include "ItemData.h"
+#include "ItemAtt.h"
 
 struct st_SaveTypePW {
   CItemData::EntryType et;
@@ -76,6 +78,11 @@ typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;
 typedef ItemList::iterator ItemListIter;
 typedef ItemList::const_iterator ItemListConstIter;
 typedef std::pair<pws_os::CUUID, CItemData> ItemList_Pair;
+
+typedef std::map<pws_os::CUUID, CItemAtt, std::less<pws_os::CUUID> > AttList;
+typedef AttList::iterator AttListIter;
+typedef AttList::const_iterator AttListConstIter;
+typedef std::pair<pws_os::CUUID, CItemAtt> AttList_Pair;
 
 typedef std::vector<CItemData> OrderedItemList;
 

@@ -103,12 +103,14 @@ public:
 
 
 private:
-  EntryStatus m_entrystatus;
   StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
+
+  EntryStatus m_entrystatus;
+  long m_offset; // location on file, for lazy evaluation
 };
 
 #endif /* __ITEMATT_H */
