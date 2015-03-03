@@ -26,7 +26,7 @@ using pws_os::CUUID;
 // Constructors
 
 CItemAtt::CItemAtt()
-  : m_entrystatus(ES_CLEAN)
+  : m_entrystatus(ES_CLEAN), m_offset(-1L)
 {
 }
 
