@@ -472,6 +472,10 @@ private:
 
   // End of Command Interface implementations
 
+  void ProcessReadEntry(CItemData &ci_temp,
+                        std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                        std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
+                        st_ValidateResults &st_vr);
   // Validate() returns true if data modified, false if all OK
   bool Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr);
 

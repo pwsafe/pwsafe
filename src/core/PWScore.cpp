@@ -848,6 +848,83 @@ static void ProcessPasswordPolicy(CItemData &ci_temp, PWScore &core)
   }
 }
 
+void PWScore::ProcessReadEntry(CItemData &ci_temp,
+                               std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                               std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
+                               st_ValidateResults &st_vr)
+{
+  TestAndFixNullUUID(ci_temp, vGTU_INVALID_UUID, st_vr);
+  TestAndFixDupUUID(ci_temp, *this, vGTU_DUPLICATE_UUID, st_vr);
+  ProcessPasswordPolicy(ci_temp, *this);
+
+  int32 iKBShortcut;
+  ci_temp.GetKBShortcut(iKBShortcut);
+  if (iKBShortcut != 0) {
+    // Entry can't have same shortcut as the Application's HotKey
+    if (m_iAppHotKey == iKBShortcut) {
+      ci_temp.SetKBShortcut(0);
+    } else { // non-zero shortcut != app hotkey
+      if (!ValidateKBShortcut(iKBShortcut)) {
+        m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
+      } else {
+        ci_temp.SetKBShortcut(0);
+      }
+    }
+  } // non-zero shortcut
+
+  // Possibly expired?
+  time_t tttXTime;
+  ci_temp.GetXTime(tttXTime);
+  if (tttXTime != time_t(0)) {
+    m_ExpireCandidates.push_back(ExpPWEntry(ci_temp));
+  }
+
+  // Finally, add it to the list!
+  m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
+}
+
+
+static void ReportReadErrors(CReport *pRpt,
+                             std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                             std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID)
+{
+  if (pRpt == NULL || (vGTU_INVALID_UUID.empty() && vGTU_DUPLICATE_UUID.empty()))
+    return;
+
+  // Here iff we've something to report and somewhere to report it
+  stringT cs_Error;
+  // Write out error heading
+  pRpt->WriteLine();
+  LoadAString(cs_Error, IDSC_VALIDATE_ERRORS);
+  pRpt->WriteLine(cs_Error);
+
+  // Report invalid UUIDs
+  if (!vGTU_INVALID_UUID.empty()) {
+    pRpt->WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATE_BADUUID);
+    pRpt->WriteLine(cs_Error);
+  }
+  std::sort(vGTU_INVALID_UUID.begin(), vGTU_INVALID_UUID.end(), GTUCompareV1);
+  for (auto iv1 = vGTU_INVALID_UUID.begin(); iv1 != vGTU_INVALID_UUID.end(); iv1++) {
+    Format(cs_Error, IDSC_VALIDATE_ENTRY,
+           iv1->group.c_str(), iv1->title.c_str(), iv1->user.c_str(), _T(""));
+    pRpt->WriteLine(cs_Error);
+  }
+
+  // Report Duplicate UUIDs
+  if (!vGTU_DUPLICATE_UUID.empty()) {
+    pRpt->WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATE_DUPUUID);
+    pRpt->WriteLine(cs_Error);
+  }
+  std::sort(vGTU_DUPLICATE_UUID.begin(), vGTU_DUPLICATE_UUID.end(), GTUCompareV1);
+  for (auto iv2 = vGTU_DUPLICATE_UUID.begin(); iv2 < vGTU_DUPLICATE_UUID.end(); iv2++) {
+    Format(cs_Error, IDSC_VALIDATE_ENTRY,
+           iv2->group.c_str(), iv2->title.c_str(), iv2->user.c_str(), _T(""));
+    pRpt->WriteLine(cs_Error);
+  }
+}
+
 int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
                       const bool bValidate, const size_t iMAXCHARS,
                       CReport *pRpt)
@@ -961,32 +1038,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
-        TestAndFixNullUUID(ci_temp, vGTU_INVALID_UUID, st_vr);
-        TestAndFixDupUUID(ci_temp, *this, vGTU_DUPLICATE_UUID, st_vr);
-        ProcessPasswordPolicy(ci_temp, *this);
-
-        int32 iKBShortcut;
-        ci_temp.GetKBShortcut(iKBShortcut);
-        if (iKBShortcut != 0) {
-          // Entry can't have same shortcut as the Application's HotKey
-          if (m_iAppHotKey == iKBShortcut) {
-            ci_temp.SetKBShortcut(0);
-          } else { // non-zero shortcut != app hotkey
-            if (!ValidateKBShortcut(iKBShortcut)) {
-              m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
-            } else {
-              ci_temp.SetKBShortcut(0);
-            }
-          }
-        } // non-zero shortcut
-
-        m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
-
-        time_t tttXTime;
-        ci_temp.GetXTime(tttXTime);
-        if (tttXTime != time_t(0)) {
-          m_ExpireCandidates.push_back(ExpPWEntry(ci_temp));
-        }
+        ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
         break;
       case PWSfile::END_OF_FILE:
         go = false;
@@ -1004,42 +1056,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   int closeStatus = in->Close(); // in V3 & later this checks integrity
   delete in;
 
-  // Write out error heading
-  if ((!vGTU_INVALID_UUID.empty() || !vGTU_DUPLICATE_UUID.empty()) &&
-      pRpt != NULL) {
-    stringT cs_Error;
-    pRpt->WriteLine();
-    LoadAString(cs_Error, IDSC_VALIDATE_ERRORS);
-    pRpt->WriteLine(cs_Error);
-
-    // Report invalid UUIDs
-    if (!vGTU_INVALID_UUID.empty()) {
-      std::sort(vGTU_INVALID_UUID.begin(), vGTU_INVALID_UUID.end(), GTUCompareV1);
-      pRpt->WriteLine();
-      LoadAString(cs_Error, IDSC_VALIDATE_BADUUID);
-      pRpt->WriteLine(cs_Error);
-      for (size_t iv = 0; iv < vGTU_INVALID_UUID.size(); iv++) {
-        st_GroupTitleUser &gtu = vGTU_INVALID_UUID[iv];
-        Format(cs_Error, IDSC_VALIDATE_ENTRY,
-               gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
-        pRpt->WriteLine(cs_Error);
-      }
-    }
-
-    // Report Duplicate UUIDs
-    if (!vGTU_DUPLICATE_UUID.empty()) {
-      std::sort(vGTU_DUPLICATE_UUID.begin(), vGTU_DUPLICATE_UUID.end(), GTUCompareV1);
-      pRpt->WriteLine();
-      LoadAString(cs_Error, IDSC_VALIDATE_DUPUUID);
-      pRpt->WriteLine(cs_Error);
-      for (size_t iv = 0; iv < vGTU_DUPLICATE_UUID.size(); iv++) {
-        st_GroupTitleUser &gtu = vGTU_DUPLICATE_UUID[iv];
-        Format(cs_Error, IDSC_VALIDATE_ENTRY,
-               gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
-        pRpt->WriteLine(cs_Error);
-      }
-    }
-  }
+  ReportReadErrors(pRpt, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID);
 
   // Validate rest of things in the database (excluding duplicate UUIDs fixed above
   // as needed for m_pwlist - map uses UUID as its key)
