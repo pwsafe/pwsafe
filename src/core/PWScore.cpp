@@ -381,6 +381,27 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   m_bDBChanged = true;
 }
 
+void PWScore::DoAddAtt(const CItemAtt &att)
+{
+  // Make sure att's not already there
+  ASSERT(m_attlist.find(att.GetUUID()) == m_attlist.end());
+
+  m_attlist[att.GetUUID()] = att;
+}
+
+void PWScore::DoDeleteAtt(const CItemAtt &att)
+{
+  /**
+   * Note that we do NOT erase reference uuid in owner record(s)
+   */
+
+  // Make sure att's there
+  auto pos = m_attlist.find(att.GetUUID());
+  ASSERT(pos != m_attlist.end());
+
+  m_attlist.erase(pos);
+}
+
 void PWScore::ClearData(void)
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
