@@ -657,7 +657,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
-      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT)
+      if (m_core.GetFileVersion() == PWSfile::VCURRENT)
         pmulticmds->Add(DBPrefsCommand::Create(&m_core, sxNewDBPrefsString));
     } // defChanged
 

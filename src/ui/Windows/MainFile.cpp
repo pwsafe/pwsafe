@@ -1081,7 +1081,7 @@ int DboxMain::Save(const SaveType savetype)
   if (m_core.GetCurFile().empty())
     return SaveAs();
 
-  switch (m_core.GetReadFileVersion()) {
+  switch (m_core.GetFileVersion()) {
     case PWSfile::V30:
     case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
