@@ -1721,7 +1721,7 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
     if (!m_core.GetCurFile().empty() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+        m_core.GetFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
         const StringX prefString(prefs->Store());
         SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);

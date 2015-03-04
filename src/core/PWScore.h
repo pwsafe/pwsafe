@@ -130,7 +130,7 @@ public:
   int ReadFile(const StringX &filename, const StringX &passkey,
                const bool bValidate = false, const size_t iMAXCHARS = 0,
                CReport *pRpt = NULL);
-  PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
+  PWSfile::VERSION GetFileVersion() const {return m_FileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir, stringT &bu_fname);
@@ -509,7 +509,7 @@ private:
   int m_LockCount2;
 
   stringT m_AppNameAndVersion;
-  PWSfile::VERSION m_ReadFileVersion;
+  PWSfile::VERSION m_FileVersion;
 
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;

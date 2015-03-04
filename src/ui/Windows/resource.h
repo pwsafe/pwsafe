@@ -805,7 +805,7 @@
 #define IDC_ATT_ADD                     1513
 #define IDC_ATT_EXPORT                  1514
 #define IDC_ATT_IMPORT                  1515
->>>>>>> AddEdit_Attachment works again
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
