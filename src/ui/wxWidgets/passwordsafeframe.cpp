@@ -77,13 +77,8 @@
 
 using pws_os::CUUID;
 
-#ifdef __WXMAC__
-using std::tr1::get;
-using std::tr1::make_tuple;
-#else
 using std::get;
 using std::make_tuple;
-#endif
 
 
 /*!

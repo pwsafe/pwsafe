@@ -50,9 +50,9 @@ Usage (all flags are optional):
 	-n
 	    Dry run.  Will just echo the command(s) to be used to build wxWidgets
 
-	-k <10.4 SDK directory path>
-	    Only required for wx2.8.  Should point to 10.4 SDK because that is what pwsafe Xcode project uses.
-	    Default is /Developer/SDKs/MacOSX10.4u.sdk, which is present if you upgrade to 10.9 from a lower version.
+	-k <SDK directory path>
+	    You can get the path to any installed SDK that Xcode is aware of like this
+	    xcodebuild -version -sdk macosx10.9 Path
 
 	-t <toolchain dir>
 	    Directory where gcc-4.0, g++4.0, etc. should be.  Only required for building wx2.8 on OS X 10.9
@@ -207,13 +207,23 @@ else
             SDKFLAG="--with-macosx-sdk=$SDKPATH"
         fi
 
+        # This is required for C++14
+        export CC=clang
+        export CPP="clang -E"
+        export CXX=clang++
+        export CXXCPP="clang++ -E"
+        export CXXFLAGS="-std=c++1y -stdlib=libc++"
+        export OBJCXXFLAGS="-std=c++1y -stdlib=libc++"
+        export LDFLAGS=-stdlib=libc++
+
         $DRY_RUN $CONF_SCRIPT --prefix=`pwd` $DEBUG_FLAG        \
                               $SDKFLAG                          \
                               --with-osx_cocoa                  \
                               --disable-shared                  \
                               --disable-compat24                \
                               --enable-unicode                  \
-                              --enable-universal-binary=i386,x86_64
+                              --with-macosx-version-min=10.7    \
+                              --without-liblzma
 	fi
 fi
 

@@ -28,11 +28,7 @@
 #include "core/UIinterface.h"
 #include "RUEList.h"
 #include "./wxutils.h"
-#ifndef __WXMAC__
 #include <tuple>
-#else
-#include <tr1/tuple>
-#endif
 
 /*!
  * Forward declarations
@@ -539,13 +535,7 @@ public:
    * as it should appear in the menu and of an indicator whether the language can be
    * activated or not.
    */
-#ifdef __WXMAC__
-  typedef std::tr1::tuple<wxLanguage, wxString, bool> TupleType;
-#else
-  typedef std::tuple<wxLanguage, wxString, bool> TupleType;
-#endif
-
-  std::map<int, TupleType > m_languages;
+  std::map<int, std::tuple<wxLanguage, wxString, bool> > m_languages;
 
   // The selected language menu id
   int m_selectedLanguage;
