@@ -694,7 +694,7 @@ void DboxMain::OnManagePasswordPolicies()
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
-      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (m_core.GetFileVersion() == PWSfile::VCURRENT) {
           Command *pcmd1 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
           pmulticmds->Add(pcmd1);
       }
