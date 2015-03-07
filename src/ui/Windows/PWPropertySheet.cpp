@@ -95,7 +95,7 @@ INT_PTR CPWPropertySheet::DoModal()
   CPWDialog::GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
-    if (bAccEn)app.EnableAccelerator();
+    app.EnableAccelerator();
 
   return rc;
 }
