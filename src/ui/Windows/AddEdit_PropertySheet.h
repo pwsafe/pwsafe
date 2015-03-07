@@ -56,16 +56,16 @@ public:
   CItemData *GetNewCI() {return m_AEMD.pci;}
   PWScore *GetCore() {return m_AEMD.pcore;}
 
-  bool IsEntryModified() {return m_bIsModified;}
+  bool IsEntryModified() const {return m_bIsModified;}
 
   void SetChanged(const bool bChanged);
-  bool IsChanged() {return m_bChanged;}
+  bool IsChanged() const {return m_bChanged;}
 
   void SetNotesChanged(const bool bNotesChanged) {m_bNotesChanged = bNotesChanged;}
-  bool IsNotesChanged() {return m_bNotesChanged;}
+  bool IsNotesChanged() const {return m_bNotesChanged;}
 
   void SetSymbolsChanged(const bool bSymbolsChanged);
-  bool IsSymbolsChanged() {return m_bSymbolsChanged;}
+  bool IsSymbolsChanged() const {return m_bSymbolsChanged;}
 
 protected:
   st_AE_master_data m_AEMD;

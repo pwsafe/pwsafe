@@ -3383,3 +3383,10 @@ void PWScore::SetHashIters(uint32 value)
     SetDBPrefsChanged(true);
   }
 }
+
+void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
+{
+  ASSERT(HasAtt(attuuid));
+  m_bDBChanged = true;
+  m_attlist.erase(m_attlist.find(attuuid));
+}

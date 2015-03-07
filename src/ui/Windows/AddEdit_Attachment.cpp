@@ -96,7 +96,7 @@ LRESULT CAddEdit_Attachment::OnQuerySiblings(WPARAM , LPARAM )
 BOOL CAddEdit_Attachment::OnApply()
 {
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return FALSE; //CAddEdit_PropertyPage::OnApply();
+    return FALSE;
 
   return CAddEdit_PropertyPage::OnApply();
 }
@@ -136,6 +136,14 @@ void CAddEdit_Attachment::OnBnClickedAttImport()
       ::AfxMessageBox(errmess);
       return;
     }
+
+    CItemAtt &att = M_attachment();
+    int status = att.Import(LPCWSTR(m_AttFile));
+    ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
+    if (!att.HasUUID())
+      att.CreateUUID();
+
+    m_ae_psh->SetChanged(true);
     Invalidate();
     UpdateControls();
     UpdateData(FALSE);
@@ -178,6 +186,8 @@ void CAddEdit_Attachment::OnBnClickedAttRemove()
     m_AttImage.Destroy();
   }
   m_AttFile = m_AttName = L"";
+  M_attachment().Clear();
+  m_ae_psh->SetChanged(true);
   UpdateControls();
   UpdateData(FALSE);
   UpdateWindow();
