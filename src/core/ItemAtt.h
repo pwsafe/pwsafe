@@ -66,6 +66,8 @@ public:
   int Import(const stringT &fname);
   int Export(const stringT &fname) const;
 
+  bool HasContent() const {return IsFieldSet(CONTENT);}
+
   // Convenience: Get the name associated with FieldType
   static stringT FieldName(FieldType ft);
   // Convenience: Get the untranslated (English) name of a FieldType
@@ -88,8 +90,8 @@ public:
 
   CItemAtt& operator=(const CItemAtt& second);
 
-  // For unit tests:
   bool operator==(const CItemAtt &that) const;
+  bool operator!=(const CItemAtt &that) const {return !operator==(that);}
 
 
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }

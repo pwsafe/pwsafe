@@ -24,9 +24,6 @@ public:
   CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_Attachment();
 
-  static bool m_bNumDaysFailed;
-  static bool m_bShowUUID;
-
   // Dialog Data
   //{{AFX_DATA(CAddEdit_Attachment)
   enum { IDD = IDD_ADDEDIT_ATT, IDD_SHORT = IDD_ADDEDIT_ATT_SHORT };

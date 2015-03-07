@@ -134,6 +134,7 @@ public:
   void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
   const pws_os::CUUID GetUUID(FieldType ft = END) const; // V20 - see comment in .cpp re return type
   const pws_os::CUUID GetBaseUUID() const {return GetUUID(CItemData::BASEUUID);}
+  const pws_os::CUUID GetAttUUID() const {return GetUUID(CItemData::ATTREF);}
   StringX GetGroup() const {return GetField(GROUP);} // V20
   StringX GetURL() const {return GetField(URL);} // V30
   StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30
@@ -207,6 +208,8 @@ public:
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
   void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
   void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
+  void SetAttUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::ATTREF);}
+  void ClearAttUUID() {ClearField(CItemData::ATTREF);}
   void SetGroup(const StringX &group); // V20
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
@@ -248,8 +251,8 @@ public:
 
   void Clear();
 
-  // For unit tests:
   bool operator==(const CItemData &that) const;
+  bool operator!=(const CItemData &that) const {return !operator==(that);}
 
   // Check record for correct password history
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
