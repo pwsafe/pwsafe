@@ -425,6 +425,12 @@ public:
 
   uint32 GetHashIters() const;
   void SetHashIters(uint32 value);
+
+  CItemAtt &GetAtt(const pws_os::CUUID &attuuid) {return m_attlist[attuuid];}
+  void PutAtt(const CItemAtt &att) {m_attlist[att.GetUUID()] = att;}
+  void RemoveAtt(const pws_os::CUUID &attuuid);
+  bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
+  
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
 private:

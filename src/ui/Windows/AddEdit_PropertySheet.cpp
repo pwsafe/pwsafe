@@ -288,7 +288,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.pwp         != m_AEMD.oldpwp)              ||
                         (m_AEMD.ipolicy     == NAMED_POLICY &&
                          m_AEMD.policyname  != m_AEMD.oldpolicyname)       ||
-                         m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut);
+                         m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut        ||
+                         m_AEMD.attachment  != m_AEMD.oldattachment);
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -339,7 +340,16 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
           m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
           m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
-        }
+
+          if (m_AEMD.attachment.HasUUID()) {
+            m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+            m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+          } else {
+            m_AEMD.pci->ClearAttUUID();
+            if (m_AEMD.oldattachment.HasUUID())
+              m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+          }
+        } // m_bIsModified
 
         m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 

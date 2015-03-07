@@ -12,6 +12,7 @@
 #include "SecString.h"
 #include "ControlExtns.h"
 #include "core/ItemData.h"
+#include "core/ItemAtt.h"
 #include "core/PWSprefs.h"
 #include "core/PWHistory.h"
 
@@ -82,6 +83,10 @@ struct st_AE_master_data {
 
   // Keyboard shortcut
   int KBShortcut, oldKBShortcut;
+
+  // Attachment
+  CItemAtt attachment;
+  CItemAtt oldattachment;
   
   // Attributes
   unsigned char ucprotected;
@@ -178,6 +183,10 @@ public:
   // Keyboard shortcut
   int &M_KBShortcut() {return m_AEMD.KBShortcut;}
   int &M_oldKBShortcut() {return m_AEMD.oldKBShortcut;}
+  
+  // Attachment
+  CItemAtt &M_attachment() {return m_AEMD.attachment;}
+  CItemAtt &M_oldattachment() {return m_AEMD.oldattachment;}
   
   // Attributes
   unsigned char &M_protected() {return m_AEMD.ucprotected;}

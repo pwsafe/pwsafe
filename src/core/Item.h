@@ -90,7 +90,6 @@ public:
   void Clear();
   void ClearField(int ft) {m_fields.erase(ft);}
 
-  // For unit tests:
   bool operator==(const CItem &that) const;
 
   size_t GetSize() const;
