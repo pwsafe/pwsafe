@@ -26,38 +26,32 @@ class ItemAttTest : public ::testing::Test
 {
 protected:
   ItemAttTest(); // to init members
-  CItemAtt emptyItem, fullItem;
   void SetUp();
 
   // members used to populate and test fullItem:
-  const StringX title, mediaType, fileName;
-  const time_t cTime;
-  CItemAtt::key256T EK, AK;
-  CItemAtt::contentHMACT ContentHMAC;
-  vector<char> content;
+  const StringX title, mediaType;
+  const stringT fileName;
 };
 
 ItemAttTest::ItemAttTest()
   : title(_T("a-title")), mediaType(_T("application/octet-stream")),
-    fileName(_T("notafile.foo")), cTime(1409901293)
+    fileName(L"../../help/default/html/images/edit_menu.jpg")
 {}
 
 void ItemAttTest::SetUp()
 {
-  fullItem.SetTitle(title);
 }
 
 // And now the tests...
 
 TEST_F(ItemAttTest, EmptyItems)
 {
-  CItemAtt ai2;
-  const StringX t(L"title");
-  EXPECT_TRUE(emptyItem == ai2);
-  emptyItem.SetTitle(t);
-  EXPECT_FALSE(emptyItem == ai2);  
-  ai2.SetTitle(t);
-  EXPECT_TRUE(emptyItem == ai2);
+  CItemAtt ai1, ai2;
+  EXPECT_TRUE(ai1 == ai2);
+  ai1.SetTitle(title);
+  EXPECT_FALSE(ai1 == ai2);  
+  ai2.SetTitle(title);
+  EXPECT_TRUE(ai1 == ai2);
 }
 
 TEST_F(ItemAttTest, UUIDs)
@@ -73,16 +67,18 @@ TEST_F(ItemAttTest, UUIDs)
 
 TEST_F(ItemAttTest, ImpExp)
 {
-  const stringT testImpFile(L"../../help/default/html/images/edit_menu.jpg");
+  const stringT testImpFile(fileName);
   const stringT testExpFile(L"output.tmp");
   CItemAtt ai;
   int status = ai.Import(L"nosuchfile");
   EXPECT_EQ(PWScore::CANT_OPEN_FILE, status);
   EXPECT_EQ(L"", ai.GetFileName());
+  EXPECT_FALSE(ai.HasContent());
 
   status = ai.Import(testImpFile);
   EXPECT_EQ(PWScore::SUCCESS, status);
   EXPECT_STREQ(testImpFile.c_str(), ai.GetFileName().c_str());
+  EXPECT_TRUE(ai.HasContent());
 
   status = ai.Export(testExpFile);
   EXPECT_EQ(PWScore::SUCCESS, status);
@@ -107,68 +103,81 @@ TEST_F(ItemAttTest, ImpExp)
   pws_os::DeleteAFile(testExpFile);
 }
 
-#if 0
 TEST_F(ItemAttTest, CopyCtor)
 {
-  emptyItem.SetTitle(_T("title"));
-  emptyItem.SetPassword(_T("password!"));
-  CItemAtt ai2(emptyItem);
-  EXPECT_TRUE(emptyItem == ai2);
+  const stringT testImpFile(fileName);
+  CItemAtt ea1;
+  CItemAtt ea2(ea1);
+  EXPECT_TRUE(ea1 == ea2);
+
+  CItemAtt a1;
+  a1.SetTitle(title);
+  int status = a1.Import(testImpFile);
+  ASSERT_EQ(PWScore::SUCCESS, status);
+
+  CItemAtt a2(a1);
+  EXPECT_TRUE(a1 == a2);
 }
 
 TEST_F(ItemAttTest, Getters_n_Setters)
 {
-  // Setters called in SetUp()
-  EXPECT_EQ(title, fullItem.GetTitle());
-  EXPECT_EQ(password, fullItem.GetPassword());
-  EXPECT_EQ(user, fullItem.GetUser());
-  EXPECT_EQ(notes, fullItem.GetNotes());
-  EXPECT_EQ(group, fullItem.GetGroup());
-  EXPECT_EQ(url, fullItem.GetURL());
-  EXPECT_EQ(at, fullItem.GetAutoType());
-  EXPECT_EQ(email, fullItem.GetEmail());
-  EXPECT_EQ(polname, fullItem.GetPolicyName());
-  EXPECT_EQ(symbols, fullItem.GetSymbols());
-  EXPECT_EQ(runcmd, fullItem.GetRunCommand());
-  EXPECT_EQ(aTime, fullItem.GetATime(tVal));
-  EXPECT_EQ(cTime, fullItem.GetCTime(tVal));
-  EXPECT_EQ(xTime, fullItem.GetXTime(tVal));
-  EXPECT_EQ(pmTime, fullItem.GetPMTime(tVal));
-  EXPECT_EQ(rmTime, fullItem.GetRMTime(tVal));
-  EXPECT_EQ(iDCA, fullItem.GetDCA(iVal16));
-  EXPECT_EQ(iSDCA, fullItem.GetShiftDCA(iVal16));
-  EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
+  CItemAtt ai;
+  pws_os::CUUID uuid;
+  time_t cTime = 1425836169;
+  CItemAtt::key256T EK = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
+                          0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
+                          0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
+                          0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  CItemAtt::key256T AK = {0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
+                          0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
+                          0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
+                          0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
+  CItemAtt::contentHMACT HMAC = {0x37, 0xff, 0xf3, 0x0a, 0xc8, 0x69, 0xfd, 0x6d,
+                                 0xa9, 0x95, 0x5a, 0xfd, 0xfe, 0x93, 0x4b, 0x87,
+                                 0xfc, 0xfb, 0x06, 0xf1, 0xdd, 0xbf, 0x82, 0x86,
+                                 0xfd, 0xf8, 0x76, 0xc4, 0x7f, 0x94, 0x7f, 0xb6};
+  unsigned char content[122] = {0xff, 0x00, 0xb4, 0x65, 0xfc, 0x91, 0xfb, 0xbf,
+                                0xe0, 0x8f, 0xea, 0x6b, 0xf9, 0x9f, 0xde, 0x1f,
+                                0x62, 0xd6, 0xbf, 0xe8, 0x2f, 0xfb, 0x2c, 0xff,
+                                0x00, 0xe0, 0xf3, 0xe1, 0xff, 0x00, 0xff, 0x00,
+                                0x1d, 0xa5, 0x5b, 0x2d, 0x67, 0xbe, 0xaf, 0xfb,
+                                0x2c, 0xff, 0x00, 0xe0, 0xf3, 0xc0, 0x1f, 0xfc,
+                                0x76, 0x8a, 0x29, 0x7f, 0x68, 0x4b, 0xf9, 0x23,
+                                0xf7, 0x7f, 0xc1, 0x1f, 0xd4, 0xd7, 0xf3, 0x3f,
+                                0xbc, 0x5f, 0xb1, 0x6b, 0x1f, 0xf4, 0x17, 0xfd,
+                                0x96, 0x7f, 0xf0, 0x79, 0xe0, 0x0f, 0xfe, 0x3b,
+                                0x47, 0xd8, 0xb5, 0x8f, 0xfa, 0x0b, 0xfe, 0xcb,
+                                0x3f, 0xf8, 0x3c, 0xf0, 0x07, 0xff, 0x00, 0x1d,
+                                0xa2, 0x8a, 0x3f, 0xb4, 0x25, 0xfc, 0x91, 0xfb,
+                                0xbf, 0xe0, 0x8b, 0xea, 0x6b, 0xf9, 0x9f, 0xde,
+                                0xb0, 0xf1, 0xa7, 0xef, 0xa6, 0xdb, 0xf3, 0x3f,
+                                0xff, 0xd9};
+  ai.SetUUID(uuid);
+  ai.SetTitle(title);
+  ai.SetCTime(cTime);
+  ai.SetEK(EK);
+  ai.SetAK(AK);
+  ai.SetHMAC(HMAC);
+  ai.SetContent(content, sizeof(content));
+
+  time_t tVal = 0;
+  CItemAtt::key256T keyVal;
+  CItemAtt::contentHMACT hVal;
+  unsigned char *contentVal;
+
+  EXPECT_EQ(uuid, ai.GetUUID());
+  EXPECT_EQ(title, ai.GetTitle());
+  EXPECT_EQ(cTime, ai.GetCTime(tVal));
+  ai.GetEK(keyVal);
+  EXPECT_EQ(0, memcmp(EK, keyVal, sizeof(EK)));
+  ai.GetAK(keyVal);
+  EXPECT_EQ(0, memcmp(AK, keyVal, sizeof(AK)));
+  ai.GetHMAC(hVal);
+  EXPECT_EQ(0, memcmp(HMAC, hVal, sizeof(HMAC)));
+  ASSERT_EQ(sizeof(content), ai.GetContentLength());
+  size_t contentSize = ai.GetContentSize();
+  contentVal = new unsigned char[contentSize];
+  EXPECT_FALSE(ai.GetContent(contentVal, contentSize - 1));
+  EXPECT_TRUE(ai.GetContent(contentVal, contentSize));
+  EXPECT_EQ(0, memcmp(content, contentVal, sizeof(content)));
 }
-
-TEST_F(ItemAttTest, PlainTextSerialization)
-{
-  std::vector<char> v;
-  emptyItem.SerializePlainText(v);
-  CItemAtt di;
-  EXPECT_TRUE(di.DeSerializePlainText(v));
-  EXPECT_EQ(emptyItem, di);
-
-  fullItem.SerializePlainText(v);
-  EXPECT_TRUE(di.DeSerializePlainText(v));
-  EXPECT_EQ(fullItem, di);
-}
-
-TEST_F(ItemAttTest, UnknownFields)
-{
-  unsigned char u1t = 100, u2t = 200, u3t = 100;
-  unsigned char u1v[] = {10, 11, 33, 57};
-  unsigned char u2v[] = {92, 77, 76, 40, 65, 66};
-  unsigned char u3v[] = {1};
-
-  ASSERT_EQ(0, emptyItem.NumberUnknownFields());
-  emptyItem.SetUnknownField(u1t, sizeof(u1v), u1v);
-  emptyItem.SetUnknownField(u2t, sizeof(u2v), u2v);
-  emptyItem.SetUnknownField(u3t, sizeof(u3v), u3v);
-  EXPECT_EQ(3, emptyItem.NumberUnknownFields());
-
-  // Getting Unknown Fields is done by private
-  // member functions, which make sense considering
-  // how they're processed. Worth exposing an API
-  // just for testing, TBD.
-}
-#endif

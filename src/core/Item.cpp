@@ -10,6 +10,7 @@
 
 #include "Item.h"
 #include "BlowFish.h"
+#include "TwoFish.h"
 
 bool CItem::IsSessionKeySet = false;
 unsigned char CItem::SessionKey[64];
@@ -190,4 +191,25 @@ StringX CItem::GetField(const CItemField &field) const
   field.Get(retval, bf);
   delete bf;
   return retval;
+}
+
+void CItem::GetTime(int whichtime, time_t &t) const
+{
+  FieldConstIter fiter = m_fields.find(whichtime);
+  if (fiter != m_fields.end()) {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    size_t tlen = sizeof(in); // ditto
+
+    CItem::GetField(fiter->second, in, tlen);
+    if (tlen != 0) {
+    // time field's store in native time_t size, regardless of
+    // the representation on file
+      ASSERT(tlen == sizeof(t));
+      if (!PWSUtil::pull_time(t, in, tlen))
+        ASSERT(0);
+    } else {
+      t = 0;
+    }
+  } else // fiter == m_fields.end()
+    t = 0;
 }

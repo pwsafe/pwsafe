@@ -92,6 +92,88 @@ const CUUID CItemAtt::GetUUID() const
   return CUUID(ua);
 }
 
+void CItemAtt::SetCTime(time_t t)
+{
+  unsigned char buf[sizeof(time_t)];
+  putInt(buf, t);
+  SetField(CTIME, buf, sizeof(time_t));
+}
+
+void CItemAtt::SetEK(const key256T &key)
+{
+  SetField(ATTEK, key, sizeof(key));
+}
+
+void CItemAtt::SetAK(const key256T &key)
+{
+  SetField(ATTAK, key, sizeof(key));
+}
+
+void CItemAtt::SetHMAC(const contentHMACT &hm)
+{
+  SetField(CONTENTHMAC, hm, sizeof(hm));
+}
+
+void CItemAtt::SetContent(const unsigned char *content, size_t clen)
+{
+  SetField(CONTENT, content, clen);
+}
+
+time_t CItemAtt::GetCTime(time_t &t) const
+{
+  GetTime(CTIME, t);
+  return t;
+}
+
+void CItemAtt::GetKey(FieldType ft, key256T &key) const
+{
+  auto fiter = m_fields.find(ft);
+  ASSERT(fiter != m_fields.end());
+  size_t len = sizeof(key);
+  GetField(fiter->second, key, len);
+}
+
+void CItemAtt::GetHMAC(contentHMACT &hm) const
+{
+  // should templatize GetKey...
+  auto fiter = m_fields.find(CONTENTHMAC);
+  ASSERT(fiter != m_fields.end());
+  size_t len = sizeof(hm);
+  GetField(fiter->second, hm, len);
+}
+
+size_t CItemAtt::GetContentLength() const
+{
+  auto fiter = m_fields.find(CONTENT);
+
+  if (fiter != m_fields.end())
+    return fiter->second.GetLength();
+  else
+    return 0;
+}
+
+size_t CItemAtt::GetContentSize() const
+{
+  auto fiter = m_fields.find(CONTENT);
+
+  if (fiter != m_fields.end())
+    return fiter->second.GetSize();
+  else
+    return 0;
+}
+
+bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
+{
+  ASSERT(content != NULL);
+
+  if (!HasContent() || csize < GetContentSize())
+    return false;
+
+  GetField(m_fields.find(CONTENT)->second, content, csize);
+  return true;
+}
+
+
 int CItemAtt::Import(const stringT &fname)
 {
   int status = PWScore::SUCCESS;
