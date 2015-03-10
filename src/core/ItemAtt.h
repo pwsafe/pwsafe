@@ -38,8 +38,8 @@ class PWSfile;
 class CItemAtt : public CItem
 {
 public:
-  typedef char key256T[32];
-  typedef char contentHMACT[32];
+  typedef unsigned char key256T[32];
+  typedef unsigned char contentHMACT[32];
 
   enum FieldType {
     ATTUUID = 0x61,
@@ -73,20 +73,28 @@ public:
   // Convenience: Get the untranslated (English) name of a FieldType
   static stringT EngFieldName(FieldType ft);
 
-  //Data retrieval
+  // Setters and Getters
+  void CreateUUID(); // for new
+  void SetUUID(const pws_os::CUUID &uuid);
+  void SetTitle(const StringX &title);
+  void SetCTime(time_t t);
+  void SetEK(const key256T &key);
+  void SetAK(const key256T &key);
+  void SetHMAC(const contentHMACT &hm);
+  void SetContent(const unsigned char *content, size_t clen);
+
   StringX GetTitle() const {return GetField(TITLE);}
   void GetUUID(uuid_array_t &) const;
   const pws_os::CUUID GetUUID() const;
   StringX GetFileName() const {return GetField(FILENAME);}
-  StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
-  time_t GetCTime(time_t &t) const {GetTime(CTIME, t); return t;}  // V30
+  time_t GetCTime(time_t &t) const;
+  void GetEK(key256T &key) const {return GetKey(ATTEK, key);}
+  void GetAK(key256T &key) const {return GetKey(ATTAK, key);}
+  void GetHMAC(contentHMACT &hm) const;
+  size_t GetContentLength() const; // Number of bytes stored
+  size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
+  bool GetContent(unsigned char *content, size_t csize) const;
 
-  void CreateUUID(); // for new
-  void SetUUID(const pws_os::CUUID &uuid);
-  void SetTitle(const StringX &title);
-  void SetCTime() {SetTime(CTIME);}  // V30
-  void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
-  bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
 
   CItemAtt& operator=(const CItemAtt& second);
 
@@ -105,11 +113,7 @@ public:
 
 
 private:
-  StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
-  void GetTime(int whichtime, time_t &t) const; // V30
-  void SetTime(const int whichtime); // V30
-  void SetTime(const int whichtime, time_t t); // V30
-  bool SetTime(const int whichtime, const stringT &time_str); // V30
+  void GetKey(FieldType ft, key256T &key) const;
 
   EntryStatus m_entrystatus;
   long m_offset; // location on file, for lazy evaluation

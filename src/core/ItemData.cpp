@@ -269,7 +269,7 @@ int CItemData::WriteCommon(PWSfile *out) const
 
   for (i = 0; TimeFields[i] != END; i++) {
     time_t t = 0;
-    GetTime(TimeFields[i], t);
+    CItem::GetTime(TimeFields[i], t);
     if (t != 0) {
       if (out->timeFieldLen() == 4) {
         unsigned char buf[4];
@@ -500,29 +500,8 @@ StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 {
   time_t t;
 
-  GetTime(whichtime, t);
+  CItem::GetTime(whichtime, t);
   return PWSUtil::ConvertToDateTimeString(t, result_format);
-}
-
-void CItemData::GetTime(int whichtime, time_t &t) const
-{
-  FieldConstIter fiter = m_fields.find(FieldType(whichtime));
-  if (fiter != m_fields.end()) {
-    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-    size_t tlen = sizeof(in); // ditto
-
-    CItem::GetField(fiter->second, in, tlen);
-    if (tlen != 0) {
-    // time field's store in native time_t size, regardless of
-    // the representation on file
-      ASSERT(tlen == sizeof(t));
-      if (!PWSUtil::pull_time(t, in, tlen))
-        ASSERT(0);
-    } else {
-      t = 0;
-    }
-  } else // fiter == m_fields.end()
-    t = 0;
 }
 
 void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
@@ -1837,7 +1816,7 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
     case ATIME:
     case XTIME:
     case RMTIME:
-      GetTime(iObject, tValue);
+      CItem::GetTime(iObject, tValue);
       break;
     default:
       ASSERT(0);

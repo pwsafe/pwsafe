@@ -40,6 +40,7 @@ public:
   void Get(unsigned char *value, size_t &length, Fish *bf) const;
   unsigned char GetType() const {return m_Type;}
   size_t GetLength() const {return m_Length;}
+  size_t GetSize() const {return GetBlockSize(m_Length);}
   bool IsEmpty() const {return m_Length == 0;}
   void Empty();
 

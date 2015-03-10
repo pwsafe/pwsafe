@@ -125,6 +125,7 @@ protected:
   StringX GetField(int ft) const;
   StringX GetField(const CItemField &field) const;
 
+  void GetTime(int whichtime, time_t &t) const;
 
   // Helper function for operator==
   bool CompareFields(const CItemField &fthis,
