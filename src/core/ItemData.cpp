@@ -11,7 +11,6 @@
 #include "ItemData.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
-#include "PWSrand.h"
 #include "UTF8Conv.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
@@ -42,17 +41,6 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len);
 static bool pull_int16(int16 &i16, const unsigned char *data, size_t len);
 static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
 // pull_time moved to Util.{h,cpp}, used in header parsing.
-
-void CItemData::SetSessionKey()
-{
-  // meant to be called once per session, no more, no less
-  // but for the test framework, we relax this
-  if (!IsSessionKeySet) {
-    pws_os::mlock(SessionKey, sizeof(SessionKey));
-    PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
-    IsSessionKeySet = true;
-  }
-}
 
 //-----------------------------------------------------------------------------
 // Constructors

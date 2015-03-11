@@ -16,6 +16,17 @@
 bool CItem::IsSessionKeySet = false;
 unsigned char CItem::SessionKey[64];
 
+void CItem::SetSessionKey()
+{
+  // meant to be called once per session, no more, no less
+  // but for the test framework, we relax this
+  if (!IsSessionKeySet) {
+    pws_os::mlock(SessionKey, sizeof(SessionKey));
+    PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
+    IsSessionKeySet = true;
+  }
+}
+
 CItem::CItem() :
   m_display_info(NULL)
 {

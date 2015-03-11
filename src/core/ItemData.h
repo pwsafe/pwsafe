@@ -104,8 +104,6 @@ public:
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
-  static void SetSessionKey(); // call exactly once per session
-
   static bool IsTextField(unsigned char t);
 
   //Construction
