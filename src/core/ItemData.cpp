@@ -60,13 +60,11 @@ void CItemData::SetSessionKey()
 CItemData::CItemData()
   : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN)
 {
-  PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
   CItem(that), m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus)
 {
-  memcpy(m_salt, that.m_salt, SaltLength);
 }
 
 CItemData::~CItemData()
