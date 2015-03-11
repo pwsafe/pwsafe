@@ -134,7 +134,7 @@ PWScore::PWScore() :
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
     PWScore::m_session_initialized = true;
-    CItemData::SetSessionKey(); // per-session initialization
+    CItem::SetSessionKey(); // per-session initialization
     pws_os::mlock(m_session_key, sizeof(m_session_key));
     PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key));
     if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {

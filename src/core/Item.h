@@ -70,6 +70,7 @@ public:
                     ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
                     ES_LAST};
 
+  static void SetSessionKey(); // call exactly once per session
 
   //Construction
   CItem();
