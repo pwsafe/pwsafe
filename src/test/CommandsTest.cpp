@@ -14,7 +14,7 @@
 #include "core/PWScore.h"
 #include "gtest/gtest.h"
 
-// Since we use CItemData, we assume CItemData::SetSessionKey()
+// Since we use CItemData, we assume CItem::SetSessionKey()
 // was called in the ItemData test environment setup
 
 // A fixture for factoring common code across tests
