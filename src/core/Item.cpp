@@ -11,6 +11,7 @@
 #include "Item.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
+#include "PWSrand.h"
 
 bool CItem::IsSessionKeySet = false;
 unsigned char CItem::SessionKey[64];
@@ -18,6 +19,7 @@ unsigned char CItem::SessionKey[64];
 CItem::CItem() :
   m_display_info(NULL)
 {
+  PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItem::CItem(const CItem &that) :
@@ -26,6 +28,7 @@ CItem::CItem(const CItem &that) :
   m_display_info(that.m_display_info == NULL ?
                  NULL : that.m_display_info->clone())
 {
+  memcpy(m_salt, that.m_salt, SaltLength);
 }
 
 CItem::~CItem()
