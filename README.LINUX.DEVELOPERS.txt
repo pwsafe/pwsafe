@@ -66,7 +66,7 @@ potential conflicts with 2.8.
 
 --------------------
 
-Notes re libykpers-1/ykpers-devel:
+Note #2 - libykpers-1/ykpers-devel:
 If your distro doesn't have the development version of this you will
 need to build and install it from the source: 
 https://github.com/Yubico/yubikey-personalization.git
@@ -84,12 +84,18 @@ $ LD_LIBRARY_PATH=<libykpers-1.a or libykpers-1.so dir> pwsafe
 --------------------
 
 Running 'make' at the top of the source tree will result in the debug
-version of pwsafe being built under src/ui/wxWidgets/GCCUnicodeDebug
+version of pwsafe being built under src/ui/wxWidgets/GCCUnicodeDebug,
+and the release version under src/ui/wxWidgets/GCCUnicodeRelease.
 
-(Note that under Fedora and RHEL5, wxGTK-devel doesn't support
+Note that under Fedora and RHEL5, wxGTK-devel doesn't support
 "wx-config --debug=yes --unicode=yes" so just "make" fails. The
-workaround is to use "make release". The release binary will be found
-under src/ui/wxWidgets/GCCUnicodeRelease.)
+workaround is to use "make release", which will only build the release
+version.
+
+Fedora 22 didn't rebuild wxGTK with gcc 5 yet it seems, to the
+ABI-version was at version 2, which was the default up until gcc
+4.9. A way to solve this would be adding '-fabi-version=2' to the
+CXXFLAGS.
 
 Create a Debian Package
 =======================
