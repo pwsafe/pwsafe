@@ -34,6 +34,7 @@ class FileV4Test : public ::testing::Test
 protected:
   FileV4Test(); // to init members
   CItemData smallItem, fullItem, item;
+  CItemAtt attItem;
   void SetUp();
   void TearDown();
 
@@ -90,6 +91,13 @@ void FileV4Test::SetUp()
   smallItem.CreateUUID();
   smallItem.SetTitle(_T("picollo"));
   smallItem.SetPassword(_T("tiny-passw"));
+
+  attItem.CreateUUID();
+  attItem.SetTitle(L"I'm an attachment");
+  const stringT testAttFile(L"../../help/default/html/images/edit_menu.jpg");
+  int status = attItem.Import(testAttFile);
+  ASSERT_EQ(PWSfile::SUCCESS, status);
+  
 }
 
 void FileV4Test::TearDown()
@@ -204,3 +212,21 @@ TEST_F(FileV4Test, MulitKeysTest)
   EXPECT_FALSE(kbs.RemoveKeyBlock(pw3));
   EXPECT_FALSE(kbs.RemoveKeyBlock(passphrase));
 }
+
+TEST_F(FileV4Test, AttTest)
+{
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  CItemAtt readAtt;
+  PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  EXPECT_EQ(attItem, readAtt);
+}
+
