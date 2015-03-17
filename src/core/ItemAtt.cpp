@@ -243,11 +243,10 @@ int CItemAtt::Export(const stringT &fname) const
 }
 
 
-#if 0
 int CItemAtt::Read(PWSfile *in)
 {
   int status = PWSfile::SUCCESS;
-
+#if 0
   signed long numread = 0;
   unsigned char type;
 
@@ -293,8 +292,11 @@ int CItemAtt::Read(PWSfile *in)
     return status;
   } else
     return PWSfile::END_OF_FILE;
+#endif
+  return status;
 }
 
+#if 0
 size_t CItemAtt::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 {
   FieldConstIter fiter = m_fields.find(ft);
@@ -397,11 +399,12 @@ int CItemAtt::WriteCommon(PWSfile *out) const
     return PWSfile::FAILURE;
   }
 }
+#endif
 
 int CItemAtt::Write(PWSfile *out) const
 {
   int status = PWSfile::SUCCESS;
-
+#if 0
   // Map different UUID types (V4 concept) to original V3 UUID
   uuid_array_t item_uuid;
   FieldType ft = END;
@@ -462,10 +465,11 @@ int CItemAtt::Write(PWSfileV4 *out) const
   }
 
   status = WriteCommon(out);
-
+#endif
   return status;
 }
 
+#if 0
 int CItemAtt::WriteUnknowns(PWSfile *out) const
 {
   for (UnknownFieldsConstIter uiter = m_URFL.begin();
@@ -481,8 +485,6 @@ int CItemAtt::WriteUnknowns(PWSfile *out) const
   }
   return PWSfile::SUCCESS;
 }
-
-
 
 //-----------------------------------------------------------------------------
 // Accessors
