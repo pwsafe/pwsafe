@@ -262,6 +262,13 @@ int PWSfileV4::WriteRecord(const CItemData &item)
   return item.Write(this);
 }
 
+int PWSfileV4::WriteRecord(const CItemAtt &att)
+{
+  ASSERT(m_fd != NULL);
+  ASSERT(m_curversion == V40);
+  return att.Write(this);
+}
+
 size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
 {
@@ -286,6 +293,16 @@ int PWSfileV4::ReadRecord(CItemData &item)
   ASSERT(m_curversion == V40);
   if (ftell(m_fd) < m_effectiveFileLength)
     return item.Read(this);
+  else
+    return END_OF_FILE;
+}
+
+int PWSfileV4::ReadRecord(CItemAtt &att)
+{
+  ASSERT(m_fd != NULL);
+  ASSERT(m_curversion == V40);
+  if (ftell(m_fd) < m_effectiveFileLength)
+    return att.Read(this);
   else
     return END_OF_FILE;
 }
