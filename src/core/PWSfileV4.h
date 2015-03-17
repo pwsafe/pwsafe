@@ -42,6 +42,9 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
+  int WriteRecord(const CItemAtt &att);
+  int ReadRecord(CItemAtt &att);
+
   uint32 GetNHashIters() const {return m_nHashIters;}
   void SetNHashIters(uint32 N) {m_nHashIters = N;}
   
