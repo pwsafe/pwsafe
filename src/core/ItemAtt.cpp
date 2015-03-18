@@ -18,6 +18,7 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 #include "os/file.h"
+#include "os/utf8conv.h"
 
 using namespace std;
 using pws_os::CUUID;
@@ -321,7 +322,6 @@ int CItemAtt::Read(PWSfile *in)
     return PWSfile::END_OF_FILE;
 }
 
-#if 0
 size_t CItemAtt::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 {
   FieldConstIter fiter = m_fields.find(ft);
@@ -356,6 +356,7 @@ size_t CItemAtt::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
   return retval;
 }
 
+#if 0
 int CItemAtt::WriteCommon(PWSfile *out) const
 {
   int i;
@@ -438,20 +439,21 @@ int CItemAtt::Write(PWSfile *out) const
 
   out->WriteField(static_cast<unsigned char>(ATTUUID), att_uuid,
                   sizeof(uuid_array_t));
-#if 0
-  // We need to cast away constness to change Password field
-  // for dependent entries
-  // We restore the password afterwards (not that it should matter
-  // for a dependent), so logically we're still const.
 
-  CItemAtt *self = const_cast<CItemAtt *>(this);
-  const StringX saved_password = GetPassword();
-  self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
+  WriteIfSet(TITLE, out, true);
+  WriteIfSet(CTIME, out, false);
+  WriteIfSet(MEDIATYPE, out, true);
+  WriteIfSet(FILENAME, out, true);
+  WriteIfSet(ATTEK, out, false);
+  WriteIfSet(ATTAK, out, false);
+  WriteIfSet(CONTENT, out, false); // XXX write under ATTEK/ATTAK
+  WriteIfSet(CONTENTHMAC, out, false); // XXX HMAC needs to be calculated!
 
-  status = WriteCommon(out);
-
-  self->SetPassword(saved_password);
-#endif
+  if (out->WriteField(END, _T("")) > 0) {
+    status = PWSfile::SUCCESS;
+  } else {
+    status = PWSfile::FAILURE;
+  }
   return status;
 }
 
