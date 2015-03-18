@@ -115,6 +115,7 @@ public:
 private:
   void GetKey(FieldType ft, key256T &key) const;
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
+  size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 
   EntryStatus m_entrystatus;
   long m_offset; // location on file, for lazy evaluation
