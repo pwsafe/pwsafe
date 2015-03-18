@@ -199,7 +199,7 @@ int CItemAtt::Import(const stringT &fname)
     goto done;
   }
   SetField(CONTENT, data, flen);
-  SetField(FILENAME, fname.c_str());
+  CItem::SetField(FILENAME, fname.c_str());
  done:
   trashMemory(data, flen);
   delete[] data;
@@ -243,10 +243,51 @@ int CItemAtt::Export(const stringT &fname) const
 }
 
 
+bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
+                        size_t len)
+{
+  FieldType ft = static_cast<FieldType>(type);
+  switch (ft) {
+  case ATTUUID:
+    {
+      uuid_array_t uuid_array;
+      ASSERT(len == sizeof(uuid_array_t));
+      for (size_t i = 0; i < sizeof(uuid_array_t); i++)
+        uuid_array[i] = data[i];
+      SetUUID(uuid_array);
+      break;
+    }
+  case TITLE:
+  case MEDIATYPE:
+  case FILENAME:
+#if 0
+    if (!pull_string(str, data, len)) return false;
+    SetField(ft, str);
+#endif
+    break;
+  case CTIME:
+#if 0
+    if (!PWSUtil::pull_time(t, data, len)) return false;
+    SetTime(ft, t);
+#endif
+    break;
+  case ATTEK:
+  case ATTAK:
+  case CONTENT:
+  case CONTENTHMAC:
+  case END:
+    break;
+  default:
+    // unknowns!
+    // SetUnknownField(char(type), len, data); -- good idea for ItemAtt too
+    break;
+  }
+  return true;
+}
+
 int CItemAtt::Read(PWSfile *in)
 {
   int status = PWSfile::SUCCESS;
-#if 0
   signed long numread = 0;
   unsigned char type;
 
@@ -275,25 +316,9 @@ int CItemAtt::Read(PWSfile *in)
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
   if (numread > 0) {
-    // Determine entry type:
-    // ET_NORMAL (which may later change to ET_ALIASBASE or ET_SHORTCUTBASE)
-    // ET_ALIAS or ET_SHORTCUT
-    // For V4, this is simple, as we have different UUID types
-    // For V3, we need to parse the password
-    ParseSpecialPasswords();
-    if (m_fields.find(UUID) != m_fields.end())
-      m_entrytype = ET_NORMAL; // may change later to ET_*BASE
-    else if (m_fields.find(ALIASUUID) != m_fields.end())
-      m_entrytype = ET_ALIAS;
-    else if (m_fields.find(SHORTCUTUUID) != m_fields.end())
-      m_entrytype = ET_SHORTCUT;
-    else 
-      ASSERT(0);
     return status;
   } else
     return PWSfile::END_OF_FILE;
-#endif
-  return status;
 }
 
 #if 0
@@ -404,23 +429,16 @@ int CItemAtt::WriteCommon(PWSfile *out) const
 int CItemAtt::Write(PWSfile *out) const
 {
   int status = PWSfile::SUCCESS;
-#if 0
-  // Map different UUID types (V4 concept) to original V3 UUID
-  uuid_array_t item_uuid;
-  FieldType ft = END;
+  uuid_array_t att_uuid;
 
   ASSERT(HasUUID());
-  if (!IsDependent())
-    ft = UUID;
-  else if (IsAlias())
-    ft = ALIASUUID;
-  else if (IsShortcut())
-    ft = SHORTCUTUUID;
-  else ASSERT(0);
-  GetUUID(item_uuid, ft);
+  GetUUID(att_uuid);
 
-  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
+  FieldType ft = END;
 
+  out->WriteField(static_cast<unsigned char>(ATTUUID), att_uuid,
+                  sizeof(uuid_array_t));
+#if 0
   // We need to cast away constness to change Password field
   // for dependent entries
   // We restore the password afterwards (not that it should matter
@@ -433,9 +451,11 @@ int CItemAtt::Write(PWSfile *out) const
   status = WriteCommon(out);
 
   self->SetPassword(saved_password);
+#endif
   return status;
 }
 
+#if 0
 int CItemAtt::Write(PWSfileV4 *out) const
 {
   int status = PWSfile::SUCCESS;
@@ -465,11 +485,9 @@ int CItemAtt::Write(PWSfileV4 *out) const
   }
 
   status = WriteCommon(out);
-#endif
   return status;
 }
 
-#if 0
 int CItemAtt::WriteUnknowns(PWSfile *out) const
 {
   for (UnknownFieldsConstIter uiter = m_URFL.begin();
