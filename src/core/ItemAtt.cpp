@@ -261,21 +261,23 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
   case TITLE:
   case MEDIATYPE:
   case FILENAME:
-#if 0
-    if (!pull_string(str, data, len)) return false;
-    SetField(ft, str);
-#endif
+    if (!SetTextField(ft, data, len)) return false;
     break;
   case CTIME:
-#if 0
-    if (!PWSUtil::pull_time(t, data, len)) return false;
-    SetTime(ft, t);
-#endif
+    if (!SetTimeField(ft, data, len)) return false;
+    break;
+  case CONTENT:
+    CItem::SetField(type, data, len); // XXX Not (yet) per spec
     break;
   case ATTEK:
   case ATTAK:
-  case CONTENT:
+    if (len != sizeof(key256T)) return false;
+    CItem::SetField(type, data, len);
+    break;
   case CONTENTHMAC:
+    if (len != sizeof(contentHMACT)) return false;
+    CItem::SetField(type, data, len);
+    break;
   case END:
     break;
   default:
