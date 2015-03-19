@@ -12,6 +12,11 @@
 #include "BlowFish.h"
 #include "TwoFish.h"
 #include "PWSrand.h"
+#include "UTF8Conv.h"
+#include "Util.h"
+#include "os/env.h"
+
+#include <vector>
 
 bool CItem::IsSessionKeySet = false;
 unsigned char CItem::SessionKey[64];
@@ -182,6 +187,62 @@ void CItem::SetField(int ft, const StringX &value)
     delete bf;
   } else
     m_fields.erase(ft);
+}
+
+static bool pull_string(StringX &str,
+                        const unsigned char *data, size_t len)
+{
+  /**
+   * cp_acp is used to force reading data as non-utf8 encoded
+   * This is for databases that were incorrectly written, e.g., 3.05.02
+   * PWS_CP_ACP is either set externally or via the --CP_ACP argv
+   *
+   * We use a static variable purely for efficiency, as this won't change
+   * over the course of the program.
+   */
+
+  static int cp_acp = -1;
+  if (cp_acp == -1) {
+    cp_acp = pws_os::getenv("PWS_CP_ACP", false).empty() ? 0 : 1;
+  }
+  CUTF8Conv utf8conv(cp_acp != 0);
+  std::vector<unsigned char> v(data, (data + len));
+  v.push_back(0); // null terminate for FromUTF8.
+  bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
+  if (!utf8status) {
+    pws_os::Trace(_T("Item.cpp: pull_string(): FromUTF8 failed!\n"));
+  }
+  trashMemory(&v[0], len);
+  return utf8status;
+}
+
+bool CItem::SetTextField(int ft, const unsigned char *value,
+                         size_t length)
+{
+  StringX str;
+  if (pull_string(str, value, length)) {
+    SetField(ft, str);
+    return true;
+  } else
+    return false;
+}
+
+void CItem::SetTime(int whichtime, time_t t)
+{
+  unsigned char buf[sizeof(time_t)];
+  putInt(buf, t);
+  SetField(whichtime, buf, sizeof(time_t));
+}
+
+bool CItem::SetTimeField(int ft, const unsigned char *value,
+                         size_t length)
+{
+  time_t t;
+  if (PWSUtil::pull_time(t, value, length)) {
+    SetTime(ft, t);
+    return true;
+  } else
+    return false;
 }
 
 void CItem::GetField(const CItemField &field,

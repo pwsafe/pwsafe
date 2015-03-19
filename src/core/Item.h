@@ -121,11 +121,15 @@ protected:
 
   void SetField(int ft, const unsigned char *value, size_t length);
   void SetField(int ft, const StringX &value);
+  bool SetTextField(int ft, const unsigned char *value, size_t length);
+  bool SetTimeField(int ft, const unsigned char *value, size_t length);
+
   void GetField(const CItemField &field, unsigned char *value,
                 size_t &length) const;
   StringX GetField(int ft) const;
   StringX GetField(const CItemField &field) const;
 
+  void SetTime(const int whichtime, time_t t);
   void GetTime(int whichtime, time_t &t) const;
 
   // Helper function for operator==
