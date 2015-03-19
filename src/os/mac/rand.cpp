@@ -92,9 +92,13 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     // here if we had any trouble getting data from /dev/random
     get_failsafe_rnd(data, slen);
   } else { // called with non-NULL p, just return our hard-earned entropy
-    assert(data != NULL); // MUST call with p == NULL first!
-    memcpy(p, data, slen);
-    delete[] data;
-    data = NULL;
+    if (data) {
+      memcpy(p, data, slen);
+      delete[] data;
+      data = NULL;
+    }
+    else {
+      assert(false); // MUST call with p == NULL first!
+    }
   }
 }    

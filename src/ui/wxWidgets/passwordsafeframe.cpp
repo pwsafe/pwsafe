@@ -2133,6 +2133,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
     pws_os::Trace(wxT("Couldn't find uuid %ls"),
                   StringX(CUUID(entry_uuid)).c_str());
+    return;
   }
 
 #ifdef NOTYET

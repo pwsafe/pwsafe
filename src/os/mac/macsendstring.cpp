@@ -24,25 +24,27 @@ void SendString(CFStringRef str, unsigned delayMS)
   enum { VK_RETURN = 0x24 /*KVK_Return*/, VK_TAB = 0x30 /*kVK_Tab*/, VK_SPACE = 0x31/*kVK_Space*/};
   
   //A list of chars for which we must specify the virtual keycode
-  static CFStringRef specialChars = CFSTR("\n\t ");
+  static const CFStringRef specialChars = CFSTR("\n\t ");
   
-  CFStringRef verticalTab = CFSTR("\v");
+  static const UniChar verticalTab = CFStringGetCharacterAtIndex(CFSTR("\v"), 0);
 
   //each keycode must correspond to the correct char in 'specialChars'
   CGKeyCode specialKeyCodes[] = {VK_RETURN, VK_TAB, VK_SPACE };
   
+  assert(CFStringGetLength(specialChars) == NumberOf(specialKeyCodes));
+
   for (unsigned i = 0, len = CFStringGetLength(str); i < len; ++i) {
     //The next char to send
     UniChar c = CFStringGetCharacterAtIndex(str, i);
     
     //throw away 'vertical tab' chars which are only used on Windows to send a shift+tab
     //as a workaround for some issues with IE 
-    if (CFStringGetCharacterAtIndex(verticalTab, 0) == c)
+    if (verticalTab == c)
       continue;
     
     //see if we need to specify the virtual ekycode for this char
     CGKeyCode vKey = 0; //0 = kVK_ANSI_A, but I don't know of a more appropriate default value
-    for (unsigned j = 0, n = CFStringGetLength(specialChars); j < n; ++j) {
+    for (size_t j = 0; j < NumberOf(specialKeyCodes); ++j) {
       if ( CFStringGetCharacterAtIndex(specialChars, j) == c) {
         vKey = specialKeyCodes[j];
         break;
