@@ -212,19 +212,19 @@ public:
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
   void SetATime() {SetTime(ATIME);}  // V30
-  void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
+  void SetATime(time_t t) {CItem::SetTime(ATIME, t);}  // V30
   bool SetATime(const stringT &time_str) {return SetTime(ATIME, time_str);}  // V30
   void SetCTime() {SetTime(CTIME);}  // V30
-  void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
+  void SetCTime(time_t t) {CItem::SetTime(CTIME, t);}  // V30
   bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
   void SetXTime() {SetTime(XTIME);}  // V30
-  void SetXTime(time_t t) {SetTime(XTIME, t);}  // V30
+  void SetXTime(time_t t) {CItem::SetTime(XTIME, t);}  // V30
   bool SetXTime(const stringT &time_str) {return SetTime(XTIME, time_str);}  // V30
   void SetPMTime() {SetTime(PMTIME);}  // V30
-  void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
+  void SetPMTime(time_t t) {CItem::SetTime(PMTIME, t);}  // V30
   bool SetPMTime(const stringT &time_str) {return SetTime(PMTIME, time_str);}  // V30
   void SetRMTime() {SetTime(RMTIME);}  // V30
-  void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
+  void SetRMTime(time_t t) {CItem::SetTime(RMTIME, t);}  // V30
   bool SetRMTime(const stringT &time_str) {return SetTime(RMTIME, time_str);}  // V30
   void SetXTimeInt(int32 xint); // V30
   bool SetXTimeInt(const stringT &xint_str); // V30
@@ -338,7 +338,6 @@ private:
                  StringX &title, StringX &username);
   StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
   void SetTime(const int whichtime); // V30
-  void SetTime(const int whichtime, time_t t); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Laziness is a Virtue:

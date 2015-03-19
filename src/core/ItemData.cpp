@@ -25,7 +25,6 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 #include "os/mem.h"
-#include "os/env.h"
 #include "os/utf8conv.h"
 
 #include <time.h>
@@ -36,11 +35,9 @@ using namespace std;
 using pws_os::CUUID;
 
 // some fwd declarations:
-static bool pull_string(StringX &str, const unsigned char *data, size_t len);
 static bool pull_int32(int32 &i, const unsigned char *data, size_t len);
 static bool pull_int16(int16 &i16, const unsigned char *data, size_t len);
 static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
-// pull_time moved to Util.{h,cpp}, used in header parsing.
 
 //-----------------------------------------------------------------------------
 // Constructors
@@ -1399,14 +1396,7 @@ void CItemData::SetTime(int whichtime)
 {
   time_t t;
   time(&t);
-  SetTime(whichtime, t);
-}
-
-void CItemData::SetTime(int whichtime, time_t t)
-{
-  unsigned char buf[sizeof(time_t)];
-  putInt(buf, t);
-  SetField(static_cast<FieldType>(whichtime), buf, sizeof(time_t));
+  CItem::SetTime(whichtime, t);
 }
 
 bool CItemData::SetTime(int whichtime, const stringT &time_str)
@@ -1414,12 +1404,12 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
   time_t t(0);
 
   if (time_str.empty()) {
-    SetTime(whichtime, t);
+    CItem::SetTime(whichtime, t);
     return true;
   } else
     if (time_str == _T("now")) {
       time(&t);
-      SetTime(whichtime, t);
+      CItem::SetTime(whichtime, t);
       return true;
     } else
       if ((VerifyImportDateTimeString(time_str, t) ||
@@ -1427,7 +1417,7 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
            VerifyASCDateTimeString(time_str, t)) &&
           (t != time_t(-1))  // checkerror despite all our verification!
           ) {
-        SetTime(whichtime, t);
+        CItem::SetTime(whichtime, t);
         return true;
       }
   return false;
@@ -1898,32 +1888,6 @@ bool CItemData::WillExpire(const int numdays) const
   return (XTime < exptime);
 }
 
-static bool pull_string(StringX &str, const unsigned char *data, size_t len)
-{
-  /**
-   * cp_acp is used to force reading data as non-utf8 encoded
-   * This is for databases that were incorrectly written, e.g., 3.05.02
-   * PWS_CP_ACP is either set externally or via the --CP_ACP argv
-   *
-   * We use a static variable purely for efficiency, as this won't change
-   * over the course of the program.
-   */
-
-  static int cp_acp = -1;
-  if (cp_acp == -1) {
-    cp_acp = pws_os::getenv("PWS_CP_ACP", false).empty() ? 0 : 1;
-  }
-  CUTF8Conv utf8conv(cp_acp != 0);
-  vector<unsigned char> v(data, (data + len));
-  v.push_back(0); // null terminate for FromUTF8.
-  bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
-  if (!utf8status) {
-    pws_os::Trace(_T("ItemData.cpp: pull_string(): FromUTF8 failed!\n"));
-  }
-  trashMemory(&v[0], len);
-  return utf8status;
-}
-
 static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int32)) {
@@ -1989,8 +1953,6 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 
 bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t len)
 {
-  StringX str;
-  time_t t;
   int32 i32;
   int16 i16;
   unsigned char uc;
@@ -2025,16 +1987,14 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
     case EMAIL:
     case SYMBOLS:
     case POLICYNAME:
-      if (!pull_string(str, data, len)) return false;
-      SetField(ft, str);
+      if (!SetTextField(ft, data, len)) return false;
       break;
     case CTIME:
     case PMTIME:
     case ATIME:
     case XTIME:
     case RMTIME:
-      if (!PWSUtil::pull_time(t, data, len)) return false;
-      SetTime(ft, t);
+      if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
       if (!pull_int32(i32, data, len)) return false;
