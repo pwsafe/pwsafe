@@ -110,6 +110,11 @@ void CItemAtt::SetAK(const key256T &key)
   SetField(ATTAK, key, sizeof(key));
 }
 
+void CItemAtt::SetIV(const unsigned char *IV, unsigned int blocksize)
+{
+  SetField(ATTIV, IV, blocksize);
+}
+
 void CItemAtt::SetHMAC(const contentHMACT &hm)
 {
   SetField(CONTENTHMAC, hm, sizeof(hm));
@@ -132,6 +137,13 @@ void CItemAtt::GetKey(FieldType ft, key256T &key) const
   ASSERT(fiter != m_fields.end());
   size_t len = sizeof(key);
   GetField(fiter->second, key, len);
+}
+
+void CItemAtt::GetIV(unsigned char *IV, unsigned int &blocksize) const
+{
+  auto fiter = m_fields.find(ATTIV);
+  ASSERT(fiter != m_fields.end());
+  GetField(fiter->second, IV, blocksize);
 }
 
 void CItemAtt::GetHMAC(contentHMACT &hm) const
@@ -265,6 +277,9 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
     break;
   case CTIME:
     if (!SetTimeField(ft, data, len)) return false;
+    break;
+  case ATTIV:
+    CItem::SetField(type, data, len);
     break;
   case CONTENT:
     CItem::SetField(type, data, len); // XXX Not (yet) per spec
@@ -436,8 +451,6 @@ int CItemAtt::Write(PWSfile *out) const
 
   ASSERT(HasUUID());
   GetUUID(att_uuid);
-
-  FieldType ft = END;
 
   out->WriteField(static_cast<unsigned char>(ATTUUID), att_uuid,
                   sizeof(uuid_array_t));

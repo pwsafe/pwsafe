@@ -124,6 +124,8 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   CItemAtt ai;
   pws_os::CUUID uuid;
   time_t cTime = 1425836169;
+  unsigned char IV[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                          0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
   CItemAtt::key256T EK = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
                           0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
                           0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
@@ -157,11 +159,13 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   ai.SetCTime(cTime);
   ai.SetEK(EK);
   ai.SetAK(AK);
+  ai.SetIV(IV, sizeof(IV));
   ai.SetHMAC(HMAC);
   ai.SetContent(content, sizeof(content));
 
   time_t tVal = 0;
   CItemAtt::key256T keyVal;
+  unsigned char IVVal[sizeof(IV)];
   CItemAtt::contentHMACT hVal;
   unsigned char *contentVal;
 
@@ -172,6 +176,9 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   EXPECT_EQ(0, memcmp(EK, keyVal, sizeof(EK)));
   ai.GetAK(keyVal);
   EXPECT_EQ(0, memcmp(AK, keyVal, sizeof(AK)));
+  unsigned int bs = sizeof(IVVal);
+  ai.GetIV(IVVal, bs);
+  EXPECT_EQ(0, memcmp(IV, IVVal, sizeof(IV)));
   ai.GetHMAC(hVal);
   EXPECT_EQ(0, memcmp(HMAC, hVal, sizeof(HMAC)));
   ASSERT_EQ(sizeof(content), ai.GetContentLength());
