@@ -49,8 +49,9 @@ public:
     FILENAME = 0x63,
     ATTEK = 0x64,
     ATTAK = 0x65,
-    CONTENT = 0x66,
-    CONTENTHMAC = 0x67,
+    ATTIV = 0x66,
+    CONTENT = 0x67,
+    CONTENTHMAC = 0x68,
     END = 0xff
 };
 
@@ -80,6 +81,7 @@ public:
   void SetCTime(time_t t);
   void SetEK(const key256T &key);
   void SetAK(const key256T &key);
+  void SetIV(const unsigned char *IV, unsigned int blocksize);
   void SetHMAC(const contentHMACT &hm);
   void SetContent(const unsigned char *content, size_t clen);
 
@@ -90,6 +92,7 @@ public:
   time_t GetCTime(time_t &t) const;
   void GetEK(key256T &key) const {return GetKey(ATTEK, key);}
   void GetAK(key256T &key) const {return GetKey(ATTAK, key);}
+  void GetIV(unsigned char *IV, unsigned int &blocksize) const;
   void GetHMAC(contentHMACT &hm) const;
   size_t GetContentLength() const; // Number of bytes stored
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)

@@ -531,8 +531,9 @@ MediaType                   0x62        Text          Y              [4]
 FileName                    0x63        Text          Y              [5]
 AttEK                       0x64        32 bytes      Y              [6]
 AttAK                       0x65        32 bytes      Y              [7]
-Content                     0x66        binary        Y              [8]
-ContentHMAC                 0x67        32 bytes      Y              [9]
+ATTIV                       0x66        binary        Y              [8]
+Content                     0x67        binary        Y              [9]
+ContentHMAC                 0x68        32 bytes      Y              [10]
 End of Entry                0xff        [empty]       Y              
 
 [1] This is the UUID of the attachment record, which is referred to by
@@ -549,15 +550,17 @@ applications that require this for proper viewing.
 content.
 [7] Attachment authentication key: This is a 256 bit random key used to
 verify the integrity of the content.
-[8] The binary representation of the attachment. Note that this is limited
+[8] The initialization vector (IV) used in the CBC encryption of the
+attachment. Size is the blocksize of the underlying block cipher.
+[9] The binary representation of the attachment. Note that this is limited
 to 4GB (2^32 bytes), which should suffice.
 The first block of this field is encrypted under the database's
 encryption key. This is so the field's type and length can be determined
 without relying on the implicit order of the fields. The rest of the blocks
-are encrypted under the AttEK in CBC mode with the first block serving as
+are encrypted under the AttEK in CBC mode with the value of ATTIV as
 the IV, using the same algorithm as the rest of the database. Padding of
 input is done with random data, as needed.
-[9] The content HMAC is calculated over the same plaintext data that
+[10] The content HMAC is calculated over the same plaintext data that
 is protected using the AttEK, including padding. HMAC calculation uses
 AttAK and SHA256.
 This field is encrypted with K (see 2.2.5). The first block of the
