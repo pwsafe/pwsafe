@@ -170,7 +170,7 @@ int FindModifierMask(Display* disp, KeySym sym)
   if (modmap) {
     const int last = 8*modmap->max_keypermod;
     //begin at 4th row, where Mod1 starts
-    for (int i = 3*modmap->max_keypermod && !modmask; i < last; i++) {
+    for (int i = Mod1MapIndex*modmap->max_keypermod; i < last && !modmask; i++) {
       //
       const KeyCode kc = modmap->modifiermap[i];
       if (!kc)
@@ -187,6 +187,7 @@ int FindModifierMask(Display* disp, KeySym sym)
             break;
           }
         }
+        XFree(symlist);
       }
     }
     XFreeModifiermap(modmap);
