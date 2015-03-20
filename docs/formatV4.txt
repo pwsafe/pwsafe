@@ -47,15 +47,15 @@ This Section summarizes minor changes from the previous format
 version, as is informative, not normative.
 1.2.4.1 Hex to Binary
 Several numeric fields in are encoded in V3 as ASCII hex data, which
-is inefficient and arguably inelegant. All such fields should be
-changed to little-endian integer values.
+is inefficient and arguably inelegant. All such fields have been
+changed to little-endian integer representations.
 1.2.4.2 Time Representation
-Time should be uniformly represented as 40 bit unsigned little-endian
+Time is uniformly represented as 40 bit unsigned little-endian
 integers, in seconds from 1/1/1970, UTC. V3 representation is 32 bits.
 1.2.4.3 Fix Minor Weakness
 The only known weakness in the V3 format is that the HMAC
 integrity check does not currently cover the field type and field
-length values. This should be fixed. 
+length values. This has been fixed.
 
 1.3 Backwards Compatibility:
 This format is NOT compatible with previous (major) versions. Note,
@@ -106,8 +106,8 @@ encrypt header HDR and records R1..Rn. As K is 256 bits, KW(Pi',K) is
 
 2.2.6 KW(Pi',L)  is the wrapped random key L that is used to
 calculate the HMAC (keyed-hash message authentication code) of the
-encrypted data. See description of EOF field below for more details.
-As L is 256 bits, KW(Pi',K) is 320 bits (40 bytes).
+data. See description of EOF field below for more details. As L is 256
+bits, KW(Pi',K) is 320 bits (40 bytes).
 Implementation Note: K and L must NOT be related. 
 
 2.3 endKB consists of two parts: The first is a 256 bit indicator of
@@ -163,7 +163,7 @@ fields for this record are, therefore:
 2.5.2.4 An "Attachment" record. This record is used to contain
 attachments, e.g., jpeg, tiff, or other media types. This record is
 defined to be "skipped over" while reading, and to be copied without
-the need to decrypt and re-encrypt. See Section TBD for details.
+the need to decrypt and re-encrypt. See Section 3.4 for details.
 
 2.5.2.5 For all records, all non-mandatory fields may either be absent
 or have zero length. When a field is absent or zero-length, its
@@ -172,13 +172,13 @@ terminating 'END' field, no order is assumed on the field types unless
 otherwise specified.
 
 2.6 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
-256 as the underlying hash function. The value is calculated over all
-of the protected fields, including the field type, the field length
-and the data stored in the field, over all fields (starting from the
-version number in the header, ending with the last field of the last
-record). The exception is the content field (of the attachment
-record), which is handled separately as described in Section TBD. The
-key L is used as the hash key value.
+256 as the underlying hash function. The value is calculated over the
+plaintect values of the field type, the field length and the data
+stored in the field, over all fields (starting from the version number
+in the header, ending with the last field of the last record). The
+exception is the content field (of the attachment record), which is
+handled separately as described in Section 3.4.2. The key L is used as
+the hash key value.
 
 3. Fields: Data in PasswordSafe is stored in typed fields. Each field
 consists of one or more blocks. The blocks are the blocks of the underlying
@@ -557,11 +557,12 @@ without relying on the implicit order of the fields. The rest of the blocks
 are encrypted under the AttEK in CBC mode with the first block serving as
 the IV, using the same algorithm as the rest of the database. Padding of
 input is done with random data, as needed.
-[9] This is calculated over the same data that is protected using the AttEK,
-including padding. HMAC calculation uses AttAK and SHA256.
-To encrypt this field, the first block of the Content field is used as the
-IV, so as to continue the database CBC stream. This field must immeidately
-follow the Content field.
+[9] The content HMAC is calculated over the same plaintext data that
+is protected using the AttEK, including padding. HMAC calculation uses
+AttAK and SHA256.
+This field is encrypted with K (see 2.2.5). The first block of the
+Content field is used as the IV, so as to continue the database CBC
+stream. This field must immediately follow the Content field.
 
 3.4.2 Changes to database HMAC calculation
 
