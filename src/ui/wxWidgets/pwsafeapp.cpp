@@ -374,11 +374,8 @@ bool PwsafeApp::OnInit()
   // here if we're the child
   recentDatabases().Load();
 
-  if (cmd_closed) {
-    m_core.SetCurFile(wxT(""));
-  }
-  if (cmd_minimized) {
-    m_core.SetCurFile(wxT(""));
+  if (cmd_closed || cmd_minimized) {
+    m_core.SetCurFile(L"");
   }
   if (cmd_silent) {
     if ( wxTaskBarIcon::IsAvailable() ) {
@@ -450,6 +447,9 @@ bool PwsafeApp::OnInit()
     if (file_in_cmd) {
        // set locked status if file was passed from command line
        m_frame->SetTrayStatus(true);
+    }
+    else {
+       m_core.SetCurFile(L"");
     }
   } else {
     SetTopWindow(m_frame);
