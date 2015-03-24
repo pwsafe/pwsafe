@@ -6,6 +6,15 @@ described in terms of .deb packages. If someone builds pwsafe on
 another distro, please update this document with the corresponding
 package names (e.g., rpm).
 
+For all Linux distros, your version of gcc/g++ needs to be 4.7 or higher
+because gcc 4.6 doesn't support the C++11 standard.  It does support the
+draft C++0x standard, but our makefiles have -std=c++11, which needs 4.7+
+
+Even 4.7 doesn't seem to support the C++11 standard fully, so if you get
+compilation errors, try using a more recent version of gcc, if possible.
+Its best to try to build pwsafe on a recent version of Linux than retrofit
+a new gcc on an old distro.
+
 Here are the packages/tools required for building the Linux version
 under Debian/Ubuntu:
 fakeroot
