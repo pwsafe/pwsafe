@@ -11,6 +11,7 @@ Source:	pwsafe-@VERSION@-src.tgz
 BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, libyubikey-devel, xerces-c-devel, ykpers-devel, wxGTK3-devel, make
 BuildRequires: zip
 BuildRequires: gettext
+%{?el7:Requires: epel-release, wxBase3, wxGTK3, xerces-c, ykpers}
 
 %description
 Password Safe is a password database utility. Like many other such
