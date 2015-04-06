@@ -6,6 +6,15 @@ Instead of the makefiles, you can use CodeLite to build Password‐
 Safe if you are missing missing the MS Visual  Studio  experience
 badly on Linux :‐)
 
+Since pwsafe uses wxWidgets 3.X now, and many distros don't ship
+that yet, you would likely need to build wxWidgets 3.x yourself,
+and point CodeLite to it so that it can pick up the headers/libs.
+Set these two environment variables in a way that CodeLite can
+"see" them:
+
+WX3_CONFIG_DEBUG=<path to wx-config of your wx3 debug build>
+WX3_CONFIG_RELEASE=<path to wx-config of your wx3 release build>
+
 NOTE:  CodeLite’s  project/workspace  files  are provided only to
 make it easier to browse/build/debug PasswordSafe from  a  conve‐
 nient  IDE.  But if you are going to use CodeLite to edit code as
