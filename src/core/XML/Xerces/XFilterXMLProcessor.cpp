@@ -133,9 +133,10 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
     } else {
       const char *szID = "database_filters";
       const char *buffer = XMLString::transcode(_W2X(strXMLData.c_str()));
+      //2nd parameter must be number of bytes, so we use a length for char* repr
       MemBufInputSource* memBufIS = new MemBufInputSource(
-                    reinterpret_cast<const XMLByte*>(buffer),
-                    strXMLData.length(),
+                    reinterpret_cast<const XMLByte *>(buffer),
+                    XMLString::stringLen(buffer),
                     szID, false);
       pSAX2Parser->parse(*memBufIS);
       delete memBufIS;

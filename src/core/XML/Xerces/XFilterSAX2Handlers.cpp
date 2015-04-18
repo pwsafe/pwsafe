@@ -600,8 +600,9 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
 {
   stringT FormatString;
   int iLineNumber, iCharacter;
-
-  const XMLCh *szErrorMessage = e.getMessage();
+  USES_XMLCH_STR
+  stringT ErrorMessage = _X2ST(e.getMessage());
+  USES_XMLCH_STR_END
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
@@ -620,11 +621,9 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
     default:
       assert(0);
   }
-
   Format(FormatString, cs_format.c_str(),
-         cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
-
-  m_strValidationResult += FormatString;
+         cs_errortype.c_str(), iLineNumber, iCharacter, ErrorMessage.c_str());
+  m_strValidationResult += FormatString + L'\n';
 }
 
 void XFilterSAX2Handlers::error(const SAXParseException& e)

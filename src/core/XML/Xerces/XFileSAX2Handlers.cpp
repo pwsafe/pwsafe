@@ -165,7 +165,9 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   stringT FormatString;
   int iLineNumber, iCharacter;
 
-  const XMLCh *szErrorMessage = e.getMessage();
+  USES_XMLCH_STR
+  stringT ErrorMessage = _X2ST(e.getMessage());
+  USES_XMLCH_STR_END
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
@@ -186,7 +188,7 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   }
 
   Format(FormatString, cs_format.c_str(),
-         cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
+         cs_errortype.c_str(), iLineNumber, iCharacter, ErrorMessage.c_str());
 
   m_strValidationResult += FormatString + _T("\r\n");
 }

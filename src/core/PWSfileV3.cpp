@@ -777,7 +777,8 @@ int PWSfileV3::ReadHeader()
           LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
           if (m_pReporter != NULL)
             (*m_pReporter)(message);
-
+          pws_os::Trace(L"Error while parsing header filters.\n\tData: %ls\n\tErrors: %ls\n",
+                        text.c_str(), strErrors.c_str());
           UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
           m_UHFL.push_back(unkhfe);
         }
