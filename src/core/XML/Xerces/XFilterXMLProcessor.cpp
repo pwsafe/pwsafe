@@ -107,9 +107,9 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
 
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                      const_cast<void*>(reinterpret_cast<const void*>(strXSDFileName.c_str())));
+                      _W2X(strXSDFileName.c_str()));
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
-                      const_cast<void*>(reinterpret_cast<const void*>(XMLUni::fgSGXMLScanner)));
+                      const_cast<XMLCh*>(XMLUni::fgSGXMLScanner));
   pSAX2Parser->setInputBufferSize(4096);
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
