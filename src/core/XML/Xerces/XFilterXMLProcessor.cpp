@@ -106,10 +106,12 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
 
   // Set properties
+  // we need const_cast here, because _W2X return const wchar_t* when
+  // WCHAR_INCOMPATIBLE_XMLCH isn't set
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                      const_cast<void*>(reinterpret_cast<const void*>(strXSDFileName.c_str())));
+                      const_cast<XMLCh*>(_W2X(strXSDFileName.c_str())));
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
-                      const_cast<void*>(reinterpret_cast<const void*>(XMLUni::fgSGXMLScanner)));
+                      const_cast<XMLCh*>(XMLUni::fgSGXMLScanner));
   pSAX2Parser->setInputBufferSize(4096);
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
@@ -133,9 +135,10 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
     } else {
       const char *szID = "database_filters";
       const char *buffer = XMLString::transcode(_W2X(strXMLData.c_str()));
+      //2nd parameter must be number of bytes, so we use a length for char* repr
       MemBufInputSource* memBufIS = new MemBufInputSource(
-                    reinterpret_cast<const XMLByte*>(buffer),
-                    strXMLData.length(),
+                    reinterpret_cast<const XMLByte *>(buffer),
+                    XMLString::stringLen(buffer),
                     szID, false);
       pSAX2Parser->parse(*memBufIS);
       delete memBufIS;

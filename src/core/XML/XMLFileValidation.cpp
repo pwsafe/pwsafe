@@ -123,10 +123,6 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
 #endif
 {
 #if USE_XML_LIBRARY == XERCES
-  USES_XMLCH_STR
-#endif
-
-#if USE_XML_LIBRARY == XERCES
   const stringT strValue(_X2ST(name));
 #else
   const stringT strValue(name);

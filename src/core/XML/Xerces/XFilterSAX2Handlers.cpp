@@ -140,8 +140,6 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
 void XFilterSAX2Handlers::characters(const XMLCh* const chars,
                                     const XMLSize_t length)
 {
-  USES_XMLCH_STR
-
   if (m_bValidation)
     return;
 
@@ -155,8 +153,6 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
 void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                              const XMLSize_t length)
 {
-  USES_XMLCH_STR
-
   if (m_bValidation)
     return;
 
@@ -600,8 +596,7 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
 {
   stringT FormatString;
   int iLineNumber, iCharacter;
-
-  const XMLCh *szErrorMessage = e.getMessage();
+  stringT ErrorMessage = _X2ST(e.getMessage());
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
@@ -620,11 +615,9 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
     default:
       assert(0);
   }
-
   Format(FormatString, cs_format.c_str(),
-         cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
-
-  m_strValidationResult += FormatString;
+         cs_errortype.c_str(), iLineNumber, iCharacter, ErrorMessage.c_str());
+  m_strValidationResult += FormatString + L'\n';
 }
 
 void XFilterSAX2Handlers::error(const SAXParseException& e)
