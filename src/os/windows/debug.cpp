@@ -28,23 +28,27 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
+  int num_required, num_written;
 
-  TCHAR szBuffer[512];
-  int nBuf = _vsntprintf(szBuffer, sizeof(szBuffer) / sizeof(TCHAR),
-                        lpszFormat, args);
-  _ASSERT(nBuf > -1);
+  num_required = GetStringBufSize(lpszFormat, args);
+  va_end(args);//after using args we should reset list
+  va_start(args, lpszFormat);
 
-  const TCHAR szErrorMsg[] = _T("pws_os::Trace buffer overflow\n");
-  const size_t N = _tcslen(nBuf > -1 ? szBuffer : szErrorMsg) + sTimeStamp.length() + 2;
+  TCHAR *szBuffer = new TCHAR[num_required];
+  num_written = _vsntprintf_s(szBuffer, num_required, num_required - 1, lpszFormat, args);
+  assert(num_required == num_written + 1);
+  szBuffer[num_required - 1] = '\0';
+
+  const size_t N = num_written + sTimeStamp.length() + 2;
   TCHAR *szDebugString = new TCHAR[N];
 
   _tcscpy_s(szDebugString, N, sTimeStamp.c_str());
   _tcscat_s(szDebugString, N, _T(" "));
-  _tcscat_s(szDebugString, N, nBuf > -1 ? szBuffer : szErrorMsg);
+  _tcscat_s(szDebugString, N, szBuffer);
 
   OutputDebugString(szDebugString);
-  delete [] szDebugString;
-
+  delete[] szDebugString;
+  delete[] szBuffer;
   va_end(args);
 }
 

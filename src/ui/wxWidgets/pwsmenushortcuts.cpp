@@ -441,8 +441,8 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
       itr->ApplyEffectiveShortcut();
     }
     else {
-      wxLogDebug(wxT("Could not find menu item id=[%d], for saved shortcut {key=[%d], mods=[%d]}"),
-                                usrItr->id, usrItr->siVirtKey, usrItr->cModifier);
+      pws_os::Trace(L"Could not find menu item id=[%d], for saved shortcut {key=[%d], mods=[%d]}",
+                    usrItr->id, usrItr->siVirtKey, usrItr->cModifier);
     }
   }
 }
