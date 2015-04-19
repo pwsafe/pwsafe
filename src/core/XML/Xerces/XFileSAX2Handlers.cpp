@@ -111,8 +111,6 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
 
 void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t length)
 {
-  USES_XMLCH_STR
-
   if (m_bValidation)
     return;
 
@@ -126,8 +124,6 @@ void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t len
 void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                            const XMLSize_t length)
 {
-  USES_XMLCH_STR
-
   if (m_bValidation)
     return;
 
@@ -165,9 +161,7 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   stringT FormatString;
   int iLineNumber, iCharacter;
 
-  USES_XMLCH_STR
   stringT ErrorMessage = _X2ST(e.getMessage());
-  USES_XMLCH_STR_END
   iLineNumber = static_cast<int>(e.getLineNumber());
   iCharacter = static_cast<int>(e.getColumnNumber());
 
