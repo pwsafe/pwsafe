@@ -95,7 +95,7 @@ bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, c
     // currently (wx 3.0.2 GTK+) after SetSizeHints() style flags are ignored
     // and maximize/minimize buttons reappear, so we need to force max size
     // to remove maximize and minimize buttons
-    if (! style & wxMAXIMIZE_BOX) {
+    if (! (style & wxMAXIMIZE_BOX)) {
       SetMaxSize(GetSize());
     }
   }
