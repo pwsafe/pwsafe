@@ -106,8 +106,10 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
 
   // Set properties
+  // we need const_cast here, because _W2X return const wchar_t* when
+  // WCHAR_INCOMPATIBLE_XMLCH isn't set
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                      _W2X(strXSDFileName.c_str()));
+                      const_cast<XMLCh*>(_W2X(strXSDFileName.c_str())));
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
                       const_cast<XMLCh*>(XMLUni::fgSGXMLScanner));
   pSAX2Parser->setInputBufferSize(4096);
