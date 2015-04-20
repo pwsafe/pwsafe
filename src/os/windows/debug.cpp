@@ -36,7 +36,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 
   TCHAR *szBuffer = new TCHAR[num_required];
   num_written = _vsntprintf_s(szBuffer, num_required, num_required - 1, lpszFormat, args);
-  _ASSERT(num_required == num_written + 1);
+  ASSERT(num_required == num_written + 1);
   szBuffer[num_required - 1] = '\0';
 
   const size_t N = num_written + sTimeStamp.length() + 2;
