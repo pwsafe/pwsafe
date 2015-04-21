@@ -36,6 +36,7 @@ using namespace std;
 #include "core/SysInfo.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
+#include "pwsclip.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
 #include "../../os/dir.h"
@@ -184,6 +185,7 @@ PwsafeApp::~PwsafeApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
+  PWSclipboard::DeleteInstance();
 
   if (m_helpController)
     delete m_helpController;
