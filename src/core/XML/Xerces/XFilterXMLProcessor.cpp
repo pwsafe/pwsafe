@@ -127,6 +127,9 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
 
   pSAX2Handler->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
 
+  // instantiate converter out of if/else to be sure that string will be valid
+  // till the end of pSAX2Parser, that may capture pointer to string from MemBufInputSource
+  CUTF8Conv conv;
   try
   {
     // Let's begin the parsing now
@@ -134,11 +137,17 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
       pSAX2Parser->parse(_W2X(strXMLFileName.c_str()));
     } else {
       const char *szID = "database_filters";
-      const char *buffer = XMLString::transcode(_W2X(strXMLData.c_str()));
-      //2nd parameter must be number of bytes, so we use a length for char* repr
+      // Xerces use encoding from XML (we have set it to utf-8), but transcode() on Windows convert to one-byte cpXXXX,
+      // so we need to manually convert from wchar to UTF-8
+      const unsigned char* buffer=nullptr;
+      size_t len;
+      if (!conv.ToUTF8(strXMLData, buffer, len)) {
+        throw std::runtime_error("Can't convert data to UTF-8");
+      }
+      //2nd parameter must be number of bytes, so we use a length for char* representation
       MemBufInputSource* memBufIS = new MemBufInputSource(
                     reinterpret_cast<const XMLByte *>(buffer),
-                    XMLString::stringLen(buffer),
+                    strlen(reinterpret_cast<const char*>(buffer)),
                     szID, false);
       pSAX2Parser->parse(*memBufIS);
       delete memBufIS;
@@ -163,7 +172,8 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
 
   if (pSAX2Handler->getIfErrors() || bErrorOccurred) {
     bErrorOccurred = true;
-    strResultText = pSAX2Handler->getValidationResult();
+    if (pSAX2Handler->getIfErrors())
+      strResultText = pSAX2Handler->getValidationResult();
     Format(m_strXMLErrors, IDSC_XERCESPARSEERROR,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str(),
            strResultText.c_str());
