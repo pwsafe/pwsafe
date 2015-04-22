@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include <map>
 #include <algorithm>
+#include <stdexcept>
 
 // Xerces includes
 #include <xercesc/util/PlatformUtils.hpp>
