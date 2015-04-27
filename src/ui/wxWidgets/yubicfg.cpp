@@ -28,6 +28,7 @@
 
 #include <wx/timer.h>
 #include "yubicfg.h"
+#include "YubiMixin.h" // for POLLING_INTERVAL
 #include "./wxutils.h"
 
 #include "core/StringX.h"
@@ -214,7 +215,7 @@ void YubiCfgDlg::CreateControls()
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_yksernum) );
   m_SKCtrl->SetValidator( wxGenericValidator(& m_yksk) );
 ////@end YubiCfgDlg content construction
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
+  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
 }
 
 

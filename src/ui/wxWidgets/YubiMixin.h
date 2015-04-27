@@ -24,6 +24,7 @@ class wxWindow;
 
 class CYubiMixin {
  public:
+  enum {POLLING_INTERVAL = 500}; // mSec
  CYubiMixin() : m_present(false), m_btn(NULL), m_status(NULL) {}
   ~CYubiMixin() {}
 

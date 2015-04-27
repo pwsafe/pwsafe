@@ -105,7 +105,7 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
+  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
 #endif
   return true;
 }
