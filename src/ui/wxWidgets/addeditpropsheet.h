@@ -290,6 +290,7 @@ public:
   wxPanel* m_BasicPanel;
   wxFlexGridSizer* m_BasicFGSizer;
   wxComboBox* m_groupCtrl;
+  wxTextCtrl* m_UsernameCtrl;
   wxTextCtrl* m_PasswordCtrl;
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;

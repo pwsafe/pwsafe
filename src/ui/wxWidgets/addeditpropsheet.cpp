@@ -169,6 +169,7 @@ void AddEditPropSheet::Init()
   m_BasicPanel = NULL;
   m_BasicFGSizer = NULL;
   m_groupCtrl = NULL;
+  m_UsernameCtrl = NULL;
   m_PasswordCtrl = NULL;
   m_ShowHideCtrl = NULL;
   m_Password2Ctrl = NULL;
@@ -269,8 +270,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl13 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemTextCtrl13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_UsernameCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicFGSizer->Add(m_UsernameCtrl , 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicFGSizer->Add(10, 13, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -626,7 +627,7 @@ void AddEditPropSheet::CreateControls()
 
   // Set validators
   itemTextCtrl10->SetValidator( wxGenericValidator(& m_title) );
-  itemTextCtrl13->SetValidator( wxGenericValidator(& m_user) );
+  m_UsernameCtrl->SetValidator( wxGenericValidator(& m_user) );
   itemTextCtrl26->SetValidator( wxGenericValidator(& m_url) );
   itemTextCtrl31->SetValidator( wxGenericValidator(& m_email) );
   m_noteTX->SetValidator( wxGenericValidator(& m_notes) );
@@ -1061,6 +1062,7 @@ void AddEditPropSheet::ShowPassword()
     m_PasswordCtrl->ChangeValue(pwd);
     m_PasswordCtrl->SetModified(true);
   }
+  m_PasswordCtrl->MoveAfterInTabOrder(m_UsernameCtrl);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
@@ -1084,6 +1086,7 @@ void AddEditPropSheet::HidePassword()
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
   ApplyPasswordFont(m_PasswordCtrl);
+  m_PasswordCtrl->MoveAfterInTabOrder(m_UsernameCtrl);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
