@@ -101,17 +101,19 @@ struct st_IDKSCSS2Offset {
   ushort uiDKOffset;           // Offset to Dead Key value
 };
 
-typedef std::vector<const st_SCSS2Offset> Vct_ISCSS2MC;
+typedef std::vector<st_SCSS2Offset> Vct_ISCSS2MC;
 typedef Vct_ISCSS2MC::const_iterator CIter_Vct_ISCSS2MC;
 
-// Disable warning can't create const fields - we never do - they are constant values
-#pragma warning(push)
-#pragma warning(disable: 4510 4512 4610)
 struct st_IKLID2SCSS2MC {
   const unsigned int uiKLID;
-  const Vct_ISCSS2MC * pvctISCSS2MC;
+  const Vct_ISCSS2MC *pvctISCSS2MC;
+
+  // User defined constructor & copy to stop warnings  4510 & 4512
+  st_IKLID2SCSS2MC(const unsigned int uiINKLID, const Vct_ISCSS2MC *pINvctISCSS2MC) :
+    uiKLID(uiINKLID), pvctISCSS2MC(pINvctISCSS2MC) {}
+
+  st_IKLID2SCSS2MC & operator=(const st_IKLID2SCSS2MC &) { return *this; }
 };
-#pragma warning(pop)
 
 // Entry in an array of structures pointing to the keyboard data for a given KLID
 struct st_IKLID2VKBD {
@@ -137,7 +139,7 @@ typedef MMap_DK2SCSSCC::iterator Iter_MMap_DK2SCSSCC;
 
 // Vector of scan codes and corresponding offset into common Deadkey data
 // for a specific deadkey for a specific keyboard
-typedef std::vector<const st_IDKSCSS2Offset> Vct_IDeadkeys;
+typedef std::vector<st_IDKSCSS2Offset> Vct_IDeadkeys;
 typedef Vct_IDeadkeys::const_iterator CIter_Vct_IDeadkeys;
 
 // Maps a given KLID's DeadKey to data area of scancode + shiftstate to character
