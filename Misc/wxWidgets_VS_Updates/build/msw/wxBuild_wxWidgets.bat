@@ -24,10 +24,11 @@
 ::					v1.10 - Added USE_GDIPLUS=1 to FLAGS for wxGraphicsContext.
 ::					v1.11 - Added support for VC 9.0
 ::          V1.12 - Added support for VC 10.0 and x64 builds
-::					V1.13 - Added support for VC 12.0 and wxWidgets 3.0 and MinGW4-w64
+::			V1.13 - Added support for VC 12.0 and wxWidgets 3.0 and MinGW4-w64
+::			V1.14 - Added support for VC 14.0
 ::**************************************************************************
 SETLOCAL
-set WXBUILD_VERSION=1.13
+set WXBUILD_VERSION=1.14
 set WXBUILD_APPNAME=wxBuild_wxWidgets
 :: MinGW Gcc install location. This must match your systems configuration.
 set GCCDIR=C:\MinGW
@@ -74,6 +75,10 @@ if %1 == VC120    	    goto SETUP_VC120_BUILD_ENVIRONMENT
 if %1 == vc120    	    goto SETUP_VC120_BUILD_ENVIRONMENT
 if %1 == VC120_64 	    goto SETUP_VC120_64_BUILD_ENVIRONMENT
 if %1 == vc120_64 	    goto SETUP_VC120_64_BUILD_ENVIRONMENT
+if %1 == VC140    	    goto SETUP_VC140_BUILD_ENVIRONMENT
+if %1 == vc140    	    goto SETUP_VC140_BUILD_ENVIRONMENT
+if %1 == VC140_64 	    goto SETUP_VC140_64_BUILD_ENVIRONMENT
+if %1 == vc140_64 	    goto SETUP_VC140_64_BUILD_ENVIRONMENT
 if %1 == MINGW    	    goto SETUP_GCC_BUILD_ENVIRONMENT
 if %1 == mingw    	    goto SETUP_GCC_BUILD_ENVIRONMENT
 if %1 == MINGW4   	    goto SETUP_GCC4_BUILD_ENVIRONMENT
@@ -257,6 +262,35 @@ set MAKE=nmake
 set MAKEFILE=makefile.vc
 set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1 CXXFLAGS=/DNEED_PBT_H=0
 set COMPILER_VERSION=120
+goto START
+
+:SETUP_VC140_BUILD_ENVIRONMENT
+:: Add the VC 2015 includes.
+echo Setting environment for Visual C++ 14.0...
+echo.
+call "%VS140COMNTOOLS%vsvars32.bat"
+set INCLUDE=%WXWIN%\include;%INCLUDE%
+:: -- Setup the make executable and the actual makefile name --
+set MAKE=nmake
+set MAKEFILE=makefile.vc
+set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1 CXXFLAGS=/DNEED_PBT_H=0
+set COMPILER_VERSION=140
+goto START
+
+:SETUP_VC140_64_BUILD_ENVIRONMENT
+:: Add the VC 2015 64-bit includes.
+echo Setting environment for Visual C++ 14.0 64-bit...
+echo.
+set CPU=AMD64
+set CMD32="%VS140COMNTOOLS%vcvarsall.bat"
+set CMD64=%CMD32:\Common7\Tools\=\VC\%
+call %CMD64% x86_amd64
+set INCLUDE=%WXWIN%\include;%INCLUDE%
+:: -- Setup the make executable and the actual makefile name --
+set MAKE=nmake
+set MAKEFILE=makefile.vc
+set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1 CXXFLAGS=/DNEED_PBT_H=0
+set COMPILER_VERSION=140
 goto START
 
 :SETUP_GCC_BUILD_ENVIRONMENT
@@ -512,6 +546,8 @@ echo           VC110         = Visual C++ 11.0
 echo           VC110_64      = Visual C++ 11.0 64-bit
 echo           VC120         = Visual C++ 12.0
 echo           VC120_64      = Visual C++ 12.0 64-bit
+echo           VC140         = Visual C++ 14.0
+echo           VC140_64      = Visual C++ 14.0 64-bit
 echo.
 echo      BuildTarget Options:
 echo           LIB   = Builds all the static library targets.
