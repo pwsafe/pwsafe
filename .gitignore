@@ -11,3 +11,4 @@ ipch
 *.wixpdb
 *.props
 *.stackdump
+/.vs
