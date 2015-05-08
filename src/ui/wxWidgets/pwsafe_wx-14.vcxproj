@@ -182,6 +182,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <DisableSpecificWarnings>4458</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -260,7 +261,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Wv:18.00.0000 %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4458</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -338,6 +339,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <DisableSpecificWarnings>4458</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -412,7 +414,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Wv:18.00.0000 %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4458</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
