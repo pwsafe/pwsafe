@@ -949,7 +949,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     int iLangPos = app.FindMenuItem(pPopupMenu, ID_LANGUAGEMENU);
     if (iLangPos >= 0) {
       CMenu *pSubMenu = pPopupMenu->GetSubMenu(iLangPos);
-      const bool brc = ProcessLanguageMenu(pSubMenu);
+      brc = ProcessLanguageMenu(pSubMenu);
       pPopupMenu->EnableMenuItem(iLangPos, MF_BYPOSITION | (brc ? MF_ENABLED : MF_GRAYED));
     }
   }

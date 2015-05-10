@@ -261,11 +261,9 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
   stringT s_temp;
   bool bsearch_dirs(true), bsearch_extns(true);
 
-  const StringX::size_type len = full_pgm.length();
-
   bfound = false;
 
-  if (len == 0)
+  if (full_pgm.length() == 0)
     return full_pgm;
 
   // Search order:
@@ -335,7 +333,7 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 
   if (!extn.empty()) {
     // ends with '.x-x'
-    StringX sx_temp = StringX(extn.c_str());
+    sx_temp = StringX(extn.c_str());
     for (StringX::size_type i = 1; i < extn.size(); i++) {
       sx_temp[i] = _totlower(sx_temp[i]);
     }

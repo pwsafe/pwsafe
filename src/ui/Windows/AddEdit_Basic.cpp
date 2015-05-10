@@ -1041,7 +1041,6 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
 UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 {
   CAddEdit_Basic *self = (CAddEdit_Basic *)me;
-  CGeneralMsgBox gmb;
 
   wchar_t szExecName[MAX_PATH + 1];
   wchar_t lpPathBuffer[4096];
@@ -1082,6 +1081,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
                                       szExecName, &dwSize);
     if (int(stat) != S_OK) {
 #ifdef _DEBUG
+      CGeneralMsgBox gmb;
       gmb.AfxMessageBox(L"oops");
 #endif
       return 16;
@@ -1354,6 +1354,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
   }
 
   if (pl.ibasedata > 0) {
+    CGeneralMsgBox gmbx;
     if (pl.TargetType == CItemData::ET_ALIAS) {
       // If user tried to point to an alias -> change to point to the 'real' base
       CString cs_msg;
@@ -1361,7 +1362,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
                     pl.csPwdGroup.c_str(),
                     pl.csPwdTitle.c_str(),
                     pl.csPwdUser.c_str());
-      if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      if (gmbx.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
         return false;
       }
     } else {
@@ -1372,7 +1373,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
                       pl.csPwdGroup.c_str(),
                       pl.csPwdTitle.c_str(), 
                       pl.csPwdUser.c_str());
-        gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
+        gmbx.AfxMessageBox(cs_msg, NULL, MB_OK);
         return false;
       } else {
         return true;

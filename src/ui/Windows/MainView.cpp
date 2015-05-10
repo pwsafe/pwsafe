@@ -3049,8 +3049,8 @@ void DboxMain::OnViewReports()
   }
 
   if (!bReportExists) {
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_NOREPORTSEXIST);
+    CGeneralMsgBox gmbx;  // Note - this variable is NOT reusable after display!
+    gmbx.AfxMessageBox(IDS_NOREPORTSEXIST);
     return;
   }
 
@@ -4123,7 +4123,6 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   CItemData *pci(NULL);
   POSITION pos;
   HTREEITEM ti;
-  int i;
 
   // Note: User can have different entries selected/visible in Tree & List Views
   if ((iView & iListOnly) == iListOnly) {
@@ -4143,7 +4142,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
     } // p != 0
 
     // Get first entry visible in CListCtrl
-    i = m_ctlItemList.GetTopIndex();
+    int i = m_ctlItemList.GetTopIndex();
     if (i >= 0) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
@@ -4472,10 +4471,10 @@ void DboxMain::RestoreGUIStatus()
   }
 
   if (SaveGUIInfo.btGroupValid) {
-    std::map<StringX, HTREEITEM>::iterator iter;
-    iter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
-    if (iter != m_mapGroupToTreeItem.end()) {
-      m_ctlItemTree.SelectItem(iter->second);
+    std::map<StringX, HTREEITEM>::iterator grouptreeiter;
+    grouptreeiter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
+    if (grouptreeiter != m_mapGroupToTreeItem.end()) {
+      m_ctlItemTree.SelectItem(grouptreeiter->second);
     }
   }
 

@@ -18,6 +18,10 @@
 #include "../debug.h"
 
 #ifndef __WX__
+
+static HKEY hSubTreeKey;      // not re-entrant, but who cares?
+static bool bSubTreeKeyValid; // not me!
+
 bool pws_os::RegCheckExists(const TCHAR *stree)
 {
   if (stree == NULL)
@@ -113,8 +117,8 @@ void pws_os::RegDeleteSubtree(const TCHAR *stree)
   }
 }
 
-static HKEY hSubkey; // not re-entrant, but who cares?
-
+// Start of registry Subtree functions
+// Use static variable hSubTreeKey to hold registry key handle between calls.
 bool pws_os::RegOpenSubtree(const TCHAR *stree)
 {
   const stringT streeT(stree);
@@ -124,12 +128,16 @@ bool pws_os::RegOpenSubtree(const TCHAR *stree)
                            OldAppKey.c_str(),
                            NULL,
                            KEY_ALL_ACCESS,
-                           &hSubkey);
-  return (dw == ERROR_SUCCESS);
+                           &hSubTreeKey);
+  bSubTreeKeyValid = (dw == ERROR_SUCCESS);
+  return bSubTreeKeyValid;
 }
 
 bool pws_os::RegReadSTValue(const TCHAR *name, bool &value)
 {
+  if (!bSubTreeKeyValid)
+    return bSubTreeKeyValid;
+
   int v;
   bool retval = RegReadSTValue(name, v);
   if (retval)
@@ -139,10 +147,13 @@ bool pws_os::RegReadSTValue(const TCHAR *name, bool &value)
 
 bool pws_os::RegReadSTValue(const TCHAR *name, int &value)
 {
+  if (!bSubTreeKeyValid)
+    return bSubTreeKeyValid;
+
   bool retval = false;
   LONG rv;
   DWORD dwType, vData, DataLen(sizeof(vData));
-  rv = ::RegQueryValueEx(hSubkey,
+  rv = ::RegQueryValueEx(hSubTreeKey,
                          name,
                          NULL,
                          &dwType,
@@ -157,39 +168,49 @@ bool pws_os::RegReadSTValue(const TCHAR *name, int &value)
 
 bool pws_os::RegReadSTValue(const TCHAR *name, stringT &value)
 {
+  if (!bSubTreeKeyValid)
+    return bSubTreeKeyValid;
+
   bool retval = false;
   LONG rv;
   DWORD dwType, DataLen;
-  rv = ::RegQueryValueEx(hSubkey,
+  rv = ::RegQueryValueEx(hSubTreeKey,
                          name,
                          NULL,
                          &dwType,
                          NULL,
                          &DataLen);
   if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
-        DataLen++;
-        TCHAR *pData = new TCHAR[DataLen];
-        ::memset(pData, 0, DataLen);
-        rv = ::RegQueryValueEx(hSubkey,
-                               name,
-                               NULL,
-                               &dwType,
-                               LPBYTE(pData),
-                               &DataLen);
+    DataLen++;
+    TCHAR *pData = new TCHAR[DataLen];
+    ::memset(pData, 0, DataLen);
+    rv = ::RegQueryValueEx(hSubTreeKey,
+                            name,
+                            NULL,
+                            &dwType,
+                            LPBYTE(pData),
+                            &DataLen);
 
-        if (rv == ERROR_SUCCESS) {
-          value = pData;
-          retval = true;
-        }
-        delete[] pData;
+    if (rv == ERROR_SUCCESS) {
+      value = pData;
+      retval = true;
+    }
+    delete[] pData;
   }
   return retval;
 }
 
 bool pws_os::RegCloseSubtree()
 {
-  return (::RegCloseKey(hSubkey) == ERROR_SUCCESS);
+  if (!bSubTreeKeyValid)
+    return bSubTreeKeyValid;
+
+  bool retval = (::RegCloseKey(hSubTreeKey) == ERROR_SUCCESS);
+  bSubTreeKeyValid = false;
+  return retval;
 }
+
+// End of registry Subtree functions
 
 bool pws_os::DeleteRegistryEntries()
 {

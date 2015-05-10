@@ -122,9 +122,9 @@ void CAboutDlg::CheckNewVer()
   // and notify the user
   // First, make sure database is closed: Sensitive data with an
   // open socket makes me uneasy...
-  CGeneralMsgBox gmb;
 
   if (GetMainDlg()->GetNumEntries() != 0) {
+    CGeneralMsgBox gmb;
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
     INT_PTR rc = gmb.MessageBox(cs_txt, cs_title,
@@ -155,6 +155,7 @@ void CAboutDlg::CheckNewVer()
       break;
     case CheckVersion::NEWER_AVAILABLE:
       {
+      CGeneralMsgBox gmb;
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
                    m_appversion, latest.c_str());

@@ -263,7 +263,7 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
     SetItemText(i, FLC_LGC_COMBOBOX, L"");
 
     // Add a new filter to vector
-    st_FilterRow newfilter;
+    newfilter.Empty();
     m_pvfdata->push_back(newfilter);
     (*m_pnumactive)++;
   }
@@ -1806,11 +1806,11 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     if (m_rowheight < 0) {
       // Set row height to take image by adding a dummy ImageList
       // Good trick - save making ComboBox "ownerdraw"
-      CRect rect;
-      m_pComboBox->GetClientRect(&rect);
+      CRect combo_rect;
+      m_pComboBox->GetClientRect(&combo_rect);
       IMAGEINFO imageinfo;
       m_pCheckImageList->GetImageInfo(0, &imageinfo);
-      m_rowheight = max(rect.Height(),
+      m_rowheight = max(combo_rect.Height(),
                         abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
 
       m_pImageList = new CImageList;

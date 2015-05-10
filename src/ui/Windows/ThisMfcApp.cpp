@@ -1370,7 +1370,9 @@ void ThisMfcApp::GetLanguageFiles()
   // Add default embedded language - English
   const LCID AppLCID = MAKELCID(m_AppLangID, SORT_DEFAULT); // 0x0409 - English US
 
-  wchar_t *szLanguage_Native(NULL);
+  wchar_t *szLanguage_Native(NULL), *szLanguage_English(NULL);
+  wchar_t *szCountry_Native(NULL), *szCountry_English(NULL);
+
   int inum = ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native, 0);
   if (inum > 0) {
     szLanguage_Native = new wchar_t[inum + 1];
@@ -1422,10 +1424,7 @@ void ThisMfcApp::GetLanguageFiles()
     // Create LCID
     LCID lcid = MAKELCID(FoundResLangID, SORT_DEFAULT);
 
-    wchar_t *szLanguage_Native(NULL), *szLanguage_English(NULL);
-    wchar_t *szCountry_Native(NULL), *szCountry_English(NULL);
-
-    int inum = ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, NULL, 0);
+    inum = ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, NULL, 0);
     if (inum > 0) {
       // Get language name in that language
       szLanguage_Native = new wchar_t[inum + 1];

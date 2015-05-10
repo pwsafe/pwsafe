@@ -342,7 +342,6 @@ void CManagePSWDPols::OnNew()
 
   if (rc == IDOK) {
     m_bChanged = true;
-    CString cs_policyname;
     
     // Get new named password policy
     pDlg->GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);

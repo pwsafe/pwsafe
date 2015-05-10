@@ -818,7 +818,6 @@ LRESULT CWZAdvanced::OnWizardNext()
           break;
       }
 
-      CGeneralMsgBox gmb;
       CString cs_msg;
       cs_temp.LoadString(uimsg);
       cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, cs_temp);

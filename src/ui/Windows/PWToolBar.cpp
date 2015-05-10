@@ -377,9 +377,9 @@ CString CPWToolBar::GetButtonString() const
     }
 
     int index = -1;
-    for (int i = 0; i < _countof(MainGuiInfo); i++) {
-      if (MainGuiInfo[i].ID == UINT(tbinfo.idCommand)) {
-        index = i;
+    for (int j = 0; j < _countof(MainGuiInfo); j++) {
+      if (MainGuiInfo[j].ID == UINT(tbinfo.idCommand)) {
+        index = j;
         break;
       }
     }

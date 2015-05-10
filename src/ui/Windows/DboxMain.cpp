@@ -1766,10 +1766,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         rc = pcore->WriteCurFile();
 
         if (rc == PWScore::CANT_OPEN_FILE) {
-          CGeneralMsgBox gmb;
+          CGeneralMsgBox gmbx;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
           cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
-          gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+          gmbx.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
           // By definition - new files can't be read-only!
@@ -3048,17 +3048,17 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        const CItemData *pci = getSelectedItem();
-        if (pci == NULL) {
+        const CItemData *pcix = getSelectedItem();
+        if (pcix == NULL) {
           iEnable = FALSE;
         } else {
-          if (pci->IsShortcut()) {
-            pci = GetBaseEntry(pci);
+          if (pcix->IsShortcut()) {
+            pcix = GetBaseEntry(pci);
           }
 
-          if (pci->IsEmailEmpty() && 
-              (pci->IsURLEmpty() || 
-              (!pci->IsURLEmpty() && !pci->IsURLEmail()))) {
+          if (pcix->IsEmailEmpty() &&
+              (pcix->IsURLEmpty() ||
+              (!pcix->IsURLEmpty() && !pcix->IsURLEmail()))) {
             iEnable = FALSE;
           }
         }
@@ -3075,35 +3075,35 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        const CItemData *pci = getSelectedItem();
-        if (pci == NULL) {
+        const CItemData *pcix = getSelectedItem();
+        if (pcix == NULL) {
           iEnable = FALSE;
         } else {
-          if (pci->IsShortcut()) {
-            pci = GetBaseEntry(pci);
+          if (pcix->IsShortcut()) {
+            pcix = GetBaseEntry(pcix);
           }
 
           switch (nID) {
             case ID_MENUITEM_COPYUSERNAME:
-              if (pci->IsUserEmpty()) {
+              if (pcix->IsUserEmpty()) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_COPYNOTESFLD:
-              if (pci->IsNotesEmpty()) {
+              if (pcix->IsNotesEmpty()) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_COPYEMAIL:
-              if (pci->IsEmailEmpty() ||
-                  (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+              if (pcix->IsEmailEmpty() ||
+                  (!pcix->IsURLEmpty() && pcix->IsURLEmail())) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_BROWSEURL:
             case ID_MENUITEM_BROWSEURLPLUS:
             case ID_MENUITEM_COPYURL:
-              if (pci->IsURLEmpty()) {
+              if (pcix->IsURLEmpty()) {
                 iEnable = FALSE;
               }
               break;
@@ -3123,13 +3123,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *pci = getSelectedItem();
-        if (pci == NULL) {
+        CItemData *pcix = getSelectedItem();
+        if (pcix == NULL) {
           iEnable = FALSE;
         } else {
           // Can only define a shortcut on a normal entry or
           // one that is already a shortcut base
-          if (!pci->IsNormal() && !pci->IsShortcutBase()) {
+          if (!pcix->IsNormal() && !pcix->IsShortcutBase()) {
             iEnable = FALSE;
           }
         }

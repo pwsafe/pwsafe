@@ -77,7 +77,6 @@ bool PerformConfigMigration()
   ASSERT(OfferConfigMigration()); // should not be here otherwise!
   if (!OfferConfigMigration()) return false; // I mean it!
 
-  CGeneralMsgBox gmb;  // Note: CGeneralMsgBox is not re-useable.
   PWSprefs::ConfigOption configoption;  // Note value meaningless at this point!
   std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
   const std::wstring wsExecDir = pws_os::getexecdir();

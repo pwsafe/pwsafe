@@ -793,8 +793,8 @@ void COptions::PrefsToPropSheet()
   m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
   m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
   if (!wxTaskBarIcon::IsAvailable()) {
-	  m_systrayWarning->Show();
-	  Layout();
+    m_systrayWarning->Show();
+    Layout();
   }
   m_sysstartup = false; // XXX TBD
   m_sysmaxmru = prefs->GetPref(PWSprefs::MaxMRUItems);

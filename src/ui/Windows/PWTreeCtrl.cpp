@@ -1761,6 +1761,7 @@ HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
 void CPWTreeCtrl::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
 {
   if (hItem) {
+    // Start at supplied entry
     functor(hItem); // apply whatever needs to be done
     hItem = GetNextItem(hItem, TVGN_CHILD);
     while (hItem) {
@@ -1768,14 +1769,14 @@ void CPWTreeCtrl::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
       hItem = GetNextItem(hItem, TVGN_NEXT);
     }
   } else {
-    HTREEITEM hItem = GetNextItem(NULL, TVGN_ROOT);
-    while (hItem) {
-      Iterate(hItem, functor);
-      hItem = GetNextItem(hItem, TVGN_NEXT);
+    // Start at root
+    HTREEITEM hItem2 = GetNextItem(NULL, TVGN_ROOT);
+    while (hItem2) {
+      Iterate(hItem2, functor);
+      hItem2 = GetNextItem(hItem2, TVGN_NEXT);
     }
   }
 }
-
 
 bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
@@ -2197,7 +2198,7 @@ bad_return:
   if (retval == FALSE) {
     pws_os::Trace(L"CPWTreeCtrl::RenderTextData - returning FALSE!\n");
     if (*phgData != NULL) {
-      LPVOID lpData = GlobalLock(*phgData);
+      lpData = GlobalLock(*phgData);
       SIZE_T memsize = GlobalSize(*phgData);
       if (lpData != NULL && memsize > 0) {
         trashMemory(lpData, memsize);
@@ -2306,7 +2307,7 @@ bad_return:
   if (retval == FALSE) {
     pws_os::Trace(L"CPWTreeCtrl::RenderAllData - returning FALSE!\n");
     if (m_hgDataALL != NULL) {
-      LPVOID lpData = GlobalLock(m_hgDataALL);
+      lpData = GlobalLock(m_hgDataALL);
       SIZE_T memsize = GlobalSize(m_hgDataALL);
       if (lpData != NULL && memsize > 0) {
         trashMemory(lpData, memsize);

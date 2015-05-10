@@ -570,7 +570,6 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
-      CString cs_errmsg;
       cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, cs_HotKey,
                        sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
       m_stc_warning.SetWindowText(cs_errmsg);
@@ -595,7 +594,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Warn user that it is already in use for a menu item
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
-      CString cs_errmsg, cs_override(MAKEINTRESOURCE(IDS_ENTRYKBST_OVERRIDE));
+      CString cs_override(MAKEINTRESOURCE(IDS_ENTRYKBST_OVERRIDE));
       cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
@@ -656,7 +655,6 @@ BOOL CAddEdit_Additional::OnApply()
     return FALSE; //CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
-  CGeneralMsgBox gmb;
 
   UpdateData(TRUE);
   M_autotype().EmptyIfOnlyWhiteSpace();
@@ -683,6 +681,7 @@ BOOL CAddEdit_Additional::OnApply()
                                    bAutoType, sxAutotype, errmsg, st_column,
                                    bURLSpecial);
     if (errmsg.length() > 0) {
+      CGeneralMsgBox gmb;
       CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_RUN_IGNOREORFIX));
       CString cs_errmsg;
@@ -720,6 +719,7 @@ BOOL CAddEdit_Additional::OnApply()
 
   if (M_SavePWHistory() == TRUE &&
       (M_MaxPWHistory() < 1 || M_MaxPWHistory() > 255)) {
+    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
     pFocus = GetDlgItem(IDC_MAXPWHISTORY);
     goto error;

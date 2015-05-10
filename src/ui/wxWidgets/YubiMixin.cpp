@@ -93,9 +93,9 @@ void CYubiMixin::UpdateStatus()
 }
 
 bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
-					  const StringX &challenge,
-					  StringX &response,
-					  bool oldYubiChallenge)
+            const StringX &challenge,
+            StringX &response,
+            bool oldYubiChallenge)
 {
   bool retval = false;
   m_status->SetForegroundColour(wxNullColour);

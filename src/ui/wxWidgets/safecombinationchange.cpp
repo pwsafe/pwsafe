@@ -349,7 +349,7 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
   if (Validate() && TransferDataFromWindow()) {
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (m_yubiMixin1.PerformChallengeResponse(this, m_oldpasswd,
-					      m_oldresponse, oldYubiChallenge)) {
+                m_oldresponse, oldYubiChallenge)) {
       // Verify the response - a convenience, as we double check in OnYubibtn2Click().
       int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
       if (rc == PWScore::WRONG_PASSWORD) {

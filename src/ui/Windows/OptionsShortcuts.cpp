@@ -118,36 +118,36 @@ BOOL COptionsShortcuts::OnInitDialog()
   cs_colname.LoadString(IDS_COL_MENUITEM);
   m_ShortcutLC.InsertColumn(1, cs_colname);  // SHCT_MENUITEMTEXT
 
-  MapMenuShortcutsIter iter, iter_parent;
+  MapMenuShortcutsIter MenuMapiter, MenuMapiter_parent;
   CString str;
   int iItem(0);
 
-  for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
-       iter++) {
+  for (MenuMapiter = m_MapMenuShortcuts.begin(); MenuMapiter != m_MapMenuShortcuts.end();
+       MenuMapiter++) {
     // We don't allow change of certain menu items
     // Just don't put in the list that the user sees.
-    if (iter->second.uiParentID == 0)
+    if (MenuMapiter->second.uiParentID == 0)
       continue;
 
     if (std::find(m_ExcludedMenuItems.begin(),
                   m_ExcludedMenuItems.end(),
-                  iter->first) != m_ExcludedMenuItems.end())
+                  MenuMapiter->first) != m_ExcludedMenuItems.end())
         continue;
 
-    str = CMenuShortcut::FormatShortcut(iter);
+    str = CMenuShortcut::FormatShortcut(MenuMapiter);
 
-    iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
-    ASSERT(iter_parent != m_MapMenuShortcuts.end());
-    CString sMenuItemtext = (CString(iter_parent->second.name.c_str()) + 
+    MenuMapiter_parent = m_MapMenuShortcuts.find(MenuMapiter->second.uiParentID);
+    ASSERT(MenuMapiter_parent != m_MapMenuShortcuts.end());
+    CString sMenuItemtext = (CString(MenuMapiter_parent->second.name.c_str()) +
                              CString(L" \xbb ") +
-                             CString(iter->second.name.c_str()));
+                             CString(MenuMapiter->second.name.c_str()));
 
     // Remove the ampersand from the menu item the user sees here
     sMenuItemtext.Remove(L'&');
 
     iItem = m_ShortcutLC.InsertItem(iItem, str);  // SHCT_SHORTCUTKEYS
     m_ShortcutLC.SetItemText(iItem, 1, sMenuItemtext); // SHCT_MENUITEMTEXT
-    DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
+    DWORD dwData = MAKELONG(MenuMapiter->first, MenuMapiter->second.iMenuPosition);
     m_ShortcutLC.SetItemData(iItem, dwData);
   } // foreach m_MapMenuShortcuts
 
@@ -761,7 +761,7 @@ int COptionsShortcuts::CheckAppHotKey()
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
-      CString cs_errmsg;
+
       cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, cs_HotKey,
                        sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
       m_stc_warning.SetWindowText(cs_errmsg);
@@ -786,7 +786,7 @@ int COptionsShortcuts::CheckAppHotKey()
       // Warn user that it is already in use for a menu item
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
-      CString cs_errmsg, cs_override(MAKEINTRESOURCE(IDS_APPHOTKEY_OVERRIDE));
+      CString cs_override(MAKEINTRESOURCE(IDS_APPHOTKEY_OVERRIDE));
       cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);

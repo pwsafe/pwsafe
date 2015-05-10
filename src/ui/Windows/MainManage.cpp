@@ -474,6 +474,8 @@ void DboxMain::OnOptions()
     // Allow even if no entries (yet) in database and if the database is R-O.
     // In the latter case - just won't be saved but will do what the user wants
     // in this session with this database, until the database is closed.
+    Command *pcmd;
+
     if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplayng due to change
@@ -484,17 +486,17 @@ void DboxMain::OnOptions()
         bool bNeedGUITreeUpdate = bUserDisplayChanged || 
                  (pOptionsPS->ShowUsernameInTree() && bPswdDisplayChanged);
         if (bNeedGUITreeUpdate) {
-          Command *pcmd = UpdateGUICommand::Create(&m_core,
-                                                   UpdateGUICommand::WN_UNDO,
-                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+          pcmd = UpdateGUICommand::Create(&m_core,
+                                                  UpdateGUICommand::WN_UNDO,
+                                                  UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
           pmulticmds->Add(pcmd);
         }
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
         if (bNeedGUITreeUpdate) {
-          Command *pcmd = UpdateGUICommand::Create(&m_core,
-                                                   UpdateGUICommand::WN_EXECUTE_REDO,
-                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+          pcmd = UpdateGUICommand::Create(&m_core,
+                                                  UpdateGUICommand::WN_EXECUTE_REDO,
+                                                  UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
           pmulticmds->Add(pcmd);
         }
       }
@@ -506,20 +508,20 @@ void DboxMain::OnOptions()
     int num_altered(0);
 
     if (iAction != 0) {
-      Command *pcmd1 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_UNDO,
-                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
-      pmulticmds->Add(pcmd1);
-      Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
-                                                           iAction,
-                                                           new_default_max);
+      pcmd = UpdateGUICommand::Create(&m_core,
+                                              UpdateGUICommand::WN_UNDO,
+                                              UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd);
+      pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                          iAction,
+                                                          new_default_max);
       pmulticmds->Add(pcmd);
       ipwh_exec = pmulticmds->GetSize();
 
-      Command *pcmd2 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
-      pmulticmds->Add(pcmd2);
+      pcmd = UpdateGUICommand::Create(&m_core,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd);
     }
 
     // If DB preferences changed and/or password history options

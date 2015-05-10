@@ -116,7 +116,7 @@ BOOL DboxMain::OpenOnInit()
   if (rc == PWScore::OPEN_NODB)
     return TRUE;
 
-  CString cs_title;
+  CString cs_title, cs_msg;
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();
   bool bReporterSet = m_core.IsReporterSet();
@@ -159,7 +159,6 @@ BOOL DboxMain::OpenOnInit()
       } else {
         // Here if there was a filename saved from last invocation, but it couldn't
         // be opened. It was either removed or renamed, so ask the user what to do
-        CString cs_msg;
         cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
@@ -211,7 +210,7 @@ BOOL DboxMain::OpenOnInit()
       rc2 == PWScore::TRUNCATED_FILE ||
       rc2 == PWScore::READ_FAIL) {
     CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR)), cs_msg;
+    cs_title.LoadString(IDS_FILEREADERROR);
     cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
       CDialog::OnCancel();
@@ -224,17 +223,15 @@ BOOL DboxMain::OpenOnInit()
     rc2 = PWScore::SUCCESS;
 
     CGeneralMsgBox gmb;
-    std::wstring cs_title, cs_msg;
-    LoadAString(cs_title, IDS_RPTVALIDATE);
-    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
-    gmb.SetTitle(cs_title.c_str());
-    gmb.SetMsg(cs_msg.c_str());
+    cs_title.LoadString(IDS_RPTVALIDATE);
+    cs_msg.LoadString(IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
 
-    INT_PTR rc2 = gmb.DoModal();
-    if (rc2 == IDS_VIEWREPORT)
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(Rpt);
   }
 
@@ -697,7 +694,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   INT_PTR rc1;
   int rc;
   StringX passkey;
-  CString cs_temp, cs_title, cs_text;
+  CString cs_temp, cs_title, cs_text, cs_msg;
 
   //Check that this file isn't already open
   if (sx_Filename == m_core.GetCurFile() && !m_bDBNeedsReading) {
@@ -845,17 +842,15 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   if (rc == PWScore::OK_WITH_VALIDATION_ERRORS) {
     rc = PWScore::SUCCESS;
 
-    std::wstring cs_title, cs_msg;
-    LoadAString(cs_title, IDS_RPTVALIDATE);
-    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
-    gmb.SetTitle(cs_title.c_str());
-    gmb.SetMsg(cs_msg.c_str());
+    cs_title.LoadString(IDS_RPTVALIDATE);
+    cs_msg.LoadString(IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
 
-    INT_PTR rc2 = gmb.DoModal();
-    if (rc2 == IDS_VIEWREPORT)
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(Rpt);
   }
 
@@ -1085,8 +1080,8 @@ int DboxMain::Save(const SaveType savetype)
               gmb.SetStandardIcon(MB_ICONEXCLAMATION);
               gmb.AddButton(IDS_SAVEAS, IDS_SAVEAS);
               gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
-              INT_PTR rc = gmb.DoModal();
-              if (rc == IDS_EXIT)
+
+              if (gmb.DoModal() == IDS_EXIT)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
@@ -1231,23 +1226,24 @@ int DboxMain::SaveAs()
 {
   PWS_LOGIT;
 
-  CGeneralMsgBox gmb;
   INT_PTR rc;
   StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+    CGeneralMsgBox gmb;
+
     cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
-    CGeneralMsgBox gmb;
+
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
     gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_CANCEL)
+
+    if (gmb.DoModal() == IDS_CANCEL)
       return PWScore::USER_CANCEL;
   }
 
@@ -1305,6 +1301,7 @@ int DboxMain::SaveAs()
   std::wstring locker(L""); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
+    CGeneralMsgBox gmb;
     cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
@@ -1774,8 +1771,8 @@ void DboxMain::OnImportText()
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_VIEWREPORT)
+
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(rpt);
 
     // May need to update menu/toolbar if original database was empty
@@ -1887,8 +1884,8 @@ void DboxMain::OnImportKeePassV1CSV()
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_VIEWREPORT)
+
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(rpt);
   }
 }
@@ -1998,8 +1995,8 @@ void DboxMain::OnImportKeePassV1TXT()
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_VIEWREPORT)
+
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(rpt);
   }
 }
@@ -2014,6 +2011,7 @@ void DboxMain::OnImportXML()
   cs_text.LoadString(IDS_PICKXMLFILE);
 
   CGeneralMsgBox gmb;
+
   // Initialize set
   GTUSet setGTU;
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
@@ -2027,7 +2025,6 @@ void DboxMain::OnImportXML()
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
   if (!pws_os::FileExists(XSDFilename)) {
-    CGeneralMsgBox gmb;
     cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
@@ -2207,8 +2204,8 @@ void DboxMain::OnImportXML()
     gmb.SetMsg(cs_temp);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_VIEWREPORT)
+
+    if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(rpt);
 
     // May need to update menu/toolbar if original database was empty
@@ -2252,9 +2249,7 @@ void DboxMain::ChangeMode(bool promptUser)
        // But ask just in case
        CGeneralMsgBox gmb;
        CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
-       INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);
-
-       if (rc == IDNO)
+       if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO)
          return;
 
       // User said No to the save - so we must back-out all changes since last save

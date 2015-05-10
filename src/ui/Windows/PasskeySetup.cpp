@@ -127,7 +127,6 @@ void CPasskeySetup::OnOK()
     CString cs_msg, cs_text;
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-    CGeneralMsgBox gmb;
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
     INT_PTR rc = gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONSTOP);

@@ -755,12 +755,12 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
 
   bool bSave = m_FPROPHeader.GetStopChangeFlag();
   m_FPROPHeader.SetStopChangeFlag(false);
-  for (int i = 0; i < MFPRP_CRITERIA_TEXT; i++) {
-    m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE);
-    int iw1 =  m_FilterProperties.GetColumnWidth(i);
-    m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-    int iw2 =  m_FilterProperties.GetColumnWidth(i);
-    m_FilterProperties.SetColumnWidth(i, max(iw1, iw2));
+  for (int j = 0; j < MFPRP_CRITERIA_TEXT; j++) {
+    m_FilterProperties.SetColumnWidth(j, LVSCW_AUTOSIZE);
+    int iw1 =  m_FilterProperties.GetColumnWidth(j);
+    m_FilterProperties.SetColumnWidth(j, LVSCW_AUTOSIZE_USEHEADER);
+    int iw2 =  m_FilterProperties.GetColumnWidth(j);
+    m_FilterProperties.SetColumnWidth(j, max(iw1, iw2));
   }
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterProperties.SetRedraw(TRUE);

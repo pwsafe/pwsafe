@@ -385,7 +385,7 @@ void DboxMain::OnDuplicateGroup()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  bool bRefresh(true);
+  bool bRefresh(true), bState;
   // Get selected group
   HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
 
@@ -410,8 +410,7 @@ void DboxMain::OnDuplicateGroup()
   // Have new group - now copy all entries in current group to new group
 
   std::vector<bool> bVNodeStates; // new group will have old's expanded nodes
-  bool bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) &
-                 TVIS_EXPANDED) != 0;
+  bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
   bVNodeStates.push_back(bState);
 
   // Get all of the children
@@ -472,8 +471,7 @@ void DboxMain::OnDuplicateGroup()
         pcmd->SetNoGUINotify();
         pmulti_cmd_base->Add(pcmd);
       } else { // pci == NULL -> This is a node: save its expanded/collapsed state
-        bool bState = (m_ctlItemTree.GetItemState(hNextItem, TVIS_EXPANDED) &
-                       TVIS_EXPANDED) != 0;
+        bState = (m_ctlItemTree.GetItemState(hNextItem, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
         bVNodeStates.push_back(bState);
       }
     } // for
@@ -1116,6 +1114,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // But the common case is simply to replace the original entry
   // with a new one having the edited values and the same uuid.
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+  Command *pcmd(NULL);
 
   StringX newPassword = pci_new->GetPassword();
 
@@ -1134,9 +1133,9 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       pci_original->GetPassword() != newPassword) {
     // Original was a 'normal' entry and the password has changed
     if (pentry_psh->GetIBasedata() > 0) { // Now an alias
-      Command *pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
-                                                       original_uuid,
-                                                       CItemData::ET_ALIAS);
+      pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
+                                                     original_uuid,
+                                                     CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
       pci_new->SetPassword(L"[Alias]");
       pci_new->SetAlias();
@@ -1149,25 +1148,23 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_ALIAS) {
     // Original was an alias - delete it from multimap
     // RemoveDependentEntry also resets base to normal if no more dependents
-    Command *pcmd = RemoveDependentEntryCommand::Create(pcore,
-                                                        original_base_uuid,
-                                                        original_uuid,
-                                                        CItemData::ET_ALIAS);
+    pcmd = RemoveDependentEntryCommand::Create(pcore, original_base_uuid,
+                                                      original_uuid,
+                                                      CItemData::ET_ALIAS);
     pmulticmds->Add(pcmd);
     if (newPassword == pentry_psh->GetBase()) {
       // Password (i.e. base) unchanged - put it back
-      Command *pcmd = AddDependentEntryCommand::Create(pcore,
-                                                       original_base_uuid,
-                                                       original_uuid,
-                                                       CItemData::ET_ALIAS);
+      pcmd = AddDependentEntryCommand::Create(pcore, original_base_uuid,
+                                                     original_uuid,
+                                                     CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
     } else { // Password changed
       // Password changed so might be an alias of another entry!
       // Could also be the same entry i.e. [:t:] == [t] !
       if (pentry_psh->GetIBasedata() > 0) { // Still an alias
-        Command *pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
-                                                         original_uuid,
-                                                         CItemData::ET_ALIAS);
+        pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
+                                                       original_uuid,
+                                                       CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
         pci_new->SetPassword(L"[Alias]");
         pci_new->SetAlias();
@@ -1184,18 +1181,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     if (pentry_psh->GetIBasedata() > 0) {
       // Now an alias
       // Make this one an alias
-      Command *pcmd1 = AddDependentEntryCommand::Create(pcore, new_base_uuid,
-                                                        original_uuid,
-                                                        CItemData::ET_ALIAS);
-      pmulticmds->Add(pcmd1);
+      pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
+                                                     original_uuid,
+                                                     CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
       pci_new->SetPassword(L"[Alias]");
       pci_new->SetAlias();
       // Move old aliases across
-      Command *pcmd2 = MoveDependentEntriesCommand::Create(pcore,
-                                                           original_uuid,
-                                                           new_base_uuid,
-                                                           CItemData::ET_ALIAS);
-      pmulticmds->Add(pcmd2);
+      pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
+                                                        new_base_uuid,
+                                                        CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
     } else { // Still a base entry but with a new password
       pci_new->SetPassword(newPassword);
       pci_new->SetAliasBase();
@@ -1221,8 +1217,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   pci_new->SetStatus(CItemData::ES_MODIFIED);
 
-  Command *pcmd = EditEntryCommand::Create(pcore, *(pci_original),
-                                                  *(pci_new));
+  pcmd = EditEntryCommand::Create(pcore, *(pci_original), *(pci_new));
   pmulticmds->Add(pcmd);
 
   Execute(pmulticmds, pcore);
