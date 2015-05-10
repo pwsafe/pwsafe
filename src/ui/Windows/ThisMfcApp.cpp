@@ -52,11 +52,6 @@
 #include <errno.h>
 #include <io.h>
 
-// Only produce minidumps in release code
-#ifndef _DEBUG
-#include "Dbghelp.h"
-#endif
-
 using namespace std;
 
 #ifdef _DEBUG

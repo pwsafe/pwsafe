@@ -15,7 +15,18 @@ enum UserStream {usAll = -2, usPrefs = -1, us0 = 0, us1 = 1, us2 = 2, us3 = 3};
 #include "stdafx.h"
 #include "core/PWSprefs.h"
 
-#include <dbghelp.h>
+#if _MSC_VER < 1900
+  #include <dbghelp.h>
+#else
+  // VS2015 RC produces warnings from SDK dbghelp.h re: lines 1544 & 3190
+  //   'typedef ': ignored on left of '' when no variable is declared
+  // Hopefully fixed by MS by the time it is released and this warning
+  // suppression can be removed.
+  #pragma warning(push)
+  #pragma warning(disable: 4091)
+  #include <dbghelp.h>
+  #pragma warning(pop)
+#endif
 
 // User stream 0 version
 #define IVERSION 1
