@@ -39,7 +39,7 @@ const size_t CPasswordCharPool::std_digit_len = LENGTH(std_digit_chars);
 const charT CPasswordCharPool::std_hexdigit_chars[] = _T("0123456789abcdef");
 const size_t CPasswordCharPool::std_hexdigit_len = LENGTH(std_hexdigit_chars);
 
-const charT CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|");
+const charT CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|*");
 const size_t CPasswordCharPool::std_symbol_len = LENGTH(std_symbol_chars);
 
 const charT CPasswordCharPool::easyvision_lowercase_chars[] = _T("abcdefghijkmnopqrstuvwxyz");
@@ -51,7 +51,7 @@ const size_t CPasswordCharPool::easyvision_uppercase_len = LENGTH(easyvision_upp
 const charT CPasswordCharPool::easyvision_digit_chars[] = _T("346789");
 const size_t CPasswordCharPool::easyvision_digit_len = LENGTH(easyvision_digit_chars);
 
-const charT CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?");
+const charT CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?*");
 const size_t CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol_chars);
 
 const charT CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
