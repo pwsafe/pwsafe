@@ -21,6 +21,7 @@
 #include "vsstyle.h"
 
 #include <algorithm>
+#include <locale>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1130,8 +1131,16 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   }
 
   wint_t wChar = reinterpret_cast<wint_t &>(nChar);
-  // Must be a valid symbol, per current valid set
-  if (m_validSym.find(wChar) != std::string::npos) {
+  // Do not limit user to 'our' definition of symbols
+  // i.e. allow such things as currency symbols - £, € & ¥ etc.
+  // Note: EasyVision and MakePronounceable symbols will still be
+  // restricted to our lists defined in CPasswordCharPool as will the
+  // default symbol set.
+
+  // Can't know user's valid symbols in their locale so just
+  // prevent user's locale letters & numbers
+  std::locale locl("");
+  if (!std::isalnum(wChar, locl)) {
     CString cs_text;
     GetWindowText(cs_text);
     // Must not have duplicates
@@ -1161,10 +1170,13 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
   GetWindowText(cs_text);
   cs_oldtext = cs_text;
 
+  std::locale locl("");
+
   for (size_t i = 0; i < cs_data.length(); i++) {
     wchar_t wChar = cs_data.at(i);
-  // Must be a valid symbol, per current valid set
-    if (m_validSym.find(wChar) != std::string::npos) {
+    // Can't know user's valid symbols in their locale so just
+    // prevent user's locale letters & numbers
+    if (!std::isalnum(wChar, locl)) {
       // Must not have duplicates
       if (cs_text.Find(wChar) == -1)
         cs_text += wChar;
