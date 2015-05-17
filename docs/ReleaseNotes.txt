@@ -1,5 +1,5 @@
-Password Safe 3.36 Release Notes - April 2015
-=============================================
+Password Safe 3.36 Release Notes - May 2015
+===========================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,12 +8,13 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.35.1
-=======================
+New Features for 3.36
+=====================
 [768] Caps Lock indicator added to passphrase entry dialogs.
 
-Bugs fixed in 3.35.1
-====================
+Bugs fixed in 3.36
+==================
+[1245] Asterisk is now accepted as a symbol in Password Policies.
 [1233] Don't count unchecked character types in password policies when
 checking for consistency.
 [1231] Relax restriction on easy-vision password policy + more
