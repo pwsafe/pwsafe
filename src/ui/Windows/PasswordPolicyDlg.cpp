@@ -432,7 +432,7 @@ void CPasswordPolicyDlg::OnCancel()
       m_PWEasyVision        != m_oldPWEasyVision        ||
       m_PWUseHexdigits      != m_oldPWUseHexdigits      ||
       m_PWMakePronounceable != m_oldPWMakePronounceable ||
-      m_Symbols            != m_oldSymbols) {
+      m_Symbols             != m_oldSymbols) {
     // Confirm Cancel from User
     CGeneralMsgBox gmb;
     if (gmb.AfxMessageBox(IDS_AREYOUSURE_OPT,
@@ -497,7 +497,8 @@ void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
   m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.upperminlength;
 
   CString cs_symbols = xst_pp.symbols.c_str();
-  m_Symbols = m_oldSymbols = cs_symbols;
+  if (m_PWUseSymbols &&!cs_symbols.IsEmpty())
+    m_Symbols = m_oldSymbols = cs_symbols;
 }
 
 void CPasswordPolicyDlg::OnNamesComboChanged()
