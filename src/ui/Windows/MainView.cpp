@@ -4497,6 +4497,13 @@ bool DboxMain::LongPPs(CWnd *pWnd)
 {
   // Based on current screen height, decide if we want to display.
   // The normal "tall/long" page, or the "wide/short" version (for netbooks)
+  // This can be overridden by the DlgOrientation preference.
+
+  int orientation = PWSprefs::GetInstance()->GetPref(PWSprefs::DlgOrientation);
+  if (orientation != PWSprefs::AUTO) {
+    return (orientation == PWSprefs::TALL); // values are AUTO, TALL, WIDE
+  }
+
   MONITORINFO mi;
   mi.cbSize = sizeof(mi);
   GetMonitorInfo(MonitorFromWindow(GetSafeHwnd(), MONITOR_DEFAULTTONEAREST), &mi);

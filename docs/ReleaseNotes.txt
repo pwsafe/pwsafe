@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.36
 =====================
+[777] Added command line option to force choice of tall or wide dialog screens.
 [768] Caps Lock indicator added to passphrase entry dialogs.
 
 Bugs fixed in 3.36

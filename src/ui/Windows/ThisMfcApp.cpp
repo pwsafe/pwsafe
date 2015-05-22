@@ -673,6 +673,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
    * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
    */
 
+  int dialogOrientation = -1; // update pref only if set
+
   allDone = false;
   if (m_lpCmdLine[0] != L'\0') {
     CString args = m_lpCmdLine;
@@ -732,6 +734,12 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * Supported natively in List View
            */
           dbox.AllowCompareEntries();
+        } else if ((*arg) == L"--do-tall") {
+	  dialogOrientation = PWSprefs::TALL;
+        } else if ((*arg) == L"--do-wide") {
+	  dialogOrientation = PWSprefs::WIDE;
+        } else if ((*arg) == L"--do-auto") {
+	  dialogOrientation = PWSprefs::AUTO;
         } else {
           // unrecognized extended flag. Silently ignore.
         }
@@ -872,6 +880,15 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
     if (startSilent && !fileGiven)
       dbox.SetStartClosed(true);
   } // Command line not empty
+
+  if (!allDone) {
+    // MUST (indirectly) create PWSprefs first thing after parsing argv
+    // Ensures all things like saving locations etc. are set up.
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    // Update dialog orientation preference if user specified:
+    if (dialogOrientation != -1)
+      prefs->SetPref(PWSprefs::DlgOrientation, dialogOrientation);
+  } // !allDone
   return true;
 }
 
@@ -925,9 +942,6 @@ BOOL ThisMfcApp::InitInstance()
     return parseVal ? TRUE : FALSE;
   else if (!parseVal) // bad command line args
     return FALSE;
-
-  // MUST (indirectly) create PWSprefs first
-  // Ensures all things like saving locations etc. are set up.
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 

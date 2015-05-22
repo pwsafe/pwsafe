@@ -131,6 +131,7 @@ public:
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
+    DlgOrientation,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -166,6 +167,9 @@ public:
   // For Password Policy
   // Preferences changed (Database or Application or Shortcuts)
   enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
+
+  // Dialog orientation: Determine automatically or let the system decide
+  enum  {AUTO = 0, TALL = 1, WIDE = 2};
 
   // Preference types - values are powers of 2, except ptAll = sum of previous values
   enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3};
