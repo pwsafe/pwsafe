@@ -10,10 +10,10 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.36
 =====================
+[] Entries and Groups can be exported to plain text, XML, or to a new
+PasswordSafe file.
 [777] Added command line option to force choice of tall or wide dialog screens.
 [768] Caps Lock indicator added to passphrase entry dialogs.
-[] Entries and Groups can be exported to plain text, XML or current
-database format files.
 
 Bugs fixed in 3.36
 ==================
