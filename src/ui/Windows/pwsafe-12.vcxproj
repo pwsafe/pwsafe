@@ -1343,6 +1343,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\toolbar\classic\exportDB.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV1.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV2.bmp" />
+    <Image Include="graphics\toolbar\new\exportDB.bmp" />
+    <Image Include="graphics\toolbar\new\exportDB_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV1.bmp" />
+    <Image Include="graphics\toolbar\new\exportV1_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV2.bmp" />
+    <Image Include="graphics\toolbar\new\exportV2_disabled.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>

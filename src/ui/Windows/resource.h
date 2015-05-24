@@ -364,6 +364,15 @@
 #define IDB_YUBI_LOGO                   525
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
+#define IDB_EXPORTDB_CLASSIC            528
+#define IDB_EXPORTDB_NEW                529
+#define IDB_EXPORTDB_NEW_D              530
+#define IDB_EXPORTV1_CLASSIC            531
+#define IDB_EXPORTV1_NEW                532
+#define IDB_EXPORTV1_NEW_D              533
+#define IDB_EXPORTV2_CLASSIC            534
+#define IDB_EXPORTV2_NEW                535
+#define IDB_EXPORTV2_NEW_D              536
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -733,7 +742,6 @@
 #define IDC_STATIC_PREFERENCES          1451
 #define IDC_YUBIKEY_BTN                 1452
 #define IDC_YUBIKEY_STATUS              1453
-#define IDC_YUBIKEY_BTN2                1454
 #define IDC_YUBIKEY2_BTN                1455
 #define IDC_YUBI_PROGRESS               1456
 #define IDC_YUBI_STATUS                 1457
@@ -782,14 +790,20 @@
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
 #define IDC_CAPSLOCK                    1503
+#define IDC_STATIC_NEWCOMBI             1504
+#define IDC_STATIC_VERIFY               1505
+#define IDC_STATIC_COMBI                1506
+#define IDC_PASSKEY2                    1507
+#define IDC_VERIFY2                     1508
+#define IDC_VKB2                        1509
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        528
+#define _APS_NEXT_RESOURCE_VALUE        537
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1504
-#define _APS_NEXT_SYMED_VALUE           528
+#define _APS_NEXT_CONTROL_VALUE         1510
+#define _APS_NEXT_SYMED_VALUE           537
 #endif
 #endif

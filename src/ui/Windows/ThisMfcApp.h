@@ -99,6 +99,8 @@ public:
 
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 
+  DWORD GetOSMajorMinor() { return m_dwMajorMinor; }
+
 protected:
   virtual BOOL InitInstance();
   virtual int ExitInstance();

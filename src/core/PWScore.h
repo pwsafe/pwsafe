@@ -196,6 +196,9 @@ public:
   int WriteCurFile() {return WriteFile(m_currfile);}
   int WriteFile(const StringX &filename, const bool bUpdateSig = true,
                 PWSfile::VERSION version = PWSfile::VCURRENT);
+  int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
+                      PWScore *pINcore, CReport *pRpt = NULL,
+                      PWSfile::VERSION version = PWSfile::VCURRENT);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, true, PWSfile::V17);}
   int WriteV2File(const StringX &filename)
@@ -215,7 +218,7 @@ public:
                     const stringT &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
-                    const OrderedItemList *il);
+                    const OrderedItemList *pOIL);
 
   void Compare(PWScore *pothercore,
                const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
@@ -242,14 +245,14 @@ public:
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
-                         int &numExported, const OrderedItemList *il = NULL,
+                         int &numExported, const OrderedItemList *pOIL = NULL,
                          CReport *pRpt = NULL);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR &delimiter,
-                   int &numExported, const OrderedItemList *il = NULL,
+                   int &numExported, const OrderedItemList *pOIL = NULL,
                    const bool &bFilterActive = false,
                    CReport *pRpt = NULL);
 
@@ -640,7 +643,7 @@ private:
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}
 
-  stringT GetXMLPWPolicies();
+  stringT GetXMLPWPolicies(const OrderedItemList *pOIL = NULL);
   PSWDPolicyMap m_MapPSWDPLC;
 
   KBShortcutMap m_KBShortcutMap;

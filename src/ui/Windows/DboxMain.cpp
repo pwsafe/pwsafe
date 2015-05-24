@@ -400,6 +400,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
   ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareEntries)
   ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
+  ON_COMMAND(ID_MENUITEM_EXPORTENT2DB, OnExportEntryDB)
+  ON_COMMAND(ID_MENUITEM_EXPORTGRP2PLAINTEXT, OnExportGroupText)
+  ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
+  ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -418,6 +422,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_SYNCHRONIZE, ID_MENUITEM_REPORT_SYNCHRONIZE, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_EXPORTTEXT, ID_MENUITEM_REPORT_EXPORTXML, OnViewReportsByID)
+  ON_COMMAND_RANGE(ID_MENUITEM_REPORT_EXPORTDB, ID_MENUITEM_REPORT_EXPORTDB, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_IMPORTKP1TXT, ID_MENUITEM_REPORT_IMPORTKP1CSV, OnViewReportsByID)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
@@ -613,6 +618,10 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
   {ID_MENUITEM_COMPARE_ENTRIES, true, true, false, false},
+  {ID_MENUITEM_EXPORTENT2DB, true, true, false, false},
+  {ID_MENUITEM_EXPORTGRP2PLAINTEXT, true, true, false, false},
+  {ID_MENUITEM_EXPORTGRP2XML, true, true, false, false},
+  {ID_MENUITEM_EXPORTGRP2DB, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -634,6 +643,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, false},
   {ID_MENUITEM_REPORT_EXPORTTEXT, true, true, true, false},
   {ID_MENUITEM_REPORT_EXPORTXML, true, true, true, false},
+  {ID_MENUITEM_REPORT_EXPORTDB, true, true, true, false},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, false},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, false},
   {ID_MENUITEM_REPORT_SYNCHRONIZE, true, true, true, false},
@@ -2811,18 +2821,55 @@ void DboxMain::SetDCAText(CItemData *pci)
   m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 }
 
+struct NoDuplicates{
+  NoDuplicates(pws_os::CUUID uuid) : m_uuid(uuid) {}
+
+  bool operator()(const CItemData& item) {
+    return item.GetUUID() == m_uuid;
+  }
+private:
+  pws_os::CUUID m_uuid;
+};
+
 // Returns a list of entries as they appear in tree in DFS order
-void DboxMain::MakeOrderedItemList(OrderedItemList &il) const
+void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree!
-  HTREEITEM hItem = NULL;
-  // The non-const-ness of GetNextTreeItem is debatable, and
-  // certainly irrelevant here.
-  while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
-    if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      if (pci != NULL) {// NULL if there's an empty group [bug #1633516]
-        il.push_back(*pci);
+  // Walk the Tree - either complete tree or only this group!
+  if (hItem == NULL) {
+    // The whole tree
+    while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
+      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
+        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+        if (pci != NULL) {
+          OIL.push_back(*pci);
+        }
+      }
+    }
+  }
+  else {
+    // Just this group - used for Export Group
+    const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
+
+    // Get all of the children
+    if (m_ctlItemTree.ItemHasChildren(hItem)) {
+      HTREEITEM hNextItem = m_ctlItemTree.GetNextTreeItem(hItem);
+
+      while (hNextItem != NULL && hNextItem != hNextSibling) {
+        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
+        // Include base entires of any aliases or shortcuts
+        // and ensure no duplicates (an entry could have been previously added
+        // if it was the base of a previously added alias/shortcut
+        if (pci != NULL) {
+          if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
+            OIL.push_back(*pci);
+
+          if (pci->IsDependent()) {
+            pci = GetBaseEntry(pci);
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
+              OIL.push_back(*pci);
+          }
+        }
+        hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
       }
     }
   }
@@ -3169,6 +3216,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_REPORT_IMPORTKP1TXT:
     case ID_MENUITEM_REPORT_EXPORTTEXT:
     case ID_MENUITEM_REPORT_EXPORTXML:
+    case ID_MENUITEM_REPORT_EXPORTDB:
     case ID_MENUITEM_REPORT_MERGE:
     case ID_MENUITEM_REPORT_SYNCHRONIZE:
     case ID_MENUITEM_REPORT_VALIDATE:

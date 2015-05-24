@@ -351,7 +351,7 @@ public:
   bool IsFilterActive() const {return m_bFilterActive;}
   int GetNumPassedFiltering() const {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected() const;
-  StringX GetGroupName() const;
+  StringX GetGroupName(const bool bFullPath = false) const;
   void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
@@ -413,22 +413,25 @@ public:
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
   void DoSynchronize(PWScore *pothercore,
                      const bool bAdvanced, int &numUpdated, CReport *prpt, bool *pbCancel);
-  int DoExportText(const StringX &sx_Filename, const bool bAll,
+  int DoExportText(const StringX &sx_Filename, const UINT nID,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
-  int DoExportXML(const StringX &sx_Filename, const bool bAll,
+  int DoExportXML(const StringX &sx_Filename, const UINT nID,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
+
+  int DoExportDB(const StringX &sx_Filename, const UINT nID,
+                 const StringX &sx_ExportKey, int &numExported, CReport *prpt);
 
   int TestSelection(const bool bAdvanced,
                     const stringT &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
-                    const OrderedItemList *il) const
+                    const OrderedItemList *pOIL) const
   {return m_core.TestSelection(bAdvanced, subgroup_name,
-                               subgroup_object, subgroup_function, il);}
+                               subgroup_object, subgroup_function, pOIL);}
 
-  void MakeOrderedItemList(OrderedItemList &il) const;
+  void MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
@@ -774,10 +777,15 @@ public:
 
   afx_msg BOOL OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnExportVx(UINT nID);
+
   afx_msg void OnExportText();
   afx_msg void OnExportXML();
   afx_msg void OnExportEntryText();
   afx_msg void OnExportEntryXML();
+  afx_msg void OnExportEntryDB();
+  afx_msg void OnExportGroupText();
+  afx_msg void OnExportGroupXML();
+  afx_msg void OnExportGroupDB();
   afx_msg void OnImportText();
   afx_msg void OnImportKeePassV1CSV();
   afx_msg void OnImportKeePassV1TXT();

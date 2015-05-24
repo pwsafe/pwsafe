@@ -736,6 +736,15 @@
 #define IDS_ENTRYKBST_OVERRIDE          5956
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
+#define IDS_EXPORTENT2DB                5959
+#define IDS_EXPORTGRPMENU               5960
+#define IDS_NAMEDBFILE                  5961
+#define IDS_WZEXPORTDB                  5962
+#define IDS_EXPORT_TEXTX_GROUP          5963
+#define IDS_EXPORT_XMLX_GROUP           5964
+#define IDS_RPTEXPORTDB                 5965
+#define IDS_WSSLCT_GROUP                5966
+#define IDS_EXDB                        5967
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

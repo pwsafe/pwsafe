@@ -132,7 +132,7 @@ BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
   CWnd *capslock = GetDlgItem(IDC_CAPSLOCK);
   if (capslock != NULL) {
     capslock->ShowWindow(((GetKeyState(VK_CAPITAL) & 0x0001) == 0x0001) ?
-                         SW_SHOW : SW_HIDE);
+                          SW_SHOW : SW_HIDE);
   }
 
   return CPWDialog::PreTranslateMessage(pMsg);

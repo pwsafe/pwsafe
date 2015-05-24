@@ -29,9 +29,9 @@ public:
   CString m_defexpdelim;
 
 protected:
-  CSecEditExtn *m_pctlPasskey;
+  CSecEditExtn *m_pctlPasskey, *m_pctlPasskey2, *m_pctlVerify2;
   CEditExtn *m_pctlDB;
-  CSecString m_passkey;
+  CSecString m_passkey, m_passkey2, m_verify2;
   CStaticExtn m_stc_warning;
   CString m_filespec;
   int m_tries, m_state;
@@ -41,19 +41,23 @@ protected:
   BOOL OnInitDialog();
   void DoDataExchange(CDataExchange* pDX);
   LRESULT OnWizardNext();
-  afx_msg void OnYubikeyBtn();
 
   // Generated message map functions
   //{{AFX_MSG(CWZSelectDB)
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   virtual BOOL OnSetActive();
-
   afx_msg void OnHelp();
   afx_msg void OnPassKeyChange();
+  afx_msg void OnPassKey2Change();
+  afx_msg void OnVerify2Change();
   afx_msg void OnDatabaseChange();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
+  afx_msg void OnPasskeySetfocus();
+  afx_msg void OnPasskey2Setfocus();
+  afx_msg void OnVerify2keySetfocus();
+  afx_msg void OnYubikeyBtn();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
@@ -63,7 +67,8 @@ protected:
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
                                     const CString &delimiter);
-  enum {KEYPRESENT = 1, DBPRESENT = 2, BOTHPRESENT = 3};
+  enum {KEYPRESENT = 1, DBPRESENT = 2, BOTHPRESENT = 3,
+        KEY2PRESENT = 4, VERIFY2PRESENT = 8, KEY2_EQ_VERIFY2 = 16, ALLPRESENT = 31};
 
   COLORREF m_syncwarning_cfOldColour;
 
@@ -81,6 +86,9 @@ private:
   // Following should be private inheritance of CPKBaseDlg,
   // but MFC doesn't allow us to do this. So much for OOD.
   static const wchar_t PSSWDCHAR;
+
+  UINT m_CtrlID;
+  UINT m_LastFocus;
 
   // Yubico-related:
   // Callbacks:

@@ -100,6 +100,10 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_PROTECTGROUP        32089
 #define ID_MENUITEM_UNPROTECTGROUP      32090
 #define ID_MENUITEM_COMPARE_ENTRIES     32091
+#define ID_MENUITEM_EXPORTENT2DB        32092
+#define ID_MENUITEM_EXPORTGRP2PLAINTEXT 32093
+#define ID_MENUITEM_EXPORTGRP2XML       32094
+#define ID_MENUITEM_EXPORTGRP2DB        32095
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -136,7 +140,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_IMPORTKP1TXT 32132
 #define ID_MENUITEM_REPORT_IMPORTKP1CSV 32133
 #define ID_MENUITEM_CLEARFILTER         32134
-#define ID_EXPORTENTMENU                32135
+#define ID_MENUITEM_REPORT_EXPORTDB     32135
+#define ID_EXPORTENTMENU                32136
+#define ID_EXPORTGROUPMENU              32137
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

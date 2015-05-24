@@ -21,8 +21,10 @@ namespace WZAdvanced {
                 SYNCH,
                 EXPORT_TEXT,
                 EXPORT_ENTRYTEXT,
+                EXPORT_GROUPTEXT,
                 EXPORT_XML,
                 EXPORT_ENTRYXML,
+                EXPORT_GROUPXML,
                 LAST};
 }
 

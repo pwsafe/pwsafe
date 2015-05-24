@@ -12,6 +12,8 @@ New Features for 3.36
 =====================
 [777] Added command line option to force choice of tall or wide dialog screens.
 [768] Caps Lock indicator added to passphrase entry dialogs.
+[] Entries and Groups can be exported to plain text, XML or current
+database format files.
 
 Bugs fixed in 3.36
 ==================
@@ -69,7 +71,6 @@ entered via virtual keyboard.
 [1174] "Open as read-only" check-box now correctly reflects the file's state.
 [1117] Dragging dropbar icon doesn't copy text to clipboard unless
 Control key's pressed when icon's clicked upon.
-
 
 New Features for 3.33
 =====================

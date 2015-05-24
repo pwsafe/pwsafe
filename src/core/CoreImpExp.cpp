@@ -85,16 +85,16 @@ int PWScore::TestSelection(const bool bAdvanced,
                            const stringT &subgroup_name,
                            const int &subgroup_object,
                            const int &subgroup_function,
-                           const OrderedItemList *il)
+                           const OrderedItemList *pOIL)
 {
   // Check if any pass restricting criteria
   if (bAdvanced) {
     bool bAnyMatch(false);
-    if (il != NULL) {
-      if (find_if(il->begin(), il->end(),
+    if (pOIL != NULL) {
+      if (find_if(pOIL->begin(), pOIL->end(),
                   ExportTester(subgroup_name,
                                subgroup_object,
-                               subgroup_function)) != il->end())
+                               subgroup_function)) != pOIL->end())
         bAnyMatch = true;
     } else {
       if (find_if(m_pwlist.begin(), m_pwlist.end(),
@@ -107,8 +107,8 @@ int PWScore::TestSelection(const bool bAdvanced,
     if (!bAnyMatch)
       return FAILURE;
   } else {
-    if (il != NULL)
-      return il->empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
+    if (pOIL != NULL)
+      return pOIL->empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
     else
       return m_pwlist.empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
   }
@@ -286,7 +286,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
                                 const TCHAR &delimiter, int &numExported,
-                                const OrderedItemList *il, CReport *pRpt)
+                                const OrderedItemList *pOIL, CReport *pRpt)
 {
   numExported = 0;
 
@@ -296,8 +296,8 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
-  if ((il != NULL && il->empty()) ||
-      (il == NULL && m_pwlist.empty()))
+  if ((pOIL != NULL && pOIL->empty()) ||
+      (pOIL == NULL && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
 
   FILE *txtfile = pws_os::FOpen(filename.c_str(), _T("wt"));
@@ -331,8 +331,8 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   TextRecordWriter put_text(subgroup_name, subgroup_object, subgroup_function,
                    bsFields, delimiter, ofs, txtfile, numExported, pRpt, this);
 
-  if (il != NULL) {
-    for_each(il->begin(), il->end(), put_text);
+  if (pOIL != NULL) {
+    for_each(pOIL->begin(), pOIL->end(), put_text);
   } else {
     for_each(m_pwlist.begin(), m_pwlist.end(), put_text);
   }
@@ -548,7 +548,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
   ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
-  stringT pwpolicies = GetXMLPWPolicies();
+  stringT pwpolicies = GetXMLPWPolicies(il);
   if (!pwpolicies.empty()) {
     // Write out password policies stored in database
     LoadAString(cs_temp, IDSC_XMLEXP_POLICIES);
@@ -2301,7 +2301,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
-stringT PWScore::GetXMLPWPolicies()
+stringT PWScore::GetXMLPWPolicies(const OrderedItemList *pOIL)
 {
   stringT retval(_T(""));
   ostringstreamT os;
@@ -2309,10 +2309,23 @@ stringT PWScore::GetXMLPWPolicies()
   if (m_MapPSWDPLC.empty())
     return retval;
 
+  std::vector<StringX> vPWPolicies;
+  const bool bSubset = pOIL->size() != GetNumEntries();
+  if (bSubset) {
+    // If not exporting the whole database, only get referenced Password Policies
+    PopulatePWPVector pwpv(&vPWPolicies);
+    for_each(pOIL->begin(), pOIL->end(), pwpv);
+  }
+
   os << _T("\t<NamedPasswordPolicies>") << endl;
 
   PSWDPolicyMapCIter iter;
   for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+    // If OrderedList (i.e. not the whole database), only export a Password Policy
+    // if it is referenced by one of the entries being exported
+    if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) == vPWPolicies.end())
+      continue;
+
     os << "\t\t<Policy>" << endl;
     stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
     os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;

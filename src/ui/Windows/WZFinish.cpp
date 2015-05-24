@@ -127,16 +127,24 @@ static UINT WZExecuteThread(LPVOID pParam)
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
       status = pthdpms->pWZPSH->WZPSHDoExportText(pthdpms->sx_Filename, 
-                   pthdpms->nID == ID_MENUITEM_EXPORT2PLAINTEXT,
+                   pthdpms->nID,
                    pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced, 
                    pthdpms->numProcessed, pthdpms->prpt);
       break;
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
+    case ID_MENUITEM_EXPORTGRP2XML:
       status = pthdpms->pWZPSH->WZPSHDoExportXML(pthdpms->sx_Filename,
-                   pthdpms->nID == ID_MENUITEM_EXPORT2XML,
+                   pthdpms->nID,
                    pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced,
+                   pthdpms->numProcessed, pthdpms->prpt);
+      break;
+    case ID_MENUITEM_EXPORTENT2DB:
+    case ID_MENUITEM_EXPORTGRP2DB:
+      status = pthdpms->pWZPSH->WZPSHDoExportDB(pthdpms->sx_Filename,
+                   pthdpms->nID, pthdpms->sx_exportpasskey,
                    pthdpms->numProcessed, pthdpms->prpt);
       break;
     default:
@@ -170,8 +178,12 @@ BOOL CWZFinish::OnSetActive()
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
+    case ID_MENUITEM_EXPORTGRP2XML:
+    case ID_MENUITEM_EXPORTENT2DB:
+    case ID_MENUITEM_EXPORTGRP2DB:
       uifilemsg = IDS_WZEXPORTFILE;
       break;
     default:
@@ -209,9 +221,12 @@ int CWZFinish::ExecuteAction()
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
-      m_pothercore = NULL;
+    case ID_MENUITEM_EXPORTGRP2XML:
+    case ID_MENUITEM_EXPORTENT2DB:
+    case ID_MENUITEM_EXPORTGRP2DB:
       break;
     default:
       ASSERT(0);
@@ -291,6 +306,7 @@ int CWZFinish::ExecuteAction()
     m_thdpms.pcore = m_pothercore;
     m_thdpms.prpt = m_prpt;
     m_thdpms.sx_Filename = sx_Filename2;
+    m_thdpms.sx_exportpasskey = m_pWZPSH->GetExportPassKey();
     m_thdpms.bAdvanced = bAdvanced;
 
     m_pExecuteThread = AfxBeginThread(WZExecuteThread, &m_thdpms,
@@ -348,10 +364,14 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
         break;
       case ID_MENUITEM_EXPORT2PLAINTEXT:
       case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+      case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+      case ID_MENUITEM_EXPORTENT2DB:
+      case ID_MENUITEM_EXPORTGRP2DB:
         cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
         break;
       case ID_MENUITEM_EXPORT2XML:
       case ID_MENUITEM_EXPORTENT2XML:
+      case ID_MENUITEM_EXPORTGRP2XML:
         cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
         if (m_thdpms.status == PWScore::OK_WITH_ERRORS) {
           CString cs_errors(MAKEINTRESOURCE(IDSC_XMLCHARACTERERRORS));

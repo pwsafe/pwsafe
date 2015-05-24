@@ -39,8 +39,10 @@ int CWZAdvanced::dialog_lookup[] = {
   IDD_WZADVANCED,       // SYNCH
   IDD_WZADVANCED,       // EXPORT_TEXT
   IDD_WZADVANCEDBOTTOM, // EXPORT_ENTRYTEXT (reduced dialog - bottom half only)
+  IDD_WZADVANCEDBOTTOM, // EXPORT_GROUPTEXT (reduced dialog - bottom half only)
   IDD_WZADVANCED,       // EXPORT_XML
-  IDD_WZADVANCEDBOTTOM  // EXPORT_ENTRYXML (reduced dialog - bottom half only)
+  IDD_WZADVANCEDBOTTOM, // EXPORT_ENTRYXML (reduced dialog - bottom half only)
+  IDD_WZADVANCEDBOTTOM, // EXPORT_GROUPXML (reduced dialog - bottom half only)
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -154,11 +156,17 @@ BOOL CWZAdvanced::OnInitDialog()
     case WZAdvanced::EXPORT_ENTRYTEXT:
       cs_text.LoadString(IDS_EXPORT_TEXTX_SINGLE);
       break;
+    case WZAdvanced::EXPORT_GROUPTEXT:
+      cs_text.LoadString(IDS_EXPORT_TEXTX_GROUP);
+      break;
     case WZAdvanced::EXPORT_XML:
       cs_text.Format(IDS_EXPORT_XMLX);
       break;
     case WZAdvanced::EXPORT_ENTRYXML:
       cs_text.LoadString(IDS_EXPORT_XMLX_SINGLE);
+      break;
+    case WZAdvanced::EXPORT_GROUPXML:
+      cs_text.LoadString(IDS_EXPORT_XMLX_GROUP);
       break;
     default:
       ASSERT(FALSE);
@@ -228,7 +236,7 @@ BOOL CWZAdvanced::OnInitDialog()
     GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(bEnable);
   }
 
-  // Merge does not allow field selection - get out now
+  // Merge and export to current DB do not allow field selection - get out now
   if (m_iIndex == WZAdvanced::MERGE)
     return TRUE;
 
@@ -304,8 +312,10 @@ BOOL CWZAdvanced::OnInitDialog()
     case WZAdvanced::SYNCH:
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
+    case WZAdvanced::EXPORT_GROUPTEXT:
     case WZAdvanced::EXPORT_XML:
     case WZAdvanced::EXPORT_ENTRYXML:
+    case WZAdvanced::EXPORT_GROUPXML:
       // All these are already selected fields
       cs_text.LoadString(IDS_COMPCTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
@@ -437,6 +447,7 @@ BOOL CWZAdvanced::OnInitDialog()
   switch (m_iIndex) {
     case WZAdvanced::EXPORT_XML:
     case WZAdvanced::EXPORT_ENTRYXML:
+    case WZAdvanced::EXPORT_GROUPXML:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
@@ -521,6 +532,7 @@ BOOL CWZAdvanced::OnInitDialog()
 
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
+    case WZAdvanced::EXPORT_GROUPTEXT:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
@@ -708,8 +720,10 @@ LRESULT CWZAdvanced::OnWizardNext()
           break;
         case WZAdvanced::EXPORT_TEXT:
         case WZAdvanced::EXPORT_ENTRYTEXT:
+        case WZAdvanced::EXPORT_GROUPTEXT:
         case WZAdvanced::EXPORT_XML:
         case WZAdvanced::EXPORT_ENTRYXML:
+        case WZAdvanced::EXPORT_GROUPXML:
           cs_error_msg.LoadString(IDS_NOFIELDSFOREXPORT);
           break;
         case WZAdvanced::MERGE:
@@ -763,12 +777,16 @@ LRESULT CWZAdvanced::OnWizardNext()
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_SYNCHRONIZE:
     case ID_MENUITEM_EXPORT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
     case ID_MENUITEM_EXPORT2XML:
-      iAll = 1;
+    case ID_MENUITEM_EXPORTGRP2XML:
+    case ID_MENUITEM_EXPORTGRP2DB:
+      iAll = 1;  // All entries
       break;
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2XML:
-      iAll = -1;
+    case ID_MENUITEM_EXPORTENT2DB:
+      iAll = -1;  // Single Entry
       break;
     default:
       ASSERT(0);
@@ -778,25 +796,27 @@ LRESULT CWZAdvanced::OnWizardNext()
   // No need to check selection for Merge as this applies to 2nd database
   // not the current database
   if (iAll != 0  && nID != ID_MENUITEM_MERGE) {
-    OrderedItemList orderedItemList;
+    OrderedItemList OIL;
     CString cs_title, cs_temp;
 
-    if (iAll == 1) {
+    if (iAll > 0) {
+      // All entries
       // Note: MakeOrderedItemList gets its members by walking the 
       // tree therefore, if a filter is active, it will ONLY export
       // those being displayed.
-      m_pWZPSH->WZPSHMakeOrderedItemList(orderedItemList);
+      m_pWZPSH->WZPSHMakeOrderedItemList(OIL);
     } else {
+      // Single Entry
       // Note: Only selected entry
       CItemData *pci = m_pWZPSH->WZPSHgetSelectedItem();
-      orderedItemList.push_back(*pci);
+      OIL.push_back(*pci);
     }
 
     // Check if there are any that meet the user's filter
     int rc = m_pWZPSH->WZPSHTestSelection(bAdvanced, (LPCWSTR)m_subgroup_name,
-                     m_subgroup_object, m_subgroup_function, &orderedItemList);
+      m_subgroup_object, m_subgroup_function, &OIL);
 
-    orderedItemList.clear(); // cleanup soonest
+    OIL.clear(); // cleanup soonest
 
     if (rc != PWScore::SUCCESS) {
       UINT uimsg(0);
@@ -810,7 +830,11 @@ LRESULT CWZAdvanced::OnWizardNext()
         case ID_MENUITEM_EXPORT2PLAINTEXT:
         case ID_MENUITEM_EXPORT2XML:
         case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+        case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
         case ID_MENUITEM_EXPORTENT2XML:
+        case ID_MENUITEM_EXPORTGRP2XML:
+        case ID_MENUITEM_EXPORTENT2DB:
+        case ID_MENUITEM_EXPORTGRP2DB:
           uimsg = IDS_NONE_EXPORTED;
           break;
         default:

@@ -146,7 +146,8 @@ void DboxMain::SetUpInitialMenuStrings()
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
     ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
-    ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU, ID_EXPORTENTMENU,
+    ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
+    ID_EXPORTENTMENU, ID_EXPORTGROUPMENU,
 
   // Plus Exit (2 shortcuts Ctrl+Q and Alt+F4) and Help (F1)
     ID_MENUITEM_EXIT, ID_HELP,
@@ -254,6 +255,9 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Do Export Entry submenu
   //  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_EXPORTENTMENU);
+
+  // Do Export Group submenu
+  //  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_EXPORTGROUPMENU);
 
   // Do View Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_VIEWMENU);
@@ -660,6 +664,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
       }
+
       // Only have Find Next/Previous if find still active and entries were found
       if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -694,6 +699,23 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                    ID_MENUITEM_UNPROTECTGROUP, tc_dummy);
         }
       }
+
+      CMenu GGsubMenu;
+      CString GGstr;
+      GGsubMenu.CreatePopupMenu();
+      // Re-use entry menu texts
+      GGstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
+      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                           ID_MENUITEM_EXPORTGRP2PLAINTEXT, GGstr);
+      GGstr.LoadString(IDS_EXPORTENT2XML);
+      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                           ID_MENUITEM_EXPORTGRP2XML, GGstr);
+      GGstr.LoadString(IDS_EXPORTENT2DB);
+      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                           ID_MENUITEM_EXPORTGRP2DB, GGstr);
+      GGstr.LoadString(IDS_EXPORTGRPMENU);
+      pPopupMenu->AppendMenu(MF_POPUP, (UINT)GGsubMenu.Detach(), GGstr);
+
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -867,6 +889,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENT2XML);
       EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
                           ID_MENUITEM_EXPORTENT2XML, EEstr);
+      EEstr.LoadString(IDS_EXPORTENT2DB);
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                           ID_MENUITEM_EXPORTENT2DB, EEstr);
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
@@ -925,6 +950,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     case ID_VIEWMENU:
     case ID_FILTERMENU:
     case ID_EXPORTENTMENU:
+    case ID_EXPORTGROUPMENU:
     case ID_CHANGEFONTMENU:
     case ID_REPORTSMENU:
     case ID_MANAGEMENU:

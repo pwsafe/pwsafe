@@ -612,7 +612,7 @@ int DboxMain::Open(const UINT uiTitle)
       // and splitpath always adds a slash!
       if (cdir.length() > 0)
         DBpath.pop_back();
-      
+
       // Check it exists and accessible but don't are for information retrieved
       struct _stat stat_buf;
       int istat = _wstat(DBpath.c_str(), &stat_buf);
@@ -913,7 +913,7 @@ void DboxMain::PostOpenProcessing()
   // Set up notification of desktop state, one way or another
   startLockCheckTimer();
   RegisterSessionNotification(true);
-  
+
   // Save initial R-O or R/W state for when locking
   m_bDBInitiallyRO = m_core.IsReadOnly();
 
@@ -1428,6 +1428,79 @@ void DboxMain::OnExportVx(UINT nID)
   }
 }
 
+void DboxMain::OnExportEntryDB()
+{
+  if (getSelectedItem() == NULL)
+    return;
+
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2DB,
+    this, WZAdvanced::INVALID, NULL);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
+
+void DboxMain::OnExportGroupDB()
+{
+  if (getSelectedItem() != NULL)
+    return;
+
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTGRP2DB,
+    this, WZAdvanced::INVALID, NULL);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
+
+int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
+                         const StringX &sx_ExportKey, int &numExported, CReport *prpt)
+{
+  INT_PTR rc;
+  PWScore export_core;
+
+  CGeneralMsgBox gmb;
+  OrderedItemList OIL;
+  CString cs_temp;
+
+  std::wstring str_text;
+  LoadAString(str_text, IDS_RPTEXPORTDB);
+  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+  LoadAString(str_text, IDS_EXDB);
+  cs_temp.Format(IDS_EXPORTFILE, str_text.c_str(), sx_Filename.c_str());
+  prpt->WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine();
+
+  if (nID == ID_MENUITEM_EXPORTGRP2DB) {
+    // Note: MakeOrderedItemList gets its members by walking the
+    // tree therefore, if a filter is active, it will ONLY export
+    // those being displayed.
+    MakeOrderedItemList(OIL, m_ctlItemTree.GetSelectedItem());
+  } else {
+    // Note: Only selected entry
+    CItemData *pci = getSelectedItem();
+    OIL.push_back(*pci);
+  }
+
+  numExported = OIL.size();
+
+  export_core.SetCurFile(sx_Filename);
+  export_core.SetReadOnly(false);
+  export_core.NewFile(sx_ExportKey);
+  export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
+  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, prpt);
+
+  OIL.clear();
+  export_core.ClearData();
+
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, sx_Filename);
+  }
+
+  prpt->EndReport();
+
+  return PWScore::SUCCESS;
+}
+
 void DboxMain::OnExportText()
 {
   CGeneralMsgBox gmb;
@@ -1462,15 +1535,44 @@ void DboxMain::OnExportEntryText()
   wizard.DoModal();
 }
 
-int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
+void DboxMain::OnExportGroupText()
+{
+  if (getSelectedItem() != NULL)
+    return;
+
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTGRP2PLAINTEXT,
+    this, WZAdvanced::EXPORT_GROUPTEXT,
+    &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPTEXT]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
+
+int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
                            const wchar_t &delimiter, const bool bAdvanced,
                            int &numExported, CReport *prpt)
 {
   CGeneralMsgBox gmb;
-  OrderedItemList orderedItemList;
+  OrderedItemList OIL;
   CString cs_temp;
+  WZAdvanced::AdvType nAdvType(WZAdvanced::INVALID);
 
-  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT];
+  switch (nID) {
+    case ID_MENUITEM_EXPORT2PLAINTEXT:
+      nAdvType = WZAdvanced::EXPORT_TEXT;
+      break;
+    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+      nAdvType = WZAdvanced::EXPORT_ENTRYTEXT;
+      break;
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+      nAdvType = WZAdvanced::EXPORT_GROUPTEXT;
+      break;
+    default:
+      ASSERT(0);
+      return PWScore::FAILURE;
+  }
+
+  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[nAdvType];
 
   CItemData::FieldBits bsAllFields; bsAllFields.set();
   const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
@@ -1486,26 +1588,27 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  if (bAll) {
+  if (nID != ID_MENUITEM_EXPORTENT2PLAINTEXT) {
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    MakeOrderedItemList(orderedItemList);
+    HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT ? m_ctlItemTree.GetSelectedItem() : NULL;
+    MakeOrderedItemList(OIL, hi);
   } else {
     // Note: Only selected entry
     CItemData *pci = getSelectedItem();
-    orderedItemList.push_back(*pci);
+    OIL.push_back(*pci);
   }
 
-  ReportAdvancedOptions(prpt, bAdvanced, bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT);
+  ReportAdvancedOptions(prpt, bAdvanced, nAdvType);
 
   // Do the export
   int rc = m_core.WritePlaintextFile(sx_Filename, bsFields, subgroup_name,
                                      subgroup_object, subgroup_function,
-                                     delimiter, numExported, &orderedItemList,
+                                     delimiter, numExported, &OIL,
                                      prpt);
 
-  orderedItemList.clear(); // cleanup soonest
+  OIL.clear(); // cleanup soonest
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, sx_Filename);
@@ -1549,15 +1652,45 @@ void DboxMain::OnExportEntryXML()
   wizard.DoModal();
 }
 
-int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
+void DboxMain::OnExportGroupXML()
+{
+  if (getSelectedItem() != NULL)
+    return;
+
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTGRP2XML,
+    this, WZAdvanced::EXPORT_GROUPXML,
+    &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPXML]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
+
+int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
                           const wchar_t &delimiter, const bool bAdvanced,
                           int &numExported, CReport *prpt)
 {
   CGeneralMsgBox gmb;
-  OrderedItemList orderedItemList;
+  OrderedItemList OIL;
   CString cs_temp;
 
-  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML];
+  WZAdvanced::AdvType nAdvType(WZAdvanced::INVALID);
+
+  switch (nID) {
+    case ID_MENUITEM_EXPORT2XML:
+      nAdvType = WZAdvanced::EXPORT_XML;
+      break;
+    case ID_MENUITEM_EXPORTENT2XML:
+      nAdvType = WZAdvanced::EXPORT_ENTRYXML;
+      break;
+    case ID_MENUITEM_EXPORTGRP2XML:
+      nAdvType = WZAdvanced::EXPORT_GROUPXML;
+      break;
+    default:
+      ASSERT(0);
+      return PWScore::FAILURE;
+  }
+
+  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[nAdvType];
 
   CItemData::FieldBits bsAllFields; bsAllFields.set();
   const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
@@ -1573,26 +1706,27 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  if (bAll) {
+  if (nID != ID_MENUITEM_EXPORTENT2XML) {
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    MakeOrderedItemList(orderedItemList);
+    HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2XML ? m_ctlItemTree.GetSelectedItem() : NULL;
+    MakeOrderedItemList(OIL, hi);
   } else {
     // Note: Only selected entry
     CItemData *pci = getSelectedItem();
-    orderedItemList.push_back(*pci);
+    OIL.push_back(*pci);
   }
 
-  ReportAdvancedOptions(prpt, bAdvanced, bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML);
+  ReportAdvancedOptions(prpt, bAdvanced, nAdvType);
 
   // Do the export
   int rc = m_core.WriteXMLFile(sx_Filename, bsFields, subgroup_name,
                                subgroup_object, subgroup_function,
-                               delimiter, numExported, &orderedItemList,
+                               delimiter, numExported, &OIL,
                                m_bFilterActive, prpt);
 
-  orderedItemList.clear(); // cleanup soonest
+  OIL.clear(); // cleanup soonest
 
   if (rc != PWScore::SUCCESS && rc != PWScore::OK_WITH_ERRORS) {
     DisplayFileWriteError(rc, sx_Filename);
@@ -2222,7 +2356,7 @@ void DboxMain::OnProperties()
   CProperties dlg(&st_dbp, IsDBReadOnly(), this);
 
   INT_PTR rc = dlg.DoModal();
-  
+
   if (rc == IDOK && dlg.HasDataChanged()) {
     // Update user fields in header
     m_core.SetHeaderUserFields(st_dbp);
@@ -2905,7 +3039,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   if (pPolicyCmd != NULL)
     pmulticmds->Add(pPolicyCmd);
- 
+
   // Is it already there?
   const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
     sxuser(ci_temp.GetUser());
@@ -2921,7 +3055,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     // Need to check that entry keyboard shortcut not already in use!
     int32 iKBShortcut;
     ci_temp.GetKBShortcut(iKBShortcut);
-    if (iKBShortcut != 0 && 
+    if (iKBShortcut != 0 &&
       m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
       // Remove it but no mechanism to tell user!
       ci_temp.SetKBShortcut(0);
@@ -2965,25 +3099,25 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   ASSERT(toPos != ptocore->GetEntryEndIter());
   CItemData *ptoEntry = &toPos->second;
   CItemData updtEntry(*ptoEntry);
-  
+
   MultiCommands *pmulticmds = MultiCommands::Create(ptocore);
 
   bool bUpdated(false);
   for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
     if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
-      
+
       // Special processing for password policies (default & named)
       if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
         // Don't really need the map and vector as only sync'ing 1 entry
         std::map<StringX, StringX> mapRenamedPolicies;
         std::vector<StringX> vs_PoliciesAdded;
-          
+
         const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
         StringX sxPolicyName = pfromEntry->GetPolicyName();
-          
+
         Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, updtEntry,
-             mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated, 
+             mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated,
              sxSync_DateTime, IDSC_SYNCPOLICY);
         if (pPolicyCmd != NULL)
           pmulticmds->Add(pPolicyCmd);
@@ -3000,7 +3134,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
     pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry));
     Execute(pmulticmds, ptocore);
-    
+
     SetChanged(Data);
     ChangeOkUpdate();
     return TRUE;
@@ -3008,7 +3142,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   return FALSE;
 }
-          
+
 LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
 {
   // This is always from Comparison DB to Current DB
@@ -3038,13 +3172,13 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
 
     DisplayInfo *pdi = new DisplayInfo;
     ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
-    
+
     // Special processing for password policies (default & named)
     StringX sxPolicyName = pfromEntry->GetPolicyName();
     bool bUpdated;  // Not needed for Copy
 
     Command *pcmd = ptocore->ProcessPolicyName(pfromcore, ci_temp,
-      mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated, 
+      mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated,
       sxCopy_DateTime, IDSC_COPYPOLICY);
 
     if (pcmd != NULL)
@@ -3078,7 +3212,7 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
       // Need to check that entry keyboard shortcut not already in use!
       int32 iKBShortcut;
       ci_temp.GetKBShortcut(iKBShortcut);
-      if (iKBShortcut != 0 && 
+      if (iKBShortcut != 0 &&
         m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
         // Remove it but no mechanism to tell user!
         ci_temp.SetKBShortcut(0);
@@ -3089,7 +3223,7 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
     }
     pmulticmds->Add(pcmdCopy);
   }
-  
+
   if (pmulticmds->GetSize() == 0)
     return FALSE;
 
@@ -3131,7 +3265,7 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
   // Make sure we don't add/rename password policies multiple times
   std::map<StringX, StringX> mapRenamedPolicies;
   std::vector<StringX> vs_PoliciesAdded;
-  
+
   const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   for (size_t index = 0; index < vpst_info->size(); index++) {
@@ -3141,7 +3275,7 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     PWScore *pfromcore = pst_info->pcore1;
     CUUID toUUID = pst_info->uuid0;
     CUUID fromUUID = pst_info->uuid1;
-  
+
     ItemListIter fromPos = pfromcore->Find(fromUUID);
     ASSERT(fromPos != pfromcore->GetEntryEndIter());
     const CItemData *pfromEntry = &fromPos->second;
@@ -3155,7 +3289,7 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
       if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
         StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
-        
+
         // Special processing for password policies (default & named)
         if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
           Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, updtEntry,
@@ -3524,15 +3658,13 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
       uimsgftn = IDS_RPTSYNCH;
       break;
     case WZAdvanced::EXPORT_TEXT:
-      uimsgftn = IDS_RPTEXPORTTEXT;
-      break;
     case WZAdvanced::EXPORT_ENTRYTEXT:
+    case WZAdvanced::EXPORT_GROUPTEXT:
       uimsgftn = IDS_RPTEXPORTTEXT;
       break;
     case WZAdvanced::EXPORT_XML:
-      uimsgftn = IDS_RPTEXPORTXML;
-      break;
     case WZAdvanced::EXPORT_ENTRYXML:
+    case WZAdvanced::EXPORT_GROUPXML:
       uimsgftn = IDS_RPTEXPORTXML;
       break;
     default:

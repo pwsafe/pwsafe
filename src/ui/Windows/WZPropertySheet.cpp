@@ -22,7 +22,7 @@ extern const wchar_t *EYE_CATCHER;
 
 CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType iadv_type,
                                    st_SaveAdvValues *pst_SADV)
-  : CPropertySheet(nID, pParent), m_nID(nID), m_passkey(L""), m_filespec(L""),
+  : CPropertySheet(nID, pParent), m_nID(nID), m_passkey(L""), m_exportpasskey(L""), m_filespec(L""),
   m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
   m_numProcessed(-1)
 {
@@ -54,6 +54,11 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
       uimsgid_advanced = IDS_EXPORT_TEXTX_SINGLE;
       uimsgid_finish = IDS_WZEXPORTTEXT;
       break;
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+      uimsgid_select = IDS_NAMETEXTFILE;
+      uimsgid_advanced = IDS_EXPORT_TEXTX_GROUP;
+      uimsgid_finish = IDS_WZEXPORTTEXT;
+      break;
     case ID_MENUITEM_EXPORT2XML:
       uimsgid_select = IDS_NAMEXMLFILE;
       uimsgid_advanced = IDS_EXPORT_XMLX;
@@ -64,19 +69,40 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
       uimsgid_advanced = IDS_EXPORT_XMLX_SINGLE;
       uimsgid_finish = IDS_WZEXPORTXML;
       break;
+    case ID_MENUITEM_EXPORTGRP2XML:
+      uimsgid_select = IDS_NAMEXMLFILE;
+      uimsgid_advanced = IDS_EXPORT_XMLX_GROUP;
+      uimsgid_finish = IDS_WZEXPORTXML;
+      break;
+    case ID_MENUITEM_EXPORTENT2DB:
+      uimsgid_select = IDS_NAMEDBFILE;
+      uimsgid_finish = IDS_WZEXPORTDB;
+      break;
+    case ID_MENUITEM_EXPORTGRP2DB:
+      uimsgid_select = IDS_NAMEDBFILE;
+      uimsgid_finish = IDS_WZEXPORTDB;
+      break;
     default:
       ASSERT(0);
   }
 
+  // Setup up wizard property pages
   m_nButtonID = uimsgid_finish;
   m_pp_selectdb = new CWZSelectDB(this, uimsgid_select, CWZPropertyPage::START);
-  m_pp_advanced = new CWZAdvanced(this, uimsgid_advanced, CWZPropertyPage::PENULTIMATE,
-                                  iadv_type, m_pst_SADV);
-  m_pp_finish   = new CWZFinish(this, uimsgid_finish, CWZPropertyPage::LAST);
-
   AddPage(m_pp_selectdb);
-  AddPage(m_pp_advanced);
+
+  if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB) {
+    m_pp_advanced = new CWZAdvanced(this, uimsgid_advanced, CWZPropertyPage::PENULTIMATE,
+                                    iadv_type, m_pst_SADV);
+    AddPage(m_pp_advanced);
+  } else {
+    // No Advanced property page when exporting to current DB format
+    m_pp_advanced = NULL;
+  }
+
+  m_pp_finish   = new CWZFinish(this, uimsgid_finish, CWZPropertyPage::LAST);
   AddPage(m_pp_finish);
+
   SetWizardMode();
 }
 

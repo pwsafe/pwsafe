@@ -114,4 +114,20 @@ typedef KBShortcutMap::iterator KBShortcutMapIter;
 typedef KBShortcutMap::const_iterator KBShortcutMapConstIter;
 typedef std::pair<int32, pws_os::CUUID> KBShortcutMapPair;
 
+struct PopulatePWPVector {
+  PopulatePWPVector(std::vector<StringX> *pvPWPolicies) :
+    m_pvPWPolicies(pvPWPolicies) {}
+
+  // operator for OrderedItemList
+  void operator()(const CItemData &item) {
+    StringX sx_pwpname = item.GetPolicyName();
+    if (!sx_pwpname.empty())
+      m_pvPWPolicies->push_back(sx_pwpname);
+  }
+
+private:
+  PopulatePWPVector& operator=(const PopulatePWPVector&); // Do not implement
+  std::vector<StringX> *m_pvPWPolicies;
+};
+
 #endif /* __COREDEFS_H */

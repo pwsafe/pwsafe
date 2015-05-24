@@ -164,6 +164,7 @@ BEGIN
   IDSC_FILE_TRUNCATED     "File is truncated or otherwise corrupt. Please use backup database."
   IDSC_FILE_TOO_SHORT     "File is too short."
   IDSC_FILE_TOO_BIG       "File is too big."
+  IDSC_EXPORTDESCRIPTION  "DB Export from database: '%s'"
 END
 
 // Status Bar

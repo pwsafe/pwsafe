@@ -1631,5 +1631,32 @@
     <Image Include="graphics\Yubikey-button-disabled.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\toolbar\classic\exportDB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportDB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportDB_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\classic\exportV1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportV1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportV1_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\classic\exportV2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportV2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\exportV2_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

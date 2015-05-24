@@ -751,15 +751,15 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
   ItemListConstIter listPos, listEnd;
 
-  OrderedItemList orderedItemList;
+  OrderedItemList OIL;
   OrderedItemList::const_iterator olistPos, olistEnd;
   if (m_IsListView) {
     listPos = m_core.GetEntryIter();
     listEnd = m_core.GetEntryEndIter();
   } else {
-    MakeOrderedItemList(orderedItemList);
-    olistPos = orderedItemList.begin();
-    olistEnd = orderedItemList.end();
+    MakeOrderedItemList(OIL);
+    olistPos = OIL.begin();
+    olistEnd = OIL.end();
   }
 
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
@@ -898,7 +898,7 @@ nextentry:
     sort(indices.begin(), indices.end());
 
   if (!m_IsListView)
-    orderedItemList.clear();
+    OIL.clear();
 
   return retval;
 }
@@ -3106,6 +3106,8 @@ static UINT SetupViewReports(const int nID)
     return IDS_RPTEXPORTTEXT;
   case ID_MENUITEM_REPORT_EXPORTXML:
     return IDS_RPTEXPORTXML;
+  case ID_MENUITEM_REPORT_EXPORTDB:
+    return IDS_RPTEXPORTDB;
   case ID_MENUITEM_REPORT_VALIDATE:
     return IDS_RPTVALIDATE;
   default:
@@ -3815,14 +3817,14 @@ CItemData *DboxMain::GetLastSelected() const
   return pci;
 }
 
-StringX DboxMain::GetGroupName() const
+StringX DboxMain::GetGroupName(const bool bFullPath) const
 {
   HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
   StringX s(L"");
   if (hi != NULL)
     s = m_ctlItemTree.GetItemText(hi);
 
-  if ((GetKeyState(VK_CONTROL) & 0x8000) == 0) {
+  if (bFullPath || (GetKeyState(VK_CONTROL) & 0x8000) == 0) {
     while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
       s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
     }

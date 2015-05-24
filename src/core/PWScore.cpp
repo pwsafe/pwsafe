@@ -38,6 +38,8 @@
 #include <set>
 #include <iterator>
 
+extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
+
 using pws_os::CUUID;
 
 unsigned char PWScore::m_session_key[32];
@@ -483,7 +485,8 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
     m_hdr = out->GetHeader(); // update time saved, etc.
-  } catch (...) {
+  }
+  catch (...) {
     out->Close();
     delete out;
     return FAILURE;
@@ -498,6 +501,131 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   // Create new signature if required
   if (bUpdateSig)
     m_pFileSig = new PWSFileSig(filename.c_str());
+
+  return SUCCESS;
+}
+
+// functor object type for for_each:
+struct ExportRecordWriter {
+  ExportRecordWriter(PWSfile *pout, PWScore *pcore, CReport *pRpt) :
+    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt) {}
+  void operator()(CItemData &item)
+  {
+    StringX savePassword = item.GetPassword();
+    StringX uuid_str(savePassword);
+    CUUID base_uuid(CUUID::NullUUID());
+    CUUID item_uuid = item.GetUUID();
+
+    if (item.IsAlias()) {
+      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
+      uuid_str = _T("[[");
+      uuid_str += base_uuid;
+      uuid_str += _T("]]");
+    }
+    else if (item.IsShortcut()) {
+      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
+      uuid_str = _T("[~");
+      uuid_str += base_uuid;
+      uuid_str += _T("~]");
+    }
+
+    item.SetPassword(uuid_str);
+    m_pout->WriteRecord(item);
+    item.SetPassword(savePassword);
+
+    if (m_pRpt != NULL) {
+      StringX sx_exported;
+      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+        item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
+      m_pRpt->WriteLine(sx_exported.c_str(), false);
+    }
+  }
+
+private:
+  PWSfile *m_pout;
+  PWScore *m_pcore;
+  CReport *m_pRpt;
+};
+
+int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
+                             PWScore *pINcore, CReport *pRpt, PWSfile::VERSION version)
+{
+  int status;
+  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+    PWSfile::Write, status);
+
+  if (status != PWSfile::SUCCESS) {
+    delete out;
+    return status;
+  }
+
+  m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
+  m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
+
+  // Get current DB name but ensure it will fit in 255 character description
+  StringX sx_currentDB = pINcore->GetCurFile();
+
+  const int Width = 220;
+  StringX sx_normalised_currentDB;
+  if (sx_currentDB.length() > Width) {
+    sx_normalised_currentDB = sx_currentDB.substr(Width / 2 - 5) +
+      L" ... " + sx_currentDB.substr(sx_currentDB.length() - Width / 2);
+  } else {
+    sx_normalised_currentDB = sx_currentDB;
+  }
+
+  Format(m_hdr.m_dbdesc, IDSC_EXPORTDESCRIPTION, sx_normalised_currentDB.c_str());
+
+  out->SetHeader(m_hdr);
+
+  // Give PWSfileV3 the unknown headers to write out
+  // XXX cleanup gross dynamic_cast
+  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
+  if (out3 != NULL) {
+    out3->SetNHashIters(GetHashIters());
+
+    // Build a list of Named Password Polices used by exported entries
+    std::vector<StringX> vPWPolicies;
+
+    // As not exporting the whole database, only get referenced Password Policies
+    PopulatePWPVector pwpv(&vPWPolicies);
+    for_each(pOIL->begin(), pOIL->end(), pwpv);
+
+    // Only include Named Policies in map that are being used by exported entries
+    PSWDPolicyMap ExportMapPSWDPLC;
+    PSWDPolicyMapCIter iter;
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+        ExportMapPSWDPLC[iter->first] = iter->second;
+      }
+    }
+    out3->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
+  }
+
+  try { // exception thrown on write error
+    status = out->Open(GetPassKey());
+
+    if (status != PWSfile::SUCCESS) {
+      delete out;
+      return status;
+    }
+
+    ExportRecordWriter write_record(out, pINcore, pRpt);
+    for_each(pOIL->begin(), pOIL->end(), write_record);
+
+    m_hdr = out->GetHeader(); // update time saved, etc.
+  }
+  catch (...) {
+    out->Close();
+    delete out;
+    return FAILURE;
+  }
+  out->Close();
+  delete out;
+
+  SetChanged(false, false);
+
+  m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
   return SUCCESS;
 }

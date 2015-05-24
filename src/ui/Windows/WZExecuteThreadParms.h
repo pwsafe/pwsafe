@@ -24,14 +24,15 @@ class CReport;
 struct WZExecuteThreadParms {
   WZExecuteThreadParms()
   : status(0), nID(0), pWZPSH(NULL), pWZFinish(NULL), pcore(NULL),
-  prpt(NULL), sx_Filename(L""), bAdvanced(false), csResults(L""),
+  prpt(NULL), sx_Filename(L""), sx_exportpasskey(L""), bAdvanced(false), csResults(L""),
   numProcessed(0), bCancel(false)
   {}
 
   WZExecuteThreadParms(const WZExecuteThreadParms &thpms)
     : status(thpms.status), nID(thpms.nID), pWZPSH(thpms.pWZPSH),
     pWZFinish(thpms.pWZFinish), pcore(thpms.pcore), prpt(thpms.prpt),
-    sx_Filename(thpms.sx_Filename), csResults(thpms.csResults),
+    sx_Filename(thpms.sx_Filename), sx_exportpasskey(thpms.sx_exportpasskey),
+    csResults(thpms.csResults),
     bAdvanced(thpms.bAdvanced), numProcessed(thpms.numProcessed),
     bCancel(thpms.bCancel)
   {
@@ -47,6 +48,7 @@ struct WZExecuteThreadParms {
       pcore = thpms.pcore;
       prpt = thpms.prpt;
       sx_Filename = thpms.sx_Filename;
+      sx_exportpasskey = thpms.sx_exportpasskey;
       csResults = thpms.csResults;
       bAdvanced = thpms.bAdvanced;
       numProcessed = thpms.numProcessed;
@@ -57,7 +59,7 @@ struct WZExecuteThreadParms {
 
   UINT nID;
   int status;
-  StringX sx_Filename;
+  StringX sx_Filename, sx_exportpasskey;
 
   CWZPropertySheet *pWZPSH;
   CWZFinish *pWZFinish;

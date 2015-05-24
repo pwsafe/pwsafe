@@ -30,6 +30,7 @@ public:
   UINT GetID() const {return m_nID;}
   UINT GetButtonID() const {return m_nButtonID;}
   StringX GetPassKey() const {return m_passkey;}
+  StringX GetExportPassKey() const { return m_exportpasskey; }
   StringX GetOtherDBFile() const {return m_filespec;}
   st_SaveAdvValues *GetAdvValues() const {return m_pst_SADV;}
   wchar_t GetDelimiter() const {return m_delimiter;}
@@ -37,14 +38,15 @@ public:
   bool GetCompleted() const {return m_bCompleted;}
 
   void SetPassKey(const StringX passkey) {m_passkey = passkey;}
+  void SetExportPassKey(const StringX passkey) { m_exportpasskey = passkey; }
   void SetOtherDB(const StringX filespec) {m_filespec = filespec;}
   void SetAdvValues(st_SaveAdvValues *pst_SADV) {m_pst_SADV = pst_SADV;}
   void SetDelimiter(const wchar_t &delimiter) {m_delimiter = delimiter;}
   void SetAdvanced(const bool &bAdvanced) {m_bAdvanced = bAdvanced;}
   void SetCompleted(const bool &bCompleted) {m_bCompleted = bCompleted;}
 
-  void WZPSHMakeOrderedItemList(OrderedItemList &ol)
-  {app.GetMainDlg()->MakeOrderedItemList(ol);}
+  void WZPSHMakeOrderedItemList(OrderedItemList &OIL)
+  {app.GetMainDlg()->MakeOrderedItemList(OIL);}
 
   CItemData *WZPSHgetSelectedItem()
   {return app.GetMainDlg()->getSelectedItem();}
@@ -53,9 +55,9 @@ public:
                          const stringT &subgroup_name,
                          const int &subgroup_object,
                          const int &subgroup_function,
-                         const OrderedItemList *il)
+                         const OrderedItemList *pOIL)
   {return app.GetMainDlg()->TestSelection(bAdvanced, subgroup_name,
-                                subgroup_object, subgroup_function, il);}
+                                subgroup_object, subgroup_function, pOIL);}
 
   void WZPSHSetUpdateWizardWindow(CWnd *pWnd)
   {app.GetMainDlg()->SetUpdateWizardWindow(pWnd);}
@@ -73,17 +75,23 @@ public:
                           bool *pbCancel)
   {app.GetMainDlg()->DoSynchronize(pothercore, bAdvanced, numExported, prpt, pbCancel);}
 
-  int WZPSHDoExportText(const StringX &sx_Filename, const bool bAll,
+  int WZPSHDoExportText(const StringX &sx_Filename, const UINT nID,
                         const wchar_t &delimiter, const bool bAdvanced, 
                         int &numExported, CReport *prpt)
-  {return app.GetMainDlg()->DoExportText(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+  {return app.GetMainDlg()->DoExportText(sx_Filename, nID, delimiter, bAdvanced, numExported,
                                prpt);}
 
-  int WZPSHDoExportXML(const StringX &sx_Filename, const bool bAll,
+  int WZPSHDoExportXML(const StringX &sx_Filename, const UINT nID,
                        const wchar_t &delimiter, const bool bAdvanced, 
                        int &numExported, CReport *prpt)
-  {return app.GetMainDlg()->DoExportXML(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+  {return app.GetMainDlg()->DoExportXML(sx_Filename, nID, delimiter, bAdvanced, numExported,
                               prpt);}
+
+  int WZPSHDoExportDB(const StringX &sx_Filename, const UINT nID,
+                      const StringX &sx_ExportKey, int &numExported, CReport *prpt)
+  {
+    return app.GetMainDlg()->DoExportDB(sx_Filename, nID, sx_ExportKey, numExported, prpt);
+  }
 
   void WZPSHViewReport(CReport &prpt)
   {app.GetMainDlg()->ViewReport(prpt);}
@@ -125,7 +133,7 @@ private:
 
   UINT m_nID, m_nButtonID;
 
-  StringX m_passkey;
+  StringX m_passkey, m_exportpasskey;
   StringX m_filespec;
   st_SaveAdvValues *m_pst_SADV;
   wchar_t m_delimiter;
