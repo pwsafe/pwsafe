@@ -232,6 +232,8 @@ BOOL CWZSelectDB::OnInitDialog()
     GetDlgItem(IDC_PASSKEY2)->EnableWindow(TRUE);
     GetDlgItem(IDC_VERIFY2)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_VERIFY2)->EnableWindow(TRUE);
+    GetDlgItem(IDC_VKB2)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_VKB2)->EnableWindow(TRUE);
   }
 
   if (bWARNINGTEXT) {
@@ -319,6 +321,8 @@ BOOL CWZSelectDB::OnInitDialog()
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
+    GetDlgItem(IDC_VKB2)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VKB2)->EnableWindow(FALSE);
   }
 
   // Disable Next until fields set

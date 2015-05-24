@@ -559,7 +559,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
     return status;
   }
 
-  m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
+  // m_hdr.m_prefString = PWSprefs::GetInstance()->Store(); - no need to expose this
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
 
   // Get current DB name but ensure it will fit in 255 character description
@@ -613,7 +613,6 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
     ExportRecordWriter write_record(out, pINcore, pRpt);
     for_each(pOIL->begin(), pOIL->end(), write_record);
 
-    m_hdr = out->GetHeader(); // update time saved, etc.
   }
   catch (...) {
     out->Close();
@@ -622,10 +621,6 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   }
   out->Close();
   delete out;
-
-  SetChanged(false, false);
-
-  m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
   return SUCCESS;
 }
