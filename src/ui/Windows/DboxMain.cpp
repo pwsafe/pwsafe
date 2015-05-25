@@ -3100,7 +3100,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
           iEnable = FALSE;
         } else {
           if (pcix->IsShortcut()) {
-            pcix = GetBaseEntry(pci);
+            pcix = GetBaseEntry(pcix);
           }
 
           if (pcix->IsEmailEmpty() &&
