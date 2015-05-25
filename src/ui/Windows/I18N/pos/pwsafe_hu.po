@@ -784,6 +784,10 @@ msgstr "&Egyszerű szöveg..."
 msgid "&Properties"
 msgstr "&Tulajdonságok"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "&Legutóbbi bejegyzések"
@@ -867,6 +871,10 @@ msgstr "&Próbálja újra"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "&Visszavonás"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1393,6 +1401,10 @@ msgstr "Speciális XML exportálási beállítások (Egyetlen tétel)"
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "Speciális XML exportálási beállítások "
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2350,6 +2362,10 @@ msgstr "&Kivágás"
 msgid "Current Entry"
 msgstr "Aktuális bejegyzés"
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2379,6 +2395,15 @@ msgstr "Cseh (QWERTY)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "Cseh Programozó"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2678,6 +2703,10 @@ msgstr "&Kilépés\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "&Bejegyzés exportálása"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (257)
 msgid "Easyvision characters"
@@ -3028,9 +3057,17 @@ msgstr "Exportálás &formátumba"
 msgid "Export &XML"
 msgstr "Exportálás &XML-be"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
 msgstr "Bejegyzés exportálása ebbe:"
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
+msgstr ""
 
 #. Resource IDs: (365)
 msgid "Export Text"
@@ -3056,6 +3093,10 @@ msgstr "A kimeneti fájl: '%s' már létezik.\nLecseréli?"
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Az adatok exportálása néhány mezőre lett korlátozva a felhasználó által."
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4735,10 +4776,18 @@ msgstr "Jelszó hossza:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "A jelszó tartalmazzon kis- és nagybetűket, valamint legalább 1 számjegyet vagy speciális karaktert"
 
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
+
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "A PasswordSafe alkalmazás (verzió: V%d.%d.%d (Build %s)) hibát tartalmazott."
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4829,6 +4878,10 @@ msgstr "Kérem adja meg a keresendő szöveget"
 msgid "Please enter an encryption or decryption key"
 msgstr "Kérem adjon meg egy titkosító vagy feloldó kulcsot"
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr ""
@@ -4860,6 +4913,10 @@ msgstr "Kérem helyezze be a Yubikey-t"
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Kérem adjon nevet az XML fájlnak"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -6524,7 +6581,7 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
 msgstr ""
 
 #. Resource IDs: (1029)
@@ -7046,6 +7103,22 @@ msgstr "\nBejegyzés exportálása XML formátumba..."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nBejegyzés exportálása egyszerű szövegbe..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7697,6 +7770,10 @@ msgstr "szinkronizálva"
 #. Resource IDs: (1417, 65535)
 msgid "the following text:"
 msgstr "az alábbi szöveg:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"

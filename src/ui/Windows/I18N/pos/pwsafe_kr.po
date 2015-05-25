@@ -771,6 +771,10 @@ msgstr "텍스트...(&P)"
 msgid "&Properties"
 msgstr "속성(&P)"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "최근 항목 내역(&R)"
@@ -854,6 +858,10 @@ msgstr "재시도(&T)"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "되돌리기(&U)"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1380,6 +1388,10 @@ msgstr "고급 '단일 항목' XML 내보내기 설정"
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "고급 XML 보내기 옵션"
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2337,6 +2349,10 @@ msgstr "자르기(&T)"
 msgid "Current Entry"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2366,6 +2382,15 @@ msgstr "Czech (QWERTY)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "Czech Programmers"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2665,6 +2690,10 @@ msgstr "종료(&X)\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "항목을 이 곳으로 내보내기(&X):"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3015,8 +3044,16 @@ msgstr "보내기(&T)"
 msgid "Export &XML"
 msgstr "XML으로 내보내기(&X)"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
+msgstr ""
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
 msgstr ""
 
 #. Resource IDs: (123)
@@ -3043,6 +3080,10 @@ msgstr ""
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4722,10 +4763,18 @@ msgstr "비밀번호 길이:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개의 숫자 혹은 알파벳 문자를 입력해야 합니다"
 
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
+
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (빌드 %s) 가 에러를 가지고 있습니다."
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4816,6 +4865,10 @@ msgstr "검색할 문자열을 입력해 주십시오."
 msgid "Please enter an encryption or decryption key"
 msgstr "암호화 혹은 복호화 키를 입력해 주십시오."
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr ""
@@ -4847,6 +4900,10 @@ msgstr ""
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "XML 파일의 이름을 지정해주세요"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -6511,8 +6568,8 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "사용법: pwsafe [-r|-v] [데이터베이스]\n혹은 pwsafe [-e|-d] 파일이름\n혹은 pwsafe [-c]\n혹은 pwsafe [-s] [데이터베이스]\n혹은 pwsafe -m\n\n 명령변수:\n  -r = 읽기 전용으로 열기\n  -v = 유효성 검사 및 수정\n  -e/d = 파일 암호화/복호화\n  -c = 데이터베이스를 열지 않고 시작\n  -s = 시작 시 최소화\n  -m = 시작 시 최소화 & 데이터베이스 열지 않기\n\n추가적으로, 다음과 같은 변수들을 사용할 수 있습니다:\n -u 사용자 (로그인 이름 대신 사용자의 환경설정 사용)\n -h 호스트 (시스템 이름 대신 환경설정 사용)\n -g 설정파일 (pwsafe.cfg 파일 대신 다른 환경설정 파일 사용) -q 파일 손상 등에 대한 경고 무시"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7033,6 +7090,22 @@ msgstr "\n항목을 XML 형식으로 내보내기..."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\n항목을 텍스트 파일로 내보내기..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7684,6 +7757,10 @@ msgstr "동기화됨"
 #. Resource IDs: (65535)
 msgid "the following text:"
 msgstr "the following text:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"

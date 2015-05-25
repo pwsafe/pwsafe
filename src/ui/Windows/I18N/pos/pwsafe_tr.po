@@ -771,6 +771,10 @@ msgstr "&Düz Metin..."
 msgid "&Properties"
 msgstr "&Özellikler"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "&Son Girdiler Geçmişi"
@@ -854,6 +858,10 @@ msgstr "&Tekrar dene"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "&Geri Al"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1380,6 +1388,10 @@ msgstr "Gelişmiş XML 'Tek Girdi' Dışa Aktarma Seçenekleri"
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "Gelişmiş XML Dışa Aktarma Seçenekleri"
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2337,6 +2349,10 @@ msgstr "&Kes"
 msgid "Current Entry"
 msgstr "Geçerli Girdi"
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2366,6 +2382,15 @@ msgstr "Çekçe (QWERTY)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "Çek Programcılar"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2665,6 +2690,10 @@ msgstr "&Çık\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "Girdiyi Dışa A&ktar"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (257)
 msgid "Easyvision characters"
@@ -3015,9 +3044,17 @@ msgstr "&Dışa Aktar"
 msgid "Export &XML"
 msgstr "&XML Dışa Aktar"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
 msgstr "Girdiyi Dışa Aktar"
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
+msgstr ""
 
 #. Resource IDs: (365)
 msgid "Export Text"
@@ -3043,6 +3080,10 @@ msgstr "Çıkarılacak dosya: '%s' zaten var.\nDosyayı değiştirmek ister misi
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Veri dışa aktarması kullanıcı tarafından belirli alanlara kısıtlandı."
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4722,10 +4763,18 @@ msgstr "Şifre uzunluğu:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Şifre büyük ve küçük harf karışık olmalı, en az bir rakam ya da noktalama işareti içermeli"
 
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
+
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Yapı %s) bir hatayla karşılaştı."
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4816,6 +4865,10 @@ msgstr "Lütfen bir arama metni girin"
 msgid "Please enter an encryption or decryption key"
 msgstr "Lütfen bir şifreleme ya da şifre çözme anahtarı girin"
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr ""
@@ -4847,6 +4900,10 @@ msgstr ""
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Lürfen XML dosyasını adlandırın"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -6511,8 +6568,8 @@ msgid "Urdu"
 msgstr "Urduca"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "Kullanım: pwsafe [-r|-v] [şifre veritabanı]\nya da pwsafe [-e|-d] dosya adı\nya da pwsafe [-c]\nya da pwsafe [-s] [şifre veritabanı]\nya da pwsafe -m\n\n nasıl:\n  -r = salt okunur aç\n  -v = doğrula & onar\n  -e/d = dosya şifrele/şifresini çöz\n  -c = kapalı başlat örn, açık veritabanı yoksa\n  -s = sessiz başlat (küçültülmüş)\n  -m = küçültülmüş & kapalı başlat\n\nEk olarak aşağıdaki göstergeler de kullanılabilir:\n -u kullanıcı (giriş adı yerine kullanıcının tercihlerini kullan)\n -h sunucu (tercihleri aramak için kullanıcı adı yerine sunucu kullan)\n -g yapılandırma_dosyası (pwsafe.cfg yerine yapılandırma_dosyası kullan)\n -q (kayıp fontlar, dll'ler, vb. hakkında bildirim yapma)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7033,6 +7090,22 @@ msgstr "\nGirdiyi XML formatında dışa aktar..."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nGirdiyi Düz Metne Aktar"
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7684,6 +7757,10 @@ msgstr "eşlendi"
 #. Resource IDs: (1417, 65535)
 msgid "the following text:"
 msgstr "şu yazı:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"

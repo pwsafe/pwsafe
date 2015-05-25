@@ -861,6 +861,10 @@ msgstr "&Gewone Tekst..."
 msgid "&Properties"
 msgstr "&Eigenschappen"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "Geschiedenis &Recente Vermeldingen"
@@ -944,6 +948,10 @@ msgstr "&Probeer nogmaals"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "&Ongedaan maken"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1470,6 +1478,10 @@ msgstr "Geavanceerde Opties voor XML Exporteren van enkele vermelding"
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "Geavanceerde Opties voor XML Exporteren"
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2427,6 +2439,10 @@ msgstr "&Knippen"
 msgid "Current Entry"
 msgstr "Huidige Vermelding"
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2456,6 +2472,15 @@ msgstr "Tsjechisch (QWERTY)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "Tsjechische Programmeurs"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2755,6 +2780,10 @@ msgstr "A&fsluiten\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "Exporteer vermelding naar"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3105,9 +3134,17 @@ msgstr "Exporteren &Naar"
 msgid "Export &XML"
 msgstr "Exporteer &XML"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
 msgstr "Exporteer vermelding naar"
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -3133,6 +3170,10 @@ msgstr "Export bestand: '%s' bestaat reeds.\nWilt u het vervangen?"
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Exporteren van gegevens was door de gebruiker beperkt tot bepaalde velden"
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4812,10 +4853,18 @@ msgstr "Wachtwoord lengte:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Wachtwoord moet hoofdletters en kleine letters bevatten, met tenminste een cijfer of leesteken"
 
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
+
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) heeft een fout gehad."
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4906,6 +4955,10 @@ msgstr "SVP een zoekregel opgeven"
 msgid "Please enter an encryption or decryption key"
 msgstr "Geef een codering of decodering sleutel"
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr ""
@@ -4937,6 +4990,10 @@ msgstr "Voert u aub uw YubiKey in"
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "SVP het XML bestand een naam geven"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -6601,8 +6658,8 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "Gebruik: pwsafe [-r|-v] [wachtwoord database]\nof pwsafe [-e|-d] bestandsnaam\nof pwsafe [-c]\nof pwsafe [-s] [wachtwoord database]\nof pwsafe -m\n\n waarbij:\n  -r = open alleen lezen\n  -v = valideren & herstel\n  -e/d = encoderen/decoderen bestand\n  -c = start gesloten, d.w.z geen geopende database\n  -s = start stilzwijgend (geminimaliseerd)\n  -m = start  geminimaliseerd & gesloten\n\nAls toevoeging kunnen de volgende parameters gebruikt worden:\n -u gebruiker (gebruik gebruikers voorkeuren in plaats van login naam)\n -h host (gebruik de andere computers naam \"host\" in plaats van de naam van deze computer om de voorkeuren op te zoeken)\n -g config_bestand (gebruik  config_bestand in plaats van pwsafe.cfg)\n -q (niet klagen over ontbrekende fonts, dll's enzovoorts.)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7123,6 +7180,22 @@ msgstr "\nExporteer vermelding in XML opmaak....."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nExport Vermelding naar Gewone Tekst..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7774,6 +7847,10 @@ msgstr "gesynchroniseerd"
 #. Resource IDs: (65535)
 msgid "the following text:"
 msgstr "de volgende tekst:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"

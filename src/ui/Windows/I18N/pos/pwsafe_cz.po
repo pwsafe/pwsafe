@@ -2,7 +2,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# DAVID LUKSCH <LUKSCDAV@FEL.CVUT.CZ>, 2015.
 #
 #, fuzzy
 msgid ""
@@ -789,6 +788,10 @@ msgstr "&Prostý text"
 msgid "&Properties"
 msgstr "&Vlastnosti"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "&Historie"
@@ -873,6 +876,10 @@ msgstr "&Zkus znova"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "&Zpět"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1400,6 +1407,10 @@ msgstr "Rozšířené možnosti exportu  XML \"Jeden záznam\" "
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "Rozšířené možnosti exportu XML"
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2229,7 +2240,7 @@ msgstr "Kopíruj UR&L do schránky "
 
 #. Resource IDs: (329, 32070)
 msgid "Copy URL to Clipboard"
-msgstr "Kopíruj URL do schránky
+msgstr "Kopíruj URL do schránk"
 
 #. Resource IDs: (32223)
 msgid "Copy all entries to Original"
@@ -2374,6 +2385,10 @@ msgstr "Vyjmou&t"
 msgid "Current Entry"
 msgstr "Současný záznam"
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2403,6 +2418,15 @@ msgstr "Čeština (QWERTY)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "Čeština (programátorská)"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2706,6 +2730,10 @@ msgstr "O&dejít\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "E&xportovat záznam do"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3056,9 +3084,17 @@ msgstr "&Export do"
 msgid "Export &XML"
 msgstr "Export &XML"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
 msgstr "Export záznamu do"
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
+msgstr ""
 
 #. Resource IDs: (365)
 msgid "Export Text"
@@ -3084,6 +3120,10 @@ msgstr "Export souboru: '%s' již existuje.\nChecte ho nahradit?"
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Export dat byl uživatelem omezen na určitá pole."
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4286,7 +4326,7 @@ msgstr "Beze změn"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
-msgstr Nedefinována žádná kritéria""
+msgstr "edefinována žádná kritéria""
 
 #. Resource IDs: (335)
 msgid "No database open with which to compare against another database!"
@@ -4761,12 +4801,20 @@ msgstr "Délka hesla:"
 
 #. Resource IDs: (188)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
-msgstr ""Heslo by mělo používat malá i velká písmena a alespoň jednu číslici nebo znak interpunkce.
+msgstr ""Heslo by mělo používat malá i velká písmena a alespoň jednu číslici nebo znak interpunkce"
+
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
 
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) - došlo k chybě."
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4857,6 +4905,10 @@ msgstr "Prosím vložte řetězec k vyhledání"
 msgid "Please enter an encryption or decryption key"
 msgstr "Prosím vložte (de)šifrovací klíš"
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr "Prosím vložte současnou kombinaci následovanou novou kombinací. \r\nNapište novou kombinaci znovu pro potvrzení."
@@ -4888,6 +4940,10 @@ msgstr "Prosím zadjehte váš YubiKey"
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "Prosím pojmenujte XML soubor"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -4972,7 +5028,7 @@ msgstr "Stiskněte pro smazání všech přidaných znaků."
 
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Stisknutí OK zkopruje všechny hesla vybrané položky do schránky. Schránka bude bezpečně smazána při zavření PasswordSafe.\n\n"Stisknutí Zrušit zastaví kopírování hesel.
+msgstr "Stisknutí OK zkopruje všechny hesla vybrané položky do schránky. Schránka bude bezpečně smazána při zavření PasswordSafe.\n\n"Stisknutí Zrušit zastaví kopírování hesel"
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -6114,7 +6170,7 @@ msgstr "Následující záznamy byly přeskočeny:"
 #. Resource IDs: (372)
 #, c-format
 msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr "Klávesová zkratka '%s' je již přiřazena k položce menu:"\t'%s'\n%s přepíše zkratku této položky.\nStiskněte OK/Aplikovat pro přijetí nebo změnu výběru.
+msgstr "Klávesová zkratka '%s' je již přiřazena k položce menu:"\t'%s'\n%s přepíše zkratku této položky.\nStiskněte OK/Aplikovat pro přijetí nebo změnu výběru"
 
 #. Resource IDs: (372)
 #, c-format
@@ -6554,8 +6610,8 @@ msgid "Urdu"
 msgstr "Urdština"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "Použití: pwsafe [-r|-v] [databáze hesel]\nnebo pwsafe [-e|-d] název souboru\nnebo pwsafe [-c]\nnebo pwsafe [-s] [název databáze]\nnebo pwsafe -m\n\n kde:\n  -r = otevřít pouze pro čtení\n  -v = zvalidovat a opravit\n  -e/d = zašifrovat/dešifrovat soubor\n  -c = nastarovat zavřené, žádná otevřená databáze\n  -s = tichý start (minimalizováno)\n  -m = nastarovat minimalizováno a zavřeno\n\nNavíc mohou být použity následující příznaky:\n -u uživatel (uživatelské preference místo loginu)\n -h host (hledat v preferencích místo použití jména počítače)\n -g konfigurační soubor (použít tento soubor místo pwsafe.cfg)\n -q (nestěžovat si na chybějící zdroje, např.  fonty)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -6876,7 +6932,7 @@ msgstr "Ano (alespoň %d)"
 #. Resource IDs: (257)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls"
-msgstr ""Ano - alespoň %d z %ls: %ls
+msgstr ""Ano - alespoň %d z %ls: %l"
 
 #. Resource IDs: (257)
 #, c-format
@@ -7077,6 +7133,22 @@ msgstr "\nExportovat záznam ve formátu XML..."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nExportovat záznam jako text..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7728,6 +7800,10 @@ msgstr "synchronizováno"
 #. Resource IDs: (1417, 65535)
 msgid "the following text:"
 msgstr "následující text:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 #, fuzzy

@@ -758,6 +758,10 @@ msgstr "纯文本文件(&P)..."
 msgid "&Properties"
 msgstr "属性(&P)"
 
+#. Resource IDs: (32089)
+msgid "&Protect All Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
 msgstr "最近项目历史(&R)"
@@ -841,6 +845,10 @@ msgstr "重试(&T)"
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "撤销(&U)"
+
+#. Resource IDs: (32090)
+msgid "&Unprotect All Entries"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1367,6 +1375,10 @@ msgstr "高级 XML“单独项目”导出选项"
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
 msgstr "高级 XML 导出选项"
+
+#. Resource IDs: (373)
+msgid "Advanced XML Group Export Options"
+msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -2324,6 +2336,10 @@ msgstr "剪切(&T)"
 msgid "Current Entry"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Current Safe Combination:"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
@@ -2353,6 +2369,15 @@ msgstr "捷克语(标准键盘)"
 #. Resource IDs: (520)
 msgid "Czech Programmers"
 msgstr "捷克语(程序员)"
+
+#. Resource IDs: (373)
+msgid "DB"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "DB Export from database: '%s'"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "DB Format"
@@ -2652,6 +2677,10 @@ msgstr "退出(&X)\tCtrl+Q\\Alt+F4"
 #. Resource IDs: (65535)
 msgid "E&xport Entry To"
 msgstr "导出项目为"
+
+#. Resource IDs: (65535)
+msgid "E&xport Group To"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3002,8 +3031,16 @@ msgstr "导出为(&T)"
 msgid "Export &XML"
 msgstr "导出 XML(&X)"
 
+#. Resource IDs: (32135)
+msgid "Export Current &DB"
+msgstr ""
+
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
+msgstr ""
+
+#. Resource IDs: (373, 32137)
+msgid "Export Group To"
 msgstr ""
 
 #. Resource IDs: (123)
@@ -3030,6 +3067,10 @@ msgstr ""
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "导出的数据仅限于用户确定的某些字段！"
+
+#. Resource IDs: (373)
+msgid "Export_DB"
+msgstr ""
 
 #. Resource IDs: (363)
 msgid "Export_Text"
@@ -4709,10 +4750,18 @@ msgstr "密码长度:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 
+#. Resource IDs: (32092, 32095)
+msgid "Password&Safe..."
+msgstr ""
+
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
+
+#. Resource IDs: (373)
+msgid "PasswordSafe..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -4803,6 +4852,10 @@ msgstr "请输入一个需要查找的字串！"
 msgid "Please enter an encryption or decryption key"
 msgstr "请输入一个加密或解密密匙"
 
+#. Resource IDs: (1504)
+msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
 msgstr ""
@@ -4834,6 +4887,10 @@ msgstr ""
 #. Resource IDs: (334)
 msgid "Please name the XML file"
 msgstr "请命名 XML 文件！"
+
+#. Resource IDs: (373)
+msgid "Please name the database file"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
@@ -6498,8 +6555,8 @@ msgid "Urdu"
 msgstr "乌尔都语"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "用法: pwsafe [-r|-v] [密码数据库]\n或 pwsafe [-e|-d] 文件名\n或 pwsafe [-c]\n或 pwsafe [-s] [密码数据库]\n或 pwsafe -m\n\n 哪里:\n  -r = 打开为只读\n  -v = 验证 & 修复\n  -e/d = 加密/解密 文件\n  -c = 启动 关闭 如: 不打开数据库\n  -s = 静默启动 (最小化)\n  -m = 启动 最小化 & 关闭\n\n此外，下列标识符可用于:\n -u 用户 (使用用户参数选择取代登陆名称)\n -h 主机 (使用主机查找参数选择取代机器名称)\n -g config_file (使用 config_file 取代 pwsafe.cfg)\n -q (不要抱怨缺少字体，DLL 等)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7020,6 +7077,22 @@ msgstr "\n导出项目为 XML 格式..."
 #. Resource IDs: (2006)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\n导出项目为纯文本..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to another Safe..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group in XML format..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to Plain Text..."
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nExport Group to another Safe..."
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
@@ -7671,6 +7744,10 @@ msgstr "同步"
 #. Resource IDs: (65535)
 msgid "the following text:"
 msgstr "下列文本:"
+
+#. Resource IDs: (373)
+msgid "the passwords and data of all entries in this group"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"
