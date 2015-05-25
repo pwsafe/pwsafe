@@ -1476,9 +1476,25 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     // those being displayed.
     MakeOrderedItemList(OIL, m_ctlItemTree.GetSelectedItem());
   } else {
-    // Note: Only selected entry
+    // Note: Only selected entry but...
+    // if Alias - use entry with base's password
+    // If Shortcut - use complete base entry
     CItemData *pci = getSelectedItem();
-    OIL.push_back(*pci);
+    CItemData::EntryType et = pci->GetEntryType();
+    switch (et) {
+      case CItemData::ET_ALIAS:
+      {
+        CItemData ci = *pci;
+        ci.SetPassword(pci->GetPassword());
+        OIL.push_back(ci);
+        break;
+      }
+      case CItemData::ET_SHORTCUT:
+        pci = GetBaseEntry(pci);
+        // Drop through intentionally
+      default:
+        OIL.push_back(*pci);
+    }
   }
 
   numExported = OIL.size();
@@ -1595,9 +1611,25 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
     HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT ? m_ctlItemTree.GetSelectedItem() : NULL;
     MakeOrderedItemList(OIL, hi);
   } else {
-    // Note: Only selected entry
+    // Note: Only selected entry but...
+    // if Alias - use entry with base's password
+    // If Shortcut - use complete base entry
     CItemData *pci = getSelectedItem();
-    OIL.push_back(*pci);
+    CItemData::EntryType et = pci->GetEntryType();
+    switch (et) {
+      case CItemData::ET_ALIAS:
+      {
+        CItemData ci = *pci;
+        ci.SetPassword(pci->GetPassword());
+        OIL.push_back(ci);
+        break;
+      }
+      case CItemData::ET_SHORTCUT:
+        pci = GetBaseEntry(pci);
+        // Drop through intentionally
+      default:
+        OIL.push_back(*pci);
+    }
   }
 
   ReportAdvancedOptions(prpt, bAdvanced, nAdvType);
@@ -1713,9 +1745,25 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
     HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2XML ? m_ctlItemTree.GetSelectedItem() : NULL;
     MakeOrderedItemList(OIL, hi);
   } else {
-    // Note: Only selected entry
+    // Note: Only selected entry but...
+    // if Alias - use entry with base's password
+    // If Shortcut - use complete base entry
     CItemData *pci = getSelectedItem();
-    OIL.push_back(*pci);
+    CItemData::EntryType et = pci->GetEntryType();
+    switch (et) {
+      case CItemData::ET_ALIAS:
+      {
+        CItemData ci = *pci;
+        ci.SetPassword(pci->GetPassword());
+        OIL.push_back(ci);
+        break;
+      }
+      case CItemData::ET_SHORTCUT:
+        pci = GetBaseEntry(pci);
+        // Drop through intentionally
+      default:
+        OIL.push_back(*pci);
+    }
   }
 
   ReportAdvancedOptions(prpt, bAdvanced, nAdvType);
