@@ -20,6 +20,7 @@ public:
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   enum {INVALID = -1, START, MIDDLE, PENULTIMATE, LAST};
 
@@ -34,6 +35,7 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(CWZPropertyPage)
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

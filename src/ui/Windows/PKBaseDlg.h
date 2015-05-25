@@ -56,8 +56,8 @@ protected:
   //{{AFX_MSG(CPKBaseDlg)
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  //}}AFX_MSG
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
+  //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 

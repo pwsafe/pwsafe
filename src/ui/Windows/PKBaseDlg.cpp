@@ -77,8 +77,8 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
   ON_WM_CTLCOLOR()
-//{{AFX_MSG_MAP(CPKBaseDlg)
-//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CPKBaseDlg)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 BOOL CPKBaseDlg::OnInitDialog(void)
@@ -129,9 +129,9 @@ BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
   RelayToolTipEvent(pMsg);
 
   // Show/hide caps lock indicator
-  CWnd *capslock = GetDlgItem(IDC_CAPSLOCK);
-  if (capslock != NULL) {
-    capslock->ShowWindow(((GetKeyState(VK_CAPITAL) & 0x0001) == 0x0001) ?
+  CWnd *pCapsLock = GetDlgItem(IDC_CAPSLOCK);
+  if (pCapsLock != NULL) {
+    pCapsLock->ShowWindow(((GetKeyState(VK_CAPITAL) & 0x0001) == 0x0001) ?
                           SW_SHOW : SW_HIDE);
   }
 

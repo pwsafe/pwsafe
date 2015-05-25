@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
 : CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
-  m_pToolTipCtrl(NULL)
+m_pToolTipCtrl(NULL)
 {
 }
 
@@ -30,6 +30,7 @@ void CWZPropertyPage::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CWZPropertyPage, CPropertyPage)
+  ON_WM_CTLCOLOR()
   //{{AFX_MSG_MAP(CWZPropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -102,4 +103,30 @@ LRESULT CWZPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     pws_os::Trace(L"CWZPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
 
   return CPropertyPage::WindowProc(message, wParam, lParam);
+}
+
+BOOL CWZPropertyPage::PreTranslateMessage(MSG *pMsg)
+{
+  // Show/hide caps lock indicator
+  CWnd *pCapsLock = GetDlgItem(IDC_CAPSLOCK);
+  if (pCapsLock != NULL) {
+    pCapsLock->ShowWindow(((GetKeyState(VK_CAPITAL) & 0x0001) == 0x0001) ?
+                            SW_SHOW : SW_HIDE);
+  }
+
+  return CPropertyPage::PreTranslateMessage(pMsg);
+}
+
+HBRUSH CWZPropertyPage::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  if (nCtlColor == CTLCOLOR_STATIC) {
+    UINT nID = pWnd->GetDlgCtrlID();
+    if (nID == IDC_CAPSLOCK) {
+      pDC->SetTextColor(RGB(255, 0, 0));
+      pDC->SetBkMode(TRANSPARENT);
+    }
+  }
+  return hbr;
 }
