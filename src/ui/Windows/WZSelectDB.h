@@ -21,10 +21,8 @@ class CWZSelectDB : public CWZPropertyPage, public CYubiMixin
 public:
   DECLARE_DYNAMIC(CWZSelectDB)
 
-  CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType);
+  CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption, const int nType);
   ~CWZSelectDB();
-
-  enum {IDD = IDD_WZSELECTDB};
 
   CString m_defexpdelim;
 

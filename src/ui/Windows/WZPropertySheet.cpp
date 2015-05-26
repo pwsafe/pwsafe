@@ -28,21 +28,27 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
 {
   // common 'other' file processing for Compare, Merge & Synchronize
   UINT uimsgid_select(0), uimsgid_advanced(0), uimsgid_finish(0);
+  int idd_select(IDD_WZSELECTDB); // change when a pwsafe is input
+  //                                  (merge/compare/sync)
+
   switch (nID) {
     case ID_MENUITEM_COMPARE:
       uimsgid_select = IDS_PICKCOMPAREFILE;
       uimsgid_advanced = IDS_COMPAREX;
       uimsgid_finish = IDS_WZCOMPARE;
+      idd_select = IDD_WZINPUTDB;
       break;
     case ID_MENUITEM_MERGE:
       uimsgid_select = IDS_PICKMERGEFILE;
       uimsgid_advanced = IDS_MERGEX;
       uimsgid_finish = IDS_WZMERGE;
+      idd_select = IDD_WZINPUTDB;
       break;
     case ID_MENUITEM_SYNCHRONIZE:
       uimsgid_select = IDS_PICKSYNCHRONIZEEFILE;
       uimsgid_advanced = IDS_SYNCHRONIZEX;
       uimsgid_finish = IDS_WZSYNCH;
+      idd_select = IDD_WZINPUTDB;
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
       uimsgid_select = IDS_NAMETEXTFILE;
@@ -88,7 +94,8 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
 
   // Setup up wizard property pages
   m_nButtonID = uimsgid_finish;
-  m_pp_selectdb = new CWZSelectDB(this, uimsgid_select, CWZPropertyPage::START);
+  m_pp_selectdb = new CWZSelectDB(this, idd_select, uimsgid_select,
+				  CWZPropertyPage::START);
   AddPage(m_pp_selectdb);
 
   if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB) {

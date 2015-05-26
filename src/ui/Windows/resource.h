@@ -365,6 +365,7 @@
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
 #define IDB_EXPORTDB_CLASSIC            528
+#define IDD_WZINPUTDB                   528
 #define IDB_EXPORTDB_NEW                529
 #define IDB_EXPORTDB_NEW_D              530
 #define IDB_EXPORTV1_CLASSIC            531
@@ -798,7 +799,7 @@
 #define IDC_VKB2                        1509
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        537
