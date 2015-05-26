@@ -142,32 +142,32 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
-//{{AFX_MSG_MAP(CPasswordPolicyDlg)
-ON_BN_CLICKED(IDOK, OnOK)
-ON_BN_CLICKED(IDCANCEL, OnCancel)
-ON_BN_CLICKED(ID_HELP, OnHelp)
+  //{{AFX_MSG_MAP(CPasswordPolicyDlg)
+  ON_BN_CLICKED(IDOK, OnOK)
+  ON_BN_CLICKED(IDCANCEL, OnCancel)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
 
-ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
-ON_BN_CLICKED(IDC_USELOWERCASE, OnUseLowerCase)
-ON_BN_CLICKED(IDC_USEUPPERCASE, OnUseUpperCase)
-ON_BN_CLICKED(IDC_USEDIGITS, OnUseDigits)
-ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
-ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
-ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
+  ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
+  ON_BN_CLICKED(IDC_USELOWERCASE, OnUseLowerCase)
+  ON_BN_CLICKED(IDC_USEUPPERCASE, OnUseUpperCase)
+  ON_BN_CLICKED(IDC_USEDIGITS, OnUseDigits)
+  ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
+  ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
+  ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
 
-// Because we can show the generated password when used from Manage->Generate
-ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
-ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
-ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
+  // Because we can show the generated password when used from Manage->Generate
+  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
-ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
+  ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
 
-ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
-ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
+  ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
+  ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
 
-ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
-//}}AFX_MSG_MAP
-ON_BN_CLICKED(IDC_RESET_SYMBOLS, &CPasswordPolicyDlg::OnSymbolReset)
+  ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
+  ON_BN_CLICKED(IDC_RESET_SYMBOLS, &CPasswordPolicyDlg::OnSymbolReset)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -373,6 +373,30 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   if (m_uicaller == IDS_GENERATEPASSWORD) {
     // Disable Specific policy controls as default is to use a named policy (database default)
     SetSpecificPolicyControls(FALSE);
+
+    m_pToolTipCtrl = new CToolTipCtrl;
+    if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+      pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");
+      delete m_pToolTipCtrl;
+      m_pToolTipCtrl = NULL;
+      return TRUE;
+    }
+
+    // Tooltips
+    EnableToolTips();
+
+    // Activate the tooltip control.
+    m_pToolTipCtrl->Activate(TRUE);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+    // Quadruple the time to allow reading by user
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+
+    // Set the tooltip
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
+    CString cs_ToolTip;
+    cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
   }
 
   // Set appropriate focus
@@ -382,6 +406,9 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
 BOOL CPasswordPolicyDlg::PreTranslateMessage(MSG* pMsg)
 {
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && 
       (pMsg->wParam == VK_F1 || pMsg->wParam == VK_ESCAPE)) {
     PostMessage(WM_COMMAND, MAKELONG(pMsg->wParam == VK_F1 ? ID_HELP : IDCANCEL, BN_CLICKED), NULL);
