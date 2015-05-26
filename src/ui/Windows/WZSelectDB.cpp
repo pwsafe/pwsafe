@@ -41,7 +41,7 @@ const wchar_t CWZSelectDB::PSSWDCHAR = L'*';
 IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
 CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
-			 const int nType)
+       const int nType)
  : CWZPropertyPage(idd, nIDCaption, nType), m_tries(0), m_state(0),
   m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
   m_bFileExistsUserAsked(false),

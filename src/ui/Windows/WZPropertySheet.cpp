@@ -95,7 +95,7 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
   // Setup up wizard property pages
   m_nButtonID = uimsgid_finish;
   m_pp_selectdb = new CWZSelectDB(this, idd_select, uimsgid_select,
-				  CWZPropertyPage::START);
+          CWZPropertyPage::START);
   AddPage(m_pp_selectdb);
 
   if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB) {

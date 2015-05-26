@@ -365,7 +365,6 @@
 #define IDB_YUBI_LOGO_DIS               526
 #define IDD_YUBIKEY                     527
 #define IDB_EXPORTDB_CLASSIC            528
-#define IDD_WZINPUTDB                   528
 #define IDB_EXPORTDB_NEW                529
 #define IDB_EXPORTDB_NEW_D              530
 #define IDB_EXPORTV1_CLASSIC            531
@@ -374,6 +373,7 @@
 #define IDB_EXPORTV2_CLASSIC            534
 #define IDB_EXPORTV2_NEW                535
 #define IDB_EXPORTV2_NEW_D              536
+#define IDD_WZINPUTDB                   537
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -802,9 +802,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        537
+#define _APS_NEXT_RESOURCE_VALUE        538
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1510
-#define _APS_NEXT_SYMED_VALUE           537
+#define _APS_NEXT_SYMED_VALUE           538
 #endif
 #endif
