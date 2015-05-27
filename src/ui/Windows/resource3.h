@@ -160,7 +160,6 @@
 #define IDS_FILEOPENERROR               5319
 #define IDS_CANTOPENREADING             5320
 #define IDS_UNKNOWNERROR                5321
-#define IDS_NEWFORMAT                   5322
 #define IDS_NEWFORMAT2                  5323
 #define IDS_VERSIONWARNING              5324
 #define IDS_CANTOPENWRITING             5325
@@ -745,6 +744,8 @@
 #define IDS_RPTEXPORTDB                 5965
 #define IDS_WSSLCT_GROUP                5966
 #define IDS_EXDB                        5967
+#define IDS_SAVE                        5968
+#define IDS_DONTSAVE                    5969
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

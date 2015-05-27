@@ -1062,7 +1062,7 @@ int DboxMain::Save(const SaveType savetype)
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
-    case PWSfile::VCURRENT:
+    case PWSfile::V30:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
@@ -1097,29 +1097,81 @@ int DboxMain::Save(const SaveType savetype)
         } // BackupCurFile failed
       } // BackupBeforeEverySave
       break;
-    case PWSfile::NEWFILE:
+    case PWSfile::V17:
+    case PWSfile::V20:
+    {
       // file version mis-match
-      NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                        DEFAULT_SUFFIX);
+      CString cs_text;
 
-      cs_msg.Format(IDS_NEWFORMAT,
-                    m_core.GetCurFile().c_str(), NewName.c_str());
+      std::wstring dir;
+      std::wstring cdrive, cdir, dontCare;
+      pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+      dir = cdrive + cdir;
+
+      NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+        DEFAULT_SUFFIX);
+
+      // Issue here is that user is trying to Exit and so the options given are:
+      //   Save (& Exit), Don't save (& Exit), Cancel exit
+      cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
       gmb.SetTitle(IDS_VERSIONWARNING);
       gmb.SetMsg(cs_msg);
       gmb.SetStandardIcon(MB_ICONWARNING);
-      gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+      gmb.AddButton(IDS_SAVE, IDS_SAVE);
+      gmb.AddButton(IDS_DONTSAVE, IDS_DONTSAVE);
       gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
-      if (gmb.DoModal() == IDS_CANCEL)
-        return PWScore::USER_CANCEL;
+
+      rc = gmb.DoModal();
+      switch (rc) {
+        case IDS_CANCEL:
+          return PWScore::USER_CANCEL;
+        case IDS_DONTSAVE:
+          return PWScore::USER_EXIT;
+      }
+
+      while (1) {
+        CPWFileDialog fd(FALSE,
+          DEFAULT_SUFFIX,
+          NewName.c_str(),
+          OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+          OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+          CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+          this);
+
+        cs_text.LoadString(IDS_NEWNAME2);
+
+        fd.m_ofn.lpstrTitle = cs_text;
+
+        if (!dir.empty())
+          fd.m_ofn.lpstrInitialDir = dir.c_str();
+
+        rc = fd.DoModal();
+
+        if (m_inExit) {
+          // If U3ExitNow called while in CPWFileDialog,
+          // PostQuitMessage makes us return here instead
+          // of exiting the app. Try resignalling
+          PostQuitMessage(0);
+          return PWScore::USER_CANCEL;
+        }
+        if (rc == IDOK) {
+          NewName = fd.GetPathName();
+          break;
+        } else
+          return PWScore::USER_DECLINED_SAVE;
+      }
 
       m_core.SetCurFile(NewName.c_str());
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
-                                         m_core.GetCurFile()).c_str();
+        m_core.GetCurFile()).c_str();
       SetWindowText(LPCWSTR(m_titlebar));
       app.SetTooltipText(m_core.GetCurFile().c_str());
       break;
-    default:
+    }
+
+    default: /* NEWFILE, UNKNOWN_VERSION */
       ASSERT(0);
+      return PWScore::FAILURE;
   } // switch on file version
 
   UUIDList RUElist;
@@ -3384,7 +3436,7 @@ void DboxMain::OnOK()
   SavePreferencesOnExit();
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWScore::SUCCESS || rc == PWScore::USER_EXIT) {
     CleanUpAndExit();
   }
 }
@@ -3543,11 +3595,17 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     */
 
     if (bAutoSave && !m_core.IsReadOnly() &&
-        (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-        m_core.GetNumEntries() > 0) {
+      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+      m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
-      if (rc != PWScore::SUCCESS)
-        return PWScore::USER_CANCEL;
+      switch (rc) {
+        case PWScore::SUCCESS:
+          break;
+        case PWScore::USER_EXIT:
+          return PWScore::USER_EXIT;
+        default:
+          return PWScore::USER_CANCEL;
+      }
     }
     return PWScore::SUCCESS;
   } // ST_NORMALEXIT
