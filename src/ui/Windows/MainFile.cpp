@@ -1417,7 +1417,21 @@ void DboxMain::OnExportVx(UINT nID)
 {
   INT_PTR rc;
   StringX newfile;
-  CString cs_text, cs_temp;
+  CString cs_title, cs_text;
+
+  CGeneralMsgBox gmb;
+
+  cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
+  cs_title.LoadString(IDS_VERSIONWARNING);
+
+  gmb.SetTitle(cs_title);
+  gmb.SetMsg(cs_text);
+  gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+  gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+  gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
+
+  if (gmb.DoModal() == IDS_CANCEL)
+    return;
 
   //SaveAs-type dialog box
   std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),

@@ -746,6 +746,7 @@
 #define IDS_EXDB                        5967
 #define IDS_SAVE                        5968
 #define IDS_DONTSAVE                    5969
+#define IDS_EXPORTWARNING               5970
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

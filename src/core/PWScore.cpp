@@ -403,8 +403,11 @@ void PWScore::NewFile(const StringX &passkey)
 }
 
 // functor object type for for_each:
+// Writes out all records to a PasswordSafe database of any version
 struct RecordWriter {
-  RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
+  RecordWriter(PWSfile *pout, PWScore *pcore, PWSfile::VERSION version)
+    : m_pout(pout), m_pcore(pcore), m_version(version) {}
+
   void operator()(std::pair<CUUID const, CItemData> &p)
   {
     StringX savePassword = p.second.GetPassword();
@@ -413,15 +416,30 @@ struct RecordWriter {
     CUUID item_uuid = p.second.GetUUID();
 
     if (p.second.IsAlias()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
-      uuid_str = _T("[[");
-      uuid_str += base_uuid;
-      uuid_str += _T("]]");
+      if (m_version < PWSfile::V30) {
+        // Pre V30 does not support aliases.  Write as a normal record
+        // with the base record's password
+        CItemData ci = p.second;
+        CItemData *pbase = m_pcore->GetBaseEntry(&(p.second));
+        ci.SetPassword(pbase->GetPassword());
+        m_pout->WriteRecord(ci);
+        return;
+      } else {
+        m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
+        uuid_str = _T("[[");
+        uuid_str += base_uuid;
+        uuid_str += _T("]]");
+      }
     } else if (p.second.IsShortcut()) {
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
-      uuid_str = _T("[~");
-      uuid_str += base_uuid;
-      uuid_str += _T("~]");
+      if (m_version < PWSfile::V30) {
+        // Pre V30 does not support shortcuts at all - ignore completely
+        return;
+      } else {
+        uuid_str = _T("[~");
+        uuid_str += base_uuid;
+        uuid_str += _T("~]");
+      }
     }
 
     p.second.SetPassword(uuid_str);
@@ -433,6 +451,7 @@ struct RecordWriter {
 private:
   PWSfile *m_pout;
   PWScore *m_pcore;
+  PWSfile::VERSION m_version;
 };
 
 int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
@@ -481,7 +500,7 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
       return status;
     }
 
-    RecordWriter write_record(out, this);
+    RecordWriter write_record(out, this, version);
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
     m_hdr = out->GetHeader(); // update time saved, etc.
@@ -506,9 +525,12 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
 }
 
 // functor object type for for_each:
+// Writes out subset of records to a PasswordSafe database at the current version
+// Used by Export entry or Export Group
 struct ExportRecordWriter {
   ExportRecordWriter(PWSfile *pout, PWScore *pcore, CReport *pRpt) :
     m_pout(pout), m_pcore(pcore), m_pRpt(pRpt) {}
+
   void operator()(CItemData &item)
   {
     StringX savePassword = item.GetPassword();
@@ -550,6 +572,9 @@ private:
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                              PWScore *pINcore, CReport *pRpt, PWSfile::VERSION version)
 {
+  // Writes out subset of database records (as supplied in OrderedItemList)
+  // to a PasswordSafe database at the current version
+  // Used by Export entry or Export Group
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
     PWSfile::Write, status);
@@ -1418,7 +1443,8 @@ bool PWScore::WasDisplayStatusChanged() const
 {
   // m_OrigDisplayStatus is set while reading file.
   // m_hdr.m_displaystatus may be changed via SetDisplayStatus
-  return m_hdr.m_displaystatus != m_OrigDisplayStatus;
+  // Only for V3 and later
+  return m_ReadFileVersion >= PWSfile::V30 && m_hdr.m_displaystatus != m_OrigDisplayStatus;
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
