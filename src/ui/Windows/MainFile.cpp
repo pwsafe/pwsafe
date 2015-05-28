@@ -1086,11 +1086,15 @@ int DboxMain::Save(const SaveType savetype)
               else
                 return SaveAs();
             }
+
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
               gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
               return PWScore::USER_CANCEL;
+
+            default:
+              break;
           }
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
           return SaveAs();
@@ -1169,7 +1173,9 @@ int DboxMain::Save(const SaveType savetype)
       break;
     }
 
-    default: /* NEWFILE, UNKNOWN_VERSION */
+    // Do NOT code the default case statement - each version value must be specified
+    case PWSfile::NEWFILE:
+    case PWSfile::UNKNOWN_VERSION:
       ASSERT(0);
       return PWScore::FAILURE;
   } // switch on file version

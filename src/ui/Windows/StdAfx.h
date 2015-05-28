@@ -18,7 +18,12 @@
 #include <htmlhelp.h>
 #include <afxdlgs.h>
 
-//Don't show warning for automatic inline conversion
+// Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)
-//Don't show warning for "identifier was truncated to '255' characters" in STL.
+
+// Don't show warning for "identifier was truncated to '255' characters" in STL.
 #pragma warning(disable: 4786)
+
+// Ensure that switch enum statements without a "default" case statement catch all
+// possible enum values
+#pragma warning(error: 4062)
