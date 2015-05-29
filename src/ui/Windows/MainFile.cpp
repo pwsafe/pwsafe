@@ -1062,7 +1062,7 @@ int DboxMain::Save(const SaveType savetype)
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
-    case PWSfile::V30:
+    case PWSfile::VCURRENT:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
