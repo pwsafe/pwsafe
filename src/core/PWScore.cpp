@@ -451,7 +451,7 @@ struct RecordWriter {
 private:
   PWSfile *m_pout;
   PWScore *m_pcore;
-  PWSfile::VERSION m_version;
+  const PWSfile::VERSION m_version;
 };
 
 int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
