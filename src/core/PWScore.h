@@ -430,6 +430,7 @@ public:
   bool WasDisplayStatusChanged() const;
 
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  void SetHeader(const PWSfile::HeaderRecord &hdr) { m_hdr = hdr; }
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
 

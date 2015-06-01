@@ -1483,6 +1483,12 @@ void DboxMain::OnExportVx(UINT nID)
       return;
   }
 
+  // Can't take a straight copy of current core because of the use
+  // of pointers and because the entries have pointers to their
+  // display info, which would be tried to be freed twice.
+  // Do bare minimum - save header information only
+  const PWSfile::HeaderRecord saved_hdr = m_core.GetHeader();
+
   switch (nID) {
     case ID_MENUITEM_EXPORT2OLD1XFORMAT:
       rc = m_core.WriteV17File(newfile);
@@ -1495,6 +1501,10 @@ void DboxMain::OnExportVx(UINT nID)
       rc = PWScore::FAILURE;
       break;
   }
+
+  // Restore current database header
+  m_core.SetHeader(saved_hdr);
+
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
   }
