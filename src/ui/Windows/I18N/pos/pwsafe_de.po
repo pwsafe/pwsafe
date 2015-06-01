@@ -2720,6 +2720,10 @@ msgstr "Wollen sie das ersetzen?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Möchten Sie die Änderungen an der Datenbank speichern:\n\n%s\n\noder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
 
+#. Resource IDs: (374)
+msgid "Don't Save"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Die automatish gespeicherte Dokumente nicht wiederherstellen\nDie zuletzt explizit gespeicherte Version der Dokumente hernehmen"
@@ -6277,11 +6281,6 @@ msgstr "Das alte Master-Passwort ist nicht korrekt"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
-
-#. Resource IDs: (333)
-#, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
@@ -6298,6 +6297,10 @@ msgstr ""
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
 msgstr "Die ausgewählte Notsicherungsdatei wird anstelle der ausgewählten Datenbank geöffnet."
+
+#. Resource IDs: (374)
+msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."

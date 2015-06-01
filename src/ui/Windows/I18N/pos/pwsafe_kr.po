@@ -2589,6 +2589,10 @@ msgstr "정말 이것을 교체하시겠습니까?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "다음 데이터베이스에 변경 사항을 저장하시겠습니까?:\n\n%s\n\n혹은 시스템 종료\\재시작\\로그오프 를 취소하시겠습니까?"
 
+#. Resource IDs: (374)
+msgid "Don't Save"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "자동으로 저장된 문서를 열지 마십시오.\n정확히 마지막으로 저장된 문서를 사용하십시오."
@@ -6146,11 +6150,6 @@ msgstr "이전 보안 비밀번호가 일치하지 않습니다"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
-
-#. Resource IDs: (333)
-#, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
@@ -6167,6 +6166,10 @@ msgstr ""
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
 msgstr "선택한 긴급 복구본 파일이 현재 데이터베이스를 대신하여 열게 됩니다."
+
+#. Resource IDs: (374)
+msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."

@@ -2589,6 +2589,10 @@ msgstr "Değiştirmek ister misiniz?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Aşağıdaki veritabanına yapılan değişikliklerin kaydedilmesini siter misiniz:\n\n%s\n\nyoksa kapatma\\yeniden başlatma\\oturum kapatma iptal mi edisin?"
 
+#. Resource IDs: (374)
+msgid "Don't Save"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Otomatik kaydedilmiş belgeleri geri getirme\nBelgerlerin son doğrudan kaydedilmiş sürümlerini kullan"
@@ -6146,11 +6150,6 @@ msgstr "Eski kasa kombinasyonu doğru değil"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
-
-#. Resource IDs: (333)
-#, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
@@ -6167,6 +6166,10 @@ msgstr ""
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
 msgstr "Seçilen veritabanı yerine seçilen hatasız yedek dosyası açılacak."
+
+#. Resource IDs: (374)
+msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."
