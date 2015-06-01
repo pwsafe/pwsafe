@@ -200,9 +200,9 @@ public:
                       PWScore *pINcore, CReport *pRpt = NULL,
                       PWSfile::VERSION version = PWSfile::VCURRENT);
   int WriteV17File(const StringX &filename)
-  {return WriteFile(filename, true, PWSfile::V17);}
+  {return WriteFile(filename, false, PWSfile::V17);}
   int WriteV2File(const StringX &filename)
-  {return WriteFile(filename, true, PWSfile::V20);}
+  {return WriteFile(filename, false, PWSfile::V20);}
 
   // R/O file status
   void SetReadOnly(bool state) {m_IsReadOnly = state;}

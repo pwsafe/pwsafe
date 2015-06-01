@@ -503,7 +503,10 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
     RecordWriter write_record(out, this, version);
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
-    m_hdr = out->GetHeader(); // update time saved, etc.
+    // Update info only if CURRENT_VERSION
+    if (version == PWSfile::VCURRENT) {
+      m_hdr = out->GetHeader(); // update time saved, etc.
+    }
   }
   catch (...) {
     out->Close();
@@ -513,9 +516,12 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   out->Close();
   delete out;
 
-  SetChanged(false, false);
+  // Again update info only if CURRENT_VERSION
+  if (version == PWSfile::VCURRENT) {
+    SetChanged(false, false);
 
-  m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
+    m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
+  }
 
   // Create new signature if required
   if (bUpdateSig)
