@@ -593,20 +593,12 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // m_hdr.m_prefString = PWSprefs::GetInstance()->Store(); - no need to expose this
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
 
-  // Get current DB name but ensure it will fit in 255 character description
-  StringX sx_currentDB = pINcore->GetCurFile();
+  // Get current DB name and save in exported DB description
+  std::wstring sx_dontcare, sx_file, sx_extn;
+  pws_os::splitpath(pINcore->GetCurFile().c_str(), sx_dontcare, sx_dontcare, sx_file, sx_extn);
+  Format(m_hdr.m_dbdesc, IDSC_EXPORTDESCRIPTION, (sx_file + sx_extn).c_str());
 
-  const int Width = 220;
-  StringX sx_normalised_currentDB;
-  if (sx_currentDB.length() > Width) {
-    sx_normalised_currentDB = sx_currentDB.substr(Width / 2 - 5) +
-      L" ... " + sx_currentDB.substr(sx_currentDB.length() - Width / 2);
-  } else {
-    sx_normalised_currentDB = sx_currentDB;
-  }
-
-  Format(m_hdr.m_dbdesc, IDSC_EXPORTDESCRIPTION, sx_normalised_currentDB.c_str());
-
+  // Set new header
   out->SetHeader(m_hdr);
 
   // Give PWSfileV3 the unknown headers to write out
