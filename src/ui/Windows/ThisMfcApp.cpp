@@ -735,11 +735,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            */
           dbox.AllowCompareEntries();
         } else if ((*arg) == L"--do-tall") {
-	  dialogOrientation = PWSprefs::TALL;
+          dialogOrientation = PWSprefs::TALL;
         } else if ((*arg) == L"--do-wide") {
-	  dialogOrientation = PWSprefs::WIDE;
+          dialogOrientation = PWSprefs::WIDE;
         } else if ((*arg) == L"--do-auto") {
-	  dialogOrientation = PWSprefs::AUTO;
+          dialogOrientation = PWSprefs::AUTO;
         } else {
           // unrecognized extended flag. Silently ignore.
         }

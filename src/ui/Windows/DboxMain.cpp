@@ -1564,7 +1564,7 @@ void DboxMain::SetChanged(ChangeType changed)
 
 void DboxMain::ChangeOkUpdate()
 {
-  if (!m_bInitDone)
+  if (!m_bInitDone || m_core.GetReadFileVersion() != PWSfile::VCURRENT)
     return;
 
   CMenu *pmenu = GetMenu();
@@ -3204,7 +3204,14 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
-      if (!m_core.IsChanged() && !m_core.HaveDBPrefsChanged())
+      if ((!m_core.IsChanged() && !m_core.HaveDBPrefsChanged()) ||
+            m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+        iEnable = FALSE;
+      break;
+    // Don't allow Options to be changed (as they are mostly V30 and later)
+      // if a V1 or V2 database
+    case ID_MENUITEM_OPTIONS:
+      if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Special processing for viewing reports, if they exist
