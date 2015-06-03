@@ -126,8 +126,8 @@ int PWSfileV3::SanityCheck(FILE *stream)
   const long pos = ftell(stream); // restore when we're done
 
   // Is file too small?
-  const long file_length = pws_os::fileLength(stream);
-  const long min_v3file_length = 232; // pre + post, no hdr or records
+  const auto file_length = pws_os::fileLength(stream);
+  const unsigned long min_v3file_length = 232; // pre + post, no hdr or records
 
   // Does file have a valid header?
   if (file_length < sizeof(V3TAG)) {
