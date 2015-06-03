@@ -121,15 +121,19 @@ const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 int PWSfileV3::SanityCheck(FILE *stream)
 {
   int retval = SUCCESS;
+
   ASSERT(stream != NULL);
+  const long pos = ftell(stream); // restore when we're done
 
   // Is file too small?
-  const long min_file_length = 232; // pre + post, no hdr or records
-  if (pws_os::fileLength(stream) < min_file_length)
-    return TRUNCATED_FILE;
+  const long file_length = pws_os::fileLength(stream);
+  const long min_v3file_length = 232; // pre + post, no hdr or records
 
-  long pos = ftell(stream); // restore when we're done
   // Does file have a valid header?
+  if (file_length < sizeof(V3TAG)) {
+    retval = NOT_PWS3_FILE;
+    goto err;
+  }
   char tag[sizeof(V3TAG)];
   size_t nread = fread(tag, sizeof(tag), 1, stream);
   if (nread != 1) {
@@ -141,6 +145,8 @@ int PWSfileV3::SanityCheck(FILE *stream)
     goto err;
   }
 
+  if (file_length < min_v3file_length)
+    return TRUNCATED_FILE;
   // Does file have a valid EOF block?
   unsigned char eof_block[sizeof(TERMINAL_BLOCK)];
   if (fseek(stream, -int(sizeof(TERMINAL_BLOCK) + SHA256::HASHLEN), SEEK_END) != 0) {
