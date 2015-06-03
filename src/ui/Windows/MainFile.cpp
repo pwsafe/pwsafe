@@ -919,14 +919,6 @@ void DboxMain::PostOpenProcessing()
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
-
-  // Set default preferences so as not to save/backup if DB is not current version
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT) {
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    prefs->SetPref(PWSprefs::SaveImmediately, false);
-    prefs->SetPref(PWSprefs::BackupBeforeEverySave, false);
-    prefs->SetPref(PWSprefs::SavePasswordHistory, false);
-  }
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
