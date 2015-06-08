@@ -867,6 +867,11 @@ void DboxMain::PostOpenProcessing()
 {
   PWS_LOGIT;
 
+  // Force prior releases to be read-only
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT) {
+    m_core.SetReadOnly(true);
+  }
+
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
@@ -1101,79 +1106,13 @@ int DboxMain::Save(const SaveType savetype)
         } // BackupCurFile failed
       } // BackupBeforeEverySave
       break;
-    case PWSfile::V17:
-    case PWSfile::V20:
-    {
-      // file version mis-match
-      CString cs_text;
-
-      std::wstring dir;
-      std::wstring cdrive, cdir, dontCare;
-      pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-      dir = cdrive + cdir;
-
-      NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-        DEFAULT_SUFFIX);
-
-      // Issue here is that user is trying to Exit and so the options given are:
-      //   Save (& Exit), Don't save (& Exit), Cancel exit
-      cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
-      gmb.SetTitle(IDS_VERSIONWARNING);
-      gmb.SetMsg(cs_msg);
-      gmb.SetStandardIcon(MB_ICONWARNING);
-      gmb.AddButton(IDS_SAVE, IDS_SAVE);
-      gmb.AddButton(IDS_DONTSAVE, IDS_DONTSAVE);
-      gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
-
-      rc = gmb.DoModal();
-      switch (rc) {
-        case IDS_CANCEL:
-          return PWScore::USER_CANCEL;
-        case IDS_DONTSAVE:
-          return PWScore::USER_EXIT;
-      }
-
-      while (1) {
-        CPWFileDialog fd(FALSE,
-          DEFAULT_SUFFIX,
-          NewName.c_str(),
-          OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-          OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-          CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
-          this);
-
-        cs_text.LoadString(IDS_NEWNAME2);
-
-        fd.m_ofn.lpstrTitle = cs_text;
-
-        if (!dir.empty())
-          fd.m_ofn.lpstrInitialDir = dir.c_str();
-
-        rc = fd.DoModal();
-
-        if (m_inExit) {
-          // If U3ExitNow called while in CPWFileDialog,
-          // PostQuitMessage makes us return here instead
-          // of exiting the app. Try resignalling
-          PostQuitMessage(0);
-          return PWScore::USER_CANCEL;
-        }
-        if (rc == IDOK) {
-          NewName = fd.GetPathName();
-          break;
-        } else
-          return PWScore::USER_DECLINED_SAVE;
-      }
-
-      m_core.SetCurFile(NewName.c_str());
-      m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
-        m_core.GetCurFile()).c_str();
-      SetWindowText(LPCWSTR(m_titlebar));
-      app.SetTooltipText(m_core.GetCurFile().c_str());
-      break;
-    }
 
     // Do NOT code the default case statement - each version value must be specified
+    // Prior versions are always Read-Only and so Save is not appropriate - although
+    // they can export to prior versions (no point if not changed) or SaveAs in the
+    // current version format
+    case PWSfile::V17:
+    case PWSfile::V20:
     case PWSfile::NEWFILE:
     case PWSfile::UNKNOWN_VERSION:
       ASSERT(0);
@@ -2617,6 +2556,11 @@ void DboxMain::ChangeMode(bool promptUser)
 void DboxMain::OnChangeMode()
 {
   PWS_LOGIT;
+
+  // Do not allow prior releases to become R/W
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+    return;
+
   ChangeMode(true); // true means "prompt use for password".
 }
 

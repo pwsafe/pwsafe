@@ -3294,6 +3294,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (m_bUnsavedDisplayed)
         iEnable = FALSE;
       break;
+    case ID_MENUITEM_CHANGEMODE:
+      // For prior versions or no DB open - don't give the user the option to change to R/W
+      iEnable = m_core.GetReadFileVersion() == PWSfile::VCURRENT ? TRUE : FALSE;
+      break;
     default:
       break;
   }
