@@ -867,8 +867,8 @@ void DboxMain::PostOpenProcessing()
 {
   PWS_LOGIT;
 
-  // Force prior releases to be read-only
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT) {
+  // Force prior format versions to be read-only
+  if (m_core.GetReadFileVersion() < PWSfile::VCURRENT) {
     m_core.SetReadOnly(true);
   }
 
@@ -2557,11 +2557,10 @@ void DboxMain::OnChangeMode()
 {
   PWS_LOGIT;
 
-  // Do not allow prior releases to become R/W
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
-    return;
-
-  ChangeMode(true); // true means "prompt use for password".
+  // Don't allow prior format versions to become R/W
+  // Do allow current (and possible future 'experimental') fromats
+  if (m_core.GetReadFileVersion() >= PWSfile::VCURRENT)
+    ChangeMode(true); // true means "prompt use for password".
 }
 
 void DboxMain::OnCompare()
