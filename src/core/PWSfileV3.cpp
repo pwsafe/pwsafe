@@ -121,6 +121,7 @@ const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 int PWSfileV3::SanityCheck(FILE *stream)
 {
   int retval = SUCCESS;
+  size_t nread = 0;
 
   ASSERT(stream != NULL);
   const long pos = ftell(stream); // restore when we're done
@@ -135,7 +136,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
     goto err;
   }
   char tag[sizeof(V3TAG)];
-  size_t nread = fread(tag, sizeof(tag), 1, stream);
+  nread = fread(tag, sizeof(tag), 1, stream);
   if (nread != 1) {
     retval = READ_FAIL;
     goto err;
