@@ -18,6 +18,7 @@
 use strict;
 use warnings;
 use File::Copy;
+use File::Spec;
 
 sub usage {
     print "Usage: $0 template outfile\n";
@@ -50,7 +51,7 @@ if (-x $GIT && -d ".git") {
 
 
 #Now that we're done with the formalities, let's get to work:
-my $TMPFILE = "/tmp/v$$";
+my $TMPFILE = File::Spec->tmpdir()."/v$$";
 
 my ($MAJOR, $MINOR, $REVISION);
 
