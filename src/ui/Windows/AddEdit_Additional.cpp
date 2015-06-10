@@ -46,19 +46,18 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                            GetPref(PWSprefs::NumPWHistoryDefault);
 
   // Save PWS HotKey info
-  int32 iPWSHotKeyValue = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
-  m_wVirtualKeyCode = iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  m_wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
+  int32 iAppHotKeyValue = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
+  WORD wHKModifiers = iAppHotKeyValue >> 16;
+  m_wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
+  m_wAppWindowsModifiers = ConvertModifersMFC2Windows(wHKModifiers);
 
   // Can't be enabled if not set!
-  if (iPWSHotKeyValue == 0) {
-    m_bPWSHotKeyEnabled = false;
-    m_iPWSAppHotKey = 0;
+  if (iAppHotKeyValue == 0) {
+    m_bAppHotKeyEnabled = false;
+    m_iAppHotKey = 0;
   } else {
-    m_bPWSHotKeyEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::HotKeyEnabled);
-    m_iPWSAppHotKey = (wPWSModifiers << 16) + m_wVirtualKeyCode;
+    m_bAppHotKeyEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::HotKeyEnabled);
+    m_iAppHotKey = (m_wAppWindowsModifiers << 16) + m_wAppVirtualKeyCode;
   }
 }
 
@@ -440,25 +439,29 @@ BOOL CAddEdit_Additional::OnKillActive()
 
 void CAddEdit_Additional::OnEntryHotKeyKillFocus()
 {
-  if (m_bPWSHotKeyEnabled)
+  if (m_bAppHotKeyEnabled || m_wAppWindowsModifiers == 0 || m_wAppVirtualKeyCode == 0)
     return;
 
+  // If PWS Application had an active Hot Key before the user edited
+  // this entry's Hot Key, put it back
   BOOL brc = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
-                            UINT(m_wModifiers), UINT(m_wVirtualKeyCode));
-  ASSERT(brc);
-
-  m_bPWSHotKeyEnabled = true;
+                      UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode));
+  if (brc)
+    m_bAppHotKeyEnabled = true;
 }
 
 void CAddEdit_Additional::OnEntryHotKeySetFocus()
 {
-  if (!m_bPWSHotKeyEnabled)
+  if (!m_bAppHotKeyEnabled)
     return;
   
+  // If PWS Application has an active Hot Key, disable it when user
+  // is potentially editing this entry's Hot Key
   BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
+
   ASSERT(brc);
   
-  m_bPWSHotKeyEnabled = false;
+  m_bAppHotKeyEnabled = false;
 }
 
 int CAddEdit_Additional::CheckKeyboardShortcut()
@@ -498,7 +501,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       return KBSHORTCUT_INVALID_CHARACTER;
     }
 
-    if (m_iPWSAppHotKey == iKBShortcut) {
+    if (m_iAppHotKey == iKBShortcut) {
       // Same as PWS application HotKey
       cs_msg.LoadString(IDS_KBS_SAMEASAPP);
       m_stc_warning.SetWindowText(cs_msg);

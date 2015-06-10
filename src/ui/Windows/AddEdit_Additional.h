@@ -102,9 +102,10 @@ private:
   bool m_bInitdone;
   bool m_bWarnUserKBShortcut;
 
-  int32 m_iPWSAppHotKey, m_iOldHotKey;
-  WORD m_wModifiers, m_wVirtualKeyCode;
-  bool m_bPWSHotKeyEnabled;
+  int32 m_iAppHotKey, m_iOldHotKey;
+  WORD m_wAppVirtualKeyCode;
+  WORD m_wAppWindowsModifiers; // Values using Windows definition of control keys.
+  bool m_bAppHotKeyEnabled;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
