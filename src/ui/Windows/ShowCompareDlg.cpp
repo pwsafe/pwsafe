@@ -97,6 +97,34 @@ BOOL CShowCompareDlg::OnInitDialog()
   return TRUE;
 }
 
+CString ConvertKeyBoardShortcut(int32 &iKBShortcut)
+{
+  CString kbs(_T(""));
+  if (iKBShortcut != 0) {
+    CString cs_temp;
+    WORD wVirtualKeyCode = iKBShortcut & 0xff;
+    WORD wPWSModifiers = iKBShortcut >> 16;
+
+    if (iKBShortcut != 0) {
+      if (wPWSModifiers & PWS_HOTKEYF_ALT) {
+        cs_temp.LoadString(IDS_ALTP);
+        kbs += cs_temp;
+      }
+      if (wPWSModifiers & PWS_HOTKEYF_CONTROL) {
+        cs_temp.LoadString(IDS_CTRLP);
+        kbs += cs_temp;
+      }
+      if (wPWSModifiers & PWS_HOTKEYF_SHIFT) {
+        cs_temp.LoadString(IDS_SHIFTP);
+        kbs += cs_temp;
+      }
+      cs_temp.Format(L"%c", wVirtualKeyCode);
+      kbs += cs_temp;
+    }
+  }
+  return kbs;
+}
+
 void CShowCompareDlg::PopulateResults(bool bShowAll)
 {
   // Populate List view
@@ -314,46 +342,55 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
       m_ListCtrl.SetItemData(iPos, LVCFMT_LEFT);
       if (!pci->CItemData::IsTextField((unsigned char)i)) {
         switch (i) {
-          case CItemData::CTIME:      /* 07 */
+          case CItemData::CTIME:      /* 0x07 */
             pci->GetCTime(t1);
             pci_other->GetCTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
-          case CItemData::PMTIME:     /* 08 */
+          case CItemData::PMTIME:     /* 0x08 */
             pci->GetPMTime(t1);
             pci_other->GetPMTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
-          case CItemData::ATIME:      /* 09 */
+          case CItemData::ATIME:      /* 0x09 */
             pci->GetATime(t1);
             pci_other->GetATime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
-          case CItemData::XTIME:      /* 0a */
+          case CItemData::XTIME:      /* 0x0a */
             pci->GetXTime(t1);
             pci_other->GetXTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
-          case CItemData::RMTIME:     /* 0c */
+          case CItemData::RMTIME:     /* 0x0c */
             pci->GetRMTime(t1);
             pci_other->GetRMTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
-          case CItemData::XTIME_INT:  /* 11 */
-          case CItemData::PROTECTED:  /* 15 */
+          case CItemData::XTIME_INT:  /* 0x11 */
+          case CItemData::PROTECTED:  /* 0x15 */
             break;
-          case CItemData::DCA:        /* 13 */
-          case CItemData::SHIFTDCA:   /* 17 */
+          case CItemData::DCA:        /* 0x13 */
+          case CItemData::SHIFTDCA:   /* 0x17 */
             pci->GetDCA(si1, i == CItemData::SHIFTDCA);
             pci_other->GetDCA(si2, i == CItemData::SHIFTDCA);
             sxValue1 = GetDCAString(si1, i == CItemData::SHIFTDCA);
             sxValue2 = GetDCAString(si2, i == CItemData::SHIFTDCA);
             break;
+          case CItemData::KBSHORTCUT:  /* 0x19 */
+          {
+            int32 iKBShortcut;
+            pci->GetKBShortcut(iKBShortcut);
+            sxValue1 = ConvertKeyBoardShortcut(iKBShortcut);
+            pci_other->GetKBShortcut(iKBShortcut);
+            sxValue2 = ConvertKeyBoardShortcut(iKBShortcut);
+            break;
+          }
           default:
             ASSERT(0);
         }
@@ -423,8 +460,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         // Now add sub-fields
         iPos++;
 
-        sxValue1 =  status1 ? sxYes : sxNo;
-        sxValue2 =  status2 ? sxYes : sxNo;
+        sxValue1 = status1 ? sxYes : sxNo;
+        sxValue2 = status2 ? sxYes : sxNo;
         if (bShowAll || sxValue1 != sxValue2) {
           LoadAString(sFieldName, IDS_PWHACTIVE);
           iPos = m_ListCtrl.InsertItem(iPos, sFieldName.c_str());
