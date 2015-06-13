@@ -493,9 +493,10 @@ PWSFileSig::PWSFileSig(const stringT &fname)
   if (fp != NULL) {
     SHA256 hash;
     m_length = pws_os::fileLength(fp);
-    // Minimum size for an empty V3 DB is 232 bytes - pre + post, no hdr or records!
-    // Probably smaller for V1 & V2 DBs
-    if (m_length > 232) {
+    // Not the right place to be worried about min size, as this is format
+    // version specific (and we're in PWSFile).
+    // An empty file, though, should be failed.
+    if (m_length > 0) {
       unsigned char buf[THRESHOLD];
       if (m_length <= THRESHOLD) {
         if (fread(buf, size_t(m_length), 1, fp) == 1) {
@@ -510,8 +511,7 @@ PWSFileSig::PWSFileSig(const stringT &fname)
           hash.Final(m_digest);
         }
       }
-    } else {
-      // File too small
+    } else { // Empty file
       m_iErrorCode = PWSfile::TRUNCATED_FILE;
     }
 
