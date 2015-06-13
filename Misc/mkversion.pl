@@ -18,6 +18,7 @@
 use strict;
 use warnings;
 use File::Copy;
+use File::Spec;
 
 sub usage {
     print "Usage: $0 template outfile\n";
@@ -36,7 +37,7 @@ my $OUTFILE = $ARGV[1];
 my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
 my $VERSTRING;
 
-if (-x $GIT && -d ".git") {
+if (-x $GIT && (-d ".git" || -d "../../../.git")) {
     $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
     chomp $VERSTRING;
     # If string is of the form heads/master-0-g5f69087, drop everything
@@ -50,7 +51,7 @@ if (-x $GIT && -d ".git") {
 
 
 #Now that we're done with the formalities, let's get to work:
-my $TMPFILE = "/tmp/v$$";
+my $TMPFILE = File::Spec->tmpdir()."/v$$";
 
 my ($MAJOR, $MINOR, $REVISION);
 
