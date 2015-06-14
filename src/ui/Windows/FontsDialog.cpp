@@ -17,11 +17,10 @@
 #include "Fonts.h"
 #include "FontsDialog.h"
 #include "SampleTextDlg.h"
+
 #include "dlgs.h"
 
 extern const wchar_t *EYE_CATCHER;
-
-#ifndef _WIN32_WCE // CFontDialog is not supported for Windows CE.
 
 // CFontsDialog
 
@@ -31,10 +30,10 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM
 static CFontsDialog *pwfd_self(NULL);
 
 CFontsDialog::CFontsDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter,
-                               CWnd* pParentWnd, int iType)
+                           CWnd* pParentWnd, FontType iType)
   : CFontDialog(lplfInitial, dwFlags, pdcPrinter, pParentWnd), m_iType(iType)
 {
-  m_cf.Flags |= CF_ENABLETEMPLATE | CF_ENABLEHOOK | CF_APPLY;
+  m_cf.Flags |= CF_ENABLETEMPLATE | CF_ENABLEHOOK;
   m_cf.Flags &= ~(CF_EFFECTS | CF_SHOWHELP);
   m_cf.hInstance = AfxGetResourceHandle();
   m_cf.lpTemplateName = MAKEINTRESOURCE(IDD_PWFONTDIALOG);
@@ -45,21 +44,24 @@ CFontsDialog::CFontsDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter
   m_sampletext.LoadString(IDS_SAMPLETEXT);
   UINT uiID(0);
   switch (iType) {
-    case PWFONT:
+    case PASSWORDFONT:
       uiID = IDS_PSWDFONT;
       break;
-    case TLFONT:
+    case TREELISTFONT:
       uiID = IDS_TREEFONT;
       break;
-    case VKFONT:
+    case NOTESFONT:
+      uiID = IDS_NOTESFONT;
+      break;
+    case VKEYBOARDFONT:
       uiID = IDS_VKBDFONT;
       // Set up default font, which is NONE
       memcpy(&m_dfltVKBDFont, lplfInitial, sizeof(LOGFONT));
       SecureZeroMemory(m_dfltVKBDFont.lfFaceName, sizeof(m_dfltVKBDFont.lfFaceName));
       break;
-    default:
-      ASSERT(0);
+    // NO "default" statement to generate compiler error if enum missing
   }
+
   m_title.LoadString(uiID);
   m_bReset = false;
 }
@@ -85,21 +87,23 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
 
     ::SetWindowText(hdlg, pwfd_self->m_title);
 
-    if (pwfd_self->m_iType == VKFONT) {
-      // Disable things we don't allow changed
+    if (pwfd_self->m_iType == CFontsDialog::VKEYBOARDFONT) {
+      // Disable things we don't allow changed - defined in MFC's dlgs.h
+      /*
+        cmb2 = 0x0471 = Font style combobox
+        stc2 = 0x0441 = Font style text ("Font st&yle:")
+      */
       EnableWindow(GetDlgItem(hdlg, cmb2), FALSE); // style
       EnableWindow(GetDlgItem(hdlg, stc2), FALSE); // style
-#if 0
-      EnableWindow(GetDlgItem(hdlg, cmb3), FALSE); // size
-      EnableWindow(GetDlgItem(hdlg, stc3), FALSE); // size
-      // Make Edit in Size ComboBox R-O
-      SendMessage(GetDlgItem(GetDlgItem(hdlg, cmb3), 1001), 
-                     EM_SETREADONLY, TRUE, 0);
-#endif
+      /*
+        cmb5 = 0x0474 = Script combobox
+        stc7 = 0x0446 = Script text ("Sc&ript:")
+      */
       EnableWindow(GetDlgItem(hdlg, cmb5), FALSE); // script
       ShowWindow(GetDlgItem(hdlg, cmb5), SW_HIDE); // script
       ShowWindow(GetDlgItem(hdlg, stc7), SW_HIDE); // script
     }
+
     return TRUE;
   }
   if (uiMsg == WM_COMMAND && HIWORD(wParam) == BN_CLICKED) {
@@ -116,27 +120,31 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       return TRUE;  // We processed message
     }
     if (LOWORD(wParam) == IDC_RESETFONT) {
-      if (pwfd_self->m_iType == VKFONT) {
+      if (pwfd_self->m_iType == CFontsDialog::VKEYBOARDFONT) {
         pwfd_self->m_bReset = true;
-        pwfd_self->PostMessage(WM_COMMAND, IDABORT, 0);
+        pwfd_self->PostMessage(WM_COMMAND, MAKEWPARAM(IDOK, BN_CLICKED), 0);
         return TRUE;  // We processed message
       }
-      LOGFONT dfltFont;
+
+      LOGFONT dfltFont = {0};
       wchar_t wc_pt[4] = {0, 0, 0, 0};
       // Due to a documentation bug in WM_CHOOSEFONT_SETLOGFONT - instead of just this:
       //   pwfd_self->SendMessage(WM_CHOOSEFONT_SETLOGFONT, 0, (LPARAM)&dfltFont);
       // Need to do:
       switch (pwfd_self->m_iType) {
-        case PWFONT:
+        case CFontsDialog::PASSWORDFONT:
           Fonts::GetInstance()->GetDefaultPasswordFont(dfltFont);
           break;
-        case TLFONT:
+        case CFontsDialog::TREELISTFONT:
+        case CFontsDialog::NOTESFONT:
           memcpy(&dfltFont, &dfltTreeListFont, sizeof(LOGFONT));
           break;
-        default:
-          ASSERT(0);
+        case CFontsDialog::VKEYBOARDFONT:
+          // Shouldn't get here as processed earlier
           return FALSE;
+        // NO "default" statement to generate compiler error if enum missing
       }
+
       // First get point_size = (height - Internal Leading) * 72 / LOGPIXELSY
       // Assume "Internal Leading" == 0
       CClientDC dc((CWnd *)pwfd_self);
@@ -149,13 +157,16 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       SendMessage(hdlg, WM_COMMAND, MAKEWPARAM(cmb3, CBN_SELCHANGE),
                   (LPARAM)GetDlgItem(hdlg, cmb3));
       pwfd_self->SendMessage(WM_CHOOSEFONT_SETLOGFONT, 0, (LPARAM)&dfltFont);
+
+      pwfd_self->m_sampletext.LoadString(IDS_SAMPLETEXT);
+      ::SetDlgItemText(hdlg, stc5, pwfd_self->m_sampletext);
+
       return TRUE;  // We processed message
     }
   }
 
   // For some reason, we keep having to change the sample text!
   ::SetDlgItemText(hdlg, stc5, pwfd_self->m_sampletext);
-
   return FALSE; // We didn't process message
 }
 
@@ -189,7 +200,6 @@ LRESULT CFontsDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   }
   if (pParent == NULL)
     pws_os::Trace(L"CFontsDialog::WindowProc - couldn't find DboxMain ancestor\n");
+
   return CFontDialog::WindowProc(message, wParam, lParam);
 }
-
-#endif // !_WIN32_WCE

@@ -68,6 +68,11 @@ void Fonts::DeleteInstance()
     delete m_pPasswordFont;
     m_pPasswordFont = NULL;
   }
+  if (m_pNotesFont != NULL) {
+    m_pNotesFont->DeleteObject();
+    delete m_pNotesFont;
+    m_pNotesFont = NULL;
+  }
   delete self;
   self = NULL;
 }
@@ -78,6 +83,7 @@ Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
   m_pModifiedFont = new CFont;
   m_pDragFixFont = new CFont;
   m_pPasswordFont = new CFont;
+  m_pNotesFont = new CFont;
 }
 
 void Fonts::GetCurrentFont(LOGFONT *pLF)
@@ -141,6 +147,29 @@ void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
   }
 
   pDlgItem->SetFont(m_pPasswordFont);
+}
+
+void Fonts::GetNotesFont(LOGFONT *pLF)
+{
+  ASSERT(pLF != NULL && m_pNotesFont != NULL);
+  if (pLF == NULL || m_pNotesFont == NULL)
+    return;
+
+  m_pNotesFont->GetLogFont(pLF);
+}
+
+void Fonts::SetNotesFont(LOGFONT *pLF)
+{
+  ASSERT(pLF != NULL);
+  if (pLF == NULL)
+    return;
+
+  if (m_pNotesFont == NULL) {
+    m_pNotesFont = new CFont;
+  } else {
+    m_pNotesFont->DeleteObject();
+  }
+  m_pNotesFont->CreateFontIndirect(pLF);
 }
 
 static CString GetToken(CString& str, LPCWSTR c)
@@ -210,20 +239,26 @@ LONG Fonts::CalcHeight() const
   HDC hDC = ::GetDC(NULL);
   
   HFONT hFontOld = (HFONT)SelectObject(hDC, m_pCurrentFont->GetSafeHandle());
-  //Current
+
+  // Current
   GetTextMetrics(hDC, &tm);
   LONG height = tm.tmHeight + tm.tmExternalLeading;
-  //Modified
+
+  // Modified
   SelectObject(hDC, m_pModifiedFont->GetSafeHandle());
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
-      height = tm.tmHeight + tm.tmExternalLeading;
-  //Password
+    height = tm.tmHeight + tm.tmExternalLeading;
+
+  // Password
   SelectObject(hDC, m_pPasswordFont->GetSafeHandle());
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
-      height = tm.tmHeight + tm.tmExternalLeading;
+    height = tm.tmHeight + tm.tmExternalLeading;
+
+  // Tidy up
   SelectObject(hDC, hFontOld);
   ::ReleaseDC(NULL, hDC);
+
   return height;
 }

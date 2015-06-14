@@ -2164,159 +2164,164 @@ bool DboxMain::IsWorkstationLocked() const
   return bResult;
 }
 
-void DboxMain::OnChangeTreeFont() 
+void DboxMain::OnChangeTreeFont()
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  CFont *pOldFontTree;
-  pOldFontTree = m_ctlItemTree.GetFont();
-
-  // Make sure we know what is inside the font.
-  LOGFONT lf;
-  pOldFontTree->GetLogFont(&lf);
-
-  // Present Tree/List view font and possibly change it
-  // Allow user to apply changes to font
-  StringX cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
-
-  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, TLFONT);
-
-  fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
-
-  if (fontdlg.DoModal() == IDOK) {
-    Fonts::GetInstance()->SetCurrentFont(&lf);
-
-    // Transfer the fonts to the tree and list windows
-    m_ctlItemTree.SetUpFont();
-    m_ctlItemList.SetUpFont();
-    m_LVHdrCtrl.SetFont(Fonts::GetInstance()->GetCurrentFont());
-
-    // Recalculate header widths
-    CalcHeaderWidths();
-    // Reset column widths
-    AutoResizeColumns();
-
-    // Check if default
-    CString csfn(lf.lfFaceName), csdfltfn(dfltTreeListFont.lfFaceName);
-    if (lf.lfHeight == dfltTreeListFont.lfHeight && 
-        lf.lfWeight == dfltTreeListFont.lfWeight &&
-        lf.lfItalic == dfltTreeListFont.lfItalic && 
-        csfn == csdfltfn) {
-      // Delete config Tree/List font
-      prefs->ResetPref(PWSprefs::TreeFont);
-    } else { // Save user's choice of Tree/List font
-      CString treefont_str;
-      treefont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
-                          lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                          lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                          lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                          lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
-      prefs->SetPref(PWSprefs::TreeFont, LPCWSTR(treefont_str));
-    }
-    // Save user's sample text
-    prefs->SetPref(PWSprefs::TreeListSampleText,
-                   LPCWSTR(fontdlg.m_sampletext));
-  } // DoModal
+  ChangeFont(CFontsDialog::TREELISTFONT);
 }
 
-void DboxMain::OnChangePswdFont() 
+void DboxMain::OnChangeNotesFont()
+{
+  ChangeFont(CFontsDialog::NOTESFONT);
+}
+
+void DboxMain::OnChangePswdFont()
+{
+  ChangeFont(CFontsDialog::PASSWORDFONT);
+}
+
+void DboxMain::OnChangeVKFont()
+{
+  ChangeFont(CFontsDialog::VKEYBOARDFONT);
+}
+
+void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
-  LOGFONT lf;
-  // Get Password font in case the user wants to change this.
   Fonts *pFonts = Fonts::GetInstance();
-  pFonts->GetPasswordFont(&lf);
+  CFont *pOldFont;
+  StringX cs_FontName, cs_SampleText;
+  LOGFONT lf, dflt_lf;
+  PWSprefs::StringPrefs pref_Font(PWSprefs::TreeFont), pref_FontSampleText(PWSprefs::TreeListSampleText);
 
-  // Present Password font and possibly change it
-  // Allow user to apply changes to font
-  StringX cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
+  DWORD dwFlags = CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT;
 
-  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, PWFONT);
+  switch (iType) {
+    case CFontsDialog::TREELISTFONT:
+      pref_Font = PWSprefs::TreeFont;
+      pref_FontSampleText = PWSprefs::TreeListSampleText;
+      pOldFont = m_ctlItemTree.GetFont();
+      pOldFont->GetLogFont(&lf);
+      dflt_lf = dfltTreeListFont;
+      break;
+    case CFontsDialog::PASSWORDFONT:
+      pref_Font = PWSprefs::PasswordFont;
+      pref_FontSampleText = PWSprefs::PswdSampleText;
+      pFonts->GetPasswordFont(&lf);
+      pFonts->GetDefaultPasswordFont(dflt_lf);
+      break;
+    case CFontsDialog::NOTESFONT:
+      pref_Font = PWSprefs::NotesFont;
+      pref_FontSampleText = PWSprefs::NotesSampleText;
+      pFonts->GetNotesFont(&lf);
+      dflt_lf = dfltTreeListFont; // Default Notes font is the default Tree/List font
+      break;
+    case CFontsDialog::VKEYBOARDFONT:
+      // Note Virtual Keyboard font is not kept in Fonts class - so set manually
+      pref_Font = PWSprefs::VKeyboardFontName;
+      pref_FontSampleText = PWSprefs::VKSampleText;
+      dwFlags |= CF_LIMITSIZE | CF_NOSCRIPTSEL;
+      dflt_lf = {-16, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L""};
+      lf = dflt_lf;
 
-  fontdlg.m_sampletext = cs_PswdSampleText.c_str();
-
-  if (fontdlg.DoModal() == IDOK) {
-    // Transfer the new font to the passwords
-    pFonts->SetPasswordFont(&lf);
-
-    // Recalculating row height
-    m_ctlItemList.UpdateRowHeight(true);
-
-    LOGFONT dfltfont;
-    pFonts->GetDefaultPasswordFont(dfltfont);
-
-    // Check if default
-    CString csfn(lf.lfFaceName), csdfltfn(dfltfont.lfFaceName);
-    if (lf.lfHeight == dfltfont.lfHeight && 
-        lf.lfWeight == dfltfont.lfWeight &&
-        lf.lfItalic == dfltfont.lfItalic && 
-        csfn == csdfltfn) {
-      // Delete config password font
-      prefs->ResetPref(PWSprefs::PasswordFont);
-    } else { // Save user's choice of password font
-      CString pswdfont_str;
-      pswdfont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
-                          lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                          lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                          lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                          lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
-      prefs->SetPref(PWSprefs::PasswordFont, LPCWSTR(pswdfont_str));
-    }
-    // Save user's sample text
-    prefs->SetPref(PWSprefs::PswdSampleText, LPCWSTR(fontdlg.m_sampletext));
-  } // DoModal
-}
-
-void DboxMain::OnChangeVKFont() 
-{
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  LOGFONT lf = {-16, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
-                L""};
-
-  // Get VKeyboard font in case the user wants to change this.
-  StringX cs_VKeyboardFont = prefs->GetPref(PWSprefs::VKeyboardFontName);
-  if (cs_VKeyboardFont.length() != 0 && 
-      cs_VKeyboardFont.length() <= LF_FACESIZE) {
-    memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
-             cs_VKeyboardFont.c_str(), cs_VKeyboardFont.length() * sizeof(wchar_t));
+      // Get VKeyboard font in case the user wants to change this.
+      cs_FontName = prefs->GetPref(PWSprefs::VKeyboardFontName);
+      if (cs_FontName.length() != 0 && cs_FontName.length() <= LF_FACESIZE) {
+        memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+          cs_FontName.c_str(), cs_FontName.length() * sizeof(wchar_t));
+      }
+      break;
+    // NO "default" statement to generate compiler error if enum missing
   }
 
-  // Present VKeyboard font and possibly change it
-  // Allow user to apply changes to font
-  StringX cs_VKSampleText = prefs->GetPref(PWSprefs::VKSampleText);
+  cs_SampleText = prefs->GetPref(pref_FontSampleText);
 
-  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT | 
-                             CF_LIMITSIZE | CF_NOSCRIPTSEL,
-                             NULL, NULL, VKFONT);
+  CFontsDialog fontdlg(&lf, dwFlags, NULL, NULL, iType);
 
-  fontdlg.m_cf.nSizeMin = 10;
-  fontdlg.m_cf.nSizeMax = 14;
+  if (iType == CFontsDialog::VKEYBOARDFONT) {
+    fontdlg.m_cf.nSizeMin = 10;
+    fontdlg.m_cf.nSizeMax = 14;
+  }
 
-  fontdlg.m_sampletext = cs_VKSampleText.c_str();
+  fontdlg.m_sampletext = cs_SampleText.c_str();
 
   INT_PTR rc = fontdlg.DoModal();
-  if (rc == IDOK) {
+  if (rc== IDOK) {
+    if (iType == CFontsDialog::VKEYBOARDFONT && fontdlg.m_bReset) {
+      // User requested the Virtual Keyboard to be reset now
+      // Other fonts are just reset within the Fontdialog without exiting
+      prefs->ResetPref(pref_Font);
+      prefs->ResetPref(pref_FontSampleText);
+      return;
+    }
+
+    CString csfn(lf.lfFaceName), csdfltfn(dflt_lf.lfFaceName);
+    switch (iType) {
+      case CFontsDialog::TREELISTFONT:
+        // Set current tree/list font
+        pFonts->SetCurrentFont(&lf);
+
+        // Transfer the fonts to the tree and list windows
+        m_ctlItemTree.SetUpFont();
+        m_ctlItemList.SetUpFont();
+        m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+
+        // Recalculate header widths
+        CalcHeaderWidths();
+        // Reset column widths
+        AutoResizeColumns();
+        break;
+      case CFontsDialog::PASSWORDFONT:
+        // Transfer the new font to the passwords
+        pFonts->SetPasswordFont(&lf);
+
+        // Recalculating row height
+        m_ctlItemList.UpdateRowHeight(true);
+        break;
+      case CFontsDialog::NOTESFONT:
+        // Transfer the new font to the Notes field
+        pFonts->SetNotesFont(&lf);
+        break;
+      case CFontsDialog::VKEYBOARDFONT:
+        // Note Virtual Keyboard font is not kept in Fonts class - so set manually
+        if (csfn.IsEmpty()) {
+          // Delete config VKeyboard font face name
+          prefs->ResetPref(pref_Font);
+        } else {
+          // Save user's choice of VKeyboard font face name
+          // Remove leading @ (OpenType) if present
+          if (csfn.Left(1) == L"@")
+            csfn = csfn.Mid(1);
+
+          if (csfn == CString(CVKeyBoardDlg::ARIALUMS))
+            prefs->ResetPref(pref_Font);
+          else
+            prefs->SetPref(pref_Font, LPCWSTR(csfn));
+
+          prefs->SetPref(pref_FontSampleText, LPCWSTR(fontdlg.m_sampletext));
+        }
+        return;
+      // NO "default" statement to generate compiler error if enum missing
+    }
+
     // Check if default
-    CString csfn(lf.lfFaceName);
-    if (csfn.IsEmpty()) {
-      // Delete config VKeyboard font face name
-      prefs->ResetPref(PWSprefs::VKeyboardFontName);
-    } else {
-      // Save user's choice of VKeyboard font face name
-      // Remove leading @ (OpenType) if present
-      if (csfn.Left(1) == L"@")
-        csfn = csfn.Mid(1);
-      if (csfn == CString(CVKeyBoardDlg::ARIALUMS))
-        prefs->ResetPref(PWSprefs::VKeyboardFontName);
-      else
-        prefs->SetPref(PWSprefs::VKeyboardFontName, LPCWSTR(csfn));
+    if (lf.lfHeight == dflt_lf.lfHeight &&
+        lf.lfWeight == dflt_lf.lfWeight &&
+        lf.lfItalic == dflt_lf.lfItalic &&
+        csfn == csdfltfn) {
+      // Delete config font
+      prefs->ResetPref(pref_Font);
+    } else { // Save user's choice of font
+      CString font_str;
+      font_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
+        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
+      prefs->SetPref(pref_Font, LPCWSTR(font_str));
     }
 
     // Save user's sample text
-    prefs->SetPref(PWSprefs::VKSampleText, LPCWSTR(fontdlg.m_sampletext));
-  } else
-  if (fontdlg.m_bReset) {
-    // Check if user reset it to none.
-    prefs->ResetPref(PWSprefs::VKeyboardFontName);
+    prefs->SetPref(pref_FontSampleText, LPCWSTR(fontdlg.m_sampletext));
   }
 }
 

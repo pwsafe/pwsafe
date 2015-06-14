@@ -1,5 +1,5 @@
-Password Safe 3.36 Release Notes - June 2015
-============================================
+Password Safe 3.36.1 Release Notes - June 2015
+==============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,10 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+New Features for 3.36.1
+=======================
+[782] Notes field font is now user-configurable.
 
 New Features for 3.36
 =====================

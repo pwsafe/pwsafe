@@ -10,8 +10,6 @@
 
 // CFontsDialog
 
-enum {PWFONT, TLFONT, VKFONT};
-
 extern LOGFONT dfltTreeListFont;
 
 class CFontsDialog : public CFontDialog
@@ -19,17 +17,19 @@ class CFontsDialog : public CFontDialog
   DECLARE_DYNAMIC(CFontsDialog)
 
 public:
+  enum FontType { PASSWORDFONT, TREELISTFONT, NOTESFONT, VKEYBOARDFONT };
+
   CFontsDialog(LPLOGFONT lplfInitial = NULL,
                  DWORD dwFlags = CF_EFFECTS | CF_SCREENFONTS,
                  CDC* pdcPrinter = NULL,
                  CWnd* pParentWnd = NULL,
-                 int iType = PWFONT);
+                 FontType iType = PASSWORDFONT);
 #ifndef _AFX_NO_RICHEDIT_SUPPORT
   CFontsDialog(const CHARFORMAT& charformat,
                  DWORD dwFlags = CF_SCREENFONTS,
                  CDC* pdcPrinter = NULL,
                  CWnd* pParentWnd = NULL,
-                 int iType = PWFONT);
+                 FontType iType = PASSWORDFONT);
 #endif
   virtual ~CFontsDialog();
 
@@ -40,8 +40,8 @@ public:
   virtual INT_PTR DoModal();
 
   CString m_sampletext, m_title;
-  int m_iType;
   LOGFONT m_dfltVKBDFont;
+  int m_iType;
   bool m_bReset;
 
   // Dialog Data

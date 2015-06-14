@@ -139,7 +139,7 @@ public:
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
-    LanguageFile, DefaultSymbols,
+    LanguageFile, DefaultSymbols, NotesFont, NotesSampleText,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

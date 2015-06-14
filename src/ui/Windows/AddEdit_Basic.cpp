@@ -201,8 +201,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
-  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
-  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  Fonts *pFonts = Fonts::GetInstance();
+  pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
   // Need to get change notifcations
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
@@ -210,7 +211,14 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Set plain text - not that it seems to do much!
   m_ex_notes.SetTextMode(TM_PLAINTEXT);
 
-  m_ex_notes.SetFont(Fonts::GetInstance()->GetCurrentFont());
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Set Notes font!
+  if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
+    m_ex_notes.SetFont(pFonts->GetCurrentFont());
+  } else {
+    m_ex_notes.SetFont(pFonts->GetNotesFont());
+  }
 
   if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
     GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
@@ -334,7 +342,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
   }
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
   } else {

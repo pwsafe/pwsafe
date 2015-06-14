@@ -192,6 +192,8 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("AltNotesEditor"), _T(""), ptApplication},                    // application
   {_T("LanguageFile"), _T(""), ptApplication},                      // application
   {_T("DefaultSymbols"), _T(""), ptDatabase},                       // database
+  {_T("NotesFont"), _T(""), ptApplication},                         // application
+  {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
 };
 
 PWSprefs *PWSprefs::GetInstance()

@@ -419,6 +419,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
+  ON_COMMAND(ID_MENUITEM_CHANGENOTESFONT, OnChangeNotesFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_SYNCHRONIZE, ID_MENUITEM_REPORT_SYNCHRONIZE, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_EXPORTTEXT, ID_MENUITEM_REPORT_EXPORTXML, OnViewReportsByID)
@@ -634,6 +635,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, true},
   {ID_MENUITEM_CHANGEPSWDFONT, true, true, true, true},
+  {ID_MENUITEM_CHANGENOTESFONT, true, true, true, true},
   {ID_MENUITEM_VKEYBOARDFONT, true, true, true, true},
   {ID_MENUITEM_REPORT_COMPARE, true, true, true, false},
   {ID_MENUITEM_REPORT_FIND, true, true, true, false},
@@ -847,6 +849,20 @@ void DboxMain::InitPasswordSafe()
   } else {
     // Not set - use default password font
     pFonts->SetPasswordFont(NULL);
+  }
+
+  // Set up Notes font too.
+  CString szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
+
+  if (!szNotesFont.IsEmpty()) {
+    LOGFONT NotesFont;
+    pFonts->ExtractFont(szNotesFont, NotesFont);
+    pFonts->SetNotesFont(&NotesFont);
+  } else {
+    // Not set - use tree/list font set above
+    LOGFONT LF;
+    pFonts->GetCurrentFont(&LF);
+    pFonts->SetNotesFont(&LF);
   }
 
   // transfer the fonts to the tree windows

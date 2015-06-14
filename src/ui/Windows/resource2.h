@@ -143,6 +143,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_EXPORTDB     32135
 #define ID_EXPORTENTMENU                32136
 #define ID_EXPORTGROUPMENU              32137
+#define ID_MENUITEM_CHANGENOTESFONT     32138
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

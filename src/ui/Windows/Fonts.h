@@ -18,10 +18,11 @@ public:
 
   void SetUpFont(CWnd *pWnd, CFont *pfont);
 
-  CFont *GetCurrentFont() const {return m_pCurrentFont;}
-  CFont *GetDragFixFont() const {return m_pDragFixFont;}
-  CFont *GetPasswordFont() const {return m_pPasswordFont;}
-  CFont *GetModifiedFont() const {return m_pModifiedFont;}
+  CFont *GetCurrentFont() const { return m_pCurrentFont; }
+  CFont *GetDragFixFont() const { return m_pDragFixFont; }
+  CFont *GetPasswordFont() const { return m_pPasswordFont; }
+  CFont *GetModifiedFont() const { return m_pModifiedFont; }
+  CFont *GetNotesFont() const { return m_pNotesFont; }
 
   COLORREF GetModified_Color() {return MODIFIED_COLOR;}
 
@@ -29,7 +30,11 @@ public:
   void SetCurrentFont(LOGFONT *pLF);
   void GetPasswordFont(LOGFONT *pLF);
   void SetPasswordFont(LOGFONT *pLF);
+  void GetNotesFont(LOGFONT *pLF);
+  void SetNotesFont(LOGFONT *pLF);
+
   void ApplyPasswordFont(CWnd* pLF);
+
   void GetDefaultPasswordFont(LOGFONT &lf);
 
   void ExtractFont(const CString& str, LOGFONT &lf);
@@ -45,6 +50,8 @@ private:
   CFont *m_pModifiedFont;
   CFont *m_pDragFixFont;  // Fix for lack of text during drag!
   CFont *m_pPasswordFont;
+  CFont *m_pNotesFont;
+
   const COLORREF MODIFIED_COLOR;
 };
 

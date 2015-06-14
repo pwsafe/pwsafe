@@ -30,6 +30,7 @@
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
+#include "FontsDialog.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -498,6 +499,7 @@ public:
   // If we have processed it returns 0 else 1
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   bool IsWorkstationLocked() const;
+
  protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
@@ -641,6 +643,8 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
+  void ChangeFont(const CFontsDialog::FontType iType);
+
   afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
@@ -748,6 +752,7 @@ public:
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
   afx_msg void OnChangePswdFont();
+  afx_msg void OnChangeNotesFont();
   afx_msg void OnChangeVKFont();
   afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
