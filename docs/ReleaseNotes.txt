@@ -12,6 +12,10 @@ New Features for 3.36.1
 =======================
 [782] Notes field font is now user-configurable.
 
+Bugs fixed in 3.36.1
+====================
+[1254] Toolbar customisation now has correctly aligned text/images.
+
 New Features for 3.36
 =====================
 [] Entries and Groups can be exported to plain text, XML, or to a new
