@@ -33,5 +33,6 @@
 #define IDS_VK102KEYS                   8168
 #define IDS_VK106KEYS                   8169
 #define IDS_VKDEADKEY                   8170
+#define IDS_VKBBTN_SPACEBAR             8171
 
 #include "VKresource3.inc"

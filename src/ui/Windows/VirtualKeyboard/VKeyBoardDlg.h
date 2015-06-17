@@ -86,6 +86,7 @@ public:
   const CSecString &GetPassphrase() const {return m_phrase;}
   const UINT &GetKLID() const {return m_uiKLID;}
   const bool SaveKLID() const {return m_bSaveKLID == BST_CHECKED;}
+  const bool PlaySound() const { return m_bPlaySound == BST_CHECKED; }
 
   void ResetKeyboard();
 
@@ -123,6 +124,8 @@ protected:
   afx_msg void OnChangeKeyboard();
   afx_msg void OnChangeKeyboardType();
   afx_msg void OnSaveKLID();
+  afx_msg void OnKeyPressPlaySound();
+  afx_msg void OnShowPassphrase();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
@@ -136,11 +139,12 @@ private:
   void SetDeadKeyEnvironment(const bool bState);
   void SetButtons();
   void SetNormalButtons();
+  void SetSpecialButtons();
   void SetDeadKeyButtons();
   void SetJapaneseKeyboard();
   void SetKoreanKeyboard();
   void SetStandardKeyboard();
-  void SetSpecialKeys();
+  void SetJapaneseKeys();
   void ApplyUnicodeFont(CWnd* pDlgItem);
   void DoRCtrl(const bool bDoFull);
 
@@ -149,7 +153,7 @@ private:
   CVKBButton m_vkbb_Alt, m_vkbb_AltGr, m_vkbb_CapsLock, m_vkbb_AltNum, m_vkbb_BackSpace;
   CVKBButton m_vkbb_LShift, m_vkbb_LCtrl, m_vkbb_RShift, m_vkbb_RCtrl, m_vkbb_RHCtrl;
   CVKBButton m_vkbb_Randomize;
-  CVKBButton m_vkbb_InsertClose, m_vkbb_Insert, m_vkbb_Cancel, m_vkbb_ClearBuffer;
+  CVKBButton m_vkbb_Insert, m_vkbb_Cancel, m_vkbb_ClearBuffer;
 
   CVKBButton m_vkbb_SpaceBar;
   CVKBButton m_vkbb_Numbers[NUM_DIGITS];
@@ -169,6 +173,10 @@ private:
   std::vector<BYTE> m_vsc;
 
   CSecString m_phrase;
+#ifdef _DEBUG
+  // Don't even define this in the Release build - Used for testing only!
+  CSecString m_displayedphrase;
+#endif
   int m_altchar;
   int m_Size, m_Hiragana, m_Kana;
   bool m_bAltNum, m_bAltGr, m_bCapsLock, m_bRandom;
@@ -182,7 +190,7 @@ private:
   static bool m_bUserSpecifiedFont;
 
   UINT m_uiKLID, m_uiPhysKLID;
-  BOOL m_bSaveKLID;
+  BOOL m_bSaveKLID, m_bPlaySound, m_bShowPassphrase;
   vKeyboard_Layouts m_KBL;
   BYTE m_State, m_SaveState;
   CBrush m_pBkBrush;

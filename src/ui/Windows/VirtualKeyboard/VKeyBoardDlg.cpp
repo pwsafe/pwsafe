@@ -340,7 +340,8 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
-    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED)
+    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
+    m_bShowPassphrase(BST_UNCHECKED)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);
@@ -386,6 +387,10 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   }
   // Get current SYSTEM-WIDE mouse double click time interval
   m_uiMouseDblClkTime = GetDoubleClickTime();
+
+#ifdef _DEBUG
+  m_displayedphrase = L"";  // Used for testing only!
+#endif
 }
 
 CVKeyBoardDlg::~CVKeyBoardDlg()
@@ -438,7 +443,7 @@ void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_VKBBTN_LCTRL, m_vkbb_LCtrl);
   DDX_Control(pDX, IDC_VKBBTN_RCTRL, m_vkbb_RCtrl);
   DDX_Control(pDX, IDC_VKBBTN_RHCTRL, m_vkbb_RHCtrl);
-  DDX_Control(pDX, IDC_VKBBTN_ALT, m_vkbb_Alt);
+  DDX_Control(pDX, IDC_VKBBTN_ALT, m_vkbb_Alt); // NOTE: This key has no function
   DDX_Control(pDX, IDC_VKBBTN_ALTGR, m_vkbb_AltGr);
   DDX_Control(pDX, IDC_VKBBTN_ALTNUM, m_vkbb_AltNum);
   DDX_Control(pDX, IDC_VKBBTN_CAPSLOCK, m_vkbb_CapsLock);
@@ -452,6 +457,15 @@ void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
 
   // Save last used keyboard
   DDX_Check(pDX, IDC_SAVEKLID, m_bSaveKLID);
+
+  // Play sound on key press
+  DDX_Check(pDX, IDC_KEYPRESS_PLAYSOUND, m_bPlaySound);
+
+#ifdef _DEBUG
+  // Show passphrase IDC_SHOWBUFFER - Used for testing only!
+  DDX_Check(pDX, IDC_SHOWBUFFER, m_bShowPassphrase);
+  DDX_Text(pDX, IDC_STATIC_VKPASSPHRASE, m_displayedphrase);
+#endif
   //}}AFX_DATA_MAP
 }
 
@@ -466,6 +480,7 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_BN_CLICKED(IDC_VKCANCEL, OnCancel)
   ON_BN_CLICKED(IDC_VKINSERT, OnInsert)
   ON_BN_CLICKED(IDC_VKCLEARBUFFER, OnClearBuffer)
+  ON_BN_CLICKED(IDC_VKRANDOMIZE, OnRandomize)
   ON_BN_CLICKED(IDC_VKBACKSPACE, OnBackSpace)
   ON_BN_CLICKED(IDC_VKBBTN_LSHIFT, OnShift)
   ON_BN_CLICKED(IDC_VKBBTN_RSHIFT, OnShift)
@@ -479,10 +494,13 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_BN_CLICKED(IDC_VKBBTN_SMALLSPACEBAR, OnSpaceBar)
   ON_BN_CLICKED(IDC_VKBBTN_SIZE, OnKeySize)
   ON_BN_CLICKED(IDC_VKBBTN_HIRAGANA, OnHiragana)
-  ON_BN_CLICKED(IDC_VKRANDOMIZE, OnRandomize)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_N0, IDC_VKBBTN_N9, OnNumerics)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
   ON_BN_CLICKED(IDC_SAVEKLID, OnSaveKLID)
+  ON_BN_CLICKED(IDC_KEYPRESS_PLAYSOUND, OnKeyPressPlaySound)
+#ifdef _DEBUG
+  ON_BN_CLICKED(IDC_SHOWBUFFER, OnShowPassphrase)  // Used for testing only!
+#endif
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -501,6 +519,22 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  // Set user's preference re\: sound
+  m_bPlaySound = PWSprefs::GetInstance()->GetPref(PWSprefs::VKPlaySound) ? BST_CHECKED : BST_UNCHECKED;
+
+#ifdef _DEBUG
+  // allow developer to view passphrase
+  GetDlgItem(IDC_SHOWBUFFER)->ShowWindow(SW_SHOW);
+  GetDlgItem(IDC_SHOWBUFFER)->EnableWindow(TRUE);
+  // Hide passphrase initially
+  GetDlgItem(IDC_STATIC_VKPASSPHRASE)->ShowWindow(SW_HIDE);
+#else
+  // Hide & disable option to show passphrase in Release build
+  GetDlgItem(IDC_SHOWBUFFER)->ShowWindow(SW_HIDE);
+  GetDlgItem(IDC_SHOWBUFFER)->EnableWindow(FALSE);
+  GetDlgItem(IDC_STATIC_VKPASSPHRASE)->ShowWindow(SW_HIDE);
+#endif
+
   // Subclass the buttons - default is a 'flat' button
   for (int i = 0; i < NUM_DIGITS; i++) {
     m_vkbb_Numbers[i].SubclassDlgItem(IDC_VKBBTN_N0 + i, this);
@@ -514,7 +548,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   // Remove flat style from 'real' buttons
   m_vkbb_Randomize.SetFlatState(false);
-  m_vkbb_InsertClose.SetFlatState(false);
   m_vkbb_Insert.SetFlatState(false);
   m_vkbb_Cancel.SetFlatState(false);
   m_vkbb_ClearBuffer.SetFlatState(false);
@@ -690,9 +723,16 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_HIRAGANA));
   ApplyUnicodeFont(GetDlgItem(IDC_VKBBTN_SIZE));
 
-  if (m_phrasecount == 1) {
+#ifdef _DEBUG
+  // And the passphrase if the user selects to view it
+  ApplyUnicodeFont(GetDlgItem(IDC_STATIC_VKPASSPHRASE));
+#endif
+
+  if (m_phrasecount > 0) {
     m_vkbb_Insert.EnableWindow(TRUE);
     m_vkbb_ClearBuffer.EnableWindow(TRUE);
+  } else {
+    m_vkbb_BackSpace.EnableWindow(FALSE);
   }
 
   UpdateData(FALSE);
@@ -744,11 +784,15 @@ void CVKeyBoardDlg::OnNumerics(UINT nID)
     CString cs_wtxt;
     m_vkbb_Numbers[nID - IDC_VKBBTN_N0].GetWindowText(cs_wtxt);
     m_phrase += CSecString(cs_wtxt);
+#ifdef _DEBUG
+    m_displayedphrase += CSecString(cs_wtxt);  // Used for testing only!
+#endif
     m_phrasecount++;
     if (m_phrasecount == 1) {
       m_vkbb_Insert.EnableWindow(TRUE);
       m_vkbb_ClearBuffer.EnableWindow(TRUE);
     }
+    m_vkbb_BackSpace.EnableWindow(TRUE);
 
     UpdateData(FALSE);
   }
@@ -798,11 +842,15 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
   } else {
     // Not a DeadKey
     m_phrase += CSecString(cs_wtxt);
+#ifdef _DEBUG
+    m_displayedphrase += CSecString(cs_wtxt);  // Used for testing only!
+#endif
     m_phrasecount++;
     if (m_phrasecount == 1) {
       m_vkbb_Insert.EnableWindow(TRUE);
       m_vkbb_ClearBuffer.EnableWindow(TRUE);
     }
+    m_vkbb_BackSpace.EnableWindow(TRUE);
 
     bool bNeedToSetButtons(false);
     if (m_bDeadKeyActive) {
@@ -830,13 +878,21 @@ void CVKeyBoardDlg::OnSpaceBar()
   // SpaceBar key - if a DeadKey is active, this adds the original character
   CString cs_wtxt;
   m_vkbb_SpaceBar.GetWindowText(cs_wtxt);
+  if (cs_wtxt.GetLength() > 1)
+    cs_wtxt = L" ";
   m_phrase += CSecString(cs_wtxt);
+#ifdef _DEBUG
+  // Left seven eighths block for a space
+  // (not complete block so that multiple spaces can be differentiated)
+  m_displayedphrase += CSecString(L"\u2589");  // Used for testing only!
+#endif
   m_phrasecount++;
 
   if (m_phrasecount == 1) {
     m_vkbb_Insert.EnableWindow(TRUE);
     m_vkbb_ClearBuffer.EnableWindow(TRUE);
   }
+  m_vkbb_BackSpace.EnableWindow(TRUE);
 
   if (m_bDeadKeyActive) {
     // Was a deadkey combination character - reset back to normal keys
@@ -861,11 +917,15 @@ void CVKeyBoardDlg::OnAltNum()
       wchar_t c[2] = {0, 0};
       c[0] = (wchar_t)m_altchar;
       m_phrase += CSecString(c);
+#ifdef _DEBUG
+      m_displayedphrase += CSecString(c);  // Used for testing only!
+#endif
       m_phrasecount++;
       if (m_phrasecount == 1) {
         m_vkbb_Insert.EnableWindow(TRUE);
         m_vkbb_ClearBuffer.EnableWindow(TRUE);
       }
+      m_vkbb_BackSpace.EnableWindow(TRUE);
 
       UpdateData(FALSE);
     }
@@ -875,6 +935,7 @@ void CVKeyBoardDlg::OnAltNum()
   // Save the state for when the user has finished
   if (m_bAltNum) {
     m_SaveState = m_State;
+    m_State &= ~(VST_MENU | VST_SHIFT | VST_LCTRL | VST_ALTGR | VST_RCTRL | VST_CAPSLOCK);
 
     m_bSaveShift = m_bShift;
     m_bSaveLCtrl = m_bLCtrl;
@@ -883,9 +944,6 @@ void CVKeyBoardDlg::OnAltNum()
     m_bSaveCapsLock = m_bCapsLock;
 
     m_bShift = m_bLCtrl = m_bRCtrl = m_bAltGr = m_bCapsLock = false;
-
-    m_State |= VST_MENU;
-    m_State &= ~(VST_SHIFT | VST_LCTRL | VST_ALTGR | VST_RCTRL | VST_CAPSLOCK);
   } else {
     m_State = m_SaveState;
 
@@ -902,7 +960,7 @@ void CVKeyBoardDlg::OnAltNum()
   }
 
   // Set Shift/Caps Lock buttons availability
-  BOOL bEnableS, bEnableC, bEnable;
+  BOOL bEnableS, bEnableC;
   if (m_bAltNum) {
     bEnableS = FALSE;
     bEnableC = FALSE;
@@ -926,45 +984,65 @@ void CVKeyBoardDlg::OnAltNum()
   m_vkbb_RShift.EnableWindow(bEnableS);
   m_vkbb_CapsLock.EnableWindow(bEnableC);
 
-  bEnable = m_bAltNum ? FALSE : TRUE;
+  const BOOL bEnable = m_bAltNum ? FALSE : TRUE;
 
-  // Don't touch the Left/Right Control keys if Japanese keyboard
-  if (m_bLCtrlChars && m_uiKLID != JAPANESE_KBD)
+  if (m_bAltNum) {
+    // Disable all other special keys if AltNum enabled
     m_vkbb_LCtrl.EnableWindow(bEnable);
-  if (m_bRCtrlChars && m_uiKLID != JAPANESE_KBD)
     m_vkbb_RCtrl.EnableWindow(bEnable);
-
-  if (m_bAltGrChars)
     m_vkbb_AltGr.EnableWindow(bEnable);
 
-  // Don't allow changing keyboards in AltNum mode (don't worry about 106-keyboard)
-  // And other keys active in the Japanese keyboard
-  if (m_uiKLID != JAPANESE_KBD) {
-    GetDlgItem(IDC_VK101)->EnableWindow(bEnable);
-    GetDlgItem(IDC_VK102)->EnableWindow(bEnable);
+    if (m_uiKLID == JAPANESE_KBD) {
+      if (m_Kana == JAPANESE) {
+        m_vkbb_SmallSpaceBar.EnableWindow(bEnable);
+        m_vkbb_Hiragana.EnableWindow(bEnable);
+        if (m_Hiragana == KATAKANA)
+          m_vkbb_Size.EnableWindow(bEnable);
+      }
+    }
   } else {
-    if (m_Kana == JAPANESE) {
-      m_vkbb_SmallSpaceBar.EnableWindow(bEnable);
-      m_vkbb_Hiragana.EnableWindow(bEnable);
-      if (m_Hiragana == KATAKANA)
-        m_vkbb_Size.EnableWindow(bEnable);
+    // Don't touch the Left/Right Control keys if Japanese keyboard
+    m_vkbb_LCtrl.EnableWindow(m_bLCtrlChars ? TRUE : FALSE);
+    m_vkbb_RCtrl.EnableWindow(m_bRCtrlChars ? TRUE : FALSE);
+    if (m_uiKLID == JAPANESE_KBD) {
+      m_vkbb_AltGr.EnableWindow(bEnable);
+      if (m_Kana == JAPANESE) {
+        m_vkbb_SmallSpaceBar.EnableWindow(bEnable);
+        m_vkbb_Hiragana.EnableWindow(bEnable);
+        if (m_Hiragana == KATAKANA)
+          m_vkbb_Size.EnableWindow(bEnable);
+      }
+    } else {
+      m_vkbb_AltGr.EnableWindow(m_bAltGrChars ? TRUE : FALSE);
     }
   }
 
+  // Disable changing keyboards
+  GetDlgItem(IDC_VK101)->EnableWindow(bEnable);
+  GetDlgItem(IDC_VK102)->EnableWindow(bEnable);
+
   // Allow/deny other controls
   m_cbxKeyBoards.EnableWindow(bEnable);
+  m_vkbb_SpaceBar.EnableWindow(bEnable);
+  m_vkbb_BackSpace.EnableWindow(bEnable);
   m_vkbb_Randomize.EnableWindow(bEnable);
-  if (m_uiKLID != JAPANESE_KBD || (m_uiKLID == JAPANESE_KBD && m_Kana == ENGLISH))
-    m_vkbb_SpaceBar.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::OnBackSpace()
 {
   if (m_phrasecount > 0) {
     m_phrase.Delete(m_phrasecount - 1, 1);
+#ifdef _DEBUG
+    m_displayedphrase.Delete(m_phrasecount - 1, 1);  // Used for testing only!
+#endif
     m_phrasecount--;
     UpdateData(FALSE);
   }
+
+  if (m_phrasecount == 0)
+    m_vkbb_BackSpace.EnableWindow(FALSE);
 }
 
 void CVKeyBoardDlg::OnShift()
@@ -1003,7 +1081,7 @@ void CVKeyBoardDlg::OnAltGr()
       m_State = 0;
       m_vkbb_AltGr.SetWindowText(m_bAltGr ? L"Kana" : L"Eng");
       m_Kana = m_bAltGr ? JAPANESE : ENGLISH;
-      SetSpecialKeys();
+      SetJapaneseKeys();
       cs_ToolTip.LoadString(m_bAltGr ? IDS_VK_SW_ENGLISH : IDS_VK_SW_KANA);
       m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);
       if (m_bAltGr) {
@@ -1020,20 +1098,28 @@ void CVKeyBoardDlg::OnAltGr()
   else
     m_State &= ~VST_ALTGR;
 
-  if (m_bRCtrlChars)
-    m_vkbb_RCtrl.EnableWindow(m_bAltGr ? FALSE : TRUE);
+  const BOOL bEnable = m_bAltGr ? FALSE : TRUE;
 
   if (m_bAltGr) {
     m_vkbb_LShift.EnableWindow(m_bAllow_gS ? TRUE : FALSE);
     m_vkbb_RShift.EnableWindow(m_bAllow_gS ? TRUE : FALSE);
     m_vkbb_CapsLock.EnableWindow(m_bAllow_gC ? TRUE : FALSE);
+    m_vkbb_LCtrl.EnableWindow(FALSE);
+    m_vkbb_RCtrl.EnableWindow(FALSE);
   } else {
     m_vkbb_LShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
     m_vkbb_RShift.EnableWindow(m_bAllow_bS ? TRUE : FALSE);
     m_vkbb_CapsLock.EnableWindow(m_bAllow_bC ? TRUE : FALSE);
+    m_vkbb_LCtrl.EnableWindow(m_bLCtrlChars ? TRUE : FALSE);
+    m_vkbb_RCtrl.EnableWindow(m_bRCtrlChars ? TRUE : FALSE);
   }
 
   SetButtons();
+
+  m_vkbb_BackSpace.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::OnCapsLock()
@@ -1073,6 +1159,12 @@ void CVKeyBoardDlg::OnLCtrl()
   }
 
   SetButtons();
+
+  const BOOL bEnable = m_bLCtrl ? TRUE : FALSE;
+  m_vkbb_BackSpace.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::OnRCtrl()
@@ -1120,6 +1212,12 @@ void CVKeyBoardDlg::DoRCtrl(const bool bDoFull)
   }
 
   SetButtons();
+
+  const BOOL bEnable = m_bRCtrl ? TRUE : FALSE;
+  m_vkbb_BackSpace.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::OnKeySize()
@@ -1167,7 +1265,7 @@ void CVKeyBoardDlg::OnHiragana()
 
   m_pToolTipCtrl->Update();
 
-  SetSpecialKeys();
+  SetJapaneseKeys();
 
   SetButtons();
 
@@ -1228,6 +1326,80 @@ void CVKeyBoardDlg::SetButtons()
     SetDeadKeyButtons();
   else
     SetNormalButtons();
+
+  SetSpecialButtons();
+}
+
+void CVKeyBoardDlg::SetSpecialButtons()
+{
+  // Disable all other special keys - Alt, Ctrl, AltGr, Backspace etc.
+  // (m_State & (VST_LCTRL | VST_ALTGR | VST_RCTRL)) != 0 ? FALSE : TRUE
+  // m_bAltNum, m_bAltGr, m_bShift, m_bLCtrl, m_bRCtrl;
+  BOOL bEnable;
+
+  /*
+    If AltNum on - only AltNum key allowed
+    If AltGr  on - only AltGr  key allowed
+  */
+
+  bEnable = (m_bAltNum || m_bAltGr || m_bLCtrl || m_bRCtrl) ? FALSE : TRUE;
+
+  m_vkbb_BackSpace.EnableWindow(bEnable);
+  m_vkbb_Randomize.EnableWindow(bEnable);
+  m_vkbb_Insert.EnableWindow(bEnable);
+  m_vkbb_ClearBuffer.EnableWindow(bEnable);
+  m_vkbb_SpaceBar.EnableWindow(bEnable);
+
+  if (m_bAltNum) {
+    bEnable = FALSE;
+    m_vkbb_AltGr.EnableWindow(bEnable);
+    m_vkbb_CapsLock.EnableWindow(bEnable);
+
+    m_vkbb_LShift.EnableWindow(bEnable);
+    m_vkbb_LCtrl.EnableWindow(bEnable);
+    m_vkbb_RShift.EnableWindow(bEnable);
+    m_vkbb_RCtrl.EnableWindow(bEnable);
+
+    return;
+  }
+
+  if (m_bAltGr) {
+    bEnable = FALSE;
+    m_vkbb_AltNum.EnableWindow(bEnable);
+    m_vkbb_CapsLock.EnableWindow(bEnable);
+
+    m_vkbb_LShift.EnableWindow(bEnable);
+    m_vkbb_LCtrl.EnableWindow(bEnable);
+    m_vkbb_RShift.EnableWindow(bEnable);
+    m_vkbb_RCtrl.EnableWindow(bEnable);
+
+    return;
+  }
+
+  if (m_bLCtrl || m_bRCtrl) {
+    bEnable = FALSE;
+    m_vkbb_AltGr.EnableWindow(bEnable);
+    m_vkbb_AltNum.EnableWindow(bEnable);
+
+    return;
+  }
+
+  // Otherwise enable the buttons
+  if (m_uiKLID == JAPANESE_KBD) {
+    m_vkbb_LCtrl.EnableWindow(FALSE);
+    m_vkbb_RCtrl.EnableWindow(FALSE);
+    m_vkbb_RHCtrl.EnableWindow(FALSE);
+  } else {
+    m_vkbb_LCtrl.EnableWindow(m_bLCtrlChars ? TRUE : FALSE);
+    m_vkbb_RCtrl.EnableWindow(m_bRCtrlChars ? TRUE : FALSE);
+  }
+
+  bEnable = TRUE;
+  m_vkbb_AltNum.EnableWindow(bEnable);
+  m_vkbb_AltGr.EnableWindow(m_bAltGrChars ? TRUE : FALSE);
+  m_vkbb_CapsLock.EnableWindow(bEnable);
+  m_vkbb_LShift.EnableWindow(bEnable);
+  m_vkbb_RShift.EnableWindow(bEnable);
 }
 
 void CVKeyBoardDlg::SetNormalButtons()
@@ -1242,6 +1414,7 @@ void CVKeyBoardDlg::SetNormalButtons()
       m_vkbb_Keys[i].EnableWindow(FALSE);
       m_vkbb_Keys[i].SetDeadKeyState(false);
     }
+
   } else {
     // Normal keys
     Iter_Map_st_SC2CHAR iter_sc;
@@ -1371,12 +1544,16 @@ void CVKeyBoardDlg::SetNormalButtons()
     }
 
     if (m_vkbb_SpaceBar.IsWindowEnabled()) {
-      m_vkbb_SpaceBar.SetWindowText(cs_temp);
       m_vkbb_SpaceBar.EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
+      // User can't see a blank - so tell them in words
+      cs_temp.LoadString(IDS_VKBBTN_SPACEBAR);
+      m_vkbb_SpaceBar.SetWindowText(cs_temp);
       m_vkbb_SpaceBar.SetDeadKeyState(bDeadKey);
     } else {
-      m_vkbb_SmallSpaceBar.SetWindowText(cs_temp);
       m_vkbb_SmallSpaceBar.EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
+      // User can't see a blank - so tell them in words
+      cs_temp.LoadString(IDS_VKBBTN_SPACEBAR);
+      m_vkbb_SmallSpaceBar.SetWindowText(cs_temp);
       m_vkbb_SmallSpaceBar.SetDeadKeyState(bDeadKey);
     }
   }
@@ -1448,9 +1625,13 @@ void CVKeyBoardDlg::OnClearBuffer()
   // Clear the character buffer
   m_phrasecount = 0;
   m_phrase = L"";
+#ifdef _DEBUG
+  m_displayedphrase = L"";  // Used for testing only!
+#endif
 
   m_vkbb_Insert.EnableWindow(FALSE);
   m_vkbb_ClearBuffer.EnableWindow(FALSE);
+  m_vkbb_BackSpace.EnableWindow(FALSE);
 
   UpdateData(FALSE);
 }
@@ -1645,7 +1826,6 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
   m_vkbb_RHCtrl.SetPushedState(false);
   m_vkbb_LShift.SetPushedState(false);
   m_vkbb_RShift.SetPushedState(false);
-  m_vkbb_Alt.SetPushedState(false);
   m_vkbb_AltGr.SetPushedState(false);
   m_vkbb_AltNum.SetPushedState(false);
   m_vkbb_CapsLock.SetPushedState(false);
@@ -1657,12 +1837,16 @@ void CVKeyBoardDlg::ResetKeyboard()
 {
   m_phrasecount = 0;
   m_phrase = L"";
+#ifdef _DEBUG
+  m_displayedphrase = L"";  // Used for testing only!
+#endif
   SetDeadKeyEnvironment(false);
   m_wcDeadKey = (wchar_t)0;
   SetButtons();
 
   m_vkbb_Insert.EnableWindow(FALSE);
   m_vkbb_ClearBuffer.EnableWindow(FALSE);
+  m_vkbb_BackSpace.EnableWindow(FALSE);
 
   UpdateData(FALSE);
 }
@@ -1784,7 +1968,7 @@ void CVKeyBoardDlg::SetJapaneseKeyboard()
   m_vkbb_AltGr.EnableWindow(TRUE);
   m_vkbb_AltGr.ChangePushColour(false);
 
-  SetSpecialKeys();
+  SetJapaneseKeys();
 }
 
 void CVKeyBoardDlg::SetKoreanKeyboard()
@@ -1794,7 +1978,7 @@ void CVKeyBoardDlg::SetKoreanKeyboard()
   m_vkbb_AltGr.EnableWindow(TRUE);
   m_vkbb_AltGr.ChangePushColour(false);
 
-  SetSpecialKeys();
+  SetJapaneseKeys();
 }
 
 void CVKeyBoardDlg::SetStandardKeyboard()
@@ -1803,10 +1987,10 @@ void CVKeyBoardDlg::SetStandardKeyboard()
   m_vkbb_AltGr.SetWindowText(L"Alt Gr");
   m_vkbb_AltGr.ChangePushColour(true);
 
-  SetSpecialKeys();
+  SetJapaneseKeys();
 }
 
-void CVKeyBoardDlg::SetSpecialKeys()
+void CVKeyBoardDlg::SetJapaneseKeys()
 {
   /*
     Japanese Keyboard:
@@ -1848,7 +2032,7 @@ void CVKeyBoardDlg::SetSpecialKeys()
 // Override PreTranslateMessage() so RelayEvent() can be
 // called to pass a mouse message to CPWSOptions's
 // tooltip control for processing.
-BOOL CVKeyBoardDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CVKeyBoardDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message >= WM_MOUSEFIRST && pMsg->message <= WM_MOUSELAST) {
     if (m_pToolTipCtrl != NULL) {
@@ -1863,6 +2047,30 @@ BOOL CVKeyBoardDlg::PreTranslateMessage(MSG* pMsg)
 
       // Let the ToolTip process this message.
       m_pToolTipCtrl->RelayEvent(&msg);
+    }
+  }
+
+  // Make a sound if user requested it
+  if (pMsg->message == WM_LBUTTONDOWN) {
+    if (m_bPlaySound == BST_CHECKED) {
+      CWnd *pWnd = FromHandle(pMsg->hwnd);
+      if (pWnd != NULL) {
+        UINT nID = pWnd->GetDlgCtrlID();
+        if (nID != 0) {
+          Beep(1500, 100);
+        } else {
+          // Check that this was on a valid control rather than the dialog background
+          // Also, no sound for passphrase (if visible in Debug build) or the NumPad GroupBox (nID == -1)
+          POINT clpt(pMsg->pt);
+          ScreenToClient(&clpt);
+          HWND hwndChild = ::ChildWindowFromPoint(pMsg->hwnd, clpt);
+          nID = ::GetDlgCtrlID(hwndChild);
+          if (hwndChild != NULL && hwndChild != pMsg->hwnd && nID != IDC_STATIC_VKPASSPHRASE && nID != -1) {
+            Beep(800, 100);
+            Beep(500, 100);
+          }
+        }
+      }
     }
   }
 
@@ -1923,11 +2131,13 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 
   HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
+  UINT nID = pWnd->GetDlgCtrlID();
+
   switch (nCtlColor) {
     case CTLCOLOR_STATIC:
     case CTLCOLOR_DLG:
-      // Black text on white background
-      pDC->SetTextColor(RGB(0, 0, 0));
+      // Black text on white background - except passphrase if visible
+      pDC->SetTextColor(RGB(nID == IDC_STATIC_VKPASSPHRASE ? 255 : 0, 0, 0));
       pDC->SetBkColor(RGB(255, 255, 255));
       return (HBRUSH)(m_pBkBrush.GetSafeHandle());
     default:
@@ -1947,4 +2157,18 @@ void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CVKeyBoardDlg::OnSaveKLID()
 {
   m_bSaveKLID = ((CButton *)GetDlgItem(IDC_SAVEKLID))->GetCheck();
+}
+
+void CVKeyBoardDlg::OnKeyPressPlaySound()
+{
+  m_bPlaySound = ((CButton *)GetDlgItem(IDC_KEYPRESS_PLAYSOUND))->GetCheck();
+}
+
+void CVKeyBoardDlg::OnShowPassphrase()
+{
+#ifdef _DEBUG
+  m_bShowPassphrase = ((CButton *)GetDlgItem(IDC_SHOWBUFFER))->GetCheck();
+
+  GetDlgItem(IDC_STATIC_VKPASSPHRASE)->ShowWindow(m_bShowPassphrase == BST_CHECKED ? SW_SHOW : SW_HIDE);
+#endif
 }

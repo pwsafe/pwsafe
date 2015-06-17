@@ -44,14 +44,18 @@ CPKBaseDlg::~CPKBaseDlg()
 {
   delete m_pctlPasskey;
 
-  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->SaveKLID()) {
-    // Save Last Used Keyboard
-    UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
-    std::wostringstream os;
-    os.fill(L'0');
-    os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
-    StringX cs_KLID = os.str().c_str();
-    PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
+  if (m_pVKeyBoardDlg != NULL) {
+    if (m_pVKeyBoardDlg->SaveKLID()) {
+      // Save Last Used Keyboard
+      UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
+      std::wostringstream os;
+      os.fill(L'0');
+      os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
+      StringX cs_KLID = os.str().c_str();
+      PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
+    }
+
+    PWSprefs::GetInstance()->SetPref(PWSprefs::VKPlaySound, m_pVKeyBoardDlg->PlaySound());
 
     m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;

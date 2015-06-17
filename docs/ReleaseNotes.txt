@@ -11,6 +11,9 @@ releases may be found in the file ChangeLog.txt.
 New Features for 3.36.1
 =======================
 [782] Notes field font is now user-configurable.
+[781] Virtual Keyboard - allow playing sound when a valid or invalid key
+is pressed and add caption to the Space Bar (Partial implementation of
+this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================

@@ -231,6 +231,9 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
   m_pSecCtl->SetSel(nStartChar + vkbuffer.GetLength(),
                     nStartChar + vkbuffer.GetLength());
 
+  // Make us on top
+  SetWindowPos(&wndTop, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+
   return 0L;
 }
 

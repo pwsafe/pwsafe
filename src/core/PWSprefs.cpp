@@ -128,7 +128,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
   {_T("UseAltAutoType"), false, ptApplication},             //application
-  {_T("IgnoreHelpLoadError"), false, ptApplication},         //application
+  {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
+  {_T("VKPlaySound"), false, ptApplication},                //application
 };
 
 // Default value = -1 means set at runtime
