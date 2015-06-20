@@ -172,7 +172,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
     goto err;
   }
   if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    retval = NOT_PWS_FILE;
+    retval = NOT_PWS3_FILE;
     goto err;
   }
 
@@ -805,49 +805,6 @@ int PWSfileV3::ReadHeader()
       }
       break;
 #endif
-
-    case HDR_RUE:
-      {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8Len > 0) {
-          stringT strErrors;
-          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-          if (!pws_os::FileExists(XSDFilename)) {
-            // No filter schema => user won't be able to access stored filters
-            // Inform her of the fact (probably an installation problem).
-            stringT message, message2;
-            Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
-            LoadAString(message2, IDSC_FILTERSKEPT);
-            message += stringT(_T("\n\n")) + message2;
-            if (m_pReporter != NULL)
-              (*m_pReporter)(message);
-
-            // Treat it as an Unknown field!
-            // Maybe user used a later version of PWS
-            // and we don't want to lose anything
-            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-            m_UHFL.push_back(unkhfe);
-            break;
-          }
-          int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
-                                                    XSDFilename.c_str(),
-                                                    strErrors, m_pAsker);
-          if (rc != PWScore::SUCCESS) {
-            // Can't parse it - treat as an unknown field,
-            // Notify user that filter won't be available
-            stringT message;
-            LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
-            if (m_pReporter != NULL)
-              (*m_pReporter)(message);
-
-            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-            m_UHFL.push_back(unkhfe);
-          }
-        }
-        break;
-#endif
-
       case HDR_RUE:
         {
           if (utf8 != NULL) utf8[utf8Len] = '\0';
