@@ -130,7 +130,7 @@ public:
   int ReadFile(const StringX &filename, const StringX &passkey,
                const bool bValidate = false, const size_t iMAXCHARS = 0,
                CReport *pRpt = NULL);
-  PWSfile::VERSION GetFileVersion() const {return m_FileVersion;}
+  PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir, stringT &bu_fname);
@@ -370,7 +370,7 @@ public:
   bool WasDisplayStatusChanged() const;
 
   const PWSfileHeader &GetHeader() const {return m_hdr;}
-  void SetHeader(const PWSfileHeader::HeaderRecord &hdr) { m_hdr = hdr; }
+  void SetHeader(const PWSfileHeader &hdr) { m_hdr = hdr; }
 
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
@@ -515,7 +515,7 @@ private:
   int m_LockCount2;
 
   stringT m_AppNameAndVersion;
-  PWSfile::VERSION m_FileVersion;
+  PWSfile::VERSION m_ReadFileVersion;
 
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;

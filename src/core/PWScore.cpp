@@ -124,7 +124,7 @@ PWScore::PWScore() :
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
-                     m_FileVersion(PWSfile::UNKNOWN_VERSION),
+                     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_bUniqueGTUValidated(false),
                      m_nRecordsWithUnknownFields(0),
@@ -442,9 +442,9 @@ void PWScore::ReInit(bool bNewFile)
 
   // Now reset all values as if created from new
   if (bNewFile)
-    m_FileVersion = PWSfile::NEWFILE;
+    m_ReadFileVersion = PWSfile::NEWFILE;
   else
-    m_FileVersion = PWSfile::UNKNOWN_VERSION;
+    m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
   const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
@@ -474,14 +474,15 @@ void PWScore::NewFile(const StringX &passkey)
 {
   ClearData();
   SetPassKey(passkey);
-  m_FileVersion = PWSfile::VCURRENT;
+  m_ReadFileVersion = PWSfile::VCURRENT;
   SetChanged(false, false);
 }
 
 // functor object type for for_each:
 // Writes out all records to a PasswordSafe database of any version
 struct RecordWriter {
-  RecordWriter(PWSfile *pout) : m_pout(pout) {}
+  RecordWriter(PWSfile *pout, PWScore *pcore, PWSfile::VERSION version)
+    : m_pout(pout), m_pcore(pcore), m_version(version) {}
   void operator()(std::pair<CUUID const, CItemData> &p)
   {
     if (p.second.IsAlias() && m_version < PWSfile::V30) {
@@ -506,15 +507,15 @@ private:
   const PWSfile::VERSION m_version;
 };
 
-int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
-                       bool bUpdateSig)
+int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
+                       PWSfile::VERSION version)
 {
   PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
   int status;
 
   if (version == PWSfile::VCURRENT)
-    version = m_FileVersion;
+    version = m_ReadFileVersion;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
                                       PWSfile::Write, status);
 
@@ -595,13 +596,13 @@ struct ExportRecordWriter {
     CUUID item_uuid = item.GetUUID();
 
     if (item.IsAlias()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
+      base_uuid = item.GetBaseUUID();
       uuid_str = _T("[[");
       uuid_str += base_uuid;
       uuid_str += _T("]]");
     }
     else if (item.IsShortcut()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
+      base_uuid = item.GetBaseUUID();
       uuid_str = _T("[~");
       uuid_str += base_uuid;
       uuid_str += _T("~]");
@@ -651,29 +652,24 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // Set new header
   out->SetHeader(m_hdr);
 
-  // Give PWSfileV3 the unknown headers to write out
-  // XXX cleanup gross dynamic_cast
-  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
-  if (out3 != NULL) {
-    out3->SetNHashIters(GetHashIters());
+  out->SetNHashIters(GetHashIters());
 
-    // Build a list of Named Password Polices used by exported entries
-    std::vector<StringX> vPWPolicies;
+  // Build a list of Named Password Polices used by exported entries
+  std::vector<StringX> vPWPolicies;
 
-    // As not exporting the whole database, only get referenced Password Policies
-    PopulatePWPVector pwpv(&vPWPolicies);
-    for_each(pOIL->begin(), pOIL->end(), pwpv);
+  // As not exporting the whole database, only get referenced Password Policies
+  PopulatePWPVector pwpv(&vPWPolicies);
+  for_each(pOIL->begin(), pOIL->end(), pwpv);
 
-    // Only include Named Policies in map that are being used by exported entries
-    PSWDPolicyMap ExportMapPSWDPLC;
-    PSWDPolicyMapCIter iter;
-    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-      if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
-        ExportMapPSWDPLC[iter->first] = iter->second;
-      }
+  // Only include Named Policies in map that are being used by exported entries
+  PSWDPolicyMap ExportMapPSWDPLC;
+  PSWDPolicyMapCIter iter;
+  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+    if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+      ExportMapPSWDPLC[iter->first] = iter->second;
     }
-    out3->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
   }
+  out->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
 
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
@@ -791,7 +787,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
   int status;
 
   if (!filename.empty())
-    status = PWSfile::CheckPasskey(filename, passkey, m_FileVersion);
+    status = PWSfile::CheckPasskey(filename, passkey, m_ReadFileVersion);
   else { // can happen if tries to export b4 save
     size_t t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
@@ -966,7 +962,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Clear any old entry keyboard shortcuts
   m_KBShortcutMap.clear();
 
-  PWSfile *in = PWSfile::MakePWSfile(a_filename, m_FileVersion,
+  PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
   if (status != PWSfile::SUCCESS) {
@@ -978,17 +974,17 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   // in the old times we could open even 1.x files
   // for compatibility reasons, we open them again, to see if this is really a "1.x" file
-  if ((m_FileVersion == PWSfile::V20) && (status == PWSfile::WRONG_VERSION)) {
+  if ((m_ReadFileVersion == PWSfile::V20) && (status == PWSfile::WRONG_VERSION)) {
     PWSfile::VERSION tmp_version;  // only for getting compatible to "1.x" files
-    tmp_version = m_FileVersion;
-    m_FileVersion = PWSfile::V17;
+    tmp_version = m_ReadFileVersion;
+    m_ReadFileVersion = PWSfile::V17;
 
     //Closing previously opened file
     in->Close();
     in->SetCurVersion(PWSfile::V17);
     status = in->Open(a_passkey);
     if (status != PWSfile::SUCCESS) {
-      m_FileVersion = tmp_version;
+      m_ReadFileVersion = tmp_version;
     }
   }
 
@@ -997,7 +993,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     return status;
   }
 
-  if (m_FileVersion == PWSfile::UNKNOWN_VERSION) {
+  if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION) {
     delete in;
     return UNKNOWN_VERSION;
   }
@@ -1013,7 +1009,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     prefs->Load(m_hdr.m_prefString);
 
     // prepare handling of pre-2.0 DEFUSERCHR conversion
-    if (m_FileVersion == PWSfile::V17) {
+    if (m_ReadFileVersion == PWSfile::V17) {
       in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
       m_hdr.m_nCurrentMajorVersion = PWSfile::V17;
       m_hdr.m_nCurrentMinorVersion = 0;

@@ -100,7 +100,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_pp_additional = new CAddEdit_Additional(this, &m_AEMD);
   m_pp_datetimes  = new CAddEdit_DateTimes(this, &m_AEMD);
   m_pp_pwpolicy   = new CAddEdit_PasswordPolicy(this, &m_AEMD);
-  if (pcore->GetFileVersion() == PWSfile::V40)
+  if (pcore->GetReadFileVersion() == PWSfile::V40)
     m_pp_attachment = new CAddEdit_Attachment(this, &m_AEMD);
   else
     m_pp_attachment = NULL;
@@ -109,7 +109,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
   AddPage(m_pp_pwpolicy);
-  if (pcore->GetFileVersion() == PWSfile::V40)
+  if (pcore->GetReadFileVersion() == PWSfile::V40)
     AddPage(m_pp_attachment);
 }
 

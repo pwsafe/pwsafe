@@ -1081,7 +1081,7 @@ int DboxMain::Save(const SaveType savetype)
   if (m_core.GetCurFile().empty())
     return SaveAs();
 
-  switch (m_core.GetFileVersion()) {
+  switch (m_core.GetReadFileVersion()) {
     case PWSfile::V30:
     case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
@@ -1462,17 +1462,17 @@ void DboxMain::OnExportVx(UINT nID)
   // of pointers and because the entries have pointers to their
   // display info, which would be tried to be freed twice.
   // Do bare minimum - save header information only
-  const PWSfile::HeaderRecord saved_hdr = m_core.GetHeader();
+  const PWSfileHeader saved_hdr = m_core.GetHeader();
 
   switch (nID) {
     case ID_MENUITEM_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V17);
+      rc = m_core.WriteFile(newfile, true, PWSfile::V17);
       break;
     case ID_MENUITEM_EXPORT2V2FORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V20);
+      rc = m_core.WriteFile(newfile, true, PWSfile::V20);
       break;
-    case ID_MENUITEM_EXPORT2V3FORMAT:
-      rc = m_core.WriteFile(newfile, PWSfile::V30);
+    case ID_MENUITEM_EXPORT2V4FORMAT:
+      rc = m_core.WriteFile(newfile, true, PWSfile::V40);
       break;
     default:
       ASSERT(0);
