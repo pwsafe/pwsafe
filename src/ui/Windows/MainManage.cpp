@@ -118,7 +118,7 @@ int DboxMain::BackupSafe()
       return PWScore::USER_CANCEL;
   }
 
-  rc = m_core.WriteBackupFile(tempname);
+  rc = m_core.WriteFile(tempname, false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
     cs_temp.Format(IDS_CANTOPENWRITING, tempname);
@@ -694,7 +694,7 @@ void DboxMain::OnManagePasswordPolicies()
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
-      if (m_core.GetFileVersion() == PWSfile::VCURRENT) {
+      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
           Command *pcmd1 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
           pmulticmds->Add(pcmd1);
       }
