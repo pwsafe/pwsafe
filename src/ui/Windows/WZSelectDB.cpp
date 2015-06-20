@@ -721,7 +721,7 @@ void CWZSelectDB::OnOpenFileBrowser()
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
       cs_suffix = L"export";
-      cs_filter.LoadString(IDS_FDF_V3_ALL);
+      cs_filter.LoadString(IDS_FDF_VCURR_ALL);
       dwflags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
         OFN_LONGNAMES | OFN_OVERWRITEPROMPT;
       uimsgid = IDS_NAMEXMLFILE;

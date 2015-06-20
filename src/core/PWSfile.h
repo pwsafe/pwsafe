@@ -55,7 +55,7 @@ public:
   enum {SUCCESS = 0, FAILURE = 1, 
     UNSUPPORTED_VERSION,                     //  2
     WRONG_VERSION,                           //  3
-    NOT_PWS_FILE,                            //  4
+    NOT_PWS3_FILE,                            //  4
     WRONG_PASSWORD,                          //  5 - see PWScore.h
     BAD_DIGEST,                              //  6 - see PWScore.h
     END_OF_FILE,                             //  7
