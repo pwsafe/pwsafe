@@ -1000,7 +1000,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
   if (m_core.GetCurFile().empty())
     return SaveAs();
 
-  switch (m_core.GetFileVersion()) {
+  switch (m_core.GetReadFileVersion()) {
     case PWSfile::VCURRENT:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
@@ -1377,8 +1377,8 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 
 int PasswordSafeFrame::SaveAs()
 {
-  if (m_core.GetFileVersion() != PWSfile::VCURRENT &&
-      m_core.GetFileVersion() != PWSfile::UNKNOWN_VERSION) {
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
+      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"),
                                         wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxCANCEL) {

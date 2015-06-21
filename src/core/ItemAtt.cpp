@@ -139,7 +139,7 @@ void CItemAtt::GetKey(FieldType ft, key256T &key) const
   GetField(fiter->second, key, len);
 }
 
-void CItemAtt::GetIV(unsigned char *IV, unsigned int &blocksize) const
+void CItemAtt::GetIV(unsigned char *IV, size_t &blocksize) const
 {
   auto fiter = m_fields.find(ATTIV);
   ASSERT(fiter != m_fields.end());
