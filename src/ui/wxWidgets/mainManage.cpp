@@ -54,7 +54,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
         m_sysTray->ShowIcon();
 
     if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetFileVersion() == PWSfile::VCURRENT) {
+        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         if (pcmd) {

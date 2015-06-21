@@ -176,7 +176,7 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   EXPECT_EQ(0, memcmp(EK, keyVal, sizeof(EK)));
   ai.GetAK(keyVal);
   EXPECT_EQ(0, memcmp(AK, keyVal, sizeof(AK)));
-  unsigned int bs = sizeof(IVVal);
+  size_t bs = sizeof(IVVal);
   ai.GetIV(IVVal, bs);
   EXPECT_EQ(0, memcmp(IV, IVVal, sizeof(IV)));
   ai.GetHMAC(hVal);
