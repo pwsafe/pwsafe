@@ -92,7 +92,7 @@ public:
   time_t GetCTime(time_t &t) const;
   void GetEK(key256T &key) const {return GetKey(ATTEK, key);}
   void GetAK(key256T &key) const {return GetKey(ATTAK, key);}
-  void GetIV(unsigned char *IV, unsigned int &blocksize) const;
+  void GetIV(unsigned char *IV, size_t &blocksize) const;
   void GetHMAC(contentHMACT &hm) const;
   size_t GetContentLength() const; // Number of bytes stored
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
