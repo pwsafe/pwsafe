@@ -38,8 +38,6 @@ class PWSfile;
 class CItemAtt : public CItem
 {
 public:
-  typedef unsigned char key256T[32];
-  typedef unsigned char contentHMACT[32];
 
   enum FieldType {
     ATTUUID = 0x61,
@@ -79,10 +77,6 @@ public:
   void SetUUID(const pws_os::CUUID &uuid);
   void SetTitle(const StringX &title);
   void SetCTime(time_t t);
-  void SetEK(const key256T &key);
-  void SetAK(const key256T &key);
-  void SetIV(const unsigned char *IV, unsigned int blocksize);
-  void SetHMAC(const contentHMACT &hm);
   void SetContent(const unsigned char *content, size_t clen);
 
   StringX GetTitle() const {return GetField(TITLE);}
@@ -90,10 +84,6 @@ public:
   const pws_os::CUUID GetUUID() const;
   StringX GetFileName() const {return GetField(FILENAME);}
   time_t GetCTime(time_t &t) const;
-  void GetEK(key256T &key) const {return GetKey(ATTEK, key);}
-  void GetAK(key256T &key) const {return GetKey(ATTAK, key);}
-  void GetIV(unsigned char *IV, size_t &blocksize) const;
-  void GetHMAC(contentHMACT &hm) const;
   size_t GetContentLength() const; // Number of bytes stored
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
   bool GetContent(unsigned char *content, size_t csize) const;
@@ -116,7 +106,6 @@ public:
 
 
 private:
-  void GetKey(FieldType ft, key256T &key) const;
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 
