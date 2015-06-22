@@ -305,7 +305,7 @@ int PWSfileV4::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  if (ftell(m_fd) < m_effectiveFileLength)
+  if (unsigned(ftell(m_fd)) < m_effectiveFileLength)
     return item.Read(this);
   else
     return END_OF_FILE;
@@ -315,7 +315,7 @@ int PWSfileV4::ReadRecord(CItemAtt &att)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  if (ftell(m_fd) < m_effectiveFileLength)
+  if (unsigned(ftell(m_fd)) < m_effectiveFileLength)
     return att.Read(this);
   else
     return END_OF_FILE;
@@ -905,13 +905,14 @@ int PWSfileV4::ReadHeader()
 
   unsigned char fieldType;
   StringX text;
-  size_t numRead;
   bool utf8status;
   unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
 
   do {
-    numRead = ReadCBC(fieldType, utf8, utf8Len);
+    size_t numRead = ReadCBC(fieldType, utf8, utf8Len);
+    if (numRead == 0)
+      return TRUNCATED_FILE;
 
     switch (fieldType) {
     case HDR_VERSION: /* version */
