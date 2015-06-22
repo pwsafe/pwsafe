@@ -173,7 +173,7 @@ otherwise specified.
 
 2.6 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
 256 as the underlying hash function. The value is calculated over the
-plaintect values of the field type, the field length and the data
+plaintext values of the field type, the field length and the data
 stored in the field, over all fields (starting from the version number
 in the header, ending with the last field of the last record). The
 exception is the content field (of the attachment record), which is
@@ -325,17 +325,21 @@ where:
         MakePronounceable   0x0200
         Unused              0x01ff
     nn  = 2 bytes in little-endian order password total length
-    ll  = 2 bytes in little-endian order password minimum number of lowercase characters
-    uu  = 2 bytes in little-endian order password minimum number of uppercase characters
-    dd  = 2 bytes in little-endian order password minimum number of digit characters
-    ss  = 2 bytes in little-endian order password minimum number of symbol characters
+    ll  = 2 bytes in little-endian order minimum number of lowercase
+     characters in generated password
+    uu  = 2 bytes in little-endian order minimum number of uppercase
+     characters in generated password
+    dd  = 2 bytes in little-endian order minimum number of digit
+     characters in generated password
+    ss  = 2 bytes in little-endian order minimum number of symbol
+     characters in generated password
     M = 1 byte giving the length in bytes of allowed special symbols,
      or zero to specify the database default special symbol set.
     SSS...SSS = List of allowed symbols in this policy (maximum 255 bytes)
 
-[16] This fields contains the name of an empty group that cannot be constructed
-from entries within the database. Unlike other header fields, this field can appear
-multiple times.
+[16] This fields contains the name of an empty group that cannot be
+constructed from entries within the database. Unlike other header
+fields, this field can appear multiple times.
 
 [17] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

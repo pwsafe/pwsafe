@@ -269,6 +269,20 @@ int PWSfileV4::WriteRecord(const CItemAtt &att)
   return att.Write(this);
 }
 
+  // Following writes AttIV, AttEK, AttAK, AttContent
+  // and AttContentHMAC per format spec.
+  // All except the content are generated internally.
+int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
+{
+  if (len == 0)
+    return SUCCESS;
+  ASSERT(content != NULL);
+  // TBD...
+  ASSERT(0);
+  return 0;
+}
+
+
 size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
 {
