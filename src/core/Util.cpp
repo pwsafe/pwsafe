@@ -188,6 +188,34 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
     trashMemory(curblock, BS);
     throw(EIO);
   }
+
+  numWritten += _writecbc(fp, buffer, length, Algorithm, cbcbuffer);
+
+  trashMemory(curblock, BS);
+  return numWritten;
+}
+
+size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
+                 Fish *Algorithm, unsigned char *cbcbuffer)
+{
+  // Doesn't write out length, just CBC's the data, padding with randomness
+  // as required.
+
+  const unsigned int BS = Algorithm->GetBlockSize();
+  size_t numWritten = 0;
+
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+
+  unsigned char *curblock = NULL;
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+
+  // First encrypt and write the length of the buffer
+  curblock = block1;
+  // Fill unused bytes of length with random data, to make
+  // a dictionary attack harder
+  PWSrand::GetInstance()->GetRandomData(curblock, BS);
+
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
     size_t BlockLength = ((length + (BS - 1)) / BS) * BS;
