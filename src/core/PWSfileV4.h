@@ -45,6 +45,11 @@ public:
   int WriteRecord(const CItemAtt &att);
   int ReadRecord(CItemAtt &att);
 
+  // Following writes AttIV, AttEK, AttAK, AttContent
+  // and AttContentHMAC per format spec.
+  // All except the content are generated internally.
+  int WriteContentFields(unsigned char *content, size_t len);
+  
   uint32 GetNHashIters() const {return m_nHashIters;}
   void SetNHashIters(uint32 N) {m_nHashIters = N;}
   
