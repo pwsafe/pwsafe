@@ -20,6 +20,8 @@
 #include "PWStime.h"
 #include "TwoFish.h"
 
+#include "ItemAtt.h" // for WriteContentFields()
+
 #include "os/debug.h"
 #include "os/file.h"
 #include "os/logit.h"
@@ -277,9 +279,48 @@ int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   if (len == 0)
     return SUCCESS;
   ASSERT(content != NULL);
-  // TBD...
-  ASSERT(0);
-  return 0;
+
+  unsigned char IV[TwoFish::BLOCKSIZE];
+  unsigned char EK[KLEN];
+  unsigned char AK[KLEN];
+
+  PWSrand::GetInstance()->GetRandomData(IV, sizeof(IV));
+  PWSrand::GetInstance()->GetRandomData(EK, sizeof(EK));
+  PWSrand::GetInstance()->GetRandomData(AK, sizeof(AK));
+
+  WriteField(CItemAtt::ATTIV, IV, sizeof(IV));
+  WriteField(CItemAtt::ATTEK, EK, sizeof(EK));
+  WriteField(CItemAtt::ATTIV, AK, sizeof(AK));
+
+  // Create fish with EK
+  TwoFish fish(EK, sizeof(EK));
+  trashMemory(EK, sizeof(EK));
+
+  // Create hmac with AK
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
+  hmac.Init(AK, sizeof(AK));
+  trashMemory(AK, sizeof(AK));
+
+  const size_t BlockDataLen = fish.GetBlockSize() - 5;
+
+  // Write first block of content as usual
+  size_t firstLen = (len > BlockDataLen) ? BlockDataLen : len;
+
+  _writecbc(m_fd, content, firstLen, CItemAtt::CONTENT, m_fish, m_IV);
+
+  if (len <= (BlockDataLen)) {    // edge case
+    return len;
+  }
+
+  // write rest using EK
+  _writecbc(m_fd, content + BlockDataLen, len - BlockDataLen, &fish, IV);
+
+  // write HMAC
+  unsigned char digest[SHA256::HASHLEN];
+  hmac.Final(digest);
+  WriteField(CItemAtt::CONTENTHMAC, digest, sizeof(digest));
+
+  return len;
 }
 
 
