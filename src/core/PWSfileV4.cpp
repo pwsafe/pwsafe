@@ -290,7 +290,13 @@ int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 
   WriteField(CItemAtt::ATTIV, IV, sizeof(IV));
   WriteField(CItemAtt::ATTEK, EK, sizeof(EK));
-  WriteField(CItemAtt::ATTIV, AK, sizeof(AK));
+  WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
+
+  // Write content length as the "value" of the content field
+  int32 len32 = reinterpret_cast<int &>(len);
+  unsigned char buf[4];
+  putInt32(buf, len32);
+  WriteField(CItemAtt::CONTENT, buf, sizeof(buf));
 
   // Create fish with EK
   TwoFish fish(EK, sizeof(EK));
@@ -301,26 +307,25 @@ int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   hmac.Init(AK, sizeof(AK));
   trashMemory(AK, sizeof(AK));
 
-  const size_t BlockDataLen = fish.GetBlockSize() - 5;
+  // write actual content using EK
+  _writecbc(m_fd, content, len, &fish, IV);
 
-  // Write first block of content as usual
-  size_t firstLen = (len > BlockDataLen) ? BlockDataLen : len;
+  // update content's HMAC
+  hmac.Update(content, len);
 
-  _writecbc(m_fd, content, firstLen, CItemAtt::CONTENT, m_fish, m_IV);
-
-  if (len <= (BlockDataLen)) {    // edge case
-    return len;
-  }
-
-  // write rest using EK
-  _writecbc(m_fd, content + BlockDataLen, len - BlockDataLen, &fish, IV);
-
-  // write HMAC
+  // write content's HMAC
   unsigned char digest[SHA256::HASHLEN];
   hmac.Final(digest);
   WriteField(CItemAtt::CONTENTHMAC, digest, sizeof(digest));
 
   return len;
+}
+
+size_t PWSfileV4::ReadContent(Fish *fish, unsigned char *&content, size_t clen)
+{
+  ASSERT(clen > 0 && fish != NULL);
+  content = NULL;
+  return 0;
 }
 
 

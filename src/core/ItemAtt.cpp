@@ -266,10 +266,12 @@ int CItemAtt::Read(PWSfile *in)
   signed long fieldLen; // <= 0 means end of file reached
 
   bool gotIV(false), gotEK(false), gotAK(false); // pre-reqs for content
-  unsigned char IV[TwoFish::BLOCKSIZE];
-  unsigned char EK[PWSfileV4::KLEN];
-  unsigned char AK[PWSfileV4::KLEN];
-  
+  bool gotContent(false), gotHMAC(false); // post-requisites
+  unsigned char IV[TwoFish::BLOCKSIZE] = {0};
+  unsigned char EK[PWSfileV4::KLEN] = {0};
+  unsigned char AK[PWSfileV4::KLEN] = {0};
+  unsigned char expected_digest[SHA256::HASHLEN] = {0};
+
   Clear();
   do {
     unsigned char *utf8 = NULL;
@@ -307,8 +309,32 @@ int CItemAtt::Read(PWSfile *in)
         // even if IV, EK and AK haven't been read yet.
         // One step at a time, though...
         ASSERT(gotIV && gotEK && gotAK);
+        ASSERT(!gotContent && !gotHMAC);
         // XXX read the silly thing
-      } else if (!SetField(type, utf8, utf8Len)) {
+        ASSERT(utf8Len == sizeof(uint32));
+        size_t clen = getInt32(utf8);
+
+        TwoFish fish(EK, sizeof(EK));
+        trashMemory(EK, sizeof(EK));
+        const unsigned int BS = fish.GetBlockSize();
+
+        HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
+        hmac.Init(AK, sizeof(AK));
+        trashMemory(AK, sizeof(AK));
+
+        unsigned char *content = NULL;
+        PWSfileV4 *in4 = dynamic_cast<PWSfileV4 *>(in);
+        ASSERT(in4 != NULL);
+        size_t nread = in4->ReadContent(&fish, content, clen);
+        // nread should be clen rounded up to nearest BS:
+        ASSERT(nread == (clen/BS + 1)*BS);
+        gotContent = true;
+        // calculate expected HMAC
+        hmac.Update(content, clen);
+        hmac.Final(expected_digest);
+      } else if (type == CONTENTHMAC) {
+        ASSERT(gotContent && !gotHMAC);
+      } if (!SetField(type, utf8, utf8Len)) {
         status = PWSfile::FAILURE;
         break;
       }
