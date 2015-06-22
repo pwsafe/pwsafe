@@ -536,7 +536,7 @@ FileName                    0x63        Text          Y              [5]
 AttEK                       0x64        32 bytes      Y              [6]
 AttAK                       0x65        32 bytes      Y              [7]
 ATTIV                       0x66        binary        Y              [8]
-Content                     0x67        binary        Y              [9]
+Content                     0x67        4 byte+binary Y              [9]
 ContentHMAC                 0x68        32 bytes      Y              [10]
 End of Entry                0xff        [empty]       Y              
 
@@ -560,10 +560,13 @@ attachment. Size is the blocksize of the underlying block cipher.
 to 4GB (2^32 bytes), which should suffice.
 The first block of this field is encrypted under the database's
 encryption key. This is so the field's type and length can be determined
-without relying on the implicit order of the fields. The rest of the blocks
-are encrypted under the AttEK in CBC mode with the value of ATTIV as
-the IV, using the same algorithm as the rest of the database. Padding of
-input is done with random data, as needed.
+without relying on the implicit order of the fields. The length of
+this field is 4, and its contents is 4 byte little-endian value of the
+length of the actual content, padded as usual with random data. The
+actual content is in the following blocks, that are encrypted under
+the AttEK in CBC mode with the value of ATTIV as the IV, using the
+same algorithm as the rest of the database. Padding of content is done
+with random data, as needed.
 [10] The content HMAC is calculated over the same plaintext data that
 is protected using the AttEK, including padding. HMAC calculation uses
 AttAK and SHA256.
