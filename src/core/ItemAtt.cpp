@@ -101,26 +101,6 @@ void CItemAtt::SetCTime(time_t t)
   SetField(CTIME, buf, sizeof(time_t));
 }
 
-void CItemAtt::SetEK(const key256T &key)
-{
-  SetField(ATTEK, key, sizeof(key));
-}
-
-void CItemAtt::SetAK(const key256T &key)
-{
-  SetField(ATTAK, key, sizeof(key));
-}
-
-void CItemAtt::SetIV(const unsigned char *IV, unsigned int blocksize)
-{
-  SetField(ATTIV, IV, blocksize);
-}
-
-void CItemAtt::SetHMAC(const contentHMACT &hm)
-{
-  SetField(CONTENTHMAC, hm, sizeof(hm));
-}
-
 void CItemAtt::SetContent(const unsigned char *content, size_t clen)
 {
   SetField(CONTENT, content, clen);
@@ -130,30 +110,6 @@ time_t CItemAtt::GetCTime(time_t &t) const
 {
   GetTime(CTIME, t);
   return t;
-}
-
-void CItemAtt::GetKey(FieldType ft, key256T &key) const
-{
-  auto fiter = m_fields.find(ft);
-  ASSERT(fiter != m_fields.end());
-  size_t len = sizeof(key);
-  GetField(fiter->second, key, len);
-}
-
-void CItemAtt::GetIV(unsigned char *IV, size_t &blocksize) const
-{
-  auto fiter = m_fields.find(ATTIV);
-  ASSERT(fiter != m_fields.end());
-  GetField(fiter->second, IV, blocksize);
-}
-
-void CItemAtt::GetHMAC(contentHMACT &hm) const
-{
-  // should templatize GetKey...
-  auto fiter = m_fields.find(CONTENTHMAC);
-  ASSERT(fiter != m_fields.end());
-  size_t len = sizeof(hm);
-  GetField(fiter->second, hm, len);
 }
 
 size_t CItemAtt::GetContentLength() const
@@ -279,21 +235,17 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
   case CTIME:
     if (!SetTimeField(ft, data, len)) return false;
     break;
-  case ATTIV:
+  case CONTENT:
     CItem::SetField(type, data, len);
     break;
-  case CONTENT:
-    CItem::SetField(type, data, len); // XXX Not (yet) per spec
-    break;
+  case ATTIV:
   case ATTEK:
   case ATTAK:
-    if (len != sizeof(key256T)) return false;
-    CItem::SetField(type, data, len);
-    break;
   case CONTENTHMAC:
-    if (len != sizeof(contentHMACT)) return false;
-    CItem::SetField(type, data, len);
-    break;
+    // These fields have no business in the record, created and used
+    // solely for file i/o.
+    ASSERT(0);
+    return false;
   case END:
     break;
   default:
@@ -313,6 +265,11 @@ int CItemAtt::Read(PWSfile *in)
   int emergencyExit = 255; // to avoid endless loop.
   signed long fieldLen; // <= 0 means end of file reached
 
+  bool gotIV(false), gotEK(false), gotAK(false); // pre-reqs for content
+  unsigned char IV[TwoFish::BLOCKSIZE];
+  unsigned char EK[PWSfileV4::KLEN];
+  unsigned char AK[PWSfileV4::KLEN];
+  
   Clear();
   do {
     unsigned char *utf8 = NULL;
@@ -322,7 +279,36 @@ int CItemAtt::Read(PWSfile *in)
 
     if (fieldLen > 0) {
       numread += fieldLen;
-      if (!SetField(type, utf8, utf8Len)) {
+      // chained if/else instead of switch to avoid
+      // 'break' ambiguity or goto
+      if (type == ATTIV) {
+        ASSERT(utf8Len == sizeof(IV));
+        ASSERT(!gotIV);
+        gotIV = true;
+        memcpy(IV, utf8, sizeof(IV));
+        emergencyExit--;
+        continue;
+      } else if (type == ATTEK) {
+        ASSERT(utf8Len == sizeof(EK));
+        ASSERT(!gotEK);
+        gotEK = true;
+        memcpy(EK, utf8, sizeof(EK));
+        emergencyExit--;
+        continue;
+      } else if (type == ATTAK) {
+        ASSERT(utf8Len == sizeof(AK));
+        ASSERT(!gotAK);
+        gotAK = true;
+        memcpy(AK, utf8, sizeof(AK));
+        emergencyExit--;
+        continue;
+      } else if (type == CONTENT) {
+        // Yes, we're supposed to be able to handle this
+        // even if IV, EK and AK haven't been read yet.
+        // One step at a time, though...
+        ASSERT(gotIV && gotEK && gotAK);
+        // XXX read the silly thing
+      } else if (!SetField(type, utf8, utf8Len)) {
         status = PWSfile::FAILURE;
         break;
       }

@@ -61,6 +61,10 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char *cbcbuffer);
 
+// typeless version for V4 content:
+extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
+                        Fish *Algorithm, unsigned char *cbcbuffer);
+
 
 // The following can be used directly or via template functions getInt<> / putInt<>
 
