@@ -258,7 +258,7 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
 
 int CItemAtt::Read(PWSfile *in)
 {
-  int status = PWSfile::SUCCESS;
+  int status = PWSfile::FAILURE; // generic failure
   signed long numread = 0;
   unsigned char type;
 
@@ -273,42 +273,50 @@ int CItemAtt::Read(PWSfile *in)
 
   unsigned char *content = NULL;
   size_t content_len = 0;
-  unsigned char calculated_digest[SHA256::HASHLEN] = {0};
   unsigned char expected_digest[SHA256::HASHLEN] = {0};
+
+  unsigned char *utf8 = NULL;
+  size_t utf8Len = 0;
 
   Clear();
   do {
-    unsigned char *utf8 = NULL;
-    size_t utf8Len = 0;
     fieldLen = static_cast<signed long>(in->ReadField(type, utf8,
                                                       utf8Len));
 
     if (fieldLen > 0) {
       numread += fieldLen;
-      // chained if/else instead of switch to avoid
-      // 'break' ambiguity or goto
-      if (type == ATTIV) {
+      switch (type) {
+      case ATTIV: {
         ASSERT(utf8Len == sizeof(IV));
         ASSERT(!gotIV);
+        if (utf8Len != sizeof(IV) || gotIV)
+          goto exit;
         gotIV = true;
         memcpy(IV, utf8, sizeof(IV));
         emergencyExit--;
-        continue;
-      } else if (type == ATTEK) {
+        break;
+      }
+      case ATTEK: {
         ASSERT(utf8Len == sizeof(EK));
         ASSERT(!gotEK);
+        if (utf8Len != sizeof(EK) || gotEK)
+          goto exit;
         gotEK = true;
         memcpy(EK, utf8, sizeof(EK));
         emergencyExit--;
-        continue;
-      } else if (type == ATTAK) {
+        break;
+      }
+      case ATTAK: {
         ASSERT(utf8Len == sizeof(AK));
         ASSERT(!gotAK);
+        if (utf8Len != sizeof(AK) || gotAK)
+          goto exit;
         gotAK = true;
         memcpy(AK, utf8, sizeof(AK));
         emergencyExit--;
-        continue;
-      } else if (type == CONTENT) {
+        break;
+      }
+      case CONTENT: {
         // Yes, we're supposed to be able to handle this
         // even if IV and EK haven't been read yet.
         // One step at a time, though...
@@ -316,6 +324,8 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(!gotContent);
 
         ASSERT(utf8Len == sizeof(uint32));
+        if (!gotIV || !gotEK || gotContent || utf8Len != sizeof(uint32))
+          goto exit;
         content_len = getInt32(utf8);
 
         TwoFish fish(EK, sizeof(EK));
@@ -327,16 +337,26 @@ int CItemAtt::Read(PWSfile *in)
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
         ASSERT(nread == (content_len/BS + 1)*BS);
+        if (nread != (content_len/BS + 1)*BS) {
+          status = PWSfile::READ_FAIL;
+          goto exit;
+        }
         gotContent = true;
-      } else if (type == CONTENTHMAC) {
-        ASSERT(gotContent && !gotHMAC);
-        ASSERT(utf8Len == SHA256::HASHLEN);
-        gotHMAC = true;
-        memcpy(expected_digest, utf8, SHA256::HASHLEN);
-      } else if (!SetField(type, utf8, utf8Len)) { // standard fields
-        status = PWSfile::FAILURE;
         break;
       }
+      case CONTENTHMAC: {
+        ASSERT(!gotHMAC);
+        ASSERT(utf8Len == SHA256::HASHLEN);
+        if (gotHMAC || utf8Len != SHA256::HASHLEN)
+          goto exit;
+        gotHMAC = true;
+        memcpy(expected_digest, utf8, SHA256::HASHLEN);
+        break;
+      }
+      default: // "normal" fields
+        if (!SetField(type, utf8, utf8Len))
+          goto exit;
+      } // switch {type)
     } // if (fieldLen > 0)
 
     if (utf8 != NULL) {
@@ -351,24 +371,33 @@ int CItemAtt::Read(PWSfile *in)
   // - Set Content field
   // - Clean-up
 
-  if (!(gotContent && gotAK && gotHMAC))
-    return PWSfile::READ_FAIL;
+  if (gotContent && gotAK && gotHMAC) {
+    unsigned char calculated_digest[SHA256::HASHLEN] = {0};
+    HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
 
-  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
-  hmac.Init(AK, sizeof(AK));
-  trashMemory(AK, sizeof(AK));
+    hmac.Init(AK, sizeof(AK));
+    trashMemory(AK, sizeof(AK));
+    
+    // calculate HMAC
+    hmac.Update(content, content_len);
+    hmac.Final(calculated_digest);
 
-  // calculate expected HMAC
-  hmac.Update(content, content_len);
-  hmac.Final(calculated_digest);
-  
-  if (memcmp(expected_digest, calculated_digest, sizeof(calculated_digest)) == 0) {
-    SetField(CONTENT, content, content_len);
-  } else
-    status = PWSfile::BAD_DIGEST;
+    if (memcmp(expected_digest, calculated_digest,
+               sizeof(calculated_digest)) == 0) {
+      SetField(CONTENT, content, content_len);
+      status = PWSfile::SUCCESS;
+    } else {
+      status = PWSfile::BAD_DIGEST;
+    }
+  } else {
+    status = PWSfile::READ_FAIL;
+  }
 
+
+ exit:
   trashMemory(content, content_len);
   delete[] content;
+  delete[] utf8; // if here via goto exit
 
   if (numread > 0) {
     return status;
