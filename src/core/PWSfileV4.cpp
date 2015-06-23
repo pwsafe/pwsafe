@@ -321,13 +321,17 @@ int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   return len;
 }
 
-size_t PWSfileV4::ReadContent(Fish *fish, unsigned char *&content, size_t clen)
+size_t PWSfileV4::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
+                              unsigned char *&content, size_t clen)
 {
-  ASSERT(clen > 0 && fish != NULL);
-  content = NULL;
-  return 0;
-}
+  ASSERT(clen > 0 && fish != NULL && cbcbuffer != NULL);
+  // round up clen to nearest BS:
+  const unsigned int BS = fish->GetBlockSize();
+  size_t blen = (clen/BS + 1)*BS;
 
+  content = new unsigned char[blen]; // caller's responsible for delete[]
+  return _readcbc(m_fd, content, blen, fish, cbcbuffer);
+}
 
 size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
