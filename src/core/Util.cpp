@@ -31,6 +31,7 @@
 #endif
 #include <sstream>
 #include <iomanip>
+
 #include <errno.h>
 
 using namespace std;
@@ -361,6 +362,35 @@ size_t _readcbc(FILE *fp,
     delete[] buffer;
   }
   return numRead;
+}
+
+// typeless version for V4 content (caller pre-allocates buffer)
+size_t _readcbc(FILE *fp, unsigned char *buffer,
+                const size_t buffer_len, Fish *Algorithm,
+                unsigned char *cbcbuffer)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+  ASSERT((buffer_len % BS) == 0);
+  size_t nread = 0;
+  unsigned char *p = buffer;
+  unsigned char *tmpcbc = new unsigned char[BS];
+
+  do {
+    size_t nr = fread(p, 1, BS, fp);
+    nread += nr;
+    if (nr != BS)
+      break;
+
+    memcpy(tmpcbc, p, BS);
+    Algorithm->Decrypt(p, p);
+    xormem(p, cbcbuffer, BS);
+    memcpy(cbcbuffer, tmpcbc, BS);
+
+    p += nr;
+  } while (nread < buffer_len);
+
+  delete[] tmpcbc;
+  return nread;
 }
 
 // PWSUtil implementations

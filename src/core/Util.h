@@ -56,6 +56,11 @@ extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
                        ulong64 file_len = 0);
 
+// typeless version for V4 content (caller pre-allocates buffer)
+extern size_t _readcbc(FILE *fp, unsigned char *buffer,
+                       const size_t buffer_len, Fish *Algorithm,
+                       unsigned char *cbcbuffer);
+
 // _writecbc will throw(EIO) iff a write fail occurs!
 extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
