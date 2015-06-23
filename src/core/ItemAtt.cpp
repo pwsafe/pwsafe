@@ -324,7 +324,7 @@ int CItemAtt::Read(PWSfile *in)
 
         PWSfileV4 *in4 = dynamic_cast<PWSfileV4 *>(in);
         ASSERT(in4 != NULL);
-        size_t nread = in4->ReadContent(&fish, content, content_len);
+        size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
         ASSERT(nread == (content_len/BS + 1)*BS);
         gotContent = true;
@@ -333,7 +333,7 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(utf8Len == SHA256::HASHLEN);
         gotHMAC = true;
         memcpy(expected_digest, utf8, SHA256::HASHLEN);
-      } if (!SetField(type, utf8, utf8Len)) { // standard fields
+      } else if (!SetField(type, utf8, utf8Len)) { // standard fields
         status = PWSfile::FAILURE;
         break;
       }
