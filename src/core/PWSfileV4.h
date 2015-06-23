@@ -50,9 +50,9 @@ public:
   // All except the content are generated internally.
   int WriteContentFields(unsigned char *content, size_t len);
   // Following allocates content, caller responsible for deallocating
-  size_t ReadContent(Fish *fish, unsigned char *&content, size_t clen);
+  size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+                     unsigned char *&content, size_t clen);
 
-  
   uint32 GetNHashIters() const {return m_nHashIters;}
   void SetNHashIters(uint32 N) {m_nHashIters = N;}
   
