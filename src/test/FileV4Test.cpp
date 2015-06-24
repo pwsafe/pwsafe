@@ -33,7 +33,9 @@ class FileV4Test : public ::testing::Test
 {
 protected:
   FileV4Test(); // to init members
+  PWSfileHeader hdr;
   CItemData smallItem, fullItem, item;
+  CItemAtt attItem;
   void SetUp();
   void TearDown();
 
@@ -66,6 +68,14 @@ FileV4Test::FileV4Test()
 
 void FileV4Test::SetUp()
 {
+  hdr.m_prefString = _T("aPrefString");
+  hdr.m_whenlastsaved = 1413129351; // overwritten in Open()
+  hdr.m_lastsavedby = _T("aUser");
+  hdr.m_lastsavedon = _T("aMachine");
+  hdr.m_whatlastsaved = _T("PasswordSafe test framework");
+  hdr.m_dbname = fname.c_str();
+  hdr.m_dbdesc = _T("Test the header's persistency");
+
   fullItem.CreateUUID();
   fullItem.SetTitle(title);
   fullItem.SetPassword(password);
@@ -90,6 +100,12 @@ void FileV4Test::SetUp()
   smallItem.CreateUUID();
   smallItem.SetTitle(_T("picollo"));
   smallItem.SetPassword(_T("tiny-passw"));
+
+  attItem.CreateUUID();
+  attItem.SetTitle(L"I'm an attachment");
+  const stringT testAttFile(L"../../help/default/html/images/edit_menu.jpg");
+  int status = attItem.Import(testAttFile);
+  ASSERT_EQ(PWSfile::SUCCESS, status);
 }
 
 void FileV4Test::TearDown()
@@ -120,16 +136,9 @@ TEST_F(FileV4Test, HeaderTest)
 {
   // header is written when file's opened for write.
   PWSfileHeader hdr1, hdr2;
-  hdr1.m_prefString = _T("aPrefString");
-  hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
-  hdr1.m_lastsavedby = _T("aUser");
-  hdr1.m_lastsavedon = _T("aMachine");
-  hdr1.m_whatlastsaved = _T("PasswordSafe test framework");
-  hdr1.m_dbname = fname.c_str();
-  hdr1.m_dbdesc = _T("Test the header's persistency");
 
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
-  fw.SetHeader(hdr1);
+  fw.SetHeader(hdr);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
   hdr1 = fw.GetHeader(); // Some fields set by Open()
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
@@ -207,14 +216,6 @@ TEST_F(FileV4Test, MulitKeysTest)
 
 TEST_F(FileV4Test, AttTest)
 {
-  CItemAtt attItem;
-
-  attItem.CreateUUID();
-  attItem.SetTitle(L"I'm an attachment");
-  const stringT testAttFile(L"../../help/default/html/images/edit_menu.jpg");
-  int status = attItem.Import(testAttFile);
-  ASSERT_EQ(PWSfile::SUCCESS, status);
-
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
@@ -230,3 +231,28 @@ TEST_F(FileV4Test, AttTest)
   EXPECT_EQ(attItem, readAtt);
 }
 
+TEST_F(FileV4Test, HdrItemAttTest)
+{
+  PWSfileHeader hdr1, hdr2;
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+
+  pws_os::CUUID att_uuid = attItem.GetUUID();
+  fullItem.SetAttUUID(att_uuid);
+
+  fw.SetHeader(hdr);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  hdr1 = fw.GetHeader(); // Some fields set by Open()
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  CItemData readData[2];
+  CItemAtt readAtt;
+  PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readData[0]));
+  EXPECT_EQ(PWSfile::WRONG_RECORD, fr.ReadRecord(readData[1])); // att here!
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close()); // no EOF/HMAC (yet)
+}
