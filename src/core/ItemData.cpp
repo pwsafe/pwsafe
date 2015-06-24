@@ -169,6 +169,14 @@ int CItemData::Read(PWSfile *in)
 
     if (fieldLen > 0) {
       numread += fieldLen;
+      if (type >= LAST_ITEM_DATA_FIELD && type != END) {
+        // unknown field - allow rewind and retry
+        if (utf8 != NULL) {
+          trashMemory(utf8, utf8Len * sizeof(utf8[0]));
+          delete[] utf8;
+        }
+        return -numread;
+      }
       if (!SetField(type, utf8, utf8Len)) {
         status = PWSfile::FAILURE;
         break;

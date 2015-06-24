@@ -83,6 +83,7 @@ public:
     ALIASUUID = 0x42,  // UUID indicates this is an Alias (v4)
     SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
     LAST,        // Start of unknown fields!
+    LAST_ITEM_DATA_FIELD = 0x60, // beyond this is for other CItem subclasses
     END = 0xff,
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
