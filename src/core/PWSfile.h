@@ -55,13 +55,14 @@ public:
   enum {SUCCESS = 0, FAILURE = 1, 
     UNSUPPORTED_VERSION,                     //  2
     WRONG_VERSION,                           //  3
-    NOT_PWS3_FILE,                            //  4
+    NOT_PWS3_FILE,                           //  4
     WRONG_PASSWORD,                          //  5 - see PWScore.h
     BAD_DIGEST,                              //  6 - see PWScore.h
     END_OF_FILE,                             //  7
     TRUNCATED_FILE,                          //  8 (missing EOF marker)
     READ_FAIL,                               //  9
     WRITE_FAIL,                              //  10
+    WRONG_RECORD,                            // 11
     CANT_OPEN_FILE = -10                     //  -10 - see PWScore.h
   };
 

@@ -53,6 +53,21 @@ public:
     memset(K, 0, sizeof(K));
   }
 
+  HMAC(const HMAC &hmac) {
+    Hash = new H;
+    *Hash = *hmac.Hash;
+    memcpy(K, hmac.K, BLOCKSIZE);
+  }
+
+  HMAC &operator=(const HMAC &that) {
+    if (this != &that) {
+      Hash = new H;
+      *Hash = *that.Hash;
+      memcpy(K, that.K, BLOCKSIZE);
+    }
+    return *this;
+  }
+
   ~HMAC(){delete Hash;}
 
   int GetBlockSize() const {return BLOCKSIZE;}
