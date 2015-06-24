@@ -351,14 +351,40 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
   return numRead;
 }
 
+void PWSfileV4::SaveState()
+{
+  m_savepos = ftell(m_fd);
+  memcpy(m_saveIV, m_IV, m_fish->GetBlockSize());
+  m_savehmac = m_hmac;
+}
+
+void PWSfileV4::RestoreState()
+{
+  int seekstat = fseek(m_fd, m_savepos, SEEK_SET);
+  if (seekstat != 0)
+    ASSERT(0);
+  memcpy(m_IV, m_saveIV, m_fish->GetBlockSize());
+  m_hmac = m_savehmac;
+}
+
 int PWSfileV4::ReadRecord(CItemData &item)
 {
+  int status;
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  if (unsigned(ftell(m_fd)) < m_effectiveFileLength)
-    return item.Read(this);
-  else
-    return END_OF_FILE;
+  SaveState();
+  unsigned fpos = unsigned(ftell(m_fd));
+  if (fpos < m_effectiveFileLength) {
+    status = item.Read(this);
+    if (status < 0) { // detected an inappropriate field
+      RestoreState();
+      status = WRONG_RECORD;
+    }
+  } else if (unsigned(fpos) == m_effectiveFileLength)
+    status = END_OF_FILE;
+  else // fpos >= effectiveFileLength !?
+    status = READ_FAIL;
+  return status;
 }
 
 int PWSfileV4::ReadRecord(CItemAtt &att)
