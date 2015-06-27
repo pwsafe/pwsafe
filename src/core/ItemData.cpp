@@ -377,6 +377,12 @@ int CItemData::Write(PWSfileV4 *out) const
     out->WriteField(BASEUUID, base_uuid, sizeof(uuid_array_t));
   }
 
+  if (IsFieldSet(ATTREF)) {
+    uuid_array_t ref_uuid;
+    GetUUID(ref_uuid, ATTREF);
+    out->WriteField(ATTREF, ref_uuid, sizeof(uuid_array_t));
+  }
+
   status = WriteCommon(out);
 
   return status;
@@ -2034,6 +2040,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
     case BASEUUID:
     case ALIASUUID:
     case SHORTCUTUUID:
+    case ATTREF:
       {
         uuid_array_t uuid_array;
         ASSERT(len == sizeof(uuid_array_t));
