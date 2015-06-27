@@ -227,7 +227,7 @@ TEST_F(FileV4Test, AttTest)
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
-  // EXPECT_EQ(PWSfile::SUCCESS, fr.Close()); // no EOF/HMAC (yet)
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   EXPECT_EQ(attItem, readAtt);
 }
 
@@ -252,7 +252,9 @@ TEST_F(FileV4Test, HdrItemAttTest)
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readData[0]));
+  EXPECT_EQ(fullItem, readData[0]);
   EXPECT_EQ(PWSfile::WRONG_RECORD, fr.ReadRecord(readData[1])); // att here!
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.Close()); // no EOF/HMAC (yet)
+  EXPECT_EQ(attItem, readAtt);
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
