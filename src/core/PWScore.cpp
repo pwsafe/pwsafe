@@ -488,12 +488,14 @@ struct RecordWriter {
     if (p.second.IsAlias() && m_version < PWSfile::V30) {
       // Pre V30 does not support aliases.  Write as a normal record
       // with the base record's password
-      // XXX check how to work this into V4 refactoring...
-      ASSERT(0);
+      CItemData ci = p.second;
+      CItemData *pbase = m_pcore->GetBaseEntry(&(p.second));
+      ci.SetPassword(pbase->GetPassword());
+      m_pout->WriteRecord(ci);
+      return;
     } else if (p.second.IsShortcut() && m_version < PWSfile::V30) {
       // Pre V30 does not support shortcuts at all - ignore completely
-      // XXX check how to work this into V4 refactoring...
-      ASSERT(0);
+      return;
     }
     m_pout->WriteRecord(p.second);
     p.second.ClearStatus();
