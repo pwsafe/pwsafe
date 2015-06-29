@@ -556,6 +556,14 @@ int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
     RecordWriter write_record(out, this, version);
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
+    // Write attachments (only from V4)
+    if (version >= PWSfile::V40)
+      for_each(m_attlist.begin(), m_attlist.end(),
+               [&](std::pair<CUUID const, CItemAtt> &p)
+               {
+                 p.second.Write(out);
+               } );
+
     // Update info only if CURRENT_VERSION
     if (version == PWSfile::VCURRENT) {
       m_hdr = out->GetHeader(); // update time saved, etc.
@@ -1060,6 +1068,17 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
       // deliberate fall-through
       case PWSfile::SUCCESS:
         ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
+        break;
+      case PWSfile::WRONG_RECORD: {
+        // See if this is a V4 attachment:
+        CItemAtt att;
+        status = att.Read(in);
+        if (status == PWSfile::SUCCESS) {
+          m_attlist.insert(std::make_pair(att.GetUUID(), att));
+        } else {
+          // XXX report problem!
+        }
+      }
         break;
       case PWSfile::END_OF_FILE:
         go = false;
