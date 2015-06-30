@@ -31,7 +31,7 @@ public:
                           const StringX &passkey,
                           FILE *a_fd = NULL,
                           unsigned char *aPtag = NULL, uint32 *nIter = NULL);
-  static bool IsV4x(const StringX &filename, VERSION &v);
+  static bool IsV4x(const StringX &filename, const StringX &passkey, VERSION &v);
 
   PWSfileV4(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV4();

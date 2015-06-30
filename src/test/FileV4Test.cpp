@@ -12,6 +12,8 @@
 #endif
 
 #include "core/PWSfileV4.h"
+#include "core/PWScore.h"
+
 #include "os/file.h"
 
 #include "gtest/gtest.h"
@@ -43,10 +45,9 @@ protected:
   stringT fname;
   // members used to populate and test fullItem:
   const StringX title, password, user, notes, group;
-  const StringX url, at, email, polname, symbols, runcmd;
+  const StringX url, at, email, symbols, runcmd;
   const time_t aTime, cTime, xTime, pmTime, rmTime;
   const int16 iDCA, iSDCA;
-  const int32 kbs;
   time_t tVal;
   int16 iVal16;
   int32 iVal32;
@@ -59,10 +60,10 @@ FileV4Test::FileV4Test()
     notes(_T("N is for notes\nwhich can span lines\r\nin several ways.")),
     group(_T("Groups.are.nested.by.dots")), url(_T("http://pwsafe.org/")),
     at(_T("\\u\\t\\t\\n\\p\\t\\n")), email(_T("joe@spammenot.com")),
-    polname(_T("liberal")), symbols(_T("<-_+=@?>")), runcmd(_T("Run 4 your life")),
+    symbols(_T("<-_+=@?>")), runcmd(_T("Run 4 your life")),
     aTime(1409901292), // time test was first added, from http://www.unixtimestamp.com/
     cTime(1409901293), xTime(1409901294), pmTime(1409901295), rmTime(1409901296),
-    iDCA(3), iSDCA(8), kbs(0x12345678),
+    iDCA(3), iSDCA(8),
     tVal(0), iVal16(-1), iVal32(-1)
 {}
 
@@ -85,7 +86,6 @@ void FileV4Test::SetUp()
   fullItem.SetURL(url);
   fullItem.SetAutoType(at);
   fullItem.SetEmail(email);
-  fullItem.SetPolicyName(polname);
   fullItem.SetSymbols(symbols);
   fullItem.SetRunCommand(runcmd);
   fullItem.SetATime(aTime);
@@ -95,7 +95,6 @@ void FileV4Test::SetUp()
   fullItem.SetRMTime(rmTime);
   fullItem.SetDCA(iDCA);
   fullItem.SetShiftDCA(iSDCA);
-  fullItem.SetKBShortcut(kbs);
 
   smallItem.CreateUUID();
   smallItem.SetTitle(_T("picollo"));
@@ -257,4 +256,24 @@ TEST_F(FileV4Test, HdrItemAttTest)
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
   EXPECT_EQ(attItem, readAtt);
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV4Test, CoreRWTest)
+{
+  PWScore core;
+  const StringX passkey(L"3rdMambo");
+
+  pws_os::CUUID att_uuid = attItem.GetUUID();
+  fullItem.SetAttUUID(att_uuid);
+
+  core.SetPassKey(passkey);
+  core.Execute(AddEntryCommand::Create(&core, fullItem));
+  // core.Execute(AddAttachmentCommand::Create(&core, attItem)); -- TBD
+  EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), true, PWSfile::V40));
+  core.ClearData();
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey));
+  ASSERT_EQ(1, core.GetNumEntries());
+  ASSERT_TRUE(core.Find(fullItem.GetUUID()) != core.GetEntryEndIter());
+  const CItemData readFullItem = core.GetEntry(core.Find(fullItem.GetUUID()));
+  EXPECT_EQ(fullItem, readFullItem);
 }
