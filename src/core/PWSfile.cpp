@@ -21,16 +21,17 @@
 #include <errno.h>
 #include <limits>
 
-PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status,
+PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
+                              VERSION &version, RWmode mode, int &status,
                               Asker *pAsker, Reporter *pReporter)
 {
+  PWSfile *retval = NULL;
+
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
     return NULL;
   }
 
-  PWSfile *retval;
   switch (version) {
     case V17:
     case V20:
@@ -47,33 +48,47 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
       break;
     case UNKNOWN_VERSION:
       ASSERT(mode == Read);
-      // XXX Need to rethink this now that V40 doesn't have
-      // XXX a cleartext header/footer
-      if (PWSfile::ReadVersion(a_filename) == V30) {
-        version = V30;
+      version = PWSfile::ReadVersion(a_filename, passkey);
+      switch (version) {
+      case V40:
+        status = SUCCESS;
+        retval = new PWSfileV4(a_filename, mode, version);
+        break;
+      case V30:
         status = SUCCESS;
         retval = new PWSfileV3(a_filename, mode, version);
-      } else {
-        version = V20; // may be inaccurate (V17)
+        break;
+      case V17:  // never actually returned
+      case V20:  // may be inaccurate (V17)
         status = SUCCESS;
         retval = new PWSfileV1V2(a_filename, mode, version);
-      }
+        break;
+      case NEWFILE:
+        ASSERT(0);
+        // deliberate fallthru
+      case UNKNOWN_VERSION:
+        status = FAILURE;
+      } // inner switch
       break;
-    default:
-      ASSERT(0);
-      status = FAILURE; return NULL;
+  case NEWFILE: // should never happen
+    status = FAILURE;
+    ASSERT(0);
   }
-  retval->m_pAsker = pAsker;
-  retval->m_pReporter = pReporter;
+  if (retval != NULL) {
+    retval->m_pAsker = pAsker;
+    retval->m_pReporter = pReporter;
+  }
   return retval;
 }
 
 
-PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
+PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &passkey)
 {
   if (pws_os::FileExists(filename.c_str())) {
     VERSION v;
     if (PWSfileV3::IsV3x(filename, v))
+      return v;
+    else if (PWSfileV4::IsV4x(filename, passkey, v))
       return v;
     else
       return V20;

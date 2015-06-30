@@ -1261,13 +1261,11 @@ int PWSfileV4::ReadHeader()
   return SUCCESS;
 }
 
-bool PWSfileV4::IsV4x(const StringX &filename , VERSION &v)
+bool PWSfileV4::IsV4x(const StringX &filename, const StringX &passkey, VERSION &v)
 {
-  // XXX Certainly has to change, if can be at all supported!
-  v = V40;
-  ASSERT(pws_os::FileExists(filename.c_str()));
-  FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
-
-  ASSERT(fd != NULL);
-  return true;
+  if (CheckPasskey(filename, passkey) == SUCCESS) {
+    v = V40;
+    return true;
+  } else
+    return false;
 }

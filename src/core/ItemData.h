@@ -303,6 +303,7 @@ public:
   bool IsEmailEmpty() const                { return !IsEmailSet();         }
   bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
 
+  bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeSerializePlainText(const std::vector<char> &v);

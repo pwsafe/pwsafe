@@ -202,6 +202,8 @@ BEGIN
   IDSC_MISSINGTITLE        "MISSING TITLE # %d"
   IDSC_VALIDATE_ERRORS     "The following ERRORS were detected and were FIXED."
   IDSC_VALIDATE_WARNINGS   "The following WARNINGS were detected - you should review and fix them manually."
+  IDSC_VALIDATE_MISSING_ATT "The following entries refer to missing attachments."
+  IDSC_VALIDATE_ORPHAN_ATT "The following attachments are not referred to by any entry."
 END
 
 STRINGTABLE

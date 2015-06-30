@@ -68,13 +68,16 @@ struct st_ValidateResults {
   int num_excessivetxt_found;
   int num_alias_warnings;
   int num_shortcuts_warnings;
+  int num_missing_att;
+  int num_orphan_att;
 
   st_ValidateResults()
   : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
   num_empty_titles(0), num_empty_passwords(0),
   num_duplicate_GTU_fixed(0),
   num_PWH_fixed(0), num_excessivetxt_found(0),
-  num_alias_warnings(0), num_shortcuts_warnings(0)
+  num_alias_warnings(0), num_shortcuts_warnings(0),
+  num_missing_att(0), num_orphan_att(0)
   {}
 
   st_ValidateResults(const st_ValidateResults &that)
@@ -86,7 +89,8 @@ struct st_ValidateResults {
   num_PWH_fixed(that.num_PWH_fixed),
   num_excessivetxt_found(that.num_excessivetxt_found),
   num_alias_warnings(that.num_alias_warnings),
-  num_shortcuts_warnings(that.num_shortcuts_warnings)
+  num_shortcuts_warnings(that.num_shortcuts_warnings),
+  num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
   {}
 
   st_ValidateResults &operator=(const st_ValidateResults &that) {
@@ -100,6 +104,8 @@ struct st_ValidateResults {
       num_excessivetxt_found = that.num_excessivetxt_found;
       num_alias_warnings = that.num_alias_warnings;
       num_shortcuts_warnings = that.num_shortcuts_warnings;
+      num_missing_att = that.num_missing_att;
+      num_orphan_att = that.num_orphan_att;
     }
     return *this;
   }
@@ -110,7 +116,8 @@ struct st_ValidateResults {
             num_empty_titles + num_empty_passwords +
             num_duplicate_GTU_fixed +
             num_PWH_fixed + num_excessivetxt_found +
-            num_alias_warnings + num_shortcuts_warnings);
+            num_alias_warnings + num_shortcuts_warnings +
+            num_missing_att + num_orphan_att);
   }
 };
 
@@ -516,7 +523,7 @@ int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
 
   if (version == PWSfile::VCURRENT)
     version = m_ReadFileVersion;
-  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+  PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
                                       PWSfile::Write, status);
 
   if (status != PWSfile::SUCCESS) {
@@ -641,7 +648,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // to a PasswordSafe database at the current version
   // Used by Export entry or Export Group
   int status;
-  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+  PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
     PWSfile::Write, status);
 
   if (status != PWSfile::SUCCESS) {
@@ -970,7 +977,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Clear any old entry keyboard shortcuts
   m_KBShortcutMap.clear();
 
-  PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
+  PWSfile *in = PWSfile::MakePWSfile(a_filename, a_passkey, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
   if (status != PWSfile::SUCCESS) {
@@ -1695,6 +1702,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      3. Check group/title/user must be unique.
      4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
+     5. For attachments (V4):
+     5.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
+     5.2 Check that each ItemAtt has a corresponding "owner" ItemData
 
      Note:
      m_pwlist is implemented as a map keyed on UUIDs, each entry is
@@ -1720,6 +1730,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_EmptyPassword, vGTU_PWH, vGTU_TEXT,
                                  vGTU_ALIASES, vGTU_SHORTCUTS;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
+  std::vector<st_GroupTitleUser> vGTU_MissingAtt;
+  std::vector<StringX> vOrphanAtt;
+  std::set<CUUID> sAttOwners;
 
   ItemListIter iter;
 
@@ -1826,7 +1839,28 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       // need to run using the Command mechanism for Undo/Redo.
       m_pwlist[fixedItem.GetUUID()] = fixedItem;
     }
+
+    // Attachment Reference check (5.1)
+    if (ci.HasAttRef()) {
+      sAttOwners.insert(ci.GetUUID());
+      if (!HasAtt(ci.GetAttUUID())) {
+        vGTU_MissingAtt.push_back(st_GroupTitleUser(ci.GetGroup(),
+                                                    ci.GetTitle(),
+                                                    ci.GetUser()));
+        st_vr.num_missing_att++;
+      }
+    }
   } // iteration over m_pwlist
+
+  // Check for orphan attachments (5.2)
+  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+    if (sAttOwners.find(att_iter->first) == sAttOwners.end()) {
+      vOrphanAtt.push_back(att_iter->second.GetTitle());
+      st_vr.num_orphan_att++;
+    }
+  }
+
+
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias
   // but there is no equivalent base entry
@@ -1995,7 +2029,27 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         pRpt->WriteLine(cs_Error);
       }
     }
-  }
+
+    // Attachment-related issues
+    if (st_vr.num_missing_att > 0) {
+      pRpt->WriteLine();
+      LoadAString(cs_Error, IDSC_VALIDATE_MISSING_ATT);
+      pRpt->WriteLine(cs_Error);
+      for_each(vGTU_MissingAtt.begin(), vGTU_MissingAtt.end(), [&](const st_GroupTitleUser &gtu) {
+          Format(cs_Error, IDSC_VALIDATE_ENTRY,
+                 gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+          pRpt->WriteLine(cs_Error);
+        } );
+    }
+    if (st_vr.num_orphan_att > 0) {
+      pRpt->WriteLine();
+      LoadAString(cs_Error, IDSC_VALIDATE_ORPHAN_ATT);
+      pRpt->WriteLine(cs_Error);
+      for_each(vOrphanAtt.begin(), vOrphanAtt.end(), [&](const StringX &title) {
+          pRpt->WriteLine(title.c_str());
+        } );
+    }
+  } // End of issues report handling
 
   pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
 
