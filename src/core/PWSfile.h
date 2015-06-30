@@ -96,11 +96,11 @@ public:
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
-  static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status, 
+  static PWSfile *MakePWSfile(const StringX &a_filename, const StringX &passkey,
+                              VERSION &version, RWmode mode, int &status, 
                               Asker *pAsker = NULL, Reporter *pReporter = NULL);
 
-  static VERSION ReadVersion(const StringX &filename);
+  static VERSION ReadVersion(const StringX &filename, const StringX &passkey);
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey, VERSION &version);
 
