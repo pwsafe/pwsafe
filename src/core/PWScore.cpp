@@ -1677,13 +1677,21 @@ void PWScore::ParseDependants()
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
 
-  // Get all possible Aliases/Shortcuts for future checking if base entries exist
   for (ItemListIter iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     const CItemData &ci = iter->second;
+    // Get all possible Aliases/Shortcuts for future checking if base entries exist
     if (ci.IsAlias()) {
       Possible_Aliases.push_back(ci.GetUUID());
     } else if (ci.IsShortcut()) {
       Possible_Shortcuts.push_back(ci.GetUUID());
+    }
+    // Set refcount on attachments
+    if (ci.HasAttRef()) {
+      auto attIter = m_attlist.find(ci.GetAttUUID());
+      if (attIter != m_attlist.end())
+        attIter->second.IncRefcount();
+      else
+        pws_os::Trace(_T("dangling ATTREF")); // will be caught in validate
     }
   } // iter over m_pwlist
 
