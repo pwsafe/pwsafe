@@ -88,6 +88,15 @@ public:
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
   bool GetContent(unsigned char *content, size_t csize) const;
 
+  EntryStatus GetStatus() const {return m_entrystatus;}
+  void ClearStatus() {m_entrystatus = ES_CLEAN;}
+  void SetStatus(const EntryStatus es) {m_entrystatus = es;}
+
+  long GetOffset() const {return m_offset;}
+  void SetOffset(long offset) {m_offset = offset;}
+  unsigned GetRefcount() const {return m_refcount;}
+  void IncRefcount() {m_refcount++;}
+  void DecRefcont() {ASSERT(m_refcount > 0); m_refcount--;}
 
   CItemAtt& operator=(const CItemAtt& second);
 
@@ -99,18 +108,13 @@ public:
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
 
-
-  EntryStatus GetStatus() const {return m_entrystatus;}
-  void ClearStatus() {m_entrystatus = ES_CLEAN;}
-  void SetStatus(const EntryStatus es) {m_entrystatus = es;}
-
-
 private:
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 
   EntryStatus m_entrystatus;
   long m_offset; // location on file, for lazy evaluation
+  unsigned m_refcount; // how many CItemData objects refer to this?
 };
 
 #endif /* __ITEMATT_H */

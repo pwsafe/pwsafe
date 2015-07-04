@@ -28,12 +28,13 @@ using pws_os::CUUID;
 // Constructors
 
 CItemAtt::CItemAtt()
-  : m_entrystatus(ES_CLEAN), m_offset(-1L)
+  : m_entrystatus(ES_CLEAN), m_offset(-1L), m_refcount(0)
 {
 }
 
 CItemAtt::CItemAtt(const CItemAtt &that) :
-  CItem(that), m_entrystatus(that.m_entrystatus)
+  CItem(that), m_entrystatus(that.m_entrystatus),
+  m_offset(that.m_offset), m_refcount(that.m_refcount)
 {
 }
 
@@ -46,6 +47,8 @@ CItemAtt& CItemAtt::operator=(const CItemAtt &that)
   if (this != &that) { // Check for self-assignment
     CItem::operator=(that);
     m_entrystatus = that.m_entrystatus;
+    m_offset = that.m_offset;
+    m_refcount = that.m_refcount;
   }
   return *this;
 }
@@ -53,6 +56,8 @@ CItemAtt& CItemAtt::operator=(const CItemAtt &that)
 bool CItemAtt::operator==(const CItemAtt &that) const
 {
   return (m_entrystatus == that.m_entrystatus &&
+          m_offset == that.m_offset &&
+          m_refcount == that.m_refcount &&
           CItem::operator==(that));
 }
 
