@@ -39,7 +39,7 @@ class CommandInterface {
   virtual ItemListConstIter GetEntryEndIter() const = 0;
 
   // Command-specific methods
-  virtual void DoAddEntry(const CItemData &item) = 0;
+  virtual void DoAddEntry(const CItemData &item, const CItemAtt *att) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci) = 0;
 
@@ -102,9 +102,6 @@ class CommandInterface {
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup) = 0;
   virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual const std::vector<StringX> & GetEmptyGroups() = 0;
-  
-  virtual void DoAddAtt(const CItemAtt &att) = 0;
-  virtual void DoDeleteAtt(const CItemAtt &att) = 0;
   
   virtual ~CommandInterface() {}
 };
