@@ -197,8 +197,8 @@ class AddEntryCommand : public Command
 {
 public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
-                                 const Command *pcmd = NULL)
-  { return new AddEntryCommand(pcomInt, ci, pcmd); }
+                                 const CItemAtt *att = NULL, const Command *pcmd = NULL)
+  { return new AddEntryCommand(pcomInt, ci, att, pcmd); }
   ~AddEntryCommand();
   int Execute();
   void Undo();
@@ -206,8 +206,10 @@ public:
 
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, const Command *pcmd = NULL);
+  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                  const CItemAtt *att, const Command *pcmd = NULL);
   const CItemData m_ci;
+  CItemAtt m_att;
   bool m_bExpired;
 };
 
@@ -228,6 +230,7 @@ private:
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                      const Command *pcmd = NULL);
   const CItemData m_ci;
+  CItemAtt m_att;
   pws_os::CUUID m_base_uuid; // for undo of shortcut or alias deletion
   std::vector<CItemData> m_dependents; // for undo of base deletion
 };

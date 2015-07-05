@@ -233,7 +233,7 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &sxDependents)
     sxDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
 }
 
-void PWScore::DoAddEntry(const CItemData &item)
+void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
 {
   // Also "UndoDeleteEntry" !
   ASSERT(m_pwlist.find(item.GetUUID()) == m_pwlist.end());
@@ -244,6 +244,13 @@ void PWScore::DoAddEntry(const CItemData &item)
 
   if (item.IsNormal() && item.IsPolicyNameSet()) {
     IncrementPasswordPolicy(item.GetPolicyName());
+  }
+
+  if (att != NULL && att->HasContent()) {
+    m_pwlist[item.GetUUID()].SetAttUUID(att->GetUUID());
+    if (m_attlist.find(att->GetUUID()) == m_attlist.end())
+      m_attlist.insert(std::make_pair(att->GetUUID(), *att));
+    m_attlist[att->GetUUID()].IncRefcount();
   }
 
   int32 iKBShortcut;
@@ -388,13 +395,7 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   m_bDBChanged = true;
 }
 
-void PWScore::DoAddAtt(const CItemAtt &att)
-{
-  // Make sure att's not already there
-  ASSERT(m_attlist.find(att.GetUUID()) == m_attlist.end());
-
-  m_attlist[att.GetUUID()] = att;
-}
+#if 0
 
 void PWScore::DoDeleteAtt(const CItemAtt &att)
 {
@@ -408,6 +409,7 @@ void PWScore::DoDeleteAtt(const CItemAtt &att)
 
   m_attlist.erase(pos);
 }
+#endif
 
 void PWScore::ClearData(void)
 {

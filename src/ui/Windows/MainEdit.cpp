@@ -164,7 +164,7 @@ void DboxMain::OnAdd()
     if (pAddEntryPSH->GetIBasedata() != 0) { // creating an alias
       ci.SetBaseUUID(pAddEntryPSH->GetBaseUUID());
     }
-    pmulticmds->Add(AddEntryCommand::Create(&m_core, ci));
+    pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, pAddEntryPSH->GetAtt()));
 
     if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,

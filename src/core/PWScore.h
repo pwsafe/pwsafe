@@ -439,7 +439,7 @@ private:
   // NOTE: Member functions starting with 'Do' or 'Undo' are meant to
   // be executed ONLY via Command subclasses. These are implementations of
   // the CommandInterface mixin, where they're declared public.
-  virtual void DoAddEntry(const CItemData &item);
+  virtual void DoAddEntry(const CItemData &item, const CItemAtt *att);
   virtual void DoDeleteEntry(const CItemData &item);
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci);
 
@@ -473,9 +473,6 @@ private:
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
   virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath);
-
-  virtual void DoAddAtt(const CItemAtt &att);
-  virtual void DoDeleteAtt(const CItemAtt &att);
 
   // End of Command Interface implementations
 

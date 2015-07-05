@@ -459,9 +459,12 @@ void DBEmptyGroupsCommand::Undo()
 // ------------------------------------------------
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 const Command *pcmd)
+                                 const CItemAtt *att, const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
+  if (att != NULL)
+    m_att = *att;
+
   if (pcmd != NULL)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
@@ -477,7 +480,7 @@ int AddEntryCommand::Execute()
   if (m_pcomInt->IsReadOnly())
     return 0;
 
-  m_pcomInt->DoAddEntry(m_ci);
+  m_pcomInt->DoAddEntry(m_ci, &m_att);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
   if (m_ci.IsDependent()) {
@@ -588,7 +591,8 @@ int DeleteEntryCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
                                       m_ci.GetUUID());
   }
-
+  // XXX if entry has an attachment, find and store it in m_att for undo.
+  // XXX as well as removing it / decrementing its refcount
   m_pcomInt->DoDeleteEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
   m_pcomInt->RemoveExpiryEntry(m_ci);
@@ -607,12 +611,12 @@ void DeleteEntryCommand::Undo()
       delete pcmd;
     }
   } else {
-    AddEntryCommand undo(m_pcomInt, m_ci, this);
+    AddEntryCommand undo(m_pcomInt, m_ci, &m_att, this);
     undo.Execute();
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL);
         pcmd->Execute();
         delete pcmd;
       }
@@ -628,7 +632,7 @@ void DeleteEntryCommand::Undo()
           continue;
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }
