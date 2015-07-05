@@ -1,0 +1,3 @@
+#!/bin/sh
+# have to use wrapper script, because C::B don't support stream redirection inside `expr`
+wx-config "$@" | sed 's/\(^\|\s\)-I/ -isystem /g'
