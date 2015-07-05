@@ -54,6 +54,7 @@ public:
 
   CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
   CItemData *GetNewCI() {return m_AEMD.pci;}
+  CItemAtt *GetAtt() {return &m_AEMD.attachment;}
   PWScore *GetCore() {return m_AEMD.pcore;}
 
   bool IsEntryModified() const {return m_bIsModified;}
