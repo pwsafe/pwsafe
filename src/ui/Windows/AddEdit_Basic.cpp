@@ -1053,6 +1053,50 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
+  StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
+  if (sxEditor.empty()) {
+    // Find out the users default editor for "txt" files
+    DWORD dwSize(MAX_PATH);
+    HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
+      szExecName, &dwSize);
+    if (int(stat) != S_OK) {
+#ifdef _DEBUG
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(L"oops");
+#endif
+      // Send error return (WPARAM != 0)
+      self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
+      return 16;
+    }
+    sxEditor = szExecName;
+  }
+
+  DWORD dwResult = ExpandEnvironmentStrings(sxEditor.c_str(), szExecName, MAX_PATH + 1);
+  if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
+    CGeneralMsgBox gmb;
+    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EDITEXTERNALLY));
+    cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
+    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
+
+    // Send error return (WPARAM != 0)
+    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
+    return 0;
+  }
+
+  sxEditor = szExecName;
+
+  if (!pws_os::FileExists(sxEditor.c_str())) {
+    CGeneralMsgBox gmb;
+    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EDITEXTERNALLY));
+    cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
+    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
+
+    // Send error return (WPARAM != 0)
+    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
+    return 0;
+  }
+
+  // Now we know the editor exists - go copy the data for it!
   // Get the temp path
   GetTempPath(dwBufSize,          // length of the buffer
               lpPathBuffer);      // buffer for path
@@ -1066,7 +1110,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   FILE *fd;
 
   if ((fd = pws_os::FOpen(self->m_szTempName, _T("w+b"))) == NULL) {
-    return false;
+    return 0;
   }
 
   // Write BOM
@@ -1079,22 +1123,6 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Close file before invoking editor
   fclose(fd);
-
-  StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
-  if (sxEditor.empty()) {
-    // Find out the users default editor for "txt" files
-    DWORD dwSize(MAX_PATH);
-    HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
-                                      szExecName, &dwSize);
-    if (int(stat) != S_OK) {
-#ifdef _DEBUG
-      CGeneralMsgBox gmb;
-      gmb.AfxMessageBox(L"oops");
-#endif
-      return 16;
-    }
-    sxEditor = szExecName;
-  }
 
   // Create an Edit process
   STARTUPINFO si;
@@ -1116,10 +1144,16 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags,
                      NULL, lpPathBuffer, &si, &pi)) {
-    pws_os::Trace(L"CreateProcess failed (%d).\n", GetLastError());
+    pws_os::IssueError(L"External Editor CreateProcess", false);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANT_FIND_EXT_EDITOR, MB_OK | MB_ICONEXCLAMATION);
+
     // Delete temporary file
     _wremove(self->m_szTempName);
     SecureZeroMemory(self->m_szTempName, sizeof(self->m_szTempName));
+
+    // Send error return (WPARAM != 0)
+    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
     return 0;
   }
 
@@ -1138,19 +1172,23 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   return 0;
 }
 
-LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
+LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 {
+  std::wstring note;
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
-  // Now get what the user saved in this file and put it back into Notes field
-  M_realnotes().Empty();
-  std::wstring note;
+  if (wParam != 0) {
+    goto error_exit;
+  }
 
+  // Now get what the user saved in this file and put it back into Notes field
   FILE *fd;
 
   if ((fd = pws_os::FOpen(m_szTempName, _T("r+b"))) == NULL) {
-    return 0L;
+    goto error_exit;
   }
+
+  M_realnotes().Empty();
 
   ulong64 flength = pws_os::fileLength(fd);
 
@@ -1217,6 +1255,18 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
 
   OnENChangeNotes();
+  return 0L;
+
+error_exit:
+  // Restore notes field and get out
+  m_notes = M_realnotes();
+
+  UpdateData(FALSE);
+  GetDlgItem(IDC_NOTES)->Invalidate();
+
+  // Restore Sheet buttons
+  GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
+  GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
   return 0L;
 }
 

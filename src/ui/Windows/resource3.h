@@ -746,6 +746,7 @@
 #define IDS_EXDB                        5967
 #define IDS_EXPORTWARNING               5970
 #define IDS_NOTESFONT                   5971
+#define IDS_CANT_FIND_EXT_EDITOR        5972
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
