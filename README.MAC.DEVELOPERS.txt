@@ -47,14 +47,12 @@ suffice.
 2. GET PASSWORDSAFE SOURCES
 ===========================
 
-You need to get the Passwordsafe Sources (obviously).  Either download from the website:
-
-http://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.34/pwsafe-3.34.1-src.zip
-(this may not be the latest version)
+You need to get the Passwordsafe source code (obviously).
+Either download from the website:
+https://github.com/pwsafe/pwsafe/archive/master.zip
 
 or clone the git repository:
-
-git clone git://git.code.sf.net/p/passwordsafe/git-code pwsafe
+git clone https://github.com/pwsafe/pwsafe.git
 
 3. wxWidgets
 ============

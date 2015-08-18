@@ -43,10 +43,10 @@ now has built-in support for the following languages:
 - Swedish
 - Turkish
 Older versions have translations to other languages as well, see
-http://pwsafe.org/nonenglish.shtml for the complete list.
+https://pwsafe.org/nonenglish.shtml for the complete list.
 
 If you are interested  in making Password Safe available in other
-languages, please let me (https://sourceforge.net/users/ronys) know.
+languages, please let me (https://pwsafe.org/contact.php) know.
 
 Installation:
 =============
@@ -98,8 +98,8 @@ source project, free for and redistribution. However, donations to the
 project will help me justify the time and effort I spend in
 maintaining and improving this utility. In addtion, donations to the
 project help maintain SourceForge, the hosting site. If you wish to
-donate, please follow this link:
-https://sourceforge.net/p/passwordsafe/donate/
+donate, please click on the Donate button at the top of
+https://pwsafe.org
 
 Release Notes:
 ==============

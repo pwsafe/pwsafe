@@ -7,7 +7,7 @@ this is good enough to release as an early beta to gather feedback
 from a wider audience.
 
 2. Supported Distributions:
-Currently Debian 7.0, Ubuntu 13.04 and Fedora 19 are supported, 32 and
+Currently Debian 8.0, Ubuntu 13.04 and Fedora 22 are supported, 32 and
 64 bit systems.
 
 3. Installation on Debian or Ubuntu:
@@ -24,6 +24,5 @@ $ sudo aptitude install missing-pkgX missing-pkgY
 $ sudo yum install passwordsafe-*.rpm
 
 5. Reporting bugs:
-Please submit bugs via
-https://sourceforge.net/tracker/?func=add&group_id=41019&atid=429579
+Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/
 Set the Category field to Linux to help ensure timely response.
