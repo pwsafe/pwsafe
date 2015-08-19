@@ -31,8 +31,12 @@ GIT := "/cygdrive/c/Program Files (x86)/Git/bin/git"
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
-UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
-UPLOAD_DST :=  $(UPLOAD_ROOT)/passwordsafe/$(RELEASENUM)
+SF_UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
+SF_UPLOAD_DST :=  $(SF_UPLOAD_ROOT)/passwordsafe/$(RELEASENUM)
+# GitHub upload utility from https://github.com/aktau/github-release
+GH_UPLOAD_CMD := /usr/local/bin/github-release
+export GITHUB_USER := pwsafe
+export GITHUB_REPO := pwsafe
 PYTHON := /usr/bin/python
 MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
 WIXDIR := /cygdrive/c/local/WIX
@@ -69,29 +73,47 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
 I18N_MANIFEST := $(I18N_HELPS) $(I18N_DLLS)
 
 .PHONY: all release bin-release src-release installables signatures \
-	upload sha1sums msi nsis upload-latest update-pos i18n save-map help \
+	upload upload-sf upload-github upload-latest sha1sums msi nsis update-pos i18n save-map help \
 	git-tag
 
 all: help release installables signatures sha1sums
 
-upload: upload-latest
+upload: upload-sf upload-github upload-latest
+
+upload-sf:
 	(cd $(RELEASEDIR); \
-	 $(UPLOAD_CMD) pwsafe-$(RELEASENAME).exe \
+	 $(SF_UPLOAD_CMD) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip \
 	 pwsafe-$(RELEASENAME).msi \
 	 pwsafe-$(RELEASENAME)-map+pdb.zip \
 	$(RELNOTES) \
 	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
-	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(UPLOAD_DST))
+	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(SF_UPLOAD_DST))
+
+upload-github:
+ifeq ($(GITHUB_TOKEN),)
+	$(error "GITHUB_TOKEN not set")
+endif
+	-$(GH_UPLOAD_CMD) release -t $(RELEASENAME) -d "PasswordSafe release $(RELEASEAME)"
+	(cd $(RELEASEDIR); \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe -f pwsafe-$(RELEASENAME).exe; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe.sig -f pwsafe-$(RELEASENAME).exe.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi -f pwsafe-$(RELEASENAME).msi; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi.sig -f pwsafe-$(RELEASENAME).msi.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(BINRELNAME).zip -f pwsafe-$(BINRELNAME).zip; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(BINRELNAME).zip.sig -f pwsafe-$(BINRELNAME).zip.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
+			-f pwsafe-$(RELEASENAME)-map+pdb.zip)
+	(cd docs; $(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n ReleaseNotes.txt -f ReleaseNotes.txt)
 
 upload-latest: latest.xml
-	echo "cd htdocs" > putlatest.tmp
+	echo "cd public_html" > putlatest.tmp
 	echo "put $<" >> putlatest.tmp
 	echo "cd padfiles" >> putlatest.tmp
 	echo "put docs/pad_file.xml pwsafe.xml"
-	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
-	$(RM) putlatest.tmp
+	sftp -b putlatest.tmp pwsafe.org
+	$(RM) putlatest.tmp latest.xml
 
 latest.xml: src/ui/Windows/version.h src/ui/wxWidgets/version.h
 	Misc/make-latest-xml.pl $^ > $@

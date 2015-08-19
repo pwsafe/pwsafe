@@ -1,7 +1,7 @@
 OS:= $(findstring Linux, $(shell uname -s))
 GPG_KEY := 5CCF8BB3
 
-UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
+SF_UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 include Makefile.linux
