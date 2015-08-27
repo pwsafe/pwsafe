@@ -71,3 +71,19 @@ bool CKeySend::SimulateApplicationSwitch(void)
 }
 #endif
 
+
+void CKeySend::SelectAll() const
+{
+  const bool selectedAll = pws_os::SelectAll();
+  VERIFY(selectedAll);
+}
+
+void CKeySend::EmulateMods(bool /*emulate*/)
+{
+  // I just don't know how to do it!
+}
+
+bool CKeySend::IsEmulatingMods() const
+{
+  return false;
+}

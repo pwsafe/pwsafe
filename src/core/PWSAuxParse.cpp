@@ -381,6 +381,9 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         // Copy them to output string unchanged.
         case TCHAR('b'):  // backspace!
         case TCHAR('z'):  // Use older method
+        case TCHAR('c'):  // select-all
+        case TCHAR('j'):  // modifier emulation on
+        case TCHAR('k'):  // modifier emulation off
           vactionverboffsets.push_back(sxtmp.length());
           sxtmp += _T("\\");
           sxtmp += curChar;

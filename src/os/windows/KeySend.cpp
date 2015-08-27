@@ -307,3 +307,16 @@ void CKeySend::BlockInput(bool bi) const
 {
   ::BlockInput(bi ? TRUE : FALSE);
 }
+
+void CKeySend::SelectAll() const
+{
+}
+
+void CKeySend::EmulateMods(bool /*emulate*/)
+{
+}
+
+bool CKeySend::IsEmulatingMods() const
+{
+  return false;
+}

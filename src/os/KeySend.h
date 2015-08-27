@@ -34,6 +34,9 @@ public:
 #ifdef __PWS_MACINTOSH__  
   bool SimulateApplicationSwitch();
 #endif  
+  void SelectAll() const;
+  void EmulateMods(bool emulate);
+  bool IsEmulatingMods() const;
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;
