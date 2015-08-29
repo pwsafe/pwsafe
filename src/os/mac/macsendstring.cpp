@@ -85,21 +85,15 @@ void pws_os::SendString(const char* str, unsigned delayMS)
   CFRelease(cfstr);
 }
 
-bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
+struct KeyStroke {
+  CGKeyCode virtualKey;
+  bool down;
+  bool mask;
+};
+
+bool EmulateKeyStrokes(const KeyStroke *KeySequence, size_t num, unsigned delayMS)
 {
-  enum { VK_CMD = 55, VK_TAB = 48 };
-
-  struct {
-    CGKeyCode virtualKey;
-    bool down;
-    bool mask;
-  } KeySequence[]={ {VK_CMD, true, true},
-                    {VK_TAB, true, true},
-                    {VK_TAB, false, true},
-                    {VK_CMD, false, false}
-                  };
-
-  for (size_t idx = 0; idx < NumberOf(KeySequence); ++idx) {
+  for (size_t idx = 0; idx < num; ++idx) {
     CGEventRef keystroke = CGEventCreateKeyboardEvent(NULL, KeySequence[idx].virtualKey, KeySequence[idx].down);
     if (keystroke) {
       if (KeySequence[idx].mask) {
@@ -107,18 +101,45 @@ bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
       }
       CGEventPost(kCGSessionEventTap, keystroke);
       CFRelease(keystroke);
-      pws_os::sleep_ms(delayMS);
+      if (delayMS)
+        pws_os::sleep_ms(delayMS);
     }
     else {
       return false;
     }
   }
-  
   return true;
 }
 
+bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
+{
+  enum { VK_CMD = 55, VK_TAB = 48 };
+
+  KeyStroke KeySequence[] = { {VK_CMD, true, true},
+                              {VK_TAB, true, true},
+                              {VK_TAB, false, true},
+                              {VK_CMD, false, false}
+                            };
+
+
+  return EmulateKeyStrokes(KeySequence, NumberOf(KeySequence), delayMS);
+}
+
+bool pws_os::SelectAll()
+{
+  enum { VK_A = kVK_ANSI_A, VK_CMD = kVK_Command };
+
+  KeyStroke KeySequence[]={ {VK_CMD, true,  true},
+                            {VK_A,   true,  true},
+                            {VK_A,   false, true},
+                            {VK_CMD, false, false}
+                          };
+
+  return EmulateKeyStrokes(KeySequence, NumberOf(KeySequence), 0);
+}
+
 #if 0
-int main (int argc, const char * argv[]) 
+int main (int argc, const char * argv[])
 {
     for (int i = 1; i < argc; ++i)
   {

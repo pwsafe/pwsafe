@@ -632,6 +632,29 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 
           break; // case 'd', 'w' & 'W'
         }
+        case L'c':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          }
+          else {
+            ks.SelectAll();
+          }
+          break;
+        case L'j':
+        case L'k':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          }
+          else {
+            ks.EmulateMods(curChar == L'j');
+          }
+          break;
         case L'z':
           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
               vactionverboffsets.end()) {

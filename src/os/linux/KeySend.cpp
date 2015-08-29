@@ -11,26 +11,31 @@
 #include "../../core/Util.h"
 #include "../../core/PWSprefs.h"
 
+static bool GetPref(PWSprefs::BoolPrefs pref) {
+  return PWSprefs::GetInstance()->GetPref(pref);
+}
+
+static pws_os::AutotypeMethod DefaultAutytypeMethod() {
+  return GetPref(PWSprefs::UseAltAutoType)? pws_os::ATMETHOD_XTEST: pws_os::ATMETHOD_XSENDKEYS;
+}
+
+
+////////////////////////////////////////////////////
+// CKeySend - The generic implementation
 CKeySend::CKeySend(bool, unsigned defaultDelay)
-  : m_delayMS(defaultDelay)
+  : m_delayMS(defaultDelay),
+    m_impl(new CKeySendImpl(DefaultAutytypeMethod()))
 {
 }
 
 CKeySend::~CKeySend()
 {
+  delete m_impl;
 }
 
 void CKeySend::SendString(const StringX &data)
 {
-  /**
-   * Default method is via XSendKeys. Since this may be blocked,
-   * we also support XTEST, even though the latter is less capable (?)
-   */
-
-  bool useAlt = PWSprefs::GetInstance()->GetPref(PWSprefs::UseAltAutoType);
-  pws_os::AutotypeMethod am = useAlt ? pws_os::ATMETHOD_XTEST : pws_os::ATMETHOD_XSENDKEYS;
-
-  pws_os::SendString(data, am, m_delayMS);
+  m_impl->SendString(data, m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d)
@@ -66,4 +71,19 @@ void CKeySend::BlockInput(bool) const
 void CKeySend::ResetKeyboardState() const
 {
   // XXX Need we implement this for X?
+}
+
+void CKeySend::SelectAll() const
+{
+  m_impl->SelectAll(m_delayMS);
+}
+
+void CKeySend::EmulateMods(bool emulate)
+{
+  m_impl->EmulateMods(emulate);
+}
+
+bool CKeySend::IsEmulatingMods() const
+{
+  return m_impl->IsEmulatingMods();
 }
