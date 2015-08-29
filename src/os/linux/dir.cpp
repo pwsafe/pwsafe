@@ -56,16 +56,19 @@ bool pws_os::chdir(const stringT &dir)
   return retval;
 }
 
-  // In following, drive will be empty on non-Windows platforms
+
 bool pws_os::splitpath(const stringT &path,
                        stringT &drive, stringT &dir,
                        stringT &file, stringT &ext)
 {
   if (path.empty())
     return false;
-  drive = _T("");
+
   stringT::size_type last_slash = path.find_last_of(_T("/"));
   dir = path.substr(0, last_slash + 1);
+  if (dir.empty())
+    dir = _T("./");
+  drive = (dir[0] == '/') ? _T("/") : _T("./");
   stringT::size_type last_dot = path.find_last_of(_T("."));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
