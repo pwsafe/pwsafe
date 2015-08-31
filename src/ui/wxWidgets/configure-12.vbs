@@ -29,7 +29,6 @@ CRLF = Chr(13) & Chr(10)
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
-
 const HLM = &H80000002
 strComputer = "."
 strPgmFiles = ""
