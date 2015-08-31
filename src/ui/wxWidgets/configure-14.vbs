@@ -7,7 +7,7 @@
 '
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
-' This script is for setting up Visual Studio 2013.
+' This script is for setting up Visual Studio 2015.
 
 Dim objFileSystem, objOutputFile
 Dim strOutputFile
@@ -29,7 +29,6 @@ CRLF = Chr(13) & Chr(10)
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
-
 const HLM = &H80000002
 strComputer = "."
 strPgmFiles = ""
@@ -43,15 +42,17 @@ oReg.GetStringValue HLM, strKeyPath, strValueName, strValue
 
 If strValue = "AMD64" Then
   strPgmFiles = " (x86)"
+  strGitDir = "C:\Program Files (x86)\Git"
+Else
+  strGitDir = "C:\Program Files\Git"
 End If
 
 Set oReg = Nothing
 
 ' Set defaults
-strGitDir = "C:\Program Files (x86)\Git"
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-14.0"
-strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-14.0"
-strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.12"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-14.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-14.0"
+strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 
 str1 = "Please supply fully qualified location, without quotes, where "
