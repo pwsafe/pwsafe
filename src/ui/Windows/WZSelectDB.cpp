@@ -614,17 +614,17 @@ LRESULT CWZSelectDB::OnWizardNext()
 
   if (nID == ID_MENUITEM_EXPORTENT2DB || nID == ID_MENUITEM_EXPORTGRP2DB) {
     // New Export DB passkey
-    CGeneralMsgBox gmb;  // Note   CGeneralMsgBox is not a reuseable class!
+    CGeneralMsgBox gmbx;  // Note   CGeneralMsgBox is not a reuseable class!
     if (m_passkey2 != m_verify2) {
       // This shouldn't happen as the Wizard Next button shouldn't be
       // active unless they are equal!
-      gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+      gmbx.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
       ((CEdit*)GetDlgItem(IDC_VERIFY2))->SetFocus();
       return -1;
     }
 
     if (m_passkey2.IsEmpty()) {
-      gmb.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
+      gmbx.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
       ((CEdit*)GetDlgItem(IDC_PASSKEY2))->SetFocus();
       return -1;
     }
@@ -641,8 +641,8 @@ LRESULT CWZSelectDB::OnWizardNext()
 
   if (bOtherIsDB && sx_Filename2 == sx_Filename1) {
     // It is the same damn file
-    CGeneralMsgBox gmb;  // Note   CGeneralMsgBox is not a reuseable class!
-    gmb.AfxMessageBox(IDS_COMPARESAME, MB_OK | MB_ICONWARNING);
+    CGeneralMsgBox gmbx;  // Note   CGeneralMsgBox is not a reuseable class!
+    gmbx.AfxMessageBox(IDS_COMPARESAME, MB_OK | MB_ICONWARNING);
     return -1;
   }
 
