@@ -18,10 +18,10 @@ enum UserStream {usAll = -2, usPrefs = -1, us0 = 0, us1 = 1, us2 = 2, us3 = 3};
 #if _MSC_VER < 1900
   #include <dbghelp.h>
 #else
-  // VS2015 RC produces warnings from SDK dbghelp.h re: lines 1544 & 3190
+  // VS2015 produces warnings from SDK dbghelp.h re: lines 1544 & 3190
   //   'typedef ': ignored on left of '' when no variable is declared
-  // Hopefully fixed by MS by the time it is released and this warning
-  // suppression can be removed.
+  // This is true with SDK 7.1A (won't be fixed by MS) & 8.1 (unknown if will be fixed).
+  // However, it is fixed with SDK 10 for Windows 10 applications.
   #pragma warning(push)
   #pragma warning(disable: 4091)
   #include <dbghelp.h>
