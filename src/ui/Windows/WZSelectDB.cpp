@@ -916,6 +916,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
     m_pending = false;
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
+    m_state |= KEYPRESENT;
     // The returned hash is the passkey
     m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable
     // This will check the password, etc.:
@@ -929,6 +930,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     break;
 
   case YKLIB_INVALID_RESPONSE:  // Invalid or no response
+    m_state &= ~KEYPRESENT;
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_TIMEOUT)));
@@ -936,6 +938,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     break;
 
   default:                // A non-recoverable error has occured
+    m_state &= ~KEYPRESENT;
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);

@@ -19,6 +19,8 @@ this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================
+[1267] Export from a YubiKey-protected database to another database
+fixed.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
 [1254] Toolbar customisation now has correctly aligned text/images.
