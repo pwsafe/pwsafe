@@ -452,7 +452,7 @@ void CWZSelectDB::OnPassKeyChange()
   CSecString cs_Passkey;
   cs_Passkey =  m_pctlPasskey->GetSecureText();
 
-  if (cs_Passkey.GetLength() > 0)
+  if (!cs_Passkey.IsEmpty())
     m_state |= KEYPRESENT;
   else
     m_state &= ~KEYPRESENT;
@@ -477,12 +477,12 @@ void CWZSelectDB::OnPassKey2Change()
   cs_Passkey2 = m_pctlPasskey2->GetSecureText();
   cs_Verify2 = m_pctlVerify2->GetSecureText();
 
-  if (cs_Passkey2.GetLength() > 0)
+  if (!cs_Passkey2.IsEmpty())
     m_state |= KEY2PRESENT;
   else
     m_state &= ~KEY2PRESENT;
 
-  if (cs_Verify2.GetLength() > 0 && cs_Passkey2 == cs_Verify2)
+  if (!cs_Verify2.IsEmpty() && cs_Passkey2 == cs_Verify2)
     m_state |= KEY2_EQ_VERIFY2;
   else
     m_state &= ~KEY2_EQ_VERIFY2;
@@ -498,12 +498,12 @@ void CWZSelectDB::OnVerify2Change()
   cs_Passkey2 = m_pctlPasskey2->GetSecureText();
   cs_Verify2 = m_pctlVerify2->GetSecureText();
 
-  if (cs_Verify2.GetLength() > 0)
+  if (!cs_Verify2.IsEmpty())
     m_state |= VERIFY2PRESENT;
   else
     m_state &= ~VERIFY2PRESENT;
 
-  if (cs_Passkey2.GetLength() > 0 && cs_Passkey2 == cs_Verify2)
+  if (!cs_Passkey2.IsEmpty() && cs_Passkey2 == cs_Verify2)
     m_state |= KEY2_EQ_VERIFY2;
   else
     m_state &= ~KEY2_EQ_VERIFY2;
@@ -518,7 +518,7 @@ void CWZSelectDB::OnDatabaseChange()
   CString cs_DB;
   m_pctlDB->GetWindowText(cs_DB);
 
-  if (cs_DB.GetLength() > 0)
+  if (!cs_DB.IsEmpty())
     m_state |= DBPRESENT;
   else
     m_state &= ~DBPRESENT;
@@ -856,7 +856,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
   UpdateData(FALSE);
 
   // Ensure flags set so that buttons are activated as required
-  if (vkbuffer.GetLength() > 0) {
+  if (!vkbuffer.IsEmpty()) {
     switch (m_LastFocus) {
       case IDC_PASSKEY:
         OnPassKeyChange();
