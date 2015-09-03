@@ -7,8 +7,11 @@ This file is based on that provided by RJP Computing as part of the wxPack proje
 (see: http://wxpack.sourceforge.net/).  It has been updated to support VS2010 and VS2012
 and also 64-bit compilations for VS2005, VS2008, VS2010 and VS2012.
 
-Note: PasswordSafe wxWidgets uses the static Unicode libraries only, although the
-following will also build the Unicode DLLs.
+Note: PasswordSafe wxWidgets uses the static Unicode libraries only.
+
+Note: In order to build the VS2015 libraries of wxwidgest 3.0.2, please ensure that
+the changes of ticket 16854 have been made to the source.  See:
+http://trac.wxwidgets.org/attachment/ticket/16854/msw_vc14_compiler_fixes.diff
 
 For VS2010, the parameter xxxxx below should be vc100.
 For VS2012, the parameter xxxxx below should be vc110.
