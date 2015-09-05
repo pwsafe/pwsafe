@@ -7,7 +7,7 @@
 '
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
-' This script is for setting up Visual Studio 2013.
+' This script is for setting up Visual Studio 2015.
 
 Dim objFileSystem, objOutputFile
 Dim strOutputFile
@@ -42,15 +42,17 @@ oReg.GetStringValue HLM, strKeyPath, strValueName, strValue
 
 If strValue = "AMD64" Then
   strPgmFiles = " (x86)"
+  strGitDir = "C:\Program Files\Git"
+Else
+  strGitDir = "C:\Program Files (x86)\Git"
 End If
 
 Set oReg = Nothing
 
 ' Set defaults
-strGitDir = "C:\Program Files (x86)\Git"
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-12.0"
-strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-12.0"
-strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.12"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-12.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-12.0"
+strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 
 str1 = "Please supply fully qualified location, without quotes, where "
@@ -106,38 +108,42 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   End If
 End If
 
+strFileLocation = InputBox(str1 & "GitDir" & str2 & strGitDir & str3, "Git Location", strGitDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strGitDir = strFileLocation
+
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strXercesDir = strFileLocation
+
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXerces64Dir & str3, "Xerces 64-bit Location", strXerces64Dir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strXerces64Dir = strFileLocation
+
+strFileLocation = InputBox(str1 & "wxWidgets" & str2 & strWXDir & str3, "wxWidgets Location", strWXDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strWXDir = strFileLocation
+
+strFileLocation = InputBox(str1 & "Windows Driver Kit" & str2 & strWDKDir & str3, "WDK Location", strWDKDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strWDKDir = strFileLocation
+
 Set objOutputFile = objFileSystem.CreateTextFile(strOutputFile, TRUE)
 
 objOutputFile.WriteLine("<?xml version=""1.0"" encoding=""utf-8""?>")
 objOutputFile.WriteLine("<Project DefaultTargets=""Build"" ToolsVersion=""12.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">")
 objOutputFile.WriteLine("  <PropertyGroup Label=""UserMacros"">")
 objOutputFile.WriteLine("    <ConfigurationName>$(Configuration)</ConfigurationName>")
-
-strFileLocation = InputBox(str1 & "GitDir" & str2 & strGitDir & str3, "Git Location", strGitDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strGitDir
-
-objOutputFile.WriteLine("    <GitDir>" & strFileLocation & "</GitDir>")
-
-strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
-
-objOutputFile.WriteLine("    <XercesDir>" & strFileLocation & "</XercesDir>")
-
-strFileLocation = InputBox(str1 & "Xerces" & str2 & strXerces64Dir & str3, "Xerces 64-bit Location", strXerces64Dir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strXerces64Dir
-
-objOutputFile.WriteLine("    <Xerces64Dir>" & strFileLocation & "</Xerces64Dir>")
-
-strFileLocation = InputBox(str1 & "wxWidgets" & str2 & strWXDir & str3, "wxWidgets Location", strWXDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
-
-objOutputFile.WriteLine("    <WXDIR>" & strFileLocation & "</WXDIR>")
-
-strFileLocation = InputBox(str1 & "Windows Driver Kit" & str2 & strWDKDir & str3, "WDK Location", strWDKDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strWDKDir
-
-objOutputFile.WriteLine("    <WDKDIR>" & strFileLocation & "</WDKDIR>")
-
+objOutputFile.WriteLine("    <GitDir>" & strGitDir & "</GitDir>")
+objOutputFile.WriteLine("    <XercesDir>" & strXercesDir & "</XercesDir>")
+objOutputFile.WriteLine("    <Xerces64Dir>" & strXerces64Dir & "</Xerces64Dir>")
+objOutputFile.WriteLine("    <WXDIR>" & strWXDir & "</WXDIR>")
+objOutputFile.WriteLine("    <WDKDIR>" & strWDKDir & "</WDKDIR>")
 objOutputFile.WriteLine("    <PWSBin>..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
 objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
 objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
@@ -191,8 +197,13 @@ objOutputFile.WriteLine("  </ItemGroup>")
 objOutputFile.WriteLine("</Project>")
 
 objOutputFile.Close
-Set objFileSystem = Nothing
 
 Call MsgBox("File UserVariables-12.props created successfully", 0, "Configure User Variables")
-
+Set objFileSystem = Nothing
 WScript.Quit(0)
+
+Sub CancelExit
+  Call MsgBox("File UserVariables-12.props was not created/changed", 0, "Configure User Variables")
+  Set objFileSystem = Nothing
+  WScript.Quit(0)
+End Sub
