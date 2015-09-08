@@ -72,7 +72,7 @@ If Not objFSO.FileExists(strGitPGM) Then
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
   End If
-  rc = 99
+  rc = 97
 Else
   cmd = Chr(34) & strGitPGM  & Chr(34) & " describe --all --always --dirty=+ --long"
   stdout.WriteLine "  Executing: " & cmd
