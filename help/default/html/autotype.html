@@ -100,27 +100,47 @@ pause between the two words. This is useful for fine-tuning the timing with cert
 and then emit the letter '0', which is probably not what you intended (\W5 would do the trick, though).</li>
 <li><b>\z</b> invokes the old AutoType mechanism.  This mechanism may handle
 non-Latin characters incorrectly, but can make AutoType work on certain problematical web sites.
-If you find that AutoType does not work properly on a particular web site, try this code in the
-AutoType command field.</li>
-<li><b>\c</b> generates the key events that cause a platform-specific Select-All command. It is
-useful when autotype conflicts with browser's autofill, where the two texts combine instead of
-autotype'd text replacing the auto-filled text.  Generating a <b>\c</b> at the start of autotyping
-inside a field (at the very beginning of autotype string, or just after a <b>\t</b>) ensures that
-the autofill'ed text gets replaced by the autotype'd text. For some sites, you might also
-need to autotype <i>slowly</i>, for which put <b>\d100</b> at the begining of your autotype string.
-So your autotype string could look like <pre>\d100\c\u\t\c\p\n</pre>.
+<i><u>If you find that AutoType does not work properly on a particular web site, try this code
+at the beginning of the AutoType command field.</u></i></li>
+<li><b>\c</b> (Linux only) generates the key events that cause a platform-specific Select-All
+command. It is useful when autotype conflicts with browser's autofill, where the two texts
+combine instead of autotype'd text replacing the auto-filled text.  Generating a <b>\c</b> at
+the start of autotyping inside a field (at the very beginning of autotype string, or just after
+a <b>\t</b>) ensures that the autofill'ed text gets replaced by the autotype'd text. For some
+sites, you might also need to autotype <i>slowly</i>, for which put <b>\d100</b> at the begining
+of your autotype string. So your autotype string could look like
+<pre>
+\d100\c\u\t\c\p\n
+</pre>
 </li>
-<li><b>\j</b> starts generating independent key events for modifier keys like ALT, SHIFT, etc.</li>
-<li><b>\k</b> stops generating independent keystrokes for modifier keys and only simulates the modifications (like making things uppercase) with flags to main key events.</li>
-<li> <b>\j</b> and <b>\k</b> could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</li>
+<li><b>\j</b> (Linux only) starts generating independent key events for modifier keys like ALT,
+SHIFT, etc.</li>
+<li><b>\k</b> (Linux only) stops generating independent keystrokes for modifier keys and only
+simulates the modifications (like making things uppercase) with flags to main key events.</li>
+<li><b>\j</b> and <b>\k</b> could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</li>
 <li>All other text is typed as-is.</li>
 </ul>
 
-<p><b>Example:</b>
+<p>The default autotype sequence in Password Safe is \u\t\p\n. This default can be changed
+via the Manage/Options menu (Misc. tab).</p>
+
+<p><b>Example 1:</b>
 The following can be used where the bank account number (12345) must be
 entered before the user and password:<a name="N1"></a>
 <pre>
-<i>12345\t\u\t\p\t\n</i>
+    <i>12345\t\u\t\p\t\n</i>
+</pre>
+</p>
+
+<p><b>Example 2:</b>
+The following sequence has been suggested by a user as it should clear the username field first
+before username and password autotype begins. Non-empty username fields occur all the time.
+Some sites remember the username even when the user does not want it to or user forgets to clear
+the don't remember username and, because of browser cookies, it is remembered anyway, or if login
+fails for whatever reason on the first attempt the username would still remain. This autotype
+sequence should ensure that the user doesn't have to clear a non-empty username field first.
+<pre>
+    <i>\t\s\b\u\t\p\n</i>
 </pre>
 </p>
 
