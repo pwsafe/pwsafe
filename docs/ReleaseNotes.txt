@@ -19,7 +19,8 @@ this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================
-[1269] Fix XML schema for filters containing Password Policy Names.
+[1269] Filters containing Password Policy Names now export/import
+correctly to/from XML.
 [1267] Export from a YubiKey-protected database to another database
 fixed.
 [1260] If Password Safe is unable to find the user specified external editor,
