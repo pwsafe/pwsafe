@@ -19,6 +19,8 @@ this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================
+[1270] Display Filter dropdown list of filter fields now fits on low
+resolution screens.
 [1269] Filters containing Password Policy Names now export/import
 correctly to/from XML.
 [1267] Export from a YubiKey-protected database to another database

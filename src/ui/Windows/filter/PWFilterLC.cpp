@@ -1710,7 +1710,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   CRect m_rectComboBox(rect);
   m_rectComboBox.left += 1;
 
-  DWORD dwStyle =  CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE;
+  DWORD dwStyle =  CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_VSCROLL;
   BOOL bSuccess = m_pComboBox->Create(dwStyle, m_rectComboBox, this, nID);
   ASSERT(bSuccess);
 
@@ -1826,8 +1826,8 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     m_pComboBox->SetDroppedWidth(iSubItem == FLC_FLD_COMBOBOX ? m_fwidth : m_lwidth);
   }
 
-  // Try to ensure that dropdown list is big enough for all entries and
-  // therefore no scrolling
+  // Try to ensure that dropdown list is big enough for half the entries (fits
+  // in the same height as the dialog) but add vertical scrolling
   int n = m_pComboBox->GetCount();
 
   int ht = m_pComboBox->GetItemHeight(0);
@@ -1835,7 +1835,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
 
   CSize sz;
   sz.cx = rect.Width();
-  sz.cy = ht * (n + 2);
+  sz.cy = ht * ((n / 2) + 2);
 
   if ((rect.top - sz.cy) < 0 || 
       (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
