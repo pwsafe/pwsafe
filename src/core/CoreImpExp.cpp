@@ -2317,51 +2317,64 @@ stringT PWScore::GetXMLPWPolicies(const OrderedItemList *pOIL)
     for_each(pOIL->begin(), pOIL->end(), pwpv);
   }
 
-  os << _T("\t<NamedPasswordPolicies>") << endl;
+  bool bNamedPasswordPolicies(false);
 
   PSWDPolicyMapCIter iter;
   for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
     // If OrderedList (i.e. not the whole database), only export a Password Policy
     // if it is referenced by one of the entries being exported
-    if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) == vPWPolicies.end())
-      continue;
-
-    os << "\t\t<Policy>" << endl;
-    stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
-    os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;
-
-    os << "\t\t\t<PWDefaultLength>" << iter->second.length <<
-          "</PWDefaultLength>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseLowercase)
-      os << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseUppercase)
-      os << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseDigits)
-      os << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseSymbols)
-      os << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseHexDigits)
-      os << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
-
-    if (iter->second.flags & PWPolicy::UseEasyVision)
-      os << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
-
-    if (iter->second.flags & PWPolicy::MakePronounceable)
-      os << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
-
-    if (!iter->second.symbols.empty()) {
-      sTemp = PWSUtil::GetSafeXMLString(iter->second.symbols);
-      os << "\t\t\t<symbols>" << sTemp << "</symbols>" << endl;
+    if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+      bNamedPasswordPolicies = true;
+      break;
     }
-    os << "\t\t</Policy>" << endl;
   }
 
-  os << "\t</NamedPasswordPolicies>" << endl << endl;
-  retval = os.str().c_str();
+  if (bNamedPasswordPolicies) {
+    os << _T("\t<NamedPasswordPolicies>") << endl;
+
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      // If OrderedList (i.e. not the whole database), only export a Password Policy
+      // if it is referenced by one of the entries being exported
+      if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) == vPWPolicies.end())
+        continue;
+
+      os << "\t\t<Policy>" << endl;
+      stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
+      os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;
+
+      os << "\t\t\t<PWDefaultLength>" << iter->second.length <<
+        "</PWDefaultLength>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseLowercase)
+        os << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseUppercase)
+        os << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseDigits)
+        os << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseSymbols)
+        os << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseHexDigits)
+        os << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
+
+      if (iter->second.flags & PWPolicy::UseEasyVision)
+        os << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
+
+      if (iter->second.flags & PWPolicy::MakePronounceable)
+        os << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
+
+      if (!iter->second.symbols.empty()) {
+        sTemp = PWSUtil::GetSafeXMLString(iter->second.symbols);
+        os << "\t\t\t<symbols>" << sTemp << "</symbols>" << endl;
+      }
+      os << "\t\t</Policy>" << endl;
+    }
+
+    os << "\t</NamedPasswordPolicies>" << endl;
+    retval = os.str().c_str();
+  }
   return retval;
 }
