@@ -4035,8 +4035,6 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
   StringX sx_fielddata;
-  const StringX &sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
-  StringX sxNA; LoadAString(sxNA, IDS_NA);
   time_t t;
 
   switch (ft) {
@@ -4062,16 +4060,15 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       break;
     }
     case CItemData::CTIME:
-      ci.GetCTime(t);
-      sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
+      sx_fielddata = ci.GetCTimeL();
       break;
     case CItemData::PMTIME:
       ci.GetPMTime(t);
-      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
       break;
     case CItemData::RMTIME:
       ci.GetRMTime(t);
-      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
       break;
     case CItemData::POLICY:
     {
@@ -4551,24 +4548,20 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
 StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
 {
   StringX sx_fielddata(L"");
-  const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
-  StringX sxNA; LoadAString(sxNA, IDS_NA);
-  
   time_t t;
   const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[icolumn];
   
   switch (ft) {
     case CItemData::CTIME:
-      ci.GetCTime(t);
-      sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
+      sx_fielddata = ci.GetCTimeL();
       break;
     case CItemData::PMTIME:
       ci.GetPMTime(t);
-      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
       break;
     case CItemData::RMTIME:
       ci.GetRMTime(t);
-      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
       break;
     case CItemData::POLICY:
     {

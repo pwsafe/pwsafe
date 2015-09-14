@@ -556,13 +556,13 @@ void CAddEdit_PropertySheet::SetupInitialValues()
 
   m_AEMD.locRMTime = m_AEMD.pci->GetRMTimeL();
   if (m_AEMD.locRMTime.IsEmpty())
-    m_AEMD.locRMTime.LoadString(IDS_NA);
+    m_AEMD.locRMTime = m_AEMD.locCTime;
 
   m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
   if (m_AEMD.locPMTime.IsEmpty())
-    m_AEMD.locPMTime.LoadString(IDS_NA);
+    m_AEMD.locPMTime = m_AEMD.locCTime;
 
-  if (!m_AEMD.locPMTime.IsEmpty())
+  if (!m_AEMD.locPMTime.IsEmpty()) // ??? always true ???
     m_AEMD.pci->GetPMTime(m_AEMD.tttCPMTime);
 
   if ((long)m_AEMD.tttCPMTime == 0L) // if never changed - try creation date
