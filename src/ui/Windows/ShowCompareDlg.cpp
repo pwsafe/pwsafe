@@ -579,13 +579,15 @@ CString CShowCompareDlg::GetDCAString(int iValue, bool isShift) const
   UINT ui(0);
   if (iValue == -1)
     ui = m_DCA[PWSprefs::GetInstance()->GetPref(isShift ?
-                                          PWSprefs::ShiftDoubleClickAction :
-                                          PWSprefs::DoubleClickAction)];
+           PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction)];
   else
     ui = m_DCA[iValue];
 
-  CString cs;
-  cs.LoadString(ui);
+  CString cs(MAKEINTRESOURCE(ui));
+  if (iValue == -1) {
+    CString cs_DB_DEFAULT(MAKEINTRESOURCE(IDS_DB_DEFAULT));
+    cs += cs_DB_DEFAULT;
+  }
   return cs;
 }
 

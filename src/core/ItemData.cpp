@@ -1694,9 +1694,6 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
 {
   int16 iDCA;
   GetDCA(iDCA, bShift);
-  if (iDCA < 0)
-    iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(bShift ?
-               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
 
   switch (iFunction) {
     case PWSMatch::MR_IS:

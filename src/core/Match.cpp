@@ -410,6 +410,30 @@ void PWSMatch::GetMatchType(MatchType mtype,
           id = IDSC_INVALID;
       }
       LoadAString(cs1, id);
+      if (fdca == -1) {
+        // Fill in the current message with the default action
+        short iDCA = (short)PWSprefs::GetInstance()->GetPref(mtype == MT_SHIFTDCA ?
+          PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
+        UINT id2;
+        switch (iDCA) {
+          case PWSprefs::DoubleClickCopyPassword:         id2 = IDSC_DCACOPYPASSWORD;    break;
+          case PWSprefs::DoubleClickViewEdit:             id2 = IDSC_DCAVIEWEDIT;        break;
+          case PWSprefs::DoubleClickAutoType:             id2 = IDSC_DCAAUTOTYPE;        break;
+          case PWSprefs::DoubleClickBrowse:               id2 = IDSC_DCABROWSE;          break;
+          case PWSprefs::DoubleClickCopyNotes:            id2 = IDSC_DCACOPYNOTES;       break;
+          case PWSprefs::DoubleClickCopyUsername:         id2 = IDSC_DCACOPYUSERNAME;    break;
+          case PWSprefs::DoubleClickCopyPasswordMinimize: id2 = IDSC_DCACOPYPASSWORDMIN; break;
+          case PWSprefs::DoubleClickBrowsePlus:           id2 = IDSC_DCABROWSEPLUS;      break;
+          case PWSprefs::DoubleClickRun:                  id2 = IDSC_DCARUN;             break;
+          case PWSprefs::DoubleClickSendEmail:            id2 = IDSC_DCASENDEMAIL;       break;
+          default:
+            ASSERT(0);
+            id2 = IDSC_INVALID;
+        }
+        stringT cs3;
+        LoadAString(cs3, id2);
+        Format(cs1, cs1.c_str(), cs3.c_str());
+      }
       break;
     case MT_ENTRYSTATUS:
       switch (estatus) {

@@ -22,10 +22,13 @@ protected:
 
 public:
   PWSMatch::MatchRule m_rule;
+  PWSMatch::MatchType m_type;
   CString m_title;
   CString m_oldtitle;
   bool m_bFirst;
+
   DECLARE_DYNAMIC(CFilterBaseDlg)
+
 protected:
   int m_rule2selection[PWSMatch::MR_LAST];
 };

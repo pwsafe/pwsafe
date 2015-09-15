@@ -1312,11 +1312,12 @@ bool CPWFilterLC::GetCriterion()
       } else {
         m_fDCA.m_rule = PWSMatch::MR_INVALID;
       }
+      m_fDCA.m_type = st_fldata.mtype;  // MT_DCA or MT_SHIFTDCA
       rc = m_fDCA.DoModal();
       if (rc == IDOK) {
         st_fldata.Empty();
         st_fldata.bFilterActive = true;
-        st_fldata.mtype = PWSMatch::MT_DCA;
+        st_fldata.mtype = m_fDCA.m_type;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fDCA.m_rule;
         st_fldata.fdca = m_fDCA.m_DCA;
