@@ -982,10 +982,15 @@ void DboxMain::OnEdit()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
     try {
-      if (pci->IsShortcut())
-        EditShortcut(pci);
-      else
+      if (pci->IsShortcut()) {
+        if (!m_bViaDCA) {
+          EditShortcut(pci);
+        } else {
+          EditItem(GetBaseEntry(pci));
+        }
+      }  else {
         EditItem(pci);
+      }
     } catch (CString &err) {
       CGeneralMsgBox gmb;
       gmb.MessageBox(err, NULL, MB_OK | MB_ICONERROR);

@@ -12,6 +12,11 @@ New Features for 3.36.1
 =======================
 [] The Notes External Editor now accepts environment strings (e.g. %windir%)
 in the path to the editor.
+[789] If the double-click action (or shift-double-click) of an entry
+is set to Edit/View Entry, then (shift-) double-clicking on its
+shortcut will edit/view the base entry. The selected shortcut entry
+can still be viewed/edited via menu, right-click or just hitting
+Enter.
 [782] Notes field font is now user-configurable.
 [781] Virtual Keyboard - allow playing sound when a valid or invalid key
 is pressed and add caption to the Space Bar (Partial implementation of

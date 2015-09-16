@@ -145,7 +145,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false),
+  m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -1400,13 +1400,15 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     POINT pt;
     if(!GetCursorPos(&pt))
       return;
+
     m_ctlItemTree.ScreenToClient(&pt);
     HTREEITEM hItem = m_ctlItemTree.HitTest(pt);
     
     HTREEITEM hItemSel = m_ctlItemTree.GetSelectedItem();
     
-    if (hItem!=hItemSel)//Clicked near item, that is different from current
+    if (hItem != hItemSel) //Clicked near item, that is different from current
        return;
+
     // Only if a group is selected
     if ((hItem != NULL && !m_ctlItemTree.IsLeaf(hItem))) {
       // Do standard double-click processing - i.e. toggle expand/collapse!
@@ -1434,15 +1436,16 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     iDCA = (short)PWSprefs::GetInstance()->GetPref(m_bShiftKey ? 
               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
 
+  m_bViaDCA = true;  // Currently only needed for View/Edit
   switch (iDCA) {
     case PWSprefs::DoubleClickAutoType:
-      PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
+      OnAutoType();
       break;
     case PWSprefs::DoubleClickBrowse:
-      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
+      OnBrowse();
       break;
     case PWSprefs::DoubleClickBrowsePlus:
-      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURLPLUS);
+      OnBrowsePlus();
       break;
     case PWSprefs::DoubleClickCopyNotes:
       OnCopyNotes();
@@ -1457,7 +1460,7 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
       OnCopyPasswordMinimize();
       break;
     case PWSprefs::DoubleClickViewEdit:
-      PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
+      OnEdit();
       break;
     case PWSprefs::DoubleClickRun:
       OnRunCommand();
@@ -1468,6 +1471,7 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     default:
       ASSERT(0);
   }
+  m_bViaDCA = false;
 }
 
 // Called to send an email.
