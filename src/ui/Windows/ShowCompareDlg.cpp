@@ -586,7 +586,7 @@ CString CShowCompareDlg::GetDCAString(int iValue, bool isShift) const
   CString cs(MAKEINTRESOURCE(ui));
   if (iValue == -1) {
     CString cs1(cs);
-    cs.Format(IDS_DB_DEFAULT, cs1);
+    cs.Format(IDS_APP_DEFAULT, cs1);
   }
   return cs;
 }
