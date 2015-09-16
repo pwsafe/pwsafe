@@ -1011,6 +1011,7 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
     retval = m_ctlItemTree.SelectItem(pdi->tree_item);
     if (MakeVisible) {
       m_ctlItemTree.SetItemState(pdi->tree_item, TVIS_BOLD, TVIS_BOLD);
+      m_ctlItemTree.EnsureVisible(pdi->tree_item);
       m_LastFoundTreeItem = pdi->tree_item;
       m_bBoldItem = true;
     }

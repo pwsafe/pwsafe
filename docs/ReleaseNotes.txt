@@ -15,8 +15,7 @@ in the path to the editor.
 [789] If the double-click action (or shift-double-click) of an entry
 is set to Edit/View Entry, then (shift-) double-clicking on its
 shortcut will edit/view the base entry. The selected shortcut entry
-can still be viewed/edited via menu, right-click or just hitting
-Enter.
+can still be viewed/edited via menu, right-click or just hitting Enter.
 [782] Notes field font is now user-configurable.
 [781] Virtual Keyboard - allow playing sound when a valid or invalid key
 is pressed and add caption to the Space Bar (Partial implementation of
@@ -24,6 +23,8 @@ this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================
+[1273] Find in the Tree View will now ensure that any found entry will be
+visible by scrolling appropriately.
 [1272] XML export of single entry using default Password policy now
 works correctly.
 [1270] Display Filter dropdown list of filter fields now fits on low
