@@ -327,7 +327,7 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
       cs_text.LoadString(ResPref[i].res);
       if (ResPref[i].pref == DefaultDCA) {
         const CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT));
-        cs_text += L" ("; cs_text += cs_default; cs_text += L")";
+        cs_text += cs_default;
       }
       int nIndex = pcbox->AddString(cs_text);
       pcbox->SetItemData(nIndex, ResPref[i].pref);
