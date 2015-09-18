@@ -33,6 +33,8 @@ resolution screens.
 correctly to/from XML.
 [1267] Export from a YubiKey-protected database to another database
 fixed.
+[1261] 'Unlock Difficulty' slider is now correctly initialised in the Manage
+Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
 [1254] Toolbar customisation now has correctly aligned text/images.
