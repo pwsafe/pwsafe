@@ -100,7 +100,6 @@
 #define IDS_NOSAFE                      5259
 #define IDS_COPYURL                     5260
 #define IDS_VIEWENTRY2                  5261
-#define IDS_SHORTCUTROEXPLANATION       5262
 #define IDS_UNKNOWN                     5263
 #define IDS_VIEWENTRY                   5264
 #define IDS_ON                          5265
@@ -332,7 +331,6 @@
 #define IDS_EMPTYSAMPLETEXT             5514
 #define IDS_MENUCOPYEMAIL               5516
 #define IDS_COPYEMAIL                   5517
-#define IDS_SHORTCUTEXPLANATION         5519
 #define IDS_SCTARGET                    5520
 #define IDS_ADVANCEDOPTIONS             5522
 #define IDS_ADVANCEDSUBSET              5523

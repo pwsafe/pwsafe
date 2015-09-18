@@ -45,14 +45,13 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 
   m_title.Format(IDS_SCTARGET, m_tt);
 
-  CSecString cs_explanation, cs_target(L"");
+  CSecString cs_target(L"");
   if (!m_tg.IsEmpty())
     cs_target = m_tg + L".";
   cs_target += m_tt;
   if (!m_tu.IsEmpty())
     cs_target += L"." + m_tu;
-  cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
-  GetDlgItem(IDC_ADDSCEXPLANATION)->SetWindowText(cs_explanation);
+  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
 
   m_ex_group.ChangeColour();
 

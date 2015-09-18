@@ -79,7 +79,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   CString cs_text;
-  CSecString cs_explanation, cs_target(L"\xab");
+  CSecString cs_target(L"\xab");
   // Leave \xab \xbb between group/title/user even if group or user is empty
   // so that the user knows the exact name. Looks similar to: <g><t><u>
   // Note: the title field is mandatory and never empty.
@@ -114,8 +114,6 @@ BOOL CEditShortcutDlg::OnInitDialog()
     GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
     m_ex_title.EnableWindow(FALSE);
     m_ex_username.EnableWindow(FALSE);
-    // setup explanatory text
-    cs_explanation.Format(IDS_SHORTCUTROEXPLANATION, cs_target);
   } else { // !read-only
     // Populate the groups combo box
     m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
@@ -125,12 +123,10 @@ BOOL CEditShortcutDlg::OnInitDialog()
          iter != aryGroups.end(); ++iter) {
       m_ex_group.AddString(iter->c_str());
     }
-    // setup explanatory text
-    cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
   } // !read-only
 
-  // Show explanatory text
-  GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
+  // Show base entry
+  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
 
   UpdateData(FALSE);
   m_ex_group.ChangeColour();
