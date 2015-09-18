@@ -500,7 +500,6 @@
 #define IDS_ADDENTRY                    5698
 #define IDS_EDITENTRY                   5699
 #define IDS_NA                          5700
-#define IDS_ISANALIAS                   5701
 #define IDS_ISANALIASBASE               5702
 #define IDS_ISASHORTCUTBASE             5703
 #define IDS_COMPDCA                     5704

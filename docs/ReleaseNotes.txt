@@ -23,6 +23,8 @@ this Feature Request).
 
 Bugs fixed in 3.36.1
 ====================
+[1274] References to base entries are now scrollable, no longer
+truncated.
 [1273] Find in the Tree View will now ensure that any found entry will be
 visible by scrolling appropriately.
 [1272] XML export of single entry using default Password policy now

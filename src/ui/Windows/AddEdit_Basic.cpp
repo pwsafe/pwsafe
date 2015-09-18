@@ -327,19 +327,21 @@ BOOL CAddEdit_Basic::OnInitDialog()
                        IDS_ISANALIASBASE : IDS_ISASHORTCUTBASE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
     M_realpassword() = M_oldRealPassword() = m_password = m_password2 = M_base();
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
 
-    cs_text.Format(IDS_ISANALIAS, M_base());
-    GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
+    GetDlgItem(IDC_MYBASE)->SetWindowText(M_base());
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_SHOW);
   } else if (M_original_entrytype() == CItemData::ET_NORMAL) {
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
   }
 
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
