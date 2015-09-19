@@ -292,6 +292,10 @@ msgstr "'beschermd'"
 msgid " 'symbols'"
 msgstr " 'symbolen'"
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -705,6 +709,10 @@ msgstr "&Kopieer Vermelding"
 msgid "&Duplicate Group"
 msgstr "&Kopieer Groep"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Bewerk"
@@ -816,6 +824,10 @@ msgstr "&Nieuw/Bewerk Filter"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Nee"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -992,10 +1004,6 @@ msgstr "&Ja"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr "&Yubikey..."
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "&e-mail:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1612,6 +1620,11 @@ msgstr "Willekeurig veld laatst gewijzigd op:"
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
 msgstr "Programma sneltoets"
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
+msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -2326,13 +2339,13 @@ msgstr "Kopieer wachtwoord naar klembord, minimaliseer"
 msgid "Copy to Clipboard"
 msgstr "Kopieer naar Klembord"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "Kopieer naar DB"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
 msgstr "Kopieer naar Origineel"
+
+#. Resource IDs: (353)
+msgid "Copy to database"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2482,10 +2495,6 @@ msgstr ""
 msgid "DB Export from database: '%s'"
 msgstr ""
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "DB Opmaak"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2501,6 +2510,10 @@ msgstr "Database"
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
 msgstr "Database vermeldingen snelkoppelingen"
+
+#. Resource IDs: (360)
+msgid "Database Format"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2614,11 +2627,6 @@ msgstr "bestemmingslokatie bestaat niet of is niet toegankelijk."
 msgid "Details"
 msgstr "Details"
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Details van deze snelkoppeling naar de basis vermelding '%s':"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanāgarī - INSCRIPT"
@@ -2679,21 +2687,17 @@ msgstr "Wilt u het vervangen?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Wilt u de wijzigingen aan de database opslaan:\n\n%s\n\nof het Afsluiten\\Herstarten\\Uitloggen afbreken?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Niet de automatisch opgeslagen documenten herstellen\nGebruik de laatste door u opgeslagen versies van de documenten"
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Dubbel Klik Actie"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
 msgstr "Dubbelklik om de vermelding te Wijzigen/Bekijken."
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2787,6 +2791,10 @@ msgstr "Exporteer vermelding naar"
 
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "E-mail"
 msgstr ""
 
 #. Resource IDs: (350)
@@ -3610,10 +3618,6 @@ msgstr "Hongaars"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Hongaars met 101-toets"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "Ik ben een ..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4626,8 +4630,8 @@ msgstr "Een of meer automatisch bewaarde documenten zijn gevonden."
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Alleen in Origineel DB: %d; Alleen in Vergelijk DB: %d;In allebei (verschillend);%d;In allebei (identiek):%d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4890,6 +4894,10 @@ msgstr "Fysiek toetsenbord"
 msgid "Plain Text (tab separated)..."
 msgstr "Gewone Tekst (tab gescheiden)"
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "Kies alstublieft een back-up om te herstellen:"
@@ -5022,11 +5030,6 @@ msgstr "SVP text opgeven"
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
 msgstr "Geef alstublieft de plaats waar alle back-ups worden bewaard."
-
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis vermelding '%s':"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5618,6 +5621,10 @@ msgstr "Zet beeld filters: %d Toegevoegd; %d Actief"
 msgid "Set Entry's Password Policy"
 msgstr "Zet vermelding wachtwoordbeleid"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5677,8 +5684,8 @@ msgid "Shift+DCA"
 msgstr "Shift+DCA"
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
-msgstr "Shift + Dubbel Klik Actie"
+msgid "Shift+Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5732,6 +5739,10 @@ msgstr "Toon Notities als tekstballon in de Boom- && Lijstweergaves"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Toon Notities bij bewerken"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5840,6 +5851,10 @@ msgstr "Sorry, kon het help bestand niet vinden - help niet beschikbaar."
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Bron"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6349,14 +6364,17 @@ msgstr "Dit is een dode toets. Druk deze in en daarna een van de combinatie toet
 msgid "This is a shortcut base entry."
 msgstr "Dit is een snelkoppeling naar een basis vermelding."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Dit is een alias voor een basis vermelding."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Dit is een alias van: '%s'"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6912,6 +6930,11 @@ msgstr "Win32 Onbehandelde Uitzondering"
 msgid "Windows Registry"
 msgstr "Windows Register"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7203,6 +7226,14 @@ msgstr ""
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nExporteer naar Tekst"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7596,10 +7627,6 @@ msgstr "dagen"
 msgid "days before passwords expire"
 msgstr "dagen voordat wachtwoord verloopt"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr "standaard"
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr "Standaard symbool gezet"
@@ -7630,10 +7657,6 @@ msgstr "is niet gelijk"
 
 #. Resource IDs: (192)
 msgid "e-mail"
-msgstr "e-mail"
-
-#. Resource IDs: (358)
-msgid "email"
 msgstr "e-mail"
 
 #. Resource IDs: (358)

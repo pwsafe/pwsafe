@@ -219,6 +219,10 @@ msgstr " 'chráněno'"
 msgid " 'symbols'"
 msgstr " 'znaky'"
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -632,6 +636,10 @@ msgstr "&Duplikuj záznam"
 msgid "&Duplicate Group"
 msgstr "&Duplikuj skupinu"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Upravit"
@@ -743,6 +751,10 @@ msgstr "&Nový/uprav filtr"
 #. Resource IDs: (2, 340)
 msgid "&No"
 msgstr "&Ne"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -920,10 +932,6 @@ msgstr "&Ano"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr "&Yubikey..."
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "&email:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1541,6 +1549,11 @@ msgstr "Čas poslední změny: "
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
 msgstr "Zkratka aplikace"
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
+msgstr ""
 
 #. Resource IDs: (353, 1216)
 msgid "Apply"
@@ -2266,14 +2279,13 @@ msgstr "Kopíruj heslo do schránky a minimalizuj"
 msgid "Copy to Clipboard"
 msgstr "Kopíruj do schránky"
 
-#. Resource IDs: (353)
-#, fuzzy
-msgid "Copy to DB"
-msgstr "Kopíruj do databáze"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
 msgstr "Kopíruj do Originálního"
+
+#. Resource IDs: (353)
+msgid "Copy to database"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Copy username to clipboard"
@@ -2428,10 +2440,6 @@ msgstr ""
 msgid "DB Export from database: '%s'"
 msgstr ""
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "Formát databáze"
-
 #. Resource IDs: (192, 357)
 msgid "DCA"
 msgstr "DCA"
@@ -2447,6 +2455,10 @@ msgstr "Databáze"
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
 msgstr "Odkazy databázových záznamů"
+
+#. Resource IDs: (360)
+msgid "Database Format"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2562,11 +2574,6 @@ msgstr "Cílové místo neexistuje nebo není přístupné"
 msgid "Details"
 msgstr "Detaily"
 
-#. Resource IDs: (329)
-#, fuzzy, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Detaily tohoto odkazu na základní záznam: '%s':"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanagari (písemná)"
@@ -2628,22 +2635,18 @@ msgstr "Přepsat?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Uložit změny databáze:\n\n%s\n\nnebo neukončovat program\\nerestartovat\\neodhlášovat?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 #, fuzzy
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Neobnovovat automaticky ukládané dokumenty\nPoužít poslední ručně uložené verze dokumentů"
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Dvojklik"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
 msgstr "Dvojklikem editovat/zobrazit tento záznam."
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2737,6 +2740,10 @@ msgstr "E&xportovat záznam do"
 
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "E-mail"
 msgstr ""
 
 #. Resource IDs: (350)
@@ -3560,10 +3567,6 @@ msgstr "Maďarština"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Maďarština 101-kláves"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "Já jsem ..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...'
 msgid "ID:32002:V C +O"
@@ -4576,8 +4579,8 @@ msgstr "Jeden nebo více automaticky uložených bylo nalezeno."
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Pouze v původní databázi: %d; Pouze v porovnávané databáze: %d; V obou (lišící se): %d; V obou (stejné): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4840,6 +4843,10 @@ msgstr "Fyzická klávesnice:"
 msgid "Plain Text (tab separated)..."
 msgstr "Čistý text (oddělený tabulátorem)..."
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "Prosím vyberte zálohu k obnovení:"
@@ -4972,11 +4979,6 @@ msgstr "Prosím specifikujte text"
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
 msgstr "Prosím specifikujte cílové umístění, které bude obsahovat všechny zálohy"
-
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Prosím specifikujte název a skupinu základního záznamu pro tuto zkratku '%s':"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5570,6 +5572,10 @@ msgstr "Nastavit filtry zobrazení: %d přidáno; %d aktivních"
 msgid "Set Entry's Password Policy"
 msgstr "Nastavit politiku hesel záznamu"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5629,8 +5635,8 @@ msgid "Shift+DCA"
 msgstr "Shift+dvojklik"
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
-msgstr "Shift + dvojklik"
+msgid "Shift+Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5684,6 +5690,10 @@ msgstr "Zobraz poznámky jako tipy v &&seznamu strom"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Zobraz poznámky ve form"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5792,6 +5802,10 @@ msgstr "Omlouváme se, nelze najít soubor s nápovědou - nápověda není k di
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Zdroj"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6301,14 +6315,17 @@ msgstr "Toto je DeadKey. Stisknete to a poté vyberte jeden z kombinovaných kl�
 msgid "This is a shortcut base entry."
 msgstr "Toto je zkratka k základnímu záznamu."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Toto je alias základního záznamu."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Toto je alias záznamu: '%s'"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6865,6 +6882,11 @@ msgstr "Win32 Unhandled Exception"
 msgid "Windows Registry"
 msgstr "Registry Windows"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7156,6 +7178,14 @@ msgstr ""
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nExportovat jako text"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7549,10 +7579,6 @@ msgstr "dny"
 msgid "days before passwords expire"
 msgstr "dnů před vypršením hesla"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr "výchozí"
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr "výchozí znaková sada"
@@ -7584,10 +7610,6 @@ msgstr "není roven"
 #. Resource IDs: (192)
 msgid "e-mail"
 msgstr "e-mail"
-
-#. Resource IDs: (358)
-msgid "email"
-msgstr "email"
 
 #. Resource IDs: (358)
 msgid "email copied "

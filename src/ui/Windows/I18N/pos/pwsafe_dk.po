@@ -202,6 +202,10 @@ msgstr ""
 msgid " 'symbols'"
 msgstr ""
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -615,6 +619,10 @@ msgstr "&Dupliker Adgang"
 msgid "&Duplicate Group"
 msgstr ""
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Rediger"
@@ -726,6 +734,10 @@ msgstr "&Ny/Rediger Filter"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Nej"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -902,10 +914,6 @@ msgstr "&Ja"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr ""
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "&email:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1521,6 +1529,11 @@ msgstr "Ethvert felt senest ændret d.:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
+msgstr ""
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
 msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
@@ -2236,12 +2249,12 @@ msgstr "Kopier adgangskode til klipbord, minimer"
 msgid "Copy to Clipboard"
 msgstr "Kopier til Klipbord"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "Kopier til DB"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
+msgstr ""
+
+#. Resource IDs: (353)
+msgid "Copy to database"
 msgstr ""
 
 #. Resource IDs: (325)
@@ -2392,10 +2405,6 @@ msgstr ""
 msgid "DB Export from database: '%s'"
 msgstr ""
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "DB Format"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2410,6 +2419,10 @@ msgstr "Database"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
+msgstr ""
+
+#. Resource IDs: (360)
+msgid "Database Format"
 msgstr ""
 
 #. Resource IDs: (361)
@@ -2524,11 +2537,6 @@ msgstr "Destinations placeringen eksisterer ikke eller er ikke tilgængelig."
 msgid "Details"
 msgstr ""
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Detaljer for denne genvej til base adgang '%s':"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanagari - INDSKRIFT"
@@ -2589,20 +2597,16 @@ msgstr "Vil du erstatte den?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Vil du gemme ændringerne til databasen:\n\n%s\n\neller afbryde nedlukningen\\genstart\\log af?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr ""
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Dobbelt Klik Handling"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2697,6 +2701,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "E-mail"
 msgstr ""
 
 #. Resource IDs: (350)
@@ -3520,10 +3528,6 @@ msgstr "Hungarian"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Hungarian 101-key"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "Jeg er en ..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4536,7 +4540,7 @@ msgstr ""
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr ""
 
 #. Resource IDs: (3841)
@@ -4800,6 +4804,10 @@ msgstr "Fysisk Tastatur:"
 msgid "Plain Text (tab separated)..."
 msgstr ""
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "Vælg Venligst en Sikkerhedskopi til gendannelse:"
@@ -4932,11 +4940,6 @@ msgstr "Specificer venligst tekst"
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
 msgstr "Specificer venligst destinations mappe til alle sikkerhedskopier."
-
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Specificer venligst navn && gruppe for genvejen til denne base adgang '%s':"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5528,6 +5531,10 @@ msgstr "Sæt Visnings Filter: %d Ekstra; %d Aktiv"
 msgid "Set Entry's Password Policy"
 msgstr "Sæt Post Adgangskode Politik"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5587,7 +5594,7 @@ msgid "Shift+DCA"
 msgstr ""
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
+msgid "Shift+Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (348)
@@ -5642,6 +5649,10 @@ msgstr "Vis Notater som Værktøjstips i Træ && Liste Visning"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Vis Notater i Rediger"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5750,6 +5761,10 @@ msgstr ""
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Kilde"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6259,14 +6274,17 @@ msgstr "Dette er en DødTast. Klik på den så vil en af de forbundne taster så
 msgid "This is a shortcut base entry."
 msgstr "Dette er en genvejs basis post."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Dette er en alias basis post."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Dette er et alias af: '%s'"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6822,6 +6840,11 @@ msgstr "Win32 Ubehandlet Undtagelse"
 msgid "Windows Registry"
 msgstr ""
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7113,6 +7136,14 @@ msgstr ""
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nEksporter til Tekst"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7506,10 +7537,6 @@ msgstr "dage"
 msgid "days before passwords expire"
 msgstr "dage før adgangskode udløber"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr ""
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr ""
@@ -7541,10 +7568,6 @@ msgstr "er ikke lig med"
 #. Resource IDs: (192)
 msgid "e-mail"
 msgstr ""
-
-#. Resource IDs: (358)
-msgid "email"
-msgstr "email"
 
 #. Resource IDs: (358)
 msgid "email copied "

@@ -332,6 +332,10 @@ msgstr " 'skyddat'"
 msgid " 'symbols'"
 msgstr " 'symboler'"
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -745,6 +749,10 @@ msgstr "&Duplicera posten"
 msgid "&Duplicate Group"
 msgstr "&Duplicera gruppen"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Redigera"
@@ -856,6 +864,10 @@ msgstr "&Nytt/redigera filter"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Nej"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -1032,10 +1044,6 @@ msgstr "&Ja"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr "&Yubikey..."
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "&e-post:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1652,6 +1660,11 @@ msgstr "Fält som senast ändrats:"
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
 msgstr "Applikationsgenväg"
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
+msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -2366,13 +2379,13 @@ msgstr "Kopiera lösenordet till Urklipp, minimera"
 msgid "Copy to Clipboard"
 msgstr "Kopiera till Urklipp"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "Kopiera till DB"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
 msgstr "Kopiera till originalet"
+
+#. Resource IDs: (353)
+msgid "Copy to database"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2522,10 +2535,6 @@ msgstr "DB"
 msgid "DB Export from database: '%s'"
 msgstr "DB Export från databas: '%s'"
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "DB-format"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2541,6 +2550,10 @@ msgstr "Databas"
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
 msgstr "Databasposters genvägar"
+
+#. Resource IDs: (360)
+msgid "Database Format"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2654,11 +2667,6 @@ msgstr "Målet finns inte eller är inte tillgängligt."
 msgid "Details"
 msgstr "Information"
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Uppgifter om denna genväg till basposten '%s':"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Sanskrit - INSCRIPT"
@@ -2719,21 +2727,17 @@ msgstr "Vill du ersätta det?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Vill du spara gjorda ändringar till databasen:\n\n%s\n\neller avbryta avstängningen\\starta om\\logga ut?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Spara inte de auto-sparade dokumenten\nAnvänd de senaste aktivt sparade dokumentversionerna"
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Dubbelklicksval"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
 msgstr "Dubbelklicka för att Editera/se denna post"
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2828,6 +2832,10 @@ msgstr "E&xportera post till"
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
 msgstr "E&xportera Grupp till"
+
+#. Resource IDs: (358)
+msgid "E-mail"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3650,10 +3658,6 @@ msgstr "Ungerskt"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Ungerskt 101-tangenter"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "Jag är en ..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4666,8 +4670,8 @@ msgstr "Ett eller fler autosparade dokument hittades."
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Bara i aktuell DB: %d; Bara i Jämförd DB: %d; I båda (skiljande): %d; I båda (identiska): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4930,6 +4934,10 @@ msgstr "Fysiskt tangentbord:"
 msgid "Plain Text (tab separated)..."
 msgstr "Enkel text (tab-separerad):::"
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "Vänligen, välj en säkerhetskopia att återställa:"
@@ -5062,11 +5070,6 @@ msgstr "Vänligen, ange text"
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
 msgstr "Vänligen, ange den enhet som skall innehålla alla säkerhetskopior."
-
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Vänligen, specificera namn && grupp för denna genväg till basposten '%s':"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5658,6 +5661,10 @@ msgstr "Valda visningsfilter: %d tillagd; %d aktivt"
 msgid "Set Entry's Password Policy"
 msgstr "Välj posters lösenordspolicy"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5717,8 +5724,8 @@ msgid "Shift+DCA"
 msgstr "Skift+DCA"
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
-msgstr "Skift+dubbelklicksval"
+msgid "Shift+Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5772,6 +5779,10 @@ msgstr "Visa noteringar som verktygstips i Träd- && Tabellvyer"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Visa noteringar i Redigera post"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5881,6 +5892,10 @@ msgstr "Tyvärr, kunde inte hitta en hjälpfil - hjälp är inte tillgänglig."
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Källa"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6390,14 +6405,17 @@ msgstr "Detta är en icke fungerande tangent. Tryck på den så kommer kopplade 
 msgid "This is a shortcut base entry."
 msgstr "Detta är genvägens baspost."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Detta är en alias baspost."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Detta är en alias för: '%s'"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6953,6 +6971,11 @@ msgstr "Ett Win32 icke hanterat undantag"
 msgid "Windows Registry"
 msgstr "Windows Register"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7244,6 +7267,14 @@ msgstr "\nExportera Gruppen till en annan Safe...."
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nExportera som text"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7637,10 +7668,6 @@ msgstr "dagar"
 msgid "days before passwords expire"
 msgstr "dagar innan lösenordet går ut"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr "förval"
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr "förvald teckenuppsättning"
@@ -7671,10 +7698,6 @@ msgstr "är inte lika med"
 
 #. Resource IDs: (192)
 msgid "e-mail"
-msgstr "e-post"
-
-#. Resource IDs: (358)
-msgid "email"
 msgstr "e-post"
 
 #. Resource IDs: (358)

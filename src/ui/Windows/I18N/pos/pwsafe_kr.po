@@ -202,6 +202,10 @@ msgstr ""
 msgid " 'symbols'"
 msgstr ""
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -615,6 +619,10 @@ msgstr "항목 복제(&D)"
 msgid "&Duplicate Group"
 msgstr "그룹 복제(&D)"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "편집(&E)"
@@ -726,6 +734,10 @@ msgstr "필터 생성/편집하기(&N)"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "아니오(&N)"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -902,10 +914,6 @@ msgstr "네(&Y)"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr ""
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "전자우편(&E)"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1521,6 +1529,11 @@ msgstr "마지막으로 변경된 날짜:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
+msgstr ""
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
 msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
@@ -2236,12 +2249,12 @@ msgstr "비밀번호를 클립보드에 복사하고 창 최소화"
 msgid "Copy to Clipboard"
 msgstr "클립보드에 복사"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "DB에 복사"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
+msgstr ""
+
+#. Resource IDs: (353)
+msgid "Copy to database"
 msgstr ""
 
 #. Resource IDs: (325)
@@ -2392,10 +2405,6 @@ msgstr ""
 msgid "DB Export from database: '%s'"
 msgstr ""
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "데이터베이스 형식"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2410,6 +2419,10 @@ msgstr "데이터베이스"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
+msgstr ""
+
+#. Resource IDs: (360)
+msgid "Database Format"
 msgstr ""
 
 #. Resource IDs: (361)
@@ -2524,11 +2537,6 @@ msgstr "대상 위치가 존재하지 않거나 접근할 수 없습니다."
 msgid "Details"
 msgstr ""
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "기본 항목 '%s'으로으 바로가기의 자세한 속성:"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanagari - INSCRIPT"
@@ -2589,20 +2597,16 @@ msgstr "정말 이것을 교체하시겠습니까?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "다음 데이터베이스에 변경 사항을 저장하시겠습니까?:\n\n%s\n\n혹은 시스템 종료\\재시작\\로그오프 를 취소하시겠습니까?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "자동으로 저장된 문서를 열지 마십시오.\n정확히 마지막으로 저장된 문서를 사용하십시오."
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "더블클릭 행동"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2697,6 +2701,10 @@ msgstr "항목을 이 곳으로 내보내기(&X):"
 
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "E-mail"
 msgstr ""
 
 #. Resource IDs: (350)
@@ -3520,10 +3528,6 @@ msgstr "Hungarian"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Hungarian 101-key"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "저는..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4536,7 +4540,7 @@ msgstr "최소 한 개 이상의 자동저장된 문서가 발견되었습니다
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr ""
 
 #. Resource IDs: (3841)
@@ -4800,6 +4804,10 @@ msgstr "실제 키보드:"
 msgid "Plain Text (tab separated)..."
 msgstr ""
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "복원할 백업본을 선택하세요:"
@@ -4932,11 +4940,6 @@ msgstr "텍스트를 명시해 주십시오"
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
 msgstr "모든 백업본을 저장할 위치를 지정해 주십시오."
-
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "기본 항목'%s' 으로 향하는 바로가기의 이름과 그룹을 입력해 주십시오:"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5528,6 +5531,10 @@ msgstr "표시 필터 설정: %d개 추가됨; %d개 활성"
 msgid "Set Entry's Password Policy"
 msgstr "항목의 비밀번호 정책 설정"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5587,7 +5594,7 @@ msgid "Shift+DCA"
 msgstr ""
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
+msgid "Shift+Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (348)
@@ -5642,6 +5649,10 @@ msgstr "트리/리스트 보기에서 노트를 도움말로 보여주기"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "편집 상태로 노트 보이기"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5750,6 +5761,10 @@ msgstr ""
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "소스"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6259,14 +6274,17 @@ msgstr "만료된 비밀번호입니다. 이 곳을 누르시고 새 비밀번�
 msgid "This is a shortcut base entry."
 msgstr "이것은 기본 바로가기 항목입니다."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "이 항목은 기본 보조 항목입니다."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "이 항목은 '%s'의 보조 항목입니다"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6822,6 +6840,11 @@ msgstr "Win32 Unhandled Exception"
 msgid "Windows Registry"
 msgstr "Windows Registry"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7113,6 +7136,14 @@ msgstr ""
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\n텍스트 파일로 내보내기"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7506,10 +7537,6 @@ msgstr "days"
 msgid "days before passwords expire"
 msgstr "days before passwords expire"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr ""
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr ""
@@ -7540,10 +7567,6 @@ msgstr "does not equal"
 
 #. Resource IDs: (192)
 msgid "e-mail"
-msgstr "전자우편"
-
-#. Resource IDs: (358)
-msgid "email"
 msgstr "전자우편"
 
 #. Resource IDs: (358)
