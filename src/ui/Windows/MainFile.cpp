@@ -560,11 +560,7 @@ void DboxMain::OnOpen()
   }
 }
 
-#if _MFC_VER > 1200
 BOOL DboxMain::OnOpenMRU(UINT nID)
-#else
-void DboxMain::OnOpenMRU(UINT nID)
-#endif
 {
   UINT uMRUItem = nID - ID_FILE_MRU_ENTRY1;
 
@@ -590,9 +586,7 @@ void DboxMain::OnOpenMRU(UINT nID)
     m_core.SetReadOnly(last_ro);
   }
 
-#if _MFC_VER > 1200
   return TRUE;
-#endif
 }
 
 int DboxMain::Open(const UINT uiTitle)

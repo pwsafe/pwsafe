@@ -66,10 +66,6 @@
 
 #endif  /* WINVER < 0x0501 */
 
-#if (_MFC_VER <= 1200)
-DECLARE_HANDLE(HDROP);
-#endif
-
 // Custom message event used for system tray handling
 #define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
 
@@ -807,12 +803,7 @@ public:
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-
-#if _MFC_VER > 1200
   afx_msg BOOL OnOpenMRU(UINT nID);
-#else
-  afx_msg void OnOpenMRU(UINT nID);
-#endif
 
   DECLARE_MESSAGE_MAP()
 
