@@ -249,6 +249,10 @@ BOOL DboxMain::OpenOnInit()
 
   PostOpenProcessing();
 
+  bool bFileIsReadOnly;
+  pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
+
   retval = TRUE;
 
 exit:
@@ -521,6 +525,8 @@ int DboxMain::Close(const bool bTrySave)
   m_ilastaction = 0;
   UpdateStatusBar();
 
+  m_statusBar.SetFileStatus(false, false);
+
   // Delete any saved status information
   while (!m_stkSaveGUIInfo.empty()) {
     m_stkSaveGUIInfo.pop();
@@ -684,6 +690,10 @@ int DboxMain::Open(const UINT uiTitle)
       return PWScore::USER_CANCEL;
     }
   }
+
+  bool bFileIsReadOnly;
+  pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
 
   return rc;
 }
@@ -853,6 +863,10 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     if (gmb.DoModal() == IDS_VIEWREPORT)
       ViewReport(Rpt);
   }
+
+  bool bFileIsReadOnly;
+  pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
 
 exit:
   if (!bAskerSet)
@@ -2470,7 +2484,7 @@ void DboxMain::ChangeMode(bool promptUser)
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
     CPasskeyEntry PasskeyEntryDlg(this, m_core.GetCurFile().c_str(),
-                                  GCP_CHANGEMODE, true, false, true);
+      GCP_CHANGEMODE, true, false, false, true);
 
     INT_PTR rc = PasskeyEntryDlg.DoModal();
     if (rc != IDOK)
@@ -2557,8 +2571,13 @@ void DboxMain::OnChangeMode()
 {
   PWS_LOGIT;
 
+  // Don't bother doing anything if DB is read-only on disk
+  bool bFileIsReadOnly;
+  if (pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly) && bFileIsReadOnly)
+    return;
+
   // Don't allow prior format versions to become R/W
-  // Do allow current (and possible future 'experimental') fromats
+  // Do allow current (and possible future 'experimental') formats
   if (m_core.GetReadFileVersion() >= PWSfile::VCURRENT)
     ChangeMode(true); // true means "prompt use for password".
 }

@@ -40,6 +40,8 @@ Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
 [1254] Toolbar customisation now has correctly aligned text/images.
+[1230] "Open as read-only" check-box correctly set when opening a R/W database
+after previously opening/selecting a R-O database.
 [1082] Field modification times set to creation time for list view and
 entry's time and date tab. This is more useful than "N/A", e.g., for
 sorting by password modification to find old passwords that should be

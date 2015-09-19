@@ -57,14 +57,15 @@ int CPasskeyEntry::dialog_lookup[5] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
+  bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly)
   : CPKBaseDlg(dialog_lookup[index], pParent),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
-  m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
+  m_PKE_ReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
+  m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
-    m_bHideReadOnly(bHideReadOnly),
+  m_bHideReadOnly(bHideReadOnly),
   m_yubi_sk(NULL)
 {
   m_index = index;
@@ -156,7 +157,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   switch(m_index) {
     case GCP_FIRST:
       // At start up - give the user the option unless file is R-O
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
       break;
@@ -166,13 +167,13 @@ BOOL CPasskeyEntry::OnInitDialog(void)
         GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
         GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
       } else {
-        GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+        GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
         GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
       }
       break;
     case GCP_RESTORE:
     case GCP_WITHEXIT:
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
       break;
     case GCP_CHANGEMODE:
@@ -448,8 +449,7 @@ void CPasskeyEntry::UpdateRO()
 {
   if (!m_bForceReadOnly) {
     // If allowed, change R-O state to reflect file's permission - only if file is R-O
-    bool fro;
-    if (pws_os::FileExists(LPCWSTR(m_filespec), fro) && fro) {
+    if (pws_os::FileExists(LPCWSTR(m_filespec), m_bFileReadOnly) && m_bFileReadOnly) {
       m_PKE_ReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(BST_CHECKED);

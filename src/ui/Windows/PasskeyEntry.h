@@ -51,7 +51,7 @@ class CPasskeyEntry : public CPKBaseDlg
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly);
+                bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly);
 
   ~CPasskeyEntry();
 
@@ -69,6 +69,7 @@ protected:
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
   BOOL m_PKE_ReadOnly;
+  bool m_bFileReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
 

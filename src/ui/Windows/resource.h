@@ -756,7 +756,6 @@
 #define IDC_YUBI_SN                     1465
 #define IDC_YUBI_SK                     1466
 #define IDC_YUBI_GEN_BN                 1467
-#define IDC_BUTTON2                     1468
 #define IDC_YUBI_API                    1469
 #define IDC_RESET_SYMBOLS               1470
 #define IDC_YUBI_SHOW_HIDE              1471

@@ -1688,8 +1688,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   m_pPasskeyEntryDlg = new CPasskeyEntry(this,
                                    filename.c_str(),
-                                   index, bReadOnly || bFileIsReadOnly,
-                                   bFileIsReadOnly || bForceReadOnly,
+                                   index, bReadOnly,
+                                   bFileIsReadOnly,
+                                   bForceReadOnly,
                                    bHideReadOnly);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
@@ -3070,7 +3071,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // The previous lookup table is the only mechanism to ENABLE an item
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
-  bool bGroupSelected = false;
+  bool bGroupSelected = false, bFileIsReadOnly(false);
   const CItemData *pci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
 
@@ -3315,8 +3316,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CHANGEMODE:
-      // For prior versions or no DB open - don't give the user the option to change to R/W
-      iEnable = m_core.GetReadFileVersion() >= PWSfile::VCURRENT ? TRUE : FALSE;
+      // For prior versions, no DB open or file is R-O on disk -
+      //  don't give the user the option to change to R/W
+      pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+      iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
       break;
     default:
       break;
