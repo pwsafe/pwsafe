@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 use Crypt::Blowfish;
 use Digest::SHA1;

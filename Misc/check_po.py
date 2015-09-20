@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/env python
 # -*- coding: utf8 -*-
 
 __version__ = '$Id$'
