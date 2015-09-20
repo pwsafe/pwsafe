@@ -1,0 +1,13 @@
+This is the Linux interface layer to the YubiKey API.
+It depends on the following Yubico libraries:
+yubico-c:                 https://github.com/Yubico/yubico-c.git
+yubico-c-client:          https://github.com/Yubico/yubico-c-client.git
+yubico-pam:               https://github.com/Yubico/yubico-pam.git
+yubikey-personalization:  https://github.com/Yubico/yubikey-personalization.git
+
+These libraries should be built and installed in the default
+configuration as described in their respective READMEs.
+
+Ultimately, the interface defined here will be made common to both
+Windows and wx.
+

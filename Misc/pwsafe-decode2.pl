@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 # Updated April 5, 2005 by Jason Diamond.
 
