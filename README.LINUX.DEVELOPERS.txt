@@ -20,16 +20,17 @@ under Debian/Ubuntu:
 fakeroot
 g++
 gettext
-make (version 3.81 or newer.  Makefiles are not compatible with lower versions)
+git
 libuuid1
-libwxgtk3.0-dev (See note 1 below)
 libwxgtk3.0-dbg (See note 1 below)
+libwxgtk3.0-dev (See note 1 below)
 libxerces-c-dev
 libxt-dev
 libxtst-dev
 libykpers-1-dev (see note 2 below)
 libyubikey-dev
-git
+make
+pkg-config
 uuid-dev
 zip
 
@@ -39,11 +40,11 @@ git
 libXt-devel
 libXtst-devel
 libuuid-devel
-ykpers-devel (see note 2 below)
 libyubikey-devel
-xerces-c-devel
-wxGTK3-devel
 make
+wxGTK3-devel
+xerces-c-devel
+ykpers-devel (see note 2 below)
 
 To compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,
