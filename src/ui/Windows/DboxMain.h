@@ -323,7 +323,11 @@ public:
   void FixListIndexes();
   void Delete(); // "Top level" delete, calls the following 2 and Execute()
   Command *Delete(const CItemData *pci); // create command for deleting a single item
-  Command *Delete(HTREEITEM ti); // For deleting a group
+  // For deleting a group:
+  void Delete(HTREEITEM ti,
+              std::vector<Command *> &vbases,
+              std::vector<Command *> &vdeps,
+              std::vector<Command *> &vemptygrps); 
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
   void RestoreGUIStatusEx();
