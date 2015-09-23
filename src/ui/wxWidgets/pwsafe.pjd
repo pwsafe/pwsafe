@@ -8901,7 +8901,7 @@ Type the new combination once again to confirm it."</string>
                   <string name="proxy-Header filename">""</string>
                   <string name="proxy-Member variable name">""</string>
                   <string name="proxy-Label">"PasswordSafe website"</string>
-                  <string name="proxy-URL">"http://pwsafe.org/"</string>
+                  <string name="proxy-URL">"https://pwsafe.org/"</string>
                   <string name="proxy-Normal colour">""</string>
                   <string name="proxy-Visited colour">""</string>
                   <string name="proxy-Hover colour">""</string>

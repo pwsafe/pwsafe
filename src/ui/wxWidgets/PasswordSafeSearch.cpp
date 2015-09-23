@@ -447,7 +447,7 @@ void PasswordSafeSearch::Activate(void)
       const wxPoint pt = m_toolbar->GetPosition();
       const wxSize sz = m_toolbar->GetSize();
       wxMessageBox(wxString() << _("Could not re-display searchbar at ") << pt << _(" of size ") << sz
-                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("its already visible"): _(" of an error")));
+                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("it's already visible"): _(" of an error")));
     }
   }
 
