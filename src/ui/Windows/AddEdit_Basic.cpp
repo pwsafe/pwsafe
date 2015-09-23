@@ -825,9 +825,14 @@ void CAddEdit_Basic::OnGeneratePassword()
     GetMainDlg()->GetPolicyFromName(M_policyname(), st_pp);
     GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   } else {
-    // XXX temp - to be cleaned up
     PWPolicy policy(M_pwp());
-    policy.symbols = LPCWSTR(M_symbols());
+    if (M_symbols().IsEmpty()) {
+      // No specifc entry symbols - use default
+      policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+    } else {
+      // This entry has its own list of symbols
+      policy.symbols = LPCWSTR(M_symbols());
+    }
     GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
 
