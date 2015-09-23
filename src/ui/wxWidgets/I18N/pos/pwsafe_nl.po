@@ -5146,8 +5146,8 @@ msgstr ""
 #~ msgstr "Password Safe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7533,9 +7533,9 @@ msgstr ""
 #~ msgstr "Geef alstublieft de sub-folder waar alle back-ups worden bewaard."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Bezoek alstublieft de <a href=\"http://pwsafe.org/\">PasswordSafe website."
+#~ "Bezoek alstublieft de <a href=\"https://pwsafe.org/\">PasswordSafe website."
 #~ "</a>"
 
 #~ msgid "Polish (Programmers)"

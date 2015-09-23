@@ -4946,8 +4946,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Specificer venligst under-biblioteket til alle sikkerhedskopier."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Besøg venligst <a href=\"http://pwsafe.org/\">PasswordSafe websiden.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Besøg venligst <a href=\"https://pwsafe.org/\">PasswordSafe websiden.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -7610,8 +7610,8 @@ msgid "has expired"
 msgstr "er udløbet"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

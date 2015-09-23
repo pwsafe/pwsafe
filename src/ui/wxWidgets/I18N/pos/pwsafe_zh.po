@@ -4999,8 +4999,8 @@ msgstr ""
 #~ msgstr "Password Safe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7140,8 +7140,8 @@ msgstr ""
 #~ msgstr "请指定包含所有备份文件的子目录！"
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-#~ msgstr "请访问 <a href=\"http://pwsafe.org/\">PasswordSafe 站点</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgstr "请访问 <a href=\"https://pwsafe.org/\">PasswordSafe 站点</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "波兰语(程序员)"

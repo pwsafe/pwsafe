@@ -14277,10 +14277,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The latest program updates, documentation, and news can be located at <bpt i="2" x="2">&lt;a2&gt;</bpt>http://pwsafe.org<ept i="2">&lt;/a2&gt;</ept>.</seg>
+        <seg>The latest program updates, documentation, and news can be located at <bpt i="2" x="2">&lt;a2&gt;</bpt>https://pwsafe.org<ept i="2">&lt;/a2&gt;</ept>.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20100920T192718Z">
-        <seg>Последние обновления, документация и новости расположены на сайте <bpt i="2" x="2">&lt;a2&gt;</bpt>http://pwsafe.org<ept i="2">&lt;/a2&gt;</ept>.</seg>
+        <seg>Последние обновления, документация и новости расположены на сайте <bpt i="2" x="2">&lt;a2&gt;</bpt>https://pwsafe.org<ept i="2">&lt;/a2&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18775,18 +18775,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>http://pwsafe.org</seg>
+        <seg>https://pwsafe.org</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110207T182744Z">
-        <seg>http://pwsafe.org</seg>
+        <seg>https://pwsafe.org</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>http://pwsafe.org/</seg>
+        <seg>https://pwsafe.org/</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110209T181915Z">
-        <seg>http://pwsafe.org/</seg>
+        <seg>https://pwsafe.org/</seg>
       </tuv>
     </tu>
     <tu>

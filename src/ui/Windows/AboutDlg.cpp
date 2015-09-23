@@ -187,7 +187,7 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
 
   try {
     // Loading the file as binary since we're treating it as UTF-8
-    fh = session.OpenURL(L"http://pwsafe.org/latest.xml",
+    fh = session.OpenURL(L"https://pwsafe.org/latest.xml",
                          1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;

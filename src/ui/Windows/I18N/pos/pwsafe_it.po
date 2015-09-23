@@ -4959,8 +4959,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Per favore specificate la sottocartella che conterrà tutte le copie di sicurezza."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Per favore visitate il sito in rete di <a href=\"http://pwsafe.org/\">PasswordSafe.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Per favore visitate il sito in rete di <a href=\"https://pwsafe.org/\">PasswordSafe.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -7623,8 +7623,8 @@ msgid "has expired"
 msgstr "è scaduta"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

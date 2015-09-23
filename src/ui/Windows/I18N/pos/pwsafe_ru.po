@@ -5170,8 +5170,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Укажите подкаталог для сохранения резервных копий."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Посетите <a href=\"http://pwsafe.org/\">сайт Password Safe.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Посетите <a href=\"https://pwsafe.org/\">сайт Password Safe.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -7939,8 +7939,8 @@ msgid "has expired"
 msgstr "просрочен"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 #, fuzzy

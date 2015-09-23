@@ -4946,8 +4946,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "모든 백업본을 저장하기 위한 하위 폴더를 지정해 주십시오."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "<a href=\"http://pwsafe.org/\">Password Safe 웹사이트 </a>를 방문해주세요."
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "<a href=\"https://pwsafe.org/\">Password Safe 웹사이트 </a>를 방문해주세요."
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -7610,8 +7610,8 @@ msgid "has expired"
 msgstr "has expired"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

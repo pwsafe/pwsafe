@@ -5136,8 +5136,8 @@ msgstr "Al menos debe ser %d from %ls: %ls"
 #~ msgstr "Password Safe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7498,9 +7498,9 @@ msgstr "Al menos debe ser %d from %ls: %ls"
 #~ msgstr "Indique el subdirectorio que contiene las copias de seguridad."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Visita el <a href=\"http://pwsafe.org/\">sitio web de PasswordSafe.</a>"
+#~ "Visita el <a href=\"https://pwsafe.org/\">sitio web de PasswordSafe.</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Polaco (programadores)"

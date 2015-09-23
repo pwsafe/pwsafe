@@ -5709,9 +5709,9 @@ msgstr "Bitte wählen Sie das Unterverzeichnis für alle Sicherungsdateien aus."
 
 #. Resource IDs: (344)
 msgid ""
-"Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+"Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr ""
-"Bitte besuchen Sie die <a href=\"http://pwsafe.org/\">PasswordSafe Wenseite."
+"Bitte besuchen Sie die <a href=\"https://pwsafe.org/\">PasswordSafe Wenseite."
 "</a>"
 
 #. Resource IDs: (368)
@@ -9381,8 +9381,8 @@ msgid "has expired"
 msgstr "ist abgelaufen"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

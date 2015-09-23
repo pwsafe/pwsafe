@@ -14,7 +14,7 @@ ready for pasting.
 2. Security: The original version was designed by Bruce Schneier -
 'nuff said.
 3. Open Source: The source code for the project is available for
-inspection. For more information, see http://pwsafe.org.
+inspection. For more information, see https://pwsafe.org.
 
 The current version of Password Safe currently runs on Windows XP and
 later. Older versions are still available supporting Windows 95, 98,

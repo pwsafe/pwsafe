@@ -10384,10 +10384,10 @@ The following new %s %s merged into this database:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>http://pwsafe.org/latest.xml</seg>
+        <seg>https://pwsafe.org/latest.xml</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T092840Z">
-        <seg>http://pwsafe.org/latest.xml</seg>
+        <seg>https://pwsafe.org/latest.xml</seg>
       </tuv>
     </tu>
     <tu>

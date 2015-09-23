@@ -4959,8 +4959,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Kérem adja meg a mentések helyének alkönyvárát."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Kérem látogasson el a <a href=\"http://pwsafe.org/\">PasswordSafe honlapra.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Kérem látogasson el a <a href=\"https://pwsafe.org/\">PasswordSafe honlapra.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -7623,8 +7623,8 @@ msgid "has expired"
 msgstr "lejárt"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
