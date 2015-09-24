@@ -44,6 +44,8 @@ the external edit is cancelled and the Notes field remains unchanged.
 when "Use easy-to-read characters" is set.
 [1230] "Open as read-only" check-box correctly set when opening a R/W database
 after previously opening/selecting a R-O database.
+[1124] Autotype on a shortcut entry now picks up title, group and user
+fields from shortcut instead of base.
 [1082] Field modification times set to creation time for list view and
 entry's time and date tab. This is more useful than "N/A", e.g., for
 sorting by password modification to find old passwords that should be
