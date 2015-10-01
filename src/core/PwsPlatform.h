@@ -37,6 +37,7 @@
 //
 // Linux
 // MacOS (unofficial)
+// FreeBSD (unofficial)
 
 #ifndef __PWSPLATFORM_H
 #define __PWSPLATFORM_H
@@ -75,7 +76,7 @@
 #endif
 #endif
 
-// PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN can be specified on the 
+// PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN can be specified on the
 #if defined(PWS_BIG_ENDIAN)
 #undef PWS_BIG_ENDIAN
 #define PWS_BIG_ENDIAN
@@ -109,12 +110,12 @@
 #define PWS_PLATFORM "Cygwin"
 #if defined(__i386__) || defined(__i486__)
 #define PWS_LITTLE_ENDIAN
- #endif
+#endif
 /* http://predef.sourceforge.net/preos.html*/
 #elif defined (macintosh) || defined(Macintosh) || defined(__APPLE__) || defined(__MACH__)
 #define PWS_PLATFORM "Mac"
 #define __PWS_MACINTOSH__
-/* following line was added to avoid "Impossible constraint in 'asm'" errors in ROLc() 
+/* following line was added to avoid "Impossible constraint in 'asm'" errors in ROLc()
    and RORc() functions below, just like it is defined for Linux and cygwin above */
 #define LTC_NO_ROLC
 #if defined(__APPLE__) && defined(__MACH__)
@@ -129,11 +130,20 @@
 #define PWS_BIG_ENDIAN
 #endif
 // **********************************************
+// * FreeBSD on Intel                           *
+// **********************************************
+#elif defined(__FreeBSD) || defined(__FreeBSD__)
+#define PWS_PLATFORM "FreeBSD"
+#define LTC_NO_ROLC
+#if defined(__i386__) || defined(__amd64__)
+#define PWS_LITTLE_ENDIAN
+#endif
+// **********************************************
 // * Add other platforms here...                *
 // **********************************************
 #endif
 
-// 
+//
 #if !defined(PWS_PLATFORM)
 #error Unable to determine the target platform - please fix PwsPlatform.h
 #endif
@@ -147,8 +157,8 @@
 #endif
 
 // Following from libtomcrypt, for twofish & SHA256
-/* Controls endianess and size of registers.  Leave uncommented to get platform neutral [slower] code 
-* 
+/* Controls endianess and size of registers.  Leave uncommented to get platform neutral [slower] code
+*
 * Note: in order to use the optimized macros your platform must support unaligned 32 and 64 bit read/writes.
 * The x86 platforms allow this but some others [ARM for instance] do not.  On those platforms you **MUST**
 * use the portable [slower] macros.
@@ -167,7 +177,7 @@
 #endif
 
 /* detect amd64 */
-#if defined(__x86_64__) || (defined(_MSC_VER) && defined(WIN64))
+#if defined(__x86_64__) || defined(__amd64__) || (defined(_MSC_VER) && defined(WIN64))
 #define ENDIAN_LITTLE
 #define ENDIAN_64BITWORD
 #endif
@@ -195,8 +205,8 @@ typedef unsigned __int64 ulong64;
 typedef uint64_t ulong64;
 #endif
 
-/* this is the "32-bit at least" data type 
-* Re-define it to suit your platform but it must be at least 32-bits 
+/* this is the "32-bit at least" data type
+* Re-define it to suit your platform but it must be at least 32-bits
 */
 #if defined(__x86_64__)
 typedef unsigned ulong32;
@@ -277,7 +287,7 @@ typedef unsigned long ulong32;
   ((static_cast<ulong64>((y)[4] & 255))<<24)|((static_cast<ulong64>((y)[5] & 255))<<16) | \
   ((static_cast<ulong64>((y)[6] & 255))<<8)|((static_cast<ulong64>((y)[7] & 255))); }
 
-#ifdef ENDIAN_32BITWORD 
+#ifdef ENDIAN_32BITWORD
 
 #define STORE32L(x, y)        \
 { unsigned long __t = (x); memcpy(y, &__t, 4); }
@@ -338,7 +348,7 @@ typedef unsigned long ulong32;
   ((static_cast<ulong64>((y)[3] & 255))<<24)|((static_cast<ulong64>((y)[2] & 255))<<16) | \
   ((static_cast<ulong64>((y)[1] & 255))<<8)|((static_cast<ulong64>((y)[0] & 255))); }
 
-#ifdef ENDIAN_32BITWORD 
+#ifdef ENDIAN_32BITWORD
 
 #define STORE32H(x, y)        \
 { unsigned long __t = (x); memcpy(y, &__t, 4); }
@@ -513,7 +523,7 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 #define byte(x, n) (static_cast<unsigned char>((x) >> (8 * (n))))
 #else
 #define byte(x, n) (((x) >> (8 * (n))) & 255)
-#endif   
+#endif
 
 #define NumberOf(array) ((sizeof array) / sizeof(array[0]))
 

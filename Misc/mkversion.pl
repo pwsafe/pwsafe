@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/local/bin/perl -w
 #
 # Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
 # All rights reserved. Use of the code is allowed under the
@@ -27,14 +27,14 @@ sub usage {
 
 my %git_loc  = (
 	darwin => '/usr/local/git/bin/git',
-	linux  => '/usr/bin/git',
+	linux  => '/usr/local/bin/git',
 );
 
 &usage unless ($#ARGV == 1);
 my $TEMPLATE = $ARGV[0];
 my $OUTFILE = $ARGV[1];
 
-my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/bin/git";
+my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/local/bin/git";
 my $VERSTRING;
 
 if (-x $GIT && (-d ".git" || -d "../../../.git")) {

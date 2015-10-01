@@ -12,8 +12,13 @@
 CONFIG?=unicodedebug
 
 # Following sets WX_CONFIG to 3.0 version if found, else 2.x:
+ifeq ($(PLATFORM),FreeBSD)
+WX2=/usr/local/bin/wxgtk2y-2.8-config
+WX3=/usr/local/bin/wxgtk2u-3.0-config
+else
 WX2=/usr/bin/wx-config
 WX3=/usr/bin/wx-config-3.0
+endif
 
 WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 

@@ -21,7 +21,9 @@
 
 #include <dirent.h>
 #include <fnmatch.h>
+#ifndef __FreeBSD__
 #include <malloc.h> // for free
+#endif
 
 #include "../file.h"
 #include "../env.h"
