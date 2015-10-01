@@ -20,6 +20,9 @@ RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
 
+PKG_BASE = pwsafe
+SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
+
 MKDIR := mkdir -p
 RM := /bin/rm -rf
 GIT := git
@@ -86,7 +89,7 @@ rpm:	I18N tar
 
 tar:
 	@$(MKDIR)  $(RELEASEDIR)
-	@$(GIT) archive HEAD --prefix=pwsafe-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
+	@$(GIT) archive HEAD --prefix=$(PKG_BASE)-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)/$(SRC_TGZ)
 	@echo "Done."
 
 sha1sums:
