@@ -10,6 +10,9 @@
 
 #include "../typedefs.h"
 #include <stdint.h>
+#ifdef __FreeBSD__
+#include <time.h>
+#endif
 typedef time_t __time32_t;
 typedef uint64_t __time64_t;
 

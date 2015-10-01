@@ -42,6 +42,7 @@ export CFLAGS+=-I/usr/local/include -DNO_YUBI
 export CC=clang
 export CXX=clang++
 export CPP=clang++
+export PLATFORM=FreeBSD
 
 all: I18N unicodedebug unicoderelease
 

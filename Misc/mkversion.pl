@@ -86,7 +86,7 @@ close(VH);
 if (!-e $OUTFILE) {
     move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
 } else {
-    `/usr/local/bin/diff -q $TMPFILE $OUTFILE > /dev/null`;
+    `/usr/bin/diff -q $TMPFILE $OUTFILE > /dev/null`;
     if ($VERSTRING ne "local" && $? != 0) {
         unlink $OUTFILE || die "Couldn't remove old $OUTFILE\n";
         move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
