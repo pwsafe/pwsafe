@@ -7179,9 +7179,9 @@ msgstr "Eingabe des Master-Passwortes"
 #~ "Bitte wählen Sie das Unterverzeichnis für alle Sicherungsdateien aus."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Bitte besuchen Sie die <a href=\"http://pwsafe.org/\">PasswordSafe "
+#~ "Bitte besuchen Sie die <a href=\"https://pwsafe.org/\">PasswordSafe "
 #~ "Homepage.</a>"
 
 #~ msgid "Polish (Programmers)"

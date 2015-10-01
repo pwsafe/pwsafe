@@ -51,30 +51,37 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.36.1 Release Notes - June 2015</h1>
+<h1 align="center">Password Safe 3.37 Release Notes - September 2015</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit the
-<a href="http://pwsafe.org">PasswordSafe project site</a>.
+<a href="https://pwsafe.org">PasswordSafe project site</a>.
 Details about changes to older releases may be found in the file
 ChangeLog.txt.</p>
 
 <p>Here are the notes for the latest version. Previous versions
 are described <a href="#prev-vers">here</a>.
-Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
+Information about older versions may be found <a href="https://pwsafe.org/history.shtml">here</a>.</p>
 <br>
 <hr>
-<h3><a name="V3.36.1"></a>Version V3.36.1</h3>
+<h3><a name="V3.37"></a>Version V3.37</h3>
 <hr>
-<h4><a name="V3.36.1New"></a>New Features for V3.36.1</h4>
+<h4><a name="V3.37New"></a>New Features for V3.37</h4>
 <table>
 <tbody>
 <tr>
 <td align="center" width="100">n/a</td>
 <td>The Notes External Editor now accepts environment strings (e.g. %windir%)
 in the path to the editor.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(789);return false;">78</a></td>
+<td>If the double-click action (or shift-double-click) of an entry is set to
+Edit/View Entry, then (shift-) double-clicking on its shortcut will edit/view
+the base entry. The selected shortcut entry can still be viewed/edited via menu,
+right-click or just hitting Enter.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(782);return false;">782</a></td>
@@ -89,13 +96,37 @@ add caption to the Space Bar (Partial implementation of this Feature Request).</
 </table>
 <br>
 <hr>
-<h4><a name="V3.36.1BugsFixed"></a>Bugs fixed in V3.36.1</h4>
-
+<h4><a name="V3.37BugsFixed"></a>Bugs fixed in V3.37</h4>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1274);return false;">1274</a></td>
+<td>References to base entries are now scrollable, no longer truncated.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1273);return false;">1273</a></td>
+<td>Find in the Tree View will now ensure that any found entry will be visible by scrolling
+appropriately.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1272);return false;">1272</a></td>
+<td>XML export of single entry using default Password policy now works correctly.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1270);return false;">1270</a></td>
+<td>Display Filter dropdown list of filter fields now fits on low resolution screens</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1269);return false;">1269</a></td>
+<td>Filters containing Password Policy Names now export/import correctly to/from XML.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1267);return false;">1267</a></td>
 <td>Export from a YubiKey-protected database to another database fixed.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1261);return false;">1261</a></td>
+<td>'Unlock Difficulty' slider is now correctly initialised in the Manage Options Security tab.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1260);return false;">1260</a></td>
@@ -105,6 +136,28 @@ the external edit is cancelled and the Notes field remains unchanged.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1254);return false;">1254</a></td>
 <td>Toolbar customisation now has correctly aligned text/images.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1244);return false;">1244</a></td>
+<td>Changes to symbol set in default password policy are respected
+  when "Use easy-to-read characters" is set.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1230);return false;">1230</a></td>
+<td>"Open as read-only" check-box correctly set when opening a R/W database after previously
+opening/selecting a R-O database.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1124);return false;">1124</a></td>
+<td>Autotype on a shortcut entry now picks up title, group and user
+  fields from shortcut instead of base.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1082);return false;">1082</a></td>
+<td>Field modification times set to creation time for list view and
+  entry's time and date tab. This is more useful than "N/A", e.g., for
+  sorting by password modification to find old passwords that should
+  be changed.</td>
 </tr>
 </tbody>
 </table>

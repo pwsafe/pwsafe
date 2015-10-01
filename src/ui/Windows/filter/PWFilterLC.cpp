@@ -1312,11 +1312,12 @@ bool CPWFilterLC::GetCriterion()
       } else {
         m_fDCA.m_rule = PWSMatch::MR_INVALID;
       }
+      m_fDCA.m_type = st_fldata.mtype;  // MT_DCA or MT_SHIFTDCA
       rc = m_fDCA.DoModal();
       if (rc == IDOK) {
         st_fldata.Empty();
         st_fldata.bFilterActive = true;
-        st_fldata.mtype = PWSMatch::MT_DCA;
+        st_fldata.mtype = m_fDCA.m_type;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fDCA.m_rule;
         st_fldata.fdca = m_fDCA.m_DCA;
@@ -1452,15 +1453,18 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_RUNCMD;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text = CItemData::FieldName(CItemData::DCA).c_str();
+        //stf.cs_text = CItemData::FieldName(CItemData::DCA).c_str();
+        stf.cs_text.LoadString(IDS_DCALONG);
         stf.ftype = FT_DCA;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text = CItemData::FieldName(CItemData::SHIFTDCA).c_str();
+        //stf.cs_text = CItemData::FieldName(CItemData::SHIFTDCA).c_str();
+        stf.cs_text.LoadString(IDS_SHIFTDCALONG);
         stf.ftype = FT_SHIFTDCA;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();
+        //stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();
+        stf.cs_text.LoadString(IDS_EMAIL);
         stf.ftype = FT_EMAIL;
         vFcbx_data.push_back(stf);
 
@@ -1710,7 +1714,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   CRect m_rectComboBox(rect);
   m_rectComboBox.left += 1;
 
-  DWORD dwStyle =  CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE;
+  DWORD dwStyle =  CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_VSCROLL;
   BOOL bSuccess = m_pComboBox->Create(dwStyle, m_rectComboBox, this, nID);
   ASSERT(bSuccess);
 
@@ -1749,6 +1753,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
         m_pComboBox->AddString(vWCFcbx_data[i].cs_text);
         m_pComboBox->SetItemData(i, vWCFcbx_data[i].ftype);
       }
+      SetComboBoxWidth();
       break;
     case FLC_LGC_COMBOBOX:
       for (int i = 0; i < (int)vLcbx_data.size(); i++) {
@@ -1826,8 +1831,8 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     m_pComboBox->SetDroppedWidth(iSubItem == FLC_FLD_COMBOBOX ? m_fwidth : m_lwidth);
   }
 
-  // Try to ensure that dropdown list is big enough for all entries and
-  // therefore no scrolling
+  // Try to ensure that dropdown list is big enough for half the entries (fits
+  // in the same height as the dialog) but add vertical scrolling
   int n = m_pComboBox->GetCount();
 
   int ht = m_pComboBox->GetItemHeight(0);
@@ -1835,7 +1840,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
 
   CSize sz;
   sz.cx = rect.Width();
-  sz.cy = ht * (n + 2);
+  sz.cy = ht * ((n / 2) + 2);
 
   if ((rect.top - sz.cy) < 0 || 
       (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
@@ -1864,6 +1869,44 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   m_pComboBox->SetCurSel(nindex);
   m_pComboBox->ShowWindow(SW_SHOW);
   m_pComboBox->BringWindowToTop();
+}
+
+void CPWFilterLC::SetComboBoxWidth()
+{
+  // Find the longest string in the combo box.
+  CString    str;
+  CSize      sz;
+  int        dx = 0;
+  TEXTMETRIC tm;
+  CDC *pDC = m_pComboBox->GetDC();
+  CFont *pFont = m_pComboBox->GetFont();
+
+  // Select the listbox font, save the old font
+  CFont *pOldFont = pDC->SelectObject(pFont);
+
+  // Get the text metrics for avg char width
+  pDC->GetTextMetrics(&tm);
+
+  for (int i = 0; i < m_pComboBox->GetCount(); i++) {
+    m_pComboBox->GetLBText(i, str);
+    sz = pDC->GetTextExtent(str);
+
+    // Add the avg width to prevent clipping
+    sz.cx += tm.tmAveCharWidth;
+
+    if (sz.cx > dx)
+      dx = sz.cx;
+  }
+
+  // Select the old font back into the DC
+  pDC->SelectObject(pOldFont);
+  m_pComboBox->ReleaseDC(pDC);
+
+  // Adjust the width for the vertical scroll bar and the left and right border.
+  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+
+  // Set the width of the list box so that every item is completely visible.
+  m_pComboBox->SetDroppedWidth(dx);
 }
 
 void CPWFilterLC::DeleteEntry(FieldType ftype)

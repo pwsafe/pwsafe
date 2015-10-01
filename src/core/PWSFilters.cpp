@@ -222,6 +222,8 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 
     const int ft = static_cast<int>(st_fldata.ftype);
     const char *pszfieldtype = {"\0"};
+
+    // These are the entry names exported and must be recognised by the associated schema
     switch (ft) {
       case FT_GROUPTITLE:
         pszfieldtype = "grouptitle";
@@ -266,7 +268,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
         pszfieldtype = "symbols";
         break;
       case FT_POLICYNAME:
-        pszfieldtype = "policyname";
+        pszfieldtype = "policy_name";
         break;
       case FT_KBSHORTCUT:
         pszfieldtype = "kbshortcut";

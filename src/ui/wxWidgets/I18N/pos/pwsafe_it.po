@@ -4759,8 +4759,8 @@ msgstr ""
 #~ msgid "Password Safe vx.yy (abcd)"
 #~ msgstr "Password Safe vx.yy (abcd)"
 
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/latest.xml"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/latest.xml"
 
 #, fuzzy
 #~ msgid "Danish"

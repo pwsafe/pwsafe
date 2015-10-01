@@ -327,19 +327,21 @@ BOOL CAddEdit_Basic::OnInitDialog()
                        IDS_ISANALIASBASE : IDS_ISASHORTCUTBASE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
     M_realpassword() = M_oldRealPassword() = m_password = m_password2 = M_base();
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
 
-    cs_text.Format(IDS_ISANALIAS, M_base());
-    GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
+    GetDlgItem(IDC_MYBASE)->SetWindowText(M_base());
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_SHOW);
   } else if (M_original_entrytype() == CItemData::ET_NORMAL) {
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
   }
 
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
@@ -823,9 +825,14 @@ void CAddEdit_Basic::OnGeneratePassword()
     GetMainDlg()->GetPolicyFromName(M_policyname(), st_pp);
     GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   } else {
-    // XXX temp - to be cleaned up
     PWPolicy policy(M_pwp());
-    policy.symbols = LPCWSTR(M_symbols());
+    if (M_symbols().IsEmpty()) {
+      // No specifc entry symbols - use default
+      policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+    } else {
+      // This entry has its own list of symbols
+      policy.symbols = LPCWSTR(M_symbols());
+    }
     GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
 

@@ -189,6 +189,10 @@ msgstr ""
 msgid " 'symbols'"
 msgstr ""
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -602,6 +606,10 @@ msgstr "复制项目(&D)"
 msgid "&Duplicate Group"
 msgstr "复制组(&D)"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "编辑(&E)"
@@ -713,6 +721,10 @@ msgstr "新建/编辑筛选(&N)"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "否(&N)"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -889,10 +901,6 @@ msgstr "是(&Y)"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr ""
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "邮箱(&E):"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1508,6 +1516,11 @@ msgstr "所有字段最后修改时间:"
 
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
+msgstr ""
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
 msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
@@ -2223,12 +2236,12 @@ msgstr "复制密码到剪贴板后立即最小化"
 msgid "Copy to Clipboard"
 msgstr "复制到剪贴板"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "复制到数据库"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
+msgstr ""
+
+#. Resource IDs: (353)
+msgid "Copy to database"
 msgstr ""
 
 #. Resource IDs: (325)
@@ -2379,10 +2392,6 @@ msgstr ""
 msgid "DB Export from database: '%s'"
 msgstr ""
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "数据库格式"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2397,6 +2406,10 @@ msgstr "数据库"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
+msgstr ""
+
+#. Resource IDs: (360)
+msgid "Database Format"
 msgstr ""
 
 #. Resource IDs: (361)
@@ -2511,11 +2524,6 @@ msgstr "目标位置不存在或不可到达！"
 msgid "Details"
 msgstr ""
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "基于项目 '%s' 快捷方式详细资料:"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "梵文字母(碑文)"
@@ -2576,20 +2584,16 @@ msgstr "你是否需要替换它？"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "你是否希望保存所作的更改到数据库:\n\n%s\n\n或取消关机\\重启\\注销？"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "不能恢复自动保存的文档！\n使用最后明确保存版本的文档。"
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "双击操作"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2684,6 +2688,10 @@ msgstr "导出项目为"
 
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "E-mail"
 msgstr ""
 
 #. Resource IDs: (350)
@@ -3507,10 +3515,6 @@ msgstr "匈牙利语"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "匈牙利语(101 键)"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "我是一位..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4523,7 +4527,7 @@ msgstr "找到一个或多个自动保存的文档！"
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr ""
 
 #. Resource IDs: (3841)
@@ -4787,6 +4791,10 @@ msgstr "物理键盘:"
 msgid "Plain Text (tab separated)..."
 msgstr ""
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "请选定一个备份恢复:"
@@ -4920,18 +4928,13 @@ msgstr "请指定文本！"
 msgid "Please specify the destination location to contain all backups."
 msgstr "请指定包含所有备份文件的目标位置！"
 
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "请指定作为该快捷方式到基本项目“%s”的名称和组:"
-
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
 msgstr "请指定包含所有备份文件的子目录！"
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "请访问 <a href=\"http://pwsafe.org/\">PasswordSafe 站点</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "请访问 <a href=\"https://pwsafe.org/\">PasswordSafe 站点</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -5515,6 +5518,10 @@ msgstr "设定显示筛选: %d 个添加； %d 个激活"
 msgid "Set Entry's Password Policy"
 msgstr "设定项目密码策略"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5574,7 +5581,7 @@ msgid "Shift+DCA"
 msgstr ""
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
+msgid "Shift+Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (348)
@@ -5629,6 +5636,10 @@ msgstr "在树状目录与列表视图工具提示备注内容"
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "编辑时显示备注内容"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5737,6 +5748,10 @@ msgstr ""
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "来源"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6246,14 +6261,17 @@ msgstr "这是一个无用键，按住它，然后组合一个键则显示添加
 msgid "This is a shortcut base entry."
 msgstr "这是一个基于项目的快捷方式！"
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "这是一个基于项目的别名！"
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "这是一个: '%s'的别名！"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6809,6 +6827,11 @@ msgstr "Win32 未处理过的异常！"
 msgid "Windows Registry"
 msgstr "Windows 注册表"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "沃洛夫语"
@@ -7100,6 +7123,14 @@ msgstr ""
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\n导出为文本"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7493,10 +7524,6 @@ msgstr "天后"
 msgid "days before passwords expire"
 msgstr "天通知密码失效"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr ""
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr ""
@@ -7528,10 +7555,6 @@ msgstr "不等于"
 #. Resource IDs: (192)
 msgid "e-mail"
 msgstr "电子邮件"
-
-#. Resource IDs: (358)
-msgid "email"
-msgstr "电子邮箱"
 
 #. Resource IDs: (358)
 msgid "email copied "
@@ -7574,8 +7597,8 @@ msgid "has expired"
 msgstr "已失效"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

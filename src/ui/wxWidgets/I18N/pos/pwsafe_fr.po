@@ -5121,8 +5121,8 @@ msgstr "Oui - Au moins %d de %ls: %ls"
 #~ msgstr "PasswordSafe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7549,9 +7549,9 @@ msgstr "Oui - Au moins %d de %ls: %ls"
 #~ msgstr "Spécifier le sous-dossier qui contiendra totues les sauvegardes."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Visitez le <a href=\"http://pwsafe.org/\">site web de PasswordSafe.</a>"
+#~ "Visitez le <a href=\"https://pwsafe.org/\">site web de PasswordSafe.</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Polonais (Programmeurs)"

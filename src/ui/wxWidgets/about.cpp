@@ -175,7 +175,7 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"http://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
@@ -293,7 +293,7 @@ void CAbout::CheckNewVersion()
   *m_newVerStatus << _("Trying to contact server...");
   m_newVerStatus->Show();
   stringT latext_xml;
-  wxURL url(L"http://pwsafe.org/latest.xml");
+  wxURL url(L"https://pwsafe.org/latest.xml");
   wxInputStream *in_stream = url.GetInputStream();
   unsigned char buff[BUFSIZ+1];
   StringX chunk;

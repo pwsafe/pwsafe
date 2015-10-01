@@ -17,20 +17,24 @@
 #include <vector>
 
 // Subitem indices for list of filters
-#define MFLC_FILTER_NAME    0
-#define MFLC_FILTER_SOURCE  1
-#define MFLC_INUSE          2
-#define MFLC_COPYTODATABASE 3
-#define MFLC_EXPORT         4
-#define MFLC_NUM_COLUMNS    5
+enum {
+  MFLC_FILTER_NAME = 0,
+  MFLC_FILTER_SOURCE,
+  MFLC_INUSE,
+  MFLC_COPYTODATABASE,
+  MFLC_EXPORT,
+  MFLC_NUM_COLUMNS
+};
 
 // Subitem indices for filter properties
-#define MFPRP_FILTER_NUMBER 0
-#define MFPRP_FILTER_ACTIVE 1
-#define MFPRP_AND_OR        2
-#define MFPRP_FIELD         3
-#define MFPRP_CRITERIA_TEXT 4
-#define MFPRP_NUM_COLUMNS   5
+enum {
+  MFPRP_FILTER_NUMBER = 0,
+  MFPRP_FILTER_ACTIVE,
+  MFPRP_AND_OR,
+  MFPRP_FIELD,
+  MFPRP_CRITERIA_TEXT,
+  MFPRP_NUM_COLUMNS
+};
 
 // Filter Flags
 enum {MFLT_SELECTED           = 0x8000,

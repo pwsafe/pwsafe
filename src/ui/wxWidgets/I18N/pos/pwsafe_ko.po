@@ -5081,8 +5081,8 @@ msgstr ""
 #~ msgstr "Password Safe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7264,9 +7264,9 @@ msgstr ""
 #~ msgstr "모든 백업본을 저장하기 위한 하위 폴더를 지정해 주십시오."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "<a href=\"http://pwsafe.org/\">Password Safe 웹사이트 </a>를 방문해주세요."
+#~ "<a href=\"https://pwsafe.org/\">Password Safe 웹사이트 </a>를 방문해주세요."
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Polish (Programmers)"

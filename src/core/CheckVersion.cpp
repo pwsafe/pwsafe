@@ -11,7 +11,7 @@
 
 /*
  * The latest version information is in
- * http://pwsafe.org/latest.xml
+ * https://pwsafe.org/latest.xml
  *
  * And is of the form:
  * <VersionInfo>

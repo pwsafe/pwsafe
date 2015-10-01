@@ -148,6 +148,8 @@ private:
   // sub-dialogs being shown more than once.
   void DeleteEntry(FieldType ftype);
 
+  void SetComboBoxWidth();
+
   CPWFiltersDlg* m_pPWF;
   CHeaderCtrl* m_pHeaderCtrl;
   CImageList *m_pImageList, *m_pCheckImageList;

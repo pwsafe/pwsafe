@@ -5109,8 +5109,8 @@ msgstr ""
 #~ msgstr "Password Safe x.xx"
 
 #, fuzzy
-#~ msgid "http://pwsafe.org/latest.xml"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/latest.xml"
+#~ msgstr "https://pwsafe.org/"
 
 #, fuzzy
 #~ msgid "Chinese"
@@ -7502,9 +7502,9 @@ msgstr ""
 #~ "Vänligen, ange den undermapp som skall innehålla alla säkerhetskopior."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Vänligen, besök <a href=\"http://pwsafe.org/\">PasswordSafe's hemsida.</a>"
+#~ "Vänligen, besök <a href=\"https://pwsafe.org/\">PasswordSafe's hemsida.</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Polskt (Programmers)"

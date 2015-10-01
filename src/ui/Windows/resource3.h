@@ -100,7 +100,6 @@
 #define IDS_NOSAFE                      5259
 #define IDS_COPYURL                     5260
 #define IDS_VIEWENTRY2                  5261
-#define IDS_SHORTCUTROEXPLANATION       5262
 #define IDS_UNKNOWN                     5263
 #define IDS_VIEWENTRY                   5264
 #define IDS_ON                          5265
@@ -332,7 +331,6 @@
 #define IDS_EMPTYSAMPLETEXT             5514
 #define IDS_MENUCOPYEMAIL               5516
 #define IDS_COPYEMAIL                   5517
-#define IDS_SHORTCUTEXPLANATION         5519
 #define IDS_SCTARGET                    5520
 #define IDS_ADVANCEDOPTIONS             5522
 #define IDS_ADVANCEDSUBSET              5523
@@ -500,7 +498,6 @@
 #define IDS_ADDENTRY                    5698
 #define IDS_EDITENTRY                   5699
 #define IDS_NA                          5700
-#define IDS_ISANALIAS                   5701
 #define IDS_ISANALIASBASE               5702
 #define IDS_ISASHORTCUTBASE             5703
 #define IDS_COMPDCA                     5704
@@ -747,6 +744,7 @@
 #define IDS_EXPORTWARNING               5970
 #define IDS_NOTESFONT                   5971
 #define IDS_CANT_FIND_EXT_EDITOR        5972
+#define IDS_APP_DEFAULT                 5973
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

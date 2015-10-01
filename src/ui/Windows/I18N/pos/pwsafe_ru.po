@@ -186,6 +186,10 @@ msgstr " 'защищён'"
 msgid " 'symbols'"
 msgstr " 'символов'"
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -627,6 +631,10 @@ msgstr "Ду&блировать элемент"
 msgid "&Duplicate Group"
 msgstr "Ду&блировать группу"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 1472, 32050)
 # урезано
 # диалог управления фильтрами
@@ -747,6 +755,10 @@ msgstr "&Создать/Редактировать фильтр"
 #. Resource IDs: (2, 340)
 msgid "&No"
 msgstr "&Нет"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -928,10 +940,6 @@ msgstr "&Да"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr "&YubiKey..."
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "E-mail:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1566,6 +1574,11 @@ msgstr "Изменено хотя бы одно поле:"
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
 msgstr "Горячая клавиша для вызова программы"
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
+msgstr ""
 
 #. Resource IDs: (353, 1216)
 msgid "Apply"
@@ -2318,13 +2331,13 @@ msgstr "Копировать пароль в буфер и свернуть"
 msgid "Copy to Clipboard"
 msgstr "Копировать в буфер"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "Копировать в контейнер"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
 msgstr "Копировать в исходный"
+
+#. Resource IDs: (353)
+msgid "Copy to database"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Copy username to clipboard"
@@ -2484,10 +2497,6 @@ msgstr " "
 msgid "DB Export from database: '%s'"
 msgstr "Экспортировано из контейнера: '%s'"
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "Формат контейнера"
-
 #. Resource IDs: (192, 357)
 #, fuzzy
 msgid "DCA"
@@ -2505,6 +2514,10 @@ msgstr "Контейнер"
 # Options->shortcuts
 msgid "Database Entry Shortcuts"
 msgstr "Горячие клавиши для элементов"
+
+#. Resource IDs: (360)
+msgid "Database Format"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2627,11 +2640,6 @@ msgstr "Путь назначения не существует или недо�
 msgid "Details"
 msgstr "Информация"
 
-#. Resource IDs: (329)
-#, fuzzy, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Информация о ярлыке для исходного элемента «%s»:"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Деванагари (инскрипт)"
@@ -2696,22 +2704,18 @@ msgstr "Заменить?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Сохранить изменения в контейнере:\n\n%s\n\nили отменить выключение\\перезапуск\\завершение сеанса?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr "Не сохранять"
-
 #. Resource IDs: (3887)
 # AFX_IDS_AUTOSAVE_RECOVERY_ASK_6
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Не восстанавливать автоматически сохранённые версии\nИспользовать последние явно сохранённые версии документов"
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Действие по двойному клику"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
 msgstr "Щёлкните дважды для просмотра/редактирования"
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
 # урезано
@@ -2808,6 +2812,10 @@ msgstr "Экспортировать элемент &в"
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
 msgstr "Экспортировать группу &в"
+
+#. Resource IDs: (358)
+msgid "E-mail"
+msgstr ""
 
 #. Resource IDs: (257)
 msgid "Easyvision characters"
@@ -3682,11 +3690,6 @@ msgstr "Венгерская"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Венгерская (101 клавиша)"
-
-#. Resource IDs: (1269)
-# заглушка, не используется
-msgid "I am a ..."
-msgstr "Тип элемента"
 
 #. Accelerator Entry for Menu ID:32002; '&Open...'
 msgid "ID:32002:V C +O"
@@ -4742,8 +4745,8 @@ msgstr "Были найдены один или несколько автома�
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Только в исходном: %d; Только в сравниваемом: %d; В обоих (отличающихся): %d; В обоих (совпадающих): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -5023,6 +5026,10 @@ msgstr "Системная:"
 msgid "Plain Text (tab separated)..."
 msgstr "Простой текст (разделитель табуляция)..."
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "Выберите резервную копию для восстановления"
@@ -5158,18 +5165,13 @@ msgstr "Введите текст"
 msgid "Please specify the destination location to contain all backups."
 msgstr "Укажите путь для сохранения резервных копий."
 
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Укажите имя и группу для ярлыка на «%s»:"
-
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
 msgstr "Укажите подкаталог для сохранения резервных копий."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Посетите <a href=\"http://pwsafe.org/\">сайт Password Safe.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Посетите <a href=\"https://pwsafe.org/\">сайт Password Safe.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -5777,6 +5779,10 @@ msgstr "Фильтры отображения: %d добавлено; %d акт�
 msgid "Set Entry's Password Policy"
 msgstr "Задать политику создания паролей"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5839,8 +5845,8 @@ msgid "Shift+DCA"
 msgstr "Действие по Shift+двойной клик"
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
-msgstr "Действие по Shift + двойной клик"
+msgid "Shift+Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5898,6 +5904,10 @@ msgstr "Отображать заметки во всплывающей подс
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Отображать заметки при редактировании"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -6007,6 +6017,10 @@ msgstr "Помощь недоступна: не найден файл справ
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Источник"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6529,14 +6543,17 @@ msgstr "Это клавиша диакритического знака. Наж�
 msgid "This is a shortcut base entry."
 msgstr "Существуют ярлыки для этого элемента"
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Существуют псевдонимы для этого элемента"
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Это псевдоним для: «%s»"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 # AFX_IDP_DLL_BAD_VERSION
@@ -7132,6 +7149,11 @@ msgstr "Win32 Unhandled Exception"
 msgid "Windows Registry"
 msgstr "Реестр Windows"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Волоф"
@@ -7426,6 +7448,14 @@ msgstr "\nЭкспортировать группу в другой контей
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nЭкспортировать в простой текст"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7832,11 +7862,6 @@ msgstr "дней"
 msgid "days before passwords expire"
 msgstr "дней до истечения пароля"
 
-#. Resource IDs: (251)
-#, fuzzy
-msgid "default"
-msgstr "по умолчанию"
-
 #. Resource IDs: (257)
 # не менее X из набора ... в информации о политике
 msgid "default symbol set"
@@ -7868,10 +7893,6 @@ msgstr "не совпадает с"
 
 #. Resource IDs: (192)
 msgid "e-mail"
-msgstr "E-mail"
-
-#. Resource IDs: (358)
-msgid "email"
 msgstr "E-mail"
 
 #. Resource IDs: (358)
@@ -7918,8 +7939,8 @@ msgid "has expired"
 msgstr "просрочен"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 #, fuzzy

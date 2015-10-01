@@ -17,6 +17,8 @@
 
 #include "core/PWSprefs.h"
 
+#include "os/file.h"
+
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
@@ -523,9 +525,16 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   // Change the 'Change Mode' text as appropriate
   if (uiMenuID == ID_FILEMENU) {
+    // Otherwise set the correct menu item text
     pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,
-                           ID_MENUITEM_CHANGEMODE,
-                           bReadOnly ? CS_READWRITE : CS_READONLY);
+      ID_MENUITEM_CHANGEMODE,
+      bReadOnly ? CS_READWRITE : CS_READONLY);
+
+    // Disable menu item if no DB or if DB is read-only on disk
+    bool bFileIsReadOnly;
+    if (!m_bOpen || (pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly) && bFileIsReadOnly)) {
+      pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
+    }
     return;
   }
 

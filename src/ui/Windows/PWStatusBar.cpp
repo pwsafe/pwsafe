@@ -39,7 +39,7 @@ IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
   : m_bFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
-  m_bMouseInWindow(false)
+  m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
   m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);
   BITMAP bm;
@@ -144,15 +144,7 @@ BOOL CPWStatusBar::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRE
 
 bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
 {
-  if (!m_bUseToolTips)
-    return false;
-
-  if (nPane < 0 || nPane >= SB_TOTAL || !bVisible) {
-    m_pSBToolTips->ShowWindow(SW_HIDE);
-    return false;
-  }
-
-  const UINT uiMsg[SB_TOTAL] =  {
+  const UINT uiMsg[SB_TOTAL] = {
     IDS_SB_TT_DBCLICK    /* SB_DBLCLICK        */,
     IDS_SB_TT_CBACTION   /* SB_CLIPBOARDACTION */,
 #if defined(_DEBUG) || defined(DEBUG)
@@ -162,6 +154,19 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
     IDS_SB_TT_MODE       /* SB_READONLY        */,
     IDS_SB_TT_NUMENTRIES /* SB_NUM_ENT         */,
     IDS_SB_TT_FILTER     /* SB_FILTER          */};
+
+  if (!m_bUseToolTips || !m_bFileOpen)
+    return false;
+
+  if (nPane < 0 || nPane >= SB_TOTAL || !bVisible) {
+    m_pSBToolTips->ShowWindow(SW_HIDE);
+    return false;
+  }
+
+  // Don't show Mode change tooltip if file is R/O on disk
+  if (uiMsg[nPane] == IDS_SB_TT_MODE && m_bFileReadOnly) {
+    return false;
+  }
 
   CString cs_ToolTip;
   cs_ToolTip.LoadString(uiMsg[nPane]);

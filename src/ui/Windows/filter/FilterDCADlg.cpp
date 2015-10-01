@@ -72,7 +72,8 @@ BOOL CFilterDCADlg::OnInitDialog()
     CString cs_dca;
     UINT ui_dca;
 
-    const short si_DCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+    const short si_DCA = (short)PWSprefs::GetInstance()->GetPref(m_type == PWSMatch::MT_DCA ?
+        PWSprefs::DoubleClickAction : PWSprefs::ShiftDoubleClickAction);
     switch (si_DCA) {
       case PWSprefs::DoubleClickAutoType:             ui_dca = IDSC_DCAAUTOTYPE;        break;
       case PWSprefs::DoubleClickBrowse:               ui_dca = IDSC_DCABROWSE;          break;

@@ -35,6 +35,9 @@ public:
   int GetBitmapWidth()
   {return m_bmWidth;}
 
+  void SetFileStatus(const bool bFileOpen, const bool bFileReadOnly)
+  {m_bFileOpen = bFileOpen; m_bFileReadOnly = bFileReadOnly;}
+
 protected:
   //{{AFX_MSG(CPWStatusBar)
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -56,5 +59,5 @@ private:
   UINT_PTR m_nHoverSBTimerID, m_nShowSBTimerID;
   CPoint m_HoverSBPoint;
   int m_HoverSBnPane;
-  bool m_bUseToolTips, m_bMouseInWindow;
+  bool m_bUseToolTips, m_bMouseInWindow, m_bFileReadOnly, m_bFileOpen;
 };

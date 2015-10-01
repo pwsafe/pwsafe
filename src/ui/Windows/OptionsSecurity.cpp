@@ -106,6 +106,8 @@ BOOL COptionsSecurity::OnInitDialog()
 
   CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_HASHITERSLIDER);
   pslider->SetRange(MinHIslider, MaxHIslider);
+  pslider->SetTicFreq(1);
+  pslider->SetPos(m_HashIterSliderValue);
 
   return TRUE;
 }

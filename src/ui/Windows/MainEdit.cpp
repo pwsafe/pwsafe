@@ -864,7 +864,18 @@ void DboxMain::Delete()
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
-    pcmd = Delete(ti);
+    // We need to collect bases and dependents separately, deleting the latter first
+    // so that an undo will add bases first.
+    std::vector<Command *> vbases, vdeps, vemptygrps;
+    Delete(ti, vbases, vdeps, vemptygrps);
+    MultiCommands *pmcmd = MultiCommands::Create(&m_core);
+    std::for_each(vemptygrps.begin(), vemptygrps.end(),
+                  [&] (Command *cmd) {pmcmd->Add(cmd);});
+    std::for_each(vdeps.begin(), vdeps.end(),
+                  [&] (Command *cmd) {pmcmd->Add(cmd);});
+    std::for_each(vbases.begin(), vbases.end(),
+                  [&] (Command *cmd) {pmcmd->Add(cmd);});
+    pcmd = pmcmd;
     m_ctlItemTree.SelectItem(parent);
     m_TreeViewGroup = L"";
   }
@@ -902,7 +913,10 @@ struct FindGroupFromHTREEITEM {
   HTREEITEM m_ti;
 };
 
-Command *DboxMain::Delete(HTREEITEM ti)
+void DboxMain::Delete(HTREEITEM ti,
+                      std::vector<Command *> &vbases,
+                      std::vector<Command *> &vdeps,
+                      std::vector<Command *> &vemptygrps)
 {
   // Delete a group
   // Create a multicommand, iterate over tree's children,
@@ -910,11 +924,15 @@ Command *DboxMain::Delete(HTREEITEM ti)
   // Of course, this may recurse...
 
   if (ti == NULL)
-    return NULL; // bad bottoming out of recursion?
+    return; // bad bottoming out of recursion?
 
   if (m_ctlItemTree.IsLeaf(ti)) {
+    // normal bottom out of recursion
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
-    return Delete(pci); // normal bottom out of recursion
+    if (pci->IsBase())
+      vbases.push_back(Delete(pci));
+    else
+      vdeps.push_back(Delete(pci));
   }
 
   // Here if we have a bona fida group
@@ -927,26 +945,25 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
     // Check we know about it!
     if (m_core.IsEmptyGroup(sxPath)) {
-      return DBEmptyGroupsCommand::Create(&m_core, sxPath,
-                      DBEmptyGroupsCommand::EG_DELETE);
+      vemptygrps.push_back(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+                                        DBEmptyGroupsCommand::EG_DELETE));
     }
   }
-  
-  MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
 
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
 
   while (cti != NULL) {
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(cti);
-    if (pci != NULL)
-      pmulti_cmd->Add(Delete(pci));
-    else
-      pmulti_cmd->Add(Delete(cti)); // subgroup!
+    if (pci != NULL) {
+      if (pci->IsBase())
+        vbases.push_back(Delete(pci));
+      else
+        vdeps.push_back(Delete(pci));
+    } else
+      Delete(cti, vbases, vdeps, vemptygrps); // subgroup!
 
     cti = m_ctlItemTree.GetNextItem(cti, TVGN_NEXT);
   }
-
-  return pmulti_cmd;
 }
 
 void DboxMain::OnRename()
@@ -982,10 +999,15 @@ void DboxMain::OnEdit()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
     try {
-      if (pci->IsShortcut())
-        EditShortcut(pci);
-      else
+      if (pci->IsShortcut()) {
+        if (!m_bViaDCA) {
+          EditShortcut(pci);
+        } else {
+          EditItem(GetBaseEntry(pci));
+        }
+      }  else {
         EditItem(pci);
+      }
     } catch (CString &err) {
       CGeneralMsgBox gmb;
       gmb.MessageBox(err, NULL, MB_OK | MB_ICONERROR);

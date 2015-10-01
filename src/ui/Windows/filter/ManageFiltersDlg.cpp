@@ -897,7 +897,7 @@ void CManageFiltersDlg::OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
   const int iItem = (int)pLVCD->nmcd.dwItemSpec;

@@ -66,10 +66,6 @@
 
 #endif  /* WINVER < 0x0501 */
 
-#if (_MFC_VER <= 1200)
-DECLARE_HANDLE(HDROP);
-#endif
-
 // Custom message event used for system tray handling
 #define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
 
@@ -327,7 +323,11 @@ public:
   void FixListIndexes();
   void Delete(); // "Top level" delete, calls the following 2 and Execute()
   Command *Delete(const CItemData *pci); // create command for deleting a single item
-  Command *Delete(HTREEITEM ti); // For deleting a group
+  // For deleting a group:
+  void Delete(HTREEITEM ti,
+              std::vector<Command *> &vbases,
+              std::vector<Command *> &vdeps,
+              std::vector<Command *> &vemptygrps); 
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
   void RestoreGUIStatusEx();
@@ -807,12 +807,7 @@ public:
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-
-#if _MFC_VER > 1200
   afx_msg BOOL OnOpenMRU(UINT nID);
-#else
-  afx_msg void OnOpenMRU(UINT nID);
-#endif
 
   DECLARE_MESSAGE_MAP()
 
@@ -848,6 +843,7 @@ private:
   bool m_bPasswordColumnShowing;
   bool m_bInRefresh, m_bInRestoreWindows;
   bool m_bDBInitiallyRO;
+  bool m_bViaDCA;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItemData::LAST];

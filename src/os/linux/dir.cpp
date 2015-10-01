@@ -83,10 +83,18 @@ bool pws_os::splitpath(const stringT &path,
 stringT pws_os::makepath(const stringT &drive, const stringT &dir,
                          const stringT &file, const stringT &ext)
 {
-  stringT retval(drive);
-  retval += dir;
-  if (!dir.empty() && retval[retval.length()-1] != '/')
-    retval += _T("/");
+  stringT retval;
+  /**
+   * drive and dir can semantically be "./" with no ill effect,
+   * but wxFileDialog doesn't like a "filename" with "/"s.
+   */
+  if (drive != L"./")
+    retval = drive;
+  if (dir != L"./") {
+    retval += dir;
+    if (!dir.empty() && retval[retval.length()-1] != '/')
+      retval += _T("/");
+  }
   retval += file;
   if (!ext.empty()) {
     retval += _T(".");

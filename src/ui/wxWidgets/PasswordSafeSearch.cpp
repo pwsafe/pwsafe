@@ -413,7 +413,6 @@ void PasswordSafeSearch::CreateSearchBar()
   }
   srchCtrl->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(PasswordSafeSearch::OnSearchTextChanged), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
-  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
   m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
@@ -448,7 +447,7 @@ void PasswordSafeSearch::Activate(void)
       const wxPoint pt = m_toolbar->GetPosition();
       const wxSize sz = m_toolbar->GetSize();
       wxMessageBox(wxString() << _("Could not re-display searchbar at ") << pt << _(" of size ") << sz
-                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("its already visible"): _(" of an error")));
+                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("it's already visible"): _(" of an error")));
     }
   }
 

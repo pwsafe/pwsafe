@@ -434,7 +434,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  // Set up all the data (a shortcut entry will change all of them!)
+  // Set up all the data (a shortcut entry will change some of them!)
   StringX sxgroup = ci.GetGroup();
   StringX sxtitle = ci.GetTitle();
   StringX sxuser = ci.GetUser();
@@ -454,9 +454,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
   } else if (ci.IsShortcut()) {
     const CItemData *pbci = core.GetBaseEntry(&ci);
     if (pbci != NULL) {
-      sxgroup = pbci->GetGroup();
-      sxtitle = pbci->GetTitle();
-      sxuser = pbci->GetUser();
+      // Use shortcut's group, title and username [BR1124],
+      // pick up the rest from base
       sxpwd = pbci->GetPassword();
       sxnotes = pbci->GetNotes();
       sxurl = pbci->GetURL();

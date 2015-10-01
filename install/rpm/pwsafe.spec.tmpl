@@ -1,13 +1,13 @@
 Summary: Password Safe is a password database utility.
-Name: pwsafe
+Name: passwordsafe
 Version: @VERSION@
 Release: 3
 License: Artistic2.0
 Group: Applications/Utils
 Vendor: Rony Shapiro
-URL: http://pwsafe.org/
+URL: https://pwsafe.org/
 Packager: David Dreggors <dadreggors@gmail.com>
-Source:	pwsafe-@VERSION@-src.tgz
+Source:	passwordsafe-@VERSION@-src.tgz
 BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, libyubikey-devel, xerces-c-devel, ykpers-devel, wxGTK3-devel, make
 BuildRequires: zip
 BuildRequires: gettext
@@ -77,6 +77,8 @@ rm -rf ${RPM_BUILD_ROOT}
 %attr(755, root, root) /usr/bin/pwsafe
 
 %changelog
+* Tue Sep 29 2015 Rony Shapiro <ronys@users.sourceforge.net> - 0.97BETA-4
+- Rename package to passwordsafe to avoid conflict with command-line pwsafe
 * Thu Oct 24 2013 Johan Vromans <jvromans@squirrel.nl> - 0.92BETA-3
 - Additional buildrequires for some platforms.
 * Sun Sep 22 2013 Rony Shapiro <ronys@users.sourceforge.net> - 0.92BETA-2

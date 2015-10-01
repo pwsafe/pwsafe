@@ -7815,8 +7815,8 @@ msgstr "Да: не менее %d из %ls: %ls"
 #~ msgstr "Укажите подкаталог для сохранения резервных копий."
 
 #~ msgid ""
-#~ "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-#~ msgstr "Посетите <a href=\"http://pwsafe.org/\">сайт Password Safe.</a>"
+#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgstr "Посетите <a href=\"https://pwsafe.org/\">сайт Password Safe.</a>"
 
 #~ msgid "Policy Name is already in use"
 #~ msgstr "Имя политики уже используется"
@@ -9912,8 +9912,8 @@ msgstr "Да: не менее %d из %ls: %ls"
 #~ msgid "exported"
 #~ msgstr "экспортирован"
 
-#~ msgid "http://pwsafe.org/"
-#~ msgstr "http://pwsafe.org/"
+#~ msgid "https://pwsafe.org/"
+#~ msgstr "https://pwsafe.org/"
 
 #~ msgid "in"
 #~ msgstr "через"

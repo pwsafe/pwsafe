@@ -1,5 +1,5 @@
-Password Safe 3.36.1 Release Notes - June 2015
-==============================================
+Password Safe 3.37 Release Notes - September 2015
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,22 +8,48 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.36.1
-=======================
+New Features for 3.37
+=====================
 [] The Notes External Editor now accepts environment strings (e.g. %windir%)
 in the path to the editor.
+[789] If the double-click action (or shift-double-click) of an entry
+is set to Edit/View Entry, then (shift-) double-clicking on its
+shortcut will edit/view the base entry. The selected shortcut entry
+can still be viewed/edited via menu, right-click or just hitting Enter.
 [782] Notes field font is now user-configurable.
 [781] Virtual Keyboard - allow playing sound when a valid or invalid key
 is pressed and add caption to the Space Bar (Partial implementation of
 this Feature Request).
 
-Bugs fixed in 3.36.1
-====================
+Bugs fixed in 3.37
+==================
+[1274] References to base entries are now scrollable, no longer
+truncated.
+[1273] Find in the Tree View will now ensure that any found entry will be
+visible by scrolling appropriately.
+[1272] XML export of single entry using default Password policy now
+works correctly.
+[1270] Display Filter dropdown list of filter fields now fits on low
+resolution screens.
+[1269] Filters containing Password Policy Names now export/import
+correctly to/from XML.
 [1267] Export from a YubiKey-protected database to another database
 fixed.
+[1261] 'Unlock Difficulty' slider is now correctly initialised in the Manage
+Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
 [1254] Toolbar customisation now has correctly aligned text/images.
+[1244] Changes to symbol set in default password policy are respected
+when "Use easy-to-read characters" is set.
+[1230] "Open as read-only" check-box correctly set when opening a R/W database
+after previously opening/selecting a R-O database.
+[1124] Autotype on a shortcut entry now picks up title, group and user
+fields from shortcut instead of base.
+[1082] Field modification times set to creation time for list view and
+entry's time and date tab. This is more useful than "N/A", e.g., for
+sorting by password modification to find old passwords that should be
+changed.
 
 New Features for 3.36
 =====================

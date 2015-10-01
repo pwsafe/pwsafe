@@ -332,6 +332,10 @@ msgstr "'protégé'"
 msgid " 'symbols'"
 msgstr " 'symboles'"
 
+#. Resource IDs: (251)
+msgid " (application default)"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -745,6 +749,10 @@ msgstr "&Dupliquer l'entrée"
 msgid "&Duplicate Group"
 msgstr "&Dupliquer le groupe"
 
+#. Resource IDs: (1356)
+msgid "&E-mail:"
+msgstr ""
+
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Edition"
@@ -856,6 +864,10 @@ msgstr "&Nouveau/Modifier Filtre "
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Non"
+
+#. Resource IDs: (32138)
+msgid "&Notes Font"
+msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -1032,10 +1044,6 @@ msgstr "Oui"
 #. Resource IDs: (32160)
 msgid "&Yubikey..."
 msgstr "&Yubikey"
-
-#. Resource IDs: (1356)
-msgid "&email:"
-msgstr "&courriel:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1652,6 +1660,11 @@ msgstr "Tout champ récemment changé sur:"
 #. Resource IDs: (65535)
 msgid "Application Hotkey"
 msgstr "Raccourci d'application"
+
+#. Resource IDs: (374)
+#, c-format
+msgid "Application default (%s)"
+msgstr ""
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
@@ -2366,13 +2379,13 @@ msgstr "Copier le mot de passe au presse-papier, réduire"
 msgid "Copy to Clipboard"
 msgstr "Copier au presse-papier"
 
-#. Resource IDs: (353)
-msgid "Copy to DB"
-msgstr "Copier dans le fichier"
-
 #. Resource IDs: (32221)
 msgid "Copy to Original"
 msgstr "Copier à l'Original"
+
+#. Resource IDs: (353)
+msgid "Copy to database"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2522,10 +2535,6 @@ msgstr "BD"
 msgid "DB Export from database: '%s'"
 msgstr "Exportation BD à partir du fichier: '%s'"
 
-#. Resource IDs: (360)
-msgid "DB Format"
-msgstr "Format de BD"
-
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "ACD"
@@ -2541,6 +2550,10 @@ msgstr "Fichier"
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
 msgstr "Raccourci de fichier"
+
+#. Resource IDs: (360)
+msgid "Database Format"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Database Unique ID"
@@ -2654,11 +2667,6 @@ msgstr "La destination n'existe pas ou n'est pas accessible."
 msgid "Details"
 msgstr "Détails"
 
-#. Resource IDs: (329)
-#, c-format
-msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Détails de ce raccourcis vers l'entrée de base '%s' :"
-
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanagari - INSCRIPT"
@@ -2719,21 +2727,17 @@ msgstr "Voulez-vous le remplacer?"
 msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Voulez-vous enregistrer les changements effectués sur la base:\n\n%s\n\nou annuler l'arrêt de la machine\\redémarrage\\déconnexion?"
 
-#. Resource IDs: (374)
-msgid "Don't Save"
-msgstr ""
-
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr "Ne pas récupérer les documents automatiquement sauvegardés.\nUtilisez la dernière version explicitement sauvegardée de ce document."
 
-#. Resource IDs: (359)
-msgid "Double Click Action"
-msgstr "Action double-clic :"
-
 #. Resource IDs: (373)
 msgid "Double click to Edit/View this entry."
 msgstr "Double-cliquez pour voir/modifier cette entrée."
+
+#. Resource IDs: (359)
+msgid "Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -2828,6 +2832,10 @@ msgstr "E&xporter l'entrée vers"
 #. Resource IDs: (65535)
 msgid "E&xport Group To"
 msgstr "E&xporter le Groupe vers"
+
+#. Resource IDs: (358)
+msgid "E-mail"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -3650,10 +3658,6 @@ msgstr "Hongrois"
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
 msgstr "Hongrois 101-touches"
-
-#. Resource IDs: (1269)
-msgid "I am a ..."
-msgstr "Je suis un ..."
 
 #. Accelerator Entry for Menu ID:32002; '&Open...\tCtrl+O'
 msgid "ID:32002:V C +O"
@@ -4666,8 +4670,8 @@ msgstr "Un ou plus d'un document auto-sauvegardé ont été trouvés."
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Seulement dans le fichier original: %d; Seulemennt dans le fichier de comparaison: %d; Dans les deux (difference): %d; Dans les deux (identique): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4930,6 +4934,10 @@ msgstr "Clavier physique :"
 msgid "Plain Text (tab separated)..."
 msgstr "Texte simple (séparé par tabulation)..."
 
+#. Resource IDs: (8101)
+msgid "Play sound on key press"
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
 msgstr "SVP, Choisissez une copie de sauvegarde à restaurer:"
@@ -5063,18 +5071,13 @@ msgstr "Veuillez spécifier du texte"
 msgid "Please specify the destination location to contain all backups."
 msgstr "Veuillez spécifier la destination des sauvegardes."
 
-#. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Veuillez spécifier le nom ainsi que le groupe pour ce raccourci vers l'entrée '%s' :"
-
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
 msgstr "Spécifier le sous-dossier qui contiendra totues les sauvegardes."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Visitez le <a href=\"http://pwsafe.org/\">site web de PasswordSafe.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Visitez le <a href=\"https://pwsafe.org/\">site web de PasswordSafe.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -5658,6 +5661,10 @@ msgstr "Mettre en place l'affichage des filtres: %d ajoutés; %d actifs"
 msgid "Set Entry's Password Policy"
 msgstr "Mettre en place la stratégie de mot de passe pour l'entrée"
 
+#. Resource IDs: (374)
+msgid "Set Notes display font"
+msgstr ""
+
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
@@ -5717,8 +5724,8 @@ msgid "Shift+DCA"
 msgstr "Maj + ACD"
 
 #. Resource IDs: (368)
-msgid "Shift+Double Click Action"
-msgstr "Action Maj + double clic"
+msgid "Shift+Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5772,6 +5779,10 @@ msgstr "Afficher les notes dans les vues arbre && liste "
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
 msgstr "Afficher les notes dans Modifier"
+
+#. Resource IDs: (8102)
+msgid "Show Passphrase"
+msgstr ""
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
@@ -5880,6 +5891,10 @@ msgstr "Désolé impossible de trouver le fichier d'aide - Aide non disponible."
 #. Resource IDs: (353)
 msgid "Source"
 msgstr "Source"
+
+#. Resource IDs: (511)
+msgid "Space Bar"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Spanish"
@@ -6389,14 +6404,17 @@ msgstr "Ceci est une Touche Morte. Appuyez-la ainsi qu'une des touches combinée
 msgid "This is a shortcut base entry."
 msgstr "Ceci est une entrée de base de raccourci."
 
+#. Resource IDs: (1071, 1294)
+msgid "This is a shortcut to base entry:"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
 msgstr "Ceci est une entrée de base d'alias."
 
-#. Resource IDs: (357)
-#, c-format
-msgid "This is an alias of: '%s'"
-msgstr "Ceci est un alias de : '%s'"
+#. Resource IDs: (1269, 1285)
+msgid "This is an alias of:"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -6952,6 +6970,11 @@ msgstr "Exception Win32 non gérée"
 msgid "Windows Registry"
 msgstr "Registre Windows"
 
+#. Resource IDs: (374)
+#, c-format
+msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr "Wolof"
@@ -7243,6 +7266,14 @@ msgstr "\nExporter l'entrée vers un autre fichier..."
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nExporter sous forme de texte"
+
+#. Resource IDs: (2001)
+msgid "\nExport to V1 database"
+msgstr ""
+
+#. Resource IDs: (2001)
+msgid "\nExport to V2 database"
+msgstr ""
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
@@ -7636,10 +7667,6 @@ msgstr "jours"
 msgid "days before passwords expire"
 msgstr "jours avant expiration"
 
-#. Resource IDs: (251)
-msgid "default"
-msgstr "défaut"
-
 #. Resource IDs: (369)
 msgid "default symbol set"
 msgstr "liste de symboles par défaut"
@@ -7671,10 +7698,6 @@ msgstr "n'est pas égal à"
 #. Resource IDs: (192)
 msgid "e-mail"
 msgstr "courrier"
-
-#. Resource IDs: (358)
-msgid "email"
-msgstr "Courriel"
 
 #. Resource IDs: (358)
 msgid "email copied "
@@ -7717,8 +7740,8 @@ msgid "has expired"
 msgstr "a expiré"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="

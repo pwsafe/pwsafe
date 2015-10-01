@@ -145,7 +145,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false),
+  m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -1400,13 +1400,15 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     POINT pt;
     if(!GetCursorPos(&pt))
       return;
+
     m_ctlItemTree.ScreenToClient(&pt);
     HTREEITEM hItem = m_ctlItemTree.HitTest(pt);
     
     HTREEITEM hItemSel = m_ctlItemTree.GetSelectedItem();
     
-    if (hItem!=hItemSel)//Clicked near item, that is different from current
+    if (hItem != hItemSel) //Clicked near item, that is different from current
        return;
+
     // Only if a group is selected
     if ((hItem != NULL && !m_ctlItemTree.IsLeaf(hItem))) {
       // Do standard double-click processing - i.e. toggle expand/collapse!
@@ -1434,15 +1436,16 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     iDCA = (short)PWSprefs::GetInstance()->GetPref(m_bShiftKey ? 
               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
 
+  m_bViaDCA = true;  // Currently only needed for View/Edit
   switch (iDCA) {
     case PWSprefs::DoubleClickAutoType:
-      PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
+      OnAutoType();
       break;
     case PWSprefs::DoubleClickBrowse:
-      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
+      OnBrowse();
       break;
     case PWSprefs::DoubleClickBrowsePlus:
-      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURLPLUS);
+      OnBrowsePlus();
       break;
     case PWSprefs::DoubleClickCopyNotes:
       OnCopyNotes();
@@ -1457,7 +1460,7 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
       OnCopyPasswordMinimize();
       break;
     case PWSprefs::DoubleClickViewEdit:
-      PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
+      OnEdit();
       break;
     case PWSprefs::DoubleClickRun:
       OnRunCommand();
@@ -1468,6 +1471,7 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
     default:
       ASSERT(0);
   }
+  m_bViaDCA = false;
 }
 
 // Called to send an email.
@@ -1604,7 +1608,7 @@ void DboxMain::OnAbout()
 
 void DboxMain::OnPasswordSafeWebsite()
 {
-  HINSTANCE stat = ::ShellExecute(NULL, NULL, L"http://pwsafe.org/",
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, L"https://pwsafe.org/",
                               NULL, L".", SW_SHOWNORMAL);
   if (int(stat) <= 32) {
 #ifdef _DEBUG
@@ -1684,8 +1688,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   m_pPasskeyEntryDlg = new CPasskeyEntry(this,
                                    filename.c_str(),
-                                   index, bReadOnly || bFileIsReadOnly,
-                                   bFileIsReadOnly || bForceReadOnly,
+                                   index, bReadOnly,
+                                   bFileIsReadOnly,
+                                   bForceReadOnly,
                                    bHideReadOnly);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
@@ -3066,7 +3071,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // The previous lookup table is the only mechanism to ENABLE an item
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
-  bool bGroupSelected = false;
+  bool bGroupSelected = false, bFileIsReadOnly(false);
   const CItemData *pci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
 
@@ -3311,8 +3316,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CHANGEMODE:
-      // For prior versions or no DB open - don't give the user the option to change to R/W
-      iEnable = m_core.GetReadFileVersion() >= PWSfile::VCURRENT ? TRUE : FALSE;
+      // For prior versions, no DB open or file is R-O on disk -
+      //  don't give the user the option to change to R/W
+      pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+      iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
       break;
     default:
       break;

@@ -2,7 +2,7 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.96
+RELEASENUM := 0.97
 RELEASE_SPECIAL := BETA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
@@ -19,6 +19,9 @@ RELEASE_SPECIAL := BETA
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
+
+PKG_BASE = pwsafe
+SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
 
 MKDIR := mkdir -p
 RM := /bin/rm -rf
@@ -86,7 +89,7 @@ rpm:	I18N tar
 
 tar:
 	@$(MKDIR)  $(RELEASEDIR)
-	@$(GIT) archive HEAD --prefix=pwsafe-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
+	@$(GIT) archive HEAD --prefix=$(PKG_BASE)-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)/$(SRC_TGZ)
 	@echo "Done."
 
 sha1sums:

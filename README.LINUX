@@ -8,7 +8,7 @@ from a wider audience.
 
 2. Supported Distributions:
 Currently Debian 8.0, Ubuntu 13.04 and Fedora 22 are supported, 32 and
-64 bit systems.
+64 bit systems. Slackware is independantly supported, see below.
 
 3. Installation on Debian or Ubuntu:
 3.1 Download the .deb file that corresponds to your distribution.
@@ -23,6 +23,9 @@ $ sudo aptitude install missing-pkgX missing-pkgY
 3.2 Install it using yum:
 $ sudo yum install passwordsafe-*.rpm
 
-5. Reporting bugs:
+5. Slackware users can download SlackBuild for PasswordSafe from
+https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
+
+6. Reporting bugs:
 Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/
 Set the Category field to Linux to help ensure timely response.

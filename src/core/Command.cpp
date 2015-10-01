@@ -596,9 +596,13 @@ void DeleteEntryCommand::Undo()
 {
   CUUID uuid = m_ci.GetUUID();
   if (m_ci.IsDependent()) {
-    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
-    pcmd->Execute();
-    delete pcmd;
+    // Check if dep entry hasn't alredy been added - can happen if
+    // base and dep in group that's being undeleted.
+    if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
+      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
+      pcmd->Execute();
+      delete pcmd;
+    }
   } else {
     AddEntryCommand undo(m_pcomInt, m_ci, this);
     undo.Execute();
@@ -615,6 +619,10 @@ void DeleteEntryCommand::Undo()
       // and create new aliases.
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
+        // Need to check that alias still exists - could have been deleted in group along with item
+        // being undone, in which case it will be added separately
+        if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
+          continue;
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
         Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
