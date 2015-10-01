@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 #
 # Quick hack to convert text files exported by maemo pwsafe clone
 # to something that PasswordSafe can import as text.

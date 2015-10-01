@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 #
 # passwordsafe-db-remapper v1.0.0
 #

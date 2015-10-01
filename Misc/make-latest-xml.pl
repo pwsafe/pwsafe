@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/env perl
 #
 # Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
 # All rights reserved. Use of the code is allowed under the
@@ -11,6 +11,8 @@
 # The script parses the file passed as arg (version.h)
 # to get the information it needs.
 # For the XML format description, see ../src/ui/Windows/AboutDlg.cpp
+
+use warnings;
 
 my @verline;
 my ($WinMajor, $WinMinor, $WinBuild, $WinRevision);
