@@ -20,7 +20,9 @@
 #include <assert.h>
 
 /* currently here only for Cygwin test harness */
+#ifndef __FreeBSD__
 #include <asm/byteorder.h> /* for htonl, htons */
+#endif
 
 using namespace std;
 
