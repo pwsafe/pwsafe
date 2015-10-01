@@ -23,8 +23,8 @@
 #include "os/dir.h"
 
 #include <stdio.h>
-#include <sys/timeb.h>
 #include <time.h>
+#include <sys/time.h>
 #include <sstream>
 #include <iomanip>
 #include <errno.h>
@@ -432,11 +432,11 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
   ptimebuffer = new _timeb;
   _ftime_s(ptimebuffer);
 #else
-  struct timeb *ptimebuffer;
-  ptimebuffer = new timeb;
-  ftime(ptimebuffer);
+  struct timeval *ptimebuffer;
+  ptimebuffer = new timeval;
+  gettimeofday(ptimebuffer, NULL);
 #endif
-  StringX cmys_now = ConvertToDateTimeString(ptimebuffer->time, TMC_EXPORT_IMPORT);
+  StringX cmys_now = ConvertToDateTimeString(ptimebuffer->tv_sec, TMC_EXPORT_IMPORT);
 
   if (bShort) {
     sTimeStamp = cmys_now.c_str();
@@ -444,7 +444,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
     ostringstreamT *p_os;
     p_os = new ostringstreamT;
     *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
-          << static_cast<unsigned int>(ptimebuffer->millitm);
+          << static_cast<unsigned int>(ptimebuffer->tv_usec);
 
     sTimeStamp = p_os->str();
     delete p_os;

@@ -29,6 +29,10 @@
 #include "linux/pws_time.h"
 #define _tcsdup(s) wcsdup(s)
 #endif
+#ifdef __FreeBSD__
+#include "linux/pws_time.h"
+#define _tcsdup(s) wcsdup(s)
+#endif // __FreeBSD__
 #include "funcwrap.h"
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcsncpy_s wcsncpy_s

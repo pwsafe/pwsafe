@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 #
 # Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
 # All rights reserved. Use of the code is allowed under the
