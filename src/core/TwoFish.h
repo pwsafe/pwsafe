@@ -31,10 +31,10 @@ class TwoFish : public Fish
 public:
   enum {BLOCKSIZE=16};
   TwoFish(const unsigned char* key, int keylen);
-  virtual ~TwoFish();
-  virtual void Encrypt(const unsigned char *in, unsigned char *out);
-  virtual void Decrypt(const unsigned char *in, unsigned char *out);
-  virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+  ~TwoFish();
+  void Encrypt(const unsigned char *in, unsigned char *out) const;
+  void Decrypt(const unsigned char *in, unsigned char *out) const;
+  unsigned int GetBlockSize() const {return BLOCKSIZE;}
 
 private:
   twofish_key key_schedule;
