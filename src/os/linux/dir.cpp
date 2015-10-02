@@ -151,10 +151,10 @@ stringT pws_os::getsafedir(void)
 
 stringT pws_os::getxmldir(void)
 {
-  return _S("/usr/share/pwsafe/xml/");
+  return _S("/usr/share/passwordsafe/xml/");
 }
 
 stringT pws_os::gethelpdir(void)
 {
-  return _S("/usr/share/doc/passwordsafe/help/");
+  return _S("/usr/share/passwordsafe/help/");
 }
