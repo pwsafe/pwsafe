@@ -48,7 +48,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC) $(YBPERSFLAGS) \
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I../../core -I../.. $(CPPINC) $(YBPERSFLAGS) \
                 $(CPPFLAGS)
 
 ifeq ($(CONFIG),debug)
