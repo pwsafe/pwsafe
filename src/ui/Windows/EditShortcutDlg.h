@@ -33,6 +33,8 @@ public:
   bool m_Edit_IsReadOnly;
 
 private:
+  void SetGroupComboBoxWidth();
+
   CItemData *m_pci; // The shortcut being edited
   CSecString m_group;
   CSecString m_title;

@@ -39,6 +39,7 @@ fixed.
 Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
+[1258] Group dropdown box width no longer trucates long group paths.
 [1254] Toolbar customisation now has correctly aligned text/images.
 [1244] Changes to symbol set in default password policy are respected
 when "Use easy-to-read characters" is set.

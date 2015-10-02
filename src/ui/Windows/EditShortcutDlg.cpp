@@ -125,6 +125,9 @@ BOOL CEditShortcutDlg::OnInitDialog()
     }
   } // !read-only
 
+  // Make sure Group combobox is wide enough
+  SetGroupComboBoxWidth();
+
   // Show base entry
   GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
 
@@ -210,4 +213,42 @@ void CEditShortcutDlg::OnOK()
   // may have been modified (e.g., spaces removed).
 dont_close:
   UpdateData(FALSE);
+}
+
+void CEditShortcutDlg::SetGroupComboBoxWidth()
+{
+  // Find the longest string in the combo box.
+  CString str;
+  CSize sz;
+  int dx = 0;
+  TEXTMETRIC tm;
+  CDC *pDC = m_ex_group.GetDC();
+  CFont *pFont = m_ex_group.GetFont();
+
+  // Select the listbox font, save the old font
+  CFont *pOldFont = pDC->SelectObject(pFont);
+
+  // Get the text metrics for avg char width
+  pDC->GetTextMetrics(&tm);
+
+  for (int i = 0; i < m_ex_group.GetCount(); i++) {
+    m_ex_group.GetLBText(i, str);
+    sz = pDC->GetTextExtent(str);
+
+    // Add the avg width to prevent clipping
+    sz.cx += tm.tmAveCharWidth;
+
+    if (sz.cx > dx)
+      dx = sz.cx;
+  }
+
+  // Select the old font back into the DC
+  pDC->SelectObject(pOldFont);
+  m_ex_group.ReleaseDC(pDC);
+
+  // Adjust the width for the vertical scroll bar and the left and right border.
+  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+
+  // Set the width of the list box so that every item is completely visible.
+  m_ex_group.SetDroppedWidth(dx);
 }

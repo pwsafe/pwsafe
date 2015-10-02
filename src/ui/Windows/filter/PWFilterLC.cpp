@@ -1874,9 +1874,9 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
 void CPWFilterLC::SetComboBoxWidth()
 {
   // Find the longest string in the combo box.
-  CString    str;
-  CSize      sz;
-  int        dx = 0;
+  CString str;
+  CSize sz;
+  int dx = 0;
   TEXTMETRIC tm;
   CDC *pDC = m_pComboBox->GetDC();
   CFont *pFont = m_pComboBox->GetFont();
