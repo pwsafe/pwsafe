@@ -680,7 +680,7 @@ BOOL CAddEdit_Additional::OnApply()
     bool bAutoType(false);
     StringX sxAutotype(L"");
     bool bURLSpecial;
-    PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL,
+    PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL, NULL,
                                    bAutoType, sxAutotype, errmsg, st_column,
                                    bURLSpecial);
     if (errmsg.length() > 0) {
@@ -818,9 +818,15 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
+
+        CItemData *pbci = NULL;
+        if (M_pci()->IsAlias()) {
+          pbci = M_pcore()->GetBaseEntry(M_pci());
+        }
+
         sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                  M_currentDB(),
-                                                 M_pci(),
+                                                 M_pci(), pbci,
                                                  GetMainDlg()->m_bDoAutoType,
                                                  GetMainDlg()->m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);

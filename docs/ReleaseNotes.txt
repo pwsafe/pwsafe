@@ -53,6 +53,7 @@ fields from shortcut instead of base.
 entry's time and date tab. This is more useful than "N/A", e.g., for
 sorting by password modification to find old passwords that should be
 changed.
+[1054] Password Variable in Run Command correctly set when executed from an alias.
 
 New Features for 3.36
 =====================

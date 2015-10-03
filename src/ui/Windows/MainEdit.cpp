@@ -1559,9 +1559,15 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
+
+        CItemData *pbci = NULL;
+        if (pci->IsAlias()) {
+          pbci = GetBaseEntry(pci);
+        }
+
         sxData = PWSAuxParse::GetExpandedString(sxData,
                                                  m_core.GetCurFile(),
-                                                 pci,
+                                                 pci, pbci,
                                                  m_bDoAutoType,
                                                  m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
@@ -1797,17 +1803,22 @@ void DboxMain::OnRunCommand()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
+  CItemData *pbci = NULL;
+
   const pws_os::CUUID uuid = pci->GetUUID();
   StringX sx_pswd;
 
   if (pci->IsDependent()) {
-    CItemData *pbci = GetBaseEntry(pci);
+    pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
-    if (pci->IsShortcut())
+    if (pci->IsShortcut()) {
       pci = pbci;
-  } else
+      pbci = NULL;
+    }
+  } else {
     sx_pswd = pci->GetPassword();
+  }
 
   StringX sx_RunCommand, sx_Expanded_ES;
   sx_RunCommand = pci->GetRunCommand();
@@ -1818,7 +1829,7 @@ void DboxMain::OnRunCommand()
   StringX::size_type st_column;
   bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand,
-                       m_core.GetCurFile(), pci,
+                       m_core.GetCurFile(), pci, pbci,
                        m_bDoAutoType, m_sxAutoType,
                        errmsg, st_column, bURLSpecial);
   if (!errmsg.empty()) {

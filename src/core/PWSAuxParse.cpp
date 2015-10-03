@@ -78,7 +78,8 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
-                                       const CItemData *pci, bool &bAutoType,
+                                       const CItemData *pci, const CItemData *pbci,
+                                       bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
                                        StringX::size_type &st_column,
                                        bool &bURLSpecial)
@@ -147,7 +148,12 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += pci->GetUser();
     } else
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
-      sxretval += pci->GetPassword();
+      if (pci->IsAlias()) {
+        ASSERT(pbci != NULL);
+        sxretval += pbci->GetPassword();
+      } else {
+        sxretval += pci->GetPassword();
+      }
     } else
       if (st_rctoken.sxname == _T("e") || st_rctoken.sxname == _T("email")) {
       sxretval += pci->GetEmail();
