@@ -311,7 +311,7 @@ Group                       0x02        Text          Y              [2]
 Title                       0x03        Text          Y
 Username                    0x04        Text          Y
 Notes                       0x05        Text          Y
-Password                    0x06        Text          Y              [3,4]
+Password                    0x06        Text          Y              [3,4,21]
 Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
@@ -331,7 +331,7 @@ Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
-End of Entry                0xff        [empty]       Y              [21]
+End of Entry                0xff        [empty]       Y              [22]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -487,7 +487,15 @@ symbols for password field [0x16]. This was introduced in version
     PWS_HOTKEYF_CMD     0x40 (not supported by Windows)
 This was introduced in version 0x030D (PasswordSafe V3.30).
 
-[21] An explicit end of entry field is useful for supporting new fields
+[21] There are five types of entry:
+  a. Normal entry: Without any aliases or shortcuts
+  b. Alias base entry: With one or more aliases (but can't have shortcuts)
+  c. Shortcut base entry: With one or more shortcuts (but can't have aliases)
+  d. Alias entry (as described in note [3])
+  e. Shortcut entry (as described in note [4])
+Note: A 'base' entry can not have both aliases and shortcuts.
+
+[22] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility
