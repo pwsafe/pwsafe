@@ -227,6 +227,7 @@ class CInfoDisplay;
 
 class CListBoxExtn : public CListBox
 {
+  // ONLY used as the ListBox within CComboBoxExtn
   // Construction
 public:
   CListBoxExtn();

@@ -902,7 +902,13 @@ void CComboBoxExtn::OnDestroy()
 void CComboBoxExtn::ChangeColour()
 {
   m_edit.ChangeColour();
-  m_listbox.ChangeColour();
+
+  // Disable associated ListBox background colour, since although the
+  // background text colour is set correctly, the unused portion of
+  // any text line is not set until the mouse moves over it.
+  // Re-enable if/when this is solved (probably by making ownerdraw!)
+
+  // m_listbox.ChangeColour();
 }
 
 void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
