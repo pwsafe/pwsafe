@@ -2049,7 +2049,6 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         } else { // m_IsStartClosed (&& m_IsStartSilent)
           m_IsStartClosed = m_IsStartSilent = false;
           ShowWindow(SW_RESTORE);
-          UpdateSystemTray(UNLOCKED);
         }
         goto exit;  // return false
       } // m_IsStartSilent
