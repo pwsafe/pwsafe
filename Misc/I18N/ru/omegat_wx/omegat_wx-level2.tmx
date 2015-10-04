@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.9_1" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.5.2_1" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -842,6 +842,14 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T123353Z">
         <seg>(Резервная копия контейнера имеет то же имя, но заканчивается символом «~»)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>(application default)</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>(по умолчанию)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2297,6 +2305,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T115434Z">
         <seg>Настроить &amp;основную панель инструментов...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>DB Export from database: '%s'</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Экспортировано из контейнера: '%s'</seg>
       </tuv>
     </tu>
     <tu>
@@ -5233,8 +5249,8 @@ to the base entry</seg>
       <tuv xml:lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2015-04-18 12:29+0300
-PO-Revision-Date: 2015-03-07 16:15+0300
+POT-Creation-Date: 2015-10-04 18:13+0300
+PO-Revision-Date: 2015-10-04 17:50+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5242,17 +5258,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20150418T093036Z" creationid="pm_kan" creationdate="20150418T093036Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20151004T151831Z" creationid="pm_kan" creationdate="20151004T151644Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2015-04-18 12:40+0300
-PO-Revision-Date: 2015-04-18 12:40+0300
-Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2015-10-04 18:40+0300
+PO-Revision-Date: 2015-10-04 18:40+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@mail.ru&gt;
 Language-Team: 
 Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bitr</seg>
+Content-Transfer-Encoding: 8bit</seg>
       </tuv>
     </tu>
     <tu>
@@ -8081,11 +8097,11 @@ able to abort it mid-way.</seg>
       </tuv>
     </tu>
     <tu>
-      <note>could not redisplay ... because ... </note>
+      <note>could not redisplay ... because ...</note>
       <tuv xml:lang="EN-US">
-        <seg>its already visible</seg>
+        <seg>it's already visible</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20130428T143802Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20151004T152135Z" creationid="pm_kan" creationdate="20151004T151543Z">
         <seg>он уже отображён</seg>
       </tuv>
     </tu>
