@@ -4725,12 +4725,12 @@ msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
 msgstr ""
-"В указанных элементы не было заполнено поле с паролем. Это недопустимо. Был "
+"В указанных элементах не было заполнено поле с паролем. Это недопустимо. Был "
 "установлен пароль «%ls»"
 
 #: ../../../core/core_st.cpp:286
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr "В указанных элементы не заполнено поле с заголовком. Это недопустимо."
+msgstr "В указанных элементах не заполнено поле с заголовком. Это недопустимо."
 
 #: ../../../core/core_st.cpp:287
 #, c-format

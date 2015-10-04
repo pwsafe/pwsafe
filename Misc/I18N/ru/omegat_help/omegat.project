@@ -12,7 +12,7 @@
         <target_dir>../../../../help/pwsafeRU</target_dir>
         <tm_dir>../tm</tm_dir>
         <glossary_dir>../glossary</glossary_dir>
-        <glossary_file>../glossary/pwsafe_ru-glossary.utf8</glossary_file>
+        <glossary_file>pwsafe_ru-glossary.utf8</glossary_file>
         <dictionary_dir>__DEFAULT__</dictionary_dir>
         <source_lang>EN-US</source_lang>
         <target_lang>RU-RU</target_lang>

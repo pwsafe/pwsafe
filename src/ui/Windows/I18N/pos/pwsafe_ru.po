@@ -6393,11 +6393,11 @@ msgstr "Указанные элементы были связаны с поли�
 #. Resource IDs: (215)
 #, c-format
 msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
-msgstr "В указанных элементы не было заполнено поле с паролем. Это недопустимо. Был установлен пароль «%ls»."
+msgstr "В указанных элементах не было заполнено поле с паролем. Это недопустимо. Был установлен пароль «%ls»."
 
 #. Resource IDs: (215)
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr "В указанных элементы не заполнено поле с заголовком. Это недопустимо."
+msgstr "В указанных элементах не заполнено поле с заголовком. Это недопустимо."
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
