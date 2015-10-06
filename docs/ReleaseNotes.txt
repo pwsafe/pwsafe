@@ -1,5 +1,5 @@
-Password Safe 3.37 Release Notes - September 2015
-=================================================
+Password Safe 3.37 Release Notes - October 2015
+===============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
