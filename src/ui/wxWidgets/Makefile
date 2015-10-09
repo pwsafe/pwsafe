@@ -54,7 +54,7 @@ OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/debug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2/lib/wx/include/gtk2-ansi-debug-static-2.6"
 MACPACKAGEINFO=
 
@@ -81,7 +81,7 @@ OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/release
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags` -DNDEBUG
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
 MACPACKAGEINFO=
 
@@ -110,7 +110,7 @@ LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
 
@@ -138,7 +138,7 @@ LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE -DNDEBUG
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
-GCCFLAGS=
+GCCFLAGS=-fPIC
 LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(LDFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
 MACPACKAGEINFO=

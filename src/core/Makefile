@@ -43,7 +43,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -Wall -I.. -DLINUX $(CPPFLAGS)
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. -DLINUX $(CPPFLAGS)
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG
