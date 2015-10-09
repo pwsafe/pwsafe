@@ -294,32 +294,38 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Show();
   stringT latext_xml;
   wxURL url(L"https://pwsafe.org/latest.xml");
-  wxInputStream *in_stream = url.GetInputStream();
-  unsigned char buff[BUFSIZ+1];
-  StringX chunk;
-  stringT latest_xml;
-  CUTF8Conv conv;
   CheckVersion::CheckStatus status = CheckVersion::UP2DATE;
-  do {
-    in_stream->Read(buff, BUFSIZ);
-    size_t nRead = in_stream->LastRead();
-    if (nRead != 0) {
-      buff[nRead] = '\0';
-      // change to widechar representation
-      if (!conv.FromUTF8(buff, nRead, chunk)) {
-        delete in_stream;
-        in_stream = 0;
-        status = CheckVersion::CANT_READ;
-        break;
-      } else {
-        latest_xml += chunk.c_str();
+  stringT latest_xml;
+  if (!url.IsOk()) {
+    wxURLError err = url.GetError();
+    pws_os::Trace(wxT("Err:%d\n"),err);
+    status = CheckVersion::CANT_READ;
+  }
+  wxInputStream *in_stream = url.GetInputStream();
+  if (in_stream != NULL) {
+    unsigned char buff[BUFSIZ+1];
+    StringX chunk;
+    CUTF8Conv conv;
+    do {
+      in_stream->Read(buff, BUFSIZ);
+      size_t nRead = in_stream->LastRead();
+      if (nRead != 0) {
+        buff[nRead] = '\0';
+        // change to widechar representation
+        if (!conv.FromUTF8(buff, nRead, chunk)) {
+          delete in_stream;
+          in_stream = 0;
+          status = CheckVersion::CANT_READ;
+          break;
+        } else {
+          latest_xml += chunk.c_str();
+        }
       }
-    }
-  } while (!in_stream->Eof());
-  delete in_stream;
-  if (url.GetError() != wxURL_NOERR)
-    status = CheckVersion::CANT_CONNECT;
-
+    } while (!in_stream->Eof());
+    delete in_stream;
+    if (url.GetError() != wxURL_NOERR)
+      status = CheckVersion::CANT_CONNECT;
+  }
   stringT latest;
   if (status == CheckVersion::UP2DATE) {
     CheckVersion cv(MAJORVERSION, MINORVERSION, 0);
@@ -327,13 +333,13 @@ void CAbout::CheckNewVersion()
   }
   m_newVerStatus->Clear();
   switch (status) {
-    case CheckVersion::CANT_CONNECT:
-      *m_newVerStatus << _("Couldn't contact server.");
-      break;
-    case CheckVersion::UP2DATE:
-      *m_newVerStatus << _("This is the latest release!");
-      break;
-    case CheckVersion::NEWER_AVAILABLE:
+  case CheckVersion::CANT_CONNECT:
+    *m_newVerStatus << _("Couldn't contact server.");
+    break;
+  case CheckVersion::UP2DATE:
+    *m_newVerStatus << _("This is the latest release!");
+    break;
+  case CheckVersion::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
       newer += pwsafeVersionString + L"\n";
@@ -346,11 +352,11 @@ void CAbout::CheckNewVersion()
       dlg.ShowModal();
       break;
     }
-    case CheckVersion::CANT_READ:
-      *m_newVerStatus << _("Could not read server version data.");
-      break;
-    default:
-      break;
+  case CheckVersion::CANT_READ:
+    *m_newVerStatus << _("Could not read server version data.");
+    break;
+  default:
+    break;
   }
   m_newVerStatus->Show();
 }
