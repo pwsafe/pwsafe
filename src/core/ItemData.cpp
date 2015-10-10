@@ -69,6 +69,7 @@ CItemData::CItemData(const CItemData &that) :
 CItemData::~CItemData()
 {
   delete m_display_info;
+  delete m_blowfish;
 }
 
 CItemData& CItemData::operator=(const CItemData &that)
@@ -260,17 +261,15 @@ StringX CItemData::GetField(const FieldType ft) const
 StringX CItemData::GetField(const CItemField &field) const
 {
   StringX retval;
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
+  auto bf = MakeBlowFish(field.IsEmpty());
   field.Get(retval, bf);
-  delete bf;
   return retval;
 }
 
 void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &length) const
 {
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
+  auto bf = MakeBlowFish(field.IsEmpty());
   field.Get(value, length, bf);
-  delete bf;
 }
 
 StringX CItemData::GetFieldValue(FieldType ft) const
@@ -1056,9 +1055,8 @@ void CItemData::SetField(FieldType ft, const StringX &value)
 {
   ASSERT(ft != END);
   if (!value.empty()) {
-    BlowFish *bf = MakeBlowFish(false);
+    auto bf = MakeBlowFish(false);
     m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
-    delete bf;
   } else
     m_fields.erase(static_cast<FieldType>(ft));
 }
@@ -1067,9 +1065,8 @@ void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length
 {
   ASSERT(ft != END);
   if (length != 0) {
-    BlowFish *bf = MakeBlowFish(false);
+    auto bf = MakeBlowFish(false);
     m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
-    delete bf;
   } else
     m_fields.erase(static_cast<FieldType>(ft));
 }
@@ -1097,7 +1094,7 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
   // In order to avoid unecessary BlowFish construction/deletion,
   // we forego SetField here...
   CItemField nameField(NAME);
-  BlowFish *bf = MakeBlowFish();
+  auto bf = MakeBlowFish();
   nameField.Set(name, bf);
   m_fields[NAME] = nameField;
   CItemField titleField(TITLE);
@@ -1106,7 +1103,6 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
   CItemField userField(USER);
   userField.Set(user, bf);
   m_fields[USER] = userField;
-  delete bf;
 }
 
 void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
@@ -1365,9 +1361,8 @@ void CItemData::SetUnknownField(unsigned char type,
   **/
 
   CItemField unkrfe(type);
-  BlowFish *bf = MakeBlowFish(false);
+  auto bf = MakeBlowFish(false);
   unkrfe.Set(ufield, length, bf);
-  delete bf;
   m_URFL.push_back(unkrfe);
 }
 
@@ -1560,16 +1555,21 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
   }
 }
 
-BlowFish *CItemData::MakeBlowFish(bool noData) const
+const BlowFish *CItemData::MakeBlowFish(bool noData) const
 {
+
   ASSERT(IsSessionKeySet);
   // Creating a BlowFish object's relatively expensive. No reason
   // to bother if we don't have any data to process.
   if (noData)
     return NULL;
-  else
-    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+
+  if(!m_blowfish)
+  {
+    m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
                                   m_salt, SaltLength);
+}
+  return m_blowfish;
 }
 
 bool CItemData::ValidatePWHistory()

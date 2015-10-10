@@ -23,8 +23,8 @@ public:
   virtual unsigned int GetBlockSize() const = 0;
   // Following encrypt/decrypt a single block
   // (blocksize dependent on cipher)
-  virtual void Encrypt(const unsigned char *pt, unsigned char *ct) = 0;
-  virtual void Decrypt(const unsigned char *ct, unsigned char *pt) = 0;
+  virtual void Encrypt(const unsigned char *pt, unsigned char *ct) const = 0;
+  virtual void Decrypt(const unsigned char *ct, unsigned char *pt) const = 0;
 };
 
 #endif /* __FISH_H */
