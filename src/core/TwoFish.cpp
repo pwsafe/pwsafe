@@ -298,9 +298,9 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
 #else
 
 #ifdef LTC_CLEAN_STACK
-static uint32 _g_func(uint32 x, twofish_key *key)
+static uint32 _g_func(uint32 x, const twofish_key *key)
 #else
-static uint32 g_func(uint32 x, twofish_key *key)
+static uint32 g_func(uint32 x, const twofish_key *key)
 #endif
 {
   unsigned char g, i, y, z;
@@ -331,7 +331,7 @@ static uint32 g_func(uint32 x, twofish_key *key)
 #define g1_func(x, key) g_func(ROLc(x, 8), key)
 
 #ifdef LTC_CLEAN_STACK
-static uint32 g_func(uint32 x, twofish_key *key)
+static uint32 g_func(uint32 x, const twofish_key *key)
 {
   uint32 y;
   y = _g_func(x, key);
