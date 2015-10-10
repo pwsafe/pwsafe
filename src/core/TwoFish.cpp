@@ -479,14 +479,14 @@ int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_
 #ifdef LTC_CLEAN_STACK
 static void _twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const twofish_key *skey)
 #else
-static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
+static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const twofish_key *skey)
 #endif
 {
   uint32 a,b,c,d,ta,tb,tc,td,t1,t2;
   uint32 const *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  uint32 *S1, *S2, *S3, *S4;
+  const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
@@ -549,14 +549,14 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, cons
 #ifdef LTC_CLEAN_STACK
 static void _twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const twofish_key *skey)
 #else
-static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
+static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const twofish_key *skey)
 #endif
 {
   uint32 a,b,c,d,ta,tb,tc,td,t1,t2;
   uint32 const *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  uint32 *S1, *S2, *S3, *S4;
+  const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
