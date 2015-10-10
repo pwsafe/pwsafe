@@ -298,9 +298,9 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
 #else
 
 #ifdef LTC_CLEAN_STACK
-static uint32 _g_func(uint32 x, twofish_key *key)
+static uint32 _g_func(uint32 x, const twofish_key *key)
 #else
-static uint32 g_func(uint32 x, twofish_key *key)
+static uint32 g_func(uint32 x, const twofish_key *key)
 #endif
 {
   unsigned char g, i, y, z;
@@ -331,7 +331,7 @@ static uint32 g_func(uint32 x, twofish_key *key)
 #define g1_func(x, key) g_func(ROLc(x, 8), key)
 
 #ifdef LTC_CLEAN_STACK
-static uint32 g_func(uint32 x, twofish_key *key)
+static uint32 g_func(uint32 x, const twofish_key *key)
 {
   uint32 y;
   y = _g_func(x, key);
@@ -477,15 +477,16 @@ int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_
   @param skey The key as scheduled
 */
 #ifdef LTC_CLEAN_STACK
-static void _twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
+static void _twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const twofish_key *skey)
 #else
-static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
+static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const twofish_key *skey)
 #endif
 {
-  uint32 a,b,c,d,ta,tb,tc,td,t1,t2, *k;
+  uint32 a,b,c,d,ta,tb,tc,td,t1,t2;
+  uint32 const *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  uint32 *S1, *S2, *S3, *S4;
+  const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
@@ -532,7 +533,7 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twof
 }
 
 #ifdef LTC_CLEAN_STACK
-static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
+static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const twofish_key *skey)
 {
   _twofish_ecb_encrypt(pt, ct, skey);
   burnStack(sizeof(uint32) * 10 + sizeof(uint32));
@@ -546,15 +547,16 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twof
   @param skey The key as scheduled 
 */
 #ifdef LTC_CLEAN_STACK
-static void _twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
+static void _twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const twofish_key *skey)
 #else
-static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
+static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const twofish_key *skey)
 #endif
 {
-  uint32 a,b,c,d,ta,tb,tc,td,t1,t2, *k;
+  uint32 a,b,c,d,ta,tb,tc,td,t1,t2;
+  uint32 const *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  uint32 *S1, *S2, *S3, *S4;
+  const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
@@ -604,7 +606,7 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twof
 }
 
 #ifdef LTC_CLEAN_STACK
-static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
+static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const twofish_key *skey)
 {
   _twofish_ecb_decrypt(ct, pt, skey);
   burnStack(sizeof(uint32) * 10 + sizeof(uint32));
@@ -625,12 +627,12 @@ TwoFish::~TwoFish()
   trashMemory(&key_schedule, sizeof(key_schedule));
 }
 
-void TwoFish::Encrypt(const unsigned char *in, unsigned char *out)
+void TwoFish::Encrypt(const unsigned char *in, unsigned char *out) const
 {
   twofish_ecb_encrypt(in, out, &key_schedule);
 }
 
-void TwoFish::Decrypt(const unsigned char *in, unsigned char *out)
+void TwoFish::Decrypt(const unsigned char *in, unsigned char *out) const
 {
   twofish_ecb_decrypt(in, out, &key_schedule);
 }

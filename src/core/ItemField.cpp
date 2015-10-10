@@ -61,7 +61,7 @@ void CItemField::Empty()
 }
 
 void CItemField::Set(const unsigned char* value, size_t length,
-                     Fish *bf, unsigned char type)
+                     const Fish *bf, unsigned char type)
 {
   size_t BlockLength;
 
@@ -97,7 +97,7 @@ void CItemField::Set(const unsigned char* value, size_t length,
     m_Type = type;
 }
 
-void CItemField::Set(const StringX &value, Fish *bf, unsigned char type)
+void CItemField::Set(const StringX &value, const Fish *bf, unsigned char type)
 {
   const LPCTSTR plainstr = value.c_str();
 
@@ -105,7 +105,7 @@ void CItemField::Set(const StringX &value, Fish *bf, unsigned char type)
       value.length() * sizeof(*plainstr), bf, type);
 }
 
-void CItemField::Get(unsigned char *value, size_t &length, Fish *bf) const
+void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
@@ -136,7 +136,7 @@ void CItemField::Get(unsigned char *value, size_t &length, Fish *bf) const
   }
 }
 
-void CItemField::Get(StringX &value, Fish *bf) const
+void CItemField::Get(StringX &value, const Fish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||

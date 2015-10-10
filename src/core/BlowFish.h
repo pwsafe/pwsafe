@@ -22,10 +22,10 @@ public:
   enum {BLOCKSIZE = 8};
 
   BlowFish(const unsigned char* key, int keylen);
-  virtual ~BlowFish();
-  virtual void Encrypt(const unsigned char *in, unsigned char *out);
-  virtual void Decrypt(const unsigned char *in, unsigned char *out);
-  virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+  ~BlowFish();
+  void Encrypt(const unsigned char *in, unsigned char *out) const;
+  void Decrypt(const unsigned char *in, unsigned char *out) const;
+  unsigned int GetBlockSize() const {return BLOCKSIZE;}
 
 private:
   enum {bf_N = 16};
@@ -33,8 +33,8 @@ private:
   uint32 bf_P[bf_N + 2];
   static const uint32 tempbf_S[4][256];
   static const uint32 tempbf_P[bf_N + 2];
-  void Blowfish_encipher(uint32* xl, uint32* xr);
-  void Blowfish_decipher(uint32* xl, uint32* xr);
+  void Blowfish_encipher(uint32* xl, uint32* xr) const;
+  void Blowfish_decipher(uint32* xl, uint32* xr) const;
   void InitializeBlowfish(const unsigned char key[], short keybytes);
 };
 #endif /* __BLOWFISH_H */

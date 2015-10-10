@@ -367,6 +367,8 @@ private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
+  mutable BlowFish * m_blowfish = nullptr;
+  
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
   static bool IsSessionKeySet;
@@ -386,7 +388,7 @@ private:
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Create local Encryption/Decryption object
-  BlowFish *MakeBlowFish(bool noData = false) const;
+  const BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
   StringX GetField(FieldType ft) const;
   StringX GetField(const CItemField &field) const;

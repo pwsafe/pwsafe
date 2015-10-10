@@ -33,11 +33,11 @@ public:
 
   CItemField &operator=(const CItemField &that);
 
-  void Set(const StringX &value, Fish *bf, unsigned char type = 0xff);
-  void Set(const unsigned char* value, size_t length, Fish *bf, unsigned char type = 0xff);
+  void Set(const StringX &value, const Fish *bf, unsigned char type = 0xff);
+  void Set(const unsigned char* value, size_t length, const Fish *bf, unsigned char type = 0xff);
 
-  void Get(StringX &value, Fish *bf) const;
-  void Get(unsigned char *value, size_t &length, Fish *bf) const;
+  void Get(StringX &value, const Fish *bf) const;
+  void Get(unsigned char *value, size_t &length, const Fish *bf) const;
   unsigned char GetType() const {return m_Type;}
   size_t GetLength() const {return m_Length;}
   bool IsEmpty() const {return m_Length == 0;}
