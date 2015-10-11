@@ -16,7 +16,7 @@ Dim str1, str2, str3, CRLF
 Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
-Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir, strWDKDir
+Dim strGitDir, strXercesDir, strXerces64Dir, strWXDir, strWDKDir, strGtestIncDir, strGtestLibDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -24,8 +24,8 @@ CRLF = Chr(13) & Chr(10)
 ' Check if running 64-bit OS
 ' If running a 64-bit Windows OS, as PasswordSafe is a 32-bit application,
 ' developers should install the 32-bit version of Xerces XML library.
-' Note: the 12.0 in the Xerces directory corresponds to VS2013
-' wxWidgets only come in a 32-bit version.
+' Note: the 14.0 in the Xerces directory corresponds to VS2015
+' wxWidgets only comes in a 32-bit version.
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
@@ -54,6 +54,8 @@ strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-v
 strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-14.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
+strGtestIncDir = "C:\...\gtest-1.7.0\include"
+strGtestLibDir = "C:\...\gtest-1.7.0\build-vc14"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
@@ -63,7 +65,7 @@ strOutputFile = "UserVariables-14.props"
 
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 
-' Check if a VS2010 props file already exists
+' Check if a VS2013 props file already exists
 If (objFileSystem.FileExists(strOutputFile)) Then
   Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
   objXMLDoc.async = False
@@ -91,7 +93,15 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   If Not Node Is Nothing Then
     strWDKDir = Node.text
   End If
-
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/GtestIncDir")
+  If Not Node Is Nothing Then
+    strGtestIncDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/GtestLibDir")
+  If Not Node Is Nothing Then
+    strGtestLibDir = Node.text
+  End If
+  
   Set Node = Nothing
   Set objXMLDoc = Nothing
 End If
@@ -133,6 +143,16 @@ If (IsEmpty(strFileLocation)) Then Call CancelExit
 
 strWDKDir = strFileLocation
 
+strFileLocation = InputBox(str1 & "Google Test (gtest) include directory" & str2 & strGtestIncDir & str3, "Gtest Inc Location", strGtestIncDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strGtestIncDir = strFileLocation
+
+strFileLocation = InputBox(str1 & "Google Test (gtest) library directory" & str2 & strGtestLibDir & str3, "Gtest Lib Location", strGtestLibDir)
+If (IsEmpty(strFileLocation)) Then Call CancelExit
+
+strGtestLibDir = strFileLocation
+
 Set objOutputFile = objFileSystem.CreateTextFile(strOutputFile, TRUE)
 
 objOutputFile.WriteLine("<?xml version=""1.0"" encoding=""utf-8""?>")
@@ -144,6 +164,8 @@ objOutputFile.WriteLine("    <XercesDir>" & strXercesDir & "</XercesDir>")
 objOutputFile.WriteLine("    <Xerces64Dir>" & strXerces64Dir & "</Xerces64Dir>")
 objOutputFile.WriteLine("    <WXDIR>" & strWXDir & "</WXDIR>")
 objOutputFile.WriteLine("    <WDKDIR>" & strWDKDir & "</WDKDIR>")
+objOutputFile.WriteLine("    <GtestIncDir>" & strGtestIncDir & "</GtestIncDir>")
+objOutputFile.WriteLine("    <GtestLibDir>" & strGtestLibDir & "</GtestLibDir>")
 objOutputFile.WriteLine("    <PWSBin>..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
 objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
 objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
@@ -193,6 +215,14 @@ objOutputFile.WriteLine("    <BuildMacro Include=""WDKDIR"">")
 objOutputFile.WriteLine("      <Value>$(WDKDIR)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""GtestIncDir"">")
+objOutputFile.WriteLine("      <Value>$(GtestIncDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""GtestLibDir"">")
+objOutputFile.WriteLine("      <Value>$(GtestLibDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("  </ItemGroup>")
 objOutputFile.WriteLine("</Project>")
 
@@ -203,7 +233,7 @@ Set objFileSystem = Nothing
 WScript.Quit(0)
 
 Sub CancelExit
-  Call MsgBox("File UserVariables-14.props was not created/changed", 0, "Configure User Variables")
+  Call MsgBox("File UserVariables-12.props was not created/changed", 0, "Configure User Variables")
   Set objFileSystem = Nothing
-  WScript.Quit(0)
+WScript.Quit(0)
 End Sub
