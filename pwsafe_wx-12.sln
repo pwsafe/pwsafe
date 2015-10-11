@@ -1,8 +1,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core_wx-12.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\wxWidgets\pwsafe_wx-12.vcxproj", "{45779F00-D0DD-477B-B1E1-F624B6C86AB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73} = {D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}
+		{326058EE-494B-4E51-BB34-1F4505E368B7} = {326058EE-494B-4E51-BB34-1F4505E368B7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os_wx-12.vcxproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
 EndProject
@@ -38,20 +45,16 @@ Global
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.ReleasewxX|x64.Build.0 = ReleasewxX|x64
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|Win32.ActiveCfg = Debugwx|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|Win32.Build.0 = Debugwx|Win32
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x64.ActiveCfg = Debugwx|x64
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x64.Build.0 = Debugwx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x64.ActiveCfg = Debugwx|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.DebugwxX|Win32.ActiveCfg = DebugwxX|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.DebugwxX|Win32.Build.0 = DebugwxX|Win32
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.DebugwxX|x64.ActiveCfg = DebugwxX|x64
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.DebugwxX|x64.Build.0 = DebugwxX|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.DebugwxX|x64.ActiveCfg = DebugwxX|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|Win32.ActiveCfg = Releasewx|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|Win32.Build.0 = Releasewx|Win32
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x64.ActiveCfg = Releasewx|x64
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x64.Build.0 = Releasewx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x64.ActiveCfg = Releasewx|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.ReleasewxX|Win32.ActiveCfg = ReleasewxX|Win32
 		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.ReleasewxX|Win32.Build.0 = ReleasewxX|Win32
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.ReleasewxX|x64.ActiveCfg = ReleasewxX|x64
-		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.ReleasewxX|x64.Build.0 = ReleasewxX|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.ReleasewxX|x64.ActiveCfg = ReleasewxX|Win32
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|Win32.ActiveCfg = Debugwx|Win32
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|Win32.Build.0 = Debugwx|Win32
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|x64.ActiveCfg = Debugwx|x64
