@@ -20,7 +20,7 @@ RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
 
-PKG_BASE = pwsafe
+PKG_BASE := pwsafe
 SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
 
 MKDIR := mkdir -p
@@ -84,12 +84,15 @@ deb:	release tar
 rpm:	I18N tar
 	@$(MKDIR) $(RELEASEDIR)
 	$(MAKE) -C install/$@ \
-	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
+	RELEASENAME=$(RELEASENAME)
 	$(MAKE) signatures sha1sums
 
 tar:
 	@$(MKDIR)  $(RELEASEDIR)
-	@$(GIT) archive HEAD --prefix=$(PKG_BASE)-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)/$(SRC_TGZ)
+	@$(GIT) archive --format=tar.gz \
+	--prefix=$(PKG_BASE)-$(RELEASENAME)/ \
+	-o $(RELEASEDIR)/$(SRC_TGZ) \
+	HEAD
 	@echo "Done."
 
 sha1sums:
