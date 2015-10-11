@@ -155,10 +155,10 @@
     <ClCompile Include="pbkdf2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSfileHeader.cpp">
+    <ClCompile Include="PWSfileV4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSfileV4.cpp">
+    <ClCompile Include="PWSfileHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWStime.cpp">
@@ -343,10 +343,10 @@
     <ClInclude Include="pbkdf2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSfileHeader.h">
+    <ClInclude Include="PWSfileV4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSfileV4.h">
+    <ClInclude Include="PWSfileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWStime.h">

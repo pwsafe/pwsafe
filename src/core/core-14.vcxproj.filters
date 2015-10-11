@@ -32,6 +32,21 @@
     <ClCompile Include="Match.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PWCharPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,21 +113,6 @@
     <ClCompile Include="VerifyFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XML\XERCES\XFileSAX2Handlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\Xerces\XFileValidator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\XERCES\XFileXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\XERCES\XFilterSAX2Handlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\XERCES\XFilterXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="XML\XMLFileHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -143,10 +143,10 @@
     <ClCompile Include="AES.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="PWSfileV4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemAtt.cpp">
+    <ClCompile Include="PWStime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KeyWrap.cpp">
@@ -155,13 +155,13 @@
     <ClCompile Include="pbkdf2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemAtt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PWSfileHeader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWSfileV4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWStime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,6 +197,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Match.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileXMLProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Proxy.h">
@@ -280,21 +295,6 @@
     <ClInclude Include="VerifyFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XML\XERCES\XFileSAX2Handlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\Xerces\XFileValidator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\XERCES\XFileXMLProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\XERCES\XFilterSAX2Handlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\XERCES\XFilterXMLProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="XML\XMLDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -331,10 +331,10 @@
     <ClInclude Include="AES.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="PWSfileV4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemAtt.h">
+    <ClInclude Include="PWStime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyWrap.h">
@@ -343,13 +343,13 @@
     <ClInclude Include="pbkdf2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemAtt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWSfileHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSfileV4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWStime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
