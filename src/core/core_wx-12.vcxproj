@@ -412,6 +412,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AES.cpp" />
     <ClCompile Include="BlowFish.cpp" />
     <ClCompile Include="CheckVersion.cpp" />
     <ClCompile Include="Command.cpp" />
@@ -419,10 +420,16 @@
     <ClCompile Include="CoreImpExp.cpp" />
     <ClCompile Include="core_st.cpp" />
     <ClCompile Include="ExpiredList.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemAtt.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
+    <ClCompile Include="KeyWrap.cpp" />
     <ClCompile Include="Match.cpp" />
+    <ClCompile Include="pbkdf2.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="PWSfileHeader.cpp" />
+    <ClCompile Include="PWSfileV4.cpp" />
     <ClCompile Include="PWSLog.cpp" />
     <ClCompile Include="PWCharPool.cpp" />
     <ClCompile Include="PWHistory.cpp" />
@@ -436,6 +443,7 @@
     <ClCompile Include="PWSFilters.cpp" />
     <ClCompile Include="PWSprefs.cpp" />
     <ClCompile Include="PWSrand.cpp" />
+    <ClCompile Include="PWStime.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="sha1.cpp" />
     <ClCompile Include="sha256.cpp" />
@@ -457,6 +465,7 @@
     <ClCompile Include="XML\XERCES\XSecMemMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AES.h" />
     <ClInclude Include="BlowFish.h" />
     <ClInclude Include="CheckVersion.h" />
     <ClInclude Include="Command.h" />
@@ -468,11 +477,17 @@
     <ClInclude Include="ExpiredList.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="hmac.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemAtt.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
+    <ClInclude Include="KeyWrap.h" />
     <ClInclude Include="Match.h" />
+    <ClInclude Include="pbkdf2.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="PWSfileHeader.h" />
+    <ClInclude Include="PWSfileV4.h" />
     <ClInclude Include="PWSLog.h" />
     <ClInclude Include="Proxy.h" />
     <ClInclude Include="PWCharPool.h" />
@@ -488,6 +503,7 @@
     <ClInclude Include="PwsPlatform.h" />
     <ClInclude Include="PWSprefs.h" />
     <ClInclude Include="PWSrand.h" />
+    <ClInclude Include="PWStime.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="sha1.h" />
     <ClInclude Include="sha256.h" />
