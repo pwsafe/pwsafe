@@ -318,6 +318,50 @@ the appropriate XSD Schema file (included in the distribution and in the
 ensures that the data eventually hitting the SAX2 content handlers is
 correct and just needs placing in the appropriate fields.</p>
 
+<h3><a name="Gtest"></a> Gtest framework</h3>
+PasswordSafe uses the <a href="https://github.com/google/googletest" target="_blank">gtest</a> framework
+in the DebugM build - specifically the DebugM build of the coretest project.
+<br>
+(The following instructions were written for version 1.7 of gtest.)
+<br>
+To generate the required library, open gtest.sln in the "msvc" sub-directory in the gtest directory.
+<br>
+You only need to build the Debug version of gtest library (gtestd.lib) in the gtest project of the
+solution "gtest.sln". PasswordSafe does not use the "gtest-md.sln" solution nor following projects
+in gtest.sln:
+<ol type="a">
+ <li>gtest_main</li>
+ <li>gtest_prod_test</li>
+ <li>gtest_unittest</li>
+</ol> 
+However, you can also make the similar changes to the following in these project if you wish to
+run the gtest Test programs.
+
+The following changes should be made to the (converted) project file:
+<ol>
+<li> Configuration Properties: General: (NN is 12 for VS2013 & 14 for VS2015)
+	 <ol type="a">
+	 	 <li> All configurations:<br>
+  		 	  Output directory:       ..\build-vcNN/$(Configuration)\<br>
+			  Intermediate Directory: $(Configuration)/$(ProjectName)\</li>
+  		 <li>Debug configuration:<br>
+		     Target Name:            $(ProjectName)d</li>
+		 <li>Release configuration (not used by PasswordSafe):<br>
+		     Target Name:            $(ProjectName)</li>
+	</ol></li>
+
+<li>Configuration Properties: C/C++: Output Files
+	<ol type="a">
+  		<li>Debug configuration:<br>
+		    Program Database File Name: $(OutDir)\$(ProjectName)d.pdb</li>
+		<li>Release configuration(not used by PasswordSafe):<br>
+		    Program Database File Name: $(OutDir)\$(ProjectName).pdb</li>
+			</ol></li>
+</ol>
+Please remember to (re-)run the PasswordSafe configure-12.vbs or configure-14.vbs script to set the necessary gtest
+include and library directories.  These would normally be the subdirectories "include" and either
+"build-vc12" or "build-vc14" of the "gtest-1.7.0" directory.
+
 <h3><a name="Minidump_Production"></a>Minidump Production (Windows only)</h3>
 
 <p>In order to help debug user problems when Windows just says "there has
