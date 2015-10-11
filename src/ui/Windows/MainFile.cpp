@@ -1372,19 +1372,22 @@ void DboxMain::OnExportVx(UINT nID)
   StringX newfile;
   CString cs_title, cs_text;
 
-  CGeneralMsgBox gmb;
+  if (nID != ID_MENUITEM_EXPORT2V4FORMAT) {
+    // Only need warning if exporting to a lower DB version
+    CGeneralMsgBox gmb;
 
-  cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
-  cs_title.LoadString(IDS_VERSIONWARNING);
+    cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
+    cs_title.LoadString(IDS_VERSIONWARNING);
 
-  gmb.SetTitle(cs_title);
-  gmb.SetMsg(cs_text);
-  gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-  gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-  gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_text);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+    gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
 
-  if (gmb.DoModal() == IDS_CANCEL)
-    return;
+    if (gmb.DoModal() == IDS_CANCEL)
+      return;
+  }
 
   PWSfile::VERSION ver = PWSfile::UNKNOWN_VERSION;
   stringT sfx = L"";

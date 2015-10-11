@@ -7,7 +7,7 @@
 '
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
-' This script is for setting up Visual Studio 2013.
+' This script is for setting up Visual Studio 2015.
 
 Dim objFileSystem, objOutputFile
 Dim strOutputFile
@@ -24,8 +24,8 @@ CRLF = Chr(13) & Chr(10)
 ' Check if running 64-bit OS
 ' If running a 64-bit Windows OS, as PasswordSafe is a 32-bit application,
 ' developers should install the 32-bit version of Xerces XML library.
-' Note: the 12.0 in the Xerces directory corresponds to VS2013
-' wxWidgets only come in a 32-bit version.
+' Note: the 14.0 in the Xerces directory corresponds to VS2015
+' wxWidgets only comes in a 32-bit version.
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
@@ -50,18 +50,18 @@ End If
 Set oReg = Nothing
 
 ' Set defaults
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-12.0"
-strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-12.0"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-14.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-14.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 strGtestIncDir = "C:\...\gtest-1.7.0\include"
-strGtestLibDir = "C:\...\gtest-1.7.0\build-vc12"
+strGtestLibDir = "C:\...\gtest-1.7.0\build-vc14"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
 str3 = CRLF & CRLF & "See README.DEVELOPERS.txt for more information."
 
-strOutputFile = "UserVariables-12.props"
+strOutputFile = "UserVariables-14.props"
 
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 
@@ -101,7 +101,7 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   If Not Node Is Nothing Then
     strGtestLibDir = Node.text
   End If
-
+  
   Set Node = Nothing
   Set objXMLDoc = Nothing
 End If
@@ -228,7 +228,7 @@ objOutputFile.WriteLine("</Project>")
 
 objOutputFile.Close
 
-Call MsgBox("File UserVariables-12.props created successfully", 0, "Configure User Variables")
+Call MsgBox("File UserVariables-14.props created successfully", 0, "Configure User Variables")
 Set objFileSystem = Nothing
 WScript.Quit(0)
 
