@@ -1153,9 +1153,9 @@ int PWSfileV4::ReadHeader()
         // Get the entries and save them
         unsigned char *buf = utf8 + 1;
         for (int n = 0; n < num; n++, buf += sizeof(uuid_array_t)) {
-          uuid_array_t ua = {0};
-          memcpy(ua, buf, sizeof(uuid_array_t));
-          const CUUID uuid(ua);
+          uuid_array_t uax = {0};
+          memcpy(uax, buf, sizeof(uuid_array_t));
+          const CUUID uuid(uax);
           if (uuid != CUUID::NullUUID())
             m_hdr.m_RUEList.push_back(uuid);
         }
