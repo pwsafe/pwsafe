@@ -43,7 +43,6 @@
 * how the records are written to disk.
 */
 
-class BlowFish;
 class PWSfile;
 class PWSfileV4;
 
@@ -336,8 +335,6 @@ private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
-  mutable BlowFish * m_blowfish = nullptr;
-  
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
   static bool IsSessionKeySet;
@@ -354,11 +351,7 @@ private:
   void SetTime(const int whichtime); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
-  // Create local Encryption/Decryption object
-  const BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
-  void SetField(FieldType ft, const StringX &value);
-  void SetField(FieldType ft, const unsigned char *value, size_t length);
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
 
   // for V3 Alias or Shortcut, the base UUID is encoded in password

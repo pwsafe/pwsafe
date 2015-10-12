@@ -141,6 +141,8 @@ protected:
 
   void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata, const CItemField &item) const;
+private:
+  mutable BlowFish * m_blowfish = nullptr;
 };
 
 #endif /* __ITEM_H */
