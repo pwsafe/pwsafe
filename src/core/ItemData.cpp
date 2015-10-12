@@ -54,8 +54,6 @@ CItemData::CItemData(const CItemData &that) :
 
 CItemData::~CItemData()
 {
-  delete m_display_info;
-  delete m_blowfish;
 }
 
 CItemData& CItemData::operator=(const CItemData &that)
@@ -408,26 +406,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
 
 //-----------------------------------------------------------------------------
 // Accessors
-
-StringX CItemData::GetField(const FieldType ft) const
-{
-  FieldConstIter fiter = m_fields.find(ft);
-  return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
-}
-
-StringX CItemData::GetField(const CItemField &field) const
-{
-  StringX retval;
-  auto bf = MakeBlowFish(field.IsEmpty());
-  field.Get(retval, bf);
-  return retval;
-}
-
-void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &length) const
-{
-  auto bf = MakeBlowFish(field.IsEmpty());
-  field.Get(value, length, bf);
-}
 
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
@@ -1193,26 +1171,6 @@ void CItemData::SplitName(const StringX &name,
 //-----------------------------------------------------------------------------
 // Setters
 
-void CItemData::SetField(FieldType ft, const StringX &value)
-{
-  ASSERT(ft != END);
-  if (!value.empty()) {
-    auto bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
-}
-
-void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length)
-{
-  ASSERT(ft != END);
-  if (length != 0) {
-    auto bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
-}
-
 void CItemData::CreateUUID(FieldType ft)
 {
   CUUID uuid;
@@ -1241,24 +1199,15 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
     user = defaultUsername;
   } else
     SplitName(name, title, user);
-  // In order to avoid unecessary BlowFish construction/deletion,
-  // we forego SetField here...
-  CItemField nameField(NAME);
-  auto bf = MakeBlowFish();
-  nameField.Set(name, bf);
-  m_fields[NAME] = nameField;
-  CItemField titleField(TITLE);
-  titleField.Set(title, bf);
-  m_fields[TITLE] = titleField;
-  CItemField userField(USER);
-  userField.Set(user, bf);
-  m_fields[USER] = userField;
+  CItem::SetField(NAME, name);
+  CItem::SetField(TITLE, title);
+  CItem::SetField(USER, user);
 }
 
 void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(TITLE, title);
+    CItem::SetField(TITLE, title);
   else {
     StringX new_title(_T(""));
     StringX newstringT, tmpstringT;
@@ -1278,13 +1227,13 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
     if (!newstringT.empty())
       new_title += newstringT;
 
-    SetField(TITLE, new_title);
+    CItem::SetField(TITLE, new_title);
   }
 }
 
 void CItemData::SetUser(const StringX &user)
 {
-  SetField(USER, user);
+  CItem::SetField(USER, user);
 }
 
 void CItemData::UpdatePassword(const StringX &password)
@@ -1381,13 +1330,13 @@ void CItemData::UpdatePasswordHistory()
 
 void CItemData::SetPassword(const StringX &password)
 {
-  SetField(PASSWORD, password);
+  CItem::SetField(PASSWORD, password);
 }
 
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(NOTES, notes);
+    CItem::SetField(NOTES, notes);
   else {
     const StringX CRLF = _T("\r\n");
     StringX multiline_notes(_T(""));
@@ -1411,28 +1360,28 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
     if (!newstringT.empty())
       multiline_notes += newstringT;
 
-    SetField(NOTES, multiline_notes);
+    CItem::SetField(NOTES, multiline_notes);
   }
 }
 
 void CItemData::SetGroup(const StringX &group)
 {
-  SetField(GROUP, group);
+  CItem::SetField(GROUP, group);
 }
 
 void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
 {
-  SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
+  CItem::SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
 }
 
 void CItemData::SetURL(const StringX &url)
 {
-  SetField(URL, url);
+  CItem::SetField(URL, url);
 }
 
 void CItemData::SetAutoType(const StringX &autotype)
 {
-  SetField(AUTOTYPE, autotype);
+  CItem::SetField(AUTOTYPE, autotype);
 }
 
 void CItemData::SetTime(int whichtime)
@@ -1495,34 +1444,19 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
-void CItemData::SetUnknownField(unsigned char type,
-                                size_t length,
-                                const unsigned char *ufield)
-{
-  /**
-     TODO - check that this unknown field from the XML Import file is now
-     known and it should be added as that instead!
-  **/
-
-  CItemField unkrfe(type);
-  auto bf = MakeBlowFish(false);
-  unkrfe.Set(ufield, length, bf);
-  m_URFL.push_back(unkrfe);
-}
-
 void CItemData::SetPWHistory(const StringX &PWHistory)
 {
   StringX pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
     pwh = _T("");
-  SetField(PWHIST, pwh);
+  CItem::SetField(PWHIST, pwh);
 }
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   const StringX cs_pwp(pwp);
 
-  SetField(POLICY, cs_pwp);
+  CItem::SetField(POLICY, cs_pwp);
   if (!pwp.symbols.empty())
     SetSymbols(pwp.symbols);
 }
@@ -1531,7 +1465,7 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
   if (cs_pwp.empty()) {
-    SetField(POLICY, cs_pwp.c_str());
+    CItem::SetField(POLICY, cs_pwp.c_str());
     return true;
   }
 
@@ -1542,35 +1476,35 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   if (pwp == emptyPol)
     return false;
 
-  SetField(POLICY, cs_pwpolicy);
+  CItem::SetField(POLICY, cs_pwpolicy);
   return true;
 }
 
 void CItemData::SetRunCommand(const StringX &cs_RunCommand)
 {
-  SetField(RUNCMD, cs_RunCommand);
+  CItem::SetField(RUNCMD, cs_RunCommand);
 }
 
 void CItemData::SetEmail(const StringX &sx_email)
 {
-  SetField(EMAIL, sx_email);
+  CItem::SetField(EMAIL, sx_email);
 }
 
 void CItemData::SetSymbols(const StringX &sx_symbols)
 {
-  SetField(SYMBOLS, sx_symbols);
+  CItem::SetField(SYMBOLS, sx_symbols);
 }
 
 void CItemData::SetPolicyName(const StringX &sx_PolicyName)
 {
-  SetField(POLICYNAME, sx_PolicyName);
+  CItem::SetField(POLICYNAME, sx_PolicyName);
 }
 
 void CItemData::SetDCA(int16 iDCA, const bool bShift)
 {
   unsigned char buf[sizeof(int16)];
   putInt(buf, iDCA);
-  SetField(bShift ? SHIFTDCA : DCA, buf, sizeof(int16));
+  CItem::SetField(bShift ? SHIFTDCA : DCA, buf, sizeof(int16));
 }
 
 bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
@@ -1609,7 +1543,7 @@ void CItemData::SetKBShortcut(int32 iKBShortcut)
 {
   unsigned char buf[sizeof(int32)];
   putInt(buf, iKBShortcut);
-  SetField(KBSHORTCUT, buf, sizeof(int32));
+  CItem::SetField(KBSHORTCUT, buf, sizeof(int32));
 }
 
 void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
@@ -1666,7 +1600,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case RUNCMD:     /* 12 */
     case SYMBOLS:    /* 16 */
     case POLICYNAME: /* 18 */
-      SetField(ft, value);
+      CItem::SetField(ft, value);
       break;
     case CTIME:      /* 07 */
     case PMTIME:     /* 08 */
@@ -1699,22 +1633,6 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     default:
       ASSERT(0);     /* Not supported */
   }
-}
-
-const BlowFish *CItemData::MakeBlowFish(bool noData) const
-{
-
-  ASSERT(IsSessionKeySet);
-  // Creating a BlowFish object's relatively expensive. No reason
-  // to bother if we don't have any data to process.
-  if (noData)
-    return NULL;
-
-  if(!m_blowfish) {
-    m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                        m_salt, SaltLength);
-  }
-  return m_blowfish;
 }
 
 bool CItemData::ValidatePWHistory()

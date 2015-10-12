@@ -50,6 +50,7 @@ CItem::CItem(const CItem &that) :
 CItem::~CItem()
 {
   delete m_display_info;
+  delete m_blowfish;
 }
 
 CItem& CItem::operator=(const CItem &that)
@@ -142,9 +143,12 @@ BlowFish *CItem::MakeBlowFish(bool noData) const
   // to bother if we don't have any data to process.
   if (noData)
     return NULL;
-  else
-    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                  m_salt, SaltLength);
+
+  if(!m_blowfish) {
+    m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+                                        m_salt, SaltLength);
+  }
+  return m_blowfish;
 }
 
 void CItem::SetUnknownField(unsigned char type,
@@ -157,9 +161,7 @@ void CItem::SetUnknownField(unsigned char type,
   **/
 
   CItemField unkrfe(type);
-  BlowFish *bf = MakeBlowFish(false);
-  unkrfe.Set(ufield, length, bf);
-  delete bf;
+  unkrfe.Set(ufield, length, MakeBlowFish(false));
   m_URFL.push_back(unkrfe);
 }
 
@@ -172,9 +174,9 @@ void CItem::Clear()
 void CItem::SetField(int ft, const unsigned char *value, size_t length)
 {
   if (length != 0) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
-    delete bf;
+    m_fields[ft].Set(value, length,
+                     MakeBlowFish(false),
+                     static_cast<unsigned char>(ft));
   } else
     m_fields.erase(ft);
 }
@@ -182,9 +184,9 @@ void CItem::SetField(int ft, const unsigned char *value, size_t length)
 void CItem::SetField(int ft, const StringX &value)
 {
   if (!value.empty()) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
-    delete bf;
+    m_fields[ft].Set(value,
+                     MakeBlowFish(false),
+                     static_cast<unsigned char>(ft));
   } else
     m_fields.erase(ft);
 }
@@ -248,9 +250,7 @@ bool CItem::SetTimeField(int ft, const unsigned char *value,
 void CItem::GetField(const CItemField &field,
                      unsigned char *value, size_t &length) const
 {
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(value, length, bf);
-  delete bf;
+  field.Get(value, length, MakeBlowFish(field.IsEmpty()));
 }
 
 StringX CItem::GetField(const int ft) const
@@ -262,9 +262,7 @@ StringX CItem::GetField(const int ft) const
 StringX CItem::GetField(const CItemField &field) const
 {
   StringX retval;
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(retval, bf);
-  delete bf;
+  field.Get(retval, MakeBlowFish(field.IsEmpty()));
   return retval;
 }
 
