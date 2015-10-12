@@ -234,13 +234,14 @@ static int rijndael_setup(const unsigned char *key, int keylen,
 */
 #ifdef LTC_CLEAN_STACK
 static int _rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                                 rijndael_key *skey) 
+                                 const rijndael_key *skey) 
 #else
 static int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                                rijndael_key *skey)
+                                const rijndael_key *skey)
 #endif
 {
-    ulong32 s0, s1, s2, s3, t0, t1, t2, t3, *rk;
+    ulong32 s0, s1, s2, s3, t0, t1, t2, t3;
+    const ulong32 *rk;
     int Nr, r;
    
     ASSERT(pt != NULL);
@@ -397,7 +398,7 @@ static int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
 
 #ifdef LTC_CLEAN_STACK
 int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                         rijndael_key *skey) 
+                         const rijndael_key *skey) 
 {
    int err = _rijndael_ecb_encrypt(pt, ct, skey);
    burnStack(sizeof(unsigned long)*8 + sizeof(unsigned long*) + sizeof(int)*2);
@@ -416,13 +417,14 @@ int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
 */
 #ifdef LTC_CLEAN_STACK
 static int _rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                 rijndael_key *skey) 
+                                 const rijndael_key *skey) 
 #else
 static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                rijndael_key *skey)
+                                const rijndael_key *skey)
 #endif
 {
-    ulong32 s0, s1, s2, s3, t0, t1, t2, t3, *rk;
+    ulong32 s0, s1, s2, s3, t0, t1, t2, t3;
+    const ulong32 *rk;
     int Nr, r;
 
     ASSERT(pt != NULL);
@@ -580,7 +582,7 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
 
 #ifdef LTC_CLEAN_STACK
 static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                rijndael_key *skey) 
+                                const rijndael_key *skey) 
 {
    int err = _rijndael_ecb_decrypt(ct, pt, skey);
    burnStack(sizeof(unsigned long)*8 + sizeof(unsigned long*) + sizeof(int)*2);
@@ -603,12 +605,12 @@ AES::~AES()
   trashMemory(&key_schedule, sizeof(key_schedule));
 }
 
-void AES::Encrypt(const unsigned char *in, unsigned char *out)
+void AES::Encrypt(const unsigned char *in, unsigned char *out) const
 {
   rijndael_ecb_encrypt(in, out, &key_schedule);
 }
 
-void AES::Decrypt(const unsigned char *in, unsigned char *out)
+void AES::Decrypt(const unsigned char *in, unsigned char *out) const
 {
   rijndael_ecb_decrypt(in, out, &key_schedule);
 }
