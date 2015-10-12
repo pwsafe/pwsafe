@@ -25,10 +25,10 @@ class AES : public Fish
 public:
   enum {BLOCKSIZE=16};
   AES(const unsigned char* key, int keylen);
-  virtual ~AES();
-  virtual void Encrypt(const unsigned char *in, unsigned char *out);
-  virtual void Decrypt(const unsigned char *in, unsigned char *out);
-  virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+  ~AES();
+  void Encrypt(const unsigned char *in, unsigned char *out) const;
+  void Decrypt(const unsigned char *in, unsigned char *out) const;
+  unsigned int GetBlockSize() const {return BLOCKSIZE;}
 
 private:
   rijndael_key key_schedule;
