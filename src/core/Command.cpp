@@ -606,7 +606,7 @@ void DeleteEntryCommand::Undo()
     // Check if dep entry hasn't already been added - can happen if
     // base and dep in group that's being undeleted.
     if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, this);
+      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, &m_att, this);
       pcmd->Execute();
       delete pcmd;
     }
