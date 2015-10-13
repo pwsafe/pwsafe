@@ -152,9 +152,13 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   EXPECT_EQ(title, ai.GetTitle());
   EXPECT_EQ(cTime, ai.GetCTime(tVal));
   ASSERT_EQ(sizeof(content), ai.GetContentLength());
+
   size_t contentSize = ai.GetContentSize();
   contentVal = new unsigned char[contentSize];
+
   EXPECT_FALSE(ai.GetContent(contentVal, contentSize - 1));
   EXPECT_TRUE(ai.GetContent(contentVal, contentSize));
   EXPECT_EQ(0, memcmp(content, contentVal, sizeof(content)));
+
+  delete[] contentVal;
 }

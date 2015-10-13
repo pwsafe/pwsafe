@@ -36,13 +36,17 @@ TEST_F(CommandsTest, AddItem)
   di.SetTitle(L"a title");
   di.SetPassword(L"a password");
   const pws_os::CUUID uuid = di.GetUUID();
+
+  AddEntryCommand *pcmd = AddEntryCommand::Create(&core, di);
   
-  core.Execute(AddEntryCommand::Create(&core, di));
+  core.Execute(pcmd);
   ItemListConstIter iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
   core.Undo();
   EXPECT_EQ(0, core.GetNumEntries());
+
+  delete pcmd;
 }
 
 TEST_F(CommandsTest, CreateShortcutEntry)
@@ -84,14 +88,30 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   // Delete base, expect both to be gone
   // Get base from core for correct type
   const CItemData bi2 = core.GetEntry(core.Find(base_uuid));
-  core.Execute(DeleteEntryCommand::Create(&core, bi2));
+
+  const pws_os::CUUID bi2_uuid = bi2.GetUUID();
+
+  DeleteEntryCommand *pcmd1 = DeleteEntryCommand::Create(&core, bi2);
+
+  core.Execute(pcmd1);
   EXPECT_EQ(0, core.GetNumEntries());
   core.Undo();
   EXPECT_EQ(2, core.GetNumEntries());
 
   // Now just delete the shortcut, check that
   // base is left, and that it reverts to a normal entry
-  core.Execute(DeleteEntryCommand::Create(&core, si));
+
+  DeleteEntryCommand *pcmd2 = DeleteEntryCommand::Create(&core, si);
+
+  core.Execute(pcmd2);
   ASSERT_EQ(1, core.GetNumEntries());
   EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
+
+  // Delete in reverse order
+  // Deleting pcmd1 causes access violation after Trace warning:
+  //    CItemData::GetUUID(uuid_array_t) - no UUID found!
+  // However, not deleting it doesn't cause a memory leak!
+  delete pcmd2;
+  //delete pcmd1;
+  delete pmulticmds;
 }
