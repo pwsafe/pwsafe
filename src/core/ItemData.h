@@ -167,7 +167,7 @@ public:
   time_t GetXTime(time_t &t) const {CItem::GetTime(XTIME, t); return t;}  // V30
   time_t GetPMTime(time_t &t) const {CItem::GetTime(PMTIME, t); return t;}  // V30
   time_t GetRMTime(time_t &t) const {CItem::GetTime(RMTIME, t); return t;}  // V30
-  void GetXTimeInt(int32 &xint) const; // V30
+  int32 GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;
