@@ -39,7 +39,7 @@ protected:
   const StringX url, at, email, polname, symbols, runcmd;
   const time_t aTime, cTime, xTime, pmTime, rmTime;
   const int16 iDCA, iSDCA;
-  const int32 kbs;
+  const int32 xTimeInt, kbs;
   time_t tVal;
   int16 iVal16;
   int32 iVal32;
@@ -54,7 +54,7 @@ ItemDataTest::ItemDataTest()
     polname(_T("liberal")), symbols(_T("<-_+=@?>")), runcmd(_T("Run 4 your life")),
     aTime(1409901292), // time test was first added, from http://www.unixtimestamp.com/
     cTime(1409901293), xTime(1409901294), pmTime(1409901295), rmTime(1409901296),
-    iDCA(3), iSDCA(8), kbs(0x12345678),
+    iDCA(3), iSDCA(8), xTimeInt(42), kbs(0x12345678),
     tVal(0), iVal16(-1), iVal32(-1)
 {}
 
@@ -78,6 +78,7 @@ void ItemDataTest::SetUp()
   fullItem.SetRMTime(rmTime);
   fullItem.SetDCA(iDCA);
   fullItem.SetShiftDCA(iSDCA);
+  fullItem.SetXTimeInt(xTimeInt);
   fullItem.SetKBShortcut(kbs);
 }
 
@@ -123,6 +124,7 @@ TEST_F(ItemDataTest, Getters_n_Setters)
   EXPECT_EQ(rmTime, fullItem.GetRMTime(tVal));
   EXPECT_EQ(iDCA, fullItem.GetDCA(iVal16));
   EXPECT_EQ(iSDCA, fullItem.GetShiftDCA(iVal16));
+  EXPECT_EQ(xTimeInt, fullItem.GetXTimeInt(iVal32));
   EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
 }
 
