@@ -550,7 +550,7 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
   pwp = mypol;
 }
 
-void CItemData::GetXTimeInt(int32 &xint) const
+int32 CItemData::GetXTimeInt(int32 &xint) const
 {
   FieldConstIter fiter = m_fields.find(XTIME_INT);
   if (fiter == m_fields.end())
@@ -567,6 +567,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
       xint = 0;
     }
   }
+  return xint;
 }
 
 StringX CItemData::GetXTimeInt() const
@@ -1419,7 +1420,7 @@ void CItemData::SetXTimeInt(int32 xint)
 {
   unsigned char buf[sizeof(int32)];
   putInt(buf, xint);
-  SetField(XTIME_INT, buf, sizeof(int32));
+  CItem::SetField(XTIME_INT, buf, sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
