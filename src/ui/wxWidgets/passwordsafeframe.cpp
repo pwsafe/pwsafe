@@ -3046,7 +3046,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
       return;
 
     newfile = tostringx(fd.GetPath());
-    rc = m_core.WriteFile(newfile, ver);
+    rc = m_core.WriteFile(newfile, true, ver);
   } else { // internal error
     wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
   }

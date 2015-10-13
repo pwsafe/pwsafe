@@ -424,6 +424,9 @@ const short VersionNum = 0x0400;
 
 struct PWSfileV4::CKeyBlocks::KeyBlockFinder {
   KeyBlockFinder(const StringX &passkey) : passkey(passkey) {}
+
+  KeyBlockFinder& operator=(const KeyBlockFinder&); // Do not implement
+
   bool operator()(const KeyBlock &kb) {
     unsigned char Ptag[SHA256::HASHLEN];
     unsigned char K[PWSfileV4::KLEN];

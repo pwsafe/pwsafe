@@ -573,6 +573,7 @@
     <ClInclude Include="ExpiredList.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="hmac.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="ItemAtt.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
