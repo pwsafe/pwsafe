@@ -117,7 +117,7 @@ protected:
   unsigned char m_salt[SaltLength];
 
   // Create local Encryption/Decryption object
-  BlowFish *MakeBlowFish(bool noData = false) const;
+  BlowFish *MakeBlowFish() const;
 
   void SetField(int ft, const unsigned char *value, size_t length);
   void SetField(int ft, const StringX &value);

@@ -136,13 +136,11 @@ size_t CItem::GetSize() const
   return length;
 }
 
-BlowFish *CItem::MakeBlowFish(bool noData) const
+BlowFish *CItem::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
-  // Creating a BlowFish object's relatively expensive. No reason
-  // to bother if we don't have any data to process.
-  if (noData)
-    return NULL;
+  // Creating a BlowFish object's relatively expensive, so we use
+  // the singleton design pattern for the life of the CItem object
 
   if(!m_blowfish) {
     m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
@@ -161,7 +159,7 @@ void CItem::SetUnknownField(unsigned char type,
   **/
 
   CItemField unkrfe(type);
-  unkrfe.Set(ufield, length, MakeBlowFish(false));
+  unkrfe.Set(ufield, length, MakeBlowFish());
   m_URFL.push_back(unkrfe);
 }
 
@@ -175,7 +173,7 @@ void CItem::SetField(int ft, const unsigned char *value, size_t length)
 {
   if (length != 0) {
     m_fields[ft].Set(value, length,
-                     MakeBlowFish(false),
+                     MakeBlowFish(),
                      static_cast<unsigned char>(ft));
   } else
     m_fields.erase(ft);
@@ -185,7 +183,7 @@ void CItem::SetField(int ft, const StringX &value)
 {
   if (!value.empty()) {
     m_fields[ft].Set(value,
-                     MakeBlowFish(false),
+                     MakeBlowFish(),
                      static_cast<unsigned char>(ft));
   } else
     m_fields.erase(ft);
@@ -250,7 +248,7 @@ bool CItem::SetTimeField(int ft, const unsigned char *value,
 void CItem::GetField(const CItemField &field,
                      unsigned char *value, size_t &length) const
 {
-  field.Get(value, length, MakeBlowFish(field.IsEmpty()));
+  field.Get(value, length, MakeBlowFish());
 }
 
 StringX CItem::GetField(const int ft) const
@@ -262,7 +260,7 @@ StringX CItem::GetField(const int ft) const
 StringX CItem::GetField(const CItemField &field) const
 {
   StringX retval;
-  field.Get(retval, MakeBlowFish(field.IsEmpty()));
+  field.Get(retval, MakeBlowFish());
   return retval;
 }
 
