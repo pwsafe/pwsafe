@@ -1283,7 +1283,7 @@ int DboxMain::SaveAs()
                      newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                        CString(MAKEINTRESOURCE(IDS_FDF_VCURR_ALL)),
                      this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
