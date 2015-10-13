@@ -54,6 +54,7 @@ public:
   }
 
   HMAC(const HMAC &hmac) {
+    delete Hash;
     Hash = new H;
     *Hash = *hmac.Hash;
     memcpy(K, hmac.K, BLOCKSIZE);
@@ -61,6 +62,7 @@ public:
 
   HMAC &operator=(const HMAC &that) {
     if (this != &that) {
+      delete Hash;
       Hash = new H;
       *Hash = *that.Hash;
       memcpy(K, that.K, BLOCKSIZE);

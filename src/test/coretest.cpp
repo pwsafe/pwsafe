@@ -27,15 +27,7 @@ int main(int argc, char **argv)
   system("read");
 #endif
 
-  /* 
-     Tidy up some memory leaks - at least 85 left!
-     These are all probably caused in core/hmac.h
-     line 57 & 64 "Hash = new H" leaving any
-     exising H that was in Hash in limbo.
-
-     Leave to Rony to fix :-)
-  */
-
+  // Need to find these in order to delete them
   PWSLog *pwslog = PWSLog::GetLog();
   PWSprefs *pwsprefs = PWSprefs::GetInstance();
   PWSrand *pwsrand = PWSrand::GetInstance();
