@@ -438,7 +438,10 @@ void PasswordSafeSearch::Activate(void)
   if (!m_toolbar)
     CreateSearchBar();
   else {
-    if (m_toolbar->Show(true)) {
+    if ( m_toolbar->IsShownOnScreen() ) {
+        m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
+    }
+    else if (m_toolbar->Show(true)) {
       wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
       m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(srchCtrlSize);
       m_parentFrame->GetSizer()->Layout();
