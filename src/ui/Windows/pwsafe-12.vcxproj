@@ -794,6 +794,7 @@
     <ClCompile Include="DDStatic.cpp" />
     <ClCompile Include="DDSupport.cpp" />
     <ClCompile Include="DisplayFSBkupFiles.cpp" />
+    <ClCompile Include="DragDropAttachment.cpp" />
     <ClCompile Include="DropSource.cpp" />
     <ClCompile Include="DropTarget.cpp" />
     <ClCompile Include="DumpSelect.cpp" />
@@ -926,6 +927,7 @@
     <ClInclude Include="DDStatic.h" />
     <ClInclude Include="DDSupport.h" />
     <ClInclude Include="DisplayFSBkupFiles.h" />
+    <ClInclude Include="DragDropAttachment.h" />
     <ClInclude Include="DropSource.h" />
     <ClInclude Include="DropTarget.h" />
     <ClInclude Include="DumpSelect.h" />

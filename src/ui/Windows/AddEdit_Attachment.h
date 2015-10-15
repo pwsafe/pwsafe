@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
+#include "DragDropAttachment.h"
 #include "resource.h"
 
 #include "afxwin.h"
@@ -47,6 +48,8 @@ protected:
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
+  LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
+
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Attachment)
   afx_msg void OnHelp();
@@ -76,7 +79,7 @@ private:
   CImage m_AttImage;
 
   // Visible counterpart of CImage
-  CStatic m_AttStatic;
+  CDragDropAttachment m_AttStatic;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
