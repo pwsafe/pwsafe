@@ -67,6 +67,9 @@ BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_ATT_IMPORT, OnAttImport)
   ON_BN_CLICKED(IDC_ATT_EXPORT, OnAttExport)
   ON_BN_CLICKED(IDC_ATT_REMOVE, OnAttRemove)
+
+  // For dropped files
+  ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -186,6 +189,21 @@ void CAddEdit_Attachment::OnPaint()
     m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
       m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
   }
+}
+
+LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
+{
+  // Currently only support one attachment per entry
+  ASSERT(lParam == 1);
+  wchar_t *sxFileName = reinterpret_cast<LPWSTR>(wParam);
+  m_AttFile = sxFileName;
+
+  // Update dialog with filename so that Import uses it
+  UpdateData(FALSE);
+
+  // Import file
+  OnAttImport();
+  return 0;
 }
 
 void CAddEdit_Attachment::OnAttImport()
