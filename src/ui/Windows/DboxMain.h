@@ -491,9 +491,6 @@ public:
   const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
                                      const unsigned char &cModifier, StringX &sxMenuItemName);
   
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(DboxMain)
-
   void ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
@@ -501,8 +498,14 @@ public:
   bool IsWorkstationLocked() const;
 
  protected:
-  virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
-  //}}AFX_VIRTUAL
+   // ClassWizard generated virtual function overrides
+   //{{AFX_VIRTUAL(DboxMain)
+   virtual BOOL OnInitDialog();
+   virtual void OnCancel();
+   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+   // override following to reset idle timeout on any event
+   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+   //}}AFX_VIRTUAL
 
   HICON m_hIcon;
   HICON m_hIconSm;
@@ -564,22 +567,17 @@ public:
   int OnUpdateViewReports(const int nID);
   void OnUpdateMRU(CCmdUI* pCmdUI);
 
-  // override following to reset idle timeout on any event
-  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-
   void ConfigureSystemMenu();
-  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+
+  // 'STATE' also defined in ThisMfcApp.h - ensure identical
+  enum STATE { LOCKED, UNLOCKED, CLOSED };
+  void UpdateSystemTray(const STATE s);
+
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHdrToCCDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHeaderDragComplete(WPARAM wParam, LPARAM lParam);
-
-  // 'STATE' also defined in ThisMfcApp.h - ensure identical
-  enum STATE {LOCKED, UNLOCKED, CLOSED};
-  void UpdateSystemTray(const STATE s);
-
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
-
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
   LRESULT OnProcessCompareResultAllFunction(WPARAM wParam, LPARAM lParam);
   LRESULT OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM lParam);
@@ -591,7 +589,6 @@ public:
                              const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
   LRESULT CopyAllCompareResult(WPARAM wParam);
   LRESULT SynchAllCompareResult(WPARAM wParam);
-  
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
@@ -645,6 +642,9 @@ public:
 
   void ChangeFont(const CFontsDialog::FontType iType);
 
+  // Generated message map functions
+  //{{AFX_MSG(DboxMain)
+  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
@@ -671,11 +671,7 @@ public:
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
 
-  // Generated message map functions
-  //{{AFX_MSG(DboxMain)
-  virtual BOOL OnInitDialog();
-  virtual void OnCancel();
-  
+
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
@@ -778,7 +774,6 @@ public:
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
   afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-  //}}AFX_MSG
 
   afx_msg BOOL OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnExportVx(UINT nID);
@@ -808,6 +803,7 @@ public:
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
   afx_msg BOOL OnOpenMRU(UINT nID);
+  //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
