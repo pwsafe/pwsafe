@@ -12,8 +12,12 @@
 
 #include "AddEdit_PropertyPage.h"
 #include "resource.h"
+
 #include "afxwin.h"
 #include "atlimage.h" // for CImage
+
+#include <string>
+#include <vector>
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage
 {
@@ -28,40 +32,49 @@ public:
   //{{AFX_DATA(CAddEdit_Attachment)
   enum { IDD = IDD_ADDEDIT_ATT, IDD_SHORT = IDD_ADDEDIT_ATT_SHORT };
 
+  enum ATT_TYPE { NO_ATTACHMENT = -1, ATTACHMENT_IS_IMAGE = 0, ATTACHMENT_NOT_IMAGE};
+
   void UpdateStats();
 
+protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_Attachment)
-protected:
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
-	afx_msg void OnPaint();
   //}}AFX_VIRTUAL
 
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Attachment)
   afx_msg void OnHelp();
+  afx_msg void OnPaint();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
-
+  afx_msg void OnAttImport();
+  afx_msg void OnAttExport();
+  afx_msg void OnAttRemove();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool m_bInitdone;
-
-  afx_msg void OnBnClickedAttImport();
-  afx_msg void OnBnClickedAttExport();
-  afx_msg void OnBnClickedAttRemove();
   void UpdateControls();
+
+  bool m_bInitdone;
+  ATT_TYPE m_attType;
+  CRect m_initial_clientrect, m_initial_windowrect, m_clientrect;
+  int m_xoffset, m_yoffset;
 
   CString m_AttName;
   CString m_AttFile;
+  CString m_csImageFilter;
+  std::vector<std::wstring> m_image_extns;
+
+  CStatic m_stcNoPreview;
   CImage m_AttImage;
+
   // Visible counterpart of CImage
   CStatic m_AttStatic;
 };
