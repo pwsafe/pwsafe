@@ -807,6 +807,10 @@
 #define IDC_ATT_EXPORT                  1515
 #define IDC_ATT_IMPORT                  1516
 #define IDC_STATIC_NOPREVIEW            1517
+#define IDC_FILESIZE                    1518
+#define IDC_FILECTIME                   1519
+#define IDC_FILEMTIME                   1520
+#define IDC_FILEMTYPE                   1521
 
 // Next default values for new objects
 // 
@@ -814,7 +818,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1518
+#define _APS_NEXT_CONTROL_VALUE         1522
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

@@ -88,7 +88,6 @@ BOOL CProperties::OnInitDialog()
     GetDlgItem(IDC_CHANGE_NAME)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
-
   }
 
   return TRUE;
