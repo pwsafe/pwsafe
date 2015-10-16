@@ -16,9 +16,6 @@
 #include "afxwin.h"
 #include "atlimage.h" // for CImage
 
-#include <string>
-#include <vector>
-
 class CDragDropAttachment : public CStatic
 {
 
@@ -84,9 +81,6 @@ private:
 
   CString m_AttName;
   CString m_AttFileName;
-  CString m_csImageFilter;
-  std::vector<std::wstring> m_image_extns;
-
   CString m_csSize, m_csFileCTime, m_csFileMTime, m_csMediaType;
 
   CStatic m_stcNoPreview;
