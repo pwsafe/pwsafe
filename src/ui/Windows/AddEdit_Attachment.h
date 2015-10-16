@@ -11,7 +11,6 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
-#include "DragDropAttachment.h"
 #include "resource.h"
 
 #include "afxwin.h"
@@ -19,6 +18,18 @@
 
 #include <string>
 #include <vector>
+
+class CDragDropAttachment : public CStatic
+{
+
+  // Generated message map functions
+protected:
+  //{{AFX_MSG(CDragDropAttachment)
+  afx_msg void OnDropFiles(HDROP hDropInfo);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+};
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage
 {
@@ -64,6 +75,7 @@ protected:
 
 private:
   void UpdateControls();
+  void ShowPreview();
 
   bool m_bInitdone;
   ATT_TYPE m_attType;
@@ -71,9 +83,11 @@ private:
   int m_xoffset, m_yoffset;
 
   CString m_AttName;
-  CString m_AttFile;
+  CString m_AttFileName;
   CString m_csImageFilter;
   std::vector<std::wstring> m_image_extns;
+
+  CString m_csSize, m_csFileCTime, m_csFileMTime, m_csMediaType;
 
   CStatic m_stcNoPreview;
   CImage m_AttImage;

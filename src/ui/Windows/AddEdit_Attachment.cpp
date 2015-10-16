@@ -21,11 +21,46 @@
 
 #include "os/file.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include <Shellapi.h>
 #include <algorithm>
 
+BEGIN_MESSAGE_MAP(CDragDropAttachment, CStatic)
+  ON_WM_DROPFILES()
+END_MESSAGE_MAP()
+
+void CDragDropAttachment::OnDropFiles(HDROP hDropInfo)
+{
+  CStatic::OnDropFiles(hDropInfo);
+
+  UINT nCntFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, 0, 0);
+
+  // Shouldn't have zero files if called!
+  if (nCntFiles == 0)
+    return;
+
+  if (nCntFiles > 1) {
+    const CString cs_errmsg = L"Sorry, currently there is a limit of only one attachment per entry";
+    ::AfxMessageBox(cs_errmsg);
+    return;
+  }
+
+  wchar_t szBuf[MAX_PATH];
+  ::DragQueryFile(hDropInfo, 0, szBuf, sizeof(szBuf));
+
+  // Get parent to process this file
+  CWnd *pWnd = GetParent();
+  ASSERT(pWnd);
+
+  // Use SendMessage rather than PastMessage so that szBuf doesn't go out of scope
+  // Send nCntFiles even though only one attachment is supported at the moment
+  pWnd->SendMessage(PWS_MSG_DROPPED_FILE, (WPARAM)szBuf, nCntFiles);
+}
+
 /////////////////////////////////////////////////////////////////////////////
-// CAddEdit_DateTimes property page
+// CAddEdit_Attachment property page
 
 IMPLEMENT_DYNAMIC(CAddEdit_Attachment, CAddEdit_PropertyPage)
 
@@ -33,7 +68,7 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-   m_bInitdone(false), m_AttName(_T("")), m_AttFile(_T("")), m_attType(NO_ATTACHMENT)
+   m_bInitdone(false), m_AttName(_T("")), m_AttFileName(_T("")), m_attType(NO_ATTACHMENT)
 {
 }
 
@@ -47,7 +82,12 @@ void CAddEdit_Attachment::DoDataExchange(CDataExchange* pDX)
 
     //{{AFX_DATA_MAP(CAddEdit_Attachment)
     DDX_Text(pDX, IDC_ATT_NAME, m_AttName);
-    DDX_Text(pDX, IDC_ATT_FILE, m_AttFile);
+    DDX_Text(pDX, IDC_ATT_FILE, m_AttFileName);
+    DDX_Text(pDX, IDC_FILEMTYPE, m_csMediaType);
+    DDX_Text(pDX, IDC_FILESIZE, m_csSize);
+    DDX_Text(pDX, IDC_FILECTIME, m_csFileCTime);
+    DDX_Text(pDX, IDC_FILEMTIME, m_csFileMTime);
+
     DDX_Control(pDX, IDC_STATIC_NOPREVIEW, m_stcNoPreview);
 
     if (pDX->m_bSaveAndValidate == 0)
@@ -107,7 +147,6 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   ASSERT(hResult >= 0);
 
   std::wstring wsfilter = m_csImageFilter;
-
   std::wstring delimiters = L"*|;()";
   
   // Remove cs_allimages from front of string
@@ -134,6 +173,37 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   }
 
   m_stcNoPreview.ShowWindow(SW_HIDE);
+
+  // Check initial state
+  if (!M_pci()->HasAttRef()) {
+    m_attType = NO_ATTACHMENT;
+  } else {
+    hResult = m_AttImage.Load(m_AttFileName);
+    if (FAILED(hResult)) {
+      // Probably not an image!  But how do we make sure???
+      // Let's check if it is one of the image extensions we know about
+      wchar_t ext[_MAX_EXT];
+      _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
+      if (std::find(m_image_extns.begin(), m_image_extns.end(), std::wstring(ext)) != m_image_extns.end()) {
+        // It should be an image!
+        CGeneralMsgBox gmb;
+        const CString cs_errmsg = L"Failed to load image";
+        gmb.AfxMessageBox(cs_errmsg);
+      }
+
+      m_AttStatic.ShowWindow(SW_HIDE);
+      m_stcNoPreview.ShowWindow(SW_SHOW);
+      m_attType = ATTACHMENT_NOT_IMAGE;
+    } else {
+      // Success - was an image
+      m_AttStatic.ShowWindow(SW_SHOW);
+      m_stcNoPreview.ShowWindow(SW_HIDE);
+      m_attType = ATTACHMENT_IS_IMAGE;
+    }
+
+    // If we have an attachment - preview it
+    ShowPreview();
+  }
 
   UpdateControls();
   return TRUE;
@@ -195,8 +265,8 @@ LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
 {
   // Currently only support one attachment per entry
   ASSERT(lParam == 1);
-  wchar_t *sxFileName = reinterpret_cast<LPWSTR>(wParam);
-  m_AttFile = sxFileName;
+  wchar_t *sxFileName = reinterpret_cast<wchar_t *>(wParam);
+  m_AttFileName = sxFileName;
 
   // Update dialog with filename so that Import uses it
   UpdateData(FALSE);
@@ -209,11 +279,10 @@ LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
 void CAddEdit_Attachment::OnAttImport()
 {
   CString filter;
-  HRESULT hResult;
 
   UpdateData(TRUE);
 
-  if (m_AttFile.IsEmpty()) {
+  if (m_AttFileName.IsEmpty()) {
     // Ask user for file name
     // Remove last separator
     filter = m_csImageFilter.Left(m_csImageFilter.GetLength() - 1);
@@ -226,95 +295,24 @@ void CAddEdit_Attachment::OnAttImport()
     if (fileDlg.DoModal() == IDCANCEL)
       return;
 
-    m_AttFile = fileDlg.GetPathName();
+    m_AttFileName = fileDlg.GetPathName();
   } else {
-    if (!pws_os::FileExists(std::wstring(m_AttFile))) {
+    if (!pws_os::FileExists(std::wstring(m_AttFileName))) {
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_ATTACHMENT_NOTFOUND);
       return;
     }
   }
 
-  hResult = m_AttImage.Load(m_AttFile);
-  if (FAILED(hResult)) {
-    // Probably not an image!  But how do we make sure???
-    // Let's check if it is one of the image extensions we know about
-    wchar_t ext[_MAX_EXT];
-    _wsplitpath_s(m_AttFile, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
-    if (std::find(m_image_extns.begin(), m_image_extns.end(), std::wstring(ext)) != m_image_extns.end()) {
-      // It should be an image!
-      CGeneralMsgBox gmb;
-      const CString cs_errmsg = L"Failed to load image";
-      gmb.AfxMessageBox(cs_errmsg);
-    }
+  // Get file information
+  struct _stati64 info;
+  int rc = _wstati64(m_AttFileName, &info);
+  ASSERT(rc == 0);
 
-    m_AttStatic.ShowWindow(SW_HIDE);
-    m_stcNoPreview.ShowWindow(SW_SHOW);
-    m_attType = ATTACHMENT_NOT_IMAGE;
-  } else {
-    // Success - was an image
-    m_AttStatic.ShowWindow(SW_SHOW);
-    m_stcNoPreview.ShowWindow(SW_HIDE);
-    m_attType = ATTACHMENT_IS_IMAGE;
-  }
+  m_csFileCTime = PWSUtil::ConvertToDateTimeString(info.st_ctime, PWSUtil::TMC_LOCALE).c_str();
+  m_csFileMTime = PWSUtil::ConvertToDateTimeString(info.st_mtime, PWSUtil::TMC_LOCALE).c_str();
 
-  CItemAtt &att = M_attachment();
-  int status = att.Import(LPCWSTR(m_AttFile));
-  ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
-  if (!att.HasUUID())
-    att.CreateUUID();
-
-  // Now draw image
-  // Use original size if image is bigger otherwise resize and centre control to fit
-  if (!m_AttImage.IsNull()) {
-    int image_h = m_AttImage.GetHeight();
-    int image_w = m_AttImage.GetWidth();
-    CPoint centre_point = m_initial_clientrect.CenterPoint();
-
-    if (image_h < m_initial_clientrect.Height() && image_w < m_initial_clientrect.Width()) {
-      // Centre image
-      int iNewLeft = centre_point.x - image_w / 2;
-      int iNewTop = centre_point.y - image_h / 2;
-      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, image_w, image_h, TRUE);
-
-      // Get new client rectangle
-      m_AttStatic.GetClientRect(m_clientrect);
-    } else {
-      // Use intial (maximum size) client rectangle
-      // But might need to resize if the image aspect ratio is different to the control
-      m_clientrect = m_initial_clientrect;
-
-      double dWidth = m_initial_clientrect.Width();
-      double dHeight = m_initial_clientrect.Height();
-      double dAspectRatio = dWidth / dHeight;
-
-      double dImageWidth = image_w;
-      double dImageHeight = image_h;
-      double dImageAspectRatio = dImageWidth / dImageHeight;
-
-      // If the aspect ratios are the same then the control rectangle
-      // will do, otherwise we need to calculate the new rectangle
-      if (dImageAspectRatio > dAspectRatio) {
-        int nNewHeight = (int)(dWidth / dImageWidth * dImageHeight);
-        //int nCenteringFactor = (m_initial_clientrect.Height() - nNewHeight) / 2;
-        m_clientrect.SetRect(0, 0, (int)dWidth, nNewHeight);
-
-      } else if (dImageAspectRatio < dAspectRatio) {
-        int nNewWidth = (int)(dHeight / dImageHeight * dImageWidth);
-        //int nCenteringFactor = (m_initial_clientrect.Width() - nNewWidth) / 2;
-        m_clientrect.SetRect(0, 0, nNewWidth, (int)(dHeight));
-      }
-
-      int iNewLeft = centre_point.x - m_clientrect.Width() / 2;
-      int iNewTop = centre_point.y - m_clientrect.Height() / 2;
-      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, 
-        m_clientrect.Width(), m_clientrect.Height(), TRUE);
-    }
-
-    // Now paint it
-    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
-      m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
-  }
+  ShowPreview();
 
   m_ae_psh->SetChanged(true);
   Invalidate();
@@ -330,7 +328,7 @@ void CAddEdit_Attachment::OnAttExport()
   HRESULT hResult;
 
   wchar_t fname[_MAX_FNAME],  ext[_MAX_EXT];
-  _wsplitpath_s(m_AttFile, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+  _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
 
   switch (m_attType) {
     case NO_ATTACHMENT:
@@ -363,7 +361,7 @@ void CAddEdit_Attachment::OnAttExport()
     {
       // Set filter "??? files (*.???)|*.???||"
       SHFILEINFO sfi = {0};
-      DWORD_PTR dw = SHGetFileInfo(m_AttFile, 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
+      DWORD_PTR dw = SHGetFileInfo(m_AttFileName, 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
       if (dw != 0) {
         filter.Format(IDS_FDF_FILES, sfi.szTypeName, ext, ext);
       } else {
@@ -411,7 +409,8 @@ void CAddEdit_Attachment::OnAttRemove()
   m_AttStatic.ShowWindow(SW_SHOW);
   m_stcNoPreview.ShowWindow(SW_HIDE);
 
-  m_AttFile = m_AttName = L"";
+  m_AttFileName = m_AttName = L"";
+  m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
   M_attachment().Clear();
   m_ae_psh->SetChanged(true);
   m_AttStatic.SetWindowText(L"");
@@ -426,7 +425,122 @@ void CAddEdit_Attachment::OnAttRemove()
  void CAddEdit_Attachment::UpdateControls()
  {
    bool bHasAttachment = (m_attType != NO_ATTACHMENT);
+
+   // Currently only accept one attachment per entry
+   // If already have one, don't allow drop of any more
+   m_AttStatic.DragAcceptFiles(bHasAttachment ? FALSE : TRUE);
+
+   // Set up buttons
    GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment);
    GetDlgItem(IDC_ATT_EXPORT)->EnableWindow(bHasAttachment);
    GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(bHasAttachment);
+
+   // Don't allow user to change file name if attachment is present
+   ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment);
+ }
+ 
+ void CAddEdit_Attachment::ShowPreview()
+ {
+   HRESULT hResult;
+
+   wchar_t ext[_MAX_EXT];
+   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
+
+   hResult = m_AttImage.Load(m_AttFileName);
+   if (FAILED(hResult)) {
+     // Probably not an image!  But how do we make sure???
+     // Let's check if it is one of the image extensions we know about
+     if (std::find(m_image_extns.begin(), m_image_extns.end(), std::wstring(ext)) != m_image_extns.end()) {
+       // It should be an image!
+       CGeneralMsgBox gmb;
+       const CString cs_errmsg = L"Failed to load image";
+       gmb.AfxMessageBox(cs_errmsg);
+     }
+
+     m_AttStatic.ShowWindow(SW_HIDE);
+     m_stcNoPreview.ShowWindow(SW_SHOW);
+     m_attType = ATTACHMENT_NOT_IMAGE;
+   } else {
+     // Success - was an image
+     m_AttStatic.ShowWindow(SW_SHOW);
+     m_stcNoPreview.ShowWindow(SW_HIDE);
+     m_attType = ATTACHMENT_IS_IMAGE;
+   }
+
+   CItemAtt &att = M_attachment();
+   int status = att.Import(LPCWSTR(m_AttFileName));
+   ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
+   if (!att.HasUUID())
+     att.CreateUUID();
+
+   // Now draw image
+   // Use original size if image is bigger otherwise resize and centre control to fit
+   if (!m_AttImage.IsNull()) {
+     int image_h = m_AttImage.GetHeight();
+     int image_w = m_AttImage.GetWidth();
+     CPoint centre_point = m_initial_clientrect.CenterPoint();
+
+     if (image_h < m_initial_clientrect.Height() && image_w < m_initial_clientrect.Width()) {
+       // Centre image
+       int iNewLeft = centre_point.x - image_w / 2;
+       int iNewTop = centre_point.y - image_h / 2;
+       m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, image_w, image_h, TRUE);
+
+       // Get new client rectangle
+       m_AttStatic.GetClientRect(m_clientrect);
+     } else {
+       // Use intial (maximum size) client rectangle
+       // But might need to resize if the image aspect ratio is different to the control
+       m_clientrect = m_initial_clientrect;
+
+       double dWidth = m_initial_clientrect.Width();
+       double dHeight = m_initial_clientrect.Height();
+       double dAspectRatio = dWidth / dHeight;
+
+       double dImageWidth = image_w;
+       double dImageHeight = image_h;
+       double dImageAspectRatio = dImageWidth / dImageHeight;
+
+       // If the aspect ratios are the same then the control rectangle
+       // will do, otherwise we need to calculate the new rectangle
+       if (dImageAspectRatio > dAspectRatio) {
+         int nNewHeight = (int)(dWidth / dImageWidth * dImageHeight);
+         //int nCenteringFactor = (m_initial_clientrect.Height() - nNewHeight) / 2;
+         m_clientrect.SetRect(0, 0, (int)dWidth, nNewHeight);
+
+       } else if (dImageAspectRatio < dAspectRatio) {
+         int nNewWidth = (int)(dHeight / dImageHeight * dImageWidth);
+         //int nCenteringFactor = (m_initial_clientrect.Width() - nNewWidth) / 2;
+         m_clientrect.SetRect(0, 0, nNewWidth, (int)(dHeight));
+       }
+
+       int iNewLeft = centre_point.x - m_clientrect.Width() / 2;
+       int iNewTop = centre_point.y - m_clientrect.Height() / 2;
+       m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset,
+         m_clientrect.Width(), m_clientrect.Height(), TRUE);
+     }
+
+     // Now paint it
+     m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
+       m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
+   }
+
+   // Get properties
+   wchar_t szFileSize[256];
+   StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
+   m_csSize = szFileSize;
+
+   // m_csFileCTime = M_attachment().GetFileCTime();
+   // m_csFileMTime = M_attachment().GetFileMTime();
+   // m_csMediaType = M_attachment().GetFileMediaType();
+
+   m_csMediaType.Empty();
+
+   LPWSTR pwzMimeOut = NULL;
+   hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, FMFD_URLASFILENAME, &pwzMimeOut, 0);
+
+   if (SUCCEEDED(hResult)) {
+     m_csMediaType = pwzMimeOut;
+     CoTaskMemFree(pwzMimeOut);
+   }
  }
