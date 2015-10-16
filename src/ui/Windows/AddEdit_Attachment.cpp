@@ -137,70 +137,10 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   m_xoffset = m_initial_windowrect.left - m_initial_clientrect.left;
   m_yoffset = m_initial_windowrect.top - m_initial_clientrect.top;
 
-  // Get Image filters
-  CSimpleArray<GUID> aguidFileTypes;
-  HRESULT hResult;
-
-  const CString cs_allimages(MAKEINTRESOURCE(IDS_ALL_IMAGE_FILES));
-  const DWORD dwExclude = CImage::excludeOther;
-  hResult = m_AttImage.GetImporterFilterString(m_csImageFilter, aguidFileTypes, cs_allimages, dwExclude);
-  ASSERT(hResult >= 0);
-
-  std::wstring wsfilter = m_csImageFilter;
-  std::wstring delimiters = L"*|;()";
-  
-  // Remove cs_allimages from front of string
-  wsfilter.erase(0, cs_allimages.GetLength());
-  // Skip delimiters at beginning.
-  std::wstring::size_type lastPos = wsfilter.find_first_not_of(delimiters, 0);
-  // Find first "non-delimiter".
-  std::wstring::size_type pos = wsfilter.find_first_of(delimiters, lastPos);
-
-  while (std::wstring::npos != pos || std::wstring::npos != lastPos) {
-    // Found a token, add it to the vector ONLY if not empty, not already there and
-    // beginning with a '.' (as per the extension retrieved by splitpath)
-    std::wstring token = wsfilter.substr(lastPos, pos - lastPos);
-    if (!token.empty() && token.substr(0, 1) == L"." && 
-      std::find(m_image_extns.begin(), m_image_extns.end(), token) == m_image_extns.end()) {
-      m_image_extns.push_back(token);
-    }
-
-    // Skip delimiters
-    lastPos = wsfilter.find_first_not_of(delimiters, pos);
-
-    // Find next "non-delimiter"
-    pos = wsfilter.find_first_of(delimiters, lastPos);
-  }
-
-  m_stcNoPreview.ShowWindow(SW_HIDE);
-
   // Check initial state
   if (!M_pci()->HasAttRef()) {
     m_attType = NO_ATTACHMENT;
   } else {
-    hResult = m_AttImage.Load(m_AttFileName);
-    if (FAILED(hResult)) {
-      // Probably not an image!  But how do we make sure???
-      // Let's check if it is one of the image extensions we know about
-      wchar_t ext[_MAX_EXT];
-      _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
-      if (std::find(m_image_extns.begin(), m_image_extns.end(), std::wstring(ext)) != m_image_extns.end()) {
-        // It should be an image!
-        CGeneralMsgBox gmb;
-        const CString cs_errmsg = L"Failed to load image";
-        gmb.AfxMessageBox(cs_errmsg);
-      }
-
-      m_AttStatic.ShowWindow(SW_HIDE);
-      m_stcNoPreview.ShowWindow(SW_SHOW);
-      m_attType = ATTACHMENT_NOT_IMAGE;
-    } else {
-      // Success - was an image
-      m_AttStatic.ShowWindow(SW_SHOW);
-      m_stcNoPreview.ShowWindow(SW_HIDE);
-      m_attType = ATTACHMENT_IS_IMAGE;
-    }
-
     // If we have an attachment - preview it
     ShowPreview();
   }
@@ -264,7 +204,12 @@ void CAddEdit_Attachment::OnPaint()
 LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
 {
   // Currently only support one attachment per entry
+#ifdef DEBUG
   ASSERT(lParam == 1);
+#else
+  UNREFERENCED_PARAMETER(lParam);
+#endif
+
   wchar_t *sxFileName = reinterpret_cast<wchar_t *>(wParam);
   m_AttFileName = sxFileName;
 
@@ -279,13 +224,20 @@ LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
 void CAddEdit_Attachment::OnAttImport()
 {
   CString filter;
+  CSimpleArray<GUID> aguidFileTypes;
+  HRESULT hResult;
 
   UpdateData(TRUE);
 
   if (m_AttFileName.IsEmpty()) {
     // Ask user for file name
     // Remove last separator
-    filter = m_csImageFilter.Left(m_csImageFilter.GetLength() - 1);
+    const CString cs_allimages(MAKEINTRESOURCE(IDS_ALL_IMAGE_FILES));
+    const DWORD dwExclude = CImage::excludeOther;
+    hResult = m_AttImage.GetImporterFilterString(filter, aguidFileTypes, cs_allimages, dwExclude);
+    ASSERT(hResult >= 0);
+
+    filter = filter.Left(filter.GetLength() - 1);
 
     // Add "All files"
     const CString cs_allfiles(MAKEINTRESOURCE(IDS_FDF_ALL));
@@ -405,9 +357,6 @@ void CAddEdit_Attachment::OnAttRemove()
     // Destory image
     m_AttImage.Destroy();
   }
-  
-  m_AttStatic.ShowWindow(SW_SHOW);
-  m_stcNoPreview.ShowWindow(SW_HIDE);
 
   m_AttFileName = m_AttName = L"";
   m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
@@ -437,6 +386,18 @@ void CAddEdit_Attachment::OnAttRemove()
 
    // Don't allow user to change file name if attachment is present
    ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment);
+
+   switch (m_attType) {
+     case ATTACHMENT_NOT_IMAGE:
+       m_AttStatic.ShowWindow(SW_HIDE);
+       m_stcNoPreview.ShowWindow(SW_SHOW);
+       break;
+     case NO_ATTACHMENT:
+     case ATTACHMENT_IS_IMAGE:
+       m_AttStatic.ShowWindow(SW_SHOW);
+       m_stcNoPreview.ShowWindow(SW_HIDE);
+       break;
+   }
  }
  
  void CAddEdit_Attachment::ShowPreview()
@@ -446,25 +407,36 @@ void CAddEdit_Attachment::OnAttRemove()
    wchar_t ext[_MAX_EXT];
    _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
 
-   hResult = m_AttImage.Load(m_AttFileName);
-   if (FAILED(hResult)) {
-     // Probably not an image!  But how do we make sure???
-     // Let's check if it is one of the image extensions we know about
-     if (std::find(m_image_extns.begin(), m_image_extns.end(), std::wstring(ext)) != m_image_extns.end()) {
-       // It should be an image!
+   // Get Media type - RFC 6838
+   m_csMediaType.Empty();
+
+   LPWSTR pwzMimeOut = NULL;
+   // Note 1: FMFD_IGNOREMIMETEXTPLAIN not defined (UrlMon.h) if still supporting Windows XP
+   // Note 2: FMFD_RETURNUPDATEDIMGMIMES not defined (UrlMon.h) in SDK 7.1A - need SDK 8.1 or later
+   // Hardcode values for now
+   DWORD dwMimeFlags = FMFD_URLASFILENAME | 0x4 /*FMFD_IGNOREMIMETEXTPLAIN*/ | 0x20 /*FMFD_RETURNUPDATEDIMGMIMES*/;
+   hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, dwMimeFlags, &pwzMimeOut, 0);
+
+   if (SUCCEEDED(hResult)) {
+     m_csMediaType = pwzMimeOut;
+     CoTaskMemFree(pwzMimeOut);
+   }
+
+   // Assume not an image
+   m_attType = ATTACHMENT_NOT_IMAGE;
+
+   if (m_csMediaType.Find(L"image") != -1) {
+     // Should be an image file - but may not be supported by CImage - try..
+     hResult = m_AttImage.Load(m_AttFileName);
+     if (FAILED(hResult)) {
+       // Ooops???
        CGeneralMsgBox gmb;
        const CString cs_errmsg = L"Failed to load image";
        gmb.AfxMessageBox(cs_errmsg);
+     } else {
+       // Success - was an image
+       m_attType = ATTACHMENT_IS_IMAGE;
      }
-
-     m_AttStatic.ShowWindow(SW_HIDE);
-     m_stcNoPreview.ShowWindow(SW_SHOW);
-     m_attType = ATTACHMENT_NOT_IMAGE;
-   } else {
-     // Success - was an image
-     m_AttStatic.ShowWindow(SW_SHOW);
-     m_stcNoPreview.ShowWindow(SW_HIDE);
-     m_attType = ATTACHMENT_IS_IMAGE;
    }
 
    CItemAtt &att = M_attachment();
@@ -532,15 +504,4 @@ void CAddEdit_Attachment::OnAttRemove()
 
    // m_csFileCTime = M_attachment().GetFileCTime();
    // m_csFileMTime = M_attachment().GetFileMTime();
-   // m_csMediaType = M_attachment().GetFileMediaType();
-
-   m_csMediaType.Empty();
-
-   LPWSTR pwzMimeOut = NULL;
-   hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, FMFD_URLASFILENAME, &pwzMimeOut, 0);
-
-   if (SUCCEEDED(hResult)) {
-     m_csMediaType = pwzMimeOut;
-     CoTaskMemFree(pwzMimeOut);
-   }
  }
