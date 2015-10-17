@@ -126,6 +126,11 @@ TEST_F(ItemDataTest, Getters_n_Setters)
   EXPECT_EQ(iSDCA, fullItem.GetShiftDCA(iVal16));
   EXPECT_EQ(xTimeInt, fullItem.GetXTimeInt(iVal32));
   EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
+  EXPECT_FALSE(fullItem.IsProtected()); // default value
+  fullItem.SetProtected(true); // modify
+  EXPECT_TRUE(fullItem.IsProtected());
+  fullItem.SetProtected(false); // modify back to default
+  EXPECT_FALSE(fullItem.IsProtected());
 }
 
 TEST_F(ItemDataTest, PlainTextSerialization)
