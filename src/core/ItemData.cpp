@@ -1534,7 +1534,7 @@ void CItemData::SetProtected(bool bOnOff)
 {
   if (bOnOff) {
     const unsigned char ucProtected = 1;
-    SetField(PROTECTED, &ucProtected, sizeof(char));
+    CItem::SetField(PROTECTED, &ucProtected, sizeof(char));
   } else { // remove field
     m_fields.erase(PROTECTED);
   }
