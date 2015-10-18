@@ -96,7 +96,7 @@ public:
   void SetOffset(long offset) {m_offset = offset;}
   unsigned GetRefcount() const {return m_refcount;}
   void IncRefcount() {m_refcount++;}
-  void DecRefcont() {ASSERT(m_refcount > 0); m_refcount--;}
+  void DecRefcount() {ASSERT(m_refcount > 0); m_refcount--;}
 
   CItemAtt& operator=(const CItemAtt& second);
 
