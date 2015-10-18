@@ -36,6 +36,8 @@
 #define IDS_FDF_CSV_ALL                 5060
 #define IDS_FDF_V12_ALL                 5061
 #define IDS_FDF_V4_ALL                  5062
+#define IDS_FDF_ALL                     5063
+#define IDS_FDF_FILES                   5064
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
@@ -743,6 +745,9 @@
 #define IDS_NOTESFONT                   5971
 #define IDS_CANT_FIND_EXT_EDITOR        5972
 #define IDS_APP_DEFAULT                 5973
+#define IDS_ALL_IMAGE_FILES             5974
+#define IDS_NOPREVIEW_AVAILABLE         5975
+#define IDS_ATTACHMENT_NOTFOUND         5976
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

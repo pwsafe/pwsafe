@@ -341,6 +341,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
           m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
 
+          // TODO - What if user has removed the old attachment or changed it? (Rony)
           if (m_AEMD.attachment.HasUUID()) {
             m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
             m_AEMD.pcore->PutAtt(m_AEMD.attachment);
@@ -447,6 +448,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
               break;
           }
         }
+
+        // TODO - Add attachment if present (Rony)
 
         if (m_bIsModified)
           SendMessage(PSM_QUERYSIBLINGS,
