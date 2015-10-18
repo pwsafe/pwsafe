@@ -430,6 +430,8 @@ public:
   void PutAtt(const CItemAtt &att) {m_attlist[att.GetUUID()] = att;}
   void RemoveAtt(const pws_os::CUUID &attuuid);
   bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
+  AttList::size_type GetNumAtts() const {return m_attlist.size();}
+
   
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
