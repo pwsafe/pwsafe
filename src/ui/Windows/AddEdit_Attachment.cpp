@@ -127,7 +127,6 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
 
-  // TBD  load from attachment record
 
   // Keep initial size and position of static image control
   m_AttStatic.GetClientRect(m_initial_clientrect);
@@ -141,7 +140,9 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   if (!M_pci()->HasAttRef()) {
     m_attType = NO_ATTACHMENT;
   } else {
-    // If we have an attachment - preview it
+    // If we have an attachment, load & preview
+    ASSERT(M_pcore()->HasAtt(M_pci()->GetAttUUID()));
+    M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
     ShowPreview();
   }
 
