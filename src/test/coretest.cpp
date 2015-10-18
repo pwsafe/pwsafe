@@ -23,8 +23,6 @@ int main(int argc, char **argv)
 
 #ifdef WIN32
   system("pause");
-#else
-  system("read");
 #endif
 
   // Need to find these in order to delete them
