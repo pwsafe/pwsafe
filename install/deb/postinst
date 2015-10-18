@@ -1,6 +1,6 @@
 #!/bin/bash
 xdg-icon-resource install --novendor --size 48 --mode system \
-                  /usr/share/pwsafe/pwsafe.png
+                  /usr/share/icons/hicolor/48x48/apps/pwsafe.png
 xdg-desktop-menu install --novendor --mode system \
-                  /usr/share/pwsafe/pwsafe.desktop
+                  /usr/share/applications/passwordsafe.desktop
 exit 0
