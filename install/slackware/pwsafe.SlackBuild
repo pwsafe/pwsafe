@@ -43,8 +43,8 @@ PKGNAME=${PRGNAM}-${VERSION/-/.}-$ARCH-$BUILD_ID$BUILDER_ID
 ##
 PREFIX="/usr"
 DOCDIR=$PREFIX/share/doc/$PRGNAM-$VERSION
-HELPDIR=$PREFIX/share/doc/passwordsafe/help
-XMLDIR=$PREFIX/share/$PRGNAM/xml
+HELPDIR=$PREFIX/share/passwordsafe/help
+XMLDIR=$PREFIX/share/passwordsafe/xml
 MANDIR=$PREFIX/man
 PIXMAPDIR=$PREFIX/share/pixmaps
 APPDIR=$PREFIX/share/applications
