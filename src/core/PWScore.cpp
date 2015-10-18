@@ -349,6 +349,13 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       DecrementPasswordPolicy(item.GetPolicyName());
     }
 
+    if (item.HasAttRef()) {
+      CItemAtt &att = GetAtt(item.GetAttUUID());
+      if (att.GetRefcount() == 1)
+        RemoveAtt(item.GetAttUUID());
+      else
+        att.DecRefcount();
+    }
     NotifyDBModified();
   } // pos != m_pwlist.end()
 }
@@ -424,6 +431,7 @@ void PWScore::ClearData(void)
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
+  m_attlist.clear();
 
   // Clear out out dependents mappings
   m_base2aliases_mmap.clear();
