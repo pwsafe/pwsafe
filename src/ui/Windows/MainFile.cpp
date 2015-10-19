@@ -377,7 +377,7 @@ int DboxMain::NewFile(StringX &newfilename)
                      newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                      OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_VCURR_ALL)),
+                     CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                      this);
 
     fd.m_ofn.lpstrTitle = cs_text;
@@ -1237,14 +1237,18 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
+  // SaveAs can only save in the current format
+  // To save as a lower or higher format, the user should use Export
+
   PWS_LOGIT;
 
   INT_PTR rc;
   StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
-      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+  const PWSfile::VERSION ver = m_core.GetReadFileVersion();
+
+  if (ver != PWSfile::VCURRENT && ver != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
 
     cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
@@ -1283,7 +1287,7 @@ int DboxMain::SaveAs()
                      newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                        CString(MAKEINTRESOURCE(IDS_FDF_VCURR_ALL)),
+                        CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                      this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
@@ -1380,7 +1384,30 @@ void DboxMain::OnExportVx(UINT nID)
   StringX newfile;
   CString cs_title, cs_text;
 
-  if (nID != ID_MENUITEM_EXPORT2V4FORMAT) {
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
+  PWSfile::VERSION export_version = PWSfile::UNKNOWN_VERSION;
+  stringT sfx = L"";
+  int fdf = IDS_FDF_DB_ALL;
+
+  switch (nID) {
+    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
+      export_version = PWSfile::V17; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V2FORMAT:
+      export_version = PWSfile::V20; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V3FORMAT:
+      export_version = PWSfile::V30; sfx = L"psafe3"; fdf = IDS_FDF_V3_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V4FORMAT:
+      export_version = PWSfile::V40; sfx = L"psafe4"; fdf = IDS_FDF_V4_ALL;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
+
+  if (export_version < current_version) {
     // Only need warning if exporting to a lower DB version
     CGeneralMsgBox gmb;
 
@@ -1396,26 +1423,6 @@ void DboxMain::OnExportVx(UINT nID)
     if (gmb.DoModal() == IDS_CANCEL)
       return;
   }
-
-  PWSfile::VERSION ver = PWSfile::UNKNOWN_VERSION;
-  stringT sfx = L"";
-  int fdf = IDS_FDF_DB_ALL;
-
-  switch (nID) {
-    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
-      ver =  PWSfile::V17; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
-      break;
-    case ID_MENUITEM_EXPORT2V2FORMAT:
-      ver =  PWSfile::V20; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
-      break;
-    case ID_MENUITEM_EXPORT2V4FORMAT:
-      ver =  PWSfile::V40; sfx = L"psafe4"; fdf = IDS_FDF_V4_ALL;
-      break;
-    default:
-      ASSERT(0);
-      return;
-  }
-
 
   //SaveAs-type dialog box
   std::wstring exportFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
@@ -1467,21 +1474,8 @@ void DboxMain::OnExportVx(UINT nID)
   // Do bare minimum - save header information only
   const PWSfileHeader saved_hdr = m_core.GetHeader();
 
-  switch (nID) {
-    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteFile(newfile, true, PWSfile::V17);
-      break;
-    case ID_MENUITEM_EXPORT2V2FORMAT:
-      rc = m_core.WriteFile(newfile, true, PWSfile::V20);
-      break;
-    case ID_MENUITEM_EXPORT2V4FORMAT:
-      rc = m_core.WriteFile(newfile, true, PWSfile::V40);
-      break;
-    default:
-      ASSERT(0);
-      rc = PWScore::FAILURE;
-      break;
-  }
+  // Now export it in the requested version
+  rc = m_core.WriteFile(newfile, true, export_version);
 
   // Restore current database header
   m_core.SetHeader(saved_hdr);
@@ -1499,6 +1493,8 @@ void DboxMain::OnExportEntryDB()
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2DB,
     this, WZAdvanced::INVALID, NULL);
 
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
+
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
 }
@@ -1510,6 +1506,8 @@ void DboxMain::OnExportGroupDB()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTGRP2DB,
     this, WZAdvanced::INVALID, NULL);
+
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
