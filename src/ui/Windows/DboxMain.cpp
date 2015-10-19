@@ -353,7 +353,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
-  ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2OLD1XFORMAT, ID_MENUITEM_EXPORT2V4FORMAT, OnExportVx)
+  ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2OLD1XFORMAT, ID_MENUITEM_EXPORT2V2FORMAT, OnExportVx)
+  ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2V3FORMAT, ID_MENUITEM_EXPORT2V4FORMAT, OnExportVx)
   ON_COMMAND(ID_MENUITEM_EXPORT2PLAINTEXT, OnExportText)
   ON_COMMAND(ID_MENUITEM_EXPORT2XML, OnExportXML)
   ON_COMMAND(ID_MENUITEM_IMPORT_PLAINTEXT, OnImportText)
@@ -569,6 +570,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPORT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORT2OLD1XFORMAT, true, true, false, false},
   {ID_MENUITEM_EXPORT2V2FORMAT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2V3FORMAT, true, true, false, false},
   {ID_MENUITEM_EXPORT2V4FORMAT, true, true, false, false},
   {ID_MENUITEM_EXPORT2XML, true, true, false, false},
   {ID_MENUITEM_IMPORT_XML, true, false, true, false},
@@ -3227,13 +3229,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
       if ((!m_core.IsChanged() && !m_core.HaveDBPrefsChanged()) ||
-            m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+            m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Don't allow Options to be changed (as they are mostly V30 and later)
-      // if a V1 or V2 database
+    // if a V1 or V2 database
     case ID_MENUITEM_OPTIONS:
-      if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+      if (m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Special processing for viewing reports, if they exist

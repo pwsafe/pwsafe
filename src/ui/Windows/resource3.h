@@ -23,7 +23,7 @@
 #define IDS_READ_WRITE                  5033
 
 // File Dailog filters
-#define IDS_FDF_VCURR_ALL               5050
+#define IDS_FDF_V3_ALL                  5050
 #define IDS_FDF_DB_ALL                  5051
 #define IDS_FDF_DB_BU_ALL               5052
 #define IDS_FDF_T_C_ALL                 5053
@@ -748,6 +748,8 @@
 #define IDS_ALL_IMAGE_FILES             5974
 #define IDS_NOPREVIEW_AVAILABLE         5975
 #define IDS_ATTACHMENT_NOTFOUND         5976
+#define IDS_MENUITEM_EXPORT2V3FORMAT    5977
+#define IDS_MENUITEM_EXPORT2V4FORMAT    5978
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

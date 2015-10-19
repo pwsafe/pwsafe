@@ -116,6 +116,11 @@ public:
   void SetNumProcessed(const int numProcessed) {m_numProcessed = numProcessed;}
   int GetNumProcessed() {return m_numProcessed;}
 
+  // This is needed for Export to DB
+  void SetDBVersion(const PWSfile::VERSION current_ver)
+  {DB_version = current_ver;}
+  PWSfile::VERSION GetDBVersion() {return DB_version;}
+
   BOOL PreTranslateMessage(MSG* pMsg);
 
   // Following override to reset idle timeout on any event
@@ -139,6 +144,8 @@ private:
   wchar_t m_delimiter;
   bool m_bAdvanced, m_bCompleted;
   int m_numProcessed;
+
+  PWSfile::VERSION DB_version;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
