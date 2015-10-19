@@ -535,6 +535,48 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     if (!m_bOpen || (pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly) && bFileIsReadOnly)) {
       pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
     }
+
+    // Remove the corresponding Exort V3/V4
+    int isubmenu_pos;
+    CMenu *pSubMenu;
+    isubmenu_pos = app.FindMenuItem(pPopupMenu, ID_EXPORTMENU);
+    ASSERT(isubmenu_pos != -1);
+    pSubMenu = pPopupMenu->GetSubMenu(isubmenu_pos);
+    ASSERT_VALID(pSubMenu);
+
+    const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
+
+    // Delete both menu items and then add the appropriate one
+    pSubMenu->DeleteMenu(ID_MENUITEM_EXPORT2V3FORMAT, MF_BYCOMMAND);
+    pSubMenu->DeleteMenu(ID_MENUITEM_EXPORT2V4FORMAT, MF_BYCOMMAND);
+
+    switch (current_version) {
+      case PWSfile::V30:
+      case PWSfile::V40:
+      {
+        CString tmpStr(MAKEINTRESOURCE((current_version == PWSfile::V40) ?
+                         IDS_MENUITEM_EXPORT2V3FORMAT : IDS_MENUITEM_EXPORT2V4FORMAT));
+        
+        MENUITEMINFO MII = {0};
+        MII.cbSize = sizeof(MII);
+        MII.fMask = MIIM_STRING | MIIM_ID;
+        MII.fType = MFT_STRING;
+        MII.fState = MFS_ENABLED;
+        MII.wID = (current_version == PWSfile::V40) ? ID_MENUITEM_EXPORT2V3FORMAT : ID_MENUITEM_EXPORT2V4FORMAT;
+        MII.hSubMenu = NULL;
+        MII.hbmpChecked = NULL;
+        MII.hbmpUnchecked = NULL;
+        MII.dwTypeData = (LPTSTR)&tmpStr;
+        MII.cch = tmpStr.GetLength();
+
+        // Add after export to V2
+        pSubMenu->InsertMenuItem(2, &MII, TRUE);
+        break;
+      }
+      default:
+        break;
+    }
+
     return;
   }
 

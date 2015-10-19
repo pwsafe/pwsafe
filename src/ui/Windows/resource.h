@@ -376,6 +376,12 @@
 #define IDD_WZINPUTDB                   537
 #define IDD_ADDEDIT_ATT                 538
 #define IDD_ADDEDIT_ATT_SHORT           539
+#define IDB_EXPORTV3_CLASSIC            540
+#define IDB_EXPORTV3_NEW                541
+#define IDB_EXPORTV3_NEW_D              542
+#define IDB_EXPORTV4_CLASSIC            543
+#define IDB_EXPORTV4_NEW                544
+#define IDB_EXPORTV4_NEW_D              545
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
