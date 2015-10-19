@@ -79,8 +79,8 @@ private:
   CRect m_initial_clientrect, m_initial_windowrect, m_clientrect;
   int m_xoffset, m_yoffset;
 
-  CString m_AttName;
-  CString m_AttFileName;
+  CSecString m_AttName;
+  CSecString m_AttFileName;
   CString m_csSize, m_csFileCTime, m_csFileMTime, m_csMediaType;
 
   CStatic m_stcNoPreview;
