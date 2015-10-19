@@ -144,11 +144,16 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
     m_AttName = M_attachment().GetTitle();
     m_AttFileName = M_attachment().GetFileName();
+
     // TBD - times, mimetype
     ShowPreview();
   }
+
   UpdateData(FALSE);
   UpdateControls();
+
+  m_bInitdone = true;
+
   return TRUE;
 }
 
@@ -410,10 +415,9 @@ void CAddEdit_Attachment::OnAttRemove()
 void CAddEdit_Attachment::ShowPreview()
 {
   CItemAtt &att = M_attachment();
+  HRESULT hResult;
 
   if (!att.HasContent()) {
-    HRESULT hResult;
-
     wchar_t ext[_MAX_EXT];
     _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
 
@@ -437,7 +441,7 @@ void CAddEdit_Attachment::ShowPreview()
 
     if (m_csMediaType.Find(L"image") != -1) {
       // Should be an image file - but may not be supported by CImage - try..
-      hResult = m_AttImage.Load(m_AttFileName);
+      m_AttImage.Load(m_AttFileName);
       if (FAILED(hResult)) {
         // Ooops???
         CGeneralMsgBox gmb;
@@ -454,8 +458,37 @@ void CAddEdit_Attachment::ShowPreview()
     if (!att.HasUUID())
       att.CreateUUID();
   } else {// att.HasContent()
-    // TBD -- looks like we need to create an IStream from att.Content() and
-    // call m_AttImage.Load(IStream *);
+    // This should only be the case during the InitDialog - maybe m_bInitDone
+    // in the logic for this processing rather than att.HasContent
+    ASSERT(!m_bInitdone);
+
+    // Get attachment buffer
+    UINT len = M_attachment().GetContentSize();
+    HGLOBAL hMem = GlobalAlloc(GMEM_FIXED, len);
+    BYTE *pmem = (BYTE *)GlobalLock(hMem);
+    M_attachment().GetContent(pmem, len);
+
+    // Put it into a IStream
+    IStream *pstream = NULL;
+    CreateStreamOnHGlobal(hMem, FALSE, &pstream);
+
+    // Load it
+    hResult = m_AttImage.Load(pstream);
+
+    // Clean up
+    pstream->Release();
+    GlobalUnlock(hMem);
+    GlobalFree(hMem);
+
+    if (FAILED(hResult)) {
+      // Ooops???
+      CGeneralMsgBox gmb;
+      const CString cs_errmsg = L"Failed to load image";
+      gmb.AfxMessageBox(cs_errmsg);
+    } else {
+      // Success - was an image
+      m_attType = ATTACHMENT_IS_IMAGE;
+    }
   }
 
   // Now draw image
