@@ -3229,13 +3229,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
       if ((!m_core.IsChanged() && !m_core.HaveDBPrefsChanged()) ||
-            m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+            m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Don't allow Options to be changed (as they are mostly V30 and later)
     // if a V1 or V2 database
     case ID_MENUITEM_OPTIONS:
-      if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+      if (m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Special processing for viewing reports, if they exist
