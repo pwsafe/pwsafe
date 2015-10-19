@@ -1240,17 +1240,23 @@ int DboxMain::SaveAs()
   // SaveAs can only save in the current format
   // To save as a lower or higher format, the user should use Export
 
+  // HOWEVER, in this "Experimental" version, V1.7, V2 & V3 DBs will be saved
+  // as V3 and only if the current DB is V4 will it be saved in V4 format.
+
   PWS_LOGIT;
 
   INT_PTR rc;
   StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
-  const PWSfile::VERSION ver = m_core.GetReadFileVersion();
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
 
-  if (ver != PWSfile::VCURRENT && ver != PWSfile::UNKNOWN_VERSION) {
+  // Only need to warn user if current DB is prior to V3 - no implications if saving V4 as V4 or V3 as V3
+  if (current_version < PWSfile::V30 && 
+      current_version != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
 
+    // Note: string IDS_NEWFORMAT2 will need to be updated when DB V4 is the default
     cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
@@ -1271,7 +1277,11 @@ int DboxMain::SaveAs()
     cf = LPCWSTR(defname);
   }
 
-  std::wstring newFileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+  // Note: The default export DB will be V3 unless the current DB is already in V4 format
+  // This ensures that a user won't create an "Experimental" V4 DB by mistake
+  std::wstring newFileName = PWSUtil::GetNewFileName(cf.c_str(),
+                current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX);
+
   std::wstring dir;
   if (m_core.GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
@@ -1283,11 +1293,11 @@ int DboxMain::SaveAs()
 
   while (1) {
     CPWFileDialog fd(FALSE,
-                     DEFAULT_SUFFIX,
+                     current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX,
                      newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                        CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
+                        CString(MAKEINTRESOURCE(current_version == PWSfile::V40 ? IDS_FDF_V4_ALL : IDS_FDF_V3_ALL)),
                      this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
@@ -1333,7 +1343,9 @@ int DboxMain::SaveAs()
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  rc = m_core.WriteFile(newfile);
+  // Note: Writing out in in V4 DB format if the DB is already V4,
+  // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
+  rc = m_core.WriteFile(newfile, true, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
