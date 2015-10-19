@@ -127,7 +127,6 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
 
-
   // Keep initial size and position of static image control
   m_AttStatic.GetClientRect(m_initial_clientrect);
   m_AttStatic.GetWindowRect(m_initial_windowrect);
@@ -143,9 +142,12 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     // If we have an attachment, load & preview
     ASSERT(M_pcore()->HasAtt(M_pci()->GetAttUUID()));
     M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
+    m_AttName = M_attachment().GetTitle();
+    m_AttFileName = M_attachment().GetFileName();
+    // TBD - times, mimetype
     ShowPreview();
   }
-
+  UpdateData(FALSE);
   UpdateControls();
   return TRUE;
 }
@@ -171,7 +173,7 @@ LRESULT CAddEdit_Attachment::OnQuerySiblings(WPARAM wParam, LPARAM)
     case PP_UPDATE_VARIABLES:
     case PP_UPDATE_TIMES:
       // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
+      // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
         return 1L;
       break;
@@ -183,6 +185,10 @@ BOOL CAddEdit_Attachment::OnApply()
 {
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE;
+
+  M_attachment().SetTitle(m_AttName);
+  // M_attachment().SetCTime(m_FileCTime); -- TBD: add time_t FileCTime
+  // M_attachment().SetMediaType(m_csMediaType); -- TBD: add CItemAtt MediaType get/set
 
   return CAddEdit_PropertyPage::OnApply();
 }
@@ -248,9 +254,9 @@ void CAddEdit_Attachment::OnAttImport()
     if (fileDlg.DoModal() == IDCANCEL)
       return;
 
-    m_AttFileName = fileDlg.GetPathName();
+    m_AttFileName = CSecString(fileDlg.GetPathName());
   } else {
-    if (!pws_os::FileExists(std::wstring(m_AttFileName))) {
+    if (!pws_os::FileExists(LPCWSTR(m_AttFileName))) {
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_ATTACHMENT_NOTFOUND);
       return;
@@ -374,7 +380,7 @@ void CAddEdit_Attachment::OnAttRemove()
 
  void CAddEdit_Attachment::UpdateControls()
  {
-   bool bHasAttachment = (m_attType != NO_ATTACHMENT);
+   bool bHasAttachment = M_attachment().HasContent();
 
    // Currently only accept one attachment per entry
    // If already have one, don't allow drop of any more
@@ -401,108 +407,114 @@ void CAddEdit_Attachment::OnAttRemove()
    }
  }
  
- void CAddEdit_Attachment::ShowPreview()
- {
-   HRESULT hResult;
+void CAddEdit_Attachment::ShowPreview()
+{
+  CItemAtt &att = M_attachment();
 
-   wchar_t ext[_MAX_EXT];
-   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
+  if (!att.HasContent()) {
+    HRESULT hResult;
 
-   // Get Media type - RFC 6838
-   m_csMediaType.Empty();
+    wchar_t ext[_MAX_EXT];
+    _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
 
-   LPWSTR pwzMimeOut = NULL;
-   // Note 1: FMFD_IGNOREMIMETEXTPLAIN not defined (UrlMon.h) if still supporting Windows XP
-   // Note 2: FMFD_RETURNUPDATEDIMGMIMES not defined (UrlMon.h) in SDK 7.1A - need SDK 8.1 or later
-   // Hardcode values for now
-   DWORD dwMimeFlags = FMFD_URLASFILENAME | 0x4 /*FMFD_IGNOREMIMETEXTPLAIN*/ | 0x20 /*FMFD_RETURNUPDATEDIMGMIMES*/;
-   hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, dwMimeFlags, &pwzMimeOut, 0);
+    // Get Media type - RFC 6838
+    m_csMediaType.Empty();
 
-   if (SUCCEEDED(hResult)) {
-     m_csMediaType = pwzMimeOut;
-     CoTaskMemFree(pwzMimeOut);
-   }
+    LPWSTR pwzMimeOut = NULL;
+    // Note 1: FMFD_IGNOREMIMETEXTPLAIN not defined (UrlMon.h) if still supporting Windows XP
+    // Note 2: FMFD_RETURNUPDATEDIMGMIMES not defined (UrlMon.h) in SDK 7.1A - need SDK 8.1 or later
+    // Hardcode values for now
+    DWORD dwMimeFlags = FMFD_URLASFILENAME | 0x4 /*FMFD_IGNOREMIMETEXTPLAIN*/ | 0x20 /*FMFD_RETURNUPDATEDIMGMIMES*/;
+    hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, dwMimeFlags, &pwzMimeOut, 0);
 
-   // Assume not an image
-   m_attType = ATTACHMENT_NOT_IMAGE;
+    if (SUCCEEDED(hResult)) {
+      m_csMediaType = pwzMimeOut;
+      CoTaskMemFree(pwzMimeOut);
+    }
 
-   if (m_csMediaType.Find(L"image") != -1) {
-     // Should be an image file - but may not be supported by CImage - try..
-     hResult = m_AttImage.Load(m_AttFileName);
-     if (FAILED(hResult)) {
-       // Ooops???
-       CGeneralMsgBox gmb;
-       const CString cs_errmsg = L"Failed to load image";
-       gmb.AfxMessageBox(cs_errmsg);
-     } else {
-       // Success - was an image
-       m_attType = ATTACHMENT_IS_IMAGE;
-     }
-   }
+    // Assume not an image
+    m_attType = ATTACHMENT_NOT_IMAGE;
 
-   CItemAtt &att = M_attachment();
-   int status = att.Import(LPCWSTR(m_AttFileName));
-   ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
-   if (!att.HasUUID())
-     att.CreateUUID();
+    if (m_csMediaType.Find(L"image") != -1) {
+      // Should be an image file - but may not be supported by CImage - try..
+      hResult = m_AttImage.Load(m_AttFileName);
+      if (FAILED(hResult)) {
+        // Ooops???
+        CGeneralMsgBox gmb;
+        const CString cs_errmsg = L"Failed to load image";
+        gmb.AfxMessageBox(cs_errmsg);
+      } else {
+        // Success - was an image
+        m_attType = ATTACHMENT_IS_IMAGE;
+      }
+    }
 
-   // Now draw image
-   // Use original size if image is bigger otherwise resize and centre control to fit
-   if (!m_AttImage.IsNull()) {
-     int image_h = m_AttImage.GetHeight();
-     int image_w = m_AttImage.GetWidth();
-     CPoint centre_point = m_initial_clientrect.CenterPoint();
+    int status = att.Import(LPCWSTR(m_AttFileName));
+    ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
+    if (!att.HasUUID())
+      att.CreateUUID();
+  } else {// att.HasContent()
+    // TBD -- looks like we need to create an IStream from att.Content() and
+    // call m_AttImage.Load(IStream *);
+  }
 
-     if (image_h < m_initial_clientrect.Height() && image_w < m_initial_clientrect.Width()) {
-       // Centre image
-       int iNewLeft = centre_point.x - image_w / 2;
-       int iNewTop = centre_point.y - image_h / 2;
-       m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, image_w, image_h, TRUE);
+  // Now draw image
+  // Use original size if image is bigger otherwise resize and centre control to fit
+  if (!m_AttImage.IsNull()) {
+    int image_h = m_AttImage.GetHeight();
+    int image_w = m_AttImage.GetWidth();
+    CPoint centre_point = m_initial_clientrect.CenterPoint();
 
-       // Get new client rectangle
-       m_AttStatic.GetClientRect(m_clientrect);
-     } else {
-       // Use intial (maximum size) client rectangle
-       // But might need to resize if the image aspect ratio is different to the control
-       m_clientrect = m_initial_clientrect;
+    if (image_h < m_initial_clientrect.Height() && image_w < m_initial_clientrect.Width()) {
+      // Centre image
+      int iNewLeft = centre_point.x - image_w / 2;
+      int iNewTop = centre_point.y - image_h / 2;
+      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, image_w, image_h, TRUE);
 
-       double dWidth = m_initial_clientrect.Width();
-       double dHeight = m_initial_clientrect.Height();
-       double dAspectRatio = dWidth / dHeight;
+      // Get new client rectangle
+      m_AttStatic.GetClientRect(m_clientrect);
+    } else {
+      // Use intial (maximum size) client rectangle
+      // But might need to resize if the image aspect ratio is different to the control
+      m_clientrect = m_initial_clientrect;
 
-       double dImageWidth = image_w;
-       double dImageHeight = image_h;
-       double dImageAspectRatio = dImageWidth / dImageHeight;
+      double dWidth = m_initial_clientrect.Width();
+      double dHeight = m_initial_clientrect.Height();
+      double dAspectRatio = dWidth / dHeight;
 
-       // If the aspect ratios are the same then the control rectangle
-       // will do, otherwise we need to calculate the new rectangle
-       if (dImageAspectRatio > dAspectRatio) {
-         int nNewHeight = (int)(dWidth / dImageWidth * dImageHeight);
-         //int nCenteringFactor = (m_initial_clientrect.Height() - nNewHeight) / 2;
-         m_clientrect.SetRect(0, 0, (int)dWidth, nNewHeight);
+      double dImageWidth = image_w;
+      double dImageHeight = image_h;
+      double dImageAspectRatio = dImageWidth / dImageHeight;
 
-       } else if (dImageAspectRatio < dAspectRatio) {
-         int nNewWidth = (int)(dHeight / dImageHeight * dImageWidth);
-         //int nCenteringFactor = (m_initial_clientrect.Width() - nNewWidth) / 2;
-         m_clientrect.SetRect(0, 0, nNewWidth, (int)(dHeight));
-       }
+      // If the aspect ratios are the same then the control rectangle
+      // will do, otherwise we need to calculate the new rectangle
+      if (dImageAspectRatio > dAspectRatio) {
+        int nNewHeight = (int)(dWidth / dImageWidth * dImageHeight);
+        //int nCenteringFactor = (m_initial_clientrect.Height() - nNewHeight) / 2;
+        m_clientrect.SetRect(0, 0, (int)dWidth, nNewHeight);
 
-       int iNewLeft = centre_point.x - m_clientrect.Width() / 2;
-       int iNewTop = centre_point.y - m_clientrect.Height() / 2;
-       m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset,
-         m_clientrect.Width(), m_clientrect.Height(), TRUE);
-     }
+      } else if (dImageAspectRatio < dAspectRatio) {
+        int nNewWidth = (int)(dHeight / dImageHeight * dImageWidth);
+        //int nCenteringFactor = (m_initial_clientrect.Width() - nNewWidth) / 2;
+        m_clientrect.SetRect(0, 0, nNewWidth, (int)(dHeight));
+      }
 
-     // Now paint it
-     m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
-       m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
-   }
+      int iNewLeft = centre_point.x - m_clientrect.Width() / 2;
+      int iNewTop = centre_point.y - m_clientrect.Height() / 2;
+      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset,
+                             m_clientrect.Width(), m_clientrect.Height(), TRUE);
+    }
 
-   // Get properties
-   wchar_t szFileSize[256];
-   StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
-   m_csSize = szFileSize;
+    // Now paint it
+    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
+                          m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
+  }
 
-   // m_csFileCTime = M_attachment().GetFileCTime();
-   // m_csFileMTime = M_attachment().GetFileMTime();
- }
+  // Get properties
+  wchar_t szFileSize[256];
+  StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
+  m_csSize = szFileSize;
+
+  // m_csFileCTime = M_attachment().GetFileCTime();
+  // m_csFileMTime = M_attachment().GetFileMTime();
+}
