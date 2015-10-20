@@ -22,7 +22,7 @@
 // Linux uses the file contents to get the Media/MIME type
 // NOT SURE WHAT gio DOES - DOES IT OPEN THE FILE?
 
-stringT pws_os::GetMediaType(const stringT *sfilename)
+stringT pws_os::GetMediaType(const stringT &sfilename)
 {
   stringT sMediaType(_T(""));
   gboolean is_certain = FALSE;

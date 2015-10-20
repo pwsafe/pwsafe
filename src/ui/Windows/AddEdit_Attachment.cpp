@@ -20,7 +20,6 @@
 #include "GeneralMsgBox.h"
 
 #include "os/file.h"
-#include "os/media.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -429,12 +428,16 @@ void CAddEdit_Attachment::ShowPreview()
     wchar_t ext[_MAX_EXT];
     _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
 
-    // Get Media type - RFC 6838
-    m_csMediaType = pws_os::GetMediaType(m_AttFileName).c_str();
-
     // Assume not an image
     m_attType = ATTACHMENT_NOT_IMAGE;
 
+    int status = att.Import(LPCWSTR(m_AttFileName));
+    if (status != PWScore::SUCCESS) {
+      // most likely file error - TBD better error reporting
+      goto load_error;
+    }
+
+    m_csMediaType = att.GetMediaType().c_str();
     if (m_csMediaType.Find(L"image") != -1) {
       // Should be an image file - but may not be supported by CImage - try..
       hResult = m_AttImage.Load(m_AttFileName);
@@ -445,9 +448,6 @@ void CAddEdit_Attachment::ShowPreview()
       // Success - was an image
       m_attType = ATTACHMENT_IS_IMAGE;
     }
-
-    int status = att.Import(LPCWSTR(m_AttFileName));
-    ASSERT(status == PWScore::SUCCESS);
 
     // Create UUID if not already present
     if (!att.HasUUID())

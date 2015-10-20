@@ -19,6 +19,7 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 #include "os/file.h"
+#include "os/media.h"
 #include "os/utf8conv.h"
 
 using namespace std;
@@ -175,6 +176,7 @@ int CItemAtt::Import(const stringT &fname)
   }
   SetField(CONTENT, data, flen);
   CItem::SetField(FILENAME, fname.c_str());
+  CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
  done:
   trashMemory(data, flen);
   delete[] data;
