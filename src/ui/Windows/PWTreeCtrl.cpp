@@ -1918,6 +1918,10 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   }
   if (ci.IsProtected())
     treeDispString += L" #";
+
+  if (ci.HasAttRef())
+    treeDispString += L" *";
+
   return treeDispString;
 }
 
