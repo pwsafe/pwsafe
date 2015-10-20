@@ -40,6 +40,7 @@ class CItemAtt : public CItem
 public:
 
   enum FieldType {
+    START = 0x61,
     ATTUUID = 0x61,
     TITLE = 0x03,
     CTIME = 0x07,
@@ -50,8 +51,12 @@ public:
     ATTIV = 0x66,
     CONTENT = 0x67,
     CONTENTHMAC = 0x68,
+    LAST,
     END = 0xff
-};
+  };
+
+  // a bitset for indicating a subset of an item's fields: 
+  typedef std::bitset<LAST - START> AttFieldBits;
 
   //Construction
   CItemAtt();

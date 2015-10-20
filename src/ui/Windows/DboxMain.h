@@ -239,9 +239,10 @@ public:
                  std::vector<int> &indices);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
                  std::vector<int> &indices,
-                 const CItemData::FieldBits &bsFields, const bool &subgroup_set, 
-                 const std::wstring &subgroup_name, const int subgroup_object,
-                 const int subgroup_function);
+                 const CItemData::FieldBits &bsFields, 
+                 const CItemAtt::AttFieldBits &bsAttFields, 
+                 const bool &subgroup_set, const std::wstring &subgroup_name,
+                 const int subgroup_object, const int subgroup_function);
 
   // Used by ListCtrl KeyDown
   bool IsImageVisible() const {return m_bImageInLV;}

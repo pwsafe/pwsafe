@@ -752,6 +752,7 @@
 #define IDS_MENUITEM_EXPORT2V4FORMAT    5978
 #define IDS_ATTREF                      5979
 #define IDS_COMPATTREF                  5980
+#define IDS_FILENAME                    5981
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
