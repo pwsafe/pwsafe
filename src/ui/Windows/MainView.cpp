@@ -727,15 +727,19 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CItemData::FieldBits bsFields;
   bsFields.set();  // Default search is all text fields!
 
-  return FindAll(str, CaseSensitive, indices, bsFields, false, 
-                 L"", 0, 0);
+  CItemAtt::AttFieldBits bsAttFields;
+  bsAttFields.reset();  // Default DON'T search attachment filename
+
+  return FindAll(str, CaseSensitive, indices, bsFields, bsAttFields,
+                 false, L"", 0, 0);
 }
 
 size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                          vector<int> &indices,
-                         const CItemData::FieldBits &bsFields, const bool &subgroup_bset, 
-                         const std::wstring &subgroup_name, const int subgroup_object,
-                         const int subgroup_function)
+                         const CItemData::FieldBits &bsFields,
+                         const CItemAtt::AttFieldBits &bsAttFields, 
+                         const bool &subgroup_bset, const std::wstring &subgroup_name,
+                         const int subgroup_object, const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
@@ -743,6 +747,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
   StringX curKBS;
+  StringX curFN;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -774,14 +779,14 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_bset &&
-        !curitem.Matches(std::wstring(subgroup_name),
-                         subgroup_object, subgroup_function))
+      !curitem.Matches(std::wstring(subgroup_name),
+      subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;
     saveTitle = curTitle = curitem.GetTitle(); // saveTitle keeps orig case
     curGroup = curitem.GetGroup();
-    curUser =  curitem.GetUser();
+    curUser = curitem.GetUser();
     curPassword = curitem.GetPassword();
     curNotes = curitem.GetNotes();
     curURL = curitem.GetURL();
@@ -792,6 +797,17 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curKBS = curitem.GetKBShortcut();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
+
+    // Don't bother getting the attachment if not searchng its fields
+    if (bsAttFields.count() != 0) {
+      if (curitem.HasAttRef()) {
+        pws_os::CUUID attuuid = curitem.GetAttUUID();
+        CItemAtt att = m_core.GetAtt(attuuid);
+        curFN = att.GetFileName();
+      } else {
+        curFN = L"";
+      }
+    }
 
     if (!CaseSensitive) {
       ToLower(curGroup);
@@ -879,6 +895,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
           break;  // break out of do loop
       }
       if (bsFields.test(CItemData::XTIME_INT) && ::wcsstr(curXInt.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsAttFields.test(CItemAtt::FILENAME - CItemAtt::START) && ::wcsstr(curFN.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -3394,12 +3414,13 @@ void DboxMain::OnToolBarFindReport()
   rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
+  CItemAtt::AttFieldBits bsAttFFields;
   bool bFAdvanced;
   std::wstring Fsubgroup_name;
   int Fsubgroup_object, Fsubgroup_function;
   bool Fsubgroup_set;
 
-  m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, Fsubgroup_name, 
+  m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, bsAttFFields, Fsubgroup_name,
                               Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
 
   // tell the user we're done & provide short Compare report
@@ -3496,6 +3517,8 @@ void DboxMain::OnToolBarFindReport()
     if (bsFFields.test(CItemData::KBSHORTCUT))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
     if (bsFFields.test(CItemData::ATTREF))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
+    if (bsAttFFields.test(CItemAtt::FILENAME - CItemAtt::START))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();

@@ -36,6 +36,7 @@ public:
   //}}AFX_DATA
 
   CItemData::FieldBits m_bsFields;
+  CItemAtt::AttFieldBits m_bsAttFields;
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -70,8 +71,10 @@ protected:
 private:
   static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   void Set(CItemData::FieldBits bsFields);
+  void SetAtt(CItemAtt::AttFieldBits bsAttFields);
 
   CListCtrl *m_pLC_List, *m_pLC_Selected;
   st_SaveAdvValues *m_pst_SADV;
   CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
+  CItemAtt::AttFieldBits m_bsAttDefaultSelectedFields, m_bsAttAllowedFields;
 };
