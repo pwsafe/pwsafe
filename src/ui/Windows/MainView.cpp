@@ -353,6 +353,10 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (xint1 != xint2)
         iResult = (xint1 < xint2) ? -1 : 1;
       break;
+    case CItemData::ATTREF:
+      if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
+        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
+      break;
     default:
       ASSERT(FALSE);
   }
@@ -2919,6 +2923,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::KBSHORTCUT:        
       cs_header.LoadString(IDS_KBSHORTCUT);
       break;
+    case CItemData::ATTREF:
+      cs_header.LoadString(IDS_ATTREF);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2944,6 +2951,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
     case CItemData::KBSHORTCUT:
+    case CItemData::ATTREF:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -3487,6 +3495,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
     if (bsFFields.test(CItemData::KBSHORTCUT))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
+    if (bsFFields.test(CItemData::ATTREF))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4095,10 +4105,10 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
     bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-    if (ft == CItemData::START || ft == CItemData::TITLE || 
+    if ( ft == CItemData::START || ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
-        ft == CItemData::PROTECTED) {
+         ft == CItemData::PROTECTED) {
       UpdateTreeItem(pdi->tree_item, ci);
       if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
         UpdateEntryImages(ci);
@@ -4589,6 +4599,14 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
 
         sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
       }
+      break;
+    }
+    case CItemData::ATTREF:
+    {
+      // Get "&Yes" and remove & (May not be leading in non-English languages)
+      CString csYes(MAKEINTRESOURCE(IDS_YES));
+      csYes.Replace(L"&", L"");
+      sx_fielddata = ci.HasAttRef() ? csYes : L"";
       break;
     }
     default:

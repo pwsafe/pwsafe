@@ -1672,6 +1672,24 @@ struct st_GroupTitleUser2 {
   }
 };
 
+// For Validate only
+struct st_AttTitle_Filename {
+  StringX title;
+  StringX filename;
+
+  st_AttTitle_Filename() {}
+
+  st_AttTitle_Filename(const StringX &t, const StringX &fn)
+    : title(t), filename(fn) {}
+
+  st_AttTitle_Filename &operator=(const st_AttTitle_Filename &that) {
+    if (this != &that) {
+      title = that.title; filename = that.filename;
+    }
+    return *this;
+  }
+};
+
 static bool GTUCompareV2(const st_GroupTitleUser2 &gtu1, const st_GroupTitleUser2 &gtu2)
 {
   if (gtu1.group != gtu2.group)
@@ -1752,7 +1770,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
                                  vGTU_ALIASES, vGTU_SHORTCUTS;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
   std::vector<st_GroupTitleUser> vGTU_MissingAtt;
-  std::vector<StringX> vOrphanAtt;
+  std::vector<st_AttTitle_Filename> vOrphanAtt;
   std::set<CUUID> sAttOwners;
 
   ItemListIter iter;
@@ -1876,7 +1894,10 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   // Check for orphan attachments (5.2)
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
     if (sAttOwners.find(att_iter->first) == sAttOwners.end()) {
-      vOrphanAtt.push_back(att_iter->second.GetTitle());
+      st_AttTitle_Filename stATFN;
+      stATFN.title = att_iter->second.GetTitle();
+      stATFN.filename = att_iter->second.GetFileName();
+      vOrphanAtt.push_back(stATFN);
       st_vr.num_orphan_att++;
     }
   }
@@ -2060,15 +2081,20 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
           Format(cs_Error, IDSC_VALIDATE_ENTRY,
                  gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
           pRpt->WriteLine(cs_Error);
-        } );
+      } );
     }
+
     if (st_vr.num_orphan_att > 0) {
       pRpt->WriteLine();
       LoadAString(cs_Error, IDSC_VALIDATE_ORPHAN_ATT);
       pRpt->WriteLine(cs_Error);
-      for_each(vOrphanAtt.begin(), vOrphanAtt.end(), [&](const StringX &title) {
-          pRpt->WriteLine(title.c_str());
-        } );
+      stringT cs_NotSet;
+      LoadAString(cs_NotSet, IDCS_VALIDATE_NOTSET);
+      for_each(vOrphanAtt.begin(), vOrphanAtt.end(), [&](const st_AttTitle_Filename &stATFN) {
+        stringT sTitle = stATFN.title.empty() ? cs_NotSet : stATFN.title.c_str();
+        Format(cs_Error, IDSC_VALIDATE_ATTACHMENT, sTitle.c_str(), stATFN.filename.c_str());
+        pRpt->WriteLine(cs_Error);
+      } );
     }
   } // End of issues report handling
 

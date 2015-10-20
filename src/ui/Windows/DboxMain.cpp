@@ -1588,7 +1588,8 @@ void DboxMain::SetChanged(ChangeType changed)
 
 void DboxMain::ChangeOkUpdate()
 {
-  if (!m_bInitDone || m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+  if (!m_bInitDone || 
+    (m_core.GetReadFileVersion() != PWSfile::V30 && m_core.GetReadFileVersion() != PWSfile::V40))
     return;
 
   CMenu *pmenu = GetMenu();

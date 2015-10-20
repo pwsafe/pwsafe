@@ -20,6 +20,7 @@
 #include "GeneralMsgBox.h"
 
 #include "os/file.h"
+#include "os/media.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -144,11 +145,16 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
     m_AttName = M_attachment().GetTitle();
     m_AttFileName = M_attachment().GetFileName();
+
     // TBD - times, mimetype
     ShowPreview();
   }
+
   UpdateData(FALSE);
   UpdateControls();
+
+  m_bInitdone = true;
+
   return TRUE;
 }
 
@@ -410,27 +416,21 @@ void CAddEdit_Attachment::OnAttRemove()
 void CAddEdit_Attachment::ShowPreview()
 {
   CItemAtt &att = M_attachment();
+  HRESULT hResult;
+
+  // Get properties
+  wchar_t szFileSize[256];
+  StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
+  m_csSize = szFileSize;
+  // m_csFileCTime = att.GetFileCTime();
+  // m_csFileMTime = att.GetFileMTime();
 
   if (!att.HasContent()) {
-    HRESULT hResult;
-
     wchar_t ext[_MAX_EXT];
     _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
 
     // Get Media type - RFC 6838
-    m_csMediaType.Empty();
-
-    LPWSTR pwzMimeOut = NULL;
-    // Note 1: FMFD_IGNOREMIMETEXTPLAIN not defined (UrlMon.h) if still supporting Windows XP
-    // Note 2: FMFD_RETURNUPDATEDIMGMIMES not defined (UrlMon.h) in SDK 7.1A - need SDK 8.1 or later
-    // Hardcode values for now
-    DWORD dwMimeFlags = FMFD_URLASFILENAME | 0x4 /*FMFD_IGNOREMIMETEXTPLAIN*/ | 0x20 /*FMFD_RETURNUPDATEDIMGMIMES*/;
-    hResult = FindMimeFromData(NULL, ext, NULL, 0, NULL, dwMimeFlags, &pwzMimeOut, 0);
-
-    if (SUCCEEDED(hResult)) {
-      m_csMediaType = pwzMimeOut;
-      CoTaskMemFree(pwzMimeOut);
-    }
+    m_csMediaType = pws_os::GetMediaType(m_AttFileName).c_str();
 
     // Assume not an image
     m_attType = ATTACHMENT_NOT_IMAGE;
@@ -439,23 +439,59 @@ void CAddEdit_Attachment::ShowPreview()
       // Should be an image file - but may not be supported by CImage - try..
       hResult = m_AttImage.Load(m_AttFileName);
       if (FAILED(hResult)) {
-        // Ooops???
-        CGeneralMsgBox gmb;
-        const CString cs_errmsg = L"Failed to load image";
-        gmb.AfxMessageBox(cs_errmsg);
-      } else {
-        // Success - was an image
-        m_attType = ATTACHMENT_IS_IMAGE;
-      }
+        goto load_error;
+      } 
+
+      // Success - was an image
+      m_attType = ATTACHMENT_IS_IMAGE;
     }
 
     int status = att.Import(LPCWSTR(m_AttFileName));
-    ASSERT(status == PWScore::SUCCESS); // CImage loaded it, how can we fail??
+    ASSERT(status == PWScore::SUCCESS);
+
+    // Create UUID if not already present
     if (!att.HasUUID())
       att.CreateUUID();
   } else {// att.HasContent()
-    // TBD -- looks like we need to create an IStream from att.Content() and
-    // call m_AttImage.Load(IStream *);
+    // This should only be the case during the InitDialog - maybe m_bInitDone
+    // in the logic for this processing rather than att.HasContent
+    ASSERT(!m_bInitdone);
+
+    // Allocate attachment buffer
+    UINT imagesize = att.GetContentSize();
+    HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
+    ASSERT(gMemory);
+
+    BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+    ASSERT(pBuffer);
+
+    // Load image into buffer
+    M_attachment().GetContent(pBuffer, imagesize);
+
+    // Put it into a IStream
+    IStream *pStream = NULL;
+    hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
+    if (hResult == S_OK) {
+      // Load it
+      hResult = m_AttImage.Load(pStream);
+    } else {
+      // Reset result so that user gets error dialog below
+      // as we couldn't create the IStream object
+      hResult = E_FAIL;
+    }
+
+    // Clean up - no real need to trash the buffer
+    pStream->Release();
+    GlobalUnlock(gMemory);
+    GlobalFree(gMemory);
+
+    // Check image load (or previous error of putting content into an IStrem)
+    if (FAILED(hResult)) {
+      goto load_error;
+    }
+
+    // Success - was an image
+    m_attType = ATTACHMENT_IS_IMAGE;
   }
 
   // Now draw image
@@ -510,11 +546,11 @@ void CAddEdit_Attachment::ShowPreview()
                           m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
   }
 
-  // Get properties
-  wchar_t szFileSize[256];
-  StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
-  m_csSize = szFileSize;
+  return;
 
-  // m_csFileCTime = M_attachment().GetFileCTime();
-  // m_csFileMTime = M_attachment().GetFileMTime();
+load_error:
+  // Ooops???
+  CGeneralMsgBox gmb;
+  const CString cs_errmsg = L"Failed to load image";
+  gmb.AfxMessageBox(cs_errmsg);
 }
