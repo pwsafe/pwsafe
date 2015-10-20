@@ -507,6 +507,10 @@ public:
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
 
+  // These 3 fns are called via wxEvtHandler::CallAfter in sequence for autotyping
+  void MinimizeOrHideBeforeAutotyping();
+  void MaybeRestoreUI(bool autotype_err, wxString autotype_err_msg);
+
   template <class ExportType>
   void DoExportText();
 
