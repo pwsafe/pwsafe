@@ -59,35 +59,36 @@ public:
     USER = 0x04,
     NOTES = 0x05,
     PASSWORD = 0x06,
-    CTIME = 0x07,  // Entry 'C'reation time
-    PMTIME = 0x08, // last 'P'assword 'M'odification time
-    ATIME = 0x09,  // last 'A'ccess time
-    XTIME = 0x0a,  // password e'X'piry time
-    RESERVED = 0x0b /* cannot use */,
-    RMTIME = 0x0c, // last 'R'ecord 'M'odification time
+    CTIME = 0x07,        // Entry 'C'reation time
+    PMTIME = 0x08,       // last 'P'assword 'M'odification time
+    ATIME = 0x09,        // last 'A'ccess time
+    XTIME = 0x0a,        // password e'X'piry time
+    RESERVED = 0x0b      /* MUST NOT USE */,
+    RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
     URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f,
-    POLICY = 0x10, // string encoding of item-specific password policy
+    POLICY = 0x10,       // string encoding of item-specific password policy
     XTIME_INT = 0x11,
     RUNCMD = 0x12,
-    DCA = 0x13,    // doubleclick action (enum)
+    DCA = 0x13,          // doubleclick action (enum)
     EMAIL = 0x14,
     PROTECTED = 0x15,
-    SYMBOLS = 0x16,    // string of item-specific password symbols
-    SHIFTDCA = 0x17,   // shift-doubleclick action (enum)
-    POLICYNAME = 0x18, // named non-default password policy for item
-    KBSHORTCUT = 0x19, // Keyboard shortcuts
-    ATTREF = 0x1a,     // UUID of attachment (v4)
-    BASEUUID = 0x41,   // Base UUID of Alias or Shortcut (v4)
-    ALIASUUID = 0x42,  // UUID indicates this is an Alias (v4)
+    SYMBOLS = 0x16,      // string of item-specific password symbols
+    SHIFTDCA = 0x17,     // shift-doubleclick action (enum)
+    POLICYNAME = 0x18,   // named non-default password policy for item
+    KBSHORTCUT = 0x19,   // Keyboard shortcuts
+    ATTREF = 0x1a,       // UUID of attachment (v4)
+    BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
+    ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
     SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
-    LAST,        // Start of unknown fields!
+    LAST,                // Start of unknown fields!
     LAST_ITEM_DATA_FIELD = 0x60, // beyond this is for other CItem subclasses
     END = 0xff,
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
     // 'UNKNOWNFIELDS' should be last
-    UNKNOWNFIELDS = 0x104};
+    UNKNOWNFIELDS = 0x104
+  };
 
   // Password Policy stuff: Either PWPolicy (+ optionally symbols) is not empty
   // or PolicyName is not empty. Both cannot be set. All can be empty.
@@ -99,7 +100,8 @@ public:
                   ET_NORMAL       =  0, 
                   ET_ALIASBASE    =  1, ET_ALIAS    = 2, 
                   ET_SHORTCUTBASE =  4, ET_SHORTCUT = 8,
-                  ET_LAST};
+                  ET_LAST
+  };
 
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
@@ -303,6 +305,7 @@ public:
   bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
 
   bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
+
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeSerializePlainText(const std::vector<char> &v);
