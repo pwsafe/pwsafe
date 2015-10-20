@@ -3010,6 +3010,9 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
     if (pci->IsProtected())
       pELLE->sx_title += L" #";
 
+    if (pci->HasAttRef())
+      pELLE->sx_title += L" *";
+
     // Update time fields
     time_t tttXTime;
     pci->GetXTime(tttXTime);
@@ -3875,12 +3878,12 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
                      CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME,
-                     CItemData::KBSHORTCUT};
+                     CItemData::KBSHORTCUT, CItemData::ATTREF};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
                        IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME,
-                       IDS_COMPKBSHORTCUT};
+                       IDS_COMPKBSHORTCUT, IDS_ATTREF};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

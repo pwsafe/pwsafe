@@ -353,6 +353,10 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (xint1 != xint2)
         iResult = (xint1 < xint2) ? -1 : 1;
       break;
+    case CItemData::ATTREF:
+      if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
+        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
+      break;
     default:
       ASSERT(FALSE);
   }
@@ -3487,6 +3491,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
     if (bsFFields.test(CItemData::KBSHORTCUT))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
+    if (bsFFields.test(CItemData::ATTREF))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4095,10 +4101,10 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
     bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-    if (ft == CItemData::START || ft == CItemData::TITLE || 
+    if ( ft == CItemData::START || ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
-        ft == CItemData::PROTECTED) {
+         ft == CItemData::PROTECTED) {
       UpdateTreeItem(pdi->tree_item, ci);
       if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
         UpdateEntryImages(ci);

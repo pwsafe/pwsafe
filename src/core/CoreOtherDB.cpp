@@ -246,6 +246,8 @@ void PWScore::Compare(PWScore *pothercore,
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
         st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
         st_data.bIsProtected0 = currentItem.IsProtected();
+        st_data.bHasAttachment0 = currentItem.HasAttRef();
+        st_data.bHasAttachment1 = compItem.HasAttRef();
 
         if (bsConflicts.any()) {
           numConflicts++;

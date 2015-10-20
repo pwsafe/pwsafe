@@ -50,6 +50,9 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     if (ci.IsProtected())
       elle.sx_title += L" #";
 
+    if (ci.HasAttRef())
+      elle.sx_title += L" *";
+
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;
     elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, PWSUtil::TMC_LOCALE);
