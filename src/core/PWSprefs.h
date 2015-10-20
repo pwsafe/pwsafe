@@ -132,7 +132,7 @@ public:
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
-    DlgOrientation,
+    DlgOrientation, TimedTaskChainDelay,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -140,7 +140,7 @@ public:
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
-    LanguageFile, DefaultSymbols, NotesFont, NotesSampleText,
+    LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

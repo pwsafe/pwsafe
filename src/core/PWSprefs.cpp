@@ -168,6 +168,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
   {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -195,6 +196,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("DefaultSymbols"), _T(""), ptDatabase},                       // database
   {_T("NotesFont"), _T(""), ptApplication},                         // application
   {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
+  {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
 };
 
 PWSprefs *PWSprefs::GetInstance()

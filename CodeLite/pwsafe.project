@@ -128,6 +128,8 @@
     <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.h"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
+    <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>
+    <File Name="../src/ui/wxWidgets/TimedTaskChain.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
