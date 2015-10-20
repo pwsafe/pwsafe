@@ -16,14 +16,14 @@
 
 // Windows uses the file extension to get the Media/MIME type
 
-stringT pws_os::GetMediaType(TCHAR *filename)
+stringT pws_os::GetMediaType(stringT sfilename)
 {
   HRESULT hResult;
   TCHAR *pwzMimeOut = NULL;
   stringT sMediaType(_T(""));
 
   wchar_t extn[_MAX_EXT];
-  _tsplitpath_s(filename, NULL, 0, NULL, 0, NULL, 0, extn, _MAX_EXT);
+  _tsplitpath_s(sfilename.c_str(), NULL, 0, NULL, 0, NULL, 0, extn, _MAX_EXT);
 
   // Note 1: FMFD_IGNOREMIMETEXTPLAIN not defined (UrlMon.h) if still supporting Windows XP
   // Note 2: FMFD_RETURNUPDATEDIMGMIMES not defined (UrlMon.h) in SDK 7.1A - need SDK 8.1 or later

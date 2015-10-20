@@ -17,7 +17,7 @@ namespace pws_os {
   *
   * Linux: Uses gio library? UNTESTED
   */
-  stringT GetMediaType(TCHAR *filename);
+  stringT GetMediaType(stringT sfilename);
 };
 
 #endif /* __MEDIA_H */
