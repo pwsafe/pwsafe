@@ -2923,6 +2923,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::KBSHORTCUT:        
       cs_header.LoadString(IDS_KBSHORTCUT);
       break;
+    case CItemData::ATTREF:
+      cs_header.LoadString(IDS_ATTREF);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2948,6 +2951,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
     case CItemData::KBSHORTCUT:
+    case CItemData::ATTREF:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -4595,6 +4599,14 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
 
         sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
       }
+      break;
+    }
+    case CItemData::ATTREF:
+    {
+      // Get "&Yes" and remove & (May not be leading in non-English languages)
+      CString csYes(MAKEINTRESOURCE(IDS_YES));
+      csYes.Replace(L"&", L"");
+      sx_fielddata = ci.HasAttRef() ? csYes : L"";
       break;
     }
     default:
