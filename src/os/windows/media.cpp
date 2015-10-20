@@ -16,7 +16,7 @@
 
 // Windows uses the file extension to get the Media/MIME type
 
-stringT pws_os::GetMediaType(stringT sfilename)
+stringT pws_os::GetMediaType(const stringT &sfilename)
 {
   HRESULT hResult;
   TCHAR *pwzMimeOut = NULL;

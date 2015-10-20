@@ -82,7 +82,8 @@ public:
   StringX GetTitle() const {return GetField(TITLE);}
   void GetUUID(uuid_array_t &) const;
   const pws_os::CUUID GetUUID() const;
-  StringX GetFileName() const {return GetField(FILENAME);}
+  StringX GetFileName() const {return GetField(FILENAME);}  // set via Import()
+  StringX GetMediaType() const {return GetField(MEDIATYPE);}  // set via Import()
   time_t GetCTime(time_t &t) const;
   size_t GetContentLength() const; // Number of bytes stored
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
