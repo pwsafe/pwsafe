@@ -137,7 +137,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     CItemData::RUNCMD, CItemData::EMAIL,
     CItemData::DCA, CItemData::SHIFTDCA,
     CItemData::PROTECTED, CItemData::SYMBOLS,
-    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT,
+    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT, CItemData::ATTREF,
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
   };
@@ -382,6 +382,10 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             break;
           case CItemData::XTIME_INT:  /* 0x11 */
           case CItemData::PROTECTED:  /* 0x15 */
+            break;
+          case CItemData::ATTREF:     /* 0x1a */
+            sxValue1 = pci->HasAttRef() ? sxNo : sxYes;
+            sxValue2 = pci_other->HasAttRef() ? sxNo : sxYes;
             break;
           case CItemData::DCA:        /* 0x13 */
           case CItemData::SHIFTDCA:   /* 0x17 */

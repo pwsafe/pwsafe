@@ -61,7 +61,8 @@ CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD]
     {CItemData::XTIME,      IDS_PASSWORDEXPIRYDATE},
     {CItemData::XTIME_INT,  IDS_PASSWORDEXPIRYDATEINT},
     {CItemData::PMTIME,     IDS_PASSWORDMODIFIED},
-    {CItemData::RMTIME,     IDS_LASTMODIFIED}
+    {CItemData::RMTIME,     IDS_LASTMODIFIED},
+    {CItemData::ATTREF,     IDS_ATTREF}
 };
 
 //-----------------------------------------------------------------------------
@@ -240,10 +241,16 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, COMPARE, L"=");
 
       m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
+
+      StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
-      else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+        sxTitle += L" #";
+
+      if (st_data.bHasAttachment0)
+        sxTitle += L" *";
+      
+      m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
+
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
@@ -265,10 +272,14 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 
       m_LCResults.SetItemText(iItem, COMPARE, L"-");
       m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
+      StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
-      else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+        sxTitle += L" #";
+
+      if (st_data.bHasAttachment0)
+        sxTitle += L" *";
+
+      m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
@@ -316,10 +327,14 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, COMPARE, L"Y");
 
       m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
+      StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
-      else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+        sxTitle += L" #";
+
+      if (st_data.bHasAttachment0)
+        sxTitle += L" *";
+
+      m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
 
       // Start of the 'data' columns (if present)
@@ -1209,6 +1224,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_symbols(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
     const CString csx_policyname(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
     const CString csx_kbshortcut(MAKEINTRESOURCE(IDS_KBSHORTCUT));
+    const CString csx_attref(MAKEINTRESOURCE(IDS_ATTREF));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -1233,6 +1249,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::SYMBOLS)) buffer += csx_symbols;
       if (st_data.bsDiffs.test(CItemData::POLICYNAME)) buffer += csx_policyname;
       if (st_data.bsDiffs.test(CItemData::KBSHORTCUT)) buffer += csx_kbshortcut;
+      if (st_data.bsDiffs.test(CItemData::ATTREF)) buffer += csx_attref;
 
       // Time fields
       if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
@@ -1394,6 +1411,9 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
   if (m_bsFields.test(CItemData::KBSHORTCUT) &&
       currentItem.GetKBShortcut() != compItem.GetKBShortcut())
     bsConflicts.flip(CItemData::KBSHORTCUT);
+  if (m_bsFields.test(CItemData::ATTREF) &&
+    currentItem.HasAttRef() != compItem.HasAttRef())
+    bsConflicts.flip(CItemData::ATTREF);
 
   return bsConflicts.none();
 }
