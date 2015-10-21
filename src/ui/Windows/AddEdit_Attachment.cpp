@@ -145,7 +145,7 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     m_AttName = M_attachment().GetTitle();
     m_AttFileName = M_attachment().GetFileName();
 
-    // TBD - times, mimetype
+    // TBD - times
     ShowPreview();
   }
 
@@ -191,9 +191,28 @@ BOOL CAddEdit_Attachment::OnApply()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE;
 
-  M_attachment().SetTitle(m_AttName);
-  // M_attachment().SetCTime(m_FileCTime); -- TBD: add time_t FileCTime
-  // M_attachment().SetMediaType(m_csMediaType); -- TBD: add CItemAtt MediaType get/set
+  /*
+  
+    If user had removed an attachment - it needs to be deleted to prevent orphan
+    attachments.
+
+    Something like:
+
+    // Clear attachment and remove it
+    pws_os::CUUID attuuid = M_attachment().GetUUID();
+    M_pcore()->RemoveAtt(attuuid);
+    M_pci()->ClearAttUUID();
+  
+  */
+
+  if (M_attachment().HasContent()) {
+    // Only if still an attachment do the following!
+    M_attachment().SetTitle(m_AttName);
+
+    // M_attachment().SetCFTime(m_FileCTime); -- TBD: add time_t FileCTime
+    // M_attachment().SetMFTime(m_FileCTime); -- TBD: add time_t FileMTime
+    // M_attachment().SetAFTime(m_FileCTime); -- TBD: add time_t FileATime
+  }
 
   return CAddEdit_PropertyPage::OnApply();
 }
@@ -373,6 +392,7 @@ void CAddEdit_Attachment::OnAttRemove()
   m_AttFileName = m_AttName = L"";
   m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
   M_attachment().Clear();
+
   m_ae_psh->SetChanged(true);
   m_AttStatic.SetWindowText(L"");
 
@@ -417,19 +437,13 @@ void CAddEdit_Attachment::ShowPreview()
   CItemAtt &att = M_attachment();
   HRESULT hResult;
 
-  // Get properties
-  wchar_t szFileSize[256];
-  StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
-  m_csSize = szFileSize;
-  // m_csFileCTime = att.GetFileCTime();
-  // m_csFileMTime = att.GetFileMTime();
+  // Assume not an image
+  m_attType = ATTACHMENT_NOT_IMAGE;
 
   if (!att.HasContent()) {
-    wchar_t ext[_MAX_EXT];
-    _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, ext, _MAX_EXT);
-
-    // Assume not an image
-    m_attType = ATTACHMENT_NOT_IMAGE;
+    // No content so filename must not be empty
+    if (m_AttFileName.IsEmpty())
+      return;
 
     int status = att.Import(LPCWSTR(m_AttFileName));
     if (status != PWScore::SUCCESS) {
@@ -437,8 +451,16 @@ void CAddEdit_Attachment::ShowPreview()
       goto load_error;
     }
 
+    // Get other properties
+    wchar_t szFileSize[256];
+    StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
+    m_csSize = szFileSize;
+    // m_csFileCTime = att.GetFileCTime();
+    // m_csFileMTime = att.GetFileMTime();
+
+    // Get media type before we find we can't load it
     m_csMediaType = att.GetMediaType().c_str();
-    if (m_csMediaType.Find(L"image") != -1) {
+    if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       hResult = m_AttImage.Load(m_AttFileName);
       if (FAILED(hResult)) {
@@ -457,41 +479,53 @@ void CAddEdit_Attachment::ShowPreview()
     // in the logic for this processing rather than att.HasContent
     ASSERT(!m_bInitdone);
 
-    // Allocate attachment buffer
-    UINT imagesize = att.GetContentSize();
-    HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
-    ASSERT(gMemory);
+    // Get other properties
+    wchar_t szFileSize[256];
+    StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
+    m_csSize = szFileSize;
+    // m_csFileCTime = att.GetFileCTime();
+    // m_csFileMTime = att.GetFileMTime();
 
-    BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
-    ASSERT(pBuffer);
+    // Get media type before we find we can't load it
+    m_csMediaType = att.GetMediaType().c_str();
+    if (m_csMediaType.Left(5) == L"image") {
+      // Should be an image file - but may not be supported by CImage - try..
+      // Allocate attachment buffer
+      UINT imagesize = att.GetContentSize();
+      HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
+      ASSERT(gMemory);
 
-    // Load image into buffer
-    M_attachment().GetContent(pBuffer, imagesize);
+      BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+      ASSERT(pBuffer);
 
-    // Put it into a IStream
-    IStream *pStream = NULL;
-    hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
-    if (hResult == S_OK) {
-      // Load it
-      hResult = m_AttImage.Load(pStream);
-    } else {
-      // Reset result so that user gets error dialog below
-      // as we couldn't create the IStream object
-      hResult = E_FAIL;
+      // Load image into buffer
+      att.GetContent(pBuffer, imagesize);
+
+      // Put it into a IStream
+      IStream *pStream = NULL;
+      hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
+      if (hResult == S_OK) {
+        // Load it
+        hResult = m_AttImage.Load(pStream);
+      } else {
+        // Reset result so that user gets error dialog below
+        // as we couldn't create the IStream object
+        hResult = E_FAIL;
+      }
+
+      // Clean up - no real need to trash the buffer
+      pStream->Release();
+      GlobalUnlock(gMemory);
+      GlobalFree(gMemory);
+
+      // Check image load (or previous error of putting content into an IStream)
+      if (FAILED(hResult)) {
+        goto load_error;
+      }
+
+      // Success - was an image
+      m_attType = ATTACHMENT_IS_IMAGE;
     }
-
-    // Clean up - no real need to trash the buffer
-    pStream->Release();
-    GlobalUnlock(gMemory);
-    GlobalFree(gMemory);
-
-    // Check image load (or previous error of putting content into an IStrem)
-    if (FAILED(hResult)) {
-      goto load_error;
-    }
-
-    // Success - was an image
-    m_attType = ATTACHMENT_IS_IMAGE;
   }
 
   // Now draw image
