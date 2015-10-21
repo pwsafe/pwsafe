@@ -157,26 +157,32 @@ int CItemAtt::Import(const stringT &fname)
   ASSERT(!fname.empty());
   if (!pws_os::FileExists(fname))
     return PWScore::CANT_OPEN_FILE;
+
   std::FILE *fhandle = pws_os::FOpen(fname, L"rb");
   if (!fhandle)
     return PWScore::CANT_OPEN_FILE;
+
   size_t flen = static_cast<size_t>(pws_os::fileLength(fhandle));
   unsigned char *data = new unsigned char[flen];
   if (data == NULL)
     return PWScore::FAILURE;
+
   size_t nread = fread(data, flen, 1, fhandle);
   if (nread != 1) {
     fclose(fhandle);
     status = PWScore::READ_FAIL;
     goto done;
   }
+
   if (fclose(fhandle) != 0) {
     status = PWScore::READ_FAIL;
     goto done;
   }
+
   SetField(CONTENT, data, flen);
   CItem::SetField(FILENAME, fname.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
+
  done:
   trashMemory(data, flen);
   delete[] data;
@@ -197,22 +203,26 @@ int CItemAtt::Export(const stringT &fname) const
   std::FILE *fhandle = pws_os::FOpen(fname, L"wb");
   if (!fhandle)
     return PWScore::CANT_OPEN_FILE;
+
   size_t flen = field.GetLength() + 8; // Add 8 for block size
   unsigned char *value = new unsigned char[flen];
   if (value == NULL) {
     fclose(fhandle);
     return PWScore::FAILURE;
   }
+
   CItem::GetField(field, value, flen); // flen adjusted to real value
   size_t nwritten = fwrite(value, flen, 1, fhandle);
   if (nwritten != 1) {
     status = PWScore::WRITE_FAIL;
     goto done;
   }
+
   if (fclose(fhandle) != 0) {
     status = PWScore::WRITE_FAIL;
     goto done;
   }
+
  done:
   trashMemory(value, flen);
   delete[] value;
@@ -286,6 +296,7 @@ int CItemAtt::Read(PWSfile *in)
   size_t utf8Len = 0;
 
   Clear();
+
   do {
     fieldLen = static_cast<signed long>(in->ReadField(type, utf8,
                                                       utf8Len));
@@ -428,12 +439,15 @@ size_t CItemAtt::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
       wpdata[srclen] = 0;
       size_t dstlen = pws_os::wcstombs(NULL, 0, wpdata, srclen);
       ASSERT(dstlen > 0);
+
       char *dst = new char[dstlen+1];
       dstlen = pws_os::wcstombs(dst, dstlen, wpdata, srclen);
       ASSERT(dstlen != size_t(-1));
+
       //[BR1150, BR1167]: Discard the terminating NULLs in text fields
       if (dstlen && !dst[dstlen-1])
         dstlen--;
+
       retval = out->WriteField(static_cast<unsigned char>(ft), reinterpret_cast<unsigned char *>(dst), dstlen);
       trashMemory(dst, dstlen);
       delete[] dst;
@@ -465,6 +479,7 @@ int CItemAtt::Write(PWSfile *out) const
   if (fiter != m_fields.end()) {
     PWSfileV4 *out4 = dynamic_cast<PWSfileV4 *>(out);
     ASSERT(out4 != NULL);
+
     size_t clength = fiter->second.GetLength() + BlowFish::BLOCKSIZE;
     unsigned char *content = new unsigned char[clength];
     CItem::GetField(fiter->second, content, clength);
