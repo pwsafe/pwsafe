@@ -45,6 +45,7 @@
 #include "../../os/utf8conv.h"
 #include "./TimedTaskChain.h"
 #include <wx/tokenzr.h>
+#include <array>
 
 #include <algorithm>
 
