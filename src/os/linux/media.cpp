@@ -10,8 +10,6 @@
 * \file Linux-specific implementation of media.h
 */
 
-// *** UNTESTED ***
-
 #include "../media.h"
 #include "../file.h"
 #include "../utf8conv.h"
@@ -56,5 +54,8 @@ stringT pws_os::GetMediaType(const stringT &sfilename)
   // need to convert pret to wchar_t
   wchar_t pwret[4*sizeof(pret)];
   mbstowcs(pwret, sizeof(pwret), pret, sizeof(pret));
-  return stringT(pwret);
+  stringT retval(pwret);
+  if (!retval.empty())
+    retval.pop_back(); // get rid of pesky newline
+  return retval;
 }
