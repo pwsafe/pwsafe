@@ -88,29 +88,29 @@ static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,
                                 const unsigned char *eout,
                                 const unsigned char *key, int keylen)
 {
-	unsigned char *otmp = NULL, *ptmp = NULL;
-	int ret = 0;
-	otmp = new unsigned char[keylen + 8];
-	ptmp = new unsigned char[keylen];
-	if (!otmp || !ptmp)
-		return 0;
-	AES wctx(kek, keybits/8);
+  unsigned char *otmp = NULL, *ptmp = NULL;
+  int ret = 0;
+  otmp = new unsigned char[keylen + 8];
+  ptmp = new unsigned char[keylen];
+  if (!otmp || !ptmp)
+    return 0;
+  AES wctx(kek, keybits/8);
   KeyWrap kw(&wctx);
   kw.Wrap(key, otmp, keylen);
 
-	if (eout && std::memcmp(eout, otmp, keylen))
-		goto err;
-		
-	if (!kw.Unwrap(otmp, ptmp, keylen+8))
+  if (eout && std::memcmp(eout, otmp, keylen))
+    goto err;
+    
+  if (!kw.Unwrap(otmp, ptmp, keylen+8))
     goto err;
 
-	if (std::memcmp(key, ptmp, keylen))
-		goto err;
+  if (std::memcmp(key, ptmp, keylen))
+    goto err;
 
-	ret = 1;
+  ret = 1;
 
  err:
   delete[] otmp;
   delete[] ptmp;
-	return ret;
+  return ret;
 }

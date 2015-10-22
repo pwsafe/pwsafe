@@ -24,6 +24,7 @@ TEST(StringXTest, testConstructors)
   // StringX()
   EXPECT_EQ(0, s0.length());
   EXPECT_TRUE(s0.empty());
+
   // StringX( const char* str )
   charT v1[] = _S("abcd");
   StringX s1(v1);
@@ -170,6 +171,7 @@ TEST(StringXTest, testAssign)
   StringX s1(_S("Flew"));
   s1.assign(2, charT('B'));
   EXPECT_TRUE(_S("BB") == s1);
+
   StringX s2;
   s2.assign(s1);
   EXPECT_TRUE(s1 == s2);
