@@ -65,11 +65,13 @@ TEST(AESTest, aes_test)
       delete tf;
       FAIL() << "Test vector " << i;
     }
+
     /* now see if we can encrypt all zero bytes 1000 times, decrypt and come back where we started */
     for (y = 0; y < 16; y++) tmp[0][y] = 0;
     for (y = 0; y < 1000; y++) tf->Encrypt(tmp[0], tmp[0]);
     for (y = 0; y < 1000; y++) tf->Decrypt(tmp[0], tmp[0]);
     for (y = 0; y < 16; y++) if (tmp[0][y] != 0) {delete tf; FAIL() << "Encrypt/Decrypt zeros failed";}
+
     delete tf;
   }
   SUCCEED();

@@ -71,6 +71,7 @@ TEST_F(ItemFieldTest, testMe)
   CItemField i1(1);
   EXPECT_TRUE(i1.IsEmpty());
   EXPECT_EQ(1, i1.GetType());
+
   i1.Set(v1, sizeof(v1), m_bf);
   i1.Get(v2, lenV2, m_bf);
   EXPECT_EQ(sizeof(v1), lenV2);
