@@ -100,6 +100,7 @@
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
 		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
@@ -528,6 +529,8 @@
 		E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreOtherDB.cpp; sourceTree = "<group>"; };
 		E6DDC7001389120E00F0C0D1 /* DBCompareData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCompareData.h; sourceTree = "<group>"; };
 		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
+		E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedTaskChain.cpp; sourceTree = "<group>"; };
+		E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedTaskChain.h; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -1016,6 +1019,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */,
+				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
 				E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */,
 				E66C16BA16731F9400C996B1 /* PasswordPolicy.h */,
 				E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */,
@@ -1531,6 +1536,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* about.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* addeditpropsheet.cpp in Sources */,
 				E6ADBA3A1195709A004E2BE5 /* createshortcutdlg.cpp in Sources */,
