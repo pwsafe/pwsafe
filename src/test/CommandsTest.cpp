@@ -82,6 +82,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Undo();
   EXPECT_EQ(0, core.GetNumEntries());
+
   core.Redo();
   EXPECT_EQ(2, core.GetNumEntries());
 
@@ -92,6 +93,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Execute(pcmd1);
   EXPECT_EQ(0, core.GetNumEntries());
+
   core.Undo();
   EXPECT_EQ(2, core.GetNumEntries());
 

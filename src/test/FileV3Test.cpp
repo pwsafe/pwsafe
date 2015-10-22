@@ -110,6 +110,7 @@ TEST_F(FileV3Test, EmptyFile)
   PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
   // Try opening with wrong passphrasse, check failure
   EXPECT_EQ(PWSfile::WRONG_PASSWORD, fr.Open(_T("x")));
+
   // Now open with correct one, check emptiness
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
@@ -131,12 +132,14 @@ TEST_F(FileV3Test, HeaderTest)
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
   fw.SetHeader(hdr1);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+
   hdr1 = fw.GetHeader(); // Some fields set by Open()
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
   ASSERT_TRUE(pws_os::FileExists(fname));
 
   PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+
   hdr2 = fr.GetHeader();
   // We need the following to read past the termination block!
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));

@@ -125,6 +125,7 @@ TEST_F(FileV4Test, EmptyFile)
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   // Try opening with wrong passphrasse, check failure
   EXPECT_EQ(PWSfile::WRONG_PASSWORD, fr.Open(_T("x")));
+
   // Now open with correct one, check emptiness
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
@@ -139,12 +140,14 @@ TEST_F(FileV4Test, HeaderTest)
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
   fw.SetHeader(hdr);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+
   hdr1 = fw.GetHeader(); // Some fields set by Open()
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
   ASSERT_TRUE(pws_os::FileExists(fname));
 
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+
   hdr2 = fr.GetHeader();
   // We need the following to read past the termination block!
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
@@ -240,6 +243,7 @@ TEST_F(FileV4Test, HdrItemAttTest)
 
   fw.SetHeader(hdr);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+
   hdr1 = fw.GetHeader(); // Some fields set by Open()
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
@@ -265,23 +269,30 @@ TEST_F(FileV4Test, CoreRWTest)
 
   fullItem.SetAttUUID(attItem.GetUUID());
   EXPECT_EQ(0, attItem.GetRefcount());
+
   core.SetPassKey(passkey);
   core.Execute(AddEntryCommand::Create(&core, fullItem, &attItem));
   EXPECT_TRUE(core.HasAtt(attItem.GetUUID()));
   EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), true, PWSfile::V40));
+
   core.ClearData();
   EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey));
   ASSERT_EQ(1, core.GetNumEntries());
   ASSERT_EQ(1, core.GetNumAtts());
   ASSERT_TRUE(core.Find(fullItem.GetUUID()) != core.GetEntryEndIter());
+
   const CItemData readFullItem = core.GetEntry(core.Find(fullItem.GetUUID()));
   EXPECT_TRUE(readFullItem.HasAttRef());
   EXPECT_EQ(attItem.GetUUID(), readFullItem.GetAttUUID());
   EXPECT_EQ(fullItem, readFullItem);
   ASSERT_TRUE(core.HasAtt(attItem.GetUUID()));
   EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
+
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
   ASSERT_EQ(0, core.GetNumEntries());
   ASSERT_EQ(0, core.GetNumAtts());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
