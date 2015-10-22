@@ -20,7 +20,7 @@ stringT pws_os::GetMediaType(const stringT &sfilename)
 {
   HRESULT hResult;
   TCHAR *pwzMimeOut = NULL;
-  stringT sMediaType(_T(""));
+  stringT sMediaType(_T("unknown"));
 
   wchar_t extn[_MAX_EXT];
   _tsplitpath_s(sfilename.c_str(), NULL, 0, NULL, 0, NULL, 0, extn, _MAX_EXT);
