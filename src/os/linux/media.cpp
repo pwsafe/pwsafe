@@ -13,27 +13,48 @@
 // *** UNTESTED ***
 
 #include "../media.h"
-#include "../debug.h"
+#include "../file.h"
+#include "../utf8conv.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <gio/gio.h>
+#include <cstdlib>
+#include <cstdio>
 
-// Linux uses the file contents to get the Media/MIME type
-// NOT SURE WHAT gio DOES - DOES IT OPEN THE FILE?
+using namespace std;
 
 stringT pws_os::GetMediaType(const stringT &sfilename)
 {
-  stringT sMediaType(_T(""));
-  gboolean is_certain = FALSE;
+  /**
+   * Simplest way to get the mime type of file is via file(1) command
+   * popen()/pclose() is one approach, but we need to protect against
+   * a filename of the form "foo;/bin/rm -rf *" (Little Bobby tables).
+   * One solution is to fork/exec with dup2.
+   * I think it's easier (a) to stat the file first (b) quote the
+   * filename.
+   */
 
-  TCHAR *content_type = g_content_type_guess(sfilename.c_str(), NULL, 0, &is_certain);
+  if (!pws_os::FileExists(sfilename))
+    return _T("unknown");
+  
+  stringT command = _T("/usr/bin/file -b --mime-type '") + sfilename + _T("'");
 
-  if (content_type != NULL) {
-    sMediaType = g_content_type_get_mime_type(content_type);
+  // need to convert command to char *
+  size_t clen = pws_os::wcstombs(NULL, 0, command.c_str(), command.length());
+  if (clen <= 0)
+    return _T("unknown");
+  char *cmd = new char[clen+1];
+  pws_os::wcstombs(cmd, clen, command.c_str(), command.length());
+
+  
+  FILE *pf = popen(cmd, "r");
+  delete[] cmd;
+  char pret[64];
+  if (fgets(pret, sizeof(pret), pf) == NULL) {
+    pclose(pf);
+    return _T("unknown");
   }
-
-  g_free(content_type);
-
-  return sMediaType;
+  pclose(pf);
+  // need to convert pret to wchar_t
+  wchar_t pwret[4*sizeof(pret)];
+  mbstowcs(pwret, sizeof(pwret), pret, sizeof(pret));
+  return stringT(pwret);
 }
