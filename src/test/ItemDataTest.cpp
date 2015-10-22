@@ -89,8 +89,10 @@ TEST_F(ItemDataTest, EmptyItems)
   CItemData di2;
   const StringX t(L"title");
   EXPECT_TRUE(emptyItem == di2);
+
   emptyItem.SetTitle(t);
   EXPECT_FALSE(emptyItem == di2);  
+
   di2.SetTitle(t);
   EXPECT_TRUE(emptyItem == di2);
 }
@@ -99,6 +101,7 @@ TEST_F(ItemDataTest, CopyCtor)
 {
   emptyItem.SetTitle(_T("title"));
   emptyItem.SetPassword(_T("password!"));
+
   CItemData di2(emptyItem);
   EXPECT_TRUE(emptyItem == di2);
 }
@@ -127,8 +130,10 @@ TEST_F(ItemDataTest, Getters_n_Setters)
   EXPECT_EQ(xTimeInt, fullItem.GetXTimeInt(iVal32));
   EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
   EXPECT_FALSE(fullItem.IsProtected()); // default value
+
   fullItem.SetProtected(true); // modify
   EXPECT_TRUE(fullItem.IsProtected());
+
   fullItem.SetProtected(false); // modify back to default
   EXPECT_FALSE(fullItem.IsProtected());
 }

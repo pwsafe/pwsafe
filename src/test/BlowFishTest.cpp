@@ -179,6 +179,7 @@ c=05044B62FA52D080 k[24]=F0E1D2C3B4A5968778695A4B3C2D1E0F0011223344556677
   unsigned char zero[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   int i;
   BlowFish bf(key, sizeof(key));
+
   for (i = 0; i < 1000; i++) bf.Encrypt(tmp, tmp);
   for (i = 0; i < 1000; i++) bf.Decrypt(tmp, tmp);
   EXPECT_TRUE(memcmp(tmp, zero, 8) == 0);
@@ -190,6 +191,7 @@ c=05044B62FA52D080 k[24]=F0E1D2C3B4A5968778695A4B3C2D1E0F0011223344556677
       BlowFish bf(variable_key[i], 8);
       bf.Encrypt(plaintext_vk[i], tmp);
       EXPECT_TRUE(memcmp(tmp, ciphertext_vk[i], 8) == 0) << "Test vector " << i;
+
       bf.Decrypt(ciphertext_vk[i], tmp);
       EXPECT_TRUE(memcmp(tmp, plaintext_vk[i], 8) == 0) << "Test vector " << i;
     }

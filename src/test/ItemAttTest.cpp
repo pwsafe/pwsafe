@@ -48,8 +48,10 @@ TEST_F(ItemAttTest, EmptyItems)
 {
   CItemAtt ai1, ai2;
   EXPECT_TRUE(ai1 == ai2);
+
   ai1.SetTitle(title);
   EXPECT_FALSE(ai1 == ai2);  
+
   ai2.SetTitle(title);
   EXPECT_TRUE(ai1 == ai2);
 }
@@ -58,9 +60,11 @@ TEST_F(ItemAttTest, UUIDs)
 {
   CItemAtt ai1, ai2;
   EXPECT_FALSE(ai1.HasUUID());
+
   ai1.CreateUUID();
   ai2.CreateUUID();
   EXPECT_FALSE(ai1 == ai2);
+
   ai2.SetUUID(ai1.GetUUID());
   EXPECT_TRUE(ai1 == ai2);
 }
@@ -70,7 +74,9 @@ TEST_F(ItemAttTest, ImpExp)
   const stringT testImpFile(fileName);
   const stringT testExpFile(L"output.tmp");
   CItemAtt ai;
-  int status = ai.Import(L"nosuchfile");
+  int status;
+  
+  status = ai.Import(L"nosuchfile");
   EXPECT_EQ(PWScore::CANT_OPEN_FILE, status);
   EXPECT_EQ(L"", ai.GetFileName());
   EXPECT_FALSE(ai.HasContent());
@@ -86,19 +92,18 @@ TEST_F(ItemAttTest, ImpExp)
 
   FILE *f1 = pws_os::FOpen(testImpFile, L"rb");
   FILE *f2 = pws_os::FOpen(testExpFile, L"rb");
-
   EXPECT_EQ(pws_os::fileLength(f1), pws_os::fileLength(f2));
 
   size_t flen = static_cast<size_t>(pws_os::fileLength(f1));
-
   unsigned char *m1 = new unsigned char[flen];
   unsigned char *m2 = new unsigned char[flen];
 
   ASSERT_EQ(1, fread(m1, flen, 1, f1));
   ASSERT_EQ(1, fread(m2, flen, 1, f2));
-  fclose(f1); fclose(f2);
 
+  fclose(f1); fclose(f2);
   EXPECT_EQ(0, memcmp(m1, m2, flen));
+
   delete[] m1; delete[] m2;
   pws_os::DeleteAFile(testExpFile);
 }
