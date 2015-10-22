@@ -284,4 +284,7 @@ TEST_F(FileV4Test, CoreRWTest)
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
   ASSERT_EQ(0, core.GetNumEntries());
   ASSERT_EQ(0, core.GetNumAtts());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
