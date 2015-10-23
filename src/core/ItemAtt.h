@@ -40,17 +40,21 @@ class CItemAtt : public CItem
 public:
 
   enum FieldType {
-    START = 0x61,
-    ATTUUID = 0x61,
-    TITLE = 0x03,
-    CTIME = 0x07,
-    MEDIATYPE = 0x62,
-    FILENAME = 0x63,
-    ATTEK = 0x64,
-    ATTAK = 0x65,
-    ATTIV = 0x66,
-    CONTENT = 0x67,
-    CONTENTHMAC = 0x68,
+    START = 0x60,
+    ATTUUID = 0x60,
+    ATTEK = 0x61,
+    ATTAK = 0x62,
+    ATTIV = 0x63,
+    TITLE = 0x64,
+    MEDIATYPE = 0x65,
+    FILENAME = 0x66,
+    FILEPATH = 0x67,
+    CTIME = 0x68,
+    CONTENT = 0x69,
+    CONTENTHMAC = 0x6a,
+    FILECTIME = 0x6b,
+    FILEMTIME = 0x6c,
+    FILEATIME = 0x6d,
     LAST,
     END = 0xff
   };
@@ -87,12 +91,37 @@ public:
   StringX GetTitle() const {return GetField(TITLE);}
   void GetUUID(uuid_array_t &) const;
   const pws_os::CUUID GetUUID() const;
-  StringX GetFileName() const {return GetField(FILENAME);}  // set via Import()
+  StringX GetFileName() const {return GetField(FILENAME);}    // set via Import()
+  StringX GetFilePath() const { return GetField(FILEPATH); }  // set via Import()
   StringX GetMediaType() const {return GetField(MEDIATYPE);}  // set via Import()
-  time_t GetCTime(time_t &t) const;
   size_t GetContentLength() const; // Number of bytes stored
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
   bool GetContent(unsigned char *content, size_t csize) const;
+
+  time_t GetCTime(time_t &t) const;
+
+  StringX GetTime(int whichtime, PWSUtil::TMC result_format) const;
+  void SetTime(const int whichtime); // V30
+  bool SetTime(const int whichtime, const stringT &time_str); // V30
+
+  StringX GetFileCTime() const { return GetTime(FILECTIME, PWSUtil::TMC_LOCALE); }
+  StringX GetFileMTime() const { return GetTime(FILEMTIME, PWSUtil::TMC_LOCALE); }
+  StringX GetFileATime() const { return GetTime(FILEATIME, PWSUtil::TMC_LOCALE); }
+
+  //  These populate (and return) time_t instead of giving a character string
+  time_t GetFileCTime(time_t &t) const { CItem::GetTime(FILECTIME, t); return t; }
+  time_t GetFileMTime(time_t &t) const { CItem::GetTime(FILEMTIME, t); return t; }
+  time_t GetFileATime(time_t &t) const { CItem::GetTime(FILEATIME, t); return t; }
+
+  void SetFileCTime() { SetTime(FILECTIME); }
+  void SetFileCTime(time_t t) { CItem::SetTime(FILECTIME, t); }
+  bool SetFileCTime(const stringT &time_str) { return SetTime(FILECTIME, time_str); }
+  void SetFileMTime() { SetTime(FILEMTIME); }
+  void SetFileMTime(time_t t) { CItem::SetTime(FILEMTIME, t); }
+  bool SetFileMTime(const stringT &time_str) { return SetTime(FILEMTIME, time_str); }
+  void SetFileATime() { SetTime(FILEATIME); }
+  void SetFileATime(time_t t) { CItem::SetTime(FILEATIME, t); }
+  bool SetFileATime(const stringT &time_str) { return SetTime(FILEATIME, time_str); }
 
   EntryStatus GetStatus() const {return m_entrystatus;}
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
@@ -109,7 +138,6 @@ public:
   bool operator==(const CItemAtt &that) const;
   bool operator!=(const CItemAtt &that) const {return !operator==(that);}
 
-
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
@@ -122,7 +150,6 @@ private:
   long m_offset; // location on file, for lazy evaluation
   unsigned m_refcount; // how many CItemData objects refer to this?
 };
-
 #endif /* __ITEMATT_H */
 //-----------------------------------------------------------------------------
 // Local variables:
