@@ -247,7 +247,7 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         sxTitle += L" #";
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" *";
+        sxTitle += L" +";
       
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
 
@@ -277,7 +277,7 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         sxTitle += L" #";
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" *";
+        sxTitle += L" +";
 
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
@@ -332,7 +332,7 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         sxTitle += L" #";
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" *";
+        sxTitle += L" +";
 
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
