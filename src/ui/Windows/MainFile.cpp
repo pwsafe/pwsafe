@@ -3011,7 +3011,7 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
       pELLE->sx_title += L" #";
 
     if (pci->HasAttRef())
-      pELLE->sx_title += L" *";
+      pELLE->sx_title += L" +";
 
     // Update time fields
     time_t tttXTime;

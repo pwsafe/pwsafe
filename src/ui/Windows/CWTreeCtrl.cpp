@@ -226,7 +226,7 @@ CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
     treeDispString += L" #";
 
   if (ci.HasAttRef())
-    treeDispString += L" *";
+    treeDispString += L" +";
 
   return treeDispString;
 }
