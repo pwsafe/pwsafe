@@ -51,7 +51,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
       elle.sx_title += L" #";
 
     if (ci.HasAttRef())
-      elle.sx_title += L" *";
+      elle.sx_title += L" +";
 
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;
