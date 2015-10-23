@@ -21,6 +21,10 @@
 #include "os/file.h"
 #include "os/media.h"
 #include "os/utf8conv.h"
+#include "os/dir.h"
+
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 using pws_os::CUUID;
@@ -114,8 +118,16 @@ void CItemAtt::SetContent(const unsigned char *content, size_t clen)
 
 time_t CItemAtt::GetCTime(time_t &t) const
 {
-  GetTime(CTIME, t);
+  CItem::GetTime(CTIME, t);
   return t;
+}
+
+StringX CItemAtt::GetTime(int whichtime, PWSUtil::TMC result_format) const
+{
+  time_t t;
+
+  CItem::GetTime(whichtime, t);
+  return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
 size_t CItemAtt::GetContentLength() const
@@ -149,9 +161,9 @@ bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
   return true;
 }
 
-
 int CItemAtt::Import(const stringT &fname)
 {
+  stringT spath, sdrive, sdir, sfname, sextn; 
   int status = PWScore::SUCCESS;
 
   ASSERT(!fname.empty());
@@ -180,8 +192,26 @@ int CItemAtt::Import(const stringT &fname)
   }
 
   SetField(CONTENT, data, flen);
-  CItem::SetField(FILENAME, fname.c_str());
+
+  // derive the file's path and name
+  pws_os::splitpath(fname, sdrive, sdir, sfname, sextn);
+  spath = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
+
+  CItem::SetField(FILENAME, (sfname + sextn).c_str());
+  CItem::SetField(FILEPATH, spath.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
+
+  struct _stati64 info;
+  int rc = _wstati64(fname.c_str(), &info);
+  ASSERT(rc == 0);
+
+  unsigned char buf[sizeof(time_t)];
+  putInt(buf, info.st_ctime);
+  CItem::SetField(FILECTIME, buf, sizeof(time_t));
+  putInt(buf, info.st_mtime); 
+  CItem::SetField(FILEMTIME, buf, sizeof(time_t));
+  putInt(buf, info.st_atime); 
+  CItem::SetField(FILEATIME, buf, sizeof(time_t));
 
  done:
   trashMemory(data, flen);
@@ -247,9 +277,13 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
   case TITLE:
   case MEDIATYPE:
   case FILENAME:
+  case FILEPATH:
     if (!SetTextField(ft, data, len)) return false;
     break;
   case CTIME:
+  case FILECTIME:
+  case FILEMTIME:
+  case FILEATIME:
     if (!SetTimeField(ft, data, len)) return false;
     break;
   case CONTENT:
@@ -411,7 +445,6 @@ int CItemAtt::Read(PWSfile *in)
     status = PWSfile::READ_FAIL;
   }
 
-
  exit:
   trashMemory(content, content_len);
   delete[] content;
@@ -475,6 +508,11 @@ int CItemAtt::Write(PWSfile *out) const
   WriteIfSet(CTIME, out, false);
   WriteIfSet(MEDIATYPE, out, true);
   WriteIfSet(FILENAME, out, true);
+  WriteIfSet(FILEPATH, out, true);
+  WriteIfSet(FILECTIME, out, false);
+  WriteIfSet(FILEMTIME, out, false);
+  WriteIfSet(FILEATIME, out, false);
+
   FieldConstIter fiter = m_fields.find(CONTENT);
   if (fiter != m_fields.end()) {
     PWSfileV4 *out4 = dynamic_cast<PWSfileV4 *>(out);
