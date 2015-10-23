@@ -143,9 +143,23 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     ASSERT(M_pcore()->HasAtt(M_pci()->GetAttUUID()));
     M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
     m_AttName = M_attachment().GetTitle();
-    m_AttFileName = M_attachment().GetFileName();
+    m_AttFileName = M_attachment().GetFilePath() + M_attachment().GetFileName();
 
-    // TBD - times
+    // Get other properties
+    m_csMediaType = M_attachment().GetMediaType().c_str();
+
+    wchar_t szFileSize[256];
+    StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
+    m_csSize = szFileSize;
+
+    m_csFileCTime = M_attachment().GetFileCTime().c_str();
+    if (m_csFileCTime.IsEmpty())
+      m_csFileCTime = L"N/A";
+
+    m_csFileMTime = M_attachment().GetFileMTime().c_str();
+    if (m_csFileMTime.IsEmpty())
+      m_csFileMTime = L"N/A";
+
     ShowPreview();
   }
 
@@ -164,7 +178,6 @@ BOOL CAddEdit_Attachment::OnKillActive()
 
   return CAddEdit_PropertyPage::OnKillActive();
 }
-
 
 LRESULT CAddEdit_Attachment::OnQuerySiblings(WPARAM wParam, LPARAM)
 {
@@ -191,27 +204,9 @@ BOOL CAddEdit_Attachment::OnApply()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE;
 
-  /*
-  
-    If user had removed an attachment - it needs to be deleted to prevent orphan
-    attachments.
-
-    Something like:
-
-    // Clear attachment and remove it
-    pws_os::CUUID attuuid = M_attachment().GetUUID();
-    M_pcore()->RemoveAtt(attuuid);
-    M_pci()->ClearAttUUID();
-  
-  */
-
   if (M_attachment().HasContent()) {
     // Only if still an attachment do the following!
     M_attachment().SetTitle(m_AttName);
-
-    // M_attachment().SetCFTime(m_FileCTime); -- TBD: add time_t FileCTime
-    // M_attachment().SetMFTime(m_FileCTime); -- TBD: add time_t FileMTime
-    // M_attachment().SetAFTime(m_FileCTime); -- TBD: add time_t FileATime
   }
 
   return CAddEdit_PropertyPage::OnApply();
@@ -261,13 +256,19 @@ void CAddEdit_Attachment::OnAttImport()
   UpdateData(TRUE);
 
   if (m_AttFileName.IsEmpty()) {
-    // Ask user for file name
+    // Ask user for file name - annoyingly - returned string is all in upper case!
     // Remove last separator
     const CString cs_allimages(MAKEINTRESOURCE(IDS_ALL_IMAGE_FILES));
     const DWORD dwExclude = CImage::excludeOther;
     hResult = m_AttImage.GetImporterFilterString(filter, aguidFileTypes, cs_allimages, dwExclude);
     ASSERT(hResult >= 0);
 
+    // Make better visually
+    filter = filter.Right(filter.GetLength() - cs_allimages.GetLength());
+    filter.MakeLower();
+    filter = cs_allimages + filter;
+
+    // Remove last separator to add the all files
     filter = filter.Left(filter.GetLength() - 1);
 
     // Add "All files"
@@ -304,14 +305,25 @@ void CAddEdit_Attachment::OnAttImport()
   UpdateWindow();
 }
 
+void TimetToFileTime(time_t t, FILETIME *pft)
+{
+  LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+  pft->dwLowDateTime = (DWORD)ll;
+  pft->dwHighDateTime = ll >> 32;
+}
+
 void CAddEdit_Attachment::OnAttExport()
 {
   CString filter;
   CSimpleArray<GUID> aguidFileTypes;
   HRESULT hResult;
+  stringT soutputfile;
 
-  wchar_t fname[_MAX_FNAME],  ext[_MAX_EXT];
+  wchar_t fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+
+  // Default suffix should be the same as the original file (skip over leading ".")
+  CString cs_ext = ext + 1;
 
   switch (m_attType) {
     case NO_ATTACHMENT:
@@ -325,10 +337,43 @@ void CAddEdit_Attachment::OnAttExport()
       if (FAILED(hResult))
         return;
 
-      CFileDialog fileDlg(FALSE, ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      // Extensions look much nicer in lower case
+      filter.MakeLower();
+
+      // Get index of current extension in filter string - note in pairs so need to skip every other one
+      int cPos = 0, iIndex = 0;
+      CString cs_ext_nocase(ext); cs_ext_nocase.MakeLower();
+      CString cs_filter_nocase(filter);
+      CString cs_token;
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+      if (cs_token.Find(cs_ext_nocase) == -1) {
+        while (!cs_token.IsEmpty()) {
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+          if (cs_token.Find(cs_ext_nocase) != -1)
+            break;
+          iIndex += 2;
+        };
+      }
+
+      CFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      fileDlg.m_pOFN->nFilterIndex = iIndex;
+
       if (fileDlg.DoModal() == IDOK) {
-        const CString sfile = fileDlg.GetPathName();
-        hResult = m_AttImage.Save(sfile);
+        soutputfile = fileDlg.GetPathName();
+
+        // Get new extension
+        _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, new_ext, _MAX_EXT);
+        
+        // If new extension is the same as old, export the file rather than use
+        // CImage to save it (which may well change its size)
+        if (_wcsicmp(ext, new_ext) == 0) {
+          int rc = M_attachment().Export(soutputfile);
+          hResult = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
+        } else {
+          hResult = m_AttImage.Save(soutputfile.c_str());
+        }
         if (FAILED(hResult)) {
           CGeneralMsgBox gmb;
           const CString cs_errmsg = L"Failed to save image";
@@ -339,6 +384,7 @@ void CAddEdit_Attachment::OnAttExport()
         // User cancelled save
         return;
       }
+      break;
     }
     case ATTACHMENT_NOT_IMAGE:
     {
@@ -351,16 +397,51 @@ void CAddEdit_Attachment::OnAttExport()
         // Use All files!
         filter.LoadString(IDS_FDF_ALL);
       }
-      CFileDialog fileDlg(FALSE, ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      CFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
       if (fileDlg.DoModal() == IDOK) {
-        const CString sfile = fileDlg.GetPathName();
-        // TODO - Need to write out non image file
-        return;
+        soutputfile = fileDlg.GetPathName();
+        M_attachment().Export(soutputfile);
       } else {
         // User cancelled save
         return;
       }
+      break;
     }
+  }
+
+  // We have saved/exported the file - now reset its file times to the original
+  // when it was first imported/added
+  if (soutputfile.empty()) {
+    // Shouldn't get here with an empty export file name!
+    ASSERT(0);
+    return;
+  }
+
+  time_t ctime, mtime, atime;
+  FILETIME fctime, fmtime, fatime;
+
+  // Get old file times
+  M_attachment().GetFileCTime(ctime);
+  M_attachment().GetFileMTime(mtime);
+  M_attachment().GetFileATime(atime);
+  
+  // Convert to file time format
+  TimetToFileTime(ctime, &fctime);
+  TimetToFileTime(mtime, &fmtime);
+  TimetToFileTime(atime, &fatime);
+
+  // Now set file times
+  HANDLE hFile;
+  hFile = CreateFile(soutputfile.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL,
+    OPEN_EXISTING, 0, NULL);
+
+  if (hFile != INVALID_HANDLE_VALUE) {
+    SetFileTime(hFile, &fctime, &fmtime, &fatime);
+    CloseHandle(hFile);
+  } else {
+    CGeneralMsgBox gmb;
+    const CString cs_errmsg = L"Unable to open newly exported file to set file times";
+    gmb.AfxMessageBox(cs_errmsg);
   }
 }
 
@@ -451,15 +532,20 @@ void CAddEdit_Attachment::ShowPreview()
       goto load_error;
     }
 
+    // Get media type before we find we can't load it
+    m_csMediaType = att.GetMediaType().c_str();
+
     // Get other properties
     wchar_t szFileSize[256];
     StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
     m_csSize = szFileSize;
-    // m_csFileCTime = att.GetFileCTime();
-    // m_csFileMTime = att.GetFileMTime();
+    m_csFileCTime = att.GetFileCTime().c_str();
+    if (m_csFileCTime.IsEmpty())
+      m_csFileCTime = L"N/A";
+    m_csFileMTime = att.GetFileMTime().c_str();
+    if (m_csFileMTime.IsEmpty())
+      m_csFileMTime = L"N/A";
 
-    // Get media type before we find we can't load it
-    m_csMediaType = att.GetMediaType().c_str();
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       hResult = m_AttImage.Load(m_AttFileName);
@@ -479,15 +565,6 @@ void CAddEdit_Attachment::ShowPreview()
     // in the logic for this processing rather than att.HasContent
     ASSERT(!m_bInitdone);
 
-    // Get other properties
-    wchar_t szFileSize[256];
-    StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
-    m_csSize = szFileSize;
-    // m_csFileCTime = att.GetFileCTime();
-    // m_csFileMTime = att.GetFileMTime();
-
-    // Get media type before we find we can't load it
-    m_csMediaType = att.GetMediaType().c_str();
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       // Allocate attachment buffer
