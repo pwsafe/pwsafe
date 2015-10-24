@@ -159,6 +159,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
@@ -234,6 +235,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_NOTES,    IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_URL,      IDS_CLICKTOCOPY);
+    AddTool(IDC_COPYPASSWORD,    IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_EMAIL,    IDS_CLICKTOCOPYPLUS1);
     AddTool(IDC_LAUNCH,          IDS_CLICKTOGOPLUS);
     AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
@@ -371,6 +373,19 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Set initial Word Wrap
   m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
+
+  // Load copy password bitmap
+  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+    IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+  BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                                                 ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                                                 MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  ASSERT(brc);
+
+  FixBitmapBackground(m_CopyPswdBitmap);
+  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+  pBtn->SetBitmap(m_CopyPswdBitmap);
 
   UpdateData(FALSE);
   m_bInitdone = true;
@@ -1486,4 +1501,12 @@ void CAddEdit_Basic::SetGroupComboBoxWidth()
 
   // Set the width of the list box so that every item is completely visible.
   m_ex_group.SetDroppedWidth(dx);
+}
+
+void CAddEdit_Basic::OnCopyPassword()
+{
+  UpdateData(TRUE);
+
+  GetMainDlg()->SetClipboardData(m_password);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

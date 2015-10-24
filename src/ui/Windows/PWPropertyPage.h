@@ -26,6 +26,7 @@ public:
 
   DECLARE_DYNAMIC(CPWPropertyPage)
 protected:
+  void FixBitmapBackground(CBitmap &bm);
   DboxMain *GetMainDlg() const;
   void InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
   void AddTool(int DlgItemID, int ResID);

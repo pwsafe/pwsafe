@@ -1659,18 +1659,14 @@ void DboxMain::OnClearClipboard()
   ClearClipboardData();
 }
 
-// Generate a random password.
-// The generated password will be copied to the clipboard. Doing
-// this leaves a problem where the user can generate a random password, have
-// the password copied to the clipboard and then change the password. This could
-// be avoided by putting the password into the clipboard when the entry is saved
-// but that would be annoying when generating a new entry.
-
 void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg)
 {
+  /**
+   * Until 3.37.1 (inclusive) this used to copy the generate password to the clipboard
+   * BR1289 points out that this is better left to user's discretion, hence
+   * removed SetClipboardData/UpdateLastClipboardAction
+   */
   password = pwp.MakeRandomPassword();
-  SetClipboardData(password);
-  UpdateLastClipboardAction(CItemData::PASSWORD);
 
   if (bIssueMsg) {
     CGeneralMsgBox gmb;

@@ -97,6 +97,7 @@ protected:
   afx_msg void OnGroupComboChanged();
 
   afx_msg void OnGeneratePassword();
+  afx_msg void OnCopyPassword();
   afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnViewDependents();
@@ -131,6 +132,8 @@ private:
 
   bool m_bInitdone;
   int m_iPointSize;
+
+  CBitmap m_CopyPswdBitmap;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
