@@ -392,10 +392,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
     m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
-    // Set the tooltip text
-    CString cs_ToolTip;
-    cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
   }
 
   // Set appropriate focus

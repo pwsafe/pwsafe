@@ -156,8 +156,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
     m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * 4);
     m_pToolTipCtrl->Activate(TRUE);
     m_pToolTipCtrl->SetMaxTipWidth(500);
-    const CString cs_ToolTip(MAKEINTRESOURCE(IDS_CLICKTOCOPYGENPSWD));
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPYGENPSWD);
   }
 
   // Load bitmap
