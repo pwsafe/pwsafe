@@ -57,5 +57,8 @@
     <ClCompile Include="ItemAttTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OSTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
