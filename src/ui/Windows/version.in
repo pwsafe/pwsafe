@@ -18,8 +18,8 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 37, 1
-#define STRPRODUCTVER  "3, 37, 1, GITREV\0"
+#define PRODUCTVER     3, 37, 2
+#define STRPRODUCTVER  "3, 37, 2, GITREV\0"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
