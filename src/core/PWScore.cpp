@@ -1139,7 +1139,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   }
 
   // Make return code negative if validation errors
-  if (closeStatus == SUCCESS && pRpt != NULL && bValidateRC)
+  if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
 
   return closeStatus;
@@ -1760,8 +1760,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   stringT cs_Error;
   pws_os::Trace(_T("Start validation\n"));
-  StringX sxMissingPassword;
-  LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
 
   st_GroupTitleUser st_gtu;
   GTUSet setGTU;
@@ -1771,7 +1769,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
   std::vector<st_GroupTitleUser> vGTU_MissingAtt;
   std::vector<st_AttTitle_Filename> vOrphanAtt;
-  std::set<CUUID> sAttOwners;
+  std::set<CUUID> sAtts;
 
   ItemListIter iter;
 
@@ -1835,6 +1833,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
     // Test if Password is present as it is mandatory! was fixed
     if (ci.GetPassword().empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       fixedItem.SetPassword(sxMissingPassword);
 
       bFixed = true;
@@ -1881,7 +1881,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
     // Attachment Reference check (5.1)
     if (ci.HasAttRef()) {
-      sAttOwners.insert(ci.GetUUID());
+      sAtts.insert(ci.GetAttUUID());
       if (!HasAtt(ci.GetAttUUID())) {
         vGTU_MissingAtt.push_back(st_GroupTitleUser(ci.GetGroup(),
                                                     ci.GetTitle(),
@@ -1893,7 +1893,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   // Check for orphan attachments (5.2)
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
-    if (sAttOwners.find(att_iter->first) == sAttOwners.end()) {
+    if (sAtts.find(att_iter->first) == sAtts.end()) {
       st_AttTitle_Filename stATFN;
       stATFN.title = att_iter->second.GetTitle();
       stATFN.filename = att_iter->second.GetFileName();
@@ -1960,6 +1960,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
 
     if (!vGTU_EmptyPassword.empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       std::sort(vGTU_EmptyPassword.begin(), vGTU_EmptyPassword.end(), GTUCompareV1);
       pRpt->WriteLine();
       Format(cs_Error, IDSC_VALIDATE_EMPTYPSWD, sxMissingPassword.c_str());
