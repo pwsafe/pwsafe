@@ -1771,7 +1771,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
   std::vector<st_GroupTitleUser> vGTU_MissingAtt;
   std::vector<st_AttTitle_Filename> vOrphanAtt;
-  std::set<CUUID> sAttOwners;
+  std::set<CUUID> sAtts;
 
   ItemListIter iter;
 
@@ -1883,7 +1883,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
     // Attachment Reference check (5.1)
     if (ci.HasAttRef()) {
-      sAttOwners.insert(ci.GetUUID());
+      sAtts.insert(ci.GetAttUUID());
       if (!HasAtt(ci.GetAttUUID())) {
         vGTU_MissingAtt.push_back(st_GroupTitleUser(ci.GetGroup(),
                                                     ci.GetTitle(),
@@ -1895,7 +1895,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   // Check for orphan attachments (5.2)
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
-    if (sAttOwners.find(att_iter->first) == sAttOwners.end()) {
+    if (sAtts.find(att_iter->first) == sAtts.end()) {
       st_AttTitle_Filename stATFN;
       stATFN.title = att_iter->second.GetTitle();
       stATFN.filename = att_iter->second.GetFileName();
