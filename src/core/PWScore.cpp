@@ -1139,7 +1139,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   }
 
   // Make return code negative if validation errors
-  if (closeStatus == SUCCESS && pRpt != NULL && bValidateRC)
+  if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
 
   return closeStatus;
@@ -1760,8 +1760,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   stringT cs_Error;
   pws_os::Trace(_T("Start validation\n"));
-  StringX sxMissingPassword;
-  LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
 
   st_GroupTitleUser st_gtu;
   GTUSet setGTU;
@@ -1835,6 +1833,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
     // Test if Password is present as it is mandatory! was fixed
     if (ci.GetPassword().empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       fixedItem.SetPassword(sxMissingPassword);
 
       bFixed = true;
@@ -1960,6 +1960,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
 
     if (!vGTU_EmptyPassword.empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       std::sort(vGTU_EmptyPassword.begin(), vGTU_EmptyPassword.end(), GTUCompareV1);
       pRpt->WriteLine();
       Format(cs_Error, IDSC_VALIDATE_EMPTYPSWD, sxMissingPassword.c_str());
