@@ -74,6 +74,8 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
     m_bsFields.set();
     m_bsAttFields.reset();
   }
+
+  m_current_version = app.GetCore()->GetReadFileVersion();
 }
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -331,14 +333,36 @@ BOOL CAdvancedDlg::OnInitDialog()
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
 
-    // Add search attachment file names - not default
-    cs_text.LoadString(IDS_FILENAME);
-    iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-    m_pLC_List->SetItemData(iItem, CItemAtt::FILENAME | NORMALFIELD);
-    m_bsAttAllowedFields.set(CItemAtt::FILENAME - CItemAtt::START);
+    // Only add attachment fields for V4 and later
+    if (m_current_version >= PWSfile::V40 && m_current_version < PWSfile::NEWFILE) {
+      // Add search attachment fields - not default
+      cs_text.LoadString(IDS_FILETITLE);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::TITLE | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::TITLE - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILENAME);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::FILENAME | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::FILENAME - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILEPATH);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::FILEPATH | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::FILEPATH - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILEMEDIATYPE);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::MEDIATYPE | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::MEDIATYPE - CItemAtt::START);
+    } else {
+      // Don't allow any
+      m_bsAttAllowedFields.reset();
+    }
   }
 
-  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
+  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size() &&
+      m_bsAttFields.count() != 0) {
     Set(m_bsFields);
   }
 
@@ -502,7 +526,7 @@ void CAdvancedDlg::SetAtt(CItemAtt::AttFieldBits bsAttFields)
 
     if (bsAttFields.test(i)) {
       // Selected - find entry in list of available fields and move it
-      findinfo.lParam = i | NORMALFIELD;
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
       iItem = m_pLC_List->FindItem(&findinfo);
       if (iItem == -1)
         continue;
@@ -514,7 +538,7 @@ void CAdvancedDlg::SetAtt(CItemAtt::AttFieldBits bsAttFields)
       m_pLC_Selected->SetItemData(iItem, dw_data);
     } else {
       // Not selected - find entry in list of selected fields and move it
-      findinfo.lParam = i | NORMALFIELD;
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
       iItem = m_pLC_Selected->FindItem(&findinfo);
       if (iItem == -1)
         continue;

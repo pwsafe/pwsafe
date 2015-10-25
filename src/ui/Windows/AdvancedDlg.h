@@ -77,4 +77,6 @@ private:
   st_SaveAdvValues *m_pst_SADV;
   CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
   CItemAtt::AttFieldBits m_bsAttDefaultSelectedFields, m_bsAttAllowedFields;
+
+  PWSfile::VERSION m_current_version;
 };
