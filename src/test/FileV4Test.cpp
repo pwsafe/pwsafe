@@ -277,7 +277,7 @@ TEST_F(FileV4Test, CoreRWTest)
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), true, PWSfile::V40));
 
   core.ClearData();
-  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey));
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey, true));
   ASSERT_EQ(1, core.GetNumEntries());
   ASSERT_EQ(1, core.GetNumAtts());
   ASSERT_TRUE(core.Find(fullItem.GetUUID()) != core.GetEntryEndIter());
