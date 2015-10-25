@@ -56,7 +56,7 @@ TimedTaskChain::TimedTaskChain(std::initializer_list<TaskWithInterval> tasks): m
 
 void TimedTaskChain::Next()
 {
-    Start(m_nextTask->second, wxTIMER_ONE_SHOT);
+  Start(m_nextTask == m_tasks.end()? DefaultTaskDelay(): m_nextTask->second, wxTIMER_ONE_SHOT);
 }
 
 void TimedTaskChain::RunTask()
