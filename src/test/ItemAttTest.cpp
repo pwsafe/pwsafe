@@ -14,6 +14,8 @@
 #include "core/ItemAtt.h"
 #include "core/PWScore.h"
 #include "os/file.h"
+#include "os/dir.h"
+#include "os/debug.h"
 
 #include "gtest/gtest.h"
 
@@ -30,13 +32,20 @@ protected:
 
   // members used to populate and test fullItem:
   const StringX title, mediaType;
-  const stringT fileName;
+  stringT fullfileName, fileName, filePath;
 };
 
 ItemAttTest::ItemAttTest()
-  : title(_T("a-title")), mediaType(_T("application/octet-stream")),
-    fileName(L"../../help/default/html/images/edit_menu.jpg")
-{}
+  : title(_T("a-title")), mediaType(_T("application/octet-stream"))
+{
+  fullfileName = pws_os::fullpath(L"../../help/default/html/images/edit_menu.jpg");
+
+  stringT sFileName, sFilePath;
+  stringT sDrive, sDir, sFName, sExtn;
+  pws_os::splitpath(fullfileName, sDrive, sDir, sFName, sExtn);
+  fileName = sFName + sExtn;
+  filePath = sDrive + sDir;
+}
 
 void ItemAttTest::SetUp()
 {
@@ -71,11 +80,11 @@ TEST_F(ItemAttTest, UUIDs)
 
 TEST_F(ItemAttTest, ImpExp)
 {
-  const stringT testImpFile(fileName);
+  const stringT testImpFile(fullfileName);
   const stringT testExpFile(L"output.tmp");
   CItemAtt ai;
   int status;
-  
+
   status = ai.Import(L"nosuchfile");
   EXPECT_EQ(PWScore::CANT_OPEN_FILE, status);
   EXPECT_EQ(L"", ai.GetFileName());
@@ -83,7 +92,8 @@ TEST_F(ItemAttTest, ImpExp)
 
   status = ai.Import(testImpFile);
   EXPECT_EQ(PWScore::SUCCESS, status);
-  EXPECT_STREQ(testImpFile.c_str(), ai.GetFileName().c_str());
+  EXPECT_STREQ(fileName.c_str(), ai.GetFileName().c_str());
+  EXPECT_STREQ(filePath.c_str(), ai.GetFilePath().c_str());
   EXPECT_TRUE(ai.HasContent());
 
   status = ai.Export(testExpFile);
@@ -110,7 +120,7 @@ TEST_F(ItemAttTest, ImpExp)
 
 TEST_F(ItemAttTest, CopyCtor)
 {
-  const stringT testImpFile(fileName);
+  const stringT testImpFile(fullfileName);
   CItemAtt ea1;
   CItemAtt ea2(ea1);
   EXPECT_TRUE(ea1 == ea2);
