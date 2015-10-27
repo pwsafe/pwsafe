@@ -49,18 +49,13 @@ static stringT GetStringTFromURLRef(CFURLRef url)
 stringT pws_os::getexecdir()
 {
   stringT retval(_T("?"));
-  ProcessSerialNumber psn = {0, kCurrentProcess};
-  FSRef self = {0};
-  OSStatus err = GetProcessBundleLocation(&psn, &self);
-  if (!err) {
-    FSRef parent = {0};
-    err = FSGetCatalogInfo(&self, kFSCatInfoNone, NULL, NULL, NULL, &parent);
-    if (!err) {
-      CFURLRef url = CFURLCreateFromFSRef(kCFAllocatorDefault, &parent);
-      if (url) {
-        retval = GetStringTFromURLRef(url);
-        CFRelease(url);
-      }
+  ::CFURLRef bundleUrl = ::CFBundleCopyBundleURL(::CFBundleGetMainBundle());
+  if (bundleUrl) {
+    ::CFURLRef url = ::CFURLCreateCopyDeletingLastPathComponent(nullptr, bundleUrl);
+    ::CFRelease(bundleUrl);
+    if (url) {
+      retval = GetStringTFromURLRef(url);
+      ::CFRelease(url);
     }
   }
   return retval;
