@@ -1639,6 +1639,7 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -1654,6 +1655,7 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
@@ -1742,7 +1744,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
 			};
@@ -1766,7 +1767,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				ZERO_LINK = NO;
