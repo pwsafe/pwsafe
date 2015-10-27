@@ -514,6 +514,7 @@ int CItemAtt::Write(PWSfile *out) const
   WriteIfSet(FILEATIME, out, false);
 
   FieldConstIter fiter = m_fields.find(CONTENT);
+  // XXX TBD - fail if no content, as this is a mandatory field
   if (fiter != m_fields.end()) {
     PWSfileV4 *out4 = dynamic_cast<PWSfileV4 *>(out);
     ASSERT(out4 != NULL);
