@@ -55,7 +55,7 @@ public:
     ATTAK = 0x71,
     ATTIV = 0x72,
     CONTENT = 0x73,
-    CONTENTHMAC = 0x6a,
+    CONTENTHMAC = 0x74,
     LAST,
     END = 0xff
   };
