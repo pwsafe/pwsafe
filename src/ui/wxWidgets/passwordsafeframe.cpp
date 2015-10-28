@@ -214,6 +214,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU(ID_BACKUP,      PasswordSafeFrame::OnBackupSafe)
   EVT_MENU(ID_RESTORE,     PasswordSafeFrame::OnRestoreSafe)
 
+  EVT_MENU(ID_VISITWEBSITE, PasswordSafeFrame::OnVisitWebsite)
+
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
@@ -3328,6 +3330,11 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 {
   CompareDlg dlg(this, &m_core);
   dlg.ShowModal();
+}
+
+void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
+{
+  wxLaunchDefaultBrowser("https://pwsafe.org");
 }
 
 //-----------------------------------------------------------------
