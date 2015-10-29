@@ -171,6 +171,9 @@
     <ClInclude Include="YubiMixin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimedTaskChain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -323,6 +326,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimedTaskChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
