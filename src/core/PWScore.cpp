@@ -449,6 +449,8 @@ struct RecordWriter {
   }
 
 private:
+  RecordWriter& operator=(const RecordWriter&); // Do not implement
+
   PWSfile *m_pout;
   PWScore *m_pcore;
   const PWSfile::VERSION m_version;

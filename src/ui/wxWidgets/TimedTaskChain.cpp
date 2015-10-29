@@ -118,19 +118,19 @@ class TaskApp: public wxApp
 
     void TestSequentialExecution()
     {
-		TimedTaskChain::CreateTaskChain( [this]() { total = 10; } )
+    TimedTaskChain::CreateTaskChain( [this]() { total = 10; } )
                                 .then( [this]() { assert(total == 10); total *= 2; })
-								.then( [this]() { assert(total == 20); total += 3; })
-								.then( [this]() { assert(total == 23); total += 34; })
+                .then( [this]() { assert(total == 20); total += 3; })
+                .then( [this]() { assert(total == 23); total += 34; })
                                 .then( [this]() { assert(total == 57); Quit(); });
     }
 
     void TestErrorHandling()
     {
-		TimedTaskChain::CreateTaskChain( [](void) {  } )
+    TimedTaskChain::CreateTaskChain( [](void) {  } )
                                 .then( []() {  })
-								.then( [this]() { throw std::logic_error(this->errmsg); })
-								.then( []() { assert(!!"Task executed after exception was thrown!" ); })
+                .then( [this]() { throw std::logic_error(this->errmsg); })
+                .then( []() { assert(!!"Task executed after exception was thrown!" ); })
                                 .OnError( [this](const std::exception& e) { assert(strcmp(e.what(), this->errmsg) == 0); Quit(); } );
     }
 
@@ -151,13 +151,13 @@ class TaskApp: public wxApp
     };
 
 public:
-	bool OnInit()
-	{
+  bool OnInit()
+  {
         for ( auto t: TestsToRun )
             t(this);
 
-		return true;
-	}
+    return true;
+  }
 };
 
 wxIMPLEMENT_APP(TaskApp);
