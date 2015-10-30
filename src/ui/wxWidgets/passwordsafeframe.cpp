@@ -514,7 +514,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
-  itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
 ////@end PasswordSafeFrame content construction

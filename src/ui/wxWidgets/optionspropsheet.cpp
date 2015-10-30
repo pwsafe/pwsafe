@@ -386,7 +386,7 @@ void COptions::CreateControls()
 
   // This is to avoid a nasty assert on OSX with wx3.0.2
   auto cbStyle = wxCB_READONLY;
-#ifndef  __WXCOCOA__
+#ifndef  __WXMAC__
   cbStyle |= wxCB_SORT;
 #endif
 

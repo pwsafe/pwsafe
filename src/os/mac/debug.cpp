@@ -58,7 +58,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   char* message = buf;
 #endif
   
-  syslog(LOG_DEBUG, message);
+  syslog(LOG_DEBUG, "%s", message);
 
   delete[] message;
   closelog();
@@ -75,7 +75,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
 #else

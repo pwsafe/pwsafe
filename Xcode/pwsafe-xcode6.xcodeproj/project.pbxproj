@@ -1671,6 +1671,10 @@
 					_DEBUG,
 				);
 				HEADER_SEARCH_PATHS = ../src/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = core;
 			};
 			name = Debug;
@@ -1686,6 +1690,10 @@
 					NDEBUG,
 				);
 				HEADER_SEARCH_PATHS = ../src/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = core;
 				ZERO_LINK = NO;
 			};
@@ -1703,6 +1711,10 @@
 					DEBUG,
 					_DEBUG,
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = os;
 			};
 			name = Debug;
@@ -1716,6 +1728,10 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 					NDEBUG,
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
 				);
 				PRODUCT_NAME = os;
 				ZERO_LINK = NO;
