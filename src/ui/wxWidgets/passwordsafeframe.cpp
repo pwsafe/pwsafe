@@ -545,7 +545,7 @@ void PasswordSafeFrame::CreateControls()
 
   wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
-  mainsizer->Add(itemBoxSizer83, 1, wxEXPAND | wxALIGN_CENTER);
+  mainsizer->Add(itemBoxSizer83, 1, wxEXPAND);
   SetSizer(mainsizer);
 
   m_grid = new PWSGrid( this, m_core, ID_LISTBOX, wxDefaultPosition,
