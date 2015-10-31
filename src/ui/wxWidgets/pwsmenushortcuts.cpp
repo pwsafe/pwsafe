@@ -548,7 +548,7 @@ void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* rese
   m_shortcutGridStatus.resize(m_midata.size());
   std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), std::mem_fun_ref(&MenuItemData::GetStatus));
 
-  grid->Connect(wxEVT_GRID_CELL_CHANGE, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), NULL, this);
+  grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), NULL, this);
   grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), NULL, this);
   //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
   grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(PWSMenuShortcuts::OnShortcutKey), NULL, this);
@@ -599,7 +599,7 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
                 && col == COL_SHORTCUT_KEY) {
     wxAcceleratorEntry accel(ModifiersToAccelFlags(evt.GetModifiers()), evt.GetKeyCode(), 0);
     wxCHECK_RET(IsNotNull(accel), wxT("Could not create accelerator from wxKeyEvent"));
-    const int row = grid->GetCursorRow();
+    const int row = grid->GetGridCursorRow();
     grid->SetCellValue(row, col, accel.ToString());
     grid->SetCellTextColour(row, col, grid->GetDefaultCellTextColour());
     m_shortcutGridStatus[row].setchanged();
