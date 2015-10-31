@@ -837,7 +837,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 #define MRE_FS _T("\xbb")
 
 static void TestAndFixNullUUID(CItemData &ci_temp,
-                               std::vector<st_GroupTitleUser> vGTU_INVALID_UUID,
+                               std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                                st_ValidateResults &st_vr)
 {
   /*
@@ -862,7 +862,7 @@ static void TestAndFixNullUUID(CItemData &ci_temp,
 }
 
 static void TestAndFixDupUUID(CItemData &ci_temp, const PWScore &core,
-                              std::vector<st_GroupTitleUser> vGTU_DUPLICATE_UUID,
+                              std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
                               st_ValidateResults &st_vr)
 {
   /*
