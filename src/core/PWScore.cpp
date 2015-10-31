@@ -582,8 +582,8 @@ int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
                  p.second.Write(out);
                } );
 
-    // Update info only if CURRENT_VERSION
-    if (version == PWSfile::VCURRENT) {
+    // Update header if V30 or later (no headers before V30)
+    if (version >= PWSfile::V30) {
       m_hdr = out->GetHeader(); // update time saved, etc.
     }
   }
