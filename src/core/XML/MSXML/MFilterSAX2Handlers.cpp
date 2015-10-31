@@ -362,6 +362,9 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     } else if (m_type == DFTYPE_PWPOLICY) {
       cur_filter->num_Pactive++;
       cur_filter->vPfldata.push_back(*cur_filterentry);
+    } else if (m_type == DFTYPE_ATTACHMENT) {
+      cur_filter->num_Aactive++;
+      cur_filter->vPfldata.push_back(*cur_filterentry);
     }
     delete cur_filterentry;
   }

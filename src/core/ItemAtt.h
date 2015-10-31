@@ -139,6 +139,13 @@ public:
   bool operator==(const CItemAtt &that) const;
   bool operator!=(const CItemAtt &that) const {return !operator==(that);}
 
+  // Predicate to determine if item matches given criteria
+  bool Matches(const stringT &stValue, int iObject,
+    int iFunction) const;  // string values
+  bool Matches(time_t time1, time_t time2, int iObject,
+    int iFunction) const;  // time values
+
+
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }

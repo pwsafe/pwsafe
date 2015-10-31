@@ -53,6 +53,7 @@
 #define IDD_FILTER_ENTRYSTATUS          163
 #define IDD_DISPLAYFSBKUPFILES          164
 #define IDD_FILTER_SIZE                 165
+#define IDD_FILTER_MEDIATYPES           166
 #define IDR_POPRESETCOLUMNWIDTH         168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
@@ -817,6 +818,9 @@
 #define IDC_FILECTIME                   1519
 #define IDC_FILEMTIME                   1520
 #define IDC_FILEMTYPE                   1521
+#define IDC_AFILTER_FLD_COMBOBOX        1522
+#define IDC_AFILTER_LGC_COMBOBOX        1523
+#define IDC_CMB_AVALIABLEMEDIATYPES     1524
 
 // Next default values for new objects
 // 
@@ -824,7 +828,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1522
+#define _APS_NEXT_CONTROL_VALUE         1525
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

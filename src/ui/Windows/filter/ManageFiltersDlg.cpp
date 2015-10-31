@@ -32,7 +32,8 @@ IMPLEMENT_DYNAMIC(CManageFiltersDlg, CPWDialog)
 
 CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                bool bFilterActive,
-                               PWSFilters &mapfilters)
+                               PWSFilters &mapfilters,
+                               bool bCanHaveAttachments)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
   m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
@@ -41,7 +42,8 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
   m_pCheckImageList(NULL), m_pImageList(NULL),
-  m_iSortColumn(-1), m_bSortAscending(-1)
+  m_iSortColumn(-1), m_bSortAscending(-1),
+  m_bCanHaveAttachments(bCanHaveAttachments)
 {
   PWSFilters::iterator mf_iter;
 
@@ -73,6 +75,10 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   bitmap.LoadBitmap(IDB_BLANK);
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
+
+  if (m_bCanHaveAttachments) {
+    m_vMediaTypes = GetMainDlg()->GetAllMediaTypes();
+  }
 }
 
 CManageFiltersDlg::~CManageFiltersDlg()
@@ -1071,54 +1077,68 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
 {
   int nID = IDSC_UNKNOWN;
   switch (ft) {
-  case FT_GROUP:        return CItemData::FieldName(CItemData::GROUP).c_str();
-  case FT_TITLE:        return CItemData::FieldName(CItemData::TITLE).c_str();
-  case FT_GROUPTITLE:   return CItemData::FieldName(CItemData::GROUPTITLE).c_str();
-  case FT_USER:         return CItemData::FieldName(CItemData::USER).c_str();
-  case FT_PASSWORD:     return CItemData::FieldName(CItemData::PASSWORD).c_str();
-  case FT_NOTES:        return CItemData::FieldName(CItemData::NOTES).c_str();
-  case FT_AUTOTYPE:     return CItemData::FieldName(CItemData::AUTOTYPE).c_str();
-  case FT_URL:          return CItemData::FieldName(CItemData::URL).c_str();
-  case FT_RUNCMD:       return CItemData::FieldName(CItemData::RUNCMD).c_str();
-  case FT_DCA:          return CItemData::FieldName(CItemData::DCA).c_str();
-  case FT_SHIFTDCA:     return CItemData::FieldName(CItemData::SHIFTDCA).c_str();
-  case FT_EMAIL:        return CItemData::FieldName(CItemData::EMAIL).c_str();
-  case FT_PROTECTED:    return CItemData::FieldName(CItemData::PROTECTED).c_str();
-  case FT_SYMBOLS:      return CItemData::FieldName(CItemData::SYMBOLS).c_str();
-  case FT_CTIME:        return CItemData::FieldName(CItemData::CTIME).c_str();
-  case FT_ATIME:        return CItemData::FieldName(CItemData::ATIME).c_str();
-  case FT_PMTIME:       return CItemData::FieldName(CItemData::PMTIME).c_str();
-  case FT_XTIME:        return CItemData::FieldName(CItemData::XTIME).c_str();
-  case FT_XTIME_INT:    return CItemData::FieldName(CItemData::XTIME_INT).c_str();
-  case FT_RMTIME:       return CItemData::FieldName(CItemData::RMTIME).c_str();
-  case FT_PWHIST:       return CItemData::FieldName(CItemData::PWHIST).c_str();
-  case FT_POLICY:       return CItemData::FieldName(CItemData::POLICY).c_str();
-  case FT_POLICYNAME:   return CItemData::FieldName(CItemData::POLICYNAME).c_str();
-  case FT_KBSHORTCUT:   return CItemData::FieldName(CItemData::KBSHORTCUT).c_str();
+    case FT_GROUP:        return CItemData::FieldName(CItemData::GROUP).c_str();
+    case FT_TITLE:        return CItemData::FieldName(CItemData::TITLE).c_str();
+    case FT_GROUPTITLE:   return CItemData::FieldName(CItemData::GROUPTITLE).c_str();
+    case FT_USER:         return CItemData::FieldName(CItemData::USER).c_str();
+    case FT_PASSWORD:     return CItemData::FieldName(CItemData::PASSWORD).c_str();
+    case FT_NOTES:        return CItemData::FieldName(CItemData::NOTES).c_str();
+    case FT_AUTOTYPE:     return CItemData::FieldName(CItemData::AUTOTYPE).c_str();
+    case FT_URL:          return CItemData::FieldName(CItemData::URL).c_str();
+    case FT_RUNCMD:       return CItemData::FieldName(CItemData::RUNCMD).c_str();
+    case FT_DCA:          return CItemData::FieldName(CItemData::DCA).c_str();
+    case FT_SHIFTDCA:     return CItemData::FieldName(CItemData::SHIFTDCA).c_str();
+    case FT_EMAIL:        return CItemData::FieldName(CItemData::EMAIL).c_str();
+    case FT_PROTECTED:    return CItemData::FieldName(CItemData::PROTECTED).c_str();
+    case FT_SYMBOLS:      return CItemData::FieldName(CItemData::SYMBOLS).c_str();
+    case FT_CTIME:        return CItemData::FieldName(CItemData::CTIME).c_str();
+    case FT_ATIME:        return CItemData::FieldName(CItemData::ATIME).c_str();
+    case FT_PMTIME:       return CItemData::FieldName(CItemData::PMTIME).c_str();
+    case FT_XTIME:        return CItemData::FieldName(CItemData::XTIME).c_str();
+    case FT_XTIME_INT:    return CItemData::FieldName(CItemData::XTIME_INT).c_str();
+    case FT_RMTIME:       return CItemData::FieldName(CItemData::RMTIME).c_str();
+    case FT_PWHIST:       return CItemData::FieldName(CItemData::PWHIST).c_str();
+    case FT_POLICY:       return CItemData::FieldName(CItemData::POLICY).c_str();
+    case FT_POLICYNAME:   return CItemData::FieldName(CItemData::POLICYNAME).c_str();
+    case FT_KBSHORTCUT:   return CItemData::FieldName(CItemData::KBSHORTCUT).c_str();
 
-  case FT_PASSWORDLEN:   nID = IDS_PASSWORDLEN; break;
-  case FT_ENTRYSIZE:     nID = IDS_ENTRYSIZE; break;
-  case FT_ENTRYTYPE:     nID = IDS_ENTRYTYPE; break;
-  case FT_ENTRYSTATUS:   nID = IDS_ENTRYSTATUS; break;
-  case FT_UNKNOWNFIELDS: nID = IDS_UNKNOWNFIELDSFILTER; break;
-  case HT_PRESENT:       nID = IDS_PRESENT; break;
-  case HT_ACTIVE:        nID = IDS_HACTIVE; break;
-  case HT_NUM:           nID = IDS_HNUM; break;
-  case HT_MAX:           nID = IDS_HMAX; break;
-  case HT_CHANGEDATE:    nID = IDS_HDATE; break;
-  case HT_PASSWORDS:     nID = HT_PASSWORDS; break;
-  case PT_PRESENT:       nID = IDS_PRESENT; break;
-  case PT_LENGTH:        nID = IDSC_PLENGTH; break;
-  case PT_LOWERCASE:     nID = IDS_PLOWER; break;
-  case PT_UPPERCASE:     nID = IDS_PUPPER; break;
-  case PT_DIGITS:        nID = IDS_PDIGITS; break;
-  case PT_SYMBOLS:       nID = IDS_PSYMBOL; break;
-  case PT_HEXADECIMAL:   nID = IDSC_PHEXADECIMAL; break;
-  case PT_EASYVISION:    nID = IDSC_PEASYVISION; break;
-  case PT_PRONOUNCEABLE: nID = IDSC_PPRONOUNCEABLE; break;
+    case FT_PASSWORDLEN:   nID = IDS_PASSWORDLEN; break;
+    case FT_ENTRYSIZE:     nID = IDS_ENTRYSIZE; break;
+    case FT_ENTRYTYPE:     nID = IDS_ENTRYTYPE; break;
+    case FT_ENTRYSTATUS:   nID = IDS_ENTRYSTATUS; break;
+    case FT_UNKNOWNFIELDS: nID = IDS_UNKNOWNFIELDSFILTER; break;
+
+    case HT_PRESENT:       nID = IDS_PRESENT; break;
+    case HT_ACTIVE:        nID = IDS_HACTIVE; break;
+    case HT_NUM:           nID = IDS_HNUM; break;
+    case HT_MAX:           nID = IDS_HMAX; break;
+    case HT_CHANGEDATE:    nID = IDS_HDATE; break;
+    case HT_PASSWORDS:     nID = HT_PASSWORDS; break;
+
+    case PT_PRESENT:       nID = IDS_PRESENT; break;
+    case PT_LENGTH:        nID = IDSC_PLENGTH; break;
+    case PT_LOWERCASE:     nID = IDS_PLOWER; break;
+    case PT_UPPERCASE:     nID = IDS_PUPPER; break;
+    case PT_DIGITS:        nID = IDS_PDIGITS; break;
+    case PT_SYMBOLS:       nID = IDS_PSYMBOL; break;
+    case PT_HEXADECIMAL:   nID = IDSC_PHEXADECIMAL; break;
+    case PT_EASYVISION:    nID = IDSC_PEASYVISION; break;
+    case PT_PRONOUNCEABLE: nID = IDSC_PPRONOUNCEABLE; break;
+  
+    case FT_ATTACHMENT:    nID = IDS_ATTACHMENTS; break;
+    case AT_TITLE:         nID = IDS_FILETITLE; break;
+    case AT_CTIME:         nID = IDS_FILENAME; break;
+    case AT_MEDIATYPE:     nID = IDS_FILEMEDIATYPE; break;
+    case AT_FILENAME:      nID = IDS_FILENAME; break;
+    case AT_FILEPATH:      nID = IDS_FILEPATH; break;
+    case AT_FILECTIME:     nID = IDS_FILECTIME; break;
+    case AT_FILEMTIME:     nID = IDS_FILEMTIME; break;
+    case AT_FILEATIME:     nID = IDS_FILEATIME; break;
+
     default:
       ASSERT(0);
   }
+
   CString retval;
   retval.LoadString(nID);
   retval.TrimRight(L'\t'); // ?? do we still need to trim ??

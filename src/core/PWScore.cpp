@@ -3508,3 +3508,20 @@ void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
   m_bDBChanged = true;
   m_attlist.erase(m_attlist.find(attuuid));
 }
+
+std::vector<StringX> PWScore::GetAllMediaTypes()
+{
+  std::vector<StringX> vMediaTypes;
+
+  // Populate with unique media types
+  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+    StringX sxMediaType = att_iter->second.GetMediaType();
+    if (std::find(vMediaTypes.begin(), vMediaTypes.end(), sxMediaType) == vMediaTypes.end())
+      vMediaTypes.push_back(sxMediaType);
+  }
+
+  // Sort them
+  std::sort(vMediaTypes.begin(), vMediaTypes.end());
+
+  return vMediaTypes;
+}

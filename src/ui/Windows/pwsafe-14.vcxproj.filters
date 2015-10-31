@@ -402,6 +402,12 @@
     <ClCompile Include="AddEdit_Attachment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filter\FilterMediaTypeDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -801,6 +807,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddEdit_Attachment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\FilterMediaTypeDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
