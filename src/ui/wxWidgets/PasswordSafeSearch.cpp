@@ -391,7 +391,7 @@ void PasswordSafeSearch::CreateSearchBar()
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
-  origSizer->Add(panel, 0, wxEXPAND | wxALIGN_CENTER);
+  origSizer->Add(panel, 0, wxEXPAND);
   origSizer->Layout();
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(_("Could not display searchbar"));
