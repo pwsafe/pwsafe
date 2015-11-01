@@ -8,8 +8,11 @@
 
 #pragma once
 
-#include "core/Itemdata.h"
+#include "core/ItemData.h"
+#include "core/ItemAtt.h"
+
 #include "core/PWSFilters.h"
+
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
@@ -19,9 +22,11 @@
 #include "FilterDCADlg.h"
 #include "FilterEntryTypeDlg.h"
 #include "FilterEntryStatusDlg.h"
+#include "FilterMediaTypeDlg.h"
 
 class CSetHistoryFiltersDlg;
 class CSetPolicyFiltersDlg;
+class CSetAttachmentFiltersDlg;
 
 // Subitem indices
 #define FLC_FILTER_NUMBER 0
@@ -82,7 +87,8 @@ public:
 
   friend CPWFiltersDlg;
 
-  void Init(CWnd * pParent, st_filters *pfilters, const int &filtertype);
+  void Init(CWnd * pParent, st_filters *pfilters, const int &filtertype,
+    bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes);
 
 protected:
   std::vector<FieldType> vlast_ft;           // Last combo selected item
@@ -112,8 +118,10 @@ public:
   st_filters *m_pfilters;
   bool IsPWHIST_Set() {return m_bPWHIST_Set;}
   bool IsPOLICY_Set() {return m_bPOLICY_Set;}
+  bool IsAttachment_Set() { return m_bATTACHMENT_Set; }
   bool IsHistoryGood() {return m_GoodHistory;}
   bool IsPolicyGood() {return m_GoodPolicy;}
+  bool IsAttachmentGood() { return m_GoodAttachment; }
 
 private:
   void SetUpComboBoxData();
@@ -165,6 +173,7 @@ private:
   CFilterEntryTypeDlg m_fentry;
   CFilterEntryStatusDlg m_fstatus;
   CFilterEntrySizeDlg m_fsize;
+  CFilterMediaTypeDlg m_fmediatype;
 
   vFilterRows *m_pvfdata;
   int *m_pnumactive;
@@ -177,8 +186,10 @@ private:
   // Needed to make the row height bigger
   CImageList m_imageList; 
 
-  bool m_bPWHIST_Set, m_bPOLICY_Set;
-  bool m_GoodHistory, m_GoodPolicy;
+  bool m_bPWHIST_Set, m_bPOLICY_Set, m_bATTACHMENT_Set;
+  bool m_GoodHistory, m_GoodPolicy, m_GoodAttachment;
+  bool m_bCanHaveAttachments;
+  std::vector<StringX> *m_pvMediaTypes;
 
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;

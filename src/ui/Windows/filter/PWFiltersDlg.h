@@ -12,8 +12,10 @@
 
 #include "../PWResizeDialog.h"
 #include "../PWHdrCtrlNoChng.h"
+
 #include "core/Itemdata.h"
 #include "core/PWSFilters.h"
+
 #include "PWFilterLC.h"
 
 #include "../resource.h"
@@ -23,7 +25,8 @@ class CPWFiltersDlg : public CPWResizeDialog
   DECLARE_DYNAMIC(CPWFiltersDlg)
 public:
   CPWFiltersDlg(CWnd* pParent = NULL, const FilterType &ftype = DFTYPE_MAIN,
-                const CString &filtername = L"");
+    const CString &filtername = L"", 
+    const bool bCanHaveAttachments = false, std::vector<StringX> *pvMediaTypes = NULL);
   ~CPWFiltersDlg();
 
   void UpdateStatusText();
@@ -44,6 +47,8 @@ protected:
   CString m_filtername;
   bool VerifyFilters();
   bool m_bAllowSet;
+  bool m_bCanHaveAttachments;
+  std::vector<StringX> *m_pvMediaTypes;
 
   //{{AFX_MSG(CPWFiltersDlg)
   afx_msg void OnFNameKillFocus();

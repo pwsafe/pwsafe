@@ -3181,6 +3181,10 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   GetUniqueGroups(aryGroups);
   Format(st_dbp.numgroups, L"%d", aryGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
+  if (GetReadFileVersion() >= PWSfile::V40)
+    Format(st_dbp.numattachments, L"%d", m_attlist.size());
+  else
+    st_dbp.numattachments = L"N/A";
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {
@@ -3507,4 +3511,21 @@ void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
   ASSERT(HasAtt(attuuid));
   m_bDBChanged = true;
   m_attlist.erase(m_attlist.find(attuuid));
+}
+
+std::vector<StringX> PWScore::GetAllMediaTypes()
+{
+  std::vector<StringX> vMediaTypes;
+
+  // Populate with unique media types
+  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+    StringX sxMediaType = att_iter->second.GetMediaType();
+    if (std::find(vMediaTypes.begin(), vMediaTypes.end(), sxMediaType) == vMediaTypes.end())
+      vMediaTypes.push_back(sxMediaType);
+  }
+
+  // Sort them
+  std::sort(vMediaTypes.begin(), vMediaTypes.end());
+
+  return vMediaTypes;
 }

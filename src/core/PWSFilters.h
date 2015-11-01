@@ -19,6 +19,7 @@
 #include "StringXStream.h"
 #include "Match.h"
 #include "ItemData.h"
+#include "ItemAtt.h"
 #include "Proxy.h"
 
 #include <iostream>
@@ -30,47 +31,49 @@
 enum FilterType {DFTYPE_INVALID = 0,
                  DFTYPE_MAIN,
                  DFTYPE_PWHISTORY, 
-                 DFTYPE_PWPOLICY};
+                 DFTYPE_PWPOLICY,
+                 DFTYPE_ATTACHMENT
+};
 
 // All the fields that we can use for filtering entries:
 
 enum FieldType {
   // PWS Test fields
-  FT_GROUPTITLE    = CItemData::NAME, // reusing depreciated NAME for Group.Title combination
-  FT_GROUP         = CItemData::GROUP,
-  FT_TITLE         = CItemData::TITLE,
-  FT_USER          = CItemData::USER,
-  FT_NOTES         = CItemData::NOTES,
-  FT_PASSWORD      = CItemData::PASSWORD,
-  FT_CTIME         = CItemData::CTIME,
-  FT_PMTIME        = CItemData::PMTIME,
-  FT_ATIME         = CItemData::ATIME,
-  FT_XTIME         = CItemData::XTIME,
-  FT_RMTIME        = CItemData::RMTIME,
-  FT_URL           = CItemData::URL,
-  FT_AUTOTYPE      = CItemData::AUTOTYPE,
-  FT_PWHIST        = CItemData::PWHIST,
-  FT_POLICY        = CItemData::POLICY,
-  FT_XTIME_INT     = CItemData::XTIME_INT,
-  FT_RUNCMD        = CItemData::RUNCMD,
-  FT_DCA           = CItemData::DCA,
-  FT_SHIFTDCA      = CItemData::SHIFTDCA,
-  FT_EMAIL         = CItemData::EMAIL,
-  FT_PROTECTED     = CItemData::PROTECTED,
-  FT_SYMBOLS       = CItemData::SYMBOLS,
-  FT_POLICYNAME    = CItemData::POLICYNAME,
-  FT_KBSHORTCUT    = CItemData::KBSHORTCUT,
-  FT_END           = CItemData::END,
+  FT_GROUPTITLE = CItemData::NAME, // reusing depreciated NAME for Group.Title combination
+  FT_GROUP = CItemData::GROUP,
+  FT_TITLE = CItemData::TITLE,
+  FT_USER = CItemData::USER,
+  FT_NOTES = CItemData::NOTES,
+  FT_PASSWORD = CItemData::PASSWORD,
+  FT_CTIME = CItemData::CTIME,
+  FT_PMTIME = CItemData::PMTIME,
+  FT_ATIME = CItemData::ATIME,
+  FT_XTIME = CItemData::XTIME,
+  FT_RMTIME = CItemData::RMTIME,
+  FT_URL = CItemData::URL,
+  FT_AUTOTYPE = CItemData::AUTOTYPE,
+  FT_PWHIST = CItemData::PWHIST,
+  FT_POLICY = CItemData::POLICY,
+  FT_XTIME_INT = CItemData::XTIME_INT,
+  FT_RUNCMD = CItemData::RUNCMD,
+  FT_DCA = CItemData::DCA,
+  FT_SHIFTDCA = CItemData::SHIFTDCA,
+  FT_EMAIL = CItemData::EMAIL,
+  FT_PROTECTED = CItemData::PROTECTED,
+  FT_SYMBOLS = CItemData::SYMBOLS,
+  FT_POLICYNAME = CItemData::POLICYNAME,
+  FT_KBSHORTCUT = CItemData::KBSHORTCUT,
+  FT_END = CItemData::END,
 
   // Internal fields purely for filters
-  FT_ENTRYSIZE     = CItemData::ENTRYSIZE,     // 0x100
-  FT_ENTRYTYPE     = CItemData::ENTRYTYPE,     // 0x101,
-  FT_ENTRYSTATUS   = CItemData::ENTRYSTATUS,   // 0x102,
+  FT_ENTRYSIZE = CItemData::ENTRYSIZE,     // 0x100
+  FT_ENTRYTYPE = CItemData::ENTRYTYPE,     // 0x101,
+  FT_ENTRYSTATUS = CItemData::ENTRYSTATUS,   // 0x102,
   FT_UNKNOWNFIELDS = CItemData::UNKNOWNFIELDS, // 0x103,
-  FT_PASSWORDLEN   = CItemData::PASSWORDLEN,   // 0x104
+  FT_PASSWORDLEN = CItemData::PASSWORDLEN,   // 0x104
 
   // Password History Test fields
-  HT_PRESENT       = 0x200,
+  HT_PRESENT = 0x200,
   HT_ACTIVE,
   HT_NUM,
   HT_MAX,
@@ -79,7 +82,7 @@ enum FieldType {
   HT_END,
 
   // Password Policy Test fields
-  PT_PRESENT       = 0x300,
+  PT_PRESENT = 0x300,
   PT_LENGTH,
   PT_LOWERCASE,
   PT_UPPERCASE,
@@ -89,6 +92,19 @@ enum FieldType {
   PT_PRONOUNCEABLE,
   PT_HEXADECIMAL,
   PT_END,
+
+  // Attachment Test fields
+  FT_ATTACHMENT    = CItemAtt::LAST_SEARCHABLE + 1,
+  AT_PRESENT       = CItemAtt::START,
+  AT_TITLE         = CItemAtt::TITLE,
+  AT_CTIME         = CItemAtt::CTIME,
+  AT_MEDIATYPE     = CItemAtt::MEDIATYPE,
+  AT_FILENAME      = CItemAtt::FILENAME,
+  AT_FILEPATH      = CItemAtt::FILEPATH,
+  AT_FILECTIME     = CItemAtt::FILECTIME,
+  AT_FILEMTIME     = CItemAtt::FILEMTIME,
+  AT_FILEATIME     = CItemAtt::FILEATIME,
+  AT_END           = CItemAtt::LAST_SEARCHABLE,
 
   FT_INVALID       = 0xffff
 };
@@ -246,23 +262,26 @@ struct st_filters {
   int num_Mactive;
   int num_Hactive;
   int num_Pactive;
+  int num_Aactive;
   // Main filters
   vFilterRows vMfldata;
   // PW history filters
   vFilterRows vHfldata;
   // PW Policy filters
   vFilterRows vPfldata;
+  // Attachment filters
+  vFilterRows vAfldata;
 
   st_filters()
-  : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0)
+    : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0), num_Aactive(0)
   {}
 
   st_filters(const st_filters &that)
     : fname(that.fname),
     num_Mactive(that.num_Mactive), 
-    num_Hactive(that.num_Hactive), num_Pactive(that.num_Pactive),
+    num_Hactive(that.num_Hactive), num_Pactive(that.num_Pactive), num_Aactive(that.num_Aactive),
     vMfldata(that.vMfldata), vHfldata(that.vHfldata),
-    vPfldata(that.vPfldata)
+    vPfldata(that.vPfldata), vAfldata(that.vAfldata)
   {}
 
   st_filters &operator=(const st_filters &that)
@@ -272,9 +291,11 @@ struct st_filters {
       num_Mactive = that.num_Mactive;
       num_Hactive = that.num_Hactive;
       num_Pactive = that.num_Pactive;
+      num_Aactive = that.num_Aactive;
       vMfldata = that.vMfldata;
       vHfldata = that.vHfldata;
       vPfldata = that.vPfldata;
+      vAfldata = that.vAfldata;
     }
     return *this;
   }
@@ -286,9 +307,11 @@ struct st_filters {
           num_Mactive != that.num_Mactive ||
           num_Hactive != that.num_Hactive ||
           num_Pactive != that.num_Pactive ||
+          num_Aactive != that.num_Aactive ||
           vMfldata != that.vMfldata ||
           vHfldata != that.vHfldata ||
-          vPfldata != that.vPfldata)
+          vPfldata != that.vPfldata ||
+          vAfldata != that.vAfldata)
       return false;
     }
     return true;
@@ -300,10 +323,11 @@ struct st_filters {
   void Empty()
   {
     fname = _T("");
-    num_Mactive = num_Hactive = num_Pactive = 0;
+    num_Mactive = num_Hactive = num_Pactive = num_Aactive = 0;
     vMfldata.clear();
     vHfldata.clear();
     vPfldata.clear();
+    vAfldata.clear();
   }
 };
 

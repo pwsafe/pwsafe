@@ -750,12 +750,21 @@
 #define IDS_ATTACHMENT_NOTFOUND         5976
 #define IDS_MENUITEM_EXPORT2V3FORMAT    5977
 #define IDS_MENUITEM_EXPORT2V4FORMAT    5978
-#define IDS_ATTREF                      5979
-#define IDS_COMPATTREF                  5980
-#define IDS_FILETITLE                   5981
-#define IDS_FILENAME                    5982
-#define IDS_FILEPATH                    5983
-#define IDS_FILEMEDIATYPE               5984
+#define IDS_ATTACHMENTS                 5979
+#define IDS_ATTREF                      5980
+#define IDS_COMPATTREF                  5981
+#define IDS_FILETITLE                   5982
+#define IDS_FILENAME                    5983
+#define IDS_FILEPATH                    5984
+#define IDS_FILEMEDIATYPE               5985
+#define IDS_CTIME                       5986
+#define IDS_FILECTIME                   5987
+#define IDS_FILEMTIME                   5988
+#define IDS_FILEATIME                   5989
+#define IDS_SETATTACHMENTFILTER         5990
+#define IDS_AFILTERINFO                 5991
+#define IDS_NOMEDIATYPE                 5992
+#define IDS_NUMATTACHMENTS              5993
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

@@ -36,8 +36,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-public:
-
 private:
   int m_nMajor;
   int m_nMinor;

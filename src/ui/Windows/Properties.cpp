@@ -50,6 +50,7 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());
   GetDlgItem(IDC_NUMGROUPS)->SetWindowText(m_pdbp->numgroups.c_str());
   GetDlgItem(IDC_NUMENTRIES)->SetWindowText(m_pdbp->numentries.c_str());
+  GetDlgItem(IDC_NUMATTACHMENTS)->SetWindowText(m_pdbp->numattachments.c_str());
   GetDlgItem(IDC_SAVEDON)->SetWindowText(m_pdbp->whenlastsaved.c_str());
   GetDlgItem(IDC_SAVEDBY)->SetWindowText(m_pdbp->wholastsaved.c_str());
   GetDlgItem(IDC_SAVEDAPP)->SetWindowText(m_pdbp->whatlastsaved.c_str());
