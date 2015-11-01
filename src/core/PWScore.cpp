@@ -501,8 +501,6 @@ struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore, PWSfile::VERSION version)
     : m_pout(pout), m_pcore(pcore), m_version(version) {}
 
-  RecordWriter& operator=(const RecordWriter&); // Do not implement
-
   void operator()(std::pair<CUUID const, CItemData> &p)
   {
     if (p.second.IsAlias() && m_version < PWSfile::V30) {
