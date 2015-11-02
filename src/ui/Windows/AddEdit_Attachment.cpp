@@ -139,9 +139,8 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   if (!M_pci()->HasAttRef()) {
     m_attType = NO_ATTACHMENT;
   } else {
+    // m_attachment() set in CAddEdit_PropertySheet::SetupInitialValues()
     // If we have an attachment, load & preview
-    ASSERT(M_pcore()->HasAtt(M_pci()->GetAttUUID()));
-    M_oldattachment() = M_attachment() = M_pcore()->GetAtt(M_pci()->GetAttUUID());
     m_AttName = M_attachment().GetTitle();
     m_AttFileName = M_attachment().GetFilePath() + M_attachment().GetFileName();
 
