@@ -676,4 +676,11 @@ void CAddEdit_PropertySheet::SetupInitialValues()
       m_AEMD.original_entrytype = CItemData::ET_ALIAS;
     }
   } // IsAlias
+
+  // Attachment
+  if (m_AEMD.pci->HasAttRef()) {
+    ASSERT(m_AEMD.pcore->HasAtt(m_AEMD.pci->GetAttUUID()));
+    m_AEMD.oldattachment = m_AEMD.attachment = 
+      m_AEMD.pcore->GetAtt(m_AEMD.pci->GetAttUUID());
+  }
 }
