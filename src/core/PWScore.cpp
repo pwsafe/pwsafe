@@ -1871,14 +1871,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       }
     }
 
-    if (bFixed) {
-      // Mark as modified
-      fixedItem.SetStatus(CItemData::ES_MODIFIED);
-      // We assume that this is run during file read. If not, then we
-      // need to run using the Command mechanism for Undo/Redo.
-      m_pwlist[fixedItem.GetUUID()] = fixedItem;
-    }
-
     // Attachment Reference check (5.1)
     if (ci.HasAttRef()) {
       sAtts.insert(ci.GetAttUUID());
@@ -1887,7 +1879,18 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
                                                     ci.GetTitle(),
                                                     ci.GetUser()));
         st_vr.num_missing_att++;
+        // Fix the problem:
+        fixedItem.ClearAttUUID();
+        bFixed = true;
       }
+    }
+
+    if (bFixed) {
+      // Mark as modified
+      fixedItem.SetStatus(CItemData::ES_MODIFIED);
+      // We assume that this is run during file read. If not, then we
+      // need to run using the Command mechanism for Undo/Redo.
+      m_pwlist[fixedItem.GetUUID()] = fixedItem;
     }
   } // iteration over m_pwlist
 
@@ -1899,6 +1902,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       stATFN.filename = att_iter->second.GetFileName();
       vOrphanAtt.push_back(stATFN);
       st_vr.num_orphan_att++;
+      // NOT removing attachment for now. Add support for exporting orphans later.
     }
   }
 
