@@ -534,8 +534,6 @@ int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
 
   int status;
 
-  if (version == PWSfile::VCURRENT)
-    version = m_ReadFileVersion;
   PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
                                       PWSfile::Write, status);
 
@@ -595,8 +593,9 @@ int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
   out->Close();
   delete out;
 
-  // Again update info only if CURRENT_VERSION
-  if (version == PWSfile::VCURRENT) {
+  // Update info only if written version is same as read version
+  // (otherwise we're exporting, not saving)
+  if (version == m_ReadFileVersion) {
     SetChanged(false, false);
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
