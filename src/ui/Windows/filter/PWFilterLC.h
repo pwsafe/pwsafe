@@ -85,15 +85,15 @@ public:
   void Init(CWnd * pParent, st_filters *pfilters, const int &filtertype);
 
 protected:
-  std::vector<FieldType> vlast_ft;           // Last combo selected item
-  std::vector<PWSMatch::MatchType> vlast_mt; // Last selected matchtype
-  std::vector<bool> vcbxChanged;             // Has combo selection changed?
-  std::vector<bool> vCriteriaSet;            // Has criteria been set?
-  std::vector<bool> vAddPresent;             // Do we add 'ISPRESENT' rule option?
+  std::vector<FieldType> m_vlast_ft;           // Last combo selected item
+  std::vector<PWSMatch::MatchType> m_vlast_mt; // Last selected matchtype
+  std::vector<bool> m_vcbxChanged;             // Has combo selection changed?
+  std::vector<bool> m_vCriteriaSet;            // Has criteria been set?
+  std::vector<bool> m_vAddPresent;             // Do we add 'ISPRESENT' rule option?
 
-  std::vector<st_Fcbxdata> vFcbx_data;     // Field combobox strings & fieldtypes
-  std::vector<st_Lcbxdata> vLcbx_data;     // Logic (AND/OR) combobox strings
-  std::vector<st_Fcbxdata> vWCFcbx_data;   // Working copy Field combobox & fieldtypes
+  std::vector<st_Fcbxdata> m_vFcbx_data;     // Field combobox strings & fieldtypes
+  std::vector<st_Lcbxdata> m_vLcbx_data;     // Logic (AND/OR) combobox strings
+  std::vector<st_Fcbxdata> m_vWCFcbx_data;   // Working copy Field combobox & fieldtypes
 
   WCHAR *m_pwchTip;
 
@@ -104,6 +104,7 @@ protected:
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -148,10 +149,10 @@ private:
   // sub-dialogs being shown more than once.
   void DeleteEntry(FieldType ftype);
 
-  void SetComboBoxWidth();
+  void SetComboBoxWidth(const int iSubItem);
 
-  CPWFiltersDlg* m_pPWF;
-  CHeaderCtrl* m_pHeaderCtrl;
+  CPWFiltersDlg *m_pPWF;
+  CHeaderCtrl *m_pHeaderCtrl;
   CImageList *m_pImageList, *m_pCheckImageList;
 
   // Note - History & Policy are like my parent and they too have a ListCtrl
@@ -182,7 +183,7 @@ private:
 
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;
-  CComboBox *m_pComboBox;
+  CComboBox m_ComboBox;
   CFont *m_pFont;
   int m_iItem;
 };
