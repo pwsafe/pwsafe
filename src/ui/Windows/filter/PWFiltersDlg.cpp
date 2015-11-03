@@ -320,8 +320,8 @@ BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
   }
 
   // Make sure ComboBox messages go to ComboBox
-  if (m_FilterLC.m_pComboBox && 
-      pMsg->hwnd == m_FilterLC.m_pComboBox->m_hWnd)
+  if (m_FilterLC.m_ComboBox.GetSafeHwnd() != NULL && 
+      pMsg->hwnd == m_FilterLC.m_ComboBox.m_hWnd)
     return CWnd::PreTranslateMessage(pMsg);
 
   // Otherwise - give to the Dialog!
