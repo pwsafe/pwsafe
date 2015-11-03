@@ -47,14 +47,14 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
   return sxFile;
 }
 
-bool PWSRun::runcmd(const StringX &runcommand, const bool &bAutotype) const
+bool PWSRun::runcmd(const StringX &, const bool &) const
 {
   // Stub!
   return false;
 }
 
-bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const bool &bAutotype) const
+bool PWSRun::issuecmd(const StringX &, const StringX &,
+                      const bool &) const
 {
   // Stub!
   return false;

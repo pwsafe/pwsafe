@@ -38,7 +38,7 @@ static stringT GetStringTFromURLRef(CFURLRef url)
     CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
                                             kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8 *>(wPath), 
                                             sizeof(wchar_t) * numChars, &numBytesWritten);
-    assert(numConverted*sizeof(wchar_t) == numBytesWritten);
+    assert(static_cast<CFIndex>(numConverted*sizeof(wchar_t)) == numBytesWritten);
     retval = stringT(wPath, numConverted);
     delete [] wPath;
     CFRelease(cfpath);
@@ -49,18 +49,13 @@ static stringT GetStringTFromURLRef(CFURLRef url)
 stringT pws_os::getexecdir()
 {
   stringT retval(_T("?"));
-  ProcessSerialNumber psn = {0, kCurrentProcess};
-  FSRef self = {0};
-  OSStatus err = GetProcessBundleLocation(&psn, &self);
-  if (!err) {
-    FSRef parent = {0};
-    err = FSGetCatalogInfo(&self, kFSCatInfoNone, NULL, NULL, NULL, &parent);
-    if (!err) {
-      CFURLRef url = CFURLCreateFromFSRef(kCFAllocatorDefault, &parent);
-      if (url) {
-        retval = GetStringTFromURLRef(url);
-        CFRelease(url);
-      }
+  ::CFURLRef bundleUrl = ::CFBundleCopyBundleURL(::CFBundleGetMainBundle());
+  if (bundleUrl) {
+    ::CFURLRef url = ::CFURLCreateCopyDeletingLastPathComponent(nullptr, bundleUrl);
+    ::CFRelease(bundleUrl);
+    if (url) {
+      retval = GetStringTFromURLRef(url);
+      ::CFRelease(url);
     }
   }
   return retval;
