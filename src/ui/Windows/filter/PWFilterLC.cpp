@@ -31,7 +31,7 @@ CPWFilterLC::CPWFilterLC()
   : m_pPWF(NULL), m_iType(0), m_pfilters(NULL), m_bInitDone(false),
    m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
    m_bSetFieldActive(false), m_bSetLogicActive(false),
-   m_pComboBox(NULL), m_iItem(-1), m_numfilters(0), m_pFont(NULL),
+   m_iItem(-1), m_numfilters(0), m_pFont(NULL),
    m_pwchTip(NULL),
   // Following 4 variables only used if "m_iType == DFTYPE_MAIN"
   m_bPWHIST_Set(false), m_bPOLICY_Set(false),
@@ -55,7 +55,6 @@ CPWFilterLC::~CPWFilterLC()
   delete m_pImageList;
 
   delete m_pFont;
-  delete m_pComboBox;
   delete m_pwchTip;
 }
 
@@ -64,8 +63,16 @@ BEGIN_MESSAGE_MAP(CPWFilterLC, CListCtrl)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_WM_LBUTTONDOWN()
+  ON_WM_DESTROY()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CPWFilterLC::OnDestroy()
+{
+  m_ComboBox.DestroyWindow();
+
+  CListCtrl::OnDestroy();
+}
 
 void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype)
 {
@@ -170,21 +177,25 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
   st_FilterRow newfilter;
   m_pvfdata->push_back(newfilter);
 
+  // Create ComboBox
+  CRect rc(0, 0, 10, 10);
+  const DWORD dwStyle = CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_VSCROLL;
+  BOOL bSuccess = m_ComboBox.Create(dwStyle, rc, this, 0);
+
+  ASSERT(bSuccess);
+
+  // Default is hidden & disabled
+  m_ComboBox.EnableWindow(FALSE);
+  m_ComboBox.ShowWindow(SW_HIDE);
+
   // Set up widths of columns with comboboxes - once for each combo
   DrawComboBox(FLC_FLD_COMBOBOX, -1);
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
-  }
+  m_ComboBox.ResetContent();
+  m_vWCFcbx_data.clear();
+
   DrawComboBox(FLC_LGC_COMBOBOX, -1);
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
-  }
+  m_ComboBox.ResetContent();
+  m_vWCFcbx_data.clear();
 
   // Remove dummy item
   DeleteItem(0);
@@ -220,13 +231,13 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
       dwData |= FLC_FLD_CBX_SET | FLC_FLD_CBX_ENABLED;
       SetField(i);
       SetLogic(i);
-      vlast_ft[i] = st_fldata.ftype;
-      vlast_mt[i] = st_fldata.mtype;
-      vcbxChanged[i] = false;
+      m_vlast_ft[i] = st_fldata.ftype;
+      m_vlast_mt[i] = st_fldata.mtype;
+      m_vcbxChanged[i] = false;
       std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-      Fcbxdata_iter = std::find_if(vFcbx_data.begin(), vFcbx_data.end(), 
+      Fcbxdata_iter = std::find_if(m_vFcbx_data.begin(), m_vFcbx_data.end(), 
                                    equal_ftype(st_fldata.ftype));
-      if (Fcbxdata_iter != vFcbx_data.end())
+      if (Fcbxdata_iter != m_vFcbx_data.end())
         SetItemText(i, FLC_FLD_COMBOBOX, (*Fcbxdata_iter).cs_text);
 
       CString cs_criteria;
@@ -234,12 +245,12 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
           st_fldata.rule == PWSMatch::MR_INVALID) {
         cs_criteria.LoadString(IDS_NOTDEFINED);
         dwData |= FLC_CRITERIA_REDTXT;
-        vCriteriaSet[i] = false;
+        m_vCriteriaSet[i] = false;
         st_fldata.bFilterComplete = false;
       } else {
         cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
         dwData &= ~FLC_CRITERIA_REDTXT;
-        vCriteriaSet[i] = true;
+        m_vCriteriaSet[i] = true;
         st_fldata.bFilterComplete = true;
       }
       SetItemText(i, FLC_CRITERIA_TEXT, cs_criteria);
@@ -249,7 +260,7 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
     if (i == 0)
       cs_text = L"";
     else
-      cs_text = vLcbx_data[st_fldata.ltype == LC_AND ? 0 : 1].cs_text;
+      cs_text = m_vLcbx_data[st_fldata.ltype == LC_AND ? 0 : 1].cs_text;
  
     SetItemText(i, FLC_LGC_COMBOBOX, cs_text);
     SetItemData(i, dwData);
@@ -280,7 +291,7 @@ BOOL CPWFilterLC::OnCommand(WPARAM wParam, LPARAM lParam)
 {
   // Since we are dynamically adding controls, we need to handle their
   // messages (i.e. user clicking on them) ourselves and not via "ON_BN_CLICKED"
-  WORD wNotify  = HIWORD(wParam); // notification message
+  WORD wNotify  = HIWORD(wParam);       // notification message
   UINT nID      = (UINT)LOWORD(wParam); // control identifier
 
   if (nID == m_FLD_ComboID || nID == m_LGC_ComboID) {
@@ -344,6 +355,10 @@ int CPWFilterLC::AddFilter()
   ResetAndOr();
 
   m_pPWF->UpdateStatusText();
+
+  // Make sure that the field column is wide enough.
+  if (GetColumnWidth(FLC_FLD_COMBOBOX) < m_fwidth)
+    SetColumnWidth(FLC_FLD_COMBOBOX, m_fwidth);
 
   return newID;
 }
@@ -411,14 +426,15 @@ void CPWFilterLC::ResetFilter(const int num)
   DWORD_PTR dwData;
   dwData = FLC_CRITERIA_REDTXT | FLC_FILTER_ENABLED;
   SetItemData(num, dwData);
+
   CString cs_text(MAKEINTRESOURCE(IDS_PICKFIELD));
   SetItemText(num, FLC_FLD_COMBOBOX, cs_text);
 
-  vlast_ft[num] = FT_INVALID;
-  vlast_mt[num] = PWSMatch::MT_INVALID;
-  vcbxChanged[num] = true;
-  vCriteriaSet[num] = false;
-  vAddPresent[num] = false;
+  m_vlast_ft[num] = FT_INVALID;
+  m_vlast_mt[num] = PWSMatch::MT_INVALID;
+  m_vcbxChanged[num] = true;
+  m_vCriteriaSet[num] = false;
+  m_vAddPresent[num] = false;
 
   // Make sure entry is pristine
   m_pvfdata->at(num).Empty();
@@ -427,7 +443,7 @@ void CPWFilterLC::ResetFilter(const int num)
     SetItemText(num, FLC_LGC_COMBOBOX, L"");
   } else {
     m_pvfdata->at(num).ltype = LC_AND;
-    SetItemText(num, FLC_LGC_COMBOBOX, vLcbx_data[0].cs_text);
+    SetItemText(num, FLC_LGC_COMBOBOX, m_vLcbx_data[0].cs_text);
   }
 
   // Update criterion text and window text
@@ -441,11 +457,11 @@ void CPWFilterLC::RemoveLast()
   int num = GetItemCount();
   ASSERT(num > 0);
 
-  vlast_ft.pop_back();
-  vlast_mt.pop_back();
-  vcbxChanged.pop_back();
-  vCriteriaSet.pop_back();
-  vAddPresent.pop_back();
+  m_vlast_ft.pop_back();
+  m_vlast_mt.pop_back();
+  m_vcbxChanged.pop_back();
+  m_vCriteriaSet.pop_back();
+  m_vAddPresent.pop_back();
 
   // Remove filter
   m_pvfdata->pop_back();
@@ -478,11 +494,11 @@ int CPWFilterLC::AddFilter_Controls()
   SetColumnWidth(FLC_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   SetItemData(newID, FLC_CRITERIA_REDTXT | FLC_FILTER_ENABLED);
 
-  vlast_ft.push_back(FT_INVALID);
-  vlast_mt.push_back(PWSMatch::MT_INVALID);
-  vcbxChanged.push_back(true);
-  vCriteriaSet.push_back(false);
-  vAddPresent.push_back(false);
+  m_vlast_ft.push_back(FT_INVALID);
+  m_vlast_mt.push_back(PWSMatch::MT_INVALID);
+  m_vcbxChanged.push_back(true);
+  m_vCriteriaSet.push_back(false);
+  m_vAddPresent.push_back(false);
 
   // Increase total number
   m_numfilters++;
@@ -515,11 +531,11 @@ void CPWFilterLC::MoveDown()
     dwData = GetItemData(i + 1);
     SetItemData(i, dwData);
 
-    vlast_ft[i] = vlast_ft[i + 1];
-    vlast_mt[i] = vlast_mt[i + 1];
-    vcbxChanged[i] = vcbxChanged[i + 1];
-    vCriteriaSet[i] = vCriteriaSet[i + 1];
-    vAddPresent[i] = vAddPresent[i + 1];
+    m_vlast_ft[i] = m_vlast_ft[i + 1];
+    m_vlast_mt[i] = m_vlast_mt[i + 1];
+    m_vcbxChanged[i] = m_vcbxChanged[i + 1];
+    m_vCriteriaSet[i] = m_vCriteriaSet[i + 1];
+    m_vAddPresent[i] = m_vAddPresent[i + 1];
     m_pvfdata->at(i) = m_pvfdata->at(i + 1);
   }
 }
@@ -552,11 +568,11 @@ void CPWFilterLC::MoveUp(const int nAfter)
     dwData = GetItemData(i);
     SetItemData(i + 1, dwData);
 
-    vlast_ft[i + 1] = vlast_ft[i];
-    vlast_mt[i + 1] = vlast_mt[i];
-    vcbxChanged[i + 1] = vcbxChanged[i];
-    vCriteriaSet[i + 1] = vCriteriaSet[i];
-    vAddPresent[i + 1] = vAddPresent[i];
+    m_vlast_ft[i + 1] = m_vlast_ft[i];
+    m_vlast_mt[i + 1] = m_vlast_mt[i];
+    m_vcbxChanged[i + 1] = m_vcbxChanged[i];
+    m_vCriteriaSet[i + 1] = m_vCriteriaSet[i];
+    m_vAddPresent[i + 1] = m_vAddPresent[i];
     m_pvfdata->at(i + 1) = m_pvfdata->at(i);
   }
 
@@ -583,15 +599,15 @@ void CPWFilterLC::ResetAndOr()
 
 void CPWFilterLC::DeleteFilters()
 {
-  if (vlast_ft.empty())
+  if (m_vlast_ft.empty())
     return;
 
   // Clear the other vectors
-  vlast_ft.clear();
-  vlast_mt.clear();
-  vcbxChanged.clear();
-  vCriteriaSet.clear();
-  vAddPresent.clear();
+  m_vlast_ft.clear();
+  m_vlast_mt.clear();
+  m_vcbxChanged.clear();
+  m_vCriteriaSet.clear();
+  m_vAddPresent.clear();
 
   // Clear filter data
   m_pvfdata->clear();
@@ -697,6 +713,7 @@ bool CPWFilterLC::SetField(const int iItem)
 {
   // User has selected field
   bool retval(false);
+
   // Set focus to main window in case user does page up/down next
   // so that it changes the scoll bar not the value in this
   // ComboBox
@@ -707,11 +724,11 @@ bool CPWFilterLC::SetField(const int iItem)
 
   FieldType ft(FT_INVALID);
 
-  // m_pComboBox is NULL during inital setup
-  if (m_pComboBox) {
-    int iSelect = m_pComboBox->GetCurSel();
+  // m_ComboBox is NULL during inital setup
+  if (m_bInitDone) {
+    int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
-      ft = (FieldType)m_pComboBox->GetItemData(iSelect);
+      ft = (FieldType)m_ComboBox.GetItemData(iSelect);
     }
     st_fldata.ftype = ft;
   } else {
@@ -721,8 +738,8 @@ bool CPWFilterLC::SetField(const int iItem)
   CString cs_text(MAKEINTRESOURCE(IDS_PICKFIELD));
   if (ft != FT_INVALID) {
     std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-    Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(), equal_ftype(ft));
-    if (Fcbxdata_iter != vWCFcbx_data.end())
+    Fcbxdata_iter = std::find_if(m_vWCFcbx_data.begin(), m_vWCFcbx_data.end(), equal_ftype(ft));
+    if (Fcbxdata_iter != m_vWCFcbx_data.end())
       cs_text = (*Fcbxdata_iter).cs_text;
   }
 
@@ -733,7 +750,7 @@ bool CPWFilterLC::SetField(const int iItem)
     // Oh no they haven't!
     dwData &= ~FLC_FLD_CBX_SET;
     SetItemData(iItem, dwData);
-    goto delete_combo;
+    goto reset_combo;
   } else {
     dwData |= (FLC_FLD_CBX_ENABLED | FLC_FLD_CBX_SET);
   }
@@ -829,6 +846,7 @@ bool CPWFilterLC::SetField(const int iItem)
           ASSERT(0);
       }
       break;
+
     case DFTYPE_PWHISTORY:
       switch (ft) {
         case HT_PRESENT:
@@ -858,6 +876,7 @@ bool CPWFilterLC::SetField(const int iItem)
           ASSERT(0);
       }
       break;
+
     case DFTYPE_PWPOLICY:
       switch (ft) {
         case PT_PRESENT:
@@ -884,45 +903,46 @@ bool CPWFilterLC::SetField(const int iItem)
           ASSERT(0);
       }
       break;
+
     default:
       ASSERT(0);
   }
 
   // Save if user has just re-selected previous selection - i.e. no change
-  if (vlast_ft[iItem] != ft || vlast_mt[iItem] != mt) {
-    vcbxChanged[iItem] = true;
-    vCriteriaSet[iItem] = false;
+  if (m_vlast_ft[iItem] != ft || m_vlast_mt[iItem] != mt) {
+    m_vcbxChanged[iItem] = true;
+    m_vCriteriaSet[iItem] = false;
     st_fldata.bFilterComplete = false;
   } else
-    vcbxChanged[iItem] = false;
+    m_vcbxChanged[iItem] = false;
 
-  vAddPresent[iItem] = bAddPresent;
+  m_vAddPresent[iItem] = bAddPresent;
   if (m_iType == DFTYPE_MAIN) {
-    if (vlast_ft[iItem] == FT_PWHIST && ft != FT_PWHIST)
+    if (m_vlast_ft[iItem] == FT_PWHIST && ft != FT_PWHIST)
       m_bPWHIST_Set = false;
     else if (ft == FT_PWHIST)
       m_bPWHIST_Set = true;
 
-    if (vlast_ft[iItem] == FT_POLICY && ft != FT_POLICY)
+    if (m_vlast_ft[iItem] == FT_POLICY && ft != FT_POLICY)
       m_bPOLICY_Set = false;
     else if (ft == FT_POLICY)
       m_bPOLICY_Set = true;
   }
 
   // Now we can update the last selected field
-  vlast_ft[iItem] = ft;
+  m_vlast_ft[iItem] = ft;
 
   // Save last match type now
-  vlast_mt[iItem] = mt;
+  m_vlast_mt[iItem] = mt;
 
   if (mt == PWSMatch::MT_INVALID) {
     dwData &= ~FLC_FLD_CBX_ENABLED;
-    vCriteriaSet[iItem] = false;
+    m_vCriteriaSet[iItem] = false;
     st_fldata.bFilterComplete = false;
   }
 
   // If criterion not set, update static text message to user
-  if (vCriteriaSet[iItem] == false) {
+  if (m_vCriteriaSet[iItem] == false) {
     CString cs_criteria(MAKEINTRESOURCE(IDS_NOTDEFINED));
     dwData |= FLC_CRITERIA_REDTXT;
     SetItemText(iItem, FLC_CRITERIA_TEXT, cs_criteria);
@@ -931,7 +951,7 @@ bool CPWFilterLC::SetField(const int iItem)
 
   if (mt == PWSMatch::MT_INVALID) {
     SetItemData(iItem, dwData);
-    goto delete_combo;
+    goto reset_combo;
   }
 
   dwData |= FLC_FLD_CBX_ENABLED;
@@ -940,13 +960,17 @@ bool CPWFilterLC::SetField(const int iItem)
   st_fldata.ftype = ft;
   retval = true;
 
-delete_combo:
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
+reset_combo:
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    m_ComboBox.ShowWindow(SW_HIDE);
+    m_ComboBox.EnableWindow(FALSE);
+    m_ComboBox.ResetContent();
+    m_vWCFcbx_data.clear();
   }
+
+  RedrawItems(iItem, iItem);
+  UpdateWindow();
+
   m_bSetFieldActive = false;
   return retval;
 }
@@ -968,19 +992,19 @@ void CPWFilterLC::CancelField(const int iItem)
   CString cs_text(MAKEINTRESOURCE(IDS_PICKFIELD));
   if (ft != FT_INVALID) {
     std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-    Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(), equal_ftype(ft));
-    if (Fcbxdata_iter != vWCFcbx_data.end())
+    Fcbxdata_iter = std::find_if(m_vWCFcbx_data.begin(), m_vWCFcbx_data.end(), equal_ftype(ft));
+    if (Fcbxdata_iter != m_vWCFcbx_data.end())
       cs_text = (*Fcbxdata_iter).cs_text;
   }
 
   SetItemText(iItem, FLC_FLD_COMBOBOX, cs_text);
 
-  // m_pComboBox is NULL during inital setup
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
+  // m_ComboBox is NULL during inital setup
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    m_ComboBox.ShowWindow(SW_HIDE);
+    m_ComboBox.EnableWindow(FALSE);
+    m_ComboBox.ResetContent();
+    m_vWCFcbx_data.clear();
   }
   return;
 }
@@ -988,85 +1012,94 @@ void CPWFilterLC::CancelField(const int iItem)
 void CPWFilterLC::SetLogic(const int iItem)
 {
   CString cs_text(L"");
+
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-    goto delete_combo;
+    goto reset_combo;
   }
 
   // Get offset into vector of controls
   st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
-  // m_pComboBox is NULL during inital setup
-  if (m_pComboBox) {
-    int iSelect = m_pComboBox->GetCurSel();
+  // m_ComboBox is NULL during inital setup
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
-      lt = (LogicConnect)m_pComboBox->GetItemData(iSelect);
+      lt = (LogicConnect)m_ComboBox.GetItemData(iSelect);
     }
     m_pvfdata->at(iItem).ltype = lt;
   }
 
-  cs_text = vLcbx_data[0].cs_text;
+  cs_text = m_vLcbx_data[0].cs_text;
   if (lt != LC_INVALID) {
     std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
-    Lcbxdata_iter = std::find_if(vLcbx_data.begin(), vLcbx_data.end(), equal_ltype(lt));
-    if (Lcbxdata_iter != vLcbx_data.end())
+    Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
+    if (Lcbxdata_iter != m_vLcbx_data.end())
       cs_text = (*Lcbxdata_iter).cs_text;
   }
 
   SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
 
-delete_combo:
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
+reset_combo:
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    m_ComboBox.ShowWindow(SW_HIDE);
+    m_ComboBox.EnableWindow(FALSE);
+    m_ComboBox.ResetContent();
+    m_vWCFcbx_data.clear();
   }
+  
+  RedrawItems(iItem, iItem);
+  UpdateWindow();
+
   m_bSetLogicActive = false;
 }
 
 void CPWFilterLC::CancelLogic(const int iItem)
 {
   CString cs_text(L"");
+
   // Get offset into vector of controls
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-    goto delete_combo;
+    goto reset_combo;
   }
 
   st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
 
-  cs_text = vLcbx_data[0].cs_text;
+  cs_text = m_vLcbx_data[0].cs_text;
   if (lt != LC_INVALID) {
     std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
-    Lcbxdata_iter = std::find_if(vLcbx_data.begin(), vLcbx_data.end(), equal_ltype(lt));
-    if (Lcbxdata_iter != vLcbx_data.end())
+    Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
+    if (Lcbxdata_iter != m_vLcbx_data.end())
       cs_text = (*Lcbxdata_iter).cs_text;
   }
 
   SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
 
-delete_combo:
-  // m_pComboBox is NULL during inital setup
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
+reset_combo:
+  // m_ComboBox is NULL during inital setup
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    m_ComboBox.ShowWindow(SW_HIDE);
+    m_ComboBox.EnableWindow(FALSE);
+    m_ComboBox.ResetContent();
+    m_vWCFcbx_data.clear();
   }
+
+  RedrawItems(iItem, iItem);
+  UpdateWindow();
 }
 
 void CPWFilterLC::CloseKillCombo()
 {
-  // Remove combo
-  if (m_pComboBox) {
-    m_pComboBox->DestroyWindow();
-    delete m_pComboBox;
-    vWCFcbx_data.clear();
-    m_pComboBox = NULL;
+  // Reset combo
+  if (m_ComboBox.GetSafeHwnd() != NULL) {
+    m_ComboBox.ShowWindow(SW_HIDE);
+    m_ComboBox.EnableWindow(FALSE);
+    m_ComboBox.ResetContent();
+    m_vWCFcbx_data.clear();
   }
 }
 
@@ -1080,10 +1113,10 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
     cs_text.LoadString(IDS_PICKFIELD);
     if (ft != FT_INVALID) {
       std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-      Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(), equal_ftype(ft));
-      if (Fcbxdata_iter != vWCFcbx_data.end()) {
+      Fcbxdata_iter = std::find_if(m_vWCFcbx_data.begin(), m_vWCFcbx_data.end(), equal_ftype(ft));
+      if (Fcbxdata_iter != m_vWCFcbx_data.end()) {
         cs_text = (*Fcbxdata_iter).cs_text;
-        index = (int)(Fcbxdata_iter - vWCFcbx_data.begin());
+        index = (int)(Fcbxdata_iter - m_vWCFcbx_data.begin());
       }
     }
     SetItemText(m_iItem, FLC_FLD_COMBOBOX, cs_text);
@@ -1093,7 +1126,10 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
     cs_text.LoadString(lt == LC_AND ? IDSC_AND : IDSC_OR);
     SetItemText(m_iItem, FLC_LGC_COMBOBOX, cs_text);
   }
-  m_pComboBox->SetCurSel(index);
+  
+  SetComboBoxWidth(nID == m_FLD_ComboID ? FLC_FLD_COMBOBOX : FLC_LGC_COMBOBOX);
+
+  m_ComboBox.SetCurSel(index);
 }
 
 bool CPWFilterLC::GetCriterion()
@@ -1119,9 +1155,9 @@ bool CPWFilterLC::GetCriterion()
   // Now go display the correct match dialog
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
-      m_fstring.m_add_present = vAddPresent[m_iItem];
+      m_fstring.m_add_present = m_vAddPresent[m_iItem];
       m_fstring.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fstring.m_rule = st_fldata.rule;
         m_fstring.m_string = st_fldata.fstring.c_str();
@@ -1148,7 +1184,7 @@ bool CPWFilterLC::GetCriterion()
       break;
     case PWSMatch::MT_PASSWORD:
       m_fpswd.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fpswd.m_rule = st_fldata.rule;
         m_fpswd.m_string = st_fldata.fstring.c_str();
@@ -1174,9 +1210,9 @@ bool CPWFilterLC::GetCriterion()
       }
       break;
     case PWSMatch::MT_INTEGER:
-      m_finteger.m_add_present = vAddPresent[m_iItem];
+      m_finteger.m_add_present = m_vAddPresent[m_iItem];
       m_finteger.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_finteger.m_rule = st_fldata.rule;
         m_finteger.m_num1 = st_fldata.fnum1;
@@ -1197,9 +1233,9 @@ bool CPWFilterLC::GetCriterion()
       }
       break;
     case PWSMatch::MT_DATE:
-      m_fdate.m_add_present = vAddPresent[m_iItem];
+      m_fdate.m_add_present = m_vAddPresent[m_iItem];
       m_fdate.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fdate.m_rule = st_fldata.rule;
         m_fdate.m_datetype = st_fldata.fdatetype;
@@ -1266,7 +1302,7 @@ bool CPWFilterLC::GetCriterion()
       break;
     case PWSMatch::MT_BOOL:
       m_fbool.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fbool.m_rule = st_fldata.rule;
       } else {
@@ -1284,7 +1320,7 @@ bool CPWFilterLC::GetCriterion()
       break;
     case PWSMatch::MT_ENTRYTYPE:
       m_fentry.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fentry.m_rule = st_fldata.rule;
         m_fentry.m_etype = st_fldata.etype;
@@ -1305,7 +1341,7 @@ bool CPWFilterLC::GetCriterion()
     case PWSMatch::MT_DCA:
     case PWSMatch::MT_SHIFTDCA:
       m_fDCA.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fDCA.m_rule = st_fldata.rule;
         m_fDCA.m_DCA = st_fldata.fdca;
@@ -1326,7 +1362,7 @@ bool CPWFilterLC::GetCriterion()
       break;
     case PWSMatch::MT_ENTRYSTATUS:
       m_fstatus.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fstatus.m_rule = st_fldata.rule;
         m_fstatus.m_estatus = st_fldata.estatus;
@@ -1346,7 +1382,7 @@ bool CPWFilterLC::GetCriterion()
       break;
     case PWSMatch::MT_ENTRYSIZE:
       m_fsize.m_title = cs_selected;
-      if (!vcbxChanged[m_iItem] &&
+      if (!m_vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fsize.m_rule = st_fldata.rule;
         m_fsize.m_unit = st_fldata.funit;
@@ -1381,8 +1417,8 @@ bool CPWFilterLC::GetCriterion()
     if (b_good) {
       cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
       dwData &= ~FLC_CRITERIA_REDTXT;
-      vcbxChanged[m_iItem] = false;
-      vCriteriaSet[m_iItem] = true;
+      m_vcbxChanged[m_iItem] = false;
+      m_vCriteriaSet[m_iItem] = true;
       st_fldata.bFilterComplete = true;
     } else {
       cs_criteria.LoadString(IDS_NOTDEFINED);
@@ -1402,221 +1438,224 @@ void CPWFilterLC::SetUpComboBoxData()
   // Set up the Field selction Combobox
 
   // NOTE: The ComboBox strings are NOT sorted by design !
-  if (vLcbx_data.empty()) {
+  if (m_vLcbx_data.empty()) {
     st_Lcbxdata stl;
     stl.cs_text.LoadString(IDSC_AND);
     stl.ltype = LC_AND;
-    vLcbx_data.push_back(stl);
+    m_vLcbx_data.push_back(stl);
 
     stl.cs_text.LoadString(IDSC_OR);
     stl.ltype = LC_OR;
-    vLcbx_data.push_back(stl);
+    m_vLcbx_data.push_back(stl);
   }
 
-  if (vFcbx_data.empty()) {
+  if (m_vFcbx_data.empty()) {
     st_Fcbxdata stf;
     switch (m_iType) {
       case DFTYPE_MAIN:
         stf.cs_text = CItemData::FieldName(CItemData::GROUP).c_str();
         stf.ftype = FT_GROUP;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::TITLE).c_str();
         stf.ftype = FT_TITLE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::GROUPTITLE).c_str();
         stf.ftype = FT_GROUPTITLE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::USER).c_str();
         stf.ftype = FT_USER;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::PASSWORD).c_str();
         stf.ftype = FT_PASSWORD;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::NOTES).c_str();
         stf.ftype = FT_NOTES;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::URL).c_str();
         stf.ftype = FT_URL;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::AUTOTYPE).c_str();
         stf.ftype = FT_AUTOTYPE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::RUNCMD).c_str();
         stf.ftype = FT_RUNCMD;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         //stf.cs_text = CItemData::FieldName(CItemData::DCA).c_str();
         stf.cs_text.LoadString(IDS_DCALONG);
         stf.ftype = FT_DCA;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         //stf.cs_text = CItemData::FieldName(CItemData::SHIFTDCA).c_str();
         stf.cs_text.LoadString(IDS_SHIFTDCALONG);
         stf.ftype = FT_SHIFTDCA;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         //stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();
         stf.cs_text.LoadString(IDS_EMAIL);
         stf.ftype = FT_EMAIL;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::SYMBOLS).c_str();
         stf.ftype = FT_SYMBOLS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::POLICYNAME).c_str();
         stf.ftype = FT_POLICYNAME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::PROTECTED).c_str();
         stf.ftype = FT_PROTECTED;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::CTIME).c_str();
         stf.ftype = FT_CTIME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::ATIME).c_str();
         stf.ftype = FT_ATIME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::PMTIME).c_str();
         stf.ftype = FT_PMTIME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::XTIME).c_str();
         stf.ftype = FT_XTIME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::XTIME_INT).c_str();
         stf.ftype = FT_XTIME_INT;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::RMTIME).c_str();
         stf.ftype = FT_RMTIME;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PASSWORDHISTORY);
         stf.ftype = FT_PWHIST;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::POLICY).c_str();
         stf.ftype = FT_POLICY;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PASSWORDLEN);
         stf.ftype = FT_PASSWORDLEN;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_KBSHORTCUT);
         stf.ftype = FT_KBSHORTCUT;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_ENTRYTYPE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYTYPE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_ENTRYSTATUS);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYSTATUS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_ENTRYSIZE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYSIZE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_UNKNOWNFIELDSFILTER);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_UNKNOWNFIELDS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
         break;
+
       case DFTYPE_PWHISTORY:
         stf.cs_text.LoadString(IDS_PRESENT);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_PRESENT;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HACTIVE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_ACTIVE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HNUM);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_NUM;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HMAX);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_MAX;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HDATE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_CHANGEDATE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HPSWD);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_PASSWORDS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
         break;
+
       case DFTYPE_PWPOLICY:
         stf.cs_text.LoadString(IDS_PRESENT);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRESENT;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_PLENGTH);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_LENGTH;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PLOWER);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_LOWERCASE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PUPPER);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_UPPERCASE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PDIGITS);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_DIGITS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PSYMBOL);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_SYMBOLS;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_PHEXADECIMAL);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_HEXADECIMAL;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_PEASYVISION);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_EASYVISION;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_PPRONOUNCEABLE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRONOUNCEABLE;
-        vFcbx_data.push_back(stf);
+        m_vFcbx_data.push_back(stf);
         break;
+
       default:
         ASSERT(0);
     }
@@ -1664,13 +1703,13 @@ void CPWFilterLC::OnLButtonDown(UINT nFlags, CPoint point)
       case FLC_LGC_COMBOBOX:
         if (bFilterActive && bLogicCBXEnabled && iItem > 0) {
           DrawComboBox(FLC_LGC_COMBOBOX, m_pvfdata->at(m_iItem).ltype == LC_OR ? 1 : 0);
-          m_pComboBox->ShowDropDown(TRUE);
+          m_ComboBox.ShowDropDown(TRUE);
         }
         break;
       case FLC_FLD_COMBOBOX:
         if (bFilterActive) {
           DrawComboBox(FLC_FLD_COMBOBOX, (int)ftype);
-          m_pComboBox->ShowDropDown(TRUE);
+          m_ComboBox.ShowDropDown(TRUE);
         }
         break;
       case FLC_CRITERIA_TEXT:
@@ -1685,6 +1724,7 @@ void CPWFilterLC::OnLButtonDown(UINT nFlags, CPoint point)
   }
   if (m_iItem >= 0)
     SetItemState(m_iItem, 0, LVIS_SELECTED | LVIS_DROPHILITED);
+
   Invalidate();
 }
 
@@ -1693,12 +1733,6 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   // Draw the drop down list
   CRect rect;
   GetSubItemRect(m_iItem, iSubItem, LVIR_BOUNDS, rect);
-
-  m_pComboBox = new CComboBox;
-  ASSERT(m_pComboBox);
-
-  if (!m_pComboBox)
-    return;
 
   UINT nID;
   if (iSubItem == FLC_FLD_COMBOBOX)
@@ -1714,12 +1748,9 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   CRect m_rectComboBox(rect);
   m_rectComboBox.left += 1;
 
-  DWORD dwStyle =  CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_VSCROLL;
-  BOOL bSuccess = m_pComboBox->Create(dwStyle, m_rectComboBox, this, nID);
-  ASSERT(bSuccess);
-
-  if (!bSuccess)
-    return;
+  m_ComboBox.SetDlgCtrlID(nID);
+  m_ComboBox.SetWindowPos(NULL, m_rectComboBox.left, m_rectComboBox.top, 0, 0,
+    SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 
   if (!m_pFont) {
     CFont *pFont = GetFont();
@@ -1732,10 +1763,10 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     m_pFont = new CFont;
     m_pFont->CreateFontIndirect(&logFont);
   }
-  m_pComboBox->SetFont(m_pFont);
+  m_ComboBox.SetFont(m_pFont);
 
   // add strings & data to ComboBox
-  vWCFcbx_data = vFcbx_data;
+  m_vWCFcbx_data = m_vFcbx_data;
 
   if (m_iType == DFTYPE_MAIN && iSubItem == FLC_FLD_COMBOBOX) {
     // Is PW History or Policy already selected somewhere else?
@@ -1749,107 +1780,71 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
 
   switch (iSubItem) {
     case FLC_FLD_COMBOBOX:
-      for (int i = 0; i < (int)vWCFcbx_data.size(); i++) {
-        m_pComboBox->AddString(vWCFcbx_data[i].cs_text);
-        m_pComboBox->SetItemData(i, vWCFcbx_data[i].ftype);
+      for (int i = 0; i < (int)m_vWCFcbx_data.size(); i++) {
+        m_ComboBox.AddString(m_vWCFcbx_data[i].cs_text);
+        m_ComboBox.SetItemData(i, m_vWCFcbx_data[i].ftype);
       }
-      SetComboBoxWidth();
       break;
     case FLC_LGC_COMBOBOX:
-      for (int i = 0; i < (int)vLcbx_data.size(); i++) {
-        m_pComboBox->AddString(vLcbx_data[i].cs_text);
-        m_pComboBox->SetItemData(i, (int)vLcbx_data[i].ltype);
+      for (int i = 0; i < (int)m_vLcbx_data.size(); i++) {
+        m_ComboBox.AddString(m_vLcbx_data[i].cs_text);
+        m_ComboBox.SetItemData(i, (int)m_vLcbx_data[i].ltype);
       }
       break;
     default:
       ASSERT(0);
   }
 
-  // Find widths and height - only the first time this is called
+  // Find widths and height - only the first time this is called for each.
   // In fact, called twice during 'Init' processing just for this purpose
   // once for each Combobox
-  if ((m_fwidth < 0 && iSubItem == FLC_FLD_COMBOBOX) ||
-      (m_lwidth < 0 && iSubItem == FLC_LGC_COMBOBOX)) {
-    // Find the longest string in the list box.
-    CString str;
-    CSize sz;
-    int dx(0);
-    TEXTMETRIC tm;
-    CDC *pDC = m_pComboBox->GetDC();
-    CFont *pFont = m_pComboBox->GetFont();
+  SetComboBoxWidth(iSubItem);
+  
+  if (m_rowheight < 0) {
+    // Set row height to take image by adding a dummy ImageList
+    // Good trick - save making ComboBox "ownerdraw"
+    CRect combo_rect;
+    m_ComboBox.GetClientRect(&combo_rect);
+    IMAGEINFO imageinfo;
+    m_pCheckImageList->GetImageInfo(0, &imageinfo);
+    m_rowheight = max(combo_rect.Height(),
+      abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
 
-    // Select the ComboBox font, save the old font
-    CFont *pOldFont = pDC->SelectObject(pFont);
-    // Get the text metrics for avg char width
-    pDC->GetTextMetrics(&tm);
-
-    for (int i = 0; i < m_pComboBox->GetCount(); i++) {
-      m_pComboBox->GetLBText(i, str);
-      sz = pDC->GetTextExtent(str);
-
-      // Add the average width to prevent clipping
-      sz.cx += tm.tmAveCharWidth;
-
-      if (sz.cx > dx)
-        dx = sz.cx;
-    }
-    dx += 2 * ::GetSystemMetrics(SM_CXEDGE) + 5;
-
-    // Select the old font back into the DC
-    pDC->SelectObject(pOldFont);
-    m_pComboBox->ReleaseDC(pDC);
-
-    // Now set column widths
-    if (iSubItem == FLC_FLD_COMBOBOX) {
-      m_fwidth = max(dx, GetColumnWidth(FLC_FLD_COMBOBOX));
-      SetColumnWidth(FLC_FLD_COMBOBOX, m_fwidth);
-    } else {
-      m_lwidth = max(dx, GetColumnWidth(FLC_LGC_COMBOBOX));
-      SetColumnWidth(FLC_LGC_COMBOBOX, m_lwidth);
-    }
-
-    if (m_rowheight < 0) {
-      // Set row height to take image by adding a dummy ImageList
-      // Good trick - save making ComboBox "ownerdraw"
-      CRect combo_rect;
-      m_pComboBox->GetClientRect(&combo_rect);
-      IMAGEINFO imageinfo;
-      m_pCheckImageList->GetImageInfo(0, &imageinfo);
-      m_rowheight = max(combo_rect.Height(),
-                        abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
-
-      m_pImageList = new CImageList;
-      m_pImageList->Create(1, m_rowheight, ILC_COLOR4, 1, 1);
-      SetImageList(m_pImageList, LVSIL_SMALL);
-    }
+    m_pImageList = new CImageList;
+    m_pImageList->Create(1, m_rowheight, ILC_COLOR4, 1, 1);
+    SetImageList(m_pImageList, LVSIL_SMALL);
   }
 
-  // If the width of the list box is too small, adjust it so that every
-  // item is completely visible.
-  if (m_pComboBox->GetDroppedWidth() <
-          ((iSubItem == FLC_FLD_COMBOBOX) ? m_fwidth : m_lwidth)) {
-    m_pComboBox->SetDroppedWidth(iSubItem == FLC_FLD_COMBOBOX ? m_fwidth : m_lwidth);
-  }
+  // Since now reusing control- have to reset size
+  SetColumnWidth(iSubItem, iSubItem == FLC_FLD_COMBOBOX ? m_fwidth : m_lwidth);
 
   // Try to ensure that dropdown list is big enough for half the entries (fits
   // in the same height as the dialog) but add vertical scrolling
-  int n = m_pComboBox->GetCount();
+  int n = m_ComboBox.GetCount();
 
-  int ht = m_pComboBox->GetItemHeight(0);
-  m_pComboBox->GetWindowRect(&rect);
+  int ht = m_ComboBox.GetItemHeight(0);
+  m_ComboBox.GetWindowRect(&rect);
+
+  CRect wrc;
+  GetWindowRect(&wrc);
 
   CSize sz;
-  sz.cx = rect.Width();
-  sz.cy = ht * ((n / 2) + 2);
+  sz.cx = (iSubItem == FLC_FLD_COMBOBOX) ? m_fwidth : m_lwidth; // rect.Width();
+  sz.cy = ht * (n + 2);
 
-  if ((rect.top - sz.cy) < 0 || 
-      (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
-    int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
-    int ht2 = ht * ifit;
-    sz.cy = min(ht2, sz.cy);
+  if (ht * n >= wrc.Height()) {
+    // Only resize if combobox listctrl won't fit in dialog
+    sz.cy = ht * ((n / 2) + 2);
+
+    if ((rect.top - sz.cy) < 0 ||
+        (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
+      int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
+      int ht2 = ht * ifit;
+      sz.cy = min(ht2, sz.cy);
+    }
   }
 
-  m_pComboBox->SetWindowPos(NULL, 0, 0, sz.cx, sz.cy, SWP_NOMOVE | SWP_NOZORDER);
+  m_ComboBox.SetWindowPos(NULL, 0, 0, sz.cx, sz.cy, SWP_NOMOVE | SWP_NOZORDER);
 
   int nindex(index);
   if (nindex >= n || nindex < 0)
@@ -1857,29 +1852,34 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   else {
     if (iSubItem == FLC_FLD_COMBOBOX) {
       std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-      Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(),
+      Fcbxdata_iter = std::find_if(m_vWCFcbx_data.begin(), m_vWCFcbx_data.end(),
                                    equal_ftype((FieldType)index));
-      if (Fcbxdata_iter == vWCFcbx_data.end())
+      if (Fcbxdata_iter == m_vWCFcbx_data.end())
         nindex = -1;
       else
-        nindex = (int)(Fcbxdata_iter - vWCFcbx_data.begin());
+        nindex = (int)(Fcbxdata_iter - m_vWCFcbx_data.begin());
     }
   }
 
-  m_pComboBox->SetCurSel(nindex);
-  m_pComboBox->ShowWindow(SW_SHOW);
-  m_pComboBox->BringWindowToTop();
+  m_ComboBox.SetCurSel(nindex);
+
+  if (index >= 0) {
+    // Don't bother to show during first initialisation calls
+    m_ComboBox.EnableWindow(TRUE);
+    m_ComboBox.ShowWindow(SW_SHOW);
+    m_ComboBox.BringWindowToTop();
+  }
 }
 
-void CPWFilterLC::SetComboBoxWidth()
+void CPWFilterLC::SetComboBoxWidth(const int iSubItem)
 {
   // Find the longest string in the combo box.
   CString str;
   CSize sz;
   int dx = 0;
   TEXTMETRIC tm;
-  CDC *pDC = m_pComboBox->GetDC();
-  CFont *pFont = m_pComboBox->GetFont();
+  CDC *pDC = m_ComboBox.GetDC();
+  CFont *pFont = m_ComboBox.GetFont();
 
   // Select the listbox font, save the old font
   CFont *pOldFont = pDC->SelectObject(pFont);
@@ -1887,8 +1887,8 @@ void CPWFilterLC::SetComboBoxWidth()
   // Get the text metrics for avg char width
   pDC->GetTextMetrics(&tm);
 
-  for (int i = 0; i < m_pComboBox->GetCount(); i++) {
-    m_pComboBox->GetLBText(i, str);
+  for (int i = 0; i < m_ComboBox.GetCount(); i++) {
+    m_ComboBox.GetLBText(i, str);
     sz = pDC->GetTextExtent(str);
 
     // Add the avg width to prevent clipping
@@ -1900,13 +1900,24 @@ void CPWFilterLC::SetComboBoxWidth()
 
   // Select the old font back into the DC
   pDC->SelectObject(pOldFont);
-  m_pComboBox->ReleaseDC(pDC);
+  m_ComboBox.ReleaseDC(pDC);
 
   // Adjust the width for the vertical scroll bar and the left and right border.
   dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
 
-  // Set the width of the list box so that every item is completely visible.
-  m_pComboBox->SetDroppedWidth(dx);
+  // Now set column widths
+  if (iSubItem == FLC_FLD_COMBOBOX) {
+    m_fwidth = max(dx, GetColumnWidth(FLC_FLD_COMBOBOX));
+    SetColumnWidth(FLC_FLD_COMBOBOX, m_fwidth);
+  } else {
+    m_lwidth = max(dx, GetColumnWidth(FLC_LGC_COMBOBOX));
+    SetColumnWidth(FLC_LGC_COMBOBOX, m_lwidth);
+  }
+
+  // If the width of the list box is too small, adjust it so that every
+  // item is completely visible.
+  m_ComboBox.SetDroppedWidth(dx);
+  //m_ComboBox.SetDroppedWidth(dx);
 }
 
 void CPWFilterLC::DeleteEntry(FieldType ftype)
@@ -1914,12 +1925,12 @@ void CPWFilterLC::DeleteEntry(FieldType ftype)
   // User has selected Password History or Policy
   // Remove it from the Combobox data - Working Copy only!
   std::vector<st_Fcbxdata>::iterator Fcbxdata_iter;
-  Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(),
+  Fcbxdata_iter = std::find_if(m_vWCFcbx_data.begin(), m_vWCFcbx_data.end(),
                                equal_ftype(ftype));
 
   // Check if already deleted - should never happen!
-  if (Fcbxdata_iter != vWCFcbx_data.end())
-    vWCFcbx_data.erase(Fcbxdata_iter);
+  if (Fcbxdata_iter != m_vWCFcbx_data.end())
+    m_vWCFcbx_data.erase(Fcbxdata_iter);
 }
 
 void CPWFilterLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -2202,11 +2213,11 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
       default:
         return FALSE;
     }
+
     // If there was a CString associated with the list item,
     // copy it's text (up to 80 characters worth, limitation 
     // of the TOOLTIPTEXT structure) into the TOOLTIPTEXT 
     // structure's szText member
-
     CString cs_TipText(MAKEINTRESOURCE(nID));
     delete m_pwchTip;
 
@@ -2260,8 +2271,8 @@ void CPWFilterLC::OnProcessKey(UINT nID)
         if (dwData & FLC_FILTER_ENABLED) {
           m_bSetFieldActive = true;
           DrawComboBox(FLC_FLD_COMBOBOX, (int)m_pvfdata->at(m_iItem).ftype);
-          m_pComboBox->ShowDropDown(TRUE);
-          m_pComboBox->SetFocus();
+          m_ComboBox.ShowDropDown(TRUE);
+          m_ComboBox.SetFocus();
         }
       }
       break;
@@ -2271,8 +2282,8 @@ void CPWFilterLC::OnProcessKey(UINT nID)
             (dwData & FLC_LGC_CBX_ENABLED)) {
           m_bSetLogicActive = true;
           DrawComboBox(FLC_LGC_COMBOBOX, m_pvfdata->at(m_iItem).ltype == LC_OR ? 1 : 0);
-          m_pComboBox->ShowDropDown(TRUE);
-          m_pComboBox->SetFocus();
+          m_ComboBox.ShowDropDown(TRUE);
+          m_ComboBox.SetFocus();
         }
       }
       break;
