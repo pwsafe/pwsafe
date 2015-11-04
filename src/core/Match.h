@@ -50,7 +50,9 @@ namespace PWSMatch {
   enum MatchType {MT_INVALID = 0,
                   MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE,
                   MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE,
-                  MT_DCA, MT_SHIFTDCA, MT_ENTRYSTATUS, MT_ENTRYSIZE};
+                  MT_DCA, MT_SHIFTDCA, MT_ENTRYSTATUS, MT_ENTRYSIZE,
+                  MT_ATTACHMENT, MT_MEDIATYPE
+  };
 
   // Generalised checking
   bool Match(const StringX &stValue, StringX sx_Object, const int &iFunction);

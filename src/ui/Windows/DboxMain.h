@@ -498,6 +498,9 @@ public:
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   bool IsWorkstationLocked() const;
 
+  std::vector<StringX> GetAllMediaTypes()
+  {return m_core.GetAllMediaTypes();}
+
  protected:
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
@@ -636,6 +639,8 @@ public:
   bool PassesPWHFiltering(const CItemData *pci,
                           const st_filters &filters) const;
   bool PassesPWPFiltering(const CItemData *pci,
+                          const st_filters &filters) const;
+  bool PassesAttFiltering(const CItemData *pci,
                           const st_filters &filters) const;
 
   void SaveGUIStatus();
@@ -941,6 +946,7 @@ private:
   vfiltergroups m_vMflgroups;
   vfiltergroups m_vHflgroups;
   vfiltergroups m_vPflgroups;
+  vfiltergroups m_vAflgroups;
 
   // Global Filters
   PWSFilters m_MapFilters;

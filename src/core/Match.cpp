@@ -377,6 +377,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
     case MT_BOOL:
     case MT_PWHIST:
     case MT_POLICY:
+    case MT_ATTACHMENT:
       break;
     case MT_ENTRYTYPE:
       switch (etype) {
@@ -452,6 +453,9 @@ void PWSMatch::GetMatchType(MatchType mtype,
         if (bBetween)
           Format(cs2, L"%d", fnum2 >> (funit * 10));
       }
+      break;
+    case MT_MEDIATYPE:
+      cs1 = fstring;
       break;
     default:
       ASSERT(0);

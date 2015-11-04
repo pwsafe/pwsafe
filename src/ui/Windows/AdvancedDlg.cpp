@@ -334,7 +334,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
 
     // Only add attachment fields for V4 and later
-    if (m_current_version >= PWSfile::V40 && m_current_version < PWSfile::NEWFILE) {
+    if (m_current_version >= PWSfile::V40) {
       // Add search attachment fields - not default
       cs_text.LoadString(IDS_FILETITLE);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);

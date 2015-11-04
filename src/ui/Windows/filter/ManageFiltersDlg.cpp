@@ -32,7 +32,8 @@ IMPLEMENT_DYNAMIC(CManageFiltersDlg, CPWDialog)
 
 CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                bool bFilterActive,
-                               PWSFilters &mapfilters)
+                               PWSFilters &mapfilters,
+                               bool bCanHaveAttachments)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
   m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
@@ -41,7 +42,8 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
   m_pCheckImageList(NULL), m_pImageList(NULL),
-  m_iSortColumn(-1), m_bSortAscending(-1)
+  m_iSortColumn(-1), m_bSortAscending(-1),
+  m_bCanHaveAttachments(bCanHaveAttachments)
 {
   PWSFilters::iterator mf_iter;
 
@@ -73,6 +75,10 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   bitmap.LoadBitmap(IDB_BLANK);
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
+
+  if (m_bCanHaveAttachments) {
+    m_vMediaTypes = GetMainDlg()->GetAllMediaTypes();
+  }
 }
 
 CManageFiltersDlg::~CManageFiltersDlg()
@@ -648,7 +654,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
   CString cs_num, cs_ftype, cs_criteria, cs_ltype, cs_act;
 
   vFilterRows::iterator Flt_iter;
-  bool bHistory(false), bPolicy(false);
+  bool bHistory(false), bPolicy(false), bAttachment(false);
   int i(0), iItem(0), n(0);
 
   m_FilterProperties.DeleteAllItems();
@@ -665,7 +671,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     cs_ftype = GetFieldTypeName(st_fldata.ftype);
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
-    cs_act = cs_act.Mid(1);  // Remove leading ampersand from Yes/No
+    cs_act.Remove(L'&');  // Remove leading ampersand from Yes/No
     if (Flt_iter != pfilters->vMfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
@@ -681,6 +687,8 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
       bHistory = true;
     if (st_fldata.ftype == FT_POLICY)
       bPolicy = true;
+    if (st_fldata.ftype == FT_ATTACHMENT)
+      bAttachment = true;
   }
 
   if (bHistory) {
@@ -706,6 +714,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     cs_ftype = GetFieldTypeName(st_fldata.ftype);
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
+    cs_act.Remove(L'&');  // Remove leading ampersand from Yes/No
     if (Flt_iter != pfilters->vHfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
@@ -741,7 +750,44 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     cs_ftype = GetFieldTypeName(st_fldata.ftype);
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
+    cs_act.Remove(L'&');  // Remove leading ampersand from Yes/No
     if (Flt_iter != pfilters->vPfldata.begin())
+      cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
+    else
+      cs_ltype = L"";
+
+    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, cs_num);
+    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, cs_act);
+    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, cs_ltype);
+    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, cs_ftype);
+    m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_criteria);
+  }
+
+  if (bAttachment) {
+    i++;
+    CString cs_attachment, cs_temp;
+    cs_attachment.LoadString(IDS_SETATTACHMENTFILTER);
+    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, L"-");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, L"---");
+    cs_temp = L"---  " + cs_attachment + L"  ---";
+    m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_temp);
+  }
+
+  n = 0;
+  for (Flt_iter = pfilters->vAfldata.begin();
+       Flt_iter != pfilters->vAfldata.end(); Flt_iter++) {
+    st_FilterRow &st_fldata = *Flt_iter;
+    i++;
+    n++;
+
+    cs_num.Format(L"%d", n);
+    cs_ftype = GetFieldTypeName(st_fldata.ftype);
+    cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
+    cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
+    cs_act.Remove(L'&');  // Remove leading ampersand from Yes/No
+    if (Flt_iter != pfilters->vAfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
       cs_ltype = L"";
@@ -1101,12 +1147,14 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case FT_ENTRYTYPE:     nID = IDS_ENTRYTYPE; break;
   case FT_ENTRYSTATUS:   nID = IDS_ENTRYSTATUS; break;
   case FT_UNKNOWNFIELDS: nID = IDS_UNKNOWNFIELDSFILTER; break;
+
   case HT_PRESENT:       nID = IDS_PRESENT; break;
   case HT_ACTIVE:        nID = IDS_HACTIVE; break;
   case HT_NUM:           nID = IDS_HNUM; break;
   case HT_MAX:           nID = IDS_HMAX; break;
   case HT_CHANGEDATE:    nID = IDS_HDATE; break;
   case HT_PASSWORDS:     nID = HT_PASSWORDS; break;
+
   case PT_PRESENT:       nID = IDS_PRESENT; break;
   case PT_LENGTH:        nID = IDSC_PLENGTH; break;
   case PT_LOWERCASE:     nID = IDS_PLOWER; break;
@@ -1116,9 +1164,22 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case PT_HEXADECIMAL:   nID = IDSC_PHEXADECIMAL; break;
   case PT_EASYVISION:    nID = IDSC_PEASYVISION; break;
   case PT_PRONOUNCEABLE: nID = IDSC_PPRONOUNCEABLE; break;
+  
+    case AT_PRESENT:       nID = IDS_PRESENT; break;
+    case AT_TITLE:         nID = IDS_FILETITLE; break;
+    case AT_CTIME:         nID = IDS_FILENAME; break;
+    case AT_MEDIATYPE:     nID = IDS_FILEMEDIATYPE; break;
+    case AT_FILENAME:      nID = IDS_FILENAME; break;
+    case AT_FILEPATH:      nID = IDS_FILEPATH; break;
+    case AT_FILECTIME:     nID = IDS_FILECTIME; break;
+    case AT_FILEMTIME:     nID = IDS_FILEMTIME; break;
+    case AT_FILEATIME:     nID = IDS_FILEATIME; break;
+    case FT_ATTACHMENT:    nID = IDS_ATTACHMENTS; break;
+
     default:
       ASSERT(0);
   }
+
   CString retval;
   retval.LoadString(nID);
   retval.TrimRight(L'\t'); // ?? do we still need to trim ??

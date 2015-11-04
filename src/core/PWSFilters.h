@@ -19,6 +19,7 @@
 #include "StringXStream.h"
 #include "Match.h"
 #include "ItemData.h"
+#include "ItemAtt.h"
 #include "Proxy.h"
 
 #include <iostream>
@@ -30,7 +31,9 @@
 enum FilterType {DFTYPE_INVALID = 0,
                  DFTYPE_MAIN,
                  DFTYPE_PWHISTORY, 
-                 DFTYPE_PWPOLICY};
+                 DFTYPE_PWPOLICY,
+                 DFTYPE_ATTACHMENT
+};
 
 // All the fields that we can use for filtering entries:
 
@@ -89,6 +92,19 @@ enum FieldType {
   PT_PRONOUNCEABLE,
   PT_HEXADECIMAL,
   PT_END,
+
+  // Attachment Test fields
+  AT_PRESENT       = CItemAtt::START,
+  AT_TITLE         = CItemAtt::TITLE,
+  AT_CTIME         = CItemAtt::CTIME,
+  AT_MEDIATYPE     = CItemAtt::MEDIATYPE,
+  AT_FILENAME      = CItemAtt::FILENAME,
+  AT_FILEPATH      = CItemAtt::FILEPATH,
+  AT_FILECTIME     = CItemAtt::FILECTIME,
+  AT_FILEMTIME     = CItemAtt::FILEMTIME,
+  AT_FILEATIME     = CItemAtt::FILEATIME,
+  AT_END           = CItemAtt::LAST_SEARCHABLE,
+  FT_ATTACHMENT    = CItemAtt::LAST_SEARCHABLE + 1,
 
   FT_INVALID       = 0xffff
 };
@@ -246,23 +262,26 @@ struct st_filters {
   int num_Mactive;
   int num_Hactive;
   int num_Pactive;
+  int num_Aactive;
   // Main filters
   vFilterRows vMfldata;
   // PW history filters
   vFilterRows vHfldata;
   // PW Policy filters
   vFilterRows vPfldata;
+  // Attachment filters
+  vFilterRows vAfldata;
 
   st_filters()
-  : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0)
+    : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0), num_Aactive(0)
   {}
 
   st_filters(const st_filters &that)
     : fname(that.fname),
     num_Mactive(that.num_Mactive), 
-    num_Hactive(that.num_Hactive), num_Pactive(that.num_Pactive),
+    num_Hactive(that.num_Hactive), num_Pactive(that.num_Pactive), num_Aactive(that.num_Aactive),
     vMfldata(that.vMfldata), vHfldata(that.vHfldata),
-    vPfldata(that.vPfldata)
+    vPfldata(that.vPfldata), vAfldata(that.vAfldata)
   {}
 
   st_filters &operator=(const st_filters &that)
@@ -272,9 +291,11 @@ struct st_filters {
       num_Mactive = that.num_Mactive;
       num_Hactive = that.num_Hactive;
       num_Pactive = that.num_Pactive;
+      num_Aactive = that.num_Aactive;
       vMfldata = that.vMfldata;
       vHfldata = that.vHfldata;
       vPfldata = that.vPfldata;
+      vAfldata = that.vAfldata;
     }
     return *this;
   }
@@ -286,9 +307,11 @@ struct st_filters {
           num_Mactive != that.num_Mactive ||
           num_Hactive != that.num_Hactive ||
           num_Pactive != that.num_Pactive ||
+          num_Aactive != that.num_Aactive ||
           vMfldata != that.vMfldata ||
           vHfldata != that.vHfldata ||
-          vPfldata != that.vPfldata)
+          vPfldata != that.vPfldata ||
+          vAfldata != that.vAfldata)
       return false;
     }
     return true;
@@ -300,10 +323,11 @@ struct st_filters {
   void Empty()
   {
     fname = _T("");
-    num_Mactive = num_Hactive = num_Pactive = 0;
+    num_Mactive = num_Hactive = num_Pactive = num_Aactive = 0;
     vMfldata.clear();
     vHfldata.clear();
     vPfldata.clear();
+    vAfldata.clear();
   }
 };
 

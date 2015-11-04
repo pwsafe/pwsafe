@@ -747,6 +747,9 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
     case PWSMatch::MT_POLICY:
       LoadAString(cs_criteria, IDSC_SEEPWPOLICYFILTERS);
       break;
+    case PWSMatch::MT_ATTACHMENT:
+      LoadAString(cs_criteria, IDSC_SEEATTACHMENTFILTERS);
+      break;
     case PWSMatch::MT_BOOL:
       cs_criteria = cs_rule;
       break;
@@ -758,6 +761,9 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYSTATUS:
+      Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
+      break;
+    case PWSMatch::MT_MEDIATYPE:
       Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     default:

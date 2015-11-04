@@ -230,6 +230,7 @@
 #define IDSC_DELETESBASE                3404
 #define IDSC_ALIASES                    3405
 #define IDSC_SHORTCUTS                  3406
+#define IDSC_SEEATTACHMENTFILTERS       3407
 
 #define IDSC_WAS                        3410
 #define IDSC_WERE                       3411
