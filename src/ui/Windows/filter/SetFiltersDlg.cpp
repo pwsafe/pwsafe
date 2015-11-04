@@ -15,6 +15,7 @@
 #include "SetFiltersDlg.h"
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
+#include "SetAttachmentFiltersDlg.h"
 
 #include "../GeneralMsgBox.h"
 #include "../resource3.h"
@@ -26,17 +27,19 @@ IMPLEMENT_DYNAMIC(CSetFiltersDlg, CPWFiltersDlg)
 CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
                                const int &iWMSGID,
+                               const bool bCanHaveAttachments,
+                               std::vector<StringX> *pvMediaTypes,
                                const bool bAllowSet)
-: CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str()),
+ : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str(), bCanHaveAttachments, pvMediaTypes),
   m_iWMSGID(iWMSGID)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
   ASSERT(iWMSGID != 0);
 
-  m_bAllowSet = bAllowSet;
   m_pParent = pParent;
   m_pfilters = pfilters;
+  m_bAllowSet = bAllowSet;
 
   m_cstitle.LoadString(IDS_SETDISPLAYFILTERS);
 }

@@ -92,7 +92,7 @@ void CItemAtt::GetUUID(uuid_array_t &uuid_array) const
                     static_cast<unsigned char *>(uuid_array), length);
   } else {
     ASSERT(0);
-    pws_os::Trace(_T("CItemAtt::GetUUID(uuid_array_t) - no UUID found!"));
+    pws_os::Trace(_T("CItemAtt::GetUUID(uuid_array_t) - no UUID found!\n"));
     memset(uuid_array, 0, length);
   }
 }
@@ -535,3 +535,71 @@ int CItemAtt::Write(PWSfile *out) const
   return status;
 }
 
+bool CItemAtt::Matches(const stringT &stValue, int iObject,
+  int iFunction) const
+{
+  ASSERT(iFunction != 0); // must be positive or negative!
+
+  StringX sx_Object;
+  FieldType ft = static_cast<FieldType>(iObject);
+  switch (ft) {
+    case AT_TITLE:
+    case AT_FILENAME:
+    case AT_FILEPATH:
+    case AT_MEDIATYPE:
+      sx_Object = GetField(ft);
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  const bool bValue = !sx_Object.empty();
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
+    return PWSMatch::Match(bValue, iFunction);
+  }
+
+  return PWSMatch::Match(stValue.c_str(), sx_Object, iFunction);
+}
+
+bool CItemAtt::Matches(time_t time1, time_t time2, int iObject,
+  int iFunction) const
+{
+  //   Check time values are selected
+  time_t tValue;
+
+  switch (iObject) {
+    case AT_CTIME:
+    case AT_FILECTIME:
+    case AT_FILEMTIME:
+    case AT_FILEATIME:
+      CItem::GetTime(iObject, tValue);
+      break;
+    default:
+      ASSERT(0);
+      return false;
+  }
+
+  const bool bValue = (tValue != time_t(0));
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
+    return PWSMatch::Match(bValue, iFunction);
+  }
+
+  if (!bValue)  // date empty - always return false for other comparisons
+    return false;
+  else {
+    time_t testtime = time_t(0);
+    if (tValue) {
+      struct tm st;
+      errno_t err;
+      err = localtime_s(&st, &tValue);
+      ASSERT(err == 0);
+      if (!err) {
+        st.tm_hour = 0;
+        st.tm_min = 0;
+        st.tm_sec = 0;
+        testtime = mktime(&st);
+      }
+    }
+    return PWSMatch::Match(time1, time2, testtime, iFunction);
+  }
+}

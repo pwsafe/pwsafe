@@ -12,6 +12,7 @@
 
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
+#include "SetAttachmentFiltersDlg.h"
 #include "core/PWSFilters.h"
 
 #include "../resource3.h"
@@ -34,8 +35,8 @@ CPWFilterLC::CPWFilterLC()
    m_iItem(-1), m_numfilters(0), m_pFont(NULL),
    m_pwchTip(NULL),
   // Following 4 variables only used if "m_iType == DFTYPE_MAIN"
-  m_bPWHIST_Set(false), m_bPOLICY_Set(false),
-  m_GoodHistory(false), m_GoodPolicy(false)
+  m_bPWHIST_Set(false), m_bPOLICY_Set(false), m_bATTACHMENT_Set(false),
+  m_GoodHistory(false), m_GoodPolicy(false), m_GoodAttachment(false)
 {
   m_crGrayText   = ::GetSysColor(COLOR_GRAYTEXT);
   m_crWindow     = ::GetSysColor(COLOR_WINDOW);
@@ -74,11 +75,15 @@ void CPWFilterLC::OnDestroy()
   CListCtrl::OnDestroy();
 }
 
-void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype)
+void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
+  bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes)
 {
   m_pPWF = static_cast<CPWFiltersDlg *>(pParent);
   m_iType = filtertype;
   m_pfilters = pfilters;
+  m_bCanHaveAttachments = bCanHaveAttachments;
+  m_pvMediaTypes = pvMediaTypes;
+
   EnableToolTips(TRUE);
 
   const COLORREF crTransparent = RGB(192, 192, 192);
@@ -143,6 +148,7 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
       m_pnumactive = &(m_pfilters->num_Mactive);
       m_GoodHistory = m_pfilters->num_Hactive > 0;
       m_GoodPolicy = m_pfilters->num_Pactive > 0;
+      m_GoodAttachment = m_pfilters->num_Aactive > 0;
       break;
     case DFTYPE_PWHISTORY:
       // Set maximum number of filters per type and their own Control IDs
@@ -157,6 +163,13 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
       m_LGC_ComboID = IDC_PFILTER_LGC_COMBOBOX;
       m_pvfdata = &(m_pfilters->vPfldata);
       m_pnumactive = &(m_pfilters->num_Pactive);
+      break;
+    case DFTYPE_ATTACHMENT:
+      // Set maximum number of filters per type and their own Control IDs
+      m_FLD_ComboID = IDC_AFILTER_FLD_COMBOBOX;
+      m_LGC_ComboID = IDC_AFILTER_LGC_COMBOBOX;
+      m_pvfdata = &(m_pfilters->vAfldata);
+      m_pnumactive = &(m_pfilters->num_Aactive);
       break;
     default:
       ASSERT(0);
@@ -226,6 +239,8 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
       m_bPWHIST_Set = true;
     if (st_fldata.ftype == FT_POLICY)
       m_bPOLICY_Set = true;
+    if (st_fldata.ftype == FT_ATTACHMENT)
+      m_bATTACHMENT_Set = true;
 
     if (st_fldata.ftype != FT_INVALID) {
       dwData |= FLC_FLD_CBX_SET | FLC_FLD_CBX_ENABLED;
@@ -294,12 +309,20 @@ BOOL CPWFilterLC::OnCommand(WPARAM wParam, LPARAM lParam)
   WORD wNotify  = HIWORD(wParam);       // notification message
   UINT nID      = (UINT)LOWORD(wParam); // control identifier
 
+  static int iLastSelectedOK(-1);
+
   if (nID == m_FLD_ComboID || nID == m_LGC_ComboID) {
     switch (wNotify) {
       case CBN_SELENDOK:
         if (nID == m_FLD_ComboID) {
           m_bSetFieldActive = true;
-          SetField(m_iItem);
+          int index = m_ComboBox.GetCurSel();
+          if (m_ComboBox.GetItemData(index) != FT_END) {
+            iLastSelectedOK = index;
+            SetField(m_iItem);            
+          } else {
+            m_ComboBox.SetCurSel(iLastSelectedOK);            
+          }
         } else {
           m_bSetLogicActive = true;
           SetLogic(m_iItem);
@@ -694,11 +717,21 @@ FieldType CPWFilterLC::EnableCriteria()
           st_fldata.ftype = FT_INVALID;
         }
       }
+      if (ft == FT_ATTACHMENT) {
+        if (!m_bATTACHMENT_Set)
+          m_bATTACHMENT_Set = true;
+        else {
+          SetItemText(m_iItem, FLC_FLD_COMBOBOX, cs_text);
+          st_fldata.ftype = FT_INVALID;
+        }
+      }
     } else {
       if (m_bPWHIST_Set && ft == FT_PWHIST)
         m_bPWHIST_Set = false;
       if (m_bPOLICY_Set && ft == FT_POLICY)
         m_bPOLICY_Set = false;
+      if (m_bATTACHMENT_Set && ft == FT_ATTACHMENT)
+        m_bATTACHMENT_Set = false;
     }
     m_pPWF->EnableDisableApply();
   }
@@ -724,7 +757,7 @@ bool CPWFilterLC::SetField(const int iItem)
 
   FieldType ft(FT_INVALID);
 
-  // m_ComboBox is NULL during inital setup
+  // Dont't set field from ComboBoc during inital setup
   if (m_bInitDone) {
     int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
@@ -842,6 +875,10 @@ bool CPWFilterLC::SetField(const int iItem)
           //  - no need to add that check
           mt = PWSMatch::MT_ENTRYSIZE;
           break;
+        case FT_ATTACHMENT:
+          // 'Add Present' doesn't make sense here - see sub-dialog
+          mt = PWSMatch::MT_ATTACHMENT;
+          break;
         default:
           ASSERT(0);
       }
@@ -903,7 +940,37 @@ bool CPWFilterLC::SetField(const int iItem)
           ASSERT(0);
       }
       break;
-
+    case DFTYPE_ATTACHMENT:
+      switch (ft) {
+        case AT_PRESENT:
+          // 'Add Present' not needed - bool match
+          m_fbool.m_bt = CFilterBoolDlg::BT_PRESENT;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case AT_FILENAME:
+          // File name MUST be present - no need to add that check
+          mt = PWSMatch::MT_STRING;
+          break;
+        case AT_TITLE:
+        case AT_FILEPATH:
+          bAddPresent = true;
+          mt = PWSMatch::MT_STRING;
+          break;
+        case AT_MEDIATYPE:
+          // Media type  MUST be present - no need to add that check
+          mt = PWSMatch::MT_MEDIATYPE;
+          break;
+        case AT_CTIME:
+        case AT_FILECTIME:
+        case AT_FILEMTIME:
+        case AT_FILEATIME:
+          bAddPresent = true;
+          mt = PWSMatch::MT_DATE;
+          break;
+        default:
+          ASSERT(0);
+      }
+      break;
     default:
       ASSERT(0);
   }
@@ -927,6 +994,11 @@ bool CPWFilterLC::SetField(const int iItem)
       m_bPOLICY_Set = false;
     else if (ft == FT_POLICY)
       m_bPOLICY_Set = true;
+
+    if (m_vlast_ft[iItem] == FT_ATTACHMENT && ft != FT_ATTACHMENT)
+      m_bATTACHMENT_Set = false;
+    else if (ft == FT_ATTACHMENT)
+      m_bATTACHMENT_Set = true;
   }
 
   // Now we can update the last selected field
@@ -1022,7 +1094,7 @@ void CPWFilterLC::SetLogic(const int iItem)
   st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
-  // m_ComboBox is NULL during inital setup
+  // Do not get selection from ComboBox during inital setup
   if (m_ComboBox.GetSafeHwnd() != NULL) {
     int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
@@ -1404,6 +1476,53 @@ bool CPWFilterLC::GetCriterion()
         b_good = true;
       }
       break;
+    case PWSMatch::MT_ATTACHMENT:
+      {
+        st_filters filters(*m_pfilters);
+        CSetAttachmentFiltersDlg fattachment(this, &filters, m_pPWF->GetFiltername(), m_bCanHaveAttachments, m_pvMediaTypes);
+        rc = fattachment.DoModal();
+        if (rc == IDOK) {
+          st_fldata.Empty();
+          st_fldata.bFilterActive = true;
+          st_fldata.mtype = PWSMatch::MT_ATTACHMENT;
+          st_fldata.ftype = ft;
+          m_pfilters->num_Aactive = filters.num_Aactive;
+          m_pfilters->vAfldata = filters.vAfldata;
+          m_bATTACHMENT_Set = true;
+          m_pPWF->UpdateStatusText();
+        }
+        m_GoodAttachment = m_pfilters->num_Aactive > 0;
+        b_good = m_GoodAttachment;
+      }
+      break;
+    case PWSMatch::MT_MEDIATYPE:
+      m_fmediatype.m_add_present = m_vAddPresent[m_iItem];
+      m_fmediatype.m_title = cs_selected;
+      if (!m_vcbxChanged[m_iItem] &&
+          st_fldata.rule != PWSMatch::MR_INVALID) {
+        m_fmediatype.m_rule = st_fldata.rule;
+        m_fmediatype.m_string = st_fldata.fstring.c_str();
+        m_fmediatype.m_case = st_fldata.fcase ? BST_CHECKED : BST_UNCHECKED;
+      } else {
+        m_fmediatype.m_rule = PWSMatch::MR_INVALID;
+      }
+      m_fmediatype.m_pvMediaTypes = m_pvMediaTypes;
+      rc = m_fmediatype.DoModal();
+      if (rc == IDOK) {
+        st_fldata.Empty();
+        st_fldata.bFilterActive = true;
+        st_fldata.mtype = PWSMatch::MT_MEDIATYPE;
+        st_fldata.ftype = ft;
+        st_fldata.rule = m_fmediatype.m_rule;
+        st_fldata.fstring = m_fmediatype.m_string;
+        if (st_fldata.rule == PWSMatch::MR_PRESENT ||
+            st_fldata.rule == PWSMatch::MR_NOTPRESENT)
+          st_fldata.fcase = false;
+        else
+          st_fldata.fcase = (m_fmediatype.m_case == BST_CHECKED);
+        b_good = true;
+      }
+      break;
     default:
       ASSERT(0);
   }
@@ -1450,6 +1569,7 @@ void CPWFilterLC::SetUpComboBoxData()
   }
 
   if (m_vFcbx_data.empty()) {
+    CString cs_temp;
     st_Fcbxdata stf;
     switch (m_iType) {
       case DFTYPE_MAIN:
@@ -1556,6 +1676,10 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_KBSHORTCUT;
         m_vFcbx_data.push_back(stf);
 
+        stf.cs_text = L"";
+        stf.ftype = FT_END;
+        m_vFcbx_data.push_back(stf);
+
         stf.cs_text.LoadString(IDS_ENTRYTYPE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYTYPE;
@@ -1575,6 +1699,27 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_UNKNOWNFIELDS;
         m_vFcbx_data.push_back(stf);
+
+        stf.cs_text = L"";
+        stf.ftype = FT_END;
+        m_vFcbx_data.push_back(stf);
+
+        cs_temp.LoadString(IDS_PASSWORDHISTORY);
+        stf.cs_text = cs_temp + L" -->";  // Normal 3 dots hard to see
+        stf.ftype = FT_PWHIST;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text = CItemData::FieldName(CItemData::POLICY).c_str() + CString(L" -->");  // Normal 3 dots hard to see
+        stf.ftype = FT_POLICY;
+        m_vFcbx_data.push_back(stf);
+
+        // Only add attachment fields for V4 and later and if some in the DB
+        if (m_bCanHaveAttachments && m_pvMediaTypes != NULL && m_pvMediaTypes->size() > 0) {
+          cs_temp.LoadString(IDS_ATTACHMENTS);
+          stf.cs_text = cs_temp + L" -->";  // Normal 3 dots hard to see
+          stf.ftype = FT_ATTACHMENT;
+          m_vFcbx_data.push_back(stf);
+        }
         break;
 
       case DFTYPE_PWHISTORY:
@@ -1653,6 +1798,53 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDSC_PPRONOUNCEABLE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRONOUNCEABLE;
+        m_vFcbx_data.push_back(stf);
+        break;
+
+      case DFTYPE_ATTACHMENT:
+        stf.cs_text.LoadString(IDS_ATTACHMENTS);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_PRESENT;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILETITLE);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_TITLE;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_CTIME);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_CTIME;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILEMEDIATYPE);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_MEDIATYPE;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILENAME);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_FILENAME;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILEPATH);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_FILEPATH;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILECTIME);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_FILECTIME;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILEMTIME);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_FILEMTIME;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_FILEATIME);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = AT_FILEATIME;
         m_vFcbx_data.push_back(stf);
         break;
 
@@ -1769,27 +1961,49 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   m_vWCFcbx_data = m_vFcbx_data;
 
   if (m_iType == DFTYPE_MAIN && iSubItem == FLC_FLD_COMBOBOX) {
-    // Is PW History or Policy already selected somewhere else?
+    // Is PW History, Policy or Attachment already selected somewhere else?
     //  if so remove them as an option on this filter
     st_FilterRow &st_fldata = m_pvfdata->at(m_iItem);
     if (m_bPWHIST_Set && st_fldata.ftype != FT_PWHIST)
       DeleteEntry(FT_PWHIST);
     if (m_bPOLICY_Set && st_fldata.ftype != FT_POLICY)
       DeleteEntry(FT_POLICY);
+    if (m_bATTACHMENT_Set && st_fldata.ftype != FT_ATTACHMENT)
+      DeleteEntry(FT_ATTACHMENT);
   }
 
   switch (iSubItem) {
     case FLC_FLD_COMBOBOX:
-      for (int i = 0; i < (int)m_vWCFcbx_data.size(); i++) {
+    {
+      std::vector<int> vSeparators;
+      int max_chars(0);
+      for (size_t i = 0; i < m_vWCFcbx_data.size(); i++) {
+        max_chars = max(max_chars, m_vWCFcbx_data[i].cs_text.GetLength());
+
+        // Save index to separators
+        if (m_vWCFcbx_data[i].ftype == FT_END)
+          vSeparators.push_back(i);
+      }
+
+      // Set separators
+      CString cs_separator(L'-', max_chars);
+      for (size_t i = 0; i < vSeparators.size(); i++) {
+        m_vWCFcbx_data[vSeparators[i]].cs_text = cs_separator;
+      }
+
+      for (size_t i = 0; i < m_vWCFcbx_data.size(); i++) {
         m_ComboBox.AddString(m_vWCFcbx_data[i].cs_text);
         m_ComboBox.SetItemData(i, m_vWCFcbx_data[i].ftype);
       }
+      SetComboBoxWidth(iSubItem);
       break;
+    }
     case FLC_LGC_COMBOBOX:
       for (int i = 0; i < (int)m_vLcbx_data.size(); i++) {
         m_ComboBox.AddString(m_vLcbx_data[i].cs_text);
         m_ComboBox.SetItemData(i, (int)m_vLcbx_data[i].ltype);
       }
+      SetComboBoxWidth(iSubItem);
       break;
     default:
       ASSERT(0);

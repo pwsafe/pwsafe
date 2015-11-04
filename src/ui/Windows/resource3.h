@@ -757,6 +757,14 @@
 #define IDS_FILEPATH                    5983
 #define IDS_FILEMEDIATYPE               5984
 #define IDS_NUMATTACHMENTS              5985
+#define IDS_ATTACHMENTS                 5986
+#define IDS_CTIME                       5987
+#define IDS_FILECTIME                   5988
+#define IDS_FILEMTIME                   5989
+#define IDS_FILEATIME                   5990
+#define IDS_SETATTACHMENTFILTER         5991
+#define IDS_AFILTERINFO                 5992
+#define IDS_NOMEDIATYPE                 5993
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

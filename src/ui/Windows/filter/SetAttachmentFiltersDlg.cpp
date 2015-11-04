@@ -12,17 +12,17 @@
 #include "../stdafx.h"
 
 #include "PWFiltersDlg.h"
-#include "SetPolicyFiltersDlg.h"
+#include "SetAttachmentFiltersDlg.h"
 
 #include "../resource3.h"
 
-// CSetPolicyFiltersDlg dialog
+// CSetAttachmentFiltersDlg dialog
 
-IMPLEMENT_DYNAMIC(CSetPolicyFiltersDlg, CPWFiltersDlg)
+IMPLEMENT_DYNAMIC(CSetAttachmentFiltersDlg, CPWFiltersDlg)
 
-CSetPolicyFiltersDlg::CSetPolicyFiltersDlg(CWnd* pParent, st_filters *pfilters,
-                                           CString filtername)
-  : CPWFiltersDlg(pParent, DFTYPE_PWPOLICY, filtername)
+CSetAttachmentFiltersDlg::CSetAttachmentFiltersDlg(CWnd* pParent, st_filters *pfilters,
+  CString filtername, const bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes)
+  : CPWFiltersDlg(pParent, DFTYPE_ATTACHMENT, filtername, bCanHaveAttachments, pvMediaTypes)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
@@ -31,12 +31,12 @@ CSetPolicyFiltersDlg::CSetPolicyFiltersDlg(CWnd* pParent, st_filters *pfilters,
   m_pParent = pParent;
   m_pfilters = pfilters;
 
-  m_cstitle.LoadString(IDS_SETPWPOLICYFILTER);
+  m_cstitle.LoadString(IDS_SETATTACHMENTFILTER);
 }
 
-CSetPolicyFiltersDlg::~CSetPolicyFiltersDlg()
+CSetAttachmentFiltersDlg::~CSetAttachmentFiltersDlg()
 {
 }
 
-BEGIN_MESSAGE_MAP(CSetPolicyFiltersDlg, CPWFiltersDlg)
+BEGIN_MESSAGE_MAP(CSetAttachmentFiltersDlg, CPWFiltersDlg)
 END_MESSAGE_MAP()
