@@ -3184,6 +3184,10 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   GetUniqueGroups(aryGroups);
   Format(st_dbp.numgroups, L"%d", aryGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
+  if (GetReadFileVersion() >= PWSfile::V40)
+    Format(st_dbp.numattachments, L"%d", m_attlist.size());
+  else
+    st_dbp.numattachments = L"N/A";
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {

@@ -756,6 +756,7 @@
 #define IDS_FILENAME                    5982
 #define IDS_FILEPATH                    5983
 #define IDS_FILEMEDIATYPE               5984
+#define IDS_NUMATTACHMENTS              5985
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
