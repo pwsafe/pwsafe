@@ -9,6 +9,7 @@
 #pragma once
 
 #include "FilterBaseDlg.h"
+#include <set>
 
 // CFilterMediaTypeDlg dialog
 
@@ -39,7 +40,7 @@ public:
   CEdit m_edtString;
   CButton m_btnCase;
   CStatic m_stcStatus;
-  std::vector<StringX> *m_pvMediaTypes;
+  const std::set<StringX> *m_psMediaTypes;
 
 private:
   void EnableDialogItems();

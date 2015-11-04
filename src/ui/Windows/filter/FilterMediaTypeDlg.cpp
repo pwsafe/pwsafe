@@ -106,9 +106,12 @@ BOOL CFilterMediaTypeDlg::OnInitDialog()
     m_string = L"";
   }
 
-  if (m_cbxAvailableMTs.GetCount() == 0 && m_pvMediaTypes != NULL && m_pvMediaTypes->size() > 0) {
-    for (size_t i = 0; i < m_pvMediaTypes->size(); i++) {
-      int iItem = m_cbxAvailableMTs.AddString(m_pvMediaTypes->at(i).c_str());
+  if (m_cbxAvailableMTs.GetCount() == 0 && m_psMediaTypes != NULL) {
+    size_t i = 0;
+    for (auto iter = m_psMediaTypes->begin();
+         iter != m_psMediaTypes->end();
+         i++, iter++) {
+      int iItem = m_cbxAvailableMTs.AddString(iter->c_str());
       m_cbxAvailableMTs.SetItemData(iItem, i);
     }
   }

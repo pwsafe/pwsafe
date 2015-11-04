@@ -26,7 +26,7 @@ class CPWFiltersDlg : public CPWResizeDialog
 public:
   CPWFiltersDlg(CWnd* pParent = NULL, const FilterType &ftype = DFTYPE_MAIN,
     const CString &filtername = L"", 
-    const bool bCanHaveAttachments = false, std::vector<StringX> *pvMediaTypes = NULL);
+    const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = NULL);
   ~CPWFiltersDlg();
 
   void UpdateStatusText();
@@ -48,7 +48,7 @@ protected:
   bool VerifyFilters();
   bool m_bAllowSet;
   bool m_bCanHaveAttachments;
-  std::vector<StringX> *m_pvMediaTypes;
+  const std::set<StringX> *m_psMediaTypes;
 
   //{{AFX_MSG(CPWFiltersDlg)
   afx_msg void OnFNameKillFocus();

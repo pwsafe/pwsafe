@@ -28,9 +28,9 @@ CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
                                const int &iWMSGID,
                                const bool bCanHaveAttachments,
-                               std::vector<StringX> *pvMediaTypes,
+                               const std::set<StringX> *psMediaTypes,
                                const bool bAllowSet)
- : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str(), bCanHaveAttachments, pvMediaTypes),
+ : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str(), bCanHaveAttachments, psMediaTypes),
   m_iWMSGID(iWMSGID)
 {
   ASSERT(pParent != NULL);
