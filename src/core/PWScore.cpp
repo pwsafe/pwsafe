@@ -3515,7 +3515,7 @@ void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
   m_attlist.erase(m_attlist.find(attuuid));
 }
 
-std::vector<StringX> PWScore::GetAllMediaTypes()
+std::vector<StringX> PWScore::GetAllMediaTypes() const
 {
   std::vector<StringX> vMediaTypes;
 

@@ -104,7 +104,7 @@ enum FieldType {
   AT_FILEMTIME     = CItemAtt::FILEMTIME,
   AT_FILEATIME     = CItemAtt::FILEATIME,
   AT_END           = CItemAtt::LAST_SEARCHABLE,
-  FT_ATTACHMENT    = CItemAtt::LAST_SEARCHABLE + 1,
+  FT_ATTACHMENT    = CItemAtt::LAST_SEARCHABLE + 1, // not searchable
 
   FT_INVALID       = 0xffff
 };

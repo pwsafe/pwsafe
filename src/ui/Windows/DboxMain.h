@@ -498,7 +498,7 @@ public:
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   bool IsWorkstationLocked() const;
 
-  std::vector<StringX> GetAllMediaTypes()
+  std::vector<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
 
  protected:

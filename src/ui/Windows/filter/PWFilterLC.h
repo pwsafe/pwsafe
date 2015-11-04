@@ -119,12 +119,12 @@ protected:
 
 public:
   st_filters *m_pfilters;
-  bool IsPWHIST_Set() {return m_bPWHIST_Set;}
-  bool IsPOLICY_Set() {return m_bPOLICY_Set;}
-  bool IsAttachment_Set() { return m_bATTACHMENT_Set; }
-  bool IsHistoryGood() {return m_GoodHistory;}
-  bool IsPolicyGood() {return m_GoodPolicy;}
-  bool IsAttachmentGood() { return m_GoodAttachment; }
+  bool IsPWHIST_Set() const {return m_bPWHIST_Set;}
+  bool IsPOLICY_Set() const {return m_bPOLICY_Set;}
+  bool IsAttachment_Set() const { return m_bATTACHMENT_Set; }
+  bool IsHistoryGood() const {return m_GoodHistory;}
+  bool IsPolicyGood() const {return m_GoodPolicy;}
+  bool IsAttachmentGood() const { return m_GoodAttachment; }
 
 private:
   void SetUpComboBoxData();
