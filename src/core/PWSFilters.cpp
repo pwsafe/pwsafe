@@ -74,6 +74,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
 
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
+    case PWSMatch::MT_MEDIATYPE:
       // Even if rule == 'present'/'not present', need to put 'string' & 'case' XML
       // elements to make schema work, since W3C Schema V1.0 does NOT support 
       // conditional processing :-(
@@ -169,6 +170,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                                               << "</unit>" << endl;
       break;
     case PWSMatch::MT_BOOL:
+    case PWSMatch::MT_ATTACHMENT:
       break;
     default:
       ASSERT(0);
@@ -293,13 +295,18 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_XTIME_INT:
         pszfieldtype = "password_expiry_interval";
         break;
-      // History & Policy
+
+      // History, Policy & Attachments
       case FT_PWHIST:
         pszfieldtype = "password_history";
         break;
       case FT_POLICY:
         pszfieldtype = "password_policy";
         break;
+      case FT_ATTACHMENT:
+        pszfieldtype = "attachment";
+        break;
+
       // Other!
       case FT_PASSWORDLEN:
         pszfieldtype = "password_length";
@@ -328,7 +335,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 
     const LogicConnect lgc = st_fldata.ltype;
 
-    if (ft != FT_PWHIST && ft != FT_POLICY) {
+    if (ft != FT_PWHIST && ft != FT_POLICY && ft != FT_ATTACHMENT) {
       oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
                                      << "</rule>" << szendl;
 
@@ -462,6 +469,73 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     const LogicConnect lgc = st_fldata.ltype;
     oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                    << "</logic>" << szendl;
+
+    GetFilterTestXML(st_fldata, oss, bWithFormatting);
+
+    oss << sztab3 << "</" << pszfieldtype << ">" << szendl;
+    oss << sztab2 << "</filter_entry>" << szendl;
+  }
+
+  for (Flt_citer = filters.vAfldata.begin();
+       Flt_citer != filters.vAfldata.end(); Flt_citer++) {
+    const st_FilterRow &st_fldata = *Flt_citer;
+
+    if (!st_fldata.bFilterComplete)
+      continue;
+
+    oss << sztab2 << "<filter_entry active=\"";
+    if (st_fldata.bFilterActive)
+      oss << "yes";
+    else
+      oss << "no";
+    oss << "\">" << szendl;
+
+    const int ft = static_cast<int>(st_fldata.ftype);
+    const char *pszfieldtype = {"\0"};
+    switch (ft) {
+      case AT_PRESENT:
+        pszfieldtype = "attachment_present";
+        break;
+      case AT_TITLE:
+        pszfieldtype = "attachment_title";
+        break;
+      case AT_MEDIATYPE:
+        pszfieldtype = "attachment_mediatype";
+        break;
+      case AT_FILENAME:
+        pszfieldtype = "attachment_filename";
+        break;
+      case AT_FILEPATH:
+        pszfieldtype = "attachment_filepath";
+        break;
+      case AT_CTIME:
+        pszfieldtype = "attachment_ctime";
+        break;
+      case AT_FILECTIME:
+        pszfieldtype = "attachment_filectime";
+        break;
+      case AT_FILEMTIME:
+        pszfieldtype = "attachment_filemtime";
+        break;
+      case AT_FILEATIME:
+        pszfieldtype = "attachment_fileatime";
+        break;
+      default:
+        ASSERT(0);
+    }
+
+    oss << sztab3 << "<" << pszfieldtype << ">" << szendl;
+
+    PWSMatch::MatchRule mr = st_fldata.rule;
+    if (mr >= PWSMatch::MR_LAST)
+      mr = PWSMatch::MR_INVALID;
+
+    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
+      << "</rule>" << szendl;
+
+    const LogicConnect lgc = st_fldata.ltype;
+    oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
+      << "</logic>" << szendl;
 
     GetFilterTestXML(st_fldata, oss, bWithFormatting);
 
@@ -661,6 +735,8 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
              mem_fun_ref(&st_FilterRow::SetFilterComplete));
     for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
              mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vAfldata.begin(), filters.vAfldata.end(),
+      mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }

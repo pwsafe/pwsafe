@@ -8,7 +8,7 @@
     supported by PasswordSafe.  If either of these are not true, the filters cannot be
     loaded into PasswordSafe.
 
-    This XML Schema corresponds to V3.28 of Password Safe for filters.
+    This XML Schema corresponds to V4.0 of Password Safe for filters.
     Rules:
       EQ - equals
       NE - not equals
@@ -409,6 +409,12 @@
   </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="attachmententry" >
+  <xs:sequence>
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="booleansetfilterentry" >
   <xs:sequence>
     <xs:element name="rule" type="booleanset_ruleType" minOccurs="1" maxOccurs="1" />
@@ -488,6 +494,17 @@
     <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="unknownfields" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    
+    <xs:element name="attachment" type="attachmententry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_title" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_mediatype" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_filename" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_filepath" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_ctime" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_filectime" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_filemtime" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_fileatime" type="datefilterentry" minOccurs="1" maxOccurs="1" />
   </xs:choice>
 </xs:group>
 
