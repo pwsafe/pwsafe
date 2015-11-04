@@ -204,10 +204,12 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
   // Set up widths of columns with comboboxes - once for each combo
   DrawComboBox(FLC_FLD_COMBOBOX, -1);
   m_ComboBox.ResetContent();
+  m_ComboBox.ClearSeparators();
   m_vWCFcbx_data.clear();
 
   DrawComboBox(FLC_LGC_COMBOBOX, -1);
   m_ComboBox.ResetContent();
+  m_ComboBox.ClearSeparators();
   m_vWCFcbx_data.clear();
 
   // Remove dummy item
@@ -309,20 +311,12 @@ BOOL CPWFilterLC::OnCommand(WPARAM wParam, LPARAM lParam)
   WORD wNotify  = HIWORD(wParam);       // notification message
   UINT nID      = (UINT)LOWORD(wParam); // control identifier
 
-  static int iLastSelectedOK(-1);
-
   if (nID == m_FLD_ComboID || nID == m_LGC_ComboID) {
     switch (wNotify) {
       case CBN_SELENDOK:
         if (nID == m_FLD_ComboID) {
           m_bSetFieldActive = true;
-          int index = m_ComboBox.GetCurSel();
-          if (m_ComboBox.GetItemData(index) != FT_END) {
-            iLastSelectedOK = index;
-            SetField(m_iItem);            
-          } else {
-            m_ComboBox.SetCurSel(iLastSelectedOK);            
-          }
+          SetField(m_iItem);            
         } else {
           m_bSetLogicActive = true;
           SetLogic(m_iItem);
@@ -757,7 +751,7 @@ bool CPWFilterLC::SetField(const int iItem)
 
   FieldType ft(FT_INVALID);
 
-  // Dont't set field from ComboBoc during inital setup
+  // Don't get selection from ComboBox during inital setup
   if (m_bInitDone) {
     int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
@@ -1033,10 +1027,11 @@ bool CPWFilterLC::SetField(const int iItem)
   retval = true;
 
 reset_combo:
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+  if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
     m_ComboBox.ResetContent();
+    m_ComboBox.ClearSeparators();
     m_vWCFcbx_data.clear();
   }
 
@@ -1072,10 +1067,11 @@ void CPWFilterLC::CancelField(const int iItem)
   SetItemText(iItem, FLC_FLD_COMBOBOX, cs_text);
 
   // m_ComboBox is NULL during inital setup
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+  if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
     m_ComboBox.ResetContent();
+    m_ComboBox.ClearSeparators();
     m_vWCFcbx_data.clear();
   }
   return;
@@ -1094,8 +1090,9 @@ void CPWFilterLC::SetLogic(const int iItem)
   st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
-  // Do not get selection from ComboBox during inital setup
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+
+  // Don't get selection from ComboBox during inital setup
+  if (m_bInitDone) {
     int iSelect = m_ComboBox.GetCurSel();
     if (iSelect != CB_ERR) {
       lt = (LogicConnect)m_ComboBox.GetItemData(iSelect);
@@ -1114,10 +1111,11 @@ void CPWFilterLC::SetLogic(const int iItem)
   SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
 
 reset_combo:
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+  if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
     m_ComboBox.ResetContent();
+    m_ComboBox.ClearSeparators();
     m_vWCFcbx_data.clear();
   }
   
@@ -1152,11 +1150,12 @@ void CPWFilterLC::CancelLogic(const int iItem)
   SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
 
 reset_combo:
-  // m_ComboBox is NULL during inital setup
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+  // Reset ComboBox
+  if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
     m_ComboBox.ResetContent();
+    m_ComboBox.ClearSeparators();
     m_vWCFcbx_data.clear();
   }
 
@@ -1166,11 +1165,12 @@ reset_combo:
 
 void CPWFilterLC::CloseKillCombo()
 {
-  // Reset combo
-  if (m_ComboBox.GetSafeHwnd() != NULL) {
+  // Reset ComboBox
+  if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
     m_ComboBox.ResetContent();
+    m_ComboBox.ClearSeparators();
     m_vWCFcbx_data.clear();
   }
 }
@@ -1479,7 +1479,8 @@ bool CPWFilterLC::GetCriterion()
     case PWSMatch::MT_ATTACHMENT:
       {
         st_filters filters(*m_pfilters);
-        CSetAttachmentFiltersDlg fattachment(this, &filters, m_pPWF->GetFiltername(), m_bCanHaveAttachments, m_pvMediaTypes);
+        CSetAttachmentFiltersDlg fattachment(this, &filters, m_pPWF->GetFiltername(),
+          m_bCanHaveAttachments, m_pvMediaTypes);
         rc = fattachment.DoModal();
         if (rc == IDOK) {
           st_fldata.Empty();
@@ -1676,7 +1677,7 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_KBSHORTCUT;
         m_vFcbx_data.push_back(stf);
 
-        stf.cs_text = L"";
+        stf.cs_text.Empty();  // Separator
         stf.ftype = FT_END;
         m_vFcbx_data.push_back(stf);
 
@@ -1700,7 +1701,7 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_UNKNOWNFIELDS;
         m_vFcbx_data.push_back(stf);
 
-        stf.cs_text = L"";
+        stf.cs_text.Empty();  // Separator
         stf.ftype = FT_END;
         m_vFcbx_data.push_back(stf);
 
@@ -1923,6 +1924,7 @@ void CPWFilterLC::OnLButtonDown(UINT nFlags, CPoint point)
 void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
 {
   // Draw the drop down list
+  int iItem;
   CRect rect;
   GetSubItemRect(m_iItem, iSubItem, LVIR_BOUNDS, rect);
 
@@ -1975,35 +1977,21 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   switch (iSubItem) {
     case FLC_FLD_COMBOBOX:
     {
-      std::vector<int> vSeparators;
-      int max_chars(0);
       for (size_t i = 0; i < m_vWCFcbx_data.size(); i++) {
-        max_chars = max(max_chars, m_vWCFcbx_data[i].cs_text.GetLength());
-
-        // Save index to separators
-        if (m_vWCFcbx_data[i].ftype == FT_END)
-          vSeparators.push_back(i);
+        if (m_vWCFcbx_data[i].ftype != FT_END) {
+          iItem = m_ComboBox.AddString(m_vWCFcbx_data[i].cs_text);
+          m_ComboBox.SetItemData(iItem, m_vWCFcbx_data[i].ftype);
+        } else {
+          m_ComboBox.SetSeparator();
+        }
       }
-
-      // Set separators
-      CString cs_separator(L'-', max_chars);
-      for (size_t i = 0; i < vSeparators.size(); i++) {
-        m_vWCFcbx_data[vSeparators[i]].cs_text = cs_separator;
-      }
-
-      for (size_t i = 0; i < m_vWCFcbx_data.size(); i++) {
-        m_ComboBox.AddString(m_vWCFcbx_data[i].cs_text);
-        m_ComboBox.SetItemData(i, m_vWCFcbx_data[i].ftype);
-      }
-      SetComboBoxWidth(iSubItem);
       break;
     }
     case FLC_LGC_COMBOBOX:
       for (int i = 0; i < (int)m_vLcbx_data.size(); i++) {
-        m_ComboBox.AddString(m_vLcbx_data[i].cs_text);
-        m_ComboBox.SetItemData(i, (int)m_vLcbx_data[i].ltype);
+        iItem = m_ComboBox.AddString(m_vLcbx_data[i].cs_text);
+        m_ComboBox.SetItemData(iItem, (int)m_vLcbx_data[i].ltype);
       }
-      SetComboBoxWidth(iSubItem);
       break;
     default:
       ASSERT(0);
@@ -2043,7 +2031,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   GetWindowRect(&wrc);
 
   CSize sz;
-  sz.cx = (iSubItem == FLC_FLD_COMBOBOX) ? m_fwidth : m_lwidth; // rect.Width();
+  sz.cx = (iSubItem == FLC_FLD_COMBOBOX) ? m_fwidth : m_lwidth;
   sz.cy = ht * (n + 2);
 
   if (ht * n >= wrc.Height()) {
@@ -2311,6 +2299,7 @@ void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, int nImage)
         size.cx = rect.Width() < sizeImage.cx ? rect.Width() : sizeImage.cx;
         size.cy = rect.Height() < sizeImage.cy ? rect.Height() : sizeImage.cy;
 
+#if _MSC_VER == 1600
         // Due to a bug in VS2010 MFC the following does not work!
         //   m_pCheckImageList->DrawIndirect(pDC, nImage, point, size, CPoint(0, 0));
         // So do it the hard way!
@@ -2330,8 +2319,10 @@ void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, int nImage)
         imldp.fState = ILS_NORMAL;
         imldp.Frame = 0;
         imldp.crEffect = CLR_DEFAULT;
-
         m_pCheckImageList->DrawIndirect(&imldp);
+#else
+        m_pCheckImageList->DrawIndirect(pDC, nImage, point, size, CPoint(0, 0));
+#endif
       }
     }
   }
