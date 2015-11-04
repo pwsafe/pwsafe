@@ -13,6 +13,8 @@
 
 #include "core/PWSFilters.h"
 
+#include "../ControlExtns.h"
+
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
@@ -194,7 +196,7 @@ private:
 
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;
-  CComboBox m_ComboBox;
+  CComboBoxExtn m_ComboBox;
   CFont *m_pFont;
   int m_iItem;
 };
