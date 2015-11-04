@@ -101,8 +101,7 @@ void DboxMain::OnSetFilter()
 {
   st_filters filters(m_currentfilter);
 
-  PWSfile::VERSION current_version = m_core.GetReadFileVersion();
-  bool bCanHaveAttachments = m_core.GetNumAtts() > 0 && current_version >= PWSfile::V40;
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
 
   std::vector<StringX> vMediaTypes;
   if (bCanHaveAttachments) {
@@ -142,8 +141,7 @@ void DboxMain::OnSetFilter()
 
 bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 {
-  PWSfile::VERSION current_version = m_core.GetReadFileVersion();
-  bool bCanHaveAttachments = m_core.GetNumAtts() > 0 && current_version >= PWSfile::V40;
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
 
   std::vector<StringX> vMediaTypes;
   if (bCanHaveAttachments) {
@@ -827,8 +825,7 @@ void DboxMain::OnManageFilters()
     m_MapFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
   }
 
-  PWSfile::VERSION current_version = m_core.GetReadFileVersion();
-  bool bCanHaveAttachments = m_core.GetNumAtts() > 0 && current_version >= PWSfile::V40;
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
 
   CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters, bCanHaveAttachments);
   mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname.c_str());

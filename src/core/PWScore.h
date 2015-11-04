@@ -432,7 +432,7 @@ public:
   void RemoveAtt(const pws_os::CUUID &attuuid);
   bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
   AttList::size_type GetNumAtts() const {return m_attlist.size();}
-  std::vector<StringX> GetAllMediaTypes();
+  std::vector<StringX> GetAllMediaTypes() const;
   
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
