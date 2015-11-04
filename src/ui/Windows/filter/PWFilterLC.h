@@ -90,7 +90,7 @@ public:
   friend CPWFiltersDlg;
 
   void Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
-    bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes);
+    bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes);
 
 protected:
   std::vector<FieldType> m_vlast_ft;           // Last combo selected item
@@ -192,7 +192,7 @@ private:
   bool m_bPWHIST_Set, m_bPOLICY_Set, m_bATTACHMENT_Set;
   bool m_GoodHistory, m_GoodPolicy, m_GoodAttachment;
   bool m_bCanHaveAttachments;
-  std::vector<StringX> *m_pvMediaTypes;
+  const std::set<StringX> *m_psMediaTypes;
 
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;

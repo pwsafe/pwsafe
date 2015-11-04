@@ -76,13 +76,13 @@ void CPWFilterLC::OnDestroy()
 }
 
 void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
-  bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes)
+  bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes)
 {
   m_pPWF = static_cast<CPWFiltersDlg *>(pParent);
   m_iType = filtertype;
   m_pfilters = pfilters;
   m_bCanHaveAttachments = bCanHaveAttachments;
-  m_pvMediaTypes = pvMediaTypes;
+  m_psMediaTypes = psMediaTypes;
 
   EnableToolTips(TRUE);
 
@@ -1480,7 +1480,7 @@ bool CPWFilterLC::GetCriterion()
       {
         st_filters filters(*m_pfilters);
         CSetAttachmentFiltersDlg fattachment(this, &filters, m_pPWF->GetFiltername(),
-          m_bCanHaveAttachments, m_pvMediaTypes);
+          m_bCanHaveAttachments, m_psMediaTypes);
         rc = fattachment.DoModal();
         if (rc == IDOK) {
           st_fldata.Empty();
@@ -1507,7 +1507,7 @@ bool CPWFilterLC::GetCriterion()
       } else {
         m_fmediatype.m_rule = PWSMatch::MR_INVALID;
       }
-      m_fmediatype.m_pvMediaTypes = m_pvMediaTypes;
+      m_fmediatype.m_psMediaTypes = m_psMediaTypes;
       rc = m_fmediatype.DoModal();
       if (rc == IDOK) {
         st_fldata.Empty();
@@ -1714,8 +1714,8 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_POLICY;
         m_vFcbx_data.push_back(stf);
 
-        // Only add attachment fields for V4 and later and if some in the DB
-        if (m_bCanHaveAttachments && m_pvMediaTypes != NULL && m_pvMediaTypes->size() > 0) {
+        // Only add attachment fields if DB has attachments
+        if (m_bCanHaveAttachments && m_psMediaTypes != NULL && !m_psMediaTypes->empty()) {
           cs_temp.LoadString(IDS_ATTACHMENTS);
           stf.cs_text = cs_temp + L" -->";  // Normal 3 dots hard to see
           stf.ftype = FT_ATTACHMENT;

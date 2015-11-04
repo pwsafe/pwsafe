@@ -21,8 +21,8 @@
 IMPLEMENT_DYNAMIC(CSetAttachmentFiltersDlg, CPWFiltersDlg)
 
 CSetAttachmentFiltersDlg::CSetAttachmentFiltersDlg(CWnd* pParent, st_filters *pfilters,
-  CString filtername, const bool bCanHaveAttachments, std::vector<StringX> *pvMediaTypes)
-  : CPWFiltersDlg(pParent, DFTYPE_ATTACHMENT, filtername, bCanHaveAttachments, pvMediaTypes)
+  CString filtername, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes)
+  : CPWFiltersDlg(pParent, DFTYPE_ATTACHMENT, filtername, bCanHaveAttachments, psMediaTypes)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);

@@ -19,7 +19,8 @@ class CSetAttachmentFiltersDlg : public CPWFiltersDlg
 public:
   CSetAttachmentFiltersDlg(CWnd* pParent, st_filters *pfilters,
                            CString filtername,
-                           const bool bCanHaveAttachments = false, std::vector<StringX> *pvMediaTypes = NULL);
+                           const bool bCanHaveAttachments = false,
+                           const std::set<StringX> *psMediaTypes = NULL);
   virtual ~CSetAttachmentFiltersDlg();
 
 protected:

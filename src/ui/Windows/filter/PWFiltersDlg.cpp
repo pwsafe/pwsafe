@@ -32,11 +32,11 @@ CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /* = NULL */,
                              const FilterType &filtertype /* = DFTYPE_MAIN */,
                              const CString &filtername /* = L"" */,
                              bool bCanHaveAttachments /* = false */,
-                             std::vector<StringX> *pvMediaTypes /* = NULL */)
+                             const std::set<StringX> *psMediaTypes /* = NULL */)
   : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
   m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
   m_filtername(filtername), m_bAllowSet(true),
-  m_bCanHaveAttachments(bCanHaveAttachments), m_pvMediaTypes(pvMediaTypes)
+  m_bCanHaveAttachments(bCanHaveAttachments), m_psMediaTypes(psMediaTypes)
 {
 }
 
@@ -72,7 +72,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_SUBITEMIMAGES;
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
-  m_FilterLC.Init(this, m_pfilters, m_iType, m_bCanHaveAttachments, m_pvMediaTypes);
+  m_FilterLC.Init(this, m_pfilters, m_iType, m_bCanHaveAttachments, m_psMediaTypes);
   if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
     m_filtername.LoadString(IDS_FILTER_NAME);
   else

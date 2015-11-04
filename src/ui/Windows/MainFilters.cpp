@@ -100,15 +100,10 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
 void DboxMain::OnSetFilter()
 {
   st_filters filters(m_currentfilter);
-
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
 
-  std::vector<StringX> vMediaTypes;
-  if (bCanHaveAttachments) {
-    vMediaTypes = m_core.GetAllMediaTypes();
-  }
-
-  CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &vMediaTypes);
+  CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &sMediaTypes);
 
   INT_PTR rc = sf.DoModal();
   if (rc == IDOK) {
@@ -142,13 +137,9 @@ void DboxMain::OnSetFilter()
 bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 {
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
 
-  std::vector<StringX> vMediaTypes;
-  if (bCanHaveAttachments) {
-    vMediaTypes = m_core.GetAllMediaTypes();
-  }
-
-  CSetFiltersDlg sf(this, pfilters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &vMediaTypes, bAllowSet);
+  CSetFiltersDlg sf(this, pfilters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &sMediaTypes, bAllowSet);
 
   INT_PTR rc = sf.DoModal();
   return (rc == IDOK);

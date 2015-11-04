@@ -120,5 +120,5 @@ private:
   int m_iSortColumn, m_bSortAscending;
 
   bool m_bCanHaveAttachments;
-  std::vector<StringX> m_vMediaTypes;
+  std::set<StringX> m_sMediaTypes;
 };

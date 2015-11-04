@@ -77,7 +77,7 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   bitmap.DeleteObject();
 
   if (m_bCanHaveAttachments) {
-    m_vMediaTypes = GetMainDlg()->GetAllMediaTypes();
+    m_sMediaTypes = GetMainDlg()->GetAllMediaTypes();
   }
 }
 
