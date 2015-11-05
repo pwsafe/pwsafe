@@ -336,6 +336,7 @@
     <ClInclude Include="..\KeySend.h" />
     <ClInclude Include="..\lib.h" />
     <ClInclude Include="..\logit.h" />
+    <ClInclude Include="..\media.h" />
     <ClInclude Include="..\mem.h" />
     <ClInclude Include="..\pws_str.h" />
     <ClInclude Include="..\pws_tchar.h" />
@@ -355,6 +356,7 @@
     <ClCompile Include="KeySend.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="logit.cpp" />
+    <ClCompile Include="media.cpp" />
     <ClCompile Include="mem.cpp" />
     <ClCompile Include="rand.cpp" />
     <ClCompile Include="registry.cpp" />
