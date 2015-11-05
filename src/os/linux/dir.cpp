@@ -103,6 +103,29 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   return retval;
 }
 
+stringT pws_os::fullpath(const stringT &relpath)
+{
+  stringT retval;
+  char full[PATH_MAX];
+
+  // relpath -> char *path
+  size_t N = std::wcstombs(NULL, relpath.c_str(), 0) + 1;
+  assert(N > 0);
+  char *path = new char[N];
+  std::wcstombs(path, relpath.c_str(), N);
+
+  if (realpath(path, full) != NULL) {
+    // full -> retval
+    size_t wfull_len = ::mbstowcs(NULL, full, 0) + 1;
+    wchar_t *wfull = new wchar_t[wfull_len];
+    std::mbstowcs(wfull, full, wfull_len);
+    retval = wfull;
+    delete[] wfull;
+  }
+  delete[] path;
+  return retval;
+}
+
 static stringT createuserprefsdir(void)
 {
   stringT cfgdir = pws_os::getenv("HOME", true);
