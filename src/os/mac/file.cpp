@@ -363,3 +363,22 @@ ulong64 pws_os::fileLength(std::FILE *fp)
   return ulong64(st.st_size);
 }
 
+bool pws_os::fileTimes(const stringT &filename,
+			time_t &atime, time_t &ctime, time_t &mtime)
+{
+  struct stat info;
+  int status;
+  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  char *fn = new char[N];
+  wcstombs(fn, filename.c_str(), N);
+  int status = ::stat(fn, &statbuf);
+  delete[] fn;
+  if (status == 0) {
+    atime = info.st_atime;
+    ctime = info.st_ctime;
+    mtime = info.st_mtime;
+    return true;
+  } else {
+    return false;
+  }
+}
