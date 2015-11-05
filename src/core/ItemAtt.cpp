@@ -163,7 +163,8 @@ bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
 
 int CItemAtt::Import(const stringT &fname)
 {
-  stringT spath, sdrive, sdir, sfname, sextn; 
+  stringT spath, sdrive, sdir, sfname, sextn;
+  time_t atime(0), ctime(0), mtime(0);
   int status = PWScore::SUCCESS;
 
   ASSERT(!fname.empty());
@@ -201,17 +202,18 @@ int CItemAtt::Import(const stringT &fname)
   CItem::SetField(FILEPATH, spath.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
 
-  struct _stati64 info;
-  int rc = _wstati64(fname.c_str(), &info);
-  ASSERT(rc == 0);
-
-  unsigned char buf[sizeof(time_t)];
-  putInt(buf, info.st_ctime);
-  CItem::SetField(FILECTIME, buf, sizeof(time_t));
-  putInt(buf, info.st_mtime); 
-  CItem::SetField(FILEMTIME, buf, sizeof(time_t));
-  putInt(buf, info.st_atime); 
-  CItem::SetField(FILEATIME, buf, sizeof(time_t));
+  if (pws_os::fileTimes(fname, atime, ctime, mtime)) {
+    unsigned char buf[sizeof(time_t)];
+    putInt(buf, atime);
+    CItem::SetField(FILEATIME, buf, sizeof(buf));
+    putInt(buf, ctime);
+    CItem::SetField(FILECTIME, buf, sizeof(buf));
+    putInt(buf, mtime);
+    CItem::SetField(FILEMTIME, buf, sizeof(buf));
+  } else {
+    ASSERT(0);
+    goto done;
+  }
 
  done:
   trashMemory(data, flen);
