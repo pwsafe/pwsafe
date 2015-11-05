@@ -411,3 +411,18 @@ ulong64 pws_os::fileLength(std::FILE *fp) {
   } else
     return 0;
 }
+
+bool pws_os::fileTimes(const stringT &filename,
+			time_t &atime, time_t &ctime, time_t &mtime)
+{
+  struct _stati64 info;
+  int rc = _wstati64(filename.c_str(), &info);
+  if (rc == 0) {
+    atime = info.st_atime;
+    ctime = info.st_ctime;
+    mtime = info.st_mtime;
+    return true;
+  } else {
+    return false;
+  }
+}
