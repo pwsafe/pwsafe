@@ -61,7 +61,7 @@ public:
   };
 
   // a bitset for indicating a subset of an item's fields: 
-  typedef std::bitset<LAST - START> AttFieldBits;
+  typedef std::bitset<LAST_SEARCHABLE - START + 1> AttFieldBits;
 
   //Construction
   CItemAtt();
