@@ -202,14 +202,14 @@ int CItemAtt::Import(const stringT &fname)
   CItem::SetField(FILEPATH, spath.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
 
-  if (pws_os::fileTimes(fname, atime, ctime, mtime)) {
+  if (pws_os::GetFileTimes(fname, ctime, mtime, atime)) {
     unsigned char buf[sizeof(time_t)];
-    putInt(buf, atime);
-    CItem::SetField(FILEATIME, buf, sizeof(buf));
     putInt(buf, ctime);
     CItem::SetField(FILECTIME, buf, sizeof(buf));
     putInt(buf, mtime);
     CItem::SetField(FILEMTIME, buf, sizeof(buf));
+    putInt(buf, atime);
+    CItem::SetField(FILEATIME, buf, sizeof(buf));
   } else {
     ASSERT(0);
     goto done;

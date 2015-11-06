@@ -28,8 +28,10 @@ namespace pws_os {
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern ulong64 fileLength(std::FILE *fp);
-  extern bool fileTimes(const stringT &filename,
-      time_t &atime, time_t &ctime, time_t &mtime);
+  extern bool GetFileTimes(const stringT &filename,
+      time_t &ctime, time_t &mtime, time_t &atime);
+  extern bool SetFileTimes(const stringT &filename,
+      time_t ctime, time_t mtime, time_t atime);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 }
 #endif /* __FILE_H */
