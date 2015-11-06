@@ -304,13 +304,6 @@ void CAddEdit_Attachment::OnAttImport()
   UpdateWindow();
 }
 
-void TimetToFileTime(time_t t, FILETIME *pft)
-{
-  LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
-  pft->dwLowDateTime = (DWORD)ll;
-  pft->dwHighDateTime = ll >> 32;
-}
-
 void CAddEdit_Attachment::OnAttExport()
 {
   CString filter;
@@ -340,7 +333,8 @@ void CAddEdit_Attachment::OnAttExport()
       filter.MakeLower();
 
       // Get index of current extension in filter string - note in pairs so need to skip every other one
-      int cPos = 0, iIndex = 0;
+      int cPos = 0;
+      int iIndex = 1;  // Unusually, the filter index starts at 1 not 0
       CString cs_ext_nocase(ext); cs_ext_nocase.MakeLower();
       CString cs_filter_nocase(filter);
       CString cs_token;
@@ -352,12 +346,12 @@ void CAddEdit_Attachment::OnAttExport()
           cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
           if (cs_token.Find(cs_ext_nocase) != -1)
             break;
-          iIndex += 2;
+          iIndex++;  // Documentation says index is per pair of file types
         };
       }
 
       CFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
-      fileDlg.m_pOFN->nFilterIndex = iIndex;
+      fileDlg.m_pOFN->nFilterIndex = iIndex + 1;  // Not sure why need to add 1 but it seems to work!
 
       if (fileDlg.DoModal() == IDOK) {
         soutputfile = fileDlg.GetPathName();
@@ -416,30 +410,16 @@ void CAddEdit_Attachment::OnAttExport()
     return;
   }
 
-  time_t ctime, mtime, atime;
-  FILETIME fctime, fmtime, fatime;
-
   // Get old file times
+  time_t ctime, mtime, atime;
   M_attachment().GetFileCTime(ctime);
   M_attachment().GetFileMTime(mtime);
   M_attachment().GetFileATime(atime);
   
-  // Convert to file time format
-  TimetToFileTime(ctime, &fctime);
-  TimetToFileTime(mtime, &fmtime);
-  TimetToFileTime(atime, &fatime);
-
-  // Now set file times
-  HANDLE hFile;
-  hFile = CreateFile(soutputfile.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL,
-    OPEN_EXISTING, 0, NULL);
-
-  if (hFile != INVALID_HANDLE_VALUE) {
-    SetFileTime(hFile, &fctime, &fmtime, &fatime);
-    CloseHandle(hFile);
-  } else {
+  bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
+  if (!bUpdateFileTimes) {
     CGeneralMsgBox gmb;
-    const CString cs_errmsg = L"Unable to open newly exported file to set file times";
+    const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
     gmb.AfxMessageBox(cs_errmsg);
   }
 }
