@@ -1004,6 +1004,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
   switch (m_core.GetReadFileVersion()) {
     case PWSfile::VCURRENT:
+    case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
