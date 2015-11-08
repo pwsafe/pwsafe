@@ -1861,6 +1861,206 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   return rc;
 }
 
+void DboxMain::OnExportAttachment()
+{
+  /*
+    We save the attachment, in the same initial directory as the current DB, as follows:
+
+    * If the user retains the original file extension - just write it as-is BUT do not
+      use CImage, even if it is an image file, as it might "optimise" the file and
+      could become to be smaller causing confusion!
+    * If it ia an image file (from media type) but with a different extension, 
+      use CImage to convert it
+    * If not an image file, just write it.
+  */
+
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL && pci->HasAttRef());
+
+  CItemAtt &att = m_core.GetAtt(pci->GetAttUUID());
+
+  CString filter, csMediaType;
+  CSimpleArray<GUID> aguidFileTypes;
+  HRESULT hResult;
+  StringX sxAttFileName;
+  stringT soutputfile;
+  CImage AttImage;
+  int iAttType(0);  // -1 not an image, 0 not yet tested, +1 an image
+
+  // Get file name and extension
+  sxAttFileName = att.GetFileName();
+
+  wchar_t fullfilename[_MAX_PATH];
+  wchar_t drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
+  _wsplitpath_s(sxAttFileName.c_str(), NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+
+  // Get current DB drive and directory
+  _wsplitpath_s(m_core.GetCurFile().c_str(), drive, _MAX_DRIVE, dir, _MAX_DIR, NULL, 0, NULL, 0);
+
+  // Create new full file name
+  _wmakepath_s(fullfilename, _MAX_FNAME, drive, dir, fname, ext);
+  soutputfile = fullfilename;
+
+  // Default suffix should be the same as the original file (skip over leading ".")
+  CString cs_ext = ext + 1;
+
+  // Get media type
+  csMediaType = att.GetMediaType().c_str();
+
+  if (csMediaType.Left(5) == L"image") {
+    // Should be an image file - but may not be supported by CImage - try..
+    // Allocate attachment buffer
+    UINT imagesize = att.GetContentSize();
+    HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
+    ASSERT(gMemory);
+
+    BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+    ASSERT(pBuffer);
+
+    // Load image into buffer
+    att.GetContent(pBuffer, imagesize);
+
+    // Put it into a IStream
+    IStream *pStream = NULL;
+    hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
+    if (hResult == S_OK) {
+      // Load it
+      hResult = AttImage.Load(pStream);
+    } else {
+      // Reset result so that user gets error dialog below
+      // as we couldn't create the IStream object
+      hResult = E_FAIL;
+    }
+
+    // Clean up - no real need to trash the buffer
+    pStream->Release();
+    GlobalUnlock(gMemory);
+    GlobalFree(gMemory);
+
+    // Was it an image?  (No : Yes)
+    iAttType = FAILED(hResult) ? -1 : 1;
+  } else {
+    // Definitely not an image
+    iAttType = -1;
+  }
+
+  switch (iAttType) {
+    case 1:
+    {
+      // Should be an image and loaded into AttImage
+      if (AttImage.IsNull()) {
+        ASSERT(0);
+        return;
+      }
+
+      hResult = AttImage.GetExporterFilterString(filter, aguidFileTypes);
+      if (FAILED(hResult))
+        return;
+
+      // Extensions look much nicer in lower case
+      filter.MakeLower();
+
+      // Get index of current extension in filter string - note in pairs so need to skip every other one
+      int cPos = 0;
+      int iIndex = 1;  // Unusually, the filter index starts at 1 not 0
+      CString cs_ext_nocase(ext); cs_ext_nocase.MakeLower();
+      CString cs_filter_nocase(filter);
+      CString cs_token;
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+      if (cs_token.Find(cs_ext_nocase) == -1) {
+        while (!cs_token.IsEmpty()) {
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+          if (cs_token.Find(cs_ext_nocase) != -1)
+            break;
+          iIndex++;  // Documentation says index is per pair of file types
+        };
+      }
+
+      // Do not use lpstrInitialDir as it has no effect after the first CFileDIalog call
+      // Instead set the file name to be the full path
+      CPWFileDialog fileDlg(FALSE, cs_ext, soutputfile.c_str(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      fileDlg.m_pOFN->nFilterIndex = iIndex + 1;  // Not sure why need to add 1 but it seems to work!
+
+      if (fileDlg.DoModal() == IDOK) {
+        soutputfile = fileDlg.GetPathName();
+
+        // Get new extension
+        _wsplitpath_s(soutputfile.c_str(), NULL, 0, NULL, 0, NULL, 0, new_ext, _MAX_EXT);
+
+        // If new extension is the same as old, export the file rather than use
+        // CImage to save it (which may well change its size)
+        if (_wcsicmp(ext, new_ext) == 0) {
+          int rc = att.Export(soutputfile);
+          hResult = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
+        } else {
+          hResult = AttImage.Save(soutputfile.c_str());
+        }
+
+        // Now delete it
+        AttImage.Destroy();
+
+        if (FAILED(hResult)) {
+          CGeneralMsgBox gmb;
+          const CString cs_errmsg = L"Failed to save image";
+          gmb.AfxMessageBox(cs_errmsg);
+          return;
+        }
+      } else {
+        // User cancelled save
+        return;
+      }
+      break;
+    }
+    case -1:
+    {
+      // Not an image file
+      // Set filter "??? files (*.???)|*.???||"
+      SHFILEINFO sfi = {0};
+      DWORD_PTR dw = SHGetFileInfo(soutputfile.c_str(), 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
+
+      if (dw != 0) {
+        filter.Format(IDS_FDF_FILES, sfi.szTypeName, ext, ext);
+      } else {
+        // Use All files!
+        filter.LoadString(IDS_FDF_ALL);
+      }
+
+      CPWFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      if (fileDlg.DoModal() == IDOK) {
+        soutputfile = fileDlg.GetPathName();
+        att.Export(soutputfile);
+      } else {
+        // User cancelled save
+        return;
+      }
+      break;
+    }
+  }
+
+  // We have saved/exported the file - now reset its file times to the original
+  // when it was first imported/added
+  if (soutputfile.empty()) {
+    // Shouldn't get here with an empty export file name!
+    ASSERT(0);
+    return;
+  }
+
+  // Get old file times
+  time_t ctime, mtime, atime;
+  att.GetFileCTime(ctime);
+  att.GetFileMTime(mtime);
+  att.GetFileATime(atime);
+
+  bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
+  if (!bUpdateFileTimes) {
+    CGeneralMsgBox gmb;
+    const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
+    gmb.AfxMessageBox(cs_errmsg);
+  }
+}
+
 void DboxMain::OnImportText()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode

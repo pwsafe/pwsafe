@@ -17,6 +17,8 @@
 #include "AddEdit_Attachment.h"
 #include "AddEdit_PropertySheet.h"
 
+#include "PWFileDialog.h"
+
 #include "GeneralMsgBox.h"
 
 #include "os/file.h"
@@ -350,7 +352,7 @@ void CAddEdit_Attachment::OnAttExport()
         };
       }
 
-      CFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      CPWFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
       fileDlg.m_pOFN->nFilterIndex = iIndex + 1;  // Not sure why need to add 1 but it seems to work!
 
       if (fileDlg.DoModal() == IDOK) {
@@ -390,7 +392,7 @@ void CAddEdit_Attachment::OnAttExport()
         // Use All files!
         filter.LoadString(IDS_FDF_ALL);
       }
-      CFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      CPWFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
       if (fileDlg.DoModal() == IDOK) {
         soutputfile = fileDlg.GetPathName();
         M_attachment().Export(soutputfile);

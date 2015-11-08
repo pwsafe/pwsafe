@@ -792,6 +792,7 @@ public:
   afx_msg void OnExportGroupText();
   afx_msg void OnExportGroupXML();
   afx_msg void OnExportGroupDB();
+  afx_msg void OnExportAttachment();
   afx_msg void OnImportText();
   afx_msg void OnImportKeePassV1CSV();
   afx_msg void OnImportKeePassV1TXT();
