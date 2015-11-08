@@ -137,16 +137,16 @@ public:
                      const stringT &userBackupDir, stringT &bu_fname);
 
   void NewFile(const StringX &passkey);
-  int WriteCurFile() {return WriteFile(m_currfile);}
-  int WriteFile(const StringX &filename, const bool bUpdateSig = true,
-                PWSfile::VERSION version = PWSfile::VCURRENT);
+  int WriteCurFile() {return WriteFile(m_currfile, m_ReadFileVersion);}
+  int WriteFile(const StringX &filename, PWSfile::VERSION version,
+                bool bUpdateSig = true);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                      PWScore *pINcore, CReport *pRpt = NULL,
-                      PWSfile::VERSION version = PWSfile::VCURRENT);
+                      PWScore *pINcore, PWSfile::VERSION version,
+                      CReport *pRpt = NULL);
   int WriteV17File(const StringX &filename)
-  {return WriteFile(filename, false, PWSfile::V17);}
+  {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)
-  {return WriteFile(filename, false, PWSfile::V20);}
+  {return WriteFile(filename, PWSfile::V20, false);}
 
   // R/O file status
   void SetReadOnly(bool state) {m_IsReadOnly = state;}

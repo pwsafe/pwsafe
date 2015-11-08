@@ -526,8 +526,8 @@ private:
   const PWSfile::VERSION m_version;
 };
 
-int PWScore::WriteFile(const StringX &filename, bool bUpdateSig,
-                       PWSfile::VERSION version)
+int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
+                       bool bUpdateSig)
 {
   PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
@@ -653,7 +653,7 @@ private:
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                             PWScore *pINcore, CReport *pRpt, PWSfile::VERSION version)
+                             PWScore *pINcore, PWSfile::VERSION version, CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version

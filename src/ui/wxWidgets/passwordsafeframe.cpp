@@ -1380,8 +1380,10 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 
 int PasswordSafeFrame::SaveAs()
 {
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
-      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+  const PWSfile::VERSION curver = m_core.GetReadFileVersion();
+  
+  if (curver != PWSfile::V30 && curver != PWSfile::V40 &&
+      curver != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"),
                                         wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxCANCEL) {
@@ -1429,7 +1431,7 @@ int PasswordSafeFrame::SaveAs()
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  int rc = m_core.WriteFile(newfile);
+  int rc = m_core.WriteFile(newfile, curver);
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
@@ -3059,7 +3061,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
       return;
 
     newfile = tostringx(fd.GetPath());
-    rc = m_core.WriteFile(newfile, true, ver);
+    rc = m_core.WriteFile(newfile, ver);
   } else { // internal error
     wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
   }

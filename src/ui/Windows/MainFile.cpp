@@ -1143,7 +1143,7 @@ int DboxMain::Save(const SaveType savetype)
   m_core.SetRUEList(RUElist);
 
   // We are saving the current DB. Retain current version
-  rc = m_core.WriteFile(sxCurrFile, true, current_version);
+  rc = m_core.WriteFile(sxCurrFile, current_version);
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
@@ -1349,7 +1349,7 @@ int DboxMain::SaveAs()
 
   // Note: Writing out in in V4 DB format if the DB is already V4,
   // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
-  rc = m_core.WriteFile(newfile, true, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
+  rc = m_core.WriteFile(newfile, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
@@ -1491,7 +1491,7 @@ void DboxMain::OnExportVx(UINT nID)
   const PWSfileHeader saved_hdr = m_core.GetHeader();
 
   // Now export it in the requested version
-  rc = m_core.WriteFile(newfile, true, export_version);
+  rc = m_core.WriteFile(newfile, export_version);
 
   // Restore current database header
   m_core.SetHeader(saved_hdr);
@@ -1580,7 +1580,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.SetReadOnly(false);
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
-  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, prpt);
+  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), prpt);
 
   OIL.clear();
   export_core.ClearData();
