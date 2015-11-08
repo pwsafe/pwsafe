@@ -946,6 +946,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
+      if (pci->HasAttRef()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+          ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
+      }
+
       if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT)
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT,
@@ -1403,6 +1408,11 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (pci->IsRunCommandEmpty()) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
+    }
+
+    if (!pci->HasAttRef()) {
+      pPopup->RemoveMenu(ID_MENUITEM_EXPORT_ATTACHMENT, MF_BYCOMMAND);
+
     }
 
     if (m_IsListView) {

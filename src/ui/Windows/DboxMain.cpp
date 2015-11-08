@@ -405,6 +405,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2PLAINTEXT, OnExportGroupText)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
+  ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -626,6 +627,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPORTGRP2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTGRP2XML, true, true, false, false},
   {ID_MENUITEM_EXPORTGRP2DB, true, true, false, false},
+  {ID_MENUITEM_EXPORT_ATTACHMENT, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
