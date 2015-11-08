@@ -3788,7 +3788,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
                      cs_datetime.substr(17, 2);   // SS
     cs_newfile = nf.c_str();
     cs_newfile += L".fbak";
-    rc = m_core.WriteFile(cs_newfile.c_str());
+    rc = m_core.WriteFile(cs_newfile.c_str(), m_core.GetReadFileVersion());
     return (int)rc;
   }
 
