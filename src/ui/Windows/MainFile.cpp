@@ -1069,6 +1069,9 @@ int DboxMain::Save(const SaveType savetype)
   std::wstring NewName;
   stringT bu_fname; // used to undo backup if save failed
 
+  const StringX sxCurrFile = m_core.GetCurFile();
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   // chdir to exe dir, avoid hassle with relative paths
@@ -1078,10 +1081,10 @@ int DboxMain::Save(const SaveType savetype)
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();
 
-  if (m_core.GetCurFile().empty())
+  if (sxCurrFile.empty())
     return SaveAs();
 
-  switch (m_core.GetReadFileVersion()) {
+  switch (current_version) {
     case PWSfile::V30:
     case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
@@ -1139,14 +1142,15 @@ int DboxMain::Save(const SaveType savetype)
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  rc = m_core.WriteCurFile();
+  // We are saving the current DB. Retain current version
+  rc = m_core.WriteFile(sxCurrFile, true, current_version);
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
-    if (!bu_fname.empty() && !m_core.GetCurFile().empty())
-      pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
+    if (!bu_fname.empty() && !sxCurrFile.empty())
+      pws_os::RenameFile(bu_fname, sxCurrFile.c_str());
     // Show user that we have a problem
-    DisplayFileWriteError(rc, m_core.GetCurFile());
+    DisplayFileWriteError(rc, sxCurrFile);
     return rc;
   }
 
