@@ -95,6 +95,9 @@ public:
 
   ////@begin CSafeCombinationEntry event handler declarations
 
+  /// wxEVT_ACTIVATE event handler to do post initialization
+  void OnActivate( wxActivateEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
   void OnEllipsisClick( wxCommandEvent& event );
 
@@ -151,6 +154,7 @@ private:
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
+  bool m_postInitDone;
 
 #ifndef NO_YUBI
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
