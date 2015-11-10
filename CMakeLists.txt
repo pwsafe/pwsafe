@@ -9,9 +9,22 @@ add_subdirectory (src/core)
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
 include_directories (${PROJECT_SOURCE_DIR}/src/core)
 
+# Following can be different for windows/wx, just wrap around if/else/endif
+set (pwsafe_VERSION_MAJOR 4)
+set (pwsafe_VERSION_MINOR 0)
+set (pwsafe_REVISION 0)
+set (pwsafe_SPECIALBUILD "ALPHA")
 
-set (pwsafe_VERSION_MAJOR 0)
-set (pwsafe_VERSION_MINOR 98)
+execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  RESULT_VARIABLE res
+  OUTPUT_VARIABLE pwsafe_VERSTRING
+  ERROR_QUIET
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+if (res)
+  set(pwsafe_VERSTRING "local")
+endif()
+
 option(DEBUG "Debug symbols and AddressSanitize")
 
 set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
@@ -46,10 +59,16 @@ if(NOT HAVE_YKPERS_H)
   message(STATUS "Yubikey support disabled")
 endif(NOT HAVE_YKPERS_H)
 
+if (WIN32)
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
+else()
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
+endif()
+
 configure_file (
-  ${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in
+  ${VERSION_IN}
   ${PROJECT_BINARY_DIR}/version.h
-)
+  )
 
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/src"

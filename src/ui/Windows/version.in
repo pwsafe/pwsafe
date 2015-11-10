@@ -9,25 +9,18 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-// version.h is automatically generated from version.in by a custom
-// pre-build step that uses git's 'describe' function and
-// replaces "GITREV" with current git commit info.
+// version.h is automatically generated from version.in via cmake
 
 // Format: Major, Minor, Build, Revision
 //   Build  = 0 for all Formally Released versions
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     4, 0, 0
-#define STRPRODUCTVER  "4, 0, 0, GITREV\0"
+#define PRODUCTVER     @pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@
+#define STRPRODUCTVER  "@pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@, @pwsafe_VERSTRING@\0"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
-// Only define SPECIAL_BUILD before here (in version.in) if needed!
-#define SPECIAL_BUILD L"ALPHA"
-
-#ifndef SPECIAL_BUILD
-#define SPECIAL_BUILD L""
-#endif
+#define SPECIAL_BUILD L"@pwsafe_SPECIALBUILD@"
 
 #endif // _VERSION_H_
