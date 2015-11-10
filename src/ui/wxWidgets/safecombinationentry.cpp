@@ -66,6 +66,8 @@ IMPLEMENT_CLASS( CSafeCombinationEntry, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
 ////@begin CSafeCombinationEntry event table entries
+  EVT_ACTIVATE( CSafeCombinationEntry::OnActivate )
+
   EVT_BUTTON( ID_ELLIPSIS, CSafeCombinationEntry::OnEllipsisClick )
 
   EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
@@ -163,6 +165,7 @@ void CSafeCombinationEntry::Init()
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 #endif
+  m_postInitDone = false;
 ////@end CSafeCombinationEntry member initialisation
 }
 
@@ -272,13 +275,19 @@ void CSafeCombinationEntry::CreateControls()
   //  to hand back the string we just added
   wxCommandEvent cmdEvent(wxEVT_COMMAND_COMBOBOX_SELECTED, m_filenameCB->GetId());
   GetEventHandler()->AddPendingEvent(cmdEvent);
-  // if filename field not empty, set focus to password:
-  if (!m_filename.empty()) {
-    FindWindow(ID_COMBINATION)->SetFocus();
-  }
   SetIcons(wxGetApp().GetAppIcons());
 }
 
+void CSafeCombinationEntry::OnActivate( wxActivateEvent& event )
+{
+  if (!m_postInitDone) {
+    // if filename field not empty, set focus to password:
+    if (!m_filename.empty()) {
+      FindWindow(ID_COMBINATION)->SetFocus();
+    }
+    m_postInitDone = true;
+  }
+}
 
 /*!
  * Should we show tooltips?
