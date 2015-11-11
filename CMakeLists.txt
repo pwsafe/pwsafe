@@ -218,18 +218,7 @@ list(APPEND PWSAFE_SRCS
     src/ui/wxWidgets/SelectionCriteria.cpp
     src/ui/wxWidgets/SizeRestrictedPanel.cpp
     src/ui/wxWidgets/TimedTaskChain.cpp
-    src/core/core_st.cpp
 )
-
-#add_custom_command(
-#  PRE_BUILD
-#  OUTPUT core_st.cpp
-#  OUTPUT core_st.h
-#  COMMAND ${PROJECT_SOURCE_DIR}/src/core/rc2cpp.pl ${PROJECT_SOURCE_DIR}/src/core/core.rc2
-#  DEPENDS src/core/core.rc2
-#)
-#set_property(SOURCE src/core/StringX.cpp APPEND PROPERTY OBJECT_DEPENDS core_st.h core_st.cpp)
-# XXX
 
 add_executable(pwsafe ${PWSAFE_SRCS})
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)

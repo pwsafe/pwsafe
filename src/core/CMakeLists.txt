@@ -7,7 +7,6 @@ set (CORE_SRCS
   Command.cpp
   CoreImpExp.cpp
   CoreOtherDB.cpp
-  core_st.cpp
   ExpiredList.cpp
   ItemAtt.cpp
   Item.cpp
@@ -53,6 +52,21 @@ set (CORE_SRCS
   XML/XMLFileValidation.cpp
   pugixml/pugixml.cpp
   )
+
+if (NOT WIN32)
+  list (APPEND CORE_SRCS ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp)
+  
+  set (RC2CPP "${PROJECT_SOURCE_DIR}/Misc/rc2cpp.pl")
+
+  add_custom_command (
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp ${CMAKE_CURRENT_BINARY_DIR}/core_st.h
+    COMMAND ${RC2CPP} ${PROJECT_SOURCE_DIR}/src/core/core.rc2
+    COMMAND "mv"  ${PROJECT_SOURCE_DIR}/src/core/core_st.cpp  ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp
+    COMMAND "mv"  ${PROJECT_SOURCE_DIR}/src/core/core_st.h  ${CMAKE_CURRENT_BINARY_DIR}/core_st.h
+    DEPENDS core.rc2
+    )
+  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 if(NOT NO_YUBI)
   CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
