@@ -1,9 +1,16 @@
 cmake_minimum_required (VERSION 3.0)
 project (pwsafe CXX C)
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  set (GTEST_ROOT "/usr/src/gtest/build") # make configurable
+endif()
+  
+find_package(GTest REQUIRED)
+include_directories($GTEST_INCLUDE_DIRS)
+
 add_subdirectory (src/os)
 add_subdirectory (src/core)
-#add_subdirectory (src/test)
+add_subdirectory (src/test)
 # add_subdirectory (help)
 
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
