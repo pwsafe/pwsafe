@@ -13,6 +13,6 @@
 TEST(OSTest, testMedia)
 {
   EXPECT_EQ(_S("unknown"), pws_os::GetMediaType(_S("nosuchfile")));
-  EXPECT_EQ(_S("text/plain"), pws_os::GetMediaType(_S("../../README.txt")));
-  EXPECT_EQ(_S("image/jpeg"), pws_os::GetMediaType(_S("../../help/default/html/images/edit_menu.jpg")));
+  EXPECT_EQ(_S("text/plain"), pws_os::GetMediaType(_S("data/text1.txt")));
+  EXPECT_EQ(_S("image/jpeg"), pws_os::GetMediaType(_S("data/image1.jpg")));
 }

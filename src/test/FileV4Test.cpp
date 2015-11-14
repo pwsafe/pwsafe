@@ -102,7 +102,7 @@ void FileV4Test::SetUp()
 
   attItem.CreateUUID();
   attItem.SetTitle(L"I'm an attachment");
-  const stringT testAttFile(L"../../help/default/html/images/edit_menu.jpg");
+  const stringT testAttFile(L"data/image1.jpg");
   int status = attItem.Import(testAttFile);
   ASSERT_EQ(PWSfile::SUCCESS, status);
 }

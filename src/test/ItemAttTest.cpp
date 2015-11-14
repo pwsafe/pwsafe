@@ -38,7 +38,7 @@ protected:
 ItemAttTest::ItemAttTest()
   : title(_T("a-title")), mediaType(_T("application/octet-stream"))
 {
-  fullfileName = pws_os::fullpath(L"../../help/default/html/images/edit_menu.jpg");
+  fullfileName = pws_os::fullpath(L"data/image1.jpg");
 
   stringT sFileName, sFilePath;
   stringT sDrive, sDir, sFName, sExtn;

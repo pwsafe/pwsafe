@@ -7,6 +7,13 @@ set (TEST_SRCS
 include_directories (${PROJECT_SOURCE_DIR}/src)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
 
+# Setup test data
+file (MAKE_DIRECTORY "data")
+file (COPY "data/image1.jpg" DESTINATION "data")
+file (COPY "data/text1.txt" DESTINATION "data")
+
 add_executable(coretest ${TEST_SRCS})
 target_link_libraries(coretest ${GTEST_LIBRARIES} core os uuid pthread)
-add_test(Coretests coretest)
+add_test(NAME Coretests
+  COMMAND coretest
+  WORKING_DIRECTORY "src/test")
