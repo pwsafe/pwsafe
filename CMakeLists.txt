@@ -11,7 +11,7 @@ include_directories($GTEST_INCLUDE_DIRS)
 add_subdirectory (src/os)
 add_subdirectory (src/core)
 add_subdirectory (src/test)
-# add_subdirectory (help)
+add_subdirectory (help)
 
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
 include_directories (${PROJECT_SOURCE_DIR}/src/core)
