@@ -16,4 +16,4 @@ add_executable(coretest ${TEST_SRCS})
 target_link_libraries(coretest ${GTEST_LIBRARIES} core os uuid pthread)
 add_test(NAME Coretests
   COMMAND coretest
-  WORKING_DIRECTORY "src/test")
+  )

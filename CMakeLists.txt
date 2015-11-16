@@ -8,6 +8,8 @@ endif()
 find_package(GTest REQUIRED)
 include_directories($GTEST_INCLUDE_DIRS)
 
+enable_testing()
+
 add_subdirectory (src/os)
 add_subdirectory (src/core)
 add_subdirectory (src/test)
@@ -41,7 +43,6 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 include(CheckCSourceCompiles)
 include(CheckCXXSourceCompiles)
-enable_testing()
 
 check_include_file(stdint.h    HAVE_STDINT_H)
 
