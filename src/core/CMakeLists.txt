@@ -68,25 +68,4 @@ if (NOT WIN32)
   include_directories(${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-if(NOT NO_YUBI)
-  CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
-endif(NOT NO_YUBI)
-
-if(NOT HAVE_YKPERS_H)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
-  message(STATUS "Yubikey support disabled")
-endif(NOT HAVE_YKPERS_H)
-
-set(wxWidgets_CONFIGURATION mswu)
-find_package(wxWidgets COMPONENTS adv base core html REQUIRED)
-include(${wxWidgets_USE_FILE})
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-
-include_directories("${PROJECT_SOURCE_DIR}/src/core"
-  "${PROJECT_SOURCE_DIR}/src"
-  "/usr/include/ykpers-1")
-
 add_library(core ${CORE_SRCS})
