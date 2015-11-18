@@ -127,6 +127,10 @@ if(HAVE_YKPERS_H)
   list(APPEND CMAKE_REQUIRED_LIBRARIES ykpers-1)
 endif(HAVE_YKPERS_H)
 
+# Following is because (a) -O3 breaks the test and application, and
+# (b) -O3 is the default for cmake
+set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+
 # Subdirectories
 
 add_subdirectory (src/os) # os-specific library
