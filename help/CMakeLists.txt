@@ -4,7 +4,7 @@ if (WIN32)
   # TBD
 else()
   string (REGEX REPLACE "(..)" "help\\1.zip;" HELPFILES ${LANGS})
-  add_custom_target("helpfiles"
+  add_custom_target("helpfiles" ALL
     DEPENDS "helpEN.zip" ${HELPFILES}
     )
   # English help is a special case: default -> helpEN.zip
