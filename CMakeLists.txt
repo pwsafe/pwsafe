@@ -6,6 +6,14 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 include(CheckCXXSourceCompiles)
 
+# Version configuration:
+# Following can be different for windows/wx, just wrap around if/else/endif
+set (pwsafe_VERSION_MAJOR 4)
+set (pwsafe_VERSION_MINOR 0)
+set (pwsafe_REVISION 0)
+set (pwsafe_SPECIALBUILD "ALPHA")
+
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (GTEST_ROOT "/usr/src/gtest/build"
     CACHE PATH "The root directory of the gtest install prefix")
@@ -49,7 +57,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 
 # Common configurations
 
-set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
 
 include_directories ($GTEST_INCLUDE_DIRS)
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
@@ -58,13 +65,6 @@ include_directories (${PROJECT_BINARY_DIR})
 include_directories ("${PROJECT_SOURCE_DIR}/src"
   "${PROJECT_SOURCE_DIR}/src/core"
   "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets")
-
-# Version configuration:
-# Following can be different for windows/wx, just wrap around if/else/endif
-set (pwsafe_VERSION_MAJOR 4)
-set (pwsafe_VERSION_MINOR 0)
-set (pwsafe_REVISION 0)
-set (pwsafe_SPECIALBUILD "ALPHA")
 
 execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -154,3 +154,44 @@ add_executable(pwsafe ${PWSAFE_SRCS})
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
 target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES} ${XercesC_LIBRARY})
+
+# Installation stuff (for 'make install', but mainly for 'make package')
+install (TARGETS pwsafe RUNTIME DESTINATION "bin")
+
+install (DIRECTORY xml DESTINATION "share/pwsafe/")
+install (FILES "docs/pwsafe.1" DESTINATION "share/man/man1") # gzip'ed in postinst
+install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/pwsafe")
+install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pwsafe")
+install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
+  DESTINATION "share/locale")
+
+# Following because "install (DIRECTORY..." copies tree strcture, which is not what we
+# want here. Also "install (TARGETS" doesn't seem to work with custom targets.
+file (GLOB HELPFILES "${CMAKE_BINARY_DIR}/help/*.zip")
+install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
+install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
+
+# Packaging stuff:
+## Common:
+set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
+set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MINOR}")
+set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
+set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}-${pwsafe_SPECIALBUILD}")
+set (CPACK_PACKAGE_CONTACT "ronys@pwsafe.org")
+set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+
+## Debian-specific:
+set (CPACK_DEBIAN_PACKAGE_SECTION "utils")
+set (CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
+set (CPACK_DEBIAN_PACKAGE_DESCRIPTION
+  "Portable version of popular password manager program, pwsafe. This is the Linux version of the popular Windows PasswordSafe password manager.")
+set (CPACK_DEBIAN_PACKAGE_DEPENDS
+  "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.2-1+b1), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+  "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
+
+include(CPack)
+### End of packaging section
+### End of CMakeLists.txt
+
