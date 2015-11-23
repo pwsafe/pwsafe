@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 2.8)
 project (pwsafe CXX C)
 
 # prerequisites
@@ -187,7 +187,7 @@ set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION
   "Portable version of popular password manager program, pwsafe. This is the Linux version of the popular Windows PasswordSafe password manager.")
 set (CPACK_DEBIAN_PACKAGE_DEPENDS
-  "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.2-1+b1), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
+  "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
   "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
 
