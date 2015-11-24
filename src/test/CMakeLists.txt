@@ -10,7 +10,11 @@ file (COPY "data/image1.jpg" DESTINATION "data")
 file (COPY "data/text1.txt" DESTINATION "data")
 
 add_executable(coretest ${TEST_SRCS})
-target_link_libraries(coretest ${GTEST_LIBRARIES} core os uuid ${XercesC_LIBRARY} pthread)
+target_link_libraries(coretest ${GTEST_LIBRARIES} core os uuid pthread)
+if (XercesC_LIBRARY)
+  target_link_libraries(coretest ${XercesC_LIBRARY})
+endif (XercesC_LIBRARY)
+
 add_test(NAME Coretests
   COMMAND coretest
   )

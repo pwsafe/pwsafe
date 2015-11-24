@@ -25,10 +25,18 @@ if (NOT WIN32)
   set(wxWidgets_CONFIGURATION mswu)
   find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
+
+  CHECK_INCLUDE_FILE("uuid/uuid.h" UUID_H)
+  if (NOT UUID_H)
+    message(FATAL_ERROR
+      "uuid.h not found - uuid-dev / libuuid-devel not installed?")
+    endif(NOT UUID_H)
 endif()
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
+option (NO_XML "Set ON to disable XML import support" OFF)
+option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
 
 if(NOT NO_YUBI)
   CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
@@ -39,22 +47,38 @@ if(NOT HAVE_YKPERS_H)
   message(STATUS "Yubikey support disabled")
 endif(NOT HAVE_YKPERS_H)
 
+if (NOT NO_XML)
+  find_package (XercesC QUIET)
+  if (NOT XercesC_FOUND)
+    message (WARNING "XML enabled but Xerces-C not found - disabling")
+    set (NO_XML ON)
+    set (XercesC_INCLUDE_DIR "/usr/include")
+  endif(NOT XercesC_FOUND)
+endif (NOT NO_XML)
+
+if (NOT NO_XML) # may have been change if Xerces wasn't found
+  include_directories( ${XercesC_INCLUDE_DIR} )
+  add_definitions ("-DUSE_XML_LIBRARY=XERCES")
+endif(NOT NO_XML)
+
+if (USE_ASAN) 
+  CHECK_LIBRARY_EXISTS(asan "" "" HAS_ASAN)
+  if (NOT HAS_ASAN)
+    message (WARNING
+      "-fsanitize=address requested but libasan not found - disabling")
+    set (USE_ASAN FALSE)
+  endif (HAS_ASAN)
+endif (USE_ASAN)
+
 enable_testing()
 
-# FindXercesC module was introduced in cmake 3.1.
-# Debian stable (jessie 8.2) currently provide cmake 3.0.2
-# TODO: support compilation without Xerces-c
-find_package (XercesC QUIET)
-if (NOT XercesC_FOUND)
-  set (XercesC_INCLUDE_DIR "/usr/include")
-  set (XercesC_LIBRARY "xerces-c")
-endif(NOT XercesC_FOUND)
-include_directories( ${XercesC_INCLUDE_DIR} )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-
+set(CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} -std=gnu++11 -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
+if (USE_ASAN)
+  set(CMAKE_CXX_FLAGS_DEBUG
+    "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
+endif (USE_ASAN)
 # Common configurations
 
 
@@ -153,7 +177,11 @@ endif()
 add_executable(pwsafe ${PWSAFE_SRCS})
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
-target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES} ${XercesC_LIBRARY})
+if (XercesC_FOUND)
+  target_link_libraries(pwsafe ${XercesC_LIBRARY})
+endif (XercesC_FOUND)
+
+target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES})
 
 # Installation stuff (for 'make install', but mainly for 'make package')
 install (TARGETS pwsafe RUNTIME DESTINATION "bin")
