@@ -48,18 +48,19 @@ if(NOT HAVE_YKPERS_H)
 endif(NOT HAVE_YKPERS_H)
 
 if (NOT NO_XML)
-  find_package (XercesC QUIET)
+  find_package (XercesC QUIET MODULE)
   if (NOT XercesC_FOUND)
-    message (WARNING "XML enabled but Xerces-C not found - disabling")
-    set (NO_XML ON)
+    # FindXercesC module was added to cmake in 3.1. Debian 8 uses 3.0.2
+    # If the module wasn't found yet XML is enabled, we set the default
+    # values. If this isn't what you want, either configure NO_XML
+    # or edit the followingvalues manually.
+    message (WARNING "XML enabled but Xerces-C not found - using defaults")
     set (XercesC_INCLUDE_DIR "/usr/include")
+    set (XercesC_LIBRARY "xerces-c")
   endif(NOT XercesC_FOUND)
-endif (NOT NO_XML)
-
-if (NOT NO_XML) # may have been change if Xerces wasn't found
   include_directories( ${XercesC_INCLUDE_DIR} )
   add_definitions ("-DUSE_XML_LIBRARY=XERCES")
-endif(NOT NO_XML)
+endif (NOT NO_XML)
 
 if (USE_ASAN) 
   CHECK_LIBRARY_EXISTS(asan "" "" HAS_ASAN)
@@ -177,9 +178,9 @@ endif()
 add_executable(pwsafe ${PWSAFE_SRCS})
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
-if (XercesC_FOUND)
+if (NOT NOT_XML)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})
-endif (XercesC_FOUND)
+endif (NOT NOT_XML)
 
 target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES})
 
