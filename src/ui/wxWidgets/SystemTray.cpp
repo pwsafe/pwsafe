@@ -28,6 +28,9 @@
 #endif
 
 #include "./graphics/tray.xpm"
+#include "./graphics/tray_blue.xpm"
+#include "./graphics/tray_white.xpm"
+#include "./graphics/tray_yellow.xpm"
 #include "./graphics/locked_tray.xpm"
 #include "./graphics/unlocked_tray.xpm"
 #include "./graphics/about.xpm"
@@ -72,7 +75,10 @@ BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
 
-SystemTray::SystemTray(PasswordSafeFrame* frame) : iconClosed(tray_xpm),
+SystemTray::SystemTray(PasswordSafeFrame* frame) : iconClosedBlack(tray_xpm),
+                                                   iconClosedBlue(tray_blue_xpm),
+                                                   iconClosedYellow(tray_yellow_xpm),
+                                                   iconClosedWhite(tray_white_xpm),
                                                    iconUnlocked(unlocked_tray_xpm),
                                                    iconLocked(locked_tray_xpm),
                                                    m_frame(frame),
@@ -92,7 +98,26 @@ void SystemTray::SetTrayStatus(TrayStatus status)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
        case TRAY_CLOSED:
-         SetIcon(iconClosed, wxTheApp->GetAppName());
+         int closedIconColour;
+         closedIconColour = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
+         switch (closedIconColour) { 
+           case PWSprefs::stiWhite:
+             SetIcon(iconClosedWhite, wxTheApp->GetAppName());
+             break;
+
+           case PWSprefs::stiYellow:
+             SetIcon(iconClosedYellow, wxTheApp->GetAppName());
+             break;
+
+           case PWSprefs::stiBlue:
+             SetIcon(iconClosedBlue, wxTheApp->GetAppName());
+             break;
+
+           case PWSprefs::stiBlack:
+           default:
+             SetIcon(iconClosedBlack, wxTheApp->GetAppName());
+             break;
+         }
          break;
 
        case TRAY_UNLOCKED:
