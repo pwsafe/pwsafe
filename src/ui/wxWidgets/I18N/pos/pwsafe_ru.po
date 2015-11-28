@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 00:36-0800\n"
+"POT-Creation-Date: 2015-11-27 17:29-0800\n"
 "PO-Revision-Date: 2015-04-18 12:40+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: \n"
@@ -690,14 +690,14 @@ msgid "mailto:"
 msgstr "mailto:"
 
 #: ../../../ui/wxWidgets/wxutils.cpp:56
-#: ../../../ui/wxWidgets/mainManage.cpp:174
+#: ../../../ui/wxWidgets/mainManage.cpp:177
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2704
 msgid "Could not open file for reading!"
 msgstr "Невозможно открыть файл для чтения!"
 
 #: ../../../ui/wxWidgets/wxutils.cpp:57 ../../../ui/wxWidgets/wxutils.cpp:62
 #: ../../../ui/wxWidgets/wxutils.cpp:69
-#: ../../../ui/wxWidgets/mainManage.cpp:175
+#: ../../../ui/wxWidgets/mainManage.cpp:178
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2703
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2708
 #: ../../../ui/wxWidgets/PwsSync.cpp:579
@@ -903,27 +903,27 @@ msgstr "Перетащите изображение на другое окно, 
 msgid "' field."
 msgstr "»."
 
-#: ../../../ui/wxWidgets/mainManage.cpp:78
+#: ../../../ui/wxWidgets/mainManage.cpp:81
 msgid "Please Choose a Name for this Backup:"
 msgstr "Укажите имя для резервной копии:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:85
-#: ../../../ui/wxWidgets/mainManage.cpp:138
+#: ../../../ui/wxWidgets/mainManage.cpp:88
+#: ../../../ui/wxWidgets/mainManage.cpp:141
 msgid "Could not parse current file path"
 msgstr "Ошибка разбора пути к файлу"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:93
-#: ../../../ui/wxWidgets/mainManage.cpp:146
+#: ../../../ui/wxWidgets/mainManage.cpp:96
+#: ../../../ui/wxWidgets/mainManage.cpp:149
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Резервные копии Password Safe (*.bak)|*.bak"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:118
+#: ../../../ui/wxWidgets/mainManage.cpp:121
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2272
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:490
 msgid "Could not open file for writing!"
 msgstr "Невозможно открыть файл для записи!"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:119
+#: ../../../ui/wxWidgets/mainManage.cpp:122
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1014
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1021
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
@@ -932,11 +932,11 @@ msgstr "Невозможно открыть файл для записи!"
 msgid "Write Error"
 msgstr "Ошибка записи"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:142
+#: ../../../ui/wxWidgets/mainManage.cpp:145
 msgid "Please Choose a Backup to restore:"
 msgstr "Выберите резервную копию для восстановления"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:182
+#: ../../../ui/wxWidgets/mainManage.cpp:185
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe — <Восстановлено из резервной копии>"
 
@@ -2790,7 +2790,7 @@ msgid "Black"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:630
-msgid "Blue"
+msgid "Cyan"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:631

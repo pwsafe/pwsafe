@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 00:36-0800\n"
+"POT-Creation-Date: 2015-11-27 17:29-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -734,7 +734,7 @@ msgid "mailto:"
 msgstr "&e-mail:"
 
 #: ../../../ui/wxWidgets/wxutils.cpp:56
-#: ../../../ui/wxWidgets/mainManage.cpp:174
+#: ../../../ui/wxWidgets/mainManage.cpp:177
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2704
 #, fuzzy
 msgid "Could not open file for reading!"
@@ -745,7 +745,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/wxutils.cpp:57 ../../../ui/wxWidgets/wxutils.cpp:62
 #: ../../../ui/wxWidgets/wxutils.cpp:69
-#: ../../../ui/wxWidgets/mainManage.cpp:175
+#: ../../../ui/wxWidgets/mainManage.cpp:178
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2703
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2708
 #: ../../../ui/wxWidgets/PwsSync.cpp:579
@@ -980,23 +980,23 @@ msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 msgid "' field."
 msgstr "Veld"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:78
+#: ../../../ui/wxWidgets/mainManage.cpp:81
 msgid "Please Choose a Name for this Backup:"
 msgstr "Kies alstublieft een naam voor deze back-up"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:85
-#: ../../../ui/wxWidgets/mainManage.cpp:138
+#: ../../../ui/wxWidgets/mainManage.cpp:88
+#: ../../../ui/wxWidgets/mainManage.cpp:141
 #, fuzzy
 msgid "Could not parse current file path"
 msgstr "Kreeg geen toegang tot bestand: %s"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:93
-#: ../../../ui/wxWidgets/mainManage.cpp:146
+#: ../../../ui/wxWidgets/mainManage.cpp:96
+#: ../../../ui/wxWidgets/mainManage.cpp:149
 #, fuzzy
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Password Safe back-ups (*.bak)|*.bak||"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:118
+#: ../../../ui/wxWidgets/mainManage.cpp:121
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2272
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:490
 #, fuzzy
@@ -1006,7 +1006,7 @@ msgstr ""
 "\n"
 "Kon bestand niet openen voor schrijven!"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:119
+#: ../../../ui/wxWidgets/mainManage.cpp:122
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1014
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1021
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
@@ -1015,11 +1015,11 @@ msgstr ""
 msgid "Write Error"
 msgstr "Schrijf Fout"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:142
+#: ../../../ui/wxWidgets/mainManage.cpp:145
 msgid "Please Choose a Backup to restore:"
 msgstr "Kies alstublieft een back-up om te hetstellen:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:182
+#: ../../../ui/wxWidgets/mainManage.cpp:185
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Titelloze herstelde backup>"
 
@@ -2967,7 +2967,7 @@ msgid "Black"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:630
-msgid "Blue"
+msgid "Cyan"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:631
