@@ -12,7 +12,7 @@ set (pwsafe_VERSION_MAJOR 4)
 set (pwsafe_VERSION_MINOR 0)
 set (pwsafe_REVISION 0)
 set (pwsafe_SPECIALBUILD "ALPHA")
-
+set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (GTEST_ROOT "/usr/src/gtest/build"
@@ -198,6 +198,7 @@ install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
 # want here. Also "install (TARGETS" doesn't seem to work with custom targets.
 file (GLOB HELPFILES "${CMAKE_BINARY_DIR}/help/*.zip")
 install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
+# TODO - Insall following only if on a Debian system (or if we're building a deb?)
 install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
 
 # Packaging stuff:
@@ -205,21 +206,27 @@ install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsaf
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
-set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}-${pwsafe_SPECIALBUILD}")
+set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}-${pwsafe_SPECIALBUILD}")
 set (CPACK_PACKAGE_CONTACT "ronys@pwsafe.org")
+set (CPACK_PACKAGE_VENDOR "Rony Shapiro")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password database utility.")
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set (CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/install/description.txt")
 
 ## Debian-specific:
 set (CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
-set (CPACK_DEBIAN_PACKAGE_DESCRIPTION
-  "Portable version of popular password manager program, pwsafe. This is the Linux version of the popular Windows PasswordSafe password manager.")
 set (CPACK_DEBIAN_PACKAGE_DEPENDS
   "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
   "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
 
+## RPM-specific
+set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers")
+set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
+set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
+set (CPACK_RPM_PACKAGE_GROUP "Applications/Utils")
 include(CPack)
 ### End of packaging section
 ### End of CMakeLists.txt
