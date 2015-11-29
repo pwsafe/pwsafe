@@ -338,6 +338,7 @@ public:
   wxCheckBox* m_seclockonidleCB;
   wxSpinCtrl* m_secidletimeoutSB;
   wxCheckBox* m_sysusesystrayCB;
+  wxRadioBox* m_systrayclosediconcolourRB;
   wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
   wxStaticText *m_systrayWarning;

@@ -46,7 +46,8 @@ class SystemTray : protected wxTaskBarIcon
     wxMenu* GetRecentHistory();
     wxMenu* SetupRecentEntryMenu(const CItemData* pci, size_t idx);
 
-    wxIcon iconClosed, iconUnlocked, iconLocked;
+	wxIcon iconClosedBlack, iconClosedBlue, iconClosedYellow, iconClosedWhite;
+    wxIcon iconUnlocked, iconLocked;
     PasswordSafeFrame* m_frame;
     TrayStatus m_status;
 

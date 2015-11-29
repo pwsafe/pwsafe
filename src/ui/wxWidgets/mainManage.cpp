@@ -27,6 +27,7 @@
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
 #include "optionspropsheet.h"
+#include "SystemTray.h"
 #include "ManagePwdPolicies.h"
 #ifndef NO_YUBI
 #include "yubicfg.h"
@@ -48,6 +49,9 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
   COptions *window = new COptions(this);
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
+    // Update system tray icon if visible so changes show up immediately
+    if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))
+        m_sysTray->ShowIcon();
 
     if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
