@@ -4,7 +4,6 @@ project (pwsafe CXX C)
 # prerequisites
 include(CheckLibraryExists)
 include(CheckIncludeFile)
-include(CheckCXXSourceCompiles)
 
 # Version configuration:
 # Following can be different for windows/wx, just wrap around if/else/endif
@@ -36,7 +35,9 @@ endif()
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_XML "Set ON to disable XML import support" OFF)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
+endif()
 
 if(NOT NO_YUBI)
   CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
@@ -62,13 +63,14 @@ if (NOT NO_XML)
   add_definitions ("-DUSE_XML_LIBRARY=XERCES")
 endif (NOT NO_XML)
 
-if (USE_ASAN) 
-  CHECK_LIBRARY_EXISTS(asan "" "" HAS_ASAN)
-  if (NOT HAS_ASAN)
+if (USE_ASAN)
+  # Requires libasan, which I can't get CHECK_LIBRARY_EXISTS to find under Debian
+  CHECK_LIBRARY_EXISTS("asan" "" "" HAS_ASAN)
+  CHECK_LIBRARY_EXISTS("asan" "" "/usr/lib/x86_64-linux-gnu/" HAS_ASAN1)
+  if (NOT HAS_ASAN AND NOT HAS_ASAN1)
     message (WARNING
-      "-fsanitize=address requested but libasan not found - disabling")
-    set (USE_ASAN FALSE)
-  endif (HAS_ASAN)
+      "-fsanitize=address requested but libasan not found.")
+  endif (NOT HAS_ASAN AND NOT HAS_ASAN1)
 endif (USE_ASAN)
 
 enable_testing()
@@ -112,40 +114,9 @@ configure_file (
   ${PROJECT_BINARY_DIR}/version.h
   )
 
-
-check_include_file(stdint.h    HAVE_STDINT_H)
-CHECK_CXX_SOURCE_COMPILES("
-#include <sys/prctl.h>
-int main() { prctl(PR_SET_DUMPABLE, 0); return 0; }
-" HAVE_PR_SET_DUMPABLE)
-
-if(APPLE)
-CHECK_CXX_SOURCE_COMPILES("
-#include <sys/types.h>
-#include <sys/ptrace.h>
-int main() { ptrace(PT_DENY_ATTACH, 0, 0, 0); return 0; }
-" HAVE_PT_DENY_ATTACH)
-endif()
-
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release )
 endif( NOT CMAKE_BUILD_TYPE )
-
-if(CMAKE_BUILD_TYPE STREQUAL Release)
-  message(STATUS "Possibly disabling ptrace from built binary")
-
-  if(HAVE_PR_SET_DUMPABLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_PR_SET_DUMPABLE")
-  endif()
-
-  if(HAVE_PT_DENY_ATTACH)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_PT_DENY_ATTACH")
-  endif()
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
-  message(STATUS "ptrace and core dumps allowed from built binary")
-endif()
 
 if(HAVE_YKPERS_H)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include/ykpers-1")
