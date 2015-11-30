@@ -438,6 +438,8 @@ public:
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
   void SetTrayStatus(bool locked);
+  void SetTrayClosed();
+  void ShowTrayIcon();
 
   ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;

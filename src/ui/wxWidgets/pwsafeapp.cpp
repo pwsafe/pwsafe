@@ -437,7 +437,8 @@ bool PwsafeApp::OnInit()
   }
 
   RestoreFrameCoords();
-  m_frame->Show();
+  if (!cmd_silent)
+    m_frame->Show();
   if (cmd_minimized)
     m_frame->Iconize();
   else if (cmd_silent) {
@@ -452,10 +453,13 @@ bool PwsafeApp::OnInit()
     }
     else {
        m_core.SetCurFile(L"");
+       m_frame->SetTrayClosed();
     }
   } else {
     SetTopWindow(m_frame);
   }
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+    m_frame->ShowTrayIcon();
   return true;
 }
 
