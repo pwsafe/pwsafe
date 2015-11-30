@@ -16,8 +16,6 @@
 #include <stdarg.h>
 #include <syslog.h>
 
-
-
 // Debug output - Same usage as MFC TRACE
 void pws_os::Trace(LPCTSTR lpszFormat, ...)
 {
@@ -154,7 +152,23 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
     Trace0(szBuffer);
   };
 }
+
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  // No-op under DEBUG build, return true to avoid error handling
+  return true;
+}
+
 #else  /* _DEBUG or DEBUG */
+#include <sys/prctl.h>
+
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  return prctl(PR_SET_DUMPABLE, 0) == 0;
+}
+
 DWORD pws_os::IssueError(const stringT &, bool )
 {
   return 0;

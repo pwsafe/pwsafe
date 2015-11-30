@@ -301,6 +301,10 @@ bool PwsafeApp::OnInit()
   if (res != 0)
     return false;
 
+  // Don't allow ptrace or gdump on release build
+  if (!pws_os::DisableDumpAttach())
+    return false;
+  
   // Parse command line options:
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
