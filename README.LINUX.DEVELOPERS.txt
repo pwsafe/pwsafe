@@ -6,6 +6,11 @@ described in terms of .deb packages. If someone builds pwsafe on
 another distro, please update this document with the corresponding
 package names (e.g., rpm).
 
+The source code can be downloaded from
+https://github.com/pwsafe/pwsafe/archive/master.zip
+or cloned via git:
+git clone https://github.com/pwsafe/pwsafe.git
+
 For all Linux distros, your version of gcc/g++ needs to be 4.7 or higher
 because gcc 4.6 doesn't support the C++11 standard.  It does support the
 draft C++0x standard, but our makefiles have -std=c++11, which needs 4.7+
