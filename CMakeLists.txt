@@ -16,6 +16,10 @@ set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_RE
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (GTEST_ROOT "/usr/src/gtest/build"
     CACHE PATH "The root directory of the gtest install prefix")
+else()
+  set (GTEST_MSVC_SEARCH "MT")
+  set (GTEST_ROOT ""
+    CACHE PATH "The root directory of the gtest install prefix")
 endif()
 find_package(GTest REQUIRED)
 
