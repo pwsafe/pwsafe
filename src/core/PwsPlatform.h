@@ -59,8 +59,9 @@
 #include <stdint.h>
 #endif
 
-// Following seems needed on Linux/cygwin
 #if defined(__linux__) || defined(__CYGWIN__)
+#include <endian.h>
+// Following seems needed on Linux/cygwin
 #define LTC_NO_ROLC
 #endif
 
@@ -91,17 +92,19 @@
 // * Windows 32                                 *
 // **********************************************
 #if defined(_WIN32)
-#if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
-#define PWS_PLATFORM "Windows"
-#define PWS_LITTLE_ENDIAN
-#endif
+  #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
+    #define PWS_PLATFORM "Windows"
+    #define PWS_LITTLE_ENDIAN
+  #endif
 // **********************************************
-// * Linux on Intel                             *
+// * Linux                                      *
 // **********************************************
-#elif defined(__linux)
-#define PWS_PLATFORM "Linux"
-#if defined(__i386__) || defined(__i486__) || defined(__x86_64__)
-#define PWS_LITTLE_ENDIAN
+#elif defined(__linux) || defined(__linux__)
+  #define PWS_PLATFORM "Linux"
+  #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    #define PWS_LITTLE_ENDIAN
+  #else
+    #define PWS_BIG_ENDIAN
 #endif
 // **********************************************
 // * cygwin on Intel                             *
