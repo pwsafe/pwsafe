@@ -475,9 +475,8 @@ symbols for password field [0x16]. This was introduced in version
 0x030A (PasswordSafe V3.28).
 
 [20] Entry keyboard shortcut.  Format is:
-  Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 1)
-  Byte  2  : zero
-  Byte  3  : Keyboard Modifiers - a bitwise OR of any valid combination of:
+  Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 0)
+  Byte  2  : Keyboard Modifiers - a bitwise OR of any valid combination of:
     PWS_HOTKEYF_ALT     0x01
     PWS_HOTKEYF_CONTROL 0x02
     PWS_HOTKEYF_SHIFT   0x04
@@ -485,6 +484,7 @@ symbols for password field [0x16]. This was introduced in version
     PWS_HOTKEYF_META    0x10 (not supported by Windows)
     PWS_HOTKEYF_WIN     0x20 (not supported by Windows)
     PWS_HOTKEYF_CMD     0x40 (not supported by Windows)
+  Byte  3  : zero
 This was introduced in version 0x030D (PasswordSafe V3.30).
 
 [21] There are five types of entry:
