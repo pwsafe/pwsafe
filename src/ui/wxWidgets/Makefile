@@ -240,7 +240,8 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(RM) $@.$$$$
 
 version.h: always
-	@../../../Misc/mkversion.pl version.in $@
+	@../../../Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) SPECIAL=$(VER_SPECIAL) \
+     version.in $@
 
 -include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 

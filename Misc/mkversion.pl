@@ -11,8 +11,8 @@
 # The named file is replaced iff the newly generated one's
 # different, to avoid spurious recompilations.
 #
-# Usage: $0 template outfile
-# (typically: $0 version.in version.h)
+# Usage: $0 MAJOR=major_ver MINOR=minor_ver REV=rev SPECIAL=special_ver template outfile
+# (e.g., $0 MAJOR=4 MINOR=3 REV=0 SPECIAL="" version.in version.h)
 #
 
 use strict;
@@ -21,18 +21,32 @@ use File::Copy;
 use File::Spec;
 
 sub usage {
-    print "Usage: $0 template outfile\n";
+    print "Usage: $0 MAJOR=x MINOR=y [REV=z] [SPECIAL=w] template outfile\n";
     exit 1;
 }
 
 my %git_loc  = (
 	darwin => '/usr/local/git/bin/git',
-	linux  => '/usr/local/bin/git',
+	linux  => '/usr/bin/git',
 );
 
-&usage unless ($#ARGV == 1);
-my $TEMPLATE = $ARGV[0];
-my $OUTFILE = $ARGV[1];
+&usage unless ($#ARGV >= 3 && $#ARGV <= 5);
+my ($MAJOR, $MINOR, $REVISION, $SPECIAL) = (0, 0, 0, "");
+
+my @myargs=@ARGV;
+foreach (@myargs) {
+    my $dummy;
+    if (m/MAJOR=/) {
+        ($dummy,$MAJOR) = split("=",$_); shift @ARGV;
+    } elsif (m/MINOR=/) {
+        ($dummy,$MINOR) = split("=",$_); shift @ARGV;
+    } elsif (m/REV=/) {
+        ($dummy,$REVISION) = split("=",$_); shift @ARGV;
+    } elsif (m/SPECIAL=/) {
+        ($dummy,$SPECIAL) = split("=",$_); shift @ARGV;
+    }
+}
+my ($TEMPLATE, $OUTFILE) = ($ARGV[0], $ARGV[1]);
 
 my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/local/bin/git";
 my $VERSTRING;
@@ -53,26 +67,17 @@ if (-x $GIT && (-d ".git" || -d "../../../.git")) {
 #Now that we're done with the formalities, let's get to work:
 my $TMPFILE = File::Spec->tmpdir()."/v$$";
 
-my ($MAJOR, $MINOR, $REVISION);
 
 open(TH, "<$TEMPLATE") || die "Couldn't read $TEMPLATE\n";
 open(VH, ">$TMPFILE") || die "Couldn't open $TMPFILE for writing\n";
 
 while (<TH>) {
-    if (m/^#define\s+MAJORVERSION\s+(.+)$/) {
-        $MAJOR=$1;
-    } elsif (m/^#define\s+MINORVERSION\s+(.+)$/) {
-        $MINOR=$1;
-    } elsif (m/^#define\s+REVISION\s+(.+)$/) {
-        $REVISION=$1;
-    }
-    if (m/^\#define\s+VCS_VERSION/) {
-        print VH "#define VCS_VERSION \"$VERSTRING\"\n";
-    } elsif (m/^\#define\s+LINUXPRODVER/) {
-        print VH "#define LINUXPRODVER $MAJOR, $MINOR, $REVISION, $VERSTRING\n";
-    } else {
-        print VH;
-    }
+    s/\@pwsafe_VERSION_MAJOR\@/$MAJOR/;
+    s/\@pwsafe_VERSION_MINOR\@/$MINOR/;
+    s/\@pwsafe_REVISION\@/$REVISION/;
+    s/\@pwsafe_SPECIALBUILD\@/$SPECIAL/;
+    s/\@pwsafe_VERSTRING\@/$VERSTRING/;
+    print VH;
 }
 
 close(TH);

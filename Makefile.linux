@@ -1,9 +1,9 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-# TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 4.0
-RELEASE_SPECIAL := ALPHA
+export VER_MAJOR := 4
+export VER_MINOR := 0
+export VER_SPECIAL := ALPHA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
@@ -12,12 +12,14 @@ RELEASE_SPECIAL := ALPHA
 
 # Shouldn't change anything below here
 
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
 	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
 	help test
-
-RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
 

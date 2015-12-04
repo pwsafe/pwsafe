@@ -24,11 +24,11 @@
 #define MAJORVERSION @pwsafe_VERSION_MAJOR@
 #define MINORVERSION @pwsafe_VERSION_MINOR@
 #define REVISION     @pwsafe_REVISION@
+#define VCS_VERSION "@pwsafe_VERSTRING@"
 
 // LINUXPRODVER is for Misc/make-latest-xml.pl
 
 #define LINUXPRODVER MAJORVERSION, MINORVERSION, REVISION, VCS_VERSION
-#define VCS_VERSION "@pwsafe_VERSTRING@"
 
 // define following for custom/experimental versions
 #define SPECIALBUILD _T("@pwsafe_SPECIALBUILD@")
