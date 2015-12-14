@@ -124,15 +124,15 @@ End If
 
 stdout.WriteLine "strGitRev=" & strGitRev & vbCRLF
 
-' Read version.in, write version.h, substitute GITREV with strGitRev
+' Read version.in, write version.h, substitute @pwsafe_VERSTRING@ with strGitRev
 Set objVerInFile = objFSO.OpenTextFile(strVersionIn, ForReading)
 Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, True, TristateFalse)
 
 Do While Not objVerInFile.AtEndOfStream
   strLine = objVerInFile.ReadLine()
-  result = InStr(strLine, "GITREV")
+  result = InStr(strLine, "@pwsafe_VERSTRING@")
   If result <> 0 Then
-    strLine = Replace(strLine, "GITREV", strGitRev)
+    strLine = Replace(strLine, "@pwsafe_VERSTRING@", strGitRev)
   End If
   objVerHFile.WriteLine(strLine)
 Loop
