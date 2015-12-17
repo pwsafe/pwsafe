@@ -382,11 +382,13 @@ BOOL CAddEdit_Basic::OnInitDialog()
                                                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                                                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
-
-  FixBitmapBackground(m_CopyPswdBitmap);
-  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-  pBtn->SetBitmap(m_CopyPswdBitmap);
-
+  if (brc) {
+    FixBitmapBackground(m_CopyPswdBitmap);
+    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+    ASSERT(pBtn != NULL);
+    if (pBtn != NULL)
+      pBtn->SetBitmap(m_CopyPswdBitmap);
+  }
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
