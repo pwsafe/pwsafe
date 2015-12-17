@@ -1350,3 +1350,42 @@ void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   // Draw button image transparently
   ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMAsk);
 }
+
+void FixBitmapBackground(CBitmap &bm)
+{
+  // Change bitmap's {192,192,192} pixels
+  // to current flavor of the month default background
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  int rc = bm.GetBitmap(&bmInfo);
+
+  if (rc == 0) {
+    ASSERT(0);
+    return;
+  }
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  if (pixels == NULL) {
+    ASSERT(0);
+    return;
+  }
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
+}

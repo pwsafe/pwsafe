@@ -380,3 +380,6 @@ private:
   int m_IDB;
   COLORREF m_cfMAsk;
 };
+
+// Common to dialog and property page:
+void FixBitmapBackground(CBitmap &bm);
