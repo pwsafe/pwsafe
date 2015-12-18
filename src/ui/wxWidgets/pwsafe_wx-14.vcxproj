@@ -199,6 +199,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">
@@ -238,6 +239,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">
@@ -278,6 +280,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">
@@ -317,6 +320,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">
