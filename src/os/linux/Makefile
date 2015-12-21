@@ -36,7 +36,8 @@ YBPERSFLAGS=$(shell pkg-config --cflags ykpers-1)
 endif
 
 LIBSRC          = debug.cpp dir.cpp env.cpp \
-                  file.cpp logit.cpp mem.cpp pws_str.cpp \
+                  file.cpp logit.cpp media.cpp \
+									mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
                   sleep.cpp xsendstring.cpp\

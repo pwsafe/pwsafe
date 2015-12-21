@@ -305,3 +305,32 @@ ulong64 pws_os::fileLength(std::FILE *fp)
   return ulong64(st.st_size);
 }
 
+bool pws_os::GetFileTimes(const stringT &filename,
+			time_t &ctime, time_t &mtime, time_t &atime)
+{
+  struct stat info;
+  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  char *fn = new char[N];
+  wcstombs(fn, filename.c_str(), N);
+  int status = ::stat(fn, &info);
+  delete[] fn;
+  if (status == 0) {
+    ctime = info.st_ctime;
+    mtime = info.st_mtime;
+    atime = info.st_atime;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool pws_os::SetFileTimes(const stringT &filename,
+      time_t ctime, time_t mtime, time_t atime)
+{
+  UNREFERENCED_PARAMETER(filename);
+  UNREFERENCED_PARAMETER(ctime);
+  UNREFERENCED_PARAMETER(mtime);
+  UNREFERENCED_PARAMETER(atime);
+  
+  return true;
+}

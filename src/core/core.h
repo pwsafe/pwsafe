@@ -230,6 +230,7 @@
 #define IDSC_DELETESBASE                3404
 #define IDSC_ALIASES                    3405
 #define IDSC_SHORTCUTS                  3406
+#define IDSC_SEEATTACHMENTFILTERS       3407
 
 #define IDSC_WAS                        3410
 #define IDSC_WERE                       3411
@@ -274,6 +275,10 @@
 #define IDSC_REMOVEDKBSHORTCUTS         3450
 #define IDSC_XMLCHARACTERERRORS         3451
 #define IDSC_EXPORTDESCRIPTION          3452
+#define IDSC_VALIDATE_MISSING_ATT       3453
+#define IDSC_VALIDATE_ORPHAN_ATT        3454
+#define IDSC_VALIDATE_ATTACHMENT        3455
+#define IDCS_VALIDATE_NOTSET            3456
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

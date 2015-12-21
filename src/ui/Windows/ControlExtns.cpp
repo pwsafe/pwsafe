@@ -847,7 +847,8 @@ LRESULT CListBoxExtn::OnMouseLeave(WPARAM, LPARAM)
 // CComboBoxExtn
 
 CComboBoxExtn::CComboBoxExtn()
- : m_bUseToolTips(false)
+  : m_bUseToolTips(false), m_nPenStyle(PS_SOLID), m_crColor(RGB(64, 64, 64)),
+  m_nBottomMargin(2), m_nSepWidth(1), m_nHorizontalMargin(2)
 {
 }
 
@@ -883,6 +884,26 @@ HBRUSH CComboBoxExtn::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         m_listbox.ActivateToolTips();
       }
     }
+
+    CRect rc;
+    int nIndex, n = m_listbox.GetCount();
+
+    CPen pen(m_nPenStyle, m_nSepWidth, m_crColor), *pOldPen;
+    pOldPen = pDC->SelectObject(&pen);
+
+    for (size_t i = 0; i < m_vSeparators.size(); i++) {
+      nIndex = m_vSeparators[i];
+      if (nIndex < 0)
+        nIndex += n - 1;
+
+      if (nIndex < n - 1) {
+        m_listbox.GetItemRect(nIndex, &rc);
+        pDC->MoveTo(rc.left + m_nHorizontalMargin, rc.bottom - m_nBottomMargin);
+        pDC->LineTo(rc.right - m_nHorizontalMargin, rc.bottom - m_nBottomMargin);
+      }
+    }
+
+    pDC->SelectObject(pOldPen);
   }
 
   return hbr;
@@ -916,6 +937,25 @@ void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
   m_bUseToolTips = true;
   m_vtooltips = vtooltips;
 }
+
+void CComboBoxExtn::SetSeparator(int iSep)
+{
+  if (!m_vSeparators.size())
+    AdjustItemHeight();
+
+  m_vSeparators.push_back(iSep);
+}
+
+void CComboBoxExtn::SetSeparator()
+{
+  SetSeparator(GetCount() - 1);
+}
+
+void CComboBoxExtn::AdjustItemHeight(int nInc)
+{
+  SetItemHeight(0, GetItemHeight(0) + nInc);
+}
+
 
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't

@@ -10,8 +10,10 @@
 //
 
 #include "../stdafx.h"
+
 #include "PWFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
+
 #include "../resource3.h"
 
 // CSetPolicyFiltersDlg dialog

@@ -56,7 +56,8 @@ class CManageFiltersDlg : public CPWDialog
 public:
   CManageFiltersDlg(CWnd* pParent,
                  bool bFilterActive,
-                 PWSFilters &pmapFilters);
+                 PWSFilters &pmapFilters,
+                 bool bCanHaveAttachments);
   virtual ~CManageFiltersDlg();
   void SetCurrentData(FilterPool activefilterpool, CString activefiltername)
   {m_activefilterpool = activefilterpool;
@@ -117,4 +118,7 @@ private:
   int m_num_to_export, m_num_to_copy;
   bool m_bFilterActive, m_bDBFiltersChanged;
   int m_iSortColumn, m_bSortAscending;
+
+  bool m_bCanHaveAttachments;
+  std::set<StringX> m_sMediaTypes;
 };

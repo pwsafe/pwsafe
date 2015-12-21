@@ -8,84 +8,36 @@
 
 #ifdef WIN32
 #include "../ui/Windows/stdafx.h"
-#else
-#include <cstring>
 #endif
 
-using namespace std;
+#include "core/PWSLog.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
 
-#define TEST_BLOWFISH
-#define TEST_TWOFISH
-#define TEST_SHA256
-#define TEST_HMAC_SHA256
-#define TEST_STRINGX
-#define TEST_ITEMFIELD
+#include "gtest/gtest.h"
 
-#ifdef TEST_BLOWFISH
-#include "BlowFishTest.h"
-#endif
-#ifdef TEST_TWOFISH
-#include "TwoFishTest.h"
-#endif
-#ifdef TEST_SHA256
-#include "SHA256Test.h"
-#endif
-#ifdef TEST_HMAC_SHA256
-#include "HMAC_SHA256Test.h"
-#endif
-#ifdef TEST_STRINGX
-#include "StringXTest.h"
-#endif
-#ifdef TEST_ITEMFIELD
-#include "ItemFieldTest.h"
-#endif
-
-#include <iostream>
-using namespace std;
-
-int main()
+int main(int argc, char **argv)
 {
-#ifdef TEST_BLOWFISH
-  CBlowFishTest t0;
-  t0.setStream(&cout);
-  t0.run();
-  t0.report();
+  testing::InitGoogleTest(&argc, argv);
+  int rc = RUN_ALL_TESTS();
+
+#ifdef WIN32
+  system("pause");
 #endif
-#ifdef TEST_MYSTRING
-  CMyStringTest t1;
-  t1.setStream(&cout);
-  t1.run();
-  t1.report();
-#endif
-#ifdef TEST_TWOFISH
-  CTwoFishTest t2;
-  t2.setStream(&cout);
-  t2.run();
-  t2.report();
-#endif
-#ifdef TEST_SHA256
-  CSHA256Test t3;
-  t3.setStream(&cout);
-  t3.run();
-  t3.report();
-#endif
-#ifdef TEST_HMAC_SHA256
-  CHMAC_SHA256Test t4;
-  t4.setStream(&cout);
-  t4.run();
-  t4.report();
-#endif
-#ifdef TEST_STRINGX
-  StringXTest t5;
-  t5.setStream(&cout);
-  t5.run();
-  t5.report();
-#endif
-#ifdef TEST_ITEMFIELD
-  ItemFieldTest t6;
-  t6.setStream(&cout);
-  t6.run();
-  t6.report();
-#endif
-  return 0;
+
+  // Need to find these in order to delete them
+  PWSLog *pwslog = PWSLog::GetLog();
+  PWSprefs *pwsprefs = PWSprefs::GetInstance();
+  PWSrand *pwsrand = PWSrand::GetInstance();
+
+  pwsprefs->DeleteInstance();
+  pwslog->DeleteLog();
+  pwsrand->DeleteInstance();
+
+  // To stop Compiler warning C4189
+  pwsprefs = NULL;
+  pwslog = NULL;
+  pwsrand = NULL;
+
+  return rc;
 }

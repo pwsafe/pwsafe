@@ -1,9 +1,9 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-# TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.97
-RELEASE_SPECIAL := BETA
+export VER_MAJOR := 4
+export VER_MINOR := 0
+export VER_SPECIAL := ALPHA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
@@ -12,11 +12,14 @@ RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
 
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
-	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N help
-
-RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
+	help test
 
 RELEASEDIR := ./Releases/
 
@@ -38,7 +41,7 @@ SF_UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CXXFLAGS=-std=c++11
+export CPPFLAGS += -std=c++11
 
 all: I18N unicodedebug unicoderelease
 
@@ -127,6 +130,9 @@ I18N:
 
 help:
 	$(MAKE) -C help
+
+test:
+	$(MAKE) -C src/test test
 
 # Local variables:
 # mode: makefile

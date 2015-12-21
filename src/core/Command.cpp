@@ -459,18 +459,12 @@ void DBEmptyGroupsCommand::Undo()
 // ------------------------------------------------
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 const Command *pcmd)
+                                 const CItemAtt *att, const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
-  ASSERT(!ci.IsDependent()); // use other c'tor for dependent entries!
-  if (pcmd != NULL)
-    m_bNotifyGUI = pcmd->GetGUINotify();
-}
+  if (att != NULL)
+    m_att = *att;
 
-AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 const CUUID &base_uuid, const Command *pcmd)
-  : Command(pcomInt), m_ci(ci), m_base_uuid(base_uuid)
-{
   if (pcmd != NULL)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
@@ -486,11 +480,11 @@ int AddEntryCommand::Execute()
   if (m_pcomInt->IsReadOnly())
     return 0;
 
-  m_pcomInt->DoAddEntry(m_ci);
+  m_pcomInt->DoAddEntry(m_ci, &m_att);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
   if (m_ci.IsDependent()) {
-    m_pcomInt->DoAddDependentEntry(m_base_uuid, m_ci.GetUUID(),
+    m_pcomInt->DoAddDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
                                    m_ci.GetEntryType());
   }
 
@@ -515,7 +509,7 @@ void AddEntryCommand::Undo()
   dec.Execute();
 
   if (m_ci.IsDependent()) {
-    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_ci.GetUUID(),
+    m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
                                       m_ci.GetEntryType());
   }
 
@@ -543,9 +537,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
     // info for undo
     if (ci.IsDependent()) {
       // For aliases or shortcuts, we just need the uuid of the base entry
-      const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
-                             pcomInt->GetShortcuts2BaseMap());
-      m_base_uuid = imap.find(uuid)->second;
+      m_base_uuid = ci.GetBaseUUID();
     } else if (ci.IsBase()) {
       /**
        * When a shortcut base is deleted, we need to save all
@@ -575,6 +567,21 @@ DeleteEntryCommand::~DeleteEntryCommand()
 
 int DeleteEntryCommand::Execute()
 {
+  // There's at least one case where we may get here with an entry
+  // that's already been deleted: Consider a base and its shortcut
+  // both in the same group, and the group's being deleted:
+  // Each has its own delete command in the group-generated
+  // multicommand, but the shortcut will have been deleted as
+  // part of the base's dependency deletion...
+  // Easiest solution is to check here that we don't delete
+  // something that's no longer in the system. Should be OK for
+  // undo's.
+
+  if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter())
+    return 1;
+
+  // Here if we actually have an entry to delete:
+
   SaveState();
 
   if (m_pcomInt->IsReadOnly())
@@ -584,7 +591,8 @@ int DeleteEntryCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
                                       m_ci.GetUUID());
   }
-
+  // XXX if entry has an attachment, find and store it in m_att for undo.
+  // XXX as well as removing it / decrementing its refcount
   m_pcomInt->DoDeleteEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
   m_pcomInt->RemoveExpiryEntry(m_ci);
@@ -594,22 +602,21 @@ int DeleteEntryCommand::Execute()
 
 void DeleteEntryCommand::Undo()
 {
-  CUUID uuid = m_ci.GetUUID();
   if (m_ci.IsDependent()) {
-    // Check if dep entry hasn't alredy been added - can happen if
+    // Check if dep entry hasn't already been added - can happen if
     // base and dep in group that's being undeleted.
     if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
+      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, &m_att, this);
       pcmd->Execute();
       delete pcmd;
     }
   } else {
-    AddEntryCommand undo(m_pcomInt, m_ci, this);
+    AddEntryCommand undo(m_pcomInt, m_ci, &m_att, this);
     undo.Execute();
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL);
         pcmd->Execute();
         delete pcmd;
       }
@@ -625,7 +632,7 @@ void DeleteEntryCommand::Undo()
           continue;
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }
@@ -904,10 +911,8 @@ int AddDependentEntriesCommand::Execute()
 
   if (m_type == CItemData::ET_ALIAS) {
     m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-    m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
   } else { // if !alias, assume shortcut
     m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
-    m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
   }
 
   if (m_pcomInt->IsReadOnly())
@@ -928,10 +933,8 @@ void AddDependentEntriesCommand::Undo()
   m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
   if (m_type == CItemData::ET_ALIAS) {
     m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-    m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
   } else { // if !alias, assume shortcut
     m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
-    m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
   }
 
   RestoreState();

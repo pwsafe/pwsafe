@@ -100,11 +100,17 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_pp_additional = new CAddEdit_Additional(this, &m_AEMD);
   m_pp_datetimes  = new CAddEdit_DateTimes(this, &m_AEMD);
   m_pp_pwpolicy   = new CAddEdit_PasswordPolicy(this, &m_AEMD);
+  if (pcore->GetReadFileVersion() == PWSfile::V40)
+    m_pp_attachment = new CAddEdit_Attachment(this, &m_AEMD);
+  else
+    m_pp_attachment = NULL;
 
   AddPage(m_pp_basic);
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
   AddPage(m_pp_pwpolicy);
+  if (pcore->GetReadFileVersion() == PWSfile::V40)
+    AddPage(m_pp_attachment);
 }
 
 CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
@@ -113,6 +119,7 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
   delete m_pp_additional;
   delete m_pp_datetimes;
   delete m_pp_pwpolicy;
+  delete m_pp_attachment;
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_PropertySheet, CPWPropertySheet)
@@ -281,7 +288,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.pwp         != m_AEMD.oldpwp)              ||
                         (m_AEMD.ipolicy     == NAMED_POLICY &&
                          m_AEMD.policyname  != m_AEMD.oldpolicyname)       ||
-                         m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut);
+                         m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut        ||
+                         m_AEMD.attachment  != m_AEMD.oldattachment);
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -332,7 +340,17 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
           m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
           m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
-        }
+
+          // TODO - What if user has removed the old attachment or changed it? (Rony)
+          if (m_AEMD.attachment.HasUUID()) {
+            m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+            m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+          } else {
+            m_AEMD.pci->ClearAttUUID();
+            if (m_AEMD.oldattachment.HasUUID())
+              m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+          }
+        } // m_bIsModified
 
         m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
@@ -430,6 +448,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
               break;
           }
         }
+
+        // TODO - Add attachment if present (Rony)
 
         if (m_bIsModified)
           SendMessage(PSM_QUERYSIBLINGS,
@@ -656,4 +676,11 @@ void CAddEdit_PropertySheet::SetupInitialValues()
       m_AEMD.original_entrytype = CItemData::ET_ALIAS;
     }
   } // IsAlias
+
+  // Attachment
+  if (m_AEMD.pci->HasAttRef()) {
+    ASSERT(m_AEMD.pcore->HasAtt(m_AEMD.pci->GetAttUUID()));
+    m_AEMD.oldattachment = m_AEMD.attachment = 
+      m_AEMD.pcore->GetAtt(m_AEMD.pci->GetAttUUID());
+  }
 }

@@ -191,3 +191,10 @@ void pws_os::HexDump(unsigned char *, const int &,
 //  Do nothing in non-Debug mode
 }
 #endif  /* _DEBUG or DEBUG */
+
+bool pws_os::DisableDumpAttach()
+{
+  // On non-Windows, this prevents ptrace and creation of core dumps
+  // No-op here, return true to avoid error handling
+  return true;
+}

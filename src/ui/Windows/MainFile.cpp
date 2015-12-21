@@ -359,7 +359,7 @@ int DboxMain::NewFile(StringX &newfilename)
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  std::wstring v3FileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
+  std::wstring newFileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
   std::wstring dir;
   if (m_core.GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
@@ -374,7 +374,7 @@ int DboxMain::NewFile(StringX &newfilename)
   while (1) {
     CPWFileDialog fd(FALSE,
                      DEFAULT_SUFFIX,
-                     v3FileName.c_str(),
+                     newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                      OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
@@ -1054,6 +1054,13 @@ void DboxMain::OnSave()
 
 int DboxMain::Save(const SaveType savetype)
 {
+  /*
+   * We're treating both V3 and V4 as 'current'
+   * versions, doing incremental backups for both.
+   * For older versions, we offer to convert.
+   * This means explicit V3 -> V4 conversion
+   * Is done via SaveAs()
+   */
   PWS_LOGIT_ARGS("savetype=%d", savetype);
 
   int rc;
@@ -1061,6 +1068,9 @@ int DboxMain::Save(const SaveType savetype)
   CGeneralMsgBox gmb;
   std::wstring NewName;
   stringT bu_fname; // used to undo backup if save failed
+
+  const StringX sxCurrFile = m_core.GetCurFile();
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -1071,11 +1081,12 @@ int DboxMain::Save(const SaveType savetype)
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();
 
-  if (m_core.GetCurFile().empty())
+  if (sxCurrFile.empty())
     return SaveAs();
 
-  switch (m_core.GetReadFileVersion()) {
-    case PWSfile::VCURRENT:
+  switch (current_version) {
+    case PWSfile::V30:
+    case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
@@ -1131,14 +1142,15 @@ int DboxMain::Save(const SaveType savetype)
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  rc = m_core.WriteCurFile();
+  // We are saving the current DB. Retain current version
+  rc = m_core.WriteFile(sxCurrFile, current_version);
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
-    if (!bu_fname.empty() && !m_core.GetCurFile().empty())
-      pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
+    if (!bu_fname.empty() && !sxCurrFile.empty())
+      pws_os::RenameFile(bu_fname, sxCurrFile.c_str());
     // Show user that we have a problem
-    DisplayFileWriteError(rc, m_core.GetCurFile());
+    DisplayFileWriteError(rc, sxCurrFile);
     return rc;
   }
 
@@ -1229,16 +1241,26 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
+  // SaveAs can only save in the current format
+  // To save as a lower or higher format, the user should use Export
+
+  // HOWEVER, in this "Experimental" version, V1.7, V2 & V3 DBs will be saved
+  // as V3 and only if the current DB is V4 will it be saved in V4 format.
+
   PWS_LOGIT;
 
   INT_PTR rc;
   StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
-      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
+
+  // Only need to warn user if current DB is prior to V3 - no implications if saving V4 as V4 or V3 as V3
+  if (current_version < PWSfile::V30 && 
+      current_version != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
 
+    // Note: string IDS_NEWFORMAT2 will need to be updated when DB V4 is the default
     cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
@@ -1259,7 +1281,11 @@ int DboxMain::SaveAs()
     cf = LPCWSTR(defname);
   }
 
-  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+  // Note: The default export DB will be V3 unless the current DB is already in V4 format
+  // This ensures that a user won't create an "Experimental" V4 DB by mistake
+  std::wstring newFileName = PWSUtil::GetNewFileName(cf.c_str(),
+                current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX);
+
   std::wstring dir;
   if (m_core.GetCurFile().empty())
     dir = PWSdirs::GetSafeDir();
@@ -1271,11 +1297,11 @@ int DboxMain::SaveAs()
 
   while (1) {
     CPWFileDialog fd(FALSE,
-                     DEFAULT_SUFFIX,
-                     v3FileName.c_str(),
+                     current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX,
+                     newFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                        CString(MAKEINTRESOURCE(current_version == PWSfile::V40 ? IDS_FDF_V4_ALL : IDS_FDF_V3_ALL)),
                      this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
@@ -1321,7 +1347,9 @@ int DboxMain::SaveAs()
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  rc = m_core.WriteFile(newfile);
+  // Note: Writing out in in V4 DB format if the DB is already V4,
+  // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
+  rc = m_core.WriteFile(newfile, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
@@ -1372,23 +1400,49 @@ void DboxMain::OnExportVx(UINT nID)
   StringX newfile;
   CString cs_title, cs_text;
 
-  CGeneralMsgBox gmb;
+  const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
+  PWSfile::VERSION export_version = PWSfile::UNKNOWN_VERSION;
+  stringT sfx = L"";
+  int fdf = IDS_FDF_DB_ALL;
 
-  cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
-  cs_title.LoadString(IDS_VERSIONWARNING);
+  switch (nID) {
+    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
+      export_version = PWSfile::V17; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V2FORMAT:
+      export_version = PWSfile::V20; sfx = L"dat"; fdf = IDS_FDF_V12_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V3FORMAT:
+      export_version = PWSfile::V30; sfx = L"psafe3"; fdf = IDS_FDF_V3_ALL;
+      break;
+    case ID_MENUITEM_EXPORT2V4FORMAT:
+      export_version = PWSfile::V40; sfx = L"psafe4"; fdf = IDS_FDF_V4_ALL;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
 
-  gmb.SetTitle(cs_title);
-  gmb.SetMsg(cs_text);
-  gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-  gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-  gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
+  if (export_version < current_version) {
+    // Only need warning if exporting to a lower DB version
+    CGeneralMsgBox gmb;
 
-  if (gmb.DoModal() == IDS_CANCEL)
-    return;
+    cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
+    cs_title.LoadString(IDS_VERSIONWARNING);
+
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_text);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+    gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
+
+    if (gmb.DoModal() == IDS_CANCEL)
+      return;
+  }
 
   //SaveAs-type dialog box
-  std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                      L"dat");
+  std::wstring exportFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                        sfx);
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
 
   std::wstring dir;
@@ -1403,10 +1457,10 @@ void DboxMain::OnExportVx(UINT nID)
   while (1) {
     CPWFileDialog fd(FALSE,
                      DEFAULT_SUFFIX,
-                     OldFormatFileName.c_str(),
+                     exportFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                     CString(MAKEINTRESOURCE(fdf)),
                      this);
 
     fd.m_ofn.lpstrTitle = cs_text;
@@ -1434,20 +1488,10 @@ void DboxMain::OnExportVx(UINT nID)
   // of pointers and because the entries have pointers to their
   // display info, which would be tried to be freed twice.
   // Do bare minimum - save header information only
-  const PWSfile::HeaderRecord saved_hdr = m_core.GetHeader();
+  const PWSfileHeader saved_hdr = m_core.GetHeader();
 
-  switch (nID) {
-    case ID_MENUITEM_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteV17File(newfile);
-      break;
-    case ID_MENUITEM_EXPORT2V2FORMAT:
-      rc = m_core.WriteV2File(newfile);
-      break;
-    default:
-      ASSERT(0);
-      rc = PWScore::FAILURE;
-      break;
-  }
+  // Now export it in the requested version
+  rc = m_core.WriteFile(newfile, export_version);
 
   // Restore current database header
   m_core.SetHeader(saved_hdr);
@@ -1465,6 +1509,8 @@ void DboxMain::OnExportEntryDB()
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2DB,
     this, WZAdvanced::INVALID, NULL);
 
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
+
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
 }
@@ -1476,6 +1522,8 @@ void DboxMain::OnExportGroupDB()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTGRP2DB,
     this, WZAdvanced::INVALID, NULL);
+
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
@@ -1532,7 +1580,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.SetReadOnly(false);
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
-  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, prpt);
+  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), prpt);
 
   OIL.clear();
   export_core.ClearData();
@@ -1811,6 +1859,206 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
 
   prpt->EndReport();
   return rc;
+}
+
+void DboxMain::OnExportAttachment()
+{
+  /*
+    We save the attachment, in the same initial directory as the current DB, as follows:
+
+    * If the user retains the original file extension - just write it as-is BUT do not
+      use CImage, even if it is an image file, as it might "optimise" the file and
+      could become to be smaller causing confusion!
+    * If it ia an image file (from media type) but with a different extension, 
+      use CImage to convert it
+    * If not an image file, just write it.
+  */
+
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL && pci->HasAttRef());
+
+  CItemAtt &att = m_core.GetAtt(pci->GetAttUUID());
+
+  CString filter, csMediaType;
+  CSimpleArray<GUID> aguidFileTypes;
+  HRESULT hResult;
+  StringX sxAttFileName;
+  stringT soutputfile;
+  CImage AttImage;
+  int iAttType(0);  // -1 not an image, 0 not yet tested, +1 an image
+
+  // Get file name and extension
+  sxAttFileName = att.GetFileName();
+
+  wchar_t fullfilename[_MAX_PATH];
+  wchar_t drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
+  _wsplitpath_s(sxAttFileName.c_str(), NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+
+  // Get current DB drive and directory
+  _wsplitpath_s(m_core.GetCurFile().c_str(), drive, _MAX_DRIVE, dir, _MAX_DIR, NULL, 0, NULL, 0);
+
+  // Create new full file name
+  _wmakepath_s(fullfilename, _MAX_FNAME, drive, dir, fname, ext);
+  soutputfile = fullfilename;
+
+  // Default suffix should be the same as the original file (skip over leading ".")
+  CString cs_ext = ext + 1;
+
+  // Get media type
+  csMediaType = att.GetMediaType().c_str();
+
+  if (csMediaType.Left(5) == L"image") {
+    // Should be an image file - but may not be supported by CImage - try..
+    // Allocate attachment buffer
+    UINT imagesize = att.GetContentSize();
+    HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
+    ASSERT(gMemory);
+
+    BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+    ASSERT(pBuffer);
+
+    // Load image into buffer
+    att.GetContent(pBuffer, imagesize);
+
+    // Put it into a IStream
+    IStream *pStream = NULL;
+    hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
+    if (hResult == S_OK) {
+      // Load it
+      hResult = AttImage.Load(pStream);
+    } else {
+      // Reset result so that user gets error dialog below
+      // as we couldn't create the IStream object
+      hResult = E_FAIL;
+    }
+
+    // Clean up - no real need to trash the buffer
+    pStream->Release();
+    GlobalUnlock(gMemory);
+    GlobalFree(gMemory);
+
+    // Was it an image?  (No : Yes)
+    iAttType = FAILED(hResult) ? -1 : 1;
+  } else {
+    // Definitely not an image
+    iAttType = -1;
+  }
+
+  switch (iAttType) {
+    case 1:
+    {
+      // Should be an image and loaded into AttImage
+      if (AttImage.IsNull()) {
+        ASSERT(0);
+        return;
+      }
+
+      hResult = AttImage.GetExporterFilterString(filter, aguidFileTypes);
+      if (FAILED(hResult))
+        return;
+
+      // Extensions look much nicer in lower case
+      filter.MakeLower();
+
+      // Get index of current extension in filter string - note in pairs so need to skip every other one
+      int cPos = 0;
+      int iIndex = 1;  // Unusually, the filter index starts at 1 not 0
+      CString cs_ext_nocase(ext); cs_ext_nocase.MakeLower();
+      CString cs_filter_nocase(filter);
+      CString cs_token;
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+      cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+      if (cs_token.Find(cs_ext_nocase) == -1) {
+        while (!cs_token.IsEmpty()) {
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
+          cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
+          if (cs_token.Find(cs_ext_nocase) != -1)
+            break;
+          iIndex++;  // Documentation says index is per pair of file types
+        };
+      }
+
+      // Do not use lpstrInitialDir as it has no effect after the first CFileDIalog call
+      // Instead set the file name to be the full path
+      CPWFileDialog fileDlg(FALSE, cs_ext, soutputfile.c_str(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      fileDlg.m_pOFN->nFilterIndex = iIndex + 1;  // Not sure why need to add 1 but it seems to work!
+
+      if (fileDlg.DoModal() == IDOK) {
+        soutputfile = fileDlg.GetPathName();
+
+        // Get new extension
+        _wsplitpath_s(soutputfile.c_str(), NULL, 0, NULL, 0, NULL, 0, new_ext, _MAX_EXT);
+
+        // If new extension is the same as old, export the file rather than use
+        // CImage to save it (which may well change its size)
+        if (_wcsicmp(ext, new_ext) == 0) {
+          int rc = att.Export(soutputfile);
+          hResult = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
+        } else {
+          hResult = AttImage.Save(soutputfile.c_str());
+        }
+
+        // Now delete it
+        AttImage.Destroy();
+
+        if (FAILED(hResult)) {
+          CGeneralMsgBox gmb;
+          const CString cs_errmsg = L"Failed to save image";
+          gmb.AfxMessageBox(cs_errmsg);
+          return;
+        }
+      } else {
+        // User cancelled save
+        return;
+      }
+      break;
+    }
+    case -1:
+    {
+      // Not an image file
+      // Set filter "??? files (*.???)|*.???||"
+      SHFILEINFO sfi = {0};
+      DWORD_PTR dw = SHGetFileInfo(soutputfile.c_str(), 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
+
+      if (dw != 0) {
+        filter.Format(IDS_FDF_FILES, sfi.szTypeName, ext, ext);
+      } else {
+        // Use All files!
+        filter.LoadString(IDS_FDF_ALL);
+      }
+
+      CPWFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      if (fileDlg.DoModal() == IDOK) {
+        soutputfile = fileDlg.GetPathName();
+        att.Export(soutputfile);
+      } else {
+        // User cancelled save
+        return;
+      }
+      break;
+    }
+  }
+
+  // We have saved/exported the file - now reset its file times to the original
+  // when it was first imported/added
+  if (soutputfile.empty()) {
+    // Shouldn't get here with an empty export file name!
+    ASSERT(0);
+    return;
+  }
+
+  // Get old file times
+  time_t ctime, mtime, atime;
+  att.GetFileCTime(ctime);
+  att.GetFileMTime(mtime);
+  att.GetFileATime(atime);
+
+  bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
+  if (!bUpdateFileTimes) {
+    CGeneralMsgBox gmb;
+    const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
+    gmb.AfxMessageBox(cs_errmsg);
+  }
 }
 
 void DboxMain::OnImportText()
@@ -2966,6 +3214,9 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
     if (pci->IsProtected())
       pELLE->sx_title += L" #";
 
+    if (pci->HasAttRef())
+      pELLE->sx_title += L" +";
+
     // Update time fields
     time_t tttXTime;
     pci->GetXTime(tttXTime);
@@ -3537,7 +3788,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
                      cs_datetime.substr(17, 2);   // SS
     cs_newfile = nf.c_str();
     cs_newfile += L".fbak";
-    rc = m_core.WriteFile(cs_newfile.c_str());
+    rc = m_core.WriteFile(cs_newfile.c_str(), m_core.GetReadFileVersion());
     return (int)rc;
   }
 
@@ -3673,7 +3924,8 @@ void DboxMain::RegistryAnonymity()
 
   if (dw == ERROR_SUCCESS) {
     // Delete entries relating to PWS
-    app.DelRegTree(hSubkey, L"psafe3");
+    app.DelRegTree(hSubkey, V3_SUFFIX);
+    app.DelRegTree(hSubkey, V4_SUFFIX);
     app.DelRegTree(hSubkey, L"ibak");
     app.DelRegTree(hSubkey, L"bak");
     app.DelRegTree(hSubkey, L"*");
@@ -3830,12 +4082,12 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
                      CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME,
-                     CItemData::KBSHORTCUT};
+                     CItemData::KBSHORTCUT, CItemData::ATTREF};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
                        IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME,
-                       IDS_COMPKBSHORTCUT};
+                       IDS_COMPKBSHORTCUT, IDS_ATTREF};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

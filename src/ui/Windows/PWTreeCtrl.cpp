@@ -1217,14 +1217,14 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     case CItemData::ET_ALIAS:
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      ci_temp.SetBaseUUID(app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp);
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      ci_temp.SetBaseUUID(app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp);
       break;
     default:
       ASSERT(0);
@@ -1918,6 +1918,10 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   }
   if (ci.IsProtected())
     treeDispString += L" #";
+
+  if (ci.HasAttRef())
+    treeDispString += L" +";
+
   return treeDispString;
 }
 

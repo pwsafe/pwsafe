@@ -18,7 +18,6 @@
 #include "UTF8Conv.h"
 #include "Report.h"
 #include "VerifyFormat.h"
-#include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
 #include "os/pws_tchar.h"
@@ -58,6 +57,72 @@ static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser 
     return gtu1.user.compare(gtu2.user) < 0;
 }
 
+// Helper struct for results of a database verification
+struct st_ValidateResults {
+  int num_invalid_UUIDs;
+  int num_duplicate_UUIDs;
+  int num_empty_titles;
+  int num_empty_passwords;
+  int num_duplicate_GTU_fixed;
+  int num_PWH_fixed;
+  int num_excessivetxt_found;
+  int num_alias_warnings;
+  int num_shortcuts_warnings;
+  int num_missing_att;
+  int num_orphan_att;
+
+  st_ValidateResults()
+  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+  num_empty_titles(0), num_empty_passwords(0),
+  num_duplicate_GTU_fixed(0),
+  num_PWH_fixed(0), num_excessivetxt_found(0),
+  num_alias_warnings(0), num_shortcuts_warnings(0),
+  num_missing_att(0), num_orphan_att(0)
+  {}
+
+  st_ValidateResults(const st_ValidateResults &that)
+  : num_invalid_UUIDs(that.num_invalid_UUIDs),
+  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+  num_empty_titles(that.num_empty_titles),
+  num_empty_passwords(that.num_empty_passwords),
+  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+  num_PWH_fixed(that.num_PWH_fixed),
+  num_excessivetxt_found(that.num_excessivetxt_found),
+  num_alias_warnings(that.num_alias_warnings),
+  num_shortcuts_warnings(that.num_shortcuts_warnings),
+  num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
+  {}
+
+  st_ValidateResults &operator=(const st_ValidateResults &that) {
+    if (this != &that) {
+      num_invalid_UUIDs = that.num_invalid_UUIDs;
+      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
+      num_empty_titles = that.num_empty_titles;
+      num_empty_passwords = that.num_empty_passwords;
+      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
+      num_PWH_fixed = that.num_PWH_fixed;
+      num_excessivetxt_found = that.num_excessivetxt_found;
+      num_alias_warnings = that.num_alias_warnings;
+      num_shortcuts_warnings = that.num_shortcuts_warnings;
+      num_missing_att = that.num_missing_att;
+      num_orphan_att = that.num_orphan_att;
+    }
+    return *this;
+  }
+
+  int TotalIssues()
+  { 
+    return (num_invalid_UUIDs + num_duplicate_UUIDs +
+            num_empty_titles + num_empty_passwords +
+            num_duplicate_GTU_fixed +
+            num_PWH_fixed + num_excessivetxt_found +
+            num_alias_warnings + num_shortcuts_warnings +
+            num_missing_att + num_orphan_att);
+  }
+};
+
+//-----------------------------------------------------------------
+
 PWScore::PWScore() :
                      m_isAuxCore(false),
                      m_currfile(_T("")),
@@ -76,7 +141,7 @@ PWScore::PWScore() :
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
     PWScore::m_session_initialized = true;
-    CItemData::SetSessionKey(); // per-session initialization
+    CItem::SetSessionKey(); // per-session initialization
     pws_os::mlock(m_session_key, sizeof(m_session_key));
     PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key));
     if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {
@@ -168,7 +233,7 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &sxDependents)
     sxDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
 }
 
-void PWScore::DoAddEntry(const CItemData &item)
+void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
 {
   // Also "UndoDeleteEntry" !
   ASSERT(m_pwlist.find(item.GetUUID()) == m_pwlist.end());
@@ -179,6 +244,13 @@ void PWScore::DoAddEntry(const CItemData &item)
 
   if (item.IsNormal() && item.IsPolicyNameSet()) {
     IncrementPasswordPolicy(item.GetPolicyName());
+  }
+
+  if (att != NULL && att->HasContent()) {
+    m_pwlist[item.GetUUID()].SetAttUUID(att->GetUUID());
+    if (m_attlist.find(att->GetUUID()) == m_attlist.end())
+      m_attlist.insert(std::make_pair(att->GetUUID(), *att));
+    m_attlist[att->GetUUID()].IncRefcount();
   }
 
   int32 iKBShortcut;
@@ -242,10 +314,9 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
-    CItemData::EntryType entrytype = item.GetEntryType();
-    CUUID base_uuid(CUUID::NullUUID());
     if (item.IsDependent()) {
-      GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
+      CUUID base_uuid = item.GetBaseUUID();
+      CItemData::EntryType entrytype = item.GetEntryType();
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
     } else if (item.IsAliasBase()) {
       ResetAllAliasPasswords(entry_uuid);
@@ -278,6 +349,13 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       DecrementPasswordPolicy(item.GetPolicyName());
     }
 
+    if (item.HasAttRef()) {
+      CItemAtt &att = GetAtt(item.GetAttUUID());
+      if (att.GetRefcount() == 1)
+        RemoveAtt(item.GetAttUUID());
+      else
+        att.DecRefcount();
+    }
     NotifyDBModified();
   } // pos != m_pwlist.end()
 }
@@ -324,6 +402,22 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   m_bDBChanged = true;
 }
 
+#if 0
+
+void PWScore::DoDeleteAtt(const CItemAtt &att)
+{
+  /**
+   * Note that we do NOT erase reference uuid in owner record(s)
+   */
+
+  // Make sure att's there
+  auto pos = m_attlist.find(att.GetUUID());
+  ASSERT(pos != m_attlist.end());
+
+  m_attlist.erase(pos);
+}
+#endif
+
 void PWScore::ClearData(void)
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
@@ -337,12 +431,11 @@ void PWScore::ClearData(void)
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
+  m_attlist.clear();
 
   // Clear out out dependents mappings
   m_base2aliases_mmap.clear();
-  m_alias2base_map.clear();
   m_base2shortcuts_mmap.clear();
-  m_shortcut2base_map.clear();
 
   // Clear out unknown fields
   m_UHFL.clear();
@@ -410,59 +503,37 @@ struct RecordWriter {
 
   void operator()(std::pair<CUUID const, CItemData> &p)
   {
-    StringX savePassword = p.second.GetPassword();
-    StringX uuid_str(savePassword);
-    CUUID base_uuid(CUUID::NullUUID());
-    CUUID item_uuid = p.second.GetUUID();
-
-    if (p.second.IsAlias()) {
-      if (m_version < PWSfile::V30) {
-        // Pre V30 does not support aliases.  Write as a normal record
-        // with the base record's password
-        CItemData ci = p.second;
-        CItemData *pbase = m_pcore->GetBaseEntry(&(p.second));
-        ci.SetPassword(pbase->GetPassword());
-        m_pout->WriteRecord(ci);
-        return;
-      } else {
-        m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
-        uuid_str = _T("[[");
-        uuid_str += base_uuid;
-        uuid_str += _T("]]");
-      }
-    } else if (p.second.IsShortcut()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
-      if (m_version < PWSfile::V30) {
-        // Pre V30 does not support shortcuts at all - ignore completely
-        return;
-      } else {
-        uuid_str = _T("[~");
-        uuid_str += base_uuid;
-        uuid_str += _T("~]");
-      }
+    if (p.second.IsAlias() && m_version < PWSfile::V30) {
+      // Pre V30 does not support aliases.  Write as a normal record
+      // with the base record's password
+      CItemData ci = p.second;
+      CItemData *pbase = m_pcore->GetBaseEntry(&(p.second));
+      ci.SetPassword(pbase->GetPassword());
+      m_pout->WriteRecord(ci);
+      return;
+    } else if (p.second.IsShortcut() && m_version < PWSfile::V30) {
+      // Pre V30 does not support shortcuts at all - ignore completely
+      return;
     }
-
-    p.second.SetPassword(uuid_str);
     m_pout->WriteRecord(p.second);
-    p.second.SetPassword(savePassword);
     p.second.ClearStatus();
   }
 
 private:
   RecordWriter& operator=(const RecordWriter&); // Do not implement
-
   PWSfile *m_pout;
   PWScore *m_pcore;
   const PWSfile::VERSION m_version;
 };
 
-int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
-                       PWSfile::VERSION version)
+int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
+                       bool bUpdateSig)
 {
   PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
   int status;
-  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+
+  PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
                                       PWSfile::Write, status);
 
   if (status != PWSfile::SUCCESS) {
@@ -482,17 +553,12 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   m_hdr.m_RUEList = m_RUEList;
 
   out->SetHeader(m_hdr);
+  out->SetUnknownHeaderFields(m_UHFL);
+  out->SetNHashIters(GetHashIters());
+  out->SetFilters(m_MapFilters);
+  out->SetPasswordPolicies(m_MapPSWDPLC);
+  out->SetEmptyGroups(m_vEmptyGroups);
 
-  // Give PWSfileV3 the unknown headers to write out
-  // XXX cleanup gross dynamic_cast
-  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
-  if (out3 != NULL) {
-    out3->SetNHashIters(GetHashIters());
-    out3->SetUnknownHeaderFields(m_UHFL);
-    out3->SetFilters(m_MapFilters); // Give it the filters to write out
-    out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
-    out3->SetEmptyGroups(m_vEmptyGroups); // Give it the Empty Groups to write out
-  }
 
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
@@ -505,8 +571,16 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
     RecordWriter write_record(out, this, version);
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
-    // Update info only if CURRENT_VERSION
-    if (version == PWSfile::VCURRENT) {
+    // Write attachments (only from V4)
+    if (version >= PWSfile::V40)
+      for_each(m_attlist.begin(), m_attlist.end(),
+               [&](std::pair<CUUID const, CItemAtt> &p)
+               {
+                 p.second.Write(out);
+               } );
+
+    // Update header if V30 or later (no headers before V30)
+    if (version >= PWSfile::V30) {
       m_hdr = out->GetHeader(); // update time saved, etc.
     }
   }
@@ -518,8 +592,9 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   out->Close();
   delete out;
 
-  // Again update info only if CURRENT_VERSION
-  if (version == PWSfile::VCURRENT) {
+  // Update info only if written version is same as read version
+  // (otherwise we're exporting, not saving)
+  if (version == m_ReadFileVersion) {
     SetChanged(false, false);
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
@@ -547,13 +622,13 @@ struct ExportRecordWriter {
     CUUID item_uuid = item.GetUUID();
 
     if (item.IsAlias()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
+      base_uuid = item.GetBaseUUID();
       uuid_str = _T("[[");
       uuid_str += base_uuid;
       uuid_str += _T("]]");
     }
     else if (item.IsShortcut()) {
-      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
+      base_uuid = item.GetBaseUUID();
       uuid_str = _T("[~");
       uuid_str += base_uuid;
       uuid_str += _T("~]");
@@ -578,13 +653,13 @@ private:
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                             PWScore *pINcore, CReport *pRpt, PWSfile::VERSION version)
+                             PWScore *pINcore, PWSfile::VERSION version, CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version
   // Used by Export entry or Export Group
   int status;
-  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+  PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
     PWSfile::Write, status);
 
   if (status != PWSfile::SUCCESS) {
@@ -603,29 +678,24 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // Set new header
   out->SetHeader(m_hdr);
 
-  // Give PWSfileV3 the unknown headers to write out
-  // XXX cleanup gross dynamic_cast
-  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
-  if (out3 != NULL) {
-    out3->SetNHashIters(GetHashIters());
+  out->SetNHashIters(GetHashIters());
 
-    // Build a list of Named Password Polices used by exported entries
-    std::vector<StringX> vPWPolicies;
+  // Build a list of Named Password Polices used by exported entries
+  std::vector<StringX> vPWPolicies;
 
-    // As not exporting the whole database, only get referenced Password Policies
-    PopulatePWPVector pwpv(&vPWPolicies);
-    for_each(pOIL->begin(), pOIL->end(), pwpv);
+  // As not exporting the whole database, only get referenced Password Policies
+  PopulatePWPVector pwpv(&vPWPolicies);
+  for_each(pOIL->begin(), pOIL->end(), pwpv);
 
-    // Only include Named Policies in map that are being used by exported entries
-    PSWDPolicyMap ExportMapPSWDPLC;
-    PSWDPolicyMapCIter iter;
-    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-      if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
-        ExportMapPSWDPLC[iter->first] = iter->second;
-      }
+  // Only include Named Policies in map that are being used by exported entries
+  PSWDPolicyMap ExportMapPSWDPLC;
+  PSWDPolicyMapCIter iter;
+  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+    if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+      ExportMapPSWDPLC[iter->first] = iter->second;
     }
-    out3->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
   }
+  out->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
 
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
@@ -764,6 +834,142 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 
 #define MRE_FS _T("\xbb")
 
+static void TestAndFixNullUUID(CItemData &ci_temp,
+                               std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                               st_ValidateResults &st_vr)
+{
+  /*
+   * If, for some reason, we're reading in an invalid UUID,
+   * we will change the UUID before adding it to the list.
+   *
+   * To date, we know that databases of format 0x0200 and 0x0300 have a UUID
+   * problem if records were duplicated.  Databases of format 0x0100 did not
+   * have the duplicate function and it has been fixed in databases in format
+   * 0x0301 and so not an issue in V1 (0x0100) or V3.03 (0x0301) or later
+   *
+   * But a Null CUUID is invalid even if another application using core.lib
+   * does it and they could have got the version wrong - so fix it anyway
+   */
+  if (ci_temp.GetUUID() == CUUID::NullUUID()) {
+    vGTU_INVALID_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
+                                                  ci_temp.GetTitle(), ci_temp.GetUser()));
+    st_vr.num_invalid_UUIDs++;
+    ci_temp.CreateUUID(); // replace invalid UUID
+    ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
+  } // UUID invalid
+}
+
+static void TestAndFixDupUUID(CItemData &ci_temp, const PWScore &core,
+                              std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
+                              st_ValidateResults &st_vr)
+{
+  /*
+   * If, for some reason, we're reading in a UUID that we already have
+   * we will change the UUID, rather than overwrite an entry.
+   * This is to protect the user from possible bugs that break
+   * the uniqueness requirement of UUIDs.
+   */
+  if (core.Find(ci_temp.GetUUID()) != core.GetEntryEndIter()) {
+    vGTU_DUPLICATE_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
+                                                    ci_temp.GetTitle(), ci_temp.GetUser()));
+    st_vr.num_duplicate_UUIDs++;
+    ci_temp.CreateUUID(); // replace duplicated UUID
+    ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
+  } // UUID duplicate
+}
+
+static void ProcessPasswordPolicy(CItemData &ci_temp, PWScore &core)
+{
+  if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
+    // Error: can't have both - clear Password Policy Name
+    ci_temp.ClearField(CItemData::POLICYNAME);
+  }
+
+  if (ci_temp.IsPolicyNameSet()) {
+    if (!core.IncrementPasswordPolicy(ci_temp.GetPolicyName())) {
+      // Map name not present in database - clear it!
+      ci_temp.ClearField(CItemData::POLICYNAME);
+    }
+  }
+}
+
+void PWScore::ProcessReadEntry(CItemData &ci_temp,
+                               std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                               std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
+                               st_ValidateResults &st_vr)
+{
+  TestAndFixNullUUID(ci_temp, vGTU_INVALID_UUID, st_vr);
+  TestAndFixDupUUID(ci_temp, *this, vGTU_DUPLICATE_UUID, st_vr);
+  ProcessPasswordPolicy(ci_temp, *this);
+
+  int32 iKBShortcut;
+  ci_temp.GetKBShortcut(iKBShortcut);
+  if (iKBShortcut != 0) {
+    // Entry can't have same shortcut as the Application's HotKey
+    if (m_iAppHotKey == iKBShortcut) {
+      ci_temp.SetKBShortcut(0);
+    } else { // non-zero shortcut != app hotkey
+      if (!ValidateKBShortcut(iKBShortcut)) {
+        m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
+      } else {
+        ci_temp.SetKBShortcut(0);
+      }
+    }
+  } // non-zero shortcut
+
+  // Possibly expired?
+  time_t tttXTime;
+  ci_temp.GetXTime(tttXTime);
+  if (tttXTime != time_t(0)) {
+    m_ExpireCandidates.push_back(ExpPWEntry(ci_temp));
+  }
+
+  // Finally, add it to the list!
+  m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
+}
+
+
+static void ReportReadErrors(CReport *pRpt,
+                             std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                             std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID)
+{
+  if (pRpt == NULL || (vGTU_INVALID_UUID.empty() && vGTU_DUPLICATE_UUID.empty()))
+    return;
+
+  // Here iff we've something to report and somewhere to report it
+  stringT cs_Error;
+  // Write out error heading
+  pRpt->WriteLine();
+  LoadAString(cs_Error, IDSC_VALIDATE_ERRORS);
+  pRpt->WriteLine(cs_Error);
+
+  // Report invalid UUIDs
+  if (!vGTU_INVALID_UUID.empty()) {
+    pRpt->WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATE_BADUUID);
+    pRpt->WriteLine(cs_Error);
+  }
+  std::sort(vGTU_INVALID_UUID.begin(), vGTU_INVALID_UUID.end(), GTUCompareV1);
+  for (auto iv1 = vGTU_INVALID_UUID.begin(); iv1 != vGTU_INVALID_UUID.end(); iv1++) {
+    Format(cs_Error, IDSC_VALIDATE_ENTRY,
+           iv1->group.c_str(), iv1->title.c_str(), iv1->user.c_str(), _T(""));
+    pRpt->WriteLine(cs_Error);
+  }
+
+  // Report Duplicate UUIDs
+  if (!vGTU_DUPLICATE_UUID.empty()) {
+    pRpt->WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATE_DUPUUID);
+    pRpt->WriteLine(cs_Error);
+  }
+  std::sort(vGTU_DUPLICATE_UUID.begin(), vGTU_DUPLICATE_UUID.end(), GTUCompareV1);
+  for (auto iv2 = vGTU_DUPLICATE_UUID.begin(); iv2 < vGTU_DUPLICATE_UUID.end(); iv2++) {
+    Format(cs_Error, IDSC_VALIDATE_ENTRY,
+           iv2->group.c_str(), iv2->title.c_str(), iv2->user.c_str(), _T(""));
+    pRpt->WriteLine(cs_Error);
+  }
+}
+
 int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
                       const bool bValidate, const size_t iMAXCHARS,
                       CReport *pRpt)
@@ -782,7 +988,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Clear any old entry keyboard shortcuts
   m_KBShortcutMap.clear();
 
-  PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
+  PWSfile *in = PWSfile::MakePWSfile(a_filename, a_passkey, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
   if (status != PWSfile::SUCCESS) {
@@ -846,16 +1052,11 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   CItemData ci_temp;
   bool go = true;
-  bool limited = false;
 
-  PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
-  if (in3 != NULL) {
-    m_hashIters = in3->GetNHashIters();
-    m_MapFilters = in3->GetFilters();
-    m_MapPSWDPLC = in3->GetPasswordPolicies();
-    m_vEmptyGroups = in3->GetEmptyGroups();
-  }
-
+  m_hashIters = in->GetNHashIters();
+  if (in->GetFilters() != NULL) m_MapFilters = *in->GetFilters();
+  if (in->GetPasswordPolicies() != NULL) m_MapPSWDPLC = *in->GetPasswordPolicies();
+  if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -863,8 +1064,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     pRpt->StartReport(cs_title.c_str(), m_currfile.c_str());
   }
 
-  size_t uimaxsize(0);
-  int numlarge(0);
   do {
     ci_temp.Clear(); // Rather than creating a new one each time.
     status = in->ReadRecord(ci_temp);
@@ -884,87 +1083,19 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
-        if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
-          numlarge++;
-          uimaxsize = std::max(uimaxsize, ci_temp.GetSize());
+        ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
+        break;
+      case PWSfile::WRONG_RECORD: {
+        // See if this is a V4 attachment:
+        CItemAtt att;
+        status = att.Read(in);
+        if (status == PWSfile::SUCCESS) {
+          m_attlist.insert(std::make_pair(att.GetUUID(), att));
+        } else {
+          // XXX report problem!
         }
-
-        /*
-         * If, for some reason, we're reading in an invalid UUID,
-         * we will change the UUID before adding it to the list.
-         *
-         * To date, we know that databases of format 0x0200 and 0x0300 have a UUID
-         * problem if records were duplicated.  Databases of format 0x0100 did not
-         * have the duplicate function and it has been fixed in databases in format
-         * 0x0301 and so not an issue in V1 (0x0100) or V3.03 (0x0301) or later
-         *
-         * But a Null CUUID is invalid even if another application using core.lib
-         * does it and they could have got the version wrong - so fix it anyway
-         */
-         if (ci_temp.GetUUID() == CUUID::NullUUID()) {
-           vGTU_INVALID_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
-                                       ci_temp.GetTitle(), ci_temp.GetUser()));
-           st_vr.num_invalid_UUIDs++;
-           ci_temp.CreateUUID(); // replace invalid UUID
-           ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
-         } // UUID invalid
-
-        /*
-         * If, for some reason, we're reading in a UUID that we already have
-         * we will change the UUID, rather than overwrite an entry.
-         * This is to protect the user from possible bugs that break
-         * the uniqueness requirement of UUIDs.
-         */
-         if (m_pwlist.find(ci_temp.GetUUID()) != m_pwlist.end()) {
-           vGTU_DUPLICATE_UUID.push_back(st_GroupTitleUser(ci_temp.GetGroup(),
-                                         ci_temp.GetTitle(), ci_temp.GetUser()));
-           st_vr.num_duplicate_UUIDs++;
-           ci_temp.CreateUUID(); // replace duplicated UUID
-           ci_temp.SetStatus(CItemData::ES_MODIFIED);  // Show modified
-         } // UUID duplicate
-
-         if (ci_temp.IsPasswordPolicySet() && ci_temp.IsPolicyNameSet()) {
-           // Error can't have both - clear Password Policy Name
-           ci_temp.ClearField(CItemData::POLICYNAME);
-         }
-
-         if (ci_temp.IsPolicyNameSet()) {
-           const StringX sxPolicyName = ci_temp.GetPolicyName();
-           PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
-           if (iter == m_MapPSWDPLC.end()) {
-             // Map name not present in database - clear it!
-             ci_temp.ClearField(CItemData::POLICYNAME);
-           } else {
-             // Increase use count
-             iter->second.usecount++;
-           }
-         }
-
-         if (in3 != NULL) {
-           int32 iKBShortcut;
-           ci_temp.GetKBShortcut(iKBShortcut);
-
-           // Entry can't have same HotKey as the Application
-           if (m_iAppHotKey == iKBShortcut) {
-             ci_temp.SetKBShortcut(0);
-           } else
-           if (iKBShortcut != 0) {
-             if (!ValidateKBShortcut(iKBShortcut)) {
-               m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, ci_temp.GetUUID()));
-             } else {
-               ci_temp.SetKBShortcut(0);
-             }
-           }
-         }
-         m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
-
-         time_t tttXTime;
-         ci_temp.GetXTime(tttXTime);
-         if (!limited && tttXTime != time_t(0)) {
-           ExpPWEntry ee(ci_temp);
-           m_ExpireCandidates.push_back(ee);
-         }
-         break;
+      }
+        break;
       case PWSfile::END_OF_FILE:
         go = false;
         break;
@@ -978,45 +1109,10 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
-  int closeStatus = in->Close(); // in V3 this checks integrity
+  int closeStatus = in->Close(); // in V3 & later this checks integrity
   delete in;
 
-  // Write out error heading
-  if ((!vGTU_INVALID_UUID.empty() || !vGTU_DUPLICATE_UUID.empty()) &&
-      pRpt != NULL) {
-    stringT cs_Error;
-    pRpt->WriteLine();
-    LoadAString(cs_Error, IDSC_VALIDATE_ERRORS);
-    pRpt->WriteLine(cs_Error);
-
-    // Report invalid UUIDs
-    if (!vGTU_INVALID_UUID.empty()) {
-      std::sort(vGTU_INVALID_UUID.begin(), vGTU_INVALID_UUID.end(), GTUCompareV1);
-      pRpt->WriteLine();
-      LoadAString(cs_Error, IDSC_VALIDATE_BADUUID);
-      pRpt->WriteLine(cs_Error);
-      for (size_t iv = 0; iv < vGTU_INVALID_UUID.size(); iv++) {
-        st_GroupTitleUser &gtu = vGTU_INVALID_UUID[iv];
-        Format(cs_Error, IDSC_VALIDATE_ENTRY,
-               gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
-        pRpt->WriteLine(cs_Error);
-      }
-    }
-
-    // Report Duplicate UUIDs
-    if (!vGTU_DUPLICATE_UUID.empty()) {
-      std::sort(vGTU_DUPLICATE_UUID.begin(), vGTU_DUPLICATE_UUID.end(), GTUCompareV1);
-      pRpt->WriteLine();
-      LoadAString(cs_Error, IDSC_VALIDATE_DUPUUID);
-      pRpt->WriteLine(cs_Error);
-      for (size_t iv = 0; iv < vGTU_DUPLICATE_UUID.size(); iv++) {
-        st_GroupTitleUser &gtu = vGTU_DUPLICATE_UUID[iv];
-        Format(cs_Error, IDSC_VALIDATE_ENTRY,
-               gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
-        pRpt->WriteLine(cs_Error);
-      }
-    }
-  }
+  ReportReadErrors(pRpt, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID);
 
   // Validate rest of things in the database (excluding duplicate UUIDs fixed above
   // as needed for m_pwlist - map uses UUID as its key)
@@ -1041,7 +1137,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   }
 
   // Make return code negative if validation errors
-  if (closeStatus == SUCCESS && pRpt != NULL && bValidateRC)
+  if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
 
   return closeStatus;
@@ -1574,6 +1670,24 @@ struct st_GroupTitleUser2 {
   }
 };
 
+// For Validate only
+struct st_AttTitle_Filename {
+  StringX title;
+  StringX filename;
+
+  st_AttTitle_Filename() {}
+
+  st_AttTitle_Filename(const StringX &t, const StringX &fn)
+    : title(t), filename(fn) {}
+
+  st_AttTitle_Filename &operator=(const st_AttTitle_Filename &that) {
+    if (this != &that) {
+      title = that.title; filename = that.filename;
+    }
+    return *this;
+  }
+};
+
 static bool GTUCompareV2(const st_GroupTitleUser2 &gtu1, const st_GroupTitleUser2 &gtu2)
 {
   if (gtu1.group != gtu2.group)
@@ -1593,27 +1707,21 @@ void PWScore::ParseDependants()
   for (ItemListIter iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     const CItemData &ci = iter->second;
     // Get all possible Aliases/Shortcuts for future checking if base entries exist
-    const StringX csMyPassword = ci.GetPassword();
-    if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
-      StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
-      ToLower(cs_possibleUUID);
-      if (((csMyPassword.substr(0,2) == _T("[[") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-           (csMyPassword.substr(0, 2) == _T("[~") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-          cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        CUUID buuid(cs_possibleUUID.c_str());
-        if (csMyPassword.substr(0, 2) == _T("[[")) {
-          m_alias2base_map[ci.GetUUID()] = buuid;
-          Possible_Aliases.push_back(ci.GetUUID());
-        } else {
-          m_shortcut2base_map[ci.GetUUID()] = buuid;
-          Possible_Shortcuts.push_back(ci.GetUUID());
-        }
-      }
+    if (ci.IsAlias()) {
+      Possible_Aliases.push_back(ci.GetUUID());
+    } else if (ci.IsShortcut()) {
+      Possible_Shortcuts.push_back(ci.GetUUID());
     }
-
+    // Set refcount on attachments
+    if (ci.HasAttRef()) {
+      auto attIter = m_attlist.find(ci.GetAttUUID());
+      if (attIter != m_attlist.end())
+        attIter->second.IncRefcount();
+      else
+        pws_os::Trace(_T("dangling ATTREF")); // will be caught in validate
+    }
   } // iter over m_pwlist
+
   if (!Possible_Aliases.empty()) {
     DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
   }
@@ -1631,6 +1739,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      3. Check group/title/user must be unique.
      4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
+     5. For attachments (V4):
+     5.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
+     5.2 Check that each ItemAtt has a corresponding "owner" ItemData
 
      Note:
      m_pwlist is implemented as a map keyed on UUIDs, each entry is
@@ -1647,8 +1758,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   stringT cs_Error;
   pws_os::Trace(_T("Start validation\n"));
-  StringX sxMissingPassword;
-  LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
 
   st_GroupTitleUser st_gtu;
   GTUSet setGTU;
@@ -1656,6 +1765,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_EmptyPassword, vGTU_PWH, vGTU_TEXT,
                                  vGTU_ALIASES, vGTU_SHORTCUTS;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
+  std::vector<st_GroupTitleUser> vGTU_MissingAtt;
+  std::vector<st_AttTitle_Filename> vOrphanAtt;
+  std::set<CUUID> sAtts;
 
   ItemListIter iter;
 
@@ -1719,6 +1831,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
     // Test if Password is present as it is mandatory! was fixed
     if (ci.GetPassword().empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       fixedItem.SetPassword(sxMissingPassword);
 
       bFixed = true;
@@ -1755,6 +1869,20 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       }
     }
 
+    // Attachment Reference check (5.1)
+    if (ci.HasAttRef()) {
+      sAtts.insert(ci.GetAttUUID());
+      if (!HasAtt(ci.GetAttUUID())) {
+        vGTU_MissingAtt.push_back(st_GroupTitleUser(ci.GetGroup(),
+                                                    ci.GetTitle(),
+                                                    ci.GetUser()));
+        st_vr.num_missing_att++;
+        // Fix the problem:
+        fixedItem.ClearAttUUID();
+        bFixed = true;
+      }
+    }
+
     if (bFixed) {
       // Mark as modified
       fixedItem.SetStatus(CItemData::ES_MODIFIED);
@@ -1763,11 +1891,25 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       m_pwlist[fixedItem.GetUUID()] = fixedItem;
     }
   } // iteration over m_pwlist
+
+  // Check for orphan attachments (5.2)
+  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+    if (sAtts.find(att_iter->first) == sAtts.end()) {
+      st_AttTitle_Filename stATFN;
+      stATFN.title = att_iter->second.GetTitle();
+      stATFN.filename = att_iter->second.GetFileName();
+      vOrphanAtt.push_back(stATFN);
+      st_vr.num_orphan_att++;
+      // NOT removing attachment for now. Add support for exporting orphans later.
+    }
+  }
+
+
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias
   // but there is no equivalent base entry
   for (size_t ipa = 0; ipa < Possible_Aliases.size(); ipa++) {
-    if (m_pwlist.find(m_alias2base_map[Possible_Aliases[ipa]]) == m_pwlist.end()) {
+    if (/* no base entry for ipa exists in m_pwlist */) {
       ItemListIter iter = m_pwlist.find(Possible_Aliases[ipa]);
       if (iter != m_pwlist.end()) {
         StringX sxgroup = iter->second.GetGroup();
@@ -1782,7 +1924,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   // See if we have any entries with passwords that imply they are a shortcut
   // but there is no equivalent base entry
   for (size_t ips = 0; ips < Possible_Shortcuts.size(); ips++) {
-    if (m_pwlist.find(m_shortcut2base_map[Possible_Shortcuts[ips]]) == m_pwlist.end()) {
+    if (/* no base entry for ips exists in m_pwlist */) {
       ItemListIter iter = m_pwlist.find(Possible_Shortcuts[ips]);
       if (iter != m_pwlist.end()) {
         StringX sxgroup = iter->second.GetGroup();
@@ -1820,6 +1962,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
 
     if (!vGTU_EmptyPassword.empty()) {
+      StringX sxMissingPassword;
+      LoadAString(sxMissingPassword, IDSC_MISSINGPASSWORD);
       std::sort(vGTU_EmptyPassword.begin(), vGTU_EmptyPassword.end(), GTUCompareV1);
       pRpt->WriteLine();
       Format(cs_Error, IDSC_VALIDATE_EMPTYPSWD, sxMissingPassword.c_str());
@@ -1931,7 +2075,32 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         pRpt->WriteLine(cs_Error);
       }
     }
-  }
+
+    // Attachment-related issues
+    if (st_vr.num_missing_att > 0) {
+      pRpt->WriteLine();
+      LoadAString(cs_Error, IDSC_VALIDATE_MISSING_ATT);
+      pRpt->WriteLine(cs_Error);
+      for_each(vGTU_MissingAtt.begin(), vGTU_MissingAtt.end(), [&](const st_GroupTitleUser &gtu) {
+          Format(cs_Error, IDSC_VALIDATE_ENTRY,
+                 gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+          pRpt->WriteLine(cs_Error);
+      } );
+    }
+
+    if (st_vr.num_orphan_att > 0) {
+      pRpt->WriteLine();
+      LoadAString(cs_Error, IDSC_VALIDATE_ORPHAN_ATT);
+      pRpt->WriteLine(cs_Error);
+      stringT cs_NotSet;
+      LoadAString(cs_NotSet, IDCS_VALIDATE_NOTSET);
+      for_each(vOrphanAtt.begin(), vOrphanAtt.end(), [&](const st_AttTitle_Filename &stATFN) {
+        stringT sTitle = stATFN.title.empty() ? cs_NotSet : stATFN.title.c_str();
+        Format(cs_Error, IDSC_VALIDATE_ATTACHMENT, sTitle.c_str(), stATFN.filename.c_str());
+        pRpt->WriteLine(cs_Error);
+      } );
+    }
+  } // End of issues report handling
 
   pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
 
@@ -2090,15 +2259,14 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
                                   const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
@@ -2118,9 +2286,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
       GUIRefreshEntry(iter->second);
   }
 
-  // Add to both the base->type multimap and the type->base map
+  // Add to the base->type multimap
   pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
-  pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
 }
 
 void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
@@ -2128,18 +2295,14 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
-
-  // Remove from entry -> base map
-  pmap->erase(entry_uuid);
+  }
 
   // Remove from base -> entry multimap
   ItemMMapIter mmiter;
@@ -2174,15 +2337,14 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
                                           const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   // Remove from entry -> base map for each entry
   ItemMMapIter itr;
@@ -2193,11 +2355,6 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
     return;
 
   lastElement = pmmap->upper_bound(base_uuid);
-
-  for ( ; itr != lastElement; itr++) {
-    // Remove from entry -> base map
-    pmap->erase(itr->second);
-  }
 
   // Remove from base -> entry multimap
   pmmap->erase(base_uuid);
@@ -2213,15 +2370,14 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
-  ItemMap *pmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
-  } else
+  } else {
+    ASSERT(0);
     return;
+  }
 
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
@@ -2235,10 +2391,6 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
   for ( ; from_itr != lastfromElement; from_itr++) {
     // Add to new base in base -> entry multimap
     pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
-    // Remove from entry -> base map
-    pmap->erase(from_itr->second);
-    // Add to entry -> base map (new base)
-    pmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));
   }
 
   // Now delete all old base entries
@@ -2267,13 +2419,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
   if (pmapSaveTypePW != NULL)
     pmapSaveTypePW->clear();
 
-  ItemMap *pmap;
   ItemMMap *pmmap;
   if (type == CItemData::ET_ALIAS) {
-    pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
   } else if (type == CItemData::ET_SHORTCUT) {
-    pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
     return -1;
@@ -2297,10 +2446,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
 
       CItemData *pci_curitem = &iter->second;
       CUUID entry_uuid = pci_curitem->GetUUID();
-      GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
-
-      // Delete it - we will put it back if it is an alias/shortcut
-      pmap->erase(entry_uuid);
+      base_uuid = pci_curitem->GetBaseUUID();
 
       if (iVia == CItemData::UUID) {
         iter = m_pwlist.find(base_uuid);
@@ -2373,7 +2519,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
             CUUID temp_uuid = iter->second.GetUUID();
-            GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
+            base_uuid = iter->second.GetBaseUUID(); // ??? used here ???
             if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
@@ -2414,7 +2560,6 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         }
 
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
-        pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
         if (type == CItemData::ET_ALIAS) {
           if (pmapSaveTypePW != NULL) {
             st_typepw.et = iter->second.GetEntryType();
@@ -2613,8 +2758,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       pl.TargetType = iter->second.GetEntryType();
       if (pl.InputType == CItemData::ET_ALIAS && pl.TargetType == CItemData::ET_ALIAS) {
         // Check if base is already an alias, if so, set this entry -> real base entry
-        CUUID temp_uuid = iter->second.GetUUID();
-        GetDependentEntryBaseUUID(temp_uuid, pl.base_uuid, CItemData::ET_ALIAS);
+        pl.base_uuid = iter->second.GetBaseUUID();
       } else {
         // This may not be a valid combination of source+target entries - sorted out by caller
         pl.base_uuid = iter->second.GetUUID();
@@ -2641,48 +2785,15 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
 {
   // Alas, we need both a const and non-const version.
   ASSERT(pAliasOrSC != NULL);
-  CItemData::EntryType et = pAliasOrSC->GetEntryType();
-  if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
-    //pws_os::Trace(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
-    return NULL;
+  if (pAliasOrSC->IsDependent()) {
+    const CUUID base_uuid = pAliasOrSC->GetBaseUUID();
+    ItemListIter iter = Find(base_uuid);
+    if (iter != GetEntryEndIter())
+      return &iter->second;
+    else
+      pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
   }
-
-  CUUID base_uuid(CUUID::NullUUID());
-  CUUID dep_uuid = pAliasOrSC->GetUUID();
-  if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
-   // pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
-    return NULL;
-  }
-
-  ItemListIter iter = Find(base_uuid);
-  if (iter == GetEntryEndIter()) {
-    //pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
-    return NULL;
-  }
-  return &iter->second;
-}
-
-bool PWScore::GetDependentEntryBaseUUID(const CUUID &entry_uuid,
-                                        CUUID &base_uuid,
-                                        const CItemData::EntryType type) const
-{
-  base_uuid = CUUID::NullUUID();
-
-  const ItemMap *pmap;
-  if (type == CItemData::ET_ALIAS)
-    pmap = &m_alias2base_map;
-  else if (type == CItemData::ET_SHORTCUT)
-    pmap = &m_shortcut2base_map;
-  else
-    return false;
-
-  ItemMapConstIter iter = pmap->find(entry_uuid);
-  if (iter != pmap->end()) {
-    base_uuid = iter->second;
-    return true;
-  } else {
-    return false;
-  }
+  return NULL;
 }
 
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
@@ -3072,6 +3183,10 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   GetUniqueGroups(aryGroups);
   Format(st_dbp.numgroups, L"%d", aryGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
+  if (GetReadFileVersion() >= PWSfile::V40)
+    Format(st_dbp.numattachments, L"%d", m_attlist.size());
+  else
+    st_dbp.numattachments = L"N/A";
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {
@@ -3260,12 +3375,12 @@ const unsigned char *PWScore::GetYubiSK() const
 void PWScore::SetYubiSK(const unsigned char *sk)
 {
   if (m_hdr.m_yubi_sk)
-    trashMemory(m_hdr.m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+    trashMemory(m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
   delete[] m_hdr.m_yubi_sk;
   m_hdr.m_yubi_sk = NULL;
   if (sk != NULL) {
-    m_hdr.m_yubi_sk = new unsigned char[PWSfile::HeaderRecord::YUBI_SK_LEN];
-    memcpy(m_hdr.m_yubi_sk, sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+    m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
+    memcpy(m_hdr.m_yubi_sk, sk, PWSfileHeader::YUBI_SK_LEN);
   }
 }
 
@@ -3391,4 +3506,25 @@ void PWScore::SetHashIters(uint32 value)
     m_hashIters = value;
     SetDBPrefsChanged(true);
   }
+}
+
+void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
+{
+  ASSERT(HasAtt(attuuid));
+  m_bDBChanged = true;
+  m_attlist.erase(m_attlist.find(attuuid));
+}
+
+std::set<StringX> PWScore::GetAllMediaTypes() const
+{
+  // std::set<> has the properties we need here:
+  // 1. Members are unique
+  // 2. Iterator returns them sorted
+  std::set<StringX> sMediaTypes;
+
+  // Find media types of all our attachments, put them in a set:
+  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+    sMediaTypes.insert(att_iter->second.GetMediaType());
+  }
+  return sMediaTypes;
 }

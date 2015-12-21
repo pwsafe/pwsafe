@@ -20,16 +20,17 @@ class CSetFiltersDlg : public CPWFiltersDlg
 
 public:
   CSetFiltersDlg(CWnd* pParent, st_filters *pfilters, 
-                 const int &iWMSGID, const bool bAllowSet = true);
+    const int &iWMSGID, const bool bCanHaveAttachments,
+    const std::set<StringX> *psMediaTypes = NULL,
+    const bool bAllowSet = true);
+
   virtual ~CSetFiltersDlg();
   void EnableDisableApply();
 
 protected:
+  afx_msg void OnApply();
 
   DECLARE_MESSAGE_MAP()
-
-public:
-  afx_msg void OnApply();
 
 private:
   // Following needed to be able to send a message to DboxMain (parent)

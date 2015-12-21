@@ -41,5 +41,11 @@
     <ClInclude Include="BlowFishTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AESTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyWrapTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

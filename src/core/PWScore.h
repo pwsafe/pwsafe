@@ -12,11 +12,9 @@
 //-----------------------------------------------------------------------------
 
 #include "os/pws_tchar.h"
-#include "ItemData.h"
 #include "StringX.h"
 #include "PWSfile.h"
 #include "PWSFilters.h"
-#include "os/UUID.h"
 #include "Report.h"
 #include "Proxy.h"
 #include "UIinterface.h"
@@ -47,6 +45,7 @@ struct st_DBProperties {
   StringX databaseformat;
   StringX numgroups;
   StringX numentries;
+  StringX numattachments;
   StringX whenlastsaved;
   StringX wholastsaved;
   StringX whatlastsaved;
@@ -56,62 +55,7 @@ struct st_DBProperties {
   StringX db_description;
 };
 
-// Results of a database verification
-struct st_ValidateResults {
-  int num_invalid_UUIDs;
-  int num_duplicate_UUIDs;
-  int num_empty_titles;
-  int num_empty_passwords;
-  int num_duplicate_GTU_fixed;
-  int num_PWH_fixed;
-  int num_excessivetxt_found;
-  int num_alias_warnings;
-  int num_shortcuts_warnings;
-
-  st_ValidateResults()
-  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
-  num_empty_titles(0), num_empty_passwords(0),
-  num_duplicate_GTU_fixed(0),
-  num_PWH_fixed(0), num_excessivetxt_found(0),
-  num_alias_warnings(0), num_shortcuts_warnings(0)
-  {}
-
-  st_ValidateResults(const st_ValidateResults &that)
-  : num_invalid_UUIDs(that.num_invalid_UUIDs),
-  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
-  num_empty_titles(that.num_empty_titles),
-  num_empty_passwords(that.num_empty_passwords),
-  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
-  num_PWH_fixed(that.num_PWH_fixed),
-  num_excessivetxt_found(that.num_excessivetxt_found),
-  num_alias_warnings(that.num_alias_warnings),
-  num_shortcuts_warnings(that.num_shortcuts_warnings)
-  {}
-
-  st_ValidateResults &operator=(const st_ValidateResults &that) {
-    if (this != &that) {
-      num_invalid_UUIDs = that.num_invalid_UUIDs;
-      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
-      num_empty_titles = that.num_empty_titles;
-      num_empty_passwords = that.num_empty_passwords;
-      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
-      num_PWH_fixed = that.num_PWH_fixed;
-      num_excessivetxt_found = that.num_excessivetxt_found;
-      num_alias_warnings = that.num_alias_warnings;
-      num_shortcuts_warnings = that.num_shortcuts_warnings;
-    }
-    return *this;
-  }
-
-  int TotalIssues()
-  { 
-    return (num_invalid_UUIDs + num_duplicate_UUIDs +
-            num_empty_titles + num_empty_passwords +
-            num_duplicate_GTU_fixed +
-            num_PWH_fixed + num_excessivetxt_found +
-            num_alias_warnings + num_shortcuts_warnings);
-  }
-};
+struct st_ValidateResults;
 
 class PWScore : public CommandInterface
 {
@@ -193,16 +137,16 @@ public:
                      const stringT &userBackupDir, stringT &bu_fname);
 
   void NewFile(const StringX &passkey);
-  int WriteCurFile() {return WriteFile(m_currfile);}
-  int WriteFile(const StringX &filename, const bool bUpdateSig = true,
-                PWSfile::VERSION version = PWSfile::VCURRENT);
+  int WriteCurFile() {return WriteFile(m_currfile, m_ReadFileVersion);}
+  int WriteFile(const StringX &filename, PWSfile::VERSION version,
+                bool bUpdateSig = true);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                      PWScore *pINcore, CReport *pRpt = NULL,
-                      PWSfile::VERSION version = PWSfile::VCURRENT);
+                      PWScore *pINcore, PWSfile::VERSION version,
+                      CReport *pRpt = NULL);
   int WriteV17File(const StringX &filename)
-  {return WriteFile(filename, false, PWSfile::V17);}
+  {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)
-  {return WriteFile(filename, false, PWSfile::V20);}
+  {return WriteFile(filename, PWSfile::V20, false);}
 
   // R/O file status
   void SetReadOnly(bool state) {m_IsReadOnly = state;}
@@ -372,9 +316,6 @@ public:
   void GetAllDependentEntries(const pws_os::CUUID &base_uuid,
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
-  bool GetDependentEntryBaseUUID(const pws_os::CUUID &entry_uuid,
-                                 pws_os::CUUID &base_uuid, 
-                                 const CItemData::EntryType type) const;
   // Takes apart a 'special' password into its components:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
 
@@ -429,8 +370,9 @@ public:
   const std::vector<bool> &GetDisplayStatus() const;
   bool WasDisplayStatusChanged() const;
 
-  const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetHeader(const PWSfile::HeaderRecord &hdr) { m_hdr = hdr; }
+  const PWSfileHeader &GetHeader() const {return m_hdr;}
+  void SetHeader(const PWSfileHeader &hdr) { m_hdr = hdr; }
+
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
 
@@ -484,15 +426,24 @@ public:
 
   uint32 GetHashIters() const;
   void SetHashIters(uint32 value);
+
+  CItemAtt &GetAtt(const pws_os::CUUID &attuuid) {return m_attlist[attuuid];}
+  void PutAtt(const CItemAtt &att) {m_attlist[att.GetUUID()] = att;}
+  void RemoveAtt(const pws_os::CUUID &attuuid);
+  bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
+  AttList::size_type GetNumAtts() const {return m_attlist.size();}
+  std::set<StringX> GetAllMediaTypes() const;
+  
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
+
 private:
   // Database update routines
 
   // NOTE: Member functions starting with 'Do' or 'Undo' are meant to
   // be executed ONLY via Command subclasses. These are implementations of
   // the CommandInterface mixin, where they're declared public.
-  virtual void DoAddEntry(const CItemData &item);
+  virtual void DoAddEntry(const CItemData &item, const CItemAtt *att);
   virtual void DoDeleteEntry(const CItemData &item);
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci);
 
@@ -529,6 +480,10 @@ private:
 
   // End of Command Interface implementations
 
+  void ProcessReadEntry(CItemData &ci_temp,
+                        std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
+                        std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
+                        st_ValidateResults &st_vr);
   // Validate() returns true if data modified, false if all OK
   bool Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr);
 
@@ -568,32 +523,27 @@ private:
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 
-  PWSfile::HeaderRecord m_hdr;
+  PWSfileHeader m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
   ItemList m_pwlist;
 
+  // Attachments, if any
+  AttList m_attlist;
+  
   // Alias/Shortcut structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base
   //  Key = base uuid; Value = multiple alias/shortcut uuids
   ItemMMap m_base2aliases_mmap;
   ItemMMap m_base2shortcuts_mmap;
 
-  // Permanent Map: since an alias only has one base
-  //  Key = alias/shortcut uuid; Value = base uuid
-  ItemMap m_alias2base_map;
-  ItemMap m_shortcut2base_map;
   // Following are private in PWScore, public in CommandInterface:
   const ItemMMap &GetBase2AliasesMmap() const {return m_base2aliases_mmap;}
   void SetBase2AliasesMmap(ItemMMap &b2amm) {m_base2aliases_mmap = b2amm;}
   const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
-  const ItemMap &GetAlias2BaseMap() const {return m_alias2base_map;}
-  void SetAlias2BaseMap(const ItemMap &a2bm) {m_alias2base_map = a2bm;}
-  const ItemMap &GetShortcuts2BaseMap() const {return m_shortcut2base_map;}
-  void SetShortcuts2BaseMap(const ItemMap &s2bm) {m_shortcut2base_map = s2bm;}
   
   // Changed groups
   std::vector<StringX> m_vnodes_modified;

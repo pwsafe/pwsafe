@@ -44,6 +44,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;
+    m_bsAttFields = m_pst_SADV->bsAttFields;
     m_subgroup_name = m_pst_SADV->subgroup_name.c_str();
     m_subgroup_set = m_pst_SADV->subgroup_bset ? BST_CHECKED : BST_UNCHECKED;
     m_subgroup_object = m_pst_SADV->subgroup_object;
@@ -52,6 +53,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
     m_treatwhitespaceasempty = m_pst_SADV->btreatwhitespaceasempty ? BST_CHECKED : BST_UNCHECKED;
   } else {
     m_bsFields.set();
+    m_bsAttFields.reset();
     m_subgroup_name = L"";
     m_subgroup_set = BST_UNCHECKED;
     m_treatwhitespaceasempty = BST_CHECKED;
@@ -68,8 +70,12 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
   if (m_subgroup_set == BST_UNCHECKED)
     m_subgroup_name = L"*";
 
-  if (m_bsFields.count() == 0)
+  if (m_bsFields.count() == 0 && m_bsAttFields.count() == 0) {
     m_bsFields.set();
+    m_bsAttFields.reset();
+  }
+
+  m_current_version = app.GetCore()->GetReadFileVersion();
 }
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -82,6 +88,9 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_bsAllowedFields.reset();
   m_bsDefaultSelectedFields.reset();
   m_bsMandatoryFields.reset();
+
+  m_bsAttAllowedFields.reset();
+  m_bsAttDefaultSelectedFields.reset();
 
   cs_text.LoadString(m_iIndex == FIND ? IDS_FINDX : IDS_SYNCHRONIZEX);
 
@@ -317,16 +326,48 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
   }
 
-  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
-    Set(m_bsFields);
-  }
-
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
 
   if (m_iIndex == FIND) {
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+
+    // Only add attachment fields for V4 and later
+    if (m_current_version >= PWSfile::V40) {
+      // Add search attachment fields - not default
+      cs_text.LoadString(IDS_FILETITLE);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::TITLE | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::TITLE - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILENAME);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::FILENAME | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::FILENAME - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILEPATH);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::FILEPATH | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::FILEPATH - CItemAtt::START);
+
+      cs_text.LoadString(IDS_FILEMEDIATYPE);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemAtt::MEDIATYPE | NORMALFIELD);
+      m_bsAttAllowedFields.set(CItemAtt::MEDIATYPE - CItemAtt::START);
+    } else {
+      // Don't allow any
+      m_bsAttAllowedFields.reset();
+    }
+  }
+
+  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size() &&
+      m_bsAttFields.count() != 0) {
+    Set(m_bsFields);
+  }
+
+  if (m_bsAttFields.count() != 0 && m_bsAttFields.count() != m_bsAttFields.size()) {
+    SetAtt(m_bsAttFields);
   }
 
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -398,6 +439,7 @@ void CAdvancedDlg::OnHelp()
 void CAdvancedDlg::OnReset()
 {
   Set(m_bsDefaultSelectedFields);
+  SetAtt(m_bsAttDefaultSelectedFields);
 
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
@@ -465,6 +507,51 @@ void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
   }
 }
 
+void CAdvancedDlg::SetAtt(CItemAtt::AttFieldBits bsAttFields)
+{
+  LVFINDINFO findinfo;
+  CString cs_text;
+  int iItem;
+  DWORD_PTR dw_data;
+
+  SecureZeroMemory(&findinfo, sizeof(LVFINDINFO));
+
+  findinfo.flags = LVFI_PARAM;
+  // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
+  // and so will not be found and so not moved anywhere.
+  for (int i = 0; i < (CItemAtt::LAST - CItemAtt::START); i++) {
+    // Don't move or allow non-allowed fields
+    if (!m_bsAttAllowedFields.test(i))
+      continue;
+
+    if (bsAttFields.test(i)) {
+      // Selected - find entry in list of available fields and move it
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
+      iItem = m_pLC_List->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_List->GetItemText(iItem, 0);
+      dw_data = m_pLC_List->GetItemData(iItem);
+      m_pLC_List->DeleteItem(iItem);
+      iItem = m_pLC_Selected->InsertItem(0, cs_text);
+      m_pLC_Selected->SetItemData(iItem, dw_data);
+    } else {
+      // Not selected - find entry in list of selected fields and move it
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
+      iItem = m_pLC_Selected->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_Selected->GetItemText(iItem, 0);
+      dw_data = m_pLC_Selected->GetItemData(iItem);
+      m_pLC_Selected->DeleteItem(iItem);
+      iItem = m_pLC_List->InsertItem(0, cs_text);
+      m_pLC_List->SetItemData(iItem, dw_data);
+    }
+  }
+}
+
 void CAdvancedDlg::OnOK()
 {
   CGeneralMsgBox gmb;
@@ -472,6 +559,7 @@ void CAdvancedDlg::OnOK()
 
   UpdateData();
   m_bsFields.reset();
+  m_bsAttFields.reset();
 
   int num_selected = m_pLC_Selected->GetItemCount();
   int nItem(-1);
@@ -479,10 +567,18 @@ void CAdvancedDlg::OnOK()
   for (int i = 0; i < num_selected; i++) {
     nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
     DWORD_PTR dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
-    m_bsFields.set(dw_data & 0xff, true);
+
+    const short index = dw_data & 0xff;
+
+    if (index < CItemData::LAST) {
+      m_bsFields.set(index, true);
+    }
+    else if (index < CItemAtt::LAST) {
+      m_bsAttFields.set(index - CItemAtt::START, true);
+    }
   }
 
-  if (m_bsFields.count() == 0) {
+  if (m_bsFields.count() == 0 && m_bsAttFields.count() == 0) {
     CString cs_error_msg;
     cs_error_msg.LoadString(m_iIndex == FIND ? 
                     IDS_NOFIELDSFORSEARCH : IDS_NOFIELDSFORSYNCH);
@@ -522,6 +618,7 @@ void CAdvancedDlg::OnOK()
     m_subgroup_name.Empty();
 
   m_pst_SADV->bsFields = m_bsFields;
+  m_pst_SADV->bsAttFields = m_bsAttFields;
   m_pst_SADV->subgroup_name = m_subgroup_name;
   m_pst_SADV->subgroup_bset = m_subgroup_set == BST_CHECKED;
   m_pst_SADV->subgroup_object = m_subgroup_object;
@@ -607,9 +704,13 @@ void CAdvancedDlg::OnDeselectSome()
     cs_text = m_pLC_Selected->GetItemText(nItem, 0);
     dw_data = m_pLC_Selected->GetItemData(nItem);
 
-    // Ignore mandatory fields - can't be deselected
-    if (m_bsMandatoryFields.test(dw_data & 0xff))
-      continue;
+    const short index = dw_data & 0xff;
+
+    if (index < CItemData::LAST) {
+      // Ignore mandatory fields - can't be deselected
+      if (m_bsMandatoryFields.test(index))
+        continue;
+    }
 
     m_pLC_Selected->DeleteItem(nItem);
     iItem = m_pLC_List->InsertItem(0, cs_text);
@@ -629,9 +730,14 @@ void CAdvancedDlg::OnDeselectAll()
   for (int i = num_selected - 1; i >= 0; i--) {
     CString cs_text = m_pLC_Selected->GetItemText(i, 0);
     DWORD_PTR dw_data = m_pLC_Selected->GetItemData(i);
-    // Ignore mandatory fields - can't be deselected
-    if (m_bsMandatoryFields.test(dw_data & 0xff))
-      continue;
+
+    const short index = dw_data & 0xff;
+
+    if (index < CItemData::LAST) {
+      // Ignore mandatory fields - can't be deselected
+      if (m_bsMandatoryFields.test(dw_data & 0xff))
+        continue;
+    }
 
     int iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
@@ -644,14 +750,26 @@ void CAdvancedDlg::OnDeselectAll()
 void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct; 
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
-  if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
+  *pLResult = FALSE;
+
+  const short index = pNMListView->lParam & 0xff;
+
+  if (index < CItemData::LAST) {
+    if (m_bsMandatoryFields.test(index) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
-    pNMListView->uNewState &= ~LVIS_SELECTED;
-    *pLResult = TRUE;
-  } else
-    *pLResult = FALSE;
+      pNMListView->uNewState &= ~LVIS_SELECTED;
+      *pLResult = TRUE;
+    }
+  }
+  else if (index < CItemAtt::LAST) {
+    if (m_bsMandatoryFields.test(index - CItemAtt::START) &&
+      (pNMListView->uNewState & LVIS_SELECTED)) {
+      pNMListView->uNewState &= ~LVIS_SELECTED;
+      *pLResult = TRUE;
+    }
+  }
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be

@@ -186,6 +186,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
 
+  EVT_MENU( ID_EXPORT2V4FORMAT, PasswordSafeFrame::OnExportVx )
+
   EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
 
   EVT_MENU( ID_EXPORT2XML, PasswordSafeFrame::OnExportXml )
@@ -425,6 +427,7 @@ void PasswordSafeFrame::CreateMenubar()
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), _T(""), wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), _T(""), wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
@@ -1001,6 +1004,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
   switch (m_core.GetReadFileVersion()) {
     case PWSfile::VCURRENT:
+    case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
@@ -1202,8 +1206,8 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 {
   stringT dir = PWSdirs::GetSafeDir();
   //Open-type dialog box
-  wxFileDialog fd(this, title, dir.c_str(), wxT("pwsafe.psafe3"),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
+  wxFileDialog fd(this, title, dir.c_str(), _("pwsafe.psafe4"),
+                  _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
   while (1) {
@@ -1376,8 +1380,10 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 
 int PasswordSafeFrame::SaveAs()
 {
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
-      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+  const PWSfile::VERSION curver = m_core.GetReadFileVersion();
+  
+  if (curver != PWSfile::V30 && curver != PWSfile::V40 &&
+      curver != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"),
                                         wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxCANCEL) {
@@ -1425,7 +1431,7 @@ int PasswordSafeFrame::SaveAs()
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  int rc = m_core.WriteFile(newfile);
+  int rc = m_core.WriteFile(newfile, curver);
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
@@ -3011,42 +3017,55 @@ void PasswordSafeFrame::ViewReport(CReport& rpt)
 
 void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 {
-  int rc;
+  int rc = PWScore::FAILURE;
   StringX newfile;
-  wxString cs_text, cs_title, cs_temp;
-
-  //SaveAs-type dialog box
-  std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                      wxT("dat"));
-  cs_text = _("Please name the exported database");
-
-  //filename cannot have the path. Need to pass it separately
-  wxFileName filename(towxstring(OldFormatFileName));
-  wxString dir = filename.GetPath();
-  if (dir.empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-
-  wxFileDialog fd(this, cs_text, dir, filename.GetFullName(),
-                _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
-                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-  if (fd.ShowModal() != wxID_OK)
-    return;
-
-  newfile = tostringx(fd.GetPath());
+  wxString cs_fmt;
+  PWSfile::VERSION ver = PWSfile::UNKNOWN_VERSION;
+  stringT sfx = wxEmptyString;
 
   switch (evt.GetId()) {
     case ID_EXPORT2OLD1XFORMAT:
-      rc = m_core.WriteV17File(newfile);
+      ver =  PWSfile::V17; sfx = L"dat";
+      cs_fmt = _("Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*");
       break;
     case ID_EXPORT2V2FORMAT:
-      rc = m_core.WriteV2File(newfile);
+      ver =  PWSfile::V20; sfx = L"dat";
+      cs_fmt = _("Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*");
+      break;
+    case ID_EXPORT2V4FORMAT:
+      ver =  PWSfile::V40; sfx = L"psafe4";
+      cs_fmt =_("Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*");
       break;
     default:
-      wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
-      rc = PWScore::FAILURE;
+      ver = PWSfile::UNKNOWN_VERSION; // internal error
       break;
   }
+
+  if (ver != PWSfile::UNKNOWN_VERSION) {
+    //SaveAs-type dialog box
+    std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                             sfx);
+    const wxString cs_text = _("Please name the exported database");
+
+    //filename cannot have the path. Need to pass it separately
+    wxFileName filename(towxstring(OldFormatFileName));
+    wxString dir = filename.GetPath();
+    if (dir.empty())
+      dir = towxstring(PWSdirs::GetSafeDir());
+
+
+    wxFileDialog fd(this, cs_text, dir, filename.GetFullName(), cs_fmt,
+                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (fd.ShowModal() != wxID_OK)
+      return;
+
+    newfile = tostringx(fd.GetPath());
+    rc = m_core.WriteFile(newfile, ver);
+  } else { // internal error
+    wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
+  }
+
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
   }

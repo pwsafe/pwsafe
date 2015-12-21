@@ -118,7 +118,8 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
 #endif
 
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
-    if (m_core.WriteFile(backupfile) == PWScore::CANT_OPEN_FILE) {
+    if (m_core.WriteFile(backupfile, m_core.GetReadFileVersion(),
+                         false) == PWScore::CANT_OPEN_FILE) {
       wxMessageBox( wxbf << wxT("\n\n") << _("Could not open file for writing!"),
                     _("Write Error"), wxOK|wxICON_ERROR, this);
     }

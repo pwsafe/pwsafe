@@ -46,10 +46,11 @@ public:
   BOOL IsFindCaseSet() const {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
-  void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
+  void GetSearchInfo(bool &bAdvanced, 
+                     CItemData::FieldBits &bsFields, CItemAtt::AttFieldBits &bsAttFields,
                      std::wstring &subgroup_name, 
                      bool &subgroup_bset, int &subgroup_object, int &subgroup_function)
-  {bAdvanced = m_bAdvanced; bsFields = m_bsFields;
+  {bAdvanced = m_bAdvanced; bsFields = m_bsFields; bsAttFields = m_bsAttFields;
    subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
    subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
 
@@ -88,8 +89,12 @@ private:
 
   bool m_cs_search, m_last_cs_search;
   CSecString m_search_text, m_last_search_text;
+
   CItemData::FieldBits m_bsFields, m_last_bsFields;
+  CItemAtt::AttFieldBits m_bsAttFields, m_last_bsAttFields;
+
   std::wstring m_subgroup_name, m_last_subgroup_name;
+
   bool m_subgroup_bset, m_last_subgroup_bset;
   int m_subgroup_object, m_last_subgroup_object;
   int m_subgroup_function, m_last_subgroup_function;

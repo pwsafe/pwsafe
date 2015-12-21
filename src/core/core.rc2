@@ -202,6 +202,10 @@ BEGIN
   IDSC_MISSINGTITLE        "MISSING TITLE # %d"
   IDSC_VALIDATE_ERRORS     "The following ERRORS were detected and were FIXED."
   IDSC_VALIDATE_WARNINGS   "The following WARNINGS were detected - you should review and fix them manually."
+  IDSC_VALIDATE_MISSING_ATT "The following entries refer to missing attachments."
+  IDSC_VALIDATE_ORPHAN_ATT "The following attachments are not referred to by any entry."
+  IDSC_VALIDATE_ATTACHMENT "\tName: %s; Filename: %s"
+  IDCS_VALIDATE_NOTSET     "<Not Set>"
 END
 
 STRINGTABLE
@@ -283,6 +287,7 @@ BEGIN
   IDSC_EXPIRE_IN_DAYS      "within %d day(s)"
   IDSC_SEEPWHISTORYFILTERS "See Password History filters"
   IDSC_SEEPWPOLICYFILTERS  "See Password Policy filters"
+  IDSC_SEEATTACHMENTFILTERS "See Attachment filters"
   IDSC_CANTPROCESSDBFILTERS "Trouble reading stored filters (version mismatch?). Filters will be unusable."
   IDSC_FILTERSKEPT         "Stored filters will be unusable until the file's restored."
   IDSC_INVALID_SCHEMA      "Invalid Filter schema."

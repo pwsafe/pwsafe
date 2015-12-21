@@ -8,28 +8,30 @@
 #include "PWSfile.h"
 #include "PWSfileV1V2.h"
 #include "PWSfileV3.h"
+#include "PWSfileV4.h"
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
 
 #include "sha1.h" // for simple encrypt/decrypt
-#include "PWSrand.h" // ditto
+#include "PWSrand.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <limits>
 
-PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status,
+PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
+                              VERSION &version, RWmode mode, int &status,
                               Asker *pAsker, Reporter *pReporter)
 {
+  PWSfile *retval = NULL;
+
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
     return NULL;
   }
 
-  PWSfile *retval;
   switch (version) {
     case V17:
     case V20:
@@ -40,33 +42,53 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
       status = SUCCESS;
       retval = new PWSfileV3(a_filename, mode, version);
       break;
+    case V40:
+      status = SUCCESS;
+      retval = new PWSfileV4(a_filename, mode, version);
+      break;
     case UNKNOWN_VERSION:
       ASSERT(mode == Read);
-      if (PWSfile::ReadVersion(a_filename) == V30) {
-        version = V30;
+      version = PWSfile::ReadVersion(a_filename, passkey);
+      switch (version) {
+      case V40:
+        status = SUCCESS;
+        retval = new PWSfileV4(a_filename, mode, version);
+        break;
+      case V30:
         status = SUCCESS;
         retval = new PWSfileV3(a_filename, mode, version);
-      } else {
-        version = V20; // may be inaccurate (V17)
+        break;
+      case V17:  // never actually returned
+      case V20:  // may be inaccurate (V17)
         status = SUCCESS;
         retval = new PWSfileV1V2(a_filename, mode, version);
-      }
+        break;
+      case NEWFILE:
+        ASSERT(0);
+        // deliberate fallthru
+      case UNKNOWN_VERSION:
+        status = FAILURE;
+      } // inner switch
       break;
-    default:
-      ASSERT(0);
-      status = FAILURE; return NULL;
+  case NEWFILE: // should never happen
+    status = FAILURE;
+    ASSERT(0);
   }
-  retval->m_pAsker = pAsker;
-  retval->m_pReporter = pReporter;
+  if (retval != NULL) {
+    retval->m_pAsker = pAsker;
+    retval->m_pReporter = pReporter;
+  }
   return retval;
 }
 
 
-PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
+PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &passkey)
 {
   if (pws_os::FileExists(filename.c_str())) {
     VERSION v;
     if (PWSfileV3::IsV3x(filename, v))
+      return v;
+    else if (PWSfileV4::IsV4x(filename, passkey, v))
       return v;
     else
       return V20;
@@ -74,10 +96,10 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
     return UNKNOWN_VERSION;
 }
 
-PWSfile::PWSfile(const StringX &filename, RWmode mode)
+PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
   : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
-  m_curversion(UNKNOWN_VERSION), m_rw(mode), m_defusername(_T("")),
-  m_fish(NULL), m_terminal(NULL),
+  m_curversion(v), m_rw(mode), m_defusername(_T("")),
+    m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -87,68 +109,20 @@ PWSfile::~PWSfile()
   Close(); // idempotent
 }
 
-PWSfile::HeaderRecord::HeaderRecord()
-  : m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
-    m_file_uuid(pws_os::CUUID::NullUUID()),
-    m_prefString(_T("")), m_whenlastsaved(0),
-    m_lastsavedby(_T("")), m_lastsavedon(_T("")),
-    m_whatlastsaved(_T("")),
-    m_dbname(_T("")), m_dbdesc(_T("")), m_yubi_sk(NULL)
+void PWSfile::HashRandom256(unsigned char *p256)
 {
-  m_RUEList.clear();
-}
-
-PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) 
-  : m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
-    m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
-    m_file_uuid(h.m_file_uuid),
-    m_displaystatus(h.m_displaystatus),
-    m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
-    m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
-    m_whatlastsaved(h.m_whatlastsaved),
-    m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc), m_RUEList(h.m_RUEList)
-{
-  if (h.m_yubi_sk != NULL) {
-    m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-    memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
-  } else {
-    m_yubi_sk = NULL;
-  }
-}
-
-PWSfile::HeaderRecord::~HeaderRecord()
-{
-  if (m_yubi_sk)
-    trashMemory(m_yubi_sk, YUBI_SK_LEN);
-  delete[] m_yubi_sk;
-}
-
-PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
-{
-  if (this != &h) {
-    m_nCurrentMajorVersion = h.m_nCurrentMajorVersion;
-    m_nCurrentMinorVersion = h.m_nCurrentMinorVersion;
-    m_file_uuid = h.m_file_uuid;
-    m_displaystatus = h.m_displaystatus;
-    m_prefString = h.m_prefString;
-    m_whenlastsaved = h.m_whenlastsaved;
-    m_lastsavedby = h.m_lastsavedby;
-    m_lastsavedon = h.m_lastsavedon;
-    m_whatlastsaved = h.m_whatlastsaved;
-    m_dbname = h.m_dbname;
-    m_dbdesc = h.m_dbdesc;
-    m_RUEList = h.m_RUEList;
-    if (h.m_yubi_sk != NULL) {
-      if (m_yubi_sk)
-        trashMemory(m_yubi_sk, YUBI_SK_LEN);
-      delete[] m_yubi_sk;
-      m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-      memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
-    } else {
-      m_yubi_sk = NULL;
-    }
-  }
-  return *this;
+  /**
+   * This is for random data that will be written to the file directly.
+   * The idea is to avoid directly exposing our generated randomness
+   * to the attacker, since this might expose state of the RNG.
+   * Therefore, we'll hash the randomness.
+   *
+   * As the names imply, this works on 256 bit (32 byte) arrays.
+   */
+  PWSrand::GetInstance()->GetRandomData(p256, 32);
+  SHA256 salter;
+  salter.Update(p256, 32);
+  salter.Final(p256);
 }
 
 void PWSfile::FOpen()
@@ -215,19 +189,29 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 int PWSfile::CheckPasskey(const StringX &filename,
                           const StringX &passkey, VERSION &version)
 {
-
+  /**
+   * We start with V3 because it's the quickest to rule out
+   * due to header/footer.
+   * V4 can take a looong time if the iter value's too big.
+   * XXX Need to address this later with a popup prompting the user.
+   */
   if (passkey.empty())
     return WRONG_PASSWORD;
 
   int status;
   version = UNKNOWN_VERSION;
   status = PWSfileV3::CheckPasskey(filename, passkey);
-  if (status == SUCCESS)
+  if (status == SUCCESS) {
     version = V30;
-  if (status == NOT_PWS3_FILE) {
-    status = PWSfileV1V2::CheckPasskey(filename, passkey);
+  } else {
+    status = PWSfileV4::CheckPasskey(filename, passkey);
     if (status == SUCCESS)
-      version = V20; // or V17?
+      version = V40;
+    else {
+      status = PWSfileV1V2::CheckPasskey(filename, passkey);
+      if (status == SUCCESS)
+        version = V20; // or V17?
+    }
   }
   return status;
 }

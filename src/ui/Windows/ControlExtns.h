@@ -278,6 +278,31 @@ public:
   CSecString GetToolTip(int nItem)
   {return m_vtooltips[nItem];}
 
+  /*
+    Based on original "CComboBox with separators" code
+    CSeparatorComboBox class, created by: Zuoliu Ding in 01/30/2004
+    (C) Copyright 2004 Zuoliu Ding.
+    See: http://www.codeproject.com/Articles/7356/A-separator-combo-box
+    Covered by The Code Project Open License (CPOL) 1.02
+    
+    The original code has been merged into this code and has been updated for
+    PasswordSafe use as follows:
+      1. Changed to use std::vector instead of CArray.
+      2. Extra member functions: SetSeparator() and ClearSeparators()
+      3. Changed some default values
+  */
+
+  void SetSeparator(int iSep);
+  void SetSeparator();
+  void ClearSeparators() { m_vSeparators.clear(); }
+  void AdjustItemHeight(int nInc = 3);
+
+  void SetSepLineStyle(int iSep) { m_nPenStyle = iSep; }
+  void SetSepLineColor(COLORREF crColor) { m_crColor = crColor; }
+  void SetSepLineWidth(int iWidth) { m_nSepWidth = iWidth; }
+  void SetBottomMargin(int iMargin) { m_nBottomMargin = iMargin; }
+  void SetHorizontalMargin(int iMargin) { m_nHorizontalMargin = iMargin; }
+
   CEditExtn m_edit;
   CListBoxExtn m_listbox;
   void ChangeColour();
@@ -293,6 +318,9 @@ protected:
 private:
   bool m_bUseToolTips;
   std::vector<CSecString> m_vtooltips;
+  std::vector<int> m_vSeparators;
+
+  int m_nHorizontalMargin, m_nBottomMargin, m_nSepWidth, m_nPenStyle, m_crColor;
 };
 
 /////////////////////////////////////////////////////////////////////////////

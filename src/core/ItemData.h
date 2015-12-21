@@ -13,7 +13,7 @@
 
 #include "Util.h"
 #include "Match.h"
-#include "ItemField.h"
+#include "Item.h"
 #include "PWSprefs.h"
 #include "PWPolicy.h"
 #include "os/UUID.h"
@@ -24,9 +24,6 @@
 #include <vector>
 #include <string>
 #include <map>
-
-typedef std::vector<CItemField> UnknownFields;
-typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 //-----------------------------------------------------------------------------
 
@@ -46,18 +43,10 @@ typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 * how the records are written to disk.
 */
 
-class BlowFish;
 class PWSfile;
+class PWSfileV4;
 
-struct DisplayInfoBase
-{
-  // Following used by display methods of the GUI
-  DisplayInfoBase() {}
-  virtual ~DisplayInfoBase() {}
-  virtual DisplayInfoBase *clone() const = 0; // virtual c'tor idiom
-};
-
-class CItemData
+class CItemData : public CItem
 {
 public:
   // field types, per formatV{2,3}.txt. Any value > 0xff is internal only!
@@ -70,60 +59,52 @@ public:
     USER = 0x04,
     NOTES = 0x05,
     PASSWORD = 0x06,
-    CTIME = 0x07,  // Entry 'C'reation time
-    PMTIME = 0x08, // last 'P'assword 'M'odification time
-    ATIME = 0x09,  // last 'A'ccess time
-    XTIME = 0x0a,  // password e'X'piry time
-    RESERVED = 0x0b /* cannot use */,
-    RMTIME = 0x0c, // last 'R'ecord 'M'odification time
+    CTIME = 0x07,        // Entry 'C'reation time
+    PMTIME = 0x08,       // last 'P'assword 'M'odification time
+    ATIME = 0x09,        // last 'A'ccess time
+    XTIME = 0x0a,        // password e'X'piry time
+    RESERVED = 0x0b      /* MUST NOT USE */,
+    RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
     URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f,
-    POLICY = 0x10, // string encoding of item-specific password policy
+    POLICY = 0x10,       // string encoding of item-specific password policy
     XTIME_INT = 0x11,
     RUNCMD = 0x12,
-    DCA = 0x13,    // doubleclick action (enum)
+    DCA = 0x13,          // doubleclick action (enum)
     EMAIL = 0x14,
     PROTECTED = 0x15,
-    SYMBOLS = 0x16,    // string of item-specific password symbols
-    SHIFTDCA = 0x17,   // shift-doubleclick action (enum)
-    POLICYNAME = 0x18, // named non-default password policy for item
-    KBSHORTCUT = 0x19, // Keyboard shortcuts
-    LAST,        // Start of unknown fields!
+    SYMBOLS = 0x16,      // string of item-specific password symbols
+    SHIFTDCA = 0x17,     // shift-doubleclick action (enum)
+    POLICYNAME = 0x18,   // named non-default password policy for item
+    KBSHORTCUT = 0x19,   // Keyboard shortcuts
+    ATTREF = 0x1a,       // UUID of attachment (v4)
+    BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
+    ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
+    SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
+    LAST,                // Start of unknown fields!
+    LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
     END = 0xff,
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
     // 'UNKNOWNFIELDS' should be last
-    UNKNOWNFIELDS = 0x104};
+    UNKNOWNFIELDS = 0x104
+  };
 
   // Password Policy stuff: Either PWPolicy (+ optionally symbols) is not empty
   // or PolicyName is not empty. Both cannot be set. All can be empty.
 
   // SubGroup Object - same as FieldType
 
-  // Status returns from "ProcessInputRecordField"
-  enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
-
   // Entry type (note: powers of 2)
   enum EntryType {ET_INVALID      = -1,
                   ET_NORMAL       =  0, 
                   ET_ALIASBASE    =  1, ET_ALIAS    = 2, 
                   ET_SHORTCUTBASE =  4, ET_SHORTCUT = 8,
-                  ET_LAST};
-
-  // Entry status (note: powers of 2)
-  // A status can (currently) have values:
-  //   0 (normal), 1 (added), 2 (modified) or 4 (deleted).
-  enum EntryStatus {ES_INVALID      = -1,
-                    ES_CLEAN        =  0,
-                    ES_ADDED        =  1,  // Added    but not yet saved to disk copy
-                    ES_MODIFIED     =  2,  // Modified but not yet saved to disk copy
-                    ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
-                    ES_LAST};
+                  ET_LAST
+  };
 
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
-
-  static void SetSessionKey(); // call exactly once per session
 
   static bool IsTextField(unsigned char t);
 
@@ -135,6 +116,8 @@ public:
 
   int Read(PWSfile *in);
   int Write(PWSfile *out) const;
+  int Write(PWSfileV4 *out) const;
+  int WriteCommon(PWSfile *out) const;
 
   // Convenience: Get the name associated with FieldType
   static stringT FieldName(FieldType ft);
@@ -148,8 +131,10 @@ public:
   StringX GetPassword() const {return GetField(PASSWORD);}
   size_t GetPasswordLength() const {return GetField(PASSWORD).length();}
   StringX GetNotes(TCHAR delimiter = 0) const;
-  void GetUUID(uuid_array_t &) const; // V20
-  const pws_os::CUUID GetUUID() const; // V20 - see comment in .cpp re return type
+  void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
+  const pws_os::CUUID GetUUID(FieldType ft = END) const; // V20 - see comment in .cpp re return type
+  const pws_os::CUUID GetBaseUUID() const {return GetUUID(CItemData::BASEUUID);}
+  const pws_os::CUUID GetAttUUID() const {return GetUUID(CItemData::ATTREF);}
   StringX GetGroup() const {return GetField(GROUP);} // V20
   StringX GetURL() const {return GetField(URL);} // V30
   StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30
@@ -178,21 +163,21 @@ public:
   StringX GetXTimeXML() const {return GetTime(XTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetPMTimeXML() const {return GetTime(PMTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetRMTimeXML() const {return GetTime(RMTIME, PWSUtil::TMC_XML);}  // V30
-  //  These populate the time structure instead of giving a character string
-  void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
-  void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
-  void GetXTime(time_t &t) const {GetTime(XTIME, t);}  // V30
-  void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
-  void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
-  void GetXTimeInt(int32 &xint) const; // V30
+  //  These populate (and return) time_t instead of giving a character string
+  time_t GetATime(time_t &t) const {CItem::GetTime(ATIME, t); return t;}  // V30
+  time_t GetCTime(time_t &t) const {CItem::GetTime(CTIME, t); return t;}  // V30
+  time_t GetXTime(time_t &t) const {CItem::GetTime(XTIME, t); return t;}  // V30
+  time_t GetPMTime(time_t &t) const {CItem::GetTime(PMTIME, t); return t;}  // V30
+  time_t GetRMTime(time_t &t) const {CItem::GetTime(RMTIME, t); return t;}  // V30
+  int32 GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const {return GetField(POLICY);}
   StringX GetRunCommand() const {return GetField(RUNCMD);}
-  void GetDCA(int16 &iDCA, const bool bShift = false) const;
+  int16 GetDCA(int16 &iDCA, const bool bShift = false) const;
   StringX GetDCA(const bool bShift = false) const;
-  void GetShiftDCA(int16 &iDCA) const { GetDCA(iDCA, true); }
+  int16 GetShiftDCA(int16 &iDCA) const {return GetDCA(iDCA, true);}
   StringX GetShiftDCA() const {return GetDCA(true);}
   StringX GetEmail() const {return GetField(EMAIL);}
   StringX GetProtected() const;
@@ -200,7 +185,7 @@ public:
   bool IsProtected() const;
   StringX GetSymbols() const    {return GetField(SYMBOLS);}
   StringX GetPolicyName() const {return GetField(POLICYNAME);}
-  void GetKBShortcut(int32 &iKBShortcut) const;
+  int32 GetKBShortcut(int32 &iKBShortcut) const;
   StringX GetKBShortcut() const;
 
   StringX GetFieldValue(FieldType ft) const;
@@ -213,12 +198,7 @@ public:
                      const CItemData *pcibase, bool bforce_normal_entry,
                      bool &bXMLErrorsFound) const;
 
-  void SetUnknownField(unsigned char type, size_t length,
-                       const unsigned char *ufield);
-  size_t NumberUnknownFields() const {return m_URFL.size();}
-  void ClearUnknownFields() {return m_URFL.clear();}
-
-  void CreateUUID(); // V20 - generate UUID for new item
+  void CreateUUID(FieldType ft = CItemData::END); // V20 - generate UUID for new item
   void SetName(const StringX &name,
                const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
   void SetTitle(const StringX &title, TCHAR delimiter = 0);
@@ -226,51 +206,53 @@ public:
   void SetPassword(const StringX &password);
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
-  void SetUUID(const uuid_array_t &uuid); // V20
-  void SetUUID(const pws_os::CUUID &uuid) {SetUUID(*uuid.GetARep());}
+  void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
+  void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
+  void SetAttUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::ATTREF);}
+  void ClearAttUUID() {ClearField(CItemData::ATTREF);}
   void SetGroup(const StringX &group); // V20
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
   void SetATime() {SetTime(ATIME);}  // V30
-  void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
+  void SetATime(time_t t) {CItem::SetTime(ATIME, t);}  // V30
   bool SetATime(const stringT &time_str) {return SetTime(ATIME, time_str);}  // V30
   void SetCTime() {SetTime(CTIME);}  // V30
-  void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
+  void SetCTime(time_t t) {CItem::SetTime(CTIME, t);}  // V30
   bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
   void SetXTime() {SetTime(XTIME);}  // V30
-  void SetXTime(time_t t) {SetTime(XTIME, t);}  // V30
+  void SetXTime(time_t t) {CItem::SetTime(XTIME, t);}  // V30
   bool SetXTime(const stringT &time_str) {return SetTime(XTIME, time_str);}  // V30
   void SetPMTime() {SetTime(PMTIME);}  // V30
-  void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
+  void SetPMTime(time_t t) {CItem::SetTime(PMTIME, t);}  // V30
   bool SetPMTime(const stringT &time_str) {return SetTime(PMTIME, time_str);}  // V30
   void SetRMTime() {SetTime(RMTIME);}  // V30
-  void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
+  void SetRMTime(time_t t) {CItem::SetTime(RMTIME, t);}  // V30
   bool SetRMTime(const stringT &time_str) {return SetTime(RMTIME, time_str);}  // V30
-  void SetXTimeInt(int32 &xint); // V30
+  void SetXTimeInt(int32 xint); // V30
   bool SetXTimeInt(const stringT &xint_str); // V30
   void SetPWHistory(const StringX &PWHistory);  // V30
   void SetPWPolicy(const PWPolicy &pwp);
   bool SetPWPolicy(const stringT &cs_pwp);
   void SetRunCommand(const StringX &cs_RunCommand);
-  void SetDCA(const int16 &iDCA, const bool bShift = false);
+  void SetDCA(int16 iDCA, const bool bShift = false);
   bool SetDCA(const stringT &cs_DCA, const bool bShift = false);
-  void SetShiftDCA(const int16 &iDCA) { SetDCA(iDCA, true); }
+  void SetShiftDCA(int16 iDCA) {SetDCA(iDCA, true);}
   bool SetShiftDCA(const stringT &cs_DCA) {return SetDCA(cs_DCA, true);}
   void SetEmail(const StringX &sx_email);
   void SetProtected(bool bOnOff);
   void SetSymbols(const StringX &sx_symbols);
   void SetPolicyName(const StringX &sx_PolicyName);
   void SetKBShortcut(const StringX &sx_KBShortcut);
-  void SetKBShortcut(const int32 &iKBShortcut);
+  void SetKBShortcut(int32 iKBShortcut);
 
   void SetFieldValue(FieldType ft, const StringX &value);
 
   CItemData& operator=(const CItemData& second);
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
-  void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
+
   void Clear();
-  void ClearField(FieldType ft) {m_fields.erase(ft);}
+
+  bool operator==(const CItemData &that) const;
+  bool operator!=(const CItemData &that) const {return !operator==(that);}
 
   // Check record for correct password history
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
@@ -289,13 +271,13 @@ public:
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
   bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
+  bool HasUUID() const; // UUID type matches entry type and is set
   bool IsGroupSet() const                  { return IsFieldSet(GROUP);     }
   bool IsUserSet() const                   { return IsFieldSet(USER);      }
   bool IsNotesSet() const                  { return IsFieldSet(NOTES);     }
   bool IsURLSet() const                    { return IsFieldSet(URL);       }
   bool IsRunCommandSet() const             { return IsFieldSet(RUNCMD);    }
   bool IsEmailSet() const                  { return IsFieldSet(EMAIL);     }
-  bool IsUUIDSet() const                   { return IsFieldSet(UUID);      }
   bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
   bool IsPasswordSet() const               { return IsFieldSet(PASSWORD);  }
   bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
@@ -322,6 +304,8 @@ public:
   bool IsEmailEmpty() const                { return !IsEmailSet();         }
   bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
 
+  bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
+
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeSerializePlainText(const std::vector<char> &v);
@@ -336,12 +320,12 @@ public:
   bool IsBase() const {return IsAliasBase() || IsShortcutBase();}
   bool IsDependent() const {return IsAlias() || IsShortcut();}
 
-  void SetEntryType(EntryType et) {m_entrytype = et;}
-  void SetNormal() {m_entrytype = ET_NORMAL;}
-  void SetAliasBase() {m_entrytype = ET_ALIASBASE;}
-  void SetShortcutBase() {m_entrytype = ET_SHORTCUTBASE;}
-  void SetAlias() {m_entrytype = ET_ALIAS;}
-  void SetShortcut() {m_entrytype = ET_SHORTCUT;}
+  void SetEntryType(EntryType et);
+  void SetNormal() {SetEntryType(ET_NORMAL);}
+  void SetAliasBase() {SetEntryType(ET_ALIASBASE);}
+  void SetShortcutBase() {SetEntryType(ET_SHORTCUTBASE);}
+  void SetAlias() {SetEntryType(ET_ALIAS);}
+  void SetShortcut() {SetEntryType(ET_SHORTCUT);}
 
   EntryStatus GetStatus() const {return m_entrystatus;}
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
@@ -350,25 +334,10 @@ public:
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
 
-  size_t GetSize() const;
-  void GetSize(size_t &isize) const {isize = GetSize();}
-
-
 private:
-  typedef std::map<FieldType, CItemField> FieldMap;
-  typedef FieldMap::const_iterator FieldConstIter;
-  typedef FieldMap::iterator FieldIter;
-
-  FieldMap   m_fields;
-
-  // Save unknown record fields on read to put back on write unchanged
-  UnknownFields m_URFL;
-
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
-  mutable BlowFish * m_blowfish = nullptr;
-  
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
   static bool IsSessionKeySet;
@@ -382,24 +351,15 @@ private:
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
   StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
-  void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
-  void SetTime(const int whichtime, time_t t); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
-  // Create local Encryption/Decryption object
-  const BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
-  StringX GetField(FieldType ft) const;
-  StringX GetField(const CItemField &field) const;
-  void GetField(const CItemField &field, unsigned char *value,
-                size_t &length) const;
+  bool SetField(unsigned char type, const unsigned char *data, size_t len);
 
-  void SetField(FieldType ft, const StringX &value);
-  void SetField(FieldType ft, const unsigned char *value, size_t length);
-  bool SetField(int type, const unsigned char *data, size_t len);
-
-  bool IsFieldSet(FieldType ft) const {return m_fields.find(ft) != m_fields.end();}
+  // for V3 Alias or Shortcut, the base UUID is encoded in password
+  void ParseSpecialPasswords();
+  void SetSpecialPasswords();
 
   void UpdatePasswordHistory(); // used by UpdatePassword()
 
@@ -416,7 +376,8 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == CTIME      || t == PMTIME || t == ATIME    || t == XTIME     || t == RMTIME ||
     t == XTIME_INT  ||
     t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
-    t == KBSHORTCUT ||
+    t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
+    t == SHORTCUTUUID ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */

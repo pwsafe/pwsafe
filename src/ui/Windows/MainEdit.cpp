@@ -161,13 +161,10 @@ void DboxMain::OnAdd()
                       DBEmptyGroupsCommand::EG_DELETE));
     }
 
-    Command *pcmd;
-    if (pAddEntryPSH->GetIBasedata() == 0) {
-      pcmd = AddEntryCommand::Create(&m_core, ci);
-    } else { // creating an alias
-      pcmd = AddEntryCommand::Create(&m_core, ci, pAddEntryPSH->GetBaseUUID());
+    if (pAddEntryPSH->GetIBasedata() != 0) { // creating an alias
+      ci.SetBaseUUID(pAddEntryPSH->GetBaseUUID());
     }
-    pmulticmds->Add(pcmd);
+    pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, pAddEntryPSH->GetAtt()));
 
     if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,
@@ -265,12 +262,13 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ASSERT(pci != NULL);
 
   CItemData ci_temp;
-  ci_temp.CreateUUID();
   ci_temp.SetGroup(cs_group);
   ci_temp.SetTitle(cs_title);
   ci_temp.SetUser(cs_user);
   ci_temp.SetPassword(L"[Shortcut]");
   ci_temp.SetShortcut();
+  ci_temp.CreateUUID(); // call after setting to shortcut!
+  ci_temp.SetBaseUUID(pci->GetUUID());
 
   time_t t;
   time(&t);
@@ -289,7 +287,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     pmulticmds->Add(pcmd2);
   }
 
-  Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
+  Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
   pmulticmds->Add(pcmd);
 
   if (!sxNewDBPrefsString.empty()) {
@@ -516,27 +514,13 @@ void DboxMain::OnDuplicateGroup()
           StringX sxtmp;
           citer = mapOldToNewBaseUUIDs.find(pbci->GetUUID());
           if (citer != mapOldToNewBaseUUIDs.end()) {
-            // Base is in duplicated group - use new values
-            StringX subPath2 =  pbci->GetGroup();
-            ASSERT(subPath2.length() >= grplen);
-            subPath2 =  subPath2.substr(grplen);
-            sxtmp = L"[" +
-                      sxNewPath + subPath2 + L":" +
-                      pbci->GetTitle() + L":" +
-                      pbci->GetUser()  +
-                    L"]";
-            ci2.SetPassword(sxtmp);
-            pcmd = AddEntryCommand::Create(&m_core, ci2, citer->second);
+            // Base is in duplicated group - use base's copy
+            ci2.SetBaseUUID(citer->second);
           } else {
-            // Base not in duplicated group - use old values
-            sxtmp = L"[" +
-                      pbci->GetGroup() + L":" +
-                      pbci->GetTitle() + L":" +
-                      pbci->GetUser()  +
-                    L"]";
-            ci2.SetPassword(sxtmp);
-            pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
+            // Base not in duplicated group - use old base
+            ci2.SetBaseUUID(pbci->GetUUID());
           } // where's the base?
+          pcmd = AddEntryCommand::Create(&m_core, ci2);
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
         } // pci != NULL
@@ -1380,31 +1364,18 @@ void DboxMain::OnDuplicateEntry()
     // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
     ci2.SetKBShortcut(0);
 
-    Command *pcmd = NULL;
     if (pci->IsDependent()) {
-      if (pci->IsAlias()) {
-        ci2.SetAlias();
-      } else {
-        ci2.SetShortcut();
-      }
-
       const CItemData *pbci = GetBaseEntry(pci);
-      if (pbci != NULL) {
-        StringX sxtmp;
-        sxtmp = L"[" +
-                  pbci->GetGroup() + L":" +
-                  pbci->GetTitle() + L":" +
-                  pbci->GetUser()  +
-                L"]";
-        ci2.SetPassword(sxtmp);
-        pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
-      }
-    } else { // not alias or shortcut
-      ci2.SetNormal();
-      pcmd = AddEntryCommand::Create(&m_core, ci2);
+      ASSERT(pbci != NULL);
+      const StringX sxtmp = L"[" +
+        pbci->GetGroup() + L":" +
+        pbci->GetTitle() + L":" +
+        pbci->GetUser()  +
+        L"]";
+      ci2.SetPassword(sxtmp);
     }
 
-    Execute(pcmd);
+    Execute(AddEntryCommand::Create(&m_core, ci2));
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 

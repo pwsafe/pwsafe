@@ -10,6 +10,7 @@
 #include "core.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
+#include "os/UUID.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -20,9 +21,8 @@
 #include <algorithm>
 
 PWSfileV1V2::PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version)
-  : PWSfile(filename, mode)
+: PWSfile(filename, mode, version)
 {
-  m_curversion = version;
   m_IV = m_ipthing;
 }
 

@@ -411,3 +411,52 @@ ulong64 pws_os::fileLength(std::FILE *fp) {
   } else
     return 0;
 }
+
+bool pws_os::GetFileTimes(const stringT &filename,
+      time_t &atime, time_t &ctime, time_t &mtime)
+{
+  struct _stati64 info;
+  int rc = _wstati64(filename.c_str(), &info);
+  if (rc == 0) {
+    atime = info.st_atime;
+    ctime = info.st_ctime;
+    mtime = info.st_mtime;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void TimetToFileTime(time_t t, FILETIME *pft)
+{
+  LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+  pft->dwLowDateTime = (DWORD)ll;
+  pft->dwHighDateTime = ll >> 32;
+}
+
+bool pws_os::SetFileTimes(const stringT &filename,
+  time_t ctime, time_t mtime, time_t atime)
+{
+  FILETIME fctime, fmtime, fatime;
+
+  if (ctime == 0 && mtime == 0 && atime == 0)
+    return true;  // Nothing to do!
+
+  // Convert to file time format
+  TimetToFileTime(ctime, &fctime);
+  TimetToFileTime(mtime, &fmtime);
+  TimetToFileTime(atime, &fatime);
+
+  // Now set file times
+  HANDLE hFile;
+  hFile = CreateFile(filename.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL,
+    OPEN_EXISTING, 0, NULL);
+
+  if (hFile != INVALID_HANDLE_VALUE) {
+    SetFileTime(hFile, ctime != 0 ? &fctime : NULL, atime == 0 ? &fatime : NULL, mtime != 0 ? &fmtime : NULL);
+    CloseHandle(hFile);
+    return true;
+  } else {
+    return false;
+  }
+}

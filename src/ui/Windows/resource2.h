@@ -5,7 +5,6 @@
 // Menus and Toolbars
 
 /*
-
 *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
 *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
 *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
@@ -56,6 +55,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_SYNCHRONIZE         32022
 #define ID_MENUITEM_CHANGEMODE          32023
 #define ID_MENUITEM_IMPORT_KEEPASSV1CSV 32024
+#define ID_MENUITEM_EXPORT2V3FORMAT     32025
+#define ID_MENUITEM_EXPORT2V4FORMAT     32026
+
 
 // Edit menu
 #define ID_EDITMENU                     32050
@@ -104,6 +106,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTGRP2PLAINTEXT 32093
 #define ID_MENUITEM_EXPORTGRP2XML       32094
 #define ID_MENUITEM_EXPORTGRP2DB        32095
+#define ID_MENUITEM_EXPORT_ATTACHMENT   32096
 
 // View menu
 #define ID_VIEWMENU                     32101

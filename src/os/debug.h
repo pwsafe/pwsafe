@@ -35,6 +35,12 @@ namespace pws_os {
   */
   void HexDump(unsigned char *pmemory, const int &length,
                const stringT &cs_prefix = _S(""), const int &maxnum = 16);
+
+  /**
+     This disables the ability to create a coredump and to attach a debugger to the process
+     on Release builds (if OS supports this, of course).
+  */
+  bool DisableDumpAttach();
 }
 
 #endif /* _OSDEBUG_H */

@@ -197,13 +197,8 @@ class AddEntryCommand : public Command
 {
 public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
-                                 const Command *pcmd = NULL)
-  { return new AddEntryCommand(pcomInt, ci, pcmd); }
-  // Following for adding an alias or shortcut
-  static AddEntryCommand *Create(CommandInterface *pcomInt,
-                                 const CItemData &ci, const pws_os::CUUID &base_uuid,
-                                 const Command *pcmd = NULL)
-  { return new AddEntryCommand(pcomInt, ci, base_uuid, pcmd); }
+                                 const CItemAtt *att = NULL, const Command *pcmd = NULL)
+  { return new AddEntryCommand(pcomInt, ci, att, pcmd); }
   ~AddEntryCommand();
   int Execute();
   void Undo();
@@ -211,11 +206,10 @@ public:
 
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, const Command *pcmd = NULL);
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                  const pws_os::CUUID &base_uuid, const Command *pcmd = NULL);
+                  const CItemAtt *att, const Command *pcmd = NULL);
   const CItemData m_ci;
-  pws_os::CUUID m_base_uuid;
+  CItemAtt m_att;
   bool m_bExpired;
 };
 
@@ -236,6 +230,7 @@ private:
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                      const Command *pcmd = NULL);
   const CItemData m_ci;
+  CItemAtt m_att;
   pws_os::CUUID m_base_uuid; // for undo of shortcut or alias deletion
   std::vector<CItemData> m_dependents; // for undo of base deletion
 };
@@ -355,11 +350,6 @@ private:
   //  Key = base uuid; Value = multiple alias/shortcut uuids
   ItemMMap m_saved_base2aliases_mmap;
   ItemMMap m_saved_base2shortcuts_mmap;
-
-  // Permanent Map: since an alias only has one base
-  //  Key = alias/shortcut uuid; Value = base uuid
-  ItemMap m_saved_alias2base_map;
-  ItemMap m_saved_shortcut2base_map;
 };
 
 class RemoveDependentEntryCommand : public Command

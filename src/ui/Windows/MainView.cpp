@@ -127,17 +127,21 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       }
       break;
     case UpdateGUICommand::GUI_ADD_ENTRY:
+      ASSERT(pci != NULL);
       AddToGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
+      ASSERT(pci != NULL);
       RemoveFromGUI(*pci, bUpdateGUI);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       // Only used when group, title, username or password changed via in place
       // Edit in TreeView
+      ASSERT(pci != NULL);
       RefreshEntryFieldInGUI(*pci, ft);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
     case UpdateGUICommand::GUI_REDO_IMPORT:
@@ -161,6 +165,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Refesh one entry ListView row and in the tree if the Title/Username/Password
       // has changed and visible in the tree when entry has been edited
+      ASSERT(pci != NULL);
       UpdateEntryinGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
@@ -347,6 +352,10 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       pRHS_PCI->GetKBShortcut(xint2);
       if (xint1 != xint2)
         iResult = (xint1 < xint2) ? -1 : 1;
+      break;
+    case CItemData::ATTREF:
+      if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
+        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
       break;
     default:
       ASSERT(FALSE);
@@ -718,15 +727,19 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CItemData::FieldBits bsFields;
   bsFields.set();  // Default search is all text fields!
 
-  return FindAll(str, CaseSensitive, indices, bsFields, false, 
-                 L"", 0, 0);
+  CItemAtt::AttFieldBits bsAttFields;
+  bsAttFields.reset();  // Default DON'T search attachment filename
+
+  return FindAll(str, CaseSensitive, indices, bsFields, bsAttFields,
+                 false, L"", 0, 0);
 }
 
 size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                          vector<int> &indices,
-                         const CItemData::FieldBits &bsFields, const bool &subgroup_bset, 
-                         const std::wstring &subgroup_name, const int subgroup_object,
-                         const int subgroup_function)
+                         const CItemData::FieldBits &bsFields,
+                         const CItemAtt::AttFieldBits &bsAttFields, 
+                         const bool &subgroup_bset, const std::wstring &subgroup_name,
+                         const int subgroup_object, const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
@@ -734,6 +747,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
   StringX curKBS;
+  StringX curFN;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -765,14 +779,14 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_bset &&
-        !curitem.Matches(std::wstring(subgroup_name),
-                         subgroup_object, subgroup_function))
+      !curitem.Matches(std::wstring(subgroup_name),
+      subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;
     saveTitle = curTitle = curitem.GetTitle(); // saveTitle keeps orig case
     curGroup = curitem.GetGroup();
-    curUser =  curitem.GetUser();
+    curUser = curitem.GetUser();
     curPassword = curitem.GetPassword();
     curNotes = curitem.GetNotes();
     curURL = curitem.GetURL();
@@ -783,6 +797,17 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curKBS = curitem.GetKBShortcut();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
+
+    // Don't bother getting the attachment if not searchng its fields
+    if (bsAttFields.count() != 0) {
+      if (curitem.HasAttRef()) {
+        pws_os::CUUID attuuid = curitem.GetAttUUID();
+        CItemAtt att = m_core.GetAtt(attuuid);
+        curFN = att.GetFileName();
+      } else {
+        curFN = L"";
+      }
+    }
 
     if (!CaseSensitive) {
       ToLower(curGroup);
@@ -870,6 +895,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
           break;  // break out of do loop
       }
       if (bsFields.test(CItemData::XTIME_INT) && ::wcsstr(curXInt.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsAttFields.test(CItemAtt::FILENAME - CItemAtt::START) && ::wcsstr(curFN.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -2914,6 +2943,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::KBSHORTCUT:        
       cs_header.LoadString(IDS_KBSHORTCUT);
       break;
+    case CItemData::ATTREF:
+      cs_header.LoadString(IDS_ATTREF);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2939,6 +2971,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
     case CItemData::KBSHORTCUT:
+    case CItemData::ATTREF:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -3381,12 +3414,13 @@ void DboxMain::OnToolBarFindReport()
   rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
+  CItemAtt::AttFieldBits bsAttFFields;
   bool bFAdvanced;
   std::wstring Fsubgroup_name;
   int Fsubgroup_object, Fsubgroup_function;
   bool Fsubgroup_set;
 
-  m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, Fsubgroup_name, 
+  m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, bsAttFFields, Fsubgroup_name,
                               Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
 
   // tell the user we're done & provide short Compare report
@@ -3482,6 +3516,10 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
     if (bsFFields.test(CItemData::KBSHORTCUT))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
+    if (bsFFields.test(CItemData::ATTREF))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
+    if (bsAttFFields.test(CItemAtt::FILENAME - CItemAtt::START))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4090,10 +4128,10 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
     bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-    if (ft == CItemData::START || ft == CItemData::TITLE || 
+    if ( ft == CItemData::START || ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
-        ft == CItemData::PROTECTED) {
+         ft == CItemData::PROTECTED) {
       UpdateTreeItem(pdi->tree_item, ci);
       if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
         UpdateEntryImages(ci);
@@ -4584,6 +4622,14 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
 
         sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
       }
+      break;
+    }
+    case CItemData::ATTREF:
+    {
+      // Get "&Yes" and remove & (May not be leading in non-English languages)
+      CString csYes(MAKEINTRESOURCE(IDS_YES));
+      csYes.Replace(L"&", L"");
+      sx_fielddata = ci.HasAttRef() ? csYes : L"";
       break;
     }
     default:
