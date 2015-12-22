@@ -7,10 +7,10 @@ include(CheckIncludeFile)
 
 # Version configuration:
 # Following can be different for windows/wx, just wrap around if/else/endif
-set (pwsafe_VERSION_MAJOR 4)
-set (pwsafe_VERSION_MINOR 0)
+set (pwsafe_VERSION_MAJOR 0)
+set (pwsafe_VERSION_MINOR 98)
 set (pwsafe_REVISION 0)
-set (pwsafe_SPECIALBUILD "ALPHA")
+set (pwsafe_SPECIALBUILD "BETA")
 set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")

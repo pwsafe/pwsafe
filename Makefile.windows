@@ -8,8 +8,8 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM := 4.0
-RELEASE_SPECIAL := ALPHA
+RELEASENUM := 3.38
+RELEASE_SPECIAL := PRE
 
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 

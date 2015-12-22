@@ -1,5 +1,5 @@
-Password Safe 3.37.2 Release Notes - October 2015
-=================================================
+Password Safe 3.38 Release Notes - December 2015
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,12 +8,17 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.37.2
-====================
+Bugs fixed in 3.38
+==================
 [1289] Uniform behavior for generated password: Can be explicitly
 copied to clipboard whenever generated (no longer copied by default).
 [1266] Toolbar elements display correctly on high-resolution monitors
 under Windows 8.1 and later.
+
+New Features for 3.38
+=====================
+Experimental support for V4 format. DO NOT USE FOR PRODUCTION ("REAL")
+PASSWORDS.
 
 Bugs fixed in 3.37.1
 ====================
