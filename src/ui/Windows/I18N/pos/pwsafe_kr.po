@@ -126,6 +126,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr "'그룹'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr ""
@@ -258,6 +262,10 @@ msgstr "외부에서 편집"
 #. Resource IDs: (368)
 #, c-format
 msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1198)
+msgid "#attachments"
 msgstr ""
 
 #. Resource IDs: (1456)
@@ -418,6 +426,11 @@ msgstr "%ls\n\n설정 파일이 사용되지 않을 것입니다."
 #. Resource IDs: (371)
 #, c-format
 msgid "%s (%s)"
+msgstr ""
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
 msgstr ""
 
 #. Resource IDs: (366)
@@ -1272,6 +1285,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1429,12 +1446,20 @@ msgstr "보조 항목 비밀번호 변경"
 msgid "All Files (*.*)"
 msgstr "모든 파일(*.*)"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "사용 가능한 모든 열들이 표시되었습니다."
 
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1333)
@@ -1571,6 +1596,22 @@ msgstr ""
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "최소 한 글자(소문자, 대문자, 숫자,\n특수문자, 16진수) 이상 입력해야 합니다."
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2338,6 +2379,10 @@ msgstr "생성 시간"
 msgid "Created on:"
 msgstr "생성된 일자:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "기준"
@@ -2456,6 +2501,10 @@ msgstr "데이터베이스 이름"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "데이터베이스 검사됨 - 문제가 발견되지 않았습니다."
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3056,6 +3105,10 @@ msgstr "보내기(&T)"
 msgid "Export &XML"
 msgstr "XML으로 내보내기(&X)"
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3092,6 +3145,10 @@ msgstr ""
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3194,13 +3251,37 @@ msgstr "필드 존재함"
 msgid "File"
 msgstr ""
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "파일 사용중"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "파일 읽기 오류"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3242,6 +3323,10 @@ msgstr "파일 또는 경로를 찾을 수 없습니다."
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "파일 버전 경고"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3468,6 +3553,10 @@ msgstr "Gujarati"
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3746,6 +3835,10 @@ msgstr "현재 존재하는 항목들의 비밀번호만을 변경하기 위해 
 msgid "Import under Group?"
 msgstr "아래 그룹을 불러오시겠습니까?"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr ""
@@ -3955,6 +4048,10 @@ msgstr "최종 접근"
 msgid "Last Modified"
 msgstr "최종 수정"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "최종 접근 시간:"
@@ -4133,6 +4230,14 @@ msgstr ""
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "최초 수와 '사이' 속정에 대한 최대값"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4445,6 +4550,14 @@ msgstr "숫자열이 최대값으로 설정되었습니다. '더 큰' 설정은 
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "숫자열이 최소값으로 설정되었습니다. '보다 큰' 설정은 사용할 수 없습니다."
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "총 항목 개수"
@@ -4715,16 +4828,24 @@ msgstr "Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe 백업본 (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe 데이터베이스 (*.psafe3)|*.psafe3|모든 파일 (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4929,6 +5050,10 @@ msgstr "텍스트 파일의 이름을 지정해 주십시오"
 msgid "Please name this filter"
 msgstr "이 필터의 이름을 지정해 주십시오"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "열람할 리포트를 선택해 주십시오."
@@ -4996,6 +5121,14 @@ msgstr "추가된 모든 문자열을 삭제하시려면 Delete를 누르세요"
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
 msgstr "예를 누르시면 선택한 항목이 클립보드로 복사됩니다. 클립보드는 Password Safe의 창이 닫기면 안전하게 비워집니다.\n\n비밀번호를 복사하지 않으려면 아니오를 클릭하세요."
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5152,6 +5285,10 @@ msgstr "마지막에 사용한 항목 불러오기"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
+msgstr ""
+
+#. Resource IDs: (1468)
+msgid "Remove"
 msgstr ""
 
 #. Resource IDs: (1188)
@@ -5393,6 +5530,10 @@ msgstr ""
 msgid "Security"
 msgstr "보안"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
 msgstr "공개 소스에 대해 알고싶으시다면 LICENSE를 읽으십시오."
@@ -5505,6 +5646,11 @@ msgstr "Sesotho sa Leboa"
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "세션"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6070,6 +6216,10 @@ msgstr ""
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "다음 항목들이 인식되었으나 그룹/제목,  사용자 이름과 비밀번호만 처리됩니다:"
@@ -6112,6 +6262,10 @@ msgstr ""
 #. Resource IDs: (216)
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6820,6 +6974,10 @@ msgstr "취약한 비밀번호:\n\n %s"
 msgid "What saved"
 msgstr "What saved"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "When saved"
@@ -7109,6 +7267,10 @@ msgstr "\n비밀번호 내역의 다음 항목에서 에러가 발생했습니�
 msgid "\nExpand All"
 msgstr "\n모두 펼치기"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\n항목을 XML 형식으로 내보내기..."
@@ -7145,9 +7307,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\nXML 파일로 내보내기"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7379,6 +7549,11 @@ msgstr "\t그룹:'%s'; 제목:'%s'; 사용자 이름:'%s'"
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\t그룹:'%ls'; 제목:'%ls'; 사용자 이름:'%ls' %ls"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
@@ -7807,6 +7982,14 @@ msgstr "v1.x 형식...(&V)"
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v2 형식...(&V)"
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

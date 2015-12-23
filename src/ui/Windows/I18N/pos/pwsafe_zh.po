@@ -113,6 +113,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " '组'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr ""
@@ -245,6 +249,10 @@ msgstr "外部编辑！"
 #. Resource IDs: (368)
 #, c-format
 msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1198)
+msgid "#attachments"
 msgstr ""
 
 #. Resource IDs: (1456)
@@ -405,6 +413,11 @@ msgstr "%ls\n\n配置文件将不能再使用！"
 #. Resource IDs: (371)
 #, c-format
 msgid "%s (%s)"
+msgstr ""
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
 msgstr ""
 
 #. Resource IDs: (366)
@@ -1259,6 +1272,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1416,12 +1433,20 @@ msgstr "别名密码更改"
 msgid "All Files (*.*)"
 msgstr "所有文件 (*.*)"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "显示所有可用栏目"
 
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1333)
@@ -1558,6 +1583,22 @@ msgstr ""
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "至少需要输入一个字符(小写字母，大写字母，数字，符号，十六进制)才被许可！"
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2325,6 +2366,10 @@ msgstr "创建时间"
 msgid "Created on:"
 msgstr "创建时间:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "规则"
@@ -2443,6 +2488,10 @@ msgstr "数据库名称"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "数据库验证 - 未发现问题"
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3043,6 +3092,10 @@ msgstr "导出为(&T)"
 msgid "Export &XML"
 msgstr "导出 XML(&X)"
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3079,6 +3132,10 @@ msgstr ""
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "导出的数据仅限于用户确定的某些字段！"
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3181,13 +3238,37 @@ msgstr "当前字段"
 msgid "File"
 msgstr ""
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "文件正在使用！"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "文件读取错误！"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3229,6 +3310,10 @@ msgstr "文件或路径未建立！"
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "文件版本警告"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3455,6 +3540,10 @@ msgstr "古吉拉特语"
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3733,6 +3822,10 @@ msgstr "仅导入现有项目被更改的密码"
 msgid "Import under Group?"
 msgstr "导入下列组？"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr ""
@@ -3942,6 +4035,10 @@ msgstr "最后访问时间"
 msgid "Last Modified"
 msgstr "最后修改时间"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "最后访问时间:"
@@ -4120,6 +4217,14 @@ msgstr ""
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "最大值按第一个数字和“之间”规则！"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4432,6 +4537,14 @@ msgstr "数量已被设定到最大值，再“大于”将不被允许的！"
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "数量已被设定到最小值，再“小于”将不被允许的！"
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "项目数量"
@@ -4702,16 +4815,24 @@ msgstr "Password Safe 备份 (*.bak)|*.bak|Password Safe 中间备份 (*.ibak)|*
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe 备份 (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe 数据库 (*.psafe3)|*.psafe3|所有文件 (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4916,6 +5037,10 @@ msgstr "请命名纯文本文件"
 msgid "Please name this filter"
 msgstr "请命名该筛选！"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "请选择报告查看！"
@@ -4983,6 +5108,14 @@ msgstr "单击删除所有已添加的字符"
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
 msgstr "单击“确定”将复制所选项目密码到剪贴板。当关闭 Password Safe 时剪贴板将被安全的清除。\n\n单击“取消”停止复制存在的密码。"
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5139,6 +5272,10 @@ msgstr "记住最后"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
+msgstr ""
+
+#. Resource IDs: (1468)
+msgid "Remove"
 msgstr ""
 
 #. Resource IDs: (1188)
@@ -5380,6 +5517,10 @@ msgstr ""
 msgid "Security"
 msgstr "安全"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
 msgstr "简体中文: 小镇医生"
@@ -5492,6 +5633,11 @@ msgstr "塞索托语"
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "对话"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6057,6 +6203,10 @@ msgstr ""
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "下列栏目被认可，但只有 组/标题、用户名称和密码可以被处理:"
@@ -6099,6 +6249,10 @@ msgstr ""
 #. Resource IDs: (216)
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6807,6 +6961,10 @@ msgstr "弱密码语句:\n\n %s"
 msgid "What saved"
 msgstr "保存什么？"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "当保存时"
@@ -7096,6 +7254,10 @@ msgstr "\n历史密码错误作为项目: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\n全部展开"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\n导出项目为 XML 格式..."
@@ -7132,9 +7294,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\n导出为 XML"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7366,6 +7536,11 @@ msgstr "\t组:'%s'; 标题:'%s'; 用户:'%s'"
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\t组='%ls', 标题='%ls', 用户='%ls' %ls"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
@@ -7794,6 +7969,14 @@ msgstr "v1.x 旧版格式(&1)..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v2 旧版格式(&2)..."
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

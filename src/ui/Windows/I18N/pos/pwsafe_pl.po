@@ -126,6 +126,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " 'Grupa'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr " 'skrót klawiszowy'"
@@ -264,6 +268,10 @@ msgstr "! edytuj zewnętrznie"
 #, c-format
 msgid "# characters: %d"
 msgstr "# znaki: %d"
+
+#. Resource IDs: (1198)
+msgid "#attachments"
+msgstr ""
 
 #. Resource IDs: (1456)
 msgid "#description"
@@ -425,6 +433,11 @@ msgstr "%ls\n\nPlik konfiguracyjny nie zostanie użyty."
 #, c-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
+msgstr ""
 
 #. Resource IDs: (366)
 #, c-format
@@ -1279,6 +1292,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1439,6 +1456,10 @@ msgstr "Zmiana hasła aliasu"
 msgid "All Files (*.*)"
 msgstr "Wszystkie pliki (*.*)"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 #, fuzzy
 msgid "All available columns are being displayed."
@@ -1447,6 +1468,10 @@ msgstr "Wszystkie dostępne kolumny są wyświetlane."
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
 msgstr "Wszystkie zmiany do polityk haseł będą odrzucone"
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1583,6 +1608,22 @@ msgstr "Jako że znak cudzysłowia jest używany by oddzielać całe pola notate
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "Przynajmniej jeden rodzaj znaków (małe lub wielkie litery, cyfry,\nsymbole, hex) musi być zaznaczony."
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2364,6 +2405,10 @@ msgstr "Czas utworzenia"
 msgid "Created on:"
 msgstr "Utworzono:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Kryteria"
@@ -2483,6 +2528,10 @@ msgstr "Nazwa Bazy Danych"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "Zweryfikowano bazę danych - nie naleziono problemów."
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3092,6 +3141,10 @@ msgstr "Ekspor&tuj do"
 msgid "Export &XML"
 msgstr "Eksportuj &XML"
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3128,6 +3181,10 @@ msgstr "Pli eksportu: '%s' już istnieje.\nChcesz go zastąpić?"
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Eksport danych jest zawężony przez użytkownika do wskazanych pól."
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3232,14 +3289,38 @@ msgstr "Pole istnieje"
 msgid "File"
 msgstr "Plik"
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 #, fuzzy
 msgid "File In Use"
 msgstr "Plik jest używany"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Błąd odczytu pliku"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3283,6 +3364,10 @@ msgstr "Nie znaleziono pliku lub ścieżki."
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "Ostrzeżenie o wersji pliku"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3514,6 +3599,10 @@ msgstr "Gudźarati"
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3793,6 +3882,10 @@ msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
 msgid "Import under Group?"
 msgstr "Import do Grupy?"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr "Import_KeePassV1_CSV"
@@ -4002,6 +4095,10 @@ msgstr "Ostatni Dostęp"
 msgid "Last Modified"
 msgstr "Ostatnia Modyfikacja"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "Ostatni dostęp:"
@@ -4184,6 +4281,14 @@ msgstr "Maksymalna ilość zachowanych"
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "Maksymalna wartość dla pierwszej liczby i reguły 'pomiędzy'"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4507,6 +4612,14 @@ msgstr "Liczba ma maksymalną wartość.  'Większa niż' jest niedostępna."
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Liczba ma minimalną wartość.  'Mniejsza niż' jest niedostępna."
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "Liczba wpisów"
@@ -4783,17 +4896,25 @@ msgstr "Kopie zapasowe Password Safe(*.bak)|*.bak|Tymczasowe kopie zapasowe Pass
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Kopie zapasowe Password Safe (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Kopie bezpieczeństwa Password Safe (*.bak)|*.bak|Pośrednie kopie bezpieczeństwa Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -4999,6 +5120,10 @@ msgstr "Nazwij plik tekstowy"
 msgid "Please name this filter"
 msgstr "Podaj nazwę dla filtra"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "Wybierz raport do wyświetlenia."
@@ -5067,6 +5192,14 @@ msgstr "Naciśnij by skasować wszystkie dodane znaki."
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
 msgstr "Wybranie OK skopiuje hasła wybranego wpisu do schowka. Schowek zostanie w bezpieczny sposób wyczyszczony kiedy Password Safe będzie zamykany.\n\nWybranie Anuluj zatrzyma kopiowanie hasła."
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5226,6 +5359,10 @@ msgstr "Pamiętaj ostatnie"
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
 msgstr "Pamiętaj tę klawiaturę"
+
+#. Resource IDs: (1468)
+msgid "Remove"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5467,6 +5604,10 @@ msgstr "Druga liczba musi byc większa niż pierwsza"
 msgid "Security"
 msgstr "Bezpieczeństwo"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 #, fuzzy
 msgid "See LICENSE for open source details."
@@ -5582,6 +5723,11 @@ msgstr "Północny sotho"
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "Sesja"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6152,6 +6298,10 @@ msgstr "Następujące BŁĘDY zostały wykryte i POPRAWIONE."
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr "Następujące OSTRZEŻENIA zostały wykryte - należy je przejrzeć i naprawić ręcznie."
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Następujące kolumny zostały rozpoznane, ale tylgo Grupa/Tytuł, nazwa użytkownika i hasło będą przetwarzane:"
@@ -6195,6 +6345,10 @@ msgstr "Następujące wpisy mają jedno lub więcej pól zbyt długich by je wy�
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
 msgstr "Następujące wpisy mają hasła w prawidłowej postaci dla %ls, ale wpis bazowy nie istnieje."
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -6907,6 +7061,10 @@ msgstr "Słabe hasło:\n\n %s"
 msgid "What saved"
 msgstr "Co zachowano"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "Kiedy zachowano"
@@ -7200,6 +7358,10 @@ msgstr "\nBłąd w Historii Haseł dla wpisu: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nRozwiń wszystkol"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\nEksportowanie wpisu w formacie XML..."
@@ -7237,9 +7399,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\nEksportuj do XML"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7474,6 +7644,11 @@ msgstr "\tGrupa:'%s'; Nazwa:'%s'; Użytkownik:'%s'"
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\tGrupa='%ls', Nazwa='%ls', Użytkownik='%ls' %ls"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
@@ -7914,6 +8089,14 @@ msgstr "format v&1.x ..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "format v&2..."
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"
