@@ -2446,9 +2446,9 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
 
       CItemData *pci_curitem = &iter->second;
       CUUID entry_uuid = pci_curitem->GetUUID();
-      base_uuid = pci_curitem->GetBaseUUID();
 
       if (iVia == CItemData::UUID) {
+        base_uuid = pci_curitem->GetBaseUUID();
         iter = m_pwlist.find(base_uuid);
       } else {
         tmp = pci_curitem->GetPassword();
@@ -2462,12 +2462,15 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           // Skip over 'title:'
           csPwdUser = tmp.substr(csPwdTitle.length() + 1);
           iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+          base_uuid = iter->second.GetUUID();
         } else {
           iter = m_pwlist.end();
         }
       }
 
       if (iter != m_pwlist.end()) {
+        ASSERT(base_uuid != CUUID::NullUUID());
+        pci_curitem->SetBaseUUID(base_uuid);
         if (type == CItemData::ET_SHORTCUT) {
           // Adding shortcuts -> Base must be normal or already a shortcut base
           if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
