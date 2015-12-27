@@ -61,7 +61,6 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   si.SetPassword(L"[Shortcut]");
   si.SetShortcut();
   si.CreateUUID(); // call after setting to shortcut!
-  si.SetBaseUUID(base_uuid);
 
   time_t t;
   time(&t);
@@ -71,7 +70,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
   pmulticmds->Add(AddEntryCommand::Create(&core, bi));
-  pmulticmds->Add(AddEntryCommand::Create(&core, si));
+  pmulticmds->Add(AddEntryCommand::Create(&core, si, base_uuid));
   core.Execute(pmulticmds);
   EXPECT_EQ(2, core.GetNumEntries());
 
@@ -99,7 +98,8 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   // Now just delete the shortcut, check that
   // base is left, and that it reverts to a normal entry
-  DeleteEntryCommand *pcmd2 = DeleteEntryCommand::Create(&core, si);
+  const CItemData si2 = core.GetEntry(core.Find(si.GetUUID())); // si2 has baseUUID set
+  DeleteEntryCommand *pcmd2 = DeleteEntryCommand::Create(&core, si2);
 
   core.Execute(pcmd2);
   ASSERT_EQ(1, core.GetNumEntries());

@@ -459,11 +459,17 @@ void DBEmptyGroupsCommand::Undo()
 // ------------------------------------------------
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                                 const CUUID &baseUUID,
                                  const CItemAtt *att, const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
   if (att != NULL)
     m_att = *att;
+
+  if (m_ci.IsDependent()) {
+    ASSERT(baseUUID != CUUID::NullUUID());
+    m_ci.SetBaseUUID(baseUUID);
+  }
 
   if (pcmd != NULL)
     m_bNotifyGUI = pcmd->GetGUINotify();
@@ -606,17 +612,17 @@ void DeleteEntryCommand::Undo()
     // Check if dep entry hasn't already been added - can happen if
     // base and dep in group that's being undeleted.
     if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, &m_att, this);
+      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
       pcmd->Execute();
       delete pcmd;
     }
   } else {
-    AddEntryCommand undo(m_pcomInt, m_ci, &m_att, this);
+    AddEntryCommand undo(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
     undo.Execute();
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL);
         pcmd->Execute();
         delete pcmd;
       }
@@ -632,7 +638,7 @@ void DeleteEntryCommand::Undo()
           continue;
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, NULL, this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }

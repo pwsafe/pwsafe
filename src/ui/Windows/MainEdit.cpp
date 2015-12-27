@@ -161,10 +161,12 @@ void DboxMain::OnAdd()
                       DBEmptyGroupsCommand::EG_DELETE));
     }
 
-    if (pAddEntryPSH->GetIBasedata() != 0) { // creating an alias
-      ci.SetBaseUUID(pAddEntryPSH->GetBaseUUID());
-    }
-    pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, pAddEntryPSH->GetAtt()));
+    pws_os::CUUID baseUUID(pws_os::CUUID::NullUUID());
+    if (pAddEntryPSH->GetIBasedata() != 0)  // creating an alias
+      baseUUID = pAddEntryPSH->GetBaseUUID();
+
+    pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, baseUUID,
+                                            pAddEntryPSH->GetAtt()));
 
     if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,
@@ -268,7 +270,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ci_temp.SetPassword(L"[Shortcut]");
   ci_temp.SetShortcut();
   ci_temp.CreateUUID(); // call after setting to shortcut!
-  ci_temp.SetBaseUUID(pci->GetUUID());
 
   time_t t;
   time(&t);
@@ -287,7 +288,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     pmulticmds->Add(pcmd2);
   }
 
-  Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+  Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
   pmulticmds->Add(pcmd);
 
   if (!sxNewDBPrefsString.empty()) {
@@ -513,14 +514,15 @@ void DboxMain::OnDuplicateGroup()
 
           StringX sxtmp;
           citer = mapOldToNewBaseUUIDs.find(pbci->GetUUID());
+          CUUID baseUUID;
           if (citer != mapOldToNewBaseUUIDs.end()) {
             // Base is in duplicated group - use base's copy
-            ci2.SetBaseUUID(citer->second);
+            baseUUID = citer->second;
           } else {
             // Base not in duplicated group - use old base
-            ci2.SetBaseUUID(pbci->GetUUID());
+            baseUUID = pbci->GetUUID();
           } // where's the base?
-          pcmd = AddEntryCommand::Create(&m_core, ci2);
+          pcmd = AddEntryCommand::Create(&m_core, ci2, baseUUID);
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
         } // pci != NULL

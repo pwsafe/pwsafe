@@ -271,7 +271,7 @@ TEST_F(FileV4Test, CoreRWTest)
   EXPECT_EQ(0, attItem.GetRefcount());
 
   core.SetPassKey(passkey);
-  core.Execute(AddEntryCommand::Create(&core, fullItem, &attItem));
+  core.Execute(AddEntryCommand::Create(&core, fullItem, pws_os::CUUID::NullUUID(), &attItem));
   EXPECT_TRUE(core.HasAtt(attItem.GetUUID()));
   EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));

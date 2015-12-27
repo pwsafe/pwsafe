@@ -197,8 +197,9 @@ class AddEntryCommand : public Command
 {
 public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
+                                 const pws_os::CUUID &baseUUID = pws_os::CUUID::NullUUID(),
                                  const CItemAtt *att = NULL, const Command *pcmd = NULL)
-  { return new AddEntryCommand(pcomInt, ci, att, pcmd); }
+  { return new AddEntryCommand(pcomInt, ci, baseUUID, att, pcmd); }
   ~AddEntryCommand();
   int Execute();
   void Undo();
@@ -207,8 +208,9 @@ public:
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                  const CItemAtt *att, const Command *pcmd = NULL);
-  const CItemData m_ci;
+                  const pws_os::CUUID &baseUUID, const CItemAtt *att,
+                  const Command *pcmd = NULL);
+  CItemData m_ci;
   CItemAtt m_att;
   bool m_bExpired;
 };
