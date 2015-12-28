@@ -240,7 +240,6 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     CItemData shortcut;
     shortcut.SetShortcut();
     shortcut.CreateUUID();
-    shortcut.SetBaseUUID(m_base->GetUUID());
     shortcut.SetPassword(wxT("[Shortcut]"));
     const wxString group = m_groupCtrl->GetValue();
 
@@ -255,7 +254,8 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     shortcut.SetXTime(time_t(0));
     shortcut.SetStatus(CItemData::ES_ADDED);
 
-    m_core.Execute(AddEntryCommand::Create(&m_core, shortcut));
+    m_core.Execute(AddEntryCommand::Create(&m_core, shortcut,
+					   m_base->GetUUID()));
   }
   EndModal(wxID_OK);
 }

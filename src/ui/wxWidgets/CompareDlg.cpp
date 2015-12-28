@@ -591,12 +591,12 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
       // an Assert failure.  I think it will work anyway in Release build, but abort in Debug
       CItemData newItem(itrOther->second);
       newItem.CreateUUID();
-      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem);
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem, newItem.GetBaseUUID());
       pmulticmds->Add(cmd);
     }
     else {
       const CItemData& item = itrOther->second;
-      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item, item.GetBaseUUID());
       pmulticmds->Add(cmd);
     }
   }

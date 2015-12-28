@@ -1177,7 +1177,8 @@ void CItemData::CreateUUID(FieldType ft)
   CUUID uuid;
   if (ft == END) {
     switch (m_entrytype) {
-    case ET_NORMAL: ft = UUID; break;
+    case ET_NORMAL: case ET_SHORTCUTBASE: case ET_ALIASBASE:
+      ft = UUID; break;
     case ET_ALIAS: ft = ALIASUUID; break;
     case ET_SHORTCUT: ft = SHORTCUTUUID; break;
     default: ASSERT(0); ft = UUID; break;

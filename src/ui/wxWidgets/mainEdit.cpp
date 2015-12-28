@@ -113,7 +113,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, this, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
-    m_core.Execute(AddEntryCommand::Create(&m_core, item));
+    m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
     SetChanged(Data);
   }
 }
@@ -275,7 +275,13 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetPassword());
+  if (!item.IsDependent())
+    PWSclipboard::GetInstance()->SetData(item.GetPassword());
+  else {
+    const CUUID &base = item.GetBaseUUID();
+    const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
+    PWSclipboard::GetInstance()->SetData(passwd);
+  }
   UpdateAccessTime(item);
 }
 
@@ -433,7 +439,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
           pbci->GetTitle() + wxT(":") +
           pbci->GetUser()  + wxT("]");
         ci2.SetPassword(cs_tmp);
-        pcmd = AddEntryCommand::Create(&m_core, ci2);
+        pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
       }
     } else { // not alias or shortcut
       ci2.SetNormal();
