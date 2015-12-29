@@ -25,7 +25,7 @@
 #else
 #define PRODUCTVER     3, 38, 0
 #define STRPRODUCTVER  "3, 38, 0, @pwsafe_VERSTRING@\0"
-#define SPECIAL_BUILD L"PRE"
+#define SPECIAL_BUILD L""
 #endif /* CMAKE_ON_WINDOWS */
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
