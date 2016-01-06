@@ -2,12 +2,12 @@
 """
 Simple newline fix for translated messages in .po files
 
-When using, some tools (for example OmegaT), translated test is split into
-sentences to simplify translation. So in sone ceses newline may break small
+When using, some tools (for example OmegaT), translated text is split into
+sentences to simplify translation. So in some cases newline may break small
 sentence that looks strange and \n may be skipped by translator in the
 translated block. This tool will scan all message pairs and split translated
 text using following rules
- - translated text will be changes on if it haven't newlines;
+ - translated text will be changed if it have no newlines;
  - maximum line width will be set to maximum width for original text;
  - split is made only on word boundaries.
 
@@ -15,7 +15,7 @@ text using following rules
  things:
   - reorder metadata fields
   - wrap (reformat) msgid/msgstr text even if it haven't newlines (only .po
-    file representation, strings only chnaged by rules)
+    file representation, strings only changed by rules)
   - remove some comments (for example # something before #~ something)
 """
 
