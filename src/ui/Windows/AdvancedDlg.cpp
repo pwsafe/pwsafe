@@ -20,6 +20,7 @@
 #include "resource3.h"
 
 #include <bitset>
+#include <type_traits> // for static_assert
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -519,7 +520,11 @@ void CAdvancedDlg::SetAtt(CItemAtt::AttFieldBits bsAttFields)
   findinfo.flags = LVFI_PARAM;
   // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
   // and so will not be found and so not moved anywhere.
-  for (int i = 0; i < (CItemAtt::LAST - CItemAtt::START); i++) {
+
+  // Following check should compile, but silly MSVC thinks bitset<>::size() is runtime
+  // static_assert((m_bsAttAllowedFields.size() == bsAttFields.size()), "bitset size mismatch");
+
+  for (size_t i = 0; i < m_bsAttAllowedFields.size(); i++) {
     // Don't move or allow non-allowed fields
     if (!m_bsAttAllowedFields.test(i))
       continue;
