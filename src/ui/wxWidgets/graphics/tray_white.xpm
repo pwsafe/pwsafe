@@ -1,5 +1,5 @@
 /* XPM */
-static char * tray_white_xpm[] = {
+static const char * tray_white_xpm[] = {
 "32 32 4 1",
 " 	c None",
 ".	c #FFFFFF",

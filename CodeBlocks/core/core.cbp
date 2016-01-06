@@ -17,6 +17,7 @@
 				<Option run_host_application_in_terminal="1" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wredundant-decls" />
@@ -192,6 +193,7 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wredundant-decls" />
@@ -201,6 +203,7 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
@@ -373,10 +376,16 @@
 		<Unit filename="../../src/core/ExpiredList.cpp" />
 		<Unit filename="../../src/core/ExpiredList.h" />
 		<Unit filename="../../src/core/Fish.h" />
+		<Unit filename="../../src/core/Item.cpp" />
+		<Unit filename="../../src/core/Item.h" />
+		<Unit filename="../../src/core/ItemAtt.cpp" />
+		<Unit filename="../../src/core/ItemAtt.h" />
 		<Unit filename="../../src/core/ItemData.cpp" />
 		<Unit filename="../../src/core/ItemData.h" />
 		<Unit filename="../../src/core/ItemField.cpp" />
 		<Unit filename="../../src/core/ItemField.h" />
+		<Unit filename="../../src/core/KeyWrap.cpp" />
+		<Unit filename="../../src/core/KeyWrap.h" />
 		<Unit filename="../../src/core/Match.cpp" />
 		<Unit filename="../../src/core/Match.h" />
 		<Unit filename="../../src/core/PWCharPool.cpp" />
@@ -397,14 +406,20 @@
 		<Unit filename="../../src/core/PWSdirs.h" />
 		<Unit filename="../../src/core/PWSfile.cpp" />
 		<Unit filename="../../src/core/PWSfile.h" />
+		<Unit filename="../../src/core/PWSfileHeader.cpp" />
+		<Unit filename="../../src/core/PWSfileHeader.h" />
 		<Unit filename="../../src/core/PWSfileV1V2.cpp" />
 		<Unit filename="../../src/core/PWSfileV1V2.h" />
 		<Unit filename="../../src/core/PWSfileV3.cpp" />
 		<Unit filename="../../src/core/PWSfileV3.h" />
+		<Unit filename="../../src/core/PWSfileV4.cpp" />
+		<Unit filename="../../src/core/PWSfileV4.h" />
 		<Unit filename="../../src/core/PWSprefs.cpp" />
 		<Unit filename="../../src/core/PWSprefs.h" />
 		<Unit filename="../../src/core/PWSrand.cpp" />
 		<Unit filename="../../src/core/PWSrand.h" />
+		<Unit filename="../../src/core/PWStime.cpp" />
+		<Unit filename="../../src/core/PWStime.h" />
 		<Unit filename="../../src/core/Proxy.h" />
 		<Unit filename="../../src/core/PwsPlatform.h" />
 		<Unit filename="../../src/core/Report.cpp" />
@@ -452,6 +467,8 @@
 		<Unit filename="../../src/core/core_st.h" />
 		<Unit filename="../../src/core/coredefs.h" />
 		<Unit filename="../../src/core/hmac.h" />
+		<Unit filename="../../src/core/pbkdf2.cpp" />
+		<Unit filename="../../src/core/pbkdf2.h" />
 		<Unit filename="../../src/core/pugixml/pugiconfig.hpp" />
 		<Unit filename="../../src/core/pugixml/pugixml.cpp" />
 		<Unit filename="../../src/core/pugixml/pugixml.hpp" />

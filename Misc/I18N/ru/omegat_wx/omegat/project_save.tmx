@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.5.2_1" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.5.3" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1915,6 +1915,14 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;Not Set&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>&lt;Не задано&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>A filter was active.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T140432Z">
@@ -2345,6 +2353,14 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Основные</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Black</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173715Z" creationid="pm_kan" creationdate="20160106T173715Z">
+        <seg>Чёрный</seg>
       </tuv>
     </tu>
     <tu>
@@ -3418,6 +3434,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T115434Z">
         <seg>Настроить &amp;основную панель инструментов...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Cyan</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173917Z" creationid="pm_kan" creationdate="20160106T173917Z">
+        <seg>Голубой</seg>
       </tuv>
     </tu>
     <tu>
@@ -5010,6 +5034,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Initial tray icon color</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T175615Z" creationid="pm_kan" creationdate="20160106T175615Z">
+        <seg>Цвет значка в области уведомлений при запуске</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Input string is empty</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -5626,6 +5658,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Name: %s; Filename: %s</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Имя: %s; Имя файла: %s</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Neither MS XML V3, V4 or V6 seems available.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20150418T091905Z">
@@ -6223,6 +6263,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T175908Z" creationid="pm_kan" creationdate="20160106T175908Z">
+        <seg>Контейнеры Password Safe (*.dat)|*.dat|Все файлы (*.*)|*.*;*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T133015Z">
@@ -6243,6 +6291,30 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T110734Z">
         <seg>Контейнеры Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Резервные копии Password Safe (*.bak)|*.bak|Промежуточные резервные копии (*.ibak)|*.ibak|Все файлы (*.*; *)|*.*;*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T175923Z" creationid="pm_kan" creationdate="20160106T175923Z">
+        <seg>Контейнеры Password Safe (*.psafe4)|*.psafe4|Все файлы (*.*)|*.*;*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All files (*.*; *)|*.*;*</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173528Z" creationid="pm_kan" creationdate="20160106T173528Z">
+        <seg>Контейнеры Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Все файлы (*.*; *)|*.*;*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173622Z" creationid="pm_kan" creationdate="20160106T173622Z">
+        <seg>Контейнеры Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Резервные копии Password Safe (*.bak)|*.bak|Промежуточные резервные копии (*.ibak)|*.ibak|Все файлы (*.*; *)|*.*;*</seg>
       </tuv>
     </tu>
     <tu>
@@ -6729,6 +6801,32 @@ to the base entry</seg>
     <tu>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To:
+POT-Creation-Date: 2015-10-04 18:13+0300
+PO-Revision-Date: 2015-10-04 17:50+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language:
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T151831Z" creationid="pm_kan" creationdate="20151004T151644Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To:
+POT-Creation-Date: 2015-10-04 18:40+0300
+PO-Revision-Date: 2015-10-04 18:40+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@mail.ru&gt;
+Language-Team:
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2012-12-24 13:17+0400
 PO-Revision-Date: 2012-12-09 22:50+0400
@@ -7197,27 +7295,53 @@ Content-Transfer-Encoding: 8bitr</seg>
     <tu>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
-Report-Msgid-Bugs-To:
-POT-Creation-Date: 2015-10-04 18:13+0300
-PO-Revision-Date: 2015-10-04 17:50+0300
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2016-01-06 20:33+0300
+PO-Revision-Date: 2016-01-05 18:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
-Language:
+Language: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T151831Z" creationid="pm_kan" creationdate="20151004T151644Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173600Z" creationid="pm_kan" creationdate="20160106T173600Z">
         <seg>Project-Id-Version: Password Safe
-Report-Msgid-Bugs-To:
-POT-Creation-Date: 2015-10-04 18:40+0300
-PO-Revision-Date: 2015-10-04 18:40+0300
-Last-Translator: Andrey Kuznetsov &lt;pm_kan@mail.ru&gt;
-Language-Team:
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2015-01-06 20:50+0300
+PO-Revision-Date: 2015-01-06 20:50+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
 Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2016-01-06 21:01+0300
+PO-Revision-Date: 2016-01-05 18:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T180151Z" creationid="pm_kan" creationdate="20160106T180151Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2015-01-06 21:01+0300
+PO-Revision-Date: 2015-01-06 21:01+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
       </tuv>
     </tu>
     <tu>
@@ -7585,6 +7709,14 @@ combination:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Безопасность</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>See Attachment filters</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>См. группу фильтров вложений</seg>
       </tuv>
     </tu>
     <tu>
@@ -8439,6 +8571,14 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The following attachments are not referred to by any entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Указанные вложения не привязаны к элементам.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The following columns were recognised but only Group/Title, Username and Password will be processed:</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -8483,16 +8623,16 @@ A new named policy has been created with the current date/time (%s) appended:%s<
       <tuv lang="EN-US">
         <seg>The following entries had an empty Password field, which is not permitted.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150418T092148Z">
-        <seg>В указанных элементы не␣было заполнено поле с паролем. Это␣недопустимо.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T181622Z">
+        <seg>В указанных элементах не␣было заполнено поле с паролем. Это␣недопустимо.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>The following entries had an empty Title field, which is not permitted.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150418T092158Z">
-        <seg>В указанных элементы не␣заполнено поле с заголовком. Это␣недопустимо.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T181701Z">
+        <seg>В указанных элементах не␣заполнено поле с заголовком. Это␣недопустимо.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8533,6 +8673,14 @@ A new named policy has been created with the current date/time (%s) appended:%s<
       </tuv>
       <tuv lang="RU-RU">
         <seg>Следующие элементы содержат указатель на пароль из элемента %s, но исходный элемент не существует.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The following entries refer to missing attachments.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Указанные элементы ссылаются на отсутствующие вложения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9615,6 +9763,14 @@ Imported %d %s</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>White</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173920Z" creationid="pm_kan" creationdate="20160106T173920Z">
+        <seg>Белый</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Will use registry.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134901Z">
@@ -9723,6 +9879,14 @@ Imported %d %s</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113343Z">
         <seg>YYYYMMMDD_HHMMSS</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Yellow</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173926Z" creationid="pm_kan" creationdate="20160106T173926Z">
+        <seg>Жёлтый</seg>
       </tuv>
     </tu>
     <tu>
@@ -10717,6 +10881,12 @@ The following new %s %s merged into this database:</seg>
       </tuv>
     </tu>
     <tu>
+      <note>default file name</note>
+      <tuv lang="EN-US">
+        <seg>pwsafe.psafe4</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="EN-US">
         <seg>search</seg>
       </tuv>
@@ -10827,6 +10997,14 @@ The following new %s %s merged into this database:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Формат v&amp;2...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>v&amp;4 format (EXPERIMENTAL)...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Формат v&amp;4 (ЭКСПЕРИМЕНТАЛЬНЫЙ)...</seg>
       </tuv>
     </tu>
     <tu>
