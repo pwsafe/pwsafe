@@ -3501,38 +3501,32 @@ void DboxMain::OnToolBarFindReport()
 
     buffer = L"\t";
     // Non-time fields
-    if (bsFFields.test(CItemData::GROUP))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FINDGROUP));
-    if (bsFFields.test(CItemData::TITLE))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FINDTITLE));
-    if (bsFFields.test(CItemData::USER))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FINDUSER));
-    if (bsFFields.test(CItemData::PASSWORD))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPASSWORD));
-    if (bsFFields.test(CItemData::NOTES))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPNOTES));
-    if (bsFFields.test(CItemData::URL))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPURL));
-    if (bsFFields.test(CItemData::EMAIL))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPEMAIL));
-    if (bsFFields.test(CItemData::PROTECTED))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPROTECTED));
-    if (bsFFields.test(CItemData::SYMBOLS))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
-    if (bsFFields.test(CItemData::RUNCMD))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
-    if (bsFFields.test(CItemData::AUTOTYPE))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
-    if (bsFFields.test(CItemData::PWHIST))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
-    if (bsFFields.test(CItemData::POLICYNAME))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
-    if (bsFFields.test(CItemData::KBSHORTCUT))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPKBSHORTCUT));
-    if (bsFFields.test(CItemData::ATTREF))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
+    const struct {int si; int ii;} nonTimeTextIfSet [] = {
+      {CItemData::GROUP, IDS_FINDGROUP},
+      {CItemData::TITLE, IDS_FINDTITLE},
+      {CItemData::USER, IDS_FINDUSER},
+      {CItemData::PASSWORD, IDS_COMPPASSWORD},
+      {CItemData::NOTES, IDS_COMPNOTES},
+      {CItemData::URL, IDS_COMPURL},
+      {CItemData::EMAIL, IDS_COMPEMAIL},
+      {CItemData::PROTECTED, IDS_COMPPROTECTED},
+      {CItemData::SYMBOLS, IDS_COMPSYMBOLS},
+      {CItemData::RUNCMD, IDS_COMPRUNCOMMAND},
+      {CItemData::AUTOTYPE, IDS_COMPAUTOTYPE},
+      {CItemData::PWHIST, IDS_COMPPWHISTORY},
+      {CItemData::POLICYNAME, IDS_COMPPOLICYNAME},
+      {CItemData::KBSHORTCUT, IDS_COMPKBSHORTCUT},
+      {CItemData::ATTREF, IDS_COMPATTREF},
+    };
+
+    for (auto &elem : nonTimeTextIfSet) {
+      if (bsFFields.test(elem.si))
+        buffer += L"\t" + CString(MAKEINTRESOURCE(elem.ii));
+    }
+
     if (bsAttFFields.test(CItemAtt::FILENAME - CItemAtt::START))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FILENAME));
+
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
