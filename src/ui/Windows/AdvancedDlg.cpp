@@ -336,23 +336,23 @@ BOOL CAdvancedDlg::OnInitDialog()
 
     // Only add attachment fields for V4 and later
     if (m_current_version >= PWSfile::V40) {
-      // Add search attachment fields - not default
-      cs_text.LoadString(IDS_FILETITLE);
+      const CString cs_att = L" (" + CString(MAKEINTRESOURCE(IDS_ATTACHMENTS)) + L")";
+      cs_text.LoadString(IDS_FILETITLE); cs_text += cs_att;
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemAtt::TITLE | NORMALFIELD);
       m_bsAttAllowedFields.set(CItemAtt::TITLE - CItemAtt::START);
 
-      cs_text.LoadString(IDS_FILENAME);
+      cs_text.LoadString(IDS_FILENAME); cs_text += cs_att;
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemAtt::FILENAME | NORMALFIELD);
       m_bsAttAllowedFields.set(CItemAtt::FILENAME - CItemAtt::START);
 
-      cs_text.LoadString(IDS_FILEPATH);
+      cs_text.LoadString(IDS_FILEPATH); cs_text += cs_att;
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemAtt::FILEPATH | NORMALFIELD);
       m_bsAttAllowedFields.set(CItemAtt::FILEPATH - CItemAtt::START);
 
-      cs_text.LoadString(IDS_FILEMEDIATYPE);
+      cs_text.LoadString(IDS_FILEMEDIATYPE); cs_text += cs_att;
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemAtt::MEDIATYPE | NORMALFIELD);
       m_bsAttAllowedFields.set(CItemAtt::MEDIATYPE - CItemAtt::START);
