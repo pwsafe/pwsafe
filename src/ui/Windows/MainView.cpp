@@ -821,6 +821,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       ToLower(curPolicyName);
       ToLower(curRunCommand);
       ToLower(curAT);
+      ToLower(curFN);
     }
 
     // do loop to easily break out as soon as a match is found
