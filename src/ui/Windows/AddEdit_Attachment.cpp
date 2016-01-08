@@ -276,7 +276,7 @@ void CAddEdit_Attachment::OnAttImport()
     const CString cs_allfiles(MAKEINTRESOURCE(IDS_FDF_ALL));
     filter.Append(cs_allfiles);
 
-    CFileDialog fileDlg(TRUE, NULL, NULL, 0, filter, this);
+    CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST, filter, this);
     if (fileDlg.DoModal() == IDCANCEL)
       return;
 
