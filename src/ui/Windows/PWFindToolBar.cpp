@@ -135,10 +135,7 @@ CPWFindToolBar::CPWFindToolBar()
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
   m_iFindDirection(FIND_DOWN)
 {
-  m_bsFields.reset();
   m_last_bsFields.reset();
-
-  m_bsAttFields.reset();
   m_last_bsAttFields.reset();
 
   m_iMaxNumButtons = _countof(m_FindToolBarIDs);
