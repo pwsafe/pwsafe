@@ -747,7 +747,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
   StringX curKBS;
-  StringX curFN;
+  StringX curFN, curFP, curMT; // Attachment fields: FileName, FilePath, MediaType
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -802,10 +802,12 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     if (bsAttFields.count() != 0) {
       if (curitem.HasAttRef()) {
         pws_os::CUUID attuuid = curitem.GetAttUUID();
-        CItemAtt att = m_core.GetAtt(attuuid);
+        const CItemAtt &att = m_core.GetAtt(attuuid);
         curFN = att.GetFileName();
+        curFP = att.GetFilePath();
+        curMT = att.GetMediaType();
       } else {
-        curFN = L"";
+        curFN = curFP = curMT = L"";
       }
     }
 
@@ -822,6 +824,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       ToLower(curRunCommand);
       ToLower(curAT);
       ToLower(curFN);
+      ToLower(curFP);
+      ToLower(curMT);
     }
 
     // do loop to easily break out as soon as a match is found
@@ -900,6 +904,14 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsAttFields.test(CItemAtt::FILENAME - CItemAtt::START) && ::wcsstr(curFN.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsAttFields.test(CItemAtt::FILEPATH - CItemAtt::START) && ::wcsstr(curFP.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsAttFields.test(CItemAtt::MEDIATYPE - CItemAtt::START) && ::wcsstr(curMT.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
