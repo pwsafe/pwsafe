@@ -3532,7 +3532,7 @@ void DboxMain::OnToolBarFindReport()
     if (bsFFields.test(CItemData::ATTREF))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
     if (bsAttFFields.test(CItemAtt::FILENAME - CItemAtt::START))
-      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPATTREF));
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FILENAME));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
