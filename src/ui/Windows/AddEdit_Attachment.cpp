@@ -468,18 +468,22 @@ void CAddEdit_Attachment::OnAttRemove()
  void CAddEdit_Attachment::UpdateControls()
  {
    bool bHasAttachment = M_attachment().HasContent();
+   bool bIsRO = (M_uicaller() == IDS_VIEWENTRY ||
+                 (M_uicaller() == IDS_EDITENTRY && M_protected() != 0));
 
+   ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bIsRO);
+   
    // Currently only accept one attachment per entry
    // If already have one, don't allow drop of any more
-   m_AttStatic.DragAcceptFiles(bHasAttachment ? FALSE : TRUE);
+   m_AttStatic.DragAcceptFiles(bHasAttachment || bIsRO ? FALSE : TRUE);
 
    // Set up buttons
-   GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment);
+   GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment && !bIsRO);
    GetDlgItem(IDC_ATT_EXPORT)->EnableWindow(bHasAttachment);
-   GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(bHasAttachment);
+   GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(bHasAttachment && !bIsRO);
 
    // Don't allow user to change file name if attachment is present
-   ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment);
+   ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment || bIsRO);
 
    switch (m_attType) {
      case ATTACHMENT_NOT_IMAGE:
