@@ -2268,22 +2268,26 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
     return;
   }
 
-  ItemListIter iter = m_pwlist.find(base_uuid);
-  ASSERT(iter != m_pwlist.end());
+  ItemListIter biter = m_pwlist.find(base_uuid);
+  ItemListIter diter = m_pwlist.find(entry_uuid);
+  ASSERT(biter != m_pwlist.end());
+  ASSERT(diter != m_pwlist.end());
 
-  bool baseWasNormal = iter->second.IsNormal();
+  diter->second.SetBaseUUID(base_uuid);
+
+  bool baseWasNormal = biter->second.IsNormal();
   if (type == CItemData::ET_ALIAS) {
     // Mark base entry as a base entry - must be a normal entry or already an alias base
-    ASSERT(iter->second.IsNormal() || iter->second.IsAliasBase());
-    iter->second.SetAliasBase();
+    ASSERT(biter->second.IsNormal() || biter->second.IsAliasBase());
+    biter->second.SetAliasBase();
     if (baseWasNormal)
-      GUIRefreshEntry(iter->second);
+      GUIRefreshEntry(biter->second);
   } else if (type == CItemData::ET_SHORTCUT) {
     // Mark base entry as a base entry - must be a normal entry or already a shortcut base
-    ASSERT(iter->second.IsNormal() || iter->second.IsShortcutBase());
-    iter->second.SetShortcutBase();
+    ASSERT(biter->second.IsNormal() || biter->second.IsShortcutBase());
+    biter->second.SetShortcutBase();
     if (baseWasNormal)
-      GUIRefreshEntry(iter->second);
+      GUIRefreshEntry(biter->second);
   }
 
   // Add to the base->type multimap

@@ -1147,6 +1147,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       pmulticmds->Add(pcmd);
       pci_new->SetPassword(L"[Alias]");
       pci_new->SetAlias();
+      pci_new->SetBaseUUID(new_base_uuid);
     } else { // Still 'normal'
       pci_new->SetPassword(newPassword);
       pci_new->SetNormal();
@@ -1176,6 +1177,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
         pmulticmds->Add(pcmd);
         pci_new->SetPassword(L"[Alias]");
         pci_new->SetAlias();
+        pci_new->SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
         pci_new->SetPassword(newPassword);
         pci_new->SetNormal();
@@ -1195,6 +1197,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       pmulticmds->Add(pcmd);
       pci_new->SetPassword(L"[Alias]");
       pci_new->SetAlias();
+      pci_new->SetBaseUUID(new_base_uuid);
       // Move old aliases across
       pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
                                                         new_base_uuid,
