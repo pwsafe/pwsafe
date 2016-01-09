@@ -90,8 +90,10 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &pa
       return v;
     else if (PWSfileV4::IsV4x(filename, passkey, v))
       return v;
-    else
+    else if (PWSfileV1V2::CheckPasskey(filename, passkey) == SUCCESS)
       return V20;
+    else
+      return UNKNOWN_VERSION;
   } else
     return UNKNOWN_VERSION;
 }

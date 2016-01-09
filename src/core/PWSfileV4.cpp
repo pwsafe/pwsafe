@@ -893,7 +893,6 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
     status = ReadKeyBlock();
     // status is either SUCESS or END_OF_FILE
     if (status == END_OF_FILE) {
-      Close();
       return status;
     }
   } while (!EndKeyBlocks(calc_hnonce));
