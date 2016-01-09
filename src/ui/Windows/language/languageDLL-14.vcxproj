@@ -61,6 +61,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;RESOURCE_DLL;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -74,6 +75,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <NoEntryPoint>true</NoEntryPoint>
       <TargetMachine>MachineX86</TargetMachine>
+      <SwapRunFromCD>true</SwapRunFromCD>
+      <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PreBuildEvent>
       <Command>cscript pre_build.vbs</Command>
