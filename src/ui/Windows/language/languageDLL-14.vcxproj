@@ -61,6 +61,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;RESOURCE_DLL;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
