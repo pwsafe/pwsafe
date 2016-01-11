@@ -389,6 +389,29 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
             m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("~]")) {
             m_cur_entry->entrytype = SHORTCUT;
         }
+        if (!m_ImportedPrefix.empty() &&
+            (m_cur_entry->entrytype == ALIAS || m_cur_entry->entrytype == SHORTCUT)) {
+            StringX tmp(m_sxElemContent);
+            tmp = tmp.substr(2, tmp.length() - 4);
+
+            // Unpick the password
+            StringX sxPwdGroup, sxPwdTitle, sxPwdUser;
+            sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(";")));
+            // Skip over 'group:'
+            tmp = tmp.substr(sxPwdGroup.length() + 1);
+            sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(";")));
+            // Skip over 'title:'
+            sxPwdUser = tmp.substr(sxPwdTitle.length() + 1);
+
+            // Update the group field
+            sxPwdGroup = StringX(m_ImportedPrefix.c_str()) +
+              (sxPwdGroup.empty() ? L"" : L".") + sxPwdGroup;
+
+            // Put it all back together again
+            m_cur_entry->password = m_sxElemContent.substr(0, 2) +
+              sxPwdGroup + L":" + sxPwdTitle + L":" + sxPwdUser +
+              m_sxElemContent.substr(m_sxElemContent.length() - 2);
+        }
       }
       break;
     case XLE_CTIMEX:
