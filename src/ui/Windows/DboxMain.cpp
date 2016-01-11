@@ -2342,12 +2342,10 @@ void DboxMain::ResetIdleLockCounter(UINT event)
     SetIdleLockCounter(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout));
 }
 
-void DboxMain::SetIdleLockCounter(UINT i)
+void DboxMain::SetIdleLockCounter(UINT iMinutes)
 {
-  // i is in minutes, but we set the value to i * timer ticks per minute
-  // (If IDLE_CHECK_RATE is 1, then we would always lock when i == 1 and
-  // DecrementAndTestIdleLockCounter would be called.)
- m_IdleLockCountDown = i * IDLE_CHECK_RATE;
+  // We set the value to "iMinutes * number of checks per minute"
+  m_IdleLockCountDown = iMinutes * IDLE_CHECK_RATE;
 }
 
 bool DboxMain::DecrementAndTestIdleLockCounter()

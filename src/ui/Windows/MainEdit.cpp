@@ -153,13 +153,13 @@ void DboxMain::OnAdd()
     ci.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
     // Add the entry
-    ci.SetStatus(CItemData::ES_ADDED);
-    StringX sxGroup = ci.GetGroup();
+    ci.SetStatus(CItemData::ES_ADDED);    StringX sxGroup = ci.GetGroup();
     if (m_core.IsEmptyGroup(sxGroup)) {
       // It was an empty group - better delete it
       pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
                       DBEmptyGroupsCommand::EG_DELETE));
     }
+
 
     pws_os::CUUID baseUUID(pws_os::CUUID::NullUUID());
     if (pAddEntryPSH->GetIBasedata() != 0)  // creating an alias
@@ -1019,7 +1019,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 {
   // Note: In all but one circumstance, pcore == NULL, implying edit of an entry
   // in the current database.
-  // The one except is when the user wishes to View an entry from the comparison
+  // The one exception is when the user wishes to View an entry from the comparison
   // database via "CompareResultsDlg" (the Compare Database results dialog).
   // Note: In this instance, the comparison database is R-O and hence the user may
   // only View these entries and any database preferences can be obtain from the
@@ -1230,6 +1230,13 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   pcmd = EditEntryCommand::Create(pcore, *(pci_original), *(pci_new));
   pmulticmds->Add(pcmd);
+
+  StringX sxNewGroup = pci_new->GetGroup();
+  if (m_core.IsEmptyGroup(sxNewGroup)) {
+    // It was an empty group - better delete it
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+      DBEmptyGroupsCommand::EG_DELETE));
+  }
 
   Execute(pmulticmds, pcore);
 

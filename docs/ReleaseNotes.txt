@@ -14,6 +14,9 @@ Bugs fixed in 3.38.1
 [] Fixed regression: crash in Linux when incorrect password entered
 [] Fixes in advanced find report
 [] V4 (alpha) related fixes
+[1306] Display of an empty group is now correctly displayed when an entry
+is moved to it via editing.
+[1295] Create Shortcut group dropdown box width no longer trucates long group paths.
 
 Bugs fixed in 3.38
 ==================

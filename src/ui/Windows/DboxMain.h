@@ -878,7 +878,7 @@ private:
   bool LockDataBase();
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
-  void SetIdleLockCounter(UINT i); // i in minutes, set to timer counts
+  void SetIdleLockCounter(UINT iMinutes); // set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.

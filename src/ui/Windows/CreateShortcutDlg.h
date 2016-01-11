@@ -46,7 +46,6 @@ protected:
 
   // Implementation
 protected:
-
   virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CAddDlg)
@@ -56,9 +55,9 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-public:
-  afx_msg void OnBnClickedOk();
 
+private:
+  void SetGroupComboBoxWidth();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
