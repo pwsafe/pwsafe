@@ -3065,7 +3065,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   else
     item = UICommandTableEntry::InOpenRW;
 
-  if (item == UICommandTableEntry::InOpenRW && m_core.GetNumEntries() == 0)
+  if (item == UICommandTableEntry::InOpenRW &&
+      m_core.GetNumEntries() == 0 &&
+      m_core.GetEmptyGroups().empty())
     item = UICommandTableEntry::InEmpty;  // OpenRW + empty
 
   iEnable = m_UICommandTable[it->second].bOK[item] ? TRUE : FALSE;

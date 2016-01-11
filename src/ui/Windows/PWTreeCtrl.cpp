@@ -1060,10 +1060,10 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
         ti = si;
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
     } while (!sxPath.empty());
-  }
-  if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
-    SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
 
+    if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
+      SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+  }
   return ti;
 }
 
