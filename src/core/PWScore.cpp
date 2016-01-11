@@ -2437,7 +2437,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
   if (!dependentlist.empty()) {
     UUIDVectorIter paiter;
     ItemListIter iter;
-    StringX csPwdGroup, csPwdTitle, csPwdUser, tmp;
+    StringX sxPwdGroup, sxPwdTitle, sxPwdUser, tmp;
     CUUID base_uuid(CUUID::NullUUID());
     bool bwarnings(false);
     stringT strError;
@@ -2459,13 +2459,13 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         // Remove leading '[['/'[~' & trailing ']]'/'~]'
         tmp = tmp.substr(2, tmp.length() - 4);
         if (std::count(tmp.begin(), tmp.end(), _T(':')) == 2) {
-          csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+          sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
           // Skip over 'group:'
-          tmp = tmp.substr(csPwdGroup.length() + 1);
-          csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
+          tmp = tmp.substr(sxPwdGroup.length() + 1);
+          sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
           // Skip over 'title:'
-          csPwdUser = tmp.substr(csPwdTitle.length() + 1);
-          iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+          sxPwdUser = tmp.substr(sxPwdTitle.length() + 1);
+          iter = Find(sxPwdGroup, sxPwdTitle, sxPwdUser);
           base_uuid = iter->second.GetUUID();
         } else {
           iter = m_pwlist.end();
