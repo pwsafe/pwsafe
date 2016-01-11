@@ -771,7 +771,8 @@ void DboxMain::OnDelete()
 {
   // Check preconditions, possibly prompt user for confirmation, then call Delete()
   // to do the heavy lifting.
-  if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
+  if (m_core.GetNumEntries() == 0 &&
+      m_core.GetEmptyGroups().empty()) // easiest way to avoid asking stupid questions...
     return;
 
   bool bAskForDeleteConfirmation = !(PWSprefs::GetInstance()->

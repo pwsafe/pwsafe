@@ -1072,26 +1072,6 @@ void DboxMain::RefreshViews(const int iView)
   if (!m_bInitDone)
     return;
 
-  if (m_core.GetNumEntries() == 0) {
-    if (iView & iListOnly) {
-      if (m_ctlItemList.GetItemCount() > 0) {
-        m_ctlItemList.SetRedraw(FALSE);
-        m_ctlItemList.DeleteAllItems();
-      }
-      m_ctlItemList.SetRedraw(TRUE); 
-      m_ctlItemList.Invalidate();
-    }
-    if (iView & iTreeOnly) {
-      if (m_ctlItemTree.GetCount () > 0) {
-        m_ctlItemTree.SetRedraw(FALSE);
-        m_ctlItemTree.DeleteAllItems();
-      }
-      m_ctlItemTree.SetRedraw(TRUE);
-      m_ctlItemTree.Invalidate();
-    }
-    return;
-  }
-
   m_bNumPassedFiltering = 0;
   m_bInRefresh = true;
 
@@ -1107,28 +1087,23 @@ void DboxMain::RefreshViews(const int iView)
   }
   m_bBoldItem = false;
 
-  if (m_core.GetNumEntries() != 0) {
-    ItemListIter listPos;
-    for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
-         listPos++) {
-      CItemData &ci = m_core.GetEntry(listPos);
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-      if (pdi != NULL)
-        pdi->list_index = -1; // easier, but less efficient, to delete pdi
-      InsertItemIntoGUITreeList(ci, -1, false, iView);
-    }
+  for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
+       listPos++) {
+    CItemData &ci = m_core.GetEntry(listPos);
+    DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+    if (pdi != NULL)
+      pdi->list_index = -1; // easier, but less efficient, to delete pdi
+    InsertItemIntoGUITreeList(ci, -1, false, iView);
+  }
 
-    // Need to add any empty groups into the view
-    std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
-    for (size_t n = 0; n < vEmptyGroups.size(); n++) {
-      bool bAlreadyExists;
-      m_ctlItemTree.AddGroup(vEmptyGroups[n].c_str(), bAlreadyExists);
-    }
+  // Need to add any empty groups into the view
+  for (auto &emptyGrp : m_core.GetEmptyGroups()) {
+    bool bAlreadyExists;
+    m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+  }
 
-    m_ctlItemTree.SortTree(TVI_ROOT);
-    SortListView();
-
-  } // we have entries
+  m_ctlItemTree.SortTree(TVI_ROOT);
+  SortListView();
 
   if (m_bImageInLV) {
     m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE);
@@ -4256,7 +4231,7 @@ void DboxMain::RestoreGUIStatusEx()
 {
   PWS_LOGIT;
 
-  if (m_core.GetNumEntries() == 0)
+  if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
     return;
 
   if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
