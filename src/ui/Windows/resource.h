@@ -732,7 +732,6 @@
 #define IDC_DEFPWHIDESYSTRAY            1426
 #define IDC_ADVANCED_RESET              1427
 #define IDC_ENTRY                       1428
-#define IDC_STATIC_PROTECTED            1429
 #define IDC_DATABASE                    1430
 #define IDC_VIEWREPORT                  1431
 #define IDC_STATIC_WZWARNING            1432
@@ -822,6 +821,7 @@
 #define IDC_AFILTER_FLD_COMBOBOX        1522
 #define IDC_AFILTER_LGC_COMBOBOX        1523
 #define IDC_CMB_AVALIABLEMEDIATYPES     1524
+#define IDC_STATIC_TUTORIAL             1525
 
 // Next default values for new objects
 // 
@@ -829,7 +829,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1525
+#define _APS_NEXT_CONTROL_VALUE         1526
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif
