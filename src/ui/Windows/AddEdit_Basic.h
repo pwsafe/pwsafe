@@ -54,7 +54,6 @@ public:
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
-  CStaticExtn m_stc_protected;
 
   CButton m_ViewDependentsBtn;
   //}}AFX_DATA

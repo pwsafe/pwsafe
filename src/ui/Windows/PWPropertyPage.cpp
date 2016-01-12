@@ -26,7 +26,6 @@ DboxMain *CPWPropertyPage::GetMainDlg() const
   return app.GetMainDlg();
 }
 
-
 void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -75,7 +74,6 @@ void CPWPropertyPage::ShowHelp(const CString &topicFile)
     gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
   }
 }
-
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {

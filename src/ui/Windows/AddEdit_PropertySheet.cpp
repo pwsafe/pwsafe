@@ -152,19 +152,19 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
     case IDS_EDITENTRY:
       {
         CString cs_title;
-      StringX sx_group(L""), sx_title, sx_user(L"");
-      if (!m_AEMD.pci->IsGroupEmpty())
-        sx_group = m_AEMD.pci->GetGroup();
-      sx_title = m_AEMD.pci->GetTitle();
-      if (!m_AEMD.pci->IsUserEmpty())
-        sx_user = m_AEMD.pci->GetUser();
+        StringX sx_group(L""), sx_title, sx_user(L"");
+        if (!m_AEMD.pci->IsGroupEmpty())
+          sx_group = m_AEMD.pci->GetGroup();
+        sx_title = m_AEMD.pci->GetTitle();
+        if (!m_AEMD.pci->IsUserEmpty())
+          sx_user = m_AEMD.pci->GetUser();
 
-      // Set up and pass Propertysheet caption showing entry being edited/viewed
-      // If entry is protected, set to 'View' even if DB is in R/W mode
-      cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
-                      sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-      SetWindowText(cs_title);
-      break;
+        // Set up and pass Propertysheet caption showing entry being edited/viewed
+        // If entry is protected, set to 'View' even if DB is in R/W mode
+        cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+        SetWindowText(cs_title);
+        break;
       }
     default:
       ASSERT(0);

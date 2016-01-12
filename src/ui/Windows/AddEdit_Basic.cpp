@@ -146,9 +146,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
     DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
   }
-
-  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)
-    DDX_Control(pDX, IDC_STATIC_PROTECTED, m_stc_protected);
   //}}AFX_DATA_MAP
 }
 
@@ -221,11 +218,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_notes.SetFont(pFonts->GetNotesFont());
   }
 
-  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-    GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
-    m_stc_protected.SetColour(RGB(255,0,0));
-  }
-
   if (M_uicaller() != IDS_ADDENTRY) {
     InitToolTip();
 
@@ -241,7 +233,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
 
     if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-      AddTool(IDC_STATIC_PROTECTED, IDS_UNPROTECT);
+      AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
     }
 
     ActivateToolTip();
@@ -429,9 +421,6 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         break;
       case IDC_STATIC_EMAIL:
         pcfOld = &m_email_cfOldColour;
-        break;
-      case IDC_STATIC_PROTECTED:
-        pcfOld = &m_protected_cfOldColour;
         break;
       default:
         // Not one of ours - get out quick
