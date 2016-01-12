@@ -407,7 +407,6 @@ void DboxMain::OnDuplicateGroup()
   sxNewGroup = sxCurrentGroup + sxCopy;
 
   // Have new group - now copy all entries in current group to new group
-
   std::vector<bool> bVNodeStates; // new group will have old's expanded nodes
   bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
   bVNodeStates.push_back(bState);
@@ -583,6 +582,9 @@ void DboxMain::OnDuplicateGroup()
       m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
 
     m_mapGroupToTreeItem[sxNewPath] = ng_ti;
+    Command *pcmd = DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+      DBEmptyGroupsCommand::EG_ADD);
+    pcmd->Execute();
     bRefresh = false;
   }
 
