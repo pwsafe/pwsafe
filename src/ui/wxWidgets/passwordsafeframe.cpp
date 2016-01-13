@@ -418,7 +418,16 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu3->Append(wxID_NEW);
   itemMenu3->Append(wxID_OPEN);
   itemMenu3->Append(wxID_CLOSE);
-  itemMenu3->AppendSeparator();
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
+    wxGetApp().recentDatabases().UseMenu(itemMenu3);
+    wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
+  } else { // create Recent Safes submenu
+    itemMenu3->AppendSeparator();
+    wxMenu* itemMenuRecents = new wxMenu;
+    wxGetApp().recentDatabases().UseMenu(itemMenuRecents);
+    wxGetApp().recentDatabases().AddFilesToMenu(itemMenuRecents);
+    itemMenu3->Append(ID_MRUMENU, _("&Recent Safes"), itemMenuRecents);
+  }
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_SAVE);
@@ -444,15 +453,6 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_EXIT);
   menuBar->Append(itemMenu3, _("&File"));
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
-    wxGetApp().recentDatabases().UseMenu(itemMenu3);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
-  } else { // create Recent Safes submenu
-    wxMenu* itemMenuRecents = new wxMenu;
-    wxGetApp().recentDatabases().UseMenu(itemMenuRecents);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenuRecents);
-    itemMenu3->Append(ID_MRUMENU, _("&Recent Safes"), itemMenuRecents);
-  }
   wxMenu* itemMenu28 = new wxMenu;
   itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
