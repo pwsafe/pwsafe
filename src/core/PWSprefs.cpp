@@ -396,7 +396,7 @@ int PWSprefs::GetMRUList(stringT *MRUFiles) const
 
 int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
-  ASSERT(MRUFiles != NULL);
+  ASSERT(n == 0 || MRUFiles != NULL); // if n is zero, wx passes NULL
 
   if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY ||
       m_ConfigOption == CF_FILE_RO)
