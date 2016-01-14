@@ -1379,9 +1379,12 @@ void DboxMain::OnDuplicateEntry()
     // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
     ci2.SetKBShortcut(0);
 
+    pws_os::CUUID baseUUID = pws_os::CUUID::NullUUID();
+
     if (pci->IsDependent()) {
       const CItemData *pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
+      baseUUID = pci->GetBaseUUID();
       const StringX sxtmp = L"[" +
         pbci->GetGroup() + L":" +
         pbci->GetTitle() + L":" +
@@ -1390,7 +1393,7 @@ void DboxMain::OnDuplicateEntry()
       ci2.SetPassword(sxtmp);
     }
 
-    Execute(AddEntryCommand::Create(&m_core, ci2));
+    Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 

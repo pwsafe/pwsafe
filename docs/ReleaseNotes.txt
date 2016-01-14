@@ -15,6 +15,7 @@ Bugs fixed in 3.38.1
 [] Fixes in advanced find report
 [] V4 (alpha) related fixes
 [] Fixes related to empty groups
+[1312] Now able to duplicate an alias entry without errors.
 [1306] Display of an empty group is now correctly displayed when an entry
 is moved to it via editing.
 [1295] Create Shortcut group dropdown box width no longer trucates long
