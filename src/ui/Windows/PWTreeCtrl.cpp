@@ -920,8 +920,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
 
-  if (bIsLeaf)
-    app.GetMainDlg()->RefreshViews();
+  // Update view
+  app.GetMainDlg()->RefreshViews();
 
   return;
 

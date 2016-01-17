@@ -638,7 +638,7 @@ void DboxMain::OnDuplicateGroup()
     pmulti_cmds->Add(pcmd);
     pmulti_cmds->Add(pcmd_redo);
     Execute(pmulti_cmds);
-    bRefresh = false;
+    bRefresh = true;
   }
 
   // Must do this to re-populate m_mapGroupToTreeItem
