@@ -678,10 +678,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     if (app.GetMainDlg()->IsInAddGroup()) {
       // m_eLabel is the old name but need to get the path
       StringX sxPath = GetGroup(ti);
-
       pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxPath,
                              DBEmptyGroupsCommand::EG_ADD));
 
+      // But if parent was empty - it isn't now!
+      size_t iLast_Group_Separator = sxPath.find_last_of(GROUP_SEP2);
+      if (iLast_Group_Separator != StringX::npos) {
+        StringX sxParent = sxPath.substr(0, iLast_Group_Separator);
+        if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
@@ -866,23 +874,33 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxNewPath,
                       DBEmptyGroupsCommand::EG_ADD));
 
+      // But if parent was empty - it isn't now!
+      size_t iLast_Group_Separator = sxNewPath.find_last_of(GROUP_SEP2);
+      if (iLast_Group_Separator != StringX::npos) {
+        StringX sxParent = sxNewPath.substr(0, iLast_Group_Separator);
+        if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
+
       app.GetMainDlg()->ResetInAddGroup();
       *pLResult = TRUE;
     } else {
       // We refresh the view
-      Command *pcmd1 = UpdateGUICommand::Create(pcore,
+      Command *pcmd_undo = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd1);
+      pmulticmds->Add(pcmd_undo);
 
       // Update Group
       pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
 
       // We refresh the view
-      Command *pcmd2 = UpdateGUICommand::Create(pcore,
+      Command *pcmd_redo = UpdateGUICommand::Create(pcore,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
                                               UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd2);
+      pmulticmds->Add(pcmd_redo);
     }
   }
 
@@ -931,7 +949,7 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i != GROUP && i!= EMPTY_GROUP);
+  return (i != GROUP && i != EMPTY_GROUP);
 }
 
 // Returns the number of children of this group

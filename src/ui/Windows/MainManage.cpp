@@ -695,15 +695,15 @@ void DboxMain::OnManagePasswordPolicies()
 
       // Set up Command to update string in database
       if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-          Command *pcmd1 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-          pmulticmds->Add(pcmd1);
+        Command *pcmd_undo = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd_undo);
       }
     }
 
     // Now update named preferences
-    Command *pcmd2 = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
+    Command *pcmd = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
                              DBPolicyNamesCommand::NP_REPLACEALL);
-    pmulticmds->Add(pcmd2);
+    pmulticmds->Add(pcmd);
     Execute(pmulticmds);
 
     // Update Minidump user streams

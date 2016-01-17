@@ -41,6 +41,8 @@
 #include <vector>
 #include <algorithm>
 
+extern const wchar_t *GROUP_SEP2;
+
 using pws_os::CUUID;
 
 #ifdef _DEBUG
@@ -139,13 +141,13 @@ void DboxMain::OnAdd()
         // Set new DB preferences String value (from Copy)
         StringX sxNewDBPrefsString(prefs->Store(true));
 
-        Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+        Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                                   UpdateGUICommand::WN_UNDO,
                                                   UpdateGUICommand::GUI_REFRESH_TREE);
-        pmulticmds->Add(pcmd1);
+        pmulticmds->Add(pcmd_undo);
 
-        Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-        pmulticmds->Add(pcmd2);
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd);
       }
     }
 
@@ -279,13 +281,13 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
   if (!sxNewDBPrefsString.empty()) {
-    Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                               UpdateGUICommand::WN_UNDO,
                                               UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd1);
+    pmulticmds->Add(pcmd_undo);
 
-    Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-    pmulticmds->Add(pcmd2);
+    Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+    pmulticmds->Add(pcmd);
   }
 
   Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
@@ -370,11 +372,12 @@ void DboxMain::OnAddGroup()
 struct DupGroupFunctor : public CPWTreeCtrl::TreeItemFunctor {
   DupGroupFunctor(HTREEITEM hBase) : m_hBase(hBase) {}
   virtual void operator()(HTREEITEM hItem) {
-    if (hItem == m_hBase) // we;re not interested in top
+    if (hItem == m_hBase) // we're not interested in top
       return;
     m_items.push_back(hItem);
   }
   std::vector<HTREEITEM> m_items;
+
 private:
   HTREEITEM m_hBase;
 };
@@ -415,12 +418,12 @@ void DboxMain::OnDuplicateGroup()
   if (m_ctlItemTree.ItemHasChildren(ti)) {
     DupGroupFunctor dgf(ti);
     m_ctlItemTree.Iterate(ti, dgf); // collects children into a handy vector
-    /*
-      Create 2 multi-commands to first add all normal or base entries and then a second
-      to add any aliases and shortcuts.
-    */
+
+    //  Create 3 multi-commands to first add all normal or base entries and then a second
+    //  to add any aliases and shortcuts and finally to add any sub-empty groups
     MultiCommands *pmulti_cmd_base = MultiCommands::Create(&m_core);
     MultiCommands *pmulti_cmd_deps = MultiCommands::Create(&m_core);
+    MultiCommands *pmulti_cmd_egrps = MultiCommands::Create(&m_core);
 
     // Note that we need to do this twice - once to get all the normal entries
     // and bases and then the dependents as we need the mapping between the old
@@ -447,6 +450,7 @@ void DboxMain::OnDuplicateGroup()
         ci2.CreateUUID();
         ci2.SetStatus(CItemData::ES_ADDED);
         ci2.SetProtected(false);
+
         // Set new group
         StringX subPath =  pci->GetGroup();
         ASSERT(subPath.length() >= grplen);
@@ -471,6 +475,20 @@ void DboxMain::OnDuplicateGroup()
       } else { // pci == NULL -> This is a node: save its expanded/collapsed state
         bState = (m_ctlItemTree.GetItemState(hNextItem, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
         bVNodeStates.push_back(bState);
+
+        // Get group name & check if empty
+        StringX subPath = (StringX)m_ctlItemTree.GetGroup(hNextItem); // e.g., a.b.c
+        if (IsEmptyGroup(subPath)) {
+          ASSERT(subPath.length() >= grplen);
+          subPath = subPath.substr(grplen);
+          StringX sxThisEntryNewGroup = sxNewPath + subPath;
+
+          // Get command to add empty group
+          Command *pcmd = DBEmptyGroupsCommand::Create(&m_core, sxThisEntryNewGroup,
+            DBEmptyGroupsCommand::EG_ADD);
+          pcmd->SetNoGUINotify();
+          pmulti_cmd_egrps->Add(pcmd);
+        }
       }
     } // for
 
@@ -528,63 +546,98 @@ void DboxMain::OnDuplicateGroup()
       } // for
     } // bDependentsExist
 
-    Command *pcmd1(NULL), *pcmd2(NULL);
+    // Define the Undo & Redo commands that would bracket any actions performed
+    Command *pcmd_undo(NULL), *pcmd_redo(NULL);
 
     // We either do only one set of multi-commands, none of them or both of them
-    // as one multi-command (normals/bases first followed by dependents)
+    // as one multi-command (normals/bases first followed by dependents) and possibly
+    // add empty groups
     const int iDoExec = ((pmulti_cmd_base->GetSize() == 0) ? 0 : 1) +
                         ((pmulti_cmd_deps->GetSize() == 0) ? 0 : 2);
-    if (iDoExec != 0) {
-      pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+    if (iDoExec != 0 || pmulti_cmd_egrps->GetSize() != 0) {
+      pcmd_undo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_IMPORT);
-      pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
+      pcmd_redo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
     }
     switch (iDoExec) {
       case 0:
-        // Do nothing
-        bRefresh = false;
+        // Do nothing unless there are empty groups
+        if (pmulti_cmd_egrps->GetSize() != 0) {
+          pmulti_cmd_egrps->Insert(pcmd_undo);
+          pmulti_cmd_egrps->Add(pcmd_redo);
+          Execute(pmulti_cmd_egrps);
+        } else
+          bRefresh = false;
         break;
       case 1:
         // Only normal/base entries
-        pmulti_cmd_base->Insert(pcmd1);
-        pmulti_cmd_base->Add(pcmd2);
+        pmulti_cmd_base->Insert(pcmd_undo);
+        if (pmulti_cmd_egrps->GetSize() != 0)
+          pmulti_cmd_base->Add(pmulti_cmd_egrps);
+        pmulti_cmd_base->Add(pcmd_redo);
         Execute(pmulti_cmd_base);
         break;
       case 2:
         // Only dependents
-        pmulti_cmd_deps->Insert(pcmd1);
-        pmulti_cmd_deps->Add(pcmd2);
+        pmulti_cmd_deps->Insert(pcmd_undo);
+        if (pmulti_cmd_egrps->GetSize() != 0)
+          pmulti_cmd_deps->Add(pmulti_cmd_egrps);
+        pmulti_cmd_deps->Add(pcmd_redo);
         Execute(pmulti_cmd_deps);
         break;
       case 3:
       {
         // Both - normal entries/bases first then dependents
         MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
-        pmulti_cmds->Add(pcmd1);
+        pmulti_cmds->Add(pcmd_undo);
         pmulti_cmds->Add(pmulti_cmd_base);
         pmulti_cmds->Add(pmulti_cmd_deps);
-        pmulti_cmds->Add(pcmd2);
+        if (pmulti_cmd_egrps->GetSize() != 0)
+          pmulti_cmds->Add(pmulti_cmd_egrps);
+        pmulti_cmds->Add(pcmd_redo);
         Execute(pmulti_cmds);
         break;
       }
       default:
         ASSERT(0);
     }
+
+    // If we didn't populate the multi-commands, delete them
+    if (pmulti_cmd_base->GetSize() == 0)
+      delete pmulti_cmd_base;
+    if (pmulti_cmd_deps->GetSize() == 0)
+      delete pmulti_cmd_deps;
+    if (pmulti_cmd_egrps->GetSize() == 0)
+      delete pmulti_cmd_egrps;
   } else { // !m_ctlItemTree.ItemHasChildren(ti)
     // User is duplicating an empty group - just add it
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
-    HTREEITEM ng_ti = m_ctlItemTree.InsertItem(sxNewGroup.c_str(), parent, TVI_SORT);
+    HTREEITEM ng_ti = m_ctlItemTree.InsertItem(sxNewPath.c_str(), parent, TVI_SORT);
 
-    if (IsEmptyGroup(sxNewGroup))
+    if (IsEmptyGroup(sxCurrentPath))
       m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
     else
       m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
 
     m_mapGroupToTreeItem[sxNewPath] = ng_ti;
-    Command *pcmd = DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+
+    MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
+    Command *pcmd(NULL), *pcmd_undo(NULL), *pcmd_redo(NULL);
+
+    // Now get commands to allow Undo/Redo
+    pcmd_undo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+      UpdateGUICommand::GUI_UNDO_IMPORT);
+    pcmd_redo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
+      UpdateGUICommand::GUI_REDO_IMPORT);
+
+    // Get command to add empty group
+    pcmd = DBEmptyGroupsCommand::Create(&m_core, sxNewPath,
       DBEmptyGroupsCommand::EG_ADD);
-    pcmd->Execute();
+    pmulti_cmds->Add(pcmd_undo);
+    pmulti_cmds->Add(pcmd);
+    pmulti_cmds->Add(pcmd_redo);
+    Execute(pmulti_cmds);
     bRefresh = false;
   }
 
