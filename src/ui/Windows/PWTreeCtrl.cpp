@@ -1085,7 +1085,8 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
   return ti;
 }
 
-bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const StringX &sxPrefix)
 {
   TV_INSERTSTRUCT  tvstruct;
   wchar_t sztBuffer[260];  // max visible
@@ -1150,11 +1151,20 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
 
     // Update DisplayInfo record associated with ItemData
     pdi->tree_item = hNewItem;
-  } // leaf processing
+  } else {
+    // Group processing
+    // If original group was empty, need to update the vector of empty groups
+    StringX sxOldGroup(GetGroup(hitemDrag));
+    if (app.GetMainDlg()->IsEmptyGroup(sxOldGroup)) {
+      StringX sxNewGroup = sxPrefix + StringX(GROUP_SEP2) + sxOldGroup;
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
+        sxOldGroup, sxNewGroup));
+    }
+  }
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    MoveItem(pmulticmds, hFirstChild, hNewItem);  // recursively move all the items
+    MoveItem(pmulticmds, hFirstChild, hNewItem, sxPrefix);  // recursively move all the items
   }
 
   // We are moving it - so now delete original from TreeCtrl
@@ -1473,8 +1483,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
         parent != hitemDrop) {
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
+        const StringX sxPrefix = GetGroup(hitemDrop);
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
-        MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
+        MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxPrefix);
         
         // Make sure that the folder to which drag is performed will 
         // be removed from the vector of empty groups
@@ -1483,7 +1494,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
                                                        DBEmptyGroupsCommand::EG_DELETE));
         }
-
+        
         app.GetMainDlg()->Execute(pmulticmds);
       } else
         if (dropEffect == DROPEFFECT_COPY) {
