@@ -17,8 +17,10 @@ LIBCORE	= $(LIBPATH)/libcore.a
 LIBOS  	= $(LIBPATH)/libos.a
 LIBS    = $(LIBCORE) $(LIBOS)
 
+export CPPFLAGS += -std=c++11
+
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
-CXXFLAGS +=  -Wall -I$(COREPATH) -I../.. $(XERCESCPPFLAGS) -DUNICODE
+CXXFLAGS += $(CPPFLAGS) -Wall -I$(COREPATH) -I../.. $(XERCESCPPFLAGS) -DUNICODE
 
 # rules
 .PHONY: all clean deepclean setup
@@ -40,10 +42,10 @@ $(LIBOS):
 
 $(EXE): $(LIBS) $(OBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -los -luuid -lxerces-c
+	-L$(LIBPATH) -lcore -los -lcore -luuid -lxerces-c
 
 clean:
-	rm -f *~ $(OBJ) $(EXE) $(LIB) $(DEPENDFILE)
+	rm -f *~ $(OBJ) $(EXE) $(LIBS) $(DEPENDFILE)
 
 deepclean: clean
 	$(MAKE) -C $(COREPATH) clean
