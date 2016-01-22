@@ -33,6 +33,11 @@
 #include <algorithm>
 #include <string>
 
+#include "../UCPicker/UCPicker.h"
+
+typedef UCPICKER_API BOOL(*LP_UCP_GetUnicodeBuffer) (CString& csBuffer, CString& csREBuffer,
+  int& numchars);
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -330,6 +335,55 @@ exit:
   return bFound;
 }
 
+bool CVKeyBoardDlg::IsUCPAvailable()
+{
+  /**
+  *Check if we can support On-Screen Keyboards. Return true iff:
+  * 1. Can load the dll
+  */
+  bool bVKAvailable(false);
+  static bool warnedAlready(false); // warn only once per process.
+
+  // Try to load DLL
+#if defined(_DEBUG) || defined(DEBUG)
+  TCHAR *dll_name = _T("pws_UCP_D.dll");
+#else
+  TCHAR *dll_name = _T("pws_UCP.dll");
+#endif
+  HINSTANCE UCP_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+
+  if (UCP_module == NULL) {
+    pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Unable to load UCP DLL. UCP not available.\n");
+    return false;
+  } else {
+    pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - UCP DLL loaded OK.\n");
+
+    bVKAvailable = true;
+
+    //LP_OSK_GetVersion pUCPVersion =
+    //  LP_OSK_GetVersion(pws_os::GetFunction(UCP_module, "UCP_GetVersion"));
+
+    //pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found UCP_GetVersion: %s\n",
+    //  pUCPVersion != NULL ? L"OK" : L"FAILED");
+
+    //if (pUCPVersion == NULL)
+    //  pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Unable to get all required UCP functions. UCP not available.\n");
+    //else if (pUCPVersion() == VK_DLL_VERSION) {
+    //  bVKAvailable = true;
+    //} else if (!warnedAlready && !app.NoSysEnvWarnings()) {
+    //  CGeneralMsgBox gmb;
+    //  warnedAlready = true;
+    //  gmb.AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
+    //}
+
+    BOOL brc = pws_os::FreeLibrary(UCP_module);
+    pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Free UCP DLL: %s\n",
+      brc == TRUE ? L"OK" : L"FAILED");
+  }
+
+  return bVKAvailable;
+}
+
 //-----------------------------------------------------------------------------
 CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
@@ -356,13 +410,24 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   // Set background colour for for dialog as white
   m_pBkBrush.CreateSolidBrush(RGB(255, 255, 255));
 
-  // dll is guaranteed to be loadable, right version and in general 100% kosher
-  // by IsOSKAvailable(). Caller is responsible to call that, though...
+  // Onscreen Keyboard dll is guaranteed to be loadable, right version and
+  // in general 100% kosher by IsOSKAvailable(). Caller is responsible to call that, though...
 #if defined(_DEBUG) || defined(DEBUG)
   TCHAR *dll_name = _T("pws_osk_D.dll");
+  TCHAR *UCP_dll_name = _T("pws_UCP_D.dll");
 #else
   TCHAR *dll_name = _T("pws_osk.dll");
+  TCHAR *UCP_dll_name = _T("pws_UCP.dll");
 #endif
+
+  // Load Unicode Character Picker DLL
+  if (IsUCPAvailable()) {
+    m_UCP_module = HMODULE(pws_os::LoadLibrary(UCP_dll_name, pws_os::LOAD_LIBRARY_APP));
+  } else {
+    m_UCP_module = NULL;
+  }
+
+  // Load Onscreen Keyboard DLL
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
   ASSERT(m_OSK_module != NULL);
@@ -412,6 +477,9 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 
   pws_os::FreeLibrary(m_OSK_module);
 
+  if (m_UCP_module != NULL)
+    pws_os::FreeLibrary(m_UCP_module);
+
   // Reset double click mouse interval
   BOOL brc;
   brc = SetDoubleClickTime(m_uiMouseDblClkTime);
@@ -449,6 +517,8 @@ void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_VKBBTN_CAPSLOCK, m_vkbb_CapsLock);
 
   DDX_Control(pDX, IDC_VKBBTN_SPACEBAR, m_vkbb_SpaceBar);
+
+  DDX_Control(pDX, IDC_UCP_BUTTON, m_vkbb_UCP);
 
   // 106 keyboard
   DDX_Control(pDX, IDC_VKBBTN_SMALLSPACEBAR, m_vkbb_SmallSpaceBar);
@@ -498,10 +568,12 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
   ON_BN_CLICKED(IDC_SAVEKLID, OnSaveKLID)
   ON_BN_CLICKED(IDC_KEYPRESS_PLAYSOUND, OnKeyPressPlaySound)
+  ON_BN_CLICKED(IDC_UCP_BUTTON, OnUCP)
 #ifdef _DEBUG
   ON_BN_CLICKED(IDC_SHOWBUFFER, OnShowPassphrase)  // Used for testing only!
 #endif
   //}}AFX_MSG_MAP
+
 END_MESSAGE_MAP()
 
 void CVKeyBoardDlg::OnActivate(UINT nState, CWnd* , BOOL )
@@ -519,7 +591,12 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  // Set user's preference re\: sound
+  if (m_UCP_module == NULL) {
+    GetDlgItem(IDC_UCP_BUTTON)->EnableWindow(FALSE);
+    GetDlgItem(IDC_UCP_BUTTON)->ShowWindow(SW_HIDE);
+  }
+
+  // Set user's preference re: sound
   m_bPlaySound = PWSprefs::GetInstance()->GetPref(PWSprefs::VKPlaySound) ? BST_CHECKED : BST_UNCHECKED;
 
 #ifdef _DEBUG
@@ -559,6 +636,8 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_vkbb_AltGr.SetFlatState(false);
   m_vkbb_AltNum.SetFlatState(false);
   m_vkbb_CapsLock.SetFlatState(false);
+
+  m_vkbb_UCP.SetFlatState(false);
 
   // Make Japanese button push style but not to change colour when pushed
   m_vkbb_Size.SetFlatState(false);
@@ -2056,7 +2135,7 @@ BOOL CVKeyBoardDlg::PreTranslateMessage(MSG *pMsg)
       CWnd *pWnd = FromHandle(pMsg->hwnd);
       if (pWnd != NULL) {
         UINT nID = pWnd->GetDlgCtrlID();
-        if (nID != 0) {
+        if (nID != 0 && nID != IDC_UCP_BUTTON) {
           Beep(1500, 100);
         } else {
           // Check that this was on a valid control rather than the dialog background
@@ -2171,4 +2250,27 @@ void CVKeyBoardDlg::OnShowPassphrase()
 
   GetDlgItem(IDC_STATIC_VKPASSPHRASE)->ShowWindow(m_bShowPassphrase == BST_CHECKED ? SW_SHOW : SW_HIDE);
 #endif
+}
+
+void CVKeyBoardDlg::OnUCP()
+{
+  LP_UCP_GetUnicodeBuffer pUCPickerBuffer =
+    LP_UCP_GetUnicodeBuffer(GetProcAddress(m_UCP_module, "GetUnicodeBuffer"));
+
+  CString csBuffer, cs_RTFBuffer;
+  int numchars;
+  if (pUCPickerBuffer != NULL) {
+    BOOL brc = pUCPickerBuffer(csBuffer, cs_RTFBuffer, numchars);
+    ASSERT(brc);
+    m_phrase += CSecString(csBuffer);
+
+    m_phrasecount += numchars;
+
+    if (m_phrasecount >= 1) {
+      m_vkbb_Insert.EnableWindow(TRUE);
+      m_vkbb_ClearBuffer.EnableWindow(TRUE);
+    }
+  }
+
+  UpdateData(FALSE);
 }

@@ -1,0 +1,413 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\UCPicker.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UNICODE_DIALOG DIALOGEX 0, 0, 444, 409
+STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,94,385,50,14,BS_FLAT
+    PUSHBUTTON      "?",IDC_HELPABOUT,418,6,13,14,BS_CENTER | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "Set Fonts",IDC_SETFONTS,292,385,57,14,BS_FLAT
+    COMBOBOX        IDC_UNICODE_BLOCK_BYNAME,122,66,289,194,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_SORT | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_UNICODE_BLOCK_BYVALUE,122,83,289,194,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_SORT | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Select Unicode Text: by Name",IDC_STATIC,"Static",WS_GROUP | 0x20,14,68,100,8
+    CONTROL         "Select Unicode Text: by Range",IDC_STATIC,"Static",WS_GROUP | 0x20,14,85,100,8
+    CONTROL         "Buffer:",IDC_STATIC,"Static",WS_GROUP | 0x20,18,359,22,8
+    CTEXT           "Characters will only be displayed if\n a. it is a valid Unicode character and b. the font supports it.",IDC_STATIC_WARNING,40,31,348,22,0,WS_EX_TRANSPARENT
+    CONTROL         "Click a character to add it to the buffer tomorrow.",IDC_STATIC,
+                    "Static",WS_GROUP | 0x20,142,338,154,8
+    GROUPBOX        "",IDC_STATIC_GROUPBOX,52,118,343,213
+    PUSHBUTTON      "",IDC_UCBTN00,55,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN01,76,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN02,97,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN03,118,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN04,139,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN05,160,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN06,181,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN07,202,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN08,223,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN09,244,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0A,265,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0B,286,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0C,307,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0D,328,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0E,349,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN0F,370,123,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN10,55,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN11,76,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN12,97,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN13,118,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN14,139,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN15,160,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN16,181,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN17,202,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN18,223,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN19,244,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1A,265,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1B,286,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1C,307,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1D,328,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1E,349,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN1F,370,149,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN20,55,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN21,76,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN22,97,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN23,118,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN24,139,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN25,160,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN26,181,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN27,202,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN28,223,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN29,244,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2A,265,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2B,286,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2C,307,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2D,328,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2E,349,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN2F,370,175,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN30,55,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN31,76,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN32,97,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN33,118,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN34,139,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN35,160,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN36,181,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN37,202,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN38,223,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN39,244,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3A,265,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3B,286,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3C,307,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3D,328,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3E,349,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN3F,370,201,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN40,55,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN41,76,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN42,97,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN43,118,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN44,139,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN45,160,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN46,181,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN47,202,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN48,223,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN49,244,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4A,265,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4B,286,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4C,307,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4D,328,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4E,349,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN4F,370,227,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN50,55,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN51,76,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN52,97,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN53,118,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN54,139,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN55,160,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN56,181,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN57,202,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN58,223,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN59,244,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5A,265,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5B,286,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5C,307,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5D,328,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5E,349,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN5F,370,253,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN60,55,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN61,76,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN62,97,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN63,118,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN64,139,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN65,160,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN66,181,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN67,202,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN68,223,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN69,244,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6A,265,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6B,286,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6C,307,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6D,328,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6E,349,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN6F,370,279,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN70,55,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN71,76,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN72,97,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN73,118,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN74,139,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN75,160,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN76,181,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN77,202,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN78,223,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN79,244,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7A,265,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7B,286,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7C,307,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7D,328,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7E,349,305,21,22,NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UCBTN7F,370,305,21,22,NOT WS_TABSTOP
+    CONTROL         "0",IDC_STATIC_C0,"Static",SS_CENTER | WS_GROUP | 0x20,59,104,11,8
+    CONTROL         "1",IDC_STATIC_C1,"Static",SS_CENTER | WS_GROUP | 0x20,80,104,11,8
+    CONTROL         "2",IDC_STATIC_C2,"Static",SS_CENTER | WS_GROUP | 0x20,101,104,11,8
+    CONTROL         "3",IDC_STATIC_C3,"Static",SS_CENTER | WS_GROUP | 0x20,122,104,11,8
+    CONTROL         "4",IDC_STATIC_C4,"Static",SS_CENTER | WS_GROUP | 0x20,143,104,11,8
+    CONTROL         "5",IDC_STATIC_C5,"Static",SS_CENTER | WS_GROUP | 0x20,164,104,11,8
+    CONTROL         "6",IDC_STATIC_C6,"Static",SS_CENTER | WS_GROUP | 0x20,185,104,11,8
+    CONTROL         "7",IDC_STATIC_C7,"Static",SS_CENTER | WS_GROUP | 0x20,206,104,11,8
+    CONTROL         "8",IDC_STATIC_C8,"Static",SS_CENTER | WS_GROUP | 0x20,227,104,11,8
+    CONTROL         "9",IDC_STATIC_C9,"Static",SS_CENTER | WS_GROUP | 0x20,248,104,11,8
+    CONTROL         "A",IDC_STATIC_CA,"Static",SS_CENTER | WS_GROUP | 0x20,269,104,11,8
+    CONTROL         "B",IDC_STATIC_CB,"Static",SS_CENTER | WS_GROUP | 0x20,290,104,11,8
+    CONTROL         "C",IDC_STATIC_CC,"Static",SS_CENTER | WS_GROUP | 0x20,311,104,11,8
+    CONTROL         "D",IDC_STATIC_CD,"Static",SS_CENTER | WS_GROUP | 0x20,332,104,11,8
+    CONTROL         "E",IDC_STATIC_CE,"Static",SS_CENTER | WS_GROUP | 0x20,353,104,11,8
+    CONTROL         "F",IDC_STATIC_CF,"Static",SS_CENTER | WS_GROUP | 0x20,374,104,11,8
+    CONTROL         "",IDC_STATIC_R0,"Static",SS_CENTER | WS_GROUP | 0x20,9,130,36,8
+    CONTROL         "",IDC_STATIC_R1,"Static",SS_CENTER | WS_GROUP | 0x20,9,156,36,8
+    CONTROL         "",IDC_STATIC_R2,"Static",SS_CENTER | WS_GROUP | 0x20,9,182,36,8
+    CONTROL         "",IDC_STATIC_R3,"Static",SS_CENTER | WS_GROUP | 0x20,9,208,36,8
+    CONTROL         "",IDC_STATIC_R4,"Static",SS_CENTER | WS_GROUP | 0x20,9,234,36,8
+    CONTROL         "",IDC_STATIC_R5,"Static",SS_CENTER | WS_GROUP | 0x20,9,260,36,8
+    CONTROL         "",IDC_STATIC_R6,"Static",SS_CENTER | WS_GROUP | 0x20,9,286,36,8
+    CONTROL         "",IDC_STATIC_R7,"Static",SS_CENTER | WS_GROUP | 0x20,9,312,36,8
+    PUSHBUTTON      ">N",IDC_BUTTON_BLOCKNEXTBYNAME,403,139,26,14,BS_FLAT
+    PUSHBUTTON      "N<",IDC_BUTTON_BLOCKPREVBYNAME,403,166,26,14,BS_FLAT
+    PUSHBUTTON      ">",IDC_BUTTON_NEXTCHARS,403,244,26,14,BS_FLAT
+    PUSHBUTTON      "<",IDC_BUTTON_PREVCHARS,403,271,26,14,BS_FLAT
+    PUSHBUTTON      ">V",IDC_BUTTON_BLOCKNEXTBYVALUE,403,193,26,14,BS_FLAT
+    PUSHBUTTON      "V<",IDC_BUTTON_BLOCKPREVBYVALUE,403,221,26,14,BS_FLAT
+    CONTROL         "",IDC_BUFFER,"RichEdit20W",ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP,55,353,337,21
+    CTEXT           "Caption",IDC_STATIC_CAPTION,165,9,110,11,0,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Clear Buffer",IDC_CLEARBUFFER,160,385,50,14,0,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Backspace",IDC_BACKSPACE,226,385,50,14,0,WS_EX_TRANSPARENT
+END
+
+IDD_HELPABOUT DIALOGEX 0, 0, 358, 271
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_THICKFRAME
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,153,251,50,14
+    PUSHBUTTON      "",IDC_RESERVED,316,185,21,22,BS_CENTER | NOT WS_TABSTOP
+    PUSHBUTTON      "",IDC_UNSUPPORTED,316,213,21,22,BS_CENTER | NOT WS_TABSTOP
+    CONTROL         "A reserved Unicode character will be shown as something similar to this (font dependent):",IDC_STATIC,
+                    "Static",SS_RIGHT | WS_GROUP | 0x20,14,187,293,18
+    CONTROL         "If not supported by the font, it will be shown as an open white rectangular similar to this (font dependent):",IDC_STATIC,
+                    "Static",SS_RIGHT | WS_GROUP | 0x20,14,215,293,18
+    CONTROL         "",IDC_RICHEDIT_HELPABOUT,"RichEdit20W",0x804,7,32,343,135,WS_EX_TRANSPARENT
+    CTEXT           "Caption",IDC_STATIC_CAPTION,10,8,339,17
+END
+
+IDD_SETFONTS DIALOGEX 0, 0, 598, 342
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_THICKFRAME
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,280,317,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,346,317,50,14
+    CONTROL         "",IDC_UNICODE_RANGES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,33,391,277
+    CONTROL         "",IDC_AVAILABLE_FONTS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,407,33,183,214
+    PUSHBUTTON      "Select Font",IDC_SELECTFONT,459,295,66,14
+    CONTROL         "",IDC_RICHEDIT_FONTS,"RichEdit20W",0x804,406,250,182,42,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Reset ALL Fonts",IDC_RESETALLFONTS,458,317,68,14
+    COMBOBOX        IDC_DISPLAYTYPES,33,318,223,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP,WS_EX_TRANSPARENT
+    LTEXT           "Show",IDC_STATIC_DISPLAY,11,320,18,8,0,WS_EX_TRANSPARENT
+    CTEXT           "Caption",IDC_STATIC_CAPTION,11,11,578,14
+END
+
+IDD_FONTCOVERAGE DIALOGEX 0, 0, 428, 317
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_THICKFRAME
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,187,298,50,14
+    CONTROL         "",IDC_FONTCOVERAGELIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,28,413,263
+    CTEXT           "Caption",IDC_STATIC_CAPTION,7,9,412,13
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "FileDescription", "Unicode Character Picker"
+            VALUE "FileVersion", "1, 1, 0, 0"
+            VALUE "InternalName", "Unicode Character Picker"
+            VALUE "LegalCopyright", "Copyright (C) 2015"
+            VALUE "OriginalFilename", "UCPicker.exe"
+            VALUE "ProductName", "Unicode Character Picker"
+            VALUE "ProductVersion", "1, 1, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_UNICODE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 437
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 405
+    END
+
+    IDD_HELPABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 351
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_SETFONTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 591
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 335
+    END
+
+    IDD_FONTCOVERAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 421
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 310
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_HELPABOUT           "This was inspired by <b>BabelMap</b> by <i>Andrew West</i>.\n\nApologies for any similarity, but there are only a limited number of ways to display the same information!\n\nThe online version of BabelMap can be found <a href=""http://www.babelstone.co.uk/Unicode/babelmap.html"">here</a> and the stand-alone program <a href=""http://www.babelstone.co.uk/Software/BabelMap.html"">here</a>.\n\nAll the information about Unicode 8.0.0.1 was taken from <a href=""http://unicode.org/"">The Unicode Consortium</a>.\n\nIf a character is not being displayed, you may want to use BabelMap to find a font that will show it.  Also see Andrew West's Font List page <a href=""http://www.babelstone.co.uk/Fonts/index.html"">here</a>.\n\nIn addition, there are numerous resources on the internet that provides information on free TrueType fonts for Windows.\n\nGoogle have released a number of free fonts in their Noto series that cover a significant number of Unicode Block ranges but they are large - greater than 360MB as of July 2015!  <a href=""http://unifoundry.com/unifont.html"">Unifoundry</a> have two free fonts with a large coverage - GNU Unifont and Unifont_Upper."
+    IDS_FONTS               "<font color=""Blue""><b>Blue</b></font> font name - Preferred if installed\n<font color=""Red""><b>Red</b></font> font name - User selected preference\n<font color=""#FF8000""><b>Orange</b></font> font name - Best coverage for this Unicode Range from your installed fonts."
+END
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\UCPicker.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

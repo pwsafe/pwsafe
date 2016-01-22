@@ -822,6 +822,8 @@
 #define IDC_AFILTER_LGC_COMBOBOX        1523
 #define IDC_CMB_AVALIABLEMEDIATYPES     1524
 #define IDC_STATIC_TUTORIAL             1525
+#define IDC_BUTTON1                     1526
+#define IDC_UCP_BUTTON                  1526
 
 // Next default values for new objects
 // 
@@ -829,7 +831,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1526
+#define _APS_NEXT_CONTROL_VALUE         1527
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

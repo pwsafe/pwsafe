@@ -29,6 +29,7 @@
 typedef OSK_API void (* LP_OSK_ListKeyboards) (UINT &uiKLID, UINT &uiCtrlID);
 typedef OSK_API BOOL (* LP_OSK_GetKeyboardData) (UINT uiKLID, st_KBImpl &stKBImpl);
 typedef OSK_API int  (* LP_OSK_GetVersion) ();
+typedef OSK_API int  (* LP_UCP_GetVersion) ();
 
 enum {USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT};
 
@@ -73,6 +74,7 @@ class CVKeyBoardDlg : public CPWDialog
 {
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
+  static bool IsUCPAvailable(); // true iff dll available, right version, etc.
 
   static wchar_t *ARIALUMS;
   static wchar_t *ARIALU;
@@ -126,6 +128,8 @@ protected:
   afx_msg void OnSaveKLID();
   afx_msg void OnKeyPressPlaySound();
   afx_msg void OnShowPassphrase();
+  afx_msg void OnUCP();
+
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
@@ -154,6 +158,7 @@ private:
   CVKBButton m_vkbb_LShift, m_vkbb_LCtrl, m_vkbb_RShift, m_vkbb_RCtrl, m_vkbb_RHCtrl;
   CVKBButton m_vkbb_Randomize;
   CVKBButton m_vkbb_Insert, m_vkbb_Cancel, m_vkbb_ClearBuffer;
+  CVKBButton m_vkbb_UCP;
 
   CVKBButton m_vkbb_SpaceBar;
   CVKBButton m_vkbb_Numbers[NUM_DIGITS];
@@ -195,7 +200,7 @@ private:
   BYTE m_State, m_SaveState;
   CBrush m_pBkBrush;
 
-  HINSTANCE m_OSK_module;
+  HINSTANCE m_OSK_module, m_UCP_module;
   LP_OSK_GetKeyboardData m_pGetKBData;
   LP_OSK_ListKeyboards m_pListKBs;
   st_KBImpl m_stKBImpl;
