@@ -366,17 +366,17 @@ ulong64 pws_os::fileLength(std::FILE *fp)
 bool pws_os::GetFileTimes(const stringT &filename,
 			time_t &ctime, time_t &mtime, time_t &atime)
 {
-  struct stat info;
+  struct stat statbuf;
   int status;
   size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
   char *fn = new char[N];
   wcstombs(fn, filename.c_str(), N);
-  int status = ::stat(fn, &statbuf);
+  status = ::stat(fn, &statbuf);
   delete[] fn;
   if (status == 0) {
-    ctime = info.st_ctime;
-    mtime = info.st_mtime;
-        atime = info.st_atime;
+    ctime = statbuf.st_ctime;
+    mtime = statbuf.st_mtime;
+    atime = statbuf.st_atime;
     return true;
   } else {
     return false;
