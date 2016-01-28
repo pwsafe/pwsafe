@@ -1,5 +1,5 @@
-Password Safe 3.38.1 Release Notes - January 2016
-=================================================
+Password Safe 3.38.2 Release Notes - ???????? 2016
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,15 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.38.2
+====================
+[] Ensure that the Tooltip on how to unprotect an entry is now shown against the
+tutorial text at the top of the dialog for wide displays.
+
+New Features for 3.38.2
+=======================
+None
 
 Bugs fixed in 3.38.1
 ====================
