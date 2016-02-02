@@ -21,6 +21,14 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE257E1C5ACEFD00210C36 /* AES.cpp */; };
+		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
+		A2FE258E1C5ACF7500210C36 /* ItemAtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */; };
+		A2FE258F1C5ACF7500210C36 /* KeyWrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25851C5ACF7500210C36 /* KeyWrap.cpp */; };
+		A2FE25901C5ACF7500210C36 /* pbkdf2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25871C5ACF7500210C36 /* pbkdf2.cpp */; };
+		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
+		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
+		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
@@ -167,6 +175,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A2FE257E1C5ACEFD00210C36 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AES.cpp; sourceTree = "<group>"; };
+		A2FE257F1C5ACEFD00210C36 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES.h; sourceTree = "<group>"; };
+		A2FE25811C5ACF7500210C36 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
+		A2FE25821C5ACF7500210C36 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemAtt.cpp; sourceTree = "<group>"; };
+		A2FE25841C5ACF7500210C36 /* ItemAtt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAtt.h; sourceTree = "<group>"; };
+		A2FE25851C5ACF7500210C36 /* KeyWrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyWrap.cpp; sourceTree = "<group>"; };
+		A2FE25861C5ACF7500210C36 /* KeyWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyWrap.h; sourceTree = "<group>"; };
+		A2FE25871C5ACF7500210C36 /* pbkdf2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pbkdf2.cpp; sourceTree = "<group>"; };
+		A2FE25881C5ACF7500210C36 /* pbkdf2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbkdf2.h; sourceTree = "<group>"; };
+		A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSfileHeader.cpp; sourceTree = "<group>"; };
+		A2FE258A1C5ACF7500210C36 /* PWSfileHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileHeader.h; sourceTree = "<group>"; };
+		A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSfileV4.cpp; sourceTree = "<group>"; };
+		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
+		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
+		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
@@ -1180,13 +1204,8 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				E683B216150481DF0013D588 /* pugixml */,
-				E698275814C01B7D0043C243 /* PWSLog.cpp */,
-				E698275914C01B7D0043C243 /* PWSLog.h */,
-				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
-				E6DDC7001389120E00F0C0D1 /* DBCompareData.h */,
-				E6112A61131D720E00AA1454 /* ExpiredList.cpp */,
-				E6112A62131D720E00AA1454 /* ExpiredList.h */,
+				A2FE257E1C5ACEFD00210C36 /* AES.cpp */,
+				A2FE257F1C5ACEFD00210C36 /* AES.h */,
 				E6EE839211E87E9700B01518 /* BlowFish.cpp */,
 				E6EE839311E87E9700B01518 /* BlowFish.h */,
 				E6EE839411E87E9700B01518 /* CheckVersion.cpp */,
@@ -1194,20 +1213,33 @@
 				E6EE839611E87E9700B01518 /* Command.cpp */,
 				E6EE839711E87E9700B01518 /* Command.h */,
 				E6EE839811E87E9700B01518 /* CommandInterface.h */,
-				E6EE839D11E87E9700B01518 /* coredefs.h */,
-				E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */,
-				E6EE839F11E87E9700B01518 /* core.h */,
 				E6EE83A211E87E9700B01518 /* core_st.cpp */,
 				E6EE83A311E87E9700B01518 /* core_st.h */,
+				E6EE839F11E87E9700B01518 /* core.h */,
+				E6EE839D11E87E9700B01518 /* coredefs.h */,
+				E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */,
+				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
+				E6DDC7001389120E00F0C0D1 /* DBCompareData.h */,
+				E6112A61131D720E00AA1454 /* ExpiredList.cpp */,
+				E6112A62131D720E00AA1454 /* ExpiredList.h */,
 				E6EE83A411E87E9700B01518 /* Fish.h */,
 				E6EE83A611E87E9700B01518 /* hmac.h */,
+				A2FE25811C5ACF7500210C36 /* Item.cpp */,
+				A2FE25821C5ACF7500210C36 /* Item.h */,
+				A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */,
+				A2FE25841C5ACF7500210C36 /* ItemAtt.h */,
 				E6EE83A711E87E9700B01518 /* ItemData.cpp */,
 				E6EE83A811E87E9700B01518 /* ItemData.h */,
 				E6EE83A911E87E9700B01518 /* ItemField.cpp */,
 				E6EE83AA11E87E9700B01518 /* ItemField.h */,
+				A2FE25851C5ACF7500210C36 /* KeyWrap.cpp */,
+				A2FE25861C5ACF7500210C36 /* KeyWrap.h */,
 				E6EE83AC11E87E9700B01518 /* Match.cpp */,
 				E6EE83AD11E87E9700B01518 /* Match.h */,
+				A2FE25871C5ACF7500210C36 /* pbkdf2.cpp */,
+				A2FE25881C5ACF7500210C36 /* pbkdf2.h */,
 				E6EE83AF11E87E9700B01518 /* Proxy.h */,
+				E683B216150481DF0013D588 /* pugixml */,
 				E6EE83B011E87E9700B01518 /* PWCharPool.cpp */,
 				E6EE83B111E87E9700B01518 /* PWCharPool.h */,
 				E6EE83B211E87E9700B01518 /* PWHistory.cpp */,
@@ -1222,17 +1254,25 @@
 				E6EE83BB11E87E9700B01518 /* PWSdirs.h */,
 				E6EE83BC11E87E9700B01518 /* PWSfile.cpp */,
 				E6EE83BD11E87E9700B01518 /* PWSfile.h */,
+				A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */,
+				A2FE258A1C5ACF7500210C36 /* PWSfileHeader.h */,
 				E6EE83BE11E87E9700B01518 /* PWSfileV1V2.cpp */,
 				E6EE83BF11E87E9700B01518 /* PWSfileV1V2.h */,
 				E6EE83C011E87E9700B01518 /* PWSfileV3.cpp */,
 				E6EE83C111E87E9700B01518 /* PWSfileV3.h */,
+				A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */,
+				A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */,
 				E6EE83C211E87E9700B01518 /* PWSFilters.cpp */,
 				E6EE83C311E87E9700B01518 /* PWSFilters.h */,
+				E698275814C01B7D0043C243 /* PWSLog.cpp */,
+				E698275914C01B7D0043C243 /* PWSLog.h */,
 				E6EE83C411E87E9700B01518 /* PwsPlatform.h */,
 				E6EE83C511E87E9700B01518 /* PWSprefs.cpp */,
 				E6EE83C611E87E9700B01518 /* PWSprefs.h */,
 				E6EE83C711E87E9700B01518 /* PWSrand.cpp */,
 				E6EE83C811E87E9700B01518 /* PWSrand.h */,
+				A2FE25931C5ACFBD00210C36 /* PWStime.cpp */,
+				A2FE25941C5ACFBD00210C36 /* PWStime.h */,
 				E6EE83C911E87E9700B01518 /* Report.cpp */,
 				E6EE83CA11E87E9700B01518 /* Report.h */,
 				E6EE83CB11E87E9700B01518 /* sha1.cpp */,
@@ -1245,9 +1285,9 @@
 				E6EE83D211E87E9700B01518 /* SysInfo.cpp */,
 				E6EE83D311E87E9700B01518 /* SysInfo.h */,
 				E6EE83DB11E87E9700B01518 /* trigram.h */,
+				E6EE83DE11E87E9700B01518 /* twofish_tab.c */,
 				E6EE83DC11E87E9700B01518 /* TwoFish.cpp */,
 				E6EE83DD11E87E9700B01518 /* TwoFish.h */,
-				E6EE83DE11E87E9700B01518 /* twofish_tab.c */,
 				E6EE83DF11E87E9700B01518 /* UIinterface.h */,
 				E6EE83E011E87E9700B01518 /* UnknownField.cpp */,
 				E6EE83E111E87E9700B01518 /* UnknownField.h */,
@@ -1463,14 +1503,17 @@
 				E6EE841D11E87E9800B01518 /* Command.cpp in Sources */,
 				E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */,
 				E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */,
+				A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */,
 				E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */,
 				E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */,
 				E6EE842411E87E9800B01518 /* Match.cpp in Sources */,
 				E6EE842511E87E9800B01518 /* PWCharPool.cpp in Sources */,
+				A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */,
 				E6EE842611E87E9800B01518 /* PWHistory.cpp in Sources */,
 				E6EE842711E87E9800B01518 /* PWPolicy.cpp in Sources */,
 				E6EE842811E87E9800B01518 /* PWSAuxParse.cpp in Sources */,
 				E6EE842911E87E9800B01518 /* PWScore.cpp in Sources */,
+				A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */,
 				E6EE842A11E87E9800B01518 /* PWSdirs.cpp in Sources */,
 				E6EE842B11E87E9800B01518 /* PWSfile.cpp in Sources */,
 				E6EE842C11E87E9800B01518 /* PWSfileV1V2.cpp in Sources */,
@@ -1491,9 +1534,13 @@
 				E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */,
 				E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */,
 				E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */,
+				A2FE258E1C5ACF7500210C36 /* ItemAtt.cpp in Sources */,
 				E6EE844F11E87E9800B01518 /* XFileXMLProcessor.cpp in Sources */,
+				A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */,
+				A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */,
 				E6EE845011E87E9800B01518 /* XFilterSAX2Handlers.cpp in Sources */,
 				E6EE845111E87E9800B01518 /* XFilterXMLProcessor.cpp in Sources */,
+				A2FE25901C5ACF7500210C36 /* pbkdf2.cpp in Sources */,
 				E6EE845211E87E9800B01518 /* XSecMemMgr.cpp in Sources */,
 				E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */,
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
@@ -1502,6 +1549,7 @@
 				E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 				E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */,
 				E683B21A150481DF0013D588 /* pugixml.cpp in Sources */,
+				A2FE258F1C5ACF7500210C36 /* KeyWrap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
