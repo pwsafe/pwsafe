@@ -72,7 +72,7 @@ else()
 endif()
 
 if(HAVE_YKPERS_H)
-    list(APPEND OS_SRC ${OS_YUBI_SRC})
+    list(APPEND OS_SRCS ${OS_YUBI_SRC})
 endif()
 
 add_library(os ${OS_SRCS})
