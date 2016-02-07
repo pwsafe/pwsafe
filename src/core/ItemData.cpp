@@ -34,11 +34,6 @@
 using namespace std;
 using pws_os::CUUID;
 
-// some fwd declarations:
-static bool pull_int32(int32 &i, const unsigned char *data, size_t len);
-static bool pull_int16(int16 &i16, const unsigned char *data, size_t len);
-static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
-
 //-----------------------------------------------------------------------------
 // Constructors
 
@@ -1882,7 +1877,7 @@ bool CItemData::WillExpire(const int numdays) const
   return (XTime < exptime);
 }
 
-static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
+static bool pull(int32 &i, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int32)) {
     i = getInt32(data);
@@ -1893,7 +1888,7 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
+static bool pull(int16 &i16, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int16)) {
     i16 = getInt16(data);
@@ -1904,10 +1899,10 @@ static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len)
+static bool pull(unsigned char &value, const unsigned char *data, size_t len)
 {
   if (len == sizeof(char)) {
-    uc = *data;
+    value = *data;
   } else {
     ASSERT(0);
     return false;
@@ -1992,23 +1987,23 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
-      if (!pull_int32(i32, data, len)) return false;
+      if (!pull(i32, data, len)) return false;
       SetXTimeInt(i32);
       break;
     case DCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetDCA(i16);
       break;
     case SHIFTDCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetShiftDCA(i16);
       break;
     case PROTECTED:
-      if (!pull_char(uc, data, len)) return false;
+      if (!pull(uc, data, len)) return false;
       SetProtected(uc != 0);
       break;
     case KBSHORTCUT:
-      if (!pull_int32(i32, data, sizeof(int32))) return false;
+      if (!pull(i32, data, sizeof(int32))) return false;
       SetKBShortcut(i32);
       break;
     case END:
@@ -2050,6 +2045,19 @@ static void push_length(vector<char> &v, uint32 s)
     reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
 }
 
+template< typename T>
+static void push(vector<char> &v, char type, T value)
+{
+  if (value != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(value));
+    v.insert(v.end(),
+             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
+  }
+}
+
+// Overload rather than specialize template function
+// See http://www.gotw.ca/publications/mill17.htm
 static void push(vector<char> &v, char type,
                  const StringX &str)
 {
@@ -2069,16 +2077,6 @@ static void push(vector<char> &v, char type,
   }
 }
 
-template< typename T>
-static void push(vector<char> &v, char type, T value)
-{
-  if (value != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(value));
-    v.insert(v.end(),
-             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
-  }
-}
 
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
