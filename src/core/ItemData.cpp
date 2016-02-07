@@ -595,19 +595,16 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   }
 }
 
-StringX CItemData::GetProtected() const
-{
-  unsigned char ucprotected;
-  GetProtected(ucprotected);
-
-  return ucprotected != 0 ? StringX(_T("1")) : StringX(_T(""));
-}
-
 bool CItemData::IsProtected() const
 {
   unsigned char ucprotected;
   GetProtected(ucprotected);
   return ucprotected != 0;
+}
+
+StringX CItemData::GetProtected() const
+{
+  return IsProtected() ? StringX(_T("1")) : StringX(_T(""));
 }
 
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
@@ -897,6 +894,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   return ret;
 }
 
+static void ConditionalWriteXML(int field, const CItemData::FieldBits &fieldbits,
+                                const char *name, const StringX value,
+                                ostringstream &oss, CUTF8Conv &utf8conv, bool &errors)
+{
+  if (fieldbits.test(field) && !value.empty()) {
+    if (!PWSUtil::WriteXMLField(oss, name, value, utf8conv))
+      errors = true;
+  }
+}
+
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          TCHAR delimiter, const CItemData *pcibase,
                          bool bforce_normal_entry,
@@ -906,7 +913,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << dec << id << "\"";
   if (bforce_normal_entry)
-    oss << " normal=\"" << "true" << "\"";
+    oss << " normal=\"true\"";
 
   oss << ">" << endl;
 
@@ -915,21 +922,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   unsigned char uc;
   bool brc;
 
-  tmp = GetGroup();
-  if (bsExport.test(CItemData::GROUP) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::GROUP, bsExport, "group", GetGroup(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Title mandatory (see pwsafe.xsd)
   brc = PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetUser();
-  if (bsExport.test(CItemData::USER) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::USER, bsExport, "username", GetUser(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
@@ -951,17 +952,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetURL();
-  if (bsExport.test(CItemData::URL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetAutoType();
-  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::AUTOTYPE, bsExport, "autotype", GetAutoType(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.empty()) {
@@ -1095,11 +1089,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     }
   }
 
-  tmp = GetRunCommand();
-  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::RUNCMD, bsExport, "runcommand", GetRunCommand(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetDCA(i16);
   if (bsExport.test(CItemData::DCA) &&
@@ -1111,28 +1102,17 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     oss << "\t\t<shiftdca>" << i16 << "</shiftdca>" << endl;
 
-
-  tmp = GetEmail();
-  if (bsExport.test(CItemData::EMAIL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::EMAIL, bsExport, "email", GetEmail(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetProtected(uc);
   if (bsExport.test(CItemData::PROTECTED) && uc != 0)
     oss << "\t\t<protected>1</protected>" << endl;
 
-  tmp = GetSymbols();
-  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetKBShortcut();
-  if (bsExport.test(CItemData::KBSHORTCUT) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "kbshortcut", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::SYMBOLS, bsExport, "symbols", GetSymbols(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::KBSHORTCUT, bsExport, "kbshortcut", GetKBShortcut(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1228,11 +1208,6 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
   }
 }
 
-void CItemData::SetUser(const StringX &user)
-{
-  CItem::SetField(USER, user);
-}
-
 void CItemData::UpdatePassword(const StringX &password)
 {
   // use when password changed - manages history, modification times
@@ -1324,12 +1299,6 @@ void CItemData::UpdatePasswordHistory()
   SetPWHistory(new_PWHistory);
 }
 
-
-void CItemData::SetPassword(const StringX &password)
-{
-  CItem::SetField(PASSWORD, password);
-}
-
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
@@ -1361,24 +1330,9 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
   }
 }
 
-void CItemData::SetGroup(const StringX &group)
-{
-  CItem::SetField(GROUP, group);
-}
-
 void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
 {
   CItem::SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
-}
-
-void CItemData::SetURL(const StringX &url)
-{
-  CItem::SetField(URL, url);
-}
-
-void CItemData::SetAutoType(const StringX &autotype)
-{
-  CItem::SetField(AUTOTYPE, autotype);
 }
 
 void CItemData::SetTime(int whichtime)
@@ -1475,26 +1429,6 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 
   CItem::SetField(POLICY, cs_pwpolicy);
   return true;
-}
-
-void CItemData::SetRunCommand(const StringX &cs_RunCommand)
-{
-  CItem::SetField(RUNCMD, cs_RunCommand);
-}
-
-void CItemData::SetEmail(const StringX &sx_email)
-{
-  CItem::SetField(EMAIL, sx_email);
-}
-
-void CItemData::SetSymbols(const StringX &sx_symbols)
-{
-  CItem::SetField(SYMBOLS, sx_symbols);
-}
-
-void CItemData::SetPolicyName(const StringX &sx_PolicyName)
-{
-  CItem::SetField(POLICYNAME, sx_PolicyName);
 }
 
 void CItemData::SetDCA(int16 iDCA, const bool bShift)

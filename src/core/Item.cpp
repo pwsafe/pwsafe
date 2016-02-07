@@ -80,6 +80,7 @@ bool CItem::CompareFields(const CItemField &fthis,
   flength = fthis.GetLength() + BlowFish::BLOCKSIZE; // GetField updates length, reset
   that.GetField(fthat, dthat, flength);
   bool retval = (memcmp(dthis, dthat, flength) == 0);
+  trashMemory(dthis, flength); trashMemory(dthis, flength);
   delete[] dthis; delete[] dthat;
   return retval;
 }

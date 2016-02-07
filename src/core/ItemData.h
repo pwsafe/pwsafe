@@ -202,17 +202,17 @@ public:
   void SetName(const StringX &name,
                const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
   void SetTitle(const StringX &title, TCHAR delimiter = 0);
-  void SetUser(const StringX &user); // V20
-  void SetPassword(const StringX &password);
+  void SetUser(const StringX &user) {CItem::SetField(USER, user);} // V20
+  void SetPassword(const StringX &password) {CItem::SetField(PASSWORD, password);}
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
   void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
   void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
   void SetAttUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::ATTREF);}
   void ClearAttUUID() {ClearField(CItemData::ATTREF);}
-  void SetGroup(const StringX &group); // V20
-  void SetURL(const StringX &url); // V30
-  void SetAutoType(const StringX &autotype); // V30
+  void SetGroup(const StringX &group) {CItem::SetField(GROUP, group);} // V20
+  void SetURL(const StringX &url) {CItem::SetField(URL, url);} // V30
+  void SetAutoType(const StringX &autotype) {CItem::SetField(AUTOTYPE, autotype);} // V30
   void SetATime() {SetTime(ATIME);}  // V30
   void SetATime(time_t t) {CItem::SetTime(ATIME, t);}  // V30
   bool SetATime(const stringT &time_str) {return SetTime(ATIME, time_str);}  // V30
@@ -233,15 +233,16 @@ public:
   void SetPWHistory(const StringX &PWHistory);  // V30
   void SetPWPolicy(const PWPolicy &pwp);
   bool SetPWPolicy(const stringT &cs_pwp);
-  void SetRunCommand(const StringX &cs_RunCommand);
+  void SetRunCommand(const StringX &sx_RunCommand) {CItem::SetField(RUNCMD, sx_RunCommand);}
   void SetDCA(int16 iDCA, const bool bShift = false);
   bool SetDCA(const stringT &cs_DCA, const bool bShift = false);
   void SetShiftDCA(int16 iDCA) {SetDCA(iDCA, true);}
   bool SetShiftDCA(const stringT &cs_DCA) {return SetDCA(cs_DCA, true);}
-  void SetEmail(const StringX &sx_email);
+  void SetEmail(const StringX &sx_email) {CItem::SetField(EMAIL, sx_email);}
   void SetProtected(bool bOnOff);
-  void SetSymbols(const StringX &sx_symbols);
-  void SetPolicyName(const StringX &sx_PolicyName);
+  void SetSymbols(const StringX &sx_symbols) {CItem::SetField(SYMBOLS, sx_symbols);}
+  void SetPolicyName(const StringX &sx_PolicyName) {CItem::SetField(POLICYNAME,
+                                                                    sx_PolicyName);}
   void SetKBShortcut(const StringX &sx_KBShortcut);
   void SetKBShortcut(int32 iKBShortcut);
 
