@@ -2050,8 +2050,8 @@ static void push_length(vector<char> &v, uint32 s)
     reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
 }
 
-static void push_string(vector<char> &v, char type,
-                        const StringX &str)
+static void push(vector<char> &v, char type,
+                 const StringX &str)
 {
   if (!str.empty()) {
     CUTF8Conv utf8conv;
@@ -2065,46 +2065,18 @@ static void push_string(vector<char> &v, char type,
       v.insert(v.end(), reinterpret_cast<const char *>(utf8),
                reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
-      pws_os::Trace(_T("ItemData.cpp: push_string(%ls): ToUTF8 failed!\n"), str.c_str());
+      pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
 
-static void push_time(vector<char> &v, char type, time_t t)
+template< typename T>
+static void push(vector<char> &v, char type, T value)
 {
-  if (t != 0) {
+  if (value != 0) {
     v.push_back(type);
-    push_length(v, sizeof(t));
+    push_length(v, sizeof(value));
     v.insert(v.end(),
-             reinterpret_cast<char *>(&t), reinterpret_cast<char *>(&t) + sizeof(t));
-  }
-}
-
-static void push_int32(vector<char> &v, char type, int32 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int32));
-    v.insert(v.end(),
-             reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
-  }
-}
-
-static void push_int16(vector<char> &v, char type, int16 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int16));
-    v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int16));
-  }
-}
-
-static void push_uchar(vector<char> &v, char type, unsigned char uc)
-{
-  if (uc != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(char));
-    v.insert(v.end(), reinterpret_cast<char *>(&uc), reinterpret_cast<char *>(&uc) + sizeof(char));
+             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
   }
 }
 
@@ -2126,9 +2098,9 @@ void CItemData::SerializePlainText(vector<char> &v,
     v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   }
 
-  push_string(v, GROUP, GetGroup());
-  push_string(v, TITLE, GetTitle());
-  push_string(v, USER, GetUser());
+  push(v, GROUP, GetGroup());
+  push(v, TITLE, GetTitle());
+  push(v, USER, GetUser());
 
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
@@ -2142,30 +2114,30 @@ void CItemData::SerializePlainText(vector<char> &v,
   } else
     tmp = GetPassword();
 
-  push_string(v, PASSWORD, tmp);
-  push_string(v, NOTES, GetNotes());
-  push_string(v, URL, GetURL());
-  push_string(v, AUTOTYPE, GetAutoType());
+  push(v, PASSWORD, tmp);
+  push(v, NOTES, GetNotes());
+  push(v, URL, GetURL());
+  push(v, AUTOTYPE, GetAutoType());
 
-  GetCTime(t);   push_time(v, CTIME, t);
-  GetPMTime(t);  push_time(v, PMTIME, t);
-  GetATime(t);   push_time(v, ATIME, t);
-  GetXTime(t);   push_time(v, XTIME, t);
-  GetRMTime(t);  push_time(v, RMTIME, t);
+  GetCTime(t);   push(v, CTIME, t);
+  GetPMTime(t);  push(v, PMTIME, t);
+  GetATime(t);   push(v, ATIME, t);
+  GetXTime(t);   push(v, XTIME, t);
+  GetRMTime(t);  push(v, RMTIME, t);
 
-  GetXTimeInt(i32); push_int32(v, XTIME_INT, i32);
+  GetXTimeInt(i32); push(v, XTIME_INT, i32);
 
-  push_string(v, POLICY, GetPWPolicy());
-  push_string(v, PWHIST, GetPWHistory());
+  push(v, POLICY, GetPWPolicy());
+  push(v, PWHIST, GetPWHistory());
 
-  push_string(v, RUNCMD, GetRunCommand());
-  GetDCA(i16); if (i16 != -1) push_int16(v, DCA, i16);
-  GetShiftDCA(i16); if (i16 != -1) push_int16(v, SHIFTDCA, i16);
-  push_string(v, EMAIL, GetEmail());
-  GetProtected(uc); push_uchar(v, PROTECTED, uc);
-  push_string(v, SYMBOLS, GetSymbols());
-  push_string(v, POLICYNAME, GetPolicyName());
-  GetKBShortcut(i32); push_int32(v, KBSHORTCUT, i32);
+  push(v, RUNCMD, GetRunCommand());
+  GetDCA(i16); if (i16 != -1) push(v, DCA, i16);
+  GetShiftDCA(i16); if (i16 != -1) push(v, SHIFTDCA, i16);
+  push(v, EMAIL, GetEmail());
+  GetProtected(uc); push(v, PROTECTED, uc);
+  push(v, SYMBOLS, GetSymbols());
+  push(v, POLICYNAME, GetPolicyName());
+  GetKBShortcut(i32); push(v, KBSHORTCUT, i32);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = m_URFL.begin();
