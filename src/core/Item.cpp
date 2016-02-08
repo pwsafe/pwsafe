@@ -32,8 +32,7 @@ void CItem::SetSessionKey()
   }
 }
 
-CItem::CItem() :
-  m_display_info(NULL)
+CItem::CItem()
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
