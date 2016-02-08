@@ -1491,7 +1491,7 @@ void DboxMain::OnExportVx(UINT nID)
   const PWSfileHeader saved_hdr = m_core.GetHeader();
 
   // Now export it in the requested version
-  rc = m_core.WriteFile(newfile, export_version);
+  rc = m_core.WriteFile(newfile, export_version, false);
 
   // Restore current database header
   m_core.SetHeader(saved_hdr);

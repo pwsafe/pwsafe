@@ -51,6 +51,10 @@ CItem::~CItem()
 {
   delete m_display_info;
   delete m_blowfish;
+  // Following protects against possible use-after-delete
+  // bug, since new BF will be created, rather than
+  // using one with trashed values
+  m_blowfish = nullptr;
 }
 
 CItem& CItem::operator=(const CItem &that)
@@ -80,6 +84,7 @@ bool CItem::CompareFields(const CItemField &fthis,
   flength = fthis.GetLength() + BlowFish::BLOCKSIZE; // GetField updates length, reset
   that.GetField(fthat, dthat, flength);
   bool retval = (memcmp(dthis, dthat, flength) == 0);
+  trashMemory(dthis, flength); trashMemory(dthis, flength);
   delete[] dthis; delete[] dthat;
   return retval;
 }

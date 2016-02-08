@@ -46,7 +46,6 @@ if (WIN32)
   elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (OS_SRCS
     linux/KeySend.cpp
-    linux/PWYubi.cpp
     linux/UUID.cpp
     linux/debug.cpp
     linux/dir.cpp
@@ -65,10 +64,15 @@ if (WIN32)
     linux/utf8conv.cpp
     linux/xsendstring.cpp
     )
+  set (OS_YUBI_SRC linux/PWYubi.cpp)
 else()
   message (FATAL_ERROR "Unsupported OS "
     ${CMAKE_SYSTEM_NAME}
     " - can't build OS library")
+endif()
+
+if(HAVE_YKPERS_H)
+    list(APPEND OS_SRCS ${OS_YUBI_SRC})
 endif()
 
 add_library(os ${OS_SRCS})

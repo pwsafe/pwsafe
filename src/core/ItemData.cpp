@@ -34,11 +34,6 @@
 using namespace std;
 using pws_os::CUUID;
 
-// some fwd declarations:
-static bool pull_int32(int32 &i, const unsigned char *data, size_t len);
-static bool pull_int16(int16 &i16, const unsigned char *data, size_t len);
-static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len);
-
 //-----------------------------------------------------------------------------
 // Constructors
 
@@ -600,19 +595,16 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   }
 }
 
-StringX CItemData::GetProtected() const
-{
-  unsigned char ucprotected;
-  GetProtected(ucprotected);
-
-  return ucprotected != 0 ? StringX(_T("1")) : StringX(_T(""));
-}
-
 bool CItemData::IsProtected() const
 {
   unsigned char ucprotected;
   GetProtected(ucprotected);
   return ucprotected != 0;
+}
+
+StringX CItemData::GetProtected() const
+{
+  return IsProtected() ? StringX(_T("1")) : StringX(_T(""));
 }
 
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
@@ -902,6 +894,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   return ret;
 }
 
+static void ConditionalWriteXML(int field, const CItemData::FieldBits &fieldbits,
+                                const char *name, const StringX value,
+                                ostringstream &oss, CUTF8Conv &utf8conv, bool &errors)
+{
+  if (fieldbits.test(field) && !value.empty()) {
+    if (!PWSUtil::WriteXMLField(oss, name, value, utf8conv))
+      errors = true;
+  }
+}
+
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          TCHAR delimiter, const CItemData *pcibase,
                          bool bforce_normal_entry,
@@ -911,7 +913,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << dec << id << "\"";
   if (bforce_normal_entry)
-    oss << " normal=\"" << "true" << "\"";
+    oss << " normal=\"true\"";
 
   oss << ">" << endl;
 
@@ -920,21 +922,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   unsigned char uc;
   bool brc;
 
-  tmp = GetGroup();
-  if (bsExport.test(CItemData::GROUP) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::GROUP, bsExport, "group", GetGroup(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Title mandatory (see pwsafe.xsd)
   brc = PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetUser();
-  if (bsExport.test(CItemData::USER) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::USER, bsExport, "username", GetUser(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
@@ -956,17 +952,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetURL();
-  if (bsExport.test(CItemData::URL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetAutoType();
-  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::AUTOTYPE, bsExport, "autotype", GetAutoType(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.empty()) {
@@ -1100,11 +1089,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     }
   }
 
-  tmp = GetRunCommand();
-  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::RUNCMD, bsExport, "runcommand", GetRunCommand(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetDCA(i16);
   if (bsExport.test(CItemData::DCA) &&
@@ -1116,28 +1102,17 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     oss << "\t\t<shiftdca>" << i16 << "</shiftdca>" << endl;
 
-
-  tmp = GetEmail();
-  if (bsExport.test(CItemData::EMAIL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::EMAIL, bsExport, "email", GetEmail(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetProtected(uc);
   if (bsExport.test(CItemData::PROTECTED) && uc != 0)
     oss << "\t\t<protected>1</protected>" << endl;
 
-  tmp = GetSymbols();
-  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetKBShortcut();
-  if (bsExport.test(CItemData::KBSHORTCUT) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "kbshortcut", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::SYMBOLS, bsExport, "symbols", GetSymbols(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::KBSHORTCUT, bsExport, "kbshortcut", GetKBShortcut(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1233,11 +1208,6 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
   }
 }
 
-void CItemData::SetUser(const StringX &user)
-{
-  CItem::SetField(USER, user);
-}
-
 void CItemData::UpdatePassword(const StringX &password)
 {
   // use when password changed - manages history, modification times
@@ -1329,12 +1299,6 @@ void CItemData::UpdatePasswordHistory()
   SetPWHistory(new_PWHistory);
 }
 
-
-void CItemData::SetPassword(const StringX &password)
-{
-  CItem::SetField(PASSWORD, password);
-}
-
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
@@ -1366,24 +1330,9 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
   }
 }
 
-void CItemData::SetGroup(const StringX &group)
-{
-  CItem::SetField(GROUP, group);
-}
-
 void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
 {
   CItem::SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
-}
-
-void CItemData::SetURL(const StringX &url)
-{
-  CItem::SetField(URL, url);
-}
-
-void CItemData::SetAutoType(const StringX &autotype)
-{
-  CItem::SetField(AUTOTYPE, autotype);
 }
 
 void CItemData::SetTime(int whichtime)
@@ -1480,26 +1429,6 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 
   CItem::SetField(POLICY, cs_pwpolicy);
   return true;
-}
-
-void CItemData::SetRunCommand(const StringX &cs_RunCommand)
-{
-  CItem::SetField(RUNCMD, cs_RunCommand);
-}
-
-void CItemData::SetEmail(const StringX &sx_email)
-{
-  CItem::SetField(EMAIL, sx_email);
-}
-
-void CItemData::SetSymbols(const StringX &sx_symbols)
-{
-  CItem::SetField(SYMBOLS, sx_symbols);
-}
-
-void CItemData::SetPolicyName(const StringX &sx_PolicyName)
-{
-  CItem::SetField(POLICYNAME, sx_PolicyName);
 }
 
 void CItemData::SetDCA(int16 iDCA, const bool bShift)
@@ -1882,7 +1811,7 @@ bool CItemData::WillExpire(const int numdays) const
   return (XTime < exptime);
 }
 
-static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
+static bool pull(int32 &i, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int32)) {
     i = getInt32(data);
@@ -1893,7 +1822,7 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
+static bool pull(int16 &i16, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int16)) {
     i16 = getInt16(data);
@@ -1904,10 +1833,10 @@ static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len)
+static bool pull(unsigned char &value, const unsigned char *data, size_t len)
 {
   if (len == sizeof(char)) {
-    uc = *data;
+    value = *data;
   } else {
     ASSERT(0);
     return false;
@@ -1992,23 +1921,23 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
-      if (!pull_int32(i32, data, len)) return false;
+      if (!pull(i32, data, len)) return false;
       SetXTimeInt(i32);
       break;
     case DCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetDCA(i16);
       break;
     case SHIFTDCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetShiftDCA(i16);
       break;
     case PROTECTED:
-      if (!pull_char(uc, data, len)) return false;
+      if (!pull(uc, data, len)) return false;
       SetProtected(uc != 0);
       break;
     case KBSHORTCUT:
-      if (!pull_int32(i32, data, sizeof(int32))) return false;
+      if (!pull(i32, data, sizeof(int32))) return false;
       SetKBShortcut(i32);
       break;
     case END:
@@ -2050,8 +1979,21 @@ static void push_length(vector<char> &v, uint32 s)
     reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
 }
 
-static void push_string(vector<char> &v, char type,
-                        const StringX &str)
+template< typename T>
+static void push(vector<char> &v, char type, T value)
+{
+  if (value != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(value));
+    v.insert(v.end(),
+             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
+  }
+}
+
+// Overload rather than specialize template function
+// See http://www.gotw.ca/publications/mill17.htm
+static void push(vector<char> &v, char type,
+                 const StringX &str)
 {
   if (!str.empty()) {
     CUTF8Conv utf8conv;
@@ -2065,48 +2007,10 @@ static void push_string(vector<char> &v, char type,
       v.insert(v.end(), reinterpret_cast<const char *>(utf8),
                reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
-      pws_os::Trace(_T("ItemData.cpp: push_string(%ls): ToUTF8 failed!\n"), str.c_str());
+      pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
 
-static void push_time(vector<char> &v, char type, time_t t)
-{
-  if (t != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(t));
-    v.insert(v.end(),
-             reinterpret_cast<char *>(&t), reinterpret_cast<char *>(&t) + sizeof(t));
-  }
-}
-
-static void push_int32(vector<char> &v, char type, int32 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int32));
-    v.insert(v.end(),
-             reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
-  }
-}
-
-static void push_int16(vector<char> &v, char type, int16 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int16));
-    v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int16));
-  }
-}
-
-static void push_uchar(vector<char> &v, char type, unsigned char uc)
-{
-  if (uc != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(char));
-    v.insert(v.end(), reinterpret_cast<char *>(&uc), reinterpret_cast<char *>(&uc) + sizeof(char));
-  }
-}
 
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
@@ -2126,9 +2030,9 @@ void CItemData::SerializePlainText(vector<char> &v,
     v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   }
 
-  push_string(v, GROUP, GetGroup());
-  push_string(v, TITLE, GetTitle());
-  push_string(v, USER, GetUser());
+  push(v, GROUP, GetGroup());
+  push(v, TITLE, GetTitle());
+  push(v, USER, GetUser());
 
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
@@ -2142,30 +2046,30 @@ void CItemData::SerializePlainText(vector<char> &v,
   } else
     tmp = GetPassword();
 
-  push_string(v, PASSWORD, tmp);
-  push_string(v, NOTES, GetNotes());
-  push_string(v, URL, GetURL());
-  push_string(v, AUTOTYPE, GetAutoType());
+  push(v, PASSWORD, tmp);
+  push(v, NOTES, GetNotes());
+  push(v, URL, GetURL());
+  push(v, AUTOTYPE, GetAutoType());
 
-  GetCTime(t);   push_time(v, CTIME, t);
-  GetPMTime(t);  push_time(v, PMTIME, t);
-  GetATime(t);   push_time(v, ATIME, t);
-  GetXTime(t);   push_time(v, XTIME, t);
-  GetRMTime(t);  push_time(v, RMTIME, t);
+  GetCTime(t);   push(v, CTIME, t);
+  GetPMTime(t);  push(v, PMTIME, t);
+  GetATime(t);   push(v, ATIME, t);
+  GetXTime(t);   push(v, XTIME, t);
+  GetRMTime(t);  push(v, RMTIME, t);
 
-  GetXTimeInt(i32); push_int32(v, XTIME_INT, i32);
+  GetXTimeInt(i32); push(v, XTIME_INT, i32);
 
-  push_string(v, POLICY, GetPWPolicy());
-  push_string(v, PWHIST, GetPWHistory());
+  push(v, POLICY, GetPWPolicy());
+  push(v, PWHIST, GetPWHistory());
 
-  push_string(v, RUNCMD, GetRunCommand());
-  GetDCA(i16); if (i16 != -1) push_int16(v, DCA, i16);
-  GetShiftDCA(i16); if (i16 != -1) push_int16(v, SHIFTDCA, i16);
-  push_string(v, EMAIL, GetEmail());
-  GetProtected(uc); push_uchar(v, PROTECTED, uc);
-  push_string(v, SYMBOLS, GetSymbols());
-  push_string(v, POLICYNAME, GetPolicyName());
-  GetKBShortcut(i32); push_int32(v, KBSHORTCUT, i32);
+  push(v, RUNCMD, GetRunCommand());
+  GetDCA(i16); if (i16 != -1) push(v, DCA, i16);
+  GetShiftDCA(i16); if (i16 != -1) push(v, SHIFTDCA, i16);
+  push(v, EMAIL, GetEmail());
+  GetProtected(uc); push(v, PROTECTED, uc);
+  push(v, SYMBOLS, GetSymbols());
+  push(v, POLICYNAME, GetPolicyName());
+  GetKBShortcut(i32); push(v, KBSHORTCUT, i32);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = m_URFL.begin();
