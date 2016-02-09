@@ -6,6 +6,8 @@
 #include "FontCoverageDlg.h"
 #include "Unicode_Blocks.h"
 
+#include "resource.h"
+
 #include <algorithm>
 
 // CFontCoverageDlg dialog
@@ -67,7 +69,7 @@ BOOL CFontCoverageDlg::OnInitDialog()
   GetDlgItem(IDC_STATIC_CAPTION)->SetFont(&CaptionFont);
 
   CString cs_title;
-  cs_title.Format(L"Font '%s' Unicode Block Coverage", m_wsFontname.c_str());
+  cs_title.Format(IDS_FONT_COVERAGE, m_wsFontname.c_str());
   GetDlgItem(IDC_STATIC_CAPTION)->SetWindowText(cs_title);
 
   CFont *font = m_btnOK.GetFont();
@@ -117,8 +119,11 @@ BOOL CFontCoverageDlg::OnInitDialog()
     m_numFontChars[iter->first] = iter->second;
   }
 
-  m_lcFontCoverage.InsertColumn(0, L"Unicode Block", LVCFMT_LEFT);
-  m_lcFontCoverage.InsertColumn(1, L"% Coverage", LVCFMT_LEFT);
+  CString csTemp;
+  csTemp.LoadString(IDS_UNICODE_BLOCK);
+  m_lcFontCoverage.InsertColumn(0, csTemp, LVCFMT_LEFT);
+  csTemp.LoadString(IDS_PERCENT_COVERAGE);
+  m_lcFontCoverage.InsertColumn(1, csTemp, LVCFMT_LEFT);
 
   // Need full unicode range
   std::vector<unicode_block> temp_vUCBlocks = vUCBlocks;

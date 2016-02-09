@@ -341,7 +341,7 @@ bool CVKeyBoardDlg::IsUCPAvailable()
   *Check if we can support On-Screen Keyboards. Return true iff:
   * 1. Can load the dll
   */
-  bool bVKAvailable(false);
+  bool bUCPAvailable(false);
   static bool warnedAlready(false); // warn only once per process.
 
   // Try to load DLL
@@ -358,30 +358,30 @@ bool CVKeyBoardDlg::IsUCPAvailable()
   } else {
     pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - UCP DLL loaded OK.\n");
 
-    bVKAvailable = true;
+    bUCPAvailable = true;
 
-    //LP_OSK_GetVersion pUCPVersion =
-    //  LP_OSK_GetVersion(pws_os::GetFunction(UCP_module, "UCP_GetVersion"));
+    LP_OSK_GetVersion pUCPVersion =
+      LP_OSK_GetVersion(pws_os::GetFunction(UCP_module, "UCP_GetVersion"));
 
-    //pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found UCP_GetVersion: %s\n",
-    //  pUCPVersion != NULL ? L"OK" : L"FAILED");
+    pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Found UCP_GetVersion: %s\n",
+      pUCPVersion != NULL ? L"OK" : L"FAILED");
 
-    //if (pUCPVersion == NULL)
-    //  pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Unable to get all required UCP functions. UCP not available.\n");
-    //else if (pUCPVersion() == VK_DLL_VERSION) {
-    //  bVKAvailable = true;
-    //} else if (!warnedAlready && !app.NoSysEnvWarnings()) {
-    //  CGeneralMsgBox gmb;
-    //  warnedAlready = true;
-    //  gmb.AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
-    //}
+    if (pUCPVersion == NULL)
+      pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Unable to get all required UCP functions. UCP not available.\n");
+    else if (pUCPVersion() == UCP_DLL_VERSION) {
+      bUCPAvailable = true;
+    } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
+      CGeneralMsgBox gmb;
+      warnedAlready = true;
+      gmb.AfxMessageBox(IDS_UCP_VERSION_MISMATCH, MB_ICONERROR);
+    }
 
     BOOL brc = pws_os::FreeLibrary(UCP_module);
     pws_os::Trace(L"CVKeyBoardDlg::IsUCPAvailable - Free UCP DLL: %s\n",
       brc == TRUE ? L"OK" : L"FAILED");
   }
 
-  return bVKAvailable;
+  return bUCPAvailable;
 }
 
 //-----------------------------------------------------------------------------
@@ -750,6 +750,11 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTNUM), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_VKSTATIC_RANDOMIZE);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKRANDOMIZE), cs_ToolTip);
+
+  if (m_UCP_module != NULL) {
+    cs_ToolTip.LoadString(IDS_VK_UCPICKER);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_UCP_BUTTON), cs_ToolTip);
+  }
 
   // If not using the user specified font, show the warning.
   if (m_iFont != USER_FONT && m_bUserSpecifiedFont) {

@@ -57,7 +57,7 @@ inline void Utf32ToUtf16(uint32_t codepoint, wchar_t wc[3], ucode_info& uinfo)
 /////////////////////////////////////////////////////////////////////////////
 // CUCPickerDlg dialog
 
-CUCPickerDlg::CUCPickerDlg(CWnd* pParent /*=NULL*/)
+CUCPickerDlg::CUCPickerDlg(CWnd *pParent /*=NULL*/)
   : CDialog(CUCPickerDlg::IDD, pParent), m_pToolTipCtrl(NULL),
   m_numcharacters(0), m_offset(0), m_bDoneByValue(false), m_currentUBlock(-1)
 {
@@ -170,7 +170,6 @@ BOOL CUCPickerDlg::OnInitDialog()
   CaptionFont.CreateFontIndirect(&ncm.lfCaptionFont);
 
   GetDlgItem(IDC_STATIC_CAPTION)->SetFont(&CaptionFont);
-  GetDlgItem(IDC_STATIC_CAPTION)->SetWindowText(L"Unicode 8.0.0 Characters");
 
   // Set groupbox line thicker
   m_groupbox.SubclassDlgItem(IDC_STATIC_GROUPBOX, this);
@@ -182,8 +181,12 @@ BOOL CUCPickerDlg::OnInitDialog()
     m_UnicodeButtons[i].SetDeadKeyState(false);
   }
 
-  CVKBButton *pBtns[] = {&m_btnN_Next, &m_btnN_Prev, &m_btnV_Next, &m_btnV_Prev, &m_btnC_Next, 
-    &m_btnC_Prev, &m_btnExit, &m_btnSetFont, &m_btnHelp, &m_btnClearbuffer, &m_btnBackspace};
+  // Other buttons
+  CVKBButton *pBtns[] = {&m_btnN_Next, &m_btnN_Prev,
+                         &m_btnV_Next, &m_btnV_Prev,
+                         &m_btnC_Next, &m_btnC_Prev,
+                         &m_btnExit, &m_btnSetFont, &m_btnHelp,
+                         &m_btnClearbuffer, &m_btnBackspace};
 
   size_t nbtns = sizeof(pBtns) / sizeof(*m_btnN_Next);
 
@@ -214,7 +217,8 @@ BOOL CUCPickerDlg::OnInitDialog()
       continue;
 
     CString cs_name;
-    cs_name.Format(L"U+%06X - U+%06X  [%s]", vUCBlocks[iBlock].imin, vUCBlocks[iBlock].imax, vUCBlocks[iBlock].name);
+    cs_name.Format(L"U+%06X - U+%06X  [%s]", vUCBlocks[iBlock].imin, vUCBlocks[iBlock].imax,
+                   vUCBlocks[iBlock].name);
     nIndex = m_cboxUnicodeBlockByValue.AddString(cs_name);
     m_cboxUnicodeBlockByValue.SetItemData(nIndex, iBlock);
   }
@@ -252,8 +256,9 @@ BOOL CUCPickerDlg::OnInitDialog()
   m_pToolTipCtrl->SetMaxTipWidth(300);
 
   // Quadruple the time to allow reading by user
-  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+  // For somer eason the following return '10' rather than the normal '5000'
+  // int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * 5000 /*iTime*/);
 
   // Set the tooltip
   CString csTemp;
@@ -412,7 +417,8 @@ void CUCPickerDlg::OnUnicodeBlockByNameChange()
   GetDlgItem(IDC_BUTTON_BLOCKNEXTBYNAME)->EnableWindow(nIndex == NUMUNICODERANGES - 1 ? FALSE : TRUE);
 
   GetDlgItem(IDC_BUTTON_BLOCKPREVBYVALUE)->EnableWindow(iBlock == 0 ? FALSE : TRUE);
-  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE)->EnableWindow(iBlock == NUMUNICODERANGES - 1 ? FALSE : TRUE);
+  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE)->EnableWindow(iBlock == NUMUNICODERANGES - 1 ? 
+                FALSE : TRUE);
 
   GetDlgItem(IDC_BUTTON_PREVCHARS)->EnableWindow(m_offset == 0 ? FALSE : TRUE);
   GetDlgItem(IDC_BUTTON_NEXTCHARS)->EnableWindow(((vUCBlocks[m_currentUBlock].imin + m_offset + 0x80) > vUCBlocks[m_currentUBlock].imax) ? FALSE : TRUE);
@@ -587,7 +593,8 @@ void CUCPickerDlg::OnBlockNextByName()
   m_cboxUnicodeBlockByName.SetCurSel(iNewIndex);
 
   GetDlgItem(IDC_BUTTON_BLOCKPREVBYNAME)->EnableWindow(TRUE);
-  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYNAME)->EnableWindow(iNewIndex == NUMUNICODERANGES - 1 ? FALSE : TRUE);
+  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYNAME)->EnableWindow(iNewIndex == NUMUNICODERANGES - 1 ?
+               FALSE : TRUE);
 
   OnUnicodeBlockByNameChange();
 }
@@ -625,7 +632,8 @@ void CUCPickerDlg::OnBlockNextByValue()
   OnUnicodeBlockByNameChange();
 
   GetDlgItem(IDC_BUTTON_BLOCKPREVBYVALUE)->EnableWindow(TRUE);
-  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE)->EnableWindow(iBlock == NUMUNICODERANGES - 1 ? FALSE : TRUE);
+  GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE)->EnableWindow(iBlock == NUMUNICODERANGES - 1 ?
+                FALSE : TRUE);
 }
 
 void CUCPickerDlg::OnBlockPrevByValue()
@@ -930,7 +938,7 @@ void CUCPickerDlg::ProcessFontCMAPTable(const wchar_t *wcFontname, char *p)
             segCountX2 = SWAP_UINT16(pfmthdr4->segCountX2);
 
             //Trace(L"\t\t\tcmap format  4 header: format = %d; length = %d; language = %d" \
-            //                          L" segCountX2 = %d;\r\n", format, length, language, segCountX2);
+            //  L" segCountX2 = %d;\r\n", format, length, language, segCountX2);
 
 
             UINT16 *piendCodes = &(pfmthdr4->endCode);
@@ -1052,7 +1060,8 @@ void CUCPickerDlg::SetUnicodeBlockFonts()
   // Now create map UCBlocks to Fonts to NumChars!
   std::map<int, std::map<int, int>>::iterator font_iter;
   std::map<int, int>::iterator ublock_iter;
-  for (font_iter = m_mapFont2UBlock2NumChars.begin(); font_iter != m_mapFont2UBlock2NumChars.end(); font_iter++) {
+  for (font_iter = m_mapFont2UBlock2NumChars.begin(); 
+           font_iter != m_mapFont2UBlock2NumChars.end(); font_iter++) {
     //int iFontIndex = font_iter->first;
     for (ublock_iter = font_iter->second.begin(); ublock_iter != font_iter->second.end(); ublock_iter++) {
       //int nBlock = ublock_iter->first;
@@ -1088,7 +1097,8 @@ void CUCPickerDlg::SetUnicodeBlockFonts()
       int jmax = -1;
       int k = -1;
       std::map<int, int>::iterator iter;
-      for (iter = m_mapFont2NumChars[iBlock].begin(); iter != m_mapFont2NumChars[iBlock].end(); iter++) {
+      for (iter = m_mapFont2NumChars[iBlock].begin();
+                iter != m_mapFont2NumChars[iBlock].end(); iter++) {
         int xx = iter->second;
         if (xx > jmax) {
           jmax = xx;
@@ -1287,6 +1297,7 @@ BOOL CUCPickerDlg::OnTTNNeedText(UINT id, NMHDR *pNMHDR, LRESULT *pResult)
             cs_temp.Format(L"\\U%08X?", uinfo.ucode);
           }
           swprintf_s(pTTT->szText, sizeof(pTTT->szText) / sizeof(wchar_t), (LPCWSTR)cs_temp);
+          bRet = TRUE;
         }
       }
     }
@@ -1359,8 +1370,9 @@ bool CUCPickerDlg::LoadUserFonts()
   for (int iBlock = 0; iBlock < NUMUNICODERANGES; iBlock++) {
     CString cs_Key;
     cs_Key.Format(L"Block_%06X_%06X", vUCBlocks[iBlock].imin, vUCBlocks[iBlock].imax);
-    DWORD dw = GetPrivateProfileString(L"User_Fonts", cs_Key, NULL, wcValue, sizeof(wcValue) / sizeof(wchar_t),
-                                       m_wsConfigFile.c_str());
+    DWORD dw = GetPrivateProfileString(L"User_Fonts", cs_Key, NULL, wcValue,
+                 sizeof(wcValue) / sizeof(wchar_t),
+                 m_wsConfigFile.c_str());
     m_wsUserFonts[iBlock] = (dw > 0) ? wcValue : L"";
   }
 
@@ -1375,7 +1387,8 @@ bool CUCPickerDlg::SaveUserFonts()
     CString cs_Key;
     cs_Key.Format(L"Block_%06X_%06X", vUCBlocks[iBlock].imin, vUCBlocks[iBlock].imax);
     size_t n = m_wsUserFonts[iBlock].length();
-    WritePrivateProfileString(L"User_Fonts", cs_Key, n == 0 ? NULL : m_wsUserFonts[iBlock].c_str(), m_wsConfigFile.c_str());
+    WritePrivateProfileString(L"User_Fonts", cs_Key, n == 0 ? NULL : m_wsUserFonts[iBlock].c_str(),
+             m_wsConfigFile.c_str());
   }
 
   return true;

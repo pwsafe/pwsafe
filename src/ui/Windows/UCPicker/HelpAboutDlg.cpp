@@ -53,7 +53,6 @@ BOOL CHelpAboutDlg::OnInitDialog()
   CaptionFont.CreateFontIndirect(&ncm.lfCaptionFont);
 
   GetDlgItem(IDC_STATIC_CAPTION)->SetFont(&CaptionFont);
-  GetDlgItem(IDC_STATIC_CAPTION)->SetWindowText(L"Help && About");
 
   CFont *font = m_btnOK.GetFont();
 
@@ -110,3 +109,4 @@ HBRUSH CHelpAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
   }
   return hbr;
 }
+

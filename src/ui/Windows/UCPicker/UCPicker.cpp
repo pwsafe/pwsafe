@@ -40,6 +40,13 @@ BOOL CUCPickerApp::InitInstance()
   return TRUE;
 }
 
+UCPICKER_API int UCP_GetVersion()
+{
+  // Return current version to ensure caller and DLL are in step
+  // with regard to calling functions and Implemention Structure
+  return UCP_DLL_VERSION;
+}
+
 UCPICKER_API BOOL GetUnicodeBuffer(CSecString& csBuffer, CSecString& csRTFBuffer, int& numchars)
 {
   CUCPickerDlg dlg;

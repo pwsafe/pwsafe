@@ -13,6 +13,8 @@
 
 #include "resource.h"		// main symbols
 
+#define UCP_DLL_VERSION 1
+
 #ifdef UCPICKER_EXPORTS
 #define UCPICKER_API __declspec(dllexport)
 #else
@@ -24,6 +26,7 @@ extern "C" {
 #endif /* Start bracket of __cplusplus */
 
   UCPICKER_API BOOL GetUnicodeBuffer(CSecString& csBuffer, CSecString& csREBuffer, int& numchars);
+  UCPICKER_API int UCP_GetVersion();
 
 #ifdef __cplusplus
 }

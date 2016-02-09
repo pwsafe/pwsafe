@@ -9,6 +9,8 @@
 #include "Fonts.h"
 #include "Unicode_Blocks.h"
 
+#include "resource.h"
+
 #include "utility.h"
 
 #include <algorithm>
@@ -89,7 +91,6 @@ BOOL CSetFontsDlg::OnInitDialog()
   CaptionFont.CreateFontIndirect(&ncm.lfCaptionFont);
 
   GetDlgItem(IDC_STATIC_CAPTION)->SetFont(&CaptionFont);
-  GetDlgItem(IDC_STATIC_CAPTION)->SetWindowText(L"Set Unicode Range Font");
 
   CFont *font = m_btnOK.GetFont();
 
@@ -182,24 +183,38 @@ BOOL CSetFontsDlg::OnInitDialog()
 
   int nIndex;
   // Populate m_cbxDisplayType USER_SELECTED, PREFFERRED, BEST_AVAILABLE, NONE_FOUND 
-  nIndex = m_cbxDisplayType.AddString(L"All");
+  CString csTemp;
+  csTemp.LoadString(IDS_ALL);
+  nIndex = m_cbxDisplayType.AddString(csTemp);
   m_cbxDisplayType.SetItemData(nIndex, ALL);
-  nIndex = m_cbxDisplayType.AddString(L"Only those Unicode Blocks with User Selected fonts");
+
+  csTemp.LoadString(IDS_USER_SELECTED);
+  nIndex = m_cbxDisplayType.AddString(csTemp);
   m_cbxDisplayType.SetItemData(nIndex, USER_SELECTED);
-  nIndex = m_cbxDisplayType.AddString(L"Only those with Unicode Blocks Preferred fonts");
+
+  csTemp.LoadString(IDS_PREFERRED);
+  nIndex = m_cbxDisplayType.AddString(csTemp);
   m_cbxDisplayType.SetItemData(nIndex, PREFFERRED);
-  nIndex = m_cbxDisplayType.AddString(L"Only those Unicode Blocks assigned Best Available font");
+
+  csTemp.LoadString(IDS_BEST_AVAILABLE);
+  nIndex = m_cbxDisplayType.AddString(csTemp);
   m_cbxDisplayType.SetItemData(nIndex, BEST_AVAILABLE);
-  nIndex = m_cbxDisplayType.AddString(L"Only those Unicode Blocks not supported by any installed fonts");
-  m_cbxDisplayType.SetItemData(nIndex, NONE_FOUND); 
+
+  csTemp.LoadString(IDS_UNSUPPORTED);
+  nIndex = m_cbxDisplayType.AddString(csTemp);
+  m_cbxDisplayType.SetItemData(nIndex, NONE_FOUND);
+
   m_cbxDisplayType.SetCurSel(0);
 
   m_URLCHeader.SetDlgCtrlID(IDC_UNICODERANGELISTHDRCTRL);
   m_UnicodeRangeList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
-  m_UnicodeRangeList.InsertColumn(UNICODE_RANGE, L"Range", LVCFMT_LEFT | LVCFMT_FIXED_WIDTH);
-  m_UnicodeRangeList.InsertColumn(UNICODE_NAME, L"Unicode Block Name", LVCFMT_LEFT);
-  m_UnicodeRangeList.InsertColumn(CURRECT_FONT, L"Current Font", LVCFMT_LEFT);
+  csTemp.LoadString(IDS_RANGE);
+  m_UnicodeRangeList.InsertColumn(UNICODE_RANGE, csTemp, LVCFMT_LEFT | LVCFMT_FIXED_WIDTH);
+  csTemp.LoadString(IDS_BLOCK_NAME);
+  m_UnicodeRangeList.InsertColumn(UNICODE_NAME, csTemp, LVCFMT_LEFT);
+  csTemp.LoadString(IDS_CURRENT_FONT);
+  m_UnicodeRangeList.InsertColumn(CURRECT_FONT, csTemp, LVCFMT_LEFT);
 
   // Sort data just incase was sorted differently last visit
   std::sort(vUCBlocks.begin(), vUCBlocks.end(), CompareBlockNumberA);
@@ -222,9 +237,12 @@ BOOL CSetFontsDlg::OnInitDialog()
 
   m_AvailableFontList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
-  m_AvailableFontList.InsertColumn(FONT_NAME, L"Font Name", LVCFMT_LEFT);
-  m_AvailableFontList.InsertColumn(PERCENTAGE, L"% support", LVCFMT_LEFT);
-  m_AvailableFontList.InsertColumn(FONT_NUMCHARS, L"characters", LVCFMT_LEFT);
+  csTemp.LoadString(IDS_FONT_NAME);
+  m_AvailableFontList.InsertColumn(FONT_NAME, csTemp, LVCFMT_LEFT);
+  csTemp.LoadString(IDS_PERCENT_SUPPORT);
+  m_AvailableFontList.InsertColumn(PERCENTAGE, csTemp, LVCFMT_LEFT);
+  csTemp.LoadString(IDS_CHARACTERS);
+  m_AvailableFontList.InsertColumn(FONT_NUMCHARS, csTemp, LVCFMT_LEFT);
 
   m_AvailableFontList.DeleteAllItems();
 
@@ -255,9 +273,8 @@ BOOL CSetFontsDlg::OnInitDialog()
   m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_AVAILABLE_FONTS),
-    L"Right click on a font to show its coverage of the Unicode Block ranges\n" \
-    L"Greater than 100% is possible if the font supports unprintable or reserved characters in the range.");
+  csTemp.LoadString(IDS_AVAILABLE_FONTS);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_AVAILABLE_FONTS), csTemp);
 
   return TRUE;
 }
@@ -408,23 +425,28 @@ void CSetFontsDlg::OnAvailableFontChanged(NMHDR *pNMHDR, LRESULT *pResult)
   if (!(pNMLV->uChanged & LVIF_STATE))
     return;
 
+  CString csTemp;
+
   if (pNMLV->uNewState & LVIS_SELECTED) {
     unicode_block UBlock;
     UBlock = (m_nDisplayType == ALL) ? vUCBlocks[m_nRangeItem] : vUCBlocks_Subset[m_nRangeItem];
 
     if (m_AvailableFontList.GetItemData(pNMLV->iItem) == (DWORD)UBlock.iUserFont) {
       m_btnSelect.EnableWindow(TRUE);
-      m_btnSelect.SetWindowText(L"Deselect Font");
+      csTemp.LoadString(IDS_DESELECT_FONT);
+      m_btnSelect.SetWindowText(csTemp);
     } else {
       // Can't make preferred font a user selected font
       if (m_AvailableFontList.GetItemData(pNMLV->iItem) != (DWORD)UBlock.iPreferredFont) {
         m_btnSelect.EnableWindow(TRUE);
-        m_btnSelect.SetWindowText(L"Select Font");
+        csTemp.LoadString(IDS_SELECT_FONT);
+        m_btnSelect.SetWindowText(csTemp);
       }
     }
   } else {
     m_btnSelect.EnableWindow(FALSE);
-    m_btnSelect.SetWindowText(L"Select Font");
+    csTemp.LoadString(IDS_SELECT_FONT);
+    m_btnSelect.SetWindowText(csTemp);
   }
 }
 
@@ -813,7 +835,8 @@ void CSetFontsDlg::ResetFont(const int nFontItem)
   }
 
   m_UnicodeRangeList.SetFocus();
-  m_btnSelect.SetWindowText(L"Select Font");
+  CString csTemp(MAKEINTRESOURCE(IDS_SELECT_FONT));
+  m_btnSelect.SetWindowText(csTemp);
 }
 
 void CSetFontsDlg::OnResetAllFonts()
@@ -854,7 +877,8 @@ void CSetFontsDlg::OnResetAllFonts()
     }
   }
 
-  m_btnSelect.SetWindowText(L"Select Font");
+  CString csTemp(MAKEINTRESOURCE(IDS_SELECT_FONT));
+  m_btnSelect.SetWindowText(csTemp);
   m_btnSelect.EnableWindow(FALSE);
   m_AvailableFontList.Invalidate();
   m_UnicodeRangeList.Invalidate();

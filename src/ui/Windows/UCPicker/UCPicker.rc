@@ -245,8 +245,8 @@ BEGIN
     PUSHBUTTON      "<",IDC_BUTTON_PREVCHARS,403,271,26,14,BS_FLAT
     PUSHBUTTON      ">V",IDC_BUTTON_BLOCKNEXTBYVALUE,403,193,26,14,BS_FLAT
     PUSHBUTTON      "V<",IDC_BUTTON_BLOCKPREVBYVALUE,403,221,26,14,BS_FLAT
-    CONTROL         "",IDC_BUFFER,"RichEdit20W",WS_BORDER | WS_TABSTOP | 0x80,55,353,337,21
-    CTEXT           "Caption",IDC_STATIC_CAPTION,165,9,110,11,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_BUFFER,"RichEdit20W",ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP,55,353,337,21
+    CTEXT           "Unicode 8.0.0 Characters",IDC_STATIC_CAPTION,165,9,110,11,0,WS_EX_TRANSPARENT
     PUSHBUTTON      "Clear Buffer",IDC_CLEARBUFFER,160,385,50,14,0,WS_EX_TRANSPARENT
     PUSHBUTTON      "Backspace",IDC_BACKSPACE,226,385,50,14,0,WS_EX_TRANSPARENT
 END
@@ -262,8 +262,8 @@ BEGIN
                     "Static",SS_RIGHT | WS_GROUP | 0x20,14,187,293,18
     CONTROL         "If not supported by the font, it will be shown as an open white rectangular similar to this (font dependent):",IDC_STATIC,
                     "Static",SS_RIGHT | WS_GROUP | 0x20,14,215,293,18
-    CONTROL         "",IDC_RICHEDIT_HELPABOUT,"RichEdit20W",0x804,7,32,343,135,WS_EX_TRANSPARENT
-    CTEXT           "Caption",IDC_STATIC_CAPTION,10,8,339,17
+    CONTROL         "",IDC_RICHEDIT_HELPABOUT,"RichEdit20W",ES_MULTILINE | ES_READONLY,7,26,343,154,WS_EX_TRANSPARENT
+    CTEXT           "Help & About",IDC_STATIC_CAPTION,10,8,339,17,SS_NOPREFIX
 END
 
 IDD_SETFONTS DIALOGEX 0, 0, 598, 342
@@ -275,11 +275,11 @@ BEGIN
     CONTROL         "",IDC_UNICODE_RANGES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,33,391,277
     CONTROL         "",IDC_AVAILABLE_FONTS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,407,33,183,214
     PUSHBUTTON      "Select Font",IDC_SELECTFONT,459,295,66,14
-    CONTROL         "",IDC_RICHEDIT_FONTS,"RichEdit20W",0x804,406,250,182,42,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_RICHEDIT_FONTS,"RichEdit20W",ES_MULTILINE | ES_READONLY,406,250,182,42,WS_EX_TRANSPARENT
     PUSHBUTTON      "Reset ALL Fonts",IDC_RESETALLFONTS,458,317,68,14
     COMBOBOX        IDC_DISPLAYTYPES,33,318,223,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP,WS_EX_TRANSPARENT
     LTEXT           "Show",IDC_STATIC_DISPLAY,11,320,18,8,0,WS_EX_TRANSPARENT
-    CTEXT           "Caption",IDC_STATIC_CAPTION,11,11,578,14
+    CTEXT           "Set Unicode Range Font",IDC_STATIC_CAPTION,11,11,578,14
 END
 
 IDD_FONTCOVERAGE DIALOGEX 0, 0, 428, 317
@@ -288,7 +288,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Close",IDOK,187,298,50,14
     CONTROL         "",IDC_FONTCOVERAGELIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,28,413,263
-    CTEXT           "Caption",IDC_STATIC_CAPTION,7,9,412,13
+    CTEXT           "Set Unicode Range Font",IDC_STATIC_CAPTION,7,9,412,13
 END
 
 
@@ -384,6 +384,7 @@ BEGIN
     IDS_FONTS               "<font color=""Blue""><b>Blue</b></font> font name - Preferred if installed\n<font color=""Red""><b>Red</b></font> font name - User selected preference\n<font color=""#FF8000""><b>Orange</b></font> font name - Best coverage for this Unicode Range from your installed fonts."
     IDS_PRIVATE             "PRIVATE USE CHARACTER-%X"
     IDS_NOT_A_CHAR          "<not a character>"
+    IDS_UNICODE_BLOCK       "Unicode Block"
     IDS_NEXT_BY_NAME        "Go to next Unicode Block by Name"
     IDS_PREV_BY_NAME        "Go to previous Unicode Block by Name"
     IDS_NEXT_BY_VALUE       "Go to next Unicode Block by Value"
@@ -394,6 +395,26 @@ STRINGTABLE
 BEGIN
     IDS_PAGE_FORWARD        "Page Forward in this Unicode Block"
     IDS_PAGE_BACKWARD       "Page Backward in this Unicode Block"
+    IDS_PERCENT_COVERAGE    "% Coverage"
+    IDS_ALL                 "All"
+    IDS_USER_SELECTED       "Only those Unicode Blocks with User Selected fonts"
+    IDS_PREFERRED           "Only those with Unicode Blocks Preferred fonts"
+    IDS_BEST_AVAILABLE      "Only those Unicode Blocks assigned Best Available font"
+    IDS_UNSUPPORTED         "Only those Unicode Blocks not supported by any installed fonts"
+    IDS_RANGE               "Range"
+    IDS_BLOCK_NAME          "Unicode Block Name"
+    IDS_CURRENT_FONT        "Current Font"
+    IDS_FONT_NAME           "Font Name"
+    IDS_PERCENT_SUPPORT     "% support"
+    IDS_CHARACTERS          "characters"
+    IDS_AVAILABLE_FONTS     "Right click on a font to show its coverage of the Unicode Block ranges\nGreater than 100% is possible if the font supports unprintable or reserved characters in the range."
+    IDS_DESELECT_FONT       "Deselect Font"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SELECT_FONT         "Select Font"
+    IDS_FONT_COVERAGE       "Font '%s' Unicode Block Coverage"
 END
 
 #endif    // English (United Kingdom) resources
