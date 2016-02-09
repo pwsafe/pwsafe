@@ -66,6 +66,9 @@
     <ClCompile Include="..\VirtualKeyboard\VKBButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\SecString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UCPicker.h">

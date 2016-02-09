@@ -35,8 +35,8 @@
 
 #include "../UCPicker/UCPicker.h"
 
-typedef UCPICKER_API BOOL(*LP_UCP_GetUnicodeBuffer) (CString& csBuffer, CString& csREBuffer,
-  int& numchars);
+typedef UCPICKER_API BOOL(*LP_UCP_GetUnicodeBuffer) (CSecString& csBuffer, CSecString& csREBuffer,
+                                                     int& numchars);
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2257,12 +2257,12 @@ void CVKeyBoardDlg::OnUCP()
   LP_UCP_GetUnicodeBuffer pUCPickerBuffer =
     LP_UCP_GetUnicodeBuffer(GetProcAddress(m_UCP_module, "GetUnicodeBuffer"));
 
-  CString csBuffer, cs_RTFBuffer;
+  CSecString csBuffer, cs_RTFBuffer;
   int numchars;
   if (pUCPickerBuffer != NULL) {
     BOOL brc = pUCPickerBuffer(csBuffer, cs_RTFBuffer, numchars);
     ASSERT(brc);
-    m_phrase += CSecString(csBuffer);
+    m_phrase += csBuffer;
 
     m_phrasecount += numchars;
 

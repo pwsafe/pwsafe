@@ -245,7 +245,7 @@ BEGIN
     PUSHBUTTON      "<",IDC_BUTTON_PREVCHARS,403,271,26,14,BS_FLAT
     PUSHBUTTON      ">V",IDC_BUTTON_BLOCKNEXTBYVALUE,403,193,26,14,BS_FLAT
     PUSHBUTTON      "V<",IDC_BUTTON_BLOCKPREVBYVALUE,403,221,26,14,BS_FLAT
-    CONTROL         "",IDC_BUFFER,"RichEdit20W",ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP,55,353,337,21
+    CONTROL         "",IDC_BUFFER,"RichEdit20W",WS_BORDER | WS_TABSTOP | 0x80,55,353,337,21
     CTEXT           "Caption",IDC_STATIC_CAPTION,165,9,110,11,0,WS_EX_TRANSPARENT
     PUSHBUTTON      "Clear Buffer",IDC_CLEARBUFFER,160,385,50,14,0,WS_EX_TRANSPARENT
     PUSHBUTTON      "Backspace",IDC_BACKSPACE,226,385,50,14,0,WS_EX_TRANSPARENT
@@ -382,6 +382,18 @@ STRINGTABLE
 BEGIN
     IDS_HELPABOUT           "This was inspired by <b>BabelMap</b> by <i>Andrew West</i>.\n\nApologies for any similarity, but there are only a limited number of ways to display the same information!\n\nThe online version of BabelMap can be found <a href=""http://www.babelstone.co.uk/Unicode/babelmap.html"">here</a> and the stand-alone program <a href=""http://www.babelstone.co.uk/Software/BabelMap.html"">here</a>.\n\nAll the information about Unicode 8.0.0.1 was taken from <a href=""http://unicode.org/"">The Unicode Consortium</a>.\n\nIf a character is not being displayed, you may want to use BabelMap to find a font that will show it.  Also see Andrew West's Font List page <a href=""http://www.babelstone.co.uk/Fonts/index.html"">here</a>.\n\nIn addition, there are numerous resources on the internet that provides information on free TrueType fonts for Windows.\n\nGoogle have released a number of free fonts in their Noto series that cover a significant number of Unicode Block ranges but they are large - greater than 360MB as of July 2015!  <a href=""http://unifoundry.com/unifont.html"">Unifoundry</a> have two free fonts with a large coverage - GNU Unifont and Unifont_Upper."
     IDS_FONTS               "<font color=""Blue""><b>Blue</b></font> font name - Preferred if installed\n<font color=""Red""><b>Red</b></font> font name - User selected preference\n<font color=""#FF8000""><b>Orange</b></font> font name - Best coverage for this Unicode Range from your installed fonts."
+    IDS_PRIVATE             "PRIVATE USE CHARACTER-%X"
+    IDS_NOT_A_CHAR          "<not a character>"
+    IDS_NEXT_BY_NAME        "Go to next Unicode Block by Name"
+    IDS_PREV_BY_NAME        "Go to previous Unicode Block by Name"
+    IDS_NEXT_BY_VALUE       "Go to next Unicode Block by Value"
+    IDS_PREV_BY_VALUE       "Go to previous Unicode Block by Value"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PAGE_FORWARD        "Page Forward in this Unicode Block"
+    IDS_PAGE_BACKWARD       "Page Backward in this Unicode Block"
 END
 
 #endif    // English (United Kingdom) resources

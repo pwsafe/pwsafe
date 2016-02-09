@@ -3,9 +3,13 @@
 
 #pragma once
 
+#include "../SecString.h"
+
 #ifndef __AFXWIN_H__
   #error "include 'StdAfx.h' before including this file for PCH"
 #endif
+
+#include "UCPickerDlg.h"
 
 #include "resource.h"		// main symbols
 
@@ -19,7 +23,7 @@
 extern "C" {
 #endif /* Start bracket of __cplusplus */
 
-UCPICKER_API BOOL GetUnicodeBuffer(CString& csBuffer, CString& csREBuffer, int& numchars);
+  UCPICKER_API BOOL GetUnicodeBuffer(CSecString& csBuffer, CSecString& csREBuffer, int& numchars);
 
 #ifdef __cplusplus
 }

@@ -100,7 +100,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WINVER=0x0600;UCPICKER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
@@ -121,6 +121,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <SwapRunFromCD>true</SwapRunFromCD>
       <SwapRunFromNET>true</SwapRunFromNET>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -170,6 +171,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\SecString.cpp" />
     <ClCompile Include="FontCoverageDlg.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="GFResizeDialogHelper.cpp" />

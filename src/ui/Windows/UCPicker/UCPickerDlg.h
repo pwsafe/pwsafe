@@ -10,6 +10,8 @@
 #include "Unicode_Blocks.h"
 #include "Unicode_Characters.h"
 
+#include "../SecString.h"
+
 #include "resource.h"
 
 #include <vector>
@@ -44,9 +46,9 @@ public:
   CWComboBox m_cboxUnicodeBlockByName, m_cboxUnicodeBlockByValue;
   CRichEditCtrl m_richedit;
 
-  CString GetUnicodeBuffer() { return m_csBuffer; }
-  CString GetUnicodeRTFBuffer() { return m_csRTFBuffer; }
-  CString m_csBuffer, m_csRTFBuffer;
+  CSecString GetUnicodeBuffer() { return m_csBuffer; }
+  CSecString GetUnicodeRTFBuffer() { return m_csRTFBuffer; }
+  CSecString m_csBuffer, m_csRTFBuffer;
   int GetNumberCharacters() { return m_numcharacters; }
 
   MapFont2UBlock2NumChars m_mapFont2UBlock2NumChars;

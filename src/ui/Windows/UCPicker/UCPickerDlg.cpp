@@ -14,6 +14,10 @@
 
 #include "utility.h"
 
+#include "resource.h"
+
+#include "../SecString.h"
+
 #include <algorithm>
 
 #ifdef _DEBUG
@@ -178,60 +182,17 @@ BOOL CUCPickerDlg::OnInitDialog()
     m_UnicodeButtons[i].SetDeadKeyState(false);
   }
 
-  m_btnN_Next.SetFont(&m_fntDialogButtons);
-  m_btnN_Next.SetDeadKeyState(false);
-  m_btnN_Next.SetColourChanges(false);
-  m_btnN_Next.SetButtonColour(RGB(255, 255, 255));
+  CVKBButton *pBtns[] = {&m_btnN_Next, &m_btnN_Prev, &m_btnV_Next, &m_btnV_Prev, &m_btnC_Next, 
+    &m_btnC_Prev, &m_btnExit, &m_btnSetFont, &m_btnHelp, &m_btnClearbuffer, &m_btnBackspace};
 
-  m_btnN_Prev.SetFont(&m_fntDialogButtons);
-  m_btnN_Prev.SetDeadKeyState(false);
-  m_btnN_Prev.SetColourChanges(false);
-  m_btnN_Prev.SetButtonColour(RGB(255, 255, 255));
+  size_t nbtns = sizeof(pBtns) / sizeof(*m_btnN_Next);
 
-  m_btnV_Next.SetFont(&m_fntDialogButtons);
-  m_btnV_Next.SetDeadKeyState(false);
-  m_btnV_Next.SetColourChanges(false);
-  m_btnV_Next.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnV_Prev.SetFont(&m_fntDialogButtons);
-  m_btnV_Prev.SetDeadKeyState(false);
-  m_btnV_Prev.SetColourChanges(false);
-  m_btnV_Prev.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnC_Next.SetFont(&m_fntDialogButtons);
-  m_btnC_Next.SetDeadKeyState(false);
-  m_btnC_Next.SetColourChanges(false);
-  m_btnC_Next.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnC_Prev.SetFont(&m_fntDialogButtons);
-  m_btnC_Prev.SetDeadKeyState(false);
-  m_btnC_Prev.SetColourChanges(false);
-  m_btnC_Prev.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnExit.SetFont(&m_fntDialogButtons);
-  m_btnExit.SetDeadKeyState(false);
-  m_btnExit.SetColourChanges(false);
-  m_btnExit.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnClearbuffer.SetFont(&m_fntDialogButtons);
-  m_btnClearbuffer.SetDeadKeyState(false);
-  m_btnClearbuffer.SetColourChanges(false);
-  m_btnClearbuffer.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnBackspace.SetFont(&m_fntDialogButtons);
-  m_btnBackspace.SetDeadKeyState(false);
-  m_btnBackspace.SetColourChanges(false);
-  m_btnBackspace.SetButtonColour(RGB(255, 255, 255));
-  
-  m_btnSetFont.SetFont(&m_fntDialogButtons);
-  m_btnSetFont.SetDeadKeyState(false);
-  m_btnSetFont.SetColourChanges(false);
-  m_btnSetFont.SetButtonColour(RGB(255, 255, 255));
-
-  m_btnHelp.SetFont(&m_fntDialogButtons);
-  m_btnHelp.SetDeadKeyState(false);
-  m_btnHelp.SetColourChanges(false);
-  m_btnHelp.SetButtonColour(RGB(255, 255, 255));
+  for (size_t n = 0; n < nbtns; n++) {
+    pBtns[n]->SetFont(&m_fntDialogButtons);
+    pBtns[n]->SetDeadKeyState(false);
+    pBtns[n]->SetColourChanges(false);
+    pBtns[n]->SetButtonColour(RGB(255, 255, 255));
+  }
 
   for (int i = 0; i < 128; i++) {
     m_UnicodeButtons[i].SetFont(&m_fntDefaultUnicode);
@@ -295,12 +256,19 @@ BOOL CUCPickerDlg::OnInitDialog()
   m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKNEXTBYNAME), L"Go to next Unicode Block by Name");
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKPREVBYNAME), L"Go to previous Unicode Block by Name");
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE), L"Go to next Unicode Block by Value");
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKPREVBYVALUE), L"Go to previous Unicode Block by Value");
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_NEXTCHARS), L"Page Forward in this Unicode Block");
-  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_PREVCHARS), L"Page Backward in this Unicode Block");
+  CString csTemp;
+  csTemp.LoadString(IDS_NEXT_BY_NAME);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKNEXTBYNAME), csTemp);
+  csTemp.LoadString(IDS_PREV_BY_NAME);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKPREVBYNAME), csTemp);
+  csTemp.LoadString(IDS_NEXT_BY_VALUE);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKNEXTBYVALUE), csTemp);
+  csTemp.LoadString(IDS_PREV_BY_VALUE);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_BLOCKPREVBYVALUE), csTemp);
+  csTemp.LoadString(IDS_PAGE_FORWARD);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_NEXTCHARS), csTemp);
+  csTemp.LoadString(IDS_PAGE_BACKWARD);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BUTTON_PREVCHARS), csTemp);
 
   return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -320,9 +288,10 @@ void CUCPickerDlg::MakeUnicodeRTFBuffer()
   }
 
   // We could use the CRichEditCtrl::StreamOut function but we know what we are doing!
-  CString csHeader = L"{\\rtf1\\fbidis\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057";
 
-  CString cs_temp;
+  CSecString csHeader = L"{\\rtf1\\fbidis\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057";
+
+  CSecString cs_temp;
 
   // Start fonttbl and add the default font
   cs_temp.Format(L"{\\fonttbl{\\f0\\fnil %s;}", DEFAULT_FONT);
@@ -712,7 +681,7 @@ void CUCPickerDlg::OnUnicodeButtonClick(UINT nID)
   if (m_UnicodeButtons[nID - IDC_UCBTN00].GetDeadKeyState())
     return;
 
-  CString cs_char;
+  CSecString cs_char;
   ucode_info uinfo;
   m_UnicodeButtons[nID - IDC_UCBTN00].GetWindowText(cs_char);
   m_UnicodeButtons[nID - IDC_UCBTN00].GetButtonUCode(uinfo);
@@ -759,12 +728,6 @@ void CUCPickerDlg::OnUnicodeButtonClick(UINT nID)
 
   // replace the selection
   m_richedit.ReplaceSel(cs_char);
-
-  //// As RichEdit control is transparent, need to redraw the dialog rectangle behind it
-  //CRect rc;
-  //m_richedit.GetWindowRect(&rc);
-  //ScreenToClient(&rc);
-  //InvalidateRect(&rc);
 
   m_numcharacters++;
   m_viCharacterFonts.push_back(m_currentCharacterFont);
@@ -895,26 +858,26 @@ void CUCPickerDlg::ProcessFontCMAPTable(const wchar_t *wcFontname, char *p)
     return;
 
   char *ptr = p;
-  st_cmapindex *pci = (st_cmapindex *)ptr;
+  st_cmapindex *pcmapindex = (st_cmapindex *)ptr;
 
   UINT16 version, numsubtables, platformID, platformSpecificID, format;
   UINT32 offset;
   bool bFormat12Found(false);
 
-  version = SWAP_UINT16(pci->version);
-  numsubtables = SWAP_UINT16(pci->numsubtables);
+  version = SWAP_UINT16(pcmapindex->version);
+  numsubtables = SWAP_UINT16(pcmapindex->numsubtables);
 
   //Trace(L"Font: %s \r\n", wcFontname);
   //Trace(L"\tcmapindex: version = %d; numsubtables = %d\r\n", version, numsubtables);
 
   ptr += sizeof(st_cmapindex);
-  st_subtable_header *pcihdr = (st_subtable_header *)(ptr);
+  st_subtable_header *pcmapindexhdr = (st_subtable_header *)(ptr);
 
   for (int i = 0; i < numsubtables; i++) {
-    platformID = SWAP_UINT16(pcihdr->platformID);
+    platformID = SWAP_UINT16(pcmapindexhdr->platformID);
     if (platformID == 3) {
-      platformSpecificID = SWAP_UINT16(pcihdr->platformSpecificID);
-      offset = SWAP_UINT32(pcihdr->offset);
+      platformSpecificID = SWAP_UINT16(pcmapindexhdr->platformSpecificID);
+      offset = SWAP_UINT32(pcmapindexhdr->offset);
 
       //Trace(L"\t\tcmapsubheader#1: platformID = %d; platformSpecificID = %d; offset = 0x%08x\r\n",
       //  platformID, platformSpecificID, offset);
@@ -928,19 +891,19 @@ void CUCPickerDlg::ProcessFontCMAPTable(const wchar_t *wcFontname, char *p)
         break;
       }
     }
-    pcihdr++;
+    pcmapindexhdr++;
   }
 
   // Reset header pointer
-  pcihdr = (st_subtable_header *)(ptr);
+  pcmapindexhdr = (st_subtable_header *)(ptr);
 
   UINT16 ifBlocks[NUMUNICODERANGES];
   std::memset(ifBlocks, 0, NUMUNICODERANGES * sizeof(UINT16));
 
   for (int i = 0; i < numsubtables; i++) {
-    platformID = SWAP_UINT16(pcihdr->platformID);
-    platformSpecificID = SWAP_UINT16(pcihdr->platformSpecificID);
-    offset = SWAP_UINT32(pcihdr->offset);
+    platformID = SWAP_UINT16(pcmapindexhdr->platformID);
+    platformSpecificID = SWAP_UINT16(pcmapindexhdr->platformSpecificID);
+    offset = SWAP_UINT32(pcmapindexhdr->offset);
     //Trace(L"\t\tcmapsubheader#2: platformID = %d; platformSpecificID = %d; offset = 0x%08x\r\n",
     //  platformID, platformSpecificID, offset);
 
@@ -1070,7 +1033,7 @@ void CUCPickerDlg::ProcessFontCMAPTable(const wchar_t *wcFontname, char *p)
           break;
       }
     }
-    pcihdr++;
+    pcmapindexhdr++;
   }
 
   std::map<int, int> mapUBlock2NumChars;
@@ -1294,7 +1257,7 @@ BOOL CUCPickerDlg::OnTTNNeedText(UINT id, NMHDR *pNMHDR, LRESULT *pResult)
             if ((uinfo.ucode >= 0x00E000 && uinfo.ucode <= 0x00F8FF) ||
                 (uinfo.ucode >= 0x0F0000 && uinfo.ucode <= 0x0FFFFF) ||
                 (uinfo.ucode >= 0x100000 && uinfo.ucode <= 0x10FFFF)) {
-              cs_temp.Format(L"PRIVATE USE CHARACTER-%X", uinfo.ucode);
+              cs_temp.Format(IDS_PRIVATE, uinfo.ucode);
             } else {
             switch (uinfo.ucode) {
               case 0x00FFFE:
@@ -1303,7 +1266,7 @@ BOOL CUCPickerDlg::OnTTNNeedText(UINT id, NMHDR *pNMHDR, LRESULT *pResult)
               case 0x0FFFFF:
               case 0x10FFFE:
               case 0x10FFFF:
-                cs_temp = L"<not a character>";
+                cs_temp.LoadStringW(IDS_NOT_A_CHAR);
                 break;
               default:
                 cs_temp.Format(L"\\U%08X?", uinfo.ucode);
@@ -1319,7 +1282,7 @@ BOOL CUCPickerDlg::OnTTNNeedText(UINT id, NMHDR *pNMHDR, LRESULT *pResult)
           if ((uinfo.ucode >= 0x00E000 && uinfo.ucode <= 0x00F8FF) ||
               (uinfo.ucode >= 0x0F0000 && uinfo.ucode <= 0x0FFFFF) ||
               (uinfo.ucode >= 0x100000 && uinfo.ucode <= 0x10FFFF)) {
-            cs_temp.Format(L"PRIVATE USE CHARACTER-%X", uinfo.ucode);
+            cs_temp.Format(IDS_PRIVATE, uinfo.ucode);
           } else {
             cs_temp.Format(L"\\U%08X?", uinfo.ucode);
           }
@@ -1453,12 +1416,6 @@ void CUCPickerDlg::OnClearbuffer()
 
   m_csBuffer.Empty();
 
-  //// As RichEdit control is transparent, need to redraw the dialog rectangle behind it
-  //CRect rc;
-  //m_richedit.GetWindowRect(&rc);
-  //ScreenToClient(&rc);
-  //InvalidateRect(&rc);
-
   m_vuinfo.clear();
   m_viCharacterFonts.clear();
   m_numcharacters = 0;
@@ -1470,23 +1427,17 @@ void CUCPickerDlg::OnBackspace()
   int nLength = m_richedit.GetTextLength();
   if (nLength > 0) {
     // put the selection at the end of text
-    short int iNumChars = m_vuinfo.back().len;
+    int iNumChars = m_vuinfo.back().len;
     m_richedit.SetReadOnly(FALSE);
     m_richedit.SetSel(nLength - iNumChars, -1);
     m_richedit.Clear();
     m_richedit.SetReadOnly(TRUE);
 
-    if (m_csBuffer.GetLength() == iNumChars) {
+    if ((int)m_csBuffer.GetLength() == iNumChars) {
       m_csBuffer.Empty();
     } else {
       m_csBuffer = m_csBuffer.Left(nLength - iNumChars);
     }
-
-    //// As RichEdit control is transparent, need to redraw the dialog rectangle behind it
-    //CRect rc;
-    //m_richedit.GetWindowRect(&rc);
-    //ScreenToClient(&rc);
-    //InvalidateRect(&rc);
 
     m_vuinfo.pop_back();
     m_viCharacterFonts.pop_back();

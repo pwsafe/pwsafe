@@ -10,6 +10,15 @@
 #define ID_MENUITEM_FONTCOVERAGE        134
 #define IDS_HELPABOUT                   135
 #define IDS_FONTS                       136
+#define IDS_PRIVATE                     137
+#define IDS_NOT_A_CHAR                  138
+#define IDS_UNICODE_CHAR                139
+#define IDS_NEXT_BY_NAME                140
+#define IDS_PREV_BY_NAME                141
+#define IDS_NEXT_BY_VALUE               142
+#define IDS_PREV_BY_VALUE               143
+#define IDS_PAGE_FORWARD                144
+#define IDS_PAGE_BACKWARD               145
 #define IDC_UNICODE_BLOCK_BYNAME        1000
 #define IDC_UNICODE_BLOCK_BYVALUE       1001
 #define IDC_BUFFER                      1002

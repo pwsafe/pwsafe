@@ -8,6 +8,19 @@
 #include <sstream>
 #include <iomanip>
 
+#pragma optimize("",off)
+void trashMemory(void *buffer, size_t length)
+{
+  ASSERT(buffer != NULL);
+  // {kjp} no point in looping around doing nothing is there?
+  if (length > 0) {
+    std::memset(buffer, 0x55, length);
+    std::memset(buffer, 0xAA, length);
+    std::memset(buffer, 0, length);
+  }
+}
+#pragma optimize("",on)
+
 #if defined(_DEBUG)
 
 std::wstring TrimRight(std::wstring &s, const wchar_t *set)
@@ -138,4 +151,24 @@ bool splitpath(const std::wstring &path,
   } else {
     return false;
   }
+}
+
+/**
+* Get TCHAR buffer size by format string with parameters
+* @param[in] fmt - format string
+* @param[in] args - arguments for format string
+* @return buffer size including NULL-terminating character
+*/
+int GetStringBufSize(const TCHAR *fmt, va_list args)
+{
+  TCHAR *buffer = NULL;
+
+  int len = 0;
+
+  len = _vsctprintf(fmt, args) + 1;
+  if (buffer)
+    delete[] buffer;
+
+  ASSERT(len > 0);
+  return len;
 }

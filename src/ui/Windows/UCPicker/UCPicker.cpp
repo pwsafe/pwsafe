@@ -4,8 +4,6 @@
 #include "StdAfx.h"
 #include "UCPicker.h"
 
-#include "UCPickerDlg.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -42,7 +40,7 @@ BOOL CUCPickerApp::InitInstance()
   return TRUE;
 }
 
-UCPICKER_API BOOL GetUnicodeBuffer(CString& csBuffer, CString& csRTFBuffer, int& numchars)
+UCPICKER_API BOOL GetUnicodeBuffer(CSecString& csBuffer, CSecString& csRTFBuffer, int& numchars)
 {
   CUCPickerDlg dlg;
 
@@ -53,7 +51,7 @@ UCPICKER_API BOOL GetUnicodeBuffer(CString& csBuffer, CString& csRTFBuffer, int&
     csRTFBuffer = dlg.GetUnicodeRTFBuffer();
     numchars = dlg.GetNumberCharacters();
     return TRUE;
-  } else {
-    return FALSE;
   }
+
+  return FALSE;
 }
