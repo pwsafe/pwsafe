@@ -42,6 +42,7 @@ MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
 WIXDIR := /cygdrive/c/local/WIX
 CANDLE := $(WIXDIR)/candle.exe
 LIGHT := $(WIXDIR)/light.exe
+SIGNTOOL := /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Kits/8.1/bin/x64/signtool.exe
 
 RELTAG = V$(subst .,_,$(RELEASENAME))
 
@@ -139,6 +140,7 @@ installables: nsis msi
 
 nsis:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:

@@ -154,14 +154,17 @@ void DboxMain::OnAdd()
     DisplayInfo *pdi = new DisplayInfo;
     ci.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
+    // Save to find it again
+    const pws_os::CUUID newentry_uuid = ci.GetUUID();
+
     // Add the entry
-    ci.SetStatus(CItemData::ES_ADDED);    StringX sxGroup = ci.GetGroup();
+    ci.SetStatus(CItemData::ES_ADDED); 
+    StringX sxGroup = ci.GetGroup();
     if (m_core.IsEmptyGroup(sxGroup)) {
       // It was an empty group - better delete it
       pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
                       DBEmptyGroupsCommand::EG_DELETE));
     }
-
 
     pws_os::CUUID baseUUID(pws_os::CUUID::NullUUID());
     if (pAddEntryPSH->GetIBasedata() != 0)  // creating an alias
@@ -179,11 +182,6 @@ void DboxMain::OnAdd()
 
     Execute(pmulticmds);
 
-    // Update Toolbar for this new entry
-    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
-    m_ctlItemTree.SelectItem(pdi->tree_item);
-    UpdateToolBarForSelectedItem(&ci);
-
     if (m_core.GetNumEntries() == 1) {
       // For some reason, when adding the first entry, it is not visible!
       m_ctlItemTree.SetRedraw(TRUE);
@@ -193,8 +191,20 @@ void DboxMain::OnAdd()
     m_ctlItemList.SetFocus();
     SetChanged(Data);
 
+    // Find the new entry again as DisplayInfo now updated
+    ItemListIter iter = m_core.Find(newentry_uuid);
+    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+
+    // Update item state in views & Toolbar for this new entry
+    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+    m_ctlItemTree.SetItemState(pdi->tree_item,
+                               TVIS_DROPHILITED | TVIS_SELECTED,
+                               TVIS_DROPHILITED | TVIS_SELECTED);
+    UpdateToolBarForSelectedItem(&iter->second);
+
     ChangeOkUpdate();
-    m_RUEList.AddRUEntry(ci.GetUUID());
+    m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
     if (bWasEmpty)

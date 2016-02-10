@@ -32,8 +32,7 @@ void CItem::SetSessionKey()
   }
 }
 
-CItem::CItem() :
-  m_display_info(NULL)
+CItem::CItem()
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -54,7 +53,13 @@ CItem::~CItem()
   // Following protects against possible use-after-delete
   // bug, since new BF will be created, rather than
   // using one with trashed values
+#ifndef _DEBUG
   m_blowfish = nullptr;
+#else
+  // Try to force an assert in debug build to find use-after-delete
+  m_blowfish = (BlowFish *)-1;
+  m_fields.clear();
+#endif
 }
 
 CItem& CItem::operator=(const CItem &that)
@@ -146,6 +151,9 @@ BlowFish *CItem::MakeBlowFish() const
   ASSERT(IsSessionKeySet);
   // Creating a BlowFish object's relatively expensive, so we use
   // the singleton design pattern for the life of the CItem object
+
+  // Following ASSERT is to detect use-after-delete
+  ASSERT(m_blowfish != (BlowFish *)-1);
 
   if(!m_blowfish) {
     m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),

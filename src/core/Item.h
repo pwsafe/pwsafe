@@ -107,7 +107,7 @@ protected:
   UnknownFields m_URFL;
 
   // Following used by display methods - we just keep it handy
-  DisplayInfoBase *m_display_info;
+  DisplayInfoBase *m_display_info = nullptr;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase

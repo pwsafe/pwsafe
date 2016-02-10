@@ -32,14 +32,25 @@ sub usage {
 &usage unless (@ARGV == 1);
 
 # These come from keysymdef.h itself, except that I had to escape the + after U to U\+
-my $regex1 = qr'^\#define XK_([a-zA-Z_0-9]+)\s+0x([0-9a-f]+)\s*\/\* U\+([0-9A-F]{4,6}) (.*) \*\/\s*$';
-my $regex2 = qr'^\#define XK_([a-zA-Z_0-9]+)\s+0x([0-9a-f]+)\s*\/\*\(U\+([0-9A-F]{4,6}) (.*)\)\*\/\s*$';
+my $re_good       = qr'^\#define XK_([a-zA-Z_0-9]+)\s+0x([0-9a-f]+)\s*\/\* U\+([0-9A-F]{4,6}) (.*) \*\/\s*$';
+my $re_deprecated = qr'^\#define XK_([a-zA-Z_0-9]+)\s+0x([0-9a-f]+)\s*\/\*\(U\+([0-9A-F]{4,6}) (.*)\)\*\/\s*$';
+# This doesn't match anything
+#my $re_algo     = qr'^\#define XK_([a-zA-Z_0-9]+)\s+0x([0-9a-f]+)\s*(\/\*\s*(.*)\s*\*\/)?\s*$/';
 
 &StartFile;
 
+my %charsymmap;
+
+sub saveSymbol {
+    my ($symname, $keysym, $wchar)  = @_;
+    # don't need in map if can be gotten by adding 0x01000000, or is LATIN1 (i.e. < 256)
+	my %newkey = (keysym => $keysym, symname => $symname);
+	$charsymmap{$wchar} = \%newkey if ((hex $wchar | 0x01000000) != hex $keysym && hex $wchar > 255 && hex $keysym <= 0x20ff);
+}
+
 while (<>) {
-  if (/$regex1/ || /$regex2/) {
-    (my $keysym, my $wchar)  = ($2, $3);
+  if (/$re_good/) {
+    saveSymbol($1, $2, $3);
     
     # Use these for testing
     #print "{0x$wchar, 0x$keysym},\n";                                                     # output everything
@@ -48,10 +59,18 @@ while (<>) {
     #print "{0x$wchar, 0x$keysym},\n" if ($keysym =~/^10+$wchar$/i);                       # unicode + 0x01000000 == keysym
     #print "{0x$wchar, 0x$keysym},\n" if (hex $wchar | 0x01000000) == hex $keysym;         # unicode + 0x01000000 == keysym
     #print "{0x$wchar, 0x$keysym},\n" if (($keysym =~/^10+$wchar$/i) && hex $wchar > 255); # same as above, using regex
-
-    # don't need in map if can be gotten by adding 0x01000000, or is LATIN1 (i.e. < 256)
-    print "  keymap.insert(std::make_pair(0x$wchar, 0x$keysym));\n" if ((hex $wchar | 0x01000000) != hex $keysym && hex $wchar > 255);
   }
+  elsif (/$re_deprecated/) {
+	# don't overwrite existing entries with deprecated ones
+	if (not exists $charsymmap{$3}) {
+		saveSymbol($1, $2, $3);
+	}
+  }
+}
+
+# sort the keys to generate same output everytime unless keysymdefs.h changes
+foreach my $wchar (sort keys %charsymmap) {
+	print "\tcase 0x$wchar: return 0x$charsymmap{$wchar}{keysym};\t\t// $charsymmap{$wchar}{symname}\n";
 }
 
 &EndFile;
@@ -59,7 +78,7 @@ while (<>) {
 sub StartFile {
   print << "EOT";
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys\@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys\@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -73,30 +92,21 @@ sub StartFile {
  *
  */
 
-#include <map>
 #include <X11/Intrinsic.h>
 #include "./unicode2keysym.h"
 
-typedef std::map<wchar_t, KeySym> keymap_t;
 
-static keymap_t GetKeyMap()
+KeySym unicode2keysym(wchar_t wc)
 {
-  keymap_t keymap;
+  switch (wc) {
 EOT
 }
 
 sub EndFile {
   print << "EOT";
-  return keymap;
+	default: return NoSymbol;
+  };
 }
 
-KeySym unicode2keysym(wchar_t wc)
-{
-  static const keymap_t keymap = GetKeyMap();
-  keymap_t::const_iterator itr = keymap.find(wc);
-  if ( itr != keymap.end())
-    return itr->second;
-  return NoSymbol;
-}
 EOT
 }
