@@ -6,19 +6,13 @@
 ' http://www.opensource.org/licenses/artistic-license-2.0.php
 '
 
-' Copy pws_at(_D).dll from Debug/Release 'bin' libraries to the
-' configuration's own 'bin' library
-
 ' Copy pws_osk(_D).dll from Debug/Release 'bin' libraries to the
-' configuration's own 'bin' library
-
-' Copy UCPicker(_D).dll from Debug/Release 'bin' libraries to the
 ' configuration's own 'bin' library
 
 ' For the stdout.WriteLine to work, this Post-Build Event script
 ' MUST be executed via cscript command.
 
-Option Explicit
+'Option Explicit
 
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     MsgBox " Host: " & WScript.FullName & vbCRLF & _
@@ -29,16 +23,10 @@ If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     Wscript.Quit(99)
 End If
 
-' Copy Autotype DLL & PDB if required
-Call CopyDLL("at")
-Call CopyPDB("at")
-
-' Copy On-screen Keyboard DLL & PDB if required
-Call CopyDLL("osk")
-Call CopyPDB("osk")
-
-' Copy Unicode Character Picker DLL & PDB if required
+' Copy Unicode Character Picker DLL if required
 Call CopyDLL("UCP")
+
+' Copy Unicode Character Picker PDB if required
 Call CopyPDB("UCP")
 
 WScript.Quit(0)
@@ -50,8 +38,8 @@ Sub CopyDLL(strWhichDLL)
 Dim oShell, objFSO
 Dim strConfig, strConfigLC
 Dim strInDir, strOutDir, strInfile, strOutfile
-Dim objInfile, objOutfile, strDLL
-Dim rc, bOutputFileExists
+Dim strDLL
+Dim rc
 
 rc = 0
 bOutputFileExists = False
@@ -76,47 +64,36 @@ Set objFSO = CreateObject("Scripting.FileSystemObject")
 strConfigLC = LCase(strConfig)
 
 Select Case strConfigLC
-  Case "debug", "release", "debug64", "release64"
-    ' No action required
-    rc = -1
-  Case "debugm", "debugx"
+  Case "debug"
     strInDir = Replace(strOutDir, strConfig , "Debug")
     strDLL = "pws_" & strWhichDLL & "_D.dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 3
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 3
     End If
     strOutfile = strOutDir & "\" & strDLL
-  Case "debugm64", "debugx64"
+  Case "debug64"
     strInDir = Replace(strOutDir, strConfig , "Debug64")
     strDLL = "pws_" & strWhichDLL & "_D.dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 3
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 3
     End If
     strOutfile = strOutDir & "\" & strDLL
-  Case "demo", "releasem", "releasex"
+  Case "release"
     strInDir = Replace(strOutDir, strConfig , "Release")
     strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 4
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 4
     End If
     strOutfile = strOutDir & "\" & strDLL
-  Case "demo64", "releasem64", "releasex64"
+  Case "release64"
     strInDir = Replace(strOutDir, strConfig , "Release64")
     strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 4
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 4
     End If
     strOutfile = strOutDir & "\" & strDLL
   Case Else
@@ -127,43 +104,83 @@ If rc <> 0 Then
   Call EndScript(rc, strDLL)
 End If
 
-' Check if the output DLL exists for this configuration
-If objFSO.FileExists(strOutfile) Then
-  Set objOutfile = objFSO.GetFile(strOutfile)
-  bOutputFileExists = True
-End If
-
-Const OverwriteExisting = TRUE
-
-If bOutputFileExists = True Then
-  ' If the output DLL already exists only copy if input is newer 
-  If objInfile.DateLastModified > objOutfile.DateLastModified Then
-     objFSO.CopyFile strInfile, strOutfile, OverwriteExisting
-  Else
-    rc = 6
-  End If
-Else
-  ' Output DLL doesn't exist, copy file
-  objFSO.CopyFile  strInfile, strOutfile, OverwriteExisting
-End If
+Select Case strConfigLC
+  Case "debug"
+    strOutDir = Replace(strOutDir, "\Debug" , "\DebugM")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugM")
+    End If
+    strOutDir = Replace(strOutDir, "\DebugM" , "\DebugX")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugX")
+    End If
+  Case "debug64"
+    strOutDir = Replace(strOutDir, "\Debug64" , "\DebugM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugM")
+    End If
+    strOutDir = Replace(strOutDir, "\DebugM64" , "\DebugX64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugX64")
+    End If
+  Case "release"
+    strOutDir = Replace(strOutDir, "\Release" , "\Demo")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "Demo")
+    End If
+    strOutDir = Replace(strOutDir, "\Demo" , "\ReleaseM")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseM")
+    End If
+    strOutDir = Replace(strOutDir, "\ReleaseM" , "\ReleaseX")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseX")
+    End If
+  Case "release64"
+    strOutDir = Replace(strOutDir, "\Release64" , "\Demo64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "Demo64")
+    End If
+    strOutDir = Replace(strOutDir, "\Demo64" , "\ReleaseM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseM64")
+    End If
+    strOutDir = Replace(strOutDir, "\ReleaseM64" , "\ReleaseX64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseX64")
+    End If
+  Case Else
+    rc = 5
+End Select
 
 ' Tidy up objects
-Set objInfile = Nothing
-Set objOutfile = Nothing
-Set oShell = Nothing
 Set objFSO = Nothing
+Set oShell = Nothing
 
-Call EndScript(rc, strDLL)
+If rc <> 0 Then
+  Call EndScript(rc, strDLL)
+End If
 
 End Sub
+
 
 Sub CopyPDB(strWhichPDB)
 
 Dim oShell, objFSO
 Dim strConfig, strConfigLC
 Dim strInDir, strOutDir, strInfile, strOutfile
-Dim objInfile, objOutfile, strPDB
-Dim rc, bOutputFileExists
+Dim strPDB
+Dim rc
 
 rc = 0
 bOutputFileExists = False
@@ -188,47 +205,36 @@ Set objFSO = CreateObject("Scripting.FileSystemObject")
 strConfigLC = LCase(strConfig)
 
 Select Case strConfigLC
-  Case "debug", "release", "debug64", "release64"
-    ' No action required
-    rc = -1
-  Case "debugm", "debugx"
+  Case "debug"
     strInDir = Replace(strOutDir, strConfig , "Debug")
     strPDB = "pws_" & strWhichPDB & "_D.pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 3
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 3
     End If
     strOutfile = strOutDir & "\" & strPDB
-  Case "debugm64", "debugx64"
+  Case "debug64"
     strInDir = Replace(strOutDir, strConfig , "Debug64")
     strPDB = "pws_" & strWhichPDB & "_D.pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 3
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 3
     End If
     strOutfile = strOutDir & "\" & strPDB
-  Case "demo", "releasem", "releasex"
+  Case "release"
     strInDir = Replace(strOutDir, strConfig , "Release")
     strPDB = "pws_" & strWhichPDB & ".pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 4
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 4
     End If
     strOutfile = strOutDir & "\" & strPDB
-  Case "demo64", "releasem64", "releasex64"
+  Case "release64"
     strInDir = Replace(strOutDir, strConfig , "Release64")
     strPDB = "pws_" & strWhichPDB & ".pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then
-    	rc = 4
-    Else
-      Set objInfile = objFSO.GetFile(strInfile)
+      rc = 4
     End If
     strOutfile = strOutDir & "\" & strPDB
   Case Else
@@ -236,12 +242,70 @@ Select Case strConfigLC
 End Select
 
 If rc <> 0 Then
-  Call EndScript(rc, strPDB)
+  Call EndScript(rc, strDLL)
 End If
 
+Select Case strConfigLC
+  Case "debug"
+    strOutDir = Replace(strOutDir, "\Debug" , "\DebugM")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "DebugM")
+    End If
+  Case "debug64"
+    strOutDir = Replace(strOutDir, "\Debug64" , "\DebugM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "DebugM64")
+    End If
+  Case "release"
+    strOutDir = Replace(strOutDir, "\Release" , "\ReleaseM")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "ReleaseM")
+    End If
+  Case "release64"
+    strOutDir = Replace(strOutDir, "\Release64" , "\ReleaseM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "ReleaseM64")
+    End If
+  Case Else
+    rc = 5
+End Select
+
+' Tidy up objects
+Set objFSO = Nothing
+Set oShell = Nothing
+
+If rc <> 0 Then
+  Call EndScript(rc, strDLL)
+End If
+
+End Sub
+
+Sub CopyFile(strFileName, strInfile, strOutfile, strOutDir)
+
+Dim rc, bOutputFileExists, strType, pos
+
+pos = InStr(strFileName,".pdb")
+
+if (pos = 0) then
+  strType = " >>> DLL: '"
+else
+  strType = " >>> PDB: '"
+end if
+
+Set objFSO_CF = CreateObject("Scripting.FileSystemObject")
+Set objInfile = objFSO_CF.GetFile(strInfile)
+
+' Get stdout NOTE: Host engine MUST be cscript and NOT wscript
+Set stdFSO_CF = CreateObject("Scripting.FileSystemObject")
+Set stdout_CF = stdFSO_CF.GetStandardStream(1)
+
 ' Check if the output DLL exists for this configuration
-If objFSO.FileExists(strOutfile) Then
-  Set objOutfile = objFSO.GetFile(strOutfile)
+If objFSO_CF.FileExists(strOutfile) Then
+  Set objOutfile = objFSO_CF.GetFile(strOutfile)
   bOutputFileExists = True
 End If
 
@@ -250,25 +314,23 @@ Const OverwriteExisting = TRUE
 If bOutputFileExists = True Then
   ' If the output DLL already exists only copy if input is newer 
   If objInfile.DateLastModified > objOutfile.DateLastModified Then
-     objFSO.CopyFile strInfile, strOutfile, OverwriteExisting
+     objFSO_CF.CopyFile strInfile, strOutfile, OverwriteExisting
+     stdout_CF.WriteLine strType & strFileName & "' copied successfully to directory: " & strOutDir
   Else
-    rc = 6
+    stdout_CF.WriteLine strType & strFileName & "' not copied to directory: " & strOutDir & ", already up to date."
   End If
 Else
   ' Output DLL doesn't exist, copy file
-  objFSO.CopyFile  strInfile, strOutfile, OverwriteExisting
+  objFSO_CF.CopyFile  strInfile, strOutfile, OverwriteExisting
 End If
 
 ' Tidy up objects
 Set objInfile = Nothing
 Set objOutfile = Nothing
-Set oShell = Nothing
-Set objFSO = Nothing
-
-Call EndScript(rc, strPDB)
+Set objFSO_CF = Nothing
+Set stdFSO_CF = Nothing
 
 End Sub
-
 
 Sub EndScript(iCode, strFileName)
 ' As there is no 'goto' in vbscript, this allows the script to be
@@ -277,15 +339,6 @@ Sub EndScript(iCode, strFileName)
 Dim stdFSO, stdout
 Dim ExitCode
 Dim strErrorMsg
-Dim strType, pos
-
-pos = InStr(strFileName, ".pdb")
-
-if (pos = 0) then
-  strType = " >>> DLL: '"
-else
-  strType = " >>> PDB: '"
-end if
 
 ExitCode = iCode
 
@@ -331,7 +384,7 @@ Set stdout = Nothing
 
 ' Byee if serious error
 if (ExitCode <> 0) Then
-	MsgBox strErrorMsg, vbCritical, "Error: " & WScript.ScriptName
+  MsgBox strErrorMsg, vbCritical, "Error: " & WScript.ScriptName
   WScript.Quit(ExitCode)
 End If
 

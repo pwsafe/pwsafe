@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+
 #include "VKBButton.h"
 
 #ifdef _DEBUG
@@ -27,8 +28,8 @@ const COLORREF crefOrange = (RGB(255, 208, 192));  // Light Orange
 const COLORREF crefPink   = (RGB(255, 222, 222));  // Light Pink
 
 CVKBButton::CVKBButton()
-  : m_bMouseInWindow(false), m_bDeadKey(false),
-  m_bFlat(true), m_bPushed(false), m_bChangePushColour(true)
+  : m_bMouseInWindow(false),
+  m_bFlat(true), m_bPushed(false), m_bDoChangePushColour(true), m_crefButtonColour(crefYellow)
 {
 }
 
@@ -68,11 +69,13 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   if (m_bDeadKey) {
     pDC->FillSolidRect(rect, crefOrange);
   } else {
-    COLORREF crefColour;
+    COLORREF crefColour(m_crefButtonColour);
+    if (m_bDoColourChange) {
     if (m_bPushed)
-      crefColour = m_bMouseInWindow ? crefGreen : (m_bChangePushColour ? crefPink : crefYellow);
+        crefColour = m_bMouseInWindow ? crefGreen : (m_bDoChangePushColour ? crefPink : m_crefButtonColour);
     else
-      crefColour = m_bMouseInWindow ? crefGreen : crefYellow;
+        crefColour = m_bMouseInWindow ? crefGreen : m_crefButtonColour;
+    }
 
     pDC->FillSolidRect(rect, crefColour);
   }

@@ -14,6 +14,29 @@
 // Special Flat button for Virtual Keyboards
 // Also, if a Push button, will show pushed state by change of colour (unless disabled)
 
+struct ucode_info {
+  ucode_info()
+    : ucode(-1), len(-1), iRTF1(-1), iRTF2(-1)
+  {  }
+
+  ucode_info(const ucode_info &ui)
+    : ucode(ui.ucode), len(ui.len), iRTF1(ui.iRTF1), iRTF2(ui.iRTF2)
+  {}
+
+  ucode_info &operator =(const ucode_info &ui)
+  {
+    if (this != &ui) {
+      ucode = ui.ucode; len = ui.len; iRTF1 = ui.iRTF1; iRTF2 = ui.iRTF2;
+    }
+    return *this;
+  }
+
+  int ucode;
+  short int len;
+  short int iRTF1;
+  short int iRTF2;
+};
+
 class CVKBButton : public CButton
 {
 public:
@@ -27,8 +50,18 @@ public:
   {m_bFlat = bState;}
   void SetPushedState(bool bPushed)
   {m_bPushed = bPushed;}
-  void ChangePushColour(bool bChangePushColour)
-  {m_bChangePushColour = bChangePushColour;}
+  void ChangePushColour(bool bDoChangePushColour)
+  { m_bDoChangePushColour = bDoChangePushColour;}
+  void SetColourChanges(bool bDoColourChange)
+  { m_bDoColourChange = bDoColourChange; }
+  void SetButtonColour(COLORREF crefButtonColour)
+  { m_crefButtonColour = crefButtonColour; }
+  void SetButtonUCode(ucode_info uinfo)
+  { m_uinfo = uinfo; }
+  void GetButtonUCode(ucode_info& uinfo)
+  { uinfo = m_uinfo; }
+
+  bool GetDeadKeyState() { return m_bDeadKey; }
 
 protected:
   // ClassWizard generated virtual function overrides
@@ -47,5 +80,10 @@ protected:
 
 private:
   bool m_bMouseInWindow;
-  bool m_bDeadKey, m_bFlat, m_bPushed, m_bChangePushColour;
+  bool m_bDeadKey, m_bFlat, m_bPushed;
+  bool m_bDoChangePushColour, m_bDoColourChange;
+
+  COLORREF m_crefButtonColour;
+
+  ucode_info m_uinfo;
 };

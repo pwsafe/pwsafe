@@ -8,8 +8,14 @@
 /// \file SecString.cpp
 //-----------------------------------------------------------------------------
 
-#include "SecString.h"
+#ifndef UCPICKER_EXPORTS
 #include "core/Util.h"
+#else
+#include "UCPicker/StdAfx.h"
+#include "../../core/Util.h"
+#endif
+
+#include "SecString.h"
 
 #include <cstdarg>
 

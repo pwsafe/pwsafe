@@ -25,8 +25,13 @@
 #include <afx.h>
 #endif
 
+#ifndef UCPICKER_EXPORTS
 #include "core/StringX.h"
 #include "os/typedefs.h"
+#else
+#include "../../core/StringX.h"
+#include "../../os/typedefs.h"
+#endif
 
 //-----------------------------------------------------------------------------
 class CSecString

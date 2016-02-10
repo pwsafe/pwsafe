@@ -1,0 +1,6 @@
+; UCPicker.def : Declares the module parameters for the DLL.
+
+LIBRARY
+
+EXPORTS
+    ; Explicit exports can go here
