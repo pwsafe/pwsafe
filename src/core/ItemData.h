@@ -339,12 +339,6 @@ private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
-  // random key for storing stuff in memory, just to remove dependence
-  // on passphrase
-  static bool IsSessionKeySet;
-  static unsigned char SessionKey[64];
-  //The salt value
-  unsigned char m_salt[SaltLength];
   // Following used by display methods - we just keep it handy
   DisplayInfoBase *m_display_info;
 
