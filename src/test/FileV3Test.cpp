@@ -16,18 +16,6 @@
 
 #include "gtest/gtest.h"
 
-// We need to call CItem::SetSessionKey() exactly once.
-// That's what the following is for:
-
-class FileV3Env : public ::testing::Environment
-{
-public:
-  FileV3Env() { }
-  virtual void SetUp() { CItem::SetSessionKey(); }
-};
-
-static ::testing::Environment *const env = ::testing::AddGlobalTestEnvironment(new FileV3Env);
-
 // A fixture for factoring common code across tests
 class FileV3Test : public ::testing::Test
 {

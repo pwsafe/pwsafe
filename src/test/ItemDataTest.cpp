@@ -14,18 +14,6 @@
 #include "core/ItemData.h"
 #include "gtest/gtest.h"
 
-// We need to call CItem::SetSessionKey() exactly once.
-// That's what the following is for:
-
-class ItemDataEnv : public ::testing::Environment
-{
-public:
-  ItemDataEnv() { }
-  virtual void SetUp() { CItem::SetSessionKey(); }
-};
-
-static ::testing::Environment *const env = ::testing::AddGlobalTestEnvironment(new ItemDataEnv);
-
 // A fixture for factoring common code across tests
 class ItemDataTest : public ::testing::Test
 {

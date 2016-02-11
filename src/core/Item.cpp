@@ -18,23 +18,9 @@
 
 #include <vector>
 
-bool CItem::IsSessionKeySet = false;
-unsigned char CItem::SessionKey[64];
-
-void CItem::SetSessionKey()
-{
-  // meant to be called once per session, no more, no less
-  // but for the test framework, we relax this
-  if (!IsSessionKeySet) {
-    pws_os::mlock(SessionKey, sizeof(SessionKey));
-    PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
-    IsSessionKeySet = true;
-  }
-}
-
 CItem::CItem()
 {
-  PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
+  PWSrand::GetInstance()->GetRandomData( m_key, sizeof(m_key) );
 }
 
 CItem::CItem(const CItem &that) :
@@ -43,7 +29,7 @@ CItem::CItem(const CItem &that) :
   m_display_info(that.m_display_info == NULL ?
                  NULL : that.m_display_info->clone())
 {
-  memcpy(m_salt, that.m_salt, SaltLength);
+  memcpy(m_key, that.m_key, sizeof(m_key));
 }
 
 CItem::~CItem()
@@ -71,7 +57,7 @@ CItem& CItem::operator=(const CItem &that)
     delete m_display_info;
     m_display_info = that.m_display_info == NULL ?
       NULL : that.m_display_info->clone();
-    memcpy(m_salt, that.m_salt, SaltLength);
+    memcpy(m_key, that.m_key, sizeof(m_key));
   }
   return *this;
 }
@@ -148,7 +134,6 @@ size_t CItem::GetSize() const
 
 BlowFish *CItem::MakeBlowFish() const
 {
-  ASSERT(IsSessionKeySet);
   // Creating a BlowFish object's relatively expensive, so we use
   // the singleton design pattern for the life of the CItem object
 
@@ -156,8 +141,7 @@ BlowFish *CItem::MakeBlowFish() const
   ASSERT(m_blowfish != (BlowFish *)-1);
 
   if(!m_blowfish) {
-    m_blowfish = BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                        m_salt, SaltLength);
+    m_blowfish = BlowFish::MakeBlowFish(m_key, sizeof(m_key));
   }
   return m_blowfish;
 }

@@ -70,8 +70,6 @@ public:
                     ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
                     ES_LAST};
 
-  static void SetSessionKey(); // call exactly once per session
-
   //Construction
   CItem();
   CItem(const CItem& stuffhere);
@@ -109,12 +107,10 @@ protected:
   // Following used by display methods - we just keep it handy
   DisplayInfoBase *m_display_info = nullptr;
 
-  // random key for storing stuff in memory, just to remove dependence
-  // on passphrase
-  static bool IsSessionKeySet;
-  static unsigned char SessionKey[64];
-  //The salt value
-  unsigned char m_salt[SaltLength];
+  // random key for storing stuff in memory
+  // We need to keep the key because it's easier to copy
+  // than the BlowFish object for copy c'tor and assignment
+  unsigned char m_key[32];
 
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;

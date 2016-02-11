@@ -18,6 +18,10 @@ class BlowFish : public Fish
 public:
   static BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
                                 const unsigned char *salt, int saltlen);
+// Simple version for protecting ItemFields in memory:
+  static BlowFish *MakeBlowFish(const unsigned char *key, int keylen) {
+    return new BlowFish(key, keylen);
+  }
 
   enum {BLOCKSIZE = 8};
 
