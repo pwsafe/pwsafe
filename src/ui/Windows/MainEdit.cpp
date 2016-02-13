@@ -1181,8 +1181,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Windows Message PWS_MSG_EDIT_APPLY
 
   PWScore *pcore = pentry_psh->GetCore();
-  CItemData *pci_original = pentry_psh->GetOriginalCI();
-  CItemData *pci_new = pentry_psh->GetNewCI();
+  const CItemData *pci_original = pentry_psh->GetOriginalCI();
+  CItemData ci_new(*pentry_psh->GetNewCI());
 
   // Most of the following code handles special cases of alias/shortcut/base
   // But the common case is simply to replace the original entry
@@ -1190,7 +1190,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
   Command *pcmd(NULL);
 
-  StringX newPassword = pci_new->GetPassword();
+  StringX newPassword = ci_new.GetPassword();
 
   CUUID original_base_uuid = CUUID::NullUUID();
   CUUID new_base_uuid = pentry_psh->GetBaseUUID();
@@ -1211,12 +1211,12 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
-      pci_new->SetPassword(L"[Alias]");
-      pci_new->SetAlias();
-      pci_new->SetBaseUUID(new_base_uuid);
+      ci_new.SetPassword(L"[Alias]");
+      ci_new.SetAlias();
+      ci_new.SetBaseUUID(new_base_uuid);
     } else { // Still 'normal'
-      pci_new->SetPassword(newPassword);
-      pci_new->SetNormal();
+      ci_new.SetPassword(newPassword);
+      ci_new.SetNormal();
     }
   } // Normal entry, password changed
 
@@ -1241,12 +1241,12 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                        original_uuid,
                                                        CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-        pci_new->SetPassword(L"[Alias]");
-        pci_new->SetAlias();
-        pci_new->SetBaseUUID(new_base_uuid);
+        ci_new.SetPassword(L"[Alias]");
+        ci_new.SetAlias();
+        ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
-        pci_new->SetPassword(newPassword);
-        pci_new->SetNormal();
+        ci_new.SetPassword(newPassword);
+        ci_new.SetNormal();
       }
     } // Password changed
   } // Alias
@@ -1261,17 +1261,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
-      pci_new->SetPassword(L"[Alias]");
-      pci_new->SetAlias();
-      pci_new->SetBaseUUID(new_base_uuid);
+      ci_new.SetPassword(L"[Alias]");
+      ci_new.SetAlias();
+      ci_new.SetBaseUUID(new_base_uuid);
       // Move old aliases across
       pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
                                                         new_base_uuid,
                                                         CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
     } else { // Still a base entry but with a new password
-      pci_new->SetPassword(newPassword);
-      pci_new->SetAliasBase();
+      ci_new.SetPassword(newPassword);
+      ci_new.SetAliasBase();
     }
   } // AliasBase with password changed
 
@@ -1287,17 +1287,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       UpdateEntryImages(iter->second);
   }
 
-  if (pci_new->IsDependent()) {
-    pci_new->SetXTime((time_t)0);
-    pci_new->SetPWPolicy(L"");
+  if (ci_new.IsDependent()) {
+    ci_new.SetXTime((time_t)0);
+    ci_new.SetPWPolicy(L"");
   }
 
-  pci_new->SetStatus(CItemData::ES_MODIFIED);
+  ci_new.SetStatus(CItemData::ES_MODIFIED);
 
-  pcmd = EditEntryCommand::Create(pcore, *(pci_original), *(pci_new));
+  pcmd = EditEntryCommand::Create(pcore, *(pci_original), ci_new);
   pmulticmds->Add(pcmd);
 
-  StringX sxNewGroup = pci_new->GetGroup();
+  const StringX &sxNewGroup = ci_new.GetGroup();
   if (m_core.IsEmptyGroup(sxNewGroup)) {
     // It was an empty group - better delete it
     pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
@@ -1307,7 +1307,6 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   Execute(pmulticmds, pcore);
 
   SetChanged(Data);
-
   ChangeOkUpdate();
 
   // Order may have changed as a result of edit
@@ -1316,17 +1315,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   short sh_odca, sh_ndca;
   pci_original->GetDCA(sh_odca);
-  pci_new->GetDCA(sh_ndca);
+  ci_new.GetDCA(sh_ndca);
   if (sh_odca != sh_ndca)
-    SetDCAText(pci_new);
+    SetDCAText(&ci_new);
 
-  UpdateToolBarForSelectedItem(pci_new);
+  UpdateToolBarForSelectedItem(&ci_new);
 
   // Password may have been updated and so not expired
-  UpdateEntryImages(*pci_new);
+  UpdateEntryImages(ci_new);
 
   // Update display if no longer passes filter criteria
-  if (m_bFilterActive && !PassesFiltering(*pci_new, m_currentfilter)) {
+  if (m_bFilterActive && !PassesFiltering(ci_new, m_currentfilter)) {
       RefreshViews();
       return;
   }

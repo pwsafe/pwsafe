@@ -47,25 +47,25 @@ public:
   void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
   {m_AEMD.original_entrytype = original_entrytype;}
 
-  CSecString &GetBase() {return m_AEMD.base;}
+  const CSecString &GetBase() const {return m_AEMD.base;}
 
-  int &GetIBasedata() {return m_AEMD.ibasedata;}
+  const int GetIBasedata() const {return m_AEMD.ibasedata;}
   pws_os::CUUID &GetBaseUUID() {return m_AEMD.base_uuid;}
 
-  CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
-  CItemData *GetNewCI() {return m_AEMD.pci;}
-  CItemAtt *GetAtt() {return &m_AEMD.attachment;}
-  PWScore *GetCore() {return m_AEMD.pcore;}
+  const CItemData *GetOriginalCI() const {return m_AEMD.pci_original;}
+  const CItemData *GetNewCI() const {return m_AEMD.pci;}
+  const CItemAtt *GetAtt() const {return &m_AEMD.attachment;}
+  PWScore *GetCore() const {return m_AEMD.pcore;}
 
   bool IsEntryModified() const {return m_bIsModified;}
 
   void SetChanged(const bool bChanged);
   bool IsChanged() const {return m_bChanged;}
 
-  void SetNotesChanged(const bool bNotesChanged) {m_bNotesChanged = bNotesChanged;}
+  void SetNotesChanged(bool bNotesChanged) {m_bNotesChanged = bNotesChanged;}
   bool IsNotesChanged() const {return m_bNotesChanged;}
 
-  void SetSymbolsChanged(const bool bSymbolsChanged);
+  void SetSymbolsChanged(bool bSymbolsChanged);
   bool IsSymbolsChanged() const {return m_bSymbolsChanged;}
 
 protected:

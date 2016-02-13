@@ -165,24 +165,24 @@ public:
   enum Function {EG_ADD = 0, EG_DELETE, EG_RENAME, EG_ADDALL = 10, EG_REPLACEALL};
 
   static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
-                                std::vector<StringX> &vEmptyGroups,
+                                const std::vector<StringX> &vEmptyGroups,
                                 Function function)
   { return new DBEmptyGroupsCommand(pcomInt, vEmptyGroups, function); }
   static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxEmptyGroup, Function function)
+                                const StringX &sxEmptyGroup, Function function)
   { return new DBEmptyGroupsCommand(pcomInt, sxEmptyGroup, function); }
   static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxOldGroup, StringX &sxNewGroup)
+                                const StringX &sxOldGroup, const StringX &sxNewGroup)
   { return new DBEmptyGroupsCommand(pcomInt, sxOldGroup, sxNewGroup); }
   int Execute();
   void Undo();
 
 private:
-  DBEmptyGroupsCommand(CommandInterface *pcomInt, std::vector<StringX> &vEmptyGroups,
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
                        Function function);
-  DBEmptyGroupsCommand(CommandInterface *pcomInt, StringX &sxEmptyGroup,
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, const StringX &sxEmptyGroup,
                        Function function);
-  DBEmptyGroupsCommand(CommandInterface *pcomInt, StringX &sxOldGroup, StringX &sxNewGroup);
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, const StringX &sxOldGroup, const StringX &sxNewGroup);
 
   std::vector<StringX> m_vOldEmptyGroups;
   std::vector<StringX> m_vNewEmptyGroups;

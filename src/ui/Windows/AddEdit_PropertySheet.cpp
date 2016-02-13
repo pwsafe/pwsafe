@@ -185,7 +185,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
   return TRUE;
 }
 
-void CAddEdit_PropertySheet::SetSymbolsChanged(const bool bSymbolsChanged)
+void CAddEdit_PropertySheet::SetSymbolsChanged(bool bSymbolsChanged)
 {
   m_bSymbolsChanged = bSymbolsChanged;
   bool bChanged = m_bChanged || m_bSymbolsChanged;

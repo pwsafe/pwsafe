@@ -334,7 +334,7 @@ void DBPolicyNamesCommand::Undo()
 // ------------------------------------------------
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
-                                           std::vector<StringX> &vEmptyGroups,
+                                           const std::vector<StringX> &vEmptyGroups,
                                            Function function)
   : Command(pcomInt), m_vNewEmptyGroups(vEmptyGroups),
   m_function(function), m_bSingleGroup(false)
@@ -344,7 +344,7 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 }
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
-                                           StringX &sxEmptyGroup,
+                                           const StringX &sxEmptyGroup,
                                            Function function)
   : Command(pcomInt), m_sxEmptyGroup(sxEmptyGroup), m_function(function),
   m_bSingleGroup(true)
@@ -355,8 +355,8 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
-                                           StringX &sxOldGroup,
-                                           StringX &sxNewGroup)
+                                           const StringX &sxOldGroup,
+                                           const StringX &sxNewGroup)
   : Command(pcomInt), m_sxOldGroup(sxOldGroup), m_sxNewGroup(sxNewGroup),
   m_function(EG_RENAME), m_bSingleGroup(true)
 {
