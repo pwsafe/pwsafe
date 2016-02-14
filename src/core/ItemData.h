@@ -339,9 +339,6 @@ private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *m_display_info;
-
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
