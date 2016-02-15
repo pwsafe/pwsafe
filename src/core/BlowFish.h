@@ -27,6 +27,10 @@ public:
 
   BlowFish(const unsigned char* key, int keylen);
   ~BlowFish();
+  // ensure no copy c'tor or assignment:
+  BlowFish(const BlowFish &) = delete;
+  BlowFish &operator=(const BlowFish &) = delete;
+  
   void Encrypt(const unsigned char *in, unsigned char *out) const;
   void Decrypt(const unsigned char *in, unsigned char *out) const;
   unsigned int GetBlockSize() const {return BLOCKSIZE;}
