@@ -1,5 +1,5 @@
-Password Safe 3.38.2 Release February 2016
-==========================================
+Password Safe 3.38.2 Release Notes February 2016
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
