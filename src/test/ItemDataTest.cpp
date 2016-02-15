@@ -94,6 +94,18 @@ TEST_F(ItemDataTest, CopyCtor)
   EXPECT_TRUE(emptyItem == di2);
 }
 
+TEST_F(ItemDataTest, Assignment)
+{
+  CItemData d1;
+  CItemData d2;
+  d1.SetTitle(_T("title"));
+  d1.SetPassword(_T("password!"));
+  d2.SetTitle(_T("eltit"));
+  d2.SetPassword(_T("!drowssap"));
+  d2 = d1;
+  EXPECT_TRUE(d1 == d2);  
+}
+
 TEST_F(ItemDataTest, Getters_n_Setters)
 {
   // Setters called in SetUp()

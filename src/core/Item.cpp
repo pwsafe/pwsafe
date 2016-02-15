@@ -58,6 +58,8 @@ CItem& CItem::operator=(const CItem &that)
     m_display_info = that.m_display_info == NULL ?
       NULL : that.m_display_info->clone();
     memcpy(m_key, that.m_key, sizeof(m_key));
+    delete m_blowfish;
+    m_blowfish = nullptr;
   }
   return *this;
 }
@@ -87,7 +89,7 @@ bool CItem::operator==(const CItem &that) const
     /**
      * It would be nice to be able to compare the m_fields
      * and m_URFL directly, but the fields would be
-     * encrypted with different salts, making byte-wise
+     * encrypted with different keys, making byte-wise
      * field comparisons infeasible.
      */
     FieldConstIter ithis, ithat;

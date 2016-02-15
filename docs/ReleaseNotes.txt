@@ -1,5 +1,5 @@
-Password Safe 3.38.2 Release Notes - ???????? 2016
-==================================================
+Password Safe 3.38.2 Release February 2016
+==========================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.38.2
 ====================
+[1326] Fixed entry corruption when database locked/unlocked while an
+entry was being edited (and possibly other scenarios).
 [] Ensure that the Tooltip on how to unprotect an entry is now shown
 against the tutorial text at the top of the dialog for wide displays.
 [1319] Newly added entries are now shown as selected in the Tree view.
