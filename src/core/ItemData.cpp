@@ -150,7 +150,7 @@ int CItemData::Read(PWSfile *in)
   int status = PWSfile::SUCCESS;
 
   signed long numread = 0;
-  unsigned char type;
+  unsigned char type = END;
 
   int emergencyExit = 255; // to avoid endless loop.
   signed long fieldLen; // <= 0 means end of file reached

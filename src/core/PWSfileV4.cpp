@@ -238,10 +238,10 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
 
 size_t PWSfileV4::WriteCBC(unsigned char type, const StringX &data)
 {
-  bool status;
-  const unsigned char *utf8;
-  size_t utf8Len;
-  status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
+  const unsigned char *utf8(nullptr);
+  size_t utf8Len(0);
+
+  bool status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
     pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
   return WriteCBC(type, utf8, utf8Len);
