@@ -54,9 +54,6 @@ struct DisplayInfoBase
 class CItem
 {
 public:
-  typedef std::vector<CItemField> UnknownFields;
-  typedef UnknownFields::const_iterator UnknownFieldsConstIter;
-
   // Status returns from "ProcessInputRecordField"
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
@@ -100,7 +97,7 @@ protected:
   FieldMap   m_fields;
 
   // Save unknown record fields on read to put back on write unchanged
-  UnknownFields m_URFL;
+  std::vector<CItemField> m_URFL;
 
   void SetField(int ft, const unsigned char *value, size_t length);
   void SetField(int ft, const StringX &value);

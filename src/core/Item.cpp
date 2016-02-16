@@ -103,8 +103,9 @@ bool CItem::operator==(const CItem &that) const
   // If we made it so far, now compare the unknown record fields
   // (We already know their sizes are equal)
   if (!m_URFL.empty()) {
-    UnknownFieldsConstIter ithis, ithat;
-    for (ithis = m_URFL.begin(), ithat = that.m_URFL.begin();
+    auto ithis = m_URFL.begin();
+    auto ithat = that.m_URFL.begin();
+    for (;
          ithis != m_URFL.end();
          ithis++, ithat++) {
       if (!CompareFields(*ithis, that, *ithat))
@@ -121,7 +122,7 @@ size_t CItem::GetSize() const
   for (FieldConstIter fiter = m_fields.begin(); fiter != m_fields.end(); fiter++)
     length += fiter->second.GetLength();
 
-  for (UnknownFieldsConstIter ufiter = m_URFL.begin();
+  for (auto ufiter = m_URFL.begin();
        ufiter != m_URFL.end(); ufiter++)
     length += ufiter->GetLength();
 

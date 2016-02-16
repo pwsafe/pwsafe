@@ -383,7 +383,7 @@ int CItemData::Write(PWSfileV4 *out) const
 
 int CItemData::WriteUnknowns(PWSfile *out) const
 {
-  for (UnknownFieldsConstIter uiter = m_URFL.begin();
+  for (auto uiter = m_URFL.begin();
        uiter != m_URFL.end();
        uiter++) {
     unsigned char type;
@@ -2057,8 +2057,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   push(v, POLICYNAME, GetPolicyName());
   GetKBShortcut(i32); push(v, KBSHORTCUT, i32);
 
-  UnknownFieldsConstIter vi_IterURFE;
-  for (vi_IterURFE = m_URFL.begin();
+  for (auto vi_IterURFE = m_URFL.begin();
        vi_IterURFE != m_URFL.end();
        vi_IterURFE++) {
     unsigned char type;
@@ -2068,7 +2067,8 @@ void CItemData::SerializePlainText(vector<char> &v,
     if (length != 0) {
       v.push_back(static_cast<char>(type));
       push_length(v, static_cast<uint32>(length));
-      v.insert(v.end(), reinterpret_cast<char *>(pdata), reinterpret_cast<char *>(pdata) + length);
+      v.insert(v.end(), reinterpret_cast<char *>(pdata),
+               reinterpret_cast<char *>(pdata) + length);
       trashMemory(pdata, length);
     }
     delete[] pdata;
