@@ -377,7 +377,9 @@ AttRef                      0x1a        UUID          Y              [21]
 BaseUUID                    0x41        UUID          Y              [22]
 AliasUUID                   0x42        UUID
 ShortcutUUID                0x43        UUID
-End of Entry                0xff        [empty]       Y              [23]
+Unknown (testing)           0xdf        -             N              [23]
+Implementation-specific     0xe0-0xfe   -             N              [24]
+End of Entry                0xff        [empty]       Y              [25]
 
 [1] UUID of a password entry record. Representation is described in
 Section 3.1.1.
@@ -515,9 +517,15 @@ This was introduced in version 0x030D (PasswordSafe V3.30).
 entry record can have zero or more such fields. Each attachment field
 in a given password entry record must have a different value, but
 different entries can refer to the same attachment uuid.
+
 [22] UUID of a reference record. Representation is described in Section
 3.1.1.
-[23] An explicit end of entry field is useful for supporting new fields
+
+[23] Reserved for testing forward compatability.
+
+[24] Reserved for application-specific use. See 4.2.2.
+
+[25] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.4 Attachments

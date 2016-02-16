@@ -83,6 +83,7 @@ public:
     SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
     LAST,                // Start of unknown fields!
     LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
+    UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
     END = 0xff,
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
@@ -355,8 +356,6 @@ private:
 
   void UpdatePasswordHistory(); // used by UpdatePassword()
 
-  void GetUnknownField(unsigned char &type, size_t &length,
-                       unsigned char * &pdata, const CItemField &item) const;
   int WriteUnknowns(PWSfile *out) const;
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 };

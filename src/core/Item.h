@@ -79,8 +79,6 @@ public:
   void SetUnknownField(unsigned char type, size_t length,
                        const unsigned char *ufield);
   size_t NumberUnknownFields() const {return m_URFL.size();}
-  void ClearUnknownFields() {return m_URFL.clear();}
-
 
   CItem& operator=(const CItem& second);
   // Following used by display methods - we just keep it handy

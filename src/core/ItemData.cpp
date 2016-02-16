@@ -691,20 +691,6 @@ StringX CItemData::GetKBShortcut() const
   return _T("");
 }
 
-void CItemData::GetUnknownField(unsigned char &type, size_t &length,
-                                unsigned char * &pdata,
-                                const CItemField &item) const
-{
-  ASSERT(pdata == NULL && length == 0);
-
-  type = item.GetType();
-  size_t flength = item.GetLength();
-  length = flength;
-  flength += BlowFish::BLOCKSIZE; // ensure that we've enough for at least one block
-  pdata = new unsigned char[flength];
-  CItem::GetField(item, pdata, flength);
-}
-
 StringX CItemData::GetPWHistory() const
 {
   StringX ret = GetField(PWHIST);
