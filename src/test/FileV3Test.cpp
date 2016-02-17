@@ -153,3 +153,26 @@ TEST_F(FileV3Test, ItemTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
+
+TEST_F(FileV3Test, UnknownPersistencyTest)
+{
+  CItemData d1;
+  d1.CreateUUID();
+  d1.SetTitle(_T("future"));
+  d1.SetPassword(_T("possible"));
+  unsigned char uv[] = {55, 42, 78, 30, 16, 93};
+  d1.SetUnknownField(CItemData::UNKNOWN_TESTING, sizeof(uv), uv);
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(d1));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(d1, item);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
