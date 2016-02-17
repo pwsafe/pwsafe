@@ -1849,8 +1849,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     // Note excessively sized text fields
     if (iMAXCHARS > 0) {
       bool bEntryHasBigField(false);
-      for (unsigned char uc = static_cast<unsigned char>(CItemData::GROUP);
-           uc < static_cast<unsigned char>(CItemData::LAST); uc++) {
+      for (unsigned char uc = static_cast<unsigned char>(CItem::GROUP);
+           uc < static_cast<unsigned char>(CItem::LAST_DATA); uc++) {
         if (CItemData::IsTextField(uc)) {
           StringX sxvalue = ci.GetFieldValue(static_cast<CItemData::FieldType>(uc));
           if (sxvalue.length() > iMAXCHARS) {

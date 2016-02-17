@@ -89,10 +89,6 @@ PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode, version),
     m_effectiveFileLength(0), m_nHashIters(MIN_HASH_ITERATIONS)
 {
-#ifdef _DEBUG
-  static_assert(CItemAtt::START == CItemData::LAST_ITEM_DATA_FIELD + 1, "*** Overlap or gap in Field Types ***");
-#endif
-
   m_IV = m_ipthing;
   m_terminal = NULL;
   memset(m_key, 0, KLEN);

@@ -658,7 +658,7 @@ void CWZAdvanced::Set(CItemData::FieldBits bsFields)
   findinfo.flags = LVFI_PARAM;
   // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
   // and so will not be found and so not moved anywhere.
-  for (int i = 0; i < CItemData::LAST; i++) {
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
     // Don't move or allow non-allowed fields
     if (!m_bsAllowedFields.test(i))
       continue;
@@ -1009,7 +1009,7 @@ int CALLBACK CWZAdvanced::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
   // 4. Times last 100...
   // 5. Invalid and so shouldn't be here -1
 
-  const int iSortOrder[CItemData::LAST] = {
+  const int iSortOrder[CItem::LAST_DATA] = {
       -1 /* NAME       = 0x00 */,
       -1 /* UUID       = 0x01 */,
        0 /* GROUP      = 0x02 */,

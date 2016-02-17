@@ -54,6 +54,65 @@ struct DisplayInfoBase
 class CItem
 {
 public:
+  // field types, per formatV{2,3,4}.txt. Any value > 0xff is internal only!
+  enum FieldType {
+    START = 0x00, GROUPTITLE = 0x00 /* reusing depreciated NAME for Group.Title combination */,
+    NAME = 0x00,
+    UUID = 0x01,
+    GROUP = 0x02,
+    TITLE = 0x03,
+    USER = 0x04,
+    NOTES = 0x05,
+    PASSWORD = 0x06,
+    CTIME = 0x07,        // Entry 'C'reation time
+    PMTIME = 0x08,       // last 'P'assword 'M'odification time
+    ATIME = 0x09,        // last 'A'ccess time
+    XTIME = 0x0a,        // password e'X'piry time
+    RESERVED = 0x0b      /* MUST NOT USE */,
+    RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
+    URL = 0x0d, AUTOTYPE = 0x0e,
+    PWHIST = 0x0f,
+    POLICY = 0x10,       // string encoding of item-specific password policy
+    XTIME_INT = 0x11,
+    RUNCMD = 0x12,
+    DCA = 0x13,          // doubleclick action (enum)
+    EMAIL = 0x14,
+    PROTECTED = 0x15,
+    SYMBOLS = 0x16,      // string of item-specific password symbols
+    SHIFTDCA = 0x17,     // shift-doubleclick action (enum)
+    POLICYNAME = 0x18,   // named non-default password policy for item
+    KBSHORTCUT = 0x19,   // Keyboard shortcuts
+    ATTREF = 0x1a,       // UUID of attachment (v4)
+    BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
+    ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
+    SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
+    LAST_DATA,           // Start of unknown fields!
+    LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
+    START_ATT = 0x60,
+    ATTUUID = 0x60,
+    ATTTITLE = 0x61,
+    ATTCTIME = 0x62,
+    MEDIATYPE = 0x63,
+    FILENAME = 0x64,
+    FILEPATH = 0x65,
+    FILECTIME = 0x66,
+    FILEMTIME = 0x67,
+    FILEATIME = 0x68,
+    LAST_SEARCHABLE = 0x6f, // also last-filterable
+    ATTEK = 0x70,
+    ATTAK = 0x71,
+    ATTIV = 0x72,
+    CONTENT = 0x73,
+    CONTENTHMAC = 0x74,
+    LAST_ATT,
+    UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
+    END = 0xff,
+    // Internal fields only - used in filters
+    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
+    // 'UNKNOWNFIELDS' should be last
+    UNKNOWNFIELDS = 0x104
+  };
+
   // Status returns from "ProcessInputRecordField"
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
@@ -116,6 +175,11 @@ protected:
 
   void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata, const CItemField &item) const;
+  bool IsItemDataField(unsigned char type) const
+  {return type >= START && type < LAST_DATA;}
+  bool IsItemAttField(unsigned char type) const
+  {return type >= START_ATT && type < LAST_ATT;}
+
 private:
   // Helper function for operator==
   bool CompareFields(const CItemField &fthis,

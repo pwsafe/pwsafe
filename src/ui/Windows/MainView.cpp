@@ -2706,7 +2706,7 @@ void DboxMain::SetHeaderInfo()
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItemData::LAST; i++)
+  for (int i = 0; i < CItem::LAST_DATA; i++)
     m_nColumnIndexByType[i] = 
     m_nColumnIndexByOrder[i] =
     m_nColumnTypeByIndex[i] =
@@ -2745,7 +2745,7 @@ void DboxMain::OnResetColumns()
   }
 
   // re-initialise array
-  for (int itype = 0; itype < CItemData::LAST; itype++)
+  for (int itype = 0; itype < CItem::LAST_DATA; itype++)
     m_nColumnIndexByType[itype] = -1;
 
   // Set default columns
@@ -2845,7 +2845,7 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
 
   // and repopulate
   int iItem;
-  for (i = CItemData::LAST - 1; i >= 0; i--) {
+  for (i = CItem::LAST_DATA - 1; i >= 0; i--) {
     // Can't play with Title or User columns
     if (i == CItemData::TITLE || i == CItemData::USER)
       continue;
@@ -3002,7 +3002,7 @@ void DboxMain::CalcHeaderWidths()
   m_iheadermaxwidth = -1;
   CString cs_header;
 
-  for (int iType = 0; iType < CItemData::LAST; iType++) {
+  for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
     cs_header = GetHeaderText(iType);
     if (!cs_header.IsEmpty())
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;

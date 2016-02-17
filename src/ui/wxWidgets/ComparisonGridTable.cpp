@@ -153,7 +153,7 @@ CItemData::FieldType ComparisonGridTable::ColumnToField(int col)
         return m_colFields[col-2].ft;
       break;
   }
-  return CItemData::LAST;
+  return CItem::LAST_DATA;
 }
 
 void ComparisonGridTable::AutoSizeField(CItemData::FieldType ft)

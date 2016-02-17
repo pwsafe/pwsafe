@@ -94,9 +94,9 @@ enum FieldType {
   PT_END,
 
   // Attachment Test fields
-  AT_PRESENT       = CItemAtt::START,
-  AT_TITLE         = CItemAtt::TITLE,
-  AT_CTIME         = CItemAtt::CTIME,
+  AT_PRESENT       = CItemAtt::START_ATT,
+  AT_TITLE         = CItemAtt::ATTTITLE,
+  AT_CTIME         = CItemAtt::ATTCTIME,
   AT_MEDIATYPE     = CItemAtt::MEDIATYPE,
   AT_FILENAME      = CItemAtt::FILENAME,
   AT_FILEPATH      = CItemAtt::FILEPATH,

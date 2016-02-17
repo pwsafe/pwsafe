@@ -849,11 +849,11 @@ private:
   bool m_bViaDCA;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
-  int m_nColumnIndexByOrder[CItemData::LAST];
-  int m_nColumnIndexByType[CItemData::LAST];
-  int m_nColumnTypeByIndex[CItemData::LAST];
-  int m_nColumnWidthByIndex[CItemData::LAST];
-  int m_nColumnHeaderWidthByType[CItemData::LAST];
+  int m_nColumnIndexByOrder[CItem::LAST_DATA];
+  int m_nColumnIndexByType[CItem::LAST_DATA];
+  int m_nColumnTypeByIndex[CItem::LAST_DATA];
+  int m_nColumnWidthByIndex[CItem::LAST_DATA];
+  int m_nColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize

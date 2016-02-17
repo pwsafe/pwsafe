@@ -382,7 +382,7 @@ void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
   findinfo.flags = LVFI_PARAM;
   // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
   // and so will not be found and so not moved anywhere.
-  for (int i = 0; i < CItemData::LAST; i++) {
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
     // Don't move or allow non-allowed fields
     if (!m_bsAllowedFields.test(i))
       continue;
@@ -482,10 +482,10 @@ void CAdvancedDlg::OnOK()
 
     const short index = dw_data & 0xff;
 
-    if (index < CItemData::LAST) {
+    if (index < CItem::LAST_DATA) {
       m_bsFields.set(index, true);
     }
-    else if (index < CItemAtt::LAST) {
+    else if (index < CItem::LAST_ATT) {
       m_bsAttFields.set(index - CItemAtt::START, true);
     }
   }
@@ -618,7 +618,7 @@ void CAdvancedDlg::OnDeselectSome()
 
     const short index = dw_data & 0xff;
 
-    if (index < CItemData::LAST) {
+    if (index < CItem::LAST_DATA) {
       // Ignore mandatory fields - can't be deselected
       if (m_bsMandatoryFields.test(index))
         continue;
@@ -645,7 +645,7 @@ void CAdvancedDlg::OnDeselectAll()
 
     const short index = dw_data & 0xff;
 
-    if (index < CItemData::LAST) {
+    if (index < CItem::LAST_DATA) {
       // Ignore mandatory fields - can't be deselected
       if (m_bsMandatoryFields.test(dw_data & 0xff))
         continue;
@@ -668,15 +668,15 @@ void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResul
 
   const short index = pNMListView->lParam & 0xff;
 
-  if (index < CItemData::LAST) {
+  if (index < CItem::LAST_DATA) {
     if (m_bsMandatoryFields.test(index) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
       pNMListView->uNewState &= ~LVIS_SELECTED;
       *pLResult = TRUE;
     }
   }
-  else if (index < CItemAtt::LAST) {
-    if (m_bsMandatoryFields.test(index - CItemAtt::START) &&
+  else if (index < CItem::LAST_ATT) {
+    if (m_bsMandatoryFields.test(index - CItem::START_ATT) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
       pNMListView->uNewState &= ~LVIS_SELECTED;
       *pLResult = TRUE;

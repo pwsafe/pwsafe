@@ -68,7 +68,7 @@ bool CItemAtt::operator==(const CItemAtt &that) const
 
 void CItemAtt::SetTitle(const StringX &title)
 {
-  CItem::SetField(TITLE, title);
+  CItem::SetField(ATTTITLE, title);
 }
 
 void CItemAtt::CreateUUID()
@@ -108,7 +108,7 @@ void CItemAtt::SetCTime(time_t t)
 {
   unsigned char buf[sizeof(time_t)];
   putInt(buf, t);
-  SetField(CTIME, buf, sizeof(time_t));
+  SetField(ATTCTIME, buf, sizeof(time_t));
 }
 
 void CItemAtt::SetContent(const unsigned char *content, size_t clen)
@@ -118,7 +118,7 @@ void CItemAtt::SetContent(const unsigned char *content, size_t clen)
 
 time_t CItemAtt::GetCTime(time_t &t) const
 {
-  CItem::GetTime(CTIME, t);
+  CItem::GetTime(ATTCTIME, t);
   return t;
 }
 
@@ -276,13 +276,13 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
       SetUUID(uuid_array);
       break;
     }
-  case TITLE:
+  case ATTTITLE:
   case MEDIATYPE:
   case FILENAME:
   case FILEPATH:
     if (!SetTextField(ft, data, len)) return false;
     break;
-  case CTIME:
+  case ATTCTIME:
   case FILECTIME:
   case FILEMTIME:
   case FILEATIME:
@@ -506,8 +506,8 @@ int CItemAtt::Write(PWSfile *out) const
   out->WriteField(static_cast<unsigned char>(ATTUUID), att_uuid,
                   sizeof(uuid_array_t));
 
-  WriteIfSet(TITLE, out, true);
-  WriteIfSet(CTIME, out, false);
+  WriteIfSet(ATTTITLE, out, true);
+  WriteIfSet(ATTCTIME, out, false);
   WriteIfSet(MEDIATYPE, out, true);
   WriteIfSet(FILENAME, out, true);
   WriteIfSet(FILEPATH, out, true);

@@ -49,47 +49,6 @@ class PWSfileV4;
 class CItemData : public CItem
 {
 public:
-  // field types, per formatV{2,3}.txt. Any value > 0xff is internal only!
-  enum FieldType {
-    START = 0x00, GROUPTITLE = 0x00 /* reusing depreciated NAME for Group.Title combination */,
-    NAME = 0x00,
-    UUID = 0x01,
-    GROUP = 0x02,
-    TITLE = 0x03,
-    USER = 0x04,
-    NOTES = 0x05,
-    PASSWORD = 0x06,
-    CTIME = 0x07,        // Entry 'C'reation time
-    PMTIME = 0x08,       // last 'P'assword 'M'odification time
-    ATIME = 0x09,        // last 'A'ccess time
-    XTIME = 0x0a,        // password e'X'piry time
-    RESERVED = 0x0b      /* MUST NOT USE */,
-    RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
-    URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f,
-    POLICY = 0x10,       // string encoding of item-specific password policy
-    XTIME_INT = 0x11,
-    RUNCMD = 0x12,
-    DCA = 0x13,          // doubleclick action (enum)
-    EMAIL = 0x14,
-    PROTECTED = 0x15,
-    SYMBOLS = 0x16,      // string of item-specific password symbols
-    SHIFTDCA = 0x17,     // shift-doubleclick action (enum)
-    POLICYNAME = 0x18,   // named non-default password policy for item
-    KBSHORTCUT = 0x19,   // Keyboard shortcuts
-    ATTREF = 0x1a,       // UUID of attachment (v4)
-    BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
-    ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
-    SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
-    LAST,                // Start of unknown fields!
-    LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
-    UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
-    END = 0xff,
-    // Internal fields only - used in filters
-    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
-    // 'UNKNOWNFIELDS' should be last
-    UNKNOWNFIELDS = 0x104
-  };
 
   // Password Policy stuff: Either PWPolicy (+ optionally symbols) is not empty
   // or PolicyName is not empty. Both cannot be set. All can be empty.
@@ -105,7 +64,7 @@ public:
   };
 
   // a bitset for indicating a subset of an item's fields: 
-  typedef std::bitset<LAST> FieldBits;
+  typedef std::bitset<LAST_DATA> FieldBits;
 
   static bool IsTextField(unsigned char t);
 
@@ -369,7 +328,7 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
     t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
     t == SHORTCUTUUID ||
-    t >= LAST);
+    t >= LAST_DATA);
 }
 #endif /* __ITEMDATA_H */
 //-----------------------------------------------------------------------------

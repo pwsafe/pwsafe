@@ -38,28 +38,6 @@ class PWSfile;
 class CItemAtt : public CItem
 {
 public:
-
-  enum FieldType {
-    START = 0x60,
-    ATTUUID = 0x60,
-    TITLE = 0x61,
-    CTIME = 0x62,
-    MEDIATYPE = 0x63,
-    FILENAME = 0x64,
-    FILEPATH = 0x65,
-    FILECTIME = 0x66,
-    FILEMTIME = 0x67,
-    FILEATIME = 0x68,
-    LAST_SEARCHABLE = 0x6f, // also last-filterable
-    ATTEK = 0x70,
-    ATTAK = 0x71,
-    ATTIV = 0x72,
-    CONTENT = 0x73,
-    CONTENTHMAC = 0x74,
-    LAST,
-    END = 0xff
-  };
-
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST_SEARCHABLE - START + 1> AttFieldBits;
 
@@ -89,7 +67,7 @@ public:
   void SetCTime(time_t t);
   void SetContent(const unsigned char *content, size_t clen);
 
-  StringX GetTitle() const {return GetField(TITLE);}
+  StringX GetTitle() const {return GetField(ATTTITLE);}
   void GetUUID(uuid_array_t &) const;
   const pws_os::CUUID GetUUID() const;
   StringX GetFileName() const {return GetField(FILENAME);}    // set via Import()
@@ -147,8 +125,8 @@ public:
 
 
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
-  bool IsTitleSet() const                  { return IsFieldSet(TITLE);     }
-  bool IsCreationTimeSet() const           { return IsFieldSet(CTIME);     }
+  bool IsTitleSet() const                  { return IsFieldSet(ATTTITLE);     }
+  bool IsCreationTimeSet() const           { return IsFieldSet(ATTCTIME);     }
 
 private:
   bool SetField(unsigned char type, const unsigned char *data, size_t len);

@@ -148,7 +148,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
 
   // Exclude 5: UUID/GROUP/TITLE/USERNAME & RESERVED (01,02,03,04,0B) but include 1: ENTRYTYPE
   // The developer will still need to ensure new fields are processed below
-  ASSERT(sizeof(iFields)/sizeof(iFields[0]) == (CItemData::LAST - 5 + 1));
+  ASSERT(sizeof(iFields)/sizeof(iFields[0]) == (CItem::LAST_DATA - 5 + 1));
 
   StringX sxDefPolicyStr;
   LoadAString(sxDefPolicyStr, IDSC_DEFAULT_POLICY);
