@@ -451,6 +451,7 @@ BEGIN_MESSAGE_MAP(CRichEditExtn, CRichEditCtrl)
   ON_WM_CONTEXTMENU()
   ON_WM_LBUTTONDOWN()
   ON_WM_SETCURSOR()
+  ON_WM_LBUTTONDBLCLK()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -469,6 +470,24 @@ void CRichEditExtn::SetSel(long nStartChar, long nEndChar)
   m_nStartChar = nStartChar;
   m_nEndChar = nEndChar;
   CRichEditCtrl::SetSel(nStartChar, nEndChar);
+}
+
+void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+  long nStartChar, nEndChar;
+
+  // Do what ever would normally happen
+  CRichEditCtrl::OnLButtonDblClk(nFlags, point);
+
+  // Get selection
+  CRichEditCtrl::GetSel(nStartChar, nEndChar);
+
+  // Check if this included a trailing whitespace and, if so, trim it
+  CString csTemp = GetSelText();
+  csTemp.TrimRight();
+
+  // Reselect without trailing whitespace
+  SetSel(nStartChar, nStartChar + csTemp.GetLength());
 }
 
 void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
