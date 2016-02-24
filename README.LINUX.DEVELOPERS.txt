@@ -39,6 +39,9 @@ pkg-config
 uuid-dev
 zip
 
+The script Misc/setup-deb-dev-env.sh can be run (sudo or as root) to
+install these and setup the gtest library.
+
 For Fedora:
 cmake (See note 1 below)
 gcc-c++
