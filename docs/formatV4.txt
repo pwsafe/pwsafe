@@ -1,5 +1,5 @@
-PasswordSafe database format description version 4.0
-----------------------------------------------------
+PasswordSafe database format description version 4.01
+-----------------------------------------------------
 
 Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
 All rights reserved. Use of the code is allowed under the Artistic
@@ -374,12 +374,17 @@ Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
 AttRef                      0x1a        UUID          Y              [21]
-BaseUUID                    0x41        UUID          Y              [22]
+Two-Factor Key              0x1b        Binary        N              [22]
+Credit Card Number          0x1c        Text          N              [23]
+Credit Card Expiration      0x1d        Text          N              [23]
+Credit Card Verif. Value    0x1e        Text          N              [23]
+Credit Card PIN             0x1f        Text          N              [23]
+BaseUUID                    0x41        UUID          Y              [24]
 AliasUUID                   0x42        UUID          Y
 ShortcutUUID                0x43        UUID          Y
-Unknown (testing)           0xdf        -             N              [23]
-Implementation-specific     0xe0-0xfe   -             N              [24]
-End of Entry                0xff        [empty]       Y              [25]
+Unknown (testing)           0xdf        -             N              [25]
+Implementation-specific     0xe0-0xfe   -             N              [26]
+End of Entry                0xff        [empty]       Y              [27]
 
 [1] UUID of a password entry record. Representation is described in
 Section 3.1.1.
@@ -518,14 +523,24 @@ entry record can have zero or more such fields. Each attachment field
 in a given password entry record must have a different value, but
 different entries can refer to the same attachment uuid.
 
-[22] UUID of a reference record. Representation is described in Section
+[22] This is the shared secret for sites using Time-Based One-Time
+Password Algorithm (per RFC6238) such as Google Authenticator. At
+least 10 bytes.
+
+[23] Credit card specific fields. All values are UTF-8 encoded:
+- Number should consist of digits and spaces.
+- Expiration should be MM/YY, where MM is 01-12, and YY 00-99.
+- CVV (CVV2) is three or four digits.
+- PIN is four to twelve digits long (ISO-9564)
+
+[24] UUID of a reference record. Representation is described in Section
 3.1.1.
 
-[23] Reserved for testing forward compatability.
+[25] Reserved for testing forward compatability.
 
-[24] Reserved for application-specific use. See 4.2.2.
+[26] Reserved for application-specific use. See 4.2.2.
 
-[25] An explicit end of entry field is useful for supporting new fields
+[27] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.4 Attachments

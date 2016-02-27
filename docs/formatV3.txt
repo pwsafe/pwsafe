@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.30
+PasswordSafe database format description version 3.31
 -----------------------------------------------------
 
 Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
@@ -332,9 +332,14 @@ Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
 *RESERVED*                  0x1a        UUID          -              [22]
-Unknown (testing)           0xdf        -             N              [23]
-Implementation-specific     0xe0-0xfe   -             N              [24]
-End of Entry                0xff        [empty]       Y              [25]
+Two-Factor Key              0x1b        Binary        N              [23]
+Credit Card Number          0x1c        Text          N              [24]
+Credit Card Expiration      0x1d        Text          N              [24]
+Credit Card Verif. Value    0x1e        Text          N              [24]
+Credit Card PIN             0x1f        Text          N              [24]
+Unknown (testing)           0xdf        -             N              [25]
+Implementation-specific     0xe0-0xfe   -             N              [26]
+End of Entry                0xff        [empty]       Y              [27]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -501,11 +506,21 @@ Note: A 'base' entry can not have both aliases and shortcuts.
 [22] This value is used in V4 of the PasswordSafe format. Reserving it here to
 maintain consistency with values that follow.
 
-[23] Reserved for testing forward compatability.
+[23] This is the shared secret for sites using Time-Based One-Time
+Password Algorithm (per RFC6238) such as Google Authenticator. At
+least 10 bytes.
 
-[24] Reserved for application-specific use. See 4.2.2.
+[24] Credit card specific fields. All values are UTF-8 encoded:
+- Number should consist of digits and spaces.
+- Expiration should be MM/YY, where MM is 01-12, and YY 00-99.
+- CVV (CVV2) is three or four digits.
+- PIN is four to twelve digits long (ISO-9564)
 
-[25] An explicit end of entry field is useful for supporting new fields
+[25] Reserved for testing forward compatability.
+
+[26] Reserved for application-specific use. See 4.2.2.
+
+[27] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility
