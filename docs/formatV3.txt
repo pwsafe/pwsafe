@@ -331,9 +331,10 @@ Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
-Unknown (testing)           0xdf        -             N              [22]
-Implementation-specific     0xe0-0xfe   -             N              [23]
-End of Entry                0xff        [empty]       Y              [24]
+*RESERVED*                  0x1a        UUID          -              [22]
+Unknown (testing)           0xdf        -             N              [23]
+Implementation-specific     0xe0-0xfe   -             N              [24]
+End of Entry                0xff        [empty]       Y              [25]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -497,11 +498,14 @@ This was introduced in version 0x030D (PasswordSafe V3.30).
   e. Shortcut entry (as described in note [4])
 Note: A 'base' entry can not have both aliases and shortcuts.
 
-[22] Reserved for testing forward compatability.
+[22] This value is used in V4 of the PasswordSafe format. Reserving it here to
+maintain consistency with values that follow.
 
-[23] Reserved for application-specific use. See 4.2.2.
+[23] Reserved for testing forward compatability.
 
-[24] An explicit end of entry field is useful for supporting new fields
+[24] Reserved for application-specific use. See 4.2.2.
+
+[25] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility
