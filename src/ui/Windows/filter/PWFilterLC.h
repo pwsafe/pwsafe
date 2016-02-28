@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,8 +8,13 @@
 
 #pragma once
 
-#include "core/Itemdata.h"
+#include "core/ItemData.h"
+#include "core/ItemAtt.h"
+
 #include "core/PWSFilters.h"
+
+#include "../ControlExtns.h"
+
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
@@ -19,9 +24,11 @@
 #include "FilterDCADlg.h"
 #include "FilterEntryTypeDlg.h"
 #include "FilterEntryStatusDlg.h"
+#include "FilterMediaTypeDlg.h"
 
 class CSetHistoryFiltersDlg;
 class CSetPolicyFiltersDlg;
+class CSetAttachmentFiltersDlg;
 
 // Subitem indices
 #define FLC_FILTER_NUMBER 0
@@ -82,18 +89,19 @@ public:
 
   friend CPWFiltersDlg;
 
-  void Init(CWnd * pParent, st_filters *pfilters, const int &filtertype);
+  void Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
+    bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes);
 
 protected:
-  std::vector<FieldType> vlast_ft;           // Last combo selected item
-  std::vector<PWSMatch::MatchType> vlast_mt; // Last selected matchtype
-  std::vector<bool> vcbxChanged;             // Has combo selection changed?
-  std::vector<bool> vCriteriaSet;            // Has criteria been set?
-  std::vector<bool> vAddPresent;             // Do we add 'ISPRESENT' rule option?
+  std::vector<FieldType> m_vlast_ft;           // Last combo selected item
+  std::vector<PWSMatch::MatchType> m_vlast_mt; // Last selected matchtype
+  std::vector<bool> m_vcbxChanged;             // Has combo selection changed?
+  std::vector<bool> m_vCriteriaSet;            // Has criteria been set?
+  std::vector<bool> m_vAddPresent;             // Do we add 'ISPRESENT' rule option?
 
-  std::vector<st_Fcbxdata> vFcbx_data;     // Field combobox strings & fieldtypes
-  std::vector<st_Lcbxdata> vLcbx_data;     // Logic (AND/OR) combobox strings
-  std::vector<st_Fcbxdata> vWCFcbx_data;   // Working copy Field combobox & fieldtypes
+  std::vector<st_Fcbxdata> m_vFcbx_data;     // Field combobox strings & fieldtypes
+  std::vector<st_Lcbxdata> m_vLcbx_data;     // Logic (AND/OR) combobox strings
+  std::vector<st_Fcbxdata> m_vWCFcbx_data;   // Working copy Field combobox & fieldtypes
 
   WCHAR *m_pwchTip;
 
@@ -104,16 +112,19 @@ protected:
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 public:
   st_filters *m_pfilters;
-  bool IsPWHIST_Set() {return m_bPWHIST_Set;}
-  bool IsPOLICY_Set() {return m_bPOLICY_Set;}
-  bool IsHistoryGood() {return m_GoodHistory;}
-  bool IsPolicyGood() {return m_GoodPolicy;}
+  bool IsPWHIST_Set() const {return m_bPWHIST_Set;}
+  bool IsPOLICY_Set() const {return m_bPOLICY_Set;}
+  bool IsAttachment_Set() const { return m_bATTACHMENT_Set; }
+  bool IsHistoryGood() const {return m_GoodHistory;}
+  bool IsPolicyGood() const {return m_GoodPolicy;}
+  bool IsAttachmentGood() const { return m_GoodAttachment; }
 
 private:
   void SetUpComboBoxData();
@@ -148,10 +159,10 @@ private:
   // sub-dialogs being shown more than once.
   void DeleteEntry(FieldType ftype);
 
-  void SetComboBoxWidth();
+  void SetComboBoxWidth(const int iSubItem);
 
-  CPWFiltersDlg* m_pPWF;
-  CHeaderCtrl* m_pHeaderCtrl;
+  CPWFiltersDlg *m_pPWF;
+  CHeaderCtrl *m_pHeaderCtrl;
   CImageList *m_pImageList, *m_pCheckImageList;
 
   // Note - History & Policy are like my parent and they too have a ListCtrl
@@ -165,6 +176,7 @@ private:
   CFilterEntryTypeDlg m_fentry;
   CFilterEntryStatusDlg m_fstatus;
   CFilterEntrySizeDlg m_fsize;
+  CFilterMediaTypeDlg m_fmediatype;
 
   vFilterRows *m_pvfdata;
   int *m_pnumactive;
@@ -177,12 +189,14 @@ private:
   // Needed to make the row height bigger
   CImageList m_imageList; 
 
-  bool m_bPWHIST_Set, m_bPOLICY_Set;
-  bool m_GoodHistory, m_GoodPolicy;
+  bool m_bPWHIST_Set, m_bPOLICY_Set, m_bATTACHMENT_Set;
+  bool m_GoodHistory, m_GoodPolicy, m_GoodAttachment;
+  bool m_bCanHaveAttachments;
+  const std::set<StringX> *m_psMediaTypes;
 
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;
-  CComboBox *m_pComboBox;
+  CComboBoxExtn m_ComboBox;
   CFont *m_pFont;
   int m_iItem;
 };

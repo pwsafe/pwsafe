@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -298,11 +298,13 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
                                                      MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                                                      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
       ASSERT(brc);
-
-      FixBitmapBackground(m_CopyPswdBitmap);
-      CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-      pBtn->SetBitmap(m_CopyPswdBitmap);
-
+      if (brc) {
+        FixBitmapBackground(m_CopyPswdBitmap);
+        CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+        ASSERT(pBtn != NULL);
+        if (pBtn != NULL)
+          pBtn->SetBitmap(m_CopyPswdBitmap);
+      }
       break;
     }
   case IDS_PSWDPOLICY:
@@ -392,10 +394,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
     m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
-    // Set the tooltip text
-    CString cs_ToolTip;
-    cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
   }
 
   // Set appropriate focus

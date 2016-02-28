@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -38,7 +38,7 @@ static stringT GetStringTFromURLRef(CFURLRef url)
     CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
                                             kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8 *>(wPath), 
                                             sizeof(wchar_t) * numChars, &numBytesWritten);
-    assert(numConverted*sizeof(wchar_t) == numBytesWritten);
+    assert(static_cast<CFIndex>(numConverted*sizeof(wchar_t)) == numBytesWritten);
     retval = stringT(wPath, numConverted);
     delete [] wPath;
     CFRelease(cfpath);
@@ -49,18 +49,13 @@ static stringT GetStringTFromURLRef(CFURLRef url)
 stringT pws_os::getexecdir()
 {
   stringT retval(_T("?"));
-  ProcessSerialNumber psn = {0, kCurrentProcess};
-  FSRef self = {0};
-  OSStatus err = GetProcessBundleLocation(&psn, &self);
-  if (!err) {
-    FSRef parent = {0};
-    err = FSGetCatalogInfo(&self, kFSCatInfoNone, NULL, NULL, NULL, &parent);
-    if (!err) {
-      CFURLRef url = CFURLCreateFromFSRef(kCFAllocatorDefault, &parent);
-      if (url) {
-        retval = GetStringTFromURLRef(url);
-        CFRelease(url);
-      }
+  ::CFURLRef bundleUrl = ::CFBundleCopyBundleURL(::CFBundleGetMainBundle());
+  if (bundleUrl) {
+    ::CFURLRef url = ::CFURLCreateCopyDeletingLastPathComponent(nullptr, bundleUrl);
+    ::CFRelease(bundleUrl);
+    if (url) {
+      retval = GetStringTFromURLRef(url);
+      ::CFRelease(url);
     }
   }
   return retval;
@@ -132,6 +127,29 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
     retval += _T(".");
     retval += ext;
   }
+  return retval;
+}
+
+stringT pws_os::fullpath(const stringT &relpath)
+{
+  stringT retval;
+  char full[PATH_MAX];
+
+  // relpath -> char *path
+  size_t N = std::wcstombs(NULL, relpath.c_str(), 0) + 1;
+  assert(N > 0);
+  char *path = new char[N];
+  std::wcstombs(path, relpath.c_str(), N);
+
+  if (realpath(path, full) != NULL) {
+    // full -> retval
+    size_t wfull_len = ::mbstowcs(NULL, full, 0) + 1;
+    wchar_t *wfull = new wchar_t[wfull_len];
+    std::mbstowcs(wfull, full, wfull_len);
+    retval = wfull;
+    delete[] wfull;
+  }
+  delete[] path;
   return retval;
 }
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,6 +36,7 @@ public:
   //}}AFX_DATA
 
   CItemData::FieldBits m_bsFields;
+  CItemAtt::AttFieldBits m_bsAttFields;
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -70,8 +71,12 @@ protected:
 private:
   static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   void Set(CItemData::FieldBits bsFields);
+  void SetAtt(CItemAtt::AttFieldBits bsAttFields);
 
   CListCtrl *m_pLC_List, *m_pLC_Selected;
   st_SaveAdvValues *m_pst_SADV;
   CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
+  CItemAtt::AttFieldBits m_bsAttDefaultSelectedFields, m_bsAttAllowedFields;
+
+  PWSfile::VERSION m_current_version;
 };

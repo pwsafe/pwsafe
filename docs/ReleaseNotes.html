@@ -51,20 +51,149 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.37 Release Notes - September 2015</h1>
+<h1 align="center">Password Safe 3.38.2 Release Notes February 2016</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit the
-<a href="http://pwsafe.org">PasswordSafe project site</a>.
+<a href="https://pwsafe.org">PasswordSafe project site</a>.
 Details about changes to older releases may be found in the file
 ChangeLog.txt.</p>
 
 <p>Here are the notes for the latest version. Previous versions
 are described <a href="#prev-vers">here</a>.
-Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
+Information about older versions may be found <a href="https://pwsafe.org/history.shtml">here</a>.</p>
 <br>
+<hr>
+<h3><a name="V3.38.2"></a>Version V3.38.2</h3>
+<hr>
+<h4><a name="V3.38.2BugsFixed"></a>Bugs fixed in V3.38.2</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1326);return false;">1326</a></td>
+<td>Fixed entry corruption when database locked/unlocked while an
+entry was being edited (and possibly other scenarios).</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Ensure that the Tooltip on how to unprotect an entry is now shown
+against the tutorial text at the top of the dialog for wide displays.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1319);return false;">1319</a></td>
+<td>Newly added entries are now shown as selected in the Tree view.</td>
+</tr>
+</tbody>
+</table>
+<h4><a name="V3.38.2New"></a>New Features for V3.38.2</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+<h3><a name="V3.38.1"></a>Version V3.38.1</h3>
+<hr>
+<h4><a name="V3.38.1BugsFixed"></a>Bugs fixed in V3.38.1</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fixed regression in alias support</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fixed regression: crash in Linux when incorrect password entered</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fixes in advanced find report</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>V4 (alpha) related fixes</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fixes related to empty groups</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1312);return false;">1312</a></td>
+<td>Now able to duplicate an alias entry without errors.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1306);return false;">1306</a></td>
+<td>Display of an empty group is now correctly displayed when an entry
+is moved to it via editing.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1295);return false;">1295</a></td>
+<td>Create Shortcut group dropdown box width no longer trucates long group paths.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1057);return false;">1057</a></td>
+<td>Aliases and shortcuts imported via XML now correctly point to their respective base entries.</td>
+</tr>
+</tbody>
+</table>
+<h4><a name="V3.38.1New"></a>New Features for V3.38.1</h4>
+<table>
+<tbody>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(797);return false;">797</a></td>
+<td>Change the Add/Edit dialogs to allow a larger Notes field to be visible.  Protected entries now only have this information in the dialog caption. The Tooltip on how to unprotect an entry is now shown against the tutorial text at the top of the dialog.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+<h3><a name="V3.38"></a>Version V3.38</h3>
+<hr>
+<h4><a name="V3.38BugsFixed"></a>Bugs fixed in V3.38</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1289);return false;">1289</a></td>
+<td>Uniform behavior for generated password: Can be explicitly
+  copied to clipboard whenever generated (no longer copied by default).</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1266);return false;">1266</a></td>
+<td>Toolbar elements display correctly on high-resolution monitors
+  under Windows 8.1 and later.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+<h4><a name="V3.38New"></a>New Features for V3.38</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Experimental support for V4 format. <em><strong><font color="#FF0000">DO NOT USE FOR PRODUCTION ("REAL")
+PASSWORDS.</font></strong></em></td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+<h3><a name="V3.37.1"></a>Version V3.37.1</h3>
+<hr>
+<h4><a name="V3.37.1BugsFixed"></a>Bugs fixed in V3.37.1</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fixed crash when adding/editing an entry with wide version of dialog.</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h3><a name="V3.37"></a>Version V3.37</h3>
 <hr>
@@ -134,8 +263,17 @@ appropriately.</td>
 the external edit is cancelled and the Notes field remains unchanged.</td>
 </tr>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1258);return false;">1258</a></td>
+<td>Group dropdown box width no longer trucates long group paths.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1254);return false;">1254</a></td>
 <td>Toolbar customisation now has correctly aligned text/images.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1244);return false;">1244</a></td>
+<td>Changes to symbol set in default password policy are respected
+  when "Use easy-to-read characters" is set.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1230);return false;">1230</a></td>
@@ -143,11 +281,24 @@ the external edit is cancelled and the Notes field remains unchanged.</td>
 opening/selecting a R-O database.</td>
 </tr>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1204);return false;">1204</a></td>
+<td>Show correct icon color in system tray when unminimizing with no database open.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1124);return false;">1124</a></td>
+<td>Autotype on a shortcut entry now picks up title, group and user
+  fields from shortcut instead of base.</td>\
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1082);return false;">1082</a></td>
 <td>Field modification times set to creation time for list view and
-  entry's time and date tab. This is more useful than "N/A", e.g., for
-  sorting by password modification to find old passwords that should
-  be changed.</td>
+entry's time and date tab. This is more useful than "N/A", e.g., for
+sorting by password modification to find old passwords that should
+be changed.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1054);return false;">1054</a></td>
+<td>Password Variable in Run Command correctly set when executed from an alias.</td>
 </tr>
 </tbody>
 </table>
@@ -267,6 +418,96 @@ last database is set as default for next invocation.</td>
 <h4><a name="V3.34.1New"></a>New Features for V3.34.1</h4>
 <table>
 <tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(728);return false;">728</a></td>
+<td>The default delay between characters on autotype is now configurable.</td>
+</tr>
+<tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h4><a name="V3.33Changes"></a>Changes to Existing Features in V3.33</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+<h4><a name="V3.33BugsFixed"></a>Bugs fixed in V3.33</h4>
+
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1160);return false;">1160</a></td>
+<td>Don't create config dir if config file passed in command line.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1155);return false;">1155</a></td>
+<td>Number of shortcuts is now correctly initialized.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1148);return false;">1148</a></td>
+<td>No longer crashes when canceling unlock with expired password entries.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1146);return false;">1146</a></td>
+<td>Edit button now enabled correctly in Manage->Password Policies.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1139);return false;">1139</a></td>
+<td>Backup file numbers now rollover 999 correctly.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1134);return false;">1134</a></td>
+<td>Filtering by type now works correctly for shortcuts &amp; shortcut bases.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1130);return false;">1130</a></td>
+<td>Database field isn't highlighted when it doesn't have the focus.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1125);return false;">1125</a></td>
+<td>Increased range of unlock difficulty by a factor of four. This
+  should give an order or magnitude or so between max and min
+  settings.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1067);return false;">1067</a></td>
+<td>Fail gracefully when trying to encrypt a file > 2GB.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
+
+<h3><a name="V3.32"></a>Version V3.32</h3>
+
+<h4><a name="V3.32New"></a>New Features for V3.32</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(705);return false;">705</a></td>
+<td>User can choose not to let PasswordSafe record which virtual
+keyboard was used.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(703);return false;">703</a></td>
+<td>Changing a database opened in read-only mode to read/write will
+revert when the database is locked.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(695);return false;">695</a></td>
+<td>Allow a keyboard shortcut to be associated with selecting an entry.
+Please see Help entry for more details.</td>
+</tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(753);return false;">753</a></td>
 <td>A Password Safe database can be opened by drag &amp; drop to the Password Safe application window.</td>

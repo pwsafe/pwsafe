@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -187,7 +187,7 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
 
   try {
     // Loading the file as binary since we're treating it as UTF-8
-    fh = session.OpenURL(L"http://pwsafe.org/latest.xml",
+    fh = session.OpenURL(L"https://pwsafe.org/latest.xml",
                          1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;

@@ -1,7 +1,7 @@
-PasswordSafe database format description version 3.30
+PasswordSafe database format description version 3.31
 -----------------------------------------------------
 
-Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 All rights reserved. Use of the code is allowed under the Artistic
 License terms, as specified in the LICENSE file distributed with this
 code, or available from
@@ -311,7 +311,7 @@ Group                       0x02        Text          Y              [2]
 Title                       0x03        Text          Y
 Username                    0x04        Text          Y
 Notes                       0x05        Text          Y
-Password                    0x06        Text          Y              [3,4]
+Password                    0x06        Text          Y              [3,4,21]
 Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
@@ -331,7 +331,15 @@ Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
-End of Entry                0xff        [empty]       Y              [21]
+*RESERVED*                  0x1a        UUID          -              [22]
+Two-Factor Key              0x1b        Binary        N              [23]
+Credit Card Number          0x1c        Text          N              [24]
+Credit Card Expiration      0x1d        Text          N              [24]
+Credit Card Verif. Value    0x1e        Text          N              [24]
+Credit Card PIN             0x1f        Text          N              [24]
+Unknown (testing)           0xdf        -             N              [25]
+Implementation-specific     0xe0-0xfe   -             N              [26]
+End of Entry                0xff        [empty]       Y              [27]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -475,9 +483,8 @@ symbols for password field [0x16]. This was introduced in version
 0x030A (PasswordSafe V3.28).
 
 [20] Entry keyboard shortcut.  Format is:
-  Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 1)
-  Byte  2  : zero
-  Byte  3  : Keyboard Modifiers - a bitwise OR of any valid combination of:
+  Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 0)
+  Byte  2  : Keyboard Modifiers - a bitwise OR of any valid combination of:
     PWS_HOTKEYF_ALT     0x01
     PWS_HOTKEYF_CONTROL 0x02
     PWS_HOTKEYF_SHIFT   0x04
@@ -485,9 +492,35 @@ symbols for password field [0x16]. This was introduced in version
     PWS_HOTKEYF_META    0x10 (not supported by Windows)
     PWS_HOTKEYF_WIN     0x20 (not supported by Windows)
     PWS_HOTKEYF_CMD     0x40 (not supported by Windows)
+  Byte  3  : zero
 This was introduced in version 0x030D (PasswordSafe V3.30).
 
-[21] An explicit end of entry field is useful for supporting new fields
+[21] There are five types of entry:
+  a. Normal entry: Without any aliases or shortcuts
+  b. Alias base entry: With one or more aliases (but can't have shortcuts)
+  c. Shortcut base entry: With one or more shortcuts (but can't have aliases)
+  d. Alias entry (as described in note [3])
+  e. Shortcut entry (as described in note [4])
+Note: A 'base' entry can not have both aliases and shortcuts.
+
+[22] This value is used in V4 of the PasswordSafe format. Reserving it here to
+maintain consistency with values that follow.
+
+[23] This is the shared secret for sites using Time-Based One-Time
+Password Algorithm (per RFC6238) such as Google Authenticator. At
+least 10 bytes.
+
+[24] Credit card specific fields. All values are UTF-8 encoded:
+- Number should consist of digits and spaces.
+- Expiration should be MM/YY, where MM is 01-12, and YY 00-99.
+- CVV (CVV2) is three or four digits.
+- PIN is four to twelve digits long (ISO-9564)
+
+[25] Reserved for testing forward compatability.
+
+[26] Reserved for application-specific use. See 4.2.2.
+
+[27] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -74,7 +74,6 @@ void CPWPropertyPage::ShowHelp(const CString &topicFile)
     gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
   }
 }
-
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {

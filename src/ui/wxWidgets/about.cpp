@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -175,13 +175,13 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"http://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(visitSiteStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2015 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2016 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_newVerStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxNO_BORDER); //wxSize(aboutDialog->ConvertDialogToPixels(wxSize(120, -1)).x, -1)
@@ -293,33 +293,39 @@ void CAbout::CheckNewVersion()
   *m_newVerStatus << _("Trying to contact server...");
   m_newVerStatus->Show();
   stringT latext_xml;
-  wxURL url(L"http://pwsafe.org/latest.xml");
-  wxInputStream *in_stream = url.GetInputStream();
-  unsigned char buff[BUFSIZ+1];
-  StringX chunk;
-  stringT latest_xml;
-  CUTF8Conv conv;
+  wxURL url(L"https://pwsafe.org/latest.xml");
   CheckVersion::CheckStatus status = CheckVersion::UP2DATE;
-  do {
-    in_stream->Read(buff, BUFSIZ);
-    size_t nRead = in_stream->LastRead();
-    if (nRead != 0) {
-      buff[nRead] = '\0';
-      // change to widechar representation
-      if (!conv.FromUTF8(buff, nRead, chunk)) {
-        delete in_stream;
-        in_stream = 0;
-        status = CheckVersion::CANT_READ;
-        break;
-      } else {
-        latest_xml += chunk.c_str();
+  stringT latest_xml;
+  if (!url.IsOk()) {
+    wxURLError err = url.GetError();
+    pws_os::Trace(wxT("Err:%d\n"),err);
+    status = CheckVersion::CANT_READ;
+  }
+  wxInputStream *in_stream = url.GetInputStream();
+  if (in_stream != NULL) {
+    unsigned char buff[BUFSIZ+1];
+    StringX chunk;
+    CUTF8Conv conv;
+    do {
+      in_stream->Read(buff, BUFSIZ);
+      size_t nRead = in_stream->LastRead();
+      if (nRead != 0) {
+        buff[nRead] = '\0';
+        // change to widechar representation
+        if (!conv.FromUTF8(buff, nRead, chunk)) {
+          delete in_stream;
+          in_stream = 0;
+          status = CheckVersion::CANT_READ;
+          break;
+        } else {
+          latest_xml += chunk.c_str();
+        }
       }
-    }
-  } while (!in_stream->Eof());
-  delete in_stream;
-  if (url.GetError() != wxURL_NOERR)
-    status = CheckVersion::CANT_CONNECT;
-
+    } while (!in_stream->Eof());
+    delete in_stream;
+    if (url.GetError() != wxURL_NOERR)
+      status = CheckVersion::CANT_CONNECT;
+  }
   stringT latest;
   if (status == CheckVersion::UP2DATE) {
     CheckVersion cv(MAJORVERSION, MINORVERSION, 0);
@@ -327,13 +333,13 @@ void CAbout::CheckNewVersion()
   }
   m_newVerStatus->Clear();
   switch (status) {
-    case CheckVersion::CANT_CONNECT:
-      *m_newVerStatus << _("Couldn't contact server.");
-      break;
-    case CheckVersion::UP2DATE:
-      *m_newVerStatus << _("This is the latest release!");
-      break;
-    case CheckVersion::NEWER_AVAILABLE:
+  case CheckVersion::CANT_CONNECT:
+    *m_newVerStatus << _("Couldn't contact server.");
+    break;
+  case CheckVersion::UP2DATE:
+    *m_newVerStatus << _("This is the latest release!");
+    break;
+  case CheckVersion::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
       newer += pwsafeVersionString + L"\n";
@@ -346,11 +352,11 @@ void CAbout::CheckNewVersion()
       dlg.ShowModal();
       break;
     }
-    case CheckVersion::CANT_READ:
-      *m_newVerStatus << _("Could not read server version data.");
-      break;
-    default:
-      break;
+  case CheckVersion::CANT_READ:
+    *m_newVerStatus << _("Could not read server version data.");
+    break;
+  default:
+    break;
   }
   m_newVerStatus->Show();
 }

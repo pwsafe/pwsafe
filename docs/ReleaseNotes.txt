@@ -1,5 +1,5 @@
-Password Safe 3.37 Release Notes - September 2015
-=================================================
+Password Safe 3.38.2 Release Notes February 2016
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,57 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.38.2
+====================
+[1326] Fixed entry corruption when database locked/unlocked while an
+entry was being edited (and possibly other scenarios).
+[] Ensure that the Tooltip on how to unprotect an entry is now shown
+against the tutorial text at the top of the dialog for wide displays.
+[1319] Newly added entries are now shown as selected in the Tree view.
+
+New Features for 3.38.2
+=======================
+None
+
+Bugs fixed in 3.38.1
+====================
+[] Fixed regression in alias support
+[] Fixed regression: crash in Linux when incorrect password entered
+[] Fixes in advanced find report
+[] V4 (alpha) related fixes
+[] Fixes related to empty groups
+[1312] Now able to duplicate an alias entry without errors.
+[1306] Display of an empty group is now correctly displayed when an entry
+is moved to it via editing.
+[1295] Create Shortcut group dropdown box width no longer trucates long
+group paths.
+[1057] Aliases and shortcuts imported via XML now correctly point to their 
+respective base entries.
+
+New Features for 3.38.1
+=======================
+[797] Change the Add/Edit dialogs to allow a larger Notes field to be 
+visible.  Protected entries now only have this information in the dialog
+caption. The Tooltip on how to unprotect an entry is now shown against the
+tutorial text at the top of the dialog.
+
+Bugs fixed in 3.38
+==================
+[1289] Uniform behavior for generated password: Can be explicitly
+copied to clipboard whenever generated (no longer copied by default).
+[1266] Toolbar elements display correctly on high-resolution monitors
+under Windows 8.1 and later.
+
+New Features for 3.38
+=====================
+Experimental support for V4 format. DO NOT USE FOR PRODUCTION ("REAL")
+PASSWORDS.
+
+Bugs fixed in 3.37.1
+====================
+[] Fixed crash when adding/editing an entry with wide version of
+dialog.
 
 New Features for 3.37
 =====================
@@ -39,13 +90,21 @@ fixed.
 Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
+[1258] Group dropdown box width no longer trucates long group paths.
 [1254] Toolbar customisation now has correctly aligned text/images.
+[1244] Changes to symbol set in default password policy are respected
+when "Use easy-to-read characters" is set.
 [1230] "Open as read-only" check-box correctly set when opening a R/W database
 after previously opening/selecting a R-O database.
+[1204] Show correct icon color in system tray when unminimizing with
+no database open.
+[1124] Autotype on a shortcut entry now picks up title, group and user
+fields from shortcut instead of base.
 [1082] Field modification times set to creation time for list view and
 entry's time and date tab. This is more useful than "N/A", e.g., for
 sorting by password modification to find old passwords that should be
 changed.
+[1054] Password Variable in Run Command correctly set when executed from an alias.
 
 New Features for 3.36
 =====================

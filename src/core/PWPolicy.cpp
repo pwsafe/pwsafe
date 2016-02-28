@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -195,9 +195,12 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
 
   LoadAString(col1, IDSC_PUSESYMBOL);
   if ((flags & PWPolicy::UseSymbols) != 0) {
+    // Assume that when user selects either EasyVision or Pronounceable
+    // Then default appropriate symbol set loaded for user to change
     if (bEV || bPR) {
-      Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE,
-             bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str());
+      stringT sym;
+      sym = symbols.empty() ? (bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str()) : symbols.c_str();
+      Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE, sym.c_str());
     } else {
       stringT tmp, sym;
       LoadAString(tmp, symbols.empty() ? IDSC_DEFAULTSYMBOLS : IDSC_SPECFICSYMBOLS);

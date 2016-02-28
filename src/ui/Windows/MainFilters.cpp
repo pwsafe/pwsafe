@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -80,7 +80,7 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
 
   m_currentfilter = mf_iter->second;
   bool bActiveFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                     m_currentfilter.num_Pactive) > 0;
+    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
 
   if (!bJustDoIt && !m_bFilterActive && !bActiveFilters) {
     // Nothing to do!
@@ -100,7 +100,10 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
 void DboxMain::OnSetFilter()
 {
   st_filters filters(m_currentfilter);
-  CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS);
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
+
+  CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &sMediaTypes);
 
   INT_PTR rc = sf.DoModal();
   if (rc == IDOK) {
@@ -119,7 +122,7 @@ void DboxMain::OnSetFilter()
     m_selectedfiltername = fk.cs_filtername.c_str();
 
     bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                                   m_currentfilter.num_Pactive) > 0;
+      m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
 
     if (m_bFilterActive) {
       m_bFilterActive = bFilters;
@@ -133,7 +136,10 @@ void DboxMain::OnSetFilter()
 
 bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 {
-  CSetFiltersDlg sf(this, pfilters, PWS_MSG_EXECUTE_FILTERS, bAllowSet);
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
+
+  CSetFiltersDlg sf(this, pfilters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &sMediaTypes, bAllowSet);
 
   INT_PTR rc = sf.DoModal();
   return (rc == IDOK);
@@ -166,7 +172,7 @@ void DboxMain::ApplyFilters()
   RefreshViews();
 
   bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                                 m_currentfilter.num_Pactive) > 0;
+    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                               bFilters ? TRUE : FALSE);
 
@@ -192,7 +198,7 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
   m_currentfilter = (*pfilters);
 
   m_bFilterActive = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive +
-                                                   m_currentfilter.num_Pactive) > 0;
+    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
 
   ApplyFilters();
 
@@ -206,7 +212,7 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
   bool bValue(false);
   const CItemData *pci;
 
-  if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive) == 0)
+  if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive + filters.num_Aactive) == 0)
     return true;
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
@@ -297,6 +303,9 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           break;
         case FT_ENTRYSIZE:
           mt = PWSMatch::MT_ENTRYSIZE;
+          break;
+        case FT_ATTACHMENT:
+          mt = PWSMatch::MT_ATTACHMENT;
           break;
         default:
           ASSERT(0);
@@ -398,6 +407,12 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           thistest_rc = pci->Matches(st_fldata.fnum1, st_fldata.fnum2,
                                      (int)ft, ifunction);
           tests++;
+          break;
+        case PWSMatch::MT_ATTACHMENT:
+          if (filters.num_Aactive != 0) {
+            thistest_rc = PassesAttFiltering(pci, filters);
+            tests++;
+          }
           break;
         default:
           ASSERT(0);
@@ -651,16 +666,123 @@ bool DboxMain::PassesPWPFiltering(const CItemData *pci,
   return false;
 }
 
+bool DboxMain::PassesAttFiltering(const CItemData *pci,
+                                  const st_filters &filters) const
+{
+  bool thistest_rc, bPresent;
+  bool bValue(false);
+
+  bPresent = pci->HasAttRef();
+  
+  // Only reference att if bPresent is true
+  CItemAtt &att = m_core.GetAtt(pci->GetAttUUID());
+
+  vFilterRows::const_iterator Flt_citer;
+  vfiltergroups::const_iterator Fltgroup_citer;
+  for (Fltgroup_citer = m_vAflgroups.begin();
+       Fltgroup_citer != m_vAflgroups.end(); Fltgroup_citer++) {
+    const vfiltergroup &group = *Fltgroup_citer;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    vfiltergroup::const_iterator Fltnum_citer;
+    for (Fltnum_citer = group.begin();
+      Fltnum_citer != group.end(); Fltnum_citer++) {
+      const int &num = *Fltnum_citer;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterRow &st_fldata = filters.vAfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case AT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case AT_TITLE:
+        case AT_FILENAME:
+        case AT_FILEPATH:
+        case AT_MEDIATYPE:
+          mt = PWSMatch::MT_STRING;
+          break;
+        case AT_CTIME:
+        case AT_FILECTIME:
+        case AT_FILEMTIME:
+        case AT_FILEATIME:
+          mt = PWSMatch::MT_DATE;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_STRING:
+          if (bPresent) {
+            thistest_rc = att.Matches(st_fldata.fstring.c_str(), (int)ft,
+              st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+          } else {
+            thistest_rc = false;
+          }
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+          if (bPresent) {
+            time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
+            if (st_fldata.fdatetype == 1 /* Relative */) {
+              time_t now;
+              time(&now);
+              t1 = now + (st_fldata.fnum1 * 86400);
+              if (ifunction == PWSMatch::MR_BETWEEN)
+                t2 = now + (st_fldata.fnum2 * 86400);
+            }
+            thistest_rc = att.Matches(t1, t2, (int)ft, ifunction);
+          } else {
+            thistest_rc = false;
+          }
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
 // functor for Copy subset of map entries back to the database
 struct CopyDBFilters {
   CopyDBFilters(PWSFilters &core_mapFilters) :
   m_CoreMapFilters(core_mapFilters)
   {}
+
   // operator
   void operator()(pair<const st_Filterkey, st_filters> p)
   {
     m_CoreMapFilters.insert(PWSFilters::Pair(p.first, p.second));
   }
+
 private:
   PWSFilters &m_CoreMapFilters;
 };
@@ -694,7 +816,9 @@ void DboxMain::OnManageFilters()
     m_MapFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
   }
 
-  CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters);
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+
+  CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters, bCanHaveAttachments);
   mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname.c_str());
   mf.DoModal();
 
@@ -770,7 +894,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
       return;
   } // while (1)
 
-  PWSfile::HeaderRecord hdr = m_core.GetHeader();
+  PWSfileHeader hdr = m_core.GetHeader();
   StringX currentfile = m_core.GetCurFile();
   rc = Filters.WriteFilterXMLFile(LPCWSTR(cs_newfile), hdr, currentfile);
 
@@ -910,6 +1034,12 @@ void DboxMain::CreateGroups()
         for (int j = 0; j < m_currentfilter.num_Pactive - 1; j++) {
           group.push_back(-1);
         }
+      } else if (st_fldata.ftype == FT_ATTACHMENT) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_ATTACHMENT entry
+        for (int j = 0; j < m_currentfilter.num_Aactive - 1; j++) {
+          group.push_back(-1);
+        }
       }
     } // st_fldata.bFilterActive
     i++;
@@ -985,4 +1115,34 @@ void DboxMain::CreateGroups()
     m_vPflgroups = groups;
   } else
     m_vPflgroups.clear();
+
+  // Now do the Attachment filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (Flt_iter = m_currentfilter.vAfldata.begin();
+       Flt_iter != m_currentfilter.vAfldata.end(); Flt_iter++) {
+    st_FilterRow &st_fldata = *Flt_iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (!group.empty())
+    groups.push_back(group);
+
+  if (!groups.empty()) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    m_vAflgroups = groups;
+  } else
+    m_vAflgroups.clear();
 }

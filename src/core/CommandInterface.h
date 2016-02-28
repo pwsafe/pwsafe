@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,7 +39,7 @@ class CommandInterface {
   virtual ItemListConstIter GetEntryEndIter() const = 0;
 
   // Command-specific methods
-  virtual void DoAddEntry(const CItemData &item) = 0;
+  virtual void DoAddEntry(const CItemData &item, const CItemAtt *att) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci) = 0;
 
@@ -79,10 +79,6 @@ class CommandInterface {
   virtual void SetBase2AliasesMmap(ItemMMap &) = 0;
   virtual const ItemMMap &GetBase2ShortcutsMmap() const = 0;
   virtual void SetBase2ShortcutsMmap(ItemMMap &) = 0;
-  virtual const ItemMap &GetAlias2BaseMap() const = 0;
-  virtual void SetAlias2BaseMap(const ItemMap &) = 0;
-  virtual const ItemMap &GetShortcuts2BaseMap() const = 0;
-  virtual void SetShortcuts2BaseMap(const ItemMap &) = 0;
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       const pws_os::CUUID &,

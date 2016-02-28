@@ -1,9 +1,5 @@
 //{{NO_DEPENDENCIES}}
 
-// Strings
-#define SUFFIX_FILTERS  L"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
-#define SUFFIX3_FILTERS L"Password Safe Databases (*.psafe3)|*.psafe3|"
-
 //  Usage
 #define IDS_USAGE                       5000
 
@@ -38,6 +34,10 @@
 #define IDS_FDF_PR_ALL                  5058
 #define IDS_FDF_TXT_ALL                 5059
 #define IDS_FDF_CSV_ALL                 5060
+#define IDS_FDF_V12_ALL                 5061
+#define IDS_FDF_V4_ALL                  5062
+#define IDS_FDF_ALL                     5063
+#define IDS_FDF_FILES                   5064
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
@@ -745,6 +745,26 @@
 #define IDS_NOTESFONT                   5971
 #define IDS_CANT_FIND_EXT_EDITOR        5972
 #define IDS_APP_DEFAULT                 5973
+#define IDS_ALL_IMAGE_FILES             5974
+#define IDS_NOPREVIEW_AVAILABLE         5975
+#define IDS_ATTACHMENT_NOTFOUND         5976
+#define IDS_MENUITEM_EXPORT2V3FORMAT    5977
+#define IDS_MENUITEM_EXPORT2V4FORMAT    5978
+#define IDS_ATTREF                      5979
+#define IDS_COMPATTREF                  5980
+#define IDS_FILETITLE                   5981
+#define IDS_FILENAME                    5982
+#define IDS_FILEPATH                    5983
+#define IDS_FILEMEDIATYPE               5984
+#define IDS_NUMATTACHMENTS              5985
+#define IDS_ATTACHMENTS                 5986
+#define IDS_CTIME                       5987
+#define IDS_FILECTIME                   5988
+#define IDS_FILEMTIME                   5989
+#define IDS_FILEATIME                   5990
+#define IDS_SETATTACHMENTFILTER         5991
+#define IDS_AFILTERINFO                 5992
+#define IDS_NOMEDIATYPE                 5993
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

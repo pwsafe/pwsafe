@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -251,7 +251,7 @@ static const char *status_text(int status)
 static int
 ImportText(PWScore &core, const StringX &fname)
 {
-  int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
+  int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numNoPolicy(0);
   std::wstring strError;
   wchar_t delimiter = L' ';
   wchar_t fieldSeparator = L'\t';
@@ -271,7 +271,7 @@ ImportText(PWScore &core, const StringX &fname)
                                     delimiter, bImportPSWDsOnly,
                                     strError,
                                     numImported, numSkipped,
-                                    numPWHErrors, numRenamed,
+                                    numPWHErrors, numRenamed, numNoPolicy,
                                     rpt, pcmd);
   switch (rc) {
   case PWScore::CANT_OPEN_FILE:
@@ -338,7 +338,8 @@ ImportXML(PWScore &core, const StringX &fname)
   std::wstring ImportedPrefix;
   std::wstring dir;
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
-  int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+  int numValidated(0), numImported(0), numSkipped(0), numRenamed(0), numPWHErrors(0);
+  int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0);
   bool bImportPSWDsOnly = false;
 
   
@@ -358,6 +359,7 @@ ImportXML(PWScore &core, const StringX &fname)
                               strXMLErrors, strSkippedList, strPWHErrorList,
                               strRenameList, numValidated, numImported,
                               numSkipped, numPWHErrors, numRenamed,
+                              numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
                               rpt, pcmd);
 
   switch (rc) {

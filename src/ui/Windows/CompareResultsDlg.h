@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -90,7 +90,7 @@ public:
     // Optional columns - do NOT have to be in same order as OptCols member variable data
     PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
-    DCA, SHIFTDCA, PROTECTED, KBSHORTCUT,
+    DCA, SHIFTDCA, PROTECTED, KBSHORTCUT, ATTREF,
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME,
     LAST};
 

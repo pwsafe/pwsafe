@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -58,7 +58,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   char* message = buf;
 #endif
   
-  syslog(LOG_DEBUG, message);
+  syslog(LOG_DEBUG, "%s", message);
 
   delete[] message;
   closelog();
@@ -75,7 +75,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
 #else
@@ -84,7 +84,24 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 
   closelog();
 }
+
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  // No-op under DEBUG build, return true to avoid error handling
+  return true;
+}
+
 #else   /* _DEBUG || DEBUG */
+#include <sys/types.h>
+#include <sys/ptrace.h>
+
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  return ptrace(PT_DENY_ATTACH, 0, 0, 0) == 0;
+}
+
 void pws_os::Trace(LPCTSTR , ...)
 {
 //  Do nothing in non-Debug mode

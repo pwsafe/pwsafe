@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,6 +15,7 @@
 #include "SetFiltersDlg.h"
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
+#include "SetAttachmentFiltersDlg.h"
 
 #include "../GeneralMsgBox.h"
 #include "../resource3.h"
@@ -26,17 +27,19 @@ IMPLEMENT_DYNAMIC(CSetFiltersDlg, CPWFiltersDlg)
 CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
                                const int &iWMSGID,
+                               const bool bCanHaveAttachments,
+                               const std::set<StringX> *psMediaTypes,
                                const bool bAllowSet)
-: CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str()),
+ : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname.c_str(), bCanHaveAttachments, psMediaTypes),
   m_iWMSGID(iWMSGID)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
   ASSERT(iWMSGID != 0);
 
-  m_bAllowSet = bAllowSet;
   m_pParent = pParent;
   m_pfilters = pfilters;
+  m_bAllowSet = bAllowSet;
 
   m_cstitle.LoadString(IDS_SETDISPLAYFILTERS);
 }

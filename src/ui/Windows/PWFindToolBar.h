@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -46,12 +46,14 @@ public:
   BOOL IsFindCaseSet() const {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
-  void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
+  void GetSearchInfo(bool &bAdvanced, 
+                     CItemData::FieldBits &bsFields, CItemAtt::AttFieldBits &bsAttFields,
                      std::wstring &subgroup_name, 
                      bool &subgroup_bset, int &subgroup_object, int &subgroup_function)
-  {bAdvanced = m_bAdvanced; bsFields = m_bsFields;
-   subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
-   subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
+  {bAdvanced = m_bAdvanced;
+    bsFields = m_pst_SADV->bsFields; bsAttFields = m_pst_SADV->bsAttFields;
+    subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
+    subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
 
   std::vector<int> *GetSearchResults() {return &m_indices;}
   void SetStatus(CString cs_status) {m_findresults.SetWindowText(cs_status);}
@@ -88,8 +90,12 @@ private:
 
   bool m_cs_search, m_last_cs_search;
   CSecString m_search_text, m_last_search_text;
-  CItemData::FieldBits m_bsFields, m_last_bsFields;
+
+  CItemData::FieldBits m_last_bsFields;
+  CItemAtt::AttFieldBits m_last_bsAttFields;
+
   std::wstring m_subgroup_name, m_last_subgroup_name;
+
   bool m_subgroup_bset, m_last_subgroup_bset;
   int m_subgroup_object, m_last_subgroup_object;
   int m_subgroup_function, m_last_subgroup_function;

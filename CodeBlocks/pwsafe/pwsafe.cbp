@@ -15,14 +15,17 @@
 				<Option parameters="-s" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
 					<Add option="-Wcast-align" />
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
@@ -201,13 +204,17 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
 					<Add option="-Wcast-align" />
+					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
@@ -448,7 +455,7 @@
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<ExtraCommands>
-			<Add before="../../Misc/mkversion.pl ../../src/ui/wxWidgets/version.in ../../src/ui/wxWidgets/version.h" />
+			<Add before="../cb-ver-update" />
 		</ExtraCommands>
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.h" />
@@ -499,6 +506,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SystemTray.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SystemTray.h" />
 		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
+		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.h" />
 		<Unit filename="../../src/ui/wxWidgets/ViewReport.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ViewReport.h" />
 		<Unit filename="../../src/ui/wxWidgets/YubiMixin.cpp">

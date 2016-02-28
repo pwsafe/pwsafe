@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -54,54 +54,56 @@ class PasswordSafeSearch;
 #define ID_EXPORTMENU 10013
 #define ID_EXPORT2OLD1XFORMAT 10013
 #define ID_EXPORT2V2FORMAT 10014
-#define ID_EXPORT2PLAINTEXT 10015
-#define ID_EXPORT2XML 10016
-#define ID_IMPORTMENU 10017
-#define ID_IMPORT_PLAINTEXT 10018
-#define ID_IMPORT_XML 10019
-#define ID_IMPORT_KEEPASS 10020
-#define ID_MERGE 10021
-#define ID_COMPARE 10022
-#define ID_EDIT 10023
-#define ID_RENAME 10024
-#define ID_DUPLICATEENTRY 10025
-#define ID_ADDGROUP 10026
-#define ID_CLEARCLIPBOARD 10027
-#define ID_COPYPASSWORD 10028
-#define ID_COPYUSERNAME 10029
-#define ID_COPYNOTESFLD 10030
-#define ID_COPYURL 10031
-#define ID_BROWSEURL 10032
-#define ID_AUTOTYPE 10033
-#define ID_GOTOBASEENTRY 10034
-#define ID_LIST_VIEW 10035
-#define ID_TREE_VIEW 10036
-#define ID_SHOWHIDE_TOOLBAR 10037
-#define ID_SHOWHIDE_DRAGBAR 10038
-#define ID_EXPANDALL 10039
-#define ID_COLLAPSEALL 10040
-#define ID_FILTERMENU 10041
-#define ID_EDITFILTER 10042
-#define ID_APPLYFILTER 10043
-#define ID_MANAGEFILTERS 10044
-#define ID_CUSTOMIZETOOLBAR 10045
-#define ID_CHANGEFONTMENU 10046
-#define ID_CHANGETREEFONT 10047
-#define ID_CHANGEPSWDFONT 10048
-#define ID_REPORTSMENU 10049
-#define ID_REPORT_COMPARE 10050
-#define ID_REPORT_FIND 10051
-#define ID_REPORT_IMPORTTEXT 10052
-#define ID_REPORT_IMPORTXML 10053
-#define ID_REPORT_MERGE 10054
-#define ID_REPORT_VALIDATE 10055
-#define ID_CHANGECOMBO 10056
-#define ID_BACKUP 10057
-#define ID_RESTORE 10058
+#define ID_EXPORT2V4FORMAT 10015
+#define ID_EXPORT2PLAINTEXT 10016
+#define ID_EXPORT2XML 10017
+#define ID_IMPORTMENU 10018
+#define ID_IMPORT_PLAINTEXT 10019
+#define ID_IMPORT_XML 10020
+#define ID_IMPORT_KEEPASS 10021
+#define ID_MERGE 10022
+#define ID_COMPARE 10023
+#define ID_EDIT 10024
+#define ID_RENAME 10025
+#define ID_DUPLICATEENTRY 10026
+#define ID_ADDGROUP 10027
+#define ID_CLEARCLIPBOARD 10028
+#define ID_COPYPASSWORD 10029
+#define ID_COPYUSERNAME 10030
+#define ID_COPYNOTESFLD 10031
+#define ID_COPYURL 10032
+#define ID_BROWSEURL 10033
+#define ID_AUTOTYPE 10034
+#define ID_GOTOBASEENTRY 10035
+#define ID_LIST_VIEW 10036
+#define ID_TREE_VIEW 10037
+#define ID_SHOWHIDE_TOOLBAR 10038
+#define ID_SHOWHIDE_DRAGBAR 10039
+#define ID_EXPANDALL 10040
+#define ID_COLLAPSEALL 10041
+#define ID_FILTERMENU 10042
+#define ID_EDITFILTER 10043
+#define ID_APPLYFILTER 10044
+#define ID_MANAGEFILTERS 10045
+#define ID_CUSTOMIZETOOLBAR 10046
+#define ID_CHANGEFONTMENU 10047
+#define ID_CHANGETREEFONT 10048
+#define ID_CHANGEPSWDFONT 10049
+#define ID_REPORTSMENU 10050
+#define ID_REPORT_COMPARE 10051
+#define ID_REPORT_FIND 10052
+#define ID_REPORT_IMPORTTEXT 10053
+#define ID_REPORT_IMPORTXML 10054
+#define ID_REPORT_MERGE 10055
+#define ID_REPORT_VALIDATE 10056
+#define ID_CHANGECOMBO 10057
+#define ID_BACKUP 10058
+#define ID_RESTORE 10059
 #define ID_PWDPOLSM 10215
 #define ID_YUBIKEY_MNG 10010
 #define ID_LANGUAGEMENU 10011
-#define ID_MENUITEM 10012
+#define ID_VISITWEBSITE 10012
+#define ID_MRUMENU 10061
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
 #define SYMBOL_PASSWORDSAFEFRAME_IDNAME ID_PASSWORDSAFEFRAME
@@ -194,67 +196,67 @@ public:
   ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
-  void OnCloseWindow( wxCloseEvent& evt);
+  void OnCloseWindow( wxCloseEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
-  void OnNewClick( wxCommandEvent& evt);
+  void OnNewClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
-  void OnOpenClick( wxCommandEvent& evt);
+  void OnOpenClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
-  void OnCloseClick( wxCommandEvent& evt);
+  void OnCloseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
-  void OnSaveClick( wxCommandEvent& evt);
+  void OnSaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVEAS
-  void OnSaveAsClick( wxCommandEvent& evt);
+  void OnSaveAsClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
-  void OnPropertiesClick( wxCommandEvent& evt);
+  void OnPropertiesClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
-  void OnExitClick( wxCommandEvent& evt);
+  void OnExitClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
-  void OnAddClick( wxCommandEvent& evt);
+  void OnAddClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
-  void OnEditClick( wxCommandEvent& evt);
+  void OnEditClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
-  void OnDeleteClick( wxCommandEvent& evt);
+  void OnDeleteClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
-  void OnClearclipboardClick( wxCommandEvent& evt);
+  void OnClearclipboardClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
-  void OnCopypasswordClick( wxCommandEvent& evt);
+  void OnCopypasswordClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
-  void OnCopyusernameClick( wxCommandEvent& evt);
+  void OnCopyusernameClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
-  void OnCopynotesfldClick( wxCommandEvent& evt);
+  void OnCopynotesfldClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
-  void OnCopyurlClick( wxCommandEvent& evt);
+  void OnCopyurlClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
-  void OnListViewClick( wxCommandEvent& evt);
+  void OnListViewClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
-  void OnTreeViewClick( wxCommandEvent& evt);
+  void OnTreeViewClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
-  void OnChangePasswdClick( wxCommandEvent& evt);
+  void OnChangePasswdClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PREFERENCES
-  void OnPreferencesClick( wxCommandEvent& evt);
+  void OnPreferencesClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
-  void OnPwdPolsMClick( wxCommandEvent& evt);
+  void OnPwdPolsMClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LANGUAGEMENU
   void OnLanguageClick( wxCommandEvent& evt);
@@ -265,9 +267,7 @@ public:
 #ifndef NO_YUBI
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_YUBIKEY_MNG
   void OnYubikeyMngClick( wxCommandEvent& event );
-
-#endif
-
+#endif /* NO_YUBI */
 ////@end PasswordSafeFrame event handler declarations
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
   void OnFindClick( wxCommandEvent& evt);
@@ -320,7 +320,7 @@ public:
   /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_KEEPASS
   void OnImportKeePass(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for EXPORT2OLD1XFORMAT & ID_EXPORT2V2FORMAT
+  /// .wxEVT_COMMAND_MENU_SELECTED event handler for EXPORT2OLD1XFORMAT & ID_EXPORT2V[23]FORMAT
   void OnExportVx(wxCommandEvent& evt);
 
   /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPORT2PLAINTEXT
@@ -374,6 +374,8 @@ public:
 
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
+  
+  void OnVisitWebsite(wxCommandEvent&);
 
 ////@begin PasswordSafeFrame member function declarations
 
@@ -436,6 +438,8 @@ public:
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
   void SetTrayStatus(bool locked);
+  void SetTrayClosed();
+  void ShowTrayIcon();
 
   ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
@@ -506,6 +510,10 @@ public:
   void DoBrowse(CItemData &item, bool bAutotype);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
+
+  // These 3 fns are called via wxEvtHandler::CallAfter in sequence for autotyping
+  void MinimizeOrHideBeforeAutotyping();
+  void MaybeRestoreUI(bool autotype_err, wxString autotype_err_msg);
 
   template <class ExportType>
   void DoExportText();

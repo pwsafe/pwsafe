@@ -1,0 +1,5 @@
+Password Safe is a password database utility. Like many other such
+products, commercial and otherwise, it stores your passwords in an
+encrypted file, allowing you to remember only one password (the "safe
+combination"), instead of all the username/password combinations that
+you use.

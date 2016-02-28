@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,38 +24,6 @@ IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 DboxMain *CPWDialog::GetMainDlg() const
 {
   return app.GetMainDlg();
-}
-
-void CPWDialog::FixBitmapBackground(CBitmap &bm)
-{
-  // Change bitmap's {192,192,192} pixels
-  // to current flavor of the month default background
-
-  // Get how many pixels in the bitmap
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  BITMAP bmInfo;
-  bm.GetBitmap(&bmInfo);
-
-  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
-
-  // get a pointer to the pixels
-  DIBSECTION ds;
-  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
-
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  ASSERT(pixels != NULL);
-
-  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
-                                        GetGValue(crCOLOR_3DFACE),
-                                        GetRValue(crCOLOR_3DFACE)};
-
-  for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue  == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed   == 192) {
-      pixels[i] = newbkgrndColourRGB;
-    }
-  }
 }
 
 void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)

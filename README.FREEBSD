@@ -1,0 +1,23 @@
+= Introduction =
+The FreeBSD port of PasswordSafe is currently in BETA.
+This means that (1) you should take care to keep copies of the
+database to protect against possible loss of data due to bugs, and (2)
+there are several unimplemented features. Nonetheless, we feel that
+this is good enough to release as an early beta to gather feedback
+from a wider audience.
+
+= Supported =
+This has only been tested on FreeBSD 10.2 amd64 with wx 3.0 so far.
+== Known not working ==
+ * The help system
+ * Debug builds
+
+= Installation =
+ 1. Install x11-toolkits/wxgtk30 and devel/gmake-lite
+ 2. Run `NO_YUBI=1 gmake release
+ 3. Your `pwsafe` binary is in `src/ui/wxWidgets/GCCUnicodeRelease`
+ 4. At start you get a warning about the help system
+
+= Reporting bugs =
+Please submit bugs via https://github.com/pwsafe/pwsafe
+Make sure you include output of `uname -a`

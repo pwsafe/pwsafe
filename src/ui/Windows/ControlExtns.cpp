@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -451,6 +451,7 @@ BEGIN_MESSAGE_MAP(CRichEditExtn, CRichEditCtrl)
   ON_WM_CONTEXTMENU()
   ON_WM_LBUTTONDOWN()
   ON_WM_SETCURSOR()
+  ON_WM_LBUTTONDBLCLK()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -469,6 +470,24 @@ void CRichEditExtn::SetSel(long nStartChar, long nEndChar)
   m_nStartChar = nStartChar;
   m_nEndChar = nEndChar;
   CRichEditCtrl::SetSel(nStartChar, nEndChar);
+}
+
+void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+  long nStartChar, nEndChar;
+
+  // Do what ever would normally happen
+  CRichEditCtrl::OnLButtonDblClk(nFlags, point);
+
+  // Get selection
+  CRichEditCtrl::GetSel(nStartChar, nEndChar);
+
+  // Check if this included a trailing whitespace and, if so, trim it
+  CString csTemp = GetSelText();
+  csTemp.TrimRight();
+
+  // Reselect without trailing whitespace
+  SetSel(nStartChar, nStartChar + csTemp.GetLength());
 }
 
 void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
@@ -847,7 +866,8 @@ LRESULT CListBoxExtn::OnMouseLeave(WPARAM, LPARAM)
 // CComboBoxExtn
 
 CComboBoxExtn::CComboBoxExtn()
- : m_bUseToolTips(false)
+  : m_bUseToolTips(false), m_nPenStyle(PS_SOLID), m_crColor(RGB(64, 64, 64)),
+  m_nBottomMargin(2), m_nSepWidth(1), m_nHorizontalMargin(2)
 {
 }
 
@@ -883,6 +903,26 @@ HBRUSH CComboBoxExtn::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         m_listbox.ActivateToolTips();
       }
     }
+
+    CRect rc;
+    int nIndex, n = m_listbox.GetCount();
+
+    CPen pen(m_nPenStyle, m_nSepWidth, m_crColor), *pOldPen;
+    pOldPen = pDC->SelectObject(&pen);
+
+    for (size_t i = 0; i < m_vSeparators.size(); i++) {
+      nIndex = m_vSeparators[i];
+      if (nIndex < 0)
+        nIndex += n - 1;
+
+      if (nIndex < n - 1) {
+        m_listbox.GetItemRect(nIndex, &rc);
+        pDC->MoveTo(rc.left + m_nHorizontalMargin, rc.bottom - m_nBottomMargin);
+        pDC->LineTo(rc.right - m_nHorizontalMargin, rc.bottom - m_nBottomMargin);
+      }
+    }
+
+    pDC->SelectObject(pOldPen);
   }
 
   return hbr;
@@ -902,7 +942,13 @@ void CComboBoxExtn::OnDestroy()
 void CComboBoxExtn::ChangeColour()
 {
   m_edit.ChangeColour();
-  m_listbox.ChangeColour();
+
+  // Disable associated ListBox background colour, since although the
+  // background text colour is set correctly, the unused portion of
+  // any text line is not set until the mouse moves over it.
+  // Re-enable if/when this is solved (probably by making ownerdraw!)
+
+  // m_listbox.ChangeColour();
 }
 
 void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
@@ -910,6 +956,25 @@ void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
   m_bUseToolTips = true;
   m_vtooltips = vtooltips;
 }
+
+void CComboBoxExtn::SetSeparator(int iSep)
+{
+  if (!m_vSeparators.size())
+    AdjustItemHeight();
+
+  m_vSeparators.push_back(iSep);
+}
+
+void CComboBoxExtn::SetSeparator()
+{
+  SetSeparator(GetCount() - 1);
+}
+
+void CComboBoxExtn::AdjustItemHeight(int nInc)
+{
+  SetItemHeight(0, GetItemHeight(0) + nInc);
+}
+
 
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't
@@ -1343,4 +1408,43 @@ void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
   // Draw button image transparently
   ::TransparentBlt(dc.GetSafeHdc(), 0, 0, bmw, bmh, memDC.GetSafeHdc(), 0, 0, bmw, bmh, m_cfMAsk);
+}
+
+void FixBitmapBackground(CBitmap &bm)
+{
+  // Change bitmap's {192,192,192} pixels
+  // to current flavor of the month default background
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  int rc = bm.GetBitmap(&bmInfo);
+
+  if (rc == 0) {
+    ASSERT(0);
+    return;
+  }
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  if (pixels == NULL) {
+    ASSERT(0);
+    return;
+  }
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
 }

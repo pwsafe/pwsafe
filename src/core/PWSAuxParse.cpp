@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -78,7 +78,8 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
-                                       const CItemData *pci, bool &bAutoType,
+                                       const CItemData *pci, const CItemData *pbci,
+                                       bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
                                        StringX::size_type &st_column,
                                        bool &bURLSpecial)
@@ -147,7 +148,12 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += pci->GetUser();
     } else
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
-      sxretval += pci->GetPassword();
+      if (pci->IsAlias()) {
+        ASSERT(pbci != NULL);
+        sxretval += pbci->GetPassword();
+      } else {
+        sxretval += pci->GetPassword();
+      }
     } else
       if (st_rctoken.sxname == _T("e") || st_rctoken.sxname == _T("email")) {
       sxretval += pci->GetEmail();
@@ -434,7 +440,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  // Set up all the data (a shortcut entry will change all of them!)
+  // Set up all the data (a shortcut entry will change some of them!)
   StringX sxgroup = ci.GetGroup();
   StringX sxtitle = ci.GetTitle();
   StringX sxuser = ci.GetUser();
@@ -454,9 +460,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
   } else if (ci.IsShortcut()) {
     const CItemData *pbci = core.GetBaseEntry(&ci);
     if (pbci != NULL) {
-      sxgroup = pbci->GetGroup();
-      sxtitle = pbci->GetTitle();
-      sxuser = pbci->GetUser();
+      // Use shortcut's group, title and username [BR1124],
+      // pick up the rest from base
       sxpwd = pbci->GetPassword();
       sxnotes = pbci->GetNotes();
       sxurl = pbci->GetURL();

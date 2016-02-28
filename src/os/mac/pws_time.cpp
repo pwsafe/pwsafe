@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,9 +13,9 @@
 #include "pws_time.h"
 #include "../utf8conv.h"
 
-struct tm *gmtime64_r(const __time64_t *timep, struct tm *result)
+int gmtime64_r(const __time64_t *timep, struct tm *result)
 {
-  return gmtime_r((const time_t *)timep, result);
+  return gmtime_r((const time_t *)timep, result) == 0;
 }
 
 int pws_os::asctime(TCHAR *s, size_t, tm const *t)

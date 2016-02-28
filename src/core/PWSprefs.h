@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -132,7 +132,7 @@ public:
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
-    DlgOrientation,
+    DlgOrientation, TimedTaskChainDelay,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -140,7 +140,7 @@ public:
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
-    LanguageFile, DefaultSymbols, NotesFont, NotesSampleText,
+    LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

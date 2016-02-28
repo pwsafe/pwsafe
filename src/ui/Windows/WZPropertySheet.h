@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -116,6 +116,11 @@ public:
   void SetNumProcessed(const int numProcessed) {m_numProcessed = numProcessed;}
   int GetNumProcessed() {return m_numProcessed;}
 
+  // This is needed for Export to DB
+  void SetDBVersion(const PWSfile::VERSION current_ver)
+  {DB_version = current_ver;}
+  PWSfile::VERSION GetDBVersion() {return DB_version;}
+
   BOOL PreTranslateMessage(MSG* pMsg);
 
   // Following override to reset idle timeout on any event
@@ -139,6 +144,8 @@ private:
   wchar_t m_delimiter;
   bool m_bAdvanced, m_bCompleted;
   int m_numProcessed;
+
+  PWSfile::VERSION DB_version;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

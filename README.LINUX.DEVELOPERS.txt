@@ -1,10 +1,13 @@
 PasswordSafe is being ported to Linux using the wxWidgets user
 interface library. Following are notes for programmers wishing to
 build the Linux version. Currently, PasswordSafe is being built on
-Debian-based platforms (Debian and Ubuntu), so requirements are
-described in terms of .deb packages. If someone builds pwsafe on
-another distro, please update this document with the corresponding
-package names (e.g., rpm).
+Debian-based platforms (Debian and Ubuntu), and Fedora, so
+requirements are described in terms of .deb and .rpmpackages.
+
+The source code can be downloaded from
+https://github.com/pwsafe/pwsafe/archive/master.zip
+or cloned via git:
+git clone https://github.com/pwsafe/pwsafe.git
 
 For all Linux distros, your version of gcc/g++ needs to be 4.7 or higher
 because gcc 4.6 doesn't support the C++11 standard.  It does support the
@@ -12,29 +15,35 @@ draft C++0x standard, but our makefiles have -std=c++11, which needs 4.7+
 
 Even 4.7 doesn't seem to support the C++11 standard fully, so if you get
 compilation errors, try using a more recent version of gcc, if possible.
-Its best to try to build pwsafe on a recent version of Linux than retrofit
-a new gcc on an old distro.
+It's best to try to build pwsafe on a recent version of Linux than
+retrofit a new gcc on an old distro.
 
 Here are the packages/tools required for building the Linux version
 under Debian/Ubuntu:
+cmake (See note 1 below)
 fakeroot
 g++
 gettext
 git
+libgtest-dev
 libuuid1
-libwxgtk3.0-dbg (See note 1 below)
-libwxgtk3.0-dev (See note 1 below)
+libwxgtk3.0-dbg (See note 2 below)
+libwxgtk3.0-dev (See note 2 below)
 libxerces-c-dev
 libxt-dev
 libxtst-dev
-libykpers-1-dev (see note 2 below)
+libykpers-1-dev (see note 3 below)
 libyubikey-dev
 make
 pkg-config
 uuid-dev
 zip
 
+The script Misc/setup-deb-dev-env.sh can be run (sudo or as root) to
+install these and setup the gtest library.
+
 For Fedora:
+cmake (See note 1 below)
 gcc-c++
 git
 libXt-devel
@@ -44,7 +53,7 @@ libyubikey-devel
 make
 wxGTK3-devel
 xerces-c-devel
-ykpers-devel (see note 2 below)
+ykpers-devel (see note 3 below)
 
 To compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,
@@ -53,7 +62,16 @@ $ NO_YUBI=1 make
 development packages)
 
 --------------------
-Note #1 - wxWidgets 3.0
+Note #1 - cmake
+As of Dec. 2015 PasswordSafe can be built on Linux platforms using
+cmake, e.g., mkdir build; cd build; cmake ..; make
+Currently, this is in addition to the 'standard' toplevel make. In the
+long term, it will probably replace it.
+The cmake build can be configured in the standard manner, e.g, via
+cmake-gui.
+
+--------------------
+Note #2 - wxWidgets 3.0
 
 Some distributions still don't provide wxWidgets 3.0. In this case,
 you can either:
@@ -75,8 +93,7 @@ distribution, not requiring users to get the wx3 package, and avoiding
 potential conflicts with 2.8.
 
 --------------------
-
-Note #2 - libykpers-1/ykpers-devel:
+Note #3 - libykpers-1/ykpers-devel:
 If your distro doesn't have the development version of this you will
 need to build and install it from the source: 
 https://github.com/Yubico/yubikey-personalization.git
@@ -119,6 +136,3 @@ directory, i.e. where Makefile.linux is present.
 Install the Debian package
 ==========================
 * sudo dpkg -i Releases/passwordsafe-debian-<version>.<arch>.deb
-
-64 bit status:
-64 bit build appear functional and stable, but have not bee extensibly tested.

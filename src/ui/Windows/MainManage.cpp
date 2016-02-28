@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -118,7 +118,7 @@ int DboxMain::BackupSafe()
       return PWScore::USER_CANCEL;
   }
 
-  rc = m_core.WriteFile(tempname, false);
+  rc = m_core.WriteFile(tempname, m_core.GetReadFileVersion(), false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
     cs_temp.Format(IDS_CANTOPENWRITING, tempname);
@@ -695,15 +695,15 @@ void DboxMain::OnManagePasswordPolicies()
 
       // Set up Command to update string in database
       if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-          Command *pcmd1 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-          pmulticmds->Add(pcmd1);
+        Command *pcmd_undo = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd_undo);
       }
     }
 
     // Now update named preferences
-    Command *pcmd2 = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
+    Command *pcmd = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
                              DBPolicyNamesCommand::NP_REPLACEALL);
-    pmulticmds->Add(pcmd2);
+    pmulticmds->Add(pcmd);
     Execute(pmulticmds);
 
     // Update Minidump user streams

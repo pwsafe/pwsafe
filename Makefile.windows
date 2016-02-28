@@ -8,8 +8,8 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM := 3.37
-RELEASE_SPECIAL :=pre
+RELEASENUM := 3.38.2
+RELEASE_SPECIAL := 
 
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -42,6 +42,7 @@ MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
 WIXDIR := /cygdrive/c/local/WIX
 CANDLE := $(WIXDIR)/candle.exe
 LIGHT := $(WIXDIR)/light.exe
+SIGNTOOL := /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Kits/8.1/bin/x64/signtool.exe
 
 RELTAG = V$(subst .,_,$(RELEASENAME))
 
@@ -101,8 +102,8 @@ endif
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe.sig -f pwsafe-$(RELEASENAME).exe.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi -f pwsafe-$(RELEASENAME).msi; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi.sig -f pwsafe-$(RELEASENAME).msi.sig; \
-		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(BINRELNAME).zip -f pwsafe-$(BINRELNAME).zip; \
-		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(BINRELNAME).zip.sig -f pwsafe-$(BINRELNAME).zip.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip -f $(BINRELNAME).zip; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip.sig -f $(BINRELNAME).zip.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
 			-f pwsafe-$(RELEASENAME)-map+pdb.zip)
 	(cd docs; $(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n ReleaseNotes.txt -f ReleaseNotes.txt)
@@ -139,6 +140,7 @@ installables: nsis msi
 
 nsis:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.1.8" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.5.2_1" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1616,6 +1616,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>--do-tall, --do-wide, --do-auto</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T161713Z" creationid="pm_kan" creationdate="20151004T161713Z">
+        <seg>--do-tall, --do-wide, --do-auto</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>--novalidate</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T170217Z">
@@ -1792,10 +1800,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Example: The following can be used where the bank account number (12345) must be entered before the user and password:</seg>
+        <seg>Example 1: The following can be used where the bank account number (12345) must be entered before the user and password:</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T114648Z">
-        <seg>Пример. Если перед вводом имени и пароля нужно ввести номер счёта (12345), можно использовать следующую последовательность:</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160648Z" creationid="pm_kan" creationdate="20151004T160624Z">
+        <seg>Пример 1. Если перед вводом имени и пароля нужно ввести номер счёта (12345), можно использовать следующую последовательность:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Example 2: The following sequence has been suggested by a user as it should clear the username field first before username and password autotype begins.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160840Z" creationid="pm_kan" creationdate="20151004T160634Z">
+        <seg>Пример 2. Указанная ниже последовательность была предложена одним из пользователей для очистки поля для ввода имени пользователя перед автонабором.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2457,6 +2473,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>\c (Linux only) generates the key events that cause a platform-specific Select-All command.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T154423Z" creationid="pm_kan" creationdate="20151004T154423Z">
+        <seg>\c (только для Linux) генерирует платформно-зависимое клавиатурное событие «Выделить всё».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>\dNNN sets the delay between characters to NNN milliseconds, instead of 10 (the default).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T114258Z">
@@ -2477,6 +2501,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T091318Z">
         <seg>\i заменяется на заголовок данного элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>\j (Linux only) starts generating independent key events for modifier keys like ALT, SHIFT, etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155832Z" creationid="pm_kan" creationdate="20151004T155516Z">
+        <seg>\j (только для Linux) начать генерацию отдельных событий для клавиш-модификаторов (Alt, Shift, и пр.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>\j and \k could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160238Z" creationid="pm_kan" creationdate="20151004T160238Z">
+        <seg>\j и \k могут быть полезны в случае, если вы заметили, что автонабор не учитывает регистр текста или не вводит символы из «верхнего ряда» (вводит «3» вместо «#»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>\k (Linux only) stops generating independent keystrokes for modifier keys and only simulates the modifications (like making things uppercase) with flags to main key events.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155858Z" creationid="pm_kan" creationdate="20151004T155816Z">
+        <seg>\k (только для Linux) завершить генерацию отдельных событий для клавиш-модификаторов и и начать имитировать модификации (например, изменение регистра букв) с помощью флагов для основных клавиатурный событий.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2857,6 +2905,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If you find that AutoType does not work properly on a particular web site, try this code at the beginning of the AutoType command field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T154213Z" creationid="pm_kan" creationdate="20151004T154051Z">
+        <seg>Если вы заметили, что автонабор работает некорректно с каким-то сайтом, попробуйте добавить эту ключевую последовательность в поле автонабора.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>All codes not listed are copied across as-is.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T200007Z">
@@ -2977,10 +3033,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Password Safe can work with a YubiKey device to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase), and tsomething you have (the YubiKey device).</seg>
+        <seg>Password Safe can work with a YubiKey device to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase), and something you have (the YubiKey device).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114810Z" creationid="pm_kan" creationdate="20140113T114810Z">
-        <seg>Password Safe может использовать устройство YubiKey для обеспечения «двуфакторной аутентификации», то есть для того, чтобы ваш контейнер был защищён с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163317Z" creationid="pm_kan" creationdate="20151004T163317Z">
+        <seg>Password Safe может использовать устройство YubiKey для обеспечения «двуфакторной аутентификации», в этом случае ваш контейнер защищается с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
       </tuv>
     </tu>
     <tu>
@@ -4497,6 +4553,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>By default, Password Safe will check the screen dimensions and choose tall or wide versions of the larger dialog screens.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T162518Z" creationid="pm_kan" creationdate="20151004T162518Z">
+        <seg>По умолчанию Password Safe проверяет разрешение экрана и выбирает, какой вариант («высокий» или «широкий») использовать для больших окон.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>By default, all fields except the Password field are searched.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T202827Z">
@@ -5796,7 +5860,7 @@
       <tuv lang="EN-US">
         <seg>Deleting this copy after use is not sufficient for making it inaccesible to a determined attacker and in effect bypasses the security of the program.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T152607Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T164759Z">
         <seg>Простого удаления файла после использования не достаточно для предотвращения доступа злоумышленников к его содержимому, что может быть использовано для обхода защиты, предоставляемой Password Safe.</seg>
       </tuv>
     </tu>
@@ -5966,6 +6030,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T124231Z">
         <seg>Будет открыт данный раздел справки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>DlgOrientation</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163650Z" creationid="pm_kan" creationdate="20151004T163650Z">
+        <seg>DlgOrientation</seg>
       </tuv>
     </tu>
     <tu>
@@ -7034,10 +7106,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>For maximum security, we recommend that your database be protected both by your YubiKey and a Safe Combination (this is known as ).</seg>
+        <seg>For maximum security, we recommend that your database be protected both by your YubiKey and a Safe Combination (this is known as two-factor authentication).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T115401Z" creationid="pm_kan" creationdate="20140113T115401Z">
-        <seg>Для большей безопасности мы рекомендуем, чтобы одновременно использовались оба способа: YubiKey и мастер пароль.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163552Z" creationid="pm_kan" creationdate="20151004T163552Z">
+        <seg>Для большей безопасности мы рекомендуем, чтобы одновременно использовались оба способа: YubiKey и мастер пароль (так называемая «двухфакторная аутентификация»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -7086,6 +7158,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T142539Z">
         <seg>Для экспорта в форматы предыдущих версий Password Safe просто выберите нужный формат и укажите имя контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For some sites, you might also need to autotype slowly, for which put \d100 at the begining of your autotype string.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155249Z" creationid="pm_kan" creationdate="20151004T155249Z">
+        <seg>Для сайтов, которым требуется замедленный автонабор, добавьте \d100 в начале строки с параметрами автонабора.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7182,6 +7262,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T091249Z">
         <seg>Создать пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Generating a \c at the start of autotyping inside a field (at the very beginning of autotype string, or just after a \t) ensures that the autofill'ed text gets replaced by the autotype'd text.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155025Z" creationid="pm_kan" creationdate="20151004T155025Z">
+        <seg>Добавление \c в начале строки автонабора (или сразу после \t) гарантирует, что текст, подставленный браузером, будет заменён текстом автонабора.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7430,6 +7518,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T190158Z">
         <seg>Количество паролей, сохраняемых в истории</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>How to choose wide or tall dialog screens: 0 - automatically (default), 1 - force tall, 2 - force wide.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T165210Z" creationid="pm_kan" creationdate="20151004T163813Z">
+        <seg>Выбор между «широкими» и «высокими» диалогами: 0 — автоматически (значение по умолчанию), 1 — всегда использовать «высокие», 2 — всегда использовать «широкие».</seg>
       </tuv>
     </tu>
     <tu>
@@ -8442,14 +8538,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>If you find that AutoType does not work properly on a particular web site, try this code in the AutoType command field.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T162107Z">
-        <seg>Если вы заметили, что автонабор работает некорректно на каком-то из сайтов, попробуйте добавить данную ключевую последовательность в автонабор для этого элемента.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>If you have a password associated with this database as well, enter it in the Old Safe Combination field</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T114234Z" creationid="pm_kan" creationdate="20140113T114234Z">
@@ -9126,6 +9214,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T220942Z">
         <seg>По окончании срока действия пользователь должен самостоятельно изменить пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>It is useful when autotype conflicts with browser's autofill, where the two texts combine instead of autotype'd text replacing the auto-filled text.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T154658Z" creationid="pm_kan" creationdate="20151004T154658Z">
+        <seg>Может быть полезно, если автонабор конфликтует с функцией автозаполнения в браузере (например, когда текст, вводимый посредством автонабора, добавляется к тому, что был подставлен браузером).</seg>
       </tuv>
     </tu>
     <tu>
@@ -10058,6 +10154,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Non-empty username fields occur all the time.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T164947Z" creationid="pm_kan" creationdate="20151004T161213Z">
+        <seg>Предзаполненные поля для ввода имени пользователя встречаются довольно часто.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Non-security-related preferences are kept in a configuration file, pwsafe.cfg.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T181525Z">
@@ -10326,6 +10430,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140122T085404Z" creationid="pm_kan" creationdate="20140122T085404Z">
         <seg>Данное поле предназначено для хранения E-Mail, связанного с сайтом, например, адреса техподдержки support@myvendor.com.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that this sets a &gt;preference, so it's enough to use this flag once on a given machine.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163108Z" creationid="pm_kan" creationdate="20151004T163108Z">
+        <seg>Эти три параметра изменяют настройки приложения, поэтому, для установки предпочтений на данной машине достаточно запустить Password Safe с требуемым параметром один раз.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12989,6 +13101,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>So your autotype string could look like</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155323Z" creationid="pm_kan" creationdate="20151004T155323Z">
+        <seg>В результате, строка автонабора может получиться такой</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>So, if there is only one entry in the database with title 't', then [t] would be sufficient - since title is mandatory and only one item is given, it is assumed to be the title.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T160929Z">
@@ -13029,6 +13149,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Some sites remember the username even when the user does not want it to or user forgets to clear the don't remember username and, because of browser cookies, it is remembered anyway, or if login fails for whatever reason on the first attempt the username would still remain.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T164502Z" creationid="pm_kan" creationdate="20151004T161600Z">
+        <seg>Некоторые сайты запоминают имя пользователя, даже если он об этом не просил; пользователь мог забыть поставить флажок «не запоминать имя пользователя»; имя могло быть запомнено и подставлено браузером; или, если предыдущая попытка входа не удалась, поле может содержать ранее введённое имя.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Some validation is always required e.g. uniqueness of the entry's ID and the group/title/username combination.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T170716Z">
@@ -13057,6 +13185,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T193156Z">
         <seg>Параметры командной строки для альтернативного браузера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Specifying --do-tall or --do-wide forces the choice, and --do-auto resets the system to use its internal logic.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T162705Z" creationid="pm_kan" creationdate="20151004T162705Z">
+        <seg>--do-tall принудительно устанавливает «высокий» вариант, --do-wide — «широкий», а --do-auto сбрасывает предпочтения и возвращает автоматический выбор.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13805,6 +13941,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The default autotype sequence in Password Safe is \u\t\p\n.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160328Z" creationid="pm_kan" creationdate="20151004T160328Z">
+        <seg>По умолчанию для автонабора Password Safe использует последовательность \u\t\p\n.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The default is '»' [Alt+0187], which may be overridden if needed.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162228Z">
@@ -14279,8 +14423,8 @@
       <tuv lang="EN-US">
         <seg>The latest program updates, documentation, and news can be located at http://pwsafe.org.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T192718Z">
-        <seg>Последние обновления, документация и новости расположены на сайте http://pwsafe.org.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T153837Z" creationid="pm_kan" creationdate="20151004T153837Z">
+        <seg>Последние обновления, документация и новости расположены на сайте https://pwsafe.org.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15061,6 +15205,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This autotype sequence should ensure that the user doesn't have to clear a non-empty username field first.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T161653Z" creationid="pm_kan" creationdate="20151004T161653Z">
+        <seg>Указанная ниже последовательность избавляет пользователя от необходимости вручную очищать поле перед использованием автонабора.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This can be as simple as a sealed envelope in a drawer or safe-deposit box, or a more elaborate mechanism such as splitting the master password and giving different parts to different parties.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20111002T150241Z">
@@ -15137,6 +15289,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T124617Z">
         <seg>Это могут быть Flash-диски, съёмные жёсткие диски, сетевые ресурсы, CD(DVD)-диски и прочие устройства, предназначенные для хранения данных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This default can be changed via the Manage/Options menu (Misc. tab).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160537Z" creationid="pm_kan" creationdate="20151004T160537Z">
+        <seg>Действие по умолчанию может быть изменено на вкладке «Управление→Настройки→Разное».</seg>
       </tuv>
     </tu>
     <tu>
@@ -17287,9 +17447,9 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>When you clisk on the Yubikey button, the "Click, then activate your YubiKey" will be replaced by a progress bar indicating the remaining time you have to activate your YubiKey (by touching the flashing green light on the device).</seg>
+        <seg>When you click on the Yubikey button, the "Click, then activate your YubiKey" will be replaced by a progress bar indicating the remaining time you have to activate your YubiKey (by touching the flashing green light on the device).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132256Z" creationid="pm_kan" creationdate="20140113T132256Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163637Z" creationid="pm_kan" creationdate="20151004T163637Z">
         <seg>После нажатия на кнопку с надписью YubiKey, текст «Нажмите на кнопку и коснитесь YubiKey» изменится на индикатор, показывающий оставшееся время, в течение которого вы должны активировать YubiKey прикоснувшись к «кнопке» на устройстве (мигающий зелёный огонёк).</seg>
       </tuv>
     </tu>
@@ -18007,6 +18167,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>\d100\c\u\t\c\p\n</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T155331Z" creationid="pm_kan" creationdate="20151004T155331Z">
+        <seg>\d100\c\u\t\c\p\n</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>\dX</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T200505Z">
@@ -18059,6 +18227,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T200104Z">
         <seg>\t</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>\t\s\b\u\t\p\n</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T161654Z" creationid="pm_kan" creationdate="20151004T161654Z">
+        <seg>\t\s\b\u\t\p\n</seg>
       </tuv>
     </tu>
     <tu>
@@ -18775,22 +18951,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>http://pwsafe.org</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T182744Z">
-        <seg>http://pwsafe.org</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>http://pwsafe.org/</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181915Z">
-        <seg>http://pwsafe.org/</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>http://saxon.sourceforge.net/</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T185425Z">
@@ -18899,6 +19059,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T105048Z" creationid="pm_kan" creationdate="20140113T105048Z">
         <seg>http://www.yubico.com/yubikey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://pwsafe.org</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T182744Z">
+        <seg>https://pwsafe.org</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://pwsafe.org/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T181915Z">
+        <seg>https://pwsafe.org/</seg>
       </tuv>
     </tu>
     <tu>

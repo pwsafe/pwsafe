@@ -139,6 +139,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr "'Csoport'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr "'Billentyűparancs'"
@@ -272,6 +276,10 @@ msgstr "! Szerkesztés külső programmal"
 #, c-format
 msgid "# characters: %d"
 msgstr "Karakterek száma: %d"
+
+#. Resource IDs: (1198)
+msgid "#attachments"
+msgstr ""
 
 #. Resource IDs: (1456)
 msgid "#description"
@@ -432,6 +440,11 @@ msgstr "%ls\n\nA konfigurációs fájl nem lesz használva."
 #, c-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
+msgstr ""
 
 #. Resource IDs: (366)
 #, c-format
@@ -1285,6 +1298,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1442,6 +1459,10 @@ msgstr "Álnév jelszócsere"
 msgid "All Files (*.*)"
 msgstr "Minden fájl (*.*)"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "Minden lehetséges oszlop meg van jelenítve"
@@ -1449,6 +1470,10 @@ msgstr "Minden lehetséges oszlop meg van jelenítve"
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
 msgstr "A Jelszószabályokon végrehajtott változások elvesznek"
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1584,6 +1609,22 @@ msgstr "Mivel a dupla idézőjel határolja a teljes Megjegyzés mezőt, ezért 
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "Legalább az egyik fajta karaktert (kisbetű, nagybetű, számok, \nszinbólumok, hexadecimális) engedélyeznie kell."
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2351,6 +2392,10 @@ msgstr "Létrehozás ideje"
 msgid "Created on:"
 msgstr "Létrehozva:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Feltétel"
@@ -2469,6 +2514,10 @@ msgstr "Adatbázis neve"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "Adatbázis érvényesítve - nem találtam problémát."
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3069,6 +3118,10 @@ msgstr "Exportálás &formátumba"
 msgid "Export &XML"
 msgstr "Exportálás &XML-be"
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3105,6 +3158,10 @@ msgstr "A kimeneti fájl: '%s' már létezik.\nLecseréli?"
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Az adatok exportálása néhány mezőre lett korlátozva a felhasználó által."
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3207,13 +3264,37 @@ msgstr "A mező megvan"
 msgid "File"
 msgstr "Fájl"
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "A fájl használatban van"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Fájlolvasási hiba"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3255,6 +3336,10 @@ msgstr "Fájl vagy útvonal nem található."
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "Fájlverzió figyelmeztetés"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3481,6 +3566,10 @@ msgstr ""
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3759,6 +3848,10 @@ msgstr "CSAK a létező bejegyzések jelszavának megváltoztatása az importál
 msgid "Import under Group?"
 msgstr "Importálás csoport alá?"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr "Import_KeePassV1_CSV"
@@ -3968,6 +4061,10 @@ msgstr "Utolsó hozzáférés"
 msgid "Last Modified"
 msgstr "Utolsó módosítás"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "Utoljára hozzáférve: "
@@ -4146,6 +4243,14 @@ msgstr "A maximum tárolva"
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "Az első szám és a 'Tartomány' szabály maximális értéke"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4458,6 +4563,14 @@ msgstr "Ez a szám már a legnagyobb értékre van állítva. 'Nagyobb mint' be�
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Ez a szám már a legkisebb értékre van állítva. 'Kisebb mint' beállítás nem engedélyezett."
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "Bejegyzések száma"
@@ -4728,17 +4841,25 @@ msgstr "Password Safe mentések (*.bak)|*.bak|Password Safe Köztes mentések (*
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe mentések (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe adatbázisok (*.psafe3)|*.psafe3|Minden fájl (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr "Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3; *.dat|Minden fájl (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe mentések (*.bak)|*.bak|Password Safe köztes mentések (*.ibak)|*.ibak|Minden fájl (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -4942,6 +5063,10 @@ msgstr "Kérem adjon nevet a szövegfájlnak"
 msgid "Please name this filter"
 msgstr "Kérem adjon nevet ennek a szűrőnek"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "Kérem válassza ki a megtekintendő jelentést."
@@ -4959,8 +5084,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Kérem adja meg a mentések helyének alkönyvárát."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Kérem látogasson el a <a href=\"http://pwsafe.org/\">PasswordSafe honlapra.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Kérem látogasson el a <a href=\"https://pwsafe.org/\">PasswordSafe honlapra.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -5008,6 +5133,14 @@ msgstr "Nyomja meg az összes hozzáadott karakter törléséhez."
 
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
+msgstr ""
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
 msgstr ""
 
 #. Resource IDs: (349)
@@ -5166,6 +5299,10 @@ msgstr "Utolsó megjegyzése"
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
 msgstr "E billentyűzet megjegyzése"
+
+#. Resource IDs: (1468)
+msgid "Remove"
+msgstr ""
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -5406,6 +5543,10 @@ msgstr "A második számnak nagyobbnak kell lennie az elsőnél."
 msgid "Security"
 msgstr "Biztonság"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
 msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
@@ -5518,6 +5659,11 @@ msgstr ""
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "Munkamenet"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6083,6 +6229,10 @@ msgstr ""
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr ""
@@ -6125,6 +6275,10 @@ msgstr ""
 #. Resource IDs: (216)
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6833,6 +6987,10 @@ msgstr "Gyenge jelszó:\n\n %s"
 msgid "What saved"
 msgstr "Mi lett mentve"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "Mikor lett mentve"
@@ -7122,6 +7280,10 @@ msgstr "\nHiba a jelszótörténetben ennél a bejegyzésnél: »%ls»%ls»%ls»
 msgid "\nExpand All"
 msgstr "\nÖsszes kibontása"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\nBejegyzés exportálása XML formátumba..."
@@ -7158,9 +7320,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\nExportálás XML-be"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7393,6 +7563,11 @@ msgstr "\tCsoport:'%s'; Megnevezés:'%s'; Felhasználó:'%s'"
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\tCsoport='%ls', Megnevezés='%ls', Felhasználó='%ls' %ls"
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string '%s'"
@@ -7623,8 +7798,8 @@ msgid "has expired"
 msgstr "lejárt"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
@@ -7820,6 +7995,14 @@ msgstr "v&1.x formátum..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v&2 formátum..."
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

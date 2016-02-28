@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -27,6 +27,7 @@
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
 #include "optionspropsheet.h"
+#include "SystemTray.h"
 #include "ManagePwdPolicies.h"
 #ifndef NO_YUBI
 #include "yubicfg.h"
@@ -48,6 +49,9 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
   COptions *window = new COptions(this);
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
+    // Update system tray icon if visible so changes show up immediately
+    if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))
+        m_sysTray->ShowIcon();
 
     if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
@@ -114,7 +118,8 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
 #endif
 
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
-    if (m_core.WriteFile(backupfile) == PWScore::CANT_OPEN_FILE) {
+    if (m_core.WriteFile(backupfile, m_core.GetReadFileVersion(),
+                         false) == PWScore::CANT_OPEN_FILE) {
       wxMessageBox( wxbf << wxT("\n\n") << _("Could not open file for writing!"),
                     _("Write Error"), wxOK|wxICON_ERROR, this);
     }

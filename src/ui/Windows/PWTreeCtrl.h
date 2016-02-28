@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -141,7 +141,8 @@ private:
   
   CSecString m_eLabel; // label at start of edit, if we need to revert
 
-  bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent);
+  bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent,
+    const StringX &sxPprefix);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
   bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const; 

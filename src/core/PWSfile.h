@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -19,7 +19,9 @@
 #include "ItemData.h"
 #include "os/UUID.h"
 #include "UnknownField.h"
+#include "PWSFilters.h"
 #include "StringX.h"
+#include "PWSfileHeader.h"
 #include "Proxy.h"
 #include "sha256.h"
 
@@ -33,7 +35,10 @@
 // with a reasonably powerful CPU. Real limit's 2^32-1.
 #define MAX_USABLE_HASH_ITERS (1 << 22)
 
-#define DEFAULT_SUFFIX      _T("psafe3")
+#define V3_SUFFIX      _T("psafe3")
+#define V4_SUFFIX      _T("psafe4")
+// For now, default to V3, at least until we're sufficiently tested.
+#define DEFAULT_SUFFIX      V3_SUFFIX
 
 class Fish;
 class Asker;
@@ -41,7 +46,7 @@ class Asker;
 class PWSfile
 {
 public:
-  enum VERSION {V17, V20, V30, VCURRENT = V30,
+  enum VERSION {V17, V20, V30, V40, VCURRENT = V30,
     NEWFILE = 98,
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
 
@@ -57,6 +62,7 @@ public:
     TRUNCATED_FILE,                          //  8 (missing EOF marker)
     READ_FAIL,                               //  9
     WRITE_FAIL,                              //  10
+    WRONG_RECORD,                            // 11
     CANT_OPEN_FILE = -10                     //  -10 - see PWScore.h
   };
 
@@ -67,30 +73,34 @@ public:
   * the app. can keep a copy of, rather than duplicating
   * data members, getters and setters willy-nilly.
   */
-  struct HeaderRecord {
-    HeaderRecord();
-    HeaderRecord(const HeaderRecord &hdr);
-    HeaderRecord &operator =(const HeaderRecord &hdr);
-    ~HeaderRecord();
-    unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-    pws_os::CUUID m_file_uuid;         // Unique DB ID
-    std::vector<bool> m_displaystatus; // Tree expansion state vector
-    StringX m_prefString;              // Prefererences stored in the file
-    time_t m_whenlastsaved; // When last saved
-    StringX m_lastsavedby; // and by whom
-    StringX m_lastsavedon; // and by which machine
-    StringX m_whatlastsaved; // and by what application
-    StringX m_dbname, m_dbdesc;        // Descriptive name, Description
-    UUIDList m_RUEList;
-    unsigned char *m_yubi_sk;  // YubiKey HMAC key, added in 0x030a / 3.27Y
-    enum {YUBI_SK_LEN = 20};
-  };
+  enum {HDR_VERSION           = 0x00,
+    HDR_UUID                  = 0x01,
+    HDR_NDPREFS               = 0x02,
+    HDR_DISPSTAT              = 0x03,
+    HDR_LASTUPDATETIME        = 0x04,
+    HDR_LASTUPDATEUSERHOST    = 0x05,     // DEPRECATED in format 0x0302
+    HDR_LASTUPDATEAPPLICATION = 0x06,
+    HDR_LASTUPDATEUSER        = 0x07,     // added in format 0x0302
+    HDR_LASTUPDATEHOST        = 0x08,     // added in format 0x0302
+    HDR_DBNAME                = 0x09,     // added in format 0x0302
+    HDR_DBDESC                = 0x0a,     // added in format 0x0302
+    HDR_FILTERS               = 0x0b,     // added in format 0x0305
+    HDR_RESERVED1             = 0x0c,     // added in format 0x030?
+    HDR_RESERVED2             = 0x0d,     // added in format 0x030?
+    HDR_RESERVED3             = 0x0e,     // added in format 0x030?
+    HDR_RUE                   = 0x0f,     // added in format 0x0307
+    HDR_YUBI_OLD_SK           = 0x10,     // Yubi-specific: format 0x030a
+    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
+    HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
+    HDR_YUBI_SK               = 0x12,     // Yubi-specific: format 0x030c
+    HDR_LAST,                             // Start of unknown fields!
+    HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
-  static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status, 
+  static PWSfile *MakePWSfile(const StringX &a_filename, const StringX &passkey,
+                              VERSION &version, RWmode mode, int &status, 
                               Asker *pAsker = NULL, Reporter *pReporter = NULL);
 
-  static VERSION ReadVersion(const StringX &filename);
+  static VERSION ReadVersion(const StringX &filename, const StringX &passkey);
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey, VERSION &version);
 
@@ -106,8 +116,8 @@ public:
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
 
-  const HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetHeader(const HeaderRecord &h) {m_hdr = h;}
+  const PWSfileHeader &GetHeader() const {return m_hdr;}
+  void SetHeader(const PWSfileHeader &h) {m_hdr = h;}
 
   void SetDefUsername(const StringX &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
@@ -115,6 +125,22 @@ public:
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
+
+  // Following implemented in V3 and later
+  virtual uint32 GetNHashIters() const {return 0;}
+  virtual void SetNHashIters(uint32 ) {}
+
+  void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
+  const PWSFilters *GetFilters() const {return &m_MapFilters;}
+
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
+  const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
+
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
+  const std::vector<StringX> *GetEmptyGroups() const {return &m_vEmptyGroups;}
+
+  // Following for low-level details that changed between format versions
+  virtual size_t timeFieldLen() const {return 4;} // changed in V4
   
   size_t WriteField(unsigned char type,
                     const StringX &data) {return WriteCBC(type, data);}
@@ -126,13 +152,16 @@ public:
                    size_t &length) {return ReadCBC(type, data, length);}
   
 protected:
-  PWSfile(const StringX &filename, RWmode mode);
+  PWSfile(const StringX &filename, RWmode mode, VERSION v = UNKNOWN_VERSION);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           size_t length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          size_t &length);
+  
+  static void HashRandom256(unsigned char *p256); // when we don't want to expose our RNG
+
   const StringX m_filename;
   StringX m_passkey;
   FILE *m_fd;
@@ -142,10 +171,16 @@ protected:
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
-  HeaderRecord m_hdr;
+  int m_status;
+
+  // Following are only used by V3 and later
+  PWSfileHeader m_hdr;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
+  PWSFilters m_MapFilters;
+  PSWDPolicyMap m_MapPSWDPLC;
+  std::vector<StringX> m_vEmptyGroups;
   ulong64 m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;

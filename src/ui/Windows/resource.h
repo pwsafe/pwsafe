@@ -53,6 +53,7 @@
 #define IDD_FILTER_ENTRYSTATUS          163
 #define IDD_DISPLAYFSBKUPFILES          164
 #define IDD_FILTER_SIZE                 165
+#define IDD_FILTER_MEDIATYPES           166
 #define IDR_POPRESETCOLUMNWIDTH         168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
@@ -374,6 +375,14 @@
 #define IDB_EXPORTV2_NEW                535
 #define IDB_EXPORTV2_NEW_D              536
 #define IDD_WZINPUTDB                   537
+#define IDD_ADDEDIT_ATT                 538
+#define IDD_ADDEDIT_ATT_SHORT           539
+#define IDB_EXPORTV3_CLASSIC            540
+#define IDB_EXPORTV3_NEW                541
+#define IDB_EXPORTV3_NEW_D              542
+#define IDB_EXPORTV4_CLASSIC            543
+#define IDB_EXPORTV4_NEW                544
+#define IDB_EXPORTV4_NEW_D              545
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -527,6 +536,7 @@
 #define IDC_SAVEDBY                     1195
 #define IDC_SAVEDON                     1196
 #define IDC_SAVEDAPP                    1197
+#define IDC_NUMATTACHMENTS              1198
 #define IDC_BACKUPBEFORESAVE            1199
 #define IDC_DFLTBACKUPPREFIX            1200
 #define IDC_USERBACKUPPREFIX            1201
@@ -722,7 +732,6 @@
 #define IDC_DEFPWHIDESYSTRAY            1426
 #define IDC_ADVANCED_RESET              1427
 #define IDC_ENTRY                       1428
-#define IDC_STATIC_PROTECTED            1429
 #define IDC_DATABASE                    1430
 #define IDC_VIEWREPORT                  1431
 #define IDC_STATIC_WZWARNING            1432
@@ -756,6 +765,7 @@
 #define IDC_YUBI_SN                     1465
 #define IDC_YUBI_SK                     1466
 #define IDC_YUBI_GEN_BN                 1467
+#define IDC_ATT_REMOVE                  1468
 #define IDC_YUBI_API                    1469
 #define IDC_RESET_SYMBOLS               1470
 #define IDC_YUBI_SHOW_HIDE              1471
@@ -797,14 +807,29 @@
 #define IDC_VERIFY2                     1508
 #define IDC_VKB2                        1509
 #define IDC_MYBASE                      1510
+#define IDC_ATT_IMAGE                   1511
+#define IDC_ATT_NAME                    1512
+#define IDC_ATT_FILE                    1513
+#define IDC_ATT_ADD                     1514
+#define IDC_ATT_EXPORT                  1515
+#define IDC_ATT_IMPORT                  1516
+#define IDC_STATIC_NOPREVIEW            1517
+#define IDC_FILESIZE                    1518
+#define IDC_FILECTIME                   1519
+#define IDC_FILEMTIME                   1520
+#define IDC_FILEMTYPE                   1521
+#define IDC_AFILTER_FLD_COMBOBOX        1522
+#define IDC_AFILTER_LGC_COMBOBOX        1523
+#define IDC_CMB_AVALIABLEMEDIATYPES     1524
+#define IDC_STATIC_TUTORIAL             1525
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        538
+#define _APS_NEXT_RESOURCE_VALUE        540
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1511
-#define _APS_NEXT_SYMED_VALUE           538
+#define _APS_NEXT_CONTROL_VALUE         1526
+#define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

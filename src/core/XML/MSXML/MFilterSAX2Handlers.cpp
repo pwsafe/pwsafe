@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -362,6 +362,9 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     } else if (m_type == DFTYPE_PWPOLICY) {
       cur_filter->num_Pactive++;
       cur_filter->vPfldata.push_back(*cur_filterentry);
+    } else if (m_type == DFTYPE_ATTACHMENT) {
+      cur_filter->num_Aactive++;
+      cur_filter->vAfldata.push_back(*cur_filterentry);
     }
     delete cur_filterentry;
   }
@@ -628,6 +631,66 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_HEXADECIMAL;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_ATTACHMENT;
+    cur_filterentry->ftype = FT_ATTACHMENT;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_present")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_BOOL;
+    cur_filterentry->ftype = AT_PRESENT;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_title")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_TITLE;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_mediatype")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_MEDIATYPE;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_filename")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_FILENAME;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_filepath")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_FILEPATH;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_ctime")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_CTIME;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_filectime")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILECTIME;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_filemtime")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILEMTIME;
+  }
+
+  else if (_tcscmp(szCurElement, _T("attachment_fileatime")) == 0) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILEATIME;
   }
 
   else if (_tcscmp(szCurElement, _T("rule")) == 0) {

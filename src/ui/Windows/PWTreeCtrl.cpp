@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -678,10 +678,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     if (app.GetMainDlg()->IsInAddGroup()) {
       // m_eLabel is the old name but need to get the path
       StringX sxPath = GetGroup(ti);
-
       pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxPath,
                              DBEmptyGroupsCommand::EG_ADD));
 
+      // But if parent was empty - it isn't now!
+      size_t iLast_Group_Separator = sxPath.find_last_of(GROUP_SEP2);
+      if (iLast_Group_Separator != StringX::npos) {
+        StringX sxParent = sxPath.substr(0, iLast_Group_Separator);
+        if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
@@ -866,23 +874,33 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxNewPath,
                       DBEmptyGroupsCommand::EG_ADD));
 
+      // But if parent was empty - it isn't now!
+      size_t iLast_Group_Separator = sxNewPath.find_last_of(GROUP_SEP2);
+      if (iLast_Group_Separator != StringX::npos) {
+        StringX sxParent = sxNewPath.substr(0, iLast_Group_Separator);
+        if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
+
       app.GetMainDlg()->ResetInAddGroup();
       *pLResult = TRUE;
     } else {
       // We refresh the view
-      Command *pcmd1 = UpdateGUICommand::Create(pcore,
+      Command *pcmd_undo = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd1);
+      pmulticmds->Add(pcmd_undo);
 
       // Update Group
       pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
 
       // We refresh the view
-      Command *pcmd2 = UpdateGUICommand::Create(pcore,
+      Command *pcmd_redo = UpdateGUICommand::Create(pcore,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
                                               UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd2);
+      pmulticmds->Add(pcmd_redo);
     }
   }
 
@@ -902,8 +920,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
 
-  if (bIsLeaf)
-    app.GetMainDlg()->RefreshViews();
+  // Update view
+  app.GetMainDlg()->RefreshViews();
 
   return;
 
@@ -931,7 +949,7 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i != GROUP && i!= EMPTY_GROUP);
+  return (i != GROUP && i != EMPTY_GROUP);
 }
 
 // Returns the number of children of this group
@@ -1060,14 +1078,15 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
         ti = si;
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
     } while (!sxPath.empty());
-  }
-  if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
-    SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
 
+    if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
+      SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+  }
   return ti;
 }
 
-bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const StringX &sxPrefix)
 {
   TV_INSERTSTRUCT  tvstruct;
   wchar_t sztBuffer[260];  // max visible
@@ -1132,11 +1151,20 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
 
     // Update DisplayInfo record associated with ItemData
     pdi->tree_item = hNewItem;
-  } // leaf processing
+  } else {
+    // Group processing
+    // If original group was empty, need to update the vector of empty groups
+    StringX sxOldGroup(GetGroup(hitemDrag));
+    if (app.GetMainDlg()->IsEmptyGroup(sxOldGroup)) {
+      StringX sxNewGroup = sxPrefix + StringX(GROUP_SEP2) + sxOldGroup;
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
+        sxOldGroup, sxNewGroup));
+    }
+  }
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    MoveItem(pmulticmds, hFirstChild, hNewItem);  // recursively move all the items
+    MoveItem(pmulticmds, hFirstChild, hNewItem, sxPrefix);  // recursively move all the items
   }
 
   // We are moving it - so now delete original from TreeCtrl
@@ -1218,13 +1246,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
       pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
       pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
       break;
     default:
       ASSERT(0);
@@ -1455,8 +1483,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
         parent != hitemDrop) {
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
+        const StringX sxPrefix = GetGroup(hitemDrop);
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
-        MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
+        MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxPrefix);
         
         // Make sure that the folder to which drag is performed will 
         // be removed from the vector of empty groups
@@ -1465,7 +1494,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
                                                        DBEmptyGroupsCommand::EG_DELETE));
         }
-
+        
         app.GetMainDlg()->Execute(pmulticmds);
       } else
         if (dropEffect == DROPEFFECT_COPY) {
@@ -1918,6 +1947,10 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   }
   if (ci.IsProtected())
     treeDispString += L" #";
+
+  if (ci.HasAttRef())
+    treeDispString += L" +";
+
   return treeDispString;
 }
 

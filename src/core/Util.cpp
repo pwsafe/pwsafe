@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,10 +23,15 @@
 #include "os/dir.h"
 
 #include <stdio.h>
-#include <sys/timeb.h>
 #include <time.h>
+#ifdef _WIN32
+#include <sys/timeb.h>
+#else
+#include <sys/time.h>
+#endif
 #include <sstream>
 #include <iomanip>
+
 #include <errno.h>
 
 using namespace std;
@@ -188,6 +193,34 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
     trashMemory(curblock, BS);
     throw(EIO);
   }
+
+  numWritten += _writecbc(fp, buffer, length, Algorithm, cbcbuffer);
+
+  trashMemory(curblock, BS);
+  return numWritten;
+}
+
+size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
+                 Fish *Algorithm, unsigned char *cbcbuffer)
+{
+  // Doesn't write out length, just CBC's the data, padding with randomness
+  // as required.
+
+  const unsigned int BS = Algorithm->GetBlockSize();
+  size_t numWritten = 0;
+
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+
+  unsigned char *curblock = NULL;
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+
+  // First encrypt and write the length of the buffer
+  curblock = block1;
+  // Fill unused bytes of length with random data, to make
+  // a dictionary attack harder
+  PWSrand::GetInstance()->GetRandomData(curblock, BS);
+
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
     size_t BlockLength = ((length + (BS - 1)) / BS) * BS;
@@ -331,6 +364,35 @@ size_t _readcbc(FILE *fp,
   return numRead;
 }
 
+// typeless version for V4 content (caller pre-allocates buffer)
+size_t _readcbc(FILE *fp, unsigned char *buffer,
+                const size_t buffer_len, Fish *Algorithm,
+                unsigned char *cbcbuffer)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+  ASSERT((buffer_len % BS) == 0);
+  size_t nread = 0;
+  unsigned char *p = buffer;
+  unsigned char *tmpcbc = new unsigned char[BS];
+
+  do {
+    size_t nr = fread(p, 1, BS, fp);
+    nread += nr;
+    if (nr != BS)
+      break;
+
+    memcpy(tmpcbc, p, BS);
+    Algorithm->Decrypt(p, p);
+    xormem(p, cbcbuffer, BS);
+    memcpy(cbcbuffer, tmpcbc, BS);
+
+    p += nr;
+  } while (nread < buffer_len);
+
+  delete[] tmpcbc;
+  return nread;
+}
+
 // PWSUtil implementations
 
 void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
@@ -431,12 +493,14 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
   struct _timeb *ptimebuffer;
   ptimebuffer = new _timeb;
   _ftime_s(ptimebuffer);
+  time_t the_time = ptimebuffer->time;
 #else
-  struct timeb *ptimebuffer;
-  ptimebuffer = new timeb;
-  ftime(ptimebuffer);
+  struct timeval *ptimebuffer;
+  ptimebuffer = new timeval;
+  gettimeofday(ptimebuffer, NULL);
+  time_t the_time = ptimebuffer->tv_sec;
 #endif
-  StringX cmys_now = ConvertToDateTimeString(ptimebuffer->time, TMC_EXPORT_IMPORT);
+  StringX cmys_now = ConvertToDateTimeString(the_time, TMC_EXPORT_IMPORT);
 
   if (bShort) {
     sTimeStamp = cmys_now.c_str();
@@ -444,7 +508,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
     ostringstreamT *p_os;
     p_os = new ostringstreamT;
     *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
-          << static_cast<unsigned int>(ptimebuffer->millitm);
+          << static_cast<unsigned int>(the_time);
 
     sTimeStamp = p_os->str();
     delete p_os;
@@ -762,3 +826,33 @@ bool operator==(const std::string& str1, const stringT& str2)
     return stringx2std(xstr) == str2;
 }
 
+bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
+{
+  // len can be either 4, 5 or 8...
+  // len == 5 is new for V4
+  ASSERT(len == 4 || len == 5 || len == 8);
+  if (!(len == 4 || len == 5 || len == 8))
+    return false;
+  // sizeof(time_t) is either 4 or 8
+  if (len == sizeof(time_t)) { // 4 == 4 or 8 == 8
+    t = getInt<time_t>(data);
+  } else if (len < sizeof(time_t)) { // 4 < 8 or 5 < 8
+    unsigned char buf[sizeof(time_t)] = {0};
+    memcpy(buf, data, len);
+    t = getInt<time_t>(buf);
+  } else { // convert from 40 or 64 bit time to 32 bit
+    // XXX Change to use localtime, not GMT
+    unsigned char buf[sizeof(__time64_t)] = {0};
+    memcpy(buf, data, len); // not needed if len == 8, but no harm
+    struct tm ts;
+    const __time64_t t64 = getInt<__time64_t>(buf);
+    if (_gmtime64_s(&ts, &t64) != 0) {
+      ASSERT(0); return false;
+    }
+    t = _mkgmtime32(&ts);
+    if (t == time_t(-1)) { // time is past 2038!
+      t = 0; return false;
+    }
+  }
+  return true;
+}

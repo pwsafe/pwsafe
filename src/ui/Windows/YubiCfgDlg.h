@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,14 +12,14 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 
 class PWScore;
 
 class CYubiCfgDlg : public CPWDialog
 {
 public:
-  enum {YUBI_SK_LEN = PWSfile::HeaderRecord::YUBI_SK_LEN};
+  enum {YUBI_SK_LEN = PWSfileHeader::YUBI_SK_LEN};
   CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
   virtual ~CYubiCfgDlg();
 

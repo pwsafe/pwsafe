@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -135,8 +135,8 @@ CPWFindToolBar::CPWFindToolBar()
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
   m_iFindDirection(FIND_DOWN)
 {
-  m_bsFields.reset();
   m_last_bsFields.reset();
+  m_last_bsAttFields.reset();
 
   m_iMaxNumButtons = _countof(m_FindToolBarIDs);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
@@ -517,6 +517,7 @@ void CPWFindToolBar::Find()
   if (m_search_text != m_last_search_text ||
       m_cs_search != m_last_cs_search ||
       m_pst_SADV->bsFields != m_last_bsFields ||
+      m_pst_SADV->bsAttFields != m_last_bsAttFields ||
       m_pst_SADV->subgroup_name != m_last_subgroup_name ||
       m_pst_SADV->subgroup_bset != m_last_subgroup_bset ||
       m_pst_SADV->subgroup_object != m_last_subgroup_object ||
@@ -524,6 +525,7 @@ void CPWFindToolBar::Find()
     m_last_search_text = m_search_text;
     m_last_cs_search = m_cs_search;
     m_last_bsFields = m_pst_SADV->bsFields;
+    m_last_bsAttFields = m_pst_SADV->bsAttFields;
     m_last_subgroup_name = m_pst_SADV->subgroup_name;
     m_last_subgroup_bset = m_pst_SADV->subgroup_bset;
     m_last_subgroup_object = m_pst_SADV->subgroup_object;
@@ -536,7 +538,8 @@ void CPWFindToolBar::Find()
 
     if (m_bAdvanced)
       m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices,
-                                 m_pst_SADV->bsFields, m_pst_SADV->subgroup_bset,
+                                 m_pst_SADV->bsFields, m_pst_SADV->bsAttFields,
+                                 m_pst_SADV->subgroup_bset,
                                  m_pst_SADV->subgroup_name, m_pst_SADV->subgroup_object, 
                                  m_pst_SADV->subgroup_function);
     else
@@ -604,6 +607,7 @@ void CPWFindToolBar::ShowFindAdvanced()
 
   if (bAdvanced) {
     const CItemData::FieldBits old_bsFields(m_pst_SADV->bsFields);
+    const CItemAtt::AttFieldBits old_bsAttFields(m_pst_SADV->bsAttFields);
     const std::wstring old_subgroup_name(m_pst_SADV->subgroup_name);
     const bool old_subgroup_bset(m_pst_SADV->subgroup_bset);
     const int old_subgroup_object(m_pst_SADV->subgroup_object);
@@ -615,6 +619,7 @@ void CPWFindToolBar::ShowFindAdvanced()
 
     if (rc == IDOK) {
       m_pst_SADV->bsFields = Adv.m_bsFields;
+      m_pst_SADV->bsAttFields = Adv.m_bsAttFields;
       m_pst_SADV->subgroup_bset = Adv.m_subgroup_set == BST_CHECKED;
       if (m_pst_SADV->subgroup_bset) {
         m_pst_SADV->subgroup_name = Adv.m_subgroup_name;
@@ -624,6 +629,7 @@ void CPWFindToolBar::ShowFindAdvanced()
  
       // Check if anything changed
       if (old_bsFields != m_pst_SADV->bsFields ||
+          old_bsAttFields != m_pst_SADV->bsAttFields ||
           old_subgroup_bset != m_pst_SADV->subgroup_bset ||
           (old_subgroup_bset == m_pst_SADV->subgroup_bset &&
            old_subgroup_bset &&

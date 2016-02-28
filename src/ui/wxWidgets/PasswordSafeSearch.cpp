@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -145,9 +145,12 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxMenuItem* findItem = m_parentFrame->GetMenuBar()->FindItem(wxID_FIND, &editMenu);
   if (findItem && editMenu)  {
       //Is there a way to do this without hard-coding the insert position?
+    if (!m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT) ) {
       editMenu->Insert(FIND_MENU_POSITION, ID_EDITMENU_FIND_NEXT, _("&Find next...\tF3"), wxT(""), wxITEM_NORMAL);
+    }
+    if (!m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS) ) {
       editMenu->Insert(FIND_MENU_POSITION+1, ID_EDITMENU_FIND_PREVIOUS, _("&Find previous...\tSHIFT+F3"), wxT(""), wxITEM_NORMAL);
-      editMenu->Delete(findItem);
+    }
   }
 }
 
@@ -212,8 +215,6 @@ void PasswordSafeSearch::HideSearchToolbar()
     wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, 0);
     if (findPreviousItem)
       editMenu->Delete(findPreviousItem);
-
-    editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), wxT(""), wxITEM_NORMAL);
   }
 }
 
@@ -390,7 +391,7 @@ void PasswordSafeSearch::CreateSearchBar()
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
-  origSizer->Add(panel, 0, wxEXPAND | wxALIGN_CENTER);
+  origSizer->Add(panel, 0, wxEXPAND);
   origSizer->Layout();
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(_("Could not display searchbar"));
@@ -413,7 +414,6 @@ void PasswordSafeSearch::CreateSearchBar()
   }
   srchCtrl->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(PasswordSafeSearch::OnSearchTextChanged), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
-  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
   m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
@@ -439,7 +439,10 @@ void PasswordSafeSearch::Activate(void)
   if (!m_toolbar)
     CreateSearchBar();
   else {
-    if (m_toolbar->Show(true)) {
+    if ( m_toolbar->IsShownOnScreen() ) {
+        m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
+    }
+    else if (m_toolbar->Show(true)) {
       wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
       m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(srchCtrlSize);
       m_parentFrame->GetSizer()->Layout();
@@ -448,7 +451,7 @@ void PasswordSafeSearch::Activate(void)
       const wxPoint pt = m_toolbar->GetPosition();
       const wxSize sz = m_toolbar->GetSize();
       wxMessageBox(wxString() << _("Could not re-display searchbar at ") << pt << _(" of size ") << sz
-                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("its already visible"): _(" of an error")));
+                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("it's already visible"): _(" of an error")));
     }
   }
 

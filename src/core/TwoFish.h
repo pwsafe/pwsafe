@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -31,10 +31,10 @@ class TwoFish : public Fish
 public:
   enum {BLOCKSIZE=16};
   TwoFish(const unsigned char* key, int keylen);
-  virtual ~TwoFish();
-  virtual void Encrypt(const unsigned char *in, unsigned char *out);
-  virtual void Decrypt(const unsigned char *in, unsigned char *out);
-  virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+  ~TwoFish();
+  void Encrypt(const unsigned char *in, unsigned char *out) const;
+  void Decrypt(const unsigned char *in, unsigned char *out) const;
+  unsigned int GetBlockSize() const {return BLOCKSIZE;}
 
 private:
   twofish_key key_schedule;

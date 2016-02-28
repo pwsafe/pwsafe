@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -156,24 +156,27 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
     m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * 4);
     m_pToolTipCtrl->Activate(TRUE);
     m_pToolTipCtrl->SetMaxTipWidth(500);
-    const CString cs_ToolTip(MAKEINTRESOURCE(IDS_CLICKTOCOPYGENPSWD));
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPYGENPSWD);
   }
 
   // Load bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
                      IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
 
-  m_CopyPswdBitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                                                 ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                                                 MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
 
-  FixBitmapBackground(m_CopyPswdBitmap);
+  ASSERT(brc);
+  if (brc) {
+    FixBitmapBackground(m_CopyPswdBitmap);
 
-  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-  pBtn->SetBitmap(m_CopyPswdBitmap);
-
+    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+    ASSERT(pBtn != NULL);
+    if (pBtn != NULL)
+      pBtn->SetBitmap(m_CopyPswdBitmap);
+  }
   ShowWindow(SW_SHOW);
   return TRUE;
 }

@@ -13,14 +13,14 @@
 		<State_Province />
 		<Zip_Postal_Code />
 		<Country />
-		<Company_WebSite_URL>http://pwsafe.org</Company_WebSite_URL>
+		<Company_WebSite_URL>https://pwsafe.org</Company_WebSite_URL>
 		<Contact_Info>
 			<Author_First_Name>Rony</Author_First_Name>
 			<Author_Last_Name>Shapiro</Author_Last_Name>
-			<Author_Email>ronys@users.sourceforge.net</Author_Email>
+			<Author_Email>ronys@pwsafe.org</Author_Email>
 			<Contact_First_Name>Rony</Contact_First_Name>
 			<Contact_Last_Name>Shapiro</Contact_Last_Name>
-			<Contact_Email>ronys@users.sourceforge.net</Contact_Email>
+			<Contact_Email>ronys@pwsafe.org</Contact_Email>
 		</Contact_Info>
 		<Support_Info>
 			<Sales_Email />
@@ -82,11 +82,11 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 	</Program_Descriptions>
 	<Web_Info>
 		<Application_URLs>
-			<Application_Info_URL>http://pwsafe.org</Application_Info_URL>
+			<Application_Info_URL>https://pwsafe.org</Application_Info_URL>
 			<Application_Order_URL />
-			<Application_Screenshot_URL>http://pwsafe.org/images/main_window.jpg</Application_Screenshot_URL>
-			<Application_Icon_URL>http://pwsafe.org/images/pwsafe_logo.gif</Application_Icon_URL>
-			<Application_XML_File_URL>http://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
+			<Application_Screenshot_URL>https://pwsafe.org/images/main_window.jpg</Application_Screenshot_URL>
+			<Application_Icon_URL>https://pwsafe.org/images/pwsafe_logo.gif</Application_Icon_URL>
+			<Application_XML_File_URL>https://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
 			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.34/pwsafe-3.34.exe/download</Primary_Download_URL>

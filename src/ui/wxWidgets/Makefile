@@ -12,8 +12,13 @@
 CONFIG?=unicodedebug
 
 # Following sets WX_CONFIG to 3.0 version if found, else 2.x:
+ifeq ($(PLATFORM),FreeBSD)
+WX2=/usr/local/bin/wxgtk2y-2.8-config
+WX3=/usr/local/bin/wxgtk2u-3.0-config
+else
 WX2=/usr/bin/wx-config
 WX3=/usr/bin/wx-config-3.0
+endif
 
 WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 
@@ -49,7 +54,7 @@ OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/debug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2/lib/wx/include/gtk2-ansi-debug-static-2.6"
 MACPACKAGEINFO=
 
@@ -76,7 +81,7 @@ OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/release
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags` -DNDEBUG
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
 MACPACKAGEINFO=
 
@@ -105,7 +110,7 @@ LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
-GCCFLAGS=
+GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
 
@@ -133,8 +138,8 @@ LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE -DNDEBUG
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
-GCCFLAGS=
-LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(LDFLAGS)
+GCCFLAGS=-fPIC
+override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(LDFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
 MACPACKAGEINFO=
 endif
@@ -150,7 +155,7 @@ YBPERS_LIBPATH?=$(LIBPATH)
 YBPERS_LIBPATH_FLAGS=-L$(YBPERS_LIBPATH)
 endif
 
-LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
+override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
 CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(CPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
@@ -173,7 +178,8 @@ SOURCES= passwordsafeframe.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) \
-	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp
+	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
+	TimedTaskChain.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
@@ -234,7 +240,8 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(RM) $@.$$$$
 
 version.h: always
-	@../../../Misc/mkversion.pl version.in $@
+	@../../../Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) SPECIAL=$(VER_SPECIAL) \
+     version.in $@
 
 -include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 

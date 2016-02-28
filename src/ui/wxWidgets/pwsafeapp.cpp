@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -301,6 +301,10 @@ bool PwsafeApp::OnInit()
   if (res != 0)
     return false;
 
+  // Don't allow ptrace or gdump on release build
+  if (!pws_os::DisableDumpAttach())
+    return false;
+  
   // Parse command line options:
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
@@ -437,7 +441,8 @@ bool PwsafeApp::OnInit()
   }
 
   RestoreFrameCoords();
-  m_frame->Show();
+  if (!cmd_silent)
+    m_frame->Show();
   if (cmd_minimized)
     m_frame->Iconize();
   else if (cmd_silent) {
@@ -452,10 +457,13 @@ bool PwsafeApp::OnInit()
     }
     else {
        m_core.SetCurFile(L"");
+       m_frame->SetTrayClosed();
     }
   } else {
     SetTopWindow(m_frame);
   }
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+    m_frame->ShowTrayIcon();
   return true;
 }
 

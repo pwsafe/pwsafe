@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,6 +28,10 @@ namespace pws_os {
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern ulong64 fileLength(std::FILE *fp);
+  extern bool GetFileTimes(const stringT &filename,
+      time_t &ctime, time_t &mtime, time_t &atime);
+  extern bool SetFileTimes(const stringT &filename,
+      time_t ctime, time_t mtime, time_t atime);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 }
 #endif /* __FILE_H */

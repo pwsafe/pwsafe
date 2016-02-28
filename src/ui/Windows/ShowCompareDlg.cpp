@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -137,7 +137,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     CItemData::RUNCMD, CItemData::EMAIL,
     CItemData::DCA, CItemData::SHIFTDCA,
     CItemData::PROTECTED, CItemData::SYMBOLS,
-    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT,
+    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT, CItemData::ATTREF,
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
   };
@@ -148,7 +148,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
 
   // Exclude 5: UUID/GROUP/TITLE/USERNAME & RESERVED (01,02,03,04,0B) but include 1: ENTRYTYPE
   // The developer will still need to ensure new fields are processed below
-  ASSERT(sizeof(iFields)/sizeof(iFields[0]) == (CItemData::LAST - 5 + 1));
+  ASSERT(sizeof(iFields)/sizeof(iFields[0]) == (CItem::LAST_DATA - 5 + 1));
 
   StringX sxDefPolicyStr;
   LoadAString(sxDefPolicyStr, IDSC_DEFAULT_POLICY);
@@ -382,6 +382,10 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             break;
           case CItemData::XTIME_INT:  /* 0x11 */
           case CItemData::PROTECTED:  /* 0x15 */
+            break;
+          case CItemData::ATTREF:     /* 0x1a */
+            sxValue1 = pci->HasAttRef() ? sxNo : sxYes;
+            sxValue2 = pci_other->HasAttRef() ? sxNo : sxYes;
             break;
           case CItemData::DCA:        /* 0x13 */
           case CItemData::SHIFTDCA:   /* 0x17 */

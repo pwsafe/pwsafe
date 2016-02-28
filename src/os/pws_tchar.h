@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,6 +29,10 @@
 #include "linux/pws_time.h"
 #define _tcsdup(s) wcsdup(s)
 #endif
+#ifdef __FreeBSD__
+#include "linux/pws_time.h"
+#define _tcsdup(s) wcsdup(s)
+#endif // __FreeBSD__
 #include "funcwrap.h"
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcsncpy_s wcsncpy_s

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -100,6 +100,29 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
     retval += _T(".");
     retval += ext;
   }
+  return retval;
+}
+
+stringT pws_os::fullpath(const stringT &relpath)
+{
+  stringT retval;
+  char full[PATH_MAX];
+
+  // relpath -> char *path
+  size_t N = std::wcstombs(NULL, relpath.c_str(), 0) + 1;
+  assert(N > 0);
+  char *path = new char[N];
+  std::wcstombs(path, relpath.c_str(), N);
+
+  if (realpath(path, full) != NULL) {
+    // full -> retval
+    size_t wfull_len = ::mbstowcs(NULL, full, 0) + 1;
+    wchar_t *wfull = new wchar_t[wfull_len];
+    std::mbstowcs(wfull, full, wfull_len);
+    retval = wfull;
+    delete[] wfull;
+  }
+  delete[] path;
   return retval;
 }
 

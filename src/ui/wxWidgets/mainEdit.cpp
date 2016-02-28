@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -43,6 +43,9 @@
 #include "../../os/run.h"
 #include "../../os/sleep.h"
 #include "../../os/utf8conv.h"
+#include "./TimedTaskChain.h"
+#include <wx/tokenzr.h>
+#include <array>
 
 #include <algorithm>
 
@@ -110,7 +113,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, this, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
-    m_core.Execute(AddEntryCommand::Create(&m_core, item));
+    m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
     SetChanged(Data);
   }
 }
@@ -272,7 +275,13 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetPassword());
+  if (!item.IsDependent())
+    PWSclipboard::GetInstance()->SetData(item.GetPassword());
+  else {
+    const CUUID &base = item.GetBaseUUID();
+    const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
+    PWSclipboard::GetInstance()->SetData(passwd);
+  }
   UpdateAccessTime(item);
 }
 
@@ -424,14 +433,13 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
       const CItemData *pbci = m_core.GetBaseEntry(pci);
       if (pbci != NULL) {
-        CUUID base_uuid = pbci->GetUUID();
         StringX cs_tmp;
         cs_tmp = wxT("[") +
           pbci->GetGroup() + wxT(":") +
           pbci->GetTitle() + wxT(":") +
           pbci->GetUser()  + wxT("]");
         ci2.SetPassword(cs_tmp);
-        pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
+        pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
       }
     } else { // not alias or shortcut
       ci2.SetNormal();
@@ -485,11 +493,39 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   std::vector<size_t> vactionverboffsets;
   const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
                                                             vactionverboffsets);
+  // even though we only need them in one of the *later* tasks, its safer to
+  // get sxautotype and vactionverboffsets set up before the reference to
+  // CItemData becomes invalid in some way
 
   UpdateAccessTime(ci);
 
-  // Called from OnAutoType and OnTrayAutoType
+  const wxString intervalStr = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AutotypeTaskDelays));
+  const wxArrayString tokens = wxStringTokenize(intervalStr, wxT(" ,:;\t"), wxTOKEN_STRTOK);
+  const int stdInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::TimedTaskChainDelay);
 
+  std::array<int, 3> intervals;
+  for (unsigned idx = 0; idx < intervals.size(); idx++)
+      intervals[idx] = (tokens.GetCount() > idx && tokens[idx].IsNumber())? wxAtoi(tokens[idx]) : stdInterval;
+
+  TimedTaskChain::CreateTaskChain(
+                    {{std::bind(&PasswordSafeFrame::MinimizeOrHideBeforeAutotyping, this), intervals[0]}}
+                  )
+                  .then( [this, sxautotype, vactionverboffsets]() {
+                     // those lambda args should not be captured by reference
+                     // since they are on the stack
+                     DoAutotype(sxautotype, vactionverboffsets);
+                  }, intervals[1])
+                  .then( [this]() {
+                     MaybeRestoreUI(false, wxEmptyString);
+                  }, intervals[2])
+                  .OnError( [this](const std::exception& e) {
+                     MaybeRestoreUI(true, e.what());
+                  });
+
+}
+
+void PasswordSafeFrame::MinimizeOrHideBeforeAutotyping()
+{
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
   //    not restore it (previous default action - but a pain if locked
@@ -500,10 +536,8 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   //    it again once finished - but behind other windows.
   // NOTE: If "Lock on Minimize" is set and "MinimizeOnAutotype" then
   //       the window will be locked once minimized.
-  bool bMinOnAuto = PWSprefs::GetInstance()->
-                    GetPref(PWSprefs::MinimizeOnAutotype);
 
-  if (bMinOnAuto) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
     // Need to save display status for when we return from minimize
     //m_vGroupDisplayState = GetGroupDisplayState();
     TryIconize();
@@ -511,27 +545,16 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     m_guiInfo->Save(this);
     Hide();
   }
+}
 
-  bool autotype_err = false;
-  wxString autotype_err_msg;
-  try {
-    DoAutotype(sxautotype, vactionverboffsets);
-  }
-  catch(const std::exception& e) {
-    autotype_err = true;
-#ifndef _WIN32
-    // pws_os::towc is not defined for Windows
-    autotype_err_msg = towxstring(pws_os::towc(e.what()));
-#else
-    UNREFERENCED_PARAMETER(e);
-#endif
-  }
-
+void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, wxString autotype_err_msg)
+{
   // Restore the UI if
   //   1. there was an error autotyping
   //   2. We're supposed to be always-on-top
   //   3. We hid the UI instead of minimizing while autotyping
-  if (autotype_err || PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop) || !bMinOnAuto) {
+  if (autotype_err || PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)
+                   || !PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
     /* TODO - figure out how to keep a wxWidgets window always on top */
     if (IsIconized())
       Iconize(false);

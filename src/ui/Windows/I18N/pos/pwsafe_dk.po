@@ -126,6 +126,10 @@ msgstr "'DCA'"
 msgid " 'Group'"
 msgstr "'Gruppe'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr ""
@@ -258,6 +262,10 @@ msgstr ""
 #. Resource IDs: (368)
 #, c-format
 msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1198)
+msgid "#attachments"
 msgstr ""
 
 #. Resource IDs: (1456)
@@ -418,6 +426,11 @@ msgstr "%ls\n\nKonfigurations filen vil ikke blive brugt."
 #. Resource IDs: (371)
 #, c-format
 msgid "%s (%s)"
+msgstr ""
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
 msgstr ""
 
 #. Resource IDs: (366)
@@ -1272,6 +1285,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1429,12 +1446,20 @@ msgstr "Alias Adgangskode Ændring"
 msgid "All Files (*.*)"
 msgstr "Alle Filer (*.*)"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "Alle tilgængelige kolonner bliver vist."
 
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1333)
@@ -1571,6 +1596,22 @@ msgstr ""
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "Mindst en type af tegnene (små, store bogst., tal,\nsymboler, hexadecimal) skal tillades."
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2338,6 +2379,10 @@ msgstr ""
 msgid "Created on:"
 msgstr "Oprettet den:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Kriterie"
@@ -2456,6 +2501,10 @@ msgstr "Database navn"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "Database testet - ingen problemer fundet."
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3056,6 +3105,10 @@ msgstr "Eksporter &Til"
 msgid "Export &XML"
 msgstr ""
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3092,6 +3145,10 @@ msgstr ""
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Eksport af data blev begrænset til bestemte felter af bruger."
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3194,13 +3251,37 @@ msgstr "Indeværende Felt"
 msgid "File"
 msgstr ""
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "Fil I Brug"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Fil Læse Fejl"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3242,6 +3323,10 @@ msgstr "Fil eller sti ikke fundet."
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "Fil versions advarsel"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3468,6 +3553,10 @@ msgstr "Gujarati"
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3746,6 +3835,10 @@ msgstr "Importer for at ændre adgangskode til eksisterende adgange ALENE"
 msgid "Import under Group?"
 msgstr "Importer under Gruppe?"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr ""
@@ -3955,6 +4048,10 @@ msgstr "Senest tilgået"
 msgid "Last Modified"
 msgstr "Senest Ændret"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "Senest tilgået den:"
@@ -4133,6 +4230,14 @@ msgstr ""
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "Maximum værdi for første tal og 'Mellem' regel"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4445,6 +4550,14 @@ msgstr "Antal er sat til maximum værdi.  'Større end' er ikke tilladt."
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Antal er sat til minimum værdi.  'Mindre end' er ikke tilladt."
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "Antal af Poster"
@@ -4715,16 +4828,24 @@ msgstr "Password Safe Sikkerhedskopier (*.bak)|*.bak|Password Safe Mellemliggend
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe Sikkerhedskopier(*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe Databaser (*.psafe3)|*.psafe3|Alle filer (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4929,6 +5050,10 @@ msgstr "Navngiv venligst den alm. tekst fil"
 msgid "Please name this filter"
 msgstr "Navngiv venligst dette filter"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "Vælg venligst den rapport du vil se."
@@ -4946,8 +5071,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Specificer venligst under-biblioteket til alle sikkerhedskopier."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Besøg venligst <a href=\"http://pwsafe.org/\">PasswordSafe websiden.</a>"
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Besøg venligst <a href=\"https://pwsafe.org/\">PasswordSafe websiden.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -4996,6 +5121,14 @@ msgstr "Tryk for at slette alle tilføjede tegn."
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
 msgstr "Tryk på OK vil kopiere adgangskoden til den valgte post til klipbord. Klipbordet vil blive tømt sikkert når Password Safe afsluttes.\nTryk på Afbryd stoppes adgangskode kopieringen."
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5152,6 +5285,10 @@ msgstr "Husk sidste"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
+msgstr ""
+
+#. Resource IDs: (1468)
+msgid "Remove"
 msgstr ""
 
 #. Resource IDs: (1188)
@@ -5393,6 +5530,10 @@ msgstr ""
 msgid "Security"
 msgstr "Sikkerhed"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
 msgstr "Se LICENSEN for åben kilde detaljer."
@@ -5505,6 +5646,11 @@ msgstr "Sesotho sa Leboa"
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "Session"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6070,6 +6216,10 @@ msgstr ""
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "De følgende kolonner blev genkendt men kun Gruppe/Titel, Brugernavn og Adgangskode vil blive behandlet:"
@@ -6112,6 +6262,10 @@ msgstr ""
 #. Resource IDs: (216)
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -6820,6 +6974,10 @@ msgstr "Svagt adgangskodeord:\n\n %s"
 msgid "What saved"
 msgstr "Hvad der er gemt"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "Hvornår det er gemt"
@@ -7109,6 +7267,10 @@ msgstr "\nFejl i Adgangskode Historik for adgangen: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nUdvid Alt"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\nEksporter i XML format..."
@@ -7145,9 +7307,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\nEksporter til XML"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7380,6 +7550,11 @@ msgstr "\tGruppe:'%s'; Titel:'%s'; Bruger:'%s'"
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\tGruppe='%ls', Titel='%ls', Bruger='%ls' %ls"
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string '%s'"
@@ -7610,8 +7785,8 @@ msgid "has expired"
 msgstr "er udløbet"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
@@ -7807,6 +7982,14 @@ msgstr "v&1.x format..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v&2 format..."
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

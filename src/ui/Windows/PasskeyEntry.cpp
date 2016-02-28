@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,7 +27,7 @@ down the streetsky.  [Groucho Marx]
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 #include "core/Util.h"
 #include "core/core.h"
 
@@ -95,7 +95,7 @@ CPasskeyEntry::~CPasskeyEntry()
   ::DestroyIcon(m_hIcon);
 
   if (m_yubi_sk != NULL) {
-    trashMemory(m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+    trashMemory(m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
     delete[] m_yubi_sk;
   }
 }

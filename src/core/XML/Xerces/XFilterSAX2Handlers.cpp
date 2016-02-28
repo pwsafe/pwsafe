@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -500,6 +500,66 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_HEXADECIMAL;
+  }
+  
+  else if (XMLString::equals(qname, _A2X("attachment"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_ATTACHMENT;
+    cur_filterentry->ftype = FT_ATTACHMENT;
+  }
+  
+  else if (XMLString::equals(qname, _A2X("attachment_present"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_BOOL;
+    cur_filterentry->ftype = AT_PRESENT;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_title"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_TITLE;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_mediatype"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_MEDIATYPE;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_filename"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_FILENAME;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_filepath"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = AT_FILEPATH;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_ctime"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_CTIME;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_filectime"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILECTIME;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_filemtime"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILEMTIME;
+  }
+
+  else if (XMLString::equals(qname, _A2X("attachment_fileatime"))) {
+    m_type = DFTYPE_ATTACHMENT;
+    cur_filterentry->mtype = PWSMatch::MT_DATE;
+    cur_filterentry->ftype = AT_FILEATIME;
   }
 
   else if (XMLString::equals(qname, _A2X("rule"))) {

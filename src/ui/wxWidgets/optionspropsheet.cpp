@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -194,6 +194,7 @@ void COptions::Init()
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
+  m_systrayclosediconcolourRB = NULL;
   m_sysmaxREitemsSB = NULL;
   m_systrayWarning = NULL;
 ////@end COptions member initialisation
@@ -384,7 +385,13 @@ void COptions::CreateControls()
     m_SDCACBStrings.Add(tmp);
   }
 
-  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY|wxCB_SORT );
+  // This is to avoid a nasty assert on OSX with wx3.0.2
+  auto cbStyle = wxCB_READONLY;
+#ifndef  __WXMAC__
+  cbStyle |= wxCB_SORT;
+#endif
+
+  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, cbStyle );
   itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer53 = new wxBoxSizer(wxHORIZONTAL);
@@ -392,7 +399,7 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer53->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, wxCB_READONLY|wxCB_SORT );
+  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, cbStyle );
   itemBoxSizer53->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
@@ -618,6 +625,15 @@ void COptions::CreateControls()
   itemBoxSizer105->Add(itemCheckBox122, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
+  wxArrayString itemRadioBox125Strings;
+  itemRadioBox125Strings.Add(_("Black"));
+  itemRadioBox125Strings.Add(_("Cyan"));
+  itemRadioBox125Strings.Add(_("White"));
+  itemRadioBox125Strings.Add(_("Yellow"));
+  m_systrayclosediconcolourRB = new wxRadioBox( itemPanel104, ID_RADIOBOX, _("Initial tray icon color"), wxDefaultPosition, wxDefaultSize, itemRadioBox125Strings, 1, wxRA_SPECIFY_ROWS );
+  m_systrayclosediconcolourRB->SetSelection(0);
+  itemBoxSizer105->Add(m_systrayclosediconcolourRB, 0, wxGROW|wxALL, 5);
+
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
 
   wxPanel* itemPanel123 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
@@ -792,6 +808,7 @@ void COptions::PrefsToPropSheet()
   // System preferences
   m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
   m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
+  m_systrayclosediconcolourRB->SetSelection(prefs->GetPref(PWSprefs::ClosedTrayIconColour));
   if (!wxTaskBarIcon::IsAvailable()) {
     m_systrayWarning->Show();
     Layout();
@@ -886,6 +903,7 @@ void COptions::PropSheetToPrefs()
   // System preferences
   prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());
   prefs->SetPref(PWSprefs::UseSystemTray, m_sysusesystrayCB->GetValue());
+  prefs->SetPref(PWSprefs::ClosedTrayIconColour, m_systrayclosediconcolourRB->GetSelection());
   m_sysstartup = false; // XXX TBD
   prefs->SetPref(PWSprefs::MaxMRUItems, m_sysmaxmru);
   prefs->SetPref(PWSprefs::MRUOnFileMenu, m_sysmruonfilemenu);
@@ -1150,6 +1168,7 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
 {
   m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
+  m_systrayclosediconcolourRB->Enable(m_sysusesystrayCB->GetValue());
 }
 
 void COptions::OnPageChanging(wxBookCtrlEvent& evt)

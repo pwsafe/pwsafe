@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,10 +36,12 @@ struct st_SaveAdvValues {
     subgroup_object(0), subgroup_function(0)
   {
     bsFields.set();
+    bsAttFields.reset();
   }
 
   st_SaveAdvValues(const st_SaveAdvValues &adv)
-    : bsFields(adv.bsFields), subgroup_name(adv.subgroup_name),
+    : bsFields(adv.bsFields), bsAttFields(adv.bsAttFields),
+    subgroup_name(adv.subgroup_name),
     subgroup_bset(adv.subgroup_bset), subgroup_object(adv.subgroup_object),
     subgroup_function(adv.subgroup_function), subgroup_bcase(adv.subgroup_bcase),
     btreatwhitespaceasempty(adv.btreatwhitespaceasempty)
@@ -50,6 +52,7 @@ struct st_SaveAdvValues {
   {
     if (this != &adv) {
       bsFields = adv.bsFields;
+      bsAttFields = adv.bsAttFields;
       subgroup_name = adv.subgroup_name;
       subgroup_bset = adv.subgroup_bset;
       subgroup_object = adv.subgroup_object;
@@ -62,6 +65,7 @@ struct st_SaveAdvValues {
 
   void Clear() {
     bsFields.set();
+    bsAttFields.reset();
     subgroup_bset = subgroup_bcase = BST_UNCHECKED;
     btreatwhitespaceasempty = BST_CHECKED;
     subgroup_object = subgroup_function = 0;
@@ -69,6 +73,7 @@ struct st_SaveAdvValues {
   }
 
   CItemData::FieldBits bsFields;
+  CItemAtt::AttFieldBits bsAttFields;
   std::wstring subgroup_name;
   int subgroup_object, subgroup_function;
   bool subgroup_bset, subgroup_bcase, btreatwhitespaceasempty;

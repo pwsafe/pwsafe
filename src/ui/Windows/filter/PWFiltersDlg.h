@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,8 +12,10 @@
 
 #include "../PWResizeDialog.h"
 #include "../PWHdrCtrlNoChng.h"
+
 #include "core/Itemdata.h"
 #include "core/PWSFilters.h"
+
 #include "PWFilterLC.h"
 
 #include "../resource.h"
@@ -23,7 +25,8 @@ class CPWFiltersDlg : public CPWResizeDialog
   DECLARE_DYNAMIC(CPWFiltersDlg)
 public:
   CPWFiltersDlg(CWnd* pParent = NULL, const FilterType &ftype = DFTYPE_MAIN,
-                const CString &filtername = L"");
+    const CString &filtername = L"", 
+    const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = NULL);
   ~CPWFiltersDlg();
 
   void UpdateStatusText();
@@ -44,6 +47,8 @@ protected:
   CString m_filtername;
   bool VerifyFilters();
   bool m_bAllowSet;
+  bool m_bCanHaveAttachments;
+  const std::set<StringX> *m_psMediaTypes;
 
   //{{AFX_MSG(CPWFiltersDlg)
   afx_msg void OnFNameKillFocus();

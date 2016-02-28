@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,6 +35,12 @@ namespace pws_os {
   */
   void HexDump(unsigned char *pmemory, const int &length,
                const stringT &cs_prefix = _S(""), const int &maxnum = 16);
+
+  /**
+     This disables the ability to create a coredump and to attach a debugger to the process
+     on Release builds (if OS supports this, of course).
+  */
+  bool DisableDumpAttach();
 }
 
 #endif /* _OSDEBUG_H */

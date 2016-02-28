@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -57,7 +57,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   COpenFilePickerValidator validator(m_filepath);
   m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           filePickerCtrlTitle,
-                                          _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
+                                          _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 
                                           validator);

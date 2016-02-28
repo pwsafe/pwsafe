@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -212,11 +212,13 @@ BOOL CManagePSWDPols::OnInitDialog()
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
-
-  FixBitmapBackground(m_CopyPswdBitmap);
-  CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-  pBtn->SetBitmap(m_CopyPswdBitmap);
-
+  if (brc) {
+    FixBitmapBackground(m_CopyPswdBitmap);
+    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+    ASSERT(pBtn != NULL);
+    if (pBtn != NULL)
+      pBtn->SetBitmap(m_CopyPswdBitmap);
+  }
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
   GetDlgItem(IDC_REDO)->EnableWindow(FALSE);

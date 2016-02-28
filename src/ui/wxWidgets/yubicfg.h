@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -22,7 +22,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
-#include "core/PWSfile.h"
+#include "core/PWSfileHeader.h"
 
 /*!
  * Forward declarations
@@ -121,7 +121,7 @@ private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key
 ////@end YubiCfgDlg member variables
-  enum {YUBI_SK_LEN = PWSfile::HeaderRecord::YUBI_SK_LEN};
+  enum {YUBI_SK_LEN = PWSfileHeader::YUBI_SK_LEN};
   void ReadYubiSN();
   bool IsYubiInserted() const;
   void yubiInserted(void); // called when Yubikey's inserted

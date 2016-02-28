@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -168,6 +168,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
   {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -195,6 +196,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("DefaultSymbols"), _T(""), ptDatabase},                       // database
   {_T("NotesFont"), _T(""), ptApplication},                         // application
   {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
+  {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -394,7 +396,7 @@ int PWSprefs::GetMRUList(stringT *MRUFiles) const
 
 int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
-  ASSERT(MRUFiles != NULL);
+  ASSERT(n == 0 || MRUFiles != NULL); // if n is zero, wx passes NULL
 
   if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY ||
       m_ConfigOption == CF_FILE_RO)

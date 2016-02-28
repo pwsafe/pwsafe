@@ -168,7 +168,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -199,6 +199,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">
@@ -209,7 +210,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -238,6 +239,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">
@@ -248,7 +250,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -268,7 +270,7 @@
       <PreprocessorDefinitions>_USING_V110_SDK71_</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30ud_xrc.lib;wxmsw30ud_qa.lib;wxmsw30ud_html.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxbase30ud_xml.lib;wxbase30ud_net.lib;wxmsw30ud_richtext.lib;wxbase30ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30ud_xrc.lib;wxmsw30ud_qa.lib;wxmsw30ud_html.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxbase30ud_xml.lib;wxbase30ud_net.lib;wxmsw30ud_richtext.lib;wxbase30ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_lib;$(XercesDir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -278,6 +280,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">
@@ -288,7 +291,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -317,6 +320,7 @@
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">
@@ -328,7 +332,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -366,7 +370,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wwxMSVC_VERSION_AUTO;xUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wwxMSVC_VERSION_AUTO;xUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -403,7 +407,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -421,7 +425,7 @@
       <PreprocessorDefinitions>_USING_V110_SDK71_</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_lib;$(XercesDir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -441,7 +445,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -516,6 +520,7 @@
     <ClInclude Include="SizeRestrictedPanel.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="SystemTrayMenuId.h" />
+    <ClInclude Include="TimedTaskChain.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="wxMessages.h" />
@@ -571,6 +576,7 @@
     <ClCompile Include="SelectionCriteria.cpp" />
     <ClCompile Include="SizeRestrictedPanel.cpp" />
     <ClCompile Include="SystemTray.cpp" />
+    <ClCompile Include="TimedTaskChain.cpp" />
     <ClCompile Include="version.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="wxutils.cpp" />

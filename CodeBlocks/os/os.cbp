@@ -15,6 +15,7 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wredundant-decls" />
@@ -24,6 +25,7 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
@@ -173,6 +175,7 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
 					<Add option="-Wshadow" />
 					<Add option="-Winit-self" />
 					<Add option="-Wredundant-decls" />
@@ -182,6 +185,7 @@
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
@@ -399,6 +403,7 @@
 		<Unit filename="../../src/os/linux/env.cpp" />
 		<Unit filename="../../src/os/linux/file.cpp" />
 		<Unit filename="../../src/os/linux/logit.cpp" />
+		<Unit filename="../../src/os/linux/media.cpp" />
 		<Unit filename="../../src/os/linux/mem.cpp" />
 		<Unit filename="../../src/os/linux/pws_str.cpp" />
 		<Unit filename="../../src/os/linux/pws_str.h" />
@@ -414,6 +419,7 @@
 		<Unit filename="../../src/os/linux/xsendstring.cpp" />
 		<Unit filename="../../src/os/linux/xsendstring.h" />
 		<Unit filename="../../src/os/logit.h" />
+		<Unit filename="../../src/os/media.h" />
 		<Unit filename="../../src/os/mem.h" />
 		<Unit filename="../../src/os/pws_str.h" />
 		<Unit filename="../../src/os/pws_tchar.h" />

@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@users.sourceforge.net>
+; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 

@@ -1,6 +1,6 @@
 /*
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@
 #include <algorithm>
 
 #include "../stdafx.h"
+
 #include "../ThisMfcApp.h" // for online help
 #include "../GeneralMsgBox.h"
 #include "../PWHdrCtrlNoChng.h"
@@ -29,10 +30,13 @@ IMPLEMENT_DYNAMIC(CPWFiltersDlg, CPWResizeDialog)
 
 CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /* = NULL */,
                              const FilterType &filtertype /* = DFTYPE_MAIN */,
-                             const CString &filtername /* = L"" */)
+                             const CString &filtername /* = L"" */,
+                             bool bCanHaveAttachments /* = false */,
+                             const std::set<StringX> *psMediaTypes /* = NULL */)
   : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
   m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
-  m_filtername(filtername), m_bAllowSet(true)
+  m_filtername(filtername), m_bAllowSet(true),
+  m_bCanHaveAttachments(bCanHaveAttachments), m_psMediaTypes(psMediaTypes)
 {
 }
 
@@ -68,7 +72,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_SUBITEMIMAGES;
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
-  m_FilterLC.Init(this, m_pfilters, m_iType);
+  m_FilterLC.Init(this, m_pfilters, m_iType, m_bCanHaveAttachments, m_psMediaTypes);
   if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
     m_filtername.LoadString(IDS_FILTER_NAME);
   else
@@ -90,13 +94,14 @@ BOOL CPWFiltersDlg::OnInitDialog()
   }
 
   // Main window has Apply (if not called via Manage), OK, Cancel buttons
-  // History/Policy have OK, Cancel, Help buttons
+  // History/Policy/Attachment have OK, Cancel, Help buttons
   // but only one dialog definition in resource file for both in
   // order to ensure that the dialogs look exactly the same and also
   // easier to maintain
   if (m_iType != DFTYPE_MAIN) {
     GetDlgItem(IDC_FILTERNAME)->EnableWindow(FALSE);
   }
+
   if (!m_bAllowSet) {
     // Change buttons if called via ManageFilters or 
     // is a History/Policy dialog
@@ -168,13 +173,15 @@ void CPWFiltersDlg::OnOk()
 // first row that fails validation
 struct FilterValidator
 {
-  FilterValidator(CString &text, int &iHistory, int &iPolicy)
-    : i(0), text(text), iHistory(iHistory), iPolicy(iPolicy) {}
+  FilterValidator(CString &text, int &iHistory, int &iPolicy, int &iAttachment)
+    : i(0), text(text), iHistory(iHistory), iPolicy(iPolicy),
+    iAttachment(iAttachment) {}
   bool operator()(const st_FilterRow &st_fldata) {
     // return true if FAILS validation, so that find_if will
     // "find" it.
     if ((st_fldata.mtype != PWSMatch::MT_PWHIST &&
-         st_fldata.mtype != PWSMatch::MT_POLICY) &&
+         st_fldata.mtype != PWSMatch::MT_POLICY &&
+         st_fldata.mtype != PWSMatch::MT_ATTACHMENT) &&
         (st_fldata.mtype == PWSMatch::MT_INVALID ||
          st_fldata.rule  == PWSMatch::MR_INVALID)) {
       text.Format(IDS_FILTERINCOMPLETE, i + 1);
@@ -184,6 +191,8 @@ struct FilterValidator
       iHistory = i;
     if (st_fldata.mtype == PWSMatch::MT_POLICY)
       iPolicy = i;
+    if (st_fldata.mtype == PWSMatch::MT_ATTACHMENT)
+      iAttachment = i;
     i++;
     return false;
   }
@@ -191,6 +200,7 @@ private:
   int i;
   int &iHistory;
   int &iPolicy;
+  int &iAttachment;
   CString &text;
 };
 
@@ -212,14 +222,17 @@ bool CPWFiltersDlg::VerifyFilters()
     case DFTYPE_PWPOLICY:
       pvFilterRows = &m_pfilters->vPfldata;
       break;
+    case DFTYPE_ATTACHMENT:
+      pvFilterRows = &m_pfilters->vAfldata;
+      break;
     default:
       VERIFY(0);
   }
 
   CGeneralMsgBox gmb;
   CString cs_text;
-  int iHistory(-1), iPolicy(-1);
-  FilterValidator fv(cs_text, iHistory, iPolicy);
+  int iHistory(-1), iPolicy(-1), iAttachment(-1);
+  FilterValidator fv(cs_text, iHistory, iPolicy, iAttachment);
   if (find_if(pvFilterRows->begin(), pvFilterRows->end(), fv) !=
     pvFilterRows->end()) {
     gmb.AfxMessageBox(cs_text);
@@ -228,13 +241,18 @@ bool CPWFiltersDlg::VerifyFilters()
 
   if (m_iType == DFTYPE_MAIN) {
     // Now check that the filters were correct on
-    // History/Policy sub-filter dialogs
+    // History/Policy/Attachment sub-filter dialogs
     if (m_FilterLC.IsPWHIST_Set() && !m_FilterLC.IsHistoryGood()) {
       cs_text.Format(IDS_FILTERINCOMPLETE, iHistory + 1);
       gmb.AfxMessageBox(cs_text);
       return false;
     }
     if (m_FilterLC.IsPOLICY_Set() && !m_FilterLC.IsPolicyGood()) {
+      cs_text.Format(IDS_FILTERINCOMPLETE, iPolicy + 1);
+      gmb.AfxMessageBox(cs_text);
+      return false;
+    }
+    if (m_FilterLC.IsAttachment_Set() && !m_FilterLC.IsAttachmentGood()) {
       cs_text.Format(IDS_FILTERINCOMPLETE, iPolicy + 1);
       gmb.AfxMessageBox(cs_text);
       return false;
@@ -271,7 +289,7 @@ void CPWFiltersDlg::UpdateStatusText()
         s.LoadString(IDS_FILTERINFO_NONE);
       else {
         int numactive = m_pfilters->num_Mactive;
-        // Make totla number correct (i.e. if Policy on main filter
+        // Make total number correct (i.e. if Policy on main filter
         // and 2 of these set then total is 2 not "1 + 2"
         if (m_FilterLC.IsPWHIST_Set() && m_FilterLC.IsHistoryGood()) {
           numactive += (m_pfilters->num_Hactive - 1);
@@ -281,6 +299,10 @@ void CPWFiltersDlg::UpdateStatusText()
           numactive += (m_pfilters->num_Pactive - 1);
           numfilters += ((int)m_pfilters->vPfldata.size() - 1);
         }
+        if (m_FilterLC.IsAttachment_Set() && m_FilterLC.IsAttachmentGood()) {
+          numactive += (m_pfilters->num_Aactive - 1);
+          numfilters += ((int)m_pfilters->vAfldata.size() - 1);
+        }
         s.Format(IDS_FILTERINFO, numfilters, numactive);
       }
       break;
@@ -289,6 +311,9 @@ void CPWFiltersDlg::UpdateStatusText()
       break;
     case DFTYPE_PWPOLICY:
       s.Format(IDS_PFILTERINFO, (int)m_pfilters->vPfldata.size(), m_pfilters->num_Pactive);
+      break;
+    case DFTYPE_ATTACHMENT:
+      s.Format(IDS_AFILTERINFO, (int)m_pfilters->vAfldata.size(), m_pfilters->num_Aactive);
       break;
     default:
       ASSERT(0);
@@ -320,8 +345,8 @@ BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
   }
 
   // Make sure ComboBox messages go to ComboBox
-  if (m_FilterLC.m_pComboBox && 
-      pMsg->hwnd == m_FilterLC.m_pComboBox->m_hWnd)
+  if (m_FilterLC.m_ComboBox.GetSafeHwnd() != NULL && 
+      pMsg->hwnd == m_FilterLC.m_ComboBox.m_hWnd)
     return CWnd::PreTranslateMessage(pMsg);
 
   // Otherwise - give to the Dialog!

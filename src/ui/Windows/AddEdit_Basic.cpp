@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -146,9 +146,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
     DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
   }
-
-  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)
-    DDX_Control(pDX, IDC_STATIC_PROTECTED, m_stc_protected);
   //}}AFX_DATA_MAP
 }
 
@@ -159,6 +156,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
@@ -220,11 +218,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_notes.SetFont(pFonts->GetNotesFont());
   }
 
-  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-    GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
-    m_stc_protected.SetColour(RGB(255,0,0));
-  }
-
   if (M_uicaller() != IDS_ADDENTRY) {
     InitToolTip();
 
@@ -234,12 +227,13 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_NOTES,    IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_URL,      IDS_CLICKTOCOPY);
+    AddTool(IDC_COPYPASSWORD,    IDS_CLICKTOCOPY);
     AddTool(IDC_STATIC_EMAIL,    IDS_CLICKTOCOPYPLUS1);
     AddTool(IDC_LAUNCH,          IDS_CLICKTOGOPLUS);
     AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
 
     if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-      AddTool(IDC_STATIC_PROTECTED, IDS_UNPROTECT);
+      AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
     }
 
     ActivateToolTip();
@@ -295,6 +289,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
        iter != vGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
   }
+
+  // Make sure Group combobox is wide enough
+  SetGroupComboBoxWidth();
 
   size_t num_unkwn(0);
   if (M_uicaller() != IDS_ADDENTRY)
@@ -369,6 +366,21 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
+  // Load copy password bitmap
+  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+    IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+  BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                                                 ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                                                 MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  ASSERT(brc);
+  if (brc) {
+    FixBitmapBackground(m_CopyPswdBitmap);
+    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+    ASSERT(pBtn != NULL);
+    if (pBtn != NULL)
+      pBtn->SetBitmap(m_CopyPswdBitmap);
+  }
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
@@ -409,9 +421,6 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         break;
       case IDC_STATIC_EMAIL:
         pcfOld = &m_email_cfOldColour;
-        break;
-      case IDC_STATIC_PROTECTED:
-        pcfOld = &m_protected_cfOldColour;
         break;
       default:
         // Not one of ours - get out quick
@@ -825,9 +834,14 @@ void CAddEdit_Basic::OnGeneratePassword()
     GetMainDlg()->GetPolicyFromName(M_policyname(), st_pp);
     GetMainDlg()->MakeRandomPassword(passwd, st_pp);
   } else {
-    // XXX temp - to be cleaned up
     PWPolicy policy(M_pwp());
-    policy.symbols = LPCWSTR(M_symbols());
+    if (M_symbols().IsEmpty()) {
+      // No specifc entry symbols - use default
+      policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+    } else {
+      // This entry has its own list of symbols
+      policy.symbols = LPCWSTR(M_symbols());
+    }
     GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
 
@@ -1440,4 +1454,50 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     }
   }
   return true; // All OK
+}
+
+void CAddEdit_Basic::SetGroupComboBoxWidth()
+{
+  // Find the longest string in the combo box.
+  CString str;
+  CSize sz;
+  int dx = 0;
+  TEXTMETRIC tm;
+  CDC *pDC = m_ex_group.GetDC();
+  CFont *pFont = m_ex_group.GetFont();
+
+  // Select the listbox font, save the old font
+  CFont *pOldFont = pDC->SelectObject(pFont);
+
+  // Get the text metrics for avg char width
+  pDC->GetTextMetrics(&tm);
+
+  for (int i = 0; i < m_ex_group.GetCount(); i++) {
+    m_ex_group.GetLBText(i, str);
+    sz = pDC->GetTextExtent(str);
+
+    // Add the avg width to prevent clipping
+    sz.cx += tm.tmAveCharWidth;
+
+    if (sz.cx > dx)
+      dx = sz.cx;
+  }
+
+  // Select the old font back into the DC
+  pDC->SelectObject(pOldFont);
+  m_ex_group.ReleaseDC(pDC);
+
+  // Adjust the width for the vertical scroll bar and the left and right border.
+  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+
+  // Set the width of the list box so that every item is completely visible.
+  m_ex_group.SetDroppedWidth(dx);
+}
+
+void CAddEdit_Basic::OnCopyPassword()
+{
+  UpdateData(TRUE);
+
+  GetMainDlg()->SetClipboardData(m_password);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

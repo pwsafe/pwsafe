@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -20,6 +20,7 @@
 #include "resource3.h"
 
 #include <bitset>
+#include <type_traits> // for static_assert
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,6 +45,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;
+    m_bsAttFields = m_pst_SADV->bsAttFields;
     m_subgroup_name = m_pst_SADV->subgroup_name.c_str();
     m_subgroup_set = m_pst_SADV->subgroup_bset ? BST_CHECKED : BST_UNCHECKED;
     m_subgroup_object = m_pst_SADV->subgroup_object;
@@ -52,6 +54,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
     m_treatwhitespaceasempty = m_pst_SADV->btreatwhitespaceasempty ? BST_CHECKED : BST_UNCHECKED;
   } else {
     m_bsFields.set();
+    m_bsAttFields.reset();
     m_subgroup_name = L"";
     m_subgroup_set = BST_UNCHECKED;
     m_treatwhitespaceasempty = BST_CHECKED;
@@ -68,8 +71,12 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
   if (m_subgroup_set == BST_UNCHECKED)
     m_subgroup_name = L"*";
 
-  if (m_bsFields.count() == 0)
+  if (m_bsFields.count() == 0 && m_bsAttFields.count() == 0) {
     m_bsFields.set();
+    m_bsAttFields.reset();
+  }
+
+  m_current_version = app.GetCore()->GetReadFileVersion();
 }
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -82,6 +89,9 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_bsAllowedFields.reset();
   m_bsDefaultSelectedFields.reset();
   m_bsMandatoryFields.reset();
+
+  m_bsAttAllowedFields.reset();
+  m_bsAttDefaultSelectedFields.reset();
 
   cs_text.LoadString(m_iIndex == FIND ? IDS_FINDX : IDS_SYNCHRONIZEX);
 
@@ -115,24 +125,20 @@ BOOL CAdvancedDlg::OnInitDialog()
     // Note: NOT SORTED by design
     CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT);
     if (cboSubgroupObject->GetCount () == 0) {
-      cs_text.LoadString(IDS_GROUP);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::GROUP);
-      cs_text.LoadString(IDS_GROUPTITLE);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
-      cs_text.LoadString(IDS_TITLE);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::TITLE);
-      cs_text.LoadString(IDS_USERNAME);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::USER);
-      cs_text.LoadString(IDS_URL);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::URL);
-      cs_text.LoadString(IDS_NOTES);
-      iItem = cboSubgroupObject->AddString(cs_text);
-      cboSubgroupObject->SetItemData(iItem, CItemData::NOTES);
+      const struct {int si; int ii;} subgroupInit[] = {
+        {IDS_GROUP, CItemData::GROUP},
+        {IDS_GROUPTITLE, CItemData::GROUPTITLE},
+        {IDS_TITLE, CItemData::TITLE},
+        {IDS_USERNAME, CItemData::USER},
+        {IDS_URL, CItemData::URL},
+        {IDS_NOTES, CItemData::NOTES},
+      };
+
+      for (auto &elem : subgroupInit) {
+        cs_text.LoadString(elem.si);
+        iItem = cboSubgroupObject->AddString(cs_text);
+        cboSubgroupObject->SetItemData(iItem, elem.ii);
+      }
     }
   
     for (int i = 0; i < cboSubgroupObject->GetCount(); i++) {
@@ -160,129 +166,54 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_Selected->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 
   // Deal with non-text fields
-  // Time fields - use Compare text and remove the quotes and leading blank
   if (m_iIndex == COMPARESYNCH) {
     // All these are already selected fields
-    cs_text.LoadString(IDS_COMPCTIME);
-    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::CTIME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::CTIME);
-    m_bsDefaultSelectedFields.set(CItemData::CTIME);
+    const struct {int si; int ii; bool is_temporal;} nonTextInit[] = {
+      {IDS_COMPCTIME, CItemData::CTIME, true},
+      {IDS_COMPPMTIME, CItemData::PMTIME, true},
+      {IDS_COMPATIME, CItemData::ATIME, true},
+      {IDS_COMPRMTIME, CItemData::RMTIME, true},
+      {IDS_COMPXTIME, CItemData::XTIME, true},
+      {IDS_PASSWORDEXPIRYDATEINT, CItemData::XTIME_INT, false},
+      {IDS_PWPOLICY, CItemData::POLICY, false},
+      {IDS_POLICYNAME, CItemData::POLICYNAME, false},
+      {IDS_DCALONG, CItemData::DCA, false},
+      {IDS_SHIFTDCALONG, CItemData::SHIFTDCA, false},
+      {IDS_PROTECTED, CItemData::PROTECTED, false},
+      {IDS_KBSHORTCUT, CItemData::KBSHORTCUT, false},
+    };
 
-    cs_text.LoadString(IDS_COMPPMTIME);
-    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::PMTIME);
-    m_bsDefaultSelectedFields.set(CItemData::PMTIME);
-
-    cs_text.LoadString(IDS_COMPATIME);
-    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::ATIME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::ATIME);
-    m_bsDefaultSelectedFields.set(CItemData::ATIME);
-
-    cs_text.LoadString(IDS_COMPRMTIME);
-    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::RMTIME);
-    m_bsDefaultSelectedFields.set(CItemData::RMTIME);
-
-    cs_text.LoadString(IDS_COMPXTIME);
-    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::XTIME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::XTIME);
-    m_bsDefaultSelectedFields.set(CItemData::XTIME);
-
-    cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::XTIME_INT);
-    m_bsDefaultSelectedFields.set(CItemData::XTIME_INT);
-
-    cs_text.LoadString(IDS_PWPOLICY);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::POLICY);
-    m_bsDefaultSelectedFields.set(CItemData::POLICY);
-
-    cs_text.LoadString(IDS_POLICYNAME);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::POLICYNAME);
-    m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
-
-    cs_text.LoadString(IDS_DCALONG);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::DCA);
-    m_bsDefaultSelectedFields.set(CItemData::DCA);
-
-    cs_text.LoadString(IDS_SHIFTDCALONG);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::SHIFTDCA | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::SHIFTDCA);
-    m_bsDefaultSelectedFields.set(CItemData::SHIFTDCA);
-
-    cs_text.LoadString(IDS_PROTECTED);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::PROTECTED);
-    m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
-
-    cs_text.LoadString(IDS_KBSHORTCUT);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::KBSHORTCUT | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::KBSHORTCUT);
-    m_bsDefaultSelectedFields.set(CItemData::KBSHORTCUT);
-  }
+    for (auto &elem : nonTextInit) {
+      cs_text.LoadString(elem.si);
+      if (elem.is_temporal) { // Time fields
+        // Use Compare text and remove the quotes and leading blank
+        cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+      }
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, elem.ii | NORMALFIELD);
+      m_bsAllowedFields.set(elem.ii);
+      m_bsDefaultSelectedFields.set(elem.ii);
+    }
+  } // non-text fields
 
   // Deal with text fields - all selected by default
-  cs_text.LoadString(IDS_NOTES);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::NOTES | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::NOTES);
-  m_bsDefaultSelectedFields.set(CItemData::NOTES);
+  const struct {int si; int ii;} textInit[] = {
+    {IDS_NOTES, CItemData::NOTES},
+    {IDS_URL, CItemData::URL},
+    {IDS_AUTOTYPE, CItemData::AUTOTYPE},
+    {IDS_PWHISTORY, CItemData::PWHIST},
+    {IDS_RUNCOMMAND, CItemData::RUNCMD},
+    {IDS_EMAIL, CItemData::EMAIL},
+    {IDS_SYMBOLS, CItemData::SYMBOLS},
+  };
 
-  cs_text.LoadString(IDS_URL);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::URL | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::URL);
-  m_bsDefaultSelectedFields.set(CItemData::URL);
-
-  cs_text.LoadString(IDS_AUTOTYPE);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::AUTOTYPE);
-  m_bsDefaultSelectedFields.set(CItemData::AUTOTYPE);
-
-  cs_text.LoadString(IDS_PWHISTORY);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::PWHIST);
-  m_bsDefaultSelectedFields.set(CItemData::PWHIST);
-
-  cs_text.LoadString(IDS_RUNCOMMAND);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::RUNCMD | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::RUNCMD);
-  m_bsDefaultSelectedFields.set(CItemData::RUNCMD);
-
-  cs_text.LoadString(IDS_EMAIL);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::EMAIL | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::EMAIL);
-  m_bsDefaultSelectedFields.set(CItemData::EMAIL);
-
-  cs_text.LoadString(IDS_SYMBOLS);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::SYMBOLS | NORMALFIELD);
-  m_bsAllowedFields.set(CItemData::SYMBOLS);
-  m_bsDefaultSelectedFields.set(CItemData::SYMBOLS);
+  for (auto &elem : textInit) {
+    cs_text.LoadString(elem.si);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, elem.ii | NORMALFIELD);
+    m_bsAllowedFields.set(elem.ii);
+    m_bsDefaultSelectedFields.set(elem.ii);
+  }
 
   // Deal with standard text fields - selected by default
   if (m_iIndex == COMPARESYNCH) {
@@ -292,33 +223,20 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_bsAllowedFields.set(CItemData::PASSWORD);
     m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
   } else {
-    cs_text.LoadString(IDS_GROUP);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::GROUP);
-    m_bsDefaultSelectedFields.set(CItemData::GROUP);
+    const struct {int si; int ii;} stdtextInit[] = {
+      {IDS_GROUP, CItemData::GROUP},
+      {IDS_TITLE, CItemData::TITLE},
+      {IDS_USERNAME, CItemData::USER},
+      {IDS_PASSWORD, CItemData::PASSWORD},
+    };
 
-    cs_text.LoadString(IDS_TITLE);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::TITLE);
-    m_bsDefaultSelectedFields.set(CItemData::TITLE);
-
-    cs_text.LoadString(IDS_USERNAME);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::USER | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::USER);
-    m_bsDefaultSelectedFields.set(CItemData::USER);
-
-    cs_text.LoadString(IDS_PASSWORD);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
-    m_bsAllowedFields.set(CItemData::PASSWORD);
-    m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
-  }
-
-  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
-    Set(m_bsFields);
+    for (auto &elem : stdtextInit) {
+      cs_text.LoadString(elem.si);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, elem.ii | NORMALFIELD);
+      m_bsAllowedFields.set(elem.ii);
+      m_bsDefaultSelectedFields.set(elem.ii);
+    }
   }
 
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
@@ -327,6 +245,37 @@ BOOL CAdvancedDlg::OnInitDialog()
   if (m_iIndex == FIND) {
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+
+    // Only add attachment fields for V4 and later
+    if (m_current_version >= PWSfile::V40) {
+      const CString cs_att = L" (" + CString(MAKEINTRESOURCE(IDS_ATTACHMENTS)) + L")";
+      const struct {int si; int ii;} attInit[] = {
+        {IDS_FILETITLE, CItemAtt::TITLE},
+        {IDS_FILENAME, CItemAtt::FILENAME},
+        {IDS_FILEPATH, CItemAtt::FILEPATH},
+        {IDS_FILEMEDIATYPE, CItemAtt::MEDIATYPE},
+      };
+
+      for (auto &elem : attInit) {
+        cs_text.LoadString(elem.si);
+        cs_text += cs_att;
+        iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+        m_pLC_List->SetItemData(iItem, elem.ii | NORMALFIELD);
+        m_bsAttAllowedFields.set(elem.ii - CItemAtt::START);
+      }
+    } else {
+      // Don't allow any
+      m_bsAttAllowedFields.reset();
+    }
+  }
+
+  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size() &&
+      m_bsAttFields.count() != 0) {
+    Set(m_bsFields);
+  }
+
+  if (m_bsAttFields.count() != 0 && m_bsAttFields.count() != m_bsAttFields.size()) {
+    SetAtt(m_bsAttFields);
   }
 
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -398,6 +347,7 @@ void CAdvancedDlg::OnHelp()
 void CAdvancedDlg::OnReset()
 {
   Set(m_bsDefaultSelectedFields);
+  SetAtt(m_bsAttDefaultSelectedFields);
 
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
@@ -432,7 +382,7 @@ void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
   findinfo.flags = LVFI_PARAM;
   // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
   // and so will not be found and so not moved anywhere.
-  for (int i = 0; i < CItemData::LAST; i++) {
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
     // Don't move or allow non-allowed fields
     if (!m_bsAllowedFields.test(i))
       continue;
@@ -465,6 +415,55 @@ void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
   }
 }
 
+void CAdvancedDlg::SetAtt(CItemAtt::AttFieldBits bsAttFields)
+{
+  LVFINDINFO findinfo;
+  CString cs_text;
+  int iItem;
+  DWORD_PTR dw_data;
+
+  SecureZeroMemory(&findinfo, sizeof(LVFINDINFO));
+
+  findinfo.flags = LVFI_PARAM;
+  // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
+  // and so will not be found and so not moved anywhere.
+
+  // Following check should compile, but silly MSVC thinks bitset<>::size() is runtime
+  // static_assert((m_bsAttAllowedFields.size() == bsAttFields.size()), "bitset size mismatch");
+
+  for (size_t i = 0; i < m_bsAttAllowedFields.size(); i++) {
+    // Don't move or allow non-allowed fields
+    if (!m_bsAttAllowedFields.test(i))
+      continue;
+
+    if (bsAttFields.test(i)) {
+      // Selected - find entry in list of available fields and move it
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
+      iItem = m_pLC_List->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_List->GetItemText(iItem, 0);
+      dw_data = m_pLC_List->GetItemData(iItem);
+      m_pLC_List->DeleteItem(iItem);
+      iItem = m_pLC_Selected->InsertItem(0, cs_text);
+      m_pLC_Selected->SetItemData(iItem, dw_data);
+    } else {
+      // Not selected - find entry in list of selected fields and move it
+      findinfo.lParam = (CItemAtt::START + i) | NORMALFIELD;
+      iItem = m_pLC_Selected->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_Selected->GetItemText(iItem, 0);
+      dw_data = m_pLC_Selected->GetItemData(iItem);
+      m_pLC_Selected->DeleteItem(iItem);
+      iItem = m_pLC_List->InsertItem(0, cs_text);
+      m_pLC_List->SetItemData(iItem, dw_data);
+    }
+  }
+}
+
 void CAdvancedDlg::OnOK()
 {
   CGeneralMsgBox gmb;
@@ -472,6 +471,7 @@ void CAdvancedDlg::OnOK()
 
   UpdateData();
   m_bsFields.reset();
+  m_bsAttFields.reset();
 
   int num_selected = m_pLC_Selected->GetItemCount();
   int nItem(-1);
@@ -479,10 +479,18 @@ void CAdvancedDlg::OnOK()
   for (int i = 0; i < num_selected; i++) {
     nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
     DWORD_PTR dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
-    m_bsFields.set(dw_data & 0xff, true);
+
+    const short index = dw_data & 0xff;
+
+    if (index < CItem::LAST_DATA) {
+      m_bsFields.set(index, true);
+    }
+    else if (index < CItem::LAST_ATT) {
+      m_bsAttFields.set(index - CItemAtt::START, true);
+    }
   }
 
-  if (m_bsFields.count() == 0) {
+  if (m_bsFields.count() == 0 && m_bsAttFields.count() == 0) {
     CString cs_error_msg;
     cs_error_msg.LoadString(m_iIndex == FIND ? 
                     IDS_NOFIELDSFORSEARCH : IDS_NOFIELDSFORSYNCH);
@@ -522,6 +530,7 @@ void CAdvancedDlg::OnOK()
     m_subgroup_name.Empty();
 
   m_pst_SADV->bsFields = m_bsFields;
+  m_pst_SADV->bsAttFields = m_bsAttFields;
   m_pst_SADV->subgroup_name = m_subgroup_name;
   m_pst_SADV->subgroup_bset = m_subgroup_set == BST_CHECKED;
   m_pst_SADV->subgroup_object = m_subgroup_object;
@@ -607,9 +616,13 @@ void CAdvancedDlg::OnDeselectSome()
     cs_text = m_pLC_Selected->GetItemText(nItem, 0);
     dw_data = m_pLC_Selected->GetItemData(nItem);
 
-    // Ignore mandatory fields - can't be deselected
-    if (m_bsMandatoryFields.test(dw_data & 0xff))
-      continue;
+    const short index = dw_data & 0xff;
+
+    if (index < CItem::LAST_DATA) {
+      // Ignore mandatory fields - can't be deselected
+      if (m_bsMandatoryFields.test(index))
+        continue;
+    }
 
     m_pLC_Selected->DeleteItem(nItem);
     iItem = m_pLC_List->InsertItem(0, cs_text);
@@ -629,9 +642,14 @@ void CAdvancedDlg::OnDeselectAll()
   for (int i = num_selected - 1; i >= 0; i--) {
     CString cs_text = m_pLC_Selected->GetItemText(i, 0);
     DWORD_PTR dw_data = m_pLC_Selected->GetItemData(i);
-    // Ignore mandatory fields - can't be deselected
-    if (m_bsMandatoryFields.test(dw_data & 0xff))
-      continue;
+
+    const short index = dw_data & 0xff;
+
+    if (index < CItem::LAST_DATA) {
+      // Ignore mandatory fields - can't be deselected
+      if (m_bsMandatoryFields.test(dw_data & 0xff))
+        continue;
+    }
 
     int iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
@@ -644,14 +662,26 @@ void CAdvancedDlg::OnDeselectAll()
 void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct; 
+  NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNotifyStruct;
 
-  if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
+  *pLResult = FALSE;
+
+  const short index = pNMListView->lParam & 0xff;
+
+  if (index < CItem::LAST_DATA) {
+    if (m_bsMandatoryFields.test(index) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
-    pNMListView->uNewState &= ~LVIS_SELECTED;
-    *pLResult = TRUE;
-  } else
-    *pLResult = FALSE;
+      pNMListView->uNewState &= ~LVIS_SELECTED;
+      *pLResult = TRUE;
+    }
+  }
+  else if (index < CItem::LAST_ATT) {
+    if (m_bsMandatoryFields.test(index - CItem::START_ATT) &&
+      (pNMListView->uNewState & LVIS_SELECTED)) {
+      pNMListView->uNewState &= ~LVIS_SELECTED;
+      *pLResult = TRUE;
+    }
+  }
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,11 +16,31 @@
 
 #include "Util.h" // for ASSERT
 
+class HMAC_BASE
+{
+public:
+  HMAC_BASE() {}
+  virtual ~HMAC_BASE() {}
+
+  virtual int GetBlockSize() const = 0;
+  virtual int GetHashLen() const = 0;
+
+  virtual void Init(const unsigned char *key, unsigned long keylen) = 0;
+  virtual void Update(const unsigned char *in, unsigned long inlen) = 0;
+  virtual void Final(unsigned char digest[]) = 0;
+
+  void Doit(const unsigned char *key, unsigned long keylen,
+            const unsigned char *in, unsigned long inlen,
+            unsigned char digest[])
+  {Init(key, keylen); Update(in, inlen); Final(digest);}
+};
+
 template<class H, int HASHLEN, int BLOCKSIZE>
-class HMAC
+class HMAC : public HMAC_BASE
 {
 public:
   HMAC(const unsigned char *key, unsigned long keylen)
+    : HMAC_BASE(), Hash(0)
   {
     ASSERT(key != NULL);
     
@@ -28,16 +48,39 @@ public:
     Init(key, keylen);
   }
 
-  HMAC()
+  HMAC() : HMAC_BASE(), Hash(0)
   { // Init needs to be called separately
     memset(K, 0, sizeof(K));
   }
 
-  ~HMAC(){/* cleaned up in Final */}
+  HMAC(const HMAC &hmac) {
+    delete Hash;
+    Hash = new H;
+    *Hash = *hmac.Hash;
+    memcpy(K, hmac.K, BLOCKSIZE);
+  }
+
+  HMAC &operator=(const HMAC &that) {
+    if (this != &that) {
+      delete Hash;
+      Hash = new H;
+      *Hash = *that.Hash;
+      memcpy(K, that.K, BLOCKSIZE);
+    }
+    return *this;
+  }
+
+  ~HMAC(){delete Hash;}
+
+  int GetBlockSize() const {return BLOCKSIZE;}
+  int GetHashLen() const {return HASHLEN;}
+  bool IsInited() const {return Hash != NULL;}
 
   void Init(const unsigned char *key, unsigned long keylen)
   {
     ASSERT(key != NULL);
+    ASSERT(Hash == NULL);
+    Hash = new H; // to ensure state's cleared.
 
     if (keylen > BLOCKSIZE) {
       H H0;
@@ -51,20 +94,24 @@ public:
     unsigned char k_ipad[BLOCKSIZE];
     for (int i = 0; i < BLOCKSIZE; i++)
       k_ipad[i] = K[i] ^ 0x36;
-    Hash.Update(k_ipad, BLOCKSIZE);
+    Hash->Update(k_ipad, BLOCKSIZE);
     memset(k_ipad, 0, BLOCKSIZE);
   }
 
   void Update(const unsigned char *in, unsigned long inlen)
   {
-    Hash.Update(in, inlen);
+    ASSERT(Hash != NULL);
+    Hash->Update(in, inlen);
   }
 
   void Final(unsigned char digest[HASHLEN])
   {
     unsigned char d[HASHLEN];
+    ASSERT(Hash != NULL);
 
-    Hash.Final(d);
+    Hash->Final(d);
+    delete(Hash);
+    Hash = NULL;
     unsigned char k_opad[BLOCKSIZE];
     for (int i = 0; i < BLOCKSIZE; i++)
       k_opad[i] = K[i] ^ 0x5c;
@@ -80,26 +127,8 @@ public:
   }
 
 private:
-  H Hash;
+  H *Hash;
   unsigned char K[BLOCKSIZE];
-};
-
-class HMAC_SHA256
-{
-public:
-  enum {HASHLEN = 32};
-  HMAC_SHA256(const unsigned char *key, unsigned long keylen); // Calls Init
-  HMAC_SHA256(); // Init needs to be called separately
-  ~HMAC_SHA256();
-  void Init(const unsigned char *key, unsigned long keylen);
-  void Update(const unsigned char *in, unsigned long inlen);
-  void Final(unsigned char digest[HASHLEN]);
-
-private:
-  SHA256 H;
-  /* for SHA256 hashsize(L) = 32, blocksize(B) = 64 */
-  enum {L = 32, B = 64};
-  unsigned char K[B];
 };
 
 #endif /* __HMAC_H */

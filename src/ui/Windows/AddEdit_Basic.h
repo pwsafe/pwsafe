@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -54,7 +54,6 @@ public:
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
-  CStaticExtn m_stc_protected;
 
   CButton m_ViewDependentsBtn;
   //}}AFX_DATA
@@ -97,6 +96,7 @@ protected:
   afx_msg void OnGroupComboChanged();
 
   afx_msg void OnGeneratePassword();
+  afx_msg void OnCopyPassword();
   afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnViewDependents();
@@ -122,6 +122,7 @@ private:
                         const StringX &user, const StringX &password,
                         const bool bIsEdit, const CItemData::EntryType InputType, 
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
+  void SetGroupComboBoxWidth();
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
@@ -130,6 +131,8 @@ private:
 
   bool m_bInitdone;
   int m_iPointSize;
+
+  CBitmap m_CopyPswdBitmap;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

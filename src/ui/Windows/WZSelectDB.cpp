@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -279,7 +279,8 @@ BOOL CWZSelectDB::OnInitDialog()
       stringT str_file = file + L".export";
 
       // Create new DB
-      ExportFileName = pws_os::makepath(drive, dir, str_file, L"psafe3");
+      const PWSfile::VERSION current_version = m_pWZPSH->GetDBVersion();
+      ExportFileName = pws_os::makepath(drive, dir, str_file, current_version == PWSfile::V30 ? L"psafe3" : L"psafe4");
 
       m_pctlDB->SetWindowText(ExportFileName.c_str());
       m_filespec = ExportFileName.c_str();
@@ -687,6 +688,7 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   const UINT nID = m_pWZPSH->GetID();
   BOOL bTYPE_OPEN(FALSE); // TRUE = Open, FALSE = Save
+  const PWSfile::VERSION current_version = m_pWZPSH->GetDBVersion();
 
   switch (nID) {
     case ID_MENUITEM_SYNCHRONIZE:
@@ -719,7 +721,7 @@ void CWZSelectDB::OnOpenFileBrowser()
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
       cs_suffix = L"export";
-      cs_filter.LoadString(IDS_FDF_V3_ALL);
+      cs_filter.LoadString(current_version == PWSfile::V30 ? IDS_FDF_V3_ALL : IDS_FDF_V4_ALL);
       dwflags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
         OFN_LONGNAMES | OFN_OVERWRITEPROMPT;
       uimsgid = IDS_NAMEXMLFILE;

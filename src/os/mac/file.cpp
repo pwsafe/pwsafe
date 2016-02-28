@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -238,7 +238,7 @@ static stringT GetLockFileName(const stringT &filename)
 }
 
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &lockFileHandle, int &LockCount)
+                      HANDLE &, int &)
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
@@ -304,7 +304,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 }
 
 void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &lockFileHandle, int &LockCount)
+                        HANDLE &, int &)
 {
   stringT lock_filename = GetLockFileName(filename);
 #ifndef UNICODE
@@ -363,3 +363,33 @@ ulong64 pws_os::fileLength(std::FILE *fp)
   return ulong64(st.st_size);
 }
 
+bool pws_os::GetFileTimes(const stringT &filename,
+			time_t &ctime, time_t &mtime, time_t &atime)
+{
+  struct stat statbuf;
+  int status;
+  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  char *fn = new char[N];
+  wcstombs(fn, filename.c_str(), N);
+  status = ::stat(fn, &statbuf);
+  delete[] fn;
+  if (status == 0) {
+    ctime = statbuf.st_ctime;
+    mtime = statbuf.st_mtime;
+    atime = statbuf.st_atime;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool pws_os::SetFileTimes(const stringT &filename,
+      time_t ctime, time_t mtime, time_t atime)
+{
+  UNREFERENCED_PARAMETER(filename);
+  UNREFERENCED_PARAMETER(ctime);
+  UNREFERENCED_PARAMETER(mtime);
+  UNREFERENCED_PARAMETER(atime);
+  
+  return true;
+}

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,6 +17,7 @@ class ItemData;
 #include "AddEdit_Additional.h"
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PasswordPolicy.h"
+#include "AddEdit_Attachment.h"
 #include "SecString.h"
 
 class CAddEdit_PropertySheet : public CPWPropertySheet
@@ -46,25 +47,26 @@ public:
   void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
   {m_AEMD.original_entrytype = original_entrytype;}
 
-  CSecString &GetBase() {return m_AEMD.base;}
+  const CSecString &GetBase() const {return m_AEMD.base;}
 
-  int &GetIBasedata() {return m_AEMD.ibasedata;}
+  const int GetIBasedata() const {return m_AEMD.ibasedata;}
   pws_os::CUUID &GetBaseUUID() {return m_AEMD.base_uuid;}
 
-  CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
-  CItemData *GetNewCI() {return m_AEMD.pci;}
-  PWScore *GetCore() {return m_AEMD.pcore;}
+  const CItemData *GetOriginalCI() const {return m_AEMD.pci_original;}
+  const CItemData *GetNewCI() const {return m_AEMD.pci;}
+  const CItemAtt *GetAtt() const {return &m_AEMD.attachment;}
+  PWScore *GetCore() const {return m_AEMD.pcore;}
 
-  bool IsEntryModified() {return m_bIsModified;}
+  bool IsEntryModified() const {return m_bIsModified;}
 
   void SetChanged(const bool bChanged);
-  bool IsChanged() {return m_bChanged;}
+  bool IsChanged() const {return m_bChanged;}
 
-  void SetNotesChanged(const bool bNotesChanged) {m_bNotesChanged = bNotesChanged;}
-  bool IsNotesChanged() {return m_bNotesChanged;}
+  void SetNotesChanged(bool bNotesChanged) {m_bNotesChanged = bNotesChanged;}
+  bool IsNotesChanged() const {return m_bNotesChanged;}
 
-  void SetSymbolsChanged(const bool bSymbolsChanged);
-  bool IsSymbolsChanged() {return m_bSymbolsChanged;}
+  void SetSymbolsChanged(bool bSymbolsChanged);
+  bool IsSymbolsChanged() const {return m_bSymbolsChanged;}
 
 protected:
   st_AE_master_data m_AEMD;
@@ -80,6 +82,7 @@ private:
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
+  CAddEdit_Attachment      *m_pp_attachment;
 
   bool m_bIsModified, m_bChanged, m_bNotesChanged, m_bSymbolsChanged;
 };

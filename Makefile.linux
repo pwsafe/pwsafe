@@ -1,9 +1,9 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-# TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.96
-RELEASE_SPECIAL := BETA
+export VER_MAJOR := 0
+export VER_MINOR := 98
+export VER_SPECIAL := BETA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
@@ -12,13 +12,19 @@ RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
 
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
-	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N help
-
-RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
+	help test
 
 RELEASEDIR := ./Releases/
+
+PKG_BASE := pwsafe
+SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
 
 MKDIR := mkdir -p
 RM := /bin/rm -rf
@@ -35,7 +41,7 @@ SF_UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CXXFLAGS=-std=c++11
+export CPPFLAGS += -std=c++11
 
 all: I18N unicodedebug unicoderelease
 
@@ -81,12 +87,15 @@ deb:	release tar
 rpm:	I18N tar
 	@$(MKDIR) $(RELEASEDIR)
 	$(MAKE) -C install/$@ \
-	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
+	RELEASENAME=$(RELEASENAME)
 	$(MAKE) signatures sha1sums
 
 tar:
 	@$(MKDIR)  $(RELEASEDIR)
-	@$(GIT) archive HEAD --prefix=pwsafe-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
+	@$(GIT) archive --format=tar.gz \
+	--prefix=$(PKG_BASE)-$(RELEASENAME)/ \
+	-o $(RELEASEDIR)/$(SRC_TGZ) \
+	HEAD
 	@echo "Done."
 
 sha1sums:
@@ -121,6 +130,9 @@ I18N:
 
 help:
 	$(MAKE) -C help
+
+test:
+	$(MAKE) -C src/test test
 
 # Local variables:
 # mode: makefile

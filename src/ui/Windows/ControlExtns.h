@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -171,6 +171,7 @@ protected:
   afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
+  afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -227,6 +228,7 @@ class CInfoDisplay;
 
 class CListBoxExtn : public CListBox
 {
+  // ONLY used as the ListBox within CComboBoxExtn
   // Construction
 public:
   CListBoxExtn();
@@ -277,6 +279,31 @@ public:
   CSecString GetToolTip(int nItem)
   {return m_vtooltips[nItem];}
 
+  /*
+    Based on original "CComboBox with separators" code
+    CSeparatorComboBox class, created by: Zuoliu Ding in 01/30/2004
+    (C) Copyright 2004 Zuoliu Ding.
+    See: http://www.codeproject.com/Articles/7356/A-separator-combo-box
+    Covered by The Code Project Open License (CPOL) 1.02
+    
+    The original code has been merged into this code and has been updated for
+    PasswordSafe use as follows:
+      1. Changed to use std::vector instead of CArray.
+      2. Extra member functions: SetSeparator() and ClearSeparators()
+      3. Changed some default values
+  */
+
+  void SetSeparator(int iSep);
+  void SetSeparator();
+  void ClearSeparators() { m_vSeparators.clear(); }
+  void AdjustItemHeight(int nInc = 3);
+
+  void SetSepLineStyle(int iSep) { m_nPenStyle = iSep; }
+  void SetSepLineColor(COLORREF crColor) { m_crColor = crColor; }
+  void SetSepLineWidth(int iWidth) { m_nSepWidth = iWidth; }
+  void SetBottomMargin(int iMargin) { m_nBottomMargin = iMargin; }
+  void SetHorizontalMargin(int iMargin) { m_nHorizontalMargin = iMargin; }
+
   CEditExtn m_edit;
   CListBoxExtn m_listbox;
   void ChangeColour();
@@ -292,6 +319,9 @@ protected:
 private:
   bool m_bUseToolTips;
   std::vector<CSecString> m_vtooltips;
+  std::vector<int> m_vSeparators;
+
+  int m_nHorizontalMargin, m_nBottomMargin, m_nSepWidth, m_nPenStyle, m_crColor;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -379,3 +409,6 @@ private:
   int m_IDB;
   COLORREF m_cfMAsk;
 };
+
+// Common to dialog and property page:
+void FixBitmapBackground(CBitmap &bm);

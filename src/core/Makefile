@@ -13,20 +13,21 @@ DEPDIR= ./deps
 # Following not used in Linux build
 NOTSRC          = PWSclipboard.cpp
 
-LIBSRC          = BlowFish.cpp CheckVersion.cpp \
-                  ItemData.cpp ItemField.cpp  PWPolicy.cpp \
+LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
+                  Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp  \
                   Match.cpp PWCharPool.cpp CoreImpExp.cpp \
-                  PWHistory.cpp PWSAuxParse.cpp \
-                  PWScore.cpp PWSdirs.cpp PWSfile.cpp \
-                  PWSfileV1V2.cpp PWSfileV3.cpp \
+                  PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
+                  PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \
+                  PWSfileV1V2.cpp PWSfileV3.cpp PWSfileV4.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
+		  pbkdf2.cpp KeyWrap.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
-                  ExpiredList.cpp \
+                  ExpiredList.cpp PWStime.cpp\
                   pugixml/pugixml.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
@@ -43,7 +44,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -Wall -I.. -DLINUX $(CPPFLAGS)
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. -DLINUX $(CPPFLAGS)
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG

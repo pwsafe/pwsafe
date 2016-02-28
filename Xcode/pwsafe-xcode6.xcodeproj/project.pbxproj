@@ -35,7 +35,7 @@
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
-		E690B95712984B1D007EA508 /* help.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* help.zip */; };
+		E690B95712984B1D007EA508 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
 		E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
 		E698274014C01ABC0043C243 /* logit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698273D14C01ABC0043C243 /* logit.cpp */; };
@@ -73,7 +73,6 @@
 		E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
-		E6B144BB12B2707E00415AAE /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
 		E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
 		E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
 		E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
@@ -100,6 +99,7 @@
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
 		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
@@ -192,7 +192,7 @@
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
-		E690B95612984B1D007EA508 /* help.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = help.zip; path = ../help/help.zip; sourceTree = SOURCE_ROOT; };
+		E690B95612984B1D007EA508 /* helpEN.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = helpEN.zip; path = ../help/helpEN.zip; sourceTree = SOURCE_ROOT; };
 		E6919C631298FB25001F96D9 /* pwsafe.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pwsafe.icns; path = ../src/ui/wxWidgets/graphics/pwsafe.icns; sourceTree = SOURCE_ROOT; };
 		E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectionpanel.cpp; sourceTree = "<group>"; };
 		E691FB56140D551F00925F96 /* fieldselectionpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectionpanel.h; sourceTree = "<group>"; };
@@ -486,7 +486,6 @@
 		E6B1448112B26CEE00415AAE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E6B1448712B26D1500415AAE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E6B1449312B26D7E00415AAE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		E6B144BA12B2707E00415AAE /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		E6B5C6411232B3D000AC8B45 /* dragbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dragbar.cpp; sourceTree = "<group>"; };
 		E6B5C6421232B3D000AC8B45 /* dragbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dragbar.h; sourceTree = "<group>"; };
 		E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSDragBar.cpp; sourceTree = "<group>"; };
@@ -528,6 +527,8 @@
 		E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreOtherDB.cpp; sourceTree = "<group>"; };
 		E6DDC7001389120E00F0C0D1 /* DBCompareData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCompareData.h; sourceTree = "<group>"; };
 		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
+		E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedTaskChain.cpp; sourceTree = "<group>"; };
+		E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedTaskChain.h; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -644,7 +645,6 @@
 				E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */,
 				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
 				E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */,
-				E6B144BB12B2707E00415AAE /* QuickTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,7 +674,7 @@
 			isa = PBXGroup;
 			children = (
 				E6919C631298FB25001F96D9 /* pwsafe.icns */,
-				E690B95612984B1D007EA508 /* help.zip */,
+				E690B95612984B1D007EA508 /* helpEN.zip */,
 				E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */,
 				E690B55D12984A1A007EA508 /* pwsafe.xsd */,
 				E690B55E12984A1A007EA508 /* pwsafe.xsl */,
@@ -996,7 +996,6 @@
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
-				E6B144BA12B2707E00415AAE /* QuickTime.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1016,6 +1015,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */,
+				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
 				E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */,
 				E66C16BA16731F9400C996B1 /* PasswordPolicy.h */,
 				E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */,
@@ -1395,7 +1396,7 @@
 				E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */,
 				E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */,
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
-				E690B95712984B1D007EA508 /* help.zip in Resources */,
+				E690B95712984B1D007EA508 /* helpEN.zip in Resources */,
 				E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1413,7 +1414,7 @@
 			);
 			name = "Default English Help";
 			outputPaths = (
-				../help/help.zip,
+				../help/helpEN.zip,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1531,6 +1532,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* about.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* addeditpropsheet.cpp in Sources */,
 				E6ADBA3A1195709A004E2BE5 /* createshortcutdlg.cpp in Sources */,
@@ -1628,7 +1630,6 @@
 		E6ADB7F1119569CC004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1637,6 +1638,7 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -1644,7 +1646,6 @@
 		E6ADB7F2119569CC004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1652,6 +1653,7 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
@@ -1669,6 +1671,10 @@
 					_DEBUG,
 				);
 				HEADER_SEARCH_PATHS = ../src/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = core;
 			};
 			name = Debug;
@@ -1684,6 +1690,10 @@
 					NDEBUG,
 				);
 				HEADER_SEARCH_PATHS = ../src/;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = core;
 				ZERO_LINK = NO;
 			};
@@ -1701,6 +1711,10 @@
 					DEBUG,
 					_DEBUG,
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = os;
 			};
 			name = Debug;
@@ -1714,6 +1728,10 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 					NDEBUG,
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
 				);
 				PRODUCT_NAME = os;
 				ZERO_LINK = NO;
@@ -1740,7 +1758,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
 			};
@@ -1764,7 +1781,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				ZERO_LINK = NO;

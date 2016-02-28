@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -246,6 +246,8 @@ void PWScore::Compare(PWScore *pothercore,
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
         st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
         st_data.bIsProtected0 = currentItem.IsProtected();
+        st_data.bHasAttachment0 = currentItem.HasAttRef();
+        st_data.bHasAttachment1 = compItem.HasAttRef();
 
         if (bsConflicts.any()) {
           numConflicts++;
@@ -847,7 +849,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     if (foundPos != GetEntryEndIter())
       continue;
 
-    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp, new_base_uuid);
+    ci_temp.SetBaseUUID(new_base_uuid);
+    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 

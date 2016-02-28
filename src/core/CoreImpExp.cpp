@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -43,6 +43,7 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include <type_traits> // for static_assert
 
 // These column names must match the field names defined in core_st.cpp
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
@@ -915,7 +916,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     };
     
     // make sure all elements are there
-    ASSERT( NumberOf(fieldMap) == NUMFIELDS );
+  static_assert((NumberOf(fieldMap) == NUMFIELDS), "Mismatch between fieldMap size and NUMFIELDS");
 
   to = 0;
   do {

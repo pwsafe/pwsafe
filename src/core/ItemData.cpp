@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,7 +11,6 @@
 #include "ItemData.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
-#include "PWSrand.h"
 #include "UTF8Conv.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
@@ -20,11 +19,12 @@
 #include "StringXStream.h"
 #include "core.h"
 #include "PWSfile.h"
+#include "PWSfileV4.h"
+#include "PWStime.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 #include "os/mem.h"
-#include "os/env.h"
 #include "os/utf8conv.h"
 
 #include <time.h>
@@ -34,69 +34,115 @@
 using namespace std;
 using pws_os::CUUID;
 
-bool CItemData::IsSessionKeySet = false;
-unsigned char CItemData::SessionKey[64];
-
-void CItemData::SetSessionKey()
-{
-  // must be called once per session, no more, no less
-  ASSERT(!IsSessionKeySet);
-  pws_os::mlock(SessionKey, sizeof(SessionKey));
-  PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
-  IsSessionKeySet = true;
-}
-
 //-----------------------------------------------------------------------------
 // Constructors
 
 CItemData::CItemData()
-  : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
-    m_display_info(NULL)
+  : m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN)
 {
-  PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
-  m_fields(that.m_fields),
-  m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
-  m_display_info(that.m_display_info == NULL ?
-                      NULL : that.m_display_info->clone())
+  CItem(that), m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus)
 {
-  memcpy(m_salt, that.m_salt, SaltLength);
-  m_URFL = that.m_URFL;
 }
 
 CItemData::~CItemData()
 {
-  delete m_display_info;
 }
 
 CItemData& CItemData::operator=(const CItemData &that)
 {
-  // Check for self-assignment
-  if (this != &that) {
-    m_fields = that.m_fields;
-
-    delete m_display_info;
-    m_display_info = that.m_display_info == NULL ?
-      NULL : that.m_display_info->clone();
-
-    m_URFL = that.m_URFL;
-
+  if (this != &that) { // Check for self-assignment
+    CItem::operator=(that);
     m_entrytype = that.m_entrytype;
     m_entrystatus = that.m_entrystatus;
-    memcpy(m_salt, that.m_salt, SaltLength);
   }
-
   return *this;
 }
 
 void CItemData::Clear()
 {
-  m_fields.clear();
-  m_URFL.clear();
+  CItem::Clear();
   m_entrytype = ET_NORMAL;
   m_entrystatus = ES_CLEAN;
+}
+
+bool CItemData::operator==(const CItemData &that) const
+{
+  return (m_entrytype == that.m_entrytype &&
+          m_entrystatus == that.m_entrystatus &&
+          CItem::operator==(that));
+}
+
+void CItemData::ParseSpecialPasswords()
+{
+  // For V3 records, the Base UUID and dependent type (shortcut or alias)
+  // is encoded in the password field. 
+  // If the password isn't in the encoded format, this is a no-op
+  // If it is, then this 'normalizes' the entry record to be the same
+  // as a V4 one.
+
+  const StringX csMyPassword = GetPassword();
+  if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
+    StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
+    ToLower(cs_possibleUUID);
+    if (((csMyPassword.substr(0,2) == _T("[[") &&
+          csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+         (csMyPassword.substr(0, 2) == _T("[~") &&
+          csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+        cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
+      CUUID buuid(cs_possibleUUID.c_str());
+      SetUUID(buuid, BASEUUID);
+      uuid_array_t uuid;
+      GetUUID(uuid);
+      FieldType ft = UUID;
+      if (csMyPassword.substr(0, 2) == _T("[[")) {
+        ft = ALIASUUID;
+      } else if (csMyPassword.substr(0, 2) == _T("[~")) {
+        ft = SHORTCUTUUID;
+      } else {
+        ASSERT(0);
+      }
+      ClearField(UUID);
+      SetUUID(uuid, ft);
+    }
+  }
+}
+
+bool CItemData::HasUUID() const
+{
+  return (((m_entrytype == ET_NORMAL ||
+            m_entrytype == ET_ALIASBASE ||
+            m_entrytype == ET_SHORTCUTBASE) && IsFieldSet(UUID)) ||
+          (m_entrytype == ET_ALIAS && IsFieldSet(ALIASUUID)) ||
+          (m_entrytype == ET_SHORTCUT && IsFieldSet(SHORTCUTUUID)));
+}
+
+void CItemData::SetSpecialPasswords()
+{
+  // For writing a record in V3 format
+
+  if (IsDependent()) {
+    ASSERT(IsFieldSet(BASEUUID));
+    const CUUID base_uuid(GetUUID(BASEUUID));
+    ASSERT(base_uuid != CUUID::NullUUID());
+    ASSERT(base_uuid != GetUUID()); // not self-referential!
+    StringX uuid_str;
+
+    if (IsAlias()) {
+      uuid_str = _T("[[");
+      uuid_str += base_uuid;
+      uuid_str += _T("]]");
+    } else if (IsShortcut()) {
+      uuid_str = _T("[~");
+      uuid_str += base_uuid;
+      uuid_str += _T("~]");
+    } else
+      ASSERT(0);
+
+    SetPassword(uuid_str);
+  } // IsDependent()
 }
 
 int CItemData::Read(PWSfile *in)
@@ -104,11 +150,12 @@ int CItemData::Read(PWSfile *in)
   int status = PWSfile::SUCCESS;
 
   signed long numread = 0;
-  unsigned char type;
+  unsigned char type = END;
 
   int emergencyExit = 255; // to avoid endless loop.
   signed long fieldLen; // <= 0 means end of file reached
 
+  Clear();
   do {
     unsigned char *utf8 = NULL;
     size_t utf8Len = 0;
@@ -117,9 +164,20 @@ int CItemData::Read(PWSfile *in)
 
     if (fieldLen > 0) {
       numread += fieldLen;
-      if (!SetField(type, utf8, utf8Len)) {
-        status = PWSfile::FAILURE;
-        break;
+      if (IsItemDataField(type)) {
+        if (!SetField(type, utf8, utf8Len)) {
+          status = PWSfile::FAILURE;
+          break;
+        }
+      } else if (IsItemAttField(type)) {
+        // Allow rewind and retry
+        if (utf8 != NULL) {
+          trashMemory(utf8, utf8Len * sizeof(utf8[0]));
+          delete[] utf8;
+        }
+        return -numread;
+      } else if (type != END) { // unknown field
+        SetUnknownField(type, utf8Len, utf8);
       }
     } // if (fieldLen > 0)
 
@@ -129,9 +187,23 @@ int CItemData::Read(PWSfile *in)
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
-  if (numread > 0)
+  if (numread > 0) {
+    // Determine entry type:
+    // ET_NORMAL (which may later change to ET_ALIASBASE or ET_SHORTCUTBASE)
+    // ET_ALIAS or ET_SHORTCUT
+    // For V4, this is simple, as we have different UUID types
+    // For V3, we need to parse the password
+    ParseSpecialPasswords();
+    if (m_fields.find(UUID) != m_fields.end())
+      m_entrytype = ET_NORMAL; // may change later to ET_*BASE
+    else if (m_fields.find(ALIASUUID) != m_fields.end())
+      m_entrytype = ET_ALIAS;
+    else if (m_fields.find(SHORTCUTUUID) != m_fields.end())
+      m_entrytype = ET_SHORTCUT;
+    else 
+      ASSERT(0);
     return status;
-  else
+  } else
     return PWSfile::END_OF_FILE;
 }
 
@@ -144,7 +216,7 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
     ASSERT(!field.IsEmpty());
     size_t flength = field.GetLength() + BlowFish::BLOCKSIZE;
     unsigned char *pdata = new unsigned char[flength];
-    GetField(field, pdata, flength);
+    CItem::GetField(field, pdata, flength);
     if (isUTF8) {
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
       size_t srclen = field.GetLength()/sizeof(TCHAR);
@@ -169,10 +241,8 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
   return retval;
 }
 
-int CItemData::Write(PWSfile *out) const
+int CItemData::WriteCommon(PWSfile *out) const
 {
-  int status = PWSfile::SUCCESS;
-  uuid_array_t item_uuid;
   int i;
 
   const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
@@ -183,56 +253,140 @@ int CItemData::Write(PWSfile *out) const
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
                                   END};
 
-  ASSERT(IsUUIDSet());
-  GetUUID(item_uuid);
-  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
-
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
 
-  int32 i32;
-  
   for (i = 0; TimeFields[i] != END; i++) {
     time_t t = 0;
-    GetTime(TimeFields[i], t);
+    CItem::GetTime(TimeFields[i], t);
     if (t != 0) {
-      i32 = static_cast<int32>(t);
-      out->WriteField(static_cast<unsigned char>(TimeFields[i]),
-                      reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
-    }
+      if (out->timeFieldLen() == 4) {
+        unsigned char buf[4];
+        putInt32(buf, static_cast<int32>(t));
+        out->WriteField(static_cast<unsigned char>(TimeFields[i]), buf, out->timeFieldLen());
+      } else if (out->timeFieldLen() == PWStime::TIME_LEN) {
+        PWStime pwt(t);
+        out->WriteField(static_cast<unsigned char>(TimeFields[i]), pwt, pwt.GetLength());
+      } else ASSERT(0);
+    } // t != 0
   }
 
+  int32 i32 = 0;
+  unsigned char buf32[sizeof(i32)];
   GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
-    out->WriteField(XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
+    putInt(buf32, i32);
+    out->WriteField(XTIME_INT, buf32, sizeof(int32));
   }
 
+  i32 = 0;
   GetKBShortcut(i32);
   if (i32 != 0) {
-    out->WriteField(KBSHORTCUT, reinterpret_cast<unsigned char *>(&i32),
-                    sizeof(i32));
+    putInt(buf32, i32);
+    out->WriteField(KBSHORTCUT, buf32, sizeof(int32));
   }
 
-  int16 i16;
+  int16 i16 = 0;
+  unsigned char buf16[sizeof(i16)];
   GetDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA) {
+    putInt(buf16, i16);
+    out->WriteField(DCA, buf16, sizeof(int16));
+  }
+  i16 = 0;
   GetShiftDCA(i16);
-  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    out->WriteField(SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(i16));
-
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA) {
+    putInt(buf16, i16);
+    out->WriteField(SHIFTDCA, buf16, sizeof(int16));
+  }
   WriteIfSet(PROTECTED, out, false);
 
   WriteUnknowns(out);
-  // Assume that if previous write failed, last one will too for same reason
-  status = out->WriteField(END, _T(""));
+  // Assume that if previous write failed, last one will too.
+  if (out->WriteField(END, _T("")) > 0) {
+    return PWSfile::SUCCESS;
+  } else {
+    return PWSfile::FAILURE;
+  }
+}
+
+int CItemData::Write(PWSfile *out) const
+{
+  int status = PWSfile::SUCCESS;
+
+  // Map different UUID types (V4 concept) to original V3 UUID
+  uuid_array_t item_uuid;
+  FieldType ft = END;
+
+  ASSERT(HasUUID());
+  if (!IsDependent())
+    ft = UUID;
+  else if (IsAlias())
+    ft = ALIASUUID;
+  else if (IsShortcut())
+    ft = SHORTCUTUUID;
+  else ASSERT(0);
+  GetUUID(item_uuid, ft);
+
+  out->WriteField(UUID, item_uuid, sizeof(uuid_array_t));
+
+  // We need to cast away constness to change Password field
+  // for dependent entries
+  // We restore the password afterwards (not that it should matter
+  // for a dependent), so logically we're still const.
+
+  CItemData *self = const_cast<CItemData *>(this);
+  const StringX saved_password = GetPassword();
+  self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
+
+  status = WriteCommon(out);
+
+  self->SetPassword(saved_password);
+  return status;
+}
+
+int CItemData::Write(PWSfileV4 *out) const
+{
+  int status = PWSfile::SUCCESS;
+  uuid_array_t item_uuid;
+
+  ASSERT(HasUUID());
+
+  FieldType ft = END;
+
+  ASSERT(HasUUID());
+  if (!IsDependent())
+    ft = UUID;
+  else if (IsAlias())
+    ft = ALIASUUID;
+  else if (IsShortcut())
+    ft = SHORTCUTUUID;
+  else ASSERT(0);
+  GetUUID(item_uuid, ft);
+
+  out->WriteField(static_cast<unsigned char>(ft), item_uuid,
+                  sizeof(uuid_array_t));
+  if (IsDependent()) {
+    uuid_array_t base_uuid;
+    ASSERT(IsFieldSet(BASEUUID));
+    GetUUID(base_uuid, BASEUUID);
+    out->WriteField(BASEUUID, base_uuid, sizeof(uuid_array_t));
+  }
+
+  if (IsFieldSet(ATTREF)) {
+    uuid_array_t ref_uuid;
+    GetUUID(ref_uuid, ATTREF);
+    out->WriteField(ATTREF, ref_uuid, sizeof(uuid_array_t));
+  }
+
+  status = WriteCommon(out);
 
   return status;
 }
 
 int CItemData::WriteUnknowns(PWSfile *out) const
 {
-  for (UnknownFieldsConstIter uiter = m_URFL.begin();
+  for (auto uiter = m_URFL.begin();
        uiter != m_URFL.end();
        uiter++) {
     unsigned char type;
@@ -250,28 +404,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
 
 //-----------------------------------------------------------------------------
 // Accessors
-
-StringX CItemData::GetField(const FieldType ft) const
-{
-  FieldConstIter fiter = m_fields.find(ft);
-  return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
-}
-
-StringX CItemData::GetField(const CItemField &field) const
-{
-  StringX retval;
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(retval, bf);
-  delete bf;
-  return retval;
-}
-
-void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &length) const
-{
-  BlowFish *bf = MakeBlowFish(field.IsEmpty());
-  field.Get(value, length, bf);
-  delete bf;
-}
 
 StringX CItemData::GetFieldValue(FieldType ft) const
 {
@@ -338,21 +470,6 @@ StringX CItemData::GetFieldValue(FieldType ft) const
   }
 }
 
-size_t CItemData::GetSize() const
-{
-  size_t length(0);
-
-  for (FieldConstIter fiter = m_fields.begin(); fiter != m_fields.end(); fiter++)
-    length += fiter->second.GetLength();
-
-
-  for (UnknownFieldsConstIter ufiter = m_URFL.begin();
-       ufiter != m_URFL.end(); ufiter++)
-    length += ufiter->GetLength();
-
-  return length;
-}
-
 static void CleanNotes(StringX &s, TCHAR delimiter)
 {
   if (delimiter != 0) {
@@ -378,43 +495,41 @@ StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 {
   time_t t;
 
-  GetTime(whichtime, t);
+  CItem::GetTime(whichtime, t);
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
-void CItemData::GetTime(int whichtime, time_t &t) const
-{
-  FieldConstIter fiter = m_fields.find(FieldType(whichtime));
-  if (fiter != m_fields.end()) {
-    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-    size_t tlen = sizeof(in); // ditto
-
-    GetField(fiter->second, in, tlen);
-
-    if (tlen != 0) {
-      int32 t32;
-      ASSERT(tlen == sizeof(t32));
-      memcpy(&t32, in, sizeof(t32));
-      t = t32;
-    } else {
-      t = 0;
-    }
-  } else // fiter == m_fields.end()
-    t = 0;
-}
-
-void CItemData::GetUUID(uuid_array_t &uuid_array) const
+void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
 {
   size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.find(UUID);
+  FieldConstIter fiter = m_fields.end();
+  if (ft != END) { // END means "infer correct UUID from entry type"
+    // anything != END is used as-is, no questions asked
+    fiter = m_fields.find(ft);
+  } else switch (m_entrytype) {
+    case ET_NORMAL:
+    case ET_ALIASBASE:
+    case ET_SHORTCUTBASE:
+      fiter = m_fields.find(UUID);
+      break;
+    case ET_ALIAS:
+      fiter = m_fields.find(ALIASUUID);
+      break;
+    case ET_SHORTCUT:
+      fiter = m_fields.find(SHORTCUTUUID);
+      break;
+    default:
+      ASSERT(0);
+    }
   if (fiter == m_fields.end()) {
-    pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!"));
+    pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!\n"));
     memset(uuid_array, 0, length);
   } else
-    GetField(fiter->second, static_cast<unsigned char *>(uuid_array), length);
+    CItem::GetField(fiter->second,
+                    static_cast<unsigned char *>(uuid_array), length);
 }
 
-const CUUID CItemData::GetUUID() const
+const CUUID CItemData::GetUUID(FieldType ft) const
 {
   // Ideally we'd like to return a uuid_array_t, but C++ doesn't
   // allow array return values.
@@ -423,7 +538,7 @@ const CUUID CItemData::GetUUID() const
   // Frustrating, but that's life...
 
   uuid_array_t ua;
-  GetUUID(ua);
+  GetUUID(ua, ft);
   return CUUID(ua);
 }
 
@@ -433,7 +548,7 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
   pwp = mypol;
 }
 
-void CItemData::GetXTimeInt(int32 &xint) const
+int32 CItemData::GetXTimeInt(int32 &xint) const
 {
   FieldConstIter fiter = m_fields.find(XTIME_INT);
   if (fiter == m_fields.end())
@@ -442,7 +557,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
 
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
       memcpy(&xint, in, sizeof(int32));
@@ -450,6 +565,7 @@ void CItemData::GetXTimeInt(int32 &xint) const
       xint = 0;
     }
   }
+  return xint;
 }
 
 StringX CItemData::GetXTimeInt() const
@@ -472,7 +588,7 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   else {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(char));
       ucprotected = in[0];
@@ -482,14 +598,6 @@ void CItemData::GetProtected(unsigned char &ucprotected) const
   }
 }
 
-StringX CItemData::GetProtected() const
-{
-  unsigned char ucprotected;
-  GetProtected(ucprotected);
-
-  return ucprotected != 0 ? StringX(_T("1")) : StringX(_T(""));
-}
-
 bool CItemData::IsProtected() const
 {
   unsigned char ucprotected;
@@ -497,13 +605,18 @@ bool CItemData::IsProtected() const
   return ucprotected != 0;
 }
 
-void CItemData::GetDCA(int16 &iDCA, const bool bShift) const
+StringX CItemData::GetProtected() const
+{
+  return IsProtected() ? StringX(_T("1")) : StringX(_T(""));
+}
+
+int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
   FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int16));
@@ -513,6 +626,7 @@ void CItemData::GetDCA(int16 &iDCA, const bool bShift) const
     }
   } else // fiter == m_fields.end()
     iDCA = -1;
+  return iDCA;
 }
 
 StringX CItemData::GetDCA(const bool bShift) const
@@ -524,13 +638,13 @@ StringX CItemData::GetDCA(const bool bShift) const
   return os.str();
 }
 
-void CItemData::GetKBShortcut(int32 &iKBShortcut) const
+int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 {
   FieldConstIter fiter = m_fields.find(KBSHORTCUT);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
-    GetField(fiter->second, in, tlen);
+    CItem::GetField(fiter->second, in, tlen);
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
@@ -540,6 +654,7 @@ void CItemData::GetKBShortcut(int32 &iKBShortcut) const
     }
   } else // fiter == m_fields.end()
     iKBShortcut = 0;
+  return iKBShortcut;
 }
 
 StringX CItemData::GetKBShortcut() const
@@ -577,20 +692,6 @@ StringX CItemData::GetKBShortcut() const
     }
   }
   return _T("");
-}
-
-void CItemData::GetUnknownField(unsigned char &type, size_t &length,
-                                unsigned char * &pdata,
-                                const CItemField &item) const
-{
-  ASSERT(pdata == NULL && length == 0);
-
-  type = item.GetType();
-  size_t flength = item.GetLength();
-  length = flength;
-  flength += BlowFish::BLOCKSIZE; // ensure that we've enough for at least one block
-  pdata = new unsigned char[flength];
-  GetField(item, pdata, flength);
 }
 
 StringX CItemData::GetPWHistory() const
@@ -782,6 +883,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   return ret;
 }
 
+static void ConditionalWriteXML(int field, const CItemData::FieldBits &fieldbits,
+                                const char *name, const StringX value,
+                                ostringstream &oss, CUTF8Conv &utf8conv, bool &errors)
+{
+  if (fieldbits.test(field) && !value.empty()) {
+    if (!PWSUtil::WriteXMLField(oss, name, value, utf8conv))
+      errors = true;
+  }
+}
+
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          TCHAR delimiter, const CItemData *pcibase,
                          bool bforce_normal_entry,
@@ -791,7 +902,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << dec << id << "\"";
   if (bforce_normal_entry)
-    oss << " normal=\"" << "true" << "\"";
+    oss << " normal=\"true\"";
 
   oss << ">" << endl;
 
@@ -800,21 +911,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   unsigned char uc;
   bool brc;
 
-  tmp = GetGroup();
-  if (bsExport.test(CItemData::GROUP) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::GROUP, bsExport, "group", GetGroup(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Title mandatory (see pwsafe.xsd)
   brc = PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetUser();
-  if (bsExport.test(CItemData::USER) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::USER, bsExport, "username", GetUser(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
@@ -836,17 +941,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = GetURL();
-  if (bsExport.test(CItemData::URL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetAutoType();
-  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::AUTOTYPE, bsExport, "autotype", GetAutoType(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.empty()) {
@@ -980,11 +1078,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     }
   }
 
-  tmp = GetRunCommand();
-  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::RUNCMD, bsExport, "runcommand", GetRunCommand(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetDCA(i16);
   if (bsExport.test(CItemData::DCA) &&
@@ -996,28 +1091,17 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     oss << "\t\t<shiftdca>" << i16 << "</shiftdca>" << endl;
 
-
-  tmp = GetEmail();
-  if (bsExport.test(CItemData::EMAIL) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::EMAIL, bsExport, "email", GetEmail(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   GetProtected(uc);
   if (bsExport.test(CItemData::PROTECTED) && uc != 0)
     oss << "\t\t<protected>1</protected>" << endl;
 
-  tmp = GetSymbols();
-  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
-
-  tmp = GetKBShortcut();
-  if (bsExport.test(CItemData::KBSHORTCUT) && !tmp.empty()) {
-    brc = PWSUtil::WriteXMLField(oss, "kbshortcut", tmp, utf8conv);
-    if (!brc) bXMLErrorsFound = true;
-  }
+  ConditionalWriteXML(CItemData::SYMBOLS, bsExport, "symbols", GetSymbols(),
+                      oss, utf8conv, bXMLErrorsFound);
+  ConditionalWriteXML(CItemData::KBSHORTCUT, bsExport, "kbshortcut", GetKBShortcut(),
+                      oss, utf8conv, bXMLErrorsFound);
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1052,32 +1136,19 @@ void CItemData::SplitName(const StringX &name,
 //-----------------------------------------------------------------------------
 // Setters
 
-void CItemData::SetField(FieldType ft, const StringX &value)
-{
-  ASSERT(ft != END);
-  if (!value.empty()) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, bf, static_cast<unsigned char>(ft));
-    delete bf;
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
-}
-
-void CItemData::SetField(FieldType ft, const unsigned char *value, size_t length)
-{
-  ASSERT(ft != END);
-  if (length != 0) {
-    BlowFish *bf = MakeBlowFish(false);
-    m_fields[ft].Set(value, length, bf, static_cast<unsigned char>(ft));
-    delete bf;
-  } else
-    m_fields.erase(static_cast<FieldType>(ft));
-}
-
-void CItemData::CreateUUID()
+void CItemData::CreateUUID(FieldType ft)
 {
   CUUID uuid;
-  SetUUID(*uuid.GetARep());
+  if (ft == END) {
+    switch (m_entrytype) {
+    case ET_NORMAL: case ET_SHORTCUTBASE: case ET_ALIASBASE:
+      ft = UUID; break;
+    case ET_ALIAS: ft = ALIASUUID; break;
+    case ET_SHORTCUT: ft = SHORTCUTUUID; break;
+    default: ASSERT(0); ft = UUID; break;
+    }
+  }
+  SetUUID(uuid, ft);
 }
 
 void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
@@ -1094,25 +1165,15 @@ void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
     user = defaultUsername;
   } else
     SplitName(name, title, user);
-  // In order to avoid unecessary BlowFish construction/deletion,
-  // we forego SetField here...
-  CItemField nameField(NAME);
-  BlowFish *bf = MakeBlowFish();
-  nameField.Set(name, bf);
-  m_fields[NAME] = nameField;
-  CItemField titleField(TITLE);
-  titleField.Set(title, bf);
-  m_fields[TITLE] = titleField;
-  CItemField userField(USER);
-  userField.Set(user, bf);
-  m_fields[USER] = userField;
-  delete bf;
+  CItem::SetField(NAME, name);
+  CItem::SetField(TITLE, title);
+  CItem::SetField(USER, user);
 }
 
 void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(TITLE, title);
+    CItem::SetField(TITLE, title);
   else {
     StringX new_title(_T(""));
     StringX newstringT, tmpstringT;
@@ -1132,13 +1193,8 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
     if (!newstringT.empty())
       new_title += newstringT;
 
-    SetField(TITLE, new_title);
+    CItem::SetField(TITLE, new_title);
   }
-}
-
-void CItemData::SetUser(const StringX &user)
-{
-  SetField(USER, user);
 }
 
 void CItemData::UpdatePassword(const StringX &password)
@@ -1232,16 +1288,10 @@ void CItemData::UpdatePasswordHistory()
   SetPWHistory(new_PWHistory);
 }
 
-
-void CItemData::SetPassword(const StringX &password)
-{
-  SetField(PASSWORD, password);
-}
-
 void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
-    SetField(NOTES, notes);
+    CItem::SetField(NOTES, notes);
   else {
     const StringX CRLF = _T("\r\n");
     StringX multiline_notes(_T(""));
@@ -1265,42 +1315,20 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
     if (!newstringT.empty())
       multiline_notes += newstringT;
 
-    SetField(NOTES, multiline_notes);
+    CItem::SetField(NOTES, multiline_notes);
   }
 }
 
-void CItemData::SetGroup(const StringX &group)
+void CItemData::SetUUID(const CUUID &uuid, FieldType ft)
 {
-  SetField(GROUP, group);
-}
-
-void CItemData::SetUUID(const uuid_array_t &uuid)
-{
-  SetField(UUID, static_cast<const unsigned char *>(uuid), sizeof(uuid));
-}
-
-void CItemData::SetURL(const StringX &url)
-{
-  SetField(URL, url);
-}
-
-void CItemData::SetAutoType(const StringX &autotype)
-{
-  SetField(AUTOTYPE, autotype);
+  CItem::SetField(ft, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
 }
 
 void CItemData::SetTime(int whichtime)
 {
   time_t t;
   time(&t);
-  SetTime(whichtime, t);
-}
-
-void CItemData::SetTime(int whichtime, time_t t)
-{
-  int t32 = static_cast<int32>(t);
-  SetField(static_cast<FieldType>(whichtime),
-           reinterpret_cast<const unsigned char *>(&t32), sizeof(t32));
+  CItem::SetTime(whichtime, t);
 }
 
 bool CItemData::SetTime(int whichtime, const stringT &time_str)
@@ -1308,12 +1336,12 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
   time_t t(0);
 
   if (time_str.empty()) {
-    SetTime(whichtime, t);
+    CItem::SetTime(whichtime, t);
     return true;
   } else
     if (time_str == _T("now")) {
       time(&t);
-      SetTime(whichtime, t);
+      CItem::SetTime(whichtime, t);
       return true;
     } else
       if ((VerifyImportDateTimeString(time_str, t) ||
@@ -1321,16 +1349,17 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
            VerifyASCDateTimeString(time_str, t)) &&
           (t != time_t(-1))  // checkerror despite all our verification!
           ) {
-        SetTime(whichtime, t);
+        CItem::SetTime(whichtime, t);
         return true;
       }
   return false;
 }
 
-void CItemData::SetXTimeInt(int32 &xint)
+void CItemData::SetXTimeInt(int32 xint)
 {
-   SetField(XTIME_INT, reinterpret_cast<const unsigned char *>(&xint),
-            sizeof(int32));
+  unsigned char buf[sizeof(int32)];
+  putInt(buf, xint);
+  CItem::SetField(XTIME_INT, buf, sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
@@ -1355,35 +1384,19 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
-void CItemData::SetUnknownField(unsigned char type,
-                                size_t length,
-                                const unsigned char *ufield)
-{
-  /**
-     TODO - check that this unknown field from the XML Import file is now
-     known and it should be added as that instead!
-  **/
-
-  CItemField unkrfe(type);
-  BlowFish *bf = MakeBlowFish(false);
-  unkrfe.Set(ufield, length, bf);
-  delete bf;
-  m_URFL.push_back(unkrfe);
-}
-
 void CItemData::SetPWHistory(const StringX &PWHistory)
 {
   StringX pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
     pwh = _T("");
-  SetField(PWHIST, pwh);
+  CItem::SetField(PWHIST, pwh);
 }
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   const StringX cs_pwp(pwp);
 
-  SetField(POLICY, cs_pwp);
+  CItem::SetField(POLICY, cs_pwp);
   if (!pwp.symbols.empty())
     SetSymbols(pwp.symbols);
 }
@@ -1392,7 +1405,7 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
   if (cs_pwp.empty()) {
-    SetField(POLICY, cs_pwp.c_str());
+    CItem::SetField(POLICY, cs_pwp.c_str());
     return true;
   }
 
@@ -1403,34 +1416,15 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   if (pwp == emptyPol)
     return false;
 
-  SetField(POLICY, cs_pwpolicy);
+  CItem::SetField(POLICY, cs_pwpolicy);
   return true;
 }
 
-void CItemData::SetRunCommand(const StringX &cs_RunCommand)
+void CItemData::SetDCA(int16 iDCA, const bool bShift)
 {
-  SetField(RUNCMD, cs_RunCommand);
-}
-
-void CItemData::SetEmail(const StringX &sx_email)
-{
-  SetField(EMAIL, sx_email);
-}
-
-void CItemData::SetSymbols(const StringX &sx_symbols)
-{
-  SetField(SYMBOLS, sx_symbols);
-}
-
-void CItemData::SetPolicyName(const StringX &sx_PolicyName)
-{
-  SetField(POLICYNAME, sx_PolicyName);
-}
-
-void CItemData::SetDCA(const int16 &iDCA, const bool bShift)
-{
-   SetField(bShift ? SHIFTDCA : DCA,
-            reinterpret_cast<const unsigned char *>(&iDCA), sizeof(int16));
+  unsigned char buf[sizeof(int16)];
+  putInt(buf, iDCA);
+  CItem::SetField(bShift ? SHIFTDCA : DCA, buf, sizeof(int16));
 }
 
 bool CItemData::SetDCA(const stringT &cs_DCA, const bool bShift)
@@ -1459,16 +1453,17 @@ void CItemData::SetProtected(bool bOnOff)
 {
   if (bOnOff) {
     const unsigned char ucProtected = 1;
-    SetField(PROTECTED, &ucProtected, sizeof(char));
+    CItem::SetField(PROTECTED, &ucProtected, sizeof(char));
   } else { // remove field
     m_fields.erase(PROTECTED);
   }
 }
 
-void CItemData::SetKBShortcut(const int32 &iKBShortcut)
+void CItemData::SetKBShortcut(int32 iKBShortcut)
 {
-  SetField(KBSHORTCUT, reinterpret_cast<const unsigned char *>(&iKBShortcut),
-           sizeof(int32));
+  unsigned char buf[sizeof(int32)];
+  putInt(buf, iKBShortcut);
+  CItem::SetField(KBSHORTCUT, buf, sizeof(int32));
 }
 
 void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
@@ -1525,7 +1520,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case RUNCMD:     /* 12 */
     case SYMBOLS:    /* 16 */
     case POLICYNAME: /* 18 */
-      SetField(ft, value);
+      CItem::SetField(ft, value);
       break;
     case CTIME:      /* 07 */
     case PMTIME:     /* 08 */
@@ -1558,18 +1553,6 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     default:
       ASSERT(0);     /* Not supported */
   }
-}
-
-BlowFish *CItemData::MakeBlowFish(bool noData) const
-{
-  ASSERT(IsSessionKeySet);
-  // Creating a BlowFish object's relatively expensive. No reason
-  // to bother if we don't have any data to process.
-  if (noData)
-    return NULL;
-  else
-    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                  m_salt, SaltLength);
 }
 
 bool CItemData::ValidatePWHistory()
@@ -1694,6 +1677,9 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
 {
   int16 iDCA;
   GetDCA(iDCA, bShift);
+  if (iDCA < 0)
+    iDCA = static_cast<int16>(PWSprefs::GetInstance()->GetPref(bShift ?
+               PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
 
   switch (iFunction) {
     case PWSMatch::MR_IS:
@@ -1718,7 +1704,7 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
     case ATIME:
     case XTIME:
     case RMTIME:
-      GetTime(iObject, tValue);
+      CItem::GetTime(iObject, tValue);
       break;
     default:
       ASSERT(0);
@@ -1814,67 +1800,10 @@ bool CItemData::WillExpire(const int numdays) const
   return (XTime < exptime);
 }
 
-static bool pull_string(StringX &str, const unsigned char *data, size_t len)
-{
-  /**
-   * cp_acp is used to force reading data as non-utf8 encoded
-   * This is for databases that were incorrectly written, e.g., 3.05.02
-   * PWS_CP_ACP is either set externally or via the --CP_ACP argv
-   *
-   * We use a static variable purely for efficiency, as this won't change
-   * over the course of the program.
-   */
-
-  static int cp_acp = -1;
-  if (cp_acp == -1) {
-    cp_acp = pws_os::getenv("PWS_CP_ACP", false).empty() ? 0 : 1;
-  }
-  CUTF8Conv utf8conv(cp_acp != 0);
-  vector<unsigned char> v(data, (data + len));
-  v.push_back(0); // null terminate for FromUTF8.
-  bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
-  if (!utf8status) {
-    pws_os::Trace(_T("ItemData.cpp: pull_string(): FromUTF8 failed!\n"));
-  }
-  trashMemory(&v[0], len);
-  return utf8status;
-}
-
-static bool pull_time32(time_t &t, const unsigned char *data, size_t len)
-{
-  if (len == sizeof(__time32_t)) {
-    t = *reinterpret_cast<const time_t *>(data);
-  } else if (len == sizeof(__time64_t)) {
-    // convert from 64 bit time to currently supported 32 bit
-    struct tm ts;
-    const __time64_t *t64 = reinterpret_cast<const __time64_t *>(data);
-    if (_gmtime64_s(&ts, t64) != 0) {
-      ASSERT(0); return false;
-    }
-    t = _mkgmtime32(&ts);
-    if (t == time_t(-1)) { // time is past 2038!
-      t = 0; return false;
-    }
-#if (!defined(WIN64) && !defined(_WIN64)) /* ugly, but necessary */
-  } else if (len < sizeof(__time32_t)) {
-    // Turns out that __time32_t is 8 bytes under 64bits...
-    __time32_t t8 = t;
-    if (pull_time32(t8, data, sizeof(t8))) {
-      t = time_t(t8);
-    } else {
-      ASSERT(0); return false;
-    }
-#endif
-  } else {
-    ASSERT(0); return false;
-  }
-  return true;
-}
-
-static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
+static bool pull(int32 &i, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int32)) {
-    i = *reinterpret_cast<const int32 *>(data);
+    i = getInt32(data);
   } else {
     ASSERT(0);
     return false;
@@ -1882,10 +1811,10 @@ static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
+static bool pull(int16 &i16, const unsigned char *data, size_t len)
 {
   if (len == sizeof(int16)) {
-    i16 = *reinterpret_cast<const int16 *>(data);
+    i16 = getInt16(data);
   } else {
     ASSERT(0);
     return false;
@@ -1893,10 +1822,10 @@ static bool pull_int16(int16 &i16, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len)
+static bool pull(unsigned char &value, const unsigned char *data, size_t len)
 {
   if (len == sizeof(char)) {
-    uc = *data;
+    value = *data;
   } else {
     ASSERT(0);
     return false;
@@ -1910,7 +1839,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
   int emergencyExit = 255;
 
   while (iter != v.end()) {
-    int type = (*iter++ & 0xff); // required since enum is an int
+    unsigned char type = *iter++;
     if (static_cast<uint32>(distance(v.end(), iter)) < sizeof(uint32)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
@@ -1934,10 +1863,8 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
   return false; // END tag not found!
 }
 
-bool CItemData::SetField(int type, const unsigned char *data, size_t len)
+bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t len)
 {
-  StringX str;
-  time_t t;
   int32 i32;
   int16 i16;
   unsigned char uc;
@@ -1948,14 +1875,18 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       ASSERT(0); // not serialized, or in v3 format
       return false;
     case UUID:
-    {
-      uuid_array_t uuid_array;
-      ASSERT(len == sizeof(uuid_array_t));
-      for (size_t i = 0; i < sizeof(uuid_array_t); i++)
-        uuid_array[i] = data[i];
-      SetUUID(uuid_array);
-      break;
-    }
+    case BASEUUID:
+    case ALIASUUID:
+    case SHORTCUTUUID:
+    case ATTREF:
+      {
+        uuid_array_t uuid_array;
+        ASSERT(len == sizeof(uuid_array_t));
+        for (size_t i = 0; i < sizeof(uuid_array_t); i++)
+          uuid_array[i] = data[i];
+        SetUUID(uuid_array, ft);
+        break;
+      }
     case GROUP:
     case TITLE:
     case USER:
@@ -1969,35 +1900,33 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
     case EMAIL:
     case SYMBOLS:
     case POLICYNAME:
-      if (!pull_string(str, data, len)) return false;
-      SetField(ft, str);
+      if (!SetTextField(ft, data, len)) return false;
       break;
     case CTIME:
     case PMTIME:
     case ATIME:
     case XTIME:
     case RMTIME:
-      if (!pull_time32(t, data, len)) return false;
-      SetTime(ft, t);
+      if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
-      if (!pull_int32(i32, data, len)) return false;
+      if (!pull(i32, data, len)) return false;
       SetXTimeInt(i32);
       break;
     case DCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetDCA(i16);
       break;
     case SHIFTDCA:
-      if (!pull_int16(i16, data, len)) return false;
+      if (!pull(i16, data, len)) return false;
       SetShiftDCA(i16);
       break;
     case PROTECTED:
-      if (!pull_char(uc, data, len)) return false;
+      if (!pull(uc, data, len)) return false;
       SetProtected(uc != 0);
       break;
     case KBSHORTCUT:
-      if (!pull_int32(i32, data, sizeof(int32))) return false;
+      if (!pull(i32, data, sizeof(int32))) return false;
       SetKBShortcut(i32);
       break;
     case END:
@@ -2010,14 +1939,50 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
   return true;
 }
 
+void CItemData::SetEntryType(EntryType et)
+{
+  /**
+   * When changing between NORMAL (default) and shortcut/alias
+   * we need to move the UUID to the correct field.
+   * In other cases we leave the UUID untouched.
+   */
+  if (m_entrytype == ET_NORMAL) {
+    if (et == ET_ALIAS || et == ET_SHORTCUT) {
+      const CUUID uuid = GetUUID(UUID);
+      SetUUID(uuid, et == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+      m_fields.erase(UUID);
+    }
+  } else if (et == ET_NORMAL) {
+    if (m_entrytype == ET_ALIAS || m_entrytype == ET_SHORTCUT) {
+      const CUUID uuid = GetUUID(m_entrytype == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+      SetUUID(uuid, UUID);
+      m_fields.erase(m_entrytype == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
+    }
+  }
+  m_entrytype = et;
+}
+
 static void push_length(vector<char> &v, uint32 s)
 {
   v.insert(v.end(),
     reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
 }
 
-static void push_string(vector<char> &v, char type,
-                        const StringX &str)
+template< typename T>
+static void push(vector<char> &v, char type, T value)
+{
+  if (value != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(value));
+    v.insert(v.end(),
+             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
+  }
+}
+
+// Overload rather than specialize template function
+// See http://www.gotw.ca/publications/mill17.htm
+static void push(vector<char> &v, char type,
+                 const StringX &str)
 {
   if (!str.empty()) {
     CUTF8Conv utf8conv;
@@ -2031,49 +1996,10 @@ static void push_string(vector<char> &v, char type,
       v.insert(v.end(), reinterpret_cast<const char *>(utf8),
                reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
-      pws_os::Trace(_T("ItemData.cpp: push_string(%ls): ToUTF8 failed!\n"), str.c_str());
+      pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
 
-static void push_time(vector<char> &v, char type, time_t t)
-{
-  if (t != 0) {
-   time_t t32 = static_cast<time_t>(t);
-    v.push_back(type);
-    push_length(v, sizeof(t32));
-    v.insert(v.end(),
-      reinterpret_cast<char *>(&t32), reinterpret_cast<char *>(&t32) + sizeof(t32));
-  }
-}
-
-static void push_int32(vector<char> &v, char type, int32 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int32));
-    v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
-  }
-}
-
-static void push_int16(vector<char> &v, char type, int16 i)
-{
-  if (i != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(int16));
-    v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int16));
-  }
-}
-
-static void push_uchar(vector<char> &v, char type, unsigned char uc)
-{
-  if (uc != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(char));
-    v.insert(v.end(), reinterpret_cast<char *>(&uc), reinterpret_cast<char *>(&uc) + sizeof(char));
-  }
-}
 
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
@@ -2086,13 +2012,16 @@ void CItemData::SerializePlainText(vector<char> &v,
   unsigned char uc = 0;
 
   v.clear();
-  GetUUID(uuid_array);
-  v.push_back(UUID);
-  push_length(v, sizeof(uuid_array_t));
-  v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
-  push_string(v, GROUP, GetGroup());
-  push_string(v, TITLE, GetTitle());
-  push_string(v, USER, GetUser());
+  if (IsFieldSet(UUID)) {
+    GetUUID(uuid_array);
+    v.push_back(UUID);
+    push_length(v, sizeof(uuid_array_t));
+    v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+  }
+
+  push(v, GROUP, GetGroup());
+  push(v, TITLE, GetTitle());
+  push(v, USER, GetUser());
 
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
@@ -2106,33 +2035,32 @@ void CItemData::SerializePlainText(vector<char> &v,
   } else
     tmp = GetPassword();
 
-  push_string(v, PASSWORD, tmp);
-  push_string(v, NOTES, GetNotes());
-  push_string(v, URL, GetURL());
-  push_string(v, AUTOTYPE, GetAutoType());
+  push(v, PASSWORD, tmp);
+  push(v, NOTES, GetNotes());
+  push(v, URL, GetURL());
+  push(v, AUTOTYPE, GetAutoType());
 
-  GetCTime(t);   push_time(v, CTIME, t);
-  GetPMTime(t);  push_time(v, PMTIME, t);
-  GetATime(t);   push_time(v, ATIME, t);
-  GetXTime(t);   push_time(v, XTIME, t);
-  GetRMTime(t);  push_time(v, RMTIME, t);
+  GetCTime(t);   push(v, CTIME, t);
+  GetPMTime(t);  push(v, PMTIME, t);
+  GetATime(t);   push(v, ATIME, t);
+  GetXTime(t);   push(v, XTIME, t);
+  GetRMTime(t);  push(v, RMTIME, t);
 
-  GetXTimeInt(i32); push_int32(v, XTIME_INT, i32);
+  GetXTimeInt(i32); push(v, XTIME_INT, i32);
 
-  push_string(v, POLICY, GetPWPolicy());
-  push_string(v, PWHIST, GetPWHistory());
+  push(v, POLICY, GetPWPolicy());
+  push(v, PWHIST, GetPWHistory());
 
-  push_string(v, RUNCMD, GetRunCommand());
-  GetDCA(i16);   push_int16(v, DCA, i16);
-  GetShiftDCA(i16);   push_int16(v, SHIFTDCA, i16);
-  push_string(v, EMAIL, GetEmail());
-  GetProtected(uc); push_uchar(v, PROTECTED, uc);
-  push_string(v, SYMBOLS, GetSymbols());
-  push_string(v, POLICYNAME, GetPolicyName());
-  GetKBShortcut(i32); push_int32(v, KBSHORTCUT, i32);
+  push(v, RUNCMD, GetRunCommand());
+  GetDCA(i16); if (i16 != -1) push(v, DCA, i16);
+  GetShiftDCA(i16); if (i16 != -1) push(v, SHIFTDCA, i16);
+  push(v, EMAIL, GetEmail());
+  GetProtected(uc); push(v, PROTECTED, uc);
+  push(v, SYMBOLS, GetSymbols());
+  push(v, POLICYNAME, GetPolicyName());
+  GetKBShortcut(i32); push(v, KBSHORTCUT, i32);
 
-  UnknownFieldsConstIter vi_IterURFE;
-  for (vi_IterURFE = m_URFL.begin();
+  for (auto vi_IterURFE = m_URFL.begin();
        vi_IterURFE != m_URFL.end();
        vi_IterURFE++) {
     unsigned char type;
@@ -2142,7 +2070,8 @@ void CItemData::SerializePlainText(vector<char> &v,
     if (length != 0) {
       v.push_back(static_cast<char>(type));
       push_length(v, static_cast<uint32>(length));
-      v.insert(v.end(), reinterpret_cast<char *>(pdata), reinterpret_cast<char *>(pdata) + length);
+      v.insert(v.end(), reinterpret_cast<char *>(pdata),
+               reinterpret_cast<char *>(pdata) + length);
       trashMemory(pdata, length);
     }
     delete[] pdata;
@@ -2217,6 +2146,10 @@ stringT CItemData::EngFieldName(FieldType ft)
   case SYMBOLS:    return _T("Symbols");
   case POLICYNAME: return _T("Password Policy Name");
   case KBSHORTCUT: return _T("Keyboard Shortcut");
+  case ATTREF:     return _T("Attachment Reference");
+  case BASEUUID:   return _T("Base UUID");
+  case ALIASUUID:  return _T("Alias UUID");
+  case SHORTCUTUUID:return _T("Shortcut UUID");
   default:
     ASSERT(0);
     return _T("");

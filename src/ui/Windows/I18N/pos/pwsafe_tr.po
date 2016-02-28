@@ -126,6 +126,10 @@ msgstr " 'DCA'"
 msgid " 'Group'"
 msgstr " 'Grup'"
 
+#. Resource IDs: (374)
+msgid " 'Has Attachments'"
+msgstr ""
+
 #. Resource IDs: (372)
 msgid " 'Keyboard Shortcut'"
 msgstr ""
@@ -259,6 +263,10 @@ msgstr "! Dışarıdan düzenle"
 #, c-format
 msgid "# characters: %d"
 msgstr "# karakterler: %d"
+
+#. Resource IDs: (1198)
+msgid "#attachments"
+msgstr ""
 
 #. Resource IDs: (1456)
 msgid "#description"
@@ -419,6 +427,11 @@ msgstr "%ls\n\nYapılandırma dosyası kullanılmaycak."
 #, c-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
+
+#. Resource IDs: (317)
+#, c-format
+msgid "%s (*%s)|*%s||"
+msgstr ""
 
 #. Resource IDs: (366)
 #, c-format
@@ -1272,6 +1285,10 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
+#. Resource IDs: (217)
+msgid "<Not Set>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1429,6 +1446,10 @@ msgstr "Suret Şifresi Değiştir"
 msgid "All Files (*.*)"
 msgstr "Tüm Dosyalar"
 
+#. Resource IDs: (374)
+msgid "All Image Files"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "Tüm kullanılabilir sütunlar gösteriliyor."
@@ -1436,6 +1457,10 @@ msgstr "Tüm kullanılabilir sütunlar gösteriliyor."
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
 msgstr "Şifre Planlarına yapılan tüm değişiklikler kaybolacak"
+
+#. Resource IDs: (317)
+msgid "All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1571,6 +1596,22 @@ msgstr "Çift tırnak karakteri notlar alanının hepsini ayırmakta kullanıld�
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "En az bir tip karaktere (küçük harf, büyük harf, rakamlar,\nsemboller, 16'lık karakterler) izin verilmelidir.  "
+
+#. Resource IDs: (375, 538, 539)
+msgid "Attachment"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Attachment no found"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -2338,6 +2379,10 @@ msgstr "Oluşturma Zamanı"
 msgid "Created on:"
 msgstr "Şu Tarihte Oluşturuldu:"
 
+#. Resource IDs: (65535)
+msgid "Creation date:"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Ölçütler"
@@ -2456,6 +2501,10 @@ msgstr "Veritabanı adı"
 #. Resource IDs: (337)
 msgid "Database validated - no problems found."
 msgstr "Veritabanı doğrulandı - sorun bulunmadı."
+
+#. Resource IDs: (375)
+msgid "Date added"
+msgstr ""
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3056,6 +3105,10 @@ msgstr "&Dışa Aktar"
 msgid "Export &XML"
 msgstr "&XML Dışa Aktar"
 
+#. Resource IDs: (32096)
+msgid "Export Attachement..."
+msgstr ""
+
 #. Resource IDs: (32135)
 msgid "Export Current &DB"
 msgstr ""
@@ -3092,6 +3145,10 @@ msgstr "Çıkarılacak dosya: '%s' zaten var.\nDosyayı değiştirmek ister misi
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Veri dışa aktarması kullanıcı tarafından belirli alanlara kısıtlandı."
+
+#. Resource IDs: (1515)
+msgid "Export..."
+msgstr ""
 
 #. Resource IDs: (373)
 msgid "Export_DB"
@@ -3194,13 +3251,37 @@ msgstr "Alan var"
 msgid "File"
 msgstr ""
 
+#. Resource IDs: (375)
+msgid "File Creation Date"
+msgstr ""
+
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "Alan Kullanımda"
 
+#. Resource IDs: (375)
+msgid "File Last Accessed date"
+msgstr ""
+
+#. Resource IDs: (375)
+msgid "File Last Modified Date"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Name"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "File Path"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Dosya Okuma Hatası"
+
+#. Resource IDs: (65535)
+msgid "File Size:"
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3242,6 +3323,10 @@ msgstr "Dosya ya da yol bulunamadı"
 #. Resource IDs: (333)
 msgid "File version warning"
 msgstr "Dosya sürümü uyarısı"
+
+#. Resource IDs: (65535)
+msgid "File:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
@@ -3468,6 +3553,10 @@ msgstr "Gucerat Dili"
 #. Resource IDs: (8019)
 msgid "HK"
 msgstr "HK"
+
+#. Resource IDs: (374)
+msgid "Has Attachment(s)"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Hausa"
@@ -3746,6 +3835,10 @@ msgstr "SADECE varolan girdilerini şifrelerini değiştirmek için içe aktar"
 msgid "Import under Group?"
 msgstr "Grup altına içe aktar?"
 
+#. Resource IDs: (1516)
+msgid "Import..."
+msgstr ""
+
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
 msgstr "KeePassV1_CSV_İçe_Aktar"
@@ -3955,6 +4048,10 @@ msgstr "Son Erişim"
 msgid "Last Modified"
 msgstr "Son Değiştirme"
 
+#. Resource IDs: (65535)
+msgid "Last Modified date:"
+msgstr ""
+
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
 msgstr "Son erişim tarihi:"
@@ -4133,6 +4230,14 @@ msgstr "Maksimum kaydedildi"
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "İlk sayı ve 'arasında' kuralı için en yüksek değer"
+
+#. Resource IDs: (375)
+msgid "Media Type"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Media Type:"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -4445,6 +4550,14 @@ msgstr "Sayı maksimum değere ayarlandı. 'Büyük' kullanılamaz."
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Sayı minimum değere ayarlandı. 'Küçük' kullanılamaz."
 
+#. Resource IDs: (375)
+msgid "Number of Attachments"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Number of Attachments:"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "Number of Entries"
 msgstr "Girdi Sayısı"
@@ -4715,16 +4828,24 @@ msgstr "Password Safe Yedekleri  (*.bak)|*.bak|Password Safe Ara Yedekleri (*.ib
 msgid "Password Safe Backups (*.bak)|*.bak||"
 msgstr "Password Safe Yedekleri (*.bak)|*.bak||"
 
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
 msgstr "Password Safe Veritabanları (*.psafe3)|*.psafe3|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (316)
-msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4929,6 +5050,10 @@ msgstr "Lütfen düz metin dosyasına ad verin"
 msgid "Please name this filter"
 msgstr "Lütfen bu filtreye ad verin"
 
+#. Resource IDs: (375)
+msgid "Please select media type"
+msgstr ""
+
 #. Resource IDs: (343)
 msgid "Please select report to view."
 msgstr "Lütfen göstermek için bir rapor seçin"
@@ -4946,8 +5071,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Lütfen tüm yedekleri içerecek alt dizini belirtin."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Lütfen <a href=\"http://pwsafe.org/\">PasswordSafe sitesini</a> ziyaret edin."
+msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Lütfen <a href=\"https://pwsafe.org/\">PasswordSafe sitesini</a> ziyaret edin."
 
 #. Resource IDs: (368)
 msgid "Policy Name"
@@ -4996,6 +5121,14 @@ msgstr "Tüm eklenen karakterleri silmek için basın."
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
 msgstr "Tamam'a basmak seçili ögenin şifresini panoya kopyalayacak. Pano Password Safekapatıldığında güvenli bir şekilde temizlenecek.\n\nİptal'e basmak şifrenin kopyalanmasını durdurur."
+
+#. Resource IDs: (1517)
+msgid "Preview Unavailable"
+msgstr ""
+
+#. Resource IDs: (374)
+msgid "Preview is unavailable"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -5152,6 +5285,10 @@ msgstr "Hatırla son"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
+msgstr ""
+
+#. Resource IDs: (1468)
+msgid "Remove"
 msgstr ""
 
 #. Resource IDs: (1188)
@@ -5393,6 +5530,10 @@ msgstr "İkinci numara birinciden büyük olmalıdır"
 msgid "Security"
 msgstr "Güvenlik"
 
+#. Resource IDs: (213)
+msgid "See Attachment filters"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
 msgstr "Açık kaynak detayları için LISANS'a bakın."
@@ -5505,6 +5646,11 @@ msgstr "Sesotha sa Leboa"
 #. Resource IDs: (353)
 msgid "Session"
 msgstr "Oturum"
+
+#. Resource IDs: (375)
+#, c-format
+msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Set Date/Time"
@@ -6070,6 +6216,10 @@ msgstr "Aşağıdaki HATALAR tespit edildi ve ONARILDI."
 msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr "Aşağıdaki UYARILAR tespit edildi - gözden geçirmeli ve elle onarmalısınız."
 
+#. Resource IDs: (216)
+msgid "The following attachments are not referred to by any entry."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Aşağıdaki sütunlar tanındı ancak sadece Grup/Başlık, Kullanıcı adı ve Şifre işlenecek:"
@@ -6113,6 +6263,10 @@ msgstr "Aşağıdaki girdilerin göstermek ya da düzenlemek için çok uzun ola
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
 msgstr "Aşağıdaki girdilerin %ls için doğru formda şifreleri var, ancak temel girdi mevcut değil."
+
+#. Resource IDs: (216)
+msgid "The following entries refer to missing attachments."
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -6820,6 +6974,10 @@ msgstr "Zayıf Şifre:\n\n %s"
 msgid "What saved"
 msgstr "Ne kaydedildi"
 
+#. Resource IDs: (1518)
+msgid "Whatever"
+msgstr ""
+
 #. Resource IDs: (361)
 msgid "When saved"
 msgstr "Ne zaman kaydedildi"
@@ -7109,6 +7267,10 @@ msgstr "\nŞu girdi işin şifre geçmişinde hata: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nTümünü Genişlet"
 
+#. Resource IDs: (2007)
+msgid "\nExport Attachment..."
+msgstr ""
+
 #. Resource IDs: (2006)
 msgid "\nExport Entry in XML format..."
 msgstr "\nGirdiyi XML formatında dışa aktar..."
@@ -7145,9 +7307,17 @@ msgstr ""
 msgid "\nExport to V2 database"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nExport to V3 database"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
 msgstr "\nXML Olarak Dışa Aktar"
+
+#. Resource IDs: (2002)
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -7380,6 +7550,11 @@ msgstr "\tGrup:'%s'; Başlık:'%s'; Kullanıcı:'%s'"
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\tGup='%ls', Başlık='%ls', Kullanıcı='%ls' %ls"
 
+#. Resource IDs: (216)
+#, c-format
+msgid "\tName: %s; Filename: %s"
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string '%s'"
@@ -7610,8 +7785,8 @@ msgid "has expired"
 msgstr "süresi doldu"
 
 #. Resource IDs: (314)
-msgid "http://pwsafe.org/"
-msgstr "http://pwsafe.org/"
+msgid "https://pwsafe.org/"
+msgstr "https://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
@@ -7807,6 +7982,14 @@ msgstr "v&1.x formatı..."
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v&2 formatı..."
+
+#. Resource IDs: (374, 32025)
+msgid "v&3 format..."
+msgstr ""
+
+#. Resource IDs: (374, 32026)
+msgid "v&4 format (EXPERIMENTAL)..."
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "validation"

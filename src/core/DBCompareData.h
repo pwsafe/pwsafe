@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,7 +26,8 @@ struct st_CompareData {
     : uuid0(pws_os::CUUID::NullUUID()), uuid1(pws_os::CUUID::NullUUID()),
     bsDiffs(0), group(_T("")), title(_T("")), user(_T("")),
     id(0), indatabase(0), listindex(0),
-    unknflds0(false), unknflds1(false), bIsProtected0(false)
+    unknflds0(false), unknflds1(false), bIsProtected0(false), 
+    bHasAttachment0(false), bHasAttachment1(false)
   {
   }
 
@@ -35,7 +36,8 @@ struct st_CompareData {
     group(that.group), title(that.title), user(that.user),
     id(that.id), indatabase(that.indatabase), listindex(that.listindex),
     unknflds0(that.unknflds0), unknflds1(that.unknflds1),
-    bIsProtected0(that.bIsProtected0)
+    bIsProtected0(that.bIsProtected0),
+    bHasAttachment0(that.bHasAttachment0), bHasAttachment1(that.bHasAttachment1)
   {
   }
 
@@ -54,6 +56,8 @@ struct st_CompareData {
       unknflds0 = that.unknflds0;
       unknflds1 = that.unknflds1;
       bIsProtected0 = that.bIsProtected0;
+      bHasAttachment0 = that.bHasAttachment0;
+      bHasAttachment1 = that.bHasAttachment1;
     }
     return *this;
   }
@@ -63,7 +67,7 @@ struct st_CompareData {
     bsDiffs = 0;
     group = title = user = _T("");
     id = indatabase = listindex =0;
-    unknflds0 = unknflds1 = bIsProtected0 = false;
+    unknflds0 = unknflds1 = bIsProtected0 = bHasAttachment0 = bHasAttachment1 = false;
   }
 
   operator int() {return id;}
@@ -80,6 +84,7 @@ struct st_CompareData {
   bool unknflds0;    // original DB
   bool unknflds1;    // comparison DB
   bool bIsProtected0;
+  bool bHasAttachment0, bHasAttachment1;
 };
 
 // Vector of entries passed from DboxMain::Compare to CompareResultsDlg

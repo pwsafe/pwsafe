@@ -128,6 +128,8 @@
     <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.h"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
+    <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>
+    <File Name="../src/ui/wxWidgets/TimedTaskChain.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
@@ -228,6 +230,7 @@
         <Library Value="uuid"/>
         <Library Value="Xtst"/>
         <Library Value="xerces-c"/>
+        <Library Value="X11"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
@@ -336,6 +339,7 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
         <Library Value="uuid"/>
         <Library Value="Xtst"/>
         <Library Value="xerces-c"/>
+        <Library Value="X11"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

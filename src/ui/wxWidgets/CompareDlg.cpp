@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -591,12 +591,12 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
       // an Assert failure.  I think it will work anyway in Release build, but abort in Debug
       CItemData newItem(itrOther->second);
       newItem.CreateUUID();
-      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem);
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem, newItem.GetBaseUUID());
       pmulticmds->Add(cmd);
     }
     else {
       const CItemData& item = itrOther->second;
-      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item, item.GetBaseUUID());
       pmulticmds->Add(cmd);
     }
   }

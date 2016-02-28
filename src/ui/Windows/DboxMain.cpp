@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -354,6 +354,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
   ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2OLD1XFORMAT, ID_MENUITEM_EXPORT2V2FORMAT, OnExportVx)
+  ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2V3FORMAT, ID_MENUITEM_EXPORT2V4FORMAT, OnExportVx)
   ON_COMMAND(ID_MENUITEM_EXPORT2PLAINTEXT, OnExportText)
   ON_COMMAND(ID_MENUITEM_EXPORT2XML, OnExportXML)
   ON_COMMAND(ID_MENUITEM_IMPORT_PLAINTEXT, OnImportText)
@@ -404,6 +405,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2PLAINTEXT, OnExportGroupText)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
+  ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -569,6 +571,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPORT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORT2OLD1XFORMAT, true, true, false, false},
   {ID_MENUITEM_EXPORT2V2FORMAT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2V3FORMAT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2V4FORMAT, true, true, false, false},
   {ID_MENUITEM_EXPORT2XML, true, true, false, false},
   {ID_MENUITEM_IMPORT_XML, true, false, true, false},
   {ID_MENUITEM_IMPORT_PLAINTEXT, true, false, true, false},
@@ -623,6 +627,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPORTGRP2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTGRP2XML, true, true, false, false},
   {ID_MENUITEM_EXPORTGRP2DB, true, true, false, false},
+  {ID_MENUITEM_EXPORT_ATTACHMENT, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -1585,7 +1590,8 @@ void DboxMain::SetChanged(ChangeType changed)
 
 void DboxMain::ChangeOkUpdate()
 {
-  if (!m_bInitDone || m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+  if (!m_bInitDone || 
+    (m_core.GetReadFileVersion() != PWSfile::V30 && m_core.GetReadFileVersion() != PWSfile::V40))
     return;
 
   CMenu *pmenu = GetMenu();
@@ -1608,7 +1614,7 @@ void DboxMain::OnAbout()
 
 void DboxMain::OnPasswordSafeWebsite()
 {
-  HINSTANCE stat = ::ShellExecute(NULL, NULL, L"http://pwsafe.org/",
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, L"https://pwsafe.org/",
                               NULL, L".", SW_SHOWNORMAL);
   if (int(stat) <= 32) {
 #ifdef _DEBUG
@@ -2049,7 +2055,6 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         } else { // m_IsStartClosed (&& m_IsStartSilent)
           m_IsStartClosed = m_IsStartSilent = false;
           ShowWindow(SW_RESTORE);
-          UpdateSystemTray(UNLOCKED);
         }
         goto exit;  // return false
       } // m_IsStartSilent
@@ -2337,12 +2342,10 @@ void DboxMain::ResetIdleLockCounter(UINT event)
     SetIdleLockCounter(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout));
 }
 
-void DboxMain::SetIdleLockCounter(UINT i)
+void DboxMain::SetIdleLockCounter(UINT iMinutes)
 {
-  // i is in minutes, but we set the value to i * timer ticks per minute
-  // (If IDLE_CHECK_RATE is 1, then we would always lock when i == 1 and
-  // DecrementAndTestIdleLockCounter would be called.)
- m_IdleLockCountDown = i * IDLE_CHECK_RATE;
+  // We set the value to "iMinutes * number of checks per minute"
+  m_IdleLockCountDown = iMinutes * IDLE_CHECK_RATE;
 }
 
 bool DboxMain::DecrementAndTestIdleLockCounter()
@@ -3062,7 +3065,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   else
     item = UICommandTableEntry::InOpenRW;
 
-  if (item == UICommandTableEntry::InOpenRW && m_core.GetNumEntries() == 0)
+  if (item == UICommandTableEntry::InOpenRW &&
+      m_core.GetNumEntries() == 0 &&
+      m_core.GetEmptyGroups().empty())
     item = UICommandTableEntry::InEmpty;  // OpenRW + empty
 
   iEnable = m_UICommandTable[it->second].bOK[item] ? TRUE : FALSE;
@@ -3227,13 +3232,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
       if ((!m_core.IsChanged() && !m_core.HaveDBPrefsChanged()) ||
-            m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+            m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Don't allow Options to be changed (as they are mostly V30 and later)
-      // if a V1 or V2 database
+    // if a V1 or V2 database
     case ID_MENUITEM_OPTIONS:
-      if (m_core.GetReadFileVersion() != PWSfile::VCURRENT)
+      if (m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
     // Special processing for viewing reports, if they exist
@@ -3307,7 +3312,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_APPLYFILTER:
       if (m_bUnsavedDisplayed || m_currentfilter.vMfldata.empty() || 
           (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                         m_currentfilter.num_Pactive) == 0)
+           m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) == 0)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_EDITFILTER:

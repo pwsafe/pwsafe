@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2015 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -301,7 +301,7 @@ const uint32 BlowFish::tempbf_S[4][256] =
 };
 
 void BlowFish::Blowfish_encipher(uint32 *xl,
-                                 uint32 *xr)
+                                 uint32 *xr) const
 {
   union aword Xl;
   union aword Xr;
@@ -325,7 +325,7 @@ void BlowFish::Blowfish_encipher(uint32 *xl,
 }
 
 void BlowFish::Blowfish_decipher(uint32 *xl,
-                                 uint32 *xr)
+                                 uint32 *xr) const
 {
   union aword Xl;
   union aword Xr;
@@ -424,7 +424,7 @@ BlowFish::~BlowFish()
   trashMemory(bf_S, sizeof(bf_S));
 }
 
-void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
+void BlowFish::Encrypt(const unsigned char *in, unsigned char *out) const
 {
   for (int x = 0; x < 8; x++)
     out[x] = in[x];
@@ -432,7 +432,7 @@ void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
     reinterpret_cast<uint32 *>(out + sizeof(uint32)));
 }
 
-void BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
+void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 {
   for (int x = 0; x < 8; x++)
     out[x] = in[x];
