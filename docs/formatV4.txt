@@ -424,7 +424,7 @@ specified here.
 action maybe specified here. If unspecified, the default value of
 'username, tab, password, tab, enter' is used. In version 2 of the format,
 this was extracted from the Notes field. Several codes are recognized here,
-e.g, '%p' is replaced by the record's password. See the user documentation
+e.g, '\p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
