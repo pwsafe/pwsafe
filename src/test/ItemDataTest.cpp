@@ -12,6 +12,8 @@
 #endif
 
 #include "core/ItemData.h"
+#include "core/PWSprefs.h"
+#include "core/PWHistory.h"
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
@@ -149,6 +151,66 @@ TEST_F(ItemDataTest, PlainTextSerialization)
   fullItem.SerializePlainText(v);
   EXPECT_TRUE(di.DeSerializePlainText(v));
   EXPECT_EQ(fullItem, di);
+}
+
+TEST_F(ItemDataTest, PasswordHistory)
+{
+  size_t pwh_max, num_err;
+  PWHistList pwhl;
+
+  const StringX pw1(L"banana-0rchid");
+  const StringX pw2(L"banana-1rchid");
+  const StringX pw3(L"banana-2rchid");
+  const StringX pw4(L"banana-5rchid");
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  prefs->SetPref(PWSprefs::SavePasswordHistory, true);
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault, 3);
+
+  CItemData di;
+  di.SetCTime();
+  di.SetPassword(pw1); // first time must be Set, not Update!
+  di.UpdatePassword(pw2);
+  EXPECT_FALSE(di.GetPWHistory().empty());
+
+  EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(pw1, pwhl[0].password);
+
+  di.UpdatePassword(pw3);
+
+  EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(2, pwhl.size());
+  EXPECT_EQ(pw1, pwhl[0].password);
+  EXPECT_EQ(pw2, pwhl[1].password);
+
+  di.UpdatePassword(pw4);
+
+  EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(3, pwhl.size());
+  EXPECT_EQ(pw1, pwhl[0].password);
+  EXPECT_EQ(pw2, pwhl[1].password);
+  EXPECT_EQ(pw3, pwhl[2].password);
+
+  di.UpdatePassword(L"Last1");
+
+  EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(3, pwhl.size());
+  EXPECT_EQ(pw2, pwhl[0].password);
+  EXPECT_EQ(pw3, pwhl[1].password);
+  EXPECT_EQ(pw4, pwhl[2].password);
 }
 
 TEST_F(ItemDataTest, UnknownFields)
