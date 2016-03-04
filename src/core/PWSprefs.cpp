@@ -169,6 +169,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             1, 60000},                              // application
   {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
   {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},         // application
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},         // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

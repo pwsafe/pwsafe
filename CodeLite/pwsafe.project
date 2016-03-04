@@ -209,7 +209,7 @@
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -263,10 +263,9 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 #dummy line to keep CodeLite from stripping the TAB from the next line
 	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
-</CustomPreBuild>
+	../Misc/mkversion.pl MAJOR=0 MINOR=98 SPECIAL=BETA ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -317,7 +316,7 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -370,9 +369,10 @@ dir ../wx/src</StartupCommands>
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+	../Misc/mkversion.pl MAJOR=0 MINOR=98 SPECIAL=BETA ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
+</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
