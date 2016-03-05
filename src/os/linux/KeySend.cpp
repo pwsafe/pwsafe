@@ -11,7 +11,26 @@
 #include "../../core/Util.h"
 #include "../../core/PWSprefs.h"
 
-static bool GetPref(PWSprefs::BoolPrefs pref) {
+template <typename EnumType>
+class PrefT;
+
+template <>
+struct PrefT<PWSprefs::BoolPrefs> {
+  typedef bool type;
+};
+
+template <>
+struct PrefT<PWSprefs::IntPrefs> {
+  typedef int type;
+};
+
+template <>
+struct PrefT<PWSprefs::StringPrefs> {
+  typedef StringX type;
+};
+
+template <typename PrefEnum, typename Ret = typename PrefT<PrefEnum>::type >
+static Ret GetPref(PrefEnum pref) {
   return PWSprefs::GetInstance()->GetPref(pref);
 }
 
@@ -75,7 +94,8 @@ void CKeySend::ResetKeyboardState() const
 
 void CKeySend::SelectAll() const
 {
-  m_impl->SelectAll(m_delayMS);
+  m_impl->SelectAll(m_delayMS, GetPref(PWSprefs::AutotypeSelectAllKeyCode),
+                    GetPref(PWSprefs::AutotypeSelectAllModMask));
 }
 
 void CKeySend::EmulateMods(bool emulate)
