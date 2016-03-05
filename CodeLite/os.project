@@ -52,6 +52,7 @@
     <File Name="../src/os/linux/unicode2keysym.cpp"/>
     <File Name="../src/os/linux/unicode2keysym.h"/>
     <File Name="../src/os/linux/logit.cpp"/>
+    <File Name="../src/os/linux/media.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="os">
     <File Name="../src/os/env.h"/>

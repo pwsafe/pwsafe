@@ -28,20 +28,35 @@ namespace pws_os {
 // This is to keep Xlib headers in xsendstring.cpp only
 class AutotypeMethodBase;
 struct _XDisplay;
+class  XErrorHandlerInstaller;
+class ModifierFactory;
+struct wchar2xevent_map_ptr;
 
 class CKeySendImpl
 {
     // This takes effect the next time SendString is called
     bool m_emulateModsSeparately = true;
 
-    // The ctor throws if it can create this, because all X functions need it
+    // The ctor throws if it can't create this, because all X functions need it
     _XDisplay *m_display;
 
     // Can't change autotype method in the middle of an autotype session
     AutotypeMethodBase *m_method;
 
+    XErrorHandlerInstaller *m_errHandlerInstaller;
+
+    ModifierFactory *m_modFactory;
+
+    wchar2xevent_map_ptr  *m_wcharmap;
+
     // Does the actual autotype work with the help of m_method
     void DoSendString(const StringX& str, unsigned delayMS, bool emulateMods);
+
+    CKeySendImpl() = delete;
+    CKeySendImpl(const CKeySendImpl&) = delete;
+    CKeySendImpl(CKeySendImpl&&) = delete;
+    CKeySendImpl& operator=(const CKeySendImpl&) = delete;
+    CKeySendImpl& operator=(CKeySendImpl&&) = delete;
   public:
 
     CKeySendImpl(pws_os::AutotypeMethod method);
@@ -51,8 +66,8 @@ class CKeySendImpl
     void SendString(const StringX &data, unsigned delay);
     void EmulateMods(bool emulate) { m_emulateModsSeparately = emulate; }
     bool IsEmulatingMods() const { return m_emulateModsSeparately; }
-    // Autotypes a Ctrl-A
-    void SelectAll(unsigned delayMS);
+    // If code == 0, autotypes Ctrl-A
+    void SelectAll(unsigned delayMS, int code = 0, int mask = 0);
 };
 
 #endif

@@ -133,6 +133,7 @@ public:
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
+    AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
