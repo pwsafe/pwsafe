@@ -193,14 +193,6 @@ void DboxMain::OnAdd()
 
     // Find the new entry again as DisplayInfo now updated
     ItemListIter iter = m_core.Find(newentry_uuid);
-    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-
-    // Update item state in views & Toolbar for this new entry
-    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
-    m_ctlItemTree.SelectItem(pdi->tree_item);
-    m_ctlItemTree.SetItemState(pdi->tree_item,
-                               TVIS_DROPHILITED | TVIS_SELECTED,
-                               TVIS_DROPHILITED | TVIS_SELECTED);
     UpdateToolBarForSelectedItem(&iter->second);
 
     ChangeOkUpdate();
@@ -210,9 +202,14 @@ void DboxMain::OnAdd()
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
 
+    if (m_ctlItemTree.IsWindowVisible())
+      m_ctlItemTree.SetFocus();
+    else
+      m_ctlItemList.SetFocus();
+
   } // rc == OK
   
-  // Deelte Add Property Sheet
+  // Delete Add Property Sheet
   delete pAddEntryPSH;
 }
 
