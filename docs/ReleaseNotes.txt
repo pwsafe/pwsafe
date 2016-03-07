@@ -1,5 +1,5 @@
-Password Safe 3.38.2 Release Notes February 2016
-================================================
+Password Safe 3.38.3 Release Notes ???? 2016
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,21 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.38.3
+====================
+[1319] Re-implement fix for BR 1319 so that the added entry no longer 
+appears always selected until the display is refreshed.
+
+Changes to Existing Features in 3.38.3
+======================================
+[463] Double click on a word in the Notes field, e.g. for copy & paste,
+now no longer includes any trailing spaces.  This is different to the
+standard Microsoft processing in their products.
+
+New Features for 3.38.3
+=======================
+None
 
 Bugs fixed in 3.38.2
 ====================
@@ -126,7 +141,6 @@ consistent UI.
 [1228] Fixed incompatability with Password Policies generated with
 previous versions.
 [1226] Fixed regression in Find toolbar functionality.
-
 
 Bugs fixed in 3.35
 ==================
