@@ -19,11 +19,12 @@ GTEST_HEADERS = /usr/include/gtest/*.h \
 				/usr/include/gtest/internal/*.h
 GTEST_SRCS_   = $(GTEST_DIR)/src/*.cc \
 				$(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
+GTEST_OBJ = $(OBJPATH)/gtest-all.o
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
-TEST	 = $(BINPATH)/coretest
-OBJ	     = $(TESTOBJ) $(LIBOBJ)
+TEST	   = $(BINPATH)/coretest
+OBJS     = $(TESTOBJ) $(GTEST_OBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -std=c++11
 LDFLAGS   = -L$(LIBPATH) -lcore -luuid -los -lcore -lxerces-c -pthread
@@ -37,24 +38,21 @@ $(OBJPATH)/%.o : %.c
 $(OBJPATH)/%.o : %.cpp
 	$(CXX) -g $(CXXFLAGS) -c $< -o $@
 
-all : setup test gtest.a
+all : setup test
 
-gtest-all.o: $(GTEST_SRCS_) $(GTEST_HEADERS)
-	$(CXX) -g $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-		$(GTEST_DIR)/src/gtest-all.cc
-
-gtest.a: gtest-all.o
-	$(AR) $(ARFLAGS) $@ $^
+$(GTEST_OBJ): $(GTEST_SRCS_) $(GTEST_HEADERS)
+	$(CXX) -g $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c -o $@ \
+	$(GTEST_DIR)/src/gtest-all.cc
 
 
 run test : $(TEST)
 	$(TEST)
 
-$(TEST): $(LIB) $(TESTOBJ) gtest.a
-	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) gtest.a -o $@
+$(TEST): $(LIB) $(OBJS)
+	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) -o $@
 
 clean:
-	rm -f *~ $(OBJ) $(TEST) $(DEPENDFILE) gtest-all.o gtest.a
+	rm -f *~ $(OBJ) $(TEST) $(DEPENDFILE)
 
 setup:
 	@mkdir -p $(OBJPATH) $(LIBPATH) $(BINPATH)
