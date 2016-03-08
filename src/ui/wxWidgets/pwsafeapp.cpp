@@ -274,8 +274,6 @@ bool PwsafeApp::OnInit()
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
   SetAppName(pwsafeAppName);
-  m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
-                                      DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);

@@ -328,7 +328,7 @@ void CAbout::CheckNewVersion()
   }
   stringT latest;
   if (status == CheckVersion::UP2DATE) {
-    CheckVersion cv(MAJORVERSION, MINORVERSION, 0);
+    CheckVersion cv(MAJORVERSION, MINORVERSION, REVISION);
     status = cv.CheckLatestVersion(latest_xml, latest);
   }
   m_newVerStatus->Clear();
