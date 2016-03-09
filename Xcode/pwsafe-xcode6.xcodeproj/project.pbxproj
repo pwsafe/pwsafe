@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE257E1C5ACEFD00210C36 /* AES.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
 		A2FE258E1C5ACF7500210C36 /* ItemAtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */; };
@@ -175,6 +176,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
 		A2FE257E1C5ACEFD00210C36 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AES.cpp; sourceTree = "<group>"; };
 		A2FE257F1C5ACEFD00210C36 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES.h; sourceTree = "<group>"; };
 		A2FE25811C5ACF7500210C36 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
@@ -1148,6 +1150,7 @@
 		E6C1253511E1B2BA00D22D92 /* mac */ = {
 			isa = PBXGroup;
 			children = (
+				A2D181451C8FF86C0018AE03 /* media.cpp */,
 				E6C6876D137C406300A916C1 /* UUID.cpp */,
 				E6C1255911E1B35600D22D92 /* macsendstring.cpp */,
 				E6C1255A11E1B35600D22D92 /* macsendstring.h */,
@@ -1520,6 +1523,7 @@
 				E6EE842D11E87E9800B01518 /* PWSfileV3.cpp in Sources */,
 				E6EE842E11E87E9800B01518 /* PWSFilters.cpp in Sources */,
 				E6EE842F11E87E9800B01518 /* PWSprefs.cpp in Sources */,
+				A2D181461C8FF86C0018AE03 /* media.cpp in Sources */,
 				E6EE843011E87E9800B01518 /* PWSrand.cpp in Sources */,
 				E6EE843111E87E9800B01518 /* Report.cpp in Sources */,
 				E6EE843211E87E9800B01518 /* sha1.cpp in Sources */,
