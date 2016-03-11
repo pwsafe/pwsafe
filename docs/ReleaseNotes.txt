@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.38.3
 ====================
+[1330] Duplication of an alias or shortcut base entry now correctly
+results in a normal entry.
 [1319] Re-implement fix for BR 1319 so that the added entry no longer 
 appears always selected until the display is refreshed.
 

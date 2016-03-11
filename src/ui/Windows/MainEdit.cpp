@@ -266,6 +266,7 @@ void DboxMain::OnCreateShortcut()
                         dlg_createshortcut.m_username, sxNewDBPrefsString);
   }
 }
+
 void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                                    const StringX &cs_title, const StringX &cs_user,
                                    StringX &sxNewDBPrefsString)
@@ -1450,6 +1451,8 @@ void DboxMain::OnDuplicateEntry()
         pbci->GetUser()  +
         L"]";
       ci2.SetPassword(sxtmp);
+    } else if (pci->IsBase()) {
+      ci2.SetNormal();
     }
 
     Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));

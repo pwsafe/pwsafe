@@ -12,4 +12,5 @@ ipch
 *.wixpdb
 *.props
 *.stackdump
+*.vc.opendb
 /.vs
