@@ -885,6 +885,7 @@
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
     <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
+    <ClCompile Include="PWPListEntries.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
     <ClCompile Include="PWPropertySheet.cpp" />
     <ClCompile Include="PWResizeDialog.cpp" />
@@ -1014,6 +1015,7 @@
     <ClInclude Include="PWHdrCtrlNoChng.h" />
     <ClInclude Include="PWHistListCtrl.h" />
     <ClInclude Include="PWListCtrl.h" />
+    <ClCompile Include="PWPListEntries.h" />
     <ClInclude Include="PWPropertyPage.h" />
     <ClInclude Include="PWPropertySheet.h" />
     <ClInclude Include="PWResizeDialog.h" />

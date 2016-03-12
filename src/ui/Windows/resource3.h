@@ -765,6 +765,7 @@
 #define IDS_SETATTACHMENTFILTER         5991
 #define IDS_AFILTERINFO                 5992
 #define IDS_NOMEDIATYPE                 5993
+#define IDS_CLICKTOLISTENTRIES          5994
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

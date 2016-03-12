@@ -14,6 +14,7 @@
 
 #include "ManagePSWDPols.h"
 #include "PasswordPolicyDlg.h"
+#include "PWPListEntries.h"
 
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
@@ -72,11 +73,14 @@ BEGIN_MESSAGE_MAP(CManagePSWDPols, CPWDialog)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
+  ON_NOTIFY(NM_RCLICK, IDC_POLICYLIST, OnPolicyRightClick)
   ON_NOTIFY(LVN_KEYDOWN, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
 
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYNAMES_HEADER, OnColumnNameClick)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYENTRIES_HEADER, OnColumnEntryClick)
+
+  ON_COMMAND(ID_MENUITEM_LISTENTRIES, OnListEntries)
 END_MESSAGE_MAP()
 
 // CManagePSWDPols message handlers
@@ -130,6 +134,8 @@ BOOL CManagePSWDPols::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_CLICKTOLISTENTRIES);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_POLICYLIST), cs_ToolTip);
 
     if (!m_bReadOnly) {
       cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
@@ -638,8 +644,8 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do not allow delete of policy if use count is non-zero
       GetDlgItem(IDC_DELETE)->EnableWindow(((citer == m_MapPSWDPLC.end()) || citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
       // Do not allow list of associated items if use count is zero
-      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) || (citer->second.usecount == 0)) ?
-                                         FALSE : TRUE);
+      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) ||
+        (citer->second.usecount == 0)) ? FALSE : TRUE);
       break;
   }
   
@@ -648,6 +654,66 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   m_bViewPolicy = true;
   UpdateDetails(); 
+}
+
+void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLResult)
+{
+  *pLResult = 0; // Perform default processing on return
+  POSITION pos = m_PolicyNames.GetFirstSelectedItemPosition();
+
+  if (pos == NULL)
+    return;
+
+  int nItem = m_PolicyNames.GetNextSelectedItem(pos);
+
+  // Ignore is default policty (first entry)
+  if (nItem == 0)
+    return;
+
+  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+
+  // Ignore if no entries using this policy
+  if (m_MapPSWDPLC[sxPolicyName].usecount == 0)
+    return;
+
+  PWScore *pcore = (PWScore *)GetMainDlg()->GetCore();
+  m_ventries.clear();
+  // Ignore if can't find any even if there should be!
+  if (!pcore->GetEntriesUsingNamedPasswordPolicy(sxPolicyName, m_ventries))
+    return;
+
+  CPoint msg_pt = ::GetMessagePos();
+  CMenu menu;
+  int ipopup = IDR_POPLISTENTRIES;
+
+  if (menu.LoadMenu(ipopup)) {
+    MENUINFO minfo = { 0 };
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = ipopup;
+    BOOL brc = menu.SetMenuInfo(&minfo);
+    ASSERT(brc != 0);
+
+    CMenu *pPopup = menu.GetSubMenu(0);
+    ASSERT(pPopup != NULL);
+
+    pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
+  }
+}
+
+void CManagePSWDPols::OnListEntries()
+{
+  POSITION pos = m_PolicyNames.GetFirstSelectedItemPosition();
+  int nItem = m_PolicyNames.GetNextSelectedItem(pos);
+  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+
+  CPWPListEntries dlg(NULL, sxPolicyName, &m_ventries);
+
+  // SHow the user which entries are using this named password policy
+  dlg.DoModal();
+
+  // Clear the data
+  m_ventries.clear();
 }
 
 void CManagePSWDPols::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
