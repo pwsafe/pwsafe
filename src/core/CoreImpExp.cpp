@@ -561,6 +561,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
     conv.ToUTF8(pwpolicies.c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
   }
 
   if (!m_vEmptyGroups.empty()) {
@@ -667,8 +668,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
   if (bStartComment) {
     bStartComment = false;
     ofs << " --> " << endl;
+    ofs << endl;
   }
-  ofs << endl;
 
   // Write what we have and reset the buffer
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
@@ -2312,21 +2313,21 @@ stringT PWScore::GetXMLPWPolicies(const OrderedItemList *pOIL)
 
   std::vector<StringX> vPWPolicies;
   const bool bSubset = pOIL->size() != GetNumEntries();
+  bool bNamedPasswordPolicies = !bSubset;
+  PSWDPolicyMapCIter iter;
+
   if (bSubset) {
     // If not exporting the whole database, only get referenced Password Policies
     PopulatePWPVector pwpv(&vPWPolicies);
     for_each(pOIL->begin(), pOIL->end(), pwpv);
-  }
 
-  bool bNamedPasswordPolicies(false);
-
-  PSWDPolicyMapCIter iter;
-  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-    // If OrderedList (i.e. not the whole database), only export a Password Policy
-    // if it is referenced by one of the entries being exported
-    if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
-      bNamedPasswordPolicies = true;
-      break;
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      // If OrderedList (i.e. not the whole database), only export a Password Policy
+      // if it is referenced by one of the entries being exported
+      if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+        bNamedPasswordPolicies = true;
+        break;
+      }
     }
   }
 
