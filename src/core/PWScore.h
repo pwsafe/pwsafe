@@ -263,6 +263,9 @@ public:
                         StringX &sxPolicyName, const StringX &sxDateTime,
                         const UINT IDS_MESSAGE);
 
+  bool GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
+                                          std::vector<st_GroupTitleUser> &ventries);
+
   // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
   // m_pwlist had one or more entries with same GTU/UUID respectively.
   bool InitialiseGTU(GTUSet &setGTU);

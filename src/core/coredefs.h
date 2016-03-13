@@ -39,7 +39,8 @@ struct st_SaveTypePW {
   }  
 };
 
-// Used to verify uniqueness of GTU using std::set
+// Used to verify uniqueness of GTU using std::set and
+// retrieving all entries using a given Named Password Policy
 struct st_GroupTitleUser {
   StringX group;
   StringX title;

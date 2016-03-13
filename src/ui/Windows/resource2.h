@@ -280,10 +280,13 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...
-#define IDS_MENUSTRING_UNDO        34100
-#define IDS_MENUSTRING_CUT         34101
-#define IDS_MENUSTRING_COPY        34102
-#define IDS_MENUSTRING_PASTE       34103
-#define IDS_MENUSTRING_DELETE      34104
-#define IDS_MENUSTRING_SELECTALL   34105
-#define IDS_MENUSTRING_SHOWVKB     34106
+#define IDS_MENUSTRING_UNDO             34100
+#define IDS_MENUSTRING_CUT              34101
+#define IDS_MENUSTRING_COPY             34102
+#define IDS_MENUSTRING_PASTE            34103
+#define IDS_MENUSTRING_DELETE           34104
+#define IDS_MENUSTRING_SELECTALL        34105
+#define IDS_MENUSTRING_SHOWVKB          34106
+
+// Other
+#define ID_MENUITEM_LISTENTRIES         34200

@@ -90,6 +90,7 @@
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
+#define IDR_POPLISTENTRIES              212
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
@@ -383,6 +384,7 @@
 #define IDB_EXPORTV4_CLASSIC            543
 #define IDB_EXPORTV4_NEW                544
 #define IDB_EXPORTV4_NEW_D              545
+#define IDD_NPWP_LIST_ENTRIES           546
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -822,14 +824,15 @@
 #define IDC_AFILTER_LGC_COMBOBOX        1523
 #define IDC_CMB_AVALIABLEMEDIATYPES     1524
 #define IDC_STATIC_TUTORIAL             1525
+#define IDC_NPWP_LIST_ENTRIES           1526
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        540
+#define _APS_NEXT_RESOURCE_VALUE        547
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1526
+#define _APS_NEXT_CONTROL_VALUE         1527
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

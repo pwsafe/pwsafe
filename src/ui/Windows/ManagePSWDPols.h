@@ -59,9 +59,11 @@ protected:
   afx_msg void OnUndo();
   afx_msg void OnRedo();
   afx_msg void OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnPolicyRightClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEntryDoubleClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnListEntries();
 
   DECLARE_MESSAGE_MAP()
 
@@ -79,6 +81,7 @@ private:
   std::vector<st_PSWDPolicyChange> m_vchanges;
   int m_iundo_pos;
 
+  std::vector<st_GroupTitleUser> m_ventries;
   PSWDPolicyMap m_MapPSWDPLC;
   PWPolicy m_st_default_pp;
 
