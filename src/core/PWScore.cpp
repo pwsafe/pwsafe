@@ -46,7 +46,8 @@ unsigned char PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
-// Following structure used in ReadFile and Validate
+// Following structure used in ReadFile and Validate and entries using
+// Named Password Policy
 static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser &gtu2)
 {
   if (gtu1.group != gtu2.group)
@@ -1644,6 +1645,42 @@ void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
 
   sxPolicyName = sxNewPolicyName;
   return;
+}
+
+// functor object type for for_each:
+// Updates vector with entries using named password policy
+struct AddEntry {
+  AddEntry(const StringX sxPolicyName, std::vector<st_GroupTitleUser> &ventries)
+    : m_sxPolicyName(sxPolicyName), m_pventries(&ventries) {}
+
+  void operator()(std::pair<CUUID const, CItemData> &p)
+  {
+    if (p.second.GetPolicyName() == m_sxPolicyName) {
+      st_GroupTitleUser st;
+      st.group = p.second.GetGroup();
+      st.title = p.second.GetTitle();
+      st.user = p.second.GetUser();
+      m_pventries->push_back(st);
+      return;
+    }
+  }
+
+private:
+  AddEntry& operator=(const AddEntry&); // Do not implement
+  StringX m_sxPolicyName;
+  std::vector<st_GroupTitleUser> *m_pventries;
+};
+
+bool PWScore::GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
+              std::vector<st_GroupTitleUser> &ventries)
+{
+  AddEntry add_entry(sxPolicyName, ventries);
+  std::for_each(m_pwlist.begin(), m_pwlist.end(), add_entry);
+
+  // Sort them before displayed in the dialog later
+  std::sort(ventries.begin(), ventries.end(), GTUCompareV1);
+
+  return ventries.size() > 0;
 }
 
 // For Validate only

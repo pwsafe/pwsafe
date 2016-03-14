@@ -886,6 +886,7 @@
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
     <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
+    <ClCompile Include="PWPListEntries.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
     <ClCompile Include="PWPropertySheet.cpp" />
     <ClCompile Include="PWResizeDialog.cpp" />
@@ -1015,6 +1016,7 @@
     <ClInclude Include="PWHdrCtrlNoChng.h" />
     <ClInclude Include="PWHistListCtrl.h" />
     <ClInclude Include="PWListCtrl.h" />
+    <ClInclude Include="PWPListEntries.h" />
     <ClInclude Include="PWPropertyPage.h" />
     <ClInclude Include="PWPropertySheet.h" />
     <ClInclude Include="PWResizeDialog.h" />
@@ -1375,6 +1377,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\toolbar\classic\exportDB.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV1.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV2.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV3.bmp" />
+    <Image Include="graphics\toolbar\classic\exportV4.bmp" />
+    <Image Include="graphics\toolbar\new\exportDB.bmp" />
+    <Image Include="graphics\toolbar\new\exportDB_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV1.bmp" />
+    <Image Include="graphics\toolbar\new\exportV1_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV2.bmp" />
+    <Image Include="graphics\toolbar\new\exportV2_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV3.bmp" />
+    <Image Include="graphics\toolbar\new\exportV3_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\exportV4.bmp" />
+    <Image Include="graphics\toolbar\new\exportV4_disabled.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>
