@@ -23,9 +23,19 @@ else()
 endif()
 find_package(GTest REQUIRED)
 
+# TODO - add support for wx build under Windows
+
 if (NOT WIN32)
-  # TODO - add support for wx build under Windows
-  set(wxWidgets_CONFIGURATION mswu)
+  # help people with wxWidgets on non-standard installation
+  # quick-and-dirty since wxWdigets cmake's support is not yet loaded.
+  find_program(PWSHINT_wxconfig wx-config)
+  if(NOT(PWSHINT_wxconfig))
+    message(STATUS
+      "Failed to find 'wx-config' executable:\n"
+      "   Tip: can be pointed from command-line this way:\n"
+      "        $ cmake -D wxWidgets_CONFIG_EXECUTABLE=/path/to/wx-config ."
+    )
+  endif()
   find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
 
