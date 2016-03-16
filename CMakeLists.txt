@@ -23,9 +23,9 @@ else()
 endif()
 find_package(GTest REQUIRED)
 
+# TODO - add support for wx build under Windows
+
 if (NOT WIN32)
-  # TODO - add support for wx build under Windows
-  set(wxWidgets_CONFIGURATION mswu)
   find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
 
