@@ -164,9 +164,9 @@ endif()
 add_executable(pwsafe ${PWSAFE_SRCS})
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
-if (NOT NOT_XML)
+if (NOT NO_XML)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})
-endif (NOT NOT_XML)
+endif (NOT NO_XML)
 
 target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES})
 
