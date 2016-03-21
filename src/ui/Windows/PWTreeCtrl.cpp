@@ -842,10 +842,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 
-      if (app.GetMainDlg()->IsEmptyGroup(sxOldPath))
-        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath));
-      else
+      if (app.GetMainDlg()->IsEmptyGroup(sxOldPath)) {
+        // Rename single empty group
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath, DBEmptyGroupsCommand::EG_RENAME));
+      } else {
+        // Rename any empty groupss within this group
+        // Get current empty groups
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+          DBEmptyGroupsCommand::EG_RENAMEPATH));
+
+        // Update map of groups
         app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+      }
 
     } // good group name (no GROUP_SEP)
   } // !IsLeaf
@@ -1158,7 +1166,7 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     if (app.GetMainDlg()->IsEmptyGroup(sxOldGroup)) {
       StringX sxNewGroup = sxPrefix + StringX(GROUP_SEP2) + sxOldGroup;
       pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
-        sxOldGroup, sxNewGroup));
+        sxOldGroup, sxNewGroup, DBEmptyGroupsCommand::EG_RENAME));
     }
   }
 
