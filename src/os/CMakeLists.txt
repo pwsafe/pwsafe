@@ -42,6 +42,7 @@ if (WIN32)
     mac/sleep.cpp
     mac/utf8conv.cpp
     mac/UUID.cpp
+    mac/media.cpp
     )
   elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (OS_SRCS
