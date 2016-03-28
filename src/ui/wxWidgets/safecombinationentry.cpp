@@ -280,6 +280,7 @@ void CSafeCombinationEntry::CreateControls()
 
 void CSafeCombinationEntry::OnActivate( wxActivateEvent& event )
 {
+  UNREFERENCED_PARAMETER(event);
   if (!m_postInitDone) {
     // if filename field not empty, set focus to password:
     if (!m_filename.empty()) {
