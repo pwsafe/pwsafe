@@ -50,8 +50,8 @@ End If
 Set oReg = Nothing
 
 ' Set defaults
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-14.0"
-strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-14.0"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.3-x86-windows-vc-14.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.3-x86_64-windows-vc-14.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 strGtestIncDir = "C:\...\gtest-1.7.0\include"

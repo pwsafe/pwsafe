@@ -15,9 +15,9 @@
 
 Option Explicit
 
-Const ForReading = 1, ForWriting = 2, ForAppending = 8
+Const ForReading = 1, ForWriting = 2, ForAppending = 8 
 Const TristateUseDefault = -2, TristateTrue = -1, TristateFalse = 0
-
+ 
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
   MsgBox " Host: " & WScript.FullName & vbCRLF & _
          "This script must be executed by cscript.exe", _
@@ -72,7 +72,7 @@ If Not objFSO.FileExists(strGitPGM) Then
   If Not objFSO.FileExists(strVersionHeader) Then
     MsgBox " *** Windows UI build will fail - can't find file: version.h"
   End If
-  rc = 99
+  rc = 97
 Else
   cmd = Chr(34) & strGitPGM  & Chr(34) & " describe --all --always --dirty=+ --long"
   stdout.WriteLine "  Executing: " & cmd
@@ -124,15 +124,15 @@ End If
 
 stdout.WriteLine "strGitRev=" & strGitRev & vbCRLF
 
-' Read version.in, write version.h, substitute GITREV with strGitRev
+' Read version.in, write version.h, substitute @pwsafe_VERSTRING@ with strGitRev
 Set objVerInFile = objFSO.OpenTextFile(strVersionIn, ForReading)
 Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, True, TristateFalse)
 
 Do While Not objVerInFile.AtEndOfStream
   strLine = objVerInFile.ReadLine()
-  result = InStr(strLine, "GITREV")
+  result = InStr(strLine, "@pwsafe_VERSTRING@")
   If result <> 0 Then
-    strLine = Replace(strLine, "GITREV", strGitRev)
+    strLine = Replace(strLine, "@pwsafe_VERSTRING@", strGitRev)
   End If
   objVerHFile.WriteLine(strLine)
 Loop

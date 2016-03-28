@@ -3494,14 +3494,28 @@ bool PWScore::RemoveEmptyGroup(const StringX &sxEmptyGroup)
     return false;
 }
 
-void PWScore::RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath)
+void PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup)
 {
   std::vector<StringX>::iterator iter;
-  iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxOldPath);
+  iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxOldGroup);
   ASSERT(iter !=  m_vEmptyGroups.end());
 
   m_vEmptyGroups.erase(iter);
-  m_vEmptyGroups.push_back(sxNewPath);
+  m_vEmptyGroups.push_back(sxNewGroup);
+}
+
+void PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath)
+{
+  // Rename all empty group paths below this renamed group so that they 
+  // stay within this new group tree
+  const StringX sxOldPath2 = sxOldPath + L".";
+  const size_t len = sxOldPath2.length();
+
+  for (size_t ig = 0; ig < m_vEmptyGroups.size(); ig++) {
+    if (m_vEmptyGroups[ig].length() > len && m_vEmptyGroups[ig].substr(0, len) == sxOldPath2) {
+      m_vEmptyGroups[ig].replace(0, len - 1, sxNewPath);
+    }
+  }
 }
 
 bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)

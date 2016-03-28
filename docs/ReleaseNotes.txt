@@ -16,6 +16,7 @@ results in a normal entry.
 appears always selected until the display is refreshed.
 [] Export of a complete database to XML now includes all Named Password
 Policies.
+[] When renaming a group, all empty subgroups are now correctly renamed.
 
 Changes to Existing Features in 3.38.3
 ======================================
