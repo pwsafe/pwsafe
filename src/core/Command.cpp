@@ -356,12 +356,16 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
                                            const StringX &sxOldGroup,
-                                           const StringX &sxNewGroup)
+                                           const StringX &sxNewGroup,
+                                           Function function)
   : Command(pcomInt), m_sxOldGroup(sxOldGroup), m_sxNewGroup(sxNewGroup),
-  m_function(EG_RENAME), m_bSingleGroup(true)
+  m_function(function), m_bSingleGroup(function == EG_RENAME)
 {
-  //
+  // This function call is used to rename a single empty group (EG_RENAME) or
+  // to rename all empty groups that are sub-groups of the current group
+  // (EG_RENAMEPATH).
 }
+
 
 int DBEmptyGroupsCommand::Execute()
 {
@@ -393,6 +397,9 @@ int DBEmptyGroupsCommand::Execute()
           break;
         case EG_REPLACEALL:
           m_pcomInt->SetEmptyGroups(m_vNewEmptyGroups);
+          break;
+        case EG_RENAMEPATH:
+          m_pcomInt->RenameEmptyGroupPaths(m_sxOldGroup, m_sxNewGroup);
           break;
         default:
           // Ignore single group functions
@@ -437,6 +444,9 @@ void DBEmptyGroupsCommand::Undo()
         case EG_ADDALL:
         case EG_REPLACEALL:
           m_pcomInt->SetEmptyGroups(m_vOldEmptyGroups);
+          break;
+        case EG_RENAMEPATH:
+          m_pcomInt->RenameEmptyGroupPaths(m_sxNewGroup, m_sxOldGroup);
           break;
         default:
           // Ignore single group functions

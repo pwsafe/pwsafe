@@ -748,7 +748,7 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
     if (*itr == sxOldPath || itr->find(sxOldPathWithDot) == 0) {
       StringX sxOld = *itr;
       StringX sxNew = sxNewPath + itr->substr(sxOldPath.size());
-      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxOld, sxNew));
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxOld, sxNew, DBEmptyGroupsCommand::EG_RENAME));
     }
   }
 

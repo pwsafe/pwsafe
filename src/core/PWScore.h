@@ -479,7 +479,8 @@ private:
 
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
-  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+  virtual void RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup);
+  virtual void RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
 
