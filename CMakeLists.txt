@@ -184,11 +184,11 @@ install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pwsafe")
 install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
   DESTINATION "share/locale")
 
-# Following because "install (DIRECTORY..." copies tree strcture, which is not what we
+# Following because "install (DIRECTORY..." copies tree structure, which is not what we
 # want here. Also "install (TARGETS" doesn't seem to work with custom targets.
-file (GLOB HELPFILES "${CMAKE_BINARY_DIR}/help/*.zip")
+file (GLOB HELPFILES "help/*.zip")
 install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
-# TODO - Insall following only if on a Debian system (or if we're building a deb?)
+# TODO - Install following only if on a Debian system (or if we're building a deb?)
 install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
 
 # Packaging stuff:
