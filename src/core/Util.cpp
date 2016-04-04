@@ -23,7 +23,6 @@
 #include "os/dir.h"
 
 #include <stdio.h>
-#include <time.h>
 #ifdef _WIN32
 #include <sys/timeb.h>
 #else
@@ -841,15 +840,14 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     memcpy(buf, data, len);
     t = getInt<time_t>(buf);
   } else { // convert from 40 or 64 bit time to 32 bit
-    // XXX Change to use localtime, not GMT
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
     const __time64_t t64 = getInt<__time64_t>(buf);
-    if (_gmtime64_s(&ts, &t64) != 0) {
+    if (_localtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
-    t = _mkgmtime32(&ts);
+    t = _mktime32(&ts);
     if (t == time_t(-1)) { // time is past 2038!
       t = 0; return false;
     }

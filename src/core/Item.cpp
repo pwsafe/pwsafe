@@ -274,7 +274,7 @@ void CItem::GetTime(int whichtime, time_t &t) const
 {
   FieldConstIter fiter = m_fields.find(whichtime);
   if (fiter != m_fields.end()) {
-    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    unsigned char in[TwoFish::BLOCKSIZE] = {0}; // required by GetField
     size_t tlen = sizeof(in); // ditto
 
     CItem::GetField(fiter->second, in, tlen);

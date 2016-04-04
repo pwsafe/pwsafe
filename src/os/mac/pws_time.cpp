@@ -13,9 +13,9 @@
 #include "pws_time.h"
 #include "../utf8conv.h"
 
-int gmtime64_r(const __time64_t *timep, struct tm *result)
+int localtime64_r(const __time64_t *timep, struct tm *result)
 {
-  return gmtime_r((const time_t *)timep, result) == 0;
+  return localtime_r((const time_t *)timep, result) == 0;
 }
 
 int pws_os::asctime(TCHAR *s, size_t, tm const *t)
