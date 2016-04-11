@@ -148,8 +148,8 @@ add_subdirectory (src/core) # core library
 add_subdirectory (src/test) # tests (gtest framework)
 add_subdirectory (help) # online help
 if (WIN32)
-  # add_subdirectory (src/ui/Windows)
-  # add_subdirectory (src/ui/Windows/I18N)
+  add_subdirectory (src/ui/Windows)
+  add_subdirectory (src/ui/Windows/I18N)
 else()
   add_subdirectory (src/ui/wxWidgets)
   add_subdirectory(src/ui/cli EXCLUDE_FROM_ALL)

@@ -2,7 +2,7 @@ include(CheckLibraryExists)
 
 if (WIN32)
   set (OS_SRCS
-    indows/debug.cpp
+    windows/debug.cpp
     windows/dir.cpp
     windows/env.cpp
     windows/file.cpp

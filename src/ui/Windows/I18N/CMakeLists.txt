@@ -1,0 +1,3 @@
+# CMakeLists.txt for pwsafe I18N support:
+#
+# TBD...
