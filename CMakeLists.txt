@@ -89,17 +89,10 @@ endif (USE_ASAN)
 
 enable_testing()
 
-set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -fPIC -std=gnu++11 -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
-if (USE_ASAN)
-  set(CMAKE_CXX_FLAGS_DEBUG
-    "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
-endif (USE_ASAN)
 # Common configurations
 
 
-include_directories ($GTEST_INCLUDE_DIRS)
+include_directories (${GTEST_INCLUDE_DIRS})
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
 include_directories (${PROJECT_SOURCE_DIR}/src/core)
 include_directories (${PROJECT_BINARY_DIR})
@@ -116,6 +109,21 @@ execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
 if (res)
   set(pwsafe_VERSTRING "local")
 endif()
+
+# Assume that we're either MSVC or a Unix-like
+if (MSVC)
+set(CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm- /O2 /Ob1 /fp:precise /D WIN32 /D NDEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /GF /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MT")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MP /GS /analyze- /W4 /Zc:wchar_t /Zi /Gm- /Od  /fp:precise /D WIN32 /D _DEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /WX- /Zc:forScope /RTC1 /arch:IA32 /Gd /Oy- /MTd")
+else ()
+set(CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} -fPIC -std=gnu++11 -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
+if (USE_ASAN)
+  set(CMAKE_CXX_FLAGS_DEBUG
+    "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
+endif (USE_ASAN)
+endif (MSVC)
 
 if (WIN32)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")

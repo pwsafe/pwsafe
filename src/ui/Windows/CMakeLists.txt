@@ -25,7 +25,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/DDStatic.h
             src/ui/Windows/DDSupport.h
             src/ui/Windows/DisplayFSBkupFiles.h
-            src/ui/Windows/DoxyTempl.h
             src/ui/Windows/DropSource.h
             src/ui/Windows/DropTarget.h
             src/ui/Windows/DumpSelect.h
@@ -168,7 +167,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/DDStatic.cpp
             src/ui/Windows/DDSupport.cpp
             src/ui/Windows/DisplayFSBkupFiles.cpp
-            src/ui/Windows/DoxyTempl.cpp
             src/ui/Windows/DropSource.cpp
             src/ui/Windows/DropTarget.cpp
             src/ui/Windows/DumpSelect.cpp

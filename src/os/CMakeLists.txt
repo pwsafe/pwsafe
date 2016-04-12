@@ -17,13 +17,11 @@ if (WIN32)
     windows/sleep.cpp
     windows/utf8conv.cpp
     windows/UUID.cpp
-    windows/pws_autotype/pws_at.cpp
-    windows/pws_autotype/stdafx.cpp
-    windows/pws_osk/pws_osk.cpp
-    windows/pws_osk/stdafx.cpp
     windows/yubi/stdafx.cpp
     windows/yubi/YkLib.cpp
     )
+    add_subdirectory (windows/pws_autotype)
+    add_subdirectory (windows/pws_osk)
   elseif (APPLE)
   set (OS_SRCS
     mac/debug.cpp
