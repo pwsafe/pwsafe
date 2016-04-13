@@ -178,8 +178,11 @@ endif (NOT NO_XML)
 
 if (APPLE)
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
+elseif (WIN32)
+    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CMAKE_REQUIRED_LIBRARIES})
+    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
+    ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
 # Installation stuff (for 'make install', but mainly for 'make package')
