@@ -11,7 +11,7 @@ file (COPY "data/text1.txt" DESTINATION "data")
 
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)
-target_link_libraries(coretest ${GTEST_LIBRARIES} core os)
+target_link_libraries(coretest ${GTEST_LIBRARIES} core os Rpcrt4)
 elseif (APPLE)
 target_link_libraries(coretest ${GTEST_LIBRARIES} core os pthread)
 else ()
