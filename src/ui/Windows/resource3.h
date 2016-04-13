@@ -426,9 +426,6 @@
 #define IDS_VIEW                        5624
 #define IDS_FILTERSEXPORTEDOK           5625
 #define IDS_FILTERSIMPORTEDOK           5626
-#define IDS_SELECTFROMSTORE             5627
-#define IDS_DELETEFROMSTORE             5628
-#define IDS_VIEWFROMSTORE               5629
 #define IDS_CANTAUTOIMPORTFILTERS       5630
 #define IDS_REPLACEFILTER               5631
 #define IDS_FILTEREXISTS                5632

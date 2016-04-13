@@ -34,7 +34,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ExpPswdLC.h
             src/ui/Windows/ExpPWListDlg.h
             src/ui/Windows/ExtThread.h
-            src/ui/Windows/filter/FilterActionsDlg.h
             src/ui/Windows/filter/FilterBaseDlg.h
             src/ui/Windows/filter/FilterBoolDlg.h
             src/ui/Windows/filter/FilterDateDlg.h
@@ -176,7 +175,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ExpPswdLC.cpp
             src/ui/Windows/ExpPWListDlg.cpp
             src/ui/Windows/ExtThread.cpp
-            src/ui/Windows/filter/FilterActionsDlg.cpp
             src/ui/Windows/filter/FilterBaseDlg.cpp
             src/ui/Windows/filter/FilterBoolDlg.cpp
             src/ui/Windows/filter/FilterDateDlg.cpp
