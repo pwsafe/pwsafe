@@ -5,6 +5,9 @@ project (pwsafe CXX C)
 include(CheckLibraryExists)
 include(CheckIncludeFile)
 
+# Following has no effect, although it should...
+set (CMAKE_VS_PLATFORM_TOOLSET "v120_xp")
+
 # Version configuration:
 # Following can be different for windows/wx, just wrap around if/else/endif
 set (pwsafe_VERSION_MAJOR 0)
@@ -53,14 +56,16 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
 endif()
 
-if(NOT NO_YUBI)
-  CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
-endif(NOT NO_YUBI)
+if (NOT WIN32)
+   if(NOT NO_YUBI)
+     CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
+   endif(NOT NO_YUBI)
 
-if(NOT HAVE_YKPERS_H)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
-  message(STATUS "Yubikey support disabled")
-endif(NOT HAVE_YKPERS_H)
+   if(NOT HAVE_YKPERS_H)
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+     message(STATUS "Yubikey support disabled")
+   endif(NOT HAVE_YKPERS_H)
+endif (NOT WIN32)
 
 if (NOT NO_XML)
   find_package (XercesC QUIET MODULE)
@@ -68,10 +73,15 @@ if (NOT NO_XML)
     # FindXercesC module was added to cmake in 3.1. Debian 8 uses 3.0.2
     # If the module wasn't found yet XML is enabled, we set the default
     # values. If this isn't what you want, either configure NO_XML
-    # or edit the followingvalues manually.
-    message (WARNING "XML enabled but Xerces-C not found - using defaults")
-    set (XercesC_INCLUDE_DIR "/usr/include")
-    set (XercesC_LIBRARY "xerces-c")
+    # or edit the following values manually.
+        if (NOT XercesC_INCLUDE_DIR)
+            message (WARNING "XML enabled but XercesC_INCLUDE_DIR unset - using default")
+           set (XercesC_INCLUDE_DIR "/usr/include")
+        endif ()
+        if (NOT XercesC_LIBRARY)
+            message (WARNING "XML enabled but XercesC_LIBRARY unset - using default")
+           set (XercesC_LIBRARY "xerces-c")
+        endif ()
   endif(NOT XercesC_FOUND)
   include_directories( ${XercesC_INCLUDE_DIR} )
   add_definitions ("-DUSE_XML_LIBRARY=XERCES")
@@ -113,8 +123,9 @@ endif()
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
 set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm- /O2 /Ob1 /fp:precise /D WIN32 /D NDEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /GF /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MT")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MP /GS /analyze- /W4 /Zc:wchar_t /Zi /Gm- /Od  /fp:precise /D WIN32 /D _DEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /WX- /Zc:forScope /RTC1 /arch:IA32 /Gd /Oy- /MTd")
+  "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
+  /O2 /Ob1 /fp:precise /D WIN32 /D NDEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MT")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MP /GS /analyze- /W4 /Zc:wchar_t /Zi /Gm- /Od  /fp:precise /D WIN32 /D _DEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /WX- /Zc:forScope /RTC1 /arch:IA32 /Gd /Oy- /MTd")
 else ()
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} -fPIC -std=gnu++11 -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
@@ -169,7 +180,15 @@ else()
   endif()
 endif()
 
-add_executable(pwsafe ${PWSAFE_SRCS})
+if (NOT WIN32)
+   add_executable(pwsafe ${PWSAFE_SRCS})
+else ()
+   set(CMAKE_MFC_FLAG 1)
+   add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
+   set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
+   _BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
+   LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
+endif (NOT WIN32)
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
 if (NOT NO_XML)
@@ -179,7 +198,11 @@ endif (NOT NO_XML)
 if (APPLE)
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
 elseif (WIN32)
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
+if (NOT NO_YUBI)
+   set (YUBILIB "YkLib22")
+endif ()
+    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
+    ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid ${CMAKE_REQUIRED_LIBRARIES})
 else ()
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
     ${CMAKE_REQUIRED_LIBRARIES})

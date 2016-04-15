@@ -17,11 +17,18 @@ if (WIN32)
     windows/sleep.cpp
     windows/utf8conv.cpp
     windows/UUID.cpp
-    windows/yubi/stdafx.cpp
-    windows/yubi/YkLib.cpp
     )
+if (NOT NO_YUBI)
+    list(APPEND OS_SRCS
+        windows/yubi/stdafx.cpp
+        windows/yubi/YkLib.cpp)
+endif ()
+
     add_subdirectory (windows/pws_autotype)
     add_subdirectory (windows/pws_osk)
+if (NOT NO_YUBI)
+    add_subdirectory (windows/yubi)
+endif ()
   elseif (APPLE)
   set (OS_SRCS
     mac/debug.cpp

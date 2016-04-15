@@ -122,14 +122,14 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/SysColStatic.h
             src/ui/Windows/SystemTray.h
             src/ui/Windows/ThisMfcApp.h
-#            src/ui/Windows/UCPicker/version.h
+            src/ui/Windows/UCPicker/version.h
             src/ui/Windows/version.h
             src/ui/Windows/ViewReport.h
-#            src/ui/Windows/VirtualKeyboard/VKBButton.h
-#            src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.h
-#            src/ui/Windows/VirtualKeyboard/VKresource.h
-#            src/ui/Windows/VirtualKeyboard/VKresource3.h
-#            src/ui/Windows/VirtualKeyboard/VKShiftState.h
+            src/ui/Windows/VirtualKeyboard/VKBButton.h
+            src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.h
+            src/ui/Windows/VirtualKeyboard/VKresource.h
+            src/ui/Windows/VirtualKeyboard/VKresource3.h
+            src/ui/Windows/VirtualKeyboard/VKShiftState.h
             src/ui/Windows/WZAdvanced.h
             src/ui/Windows/WZExecuteThreadParms.h
             src/ui/Windows/WZFinish.h
@@ -266,19 +266,20 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/SystemTray.cpp
             src/ui/Windows/ThisMfcApp.cpp
             src/ui/Windows/ViewReport.cpp
-#            src/ui/Windows/VirtualKeyboard/VKBButton.cpp
-#            src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.cpp
+            src/ui/Windows/VirtualKeyboard/VKBButton.cpp
+            src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.cpp
             src/ui/Windows/WZAdvanced.cpp
             src/ui/Windows/WZFinish.cpp
             src/ui/Windows/WZPropertyPage.cpp
             src/ui/Windows/WZPropertySheet.cpp
             src/ui/Windows/WZSelectDB.cpp
+            src/ui/Windows/PasswordSafe.rc
     )
   
-if(HAVE_YKPERS_H)
+if(NOT NO_YUBI)
   list(APPEND PWSAFE_SRC_LIST src/ui/Windows/YubiCfgDlg.cpp src/ui/Windows/YubiMixin.cpp)
   list(APPEND PWSAFE_HDR_LIST src/ui/Windows/YubiCfgDlg.h src/ui/Windows/YubiMixin.h)
-endif(HAVE_YKPERS_H)
+endif(NOT NO_YUBI)
 
 set (PWSAFE_SRCS ${PWSAFE_SRC_LIST} PARENT_SCOPE)
 set (PWSAFE_HDRS ${PWSAFE_HDR_LIST} PARENT_SCOPE)
