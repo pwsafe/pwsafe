@@ -274,6 +274,8 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/WZPropertySheet.cpp
             src/ui/Windows/WZSelectDB.cpp
             src/ui/Windows/PasswordSafe.rc
+            src/ui/Windows/res/PasswordSafe2.rc2
+            src/ui/Windows/res/PasswordSafe3.rc2
     )
   
 if(NOT NO_YUBI)
@@ -284,3 +286,4 @@ endif(NOT NO_YUBI)
 set (PWSAFE_SRCS ${PWSAFE_SRC_LIST} PARENT_SCOPE)
 set (PWSAFE_HDRS ${PWSAFE_HDR_LIST} PARENT_SCOPE)
 
+add_subdirectory(language)

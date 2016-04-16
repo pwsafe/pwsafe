@@ -66,6 +66,8 @@ if (NOT WIN32)
     DEPENDS core.rc2
     )
   include_directories(${CMAKE_CURRENT_BINARY_DIR})
+else ()
+  list (APPEND CORE_SRCS core.rc2)
 endif()
 
 add_library(core ${CORE_SRCS})
