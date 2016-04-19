@@ -119,6 +119,11 @@ endif()
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
+# Debug build looks for dlls with _D pstfix, this provides it:
+set (CMAKE_DEBUG_POSTFIX "_D")
+# This copies dlls to same directory as exec upon 'install' build
+set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
   /O2 /Ob1 /fp:precise /D WIN32 /D NDEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MT")
