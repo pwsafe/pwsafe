@@ -5,9 +5,6 @@ project (pwsafe CXX C)
 include(CheckLibraryExists)
 include(CheckIncludeFile)
 
-# Following has no effect, although it should...
-set (CMAKE_VS_PLATFORM_TOOLSET "v120_xp")
-
 # Version configuration:
 # Following can be different for windows/wx, just wrap around if/else/endif
 set (pwsafe_VERSION_MAJOR 0)
@@ -156,9 +153,15 @@ if(HAVE_YKPERS_H)
   list(APPEND CMAKE_REQUIRED_LIBRARIES ykpers-1)
 endif(HAVE_YKPERS_H)
 
-# Following is because (a) -O3 breaks the test and application, and
-# (b) -O3 is the default for cmake
-set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+if (NOT MSVC)
+   # Following is because (a) -O3 breaks the test and application, and
+   # (b) -O3 is the default for cmake
+   set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif (NOT MSVC)
+
+if (WIN32)
+   set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endif (WIN32)
 
 # Subdirectories
 
@@ -211,19 +214,24 @@ endif()
 # Installation stuff (for 'make install', but mainly for 'make package')
 install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
-install (DIRECTORY xml DESTINATION "share/pwsafe/")
-install (FILES "docs/pwsafe.1" DESTINATION "share/man/man1") # gzip'ed in postinst
-install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/pwsafe")
-install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pwsafe")
-install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
-  DESTINATION "share/locale")
 
-# Following because "install (DIRECTORY..." copies tree structure, which is not what we
-# want here. Also "install (TARGETS" doesn't seem to work with custom targets.
-file (GLOB HELPFILES "help/*.zip")
-install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
-# TODO - Install following only if on a Debian system (or if we're building a deb?)
-install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
+if (NOT WIN32)
+   install (DIRECTORY xml DESTINATION "share/pwsafe/")
+   install (FILES "docs/pwsafe.1" DESTINATION "share/man/man1") # gzip'ed in postinst
+   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/pwsafe")
+   install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pwsafe")
+   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
+            DESTINATION "share/locale")
+
+   # Following because "install (DIRECTORY..." copies tree structure, which is not what we
+   # want here. Also "install (TARGETS" doesn't seem to work with custom targets.
+   file (GLOB HELPFILES "help/*.zip")
+   install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
+   # TODO - Install following only if on a Debian system (or if we're building a deb?)
+   install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
+else ()
+   install (DIRECTORY xml DESTINATION "bin")
+endif (NOT WIN32)
 
 # Packaging stuff:
 ## Common:
