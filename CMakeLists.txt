@@ -177,6 +177,8 @@ add_subdirectory (help) # online help
 if (WIN32)
   add_subdirectory (src/ui/Windows)
   add_subdirectory (src/ui/Windows/I18N)
+  add_subdirectory (src/Tools/Windows/I18N/ResText)
+  add_subdirectory (src/Tools/Windows/I18N/ResPWSL)
 else()
   add_subdirectory (src/ui/wxWidgets)
   add_subdirectory(src/ui/cli EXCLUDE_FROM_ALL)
