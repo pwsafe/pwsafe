@@ -6,11 +6,17 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 
 # Version configuration:
-# Following can be different for windows/wx, just wrap around if/else/endif
-set (pwsafe_VERSION_MAJOR 0)
-set (pwsafe_VERSION_MINOR 98)
-set (pwsafe_REVISION 1)
-set (pwsafe_SPECIALBUILD "BETA")
+if (WIN32)
+   # TBD - what version do we give wx under Windows?!?
+     set (pwsafe_VERSION_MAJOR 3)
+     set (pwsafe_VERSION_MINOR 38)
+     set (pwsafe_REVISION 3)
+else (WIN32)
+     set (pwsafe_VERSION_MAJOR 0)
+     set (pwsafe_VERSION_MINOR 98)
+     set (pwsafe_REVISION 1)
+     set (pwsafe_SPECIALBUILD "BETA")
+endif (WIN32)
 set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -141,7 +147,7 @@ endif (USE_ASAN)
 endif (MSVC)
 
 if (WIN32)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.cmake")
 else()
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
 endif()

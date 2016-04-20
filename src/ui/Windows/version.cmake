@@ -19,14 +19,10 @@
 // When building via cmake in the build directory, make sure version.h
 // is removed from the source tree.
 
-// Format: Major, Minor, Build, Revision
-//   Build  = 0 for all Formally Released versions
-//   Build != 0 for all Intermediate versions
-// Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
+#define PRODUCTVER     @pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@
+#define STRPRODUCTVER  "@pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@, @pwsafe_VERSTRING@\0"
+#define SPECIAL_BUILD L"@pwsafe_SPECIALBUILD@"
 
-#define PRODUCTVER     3, 38, 3
-#define STRPRODUCTVER  "3, 38, 3, @pwsafe_VERSTRING@\0"
-#define SPECIAL_BUILD L""
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
