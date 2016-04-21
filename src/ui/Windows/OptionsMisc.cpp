@@ -54,6 +54,7 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_ConfirmDelete = M_ConfirmDelete();
   m_MaintainDatetimeStamps = M_MaintainDatetimeStamps();
   m_EscExits = M_EscExits();
+  m_ConvertGroups = M_ConvertGroups();
   m_UseDefUsername = M_UseDefUsername();
   m_QuerySetDefUsername = M_QuerySetDefUsername();
   m_AutotypeMinimize = M_AutotypeMinimize();
@@ -81,6 +82,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_DB_DEF_AUTOTYPE_DELAY, m_AutotypeDelay);
   DDX_Check(pDX, IDC_CONFIRMDELETE, m_ConfirmDelete);
   DDX_Check(pDX, IDC_ESC_EXITS, m_EscExits);
+  DDX_Check(pDX, IDC_CONVERT_GROUPS, m_ConvertGroups);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
   DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
   DDX_Check(pDX, IDC_QUERYSETDEF, m_QuerySetDefUsername);
@@ -169,6 +171,7 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       if (M_ConfirmDelete()          != m_ConfirmDelete            || 
           M_MaintainDatetimeStamps() != m_MaintainDatetimeStamps   ||
           M_EscExits()               != m_EscExits                 ||
+          M_ConvertGroups()          != m_ConvertGroups            ||
           M_UseDefUsername()         != m_UseDefUsername           ||
           (M_UseDefUsername()        == TRUE &&
            M_DefUsername()           != CSecString(m_DefUsername)) ||
@@ -229,6 +232,7 @@ BOOL COptionsMisc::OnApply()
   M_ConfirmDelete() = m_ConfirmDelete;
   M_MaintainDatetimeStamps() = m_MaintainDatetimeStamps;
   M_EscExits() = m_EscExits;
+  M_ConvertGroups() = m_ConvertGroups;
   M_UseDefUsername() = m_UseDefUsername;
   M_QuerySetDefUsername() = m_QuerySetDefUsername;
   M_AutotypeMinimize() = m_AutotypeMinimize;
@@ -390,9 +394,7 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_USERNAME:
     case IDC_STATIC_USERNAME:
     case IDC_STATIC_DEFAUTOTYPE:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
+    case IDC_CONVERT_GROUPS:
     case IDC_MAINTAINDATETIMESTAMPS:
     case IDC_USEDEFUSER:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);

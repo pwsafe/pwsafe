@@ -51,6 +51,7 @@ struct st_Opt_master_data {
   BOOL ConfirmDelete;
   BOOL MaintainDatetimeStamps;
   BOOL EscExits;
+  BOOL ConvertGroups;
   int DoubleClickAction, ShiftDoubleClickAction;
 
   CSecString DefUsername;
@@ -143,6 +144,7 @@ public:
   inline BOOL &M_ConfirmDelete() {return m_OPTMD.ConfirmDelete;}
   inline BOOL &M_MaintainDatetimeStamps() {return m_OPTMD.MaintainDatetimeStamps;}
   inline BOOL &M_EscExits() {return m_OPTMD.EscExits;}
+  inline BOOL &M_ConvertGroups() { return m_OPTMD.ConvertGroups; }
   inline int &M_DoubleClickAction() {return m_OPTMD.DoubleClickAction;}
   inline int &M_ShiftDoubleClickAction() {return m_OPTMD.ShiftDoubleClickAction;}
 

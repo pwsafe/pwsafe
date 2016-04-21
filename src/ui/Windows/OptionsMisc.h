@@ -40,6 +40,7 @@ protected:
   BOOL m_ConfirmDelete;
   BOOL m_MaintainDatetimeStamps;
   BOOL m_EscExits;
+  BOOL m_ConvertGroups;
   BOOL m_UseDefUsername;
   BOOL m_QuerySetDefUsername;
   BOOL m_AutotypeMinimize;

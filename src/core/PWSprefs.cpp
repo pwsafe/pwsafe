@@ -89,7 +89,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("QuerySetDef"), true, ptApplication},                 // application
   {_T("UseNewToolbar"), true, ptApplication},               // application
   #ifdef __linux__
-  {_T("UseSystemTray"), false, ptApplication},               // application
+  {_T("UseSystemTray"), false, ptApplication},              // application
   #else
   {_T("UseSystemTray"), true, ptApplication},               // application
   #endif
@@ -125,11 +125,12 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
-  {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
+  {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, // application
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
-  {_T("UseAltAutoType"), false, ptApplication},             //application
-  {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
-  {_T("VKPlaySound"), false, ptApplication},                //application
+  {_T("UseAltAutoType"), false, ptApplication},             // application
+  {_T("IgnoreHelpLoadError"), false, ptApplication},        // application
+  {_T("VKPlaySound"), false, ptApplication},                // application 
+  {_T("ConvertGroupOnDelete"), false, ptDatabase},          // database
 };
 
 // Default value = -1 means set at runtime
@@ -140,7 +141,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
   {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
-  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                  // database
+  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
   {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
@@ -167,10 +168,10 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             minDCA, maxDCA},                        // application
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
-  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
-  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
-  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},         // application
-  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},         // application
+  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},          // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},          // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

@@ -179,6 +179,8 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   m_OPTMD.EscExits =
       prefs->GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
+  m_OPTMD.ConvertGroups =
+    prefs->GetPref(PWSprefs::ConvertGroupOnDelete) ? TRUE : FALSE;
   m_OPTMD.DoubleClickAction =
       prefs->GetPref(PWSprefs::DoubleClickAction);
   m_OPTMD.ShiftDoubleClickAction =
@@ -270,7 +272,7 @@ void COptions_PropertySheet::UpdateCopyPreferences()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  // Now update the Application preferences.
+  // Now update the preferences.
   // In PropertyPage alphabetic order
   // Note: Updating the copy values - especially important for DB preferences!!!
 
@@ -319,6 +321,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.ConfirmDelete == FALSE, true);
   prefs->SetPref(PWSprefs::EscExits,
                  m_OPTMD.EscExits == TRUE, true);
+  prefs->SetPref(PWSprefs::ConvertGroupOnDelete,
+                 m_OPTMD.ConvertGroups == TRUE, true);
   // by strange coincidence, the values of the enums match the indices
   // of the radio buttons in the following :-)
   prefs->SetPref(PWSprefs::DoubleClickAction,

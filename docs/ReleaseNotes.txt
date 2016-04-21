@@ -28,6 +28,9 @@ standard Microsoft processing in their products.
 
 New Features for 3.38.3
 =======================
+[806] Implement Windows Explorer-Like behavior for empty groups. If this
+preference is set (Options: Misc), the group will be saved as an "empty group" 
+when the last entry is deleted.
 [] It is now possible to list entries using a Named Password Policy from
 the Manage Password Policies dialog (right click on the name).
 
