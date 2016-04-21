@@ -69,11 +69,11 @@ public:
   // Source methods
   SCODE GiveFeedback(DROPEFFECT dropEffect);
   // target methods
-  BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
+  BOOL OnDrop(CWnd *pWnd, COleDataObject *pDataObject,
     DROPEFFECT dropEffect, CPoint point);
-  DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject,
+  DROPEFFECT OnDragEnter(CWnd *pWnd, COleDataObject *pDataObject,
     DWORD dwKeyState, CPoint point);
-  DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject,
+  DROPEFFECT OnDragOver(CWnd *pWnd, COleDataObject *pDataObject,
     DWORD dwKeyState, CPoint point);
   void OnDragLeave();
   bool IsDropOnMe() {return m_bWithinThisInstance;}
@@ -142,8 +142,9 @@ private:
   CSecString m_eLabel; // label at start of edit, if we need to revert
 
   bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent,
-    const StringX &sxPprefix);
-  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
+    const CSecString &sxPrefix);
+  bool CopyItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent,
+    const CSecString &Prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
   bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const; 
   void CollapseBranch(HTREEITEM hItem);

@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.38.3
 ====================
+[1334] An empty group is now correctly changed to a normal group when
+an entry is copied into it via Drag & Drop.
 [1330] Duplication of an alias or shortcut base entry now correctly
 results in a normal entry.
 [1319] Re-implement fix for BR 1319 so that the added entry no longer 
@@ -26,6 +28,9 @@ standard Microsoft processing in their products.
 
 New Features for 3.38.3
 =======================
+[806] Implement Windows Explorer-Like behavior for empty groups. If this
+preference is set (Options: Misc), the group will be saved as an "empty group" 
+when the last entry is deleted.
 [] It is now possible to list entries using a Named Password Policy from
 the Manage Password Policies dialog (right click on the name).
 

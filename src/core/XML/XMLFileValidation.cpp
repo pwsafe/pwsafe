@@ -30,6 +30,8 @@
 *
 * These are entered into a std::map.  The name is the key field and
 * the other 2 fields comprise the associated data via a structure.
+*
+*  NOTE: All Database preferences defined in PWSprefs.h MUST be here as XLE_PREF_<...>
 */
 
 const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE_ELEMENTS] = {
@@ -54,6 +56,8 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("UseDefaultUser"), {XLE_PREF_USEDEFAULTUSER, 0}},
   {_T("PWDefaultLength"), {XLE_PREF_PWDEFAULTLENGTH, 0}},
   {_T("LockDBOnIdleTimeout"), {XLE_PREF_LOCKDBONIDLETIMEOUT, 0}},
+  {_T("CopyPasswordWhenBrowseToURL"),{ XLE_PREF_COPYPASSWORDWHENBROWSETOURL, 0}},
+  {_T("ConvertGroupOnDelete"),{ XLE_PREF_CONVERTGROUPONDELETE, 0}},
   {_T("IdleTimeout"), {XLE_PREF_IDLETIMEOUT, 0}},
   {_T("TreeDisplayStatusAtOpen"), {XLE_PREF_TREEDISPLAYSTATUSATOPEN, 0}},
   {_T("NumPWHistoryDefault"), {XLE_PREF_NUMPWHISTORYDEFAULT, 0}},

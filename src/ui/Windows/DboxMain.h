@@ -328,7 +328,8 @@ public:
   void Delete(HTREEITEM ti,
               std::vector<Command *> &vbases,
               std::vector<Command *> &vdeps,
-              std::vector<Command *> &vemptygrps); 
+              std::vector<Command *> &vemptygrps,
+              const bool bConvertGroup);
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
   void RestoreGUIStatusEx();

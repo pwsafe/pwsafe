@@ -187,6 +187,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       // Preferences finished - get the default policy (if any) from the import XML file
       importDB_default_pwp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
       break;
+
     // Boolean DB preferences
     case XLE_PREF_SHOWPWDEFAULT:
       bpref = PWSprefs::ShowPWDefault;
@@ -257,6 +258,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       else
         bpref = PWSprefs::PWUseEasyVision;
       break;
+    case XLE_PREF_ISUTF8:
+      // Not used but defined as a database preference
+      break;
     case XLE_PREF_MAINTAINDATETIMESTAMPS:
       bpref = PWSprefs::MaintainDateTimeStamps;
       break;
@@ -284,6 +288,10 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_PREF_COPYPASSWORDWHENBROWSETOURL:
       bpref = PWSprefs::CopyPasswordWhenBrowseToURL;
       break;
+    case XLE_PREF_CONVERTGROUPONDELETE:
+      bpref = PWSprefs::ConvertGroupOnDelete;
+      break;
+
     // Integer DB preferences
     case XLE_PREF_PWDEFAULTLENGTH:
       if (m_bPolicyBeingProcessed)
@@ -333,6 +341,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       else
         ipref = PWSprefs::PWUppercaseMinLength;
       break;
+
     // String DB preferences
     case XLE_PREF_DEFAULTUSERNAME:
       spref = PWSprefs::DefaultUsername;
@@ -343,7 +352,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_PREF_DEFAULTSYMBOLS:
       spref = PWSprefs::DefaultSymbols;
       break;
-
     case XLE_PASSWORDPOLICYNAMES:
       m_bInPolicyNames = false;
       break;
