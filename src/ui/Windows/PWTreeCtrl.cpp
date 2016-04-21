@@ -262,7 +262,7 @@ void CPWTreeCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
 }
 
-BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
+BOOL CPWTreeCtrl::PreTranslateMessage(MSG *pMsg)
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
@@ -300,7 +300,7 @@ SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
   return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
+DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd *, COleDataObject *pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
@@ -326,7 +326,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
          DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
+DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd *pWnd, COleDataObject *pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
@@ -1094,7 +1094,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
 }
 
 bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const StringX &sxPrefix)
+                           const CSecString &sPrefix)
 {
   TV_INSERTSTRUCT  tvstruct;
   wchar_t sztBuffer[260];  // max visible
@@ -1162,17 +1162,17 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   } else {
     // Group processing
     // If original group was empty, need to update the vector of empty groups
-    StringX sxOldGroup(GetGroup(hitemDrag));
-    if (app.GetMainDlg()->IsEmptyGroup(sxOldGroup)) {
-      StringX sxNewGroup = sxPrefix + StringX(GROUP_SEP2) + sxOldGroup;
+    CSecString sOldGroup(GetGroup(hitemDrag));
+    if (app.GetMainDlg()->IsEmptyGroup(sOldGroup)) {
+      CSecString sNewGroup = sPrefix + CSecString(GROUP_SEP2) + sOldGroup;
       pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
-        sxOldGroup, sxNewGroup, DBEmptyGroupsCommand::EG_RENAME));
+        sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
     }
   }
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    MoveItem(pmulticmds, hFirstChild, hNewItem, sxPrefix);  // recursively move all the items
+    MoveItem(pmulticmds, hFirstChild, hNewItem, sPrefix);  // recursively move all the items
   }
 
   // We are moving it - so now delete original from TreeCtrl
@@ -1183,8 +1183,8 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   return true;
 }
 
-bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const CSecString &prefix)
+bool CPWTreeCtrl::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const CSecString &Prefix)
 {
   DWORD_PTR itemData = GetItemData(hitemDrag);
 
@@ -1192,7 +1192,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     HTREEITEM hChild = GetChildItem(hitemDrag);
 
     while (hChild != NULL) {
-      CopyItem(hChild, hitemDrop, prefix);
+      CopyItem(pmulticmds, hChild, hitemDrop, Prefix);
       hChild = GetNextItem(hChild, TVGN_NEXT);
     }
   } else { // we're dragging a leaf
@@ -1200,9 +1200,9 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     CItemData ci_temp(*pci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CSecString oldPath(ci_temp.GetGroup());
-    if (!prefix.IsEmpty()) {
-      oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
+    CSecString sOldPath(ci_temp.GetGroup());
+    if (!Prefix.IsEmpty()) {
+      sOldPath = sOldPath.Right(sOldPath.GetLength() - Prefix.GetLength() - 1);
     }
     // with new path
     CSecString path, elem;
@@ -1220,26 +1220,25 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         break;
     } while (1);
 
-    CSecString newPath;
+    CSecString sNewPath;
     if (path.IsEmpty())
-      newPath = oldPath;
+      sNewPath = sOldPath;
     else {
-      newPath = path;
-      if (!oldPath.IsEmpty())
-        newPath += GROUP_SEP + oldPath;
+      sNewPath = path;
+      if (!sOldPath.IsEmpty())
+        sNewPath += GROUP_SEP + sOldPath;
     }
     // Get information from current selected entry
     CSecString ci_user = pci->GetUser();
     CSecString ci_title0 = pci->GetTitle();
-    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(newPath, ci_title0,
+    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(sNewPath, ci_title0,
                                                  ci_user, IDS_DRAGNUMBER);
 
     ci_temp.CreateUUID(); // Copy needs its own UUID
-    ci_temp.SetGroup(newPath);
+    ci_temp.SetGroup(sNewPath);
     ci_temp.SetTitle(ci_title);
     ci_temp.SetDisplayInfo(new DisplayInfo);
 
-    Command *pcmd(NULL);
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
     case CItemData::ET_ALIASBASE:
@@ -1248,29 +1247,28 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       ci_temp.SetNormal();
       // Deliberate fall-thru
     case CItemData::ET_NORMAL:
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp);
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp));
       break;
     case CItemData::ET_ALIAS:
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp,
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID()));
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp,
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID()));
       break;
     default:
       ASSERT(0);
     }
-    app.GetMainDlg()->Execute(pcmd);
   } // leaf handling
   return true;
 }
 
-BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
+BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
@@ -1489,30 +1487,42 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
     if (m_hitemDrag != hitemDrop &&
         !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
         parent != hitemDrop) {
-      // drag operation allowed
-      if (dropEffect == DROPEFFECT_MOVE) {
-        const StringX sxPrefix = GetGroup(hitemDrop);
+      // Drag operation allowed
+      if (dropEffect == DROPEFFECT_MOVE || dropEffect == DROPEFFECT_COPY) {
+
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
-        MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxPrefix);
-        
+        pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
+          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
+
+        switch (dropEffect) {
+        case DROPEFFECT_MOVE:
+          MoveItem(pmulticmds, m_hitemDrag, hitemDrop, GetGroup(m_hitemDrop));
+          break;
+        case DROPEFFECT_COPY:
+          CopyItem(pmulticmds, m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
+          SortTree(hitemDrop);
+          break;
+        }
+
         // Make sure that the folder to which drag is performed will 
         // be removed from the vector of empty groups
         StringX sxGroup(GetGroup(hitemDrop));
         if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
           pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
-                                                       DBEmptyGroupsCommand::EG_DELETE));
+            DBEmptyGroupsCommand::EG_DELETE));
         }
-        
+
+        pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
+          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+
+        // Do it
         app.GetMainDlg()->Execute(pmulticmds);
-      } else
-        if (dropEffect == DROPEFFECT_COPY) {
-          CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
-          SortTree(hitemDrop);
-        }
-      SelectItem(hitemDrop);
-      retval = TRUE;
+
+        SelectItem(hitemDrop);
+        retval = TRUE;
+      }
     } else {
-      // drag failed or cancelled, revert to last selected
+      // Drag failed or cancelled, revert to last selected
       SelectItem(m_hitemDrag);
       goto exit;
     }
