@@ -122,8 +122,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/SysColStatic.h
             src/ui/Windows/SystemTray.h
             src/ui/Windows/ThisMfcApp.h
-            src/ui/Windows/UCPicker/version.h
-            src/ui/Windows/version.h
             src/ui/Windows/ViewReport.h
             src/ui/Windows/VirtualKeyboard/VKBButton.h
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.h
