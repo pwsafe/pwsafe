@@ -905,33 +905,53 @@ void DboxMain::Delete()
   // 3. Executes, updates UI.
 
   CItemData *pci = getSelectedItem();
-  Command *pcmd = NULL;
+  MultiCommands *pmcmd = MultiCommands::Create(&m_core);
 
-  if (pci != NULL)
-    pcmd = Delete(pci); // single entry
-  else
+  if (pci != NULL) {
+    // Easy option - just one entry
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                      (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+    // Now delete single entry
+    pmcmd->Add(Delete(pci));
+
+    // Check if last entry in group and if so - add group to empty groups
+    if (bLastEntry) {
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
+        DBEmptyGroupsCommand::EG_ADD));
+    }
+  } else
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+
     // We need to collect bases and dependents separately, deleting the latter first
     // so that an undo will add bases first.
     std::vector<Command *> vbases, vdeps, vemptygrps;
+
+    // Generate commands
     Delete(ti, vbases, vdeps, vemptygrps);
-    MultiCommands *pmcmd = MultiCommands::Create(&m_core);
-    std::for_each(vemptygrps.begin(), vemptygrps.end(),
-                  [&] (Command *cmd) {pmcmd->Add(cmd);});
+
+    // Delete normal and dependent entries
     std::for_each(vdeps.begin(), vdeps.end(),
                   [&] (Command *cmd) {pmcmd->Add(cmd);});
+
+    // Delete alias & shortcut bases
     std::for_each(vbases.begin(), vbases.end(),
                   [&] (Command *cmd) {pmcmd->Add(cmd);});
-    pcmd = pmcmd;
+
+    // This will either delete the empty groups or convert non-empty groups
+    // to empty ones once all entries have been deleted
+    std::for_each(vemptygrps.begin(), vemptygrps.end(),
+      [&](Command *cmd) {pmcmd->Add(cmd);});
+
     m_ctlItemTree.SelectItem(parent);
     m_TreeViewGroup = L"";
   }
 
-  if (pcmd != NULL) {
-    Execute(pcmd);
+  if (pmcmd->GetSize() > 0) {
+    Execute(pmcmd);
   }
 }
 
@@ -939,13 +959,14 @@ Command *DboxMain::Delete(const CItemData *pci)
 {
   // Delete a single item of any type:
   // Normal, base, alias, shortcut...
+  // ONLY called when deleting a group and all its entries
   ASSERT(pci != NULL);
   pws_os::Trace(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
         pci->GetTitle().c_str());
 
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
-  // Otherwise it just return true
+  // Otherwise it just returns true
   if (m_core.ConfirmDelete(pci))
     return DeleteEntryCommand::Create(&m_core, *pci);
   else
@@ -988,16 +1009,12 @@ void DboxMain::Delete(HTREEITEM ti,
   // Here if we have a bona fida group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
   
+  StringX sxPath = m_ctlItemTree.GetGroup(ti);
   // Check if an Empty Group
-  if (m_ctlItemTree.ItemHasChildren(ti) == 0) {
-    // Should be as it has no children!
-    StringX sxPath = m_ctlItemTree.GetGroup(ti);
-
-    // Check we know about it!
-    if (m_core.IsEmptyGroup(sxPath)) {
-      vemptygrps.push_back(DBEmptyGroupsCommand::Create(&m_core, sxPath,
-                                        DBEmptyGroupsCommand::EG_DELETE));
-    }
+  if (m_ctlItemTree.ItemHasChildren(ti) != 0) {
+    // Non-empty group - convert to empty if user want to keep it
+    vemptygrps.push_back(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+      DBEmptyGroupsCommand::EG_ADD));
   }
 
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
