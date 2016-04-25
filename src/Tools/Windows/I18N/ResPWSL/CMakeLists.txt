@@ -10,6 +10,8 @@ set (RESPWSL_SRCS
 
 set (RESPWSL_RES ResPWSL.rc)
 
+set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /D _AFXDLL" )
+
 add_executable( ResPWSL
                 EXCLUDE_FROM_ALL
                 ${RESPWSL_SRCS} ${RESPWSL_RES})
