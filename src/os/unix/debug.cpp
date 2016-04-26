@@ -161,6 +161,27 @@ bool pws_os::DisableDumpAttach()
 }
 
 #else  /* _DEBUG or DEBUG */
+#ifdef __FreeBSD__
+/*bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  // No-op under DEBUG build, return true to avoid error handling
+  return true;
+}*/
+#include <unistd.h>
+#include <sys/procctl.h>
+#include <sys/resource.h>
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  int mode = PROC_TRACE_CTL_DISABLE;
+  procctl(P_PID, getpid(), PROC_TRACE_CTL, &mode);
+  struct rlimit rlim;
+  rlim.rlim_cur = rlim.rlim_max = 0;
+  setrlimit(RLIMIT_CORE, &rlim);
+  return true;
+}
+#else
 #include <sys/prctl.h>
 
 bool pws_os::DisableDumpAttach()
@@ -168,6 +189,7 @@ bool pws_os::DisableDumpAttach()
   // prevent ptrace and creation of core dumps
   return prctl(PR_SET_DUMPABLE, 0) == 0;
 }
+#endif /* __FreeBSD__ */
 
 DWORD pws_os::IssueError(const stringT &, bool )
 {
