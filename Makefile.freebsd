@@ -1,9 +1,10 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-# TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.98.1
-RELEASE_SPECIAL := BETA
+export VER_MAJOR := 0
+export VER_MINOR := 98
+export VER_REV := 1
+export VER_SPECIAL := BETA
 
 # Since we use wxWidgets 3.x, while many distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
@@ -12,13 +13,19 @@ RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
 
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
-	dist sha1sums upload upload-src git-tag I18N help
-
-RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
+	help test debug-test release-test
 
 RELEASEDIR := ./Releases/
+
+PKG_BASE := pwsafe
+SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
 
 MKDIR := mkdir -p
 RM := /bin/rm -rf
@@ -33,16 +40,17 @@ GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SIGN_CMD := $(foreach file, $(wildcard $(RELEASEDIR)/*$(RELEASENAME)*), $(GPG_SIGN) $(file); )
 
 SHA1SUM := /usr/bin/sha1
-UPLOAD_CMD := /usr/local/bin/rsync -avP -e ssh
-UPLOAD_DST := $(UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
+SF_UPLOAD_CMD := /usr/local/bin/rsync -avP -e ssh
+SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CXXFLAGS=-std=c++11 -I/usr/local/include -DNO_YUBI
-export CFLAGS+=-I/usr/local/include -DNO_YUBI
-export CC=clang
-export CXX=clang++
-export CPP=clang++
-export PLATFORM=FreeBSD
+export CPPFLAGS += -std=c++11
+export CXXFLAGS += -I/usr/local/include -DNO_YUBI
+export CFLAGS += -I/usr/local/include -DNO_YUBI
+export CC = clang
+export CXX = clang++
+export CPP = clang++
+export PLATFORM = FreeBSD
 
 all: I18N unicodedebug unicoderelease
 
@@ -64,11 +72,13 @@ debug-clean:
 	$(MAKE) CONFIG=unicodedebug -C src/os/unix clean
 	$(MAKE) CONFIG=unicodedebug -C src/core clean
 	$(MAKE) CONFIG=unicodedebug -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicodedebug -C src/test clean
 
 release-clean:
 	$(MAKE) CONFIG=unicoderelease -C src/os/unix clean
 	$(MAKE) CONFIG=unicoderelease -C src/core clean
 	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicoderelease -C src/test clean
 
 # dist prepares stuff for upload - deprecated for Linux, until
 # we find an elegant way to tell deb and rpm distros apart.
@@ -79,21 +89,12 @@ dist:
 # which we call via 'make rpm' from here.
 rpmbuild: release I18N help
 
-deb:	release tar
-	@$(MKDIR) $(RELEASEDIR)
-	$(MAKE) -C install/$@ \
-	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
-	$(MAKE) signatures sha1sums
-
-rpm:	I18N tar
-	@$(MKDIR) $(RELEASEDIR)
-	$(MAKE) -C install/$@ \
-	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
-	$(MAKE) signatures sha1sums
-
 tar:
 	@$(MKDIR)  $(RELEASEDIR)
-	@$(GIT) archive HEAD --prefix=pwsafe-$(RELEASENAME)/ | $(GZIP) > $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
+	@$(GIT) archive --format=tar.gz \
+	--prefix=$(PKG_BASE)-$(RELEASENAME)/ \
+	-o $(RELEASEDIR)/$(SRC_TGZ) \
+	HEAD
 	@echo "Done."
 
 sha1sums:
@@ -102,18 +103,23 @@ sha1sums:
 signatures:
 	$(SIGN_CMD)
 
-upload:
-	$(UPLOAD_CMD) \
+upload: upload-sf upload-src-sf upload-github
+
+upload-sf:
+	$(SF_UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)*) \
-	$(UPLOAD_DST)
+	$(SF_UPLOAD_DST)
+
+upload-github:
+	@echo $@ TBD
 
 # Uploading source is a separate target as we only want to do this once,
 # as oppoded to uploading the compiled package, which we need to do per distro.
-upload-src:
-	$(UPLOAD_CMD) \
+upload-src-sf:
+	$(SF_UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
-	$(UPLOAD_DST)
+	$(SF_UPLOAD_DST)
 
 git-tag:
 	$(GIT) tag -u $(GPG_KEY) -m "tag wx $(RELEASENAME) release" $(RELEASENAME)
@@ -123,6 +129,15 @@ I18N:
 
 help:
 	$(MAKE) -C help
+
+test: debug-test
+
+debug-test:
+	$(MAKE) CONFIG=unicodedebug -C src/test
+
+release-test:
+	$(MAKE) CONFIG=unicoderelease -C src/test
+
 
 # Local variables:
 # mode: makefile
