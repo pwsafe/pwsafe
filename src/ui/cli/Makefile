@@ -38,7 +38,7 @@ $(LIBCORE):
 	$(MAKE) -C $(COREPATH)
 
 $(LIBOS): 
-	$(MAKE) -C $(OSPATH)/linux
+	$(MAKE) -C $(OSPATH)/unix
 
 $(EXE): $(LIBS) $(OBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) \

@@ -47,7 +47,7 @@ export PLATFORM=FreeBSD
 all: I18N unicodedebug unicoderelease
 
 unicodedebug unicoderelease:
-	$(MAKE) -C src/os/freebsd $@
+	$(MAKE) -C src/os/unix $@
 	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets CONFIG=$@
 
@@ -61,12 +61,12 @@ release:
 clean: debug-clean release-clean
 
 debug-clean:
-	$(MAKE) CONFIG=unicodedebug -C src/os/freebsd clean
+	$(MAKE) CONFIG=unicodedebug -C src/os/unix clean
 	$(MAKE) CONFIG=unicodedebug -C src/core clean
 	$(MAKE) CONFIG=unicodedebug -C src/ui/wxWidgets clean
 
 release-clean:
-	$(MAKE) CONFIG=unicoderelease -C src/os/freebsd clean
+	$(MAKE) CONFIG=unicoderelease -C src/os/unix clean
 	$(MAKE) CONFIG=unicoderelease -C src/core clean
 	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
 

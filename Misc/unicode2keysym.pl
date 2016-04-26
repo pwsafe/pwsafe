@@ -16,7 +16,7 @@
 #
 # keysymdef.h is usually in /usr/include/X11
 #
-# Output is written to stdout.  For pwsafe, it should go to src/os/linux/unicode2keysym.cpp
+# Output is written to stdout.  For pwsafe, it should go to src/os/unix/unicode2keysym.cpp
 #
 use strict;
 use warnings;
