@@ -33,7 +33,7 @@ GIT := git
 GZIP := gzip
 ECHO := /bin/echo
 
-NO_YUBI := yes
+export NO_YUBI := yes
 
 GPG := /usr/local/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
@@ -45,8 +45,8 @@ SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
 export CPPFLAGS += -std=c++11
-export CXXFLAGS += -I/usr/local/include -DNO_YUBI
-export CFLAGS += -I/usr/local/include -DNO_YUBI
+export CXXFLAGS += --stdlib=libc++ -I/usr/local/include
+export CFLAGS += -I/usr/local/include
 export CC = clang
 export CXX = clang++
 export CPP = clang++
