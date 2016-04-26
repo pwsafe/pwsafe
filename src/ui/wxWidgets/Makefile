@@ -37,8 +37,8 @@ ifeq ($(CONFIG),debug)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2d
 WXVERSION:=$(shell echo `$(WX_CONFIG) --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -47,7 +47,7 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS) ${LIBCXX_LD_EXTRA_FLAGS}
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -64,8 +64,8 @@ ifeq ($(CONFIG),release)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=no --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -91,8 +91,8 @@ ifeq ($(CONFIG),unicodedebug)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2ud
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=yes --unicode=yes --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -119,8 +119,8 @@ else
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2u
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=yes --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
