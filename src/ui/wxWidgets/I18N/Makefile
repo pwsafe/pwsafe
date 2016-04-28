@@ -7,8 +7,8 @@ SRCS := $(wildcard $(SRC_BASE)/ui/wxWidgets/*.cpp) \
 	$(wildcard $(SRC_BASE)/ui/wxWidgets/*.h) \
 	$(wildcard $(SRC_BASE)/core/*.cpp) \
 	$(wildcard $(SRC_BASE)/core/*.h) \
-	$(wildcard $(SRC_BASE)/os/linux/*.cpp) \
-	$(wildcard $(SRC_BASE)/os/linux/*.h)
+	$(wildcard $(SRC_BASE)/os/unix/*.cpp) \
+	$(wildcard $(SRC_BASE)/os/unix/*.h)
 
 LANGS := de da es fr it ko nl pl ru sv zh
 

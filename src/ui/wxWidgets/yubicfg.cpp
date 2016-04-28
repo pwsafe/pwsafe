@@ -35,7 +35,7 @@
 #include "core/PWScore.h"
 
 #include "os/rand.h"
-#include "os/linux/PWYubi.h"
+#include "os/unix/PWYubi.h"
 
 using namespace std;
 
