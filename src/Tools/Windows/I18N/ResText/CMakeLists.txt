@@ -9,8 +9,6 @@ set (RESTEXT_SRCS
 
 set (RESTEXT_RES ResText.rc)
 
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /D _AFXDLL" )
-
 add_executable( ResText
                 EXCLUDE_FROM_ALL
                 ${RESTEXT_SRCS} ${RESTEXT_RES})
