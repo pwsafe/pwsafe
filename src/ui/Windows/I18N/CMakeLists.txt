@@ -14,7 +14,10 @@ set (RESPWSL "${TOOLS_BIN_DIR}/ResPWSL/Release/ResPWSL.exe")
 
 string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 
-set (BASE_DLL "${CMAKE_BINARY_DIR}/src/ui/Windows/language/Release/pwsafe_base.dll")
+set (BASE_DLL
+     "${CMAKE_BINARY_DIR}/src/ui/Windows/language/Release/pwsafe_base.dll")
+
+set (DLL_DIR "${CMAKE_BINARY_DIR}/bin")
 
 add_custom_target("pot" DEPENDS "pwsafe.pot")
 add_custom_command(OUTPUT "pwsafe.pot"
@@ -27,6 +30,8 @@ add_custom_command(OUTPUT "pwsafe.pot"
 set_property( TARGET pot PROPERTY FOLDER I18N )
 
 # No idea why $POS doesn't work here, but it doesn't...
+# Note that this updates the SOURCE TREE!!!
+#
 add_custom_target("update-pos"
                   DEPENDS
                    pos/pwsafe_cz.po
@@ -47,11 +52,59 @@ add_custom_target("update-pos"
 
 foreach (LANG ${LANGS})
  add_custom_command(OUTPUT "pos/pwsafe_${LANG}.po"
-    message("COMMAND COPY ${CMAKE_SOURCE_TREE}/pos/pwsafe_${LANG}.po ${CMAKE_CURRENT_BINARY_DIR}/pos")
-	  COMMAND ${RESTEXT} "extract" "${BASE_DLL}" "${CMAKE_CURRENT_BINARY_DIR}/pos/pwsafe_${LANG}.po"
+	  COMMAND ${RESTEXT} "extract" "${BASE_DLL}" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
     DEPENDS "${BASE_DLL}"
     COMMENT "Updating pwsafe_${LANG}.po"
     )
 endforeach(LANG)
 
 set_property( TARGET update-pos PROPERTY FOLDER I18N )
+
+add_custom_target("dlls"
+                  DEPENDS
+                   ${DLL_DIR}/pwsafeCZ.dll
+                   ${DLL_DIR}/pwsafeDE.dll
+                   ${DLL_DIR}/pwsafeDK.dll
+                   ${DLL_DIR}/pwsafeES.dll
+                   ${DLL_DIR}/pwsafeFR.dll
+                   ${DLL_DIR}/pwsafeHU.dll
+                   ${DLL_DIR}/pwsafeIT.dll
+                   ${DLL_DIR}/pwsafeKR.dll
+                   ${DLL_DIR}/pwsafeNL.dll
+                   ${DLL_DIR}/pwsafePL.dll
+                   ${DLL_DIR}/pwsafeRU.dll
+                   ${DLL_DIR}/pwsafeSV.dll
+                   ${DLL_DIR}/pwsafeTR.dll
+                   ${DLL_DIR}/pwsafeZH.dll
+                   )
+
+
+macro( make_dll LANG CODE OUT)
+  string (TOUPPER ${LANG} UCLANG)
+  add_custom_command(OUTPUT "${DLL_DIR}/pwsafe${UCLANG}.dll"
+                     COMMAND "${RESTEXT}" "apply" "${BASE_DLL}"
+                             "foo.dll" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
+                     COMMAND "${RESPWSL}" "apply" "foo.dll" "${CODE}"
+                     COMMAND "DEL" "foo.dll"
+                     COMMAND "REN" "pwsafe${OUT}.dll" "pwsafe${UCLANG}.dll"
+                     WORKING_DIRECTORY ${DLL_DIR}
+                     COMMENT "Making pwsafe${UCLANG}.dll"
+                     )
+endmacro( make_dll LANG CODE )
+
+make_dll( "de" "0x0407" "DE_DE")
+make_dll( "sv" "0x041d" "SV_SE")
+make_dll( "es" "0x0c0a" "ES_ES")
+make_dll( "pl" "0x0415" "PL_PL")
+make_dll( "zh" "0x0804" "ZH_CN")
+make_dll( "ru" "0x0419" "RU_RU")
+make_dll( "it" "0x0410" "IT_IT")
+make_dll( "fr" "0x040c" "FR_FR")
+make_dll( "da" "0x0406" "DA_DK")
+make_dll( "kr" "0x0412" "KO_KR")
+make_dll( "nl" "0x0413" "NL_NL")
+make_dll( "cz" "0x0405" "CS_CZ")
+make_dll( "tr" "0x041f" "TR_TR")
+make_dll( "hu" "0x040e" "HU_HU")
+
+set_property( TARGET dlls PROPERTY FOLDER I18N )
