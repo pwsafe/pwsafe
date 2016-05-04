@@ -1946,7 +1946,7 @@ void DboxMain::OnRunCommand()
 }
 
 void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
-  const std::vector<StringX> vsxEmptyGroups)
+  const std::vector<StringX> &vsxEmptyGroups)
 {
   // Add Drop entries
   CItemData ci_temp;
