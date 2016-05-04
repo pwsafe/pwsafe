@@ -1906,7 +1906,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
       size_t utf8Len;
 
       if (conv.ToUTF8(vEmptyGroups[i].c_str(), utf8, utf8Len)) {
-        const size_t grouplen = vEmptyGroups[i].length();
         outDDmemfile.Write((void *)&utf8Len, sizeof(utf8Len));
         outDDmemfile.Write(reinterpret_cast<const char *>(utf8), utf8Len);
       } else {
