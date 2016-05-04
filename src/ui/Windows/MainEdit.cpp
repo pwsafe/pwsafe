@@ -1945,7 +1945,8 @@ void DboxMain::OnRunCommand()
   }
 }
 
-void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
+void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
+  const std::vector<StringX> vsxEmptyGroups)
 {
   // Add Drop entries
   CItemData ci_temp;
@@ -1964,6 +1965,9 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
   m_core.InitialiseGTU(setGTU);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  pmulticmds->Add(UpdateGUICommand::Create(&m_core,
+     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -2160,6 +2164,23 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pmulticmds->Add(pcmdS);
+
+  // Now add Empty Groups
+  for (size_t i = 0; i < vsxEmptyGroups.size(); i++) {
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, vsxEmptyGroups[i],
+      DBEmptyGroupsCommand::EG_ADD));
+  }
+
+  // Check if original drop group was empty - if so, it won't be now
+  if (IsEmptyGroup(DropGroup)) {
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, DropGroup,
+      DBEmptyGroupsCommand::EG_DELETE));
+  }
+
+  pmulticmds->Add(UpdateGUICommand::Create(&m_core,
+    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+
+  // Do it!
   Execute(pmulticmds);
 
   // Some shortcuts may have been deleted from the database as base does not exist
