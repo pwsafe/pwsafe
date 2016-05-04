@@ -28,7 +28,7 @@ namespace pws_os {
                          const char *src, size_t srclen, bool isUTF8 = true);
 #ifndef _WIN32
   // General conversion from/to char* to/from std::wstring routine
-  // for use in os/linux
+  // for use in os/unix
   extern std::wstring towc(const char *val);
   extern std::string tomb(const stringT& val);
 #endif

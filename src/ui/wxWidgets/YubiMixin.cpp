@@ -24,7 +24,7 @@
 #include <sstream>
 
 #include "YubiMixin.h"
-#include "os/linux/PWYubi.h"
+#include "os/unix/PWYubi.h"
 #include "os/sleep.h"
 
 void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)

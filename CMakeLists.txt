@@ -125,7 +125,7 @@ endif()
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
-# Debug build looks for dlls with _D pstfix, this provides it:
+# Debug build looks for dlls with _D postfix, this provides it:
 set (CMAKE_DEBUG_POSTFIX "_D")
 # This copies dlls to same directory as exec upon 'install' build
 set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
@@ -134,8 +134,12 @@ set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
-  /O2 /Ob1 /fp:precise /D WIN32 /D NDEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MT")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MP /GS /analyze- /W4 /Zc:wchar_t /Zi /Gm- /Od  /fp:precise /D WIN32 /D _DEBUG  /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /WX- /Zc:forScope /RTC1 /arch:IA32 /Gd /Oy- /MTd")
+  /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /RTC1 /Gd /Oy-")
+
+set(CMAKE_CXX_FLAGS_DEBUG " /Od  /D _DEBUG /WX- /Gd /Oy- /Ob0 /Od /MTd")
+
+set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /D NDEBUG  /W4 /Zc:wchar_t  /Od /WX-")
+
 else ()
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} -fPIC -std=gnu++11 -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
@@ -220,7 +224,7 @@ if (NOT NO_YUBI)
    set (YUBILIB "YkLib22")
 endif ()
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
-    ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid ${CMAKE_REQUIRED_LIBRARIES})
+      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid Dbghelp ${CMAKE_REQUIRED_LIBRARIES})
 else ()
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
     ${CMAKE_REQUIRED_LIBRARIES})

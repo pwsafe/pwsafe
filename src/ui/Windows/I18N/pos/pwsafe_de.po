@@ -5216,7 +5216,7 @@ msgstr "Bitte wählen Sie das Unterverzeichnis für alle Sicherungsdateien aus."
 
 #. Resource IDs: (344)
 msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Bitte besuchen Sie die <a href=\"https://pwsafe.org/\">PasswordSafe Wenseite.</a>"
+msgstr "Bitte besuchen Sie die <a href=\"https://pwsafe.org/\">PasswordSafe Webseite.</a>"
 
 #. Resource IDs: (368)
 msgid "Policy Name"

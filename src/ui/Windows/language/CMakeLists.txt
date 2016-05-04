@@ -9,3 +9,4 @@ set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /D languageDLL_EXPORTS")
 
 add_library(pwsafe_base SHARED ${LANG_SRCS} ${LANG_RES})
+set_property( TARGET pwsafe_base PROPERTY FOLDER I18N )

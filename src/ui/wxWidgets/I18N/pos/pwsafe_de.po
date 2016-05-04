@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ui/wxWidgets\n"
 "X-Poedit-SearchPath-1: core\n"
-"X-Poedit-SearchPath-2: os/linux\n"
+"X-Poedit-SearchPath-2: os/unix\n"
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
 msgid ""
