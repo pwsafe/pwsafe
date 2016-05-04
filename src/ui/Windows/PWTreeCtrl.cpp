@@ -1287,12 +1287,14 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
       pws_os::Trace(L"CPWTreeCtrl::OnDrop() No global data\n");
       goto done;
     }
+
     hdrop = HDROP(GlobalLock(hg));
     if (hdrop == NULL) {
       pws_os::Trace(L"CPWTreeCtrl::OnDrop() Could not lock global data\n");
       GlobalUnlock(hg);
       goto done;
     }
+
     nFiles = DragQueryFile(hdrop, UINT(-1), NULL, 0);
     // Support exactly one file being dropped
     if (nFiles != 1) {
@@ -1300,11 +1302,13 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
       GlobalUnlock(hg);
       goto done;
     }
+
     DragQueryFile(hdrop, 0, szDraggedFile, MAX_PATH);
     pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
     GlobalUnlock(hg);
     m_droppedFile = szDraggedFile;
     app.GetMainDlg()->PostMessage(PWS_MSG_DROPPED_FILE);
+
   done:
     SelectDropTarget(NULL);
     return FALSE;
@@ -1317,9 +1321,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
   }
 
   m_TickCount = 0;
-  pws_os::Trace(L"CPWTreeCtrl::OnDrop() show cursor\n");
+  //pws_os::Trace(L"CPWTreeCtrl::OnDrop() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
+
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   // pil will be NULL if we're the target of inter-process D&D
@@ -1337,7 +1342,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) {
     SelectDropTarget(NULL);
-    return FALSE;
+    return FALSE; // don't drop if not ours
   }
 
   UINT uFlags;
@@ -1829,6 +1834,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
   CItemData *pci = (CItemData *)itemData;
+  std::vector<StringX> vEmptyGroups;
 
   CDDObList out_oblist;
 
@@ -1838,20 +1844,88 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     out_oblist.m_bDragNode = false;
     GetEntryData(out_oblist, pci);
   } else {
-    m_nDragPathLen = GetGroup(GetParentItem(m_hitemDrag)).GetLength();
-    out_oblist.m_bDragNode = true;
-    GetGroupEntriesData(out_oblist, m_hitemDrag);
+    const StringX DragPathParent = GetGroup(GetParentItem(m_hitemDrag));
+    m_nDragPathLen = DragPathParent.length();
+    pws_os::Trace(L"DragPathParent: %s; len: %d\n", DragPathParent.c_str(), m_nDragPathLen);
+
+    StringX DragPath = GetGroup(m_hitemDrag);
+    // Check if this is an empty group
+    if (app.GetMainDlg()->IsEmptyGroup(DragPath)) {
+      // Don't bother looking for children
+      vEmptyGroups.push_back(DragPath.substr(m_nDragPathLen == 0 ? m_nDragPathLen : m_nDragPathLen + 1));
+    } else {
+      out_oblist.m_bDragNode = true;
+      GetGroupEntriesData(out_oblist, m_hitemDrag);
+
+      // Get all empty groups within original drag group
+      std::vector<StringX> vAllEmptyGroups;
+      vAllEmptyGroups = app.GetCore()->GetEmptyGroups();
+
+      DragPath += StringX(L".");
+      const size_t draglen = DragPath.length();
+      pws_os::Trace(L"DragPath: %s; len: %d\n", DragPath.c_str(), DragPath.length());
+
+      for (size_t i = 0; i < vAllEmptyGroups.size(); i++) {
+        pws_os::Trace(L"vAllEmptyGroups[%d]: %s\n", i, vAllEmptyGroups[i].c_str());
+        if (CompareNoCase(vAllEmptyGroups[i].substr(0, draglen), DragPath) == 0) {
+          StringX veg = vAllEmptyGroups[i].substr(m_nDragPathLen == 0 ? 0 : m_nDragPathLen + 1, StringX::npos);
+          vEmptyGroups.push_back(veg);
+          pws_os::Trace(L"Added: %s\n", veg.c_str());
+        }
+      }
+    }
   }
 
   CSMemFile outDDmemfile;
   out_oblist.DDSerialize(outDDmemfile);
 
-  outLen = (long)outDDmemfile.GetLength();
-  out_buffer = (BYTE *)outDDmemfile.Detach();
-
   while (!out_oblist.IsEmpty()) {
     delete (CDDObject *)out_oblist.RemoveHead();
-  } 
+  }
+
+  // Now process empty groups
+  pws_os::Trace(L"nemptygroups: %d\n", vEmptyGroups.size());
+  if (!vEmptyGroups.empty()) {
+    if (outDDmemfile.GetLength() == 0) {
+      // No entries written but as we are going to write emtpy groups
+      // we need to put a zero count
+      int nCount(0);
+      outDDmemfile.Write((void *)&nCount, sizeof(nCount));
+      outDDmemfile.Write((void *)&out_oblist.m_bDragNode, sizeof(bool));
+    }
+
+    // Add special field to ensure we recognise the extra data correctly
+    // when dropping
+    outDDmemfile.Write("egrp", 4);
+
+    size_t nemptygroups = vEmptyGroups.size();
+    outDDmemfile.Write((void *)&nemptygroups, sizeof(nemptygroups));
+    for (size_t i = 0; i < nemptygroups; i++) {
+      CUTF8Conv conv;
+      const unsigned char *utf8;
+      size_t utf8Len;
+
+      if (conv.ToUTF8(vEmptyGroups[i].c_str(), utf8, utf8Len)) {
+        const size_t grouplen = vEmptyGroups[i].length();
+        outDDmemfile.Write((void *)&utf8Len, sizeof(utf8Len));
+        outDDmemfile.Write(reinterpret_cast<const char *>(utf8), utf8Len);
+      } else {
+        ASSERT(0);
+      }
+    }
+
+    outDDmemfile.Flush();
+    long len = (long)outDDmemfile.GetLength();
+    unsigned char *buffer = new unsigned char[len];
+    outDDmemfile.SeekToBegin();
+    outDDmemfile.Read(buffer, len);
+    pws_os::Trace(L"outDDmemfile: len: %d: data: \n", len);
+    pws_os::HexDump(buffer, len, L"", 32);
+    delete[] buffer;
+  }
+
+  outLen = (long)outDDmemfile.GetLength();
+  out_buffer = (BYTE *)outDDmemfile.Detach();
 
   return (outLen > 0);
 }
@@ -1874,17 +1948,59 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen,
 
   inDDmemfile.Attach((BYTE *)in_buffer, inLen);
 
+  // Get all the entries
   in_oblist.DDUnSerialize(inDDmemfile);
 
-  inDDmemfile.Detach();
+  // Now check if empty group list is appended to the item data
+  // Empty groups have a dummy header of 'egrp' to check it is ours
+  // Note: No EOF indication in CFile and hence CMemfile only to check
+  // we have read in is what we wanted!
+  std::vector<StringX> vsxEmptyGroups;
+  StringX sxDropGroup(L"");
+  if (!DropGroup.IsEmpty())
+    sxDropGroup = StringX(LPCWSTR(DropGroup)) + StringX(L".");
 
-  if (!in_oblist.IsEmpty()) {
-    app.GetMainDlg()->AddDDEntries(in_oblist, DropGroup);
+  char chdr[5] = { 0 };
+  UINT num_chars = inDDmemfile.Read(chdr, 4);
+  if (num_chars == 4 && strcmp(chdr, "egrp") == 0) {
+    // It is ours - now process the empty groups being dropped
+    size_t nemptygroups, utf8Len, buffer_size = 512;
+    unsigned char *utf8 = new unsigned char[buffer_size];
+    inDDmemfile.Read((void *)&nemptygroups, sizeof(nemptygroups));
+    for (size_t i = 0; i < nemptygroups; i++) {
+      StringX sxEmptyGroup;
+      CUTF8Conv conv;
+      UINT num_read;
+
+      num_read = inDDmemfile.Read((void *)&utf8Len, sizeof(utf8Len));
+      ASSERT(num_read == sizeof(utf8Len));
+      if (utf8Len > buffer_size) {
+        delete[] utf8;
+        utf8 = new unsigned char[utf8Len * 2];
+        buffer_size = utf8Len * 2;
+      }
+
+      // Clear buffer
+      memset(utf8, 0, buffer_size);
+      num_read = inDDmemfile.Read(utf8, utf8Len);
+      ASSERT(num_read == utf8Len);        
+        
+      conv.FromUTF8(utf8, utf8Len, sxEmptyGroup);
+      vsxEmptyGroups.push_back(sxDropGroup + sxEmptyGroup);
+    }
+    delete[] utf8;
+  }
+
+  if (!in_oblist.IsEmpty() || !vsxEmptyGroups.empty()) {
+    app.GetMainDlg()->AddDDEntries(in_oblist, DropGroup, vsxEmptyGroups);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();
     }
   }
+
+  // All finished
+  inDDmemfile.Detach();
   return (inLen > 0);
 }
 
@@ -2123,8 +2239,10 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   BOOL retval;
   if (lpFormatEtc->cfFormat == CF_UNICODETEXT ||
       lpFormatEtc->cfFormat == CF_TEXT) {
+    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderTextData\n");
     retval = RenderTextData(lpFormatEtc->cfFormat, phGlobal);
   } else if (lpFormatEtc->cfFormat == m_tcddCPFID) {
+    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderAllData\n");
     m_cfdropped = m_tcddCPFID;
     retval = RenderAllData(phGlobal);
   } else
@@ -2177,7 +2295,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
-    pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
     cs_dragdata.ReleaseBuffer();
     lpszW = NULL;
@@ -2259,11 +2376,11 @@ bad_return:
       *phgData = NULL;
     }
   } else {
-    pws_os::Trace(L"CPWTreeCtrl::RenderTextData - D&D Data:");
+    pws_os::Trace(L"CPWTreeCtrl::RenderTextData - D&D Data:\n");
     if (cfFormat == CF_UNICODETEXT) {
-      pws_os::Trace(L"\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
+      pws_os::Trace(L"\t\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
-      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
+      pws_os::Trace(L"\t\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
     }
   }
 

@@ -31,6 +31,9 @@ standard Microsoft processing in their products.
 
 New Features for 3.38.3
 =======================
+[] Support Drag & Drop of empty groups and groups containing empty
+groups between multiple instances of PasswordSafe.  Note: Prior versions
+of PasswordSafe will not recognise or process empty groups.
 [] It is now possible to list entries using a Named Password Policy from
 the Manage Password Policies dialog (right click on the name).
 
