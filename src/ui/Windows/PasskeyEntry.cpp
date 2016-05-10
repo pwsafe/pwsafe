@@ -154,35 +154,9 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
-  switch(m_index) {
-    case GCP_FIRST:
-      // At start up - give the user the option unless file is R-O
-      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
-      break;
-    case GCP_NORMAL:
-      // otherwise during open - user can - again unless file is R-O
-      if (m_bHideReadOnly) {
-        GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      } else {
-        GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      }
-      break;
-    case GCP_RESTORE:
-    case GCP_WITHEXIT:
-      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      break;
-    case GCP_CHANGEMODE:
-      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      break;
-    default:
-      ASSERT(FALSE);
-  }
+  GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly || m_bHideReadOnly) ?
+                                         FALSE : TRUE);
+  GetDlgItem(IDC_READONLY)->ShowWindow(m_bHideReadOnly ? SW_HIDE : SW_SHOW);
 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
@@ -191,6 +165,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   if (m_index == GCP_FIRST) {
+    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
     GetDlgItem(IDC_SELECTED_DATABASE)->ShowWindow(SW_HIDE);
 
     CRecentFileList *mru = app.GetMRU();

@@ -2099,11 +2099,18 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       ShowWindow(SW_HIDE);
     }
 
-    if (m_bOpen)
+    if (m_bOpen) {
+      int flags = 0;
+      if (m_core.IsReadOnly())
+        flags |= GCP_READONLY;
+      if (CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
+          m_core.IsChanged())
+        flags |= GCP_HIDEREADONLY;
+
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                bUseSysTray ? GCP_RESTORE : GCP_WITHEXIT,
-                               m_core.IsReadOnly() ? GCP_READONLY : 0);
-
+                               flags);
+    }
     CGeneralMsgBox gmb;
     CString cs_temp, cs_title;
 
