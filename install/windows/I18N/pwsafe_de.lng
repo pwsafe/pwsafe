@@ -34,7 +34,7 @@ LangString PROGRAM_FILES ${LANG_GERMAN}  "Programm Dateien"
 LangString START_AUTO ${LANG_GERMAN}  "Automatisch starten"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_GERMAN}  "Im Startmen?anzeigen"
+LangString START_SHOW ${LANG_GERMAN}  "Im Startmenüanzeigen"
 
 ; START_SHORTCUT "Install desktop shortcut"
 LangString START_SHORTCUT ${LANG_GERMAN}  "Verknüpfung auf der Benutzeroberfläche"
@@ -55,13 +55,13 @@ LangString DESC_LangSupport ${LANG_GERMAN} "Bitte wählen sie die Sprachen aus wo
 LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Hochfahren von Windows."
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_GERMAN} "Erstellt ein Eintrag im Start Men?für Password Safe."
+LangString DESC_StartMenu ${LANG_GERMAN} "Erstellt ein Eintrag im Start Menü für Password Safe."
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
 LangString DESC_DesktopShortcut ${LANG_GERMAN} "Erzeugt eine Verknüpfung zu Password Safe auf der Benutzeroberfläche."
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_GERMAN} "Erzeugt eine Verknüpfung im Start Men?zum Deinstallieren von Password Safe."
+LangString DESC_UninstallMenu ${LANG_GERMAN} "Erzeugt eine Verknüpfung im Start Menü zum Deinstallieren von Password Safe."
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
