@@ -258,16 +258,18 @@ set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
 set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}-${pwsafe_SPECIALBUILD}")
-set (CPACK_PACKAGE_CONTACT "ronys@pwsafe.org")
+set (CPACK_PACKAGE_CONTACT "Rony Shapiro <ronys@pwsafe.org>")
 set (CPACK_PACKAGE_VENDOR "Rony Shapiro")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password database utility.")
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/install/description.txt")
+set (CPACK_STRIP_FILES "TRUE")
 
 ## Debian-specific:
 set (CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
+set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
 set (CPACK_DEBIAN_PACKAGE_DEPENDS
   "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
