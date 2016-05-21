@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
-project (pwsafe CXX C)
+project (passwordsafe CXX C)
 
 # prerequisites
 include(CheckLibraryExists)
@@ -248,6 +248,8 @@ if (NOT WIN32)
    install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
    # TODO - Install following only if on a Debian system (or if we're building a deb?)
    install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
+   install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
+            RENAME "copyright")
 else ()
    install (DIRECTORY xml DESTINATION "bin")
 endif (NOT WIN32)

@@ -1,0 +1,10 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: Rony Shapiro <ronys@pwsafe.org>
+Source: https://github.com/pwsafe/pwsafe
+
+Files: *
+Copyright:
+ Copyright (c) 2003-2016 Rony Shapiro
+License: Artistic
+ On Debian GNU/Linux systems, the complete text of the Artistic
+ license can be found in `/usr/share/common-licenses/Artistic'.
