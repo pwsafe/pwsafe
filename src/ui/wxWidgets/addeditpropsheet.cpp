@@ -65,11 +65,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_BUTTON( ID_GO_BTN, AddEditPropSheet::OnGoButtonClick )
   EVT_BUTTON( ID_SEND_BTN, AddEditPropSheet::OnSendButtonClick )
   EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_DATE_CHANGED( ID_DATECTRL, AddEditPropSheet::OnExpDateChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_SPINCTRL( ID_SPINCTRL2, AddEditPropSheet::OnExpIntervalChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
   EVT_COMBOBOX( ID_POLICYLIST, AddEditPropSheet::OnPolicylistSelected )
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
@@ -655,6 +655,8 @@ void AddEditPropSheet::CreateControls()
   // Setup symbols
   m_symbols = CPasswordCharPool::GetDefaultSymbols().c_str();
   m_ownsymbols->SetValue(m_symbols);
+
+  m_ExpTimeCtrl->SetRange(1, 3650);
 }
 
 /*!
@@ -810,6 +812,53 @@ static struct {short pv; wxString name;}
   }
 }
 
+void AddEditPropSheet::UpdateExpTimes()
+{
+  // From m_item to display
+  
+  m_item.GetXTime(m_tttXTime);
+  m_item.GetXTimeInt(m_XTimeInt);
+  m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
+
+  if (m_XTime.empty())
+    m_XTime = m_CurXTime = _("Never");
+
+  wxCommandEvent dummy;
+  wxDateTime exp;
+  if (m_tttXTime == 0) { // never expires
+    m_OnRB->SetValue(false);
+    m_InRB->SetValue(false);
+    m_NeverRB->SetValue(true);
+    exp = wxDateTime::Now();
+    dummy.SetEventObject(m_NeverRB);
+  } else {
+    exp = wxDateTime(m_tttXTime);
+    if (m_XTimeInt == 0) { // expiration specified as date
+      m_OnRB->SetValue(true);
+      m_InRB->SetValue(false);
+      m_NeverRB->SetValue(false);
+      m_ExpTimeCtrl->Enable(false);
+      m_Recurring = false;
+      dummy.SetEventObject(m_OnRB);
+    } else { // exp. specified as interval
+      m_OnRB->SetValue(false);
+      m_InRB->SetValue(true);
+      m_NeverRB->SetValue(false);
+      m_ExpDate->Enable(false);
+      m_ExpTimeCtrl->SetValue(m_XTimeInt);
+      m_Recurring = true;
+      dummy.SetEventObject(m_InRB);
+    }
+    m_RecurringCtrl->Enable(m_Recurring);
+    m_ExpDate->SetValue(exp);
+  }
+
+  if (exp > wxDateTime::Today())
+    exp = wxDateTime::Today(); // otherwise we can never move exp date back
+  m_ExpDate->SetRange(exp, wxDateTime(time_t(-1)));
+
+  OnExpRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
+}
 
 void AddEditPropSheet::ItemFieldsToPropSheet()
 {
@@ -915,45 +964,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   } // m_type
 
   // Password Expiration
-  m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
-  if (m_XTime.empty())
-    m_XTime = m_CurXTime = _("Never");
-  m_item.GetXTime(m_tttXTime);
-
-  m_item.GetXTimeInt(m_XTimeInt);
-
-  wxCommandEvent dummy;
-  wxDateTime earliestExp;
-  if (m_tttXTime == 0) { // never expires
-    m_OnRB->SetValue(false);
-    m_InRB->SetValue(false);
-    m_NeverRB->SetValue(true);
-    earliestExp = wxDateTime::Now();
-    dummy.SetEventObject(m_NeverRB);
-  } else {
-    earliestExp = wxDateTime(m_tttXTime);
-    if (m_XTimeInt == 0) { // expiration specified as date
-      m_OnRB->SetValue(true);
-      m_InRB->SetValue(false);
-      m_NeverRB->SetValue(false);
-      m_ExpTimeCtrl->Enable(false);
-      m_Recurring = false;
-      dummy.SetEventObject(m_OnRB);
-    } else { // exp. specified as interval
-      m_OnRB->SetValue(false);
-      m_InRB->SetValue(true);
-      m_NeverRB->SetValue(false);
-      m_ExpDate->Enable(false);
-      m_ExpTimeCtrl->SetValue(m_XTimeInt);
-      m_Recurring = true;
-      dummy.SetEventObject(m_InRB);
-    }
-    m_RecurringCtrl->Enable(m_Recurring);
-  }
-
-  m_ExpDate->SetRange(earliestExp, wxDateTime(time_t(-1)));
-
-  OnRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
+  UpdateExpTimes();
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
   m_PMTime = m_item.GetPMTimeL().c_str();
@@ -1263,8 +1274,11 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetRMTime(t);
       if (m_tttXTime != lastXtime)
         m_item.SetXTime(m_tttXTime);
+      if (m_Recurring) {
       if (m_XTimeInt != lastXTimeInt)
         m_item.SetXTimeInt(m_XTimeInt);
+      } else
+        m_item.SetXTimeInt(0);
       // All fields in m_item now reflect user's edits
       // Let's update the core's data
       uuid_array_t uuid;
@@ -1402,7 +1416,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
         wxString rstr;
         rstr.Printf(_(" (every %d days)"), m_XTimeInt);
         m_XTime += rstr;
-      } // recurring
+      }
     } else {
       ASSERT(0);
     }
@@ -1415,7 +1429,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
  */
 
-void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
+void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 {
   bool On = (evt.GetEventObject() == m_OnRB);
   bool Never = (evt.GetEventObject() == m_NeverRB);
