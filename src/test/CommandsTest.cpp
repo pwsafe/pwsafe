@@ -7,7 +7,7 @@
 */
 // Commands.cpp: Unit test for Commands
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(__WX__)
 #include "../ui/Windows/stdafx.h"
 #endif
 

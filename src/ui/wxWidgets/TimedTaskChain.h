@@ -42,7 +42,7 @@
 //
 // Each task is a functor (regular function, lambda or a functor) that takes
 // and returns void. The error handler functor should take a std::exception
-// derived class as argument. Its is only invoked if any of the functions in
+// derived class as argument. It is only invoked if any of the functions in
 // the task chain throws, in which case the rest of the tasks in the chain
 // are not invoked.
 
@@ -57,7 +57,7 @@
 class TimedTaskChain: public wxTimer
 {
 	typedef std::function<void(void)> TaskType;
-    typedef std::pair<TaskType, int> TaskWithInterval;
+  typedef std::pair<TaskType, int> TaskWithInterval;
 	typedef std::list<TaskWithInterval> TaskList;
 
 	typedef std::function<void(const std::exception&)> ErrorHandlerType;
@@ -74,8 +74,8 @@ class TimedTaskChain: public wxTimer
 
 public:
 	static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskWithInterval> tasks);
-    static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskType> tasks);
-    static TimedTaskChain& CreateTaskChain(const TaskType &tasks);
+  static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskType> tasks);
+  static TimedTaskChain& CreateTaskChain(const TaskType &tasks);
 
 	TimedTaskChain& then(const TaskType& task, int delay = DefaultTaskDelay() ) { m_tasks.push_back({task, delay}); return *this; }
 

@@ -1,4 +1,8 @@
-cmake_minimum_required (VERSION 2.8)
+if (WIN32)
+  cmake_minimum_required (VERSION 3.5.1)
+else (WIN32)
+  cmake_minimum_required (VERSION 2.8)
+endif (WIN32)
 project (passwordsafe CXX C)
 
 # prerequisites
@@ -19,55 +23,57 @@ else (WIN32)
 endif (WIN32)
 set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
+# Configurable options:
+option (NO_YUBI "Set ON to disable YubiKey support" OFF)
+option (NO_XML "Set ON to disable XML import support" OFF)
+if (WIN32)
+option (WX_WINDOWS "Build wxWidget under Windows" OFF)
+endif (WIN32)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (GTEST_ROOT "/usr/src/gtest/build"
     CACHE PATH "The root directory of the gtest install prefix")
-else()
+else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set (GTEST_MSVC_SEARCH "MT")
   set (GTEST_ROOT ""
     CACHE PATH "The root directory of the gtest install prefix")
-endif()
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 find_package(GTest REQUIRED)
 
-# TODO - add support for wx build under Windows
-
-if (NOT WIN32)
-  # help people with wxWidgets on non-standard installation
-  # quick-and-dirty since wxWdigets cmake's support is not yet loaded.
-  find_program(PWSHINT_wxconfig wx-config)
-  if(NOT(PWSHINT_wxconfig))
-    message(STATUS
-      "Failed to find 'wx-config' executable:\n"
-      "   Tip: can be pointed from command-line this way:\n"
-      "        $ cmake -D wxWidgets_CONFIG_EXECUTABLE=/path/to/wx-config ."
-    )
-  endif()
+if (NOT WIN32 OR WX_WINDOWS)
+  if (NOT WIN32)
+     # help people with wxWidgets on non-standard installation
+     # quick-and-dirty since wxWdigets cmake's support is not yet loaded.
+     find_program(PWSHINT_wxconfig wx-config)
+     if (NOT PWSHINT_wxconfig)
+       message(STATUS
+               "Failed to find 'wx-config' executable:\n"
+               "   Tip: can be pointed from command-line this way:\n"
+               "        $ cmake -D wxWidgets_CONFIG_EXECUTABLE=/path/to/wx-config ."
+               )
+     endif (NOT PWSHINT_wxconfig)
+  endif (NOT WIN32)
   find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
+endif (NOT WIN32 OR WX_WINDOWS)
 
+if (NOT WIN32)
   CHECK_INCLUDE_FILE("uuid/uuid.h" UUID_H)
   if (NOT UUID_H)
     message(FATAL_ERROR
       "uuid.h not found - uuid-dev / libuuid-devel not installed?")
-    endif(NOT UUID_H)
-endif()
+  endif(NOT UUID_H)
+  if(NOT NO_YUBI)
+    CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
+  endif(NOT NO_YUBI)
 
-# Configurable options:
-option (NO_YUBI "Set ON to disable YubiKey support" OFF)
-option (NO_XML "Set ON to disable XML import support" OFF)
-if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
-endif()
-
-if (NOT WIN32)
-   if(NOT NO_YUBI)
-     CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "ykpers-1/ykpers.h" HAVE_YKPERS_H)
-   endif(NOT NO_YUBI)
-
-   if(NOT HAVE_YKPERS_H)
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
-     message(STATUS "Yubikey support disabled")
-   endif(NOT HAVE_YKPERS_H)
+  if(NOT HAVE_YKPERS_H)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+    message(STATUS "Yubikey support disabled")
+  endif(NOT HAVE_YKPERS_H)
 endif (NOT WIN32)
 
 if (NOT NO_XML)
@@ -136,6 +142,10 @@ set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
   /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /RTC1 /Gd /Oy-")
 
+if (WX_WINDOWS)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
+endif (WX_WINDOWS)
+
 set(CMAKE_CXX_FLAGS_DEBUG " /Od  /D _DEBUG /WX- /Gd /Oy- /Ob0 /Od /MTd")
 
 set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /D NDEBUG  /W4 /Zc:wchar_t  /Od /WX-")
@@ -186,7 +196,7 @@ add_subdirectory (src/os) # os-specific library
 add_subdirectory (src/core) # core library
 add_subdirectory (src/test) # tests (gtest framework)
 add_subdirectory (help) # online help
-if (WIN32)
+if (WIN32 AND NOT WX_WINDOWS)
   add_subdirectory (src/ui/Windows)
   add_subdirectory (src/ui/Windows/I18N)
   add_subdirectory (src/Tools/Windows/I18N/ResText)
@@ -194,22 +204,31 @@ if (WIN32)
 else()
   add_subdirectory (src/ui/wxWidgets)
   add_subdirectory(src/ui/cli EXCLUDE_FROM_ALL)
-  find_package(Gettext QUIET)
-  if (GETTEXT_FOUND)
-    add_subdirectory (src/ui/wxWidgets/I18N)
-  else()
-    message("Gettext support not found, skipping I18N build")
-  endif()
+  if (NOT WIN32)
+    # TBD - handle I18N under WX_WINDOWS.
+    find_package(Gettext QUIET)
+    if (GETTEXT_FOUND)
+      add_subdirectory (src/ui/wxWidgets/I18N)
+    else (GETTEXT_FOUND)
+      message("Gettext support not found, skipping I18N build")
+    endif(GETTEXT_FOUND)
+  endif (NOT WIN32)
 endif()
 
 if (NOT WIN32)
    add_executable(pwsafe ${PWSAFE_SRCS})
-else ()
-   set(CMAKE_MFC_FLAG 1)
+else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
-   set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
-   _BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
-   LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
+   if (NOT WX_WINDOWS)
+      set(CMAKE_MFC_FLAG 1)
+      set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
+                            _BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
+                            LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
+   else (NOT WX_WINDOWS)
+#      set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
+#                            _BIND_TO_CURRENT_CRT_VERSION
+#                            LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
+   endif (NOT WX_WINDOWS)
 endif (NOT WIN32)
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
