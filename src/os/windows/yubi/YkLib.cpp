@@ -217,7 +217,7 @@ unsigned short CYkLib::enumPorts(void)
 	// Get the collection of present Yubikey devices
 
 	hi = SetupDiGetClassDevs(&GUID_DEVINTERFACE_KEYBOARD, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-	if (hi == INVALID_HANDLE_VALUE) return -1;
+	if (hi == INVALID_HANDLE_VALUE) return (unsigned short)-1;
 
 	di.cbSize = sizeof (SP_DEVICE_INTERFACE_DATA);
 
