@@ -10,17 +10,16 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 
 # Version configuration:
-if (WIN32)
-   # TBD - what version do we give wx under Windows?!?
+if (WIN32 AND NOT WX_WINDOWS)
      set (pwsafe_VERSION_MAJOR 3)
      set (pwsafe_VERSION_MINOR 38)
      set (pwsafe_REVISION 3)
-else (WIN32)
+else (WIN32 AND NOT WX_WINDOWS)
      set (pwsafe_VERSION_MAJOR 0)
      set (pwsafe_VERSION_MINOR 98)
      set (pwsafe_REVISION 1)
      set (pwsafe_SPECIALBUILD "BETA")
-endif (WIN32)
+endif (WIN32 AND NOT WX_WINDOWS)
 set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 # Configurable options:
@@ -142,6 +141,11 @@ set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
   /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /RTC1 /Gd /Oy-")
 
+if (NO_YUBI)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+endif (NO_YUBI)
+
+
 if (WX_WINDOWS)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
 endif (WX_WINDOWS)
@@ -160,11 +164,11 @@ if (USE_ASAN)
 endif (USE_ASAN)
 endif (MSVC)
 
-if (WIN32)
+if (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.cmake")
-else()
+else (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
-endif()
+endif (WIN32 AND NOT WX_WINDOWS)
 
 configure_file (
   ${VERSION_IN}
@@ -243,7 +247,7 @@ if (NOT NO_YUBI)
    set (YUBILIB "YkLib22")
 endif ()
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
-      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid Dbghelp ${CMAKE_REQUIRED_LIBRARIES})
+      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid Dbghelp Urlmon ${CMAKE_REQUIRED_LIBRARIES})
 else ()
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
     ${CMAKE_REQUIRED_LIBRARIES})
