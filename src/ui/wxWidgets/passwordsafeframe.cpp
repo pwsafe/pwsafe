@@ -428,92 +428,92 @@ void PasswordSafeFrame::CreateMenubar()
     wxGetApp().recentDatabases().AddFilesToMenu(itemMenuRecents);
     itemMenu3->Append(ID_MRUMENU, _("&Recent Safes"), itemMenuRecents);
   }
-  itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_SAVE);
   itemMenu3->Append(wxID_SAVEAS);
   itemMenu3->AppendSeparator();
   wxMenu* itemMenu13 = new wxMenu;
-  itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
   wxMenu* itemMenu18 = new wxMenu;
-  itemMenu18->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), _T(""), wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), _T(""), wxITEM_NORMAL);
+  itemMenu18->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu18->Append(ID_IMPORT_XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu18->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu18);
-  itemMenu3->Append(ID_MERGE, _("Merge..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(ID_COMPARE, _("Compare..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(ID_MERGE, _("Merge..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_COMPARE, _("Compare..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_PROPERTIES);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_EXIT);
   menuBar->Append(itemMenu3, _("&File"));
   wxMenu* itemMenu28 = new wxMenu;
-  itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_DELETE, _("&Delete Entry\tDel"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_RENAME, _("Rename Entry\tF2"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(wxID_DELETE, _("&Delete Entry\tDel"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
   itemMenu28->Append(wxID_UNDO);
   itemMenu28->Append(wxID_REDO);
-  itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu28->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
   menuBar->Append(itemMenu28, _("&Edit"));
   wxMenu* itemMenu47 = new wxMenu;
-  itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
-  itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
+  itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
+  itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
   itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), _T(""), wxITEM_CHECK);
+  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), wxEmptyString, wxITEM_CHECK);
   itemMenu47->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
   itemMenu47->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
-  itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
+  itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), wxEmptyString, wxITEM_CHECK);
   itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_EXPANDALL, _("Expand All"), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_COLLAPSEALL, _("Collapse All"), _T(""), wxITEM_NORMAL);
+  itemMenu47->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu47->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
   wxMenu* itemMenu56 = new wxMenu;
-  itemMenu56->Append(ID_EDITFILTER, _("&New/Edit Filter..."), _T(""), wxITEM_NORMAL);
-  itemMenu56->Append(ID_APPLYFILTER, _("&Apply current"), _T(""), wxITEM_NORMAL);
-  itemMenu56->Append(ID_MANAGEFILTERS, _("&Manage..."), _T(""), wxITEM_NORMAL);
+  itemMenu56->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu56->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu56->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu47->Append(ID_FILTERMENU, _("&Filters"), itemMenu56);
   itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), _T(""), wxITEM_NORMAL);
+  itemMenu47->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
   wxMenu* itemMenu62 = new wxMenu;
-  itemMenu62->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), _T(""), wxITEM_NORMAL);
-  itemMenu62->Append(ID_CHANGEPSWDFONT, _("&Password Font"), _T(""), wxITEM_NORMAL);
+  itemMenu62->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu62->Append(ID_CHANGEPSWDFONT, _("&Password Font"), wxEmptyString, wxITEM_NORMAL);
   itemMenu47->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu62);
   wxMenu* itemMenu65 = new wxMenu;
-  itemMenu65->Append(ID_REPORT_COMPARE, _("&Compare"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_FIND, _("&Find"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTXML, _("Import &XML"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_MERGE, _("&Merge"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), _T(""), wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
   itemMenu47->Append(ID_REPORTSMENU, _("Reports"), itemMenu65);
   menuBar->Append(itemMenu47, _("&View"));
   wxMenu* itemMenu72 = new wxMenu;
-  itemMenu72->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
-  itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
-  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), wxEmptyString, wxITEM_NORMAL);
 #ifndef NO_YUBI
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
@@ -524,7 +524,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
-  itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
 ////@end PasswordSafeFrame content construction
@@ -787,7 +787,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   } else {
-    SetTitle(_T(""));
+    SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
   }
   return status;
@@ -1201,9 +1201,9 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     if (rc != PWScore::SUCCESS)
       return;
     m_core.UnlockFile(m_core.GetCurFile().c_str());
-    m_core.SetCurFile(_T(""));
+    m_core.SetCurFile(wxEmptyString);
     ClearData();
-    SetTitle(_T(""));
+    SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
     m_core.SetReadOnly(false);
   }
@@ -2932,18 +2932,18 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   wxString cs_temp;
   wxString cs_title(_("Import XML failed"));
 
-  std::wstring csErrors(wxT(""));
+  std::wstring csErrors(wxEmptyString);
   switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
       rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls failed validation against XML Schema:\n\n%ls"),
-                                        dlg.filepath.c_str(), wxT(""));
+                                        dlg.filepath.c_str(), wxEmptyString);
       delete pcmd;
       break;
     case PWScore::XML_FAILED_IMPORT:
       rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls passed Validation but had the following errors during import:\n\n%ls"),
-                              dlg.filepath.c_str(), wxT(""));
+                              dlg.filepath.c_str(), wxEmptyString);
       delete pcmd;
       break;
     case PWScore::SUCCESS:

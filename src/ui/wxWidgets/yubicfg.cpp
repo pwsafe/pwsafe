@@ -127,7 +127,7 @@ void YubiCfgDlg::Init()
 ////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
-  m_yksernum = m_yksk = wxT("");
+  m_yksernum = m_yksk = wxEmptyString;
   m_isSKHidden = true;
 }
 
@@ -306,7 +306,7 @@ void YubiCfgDlg::OnYkGenerateClick( wxCommandEvent& WXUNUSED(event) )
 void YubiCfgDlg::OnYkSetClick( wxCommandEvent& WXUNUSED(event) )
 {
   Validate(); TransferDataFromWindow();
-  m_ykstatus->SetLabel(wxT(""));
+  m_ykstatus->SetLabel(wxEmptyString);
   StringX skStr(m_yksk.c_str());
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
@@ -347,17 +347,17 @@ void YubiCfgDlg::ReadYubiSN()
   PWYubi yk;
   unsigned int serial;
   if (!yk.GetSerial(serial)) {
-    m_yksernum = wxT("");
+    m_yksernum = wxEmptyString;
     m_ykstatus->SetLabel(yk.GetErrStr().c_str());
   } else {
     m_yksernum.Printf(wxT("%u"), serial);
-    m_ykstatus->SetLabel(wxT(""));
+    m_ykstatus->SetLabel(wxEmptyString);
   }
 }
 
 void YubiCfgDlg::yubiInserted(void)
 {
-  m_ykstatus->SetLabel(wxT(""));
+  m_ykstatus->SetLabel(wxEmptyString);
   FindWindow(ID_YK_SERNUM)->Enable(true);
   FindWindow(ID_YKSK)->Enable(true);
   FindWindow(ID_YK_GENERATE)->Enable(true);
@@ -375,7 +375,7 @@ void YubiCfgDlg::yubiInserted(void)
 void YubiCfgDlg::yubiRemoved(void)
 {
   m_ykstatus->SetLabel(_("Please insert your YubiKey"));
-  m_yksernum = m_yksk = wxT("");
+  m_yksernum = m_yksk = wxEmptyString;
   ShowSK();
   FindWindow(ID_YK_SERNUM)->Enable(false);
   FindWindow(ID_YKSK)->Enable(false);

@@ -17,6 +17,7 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+#include <wx/string.h> // for wxEmptyString
 
 using namespace std;
 using pws_os::CUUID;
@@ -47,7 +48,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
     ItemListConstIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
-      ruentrydata.string = _T("");
+      ruentrydata.string = wxEmptyString;
       ruentrydata.image = -1;
       ruentrydata.pci = NULL;
     } else {

@@ -235,7 +235,7 @@ static StringX GetPathElem(StringX &sxPath)
   size_t len=sxPath.length();
   if (dotPos == StringX::npos){
     sxElement = sxPath;
-    sxPath = wxT("");
+    sxPath = wxEmptyString;
   } else {
     while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
       dotPos++;
@@ -246,7 +246,7 @@ static StringX GetPathElem(StringX &sxPath)
     }
     else { // trailing dots
       sxElement = sxPath;
-      sxPath = wxT("");
+      sxPath = wxEmptyString;
     }
   }
   return sxElement;

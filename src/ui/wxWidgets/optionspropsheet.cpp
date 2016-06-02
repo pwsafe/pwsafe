@@ -937,7 +937,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DefaultUsername, tostringx(m_defusernameTXT->GetValue()), true);
 
   if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
-      prefs->SetPref(PWSprefs::DefaultAutotypeString, wxT(""), true);
+      prefs->SetPref(PWSprefs::DefaultAutotypeString, wxEmptyString, true);
   else
     prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
 

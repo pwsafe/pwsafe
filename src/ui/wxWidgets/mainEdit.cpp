@@ -575,7 +575,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 {
   // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
   // Except for anything involving time (\d, \w, \W) or use older method (\z)
-  StringX sxtmp(wxT(""));
+  StringX sxtmp(wxEmptyString);
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
 
@@ -634,7 +634,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           // Delay is going to change - send what we have with old delay
           ks.SendString(sxtmp);
           // start collecting new delay
-          sxtmp = wxT("");
+          sxtmp = wxEmptyString;
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
@@ -748,17 +748,17 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
    * to understand what this code is doing, and why.
    */
   wxString theURL(csURL);
-  theURL.Replace(wxT("\n\t\r"), wxT(""), true); //true => replace all
+  theURL.Replace(wxT("\n\t\r"), wxEmptyString, true); //true => replace all
 
   const bool isMailto = (theURL.Find(wxT("mailto:")) != wxNOT_FOUND);
   const wxString errMsg = isMailto ? _("Unable to send email") : _("Unable to display URL");
 
-  const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxT(""));
-  const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxT("")) +
-                          theURL.Replace(wxT("{alt}"), wxT("")));
+  const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxEmptyString);
+  const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxEmptyString) +
+                          theURL.Replace(wxT("{alt}"), wxEmptyString));
 #ifdef NOT_YET
-  const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxT(""));
-  const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxT(""));
+  const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxEmptyString);
+  const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxEmptyString);
 #endif
 
   if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
@@ -795,7 +795,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
     // Either do it because they pressed the right menu/shortcut
     // or they had specified Do Auotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
-    m_AutoType = m_bDoAutoType ? sxAutotype : wxT("");
+    m_AutoType = m_bDoAutoType ? sxAutotype : wxEmptyString;
     if (m_bDoAutoType)
       m_vactionverboffsets = vactionverboffsets;
   }

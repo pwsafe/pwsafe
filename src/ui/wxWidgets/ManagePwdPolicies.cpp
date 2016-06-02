@@ -533,7 +533,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
   CPasswordPolicy ppdlg(this, m_core, m_MapPSWDPLC);
   PWPolicy st_pp = m_st_default_pp;
-  ppdlg.SetPolicyData(wxT(""), st_pp);
+  ppdlg.SetPolicyData(wxEmptyString, st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
 

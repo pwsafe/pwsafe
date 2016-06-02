@@ -34,7 +34,7 @@ struct _subgroupFunctions {
   const wxString name;
   PWSMatch::MatchRule function;
   // Following ctor's required to shut up some compier warnings
-  _subgroupFunctions() : name(wxT("")), function(PWSMatch::MR_INVALID) {}
+  _subgroupFunctions() : name(wxEmptyString), function(PWSMatch::MR_INVALID) {}
   _subgroupFunctions(const wxString &aname, PWSMatch::MatchRule afunction) :
     name(aname), function(afunction) {}
 } subgroupFunctions[] = {                         {_("equals"),              PWSMatch::MR_EQUALS},
@@ -106,7 +106,7 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
   else
     return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxT(' ')
             << subgroupFunctions[m_subgroupFunction].name << wxT(" \"") << m_subgroupText
-            << wxT("\" [") << (m_fCaseSensitive? wxT("") : _("not ")) << _("case-sensitive]");
+            << wxT("\" [") << (m_fCaseSensitive? wxEmptyString : _("not ")) << _("case-sensitive]");
 }
 
 //static

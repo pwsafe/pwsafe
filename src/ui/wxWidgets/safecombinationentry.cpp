@@ -422,7 +422,7 @@ void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
 void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
-                  PWSdirs::GetSafeDir().c_str(), wxT(""),
+                  PWSdirs::GetSafeDir().c_str(), wxEmptyString,
                   _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
