@@ -10,30 +10,12 @@
 
 #include <algorithm> // for find_if
 
-#include "PasswordSafe.h"
-#include "ThisMfcApp.h"
-#include "DboxMain.h"
 #include "RUEList.h"
-#include "GeneralMsgBox.h"
-
-#include "core/PWScore.h"
-
-#include "resource3.h"  // String resources
+#include "PWScore.h"
 
 using namespace std;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 //-----------------------------------------------------------------------------
-
-CRUEList::CRUEList() : m_core(*app.GetCore()), m_maxentries(0)
-{
-}
 
 // Accessors
 
@@ -52,13 +34,10 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   RUEntryData ruentrydata;
   bool retval = false;
 
-  RUEListConstIter iter;
-
-  for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
+  for (auto iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
     ItemListConstIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
       ruentrydata.string = L"";
-      ruentrydata.image = -1;
       ruentrydata.pci = NULL;
     } else {
       const CItemData &ci = m_core.GetEntry(pw_listpos);
@@ -79,7 +58,6 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       ruentrydata.string = L"\xab" + group + L"\xbb " + 
                            L"\xab" + title + L"\xbb " + 
                            L"\xab" + user  + L"\xbb";
-      ruentrydata.image = app.GetMainDlg()->GetEntryImage(ci);
       ruentrydata.pci = (CItemData *)&ci;
     }
     ListofAllMenuStrings.push_back(ruentrydata);
@@ -97,7 +75,7 @@ bool CRUEList::AddRUEntry(const pws_os::CUUID &RUEuuid)
   */
   if (m_maxentries == 0) return false;
 
-  RUEListIter iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
+  auto iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
 
   if (iter == m_RUEList.end()) {
     if (m_RUEList.size() == m_maxentries)  // if already maxed out - delete oldest entry
@@ -125,7 +103,7 @@ bool CRUEList::DeleteRUEntry(const pws_os::CUUID &RUEuuid)
   if ((m_maxentries == 0) || m_RUEList.empty())
     return false;
 
-  RUEListIter iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
+  auto iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
 
   if (iter != m_RUEList.end()) {
     m_RUEList.erase(iter);
@@ -144,9 +122,7 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
   ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry);
   if (pw_listpos == m_core.GetEntryEndIter()) {
     // Entry does not exist anymore!
-    CGeneralMsgBox gmb;
     m_RUEList.erase(m_RUEList.begin() + index);
-    gmb.AfxMessageBox(IDS_CANTPROCESSENTRY);
     return false;
   } else { // valid pw_listpos
     ci = m_core.GetEntry(pw_listpos);

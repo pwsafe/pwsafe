@@ -288,9 +288,6 @@
     <ClCompile Include="RichEditCtrlExtn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RUEList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -675,9 +672,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RichEditCtrlExtn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RUEList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleTextDlg.h">

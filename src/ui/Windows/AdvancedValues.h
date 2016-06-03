@@ -12,6 +12,7 @@
 #pragma once
 
 #include "core/ItemData.h"
+#include "core/ItemAtt.h"
 #include <bitset>
 
 namespace WZAdvanced {

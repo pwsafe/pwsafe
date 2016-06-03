@@ -13,7 +13,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
-#include "RUEList.h"
+#include "GeneralMsgBox.h"
 
 #include <errno.h>
 #include "resource.h"
@@ -23,6 +23,7 @@
 #include "core/pwsprefs.h"
 #include "core/pwscore.h"
 #include "core/PWSAuxParse.h"
+#include "core/RUEList.h"
 
 #include "os/logit.h"
 
@@ -43,6 +44,17 @@ static bool SafeGetBaseEntry(const CItemData &dep, CItemData &base)
     return true;
   } else
     return false;
+}
+
+static bool GetRUEntry(CRUEList &RUEList, size_t index, CItemData &ci)
+{
+  bool retval = RUEList.GetPWEntry(index - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
+
+  if (!retval) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANTPROCESSENTRY);
+  }
+  return retval;
 }
 
 /////////////////////////////// New System Tray Commands /////////////////////
@@ -85,7 +97,7 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
     return;
 
   if (ci.IsShortcut()) {
@@ -108,7 +120,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
     return;
 
   if (ci.IsDependent()) {
@@ -131,7 +143,7 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTES1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
     return;
 
   if (ci.IsShortcut())
@@ -156,10 +168,10 @@ void DboxMain::OnTrayBrowse(UINT nID)
   const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
                            (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
   if (!bDoAutotype) {
-    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSE1, ci))
       return;
   } else {
-    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
       return;
   }
 
@@ -197,10 +209,10 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
                            (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
   if (!bDoAutotype) {
-    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSE1, ci))
       return;
   } else {
-    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
       return;
   }
 
@@ -237,7 +249,7 @@ void DboxMain::OnTrayCopyEmail(UINT nID)
     (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYEMAIL1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYEMAIL1, ci))
     return;
 
   if (ci.IsShortcut()) {
@@ -260,7 +272,7 @@ void DboxMain::OnTraySendEmail(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYSENDEMAIL1) && (nID <= ID_MENUITEM_TRAYSENDEMAILMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYSENDEMAIL1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYSENDEMAIL1, ci))
       return;
 
   if (ci.IsShortcut()) {
@@ -292,7 +304,7 @@ void DboxMain::OnTraySelect(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYSELECT1) && (nID <= ID_MENUITEM_TRAYSELECTMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYSELECT1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYSELECT1, ci))
       return;
 
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
@@ -326,7 +338,7 @@ void DboxMain::OnTrayAutoType(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYAUTOTYPE1, ci))
     return;
 
   m_bInAT = true;
@@ -344,7 +356,7 @@ void DboxMain::OnTrayCopyURL(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYURL1) && (nID <= ID_MENUITEM_TRAYCOPYURLMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYURL1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYURL1, ci))
     return;
 
   if (ci.IsShortcut()) {
@@ -378,7 +390,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYRUNCMD1) && (nID <= ID_MENUITEM_TRAYRUNCMDMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYRUNCMD1, ci))
+  if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
   if (ci.IsShortcut()) {

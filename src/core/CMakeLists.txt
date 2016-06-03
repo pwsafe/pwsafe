@@ -32,6 +32,7 @@ set (CORE_SRCS
   PWSrand.cpp
   PWStime.cpp
   Report.cpp
+  RUEList.cpp
   sha1.cpp
   sha256.cpp
   StringX.cpp

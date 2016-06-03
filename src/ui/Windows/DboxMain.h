@@ -18,7 +18,6 @@
 
 #include "PWTreeCtrl.h"
 #include "PWListCtrl.h"
-#include "RUEList.h"
 #include "CoolMenu.h"
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
@@ -39,6 +38,7 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSFilters.h"
 #include "core/Command.h"
+#include "core/RUEList.h"
 
 #include "os/run.h"
 #include "os/UUID.h"

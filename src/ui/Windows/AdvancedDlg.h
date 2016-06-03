@@ -14,6 +14,7 @@
 
 #include "PWDialog.h"
 #include "core/ItemData.h"
+#include "core/PWSfile.h"
 #include "AdvancedValues.h"
 
 class CAdvancedDlg : public CPWDialog

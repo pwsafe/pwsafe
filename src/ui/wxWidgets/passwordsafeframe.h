@@ -26,7 +26,7 @@
 #include "wx/treebase.h" // for wxTreeItemId
 #include "core/PWScore.h"
 #include "core/UIinterface.h"
-#include "RUEList.h"
+#include "core/RUEList.h"
 #include "./wxutils.h"
 #include <tuple>
 

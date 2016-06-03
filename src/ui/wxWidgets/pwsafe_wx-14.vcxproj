@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugwxX|Win32">
@@ -510,7 +510,6 @@
     <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
-    <ClInclude Include="RUEList.h" />
     <ClInclude Include="safecombinationchange.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
     <ClInclude Include="safecombinationentry.h" />
@@ -567,7 +566,6 @@
     <ClCompile Include="pwsmenushortcuts.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="PWStree.cpp" />
-    <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="safecombinationchange.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
     <ClCompile Include="safecombinationentry.cpp" />

@@ -649,7 +649,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           }
 
           pmd = new CRUEItemData;
-          pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
+          pmd->nImage = app.GetMainDlg()->
+            GetEntryImage(*m_menulist[i].pci); // Needed by OnInitMenuPopup
           miteminfo.dwItemData = (ULONG_PTR)pmd;
           irc = pMainRecentEntriesMenu->SetMenuItemInfo((int)i + 4, &miteminfo, TRUE);
           if (irc == 0) {
