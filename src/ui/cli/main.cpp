@@ -30,7 +30,7 @@ static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
 static const char *status_text(int status);
 
-static void CreateNewSafe(const StringX& filename);
+static int CreateNewSafe(const StringX& filename);
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
 
@@ -55,9 +55,9 @@ std::ostream& operator<<(std::ostream& os, const wstring& str)
 }
 
 struct UserArgs {
-  UserArgs() : ImpExp(Unset), Format(Unknown) {}
+  UserArgs() : Operation(Unset), Format(Unknown) {}
   StringX safe, fname;
-  enum {Unset, Import, Export} ImpExp;
+  enum {Unset, Import, Export, CreateNew} Operation;
   enum {Unknown, XML, Text} Format;
 };
 
@@ -97,15 +97,15 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
     switch (c) {
     case 'i':
-      if (ua.ImpExp == UserArgs::Unset)
-        ua.ImpExp = UserArgs::Import;
+      if (ua.Operation == UserArgs::Unset)
+        ua.Operation = UserArgs::Import;
       else
         return false;
       if (optarg) Utf82StringX(optarg, ua.fname);
       break;
     case 'e':
-      if (ua.ImpExp == UserArgs::Unset)
-        ua.ImpExp = UserArgs::Export;
+      if (ua.Operation == UserArgs::Unset)
+        ua.Operation = UserArgs::Export;
       else
         return false;
       if (optarg) Utf82StringX(optarg, ua.fname);
@@ -123,8 +123,8 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         return false;
       break;
     case 'n':
-      CreateNewSafe(ua.safe);
-      exit(0);
+      if (ua.Operation == UserArgs::Unset)
+        ua.Operation = UserArgs::Import;
       break;
 
     default:
@@ -144,6 +144,10 @@ int main(int argc, char *argv[])
     usage(argv[0]);
     return 1;
   }
+
+    if (ua.Operation == UserArgs::CreateNew) {
+        return CreateNewSafe(ua.safe);
+    }
 
   PWScore core;
   if (!pws_os::FileExists(ua.safe.c_str())) {
@@ -185,7 +189,7 @@ int main(int argc, char *argv[])
     goto done;
   }
 
-  if (ua.ImpExp == UserArgs::Export) {
+  if (ua.Operation == UserArgs::Export) {
     CItemData::FieldBits all(~0L);
     int N;
     if (ua.Format == UserArgs::XML) {
@@ -448,7 +452,7 @@ ImportXML(PWScore &core, const StringX &fname)
   return rc;
 }
 
-static void CreateNewSafe(const StringX& filename)
+static int CreateNewSafe(const StringX& filename)
 {
     if ( pws_os::FileExists(filename.c_str()) ) {
         cerr << filename << " - already exists" << endl;
@@ -464,6 +468,8 @@ static void CreateNewSafe(const StringX& filename)
 
     if (status != PWScore::SUCCESS)
         cerr << "Could not create " << filename << ": " << status_text(status);
+
+    return status;
 }
 
 StringX GetNewPassphrase()
