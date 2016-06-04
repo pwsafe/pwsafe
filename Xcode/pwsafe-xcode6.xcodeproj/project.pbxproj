@@ -34,12 +34,12 @@
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
+		E6299FB71D0323A300D03FD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66D293A1D02B54600C9BCBF /* main.cpp */; };
 		E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
 		E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
 		E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
 		E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
 		E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
-		E66D293B1D02B54600C9BCBF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66D293A1D02B54600C9BCBF /* main.cpp */; };
 		E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
@@ -243,7 +243,7 @@
 		E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordPolicy.cpp; sourceTree = "<group>"; };
 		E66C16BA16731F9400C996B1 /* PasswordPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordPolicy.h; sourceTree = "<group>"; };
 		E66D292F1D02B49B00C9BCBF /* pwsafe-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E66D293A1D02B54600C9BCBF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/ui/cli/main.cpp; sourceTree = "<group>"; };
+		E66D293A1D02B54600C9BCBF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
@@ -738,8 +738,9 @@
 			children = (
 				E66D293A1D02B54600C9BCBF /* main.cpp */,
 			);
-			path = "pwsafe-cli";
-			sourceTree = "<group>";
+			name = "pwsafe-cli";
+			path = ../src/ui/cli;
+			sourceTree = SOURCE_ROOT;
 		};
 		E683B216150481DF0013D588 /* pugixml */ = {
 			isa = PBXGroup;
@@ -1586,7 +1587,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66D293B1D02B54600C9BCBF /* main.cpp in Sources */,
+				E6299FB71D0323A300D03FD1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2042,6 +2043,7 @@
 				E66D29341D02B49B00C9BCBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E690B53312980BFB007EA508 /* Build configuration list for PBXAggregateTarget "Help Files" */ = {
 			isa = XCConfigurationList;
