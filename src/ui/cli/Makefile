@@ -11,7 +11,7 @@ BINPATH         = .
 
 #destination related macros
 OBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(SRC)))
-EXE	    = $(BINPATH)/pwsafe
+EXE	    = $(BINPATH)/pwsafe-cli
 
 LIBCORE	= $(LIBPATH)/libcore.a
 LIBOS  	= $(LIBPATH)/libos.a
