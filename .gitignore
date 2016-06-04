@@ -4,7 +4,7 @@ deps
 lib
 obj
 build
-_build
+_build*
 ipch
 *.sdf
 *.opensdf
