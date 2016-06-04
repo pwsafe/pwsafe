@@ -47,16 +47,23 @@ struct UserArgs {
   enum {Unknown, XML, Text} Format;
 };
 
+void Utf82StringX(const char* filename, StringX& sname)
+{
+    CUTF8Conv conv;
+    if (!conv.FromUTF8((const unsigned char *)filename, strlen(filename),
+                       sname)) {
+        cerr << "Could not convert filename " << filename << " to StringX" << endl;
+        exit(2);
+    }
+}
+
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
   if (argc != 4 && argc != 5)
     return false;
-  CUTF8Conv conv;
-  if (!conv.FromUTF8((const unsigned char *)argv[1], strlen(argv[1]),
-                     ua.safe)) {
-    cerr << "Could not convert filename " << argv[1] << " to StringX" << endl;
-    exit(2);
-  }
+
+  Utf82StringX(argv[1], ua.safe);
+
   while (1) {
     int option_index = 0;
     static struct option long_options[] = {
@@ -79,28 +86,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.ImpExp = UserArgs::Import;
       else
         return false;
-      if (optarg) {
-        if (!conv.FromUTF8((const unsigned char *)optarg, strlen(optarg),
-                           ua.fname)) {
-          cerr << "Could not convert filename "
-               << optarg << " to StringX" << endl;
-          exit(2);
-        }
-      }
+      if (optarg) Utf82StringX(optarg, ua.fname);
       break;
     case 'e':
       if (ua.ImpExp == UserArgs::Unset)
         ua.ImpExp = UserArgs::Export;
       else
         return false;
-      if (optarg) {
-        if (!conv.FromUTF8((const unsigned char *)optarg, strlen(optarg),
-                           ua.fname)) {
-          cerr << "Could not convert filename "
-               << optarg << " to StringX" << endl;
-          exit(2);
-        }
-      }
+      if (optarg) Utf82StringX(optarg, ua.fname);
       break;
     case 'x':
       if (ua.Format == UserArgs::Unknown)
