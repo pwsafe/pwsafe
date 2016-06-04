@@ -22,8 +22,8 @@ _build directory you created in the previous step.
 think a bit and the report errors: "CMake Error at [...] (message):
   Could NOT find GTest (missing: GTEST_LIBRARY GTEST_INCLUDE_DIR
   GTEST_MAIN_LIBRARY)
-To fix this, click on GTEST_ROOT and set it to the directory were gets
-is installed on your machine.
+To fix this, click on GTEST_ROOT and set it to the directory were
+gtest is installed on your machine.
 4. Check the "Advanced" checkbox, and set the values of
 XercesC_INCLUDE_DIR, XercesC_LIBRARY_DEBUG and XercesC_LIBRARY_RELEASE
 to the correct values.
