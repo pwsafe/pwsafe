@@ -81,6 +81,7 @@ class PasswordSafeSearch;
 #define ID_SHOWHIDE_DRAGBAR 10039
 #define ID_EXPANDALL 10040
 #define ID_COLLAPSEALL 10041
+#define ID_SHOW_ALL_EXPIRY 10125
 #define ID_FILTERMENU 10042
 #define ID_EDITFILTER 10043
 #define ID_APPLYFILTER 10044
@@ -248,6 +249,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
   void OnTreeViewClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_ALL_EXPIRY
+  void OnShowAllExpiryClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
   void OnChangePasswdClick( wxCommandEvent& event );

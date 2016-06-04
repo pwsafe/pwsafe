@@ -98,45 +98,26 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
-
   EVT_MENU( wxID_NEW, PasswordSafeFrame::OnNewClick )
-
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
-
   EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
-
   EVT_MENU( wxID_SAVE, PasswordSafeFrame::OnSaveClick )
-
   EVT_MENU( wxID_SAVEAS, PasswordSafeFrame::OnSaveAsClick )
-
   EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
-
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
-
   EVT_MENU( wxID_ADD, PasswordSafeFrame::OnAddClick )
-
   EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
-
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
-
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
-
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
-
   EVT_MENU( ID_COPYUSERNAME, PasswordSafeFrame::OnCopyusernameClick )
-
   EVT_MENU( ID_COPYNOTESFLD, PasswordSafeFrame::OnCopynotesfldClick )
-
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
-
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
-
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
-
+  EVT_MENU( ID_SHOW_ALL_EXPIRY, PasswordSafeFrame::OnShowAllExpiryClick )
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
-
   EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
-
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
 #ifndef NO_YUBI
@@ -146,7 +127,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU_RANGE( ID_LANGUAGE_BEGIN, ID_LANGUAGE_END, PasswordSafeFrame::OnLanguageClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
-
 ////@end PasswordSafeFrame event table entries
   EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
 
@@ -414,24 +394,17 @@ void PasswordSafeFrame::CreateMenubar()
   // Create all menu items
   // Recreating the menu items updates also their translation
 ////@begin PasswordSafeFrame content construction
+  PasswordSafeFrame* itemFrame1 = this;
+
   wxMenu* itemMenu3 = new wxMenu;
-  itemMenu3->Append(wxID_NEW);
-  itemMenu3->Append(wxID_OPEN);
-  itemMenu3->Append(wxID_CLOSE);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
-    wxGetApp().recentDatabases().UseMenu(itemMenu3);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
-  } else { // create Recent Safes submenu
-    itemMenu3->AppendSeparator();
-    wxMenu* itemMenuRecents = new wxMenu;
-    wxGetApp().recentDatabases().UseMenu(itemMenuRecents);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenuRecents);
-    itemMenu3->Append(ID_MRUMENU, _("&Recent Safes"), itemMenuRecents);
-  }
+  itemMenu3->Append(wxID_NEW, _("&New..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_OPEN, _("&Open..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_CLOSE, _("&Close"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->AppendSeparator();
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_SAVE);
-  itemMenu3->Append(wxID_SAVEAS);
+  itemMenu3->Append(wxID_SAVE, _("&Save..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_SAVEAS, _("Save &As..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), wxEmptyString, wxITEM_NORMAL);
@@ -440,93 +413,96 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
-  wxMenu* itemMenu18 = new wxMenu;
-  itemMenu18->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu18);
+  wxMenu* itemMenu19 = new wxMenu;
+  itemMenu19->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu19->Append(ID_IMPORT_XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu19->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu19);
   itemMenu3->Append(ID_MERGE, _("Merge..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_COMPARE, _("Compare..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_PROPERTIES);
+  itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_EXIT);
+  itemMenu3->Append(wxID_EXIT, _("E&xit"), wxEmptyString, wxITEM_NORMAL);
   menuBar->Append(itemMenu3, _("&File"));
-  wxMenu* itemMenu28 = new wxMenu;
-  itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(wxID_DELETE, _("&Delete Entry\tDel"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(wxID_UNDO);
-  itemMenu28->Append(wxID_REDO);
-  itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu28->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
-  menuBar->Append(itemMenu28, _("&Edit"));
-  wxMenu* itemMenu47 = new wxMenu;
-  itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
-  itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), wxEmptyString, wxITEM_CHECK);
-  itemMenu47->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
-  itemMenu47->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
-  itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), wxEmptyString, wxITEM_CHECK);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu47->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
-  wxMenu* itemMenu56 = new wxMenu;
-  itemMenu56->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu56->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu56->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu47->Append(ID_FILTERMENU, _("&Filters"), itemMenu56);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
-  wxMenu* itemMenu62 = new wxMenu;
-  itemMenu62->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu62->Append(ID_CHANGEPSWDFONT, _("&Password Font"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu47->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu62);
-  wxMenu* itemMenu65 = new wxMenu;
-  itemMenu65->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu47->Append(ID_REPORTSMENU, _("Reports"), itemMenu65);
-  menuBar->Append(itemMenu47, _("&View"));
-  wxMenu* itemMenu72 = new wxMenu;
-  itemMenu72->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), wxEmptyString, wxITEM_NORMAL);
+  wxMenu* itemMenu29 = new wxMenu;
+  itemMenu29->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(wxID_DELETE, _("&Delete Entry\tDel"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(wxID_UNDO);
+  itemMenu29->Append(wxID_REDO);
+  itemMenu29->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
+  menuBar->Append(itemMenu29, _("Edit"));
+  wxMenu* itemMenu48 = new wxMenu;
+  itemMenu48->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
+  itemMenu48->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), wxEmptyString, wxITEM_CHECK);
+  itemMenu48->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
+  itemMenu48->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
+  itemMenu48->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), wxEmptyString, wxITEM_CHECK);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
+  wxMenu* itemMenu58 = new wxMenu;
+  itemMenu58->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu58->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu58->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_FILTERMENU, _("&Filters"), itemMenu58);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
+  wxMenu* itemMenu64 = new wxMenu;
+  itemMenu64->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu64->Append(ID_CHANGEPSWDFONT, _("&Password Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu64);
+  wxMenu* itemMenu67 = new wxMenu;
+  itemMenu67->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_REPORTSMENU, _("Reports"), itemMenu67);
+  menuBar->Append(itemMenu48, _("View"));
+  wxMenu* itemMenu74 = new wxMenu;
+  itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_PWDPOLSM, _("Password Policies..."), wxEmptyString, wxITEM_NORMAL);
 #ifndef NO_YUBI
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _("Configure and backup YubiKeys"), wxITEM_NORMAL);
 #endif
-  itemMenu72->AppendSeparator();
-  AddLanguageMenu( itemMenu72 );
-
-  menuBar->Append(itemMenu72, _("&Manage"));
+  itemMenu74->AppendSeparator();
+  AddLanguageMenu( itemMenu74 );
+  menuBar->Append(itemMenu74, _("Manage"));
   wxMenu* itemMenu79 = new wxMenu;
-  itemMenu79->Append(wxID_HELP);
+  itemMenu79->Append(wxID_HELP, _("Get &Help"), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu79->Append(wxID_ABOUT);
-  menuBar->Append(itemMenu79, _("&Help"));
+  itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), wxEmptyString, wxITEM_NORMAL);
+  menuBar->Append(itemMenu79, _("Help"));
+  itemFrame1->SetMenuBar(menuBar);
+
+
 ////@end PasswordSafeFrame content construction
 
   menuBar->Thaw();
@@ -541,8 +517,6 @@ void PasswordSafeFrame::CreateMenubar()
   // Update menu selections
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
-  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
-    GetMenuBar()->Check( m_selectedLanguage, true );
 }
 
 /**
@@ -617,8 +591,10 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
     if (menu_item != nullptr)
       menu_item->Enable(get<2>(item.second));
   }
-  // duplicate English label to simplify switching language in case of wrong selection
+
   parent->Append(ID_LANGUAGEMENU, _("Select Language") + L" (Select Language)", child);
+  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
+    child->Check( m_selectedLanguage, true );
 }
 
 /**
@@ -740,10 +716,11 @@ bool PasswordSafeFrame::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& name)
 {
     // Bitmap retrieval
 ////@begin PasswordSafeFrame bitmap retrieval
+  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end PasswordSafeFrame bitmap retrieval
 }
@@ -756,7 +733,8 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 {
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
-  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
+  wxUnusedVar(name);
+  if (name == wxT("../graphics/wxWidgets/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -930,6 +908,12 @@ void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
       m_tree->CollapseAllChildren(idCurr);
   }
 }
+
+void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
+{
+  event.Skip();
+}
+
 
 void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
 {
@@ -3378,3 +3362,5 @@ void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
+
+
