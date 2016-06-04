@@ -39,6 +39,10 @@
 		E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
 		E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
 		E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
+		E66D293B1D02B54600C9BCBF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66D293A1D02B54600C9BCBF /* main.cpp */; };
+		E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E683B21A150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
@@ -154,6 +158,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E66D29361D02B50400C9BCBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB80211956A93004E2BE5;
+			remoteInfo = core;
+		};
+		E66D29381D02B50400C9BCBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
+			remoteInfo = os;
+		};
 		E690B54312980D76007EA508 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -176,6 +194,18 @@
 			remoteInfo = os;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E66D292D1D02B49B00C9BCBF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsubset.cpp; sourceTree = "<group>"; };
@@ -212,6 +242,8 @@
 		E66C16B216731EFE00C996B1 /* ManagePwdPolicies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagePwdPolicies.h; sourceTree = "<group>"; };
 		E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordPolicy.cpp; sourceTree = "<group>"; };
 		E66C16BA16731F9400C996B1 /* PasswordPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordPolicy.h; sourceTree = "<group>"; };
+		E66D292F1D02B49B00C9BCBF /* pwsafe-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E66D293A1D02B54600C9BCBF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/ui/cli/main.cpp; sourceTree = "<group>"; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
@@ -666,6 +698,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E66D292C1D02B49B00C9BCBF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */,
+				E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */,
+				E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6ADBAF3119577A7004E2BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -689,6 +731,14 @@
 				E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */,
 			);
 			name = Configs;
+			sourceTree = "<group>";
+		};
+		E66D29301D02B49B00C9BCBF /* pwsafe-cli */ = {
+			isa = PBXGroup;
+			children = (
+				E66D293A1D02B54600C9BCBF /* main.cpp */,
+			);
+			path = "pwsafe-cli";
 			sourceTree = "<group>";
 		};
 		E683B216150481DF0013D588 /* pugixml */ = {
@@ -1022,6 +1072,7 @@
 				E6EE839111E87E9700B01518 /* core */,
 				E6EE837D11E87CD200B01518 /* os */,
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
+				E66D29301D02B49B00C9BCBF /* pwsafe-cli */,
 				E6ADB80411956A93004E2BE5 /* Products */,
 				E69B800911F61CF20084F6C4 /* Carbon.framework */,
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
@@ -1036,6 +1087,7 @@
 				E6ADB80311956A93004E2BE5 /* libcore.a */,
 				E6ADB91C11956DD0004E2BE5 /* libos.a */,
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
+				E66D292F1D02B49B00C9BCBF /* pwsafe-cli */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1354,6 +1406,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E66D292E1D02B49B00C9BCBF /* pwsafe-cli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E66D29351D02B49B00C9BCBF /* Build configuration list for PBXNativeTarget "pwsafe-cli" */;
+			buildPhases = (
+				E66D292B1D02B49B00C9BCBF /* Sources */,
+				E66D292C1D02B49B00C9BCBF /* Frameworks */,
+				E66D292D1D02B49B00C9BCBF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E66D29371D02B50400C9BCBF /* PBXTargetDependency */,
+				E66D29391D02B50400C9BCBF /* PBXTargetDependency */,
+			);
+			name = "pwsafe-cli";
+			productName = "pwsafe-cli";
+			productReference = E66D292F1D02B49B00C9BCBF /* pwsafe-cli */;
+			productType = "com.apple.product-type.tool";
+		};
 		E6ADB80211956A93004E2BE5 /* core */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB80711956A94004E2BE5 /* Build configuration list for PBXNativeTarget "core" */;
@@ -1414,6 +1485,11 @@
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Open Source Software";
+				TargetAttributes = {
+					E66D292E1D02B49B00C9BCBF = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
 			};
 			buildConfigurationList = E6ADB7F3119569CC004E2BE5 /* Build configuration list for PBXProject "pwsafe-xcode6" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1434,6 +1510,7 @@
 				E6ADB91B11956DD0004E2BE5 /* os */,
 				E6ADB99D1195706A004E2BE5 /* pwsafe */,
 				E690B53012980BDD007EA508 /* Help Files */,
+				E66D292E1D02B49B00C9BCBF /* pwsafe-cli */,
 			);
 		};
 /* End PBXProject section */
@@ -1505,6 +1582,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E66D292B1D02B49B00C9BCBF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E66D293B1D02B54600C9BCBF /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6ADB80011956A93004E2BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1648,6 +1733,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E66D29371D02B50400C9BCBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB80211956A93004E2BE5 /* core */;
+			targetProxy = E66D29361D02B50400C9BCBF /* PBXContainerItemProxy */;
+		};
+		E66D29391D02B50400C9BCBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB91B11956DD0004E2BE5 /* os */;
+			targetProxy = E66D29381D02B50400C9BCBF /* PBXContainerItemProxy */;
+		};
 		E690B54412980D76007EA508 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E690B53012980BDD007EA508 /* Help Files */;
@@ -1666,6 +1761,91 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		E66D29331D02B49B00C9BCBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E66D29341D02B49B00C9BCBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		E690B53112980BDD007EA508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1855,6 +2035,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E66D29351D02B49B00C9BCBF /* Build configuration list for PBXNativeTarget "pwsafe-cli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E66D29331D02B49B00C9BCBF /* Debug */,
+				E66D29341D02B49B00C9BCBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		E690B53312980BFB007EA508 /* Build configuration list for PBXAggregateTarget "Help Files" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
