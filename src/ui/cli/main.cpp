@@ -30,7 +30,10 @@ static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
 static const char *status_text(int status);
 
+static void CreateNewSafe(const StringX& filename);
 StringX GetPassphrase(const wstring& prompt);
+StringX GetNewPassphrase();
+
 //-----------------------------------------------------------------
 
 static struct termios oldTermioFlags; // to restore tty echo
@@ -70,7 +73,7 @@ void Utf82StringX(const char* filename, StringX& sname)
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
-  if (argc != 4 && argc != 5)
+  if (argc < 3) // must give us a safe and an operation
     return false;
 
   Utf82StringX(argv[1], ua.safe);
@@ -83,6 +86,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"export", optional_argument, 0, 'e'},
       {"text", no_argument, 0, 't'},
       {"xml", no_argument, 0, 'x'},
+      {"new", no_argument, 0, 'n'},
       {0, 0, 0, 0}
     };
 
@@ -117,6 +121,10 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.Format = UserArgs::Text;
       else
         return false;
+      break;
+    case 'n':
+      CreateNewSafe(ua.safe);
+      exit(0);
       break;
 
     default:
@@ -438,6 +446,49 @@ ImportXML(PWScore &core, const StringX &fname)
   rpt.WriteLine(str_text);
   rpt.EndReport();
   return rc;
+}
+
+static void CreateNewSafe(const StringX& filename)
+{
+    if ( pws_os::FileExists(filename.c_str()) ) {
+        cerr << filename << " - already exists" << endl;
+        exit(1);
+    }
+
+    const StringX passkey = GetNewPassphrase();
+
+    PWScore core;
+    core.SetCurFile(filename);
+    core.NewFile(passkey);
+    const int status = core.WriteCurFile();
+
+    if (status != PWScore::SUCCESS)
+        cerr << "Could not create " << filename << ": " << status_text(status);
+}
+
+StringX GetNewPassphrase()
+{
+    StringX passphrase[2];
+    wstring prompt[2] = {L"Enter passphrase: ", L"Enter the same passphrase again"};
+
+    do {
+        passphrase[0] = GetPassphrase(prompt[0]);
+        passphrase[1] = GetPassphrase(prompt[1]);
+
+        if (passphrase[0] != passphrase[1]) {
+            cerr << "The two passphrases do not match. Please try again" << endl;
+            continue;
+        }
+        if (passphrase[0].length() == 0) {
+            cerr << "Invalid passphrase. Please try again" << endl;
+            continue;
+        }
+
+        break;
+    }
+    while(1);
+
+    return passphrase[0];
 }
 
 StringX GetPassphrase(const wstring& prompt)
