@@ -30,6 +30,7 @@ static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
 static const char *status_text(int status);
 
+StringX GetPassphrase(const wstring& prompt);
 //-----------------------------------------------------------------
 
 static struct termios oldTermioFlags; // to restore tty echo
@@ -38,6 +39,16 @@ static void usage(char *pname)
 {
   cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
        << "\t safe --exp[=file] --text|--xml" << endl;
+}
+
+std::ostream& operator<<(std::ostream& os, const StringX& str)
+{
+    return os << str.c_str();
+}
+
+std::ostream& operator<<(std::ostream& os, const wstring& str)
+{
+    return os << str.c_str();
 }
 
 struct UserArgs {
@@ -131,12 +142,8 @@ int main(int argc, char *argv[])
     cerr << argv[1] << " - file not found" << endl;
     return 2;
   }
-  wstring wpk;
-  cout << "Enter Password: ";
-  echoOff();
-  wcin >> wpk;
-  echoOn();
-  StringX pk(wpk.c_str());
+
+  StringX pk = GetPassphrase(L"Enter Password: ");
 
   int status;
   status = core.CheckPasskey(ua.safe, pk);
@@ -431,4 +438,14 @@ ImportXML(PWScore &core, const StringX &fname)
   rpt.WriteLine(str_text);
   rpt.EndReport();
   return rc;
+}
+
+StringX GetPassphrase(const wstring& prompt)
+{
+    wstring wpk;
+    cout << prompt;
+    echoOff();
+    wcin >> wpk;
+    echoOn();
+    return StringX(wpk.c_str());
 }
