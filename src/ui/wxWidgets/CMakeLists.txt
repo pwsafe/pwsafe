@@ -65,6 +65,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/pwsclip.cpp
     src/ui/wxWidgets/safecombinationentry.cpp
     src/ui/wxWidgets/mainEdit.cpp
+    src/ui/wxWidgets/mainView.cpp
     src/ui/wxWidgets/ViewReport.cpp
     src/ui/wxWidgets/safecombinationprompt.cpp
     src/ui/wxWidgets/passwordsafeframe.cpp
