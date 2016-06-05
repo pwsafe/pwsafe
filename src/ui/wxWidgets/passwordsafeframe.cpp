@@ -62,6 +62,7 @@
 #include "../../core/core.h"
 #include "../../core/PWScore.h"
 #include "./SelectionCriteria.h"
+#include "../../core/PWSFilters.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -911,7 +912,25 @@ void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 {
-  event.Skip();
+  if (event.IsChecked()) {
+    st_filters showexpirefilter;
+    showexpirefilter.Empty();
+    showexpirefilter.fname = _("Entries with a password expiry");
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_XTIME;
+    fr.mtype = PWSMatch::MT_DATE;
+    fr.rule = PWSMatch::MR_NOTEQUAL;
+    fr.ltype = LC_OR;
+
+    fr.fdate1 = 0;
+    showexpirefilter.vMfldata.push_back(fr);
+    showexpirefilter.num_Mactive = (int)showexpirefilter.vMfldata.size();
+  }
+
+  //  ApplyFilters();
 }
 
 
