@@ -29,6 +29,7 @@
 #include "about.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
+#include "PWStatusBar.h"
 ////@end includes
 #include "PWSgridtable.h"
 #include "safecombinationsetup.h"
@@ -237,7 +238,8 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+  m_bShowExpiry(false)
 {
     Init();
 }
@@ -334,6 +336,7 @@ void PasswordSafeFrame::Init()
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
   m_tree = NULL;
+  m_statusBar = NULL;
 ////@end PasswordSafeFrame member initialisation
   RegisterLanguageMenuItems();
 }
@@ -503,6 +506,9 @@ void PasswordSafeFrame::CreateMenubar()
   menuBar->Append(itemMenu79, _("Help"));
   itemFrame1->SetMenuBar(menuBar);
 
+  m_statusBar = new CPWStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
+  m_statusBar->SetFieldsCount(6);
+  itemFrame1->SetStatusBar(m_statusBar);
 
 ////@end PasswordSafeFrame content construction
 

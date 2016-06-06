@@ -22,6 +22,7 @@
 
 ////@begin includes
 #include "wx/frame.h"
+#include "wx/statusbr.h"
 ////@end includes
 #include "wx/treebase.h" // for wxTreeItemId
 #include "core/PWScore.h"
@@ -37,6 +38,7 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+class CPWStatusBar;
 ////@end forward declarations
 class SystemTray;
 class GUIInfo;
@@ -105,6 +107,7 @@ class PasswordSafeSearch;
 #define ID_LANGUAGEMENU 10011
 #define ID_VISITWEBSITE 10012
 #define ID_MRUMENU 10061
+#define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
 #define SYMBOL_PASSWORDSAFEFRAME_IDNAME ID_PASSWORDSAFEFRAME
@@ -448,6 +451,7 @@ public:
   ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
+  CPWStatusBar* m_statusBar;
   ////@end PasswordSafeFrame member variables
  private:
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0,
@@ -555,6 +559,10 @@ public:
   // we need to prevent multiple call to db (un)locker and UI hider
   // These mutexes must not be recursive!
   wxMutex m_dblockMutex, m_hideUIMutex;
+
+  // Filter-related stuff
+  bool m_bShowExpiry;
+  void ApplyFilters();
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

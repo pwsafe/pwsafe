@@ -36,6 +36,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PWSDragBar.h
     src/ui/wxWidgets/PWSgrid.h
     src/ui/wxWidgets/PWSgridtable.h
+    src/ui/wxWidgets/PWStatusBar.h
     src/ui/wxWidgets/PWStree.h
     src/ui/wxWidgets/PasswordPolicy.h
     src/ui/wxWidgets/PwsSync.h

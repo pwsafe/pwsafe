@@ -97,30 +97,6 @@ void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
   }
 }
 
-void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
-{
-  if (event.IsChecked()) {
-    st_filters showexpirefilter;
-    showexpirefilter.Empty();
-    showexpirefilter.fname = _("Entries with a password expiry");
-
-    st_FilterRow fr;
-
-    fr.bFilterComplete = true;
-    fr.ftype = FT_XTIME;
-    fr.mtype = PWSMatch::MT_DATE;
-    fr.rule = PWSMatch::MR_NOTEQUAL;
-    fr.ltype = LC_OR;
-
-    fr.fdate1 = 0;
-    showexpirefilter.vMfldata.push_back(fr);
-    showexpirefilter.num_Mactive = (int)showexpirefilter.vMfldata.size();
-  }
-
-  //  ApplyFilters();
-}
-
-
 void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
 {
   wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
@@ -169,3 +145,36 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
   DoLayout();
 }
+
+//-----------------------------------------------------------------
+// Filters related
+// (Starting with ShowExpiry, implementing top-down as needed)
+//-----------------------------------------------------------------
+void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
+{
+  m_bShowExpiry = event.IsChecked();
+  if (m_bShowExpiry) {
+    st_filters showexpirefilter;
+    showexpirefilter.Empty();
+    showexpirefilter.fname = _("Entries with a password expiry");
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_XTIME;
+    fr.mtype = PWSMatch::MT_DATE;
+    fr.rule = PWSMatch::MR_NOTEQUAL;
+    fr.ltype = LC_OR;
+
+    fr.fdate1 = 0;
+    showexpirefilter.vMfldata.push_back(fr);
+    showexpirefilter.num_Mactive = (int)showexpirefilter.vMfldata.size();
+  } else {
+  }
+  ApplyFilters();
+}
+
+void PasswordSafeFrame::ApplyFilters()
+{
+}
+
