@@ -523,7 +523,10 @@ void PasswordSafeFrame::CreateMenubar()
 
   // Update menu selections
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
-  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
+  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+                       ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
+  m_statusBar->Setup();
+
 }
 
 /**
@@ -775,6 +778,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
   }
+  UpdateStatusBar();
   return status;
 }
 
@@ -1081,6 +1085,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
     m_core.SetReadOnly(false);
+    UpdateStatusBar();
   }
 }
 
@@ -1596,6 +1601,7 @@ void PasswordSafeFrame::SetChanged(ChangeType changed)
     default:
       ASSERT(0);
   }
+  UpdateStatusBar();
 }
 
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
@@ -1995,6 +2001,7 @@ void PasswordSafeFrame::RefreshViews()
     ShowGrid();
 
   m_guiInfo->Restore(this);
+  UpdateStatusBar();
 }
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -3246,6 +3253,36 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
   wxLaunchDefaultBrowser("https://pwsafe.org");
+}
+
+void PasswordSafeFrame::UpdateStatusBar()
+{
+
+  if (!m_core.GetCurFile().empty()) {
+    wxString text;
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_DBLCLICK);
+
+    //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
+
+    text = m_core.IsChanged() ? wxT("*") : wxT(" ");
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_MODIFIED);
+
+    text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_READONLY);
+
+    text.Printf(wxT("%d"), m_core.GetNumEntries());
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_NUM_ENT);
+
+    text = wxEmptyString;
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
+  } else { // no open file
+    m_statusBar->SetStatusText(wxT("https://pwsafe.org/"), CPWStatusBar::SB_DBLCLICK);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_CLIPBOARDACTION);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_MODIFIED);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_NUM_ENT);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_FILTER);
+  }
 }
 
 //-----------------------------------------------------------------

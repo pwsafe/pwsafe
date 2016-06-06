@@ -532,6 +532,9 @@ public:
   /// Adds a language to internal list of supported languages by this application
   void AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name);
 
+  /// Update status bar - call when stuff changes:
+  /// File open, double-click, modify, r-o r/w, filter...
+  void UpdateStatusBar();
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   PasswordSafeSearch* m_search;

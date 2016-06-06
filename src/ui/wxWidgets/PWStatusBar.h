@@ -17,8 +17,18 @@
 class CPWStatusBar : public wxStatusBar
 {
  public:
+  enum {SB_DBLCLICK = 0, SB_CLIPBOARDACTION,
+        SB_MODIFIED, SB_READONLY, SB_NUM_ENT, SB_FILTER,
+        SB_LAST};
   CPWStatusBar(wxWindow *parent, wxWindowID id = wxID_ANY, long 	style = wxSTB_DEFAULT_STYLE)
     : wxStatusBar(parent, id, style)
     {}
+  virtual ~CPWStatusBar() {}
+
+  void Setup()
+  {
+    const int widths[SB_LAST] = {-5, -3, -1, -3, -2, -1};
+    SetFieldsCount(SB_LAST, widths);
+  }
 };
 #endif /* __PWSTATUSBAR_H */
