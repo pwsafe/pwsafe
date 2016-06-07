@@ -653,7 +653,7 @@ description.
 4.2.3 All unassigned identifiers except as listed in the previous two
 subsections are reserved, and should not be used by other
 implementations of this format specification in the interest of
-interoperablity.
+interoperability.
 
 5. References:
 [TWOFISH] http://www.schneier.com/paper-twofish-paper.html
