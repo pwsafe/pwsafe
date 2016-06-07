@@ -979,7 +979,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   PWSAuxCore othercore; // Leaves DB prefs untouched!
 
   // Get currently selected database's information
-  // No Report or MAXCHARS vaue, implies no validation of the file
+  // No Report or MAXCHARS value, implies no validation of the file
   // except the mandatory UUID uniqueness
   st_DBProperties st_dbpcore;
   othercore.ReadFile(sx_Filename, passkey);
