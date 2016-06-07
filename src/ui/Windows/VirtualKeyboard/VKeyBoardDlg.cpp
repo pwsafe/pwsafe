@@ -1408,7 +1408,7 @@ void CVKeyBoardDlg::SetNormalButtons()
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_VKDEADKEY);
   if (m_bAltNum) {
-    // Normal keys disbled if using AltNum
+    // Normal keys disabled if using AltNum
     for (int i = 0; i < NUM_KEYS; i++) {
       m_vkbb_Keys[i].SetWindowText(L"");
       m_vkbb_Keys[i].EnableWindow(FALSE);
