@@ -1272,7 +1272,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
-  // before every return, otherwise next mouse/keybord selection 
+  // before every return, otherwise next mouse/keyboard selection 
   // will be treated as drop target selections
 
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {

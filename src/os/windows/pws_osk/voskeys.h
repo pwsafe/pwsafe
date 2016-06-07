@@ -54,7 +54,7 @@ struct st_VKBD {
 // but should have no impact wih these structure definitions
 #pragma pack(push, b1, 1)
 
-// Ketboard scan code data
+// Keyboard scan code data
 // Deadkey bitmap saved as integer
 // Display Characters saved as offsets into common data areas
 struct st_ISC2CHAR {
