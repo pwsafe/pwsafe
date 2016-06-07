@@ -107,7 +107,7 @@ LRESULT CSubclassWnd::Default()
 {
   // MFC stores current MSG in thread state
   MSG& curMsg = AfxGetThreadState()->m_lastSentMsg;
-  // Note: must explicitly call CSubclassWnd::WindowProc to avoid infinte
+  // Note: must explicitly call CSubclassWnd::WindowProc to avoid infinite
   // recursion on virtual function
   return CSubclassWnd::WindowProc(curMsg.message, curMsg.wParam, curMsg.lParam);
 }
