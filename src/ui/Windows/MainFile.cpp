@@ -569,7 +569,7 @@ BOOL DboxMain::OnOpenMRU(UINT nID)
   // Save just in case need to restore if user cancels
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
-  // Read-only status can be overriden by GetAndCheckPassword
+  // Read-only status can be overridden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem),
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
   if (rc == PWScore::SUCCESS) {

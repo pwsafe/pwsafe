@@ -246,5 +246,5 @@ LRESULT CSCWListCtrl::OnSetFont(WPARAM, LPARAM)
 }
 
 void CSCWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
-  //DrawItem must be overriden for LVS_OWNERDRAWFIXED style lists
+  //DrawItem must be overridden for LVS_OWNERDRAWFIXED style lists
 }

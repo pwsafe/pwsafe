@@ -646,7 +646,7 @@ XP and later system.
 [2836569] Correct password data now copied from Edit dialog using
 'Smart Labels'
 [2832991] Double-click action display in the Status Bar now shows
-correct value for entries that have overriden the current default.
+correct value for entries that have overridden the current default.
 [2820260] Fix password expiry interval processing during Edit.
 [2818653] Password expiry interval now correctly exported to XML and
 displayed during Edit, if present.
@@ -985,7 +985,7 @@ expiry date.
 it will close the Find Toolbar.
 [1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
 [1887159] PasswordSafe may be configured to open databases 'Read-only' by
-default.  This can still be overriden during open if the file itself
+default.  This can still be overridden during open if the file itself
 is not read-only.
 [1664535] Interpret "Remember 0 last databases" on the System Options as 
 "do not store any opened database".

@@ -39,7 +39,7 @@ class SystemTray : protected wxTaskBarIcon
     using wxTaskBarIcon::RemoveIcon;
 
   protected:
-    //overriden from wxTaskBarIcon, called by framework on r-click
+    //overridden from wxTaskBarIcon, called by framework on r-click
     virtual wxMenu* CreatePopupMenu();
 
   private:

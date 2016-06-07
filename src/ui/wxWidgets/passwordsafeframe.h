@@ -389,7 +389,7 @@ public:
 /// Should we show tooltips?
   static bool ShowToolTips();
 
-  // Overriden virtuals
+  // Overridden virtuals
   virtual bool Show(bool show = true);
   virtual void SetTitle(const wxString& title);
   virtual void SetFocus();

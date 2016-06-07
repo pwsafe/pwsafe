@@ -145,7 +145,7 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-  // Overriden virtuals
+  // Overridden virtuals
   virtual bool Show(bool show = true);
 
 ////@begin CManagePasswordPolicies member variables

@@ -119,7 +119,7 @@ public:
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
 
  private:
-  //overriden from base for case-insensitive sort
+  //overridden from base for case-insensitive sort
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si) const;

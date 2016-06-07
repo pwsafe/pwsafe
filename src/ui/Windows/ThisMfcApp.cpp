@@ -924,7 +924,7 @@ BOOL ThisMfcApp::InitInstance()
 
   m_core.SetReadOnly(false);
   // Command line parsing MUST be done before the first PWSprefs lookup!
-  // (since user/host/config file may be overriden!)
+  // (since user/host/config file may be overridden!)
   bool allDone = false;
 
   // Note: Even though PWSprefs has not yet been created, parsing the command line

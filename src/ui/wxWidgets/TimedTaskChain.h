@@ -81,7 +81,7 @@ public:
 
 	void OnError(ErrorHandlerType errHandler) { m_errorHandler = errHandler; }
 
-    // overriden from wxTimer
+    // overridden from wxTimer
     void Notify();
 
 private:
