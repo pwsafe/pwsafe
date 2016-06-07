@@ -526,7 +526,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\"" << endl;
   }
 
-  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canoncally
+  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canonically
 
   ofs << "Database_uuid=\"" << huuid << "\"" << endl;
   ofs << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
