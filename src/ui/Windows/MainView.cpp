@@ -163,7 +163,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
-      // Refesh one entry ListView row and in the tree if the Title/Username/Password
+      // Refresh one entry ListView row and in the tree if the Title/Username/Password
       // has changed and visible in the tree when entry has been edited
       ASSERT(pci != NULL);
       UpdateEntryinGUI(*pci);
