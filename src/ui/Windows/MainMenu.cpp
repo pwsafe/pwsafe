@@ -280,7 +280,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Do Manage Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_MANAGEMENU);
 
-  // No need to do Manage Menu Langauges submenu as rebuilt every time!
+  // No need to do Manage Menu Languages submenu as rebuilt every time!
 
   // Do Help Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_HELPMENU);
