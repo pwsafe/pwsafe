@@ -838,7 +838,7 @@ on the current selected item (group or normal, shortcut base, alias base,
 alias or shortcut entry).
 [2425045] During Edit, if the entry has been changed and the user presses
 the Cancel button, they are asked to confirm losing their changes.
-[2415952] The currrent display status of the Find Toolbar is remembered at
+[2415952] The current display status of the Find Toolbar is remembered at
 application close and, if visible, it is will be shown the next time the
 application is started.
 [] Installation program now offers German as well as English
