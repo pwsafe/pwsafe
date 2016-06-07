@@ -54,7 +54,7 @@ Set oShell = CreateObject("WScript.Shell")
 strConfig = oShell.ExpandEnvironmentStrings("%ConfigurationName%")
 strOutDir = oShell.ExpandEnvironmentStrings("%OutDir%")
 
-' If either emtpy - prompt the user to re-run 'configure.vbs'
+' If either empty - prompt the user to re-run 'configure.vbs'
 If strConfig = "%ConfigurationName%" Then
   Call EndScript(1, "")
 End If
@@ -166,7 +166,7 @@ Set oShell = CreateObject("WScript.Shell")
 strConfig = oShell.ExpandEnvironmentStrings("%ConfigurationName%")
 strOutDir = oShell.ExpandEnvironmentStrings("%OutDir%")
 
-' If either emtpy - prompt the user to re-run 'configure.vbs'
+' If either empty - prompt the user to re-run 'configure.vbs'
 If strConfig = "%ConfigurationName%" Then
   Call EndScript(1, "")
 End If

@@ -1887,7 +1887,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   pws_os::Trace(L"nemptygroups: %d\n", vEmptyGroups.size());
   if (!vEmptyGroups.empty()) {
     if (outDDmemfile.GetLength() == 0) {
-      // No entries written but as we are going to write emtpy groups
+      // No entries written but as we are going to write empty groups
       // we need to put a zero count
       int nCount(0);
       outDDmemfile.Write((void *)&nCount, sizeof(nCount));
