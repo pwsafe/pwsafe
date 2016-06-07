@@ -189,7 +189,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
     WORD wPWSModifiers = iKBShortcut >> 16;
 
-    // Translate from PWS modifers to HotKey
+    // Translate from PWS modifiers to HotKey
     WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
     str = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
