@@ -194,7 +194,7 @@ dialog.
 New Features for 3.27
 =====================
 [3367590] User can now add a database name and description via the Properties
-diaolg.
+dialog.
 [3349458] Allow filters to match on rules based on the password's length.
 [3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
 Default is copy the username to the clipboard.
