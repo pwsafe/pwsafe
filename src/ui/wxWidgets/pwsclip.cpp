@@ -14,7 +14,7 @@
   NOTE: In VS2013 wxWidgets 3.0.x builds:
     Both <wx/clipbrd.h> & <wx/dataobj.h> cause 51 warnings about using unsecure
     versions of standard calls, such as 'wcscpy' instead of 'wcscpy_s', if any
-    previously inluded header file includes <string> even though pre-processor
+    previously included header file includes <string> even though pre-processor
     variables _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES and
     _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT are defined.
 
