@@ -141,7 +141,7 @@ void CInfoDisplay::OnPaint()
              y = rs.top; 
 
           bMoveWindow = true;
-          // Check that mouse pointer isn't on infowindow: when it is, window isn't displayed (treated somwhere as focus/mouse move?)
+          // Check that mouse pointer isn't on infowindow: when it is, window isn't displayed (treated somewhere as focus/mouse move?)
           if ((mouse_pt.x >= x) && (mouse_pt.x <= x + rs.Width()) && (mouse_pt.y >= y) && (mouse_pt.y <= y + rs.Height())) {
              if (mouse_pt.y == y)
                 y++;
