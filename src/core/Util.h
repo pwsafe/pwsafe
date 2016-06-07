@@ -100,7 +100,7 @@ inline int32 getInt32(const unsigned char buf[4])
   return *reinterpret_cast<const int32 *>(buf);
 #elif defined(PWS_BIG_ENDIAN)
 #if defined(_DEBUG)
-  // Folowing code works for big or little endian architectures but we'll warn anyway
+  // Following code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
   if ( *reinterpret_cast<const int32 *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
