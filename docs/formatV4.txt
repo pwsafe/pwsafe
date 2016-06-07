@@ -143,7 +143,7 @@ record, except that instead of a Password field, it has a Reference to
 the "base" Entry record, from which it takes the password value at
 runtime. (The use-case for this is a single-sign-on site, where the
 user has access to several systems that share the same password).
-The manadatory fields for this record are:
+The mandatory fields for this record are:
 - AliasUUID: The UUID of the record
 - Title
 - BaseUUID - the UUID of the referred-to Entry record
