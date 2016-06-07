@@ -69,7 +69,7 @@ of PasswordSafe.
     the registry, and application-specific preferences only to the
     registry. The location in the registry, however, was under
     "HKCU\Software\Counterpane Systems\Password Safe". Therefore,
-    PasswordSafe should check for this location upon invokation, and
+    PasswordSafe should check for this location upon invocation, and
     import the preferences found there, UNLESS an "imported" key is
     found, which will be written upon the end of the import process,
     to ensure this is a one-time process. If the "imported" key
