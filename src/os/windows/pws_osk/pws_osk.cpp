@@ -99,7 +99,7 @@ BOOL APIENTRY DllMain(HMODULE /* hModule */,
 OSK_API int OSK_GetVersion()
 {
   // Return current version to ensure caller and DLL are in step
-  // with regard to calling functions and Implemention Structure
+  // with regard to calling functions and Implementation Structure
   return VK_DLL_VERSION;
 }
 
