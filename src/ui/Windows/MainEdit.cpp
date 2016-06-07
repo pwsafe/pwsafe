@@ -363,7 +363,7 @@ void DboxMain::OnAddGroup()
     do {
       newGroup = m_ctlItemTree.AddGroup(s_copy.c_str(), bAlreadyExists);
       i++;
-      // Format as per Windows Exlorer "New Folder"/"New Folder (n)"
+      // Format as per Windows Explorer "New Folder"/"New Folder (n)"
       // where if 'n' present, it starts from 2
       Format(s_copy, L"%s (%d)", m_TreeViewGroup.c_str(), i);
     } while (bAlreadyExists);
