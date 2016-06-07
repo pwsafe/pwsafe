@@ -106,7 +106,7 @@ OSK_API int OSK_GetVersion()
 OSK_API void OSK_ListKeyboards(UINT &uiKLID, UINT &uiCtrlID)
 {
   // Provide list of supported keyboards in this DLL
-  // Called with uiKLID = 0 to intialise and return first entry
+  // Called with uiKLID = 0 to initialise and return first entry
   // Continues returning information. End of list signalled by returning
   // zero uiKLID.
   static int KLID_index = 0;

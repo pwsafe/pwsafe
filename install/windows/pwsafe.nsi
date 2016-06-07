@@ -29,7 +29,7 @@
 ; In general, use of this installer is not mandatory. pwsafe.exe, the
 ; executable for Password Safe, can be placed in any location and run
 ; without any registration of DLLs, creation of directories, or entry
-; of registry values.  When Password Safe intializes, any necessary
+; of registry values.  When Password Safe initializes, any necessary
 ; setup will be performed by pwsafe.exe.  So, what is the purpose of
 ; this installer?
 ;
