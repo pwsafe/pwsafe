@@ -114,7 +114,7 @@ databases, i.e., between a handheld pocketPC device and a PC. The UUID
 data type is 16 bytes long. Windows has functions for this, and for
 other platforms, it's possible to use code from the OSF.
 [2] The "Group" is meant to support displaying the entries in a
-tree-like manner. Groups can be heirarchical, with elements separated
+tree-like manner. Groups can be hierarchical, with elements separated
 by a period, supporting groups such as "Finance.credit cards.Visa",
 "Finance.credit cards.Mastercard", Finance.bank.web access", etc. Dots
 entered by the user are "escaped" by the application.

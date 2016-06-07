@@ -1889,7 +1889,7 @@ switcher
 
 New Features for 2.0pre1:
 =========================
-[RFE 782508, 829563, 815350, 555440] Tree, or heirarchical, view of
+[RFE 782508, 829563, 815350, 555440] Tree, or hierarchical, view of
 entries now supported. This allows the user to define categories,
 sub-categories, etc.
 
