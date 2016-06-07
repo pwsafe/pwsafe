@@ -143,7 +143,7 @@ decide to drop the UUID, or move it to the last field?).
 
 $Log$
 Revision 1.8  2005/07/20 21:15:01  ronys
-Updated to refelct 2.11 status + some midifications discussed on dev list.
+Updated to refelct 2.11 status + some modifications discussed on dev list.
 
 Revision 1.7  2005/04/07 19:44:37  ronys
 Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
