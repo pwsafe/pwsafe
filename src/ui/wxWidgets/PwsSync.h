@@ -19,7 +19,7 @@ class CReport;
 /*!
  * PwsSyncWizard class declaration
  * 
- * A simple wizard that imlements the "Synchronize" menu item as a series of wizard
+ * A simple wizard that implements the "Synchronize" menu item as a series of wizard
  * pages instead of a warning dialog followed by a "File Open" dialog followed by
  * SafeCombinationPrompt dialog (like in the MFC version)
  */
