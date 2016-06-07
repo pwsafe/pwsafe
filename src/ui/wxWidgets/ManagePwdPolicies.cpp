@@ -637,7 +637,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 {
   /*
    * User may have changed default policy, named policy, none or both.
-   * If anything has changed, we trat the change as atomic, creating a multicommand
+   * If anything has changed, we treat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */
   PWPolicy olddefpol(PWSprefs::GetInstance()->GetDefaultPolicy());
