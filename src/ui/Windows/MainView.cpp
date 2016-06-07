@@ -1742,7 +1742,7 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
       ChangeOkUpdate();
     }
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     // Note: not sure where, as user may have played with the columns!
     HDITEM hdi;
     hdi.mask = HDI_FORMAT;
