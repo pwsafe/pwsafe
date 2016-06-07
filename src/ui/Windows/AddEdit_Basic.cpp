@@ -203,7 +203,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  // Need to get change notifcations
+  // Need to get change notifications
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
 
   // Set plain text - not that it seems to do much!
