@@ -1333,7 +1333,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
     // In Edit, check user isn't changing entry to point to itself (circular/self reference)
     // Can't happen during Add as already checked entry does not exist so if accepted the
-    // password would be treated as an unusal "normal" password
+    // password would be treated as an unusual "normal" password
     gmb.AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
     return false;
   }
