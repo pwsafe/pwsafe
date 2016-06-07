@@ -56,7 +56,7 @@ if (-e $RC2FILE) {
     exit 1;
 }
 
-# Verify that the source and neader files are newer than the rc file
+# Verify that the source and header files are newer than the rc file
 # However, need to also verify that the source file contains good info
 # even if newer.  Size should be ~21KB not the default one of < 1KB.
 if (-e $CPPFILE) {
