@@ -1006,7 +1006,7 @@ void DboxMain::Delete(HTREEITEM ti,
       vdeps.push_back(Delete(pci));
   }
 
-  // Here if we have a bona fida group
+  // Here if we have a bona fide group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
   
   StringX sxPath = m_ctlItemTree.GetGroup(ti);
