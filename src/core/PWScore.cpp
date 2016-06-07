@@ -2895,7 +2895,7 @@ void PWScore::GUISetupDisplayInfo(CItemData &ci)
 void PWScore::GUIRefreshEntry(const CItemData &ci)
 {
   // This allows the core to provide feedback to the UI that a particular
-  // entry has been modifed
+  // entry has been modified
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
     m_pUIIF->GUIRefreshEntry(ci);
