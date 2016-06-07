@@ -139,7 +139,7 @@ public:
   // Call this the menubar has been fully created, to read user shortcuts from prefs & apply them
   void ReadApplyUserShortcuts();
 
-  // Save User shortucts to prefs file
+  // Save User shortcuts to prefs file
   void SaveUserShortcuts();
 
   // Remove or reset all user shortcuts in grid.  They don't take effect until
