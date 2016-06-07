@@ -58,7 +58,7 @@
 ; This is useful for installing to disk-on-key, and where company policy
 ; and/or user permissions disallow writing to the registry. Also, Green
 ; installation doesn't create an Uninstall.exe or entry in Add/Remove
-; Software in the control panel - to unistall, just delete the install
+; Software in the control panel - to uninstall, just delete the install
 ; directory...
 ;
 ; USE
