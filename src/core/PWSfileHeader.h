@@ -10,7 +10,7 @@
 #define __PWSFILEHEADER_H
 
 // PWSfileHeader.h
-// Represetation of what's written into a PWSfile's header (V3 and later)
+// Representation of what's written into a PWSfile's header (V3 and later)
 // Used to be a nested struct in PWSfile, but outgrew it...
 //-----------------------------------------------------------------------------
 
