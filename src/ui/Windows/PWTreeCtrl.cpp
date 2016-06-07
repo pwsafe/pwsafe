@@ -846,7 +846,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // Rename single empty group
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath, DBEmptyGroupsCommand::EG_RENAME));
       } else {
-        // Rename any empty groupss within this group
+        // Rename any empty groups within this group
         // Get current empty groups
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
           DBEmptyGroupsCommand::EG_RENAMEPATH));
