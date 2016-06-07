@@ -1456,7 +1456,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   The checkbox "Encode/replace newline characters by '\n'" MUST be selected bu the
   user during the export or this import will fail and may give unexpected results.
 
-  The line that starts with '[' and ends with ']' is equivalant to the Title field.
+  The line that starts with '[' and ends with ']' is equivalent to the Title field.
 
   The following entries are supported:
      "Group: ", "Group Tree: ", "User Name: ", "URL: ", "Password: ",
