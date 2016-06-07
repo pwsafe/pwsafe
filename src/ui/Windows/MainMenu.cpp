@@ -427,7 +427,7 @@ void DboxMain::UpdateAccelTable()
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = (int)std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
-  // But take off 1 if there is a shprtcut for AutoType
+  // But take off 1 if there is a shortcut for AutoType
   if (m_wpAutotypeKey != 0)
     numscs--;
 
