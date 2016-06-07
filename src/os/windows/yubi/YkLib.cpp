@@ -599,7 +599,7 @@ YKLIB_RC CYkLib::abortPendingRequest(void)
     STATUS status;
     YKLIB_RC rc;
 
-    // Check startus first
+    // Check status first
 
     if ((rc = readStatus(&status)) != YKLIB_NOT_READY) return rc;
 
