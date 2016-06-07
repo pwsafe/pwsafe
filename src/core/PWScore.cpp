@@ -2904,7 +2904,7 @@ void PWScore::GUIRefreshEntry(const CItemData &ci)
 void PWScore::UpdateWizard(const stringT &s)
 {
   // This allows the core to provide feedback to the Compare, Merge, Synchronize,
-  // Exort (Text/XML) UI wizard as to the entry currently being processed.
+  // Export (Text/XML) UI wizard as to the entry currently being processed.
   // The UI must be able to access the control in the wizard and the supplied
   // string gives the full 'group, title, user' of the entry.
   // It is expected that the UI will implement a pointer or other reference to

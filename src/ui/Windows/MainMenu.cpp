@@ -536,7 +536,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
     }
 
-    // Remove the corresponding Exort V3/V4
+    // Remove the corresponding Export V3/V4
     int isubmenu_pos;
     CMenu *pSubMenu;
     isubmenu_pos = app.FindMenuItem(pPopupMenu, ID_EXPORTMENU);
