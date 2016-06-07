@@ -38,7 +38,7 @@
 // it does not get destroyed as the current call stack unwinds. Similarly,
 // it cannot be destructed at will. It will autodestruct once it finishes
 // executing all its tasks. Therefore, the ctor and dtor are private, and
-// it must be constructed via a public static funciton.
+// it must be constructed via a public static function.
 //
 // Each task is a functor (regular function, lambda or a functor) that takes
 // and returns void. The error handler functor should take a std::exception
