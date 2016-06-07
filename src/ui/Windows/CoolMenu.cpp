@@ -701,7 +701,7 @@ const COLORREF CWHITE  = RGB(255, 255, 255);
 // draw transparently--i.e. leave the Destination alone.
 //
 // black ==> Pattern
-// white ==> Destintation (ie, transparent)
+// white ==> Destination (ie, transparent)
 //
 // 0xb8074a is the ROP code that does this. For more info, see Charles
 // Petzold, _Programming Windows_, 2nd Edition, p 622-624.
