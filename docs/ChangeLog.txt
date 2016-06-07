@@ -1683,7 +1683,7 @@ New Features for 2.08:
 ======================
 [1094005,1083950] Multiple instances of PasswordSafe can now open the same
 database - only the first instance will be able to modify the database,
-unles explicitly opened read-only.
+unless explicitly opened read-only.
 
 Bugs fixed in 2.07:
 ===================
