@@ -21,7 +21,7 @@ MOS := $(patsubst %,mos/%/LC_MESSAGES/pwsafe.mo,$(LANGS))
 help:
 	@echo "pot - update po template $(POT) from source code"
 	@echo "pos - update translated po files from pot file (to send to xlators)"
-	@echo "mos - regenerate compiled catralog files from translations"
+	@echo "mos - regenerate compiled catalog files from translations"
 
 
 pot: $(POT)
