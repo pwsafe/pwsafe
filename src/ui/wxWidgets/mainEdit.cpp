@@ -191,7 +191,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
       ti = m_tree->GetNextChild(tid, cookie);
     } // while children
     // Explicitly delete any empty groups coinciding with this wxTreeItem's group hierarchy
-    // Otherwise the user will see a these empty groups still hanging around inspite
+    // Otherwise the user will see a these empty groups still hanging around in spite
     // of just deleting the parent/ancestor
     StringX sxGroup = tostringx(m_tree->GetItemGroup(tid));
     if (m_core.IsEmptyGroup(sxGroup)) {
