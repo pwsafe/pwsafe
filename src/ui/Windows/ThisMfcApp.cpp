@@ -745,7 +745,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         switch ((*arg)[1]) {
         case L'E': case L'e':
           isEncrypt = true;
-        // deliberate fallthru
+        // deliberate fallthrough
         case L'D': case L'd':
           allDone = true; // no need for further processing for -e/-d
         {

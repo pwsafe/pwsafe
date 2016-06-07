@@ -2166,7 +2166,7 @@ void DboxMain::OnImportText()
         break;
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
-        // deliberate fallthru
+        // deliberate fallthrough
       default:
       {
         if (pcmd != NULL) {
@@ -2318,7 +2318,7 @@ void DboxMain::OnImportKeePassV1CSV()
         break;
       }
       case PWScore::SUCCESS:
-      default: // deliberate fallthru
+      default: // deliberate fallthrough
         if (pcmd != NULL)
           Execute(pcmd);
         RefreshViews();
@@ -2426,7 +2426,7 @@ void DboxMain::OnImportKeePassV1TXT()
         break;
       }
       case PWScore::SUCCESS:
-      default: // deliberate fallthru
+      default: // deliberate fallthrough
         if (pcmd != NULL)
           Execute(pcmd);
 

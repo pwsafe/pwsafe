@@ -281,7 +281,7 @@ ImportText(PWScore &core, const StringX &fname)
     break;
   case PWScore::SUCCESS:
   case PWScore::OK_WITH_ERRORS:
-    // deliberate fallthru
+    // deliberate fallthrough
   default:
     {
       rc = core.Execute(pcmd);
