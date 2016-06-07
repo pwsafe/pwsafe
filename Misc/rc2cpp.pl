@@ -43,7 +43,7 @@ $HFILE = "${PATHNAME}_st.h";
 
 # Get last modified dates to see if we need to recreate the files.
 # If we do re-create them when they haven't changed, then VS will
-# want to rebuild the core libray for no reason
+# want to rebuild the core library for no reason
 my $dateRC2;
 my $dateCPP;
 my $dateH;
