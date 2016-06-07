@@ -160,7 +160,7 @@
 #endif
 
 // Following from libtomcrypt, for twofish & SHA256
-/* Controls endianess and size of registers.  Leave uncommented to get platform neutral [slower] code
+/* Controls endianness and size of registers.  Leave uncommented to get platform neutral [slower] code
 *
 * Note: in order to use the optimized macros your platform must support unaligned 32 and 64 bit read/writes.
 * The x86 platforms allow this but some others [ARM for instance] do not.  On those platforms you **MUST**
@@ -192,7 +192,7 @@
 /* #define ENDIAN_64BITWORD */
 
 #if (defined(ENDIAN_BIG) || defined(ENDIAN_LITTLE)) && !(defined(ENDIAN_32BITWORD) || defined(ENDIAN_64BITWORD))
-#error You must specify a word size as well as endianess in mycrypt_cfg.h
+#error You must specify a word size as well as endianness in mycrypt_cfg.h
 #endif
 
 #if !(defined(ENDIAN_BIG) || defined(ENDIAN_LITTLE))
