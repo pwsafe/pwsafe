@@ -1166,7 +1166,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
   minfo.fMask = MIM_MENUDATA;
 
   // Note if point = (-1, -1) then invoked via keyboard.
-  // Need coordinates of current selected itme instead on mouse position when message sent
+  // Need coordinates of current selected item instead on mouse position when message sent
   bool bKeyboard = (screen.x == -1 && screen.y == -1);
 
   CPoint mp; // Screen coords (from "message point" or via Shift+F10 selected item
