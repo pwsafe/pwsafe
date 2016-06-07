@@ -903,7 +903,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #define HDR_MAP_ENTRY(e) {e, CItemData::e},
 #define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
     
-        // These must be defined in the same order as Fields enum above, or it will assesrt below
+        // These must be defined in the same order as Fields enum above, or it will assert below
       
         HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)               HDR_MAP_ENTRY(PASSWORD)  HDR_MAP_ENTRY(URL)
         HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)              HDR_MAP_ENTRY(PMTIME)    HDR_MAP_ENTRY(ATIME)
