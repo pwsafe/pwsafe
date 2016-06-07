@@ -449,7 +449,7 @@ BOOL CGeneralMsgBox::OnInitDialog()
   if (m_uiEscCmdId == (UINT)IDC_STATIC)
     ModifyStyle(WS_SYSMENU, NULL);
 
-  // Focusing and setting the defaul button
+  // Focusing and setting the default button
   if (m_uiDefCmdId != (UINT)IDC_STATIC) {
     GetDlgItem(m_uiDefCmdId)->SetFocus();
     SetDefID(m_uiDefCmdId);
