@@ -12,7 +12,7 @@
 * removed). See the .cpp file for more details.
 *
 * Also, overrides ReadList & WriteList to work with our preference mechanism
-* (that is, not neccesarily via the registry)
+* (that is, not necessarily via the registry)
 */
 
 #pragma once
