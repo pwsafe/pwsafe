@@ -2878,7 +2878,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
                                      bool bUpdateGUI)
 {
   // This allows the core to provide feedback to the UI that the GUI needs
-  // uupdating due to a field having its value changed
+  // updating due to a field having its value changed
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
