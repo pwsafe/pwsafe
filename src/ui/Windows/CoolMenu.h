@@ -17,7 +17,7 @@
 // Modified for PWS toolbar
 // Remove automatic accelerators
 // Updated for VS2005 + UNICODE
-// Change from MS classes to STL eqivalents where possible
+// Change from MS classes to STL equivalents where possible
 // Understand that RUE menu also uses MENUITEMINFO dwItemData field for icons
 
 #include "Subclass.h"
