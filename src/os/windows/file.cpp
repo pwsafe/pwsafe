@@ -298,7 +298,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
         locker = lpMsgBuf;
         LocalFree(lpMsgBuf);
       } else { // should never happen!
-        LoadAString(locker, IDSC_NOLOCKACCESS); // berrer than nothing
+        LoadAString(locker, IDSC_NOLOCKACCESS); // better than nothing
       }
     }
       break;
