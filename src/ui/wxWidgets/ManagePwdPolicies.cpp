@@ -636,7 +636,7 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
 void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 {
   /*
-   * User may have changed default poliicy, named policy, none or both.
+   * User may have changed default policy, named policy, none or both.
    * If anything has changed, we trat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */

@@ -666,7 +666,7 @@ void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLR
 
   int nItem = m_PolicyNames.GetNextSelectedItem(pos);
 
-  // Ignore is default policty (first entry)
+  // Ignore is default policy (first entry)
   if (nItem == 0)
     return;
 
