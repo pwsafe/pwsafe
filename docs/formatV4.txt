@@ -113,7 +113,7 @@ Implementation Note: K and L must NOT be related.
 2.3 endKB consists of two parts: The first is a 256 bit indicator of
 the end of the Key Blocks. This is the SHA-256 value of the Nonce
 described in 2.1. The idea is not to give a plaintext that's too easy
-to scan, but otherwise this value has no cryptgraphic utility. The
+to scan, but otherwise this value has no cryptographic utility. The
 second 256 bit value is HMAC(SHA256, L, KB1..KBn|SHA256(Nonce)). This
 serves as an integrity check on the Key Blocks.
 
