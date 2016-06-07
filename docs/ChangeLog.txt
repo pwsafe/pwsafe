@@ -1588,7 +1588,7 @@ None - This release only fixes the abovementioned bug.
 Bugs fixed in 2.12:
 ===================
 [1216983] Tree view is now the default view for new users.
-[1208955] Autotype now works with Terminal Serivices Windows and capital
+[1208955] Autotype now works with Terminal Services Windows and capital
 letters.
 [1003782,1030077] In tree view, the expanded trees are no longer collapsed
 after minimizing/restoring.
