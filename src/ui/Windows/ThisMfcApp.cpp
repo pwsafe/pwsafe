@@ -960,7 +960,7 @@ BOOL ThisMfcApp::InitInstance()
   if (cs_PWS_QUIET.GetEnvironmentVariable(L"PWS_QUIET") != FALSE)
     m_noSysEnvWarnings = true;
 
-  // Check if the user allows muliple instances.
+  // Check if the user allows multiple instances.
   // For this to apply, consistently, must use the same copy of PasswordSafe
   // configuration file.
   if (!prefs->GetPref(PWSprefs::MultipleInstances)) {
