@@ -397,7 +397,7 @@ public:
   // PasswordSafe specifics:
   int Load(const StringX &passwd);
 
-  // Hilites the item.  Used for search
+  // Highlights the item.  Used for search
   void SelectItem(const pws_os::CUUID& uuid);
 
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
