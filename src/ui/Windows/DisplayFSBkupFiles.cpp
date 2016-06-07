@@ -222,7 +222,7 @@ void CDisplayFSBkupFiles::OnDelete()
 {
   // Delete selected item - but allow undo via Recycle Bin
   // NOTE: There are no Recycle Bins on network drives, or
-  // (most) removeable drives (floppy disks, USB pen drives, CD/DVD - no,
+  // (most) removable drives (floppy disks, USB pen drives, CD/DVD - no,
   // USB hard disks - yes).
   // Must not delete first entry (current database)
   if (m_iSelectedItem < 1)
