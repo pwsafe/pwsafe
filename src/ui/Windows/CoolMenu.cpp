@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 // constants used for drawing
 const int CXGAP = 1;           // num pixels between button and text
-const int CXTEXTMARGIN = 2;    // num pixels after hilite to start text
+const int CXTEXTMARGIN = 2;    // num pixels after highlight to start text
 const int CXBUTTONMARGIN = 2;  // num pixels wider button is than bitmap
 const int CYBUTTONMARGIN = 2;  // ditto for height
 
@@ -267,7 +267,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     // because windows sets it up before sending WM_DRAWITEM
     //
     if (bDisabled && (!bSelected || colorText == colorBG)) {
-      // disabled: draw hilite text shifted southeast 1 pixel for embossed
+      // disabled: draw highlight text shifted southeast 1 pixel for embossed
       // look. Don't do it if item is selected, tho--unless text color same
       // as menu highlight color. Got it?
       //
@@ -352,7 +352,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 
   ::SelectObject(memdc, hOldBM); // restore
 
-  // draw pushed-in hilight.
+  // draw pushed-in highlight.
   if (rc.Width() > cx)        // if room:
     rcDest.InflateRect(1, 1); // inflate checkmark by one pixel all around
   dc.DrawEdge(&rcDest, BDR_SUNKENOUTER, BF_RECT);
@@ -558,7 +558,7 @@ LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMe
   //
   //   * if none: beep
   //   * if one:  execute it
-  //   * if more than one: hilite next
+  //   * if more than one: highlight next
   //
   size_t nFound = arItemsMatched.GetSize();
   if (nFound == 0)
@@ -741,7 +741,7 @@ void CCoolMenuManager::DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p)
   // This seems to be required. Why, I don't know. ???
   COLORREF colorOldBG = dc.SetBkColor(CWHITE);
 
-  // Draw using hilite offset by (1,1), then shadow
+  // Draw using highlight offset by (1,1), then shadow
   CBrush brShadow(GetSysColor(COLOR_3DSHADOW));
   CBrush brHilite(GetSysColor(COLOR_3DHIGHLIGHT));
   CBrush* pOldBrush = dc.SelectObject(&brHilite);

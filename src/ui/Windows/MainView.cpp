@@ -978,7 +978,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     HTREEITEM hti = m_ctlItemTree.GetSelectedItem();
     // NULL means nothing was selected.
     if (hti != NULL) {
-      // Time to remove the old "fake selection" (a.k.a. drop-hilite)
+      // Time to remove the old "fake selection" (a.k.a. drop-highlight)
       // Make sure to undo "MakeVisible" on the previous selection.
       m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
     }
