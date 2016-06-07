@@ -770,7 +770,7 @@ YKLIB_RC CYkLib::setKey160(CONFIG *cfg, const unsigned char *key)
 **                                                                      **
 **  Where:                                                              **
 **  "cfg" is pointer to destination configuration structure				**
-**  "seed" is moving factor. Must be even divisable by 16               **
+**  "seed" is moving factor. Must be even divisible by 16               **
 **                                                                      **
 **  Returns: Status return code                                         **
 **                                                                      **
