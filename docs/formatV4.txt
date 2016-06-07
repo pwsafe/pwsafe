@@ -198,7 +198,7 @@ representation.
 3.1.2 Text
  Text is represented in UTF-8 encoding (as defined in [RFC3629]), with
  no byte order marker (BOM) and no end-of-string mark (e.g., null
- byte). Note that the latter isn't neccessary since the length of the
+ byte). Note that the latter isn't necessary since the length of the
  field is provided explicitly. ALL fields described as "text" are
  UTF-8 encoded unless explicitly stated otherwise.
 

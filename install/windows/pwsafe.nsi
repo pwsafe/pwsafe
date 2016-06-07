@@ -670,7 +670,7 @@ FunctionEnd
 
 Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
-  ; english is in "pws-install.ini" by default, so no writing necesarry
+  ; english is in "pws-install.ini" by default, so no writing necessary
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Settings" "Title" $(RESERVE_TITLE)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 1" "Text" $(RESERVE_FIELD1)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(RESERVE_FIELD2)
