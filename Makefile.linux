@@ -119,7 +119,7 @@ upload-github:
 	@echo $@ TBD
 
 # Uploading source is a separate target as we only want to do this once,
-# as oppoded to uploading the compiled package, which we need to do per distro.
+# as opposed to uploading the compiled package, which we need to do per distro.
 upload-src-sf:
 	$(SF_UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
