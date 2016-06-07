@@ -1010,7 +1010,7 @@ private:
   CompareData m_list_Conflicts;
   CompareData m_list_Identical;
 
-  // Flag to tell user there are some expird entries
+  // Flag to tell user there are some expired entries
   bool m_bTellUserExpired;
 
   // Prevent rename of entries in Tree mode by clicking on entry
