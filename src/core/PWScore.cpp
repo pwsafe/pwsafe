@@ -3199,7 +3199,7 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
      (iter->second.GetGroup()[len2] != wcDot)) {
       // Need to check that next symbol is not a dot
       // to ensure not affecting another group
-      // (group name could contain traling dots, for example abc..def.g)
+      // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len2 (old_name + dot + subgroup_name)
       StringX sxSubGroups = iter->second.GetGroup().substr(len2);
       iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
