@@ -1596,7 +1596,7 @@ after minimizing/restoring.
 [1004026] No more multiple highlights after doing a "Find Next"
 [1214940] Cancel on password entry with system tray no longer clears
 entries, allowing potential overwrite of database.
-[1217271,1258982] Specifiying -r with a filename in command line now works
+[1217271,1258982] Specifying -r with a filename in command line now works
 correctly.
 
 New Features for 2.12:
