@@ -77,7 +77,7 @@ protected:
   CImageList     m_ImageList;   // image list for all buttons
   CImageList     m_DisabledImageList; // disabled image list for all buttons
   MenuVector     m_menuList;    // list of HMENU's initialized
-  PMDVector      m_pmdList;     // Vector of ptrs to CMenuItemData
+  PMDVector      m_pmdList;     // Vector of pointers to CMenuItemData
   CSize          m_szBitmap;    // size of button bitmap
   CSize          m_szButton;    // size of button (including shadow)
   CFont          m_fontMenu;    // menu font
