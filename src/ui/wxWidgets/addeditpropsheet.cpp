@@ -1218,7 +1218,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       } else {
         m_core.GetPolicyFromName(oldPolName, oldPWP);
       }
-      // now get dbox's effecive policy:
+      // now get dbox's effective policy:
       pwp = GetSelectedPWPolicy();
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
