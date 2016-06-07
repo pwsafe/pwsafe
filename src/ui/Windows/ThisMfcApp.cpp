@@ -156,7 +156,7 @@ ThisMfcApp::~ThisMfcApp()
   if (m_bACCEL_Table_Created && app.m_ghAccelTable != NULL)
     DestroyAcceleratorTable(app.m_ghAccelTable);
 
-  // Alhough the system will do this automatically - I like to be clean!
+  // Although the system will do this automatically - I like to be clean!
   CloseHandle(m_hMutexOneInstance);
 
   PWSprefs::DeleteInstance();
