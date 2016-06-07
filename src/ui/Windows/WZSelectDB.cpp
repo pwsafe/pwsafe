@@ -354,7 +354,7 @@ BOOL CWZSelectDB::OnInitDialog()
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool bYubiInserted = IsYubiInserted();
-  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // MFC has ancient bug: can't render disabled version of bitmap,
   // so instead of showing drek, we roll our own, and leave enabled.
   ybn->EnableWindow(TRUE);
 
