@@ -1036,7 +1036,7 @@ differences during compare.
 in a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
-[1841221] During drag & drop, a 1.5 scond delay was introduced before
+[1841221] During drag & drop, a 1.5 second delay was introduced before
 expanding a group that the cursor "hovers" upon.
 [] New disabled buttons for New Toolbar.
 
