@@ -364,7 +364,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
-  // Find reseource-only DLL if requested
+  // Find resource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
                       _T("pwsafe%s%s.dll") : _T("pwsafe%s_%s.dll");
   cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
