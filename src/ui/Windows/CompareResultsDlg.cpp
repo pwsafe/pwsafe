@@ -35,7 +35,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
-// These columns always shown and in this order (do not chnage)
+// These columns always shown and in this order (do not change)
 const UINT CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
     IDS_ORIGINALDB, IDS_COMPARISONDB, IDS_GROUP, IDS_TITLE, IDS_USERNAME
 };
