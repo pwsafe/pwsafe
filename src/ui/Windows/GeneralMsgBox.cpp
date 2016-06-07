@@ -609,7 +609,7 @@ void CGeneralMsgBox::CreateBtns()
   CFont *pWndFont = GetFont();
   CFont *poldFont = dc.SelectObject(pWndFont);
 
-  CRect rcDummy; // dimesion doesn't matter here
+  CRect rcDummy; // dimension doesn't matter here
 
   INT_PTR cBtns = m_aBtns.GetSize();
 
@@ -642,7 +642,7 @@ void CGeneralMsgBox::CreateBtns()
 void CGeneralMsgBox::CreateIcon()
 {
   if (m_hIcon != NULL) {
-    CRect rcDummy; // dimesion doesn't matter here
+    CRect rcDummy; // dimension doesn't matter here
 
     // Creating the icon control
     m_stIconCtrl.Create(NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 
