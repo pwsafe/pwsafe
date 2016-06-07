@@ -354,7 +354,7 @@ bool CYkLib::getPortName(unsigned short portIndex, wchar_t *dst, size_t dstSize)
 **  YKLIB_RC openKey(wchar_ t *portName)                                **
 **                                                                      **
 **  Where:                                                              **
-**  "portName" is name of specfic port. NULL for all ports              **
+**  "portName" is name of specific port. NULL for all ports              **
 **                                                                      **
 **  Returns: Status return code                                         **
 **                                                                      **

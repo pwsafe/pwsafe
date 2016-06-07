@@ -292,7 +292,7 @@ line.
 [11] Database Description. A purely informative description concerning
 the purpose or other practical use of the database.
 
-[12] Specfic filters for this database.  This is the text equivalent to
+[12] Specific filters for this database.  This is the text equivalent to
 the XML export of the filters as defined by the filter schema. The text 
 'image' has no 'print formatting' e.g. tabs and carriage return/line feeds,
 since XML processing does not require this.

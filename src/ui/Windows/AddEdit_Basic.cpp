@@ -836,7 +836,7 @@ void CAddEdit_Basic::OnGeneratePassword()
   } else {
     PWPolicy policy(M_pwp());
     if (M_symbols().IsEmpty()) {
-      // No specifc entry symbols - use default
+      // No specific entry symbols - use default
       policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
     } else {
       // This entry has its own list of symbols
