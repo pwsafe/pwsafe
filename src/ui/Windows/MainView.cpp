@@ -2441,7 +2441,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
     m_vactionverboffsets.clear();
   } else {
     // Either do it because they pressed the right menu/shortcut
-    // or they had specified Do Auotype flag [autotype]
+    // or they had specified Do Autotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
     m_sxAutoType = m_bDoAutoType ? sxAutotype : L"";
     if (m_bDoAutoType)
