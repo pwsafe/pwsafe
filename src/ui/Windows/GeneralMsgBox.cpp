@@ -15,7 +15,7 @@
 * This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
 * significantly enhanced to support text with HTML formatting and links
 * instead of a RTF string by using a CRichEditCtrlExtn control.
-* See www.codeproject.com for the orgininal code
+* See www.codeproject.com for the original code
 */
 
 #include "stdafx.h"
