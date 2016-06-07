@@ -23,7 +23,7 @@
 //
 // * Override CSubclassWnd::WindowProc to handle messages. Make sure you call
 //   CSubclassWnd::WindowProc if you don't handle the message, or your
-//   window will never get messages. If you write seperate message handlers,
+//   window will never get messages. If you write separate message handlers,
 //   you can call Default() to pass the message to the window.
 //
 // * Instantiate your derived class somewhere and call HookWindow(pWnd)
