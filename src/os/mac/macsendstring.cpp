@@ -42,7 +42,7 @@ void SendString(CFStringRef str, unsigned delayMS)
     if (verticalTab == c)
       continue;
     
-    //see if we need to specify the virtual ekycode for this char
+    //see if we need to specify the virtual keycode for this char
     CGKeyCode vKey = 0; //0 = kVK_ANSI_A, but I don't know of a more appropriate default value
     for (size_t j = 0; j < NumberOf(specialKeyCodes); ++j) {
       if ( CFStringGetCharacterAtIndex(specialChars, j) == c) {
