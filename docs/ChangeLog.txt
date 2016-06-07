@@ -215,7 +215,7 @@ box opened.
 [3395549] PasswordSafe now displays forms correctly on Netbooks.
 [3382422] Toolbar now updated to reflect R/W or R-O mode when user
 dynamically changes mode. 
-[3380714] User can now save database after manually taking a bakup.
+[3380714] User can now save database after manually taking a backup.
 [3380424] System Menu 'X' now closes the Edit/View PropertyPages when
 the database is in R-O mode or the entry is protected.
 [] Filter image in Status bar is no longer replaced by 'Filter1' after
