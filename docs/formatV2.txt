@@ -33,7 +33,7 @@ shortcomings:
    passphrase. 
 
 2. Following RND|H(RND) will be the SALT and IP as in the 1.x
-   format. From here onwards, all data is encrpyted in 8 byte blocks,
+   format. From here onwards, all data is encrypted in 8 byte blocks,
    with the first block holding the length (in bytes) of the encrypted
    field that follows and the type (see section 6). The length is
    stored as a 32 bit unsigned value in little-endian byte order (to
