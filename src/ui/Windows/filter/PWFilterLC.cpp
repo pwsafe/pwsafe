@@ -1207,7 +1207,7 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
 bool CPWFilterLC::GetCriterion()
 {
   // User has already enabled the filter and selected the field type
-  // Now get the criteron
+  // Now get the criterion
   ASSERT(m_iItem >= 0);
 
   // Get offset into vector of controls
