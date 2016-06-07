@@ -626,7 +626,7 @@ CRecentDBList &PwsafeApp::recentDatabases()
 {
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
-  // sure that prefs' is set correcly (user, machine, etc.)
+  // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == NULL)
     m_recentDatabases = new CRecentDBList;
   return *m_recentDatabases;
