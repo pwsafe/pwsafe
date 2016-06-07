@@ -798,7 +798,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
 
-    // Don't bother getting the attachment if not searchng its fields
+    // Don't bother getting the attachment if not searching its fields
     if (bsAttFields.count() != 0) {
       if (curitem.HasAttRef()) {
         pws_os::CUUID attuuid = curitem.GetAttUUID();
