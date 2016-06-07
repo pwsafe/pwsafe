@@ -1733,7 +1733,7 @@ LRESULT CPWTreeCtrl::OnMouseLeave(WPARAM, LPARAM)
 void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
 {
   // We need to update the parent's state vector of expanded nodes
-  // so that it will be persistent across miminize, lock, save, etc.
+  // so that it will be persistent across minimize, lock, save, etc.
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
