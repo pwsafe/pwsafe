@@ -60,7 +60,7 @@ Bugs fixed in 3.38.1
 [1312] Now able to duplicate an alias entry without errors.
 [1306] Display of an empty group is now correctly displayed when an entry
 is moved to it via editing.
-[1295] Create Shortcut group dropdown box width no longer trucates long
+[1295] Create Shortcut group dropdown box width no longer truncates long
 group paths.
 [1057] Aliases and shortcuts imported via XML now correctly point to their 
 respective base entries.
@@ -120,7 +120,7 @@ fixed.
 Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
-[1258] Group dropdown box width no longer trucates long group paths.
+[1258] Group dropdown box width no longer truncates long group paths.
 [1254] Toolbar customisation now has correctly aligned text/images.
 [1244] Changes to symbol set in default password policy are respected
 when "Use easy-to-read characters" is set.
