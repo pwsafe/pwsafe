@@ -35,7 +35,7 @@ public:
   // Returns current position
   DWORD GetPosition();
 
-  // Allings to DWORD (pads with 0s)
+  // Aligns to DWORD (pads with 0s)
   DWORD PadToDWORD();
 
   // Pads with zeroes 
