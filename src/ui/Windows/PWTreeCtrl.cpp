@@ -2047,7 +2047,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
 
 CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
 {
-  // return all path components beween hItem and root.
+  // return all path components between hItem and root.
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
   CSecString retval;
   HTREEITEM p = GetParentItem(hItem);
