@@ -151,7 +151,7 @@ void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 * an existing lock.
 * This fails to check liveness of the locker process, specifically,
 * if a user just turns of her PC, the lock file will remain.
-* So, I'm keeping the Posix code under idef POSIX_FILE_LOCK,
+* So, I'm keeping the Posix code under ifdef POSIX_FILE_LOCK,
 * and re-implementing using the Win32 API, whose semantics
 * supposedly protect against this scenario.
 * Thanks to Frank (xformer) for discussion on the subject.
