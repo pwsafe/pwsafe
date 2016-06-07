@@ -2147,7 +2147,7 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 
 void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-  // Allow draging without the caption bar!
+  // Allow dragging without the caption bar!
   CPWDialog::OnLButtonDown(nFlags, point);
 
   PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x,point.y));
