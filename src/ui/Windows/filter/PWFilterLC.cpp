@@ -1555,7 +1555,7 @@ bool CPWFilterLC::GetCriterion()
 
 void CPWFilterLC::SetUpComboBoxData()
 {
-  // Set up the Field selction Combobox
+  // Set up the Field selection Combobox
 
   // NOTE: The ComboBox strings are NOT sorted by design !
   if (m_vLcbx_data.empty()) {
