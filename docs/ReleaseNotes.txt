@@ -153,7 +153,7 @@ checking for consistency.
 [1231] Relax restriction on easy-vision password policy + more
 consistent UI.
 [1229] Hex digits checkbox can be selected in Generate Passwords.
-[1228] Fixed incompatability with Password Policies generated with
+[1228] Fixed incompatibility with Password Policies generated with
 previous versions.
 [1226] Fixed regression in Find toolbar functionality.
 
