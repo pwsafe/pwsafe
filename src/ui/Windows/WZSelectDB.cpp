@@ -264,7 +264,7 @@ BOOL CWZSelectDB::OnInitDialog()
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
     {
-      // Disable & hide - Advnaced checkbox & specifying delimiter
+      // Disable & hide - Advanced checkbox & specifying delimiter
       GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
 
