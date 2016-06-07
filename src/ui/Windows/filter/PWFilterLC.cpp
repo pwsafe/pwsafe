@@ -742,7 +742,7 @@ bool CPWFilterLC::SetField(const int iItem)
   bool retval(false);
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
@@ -1047,7 +1047,7 @@ void CPWFilterLC::CancelField(const int iItem)
   // User has selected field
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
