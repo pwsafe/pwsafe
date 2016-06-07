@@ -247,7 +247,7 @@ introduced in format version 0x0302.
 
 [12] Specfic filters for this database.  This is the text equivalent to
 the XML export of the filters as defined by the filter schema. The text 
-'image' has no 'print formatting' e.g. tabs and carraige return/line feeds,
+'image' has no 'print formatting' e.g. tabs and carriage return/line feeds,
 since XML processing does not require this. This field was introduced in 
 format version 0x0305.
 
