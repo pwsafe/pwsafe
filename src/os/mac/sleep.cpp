@@ -28,7 +28,7 @@ void pws_os::sleep_ms(unsigned int milliseconds)
     int rval = nanosleep (&tv, &tv);
     if (rval == 0) /* Completed the entire sleep time; all done.  */
       break;
-    else if (errno == EINTR) /* Interruped by a signal.  Try again.  */
+    else if (errno == EINTR) /* Interrupted by a signal.  Try again.  */
       continue;
     else /* Some other error; bail out.  */
       break;
