@@ -133,7 +133,7 @@ representation.
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
  Note that future versions of this format may allow time to be
- specifed in 64 bits as well.
+ specified in 64 bits as well.
 
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
