@@ -63,7 +63,7 @@ PWSclipboard::PWSclipboard(): m_set(false)
 /**
  * Put text data to clipboard
  * @param[in] data data to store in clipboard
- * @param isSensitive if data sensitive, we remeber its hash and will clear on ClearData() call
+ * @param isSensitive if data sensitive, we remember its hash and will clear on ClearData() call
  * @return \c true, if we could open the clipboard and put the data
 */
 bool PWSclipboard::SetData(const StringX &data)
