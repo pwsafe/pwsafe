@@ -3878,7 +3878,7 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
       }
     } 
     else if ((iter->first.length() > len+1) && (iter->first[len+1] != GROUP_SEP)) {
-      // Need to add group seperator and check that next symbol is not a dot
+      // Need to add group separator and check that next symbol is not a dot
       // to ensure not affecting another group
       // (group name could contain traling dots, for example abc..def.g)
       // subgroup name will have len > len+1 (old_name + dot + subgroup_name)
