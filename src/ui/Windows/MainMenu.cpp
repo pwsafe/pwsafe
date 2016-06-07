@@ -1169,7 +1169,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
   // Need coordinates of current selected itme instead on mouse position when message sent
   bool bKeyboard = (screen.x == -1 && screen.y == -1);
 
-  CPoint mp; // Screen co-ords (from "message point" or via Shift+F10 selected item
+  CPoint mp; // Screen coords (from "message point" or via Shift+F10 selected item
   CRect rect, appl_rect;
 
   // Get client window position
@@ -1194,7 +1194,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     }
     mp.x = (r.left + r.right) / 2;
     mp.y = (r.top + r.bottom) / 2;
-    screen = mp;  // In screen co-ords
+    screen = mp;  // In screen coords
   } else {
     mp = ::GetMessagePos();
   }
