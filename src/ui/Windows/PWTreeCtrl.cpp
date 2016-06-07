@@ -642,7 +642,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
   // Only items visible will be changed - e.g. if password is not shown and the user
-  // puts a new password in the new dispay text, it will be ignored.
+  // puts a new password in the new display text, it will be ignored.
 
   /* Allowed formats:
   1.   title
