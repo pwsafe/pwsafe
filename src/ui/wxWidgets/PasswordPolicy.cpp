@@ -346,7 +346,7 @@ bool CPasswordPolicy::Verify()
   if (m_pwUseHex &&
      (m_pwUseLowercase || m_pwUseUppercase || m_pwUseDigits ||
       m_pwUseSymbols || m_pwUseEasyVision || m_pwMakePronounceable)) {
-    mess = _("Hexadecimal is mutually exculsive to all other options.");
+    mess = _("Hexadecimal is mutually exclusive to all other options.");
     retval = false;
   } else if (m_pwUseHex) {
     if (m_pwdefaultlength % 2 != 0) {
