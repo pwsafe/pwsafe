@@ -61,7 +61,7 @@ public:
 
   // Following unique to V4
 
-  // Following needs to be public so that we can mainpulate it
+  // Following needs to be public so that we can manipulate it
   // prior to writing the database.
   class CKeyBlocks {
   public:
