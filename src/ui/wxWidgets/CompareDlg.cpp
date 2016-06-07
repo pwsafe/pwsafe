@@ -412,7 +412,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
     wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
-    //Our alogo requires the indexes to be in order, and sometimes these are actually unsorted
+    //Our algorithm requires the indexes to be in order, and sometimes these are actually unsorted
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
       wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, wxT("Selection indexes not in expected order"));
