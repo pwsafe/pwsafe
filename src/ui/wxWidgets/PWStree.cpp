@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "PWStree.h"
-#include "passwordsafeframe.h" // for DispatchDblClickAction()
+#include "passwordsafeframe.h"
 #include "core/PWSprefs.h"
 #include "../../core/Command.h"
 
@@ -767,12 +767,9 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
  * wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& event )
+void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
 {
-////@begin wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL in PWSTreeCtrl.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL in PWSTreeCtrl. 
+  CItemData *pci = GetItem(evt.GetItem());
+
+  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
-
-

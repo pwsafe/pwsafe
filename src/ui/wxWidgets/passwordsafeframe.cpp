@@ -3260,7 +3260,7 @@ void PasswordSafeFrame::UpdateStatusBar()
 
   if (!m_core.GetCurFile().empty()) {
     wxString text;
-    m_statusBar->SetStatusText(text, CPWStatusBar::SB_DBLCLICK);
+    // SB_DBLCLICK pane is set per selected entry, not here
 
     //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
 
@@ -3276,13 +3276,25 @@ void PasswordSafeFrame::UpdateStatusBar()
     text = wxEmptyString;
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
   } else { // no open file
-    m_statusBar->SetStatusText(wxT("https://pwsafe.org/"), CPWStatusBar::SB_DBLCLICK);
+    m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), CPWStatusBar::SB_DBLCLICK);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_CLIPBOARDACTION);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_MODIFIED);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_NUM_ENT);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_FILTER);
   }
+}
+
+void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
+{
+  int16 dca = -1;
+
+  if (pci != NULL) {
+    pci->GetDCA(dca);
+    if (dca == -1)
+      dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+  }
+  m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(dca), CPWStatusBar::SB_DBLCLICK);
 }
 
 //-----------------------------------------------------------------

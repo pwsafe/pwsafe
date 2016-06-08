@@ -478,11 +478,10 @@ void PWSGrid::Clear()
  * wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnSelectCell( wxGridEvent& event )
+void PWSGrid::OnSelectCell( wxGridEvent& evt )
 {
-////@begin wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX in PWSGrid.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX in PWSGrid. 
+  CItemData *pci = GetItem(evt.GetRow());
+
+  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
 

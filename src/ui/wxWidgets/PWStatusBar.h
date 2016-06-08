@@ -27,7 +27,7 @@ class CPWStatusBar : public wxStatusBar
 
   void Setup()
   {
-    const int widths[SB_LAST] = {-5, -3, -1, -3, -2, -1};
+    const int widths[SB_LAST] = {-6, -3, -1, -3, -2, -1};
     SetFieldsCount(SB_LAST, widths);
   }
 };

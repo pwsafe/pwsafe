@@ -416,7 +416,8 @@ public:
   void RefreshViews();
   void FlattenTree(OrderedItemList& olist);
 
-  void DispatchDblClickAction(CItemData &item); //called by grid/tree
+  void DispatchDblClickAction(CItemData &item); // called by grid/tree
+  void UpdateSelChanged(const CItemData *pci); // ditto
 
   /// Centralized handling of right click in the grid or the tree view
   void OnContextMenu(const CItemData* item);

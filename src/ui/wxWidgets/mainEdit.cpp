@@ -89,6 +89,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
       //The Item is updated in DB by AddEditPropSheet
       UpdateAccessTime(origItem);
       SetChanged(Data);
+      UpdateSelChanged(&origItem);
     }
     else {
       wxFAIL_MSG(wxT("Item being edited not found in currently loaded DB"));
