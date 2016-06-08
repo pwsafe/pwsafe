@@ -38,12 +38,14 @@ static const char *status_text(int status);
 
 // These are the new operations. Each returns the code to exit with
 static int CreateNewSafe(const StringX& filename);
-static int SearchForEntries(PWScore &core, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch);
+static int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
+                            const wstring &restrictToEntries, const wstring &fieldsToSearch);
 
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
 
-int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch);
+int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
+                      const wstring &restrictToEntries, const wstring &fieldsToSearch);
 
 //-----------------------------------------------------------------
 
@@ -66,7 +68,7 @@ std::ostream& operator<<(std::ostream& os, const wstring& str)
 }
 
 struct UserArgs {
-  UserArgs() : Operation(Unset), Format(Unknown) {}
+  UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false} {}
   StringX safe, fname;
   enum {Unset, Import, Export, CreateNew, Search} Operation;
   enum {Unknown, XML, Text} Format;
@@ -75,6 +77,7 @@ struct UserArgs {
   wstring searchedText;
   wstring searchedFields;
   wstring searchedSubset;
+  bool ignoreCase;
 };
 
 void Utf82StringX(const char* filename, StringX& sname)
@@ -113,6 +116,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"search", required_argument, 0, 's'},
       {"subset", required_argument, 0, 'u'},
       {"fields", required_argument, 0, 'f'},
+      {"ignore-case", optional_argument, 0, 'c'},
       {0, 0, 0, 0}
     };
 
@@ -175,6 +179,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.searchedFields = Utf82wstring(optarg);
         break;
 
+    case 'c':
+        if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
+          ua.ignoreCase = true;
+        break;
+
     default:
       cerr << "Unknown option: " << char(c) << endl;
       return false;
@@ -197,7 +206,7 @@ int main(int argc, char *argv[])
         return CreateNewSafe(ua.safe);
     }
     else if (ua.Operation == UserArgs::Search) {
-      return OpenCoreAndSearch(ua.safe, ua.searchedText, ua.searchedSubset, ua.searchedFields);
+      return OpenCoreAndSearch(ua.safe, ua.searchedText, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
     }
 
   PWScore core;
@@ -660,16 +669,18 @@ bool ItemMatches(const CItemData &item, const StringX &searchText)
 
 }
 
-int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch)
+int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
+                      const wstring &restrictToEntries, const wstring &fieldsToSearch)
 {
   PWScore core;
   int status = OpenCore(core, safe);
   if (!status)
     return status;
-  return SearchForEntries(core, searchText, restrictToEntries, fieldsToSearch);
+  return SearchForEntries(core, searchText, ignoreCase, restrictToEntries, fieldsToSearch);
 }
 
-int SearchForEntries(PWScore &core, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch)
+int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
+                     const wstring &restrictToEntries, const wstring &fieldsToSearch)
 {
   assert( !searchText.empty() );
 
@@ -686,7 +697,7 @@ int SearchForEntries(PWScore &core, const wstring &searchText, const wstring &re
     return PWScore::FAILURE;
   }
 
-  ::FindMatches(std2stringx(searchText), false, fields, true, stringT{}, CItemData::EMAIL, PWSMatch::MR_EQUALS, false,
+  ::FindMatches(std2stringx(searchText), ignoreCase, fields, true, stringT{}, CItemData::EMAIL, PWSMatch::MR_EQUALS, false,
               core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [](ItemListIter itr){
                 cout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
   });
