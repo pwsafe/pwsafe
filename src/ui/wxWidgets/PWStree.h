@@ -76,6 +76,9 @@ public:
 
 ////@begin PWSTreeCtrl event handler declarations
 
+  /// wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
+  void OnTreectrlSelChanged( wxTreeEvent& event );
+
   /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
   void OnTreectrlItemActivated( wxTreeEvent& evt);
 

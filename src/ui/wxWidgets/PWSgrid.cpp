@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
 ////@begin PWSGrid event table entries
   EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
+  EVT_GRID_SELECT_CELL( PWSGrid::OnSelectCell )
   EVT_CHAR( PWSGrid::OnChar )
   EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSGrid::OnDBGUIPrefsChange)
@@ -471,3 +472,17 @@ void PWSGrid::Clear()
   }
   DeleteAllItems();
 }
+
+
+/*!
+ * wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnSelectCell( wxGridEvent& event )
+{
+////@begin wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX in PWSGrid.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX in PWSGrid. 
+}
+

@@ -89,6 +89,7 @@ enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
 BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 
 ////@begin PWSTreeCtrl event table entries
+  EVT_TREE_SEL_CHANGED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlSelChanged )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
   EVT_CHAR( PWSTreeCtrl::OnChar )
@@ -760,4 +761,18 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
   if (newItem.IsOk())
     wxTreeCtrl::SelectItem(newItem);
 }
+
+
+/*!
+ * wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& event )
+{
+////@begin wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL in PWSTreeCtrl.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL in PWSTreeCtrl. 
+}
+
 

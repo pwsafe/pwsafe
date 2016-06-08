@@ -101,6 +101,9 @@ public:
   /// wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
   void OnLeftDClick( wxGridEvent& evt);
 
+  /// wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
+  void OnSelectCell( wxGridEvent& event );
+
   /// wxEVT_CHAR event handler for ID_LISTBOX
   void OnChar( wxKeyEvent& evt);
 
