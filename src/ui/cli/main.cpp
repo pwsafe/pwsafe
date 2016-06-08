@@ -26,6 +26,8 @@ using namespace std;
 static void echoOff();
 static void echoOn();
 
+int OpenCore(PWScore& core, const StringX& safe);
+
 static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
 static const char *status_text(int status);
@@ -148,47 +150,16 @@ int main(int argc, char *argv[])
     if (ua.Operation == UserArgs::CreateNew) {
         return CreateNewSafe(ua.safe);
     }
+    else if (ua.Operation == UserArgs::Search) {
+      return OpenCoreAndSearch(ua.safe, ua.searchedText, ua.searchedSubset, ua.searchedFields);
+    }
 
   PWScore core;
-  if (!pws_os::FileExists(ua.safe.c_str())) {
-    cerr << argv[1] << " - file not found" << endl;
-    return 2;
-  }
+  int ret = OpenCore(core, ua.safe);
+  if (ret != PWScore::SUCCESS)
+    return ret;
 
-  StringX pk = GetPassphrase(L"Enter Password: ");
-
-  int status;
-  status = core.CheckPasskey(ua.safe, pk);
-  if (status != PWScore::SUCCESS) {
-    cout << "CheckPasskey returned: " << status_text(status) << endl;
-    goto done;
-  }
-  {
-    CUTF8Conv conv;
-    const char *user = getlogin() != NULL ? getlogin() : "unknown";
-    StringX locker;
-    if (!conv.FromUTF8((const unsigned char *)user, strlen(user), locker)) {
-      cerr << "Could not convert user " << user << " to StringX" << endl;
-      return 2;
-    }
-    stringT lk(locker.c_str());
-    if (!core.LockFile(ua.safe.c_str(), lk)) {
-      wcout << L"Couldn't lock file " << ua.safe
-            << L": locked by " << locker << endl;
-      status = -1;
-      goto done;
-    }
-  }
-  // Since we may be writing the same file we're reading,
-  // it behooves us to set the Current File and use its' related
-  // functions
-  core.SetCurFile(ua.safe);
-  status = core.ReadCurFile(pk);
-  if (status != PWScore::SUCCESS) {
-    cout << "ReadFile returned: " << status_text(status) << endl;
-    goto done;
-  }
-
+  int status = PWScore::SUCCESS;
   if (ua.Operation == UserArgs::Export) {
     CItemData::FieldBits all(~0L);
     int N;
@@ -506,3 +477,46 @@ StringX GetPassphrase(const wstring& prompt)
     echoOn();
     return StringX(wpk.c_str());
 }
+
+int OpenCore(PWScore& core, const StringX& safe)
+{
+  if (!pws_os::FileExists(safe.c_str())) {
+    cerr << safe << " - file not found" << endl;
+    return 2;
+  }
+
+  StringX pk = GetPassphrase(L"Enter Password: ");
+
+  int status;
+  status = core.CheckPasskey(safe, pk);
+  if (status != PWScore::SUCCESS) {
+    cout << "CheckPasskey returned: " << status_text(status) << endl;
+    return status;
+  }
+  {
+    CUTF8Conv conv;
+    const char *user = getlogin() != NULL ? getlogin() : "unknown";
+    StringX locker;
+    if (!conv.FromUTF8((const unsigned char *)user, strlen(user), locker)) {
+      cerr << "Could not convert user " << user << " to StringX" << endl;
+      return 2;
+    }
+    stringT lk(locker.c_str());
+    if (!core.LockFile(safe.c_str(), lk)) {
+      wcout << L"Couldn't lock file " << safe
+      << L": locked by " << locker << endl;
+      status = -1;
+      return status;
+    }
+  }
+  // Since we may be writing the same file we're reading,
+  // it behooves us to set the Current File and use its' related
+  // functions
+  core.SetCurFile(safe);
+  status = core.ReadCurFile(pk);
+  if (status != PWScore::SUCCESS) {
+    cout << "ReadFile returned: " << status_text(status) << endl;
+  }
+  return status;
+}
+
