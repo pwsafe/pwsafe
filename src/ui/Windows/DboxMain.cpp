@@ -2781,7 +2781,7 @@ void DboxMain::UpdateStatusBar()
       uiID = m_bFilterActive ? IDB_FILTER_ACTIVE : IDS_BLANK;
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
     } else {
-      s.LoadString(IDS_STATCOMPANY);
+      s.LoadString(IDSC_STATCOMPANY);
       m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 
       dc.DrawText(L" ", &rectPane, DT_CALCRECT);
@@ -2835,23 +2835,7 @@ void DboxMain::SetDCAText(CItemData *pci)
   if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
     si_dca = -1;
 
-  UINT ui_dca;
-  switch (si_dca) {
-    case PWSprefs::DoubleClickAutoType:             ui_dca = IDS_STATAUTOTYPE;        break;
-    case PWSprefs::DoubleClickBrowse:               ui_dca = IDS_STATBROWSE;          break;
-    case PWSprefs::DoubleClickCopyNotes:            ui_dca = IDS_STATCOPYNOTES;       break;
-    case PWSprefs::DoubleClickCopyPassword:         ui_dca = IDS_STATCOPYPASSWORD;    break;
-    case PWSprefs::DoubleClickCopyUsername:         ui_dca = IDS_STATCOPYUSERNAME;    break;
-    case PWSprefs::DoubleClickViewEdit:             ui_dca = IDS_STATVIEWEDIT;        break;
-    case PWSprefs::DoubleClickCopyPasswordMinimize: ui_dca = IDS_STATCOPYPASSWORDMIN; break;
-    case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDS_STATBROWSEPLUS;      break;
-    case PWSprefs::DoubleClickRun:                  ui_dca = IDS_STATRUN;             break;
-    case PWSprefs::DoubleClickSendEmail:            ui_dca = IDS_STATSENDEMAIL;       break;
-    default:                                        ui_dca = IDS_STATCOMPANY;
-  }
-  CString s;
-  s.LoadString(ui_dca);
-  m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
+  m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, PWSprefs::GetDCAdescription(si_dca).c_str());
 }
 
 struct NoDuplicates{

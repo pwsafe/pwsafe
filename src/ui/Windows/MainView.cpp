@@ -488,37 +488,37 @@ void DboxMain::setupBars()
     const int dca = int(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
     switch (dca) {
       case PWSprefs::DoubleClickAutoType:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATAUTOTYPE;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATAUTOTYPE;
         break;
       case PWSprefs::DoubleClickBrowse:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSE;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATBROWSE;
         break;
       case PWSprefs::DoubleClickCopyNotes:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYNOTES;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATCOPYNOTES;
         break;
       case PWSprefs::DoubleClickCopyPassword:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORD;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATCOPYPASSWORD;
         break;
       case PWSprefs::DoubleClickCopyUsername:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYUSERNAME;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATCOPYUSERNAME;
         break;
       case PWSprefs::DoubleClickViewEdit:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATVIEWEDIT;
         break;
       case PWSprefs::DoubleClickCopyPasswordMinimize:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATCOPYPASSWORDMIN;
         break;
       case PWSprefs::DoubleClickBrowsePlus:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSEPLUS;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATBROWSEPLUS;
         break;
       case PWSprefs::DoubleClickRun:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATRUN;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATRUN;
         break;
       case PWSprefs::DoubleClickSendEmail:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATSENDEMAIL;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATSENDEMAIL;
         break;
       default:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATCOMPANY;
     }
 
     statustext[CPWStatusBar::SB_CLIPBOARDACTION] = IDS_BLANK;

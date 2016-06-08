@@ -336,6 +336,23 @@ BEGIN
   IDSC_DEFAULT             " (application default)"
 END
 
+// Double Click Action text for status bar
+
+STRINGTABLE
+BEGIN
+  IDSC_STATCOMPANY         "https://pwsafe.org/"
+  IDSC_STATAUTOTYPE        "Double-Click on entry to Autotype"
+  IDSC_STATBROWSE          "Double-Click on entry to Browse to URL"
+  IDSC_STATBROWSEPLUS      "Double-Click on entry to Browse to URL + Autotype"
+  IDSC_STATCOPYPASSWORD    "Double-Click on entry to Copy Password"
+  IDSC_STATCOPYNOTES       "Double-Click on entry to Copy Notes"
+  IDSC_STATCOPYUSERNAME    "Double-Click on entry to Copy Username"
+  IDSC_STATVIEWEDIT        "Double-Click on entry to View/Edit it"
+  IDSC_STATCOPYPASSWORDMIN "Double-Click on entry to Copy Password and Minimize"
+  IDSC_STATRUN             "Double-Click on entry to Run Command"
+  IDSC_STATSENDEMAIL       "Double-Click on entry to Send email"
+END
+
 STRINGTABLE
 BEGIN
   IDSC_FSCLEAN             "in the database"

@@ -85,7 +85,7 @@ BOOL CFilterDCADlg::OnInitDialog()
       case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDSC_DCABROWSEPLUS;      break;
       case PWSprefs::DoubleClickRun:                  ui_dca = IDSC_DCARUN;             break;
       case PWSprefs::DoubleClickSendEmail:            ui_dca = IDSC_DCASENDEMAIL;       break;
-      default:                                        ui_dca = IDS_STATCOMPANY;
+      default:                                        ui_dca = IDSC_STATCOMPANY;
     }
 
     cs_dca.LoadString(ui_dca);

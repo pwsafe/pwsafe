@@ -1873,3 +1873,25 @@ void PWSprefs::ClearUnknownPrefs()
   m_vUnknownIPrefs.clear();
   m_vUnknownSPrefs.clear();
 }
+
+stringT PWSprefs::GetDCAdescription(int dca)
+{
+  const int ids[maxDCA+1] = {
+    IDSC_STATCOPYPASSWORD,    // DoubleClickCopyPassword = 0
+    IDSC_STATVIEWEDIT,        // DoubleClickViewEdit = 1
+    IDSC_STATAUTOTYPE,        // DoubleClickAutoType = 2
+    IDSC_STATBROWSE,          // DoubleClickBrowse = 3
+    IDSC_STATCOPYNOTES,       // DoubleClickCopyNotes = 4
+    IDSC_STATCOPYUSERNAME,    // DoubleClickCopyUsername = 5
+    IDSC_STATCOPYPASSWORDMIN, // DoubleClickCopyPasswordMinimize = 6
+    IDSC_STATBROWSEPLUS,      // DoubleClickBrowsePlus = 7
+    IDSC_STATRUN,             // DoubleClickRun = 8
+    IDSC_STATSENDEMAIL,       // DoubleClickSendEmail = 9
+  };
+
+  int id = (dca >= minDCA && dca <= maxDCA) ? ids[dca] : IDSC_STATCOMPANY;
+
+  stringT retval;
+  LoadAString(retval, id);
+  return retval;
+}

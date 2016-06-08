@@ -7,19 +7,8 @@
 #define IDS_ALWAYSONTOP                 5010
 
 // Status bar
-#define IDS_STATCOMPANY                 5020
-#define IDS_STATAUTOTYPE                5021
-#define IDS_STATBROWSE                  5022
-#define IDS_STATCOPYNOTES               5023
-#define IDS_STATCOPYPASSWORD            5024
-#define IDS_STATCOPYUSERNAME            5025
-#define IDS_STATVIEWEDIT                5026
-#define IDS_STATCOPYPASSWORDMIN         5027
 #define IDS_READ_ONLY                   5028
 #define IDS_BLANK                       5029
-#define IDS_STATBROWSEPLUS              5030
-#define IDS_STATRUN                     5031
-#define IDS_STATSENDEMAIL               5032
 #define IDS_READ_WRITE                  5033
 
 // File Dailog filters

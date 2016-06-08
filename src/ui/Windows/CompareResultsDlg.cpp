@@ -16,6 +16,7 @@
 #include "CompareResultsDlg.h"
 #include "ShowCompareDlg.h"
 
+#include "core/core.h"
 #include "core/PWScore.h"
 #include "core/Report.h"
 
@@ -132,7 +133,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   AddMainCtrlID(IDC_RESULTLIST);
   AddBtnsCtrlIDs(vibottombtns);
 
-  UINT statustext[1] = {IDS_STATCOMPANY};
+  UINT statustext[1] = {IDSC_STATCOMPANY};
   SetStatusBar(&statustext[0], 1);
 
   CPWResizeDialog::OnInitDialog();

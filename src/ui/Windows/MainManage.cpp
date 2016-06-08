@@ -33,6 +33,7 @@
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
 
+#include "core/core.h"
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
 #include "core/PWSAuxParse.h"
@@ -298,30 +299,30 @@ void DboxMain::OnOptions()
     iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
-    UINT uiMessage(IDS_STATCOMPANY);
+    UINT uiMessage(IDSC_STATCOMPANY);
     switch (pOptionsPS->GetDCA()) {
       case PWSprefs::DoubleClickAutoType:
-        uiMessage = IDS_STATAUTOTYPE; break;
+        uiMessage = IDSC_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
-        uiMessage = IDS_STATBROWSE; break;
+        uiMessage = IDSC_STATBROWSE; break;
       case PWSprefs::DoubleClickCopyNotes:
-        uiMessage = IDS_STATCOPYNOTES; break;
+        uiMessage = IDSC_STATCOPYNOTES; break;
       case PWSprefs::DoubleClickCopyPassword:
-        uiMessage = IDS_STATCOPYPASSWORD; break;
+        uiMessage = IDSC_STATCOPYPASSWORD; break;
       case PWSprefs::DoubleClickCopyUsername:
-        uiMessage = IDS_STATCOPYUSERNAME; break;
+        uiMessage = IDSC_STATCOPYUSERNAME; break;
       case PWSprefs::DoubleClickViewEdit:
-        uiMessage = IDS_STATVIEWEDIT; break;
+        uiMessage = IDSC_STATVIEWEDIT; break;
       case PWSprefs::DoubleClickCopyPasswordMinimize:
-        uiMessage = IDS_STATCOPYPASSWORDMIN; break;
+        uiMessage = IDSC_STATCOPYPASSWORDMIN; break;
       case PWSprefs::DoubleClickBrowsePlus:
-        uiMessage = IDS_STATBROWSEPLUS; break;
+        uiMessage = IDSC_STATBROWSEPLUS; break;
       case PWSprefs::DoubleClickRun:
-        uiMessage = IDS_STATRUN; break;
+        uiMessage = IDSC_STATRUN; break;
       case PWSprefs::DoubleClickSendEmail:
-        uiMessage = IDS_STATSENDEMAIL; break;
+        uiMessage = IDSC_STATSENDEMAIL; break;
       default:
-        uiMessage = IDS_STATCOMPANY;
+        uiMessage = IDSC_STATCOMPANY;
     }
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
     m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);

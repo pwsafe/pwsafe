@@ -294,6 +294,19 @@
 #define IDSC_DCASENDEMAIL               4010
 #define IDSC_DEFAULT                    4011
 
+#define IDSC_STATCOMPANY                4020
+#define IDSC_STATAUTOTYPE               4021
+#define IDSC_STATBROWSE                 4022
+#define IDSC_STATCOPYNOTES              4023
+#define IDSC_STATCOPYPASSWORD           4024
+#define IDSC_STATCOPYUSERNAME           4025
+#define IDSC_STATVIEWEDIT               4026
+#define IDSC_STATCOPYPASSWORDMIN        4027
+#define IDSC_STATBROWSEPLUS             4030
+#define IDSC_STATRUN                    4031
+#define IDSC_STATSENDEMAIL              4032
+
+
 // Named Policy stuff
 #define IDSC_PUSELOWER                  4100
 #define IDSC_PUSEUPPER                  4101

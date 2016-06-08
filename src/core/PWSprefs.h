@@ -84,6 +84,8 @@ public:
   static bool UserSetCfgFile() {return m_userSetCfgFile;}
   ConfigOption GetConfigOption() {return m_ConfigOption;}
 
+  static stringT GetDCAdescription(int dca);
+
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
   StringX Store(bool bUseCopy = false); // returns string for saving in file
