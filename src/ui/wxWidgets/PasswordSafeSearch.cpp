@@ -18,6 +18,7 @@
 #include "wxutils.h"
 #include "AdvancedSelectionDlg.h"
 #include "./SelectionCriteria.h"
+#include "./SearchUtils.h"
 
 ////@begin XPM images
 #include "./graphics/findtoolbar/new/find.xpm"
@@ -120,11 +121,17 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 
       if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS))
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
-      else
-        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer,
-                      m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(), m_criteria->SubgroupSearchText(),
+      else {
+        m_searchPointer.Clear();
+        ::FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_criteria->GetSelectedFields(),
+                      m_criteria->HasSubgroupRestriction(), tostdstring(m_criteria->SubgroupSearchText()),
                       m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(),
-                      m_criteria->CaseSensitive(), begin, end, afn);
+                    m_criteria->CaseSensitive(), begin, end, afn, [this, afn](Iter itr) {
+                      uuid_array_t uuid;
+                      afn(itr).GetUUID(uuid);
+                      m_searchPointer.Add(pws_os::CUUID(uuid));
+                    });
+      }
 
       m_criteria->Clean();
       txtCtrl->SetModified(false);
@@ -464,88 +471,12 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   CItemData::FieldBits bsFields;
   bsFields.set();
 
-  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID, false, begin, end, afn);
-}
-
-bool FindNoCase( const StringX& src, const StringX& dest)
-{
-    StringX srcLower = src;
-    ToLower(srcLower);
-
-    StringX destLower = dest;
-    ToLower(destLower);
-
-    return destLower.find(srcLower) != StringX::npos;
-}
-
-template <class Iter, class Accessor>
-void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
-                                       const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction,
-                                       bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn)
-{
-  if (searchText.empty())
-      return;
-
-  searchPtr.Clear();
-
-  typedef StringX (CItemData::*ItemDataFuncT)() const;
-
-  struct {
-      CItemData::FieldType type;
-      ItemDataFuncT        func;
-  } ItemDataFields[] = {  {CItemData::GROUP,     &CItemData::GetGroup},
-                          {CItemData::TITLE,     &CItemData::GetTitle},
-                          {CItemData::USER,      &CItemData::GetUser},
-                          {CItemData::PASSWORD,  &CItemData::GetPassword},
-//                        {CItemData::NOTES,     &CItemData::GetNotes},
-                          {CItemData::URL,       &CItemData::GetURL},
-                          {CItemData::EMAIL,     &CItemData::GetEmail},
-                          {CItemData::RUNCMD,    &CItemData::GetRunCommand},
-                          {CItemData::AUTOTYPE,  &CItemData::GetAutoType},
-                          {CItemData::XTIME_INT, &CItemData::GetXTimeInt},
-
-                      };
-
-  for ( Iter itr = begin; itr != end; ++itr) {
-
-    const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
-    if (fUseSubgroups && !afn(itr).Matches(stringT(subgroupText.c_str()), subgroupObject, fn))
-        continue;
-
-    bool found = false;
-    for (size_t idx = 0; idx < NumberOf(ItemDataFields) && !found; ++idx) {
-      if (bsFields.test(ItemDataFields[idx].type)) {
-          const StringX str = (afn(itr).*ItemDataFields[idx].func)();
-          found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
-      }
-    }
-
-    if (!found && bsFields.test(CItemData::NOTES)) {
-        StringX str = afn(itr).GetNotes();
-        found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
-    }
-
-    if (!found && bsFields.test(CItemData::PWHIST)) {
-        size_t pwh_max, err_num;
-        PWHistList pwhistlist;
-        CreatePWHistoryList(afn(itr).GetPWHistory(), pwh_max, err_num,
-                            pwhistlist, PWSUtil::TMC_XML);
-        for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-          PWHistEntry pwshe = *iter;
-          found = fCaseSensitive? pwshe.password.find(searchText) != StringX::npos: FindNoCase(searchText, pwshe.password );
-          if (found)
-            break;  // break out of for loop
-        }
-        pwhistlist.clear();
-    }
-
-    if (found) {
-        uuid_array_t uuid;
-        afn(itr).GetUUID(uuid);
-        searchPtr.Add(pws_os::CUUID(uuid));
-    }
-  }
+  return ::FindMatches(searchText, fCaseSensitive, bsFields, false, stringT{}, CItemData::END, PWSMatch::MR_INVALID, false, begin, end, afn,
+                     [&searchPtr, afn](Iter itr) {
+                       uuid_array_t uuid;
+                       afn(itr).GetUUID(uuid);
+                       searchPtr.Add(pws_os::CUUID(uuid));
+                     });
 }
 
 /////////////////////////////////////////////////

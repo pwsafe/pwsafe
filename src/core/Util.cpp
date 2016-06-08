@@ -859,3 +859,14 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
   }
   return true;
 }
+
+bool FindNoCase( const StringX& src, const StringX& dest)
+{
+    StringX srcLower = src;
+    ToLower(srcLower);
+
+    StringX destLower = dest;
+    ToLower(destLower);
+
+    return destLower.find(srcLower) != StringX::npos;
+}
