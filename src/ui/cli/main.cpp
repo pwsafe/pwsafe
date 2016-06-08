@@ -10,6 +10,7 @@
 #include <sstream>
 #include <unistd.h>
 #include <getopt.h>
+#include <regex>
 
 #include "PWScore.h"
 #include "os/file.h"
@@ -17,8 +18,11 @@
 #include "core/UTF8Conv.h"
 #include "core/Report.h"
 #include "core/XML/XMLDefs.h"
+#include "../../core/core.h"
 
 #include <termios.h>
+
+#include "../wxWidgets/SearchUtils.h"
 
 using namespace std;
 
@@ -32,9 +36,14 @@ static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
 static const char *status_text(int status);
 
+// These are the new operations. Each returns the code to exit with
 static int CreateNewSafe(const StringX& filename);
+static int SearchForEntries(PWScore &core, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch);
+
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
+
+int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch);
 
 //-----------------------------------------------------------------
 
@@ -59,8 +68,13 @@ std::ostream& operator<<(std::ostream& os, const wstring& str)
 struct UserArgs {
   UserArgs() : Operation(Unset), Format(Unknown) {}
   StringX safe, fname;
-  enum {Unset, Import, Export, CreateNew} Operation;
+  enum {Unset, Import, Export, CreateNew, Search} Operation;
   enum {Unknown, XML, Text} Format;
+
+  // used for search
+  wstring searchedText;
+  wstring searchedFields;
+  wstring searchedSubset;
 };
 
 void Utf82StringX(const char* filename, StringX& sname)
@@ -68,9 +82,16 @@ void Utf82StringX(const char* filename, StringX& sname)
     CUTF8Conv conv;
     if (!conv.FromUTF8((const unsigned char *)filename, strlen(filename),
                        sname)) {
-        cerr << "Could not convert filename " << filename << " to StringX" << endl;
+        cerr << "Could not convert " << filename << " to StringX" << endl;
         exit(2);
     }
+}
+
+wstring Utf82wstring(const char* utf8str)
+{
+  StringX sx;
+  Utf82StringX(utf8str, sx);
+  return stringx2std(sx);
 }
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
@@ -89,6 +110,9 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"text", no_argument, 0, 't'},
       {"xml", no_argument, 0, 'x'},
       {"new", no_argument, 0, 'n'},
+      {"search", required_argument, 0, 's'},
+      {"subset", required_argument, 0, 'u'},
+      {"fields", required_argument, 0, 'f'},
       {0, 0, 0, 0}
     };
 
@@ -127,7 +151,29 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     case 'n':
       if (ua.Operation == UserArgs::Unset)
         ua.Operation = UserArgs::Import;
+      else
+        return false;
       break;
+
+    case 's':
+      if (ua.Operation == UserArgs::Unset) {
+        ua.Operation = UserArgs::Import;
+        assert(optarg);
+        ua.searchedText = Utf82wstring(optarg);
+        break;
+      }
+      else
+        return false;
+
+    case 'u':
+        assert(optarg);
+        ua.searchedSubset = Utf82wstring(optarg);
+        break;
+
+    case 'f':
+        assert(optarg);
+        ua.searchedFields = Utf82wstring(optarg);
+        break;
 
     default:
       cerr << "Unknown option: " << char(c) << endl;
@@ -478,6 +524,24 @@ StringX GetPassphrase(const wstring& prompt)
     return StringX(wpk.c_str());
 }
 
+struct Restriction {
+  wstring field;
+  wchar_t match_type;
+  wstring value;
+};
+
+std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
+{
+  std::vector<Restriction> restrictions;
+  if ( !restrictToEntries.empty() ) {
+    std::wregex restrictPattern(L"([[:alpha:]]+)([!]?[=^$~]=)([^;]+)(;|$)");
+    std::wsregex_iterator pos(restrictToEntries.cbegin(), restrictToEntries.cend(), restrictPattern);
+    std::wsregex_iterator end;
+    for_each( pos, end, [&restrictions](const wsmatch &m) { restrictions.push_back( {m.str(1), m.str(2)[0], m.str(3)} ); } );
+  }
+  return restrictions;
+}
+
 int OpenCore(PWScore& core, const StringX& safe)
 {
   if (!pws_os::FileExists(safe.c_str())) {
@@ -519,4 +583,112 @@ int OpenCore(PWScore& core, const StringX& safe)
   }
   return status;
 }
+using String2FieldTypeMap = std::map<stringT, CItemData::FieldType>;
 
+// Reverse of CItemData::FieldName
+String2FieldTypeMap  InitFieldTypeMap()
+{
+    String2FieldTypeMap ftmap;
+    stringT retval;
+    LoadAString(retval, IDSC_FLDNMGROUPTITLE);      ftmap[retval] = CItem::GROUPTITLE;
+    LoadAString(retval, IDSC_FLDNMUUID);            ftmap[retval] = CItem::UUID;
+    LoadAString(retval, IDSC_FLDNMGROUP);           ftmap[retval] = CItem::GROUP;
+    LoadAString(retval, IDSC_FLDNMTITLE);           ftmap[retval] = CItem::TITLE;
+    LoadAString(retval, IDSC_FLDNMUSERNAME);        ftmap[retval] = CItem::USER;
+    LoadAString(retval, IDSC_FLDNMNOTES);           ftmap[retval] = CItem::NOTES;
+    LoadAString(retval, IDSC_FLDNMPASSWORD);        ftmap[retval] = CItem::PASSWORD;
+#undef CTIME
+    LoadAString(retval, IDSC_FLDNMCTIME);           ftmap[retval] = CItem::CTIME;
+    LoadAString(retval, IDSC_FLDNMPMTIME);          ftmap[retval] = CItem::PMTIME;
+    LoadAString(retval, IDSC_FLDNMATIME);           ftmap[retval] = CItem::ATIME;
+    LoadAString(retval, IDSC_FLDNMXTIME);           ftmap[retval] = CItem::XTIME;
+    LoadAString(retval, IDSC_FLDNMRMTIME);          ftmap[retval] = CItem::RMTIME;
+    LoadAString(retval, IDSC_FLDNMURL);             ftmap[retval] = CItem::URL;
+    LoadAString(retval, IDSC_FLDNMAUTOTYPE);        ftmap[retval] = CItem::AUTOTYPE;
+    LoadAString(retval, IDSC_FLDNMPWHISTORY);       ftmap[retval] = CItem::PWHIST;
+    LoadAString(retval, IDSC_FLDNMPWPOLICY);        ftmap[retval] = CItem::POLICY;
+    LoadAString(retval, IDSC_FLDNMXTIMEINT);        ftmap[retval] = CItem::XTIME_INT;
+    LoadAString(retval, IDSC_FLDNMRUNCOMMAND);      ftmap[retval] = CItem::RUNCMD;
+    LoadAString(retval, IDSC_FLDNMDCA);             ftmap[retval] = CItem::DCA;
+    LoadAString(retval, IDSC_FLDNMSHIFTDCA);        ftmap[retval] = CItem::SHIFTDCA;
+    LoadAString(retval, IDSC_FLDNMEMAIL);           ftmap[retval] = CItem::EMAIL;
+    LoadAString(retval, IDSC_FLDNMPROTECTED);       ftmap[retval] = CItem::PROTECTED;
+    LoadAString(retval, IDSC_FLDNMSYMBOLS);         ftmap[retval] = CItem::SYMBOLS;
+    LoadAString(retval, IDSC_FLDNMPWPOLICYNAME);    ftmap[retval] = CItem::POLICYNAME;
+    LoadAString(retval, IDSC_FLDNMKBSHORTCUT);      ftmap[retval] = CItem::KBSHORTCUT;
+    return ftmap;;
+}
+
+CItemData::FieldType String2FieldType(const stringT& str)
+{
+    static const String2FieldTypeMap ftmap = InitFieldTypeMap();
+    auto itr = ftmap.find(str);
+    if (itr != ftmap.end())
+       return itr->second;
+    return CItem::LAST_DATA;;
+}
+
+CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
+{
+  CItemData::FieldBits fields;
+  if ( !fieldsToSearch.empty() ) {
+    std::wsregex_token_iterator pos(fieldsToSearch.cbegin(), fieldsToSearch.cend(), std::wregex(L";"), -1);
+    std::wsregex_token_iterator end;
+    for_each( pos, end, [&fields](const wstring &field) { fields.set(String2FieldType(field));} );
+  }
+  return fields;
+}
+
+bool ItemMatches(const CItemData &item, const StringX &searchText)
+{
+  using FT = CItemData::FieldType;
+  FT fields[] = {   CItemData::GROUP,
+                    CItemData::TITLE,
+                    CItemData::USER,
+                    CItemData::PASSWORD,
+                    CItemData::NOTES,
+                    CItemData::URL,
+                    CItemData::EMAIL,
+                    CItemData::RUNCMD,
+                    CItemData::AUTOTYPE,
+                    CItemData::XTIME_INT
+  };
+
+  return std::find_if( std::begin(fields), std::end(fields), [&item, &searchText](FT f) {
+    return item.GetFieldValue(f).find(searchText) != StringX::npos;
+  }) != std::end(fields);
+
+}
+
+int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch)
+{
+  PWScore core;
+  int status = OpenCore(core, safe);
+  if (!status)
+    return status;
+  return SearchForEntries(core, searchText, restrictToEntries, fieldsToSearch);
+}
+
+int SearchForEntries(PWScore &core, const wstring &searchText, const wstring &restrictToEntries, const wstring &fieldsToSearch)
+{
+  assert( !searchText.empty() );
+
+  std::vector<Restriction> restrictions = ParseSearchedEntryRestrictions(restrictToEntries);
+
+  if ( !restrictToEntries.empty() && restrictions.empty() ) {
+    cerr << "Could not parse [" << restrictToEntries << " ]for restricting searched entries" << endl;
+    return PWScore::FAILURE;
+  }
+
+  CItemData::FieldBits fields = ParseFieldsToSearh(fieldsToSearch);
+  if ( !fieldsToSearch.empty() && fields.none() ) {
+    cerr << "Could not parse [" << fieldsToSearch << " ]for restricting searched fields" << endl;
+    return PWScore::FAILURE;
+  }
+
+  ::FindMatches(std2stringx(searchText), false, fields, true, stringT{}, CItemData::EMAIL, PWSMatch::MR_EQUALS, false,
+              core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [](ItemListIter itr){
+                cout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
+  });
+  return PWScore::SUCCESS;
+}
