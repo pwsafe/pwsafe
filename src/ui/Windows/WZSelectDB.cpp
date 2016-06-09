@@ -264,7 +264,7 @@ BOOL CWZSelectDB::OnInitDialog()
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
     {
-      // Disable & hide - Advnaced checkbox & specifying delimiter
+      // Disable & hide - Advanced checkbox & specifying delimiter
       GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
 
@@ -354,7 +354,7 @@ BOOL CWZSelectDB::OnInitDialog()
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool bYubiInserted = IsYubiInserted();
-  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // MFC has ancient bug: can't render disabled version of bitmap,
   // so instead of showing drek, we roll our own, and leave enabled.
   ybn->EnableWindow(TRUE);
 

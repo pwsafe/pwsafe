@@ -569,7 +569,7 @@ BOOL DboxMain::OnOpenMRU(UINT nID)
   // Save just in case need to restore if user cancels
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
-  // Read-only status can be overriden by GetAndCheckPassword
+  // Read-only status can be overridden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem),
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
   if (rc == PWScore::SUCCESS) {
@@ -979,7 +979,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   PWSAuxCore othercore; // Leaves DB prefs untouched!
 
   // Get currently selected database's information
-  // No Report or MAXCHARS vaue, implies no validation of the file
+  // No Report or MAXCHARS value, implies no validation of the file
   // except the mandatory UUID uniqueness
   st_DBProperties st_dbpcore;
   othercore.ReadFile(sx_Filename, passkey);
@@ -2166,7 +2166,7 @@ void DboxMain::OnImportText()
         break;
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
-        // deliberate fallthru
+        // deliberate fallthrough
       default:
       {
         if (pcmd != NULL) {
@@ -2318,7 +2318,7 @@ void DboxMain::OnImportKeePassV1CSV()
         break;
       }
       case PWScore::SUCCESS:
-      default: // deliberate fallthru
+      default: // deliberate fallthrough
         if (pcmd != NULL)
           Execute(pcmd);
         RefreshViews();
@@ -2426,7 +2426,7 @@ void DboxMain::OnImportKeePassV1TXT()
         break;
       }
       case PWScore::SUCCESS:
-      default: // deliberate fallthru
+      default: // deliberate fallthrough
         if (pcmd != NULL)
           Execute(pcmd);
 

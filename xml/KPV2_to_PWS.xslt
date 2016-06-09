@@ -823,7 +823,7 @@
   </xsl:template>
 
 
-  <!-- substitutions for tag sequnces {TAG count} -->
+  <!-- substitutions for tag sequences {TAG count} -->
   <xsl:template name="substSequence">
     <xsl:param name="str"/>
     <xsl:param name="tag"/>
@@ -901,7 +901,7 @@
     </xsl:if>
   </xsl:template>
    
-  <!-- substitutions for {DELAY X} and {DELAY=X} tag sequnces -->
+  <!-- substitutions for {DELAY X} and {DELAY=X} tag sequences -->
   <xsl:template name="substDelaySequence">
     <xsl:param name="str"/>
     <xsl:param name="caseSensitive" select="0"/>

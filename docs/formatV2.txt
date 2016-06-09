@@ -33,7 +33,7 @@ shortcomings:
    passphrase. 
 
 2. Following RND|H(RND) will be the SALT and IP as in the 1.x
-   format. From here onwards, all data is encrpyted in 8 byte blocks,
+   format. From here onwards, all data is encrypted in 8 byte blocks,
    with the first block holding the length (in bytes) of the encrypted
    field that follows and the type (see section 6). The length is
    stored as a 32 bit unsigned value in little-endian byte order (to
@@ -114,7 +114,7 @@ databases, i.e., between a handheld pocketPC device and a PC. The UUID
 data type is 16 bytes long. Windows has functions for this, and for
 other platforms, it's possible to use code from the OSF.
 [2] The "Group" is meant to support displaying the entries in a
-tree-like manner. Groups can be heirarchical, with elements separated
+tree-like manner. Groups can be hierarchical, with elements separated
 by a period, supporting groups such as "Finance.credit cards.Visa",
 "Finance.credit cards.Mastercard", Finance.bank.web access", etc. Dots
 entered by the user are "escaped" by the application.
@@ -143,7 +143,7 @@ decide to drop the UUID, or move it to the last field?).
 
 $Log$
 Revision 1.8  2005/07/20 21:15:01  ronys
-Updated to refelct 2.11 status + some midifications discussed on dev list.
+Updated to refelct 2.11 status + some modifications discussed on dev list.
 
 Revision 1.7  2005/04/07 19:44:37  ronys
 Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.

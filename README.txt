@@ -96,7 +96,7 @@ http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce
 Last but not least: PasswordSafe is and will always remain an open
 source project, free for and redistribution. However, donations to the
 project will help me justify the time and effort I spend in
-maintaining and improving this utility. In addtion, donations to the
+maintaining and improving this utility. In addition, donations to the
 project help maintain SourceForge, the hosting site. If you wish to
 donate, please click on the Donate button at the top of
 https://pwsafe.org

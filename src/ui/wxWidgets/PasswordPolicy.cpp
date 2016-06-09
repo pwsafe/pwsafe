@@ -346,7 +346,7 @@ bool CPasswordPolicy::Verify()
   if (m_pwUseHex &&
      (m_pwUseLowercase || m_pwUseUppercase || m_pwUseDigits ||
       m_pwUseSymbols || m_pwUseEasyVision || m_pwMakePronounceable)) {
-    mess = _("Hexadecimal is mutually exculsive to all other options.");
+    mess = _("Hexadecimal is mutually exclusive to all other options.");
     retval = false;
   } else if (m_pwUseHex) {
     if (m_pwdefaultlength % 2 != 0) {
@@ -579,7 +579,7 @@ void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
     // Check if ezread is also set - forbid both
     if (m_pwpEasyCtrl->GetValue()) {
       m_pwpPronounceCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -599,7 +599,7 @@ void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
     // Check if pronounceable is also set - forbid both
     if (m_pwpPronounceCtrl->GetValue()) {
       m_pwpEasyCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }

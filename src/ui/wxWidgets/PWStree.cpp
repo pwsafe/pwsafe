@@ -424,7 +424,7 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 
 }
 
-//overriden from base for case-insensitive sort
+//overridden from base for case-insensitive sort
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),

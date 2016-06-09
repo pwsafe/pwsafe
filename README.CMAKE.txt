@@ -33,7 +33,7 @@ _build.
 "Set as StartUp Project".
 7. You may need to go back and set paths to external libraries, such
 as GTEST_LIBRARY, GTEST_LIBRARY_DEBUG, GTEST_MAIN_LIBRARY and
-GTEST_MAIN_LIBRARY_DEBUG. Click on Cofigure and Generate after setting
+GTEST_MAIN_LIBRARY_DEBUG. Click on Configure and Generate after setting
 these, and Visual Studio will prompt you to refresh the project
 files.
 

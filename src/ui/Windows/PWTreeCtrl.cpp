@@ -642,7 +642,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
   // Only items visible will be changed - e.g. if password is not shown and the user
-  // puts a new password in the new dispay text, it will be ignored.
+  // puts a new password in the new display text, it will be ignored.
 
   /* Allowed formats:
   1.   title
@@ -846,7 +846,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // Rename single empty group
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath, DBEmptyGroupsCommand::EG_RENAME));
       } else {
-        // Rename any empty groupss within this group
+        // Rename any empty groups within this group
         // Get current empty groups
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
           DBEmptyGroupsCommand::EG_RENAMEPATH));
@@ -1272,7 +1272,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
-  // before every return, otherwise next mouse/keybord selection 
+  // before every return, otherwise next mouse/keyboard selection 
   // will be treated as drop target selections
 
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
@@ -1733,7 +1733,7 @@ LRESULT CPWTreeCtrl::OnMouseLeave(WPARAM, LPARAM)
 void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
 {
   // We need to update the parent's state vector of expanded nodes
-  // so that it will be persistent across miminize, lock, save, etc.
+  // so that it will be persistent across minimize, lock, save, etc.
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
@@ -1887,7 +1887,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   pws_os::Trace(L"nemptygroups: %d\n", vEmptyGroups.size());
   if (!vEmptyGroups.empty()) {
     if (outDDmemfile.GetLength() == 0) {
-      // No entries written but as we are going to write emtpy groups
+      // No entries written but as we are going to write empty groups
       // we need to put a zero count
       int nCount(0);
       outDDmemfile.Write((void *)&nCount, sizeof(nCount));
@@ -2047,7 +2047,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
 
 CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
 {
-  // return all path components beween hItem and root.
+  // return all path components between hItem and root.
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
   CSecString retval;
   HTREEITEM p = GetParentItem(hItem);

@@ -1284,7 +1284,7 @@ void CManageFiltersDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (m_iSortColumn == iIndex) {
     m_bSortAscending = !m_bSortAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     CHeaderCtrl *phctrl = m_FilterLC.GetHeaderCtrl();
     for (int i = 0; i < phctrl->GetItemCount(); i++) {
       phctrl->GetItem(i, &hdi);

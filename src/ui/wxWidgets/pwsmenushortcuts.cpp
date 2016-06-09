@@ -142,7 +142,7 @@ bool MenuItemData::IsDirty() const {
 }
 
 /*
- * The only realiable way to change the accelerator, atleast for 2.8.11, is to
+ * The only reliable way to change the accelerator, at least for 2.8.11, is to
  * set a new and complete label, with full mnemonics + accelerator.   Don't
  * use wxMenuItem::SetAccel(), or do * SetItemLabel(SomeManipulation(GetItemLabelText()))).
  * You will end up with underscores in place where the '&' mnemonic is, and they would multiply

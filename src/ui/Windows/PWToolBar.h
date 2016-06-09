@@ -59,7 +59,7 @@ private:
     UINT GetNewBM() const {return newBM;}
     UINT GetDisBM() const {return disBM;}
   };
-  // member fuction pointer typedef for above getters
+  // member function pointer typedef for above getters
   typedef UINT (GuiRecord::*GuiRecordGetter)() const;
   
   // Following needed for std::find_if

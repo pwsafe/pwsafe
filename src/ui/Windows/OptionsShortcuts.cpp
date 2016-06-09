@@ -189,7 +189,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
     WORD wPWSModifiers = iKBShortcut >> 16;
 
-    // Translate from PWS modifers to HotKey
+    // Translate from PWS modifiers to HotKey
     WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
     str = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
@@ -252,7 +252,7 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
       return (m_bAppHotKeyEnabled == TRUE) ? 1L : 0L;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
+      // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
         return 1L;
   }

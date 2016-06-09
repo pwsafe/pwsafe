@@ -441,7 +441,7 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 }
 
 /*
-* Returns a BlowFish object set up for encryption or decrytion.
+* Returns a BlowFish object set up for encryption or decryption.
 *
 * The main issue here is that the BlowFish key is SHA1(passphrase|salt)
 * Aside from saving duplicate code, we win here by minimizing the exposure

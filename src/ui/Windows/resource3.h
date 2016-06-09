@@ -22,7 +22,7 @@
 #define IDS_STATSENDEMAIL               5032
 #define IDS_READ_WRITE                  5033
 
-// File Dailog filters
+// File Dialog filters
 #define IDS_FDF_V3_ALL                  5050
 #define IDS_FDF_DB_ALL                  5051
 #define IDS_FDF_DB_BU_ALL               5052

@@ -83,7 +83,7 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
       }
     }
 
-    /* now emit upto x bytes of buf[1] to output */
+    /* now emit up to x bytes of buf[1] to output */
     for (y = 0; y < x && left != 0; ++y) {
       out[stored++] = buf[1][y];
       --left;

@@ -349,7 +349,7 @@ void PasswordSafeSearch::ReCreateSearchBar(void)
     // right after creation it appears on the UI
     CreateSearchBar();
 
-    // if the previous searc bar was hidden then
+    // if the previous search bar was hidden then
     // hide also the new one
     if (show == false)
       HideSearchToolbar();

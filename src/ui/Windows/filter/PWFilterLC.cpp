@@ -742,7 +742,7 @@ bool CPWFilterLC::SetField(const int iItem)
   bool retval(false);
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
@@ -1047,7 +1047,7 @@ void CPWFilterLC::CancelField(const int iItem)
   // User has selected field
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
@@ -1207,7 +1207,7 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
 bool CPWFilterLC::GetCriterion()
 {
   // User has already enabled the filter and selected the field type
-  // Now get the criteron
+  // Now get the criterion
   ASSERT(m_iItem >= 0);
 
   // Get offset into vector of controls
@@ -1555,7 +1555,7 @@ bool CPWFilterLC::GetCriterion()
 
 void CPWFilterLC::SetUpComboBoxData()
 {
-  // Set up the Field selction Combobox
+  // Set up the Field selection Combobox
 
   // NOTE: The ComboBox strings are NOT sorted by design !
   if (m_vLcbx_data.empty()) {

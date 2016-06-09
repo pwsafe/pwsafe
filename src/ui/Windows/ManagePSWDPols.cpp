@@ -666,7 +666,7 @@ void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLR
 
   int nItem = m_PolicyNames.GetNextSelectedItem(pos);
 
-  // Ignore is default policty (first entry)
+  // Ignore is default policy (first entry)
   if (nItem == 0)
     return;
 
@@ -773,7 +773,7 @@ void CManagePSWDPols::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (iIndex == m_iSortNamesIndex) {
     m_bSortNamesAscending = !m_bSortNamesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -811,7 +811,7 @@ void CManagePSWDPols::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult
   if (iIndex == m_iSortEntriesIndex) {
     m_bSortEntriesAscending = !m_bSortEntriesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {

@@ -158,7 +158,7 @@ void PWSGridTable::Clear()
   m_pwsgrid->DeleteAllItems();
 }
 
-//overriden
+//overridden
 void PWSGridTable::SetView(wxGrid* newGrid)
 {
   wxGrid* oldGrid = GetView();

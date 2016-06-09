@@ -448,7 +448,7 @@ wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellA
 
 wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
 {
-  //donot show row labels in odd number rows in conflict grid
+  //do not show row labels in odd number rows in conflict grid
   if (row%2 == 1)
     return wxEmptyString;
   return wxGridTableBase::GetRowLabelValue(row/2);

@@ -163,7 +163,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
-      // Refesh one entry ListView row and in the tree if the Title/Username/Password
+      // Refresh one entry ListView row and in the tree if the Title/Username/Password
       // has changed and visible in the tree when entry has been edited
       ASSERT(pci != NULL);
       UpdateEntryinGUI(*pci);
@@ -798,7 +798,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
 
-    // Don't bother getting the attachment if not searchng its fields
+    // Don't bother getting the attachment if not searching its fields
     if (bsAttFields.count() != 0) {
       if (curitem.HasAttRef()) {
         pws_os::CUUID attuuid = curitem.GetAttUUID();
@@ -978,7 +978,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
     HTREEITEM hti = m_ctlItemTree.GetSelectedItem();
     // NULL means nothing was selected.
     if (hti != NULL) {
-      // Time to remove the old "fake selection" (a.k.a. drop-hilite)
+      // Time to remove the old "fake selection" (a.k.a. drop-highlight)
       // Make sure to undo "MakeVisible" on the previous selection.
       m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
     }
@@ -1742,7 +1742,7 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
       ChangeOkUpdate();
     }
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     // Note: not sure where, as user may have played with the columns!
     HDITEM hdi;
     hdi.mask = HDI_FORMAT;
@@ -2441,7 +2441,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
     m_vactionverboffsets.clear();
   } else {
     // Either do it because they pressed the right menu/shortcut
-    // or they had specified Do Auotype flag [autotype]
+    // or they had specified Do Autotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
     m_sxAutoType = m_bDoAutoType ? sxAutotype : L"";
     if (m_bDoAutoType)
@@ -3878,9 +3878,9 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
       }
     } 
     else if ((iter->first.length() > len+1) && (iter->first[len+1] != GROUP_SEP)) {
-      // Need to add group seperator and check that next symbol is not a dot
+      // Need to add group separator and check that next symbol is not a dot
       // to ensure not affecting another group
-      // (group name could contain traling dots, for example abc..def.g)
+      // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len+1 (old_name + dot + subgroup_name)
       StringX path = sxOldPath + StringX(GROUP_SEP2);
       if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {

@@ -1120,7 +1120,7 @@ void CItemData::SplitName(const StringX &name,
     }
   } else {
     /*
-    * There should never ever be both a SPLITCHR and a DEFUSERCHR in
+    * There should never ever be both a SPLTCHR and a DEFUSERCHR in
     * the same string
     */
     StringX temp;

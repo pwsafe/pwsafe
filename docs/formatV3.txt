@@ -122,7 +122,7 @@ representation.
 3.1.2 Text
  Text is represented in UTF-8 encoding (as defined in RFC3629), with
  no byte order marker (BOM) and no end-of-string mark (e.g., null
- byte). Note that the latter isn't neccessary since the length of the
+ byte). Note that the latter isn't necessary since the length of the
  field is provided explicitly. Note that ALL fields described as
  "text" are UTF-8 encoded unless explicitly stated otherwise.
 
@@ -133,7 +133,7 @@ representation.
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
  Note that future versions of this format may allow time to be
- specifed in 64 bits as well.
+ specified in 64 bits as well.
 
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
@@ -245,9 +245,9 @@ line. This field was introduced in format version 0x0302.
 the purpose or other practical use of the database. This field was
 introduced in format version 0x0302.
 
-[12] Specfic filters for this database.  This is the text equivalent to
+[12] Specific filters for this database.  This is the text equivalent to
 the XML export of the filters as defined by the filter schema. The text 
-'image' has no 'print formatting' e.g. tabs and carraige return/line feeds,
+'image' has no 'print formatting' e.g. tabs and carriage return/line feeds,
 since XML processing does not require this. This field was introduced in 
 format version 0x0305.
 
@@ -551,7 +551,7 @@ description.
 4.2.3 All unassigned identifiers except as listed in the previous two
 subsections are reserved, and should not be used by other
 implementations of this format specification in the interest of
-interoperablity.
+interoperability.
 
 5. References:
 [TWOFISH] http://www.schneier.com/paper-twofish-paper.html

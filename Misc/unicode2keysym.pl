@@ -68,7 +68,7 @@ while (<>) {
   }
 }
 
-# sort the keys to generate same output everytime unless keysymdefs.h changes
+# sort the keys to generate same output every time unless keysymdefs.h changes
 foreach my $wchar (sort keys %charsymmap) {
 	print "\tcase 0x$wchar: return 0x$charsymmap{$wchar}{keysym};\t\t// $charsymmap{$wchar}{symname}\n";
 }

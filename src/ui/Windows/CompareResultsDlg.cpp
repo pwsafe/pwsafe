@@ -35,7 +35,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
-// These columns always shown and in this order (do not chnage)
+// These columns always shown and in this order (do not change)
 const UINT CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
     IDS_ORIGINALDB, IDS_COMPARISONDB, IDS_GROUP, IDS_TITLE, IDS_USERNAME
 };
@@ -991,7 +991,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
     CMenu *pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 
-    // Disable copy/sychnronize if target is read-only or entry is protected
+    // Disable copy/synchronize if target is read-only or entry is protected
     // Delete synchronize if not in both databases (and not already identical)
     if (m_LCResults.GetColumn() == COMPARE) {
       // User clicked on Comparison DB
@@ -1007,7 +1007,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       }
     }
 
-    // Can't synchonize pr compare if not in both databases!
+    // Can't synchronize pr compare if not in both databases!
     if (indatabase != BOTH) {
       pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);

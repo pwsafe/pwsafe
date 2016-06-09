@@ -39,7 +39,7 @@ bool verifyDTvalues(int yyyy, int mon, int dd,
 {
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30,
                                  31, 31, 30, 31, 30, 31};
-  // Built-in obsolesence for pwsafe in 2038?
+  // Built-in obsolescence for pwsafe in 2038?
   if (yyyy < 1970 || yyyy > 2038)
     return false;
 

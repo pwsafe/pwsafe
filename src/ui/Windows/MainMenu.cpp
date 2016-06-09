@@ -280,7 +280,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Do Manage Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_MANAGEMENU);
 
-  // No need to do Manage Menu Langauges submenu as rebuilt every time!
+  // No need to do Manage Menu Languages submenu as rebuilt every time!
 
   // Do Help Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_HELPMENU);
@@ -427,7 +427,7 @@ void DboxMain::UpdateAccelTable()
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = (int)std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
-  // But take off 1 if there is a shprtcut for AutoType
+  // But take off 1 if there is a shortcut for AutoType
   if (m_wpAutotypeKey != 0)
     numscs--;
 
@@ -536,7 +536,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
     }
 
-    // Remove the corresponding Exort V3/V4
+    // Remove the corresponding Export V3/V4
     int isubmenu_pos;
     CMenu *pSubMenu;
     isubmenu_pos = app.FindMenuItem(pPopupMenu, ID_EXPORTMENU);
@@ -1166,10 +1166,10 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
   minfo.fMask = MIM_MENUDATA;
 
   // Note if point = (-1, -1) then invoked via keyboard.
-  // Need coordinates of current selected itme instead on mouse position when message sent
+  // Need coordinates of current selected item instead of mouse position when message sent
   bool bKeyboard = (screen.x == -1 && screen.y == -1);
 
-  CPoint mp; // Screen co-ords (from "message point" or via Shift+F10 selected item
+  CPoint mp; // Screen coords (from "message point" or via Shift+F10 selected item
   CRect rect, appl_rect;
 
   // Get client window position
@@ -1194,7 +1194,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     }
     mp.x = (r.left + r.right) / 2;
     mp.y = (r.top + r.bottom) / 2;
-    screen = mp;  // In screen co-ords
+    screen = mp;  // In screen coords
   } else {
     mp = ::GetMessagePos();
   }

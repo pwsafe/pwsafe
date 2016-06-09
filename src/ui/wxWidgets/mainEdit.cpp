@@ -191,7 +191,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
       ti = m_tree->GetNextChild(tid, cookie);
     } // while children
     // Explicitly delete any empty groups coinciding with this wxTreeItem's group hierarchy
-    // Otherwise the user will see a these empty groups still hanging around inspite
+    // Otherwise the user will see a these empty groups still hanging around in spite
     // of just deleting the parent/ancestor
     StringX sxGroup = tostringx(m_tree->GetItemGroup(tid));
     if (m_core.IsEmptyGroup(sxGroup)) {
@@ -793,7 +793,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
   }
   else {
     // Either do it because they pressed the right menu/shortcut
-    // or they had specified Do Auotype flag [autotype]
+    // or they had specified Do Autotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
     m_AutoType = m_bDoAutoType ? sxAutotype : wxEmptyString;
     if (m_bDoAutoType)

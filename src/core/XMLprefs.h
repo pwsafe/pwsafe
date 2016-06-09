@@ -80,6 +80,6 @@ private:
   // CreateXML - bLoad will skip creation of root element
   bool CreateXML(bool bLoad);
   void UnloadXML();
-  stringT m_Reason; // why something bad happenned
+  stringT m_Reason; // why something bad happened
 };
 #endif /* __XMLPREFS_H */

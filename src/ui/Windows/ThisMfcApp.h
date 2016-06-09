@@ -29,7 +29,7 @@
 struct LANGHELPFILE {
   LCID lcid;                 // LCID for the language
   std::wstring wsLL;         // 2-character language code
-  std::wstring wsCC;         // 2-chharacter country code if needed
+  std::wstring wsCC;         // 2-character country code if needed
   std::wstring wsLanguage;   // Name of language for menu item
 
   /*

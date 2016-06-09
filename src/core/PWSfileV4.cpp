@@ -709,7 +709,7 @@ int PWSfileV4::WriteHeader()
 
     // Allocate buffer in calculated size
     unsigned char *buf = new unsigned char[totlen];
-    memset(buf, 0, totlen); // in case we trucate some names, don't leak info.
+    memset(buf, 0, totlen); // in case we truncate some names, don't leak info.
 
     // fill buffer
     buf[0] = (unsigned char)numPols;
@@ -887,7 +887,7 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
 
   do {
     status = ReadKeyBlock();
-    // status is either SUCESS or END_OF_FILE
+    // status is either SUCCESS or END_OF_FILE
     if (status == END_OF_FILE) {
       return status;
     }

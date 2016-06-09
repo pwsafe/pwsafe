@@ -185,7 +185,7 @@ expiration date for non-recurring expiration.
 [3440318] Filters can now be cleared by double-clicking on the filter indicator in
 the status bar. Also, Filter Menu correctly changed when a filter is active.
 [3435869] '-g config_file' option now accepts a non-existing file, creating
-it after notfying the user.
+it after notifying the user.
 [3430196] Buttons in the Options property pages now retain the user's Windows theme.
 [] Fix inability to copy entries to the original database in the Compare database results
 dialog.
@@ -194,7 +194,7 @@ dialog.
 New Features for 3.27
 =====================
 [3367590] User can now add a database name and description via the Properties
-diaolg.
+dialog.
 [3349458] Allow filters to match on rules based on the password's length.
 [3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
 Default is copy the username to the clipboard.
@@ -215,7 +215,7 @@ box opened.
 [3395549] PasswordSafe now displays forms correctly on Netbooks.
 [3382422] Toolbar now updated to reflect R/W or R-O mode when user
 dynamically changes mode. 
-[3380714] User can now save database after manually taking a bakup.
+[3380714] User can now save database after manually taking a backup.
 [3380424] System Menu 'X' now closes the Edit/View PropertyPages when
 the database is in R-O mode or the entry is protected.
 [] Filter image in Status bar is no longer replaced by 'Filter1' after
@@ -646,7 +646,7 @@ XP and later system.
 [2836569] Correct password data now copied from Edit dialog using
 'Smart Labels'
 [2832991] Double-click action display in the Status Bar now shows
-correct value for entries that have overriden the current default.
+correct value for entries that have overridden the current default.
 [2820260] Fix password expiry interval processing during Edit.
 [2818653] Password expiry interval now correctly exported to XML and
 displayed during Edit, if present.
@@ -838,7 +838,7 @@ on the current selected item (group or normal, shortcut base, alias base,
 alias or shortcut entry).
 [2425045] During Edit, if the entry has been changed and the user presses
 the Cancel button, they are asked to confirm losing their changes.
-[2415952] The currrent display status of the Find Toolbar is remembered at
+[2415952] The current display status of the Find Toolbar is remembered at
 application close and, if visible, it is will be shown the next time the
 application is started.
 [] Installation program now offers German as well as English
@@ -985,7 +985,7 @@ expiry date.
 it will close the Find Toolbar.
 [1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
 [1887159] PasswordSafe may be configured to open databases 'Read-only' by
-default.  This can still be overriden during open if the file itself
+default.  This can still be overridden during open if the file itself
 is not read-only.
 [1664535] Interpret "Remember 0 last databases" on the System Options as 
 "do not store any opened database".
@@ -1036,7 +1036,7 @@ differences during compare.
 in a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
-[1841221] During drag & drop, a 1.5 scond delay was introduced before
+[1841221] During drag & drop, a 1.5 second delay was introduced before
 expanding a group that the cursor "hovers" upon.
 [] New disabled buttons for New Toolbar.
 
@@ -1494,7 +1494,7 @@ None.
 
 Bugs fixed in 3.0Beta2:
 =======================
-[1450484] Trialing garbage in tooltip text fixed (DK).
+[1450484] Trailing garbage in tooltip text fixed (DK).
 [1462527] Uses a decent PRNG for non-XP platforms, closing key recovery
 attack vulnerability.
 [1446183] Export to v2 format now readable by pwsafe v2.x
@@ -1588,7 +1588,7 @@ None - This release only fixes the abovementioned bug.
 Bugs fixed in 2.12:
 ===================
 [1216983] Tree view is now the default view for new users.
-[1208955] Autotype now works with Terminal Serivices Windows and capital
+[1208955] Autotype now works with Terminal Services Windows and capital
 letters.
 [1003782,1030077] In tree view, the expanded trees are no longer collapsed
 after minimizing/restoring.
@@ -1596,7 +1596,7 @@ after minimizing/restoring.
 [1004026] No more multiple highlights after doing a "Find Next"
 [1214940] Cancel on password entry with system tray no longer clears
 entries, allowing potential overwrite of database.
-[1217271,1258982] Specifiying -r with a filename in command line now works
+[1217271,1258982] Specifying -r with a filename in command line now works
 correctly.
 
 New Features for 2.12:
@@ -1683,7 +1683,7 @@ New Features for 2.08:
 ======================
 [1094005,1083950] Multiple instances of PasswordSafe can now open the same
 database - only the first instance will be able to modify the database,
-unles explicitly opened read-only.
+unless explicitly opened read-only.
 
 Bugs fixed in 2.07:
 ===================
@@ -1889,7 +1889,7 @@ switcher
 
 New Features for 2.0pre1:
 =========================
-[RFE 782508, 829563, 815350, 555440] Tree, or heirarchical, view of
+[RFE 782508, 829563, 815350, 555440] Tree, or hierarchical, view of
 entries now supported. This allows the user to define categories,
 sub-categories, etc.
 

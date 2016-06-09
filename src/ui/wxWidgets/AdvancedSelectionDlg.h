@@ -78,9 +78,9 @@ class AdvancedSelectionPanel: public wxPanel
 public:
   AdvancedSelectionPanel(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate);
 
-  bool Validate();               //overriden from wxWindow
-  bool TransferDataToWindow();   //overriden from wxWindow
-  bool TransferDataFromWindow(); //overriden from wxWindow
+  bool Validate();               //overridden from wxWindow
+  bool TransferDataToWindow();   //overridden from wxWindow
+  bool TransferDataFromWindow(); //overridden from wxWindow
   void OnSelectSome( wxCommandEvent& evt );
   void OnSelectAll( wxCommandEvent& evt );
   void OnRemoveSome( wxCommandEvent& evt );

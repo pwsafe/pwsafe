@@ -11,7 +11,7 @@
 
 namespace pws_os {
   // Calling the following sets up a hook to the OS's best
-  // rng, which, if succeessful, may then be called via
+  // rng, which, if successful, may then be called via
   // GetRandomData
   extern bool InitRandomDataFunction();
   

@@ -96,7 +96,7 @@ upload-github:
 ifeq ($(GITHUB_TOKEN),)
 	$(error "GITHUB_TOKEN not set")
 endif
-	-$(GH_UPLOAD_CMD) release -t $(RELEASENAME) -d "PasswordSafe release $(RELEASEAME)"
+	-$(GH_UPLOAD_CMD) release -t $(RELEASENAME) -d "PasswordSafe release $(RELEASENAME)"
 	(cd $(RELEASEDIR); \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe -f pwsafe-$(RELEASENAME).exe; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe.sig -f pwsafe-$(RELEASENAME).exe.sig; \

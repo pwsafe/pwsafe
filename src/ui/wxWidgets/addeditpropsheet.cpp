@@ -1218,7 +1218,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       } else {
         m_core.GetPolicyFromName(oldPolName, oldPWP);
       }
-      // now get dbox's effecive policy:
+      // now get dbox's effective policy:
       pwp = GetSelectedPWPolicy();
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
@@ -1631,7 +1631,7 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
     // Check if pronounceable is also set - forbid both
     if (m_pwpPronounceCtrl->GetValue()) {
       m_pwpEasyCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -1659,7 +1659,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
     // Check if ezread is also set - forbid both
     if (m_pwpEasyCtrl->GetValue()) {
       m_pwpPronounceCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }

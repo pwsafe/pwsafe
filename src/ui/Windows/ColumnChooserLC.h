@@ -8,7 +8,7 @@
 
 #pragma once
 
-// CColumnChooserLC (Coloumn Chooser "Drag" ListCtrl)
+// CColumnChooserLC (Column Chooser "Drag" ListCtrl)
 
 #include "DropTarget.h"
 #include "DropSource.h"

@@ -84,7 +84,7 @@ void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
       HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), hiddenWindows);
     }
   }
-  //Don't call Hide() here, which just calls Show(false), which is overriden in
+  //Don't call Hide() here, which just calls Show(false), which is overridden in
   //derived classes, and wxDialog actually cancels the modal loop and closes the window
   win->wxWindow::Show(false);
   //push_front ensures we Show() in the reverse order of Hide()'ing
