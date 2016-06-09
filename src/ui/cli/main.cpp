@@ -46,6 +46,7 @@ StringX GetNewPassphrase();
 
 int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
                       const wstring &restrictToEntries, const wstring &fieldsToSearch);
+CItemData::FieldType String2FieldType(const stringT& str);
 
 //-----------------------------------------------------------------
 
@@ -534,19 +535,45 @@ StringX GetPassphrase(const wstring& prompt)
 }
 
 struct Restriction {
-  wstring field;
-  wchar_t match_type;
+  CItemData::FieldType field;
+  PWSMatch::MatchRule rule;
   wstring value;
+  bool caseSensitive;
 };
 
+PWSMatch::MatchRule Str2MatchRule( const wstring &s)
+{
+  static const std::map<wstring, PWSMatch::MatchRule> rulemap{
+    {L"==", PWSMatch::MR_EQUALS},
+    {L"!==", PWSMatch::MR_NOTEQUAL},
+    {L"^=", PWSMatch::MR_BEGINS},
+    {L"!^=", PWSMatch::MR_NOTBEGIN},
+    {L"$=", PWSMatch::MR_ENDS},
+    {L"!$=", PWSMatch::MR_NOTEND},
+    {L"~=", PWSMatch::MR_CONTAINS},
+    {L"!~=", PWSMatch::MR_NOTCONTAIN}
+  };
+  const auto itr = rulemap.find(s);
+  if ( itr != rulemap.end() )
+    return itr->second;
+  return PWSMatch::MR_INVALID;
+}
+
+bool CaseSensitive(const wstring &str)
+{
+  assert(str.length() == 0 || (str.length() == 2 && str[0] == '/' && (str[1] == L'i' || str[1] == 'I')));
+  return str.length() == 0 || str[0] == L'i';
+}
 std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
 {
   std::vector<Restriction> restrictions;
   if ( !restrictToEntries.empty() ) {
-    std::wregex restrictPattern(L"([[:alpha:]]+)([!]?[=^$~]=)([^;]+)(;|$)");
+    std::wregex restrictPattern(L"([[:alpha:]]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
     std::wsregex_iterator pos(restrictToEntries.cbegin(), restrictToEntries.cend(), restrictPattern);
     std::wsregex_iterator end;
-    for_each( pos, end, [&restrictions](const wsmatch &m) { restrictions.push_back( {m.str(1), m.str(2)[0], m.str(3)} ); } );
+    for_each( pos, end, [&restrictions](const wsmatch &m) {
+      restrictions.push_back( {String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))} );
+    });
   }
   return restrictions;
 }
@@ -697,7 +724,10 @@ int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
     return PWScore::FAILURE;
   }
 
-  ::FindMatches(std2stringx(searchText), ignoreCase, fields, true, stringT{}, CItemData::EMAIL, PWSMatch::MR_EQUALS, false,
+  const Restriction dummy{ CItem::LAST_DATA, PWSMatch::MR_INVALID, wstring{}, true};
+  const Restriction r = restrictions.size() > 0? restrictions[0]: dummy;
+
+  ::FindMatches(std2stringx(searchText), ignoreCase, fields, restrictions.size() > 0, r.value, r.field, r.rule, r.caseSensitive,
               core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [](ItemListIter itr){
                 cout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
   });
