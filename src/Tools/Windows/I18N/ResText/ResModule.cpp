@@ -763,7 +763,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		size_t l = wcslen(str)+1;
 		res += l;
 		// Align to DWORD boundary
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res += ((((int)res + 3) & ~3) - (int)res)/sizeof(WORD);
 
 		if (dwType & MFT_SEPARATOR)
 			continue;
@@ -865,7 +865,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			ReplaceStr((LPCWSTR)res, newMenu, wordcount, &m_bTranslatedMenuStrings, &m_bDefaultMenuStrings);
 			res += wcslen((LPCWSTR)res) + 1;
 			// Align to DWORD
-			res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+			res += ((((int)res + 3) & ~3) - (int)res)/sizeof(WORD);
 			if ((*wordcount) & 0x01)
 				(*wordcount)++;
 
@@ -891,7 +891,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 			res += wcslen((LPCWSTR)res) + 1;
 		}
 		// Align to DWORD
-		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		res += ((((int)res + 3) & ~3) - (int)res)/sizeof(WORD);
 		if ((*wordcount) & 0x01)
 			(*wordcount)++;
 	} while (!(bResInfo & 0x80));
@@ -1117,7 +1117,7 @@ BOOL CResModule::ReplaceAccelerator(UINT nID, WORD wLanguage)
 				continue;	// not a space - user must have made a mistake when translating
 			if (wtemp.compare(4, 1, _T("+")) == 0)
 			{
-				_stscanf(wtemp.substr(5, 1).c_str(), _T("%c"), &xkey);
+				_stscanf(wtemp.substr(5, 1).c_str(), _T("%c"), (wchar_t *)&xkey);
 				lpaccelNew[i].fVirt = xfVirt;
 				lpaccelNew[i].key = xkey;
 			}

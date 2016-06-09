@@ -32,7 +32,7 @@
 // that you have found/implemented and I will fix/incorporate them into this
 // file. 
 
-#include "RUEList.h"
+#include "core/RUEList.h"
 #include "CoolMenu.h"
 #include <afxdisp.h>
 #include <vector>
