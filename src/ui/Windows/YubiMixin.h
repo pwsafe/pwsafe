@@ -9,14 +9,18 @@
 /**
  * CYubiMixin is a means of sharing the common YubiKey controls
  * and related code across dialogs that provide YubiKey authentication
+ *
+ * Compiles to empty stub under NO_YUBI
  */
 
 #pragma once
 
-#include <afxmt.h> // for CMutex
-
 #include "SecString.h"
 #include "os/windows/yubi/YkLib.h"
+
+#ifndef NO_YUBI
+#include <afxmt.h> // for CMutex
+
 
 class CYubiMixin {
  public:
@@ -50,3 +54,35 @@ class CYubiMixin {
   bool m_present; // key present?
   mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };
+
+#else /* NO_YUBI - all no-op */
+
+class CYubiMixin {
+public:
+  CYubiMixin() {}
+  static bool YubiExists() {return false;}
+  static void SetYubiExists() {}
+protected:
+  void YubiPoll() {}
+
+  virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
+  virtual void YubiFailed() {};
+
+  // Yubico-related:
+  bool IsYubiInserted() const {return false;}
+  void yubiCheckCompleted() {}
+  // Callbacks:
+  virtual void yubiShowChallengeSent() = 0; // request's in the air, setup GUI to wait for reply
+  virtual void yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYTE *respBuf) = 0; // called by yubiCheckCompleted()
+  virtual void yubiInserted(void) = 0; // called when Yubikey's inserted
+  virtual void yubiRemoved(void) = 0;  // called when Yubikey's removed
+
+  void yubiRequestHMACSha1(const CSecString &) {}
+
+  StringX Bin2Hex(const unsigned char *, int ) {return StringX(L"");}
+
+  bool m_yubiPollDisable;
+  bool m_pending; // request pending?
+  bool m_present; // key present?
+};
+#endif /* NO_YUBI */
