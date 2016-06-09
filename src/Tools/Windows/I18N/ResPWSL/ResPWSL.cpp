@@ -27,7 +27,7 @@ void ShowUsage()
   _tprintf(_T("\nFor example 0x0007 produces pwsafeEN.dll and 0x0407 produces pwsafeEN_US.dll"));
 }
 
-int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
+int _tmain(int argc, TCHAR* argv[], TCHAR* /*envp[]*/)
 {
   // initialize MFC and print and error on failure
   if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0)) {
