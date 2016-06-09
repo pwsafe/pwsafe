@@ -263,7 +263,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
     curlen = 0;
   }
 
-  /* pad upto 56 bytes of zeroes */
+  /* pad up to 56 bytes of zeroes */
   while (curlen < 56) {
     buf[curlen++] = 0;
   }

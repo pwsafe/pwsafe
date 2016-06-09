@@ -6,7 +6,7 @@ else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)
 include Makefile.windows
 else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 #include Makefile.macos
-$(error "MacOS unsuported (yet)")
+$(error "MacOS unsupported (yet)")
 else
 $(error "Unsupported OS or unable to determine OS")
 endif

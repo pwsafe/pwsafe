@@ -8,7 +8,7 @@
 
 // CColumnChooserLC.cpp : implementation file
 
-// CColumnChooserLC (Coloumn Chooser ListCtrl)
+// CColumnChooserLC (Column Chooser ListCtrl)
 
 #include "stdafx.h"
 #include <afxole.h>         // MFC OLE classes

@@ -52,7 +52,7 @@ struct st_AE_master_data {
   int ibasedata;
   enum CItemData::EntryType original_entrytype;
 
-  // Addtitional related stuff
+  // Additional related stuff
   CSecString autotype;
   CSecString runcommand;
   short DCA, oldDCA, ShiftDCA, oldShiftDCA;
@@ -139,7 +139,7 @@ public:
   int &M_ibasedata() {return m_AEMD.ibasedata;}
   CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}
 
-  // Addtitional related stuff
+  // Additional related stuff
   CSecString &M_autotype() {return m_AEMD.autotype;}
   CSecString &M_runcommand() {return m_AEMD.runcommand;}
   short &M_DCA() {return m_AEMD.DCA;}

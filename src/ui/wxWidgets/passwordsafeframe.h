@@ -396,7 +396,7 @@ public:
 /// Should we show tooltips?
   static bool ShowToolTips();
 
-  // Overriden virtuals
+  // Overridden virtuals
   virtual bool Show(bool show = true);
   virtual void SetTitle(const wxString& title);
   virtual void SetFocus();
@@ -404,7 +404,7 @@ public:
   // PasswordSafe specifics:
   int Load(const StringX &passwd);
 
-  // Hilites the item.  Used for search
+  // Highlights the item.  Used for search
   void SelectItem(const pws_os::CUUID& uuid);
 
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}

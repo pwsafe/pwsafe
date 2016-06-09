@@ -2176,7 +2176,7 @@ exit:
 
 void DboxMain::startLockCheckTimer()
 {
-  // If we sucessfully registered for WTS events,
+  // If we successfully registered for WTS events,
   // then we don't need this timer. Otherwise, we start it
   // if user wishes to lock us on Windows lock.
 

@@ -479,7 +479,7 @@ void DboxMain::OnOptions()
 
     if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        // Determine whether Tree needs redisplayng due to change
+        // Determine whether Tree needs redisplaying due to change
         // in what is shown (e.g. usernames/passwords)
         bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
         // Note: passwords are only shown in the Tree if usernames are also shown

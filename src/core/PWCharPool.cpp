@@ -217,8 +217,8 @@ struct RandomWrapper {
 StringX CPasswordCharPool::MakePassword() const
 {
   // We don't care if the policy is inconsistent e.g. 
-  // number of lower case chars > 1 + make pronouceable
-  // The individual routines (normal, hex, pronouceable) will
+  // number of lower case chars > 1 + make pronounceable
+  // The individual routines (normal, hex, pronounceable) will
   // ignore what they don't need.
   // Saves an awful amount of bother with setting values to zero and
   // back as the user changes their minds!

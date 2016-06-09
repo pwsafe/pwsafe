@@ -159,7 +159,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
         if (!m_AEMD.pci->IsUserEmpty())
           sx_user = m_AEMD.pci->GetUser();
 
-        // Set up and pass Propertysheet caption showing entry being edited/viewed
+        // Set up and pass Property sheet caption showing entry being edited/viewed
         // If entry is protected, set to 'View' even if DB is in R/W mode
         cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
@@ -214,7 +214,7 @@ void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
         if (!m_AEMD.pci->IsUserEmpty())
           sx_user = m_AEMD.pci->GetUser();
 
-        // Set up and pass Propertysheet caption showing entry being edited/viewed
+        // Set up and pass Property sheet caption showing entry being edited/viewed
         // If entry is protected, set to 'View' even if DB is in R/W mode
         cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());

@@ -115,7 +115,7 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   for (listPos = m_pcore->GetEntryIter(); listPos != m_pcore->GetEntryEndIter();
        listPos++) {
     CItemData &ci = m_pcore->GetEntry(listPos);
-    // Don't add shortuts our ourselves
+    // Don't add shortcuts our ourselves
     if (ci.GetEntryType() != CItemData::ET_SHORTCUT &&
         m_pci->GetUUID() != ci.GetUUID())
       InsertItemIntoGUITree(ci);

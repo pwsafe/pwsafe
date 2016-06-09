@@ -33,7 +33,7 @@ CItemData::FieldType subgroups[] = {  CItemData::GROUP,
 struct _subgroupFunctions {
   const wxString name;
   PWSMatch::MatchRule function;
-  // Following ctor's required to shut up some compier warnings
+  // Following ctor's required to shut up some compiler warnings
   _subgroupFunctions() : name(wxEmptyString), function(PWSMatch::MR_INVALID) {}
   _subgroupFunctions(const wxString &aname, PWSMatch::MatchRule afunction) :
     name(aname), function(afunction) {}

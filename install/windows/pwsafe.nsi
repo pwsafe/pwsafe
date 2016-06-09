@@ -29,7 +29,7 @@
 ; In general, use of this installer is not mandatory. pwsafe.exe, the
 ; executable for Password Safe, can be placed in any location and run
 ; without any registration of DLLs, creation of directories, or entry
-; of registry values.  When Password Safe intializes, any necessary
+; of registry values.  When Password Safe initializes, any necessary
 ; setup will be performed by pwsafe.exe.  So, what is the purpose of
 ; this installer?
 ;
@@ -58,7 +58,7 @@
 ; This is useful for installing to disk-on-key, and where company policy
 ; and/or user permissions disallow writing to the registry. Also, Green
 ; installation doesn't create an Uninstall.exe or entry in Add/Remove
-; Software in the control panel - to unistall, just delete the install
+; Software in the control panel - to uninstall, just delete the install
 ; directory...
 ;
 ; USE
@@ -670,7 +670,7 @@ FunctionEnd
 
 Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
-  ; english is in "pws-install.ini" by default, so no writing necesarry
+  ; english is in "pws-install.ini" by default, so no writing necessary
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Settings" "Title" $(RESERVE_TITLE)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 1" "Text" $(RESERVE_FIELD1)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(RESERVE_FIELD2)

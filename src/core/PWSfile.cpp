@@ -65,7 +65,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
         break;
       case NEWFILE:
         ASSERT(0);
-        // deliberate fallthru
+        // deliberate fallthrough
       case UNKNOWN_VERSION:
         status = FAILURE;
       } // inner switch

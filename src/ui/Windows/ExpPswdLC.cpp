@@ -172,7 +172,7 @@ BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRes
     else
       return FALSE;  // no tooltip
   } else {
-    return FALSE;  // no ooltip
+    return FALSE;  // no tooltip
   }
 
   wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),

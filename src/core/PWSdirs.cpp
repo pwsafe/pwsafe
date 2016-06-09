@@ -15,7 +15,7 @@
 * The functions here return values that cause the application
 * to default to current behaviour, UNLESS the U3 (www.u3.com) env. vars
 * are defined, in which case values corresponding to the U3 layout are used,
-* as follows (corrsponding to the layout in the .u3p package):
+* as follows (corresponding to the layout in the .u3p package):
 *
 * GetSafeDir()   Default database directory:
 *                U3_DEVICE_DOCUMENT_PATH\My Safes\

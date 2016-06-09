@@ -203,7 +203,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  // Need to get change notifcations
+  // Need to get change notifications
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
 
   // Set plain text - not that it seems to do much!
@@ -492,7 +492,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
+      // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
         return 1L;
       break;
@@ -836,7 +836,7 @@ void CAddEdit_Basic::OnGeneratePassword()
   } else {
     PWPolicy policy(M_pwp());
     if (M_symbols().IsEmpty()) {
-      // No specifc entry symbols - use default
+      // No specific entry symbols - use default
       policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
     } else {
       // This entry has its own list of symbols
@@ -1333,7 +1333,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
     // In Edit, check user isn't changing entry to point to itself (circular/self reference)
     // Can't happen during Add as already checked entry does not exist so if accepted the
-    // password would be treated as an unusal "normal" password
+    // password would be treated as an unusual "normal" password
     gmb.AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
     return false;
   }

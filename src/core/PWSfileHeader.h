@@ -10,7 +10,7 @@
 #define __PWSFILEHEADER_H
 
 // PWSfileHeader.h
-// Represetation of what's written into a PWSfile's header (V3 and later)
+// Representation of what's written into a PWSfile's header (V3 and later)
 // Used to be a nested struct in PWSfile, but outgrew it...
 //-----------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ struct PWSfileHeader {
   unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
   pws_os::CUUID m_file_uuid;         // Unique DB ID
   std::vector<bool> m_displaystatus; // Tree expansion state vector
-  StringX m_prefString;              // Prefererences stored in the file
+  StringX m_prefString;              // Preferences stored in the file
   time_t m_whenlastsaved; // When last saved
   StringX m_lastsavedby; // and by whom
   StringX m_lastsavedon; // and by which machine

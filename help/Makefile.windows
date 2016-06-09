@@ -3,7 +3,7 @@
 #
 # We're not checking any dependencies, just invoking the 
 # compiler whenver we're called.
-# We're igonring the return status of hhc, since it's != 0 even
+# We're ignoring the return status of hhc, since it's != 0 even
 # when compiles OK.
 #
 

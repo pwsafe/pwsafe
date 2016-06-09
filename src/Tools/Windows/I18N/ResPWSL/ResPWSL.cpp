@@ -46,19 +46,19 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
       while (posTable) {
         const CStringTable &st = *vi.GetStringFileInfo().GetNextStringTable(posTable);
 
-        _tprintf(_T("String table %s\n------------------------------\n"), st.GetKey());
+        _tprintf(_T("String table %s\n------------------------------\n"), (LPCTSTR)st.GetKey());
 
         POSITION posString = st.GetFirstStringPosition();
 
         while (posString) {
           const CVersionInfoString &vistr = *st.GetNextString(posString);
-          _tprintf(_T("%s=%s\n"), vistr.GetKey(), vistr.GetValue());
+          _tprintf(_T("%s=%s\n"), (LPCTSTR)vistr.GetKey(), (LPCTSTR)vistr.GetValue());
         }
         _tprintf(_T("------------------------------\n"));
       }
       return 0;
     } else {
-      _tprintf(_T("Failed to get module version information for %s\n"), strFilePath);
+      _tprintf(_T("Failed to get module version information for %s\n"), (LPCTSTR)strFilePath);
       return 1;
     }
   }
@@ -147,7 +147,7 @@ bool UpdateRODLL(const CString csInFilePath, const LCID locale)
 
   csOutFilePath = path_buffer;
   if (!CopyFile(csInFilePath, csOutFilePath, FALSE)) {
-    _tprintf(_T("Unable to create file %s\n"), csOutFilePath);
+    _tprintf(_T("Unable to create file %s\n"), (LPCTSTR)csOutFilePath);
     return false;
   }
 

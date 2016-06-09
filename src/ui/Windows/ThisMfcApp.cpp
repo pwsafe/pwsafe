@@ -156,7 +156,7 @@ ThisMfcApp::~ThisMfcApp()
   if (m_bACCEL_Table_Created && app.m_ghAccelTable != NULL)
     DestroyAcceleratorTable(app.m_ghAccelTable);
 
-  // Alhough the system will do this automatically - I like to be clean!
+  // Although the system will do this automatically - I like to be clean!
   CloseHandle(m_hMutexOneInstance);
 
   PWSprefs::DeleteInstance();
@@ -364,7 +364,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
-  // Find reseource-only DLL if requested
+  // Find resource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
                       _T("pwsafe%s%s.dll") : _T("pwsafe%s_%s.dll");
   cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
@@ -745,7 +745,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         switch ((*arg)[1]) {
         case L'E': case L'e':
           isEncrypt = true;
-        // deliberate fallthru
+        // deliberate fallthrough
         case L'D': case L'd':
           allDone = true; // no need for further processing for -e/-d
         {
@@ -924,7 +924,7 @@ BOOL ThisMfcApp::InitInstance()
 
   m_core.SetReadOnly(false);
   // Command line parsing MUST be done before the first PWSprefs lookup!
-  // (since user/host/config file may be overriden!)
+  // (since user/host/config file may be overridden!)
   bool allDone = false;
 
   // Note: Even though PWSprefs has not yet been created, parsing the command line
@@ -960,7 +960,7 @@ BOOL ThisMfcApp::InitInstance()
   if (cs_PWS_QUIET.GetEnvironmentVariable(L"PWS_QUIET") != FALSE)
     m_noSysEnvWarnings = true;
 
-  // Check if the user allows muliple instances.
+  // Check if the user allows multiple instances.
   // For this to apply, consistently, must use the same copy of PasswordSafe
   // configuration file.
   if (!prefs->GetPref(PWSprefs::MultipleInstances)) {
@@ -1476,7 +1476,7 @@ void ThisMfcApp::GetLanguageFiles()
         }
         delete[] szLanguage_NativeUpper;
       }
-      // Get language name in Englsh
+      // Get language name in English
       int lnum = ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, NULL, 0);
       if (lnum > 0) {
         szLanguage_English = new wchar_t[lnum + 1];

@@ -57,7 +57,7 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
    * Return a cryptographically strong seed
    * from /dev/random, if possible.
    *
-   * When called with p == NULL, return nuber of bytes currently
+   * When called with p == NULL, return number of bytes currently
    * in entropy pool.
    * To minimize TOCTTOU, we also read the data at this time,
    * and deliver it when called with non-NULL p.

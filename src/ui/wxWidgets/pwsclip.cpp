@@ -14,7 +14,7 @@
   NOTE: In VS2013 wxWidgets 3.0.x builds:
     Both <wx/clipbrd.h> & <wx/dataobj.h> cause 51 warnings about using unsecure
     versions of standard calls, such as 'wcscpy' instead of 'wcscpy_s', if any
-    previously inluded header file includes <string> even though pre-processor
+    previously included header file includes <string> even though pre-processor
     variables _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES and
     _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT are defined.
 
@@ -63,7 +63,7 @@ PWSclipboard::PWSclipboard(): m_set(false)
 /**
  * Put text data to clipboard
  * @param[in] data data to store in clipboard
- * @param isSensitive if data sensitive, we remeber it's hash and will clear on ClearData() call
+ * @param isSensitive if data sensitive, we remember its hash and will clear on ClearData() call
  * @return \c true, if we could open the clipboard and put the data
 */
 bool PWSclipboard::SetData(const StringX &data)

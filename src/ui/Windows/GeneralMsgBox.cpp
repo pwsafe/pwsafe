@@ -15,7 +15,7 @@
 * This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
 * significantly enhanced to support text with HTML formatting and links
 * instead of a RTF string by using a CRichEditCtrlExtn control.
-* See www.codeproject.com for the orgininal code
+* See www.codeproject.com for the original code
 */
 
 #include "stdafx.h"
@@ -449,7 +449,7 @@ BOOL CGeneralMsgBox::OnInitDialog()
   if (m_uiEscCmdId == (UINT)IDC_STATIC)
     ModifyStyle(WS_SYSMENU, NULL);
 
-  // Focusing and setting the defaul button
+  // Focusing and setting the default button
   if (m_uiDefCmdId != (UINT)IDC_STATIC) {
     GetDlgItem(m_uiDefCmdId)->SetFocus();
     SetDefID(m_uiDefCmdId);
@@ -609,7 +609,7 @@ void CGeneralMsgBox::CreateBtns()
   CFont *pWndFont = GetFont();
   CFont *poldFont = dc.SelectObject(pWndFont);
 
-  CRect rcDummy; // dimesion doesn't matter here
+  CRect rcDummy; // dimension doesn't matter here
 
   INT_PTR cBtns = m_aBtns.GetSize();
 
@@ -642,7 +642,7 @@ void CGeneralMsgBox::CreateBtns()
 void CGeneralMsgBox::CreateIcon()
 {
   if (m_hIcon != NULL) {
-    CRect rcDummy; // dimesion doesn't matter here
+    CRect rcDummy; // dimension doesn't matter here
 
     // Creating the icon control
     m_stIconCtrl.Create(NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 

@@ -176,5 +176,5 @@ At this point, just hitting Cmd-B or click Product Menu => Build to build pwsafe
 4.2 Where is pwsafe.app?
 ------------------------
 
-In Xcode/build/Debug or Xcode/build/Release directories, dependening
+In Xcode/build/Debug or Xcode/build/Release directories, depending
 on the configuration you built. 

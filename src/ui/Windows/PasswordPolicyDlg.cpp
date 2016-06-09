@@ -933,7 +933,7 @@ void CPasswordPolicyDlg::OnENOwnSymbols()
   CString cs_symbols;
   m_SymbolsEdit.GetWindowText(cs_symbols);
 
-  // Check if user about to leave own symbols emtpy
+  // Check if user about to leave own symbols empty
   if (cs_symbols.GetLength() == 0) {
     // Tell user
     CGeneralMsgBox gmb;

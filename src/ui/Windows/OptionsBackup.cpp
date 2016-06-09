@@ -177,7 +177,7 @@ LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
+      // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
         return 1L;
   }

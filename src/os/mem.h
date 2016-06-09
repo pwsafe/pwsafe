@@ -11,7 +11,7 @@
 
 namespace pws_os {
   /**
-   * platform-indepenedent functions to lock and unlock memory
+   * platform-independent functions to lock and unlock memory
    * in RAM. Useful to prevent sensitive stuff from being swapped
    * to a snoopable swap file/device
    */

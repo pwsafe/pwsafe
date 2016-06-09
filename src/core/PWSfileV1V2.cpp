@@ -48,7 +48,7 @@ int PWSfileV1V2::WriteV2Header()
   // and compare it directly to VersionString to check version - a small
   // mistake that would cause a pre-2.14 executable to barf reading a database
   // written by 2.14 and later.
-  // #idef-ing this out, while correcting the code
+  // #ifdef-ing this out, while correcting the code
   // in ReadV2Header. Perhaps this can be fixed a year from now?
 #ifdef BREAK_PRE_2_14_COMPATIBILITY
   unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...

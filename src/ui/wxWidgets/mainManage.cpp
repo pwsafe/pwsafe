@@ -101,7 +101,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   The wxFileSelector code says it appends the default extension if user
   doesn't type one, but it actually doesn't and I don't see the purported
   code in 2.8.10.  And doing it ourselves after the dialog has returned is
-  risky because we might silenty overwrite an existing file
+  risky because we might silently overwrite an existing file
   */
 
   //create a copy to avoid multiple conversions to StringX

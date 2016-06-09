@@ -1592,6 +1592,8 @@
               </document>
               <document>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="title">"Toolbar &amp;visible: ID_SHOWHIDE_TOOLBAR"</string>
+                <string name="type">"dialog-control-document"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"menuitem"</string>
                 <long name="is-transient">0</long>
@@ -1599,6 +1601,11 @@
                 <long name="owns-file">1</long>
                 <string name="proxy-Bitmap">""</string>
                 <string name="proxy-Bitmap unchecked">""</string>
+                <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="proxy-Id name">"ID_SHOWHIDE_TOOLBAR"</string>
+                <long name="proxy-Id value">10038</long>
+                <string name="proxy-Label">"Toolbar &amp;visible"</string>
+                <string name="proxy-Kind">"Check"</string>
                 <bool name="proxy-Checked">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Help text">""</string>

@@ -363,7 +363,7 @@ void DboxMain::OnAddGroup()
     do {
       newGroup = m_ctlItemTree.AddGroup(s_copy.c_str(), bAlreadyExists);
       i++;
-      // Format as per Windows Exlorer "New Folder"/"New Folder (n)"
+      // Format as per Windows Explorer "New Folder"/"New Folder (n)"
       // where if 'n' present, it starts from 2
       Format(s_copy, L"%s (%d)", m_TreeViewGroup.c_str(), i);
     } while (bAlreadyExists);
@@ -1006,7 +1006,7 @@ void DboxMain::Delete(HTREEITEM ti,
       vdeps.push_back(Delete(pci));
   }
 
-  // Here if we have a bona fida group
+  // Here if we have a bona fide group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
   
   StringX sxPath = m_ctlItemTree.GetGroup(ti);

@@ -156,7 +156,7 @@ bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype) const
   }
 
   // tokenize into separate elements using % as the field separator.
-  // If this corresponds to a set envrionmental variable - replace it
+  // If this corresponds to a set environmental variable - replace it
   // and rebuild the command
   for (StringX::size_type st_startpos = 0;
        st_startpos < first_part.size();

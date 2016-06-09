@@ -526,7 +526,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\"" << endl;
   }
 
-  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canoncally
+  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canonically
 
   ofs << "Database_uuid=\"" << huuid << "\"" << endl;
   ofs << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
@@ -903,7 +903,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #define HDR_MAP_ENTRY(e) {e, CItemData::e},
 #define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
     
-        // These must be defined in the same order as Fields enum above, or it will assesrt below
+        // These must be defined in the same order as Fields enum above, or it will assert below
       
         HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)               HDR_MAP_ENTRY(PASSWORD)  HDR_MAP_ENTRY(URL)
         HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)              HDR_MAP_ENTRY(PMTIME)    HDR_MAP_ENTRY(ATIME)
@@ -1456,7 +1456,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   The checkbox "Encode/replace newline characters by '\n'" MUST be selected bu the
   user during the export or this import will fail and may give unexpected results.
 
-  The line that starts with '[' and ends with ']' is equivalant to the Title field.
+  The line that starts with '[' and ends with ']' is equivalent to the Title field.
 
   The following entries are supported:
      "Group: ", "Group Tree: ", "User Name: ", "URL: ", "Password: ",

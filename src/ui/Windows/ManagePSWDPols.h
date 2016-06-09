@@ -75,7 +75,7 @@ private:
   static int CALLBACK SortNames(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static int CALLBACK SortEntries(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   
-  // Hisory of current changes for Undo/Redo and index to current change
+  // History of current changes for Undo/Redo and index to current change
   // that can be undone. Note: if this is less that the size of the vector
   // of saved changes, then there are changes that can be redone.
   std::vector<st_PSWDPolicyChange> m_vchanges;

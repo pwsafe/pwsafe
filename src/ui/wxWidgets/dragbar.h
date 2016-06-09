@@ -56,7 +56,7 @@ public:
   size_t GetToolsCount() const { return m_items.GetCount(); }
   void SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled = wxNullBitmap);
   
-  //overriden from wxWindow
+  //overridden from wxWindow
   virtual wxSize DoGetBestSize() const ;
   
   void OnLeftDown(wxMouseEvent& evt);

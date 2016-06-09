@@ -16,7 +16,7 @@
 //
 // As in Unix, we support the concept of an "effective" v.s. "real"
 // name. The "real" is read from the system API, and is immutable.
-// The "effecitve" is initially set to be == the real value, but
+// The "effective" is initially set to be == the real value, but
 // may be overridden by the relevant SetEffective*() member function.
 //-----------------------------------------------------------------
 #include "os/typedefs.h"

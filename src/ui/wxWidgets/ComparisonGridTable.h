@@ -80,7 +80,7 @@ public:
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
 //
-//Class to handle display of comparison results which only invole a single 
+//Class to handle display of comparison results which only involve a single 
 //safe (uses only a single core)
 class UniSafeCompareGridTable: public ComparisonGridTable
 {
@@ -118,7 +118,7 @@ public:
 ///////////////////////////////////////////////////////////////////
 //MultiSafeCompareGridTable
 //
-//Class to handle display of comparison results which invole two
+//Class to handle display of comparison results which involve two
 //safes (uses both the cores in comparison result)
 class MultiSafeCompareGridTable: public ComparisonGridTable
 {

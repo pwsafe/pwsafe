@@ -93,7 +93,7 @@ in processing power.
 user's passphrase (UTF-8 encoded) and the SALT, as defined by the
 hash-function-based key stretching algorithm in [PBKDF2], with SHA-256
 [SHA256] as the hash function, and ITER iterations (at least
-2048). The intetion is that Key Block i will be generated with user
+2048). The intention is that Key Block i will be generated with user
 i's passphrase. All keyblocks protect the same K and L values (see
 below).
 
@@ -113,7 +113,7 @@ Implementation Note: K and L must NOT be related.
 2.3 endKB consists of two parts: The first is a 256 bit indicator of
 the end of the Key Blocks. This is the SHA-256 value of the Nonce
 described in 2.1. The idea is not to give a plaintext that's too easy
-to scan, but otherwise this value has no cryptgraphic utility. The
+to scan, but otherwise this value has no cryptographic utility. The
 second 256 bit value is HMAC(SHA256, L, KB1..KBn|SHA256(Nonce)). This
 serves as an integrity check on the Key Blocks.
 
@@ -143,7 +143,7 @@ record, except that instead of a Password field, it has a Reference to
 the "base" Entry record, from which it takes the password value at
 runtime. (The use-case for this is a single-sign-on site, where the
 user has access to several systems that share the same password).
-The manadatory fields for this record are:
+The mandatory fields for this record are:
 - AliasUUID: The UUID of the record
 - Title
 - BaseUUID - the UUID of the referred-to Entry record
@@ -198,7 +198,7 @@ representation.
 3.1.2 Text
  Text is represented in UTF-8 encoding (as defined in [RFC3629]), with
  no byte order marker (BOM) and no end-of-string mark (e.g., null
- byte). Note that the latter isn't neccessary since the length of the
+ byte). Note that the latter isn't necessary since the length of the
  field is provided explicitly. ALL fields described as "text" are
  UTF-8 encoded unless explicitly stated otherwise.
 
@@ -292,9 +292,9 @@ line.
 [11] Database Description. A purely informative description concerning
 the purpose or other practical use of the database.
 
-[12] Specfic filters for this database.  This is the text equivalent to
+[12] Specific filters for this database.  This is the text equivalent to
 the XML export of the filters as defined by the filter schema. The text 
-'image' has no 'print formatting' e.g. tabs and carraige return/line feeds,
+'image' has no 'print formatting' e.g. tabs and carriage return/line feeds,
 since XML processing does not require this.
 
 [13] Values marked 'Reserved' are know to have been used by customized
@@ -653,7 +653,7 @@ description.
 4.2.3 All unassigned identifiers except as listed in the previous two
 subsections are reserved, and should not be used by other
 implementations of this format specification in the interest of
-interoperablity.
+interoperability.
 
 5. References:
 [TWOFISH] http://www.schneier.com/paper-twofish-paper.html

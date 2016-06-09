@@ -2621,7 +2621,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
       break;
     case PWScore::SUCCESS:
     case PWScore::OK_WITH_ERRORS:
-      // deliberate fallthru
+      // deliberate fallthrough
     default:
     {
       if (pcmd != NULL)
@@ -2733,7 +2733,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       break;
     }
     case PWScore::SUCCESS:
-    default: // deliberate fallthru
+    default: // deliberate fallthrough
       if (pcmd != NULL)
         Execute(pcmd);
       RefreshViews();

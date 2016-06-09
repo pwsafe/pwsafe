@@ -98,7 +98,7 @@ bool PerformConfigMigration()
   bRetVal = false;
   bool bNoMoreNodes(false);
   CXMLprefs newXMLConfig(wsExecDirCfgFile.c_str()); // for migrating user/host to new
-  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for reomving user/host from old
+  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for removing user/host from old
 
   // Create the new one from it just containing our host/user
   if (!newXMLConfig.Load())

@@ -1,5 +1,5 @@
 #!/bin/sh
-# simple script for updation version info
+# simple script for updating version info
 GIT_ROOT=`git rev-parse --show-toplevel`
 
 # just define version values here (will extract them for CMakeLists later)

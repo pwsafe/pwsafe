@@ -606,7 +606,7 @@ void CAddEdit_Attachment::ShowPreview()
       // Get new client rectangle
       m_AttStatic.GetClientRect(m_clientrect);
     } else {
-      // Use intial (maximum size) client rectangle
+      // Use initial (maximum size) client rectangle
       // But might need to resize if the image aspect ratio is different to the control
       m_clientrect = m_initial_clientrect;
 
