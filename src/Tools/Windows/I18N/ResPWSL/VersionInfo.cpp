@@ -128,7 +128,6 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
 
   m_strModulePath = strModulePath;
 
-  DWORD dwSize = viLoadBuf.GetPosition();
   VERSION_INFO_HEADER* pVI = (VERSION_INFO_HEADER*) viLoadBuf.GetData();
 
   ASSERT(!wcscmp(pVI->szKey, L"VS_VERSION_INFO"));
@@ -345,10 +344,10 @@ void CVersionInfo::SetInfoBlockOrder(BOOL bRegularStringsFirst)
   m_bRegularInfoOrder = bRegularStringsFirst;
 }
 
-BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(HANDLE hModule,   // module handle 
-                                                  LPCTSTR lpType,   // address of resource type 
-                                                  LPTSTR lpName,    // address of resource name 
-                                                  LONG_PTR lParam)  // extra parameter, could be 
+BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(HANDLE /*hModule*/,   // module handle 
+                                                  LPCTSTR /*lpType*/,   // address of resource type 
+                                                  LPTSTR lpName,        // address of resource name 
+                                                  LONG_PTR lParam)      // extra parameter, could be 
 { 
   CVersionInfo * pVI= (CVersionInfo *)lParam;
 
@@ -365,11 +364,11 @@ BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(HANDLE hModule,   // module ha
   return FALSE; 
 } 
 
-BOOL CVersionInfo::EnumResourceLangFuncFindFirst(HANDLE hModule,     // module handle
-                                                 LPCTSTR lpszType,   // resource type
-                                                 LPCTSTR lpszName,   // resource name
-                                                 WORD wIDLanguage,   // language identifier
-                                                 LONG_PTR lParam)    // application-defined parameter
+BOOL CVersionInfo::EnumResourceLangFuncFindFirst(HANDLE /*hModule*/,     // module handle
+                                                 LPCTSTR /*lpszType*/,   // resource type
+                                                 LPCTSTR /*lpszName*/,   // resource name
+                                                 WORD wIDLanguage,       // language identifier
+                                                 LONG_PTR lParam)        // application-defined parameter
 {
   CVersionInfo * pVI= (CVersionInfo *)lParam;
 

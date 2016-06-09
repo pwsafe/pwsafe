@@ -1,11 +1,15 @@
 @echo off
 Rem
 Rem Delete current POT file and recreate it.
+
+Rem *** Run from the directory containing this command file so that ***
+Rem *** the relative paths to the ResText program and DLL are correct ***
+
 Rem
 
 setlocal
-set RESTEXT=tools\bin\ResText\Release\ResText.exe
-set DLL=..\..\..\bin\release\pwsafe_base.dll
+set RESTEXT=..\..\..\..\build\bin\ResText\Release\ResText.exe
+set DLL=..\..\..\..\build\bin\pwsafe\Release\pwsafe_base.dll
 set POT=pos\pwsafe.pot
 
 if not exist %RESTEXT% goto no_program

@@ -265,9 +265,9 @@ BOOL CResModule::ExtractString(UINT nID)
 		int len = GET_WORD(pp);
 		pp++;
 		std::wstring msgid = std::wstring(pp, len);
-		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
-		wcscpy(pBuf, msgid.c_str());
+		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH * 2];
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * 2 * sizeof(WCHAR));
+		wcscpy_s(pBuf, MAX_STRING_LENGTH * 2, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 
 		if (wcslen(pBuf))
@@ -322,15 +322,15 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		size_t len = GET_WORD(pp);
 		pp++;
 		std::wstring msgid = std::wstring(pp, len);
-		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
-		wcscpy(pBuf, msgid.c_str());
+		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH * 2];
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * 2 * sizeof(WCHAR));
+		wcscpy_s(pBuf, MAX_STRING_LENGTH * 2, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 		msgid = std::wstring(pBuf);
 
 		RESOURCEENTRY resEntry;
 		resEntry = m_StringEntries[msgid];
-		wcscpy(pBuf, resEntry.msgstr.c_str());
+		wcscpy_s(pBuf, MAX_STRING_LENGTH * 2, resEntry.msgstr.c_str());
 		CUtils::StringCollapse(pBuf);
 		size_t newlen = wcslen(pBuf);
 		if (newlen)
@@ -341,8 +341,9 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		delete [] pBuf;
 	}
 
-	WORD * newTable = new WORD[nMem + (nMem % 2)];
-	SecureZeroMemory(newTable, (nMem + (nMem % 2))*2);
+  const int newtable_size = nMem + (nMem % 2);
+	WORD * newTable = new WORD[newtable_size];
+	SecureZeroMemory(newTable, newtable_size * 2);
 
 	size_t index = 0;
 	for (int i=0; i<16; ++i)
@@ -350,21 +351,21 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		int len = GET_WORD(p);
 		p++;
 		std::wstring msgid = std::wstring(p, len);
-		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
-		wcscpy(pBuf, msgid.c_str());
+		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH * 2];
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * 2 * sizeof(WCHAR));
+		wcscpy_s(pBuf, MAX_STRING_LENGTH * 2, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 		msgid = std::wstring(pBuf);
 
 		RESOURCEENTRY resEntry;
 		resEntry = m_StringEntries[msgid];
-		wcscpy(pBuf, resEntry.msgstr.c_str());
+		wcscpy_s(pBuf, MAX_STRING_LENGTH * 2, resEntry.msgstr.c_str());
 		CUtils::StringCollapse(pBuf);
 		size_t newlen = wcslen(pBuf);
 		if (newlen)
 		{
 			newTable[index++] = (WORD)newlen;
-			wcsncpy((wchar_t *)&newTable[index], pBuf, newlen);
+			wcsncpy_s((wchar_t *)&newTable[index], newtable_size - index, pBuf, newlen);
 			index += newlen;
 			m_bTranslatedStrings++;
 		}
@@ -372,7 +373,7 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		{
 			newTable[index++] = (WORD)len;
 			if (len)
-				wcsncpy((wchar_t *)&newTable[index], p, len);
+				wcsncpy_s((wchar_t *)&newTable[index], newtable_size - index, p, len);
 			index += len;
          if (len){
 				m_bDefaultStrings++;
@@ -632,7 +633,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			_tcscpy_s(pBuf, MAX_STRING_LENGTH, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -650,7 +651,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			_tcscpy_s(pBuf, MAX_STRING_LENGTH, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -723,7 +724,7 @@ const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * w
 		else
 		{
 			if (newMenu)
-				wcscpy((wchar_t *)&newMenu[(*wordcount)], (LPCWSTR)res);
+				wcscpy_s((wchar_t *)&newMenu[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 			(*wordcount) += wcslen((LPCWSTR)res) + 1;
 			res += wcslen((LPCWSTR)res) + 1;
 		}
@@ -775,7 +776,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 				menuId = (WORD)-1;
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			_tcscpy_s(pBuf, MAX_STRING_LENGTH, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -800,7 +801,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-			_tcscpy(pBuf, str);
+			_tcscpy_s(pBuf, MAX_STRING_LENGTH, str);
 			CUtils::StringExtend(pBuf);
 
 			std::wstring wstr = std::wstring(pBuf);
@@ -886,7 +887,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 		else
 		{
 			if (newMenu)
-				wcscpy((wchar_t *)&newMenu[(*wordcount)], (LPCWSTR)res);
+				wcscpy_s((wchar_t *)&newMenu[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 			(*wordcount) += wcslen((LPCWSTR)res) + 1;
 			res += wcslen((LPCWSTR)res) + 1;
 		}
@@ -974,24 +975,24 @@ BOOL CResModule::ExtractAccelerator(UINT nID)
 		// X = upper case character
 		// e.g. "V CS+Q" == Ctrl + Shift + 'Q'
 		if ((fFlags & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf, _T("V"));
+			_tcscat_s(pBuf, 1024, _T("V"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((fFlags & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf, _T("A"));
+			_tcscat_s(pBuf, 1024, _T("A"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((fFlags & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf, _T("C"));
+			_tcscat_s(pBuf, 1024, _T("C"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((fFlags & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf, _T("S"));
+			_tcscat_s(pBuf, 1024, _T("S"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		_stprintf(pBuf, _T("%s+%c"), pBuf, wAnsi);
 
@@ -1067,24 +1068,24 @@ BOOL CResModule::ReplaceAccelerator(UINT nID, WORD wLanguage)
 
 		// get original key combination
 		if ((lpaccelNew[i].fVirt & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf, _T("V"));
+			_tcscat_s(pBuf, 1024, _T("V"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf, _T("A"));
+			_tcscat_s(pBuf, 1024, _T("A"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf, _T("C"));
+			_tcscat_s(pBuf, 1024, _T("C"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf, _T("S"));
+			_tcscat_s(pBuf, 1024, _T("S"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat_s(pBuf, 1024, _T(" "));
 
 		_stprintf(pBuf, _T("%s+%c"), pBuf, lpaccelNew[i].key);
 
@@ -1117,7 +1118,7 @@ BOOL CResModule::ReplaceAccelerator(UINT nID, WORD wLanguage)
 				continue;	// not a space - user must have made a mistake when translating
 			if (wtemp.compare(4, 1, _T("+")) == 0)
 			{
-				_stscanf(wtemp.substr(5, 1).c_str(), _T("%c"), (wchar_t *)&xkey);
+				_stscanf_s(wtemp.substr(5, 1).c_str(), _T("%c"), (wchar_t *)&xkey, 1);
 				lpaccelNew[i].fVirt = xfVirt;
 				lpaccelNew[i].key = xkey;
 			}
@@ -1189,7 +1190,7 @@ BOOL CResModule::ExtractDialog(UINT nID)
 	{
 		TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-		_tcscpy(pBuf, dlg.caption);
+		_tcscpy_s(pBuf, MAX_STRING_LENGTH, dlg.caption);
 		CUtils::StringExtend(pBuf);
 
 		std::wstring wstr = std::wstring(pBuf);
@@ -1581,7 +1582,7 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 	default:
 		if (newDialog)
 		{
-			wcscpy((LPWSTR)&newDialog[(*wordcount)], (LPCWSTR)res);
+			wcscpy_s((LPWSTR)&newDialog[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 		}
 		(*wordcount) += wcslen((LPCWSTR) res) + 1;
 		res += wcslen((LPCWSTR) res) + 1;
@@ -1613,7 +1614,7 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 	default:
 		if (newDialog)
 		{
-			wcscpy((LPWSTR)&newDialog[(*wordcount)], (LPCWSTR)res);
+			wcscpy_s((LPWSTR)&newDialog[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 		}
 		(*wordcount) += wcslen((LPCWSTR) res) + 1;
 		res += wcslen((LPCWSTR) res) + 1;
@@ -1649,7 +1650,7 @@ const WORD * CResModule::CountMemReplaceDialogResource(const WORD * res, size_t 
 		}
 
 		if (newDialog)
-			wcscpy((LPWSTR)&newDialog[(*wordcount)], (LPCWSTR)res);
+			wcscpy_s((LPWSTR)&newDialog[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 		(*wordcount) += wcslen((LPCWSTR)res) + 1;
 		res += wcslen((LPCWSTR)res) + 1;
 	}
@@ -1764,7 +1765,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	else
 	{
 		if (newDialog)
-			wcscpy((LPWSTR)&newDialog[(*wordcount)], (LPCWSTR)res);
+			wcscpy_s((LPWSTR)&newDialog[(*wordcount)], *wordcount + wcslen((LPCWSTR)res) + 1, (LPCWSTR)res);
 		(*wordcount) += wcslen((LPCWSTR) res) + 1;
 		res += wcslen((LPCWSTR) res) + 1;
 	}
@@ -1896,24 +1897,24 @@ void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * tran
 {
 	TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
 	SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
-	wcscpy(pBuf, src);
+	wcscpy_s(pBuf, MAX_STRING_LENGTH, src);
 	CUtils::StringExtend(pBuf);
 
 	std::wstring wstr = std::wstring(pBuf);
 	RESOURCEENTRY entry = m_StringEntries[wstr];
 	if (entry.msgstr.size())
 	{
-		wcscpy(pBuf, entry.msgstr.c_str());
+		wcscpy_s(pBuf, MAX_STRING_LENGTH, entry.msgstr.c_str());
 		CUtils::StringCollapse(pBuf);
 		if (dest)
-			wcscpy((wchar_t *)&dest[(*count)], pBuf);
-		(*count) += wcslen(pBuf)+1;
+			wcscpy_s((wchar_t *)&dest[(*count)], *count + wcslen((LPCWSTR)pBuf) + 1, pBuf);
+		(*count) += wcslen(pBuf) + 1;
 		(*translated)++;
 	}
 	else
 	{
 		if (dest)
-			wcscpy((wchar_t *)&dest[(*count)], src);
+			wcscpy_s((wchar_t *)&dest[(*count)], *count + wcslen((LPCWSTR)src) + 1, src);
 		(*count) += wcslen(src) + 1;
       if (wcslen(src)){
 			(*def)++;
