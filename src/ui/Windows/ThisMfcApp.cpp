@@ -1476,7 +1476,7 @@ void ThisMfcApp::GetLanguageFiles()
         }
         delete[] szLanguage_NativeUpper;
       }
-      // Get language name in Englsh
+      // Get language name in English
       int lnum = ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, NULL, 0);
       if (lnum > 0) {
         szLanguage_English = new wchar_t[lnum + 1];
