@@ -274,6 +274,7 @@ void CPasskeySetup::YubiFailed()
 
 void CPasskeySetup::YubiInitialize()
 {
+#ifndef NO_YUBI
   CGeneralMsgBox gmb;
   CYubiCfgDlg ycd(this, m_core);
   unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
@@ -287,4 +288,5 @@ void CPasskeySetup::YubiInitialize()
     gmb.AfxMessageBox(IDS_YUBI_INIT_FAILED,
                       MB_OK | MB_ICONERROR);
   }
+#endif /* NO_YUBI */
 }

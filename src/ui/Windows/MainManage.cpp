@@ -645,8 +645,10 @@ void DboxMain::OnGeneratePassword()
 
 void DboxMain::OnYubikey()
 {
+#ifndef NO_YUBI
   CYubiCfgDlg dlg(this, m_core);
   dlg.DoModal();
+#endif /* NO_YUBI */
 }
 
 void DboxMain::OnManagePasswordPolicies()
