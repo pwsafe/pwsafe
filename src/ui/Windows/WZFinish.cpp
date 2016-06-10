@@ -432,10 +432,12 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
             break;
           case ID_MENUITEM_EXPORT2PLAINTEXT:
           case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+          case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
             uiMsg = IDS_WZEXPORTTEXT;
             break;
           case ID_MENUITEM_EXPORT2XML:
           case ID_MENUITEM_EXPORTENT2XML:
+          case ID_MENUITEM_EXPORTGRP2XML:
             uiMsg = IDS_WZEXPORTXML;
             break;
           default:
