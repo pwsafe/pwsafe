@@ -24,12 +24,18 @@ set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_RE
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
-option (NO_XML "Set ON to disable XML import support" OFF)
 if (WIN32)
-option (WX_WINDOWS "Build wxWidget under Windows" OFF)
+  option (WX_WINDOWS "Build wxWidget under Windows" OFF)
+  option (XML_MSXML "Set ON for XML import support with MSXML" ON)
+  option (XML_XERCESC "Set ON for XML import support with XercesC" OFF)
+  if (XML_MSXML AND XML_XERCESC)
+    message (FATAL_ERROR "MSXML and XERCESC are mutually exclusive")
+  endif (XML_MSXML AND XML_XERCESC)
+else (WIN32)
+  option (XML_XERCESC "Set OFF to disable XML import support" ON)
 endif (WIN32)
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
+  option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -75,7 +81,7 @@ if (NOT WIN32)
   endif(NOT HAVE_YKPERS_H)
 endif (NOT WIN32)
 
-if (NOT NO_XML)
+if (XML_XERCESC)
   find_package (XercesC QUIET MODULE)
   if (NOT XercesC_FOUND)
     # FindXercesC module was added to cmake in 3.1. Debian 8 uses 3.0.2
@@ -93,7 +99,12 @@ if (NOT NO_XML)
   endif(NOT XercesC_FOUND)
   include_directories( ${XercesC_INCLUDE_DIR} )
   add_definitions ("-DUSE_XML_LIBRARY=XERCES")
-endif (NOT NO_XML)
+endif (XML_XERCESC)
+
+if (XML_MSXML)
+  add_definitions ("-DUSE_XML_LIBRARY=MSXML")
+  set (MSXML_LIB "msxml6")
+endif (XML_MSXML)
 
 if (USE_ASAN)
   # Requires libasan, which I can't get CHECK_LIBRARY_EXISTS to find under Debian
@@ -236,21 +247,22 @@ else (NOT WIN32)
 endif (NOT WIN32)
 set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
-if (NOT NO_XML)
+if (XML_XERCESC)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})
-endif (NOT NO_XML)
+endif (XML_XERCESC)
 
 if (APPLE)
     target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
 elseif (WIN32)
-if (NOT NO_YUBI)
+  if (NOT NO_YUBI)
    set (YUBILIB "YkLib22")
-endif ()
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
-      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid Dbghelp Urlmon ${CMAKE_REQUIRED_LIBRARIES})
+  endif ()
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
+      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid
+      Dbghelp Urlmon ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
-    ${CMAKE_REQUIRED_LIBRARIES})
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
+  ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
 # Installation stuff (for 'make install', but mainly for 'make package')
