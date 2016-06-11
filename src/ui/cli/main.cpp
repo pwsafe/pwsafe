@@ -701,9 +701,9 @@ int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignor
 {
   PWScore core;
   int status = OpenCore(core, safe);
-  if (!status)
-    return status;
-  return SearchForEntries(core, searchText, ignoreCase, restrictToEntries, fieldsToSearch);
+  if ( status == PWScore::SUCCESS )
+    status = SearchForEntries(core, searchText, ignoreCase, restrictToEntries, fieldsToSearch);
+  return status;
 }
 
 int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
