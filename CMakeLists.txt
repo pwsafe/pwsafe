@@ -178,7 +178,7 @@ endif (MSVC)
 if (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.cmake")
 else (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.cmake")
 endif (WIN32 AND NOT WX_WINDOWS)
 
 configure_file (
