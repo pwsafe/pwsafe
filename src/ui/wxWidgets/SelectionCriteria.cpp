@@ -104,9 +104,9 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
   if (!m_fUseSubgroups)
     return _("All entries");
   else
-    return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxT(' ')
-            << subgroupFunctions[m_subgroupFunction].name << wxT(" \"") << m_subgroupText
-            << wxT("\" [") << (m_fCaseSensitive? wxEmptyString : _("not ")) << _("case-sensitive]");
+    return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxS(' ')
+            << subgroupFunctions[m_subgroupFunction].name << wxS(" \"") << m_subgroupText
+                                         << wxS("\" [") << (m_fCaseSensitive? wxS("") : _("not ")) << _("case-sensitive]");
 }
 
 //static
