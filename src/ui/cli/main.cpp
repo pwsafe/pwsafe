@@ -55,7 +55,16 @@ static struct termios oldTermioFlags; // to restore tty echo
 static void usage(char *pname)
 {
   cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
-       << "\t safe --exp[=file] --text|--xml" << endl;
+       << "\t safe --exp[=file] --text|--xml" << endl
+  << "\t safe --new" << endl
+  << "\t safe --search=<search text> [--ignore-case] [--subset<OP><string>[/iI]] [--fields=<comma-separated fieldnames>]" << endl
+  << "\t\t where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
+  << "\t\t\t = => exactly similar" << endl
+  << "\t\t\t ^ => begins-with" << endl
+  << "\t\t\t $ => ends with"
+  << "\t\t\t ^ => contains"
+  << "\t\t\t ! => negation" << endl
+  << "\t\t a trailing /i or /I at the end of subset string makes the operation case insensitive or sensitive respectively" << endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const StringX& str)
