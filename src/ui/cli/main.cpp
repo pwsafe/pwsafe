@@ -719,6 +719,8 @@ int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
   }
 
   CItemData::FieldBits fields = ParseFieldsToSearh(fieldsToSearch);
+  if (fieldsToSearch.empty())
+    fields.set();
   if ( !fieldsToSearch.empty() && fields.none() ) {
     cerr << "Could not parse [" << fieldsToSearch << " ]for restricting searched fields" << endl;
     return PWScore::FAILURE;
