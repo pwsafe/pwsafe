@@ -527,7 +527,7 @@ StringX GetNewPassphrase()
 StringX GetPassphrase(const wstring& prompt)
 {
     wstring wpk;
-    cout << prompt;
+    wcout << prompt;
     echoOff();
     wcin >> wpk;
     echoOn();
@@ -581,7 +581,7 @@ std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictT
 int OpenCore(PWScore& core, const StringX& safe)
 {
   if (!pws_os::FileExists(safe.c_str())) {
-    cerr << safe << " - file not found" << endl;
+    wcerr << safe << " - file not found" << endl;
     return 2;
   }
 
@@ -729,7 +729,7 @@ int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
 
   ::FindMatches(std2stringx(searchText), ignoreCase, fields, restrictions.size() > 0, r.value, r.field, r.rule, r.caseSensitive,
               core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [](ItemListIter itr){
-                cout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
+                wcout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
   });
   return PWScore::SUCCESS;
 }
