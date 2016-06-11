@@ -50,9 +50,10 @@
 #ifndef __TIMEDTASKCHAIN_H__
 #define __TIMEDTASKCHAIN_H__
 
+#include <wx/timer.h>
+
 #include <list>
 #include <functional>
-#include <wx/timer.h>
 
 class TimedTaskChain: public wxTimer
 {
