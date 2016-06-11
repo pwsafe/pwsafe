@@ -43,16 +43,31 @@ set (CORE_SRCS
   Util.cpp
   VerifyFormat.cpp
   XMLprefs.cpp
-  XML/Xerces/XFileSAX2Handlers.cpp
-  XML/Xerces/XFileValidator.cpp
-  XML/Xerces/XFileXMLProcessor.cpp
-  XML/Xerces/XFilterSAX2Handlers.cpp
-  XML/Xerces/XFilterXMLProcessor.cpp
-  XML/Xerces/XSecMemMgr.cpp
   XML/XMLFileHandlers.cpp
   XML/XMLFileValidation.cpp
   pugixml/pugixml.cpp
   )
+
+if (XML_MSXML)
+  list (APPEND CORE_SRCS
+    XML/MSXML/MFileSAX2Handlers.cpp
+    XML/MSXML/MFileValidator.cpp
+    XML/MSXML/MFileXMLProcessor.cpp
+    XML/MSXML/MFilterSAX2Handlers.cpp
+    XML/MSXML/MFilterXMLProcessor.cpp
+  )
+endif (XML_MSXML)
+
+if (XML_XERCESC)
+  list (APPEND CORE_SRCS
+    XML/Xerces/XFileSAX2Handlers.cpp
+    XML/Xerces/XFileValidator.cpp
+    XML/Xerces/XFileXMLProcessor.cpp
+    XML/Xerces/XFilterSAX2Handlers.cpp
+    XML/Xerces/XFilterXMLProcessor.cpp
+    XML/Xerces/XSecMemMgr.cpp
+   )
+endif (XML_XERCESC)
 
 if (NOT WIN32 OR WX_WINDOWS)
   list (APPEND CORE_SRCS ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp)
