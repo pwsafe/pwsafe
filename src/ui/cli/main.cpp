@@ -130,7 +130,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::tx",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:u:f:c",
                         long_options, &option_index);
     if (c == -1)
       break;
