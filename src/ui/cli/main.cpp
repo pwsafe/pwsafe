@@ -162,7 +162,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
     case 's':
       if (ua.Operation == UserArgs::Unset) {
-        ua.Operation = UserArgs::Import;
+        ua.Operation = UserArgs::Search;
         assert(optarg);
         ua.searchedText = Utf82wstring(optarg);
         break;
