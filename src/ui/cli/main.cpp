@@ -83,8 +83,10 @@ struct UserArgs {
   enum {Unset, Import, Export, CreateNew, Search} Operation;
   enum {Unknown, XML, Text} Format;
 
+  // The arg taken by the main operation
+  wstring opArg;
+
   // used for search
-  wstring searchedText;
   wstring searchedFields;
   wstring searchedSubset;
   bool ignoreCase;
@@ -173,7 +175,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       if (ua.Operation == UserArgs::Unset) {
         ua.Operation = UserArgs::Search;
         assert(optarg);
-        ua.searchedText = Utf82wstring(optarg);
+        ua.opArg = Utf82wstring(optarg);
         break;
       }
       else
@@ -216,7 +218,7 @@ int main(int argc, char *argv[])
         return CreateNewSafe(ua.safe);
     }
     else if (ua.Operation == UserArgs::Search) {
-      return OpenCoreAndSearch(ua.safe, ua.searchedText, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
+      return OpenCoreAndSearch(ua.safe, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
     }
 
   PWScore core;
