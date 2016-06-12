@@ -80,7 +80,9 @@ std::ostream& operator<<(std::ostream& os, const wstring& str)
 template <class CallbackType>
 void Split(const wstring &str, const wstring &sep, CallbackType cb)
 {
-  std::wsregex_token_iterator pos(str.cbegin(), str.cend(), std::wregex(sep), -1);
+  // we have to create a temp variable like this, or else it crashes in Xcode 6
+  std::wregex r(sep);
+  std::wsregex_token_iterator pos(str.cbegin(), str.cend(), r, -1);
   std::wsregex_token_iterator end;
   for_each( pos, end, cb );
 }
