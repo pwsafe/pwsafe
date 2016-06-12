@@ -40,12 +40,14 @@ static const char *status_text(int status);
 static int CreateNewSafe(const StringX& filename);
 static int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                             const wstring &restrictToEntries, const wstring &fieldsToSearch);
+static int AddEntry(PWScore &core, const wstring &fieldValues);
 
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
 
 int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
                       const wstring &restrictToEntries, const wstring &fieldsToSearch);
+int OpenCoreAndAddEntry(const StringX &safe, const wstring &fieldValues);
 CItemData::FieldType String2FieldType(const stringT& str);
 
 //-----------------------------------------------------------------
@@ -57,6 +59,7 @@ static void usage(char *pname)
   cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
        << "\t safe --exp[=file] --text|--xml" << endl
   << "\t safe --new" << endl
+  << "\t safe --add=filed=value,field=value,..." << endl
   << "\t safe --search=<search text> [--ignore-case] [--subset<OP><string>[/iI]] [--fields=<comma-separated fieldnames>]" << endl
   << "\t\t where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
   << "\t\t\t = => exactly similar" << endl
@@ -90,7 +93,7 @@ void Split(const wstring &str, const wstring &sep, CallbackType cb)
 struct UserArgs {
   UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false} {}
   StringX safe, fname;
-  enum {Unset, Import, Export, CreateNew, Search} Operation;
+  enum {Unset, Import, Export, CreateNew, Search, Add} Operation;
   enum {Unknown, XML, Text} Format;
 
   // The arg taken by the main operation
@@ -139,10 +142,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"subset", required_argument, 0, 'u'},
       {"fields", required_argument, 0, 'f'},
       {"ignore-case", optional_argument, 0, 'c'},
+      {"add", required_argument, 0, 'a'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:u:f:c",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:u:f:ca:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -206,6 +210,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           ua.ignoreCase = true;
         break;
 
+    case 'a':
+        ua.Operation = UserArgs::Add;
+        assert(optarg);
+        ua.opArg = Utf82wstring(optarg);
+        break;
+
     default:
       cerr << "Unknown option: " << char(c) << endl;
       return false;
@@ -229,6 +239,9 @@ int main(int argc, char *argv[])
     }
     else if (ua.Operation == UserArgs::Search) {
       return OpenCoreAndSearch(ua.safe, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
+    }
+    else if (ua.Operation == UserArgs::Add) {
+      return OpenCoreAndAddEntry(ua.safe, ua.opArg);
     }
 
   PWScore core;
@@ -753,4 +766,37 @@ int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                 wcout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
   });
   return PWScore::SUCCESS;
+}
+
+int OpenCoreAndAddEntry(const StringX &safe, const wstring &fieldValues)
+{
+  PWScore core;
+  int status = OpenCore(core, safe);
+  if ( status == PWScore::SUCCESS )
+    status = AddEntry(core, fieldValues);
+  return status;
+}
+
+int AddEntry(PWScore &core, const wstring &fieldValues)
+{
+  CItemData item;
+  item.CreateUUID();
+  int status = PWScore::SUCCESS;
+  Split(fieldValues, L"[,;]", [&item, &status](const wstring &nameval) {
+    std::wsmatch m;
+    if (std::regex_match(nameval, m, std::wregex(L"([^=]+)=(.+)"))) {
+      item.SetFieldValue(String2FieldType(m.str(1)), std2stringx(m.str(2)));
+    }
+    else {
+      wcerr << L"Could not parse field value " << endl;
+      status = PWScore::FAILURE;
+    }
+  });
+
+  if (status == PWScore::SUCCESS)
+    status = core.Execute(AddEntryCommand::Create(&core, item));
+  if (status == PWScore::SUCCESS)
+    status = core.WriteCurFile();
+
+  return status;
 }
