@@ -293,7 +293,8 @@ if (NOT WIN32)
    install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
             RENAME "copyright")
 else ()
-   install (DIRECTORY xml DESTINATION "bin")
+   install (FILES "xml/pwsafe.xsd" DESTINATION "bin")
+   install (FILES "xml/pwsafe_filter.xsd" DESTINATION "bin")
 endif (NOT WIN32)
 
 # Packaging stuff:
