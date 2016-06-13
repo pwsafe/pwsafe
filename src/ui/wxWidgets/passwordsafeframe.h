@@ -566,6 +566,7 @@ public:
 
   // Filter-related stuff
   bool m_bShowExpiry;
+  bool m_bFilterActive;
   void ApplyFilters();
 };
 

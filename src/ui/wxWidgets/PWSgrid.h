@@ -130,6 +130,8 @@ public:
 
   void SaveSettings(void) const;
 
+  void SetFilterState(bool state);
+
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
 

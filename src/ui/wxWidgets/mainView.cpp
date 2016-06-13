@@ -153,6 +153,7 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 {
   m_bShowExpiry = event.IsChecked();
+  m_bFilterActive = m_bShowExpiry; //for now these are synonymous
   if (m_bShowExpiry) {
     st_filters showexpirefilter;
     showexpirefilter.Empty();
@@ -176,5 +177,7 @@ void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::ApplyFilters()
 {
+  m_tree->SetFilterState(m_bFilterActive);
+  m_grid->SetFilterState(m_bFilterActive);
+  UpdateStatusBar();
 }
-

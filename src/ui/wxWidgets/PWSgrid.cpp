@@ -485,3 +485,9 @@ void PWSGrid::OnSelectCell( wxGridEvent& evt )
   dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
 
+void PWSGrid::SetFilterState(bool state)
+{
+  const wxColour *colour = state ? wxRED : wxBLACK;
+  SetDefaultCellTextColour(*colour);
+  ForceRefresh();
+}

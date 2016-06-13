@@ -239,7 +239,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
   m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-  m_bShowExpiry(false)
+  m_bShowExpiry(false), m_bFilterActive(false)
 {
     Init();
 }
@@ -249,7 +249,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+    m_bShowExpiry(false), m_bFilterActive(false)
 {
     Init();
     m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
@@ -3273,7 +3274,7 @@ void PasswordSafeFrame::UpdateStatusBar()
     text.Printf(wxT("%d"), m_core.GetNumEntries());
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_NUM_ENT);
 
-    text = wxEmptyString;
+    text = m_bFilterActive ? wxT("[F]") : wxT("   ");
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
   } else { // no open file
     m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), CPWStatusBar::SB_DBLCLICK);

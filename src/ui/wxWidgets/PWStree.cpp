@@ -773,3 +773,26 @@ void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
 
   dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
+
+static void ColourChildren(PWSTreeCtrl *tree, wxTreeItemId parent, const wxColour &colour)
+{
+  wxTreeItemIdValue cookie;
+  wxTreeItemId child = tree->GetFirstChild(parent, cookie);
+
+  while (child) {
+    tree->SetItemTextColour(child, colour);
+    child = tree->GetNextChild(parent, cookie);
+    if (child && tree->ItemHasChildren(child))
+      ColourChildren(tree, child, colour);
+  }
+}
+
+void PWSTreeCtrl::SetFilterState(bool state)
+{
+  const wxColour *colour = state ? wxRED : wxBLACK;
+  // iterate over all items, no way to do this en-mass
+  wxTreeItemId root = GetRootItem();
+  if (root)
+    ColourChildren(this, root, *colour);
+}
+

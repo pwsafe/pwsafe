@@ -120,6 +120,7 @@ public:
   wxString GetItemGroup(const wxTreeItemId& item) const;
   bool ItemIsGroup(const wxTreeItemId& item) const ;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
+  void SetFilterState(bool state);
 
  private:
   //overridden from base for case-insensitive sort
