@@ -21,9 +21,9 @@
 #define APPNAME _T("PasswordSafe (wxWidgets)")
 #endif
 
-#define MAJORVERSION 0
-#define MINORVERSION 98
-#define REVISION     1
+#define MAJORVERSION @pwsafe_VERSION_MAJOR@
+#define MINORVERSION @pwsafe_VERSION_MINOR@
+#define REVISION     @pwsafe_REVISION@
 #define VCS_VERSION "@pwsafe_VERSTRING@"
 
 // LINUXPRODVER is for Misc/make-latest-xml.pl

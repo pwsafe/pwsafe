@@ -446,6 +446,7 @@
     <ClCompile Include="PWSrand.cpp" />
     <ClCompile Include="PWStime.cpp" />
     <ClCompile Include="Report.cpp" />
+    <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="sha1.cpp" />
     <ClCompile Include="sha256.cpp" />
     <ClCompile Include="StringX.cpp" />
@@ -506,6 +507,7 @@
     <ClInclude Include="PWSrand.h" />
     <ClInclude Include="PWStime.h" />
     <ClInclude Include="Report.h" />
+    <ClInclude Include="RUEList.h" />
     <ClInclude Include="sha1.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="StringX.h" />
