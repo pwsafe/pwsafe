@@ -15,6 +15,7 @@
 #include "core.h"
 #include "StringXStream.h"
 #include "PWPolicy.h"
+#include "./UTF8Conv.h"
 
 #include "Util.h"
 
@@ -869,4 +870,14 @@ bool FindNoCase( const StringX& src, const StringX& dest)
     ToLower(destLower);
 
     return destLower.find(srcLower) != StringX::npos;
+}
+
+std::string toutf8(const std::wstring &w)
+{
+  CUTF8Conv conv;
+  const unsigned char *utf8str = nullptr;
+  size_t length = 0;
+  if (conv.ToUTF8(std2stringx(w), utf8str, length))
+    return string{ reinterpret_cast<const char *>(utf8str), length};
+  return string{};
 }

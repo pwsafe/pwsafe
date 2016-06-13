@@ -285,6 +285,7 @@ extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
 bool FindNoCase( const StringX& src, const StringX& dest);
 
 
+std::string toutf8(const std::wstring &w);
 
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
