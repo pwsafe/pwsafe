@@ -12,7 +12,7 @@
 #include <getopt.h>
 #include <regex>
 
-#include "PWScore.h"
+#include "../../core/PWScore.h"
 #include "os/file.h"
 #include "core/PWSdirs.h"
 #include "core/UTF8Conv.h"
