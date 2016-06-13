@@ -45,9 +45,6 @@ static int AddEntry(PWScore &core, const wstring &fieldValues);
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
 
-int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
-                      const wstring &restrictToEntries, const wstring &fieldsToSearch);
-int OpenCoreAndAddEntry(const StringX &safe, const wstring &fieldValues);
 CItemData::FieldType String2FieldType(const stringT& str);
 
 //-----------------------------------------------------------------
@@ -237,12 +234,6 @@ int main(int argc, char *argv[])
     if (ua.Operation == UserArgs::CreateNew) {
         return CreateNewSafe(ua.safe);
     }
-    else if (ua.Operation == UserArgs::Search) {
-      return OpenCoreAndSearch(ua.safe, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
-    }
-    else if (ua.Operation == UserArgs::Add) {
-      return OpenCoreAndAddEntry(ua.safe, ua.opArg);
-    }
 
   PWScore core;
   int ret = OpenCore(core, ua.safe);
@@ -258,7 +249,7 @@ int main(int argc, char *argv[])
     } else { // export text
       status = core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
     }
-  } else { // Import
+  } else if (ua.Operation == UserArgs::Import) { // Import
     if (ua.Format == UserArgs::XML) {
       status = ImportXML(core, ua.fname);
     } else { // import text
@@ -266,6 +257,10 @@ int main(int argc, char *argv[])
     }
     if (status == PWScore::SUCCESS)
       status = core.WriteCurFile();
+  } else if ( ua.Operation == UserArgs::Search ) {
+    status = SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
+  } else if (ua.Operation == UserArgs::Add) {
+    status = AddEntry(core, ua.opArg);
   }
   if (status != PWScore::SUCCESS) {
     cout << "Operation returned status: " << status_text(status) << endl;
@@ -728,16 +723,6 @@ bool ItemMatches(const CItemData &item, const StringX &searchText)
 
 }
 
-int OpenCoreAndSearch(const StringX &safe, const wstring &searchText, bool ignoreCase,
-                      const wstring &restrictToEntries, const wstring &fieldsToSearch)
-{
-  PWScore core;
-  int status = OpenCore(core, safe);
-  if ( status == PWScore::SUCCESS )
-    status = SearchForEntries(core, searchText, ignoreCase, restrictToEntries, fieldsToSearch);
-  return status;
-}
-
 int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                      const wstring &restrictToEntries, const wstring &fieldsToSearch)
 {
@@ -766,15 +751,6 @@ int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                 wcout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
   });
   return PWScore::SUCCESS;
-}
-
-int OpenCoreAndAddEntry(const StringX &safe, const wstring &fieldValues)
-{
-  PWScore core;
-  int status = OpenCore(core, safe);
-  if ( status == PWScore::SUCCESS )
-    status = AddEntry(core, fieldValues);
-  return status;
 }
 
 int AddEntry(PWScore &core, const wstring &fieldValues)
