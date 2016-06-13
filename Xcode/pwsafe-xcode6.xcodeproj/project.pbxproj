@@ -43,6 +43,7 @@
 		E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		E66E85C21D0F2F5D00385D60 /* pwsafe-cli in CopyFiles */ = {isa = PBXBuildFile; fileRef = E66D292F1D02B49B00C9BCBF /* pwsafe-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E683B21A150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
@@ -172,6 +173,13 @@
 			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
 			remoteInfo = os;
 		};
+		E66E85BC1D0F27B100385D60 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E66D292E1D02B49B00C9BCBF;
+			remoteInfo = "pwsafe-cli";
+		};
 		E690B54312980D76007EA508 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -204,6 +212,16 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		E66E85C11D0F2F5000385D60 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = $CONFIGURATION_BUILD_DIR/$EXECUTABLE_FOLDER_PATH;
+			dstSubfolderSpec = 0;
+			files = (
+				E66E85C21D0F2F5D00385D60 /* pwsafe-cli in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -1467,6 +1485,7 @@
 				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
+				E66E85C11D0F2F5000385D60 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1474,6 +1493,7 @@
 				E6ADBAED1195776F004E2BE5 /* PBXTargetDependency */,
 				E6ADBAEF11957776004E2BE5 /* PBXTargetDependency */,
 				E690B54412980D76007EA508 /* PBXTargetDependency */,
+				E66E85BD1D0F27B100385D60 /* PBXTargetDependency */,
 			);
 			name = pwsafe;
 			productName = pwsafe;
@@ -1745,6 +1765,11 @@
 			isa = PBXTargetDependency;
 			target = E6ADB91B11956DD0004E2BE5 /* os */;
 			targetProxy = E66D29381D02B50400C9BCBF /* PBXContainerItemProxy */;
+		};
+		E66E85BD1D0F27B100385D60 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E66D292E1D02B49B00C9BCBF /* pwsafe-cli */;
+			targetProxy = E66E85BC1D0F27B100385D60 /* PBXContainerItemProxy */;
 		};
 		E690B54412980D76007EA508 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
