@@ -76,7 +76,7 @@ typedef std::vector<PWHistEntry> PWHistList;
 // num_err will have the number of ill-formed entries.
 
 bool CreatePWHistoryList(const StringX &pwh_str,
-                        size_t &pwh_max, size_t &num_err,
+                         size_t &pwh_max, size_t &num_err,
                          PWHistList &pwhl, PWSUtil::TMC time_format);
 
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);

@@ -853,11 +853,7 @@ static inline bool group_pred(const vfiltergroup& v1, const vfiltergroup& v2)
   return v1.size() < v2.size();
 }
 
-void PWSFilters::CreateGroups(const st_filters &currentfilter,
-                              vfiltergroups &vMflgroups,
-                              vfiltergroups &vHflgroups,
-                              vfiltergroups &vPflgroups,
-                              vfiltergroups &vAflgroups)
+void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
 {
   int i(0);
   vfiltergroup group;
@@ -907,9 +903,9 @@ void PWSFilters::CreateGroups(const st_filters &currentfilter,
     std::sort(groups.begin(), groups.end(), group_pred);
 
     // And save
-    vMflgroups = groups;
+    m_vMflgroups = groups;
   } else
-    vMflgroups.clear();
+    m_vMflgroups.clear();
 
   // Now do the History filters
   i = 0;
@@ -937,9 +933,9 @@ void PWSFilters::CreateGroups(const st_filters &currentfilter,
     std::sort(groups.begin(), groups.end(), group_pred);
 
     // And save
-    vHflgroups = groups;
+    m_vHflgroups = groups;
   } else
-    vHflgroups.clear();
+    m_vHflgroups.clear();
 
   // Now do the Policy filters
   i = 0;
@@ -967,9 +963,9 @@ void PWSFilters::CreateGroups(const st_filters &currentfilter,
     std::sort(groups.begin(), groups.end(), group_pred);
 
     // And save
-    vPflgroups = groups;
+    m_vPflgroups = groups;
   } else
-    vPflgroups.clear();
+    m_vPflgroups.clear();
 
   // Now do the Attachment filters
   i = 0;
@@ -997,12 +993,566 @@ void PWSFilters::CreateGroups(const st_filters &currentfilter,
     std::sort(groups.begin(), groups.end(), group_pred);
 
     // And save
-    vAflgroups = groups;
+    m_vAflgroups = groups;
   } else
-    vAflgroups.clear();
+    m_vAflgroups.clear();
 }
 
-bool PWSFilters::PassesFiltering()
+bool PWSFilterManager::PassesFiltering(const CItemData &ci,
+                                       const st_filters &filters,
+                                       const PWScore &core,
+                                       bool &bFilterForStatus,
+                                       bool &bFilterForType)
 {
-  return true;
+  bool thistest_rc;
+  bool bValue(false);
+  const CItemData *pci;
+
+  if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive + filters.num_Aactive) == 0)
+    return true;
+
+  const CItemData::EntryType entrytype = ci.GetEntryType();
+
+  bFilterForStatus = bFilterForType = false;
+
+  for (auto groups_iter = m_vMflgroups.begin();
+       groups_iter != m_vMflgroups.end(); groups_iter++) {
+    const vfiltergroup &group = *groups_iter;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    for (auto iter = group.begin();
+         iter != group.end(); iter++) {
+      const int &num = *iter;
+      if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
+        continue;
+
+      const st_FilterRow &st_fldata = filters.vMfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = filters.vMfldata[num].ftype;
+      const int ifunction = (int)st_fldata.rule;
+
+      switch (ft) {
+        case FT_GROUPTITLE:
+        case FT_GROUP:
+        case FT_TITLE:
+        case FT_USER:
+        case FT_NOTES:
+        case FT_URL:
+        case FT_AUTOTYPE:
+        case FT_RUNCMD:
+        case FT_EMAIL:
+        case FT_SYMBOLS:
+        case FT_POLICYNAME:
+          mt = PWSMatch::MT_STRING;
+          break;
+        case FT_PASSWORD:
+          mt = PWSMatch::MT_PASSWORD;
+          break;
+        case FT_DCA:
+          mt = PWSMatch::MT_DCA;
+          break;
+        case FT_SHIFTDCA:
+          mt = PWSMatch::MT_SHIFTDCA;
+          break;
+        case FT_CTIME:
+        case FT_PMTIME:
+        case FT_ATIME:
+        case FT_XTIME:
+        case FT_RMTIME:
+          mt = PWSMatch::MT_DATE;
+          break;
+        case FT_PWHIST:
+          mt = PWSMatch::MT_PWHIST;
+          break;
+        case FT_POLICY:
+          mt = PWSMatch::MT_POLICY;
+          break;
+        case FT_XTIME_INT:
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case FT_KBSHORTCUT:
+          bValue = !ci.GetKBShortcut().empty();
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case FT_UNKNOWNFIELDS:
+          bValue = ci.NumberUnknownFields() > 0;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case FT_PROTECTED:
+          bValue = ci.IsProtected();
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case FT_PASSWORDLEN:
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case FT_ENTRYTYPE:
+          mt = PWSMatch::MT_ENTRYTYPE;
+          break;
+        case FT_ENTRYSTATUS:
+          mt = PWSMatch::MT_ENTRYSTATUS;
+          break;
+        case FT_ENTRYSIZE:
+          mt = PWSMatch::MT_ENTRYSIZE;
+          break;
+        case FT_ATTACHMENT:
+          mt = PWSMatch::MT_ATTACHMENT;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (ft == FT_ENTRYSTATUS) {
+        bFilterForStatus = true;
+      }
+
+      if (ft == FT_ENTRYTYPE) {
+        bFilterForType = true;
+      }
+
+      pci = &ci;
+
+      if (ft == FT_PASSWORD && entrytype == CItemData::ET_ALIAS) {
+        pci = core.GetBaseEntry(pci); // This is an alias
+      }
+
+      if (entrytype == CItemData::ET_SHORTCUT && !bFilterForStatus && !bFilterForType) {
+        // Only include shortcuts if the filter is on the group, title or user fields
+        // Note: "GROUPTITLE = 0x00", "GROUP = 0x02", "TITLE = 0x03", "USER = 0x04"
+        //   "UUID = 0x01" but no filter is implemented against this field
+        // The following is a simple single test rather than testing against every value
+        if (ft > FT_USER) {
+          pci = core.GetBaseEntry(pci); // This is an shortcut
+        }
+      }
+
+      switch (mt) {
+        case PWSMatch::MT_PASSWORD:
+          if (ifunction == PWSMatch::MR_EXPIRED) {
+            // Special Password "string" case
+            thistest_rc = pci->IsExpired();
+            tests++;
+            break;
+          } else if (ifunction == PWSMatch::MR_WILLEXPIRE) {
+            // Special Password "string" case
+            thistest_rc = pci->WillExpire(st_fldata.fnum1);
+            tests++;
+            break;
+          }
+          // Note: purpose drop through to standard 'string' processing
+        case PWSMatch::MT_STRING:
+          thistest_rc = pci->Matches(st_fldata.fstring.c_str(), (int)ft,
+                                 st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = pci->Matches(st_fldata.fnum1, st_fldata.fnum2,
+                                     (int)ft, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+        {
+          time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
+          if (st_fldata.fdatetype == 1 /* Relative */) {
+            time_t now;
+            time(&now);
+            t1 = now + (st_fldata.fnum1 * 86400);
+            if (ifunction == PWSMatch::MR_BETWEEN)
+              t2 = now + (st_fldata.fnum2 * 86400);
+          }
+          thistest_rc = pci->Matches(t1, t2,
+                                     (int)ft, ifunction);
+          tests++;
+          break;
+        }
+        case PWSMatch::MT_PWHIST:
+          if (filters.num_Hactive != 0) {
+            thistest_rc = PassesPWHFiltering(pci, filters);
+            tests++;
+          }
+          break;
+        case PWSMatch::MT_POLICY:
+          if (filters.num_Pactive != 0) {
+            thistest_rc = PassesPWPFiltering(pci, filters);
+            tests++;
+          }
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYTYPE:
+          thistest_rc = pci->Matches(st_fldata.etype, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DCA:
+        case PWSMatch::MT_SHIFTDCA:
+          thistest_rc = pci->Matches(st_fldata.fdca, ifunction, mt == PWSMatch::MT_SHIFTDCA);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYSTATUS:
+          thistest_rc = pci->Matches(st_fldata.estatus, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYSIZE:
+          thistest_rc = pci->Matches(st_fldata.fnum1, st_fldata.fnum2,
+                                     (int)ft, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ATTACHMENT:
+          if (filters.num_Aactive != 0) {
+            thistest_rc = PassesAttFiltering(pci, filters, core);
+            tests++;
+          }
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
 }
+
+bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci,
+                                          const st_filters &filters) const
+{
+  bool thistest_rc, bPresent;
+  bool bValue(false);
+  int iValue(0);
+
+  size_t pwh_max, err_num;
+  PWHistList pwhistlist;
+
+  bool status = CreatePWHistoryList(pci->GetPWHistory(),
+                                    pwh_max, err_num,
+                                    pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+
+  bPresent = pwh_max > 0 || !pwhistlist.empty();
+
+  for (auto group_iter = m_vHflgroups.begin();
+       group_iter != m_vHflgroups.end(); group_iter++) {
+    const vfiltergroup &group = *group_iter;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    for (auto num_iter = group.begin();
+         num_iter != group.end(); num_iter++) {
+      const int &num = *num_iter;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterRow &st_fldata = filters.vHfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case HT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case HT_ACTIVE:
+          bValue = status == TRUE;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case HT_NUM:
+          iValue = (int)pwhistlist.size();
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case HT_MAX:
+          iValue = (int)pwh_max;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case HT_CHANGEDATE:
+          mt = PWSMatch::MT_DATE;
+          break;
+        case HT_PASSWORDS:
+          mt = PWSMatch::MT_STRING;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_STRING:
+          for (auto pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
+            PWHistEntry pwshe = *pwshe_iter;
+            thistest_rc = PWSMatch::Match(st_fldata.fstring, pwshe.password,
+                                          st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+            tests++;
+            if (thistest_rc)
+              break;
+          }
+          break;
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = PWSMatch::Match(st_fldata.fnum1, st_fldata.fnum2,
+                                        iValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+          for (auto pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
+            const PWHistEntry pwshe = *pwshe_iter;
+            CTime ct(pwshe.changetttdate);
+            CTime ct2;
+            ct2 = CTime(ct.GetYear(), ct.GetMonth(), ct.GetDay(), 0, 0, 0);
+            time_t changetime;
+            changetime = (time_t)ct2.GetTime();
+            thistest_rc = PWSMatch::Match(st_fldata.fdate1, st_fldata.fdate2,
+                                          changetime, ifunction);
+            tests++;
+            if (thistest_rc)
+              break;
+          }
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
+bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci,
+                                          const st_filters &filters) const
+{
+  bool thistest_rc, bPresent;
+  bool bValue(false);
+  int iValue(0);
+
+  PWPolicy pwp;
+
+  pci->GetPWPolicy(pwp);
+  bPresent = pwp.flags != 0;
+
+  for (auto group_iter = m_vPflgroups.begin();
+       group_iter != m_vPflgroups.end(); group_iter++) {
+    const vfiltergroup &group = *group_iter;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    for (auto num_iter = group.begin();
+         num_iter != group.end(); num_iter++) {
+      const int &num = *num_iter;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterRow &st_fldata = filters.vPfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case PT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_LENGTH:
+          iValue = pwp.length;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_LOWERCASE:
+          iValue = pwp.lowerminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_UPPERCASE:
+          iValue = pwp.upperminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_DIGITS:
+          iValue = pwp.digitminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_SYMBOLS:
+          iValue = pwp.symbolminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_HEXADECIMAL:
+          bValue = (pwp.flags & PWPolicy::UseHexDigits) ==
+                       PWPolicy::UseHexDigits;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_EASYVISION:
+          bValue = (pwp.flags & PWPolicy::UseEasyVision) ==
+                       PWPolicy::UseEasyVision;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_PRONOUNCEABLE:
+          bValue = (pwp.flags & PWPolicy::MakePronounceable) ==
+                       PWPolicy::MakePronounceable;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = PWSMatch::Match(st_fldata.fnum1, st_fldata.fnum2,
+                                        iValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
+bool PWSFilterManager::PassesAttFiltering(const CItemData *pci,
+                                          const st_filters &filters,
+                                          const PWScore &core) const
+{
+  bool thistest_rc, bPresent;
+  bool bValue(false);
+
+  bPresent = pci->HasAttRef();
+  
+  // Only reference att if bPresent is true
+  const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
+
+  for (auto group_iter = m_vAflgroups.begin();
+       group_iter != m_vAflgroups.end(); group_iter++) {
+    const vfiltergroup &group = *group_iter;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    vfiltergroup::const_iterator Fltnum_citer;
+    for (auto num_iter = group.begin();
+      num_iter != group.end(); num_iter++) {
+      const int &num = *num_iter;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterRow &st_fldata = filters.vAfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case AT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case AT_TITLE:
+        case AT_FILENAME:
+        case AT_FILEPATH:
+        case AT_MEDIATYPE:
+          mt = PWSMatch::MT_STRING;
+          break;
+        case AT_CTIME:
+        case AT_FILECTIME:
+        case AT_FILEMTIME:
+        case AT_FILEATIME:
+          mt = PWSMatch::MT_DATE;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_STRING:
+          if (bPresent) {
+            thistest_rc = att.Matches(st_fldata.fstring.c_str(), (int)ft,
+              st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+          } else {
+            thistest_rc = false;
+          }
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+          if (bPresent) {
+            time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
+            if (st_fldata.fdatetype == 1 /* Relative */) {
+              time_t now;
+              time(&now);
+              t1 = now + (st_fldata.fnum1 * 86400);
+              if (ifunction == PWSMatch::MR_BETWEEN)
+                t2 = now + (st_fldata.fnum2 * 86400);
+            }
+            thistest_rc = att.Matches(t1, t2, (int)ft, ifunction);
+          } else {
+            thistest_rc = false;
+          }
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+

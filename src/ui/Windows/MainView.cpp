@@ -1581,7 +1581,9 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
-    if (!PassesFiltering(ci, m_currentfilter))
+    if (!m_FilterManager.PassesFiltering(ci, m_currentfilter, m_core,
+                                         m_bFilterForStatus,
+                                         m_bFilterForType))
       return -1;
     m_bNumPassedFiltering++;
   }

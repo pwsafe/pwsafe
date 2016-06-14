@@ -1382,7 +1382,10 @@ void DboxMain::FixListIndexes()
   for (int i = 0; i < N; i++) {
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
-    if (m_bFilterActive && !PassesFiltering(*pci, m_currentfilter))
+    if (m_bFilterActive &&
+        !m_FilterManager.PassesFiltering(*pci, m_currentfilter, m_core,
+                                         m_bFilterForStatus,
+                                         m_bFilterForType))
       continue;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);

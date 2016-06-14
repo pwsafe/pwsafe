@@ -633,16 +633,9 @@ public:
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
-
+  
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);
-  bool PassesFiltering(const CItemData &ci, const st_filters &filters);
-  bool PassesPWHFiltering(const CItemData *pci,
-                          const st_filters &filters) const;
-  bool PassesPWPFiltering(const CItemData *pci,
-                          const st_filters &filters) const;
-  bool PassesAttFiltering(const CItemData *pci,
-                          const st_filters &filters) const;
 
   void SaveGUIStatus();
   void RestoreGUIStatus();
@@ -944,13 +937,8 @@ private:
   // Special Show Expired/expiring passwords filter
   st_filters m_showexpirefilter;
 
-  // Sorted Groups
-  vfiltergroups m_vMflgroups;
-  vfiltergroups m_vHflgroups;
-  vfiltergroups m_vPflgroups;
-  vfiltergroups m_vAflgroups;
-
   // Global Filters
+  PWSFilterManager m_FilterManager;
   PWSFilters m_MapFilters;
   FilterPool m_currentfilterpool;
   CString m_selectedfiltername;

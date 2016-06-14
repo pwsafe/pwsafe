@@ -351,6 +351,7 @@ struct ltfk {
 };
 
 struct PWSfileHeader;
+class PWScore;
 
 class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
@@ -367,15 +368,29 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
                           Asker *pAsker);
 
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
-  static void CreateGroups(const st_filters &currentfilter,
-                           vfiltergroups &vMflgroups,
-                           vfiltergroups &vHflgroups,
-                           vfiltergroups &vPflgroups,
-                           vfiltergroups &vAflgroups);
-  static bool PassesFiltering();
  private:
   std::string GetFilterXMLHeader(const StringX &currentfile,
                                  const PWSfileHeader &hdr);
+};
+
+class PWSFilterManager {
+ public:
+  void CreateGroups(const st_filters &currentfilter);
+  bool PassesFiltering(const CItemData &ci,
+                              const st_filters &filters,
+                              const PWScore &core,
+                              bool &bFilterForStatus,
+                              bool &bFilterForType);
+ private:
+ bool PassesPWHFiltering(const CItemData *pci,
+                         const st_filters &filters) const;
+ bool PassesPWPFiltering(const CItemData *pci,
+                         const st_filters &filters) const;
+ bool PassesAttFiltering(const CItemData *pci,
+                         const st_filters &filters,
+                         const PWScore &core) const;
+
+ vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
 };
 
 #endif  /* __PWSFILTERS_H */
