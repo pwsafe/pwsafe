@@ -367,6 +367,12 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
                           Asker *pAsker);
 
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
+  static void CreateGroups(const st_filters &currentfilter,
+                           vfiltergroups &vMflgroups,
+                           vfiltergroups &vHflgroups,
+                           vfiltergroups &vPflgroups,
+                           vfiltergroups &vAflgroups);
+  static bool PassesFiltering();
  private:
   std::string GetFilterXMLHeader(const StringX &currentfile,
                                  const PWSfileHeader &hdr);

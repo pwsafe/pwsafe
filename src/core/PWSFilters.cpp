@@ -847,3 +847,162 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   }
   return cs_criteria;
 }
+
+static inline bool group_pred(const vfiltergroup& v1, const vfiltergroup& v2)
+{
+  return v1.size() < v2.size();
+}
+
+void PWSFilters::CreateGroups(const st_filters &currentfilter,
+                              vfiltergroups &vMflgroups,
+                              vfiltergroups &vHflgroups,
+                              vfiltergroups &vPflgroups,
+                              vfiltergroups &vAflgroups)
+{
+  int i(0);
+  vfiltergroup group;
+  vfiltergroups groups;
+
+  // Do the main filters
+  for (auto iter = currentfilter.vMfldata.begin();
+       iter != currentfilter.vMfldata.end(); iter++) {
+    const st_FilterRow &st_fldata = *iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // This active filter is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+
+      group.push_back(i);
+
+      if (st_fldata.ftype == FT_PWHIST) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_PWHIST entry
+        for (int j = 0; j < currentfilter.num_Hactive - 1; j++) {
+          group.push_back(-1);
+         }
+      } else if (st_fldata.ftype == FT_POLICY) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_POLICY entry
+        for (int j = 0; j < currentfilter.num_Pactive - 1; j++) {
+          group.push_back(-1);
+        }
+      } else if (st_fldata.ftype == FT_ATTACHMENT) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_ATTACHMENT entry
+        for (int j = 0; j < currentfilter.num_Aactive - 1; j++) {
+          group.push_back(-1);
+        }
+      }
+    } // st_fldata.bFilterActive
+    i++;
+  } // iterate over currentfilter.vMfldata
+  if (!group.empty())
+    groups.push_back(group);
+
+  if (!groups.empty()) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    vMflgroups = groups;
+  } else
+    vMflgroups.clear();
+
+  // Now do the History filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (auto iter = currentfilter.vHfldata.begin();
+       iter != currentfilter.vHfldata.end(); iter++) {
+    const st_FilterRow &st_fldata = *iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (!group.empty())
+    groups.push_back(group);
+
+  if (!groups.empty()) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    vHflgroups = groups;
+  } else
+    vHflgroups.clear();
+
+  // Now do the Policy filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (auto iter = currentfilter.vPfldata.begin();
+       iter != currentfilter.vPfldata.end(); iter++) {
+    const st_FilterRow &st_fldata = *iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (!group.empty())
+    groups.push_back(group);
+
+  if (!groups.empty()) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    vPflgroups = groups;
+  } else
+    vPflgroups.clear();
+
+  // Now do the Attachment filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (auto iter = currentfilter.vAfldata.begin();
+       iter != currentfilter.vAfldata.end(); iter++) {
+    const st_FilterRow &st_fldata = *iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (!group.empty())
+    groups.push_back(group);
+
+  if (!groups.empty()) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    vAflgroups = groups;
+  } else
+    vAflgroups.clear();
+}
+
+bool PWSFilters::PassesFiltering()
+{
+  return true;
+}

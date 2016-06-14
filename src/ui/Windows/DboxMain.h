@@ -955,7 +955,6 @@ private:
   FilterPool m_currentfilterpool;
   CString m_selectedfiltername;
 
-  void CreateGroups();
   int m_bNumPassedFiltering;
 
   PWSRun m_runner; // for executing external programs
