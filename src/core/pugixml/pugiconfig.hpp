@@ -1,7 +1,7 @@
 /**
- * pugixml parser - version 1.4
+ * pugixml parser - version 1.7
  * --------------------------------------------------------
- * Copyright (C) 2006-2014, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+ * Copyright (C) 2006-2015, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
  * Report bugs and download new versions at http://pugixml.org/
  *
  * This library is distributed under the MIT License. See notice at the end
@@ -11,15 +11,14 @@
  * Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
  */
 
-/*
+ /*
  *
  * Modified by DK for PasswordSafe
- * The ONLY change for this configuration:
+ * The ONLY changes for this configuration:
+ *  Ensable wchar_t mode
  *  Disable XPath as we do not need it.
  *
  * NO changes made to the package's source files pugixml.cpp and pugixml.hpp
- *
- * The pugixml source corresponds to V1.4 @ rev. 996 - latest release as of 2014-02-27.
  *
  */
 
@@ -28,6 +27,9 @@
 
 // Uncomment this to enable wchar_t mode
 #define PUGIXML_WCHAR_MODE
+
+// Uncomment this to enable compact mode
+// #define PUGIXML_COMPACT
 
 // Uncomment this to disable XPath
 #define PUGIXML_NO_XPATH
@@ -51,7 +53,6 @@
 
 // Uncomment this to switch to header-only version
 // #define PUGIXML_HEADER_ONLY
-// #include "pugixml.cpp"
 
 // Uncomment this to enable long long support
 // #define PUGIXML_HAS_LONG_LONG
@@ -59,7 +60,7 @@
 #endif
 
 /**
- * Copyright (c) 2006-2014 Arseny Kapoulkine
+ * Copyright (c) 2006-2015 Arseny Kapoulkine
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
