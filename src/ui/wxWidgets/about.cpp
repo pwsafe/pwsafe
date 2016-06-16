@@ -142,10 +142,10 @@ void CAbout::CreateControls()
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
   mainSizer->Add(rightSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe")+L" vx.yy (abcd)", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe")+wxT(" vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(versionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+L" Mon dd yyyy hh:mm:ss", wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+wxT(" Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -194,8 +194,7 @@ void CAbout::CreateControls()
 
   const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
   versionStaticText->SetLabel(vstring);
-  const wxString d(__DATE__), t(__TIME__);
-  const wxString dstring = _("Build date:") + L" " + d + L" " + t;
+  const wxString dstring = _("Build date:") + wxT(" ") + wxT(__DATE__) + wxT(" ") + wxT(__TIME__);
   buildStaticText->SetLabel(dstring);
 }
 

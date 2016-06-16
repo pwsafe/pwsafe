@@ -13,6 +13,8 @@
 
 #ifndef _PWSCLIP_H_
 #define _PWSCLIP_H_
+#include <wx/thread.h> // for wxMutex
+
 #include "core/sha256.h"
 #include "core/StringX.h"
 class PWSclipboard
