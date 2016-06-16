@@ -378,9 +378,7 @@ class PWSFilterManager {
   void CreateGroups(const st_filters &currentfilter);
   bool PassesFiltering(const CItemData &ci,
                               const st_filters &filters,
-                              const PWScore &core,
-                              bool &bFilterForStatus,
-                              bool &bFilterForType);
+                              const PWScore &core);
  private:
  bool PassesPWHFiltering(const CItemData *pci,
                          const st_filters &filters) const;

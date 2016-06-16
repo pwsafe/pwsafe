@@ -133,7 +133,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bFilterForStatus(false), m_bFilterForType(false),
   m_bUnsavedDisplayed(false), m_RUEList(*app.GetCore()),
   m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false),
@@ -1383,9 +1382,7 @@ void DboxMain::FixListIndexes()
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
     if (m_bFilterActive &&
-        !m_FilterManager.PassesFiltering(*pci, m_currentfilter, m_core,
-                                         m_bFilterForStatus,
-                                         m_bFilterForType))
+        !m_FilterManager.PassesFiltering(*pci, m_currentfilter, m_core))
       continue;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);

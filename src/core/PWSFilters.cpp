@@ -1000,20 +1000,17 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
 
 bool PWSFilterManager::PassesFiltering(const CItemData &ci,
                                        const st_filters &filters,
-                                       const PWScore &core,
-                                       bool &bFilterForStatus,
-                                       bool &bFilterForType)
+                                       const PWScore &core)
 {
   bool thistest_rc;
   bool bValue(false);
+  bool bFilterForStatus(false), bFilterForType(false);
   const CItemData *pci;
 
   if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive + filters.num_Aactive) == 0)
     return true;
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
-
-  bFilterForStatus = bFilterForType = false;
 
   for (auto groups_iter = m_vMflgroups.begin();
        groups_iter != m_vMflgroups.end(); groups_iter++) {

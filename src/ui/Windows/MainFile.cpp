@@ -1163,7 +1163,8 @@ int DboxMain::Save(const SaveType savetype)
   if (m_bUnsavedDisplayed)
     OnShowUnsavedEntries();
 
-  if (m_bFilterActive && m_bFilterForStatus) {
+  if (m_bFilterActive) { // we no longer limit this to status-changed filter
+    // although strictly speaking, we should (overhead doesn't seem worth it)
     m_ctlItemList.Invalidate();
     m_ctlItemTree.Invalidate();
   }
@@ -1377,7 +1378,8 @@ int DboxMain::SaveAs()
   if (m_bUnsavedDisplayed)
     OnShowUnsavedEntries();
 
-  if (m_bFilterActive && m_bFilterForStatus) {
+  if (m_bFilterActive) { // we no longer limit this to status-changed filter
+    // although strictly speaking, we should (overhead doesn't seem worth it)
     m_ctlItemList.Invalidate();
     m_ctlItemTree.Invalidate();
   }

@@ -149,9 +149,6 @@ void DboxMain::ClearFilter()
 {
   m_currentfilter.Empty();
   m_bFilterActive = false;
-  m_bFilterForStatus = false;
-  m_bFilterForType = false;
-
   ApplyFilters();
 }
 

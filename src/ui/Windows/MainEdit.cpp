@@ -1341,9 +1341,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   // Update display if no longer passes filter criteria
   if (m_bFilterActive &&
-      !m_FilterManager.PassesFiltering(ci_new, m_currentfilter, m_core,
-                                       m_bFilterForStatus,
-                                       m_bFilterForType)) {
+      !m_FilterManager.PassesFiltering(ci_new, m_currentfilter, m_core)) {
       RefreshViews();
       return;
   }
