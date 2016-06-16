@@ -375,18 +375,15 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
 
 class PWSFilterManager {
  public:
-  void CreateGroups(const st_filters &currentfilter);
-  bool PassesFiltering(const CItemData &ci,
-                              const st_filters &filters,
-                              const PWScore &core);
+  void CreateGroups();
+  bool PassesFiltering(const CItemData &ci, const PWScore &core);
+
+  st_filters m_currentfilter;
+  
  private:
- bool PassesPWHFiltering(const CItemData *pci,
-                         const st_filters &filters) const;
- bool PassesPWPFiltering(const CItemData *pci,
-                         const st_filters &filters) const;
- bool PassesAttFiltering(const CItemData *pci,
-                         const st_filters &filters,
-                         const PWScore &core) const;
+ bool PassesPWHFiltering(const CItemData *pci) const;
+ bool PassesPWPFiltering(const CItemData *pci) const;
+ bool PassesAttFiltering(const CItemData *pci, const PWScore &core) const;
 
  vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
 };

@@ -78,8 +78,8 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
   if (mf_iter == m_MapFilters.end())
     return false;
 
-  m_currentfilter = mf_iter->second;
-  bool bActiveFilters = m_currentfilter.IsActive();
+  CurrentFilter() = mf_iter->second;
+  bool bActiveFilters = CurrentFilter().IsActive();
 
   if (!bJustDoIt && !m_bFilterActive && !bActiveFilters) {
     // Nothing to do!
@@ -98,7 +98,7 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
 
 void DboxMain::OnSetFilter()
 {
-  st_filters filters(m_currentfilter);
+  st_filters filters(CurrentFilter());
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
   const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
 
@@ -108,19 +108,19 @@ void DboxMain::OnSetFilter()
   if (rc == IDOK) {
     // If filters currently active - update and re-apply
     // If not, just update
-    m_currentfilter.Empty();
-    m_currentfilter = filters;
+    CurrentFilter().Empty();
+    CurrentFilter() = filters;
 
     st_Filterkey fk;
     fk.fpool = FPOOL_SESSION;
-    fk.cs_filtername = m_currentfilter.fname;
+    fk.cs_filtername = CurrentFilter().fname;
     m_MapFilters.erase(fk);
-    m_MapFilters.insert(PWSFilters::Pair(fk, m_currentfilter));
+    m_MapFilters.insert(PWSFilters::Pair(fk, CurrentFilter()));
 
     m_currentfilterpool = fk.fpool;
     m_selectedfiltername = fk.cs_filtername.c_str();
 
-    bool bFilters = m_currentfilter.IsActive();
+    bool bFilters = CurrentFilter().IsActive();
 
     if (m_bFilterActive) {
       m_bFilterActive = bFilters;
@@ -145,7 +145,7 @@ bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 
 void DboxMain::ClearFilter()
 {
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
   m_bFilterActive = false;
   ApplyFilters();
 }
@@ -162,11 +162,11 @@ void DboxMain::ApplyFilters()
   m_ctlItemTree.Invalidate();
   m_ctlItemList.Invalidate();
 
-  m_FilterManager.CreateGroups(m_currentfilter);
+  m_FilterManager.CreateGroups();
 
   RefreshViews();
 
-  bool bFilters = m_currentfilter.IsActive();
+  bool bFilters = CurrentFilter().IsActive();
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                               bFilters ? TRUE : FALSE);
 
@@ -187,11 +187,11 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
 {
   // Called when user presses "Apply" on main SetFilters dialog
   st_filters *pfilters = reinterpret_cast<st_filters *>(wParam);
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
 
-  m_currentfilter = (*pfilters);
+  CurrentFilter() = (*pfilters);
 
-  m_bFilterActive = m_currentfilter.IsActive();
+  m_bFilterActive = CurrentFilter().IsActive();
 
   ApplyFilters();
 
@@ -246,7 +246,7 @@ void DboxMain::OnManageFilters()
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
 
   CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters, bCanHaveAttachments);
-  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname.c_str());
+  mf.SetCurrentData(m_currentfilterpool, CurrentFilter().fname.c_str());
   mf.DoModal();
 
   // If user has changed the database filters, we need to update the core copy.

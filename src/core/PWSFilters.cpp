@@ -853,15 +853,15 @@ static inline bool group_pred(const vfiltergroup& v1, const vfiltergroup& v2)
   return v1.size() < v2.size();
 }
 
-void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
+void PWSFilterManager::CreateGroups()
 {
   int i(0);
   vfiltergroup group;
   vfiltergroups groups;
 
   // Do the main filters
-  for (auto iter = currentfilter.vMfldata.begin();
-       iter != currentfilter.vMfldata.end(); iter++) {
+  for (auto iter = m_currentfilter.vMfldata.begin();
+       iter != m_currentfilter.vMfldata.end(); iter++) {
     const st_FilterRow &st_fldata = *iter;
 
     if (st_fldata.bFilterActive) {
@@ -876,25 +876,25 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
       if (st_fldata.ftype == FT_PWHIST) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_PWHIST entry
-        for (int j = 0; j < currentfilter.num_Hactive - 1; j++) {
+        for (int j = 0; j < m_currentfilter.num_Hactive - 1; j++) {
           group.push_back(-1);
          }
       } else if (st_fldata.ftype == FT_POLICY) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_POLICY entry
-        for (int j = 0; j < currentfilter.num_Pactive - 1; j++) {
+        for (int j = 0; j < m_currentfilter.num_Pactive - 1; j++) {
           group.push_back(-1);
         }
       } else if (st_fldata.ftype == FT_ATTACHMENT) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_ATTACHMENT entry
-        for (int j = 0; j < currentfilter.num_Aactive - 1; j++) {
+        for (int j = 0; j < m_currentfilter.num_Aactive - 1; j++) {
           group.push_back(-1);
         }
       }
     } // st_fldata.bFilterActive
     i++;
-  } // iterate over currentfilter.vMfldata
+  } // iterate over m_currentfilter.vMfldata
   if (!group.empty())
     groups.push_back(group);
 
@@ -911,8 +911,8 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
   i = 0;
   group.clear();
   groups.clear();
-  for (auto iter = currentfilter.vHfldata.begin();
-       iter != currentfilter.vHfldata.end(); iter++) {
+  for (auto iter = m_currentfilter.vHfldata.begin();
+       iter != m_currentfilter.vHfldata.end(); iter++) {
     const st_FilterRow &st_fldata = *iter;
 
     if (st_fldata.bFilterActive) {
@@ -941,8 +941,8 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
   i = 0;
   group.clear();
   groups.clear();
-  for (auto iter = currentfilter.vPfldata.begin();
-       iter != currentfilter.vPfldata.end(); iter++) {
+  for (auto iter = m_currentfilter.vPfldata.begin();
+       iter != m_currentfilter.vPfldata.end(); iter++) {
     const st_FilterRow &st_fldata = *iter;
 
     if (st_fldata.bFilterActive) {
@@ -971,8 +971,8 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
   i = 0;
   group.clear();
   groups.clear();
-  for (auto iter = currentfilter.vAfldata.begin();
-       iter != currentfilter.vAfldata.end(); iter++) {
+  for (auto iter = m_currentfilter.vAfldata.begin();
+       iter != m_currentfilter.vAfldata.end(); iter++) {
     const st_FilterRow &st_fldata = *iter;
 
     if (st_fldata.bFilterActive) {
@@ -998,16 +998,14 @@ void PWSFilterManager::CreateGroups(const st_filters &currentfilter)
     m_vAflgroups.clear();
 }
 
-bool PWSFilterManager::PassesFiltering(const CItemData &ci,
-                                       const st_filters &filters,
-                                       const PWScore &core)
+bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
 {
   bool thistest_rc;
   bool bValue(false);
   bool bFilterForStatus(false), bFilterForType(false);
   const CItemData *pci;
 
-  if (!filters.IsActive())
+  if (!m_currentfilter.IsActive())
     return true;
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
@@ -1024,11 +1022,11 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci,
       if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
         continue;
 
-      const st_FilterRow &st_fldata = filters.vMfldata.at(num);
+      const st_FilterRow &st_fldata = m_currentfilter.vMfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
-      const FieldType ft = filters.vMfldata[num].ftype;
+      const FieldType ft = m_currentfilter.vMfldata[num].ftype;
       const int ifunction = (int)st_fldata.rule;
 
       switch (ft) {
@@ -1165,14 +1163,14 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci,
           break;
         }
         case PWSMatch::MT_PWHIST:
-          if (filters.num_Hactive != 0) {
-            thistest_rc = PassesPWHFiltering(pci, filters);
+          if (m_currentfilter.num_Hactive != 0) {
+            thistest_rc = PassesPWHFiltering(pci);
             tests++;
           }
           break;
         case PWSMatch::MT_POLICY:
-          if (filters.num_Pactive != 0) {
-            thistest_rc = PassesPWPFiltering(pci, filters);
+          if (m_currentfilter.num_Pactive != 0) {
+            thistest_rc = PassesPWPFiltering(pci);
             tests++;
           }
           break;
@@ -1199,8 +1197,8 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci,
           tests++;
           break;
         case PWSMatch::MT_ATTACHMENT:
-          if (filters.num_Aactive != 0) {
-            thistest_rc = PassesAttFiltering(pci, filters, core);
+          if (m_currentfilter.num_Aactive != 0) {
+            thistest_rc = PassesAttFiltering(pci, core);
             tests++;
           }
           break;
@@ -1225,8 +1223,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci,
   return false;
 }
 
-bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci,
-                                          const st_filters &filters) const
+bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
 {
   bool thistest_rc, bPresent;
   bool bValue(false);
@@ -1253,7 +1250,7 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci,
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
         continue;
 
-      const st_FilterRow &st_fldata = filters.vHfldata.at(num);
+      const st_FilterRow &st_fldata = m_currentfilter.vHfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
@@ -1343,8 +1340,7 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci,
   return false;
 }
 
-bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci,
-                                          const st_filters &filters) const
+bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci) const
 {
   bool thistest_rc, bPresent;
   bool bValue(false);
@@ -1367,7 +1363,7 @@ bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci,
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
         continue;
 
-      const st_FilterRow &st_fldata = filters.vPfldata.at(num);
+      const st_FilterRow &st_fldata = m_currentfilter.vPfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
@@ -1449,9 +1445,7 @@ bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci,
   return false;
 }
 
-bool PWSFilterManager::PassesAttFiltering(const CItemData *pci,
-                                          const st_filters &filters,
-                                          const PWScore &core) const
+bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &core) const
 {
   bool thistest_rc, bPresent;
   bool bValue(false);
@@ -1474,7 +1468,7 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci,
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
         continue;
 
-      const st_FilterRow &st_fldata = filters.vAfldata.at(num);
+      const st_FilterRow &st_fldata = m_currentfilter.vAfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);

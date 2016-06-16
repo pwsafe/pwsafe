@@ -1331,8 +1331,8 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
   // to display, which would have meant that the user should not be able to select them,
   // we need to cancel them
   if (m_ctlItemTree.GetCount() == 0 &&
-      (m_currentfilter == m_showexpirefilter ||
-       m_currentfilter == m_showunsavedfilter)) {
+      (CurrentFilter() == m_showexpirefilter ||
+       CurrentFilter() == m_showunsavedfilter)) {
     OnCancelFilter();
   }
 
@@ -1349,8 +1349,8 @@ void DboxMain::OnUndo()
   // to display, which would have meant that the user should not be able to select them,
   // we need to cancel them
   if (m_ctlItemTree.GetCount() == 0 &&
-      (m_currentfilter == m_showexpirefilter ||
-       m_currentfilter == m_showunsavedfilter)) {
+      (CurrentFilter() == m_showexpirefilter ||
+       CurrentFilter() == m_showunsavedfilter)) {
     OnCancelFilter();
   }
 
@@ -1382,7 +1382,7 @@ void DboxMain::FixListIndexes()
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
     if (m_bFilterActive &&
-        !m_FilterManager.PassesFiltering(*pci, m_currentfilter, m_core))
+        !m_FilterManager.PassesFiltering(*pci, m_core))
       continue;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
@@ -3302,8 +3302,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_APPLYFILTER:
-      if (m_bUnsavedDisplayed || m_currentfilter.vMfldata.empty() ||
-          !m_currentfilter.IsActive())
+      if (m_bUnsavedDisplayed || CurrentFilter().vMfldata.empty() ||
+          !CurrentFilter().IsActive())
         iEnable = FALSE;
       break;
     case ID_MENUITEM_EDITFILTER:

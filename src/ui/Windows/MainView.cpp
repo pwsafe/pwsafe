@@ -1581,7 +1581,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
-    if (!m_FilterManager.PassesFiltering(ci, m_currentfilter, m_core))
+    if (!m_FilterManager.PassesFiltering(ci, m_core))
       return -1;
     m_bNumPassedFiltering++;
   }
@@ -3927,9 +3927,9 @@ void DboxMain::OnShowUnsavedEntries()
     if (m_bExpireDisplayed)
       m_bExpireDisplayed = !m_bExpireDisplayed;
 
-    m_currentfilter = m_showunsavedfilter;
+    CurrentFilter() = m_showunsavedfilter;
   } else
-    m_currentfilter.Empty();
+    CurrentFilter().Empty();
 
   ApplyFilters();
 
@@ -3970,9 +3970,9 @@ void DboxMain::OnShowExpireList()
     if (m_bUnsavedDisplayed)
       m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
 
-    m_currentfilter = m_showexpirefilter;
+    CurrentFilter() = m_showexpirefilter;
   } else
-    m_currentfilter.Empty();
+    CurrentFilter().Empty();
 
   ApplyFilters();
 

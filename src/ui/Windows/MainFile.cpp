@@ -435,7 +435,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_bDBNeedsReading = false;
 
   // Tidy up filters
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
   m_bFilterActive = false;
 
   // Clear any saved group information
@@ -500,7 +500,7 @@ int DboxMain::Close(const bool bTrySave)
   m_core.ReInit();
 
   // Tidy up filters
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
   m_bFilterActive = false;
   ApplyFilters();
 
@@ -774,7 +774,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   m_savedDBprefs = EMPTYSAVEDDBPREFS;
 
   // Tidy up filters
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
   m_bFilterActive = false;
   ApplyFilters();
 
@@ -893,7 +893,7 @@ void DboxMain::PostOpenProcessing()
   ChangeOkUpdate();
 
   // Tidy up filters
-  m_currentfilter.Empty();
+  CurrentFilter().Empty();
   m_bFilterActive = false;
 
   // Clear any saved group information
