@@ -3302,9 +3302,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_APPLYFILTER:
-      if (m_bUnsavedDisplayed || m_currentfilter.vMfldata.empty() || 
-          (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-           m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) == 0)
+      if (m_bUnsavedDisplayed || m_currentfilter.vMfldata.empty() ||
+          !m_currentfilter.IsActive())
         iEnable = FALSE;
       break;
     case ID_MENUITEM_EDITFILTER:

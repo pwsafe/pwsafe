@@ -79,8 +79,7 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
     return false;
 
   m_currentfilter = mf_iter->second;
-  bool bActiveFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
+  bool bActiveFilters = m_currentfilter.IsActive();
 
   if (!bJustDoIt && !m_bFilterActive && !bActiveFilters) {
     // Nothing to do!
@@ -121,8 +120,7 @@ void DboxMain::OnSetFilter()
     m_currentfilterpool = fk.fpool;
     m_selectedfiltername = fk.cs_filtername.c_str();
 
-    bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-      m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
+    bool bFilters = m_currentfilter.IsActive();
 
     if (m_bFilterActive) {
       m_bFilterActive = bFilters;
@@ -168,8 +166,7 @@ void DboxMain::ApplyFilters()
 
   RefreshViews();
 
-  bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
+  bool bFilters = m_currentfilter.IsActive();
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                               bFilters ? TRUE : FALSE);
 
@@ -194,8 +191,7 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
 
   m_currentfilter = (*pfilters);
 
-  m_bFilterActive = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive +
-    m_currentfilter.num_Pactive + m_currentfilter.num_Aactive) > 0;
+  m_bFilterActive = m_currentfilter.IsActive();
 
   ApplyFilters();
 

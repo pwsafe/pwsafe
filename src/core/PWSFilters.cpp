@@ -1007,7 +1007,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci,
   bool bFilterForStatus(false), bFilterForType(false);
   const CItemData *pci;
 
-  if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive + filters.num_Aactive) == 0)
+  if (!filters.IsActive())
     return true;
 
   const CItemData::EntryType entrytype = ci.GetEntryType();

@@ -259,10 +259,7 @@ struct st_filters {
   // Filter name
   stringT fname;
   // Counters
-  int num_Mactive;
-  int num_Hactive;
-  int num_Pactive;
-  int num_Aactive;
+  int num_Mactive, num_Hactive, num_Pactive, num_Aactive;
   // Main filters
   vFilterRows vMfldata;
   // PW history filters
@@ -319,6 +316,9 @@ struct st_filters {
 
   bool operator!=(const st_filters &that) const
   {return !(*this == that);}
+
+  bool IsActive() const {return (num_Mactive + num_Hactive +
+                                 num_Pactive + num_Aactive) != 0;}
 
   void Empty()
   {
