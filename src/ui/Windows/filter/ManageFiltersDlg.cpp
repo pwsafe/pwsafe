@@ -246,6 +246,11 @@ BOOL CManageFiltersDlg::OnInitDialog()
   GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
   GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
 
+  // Don't import if we can't validate
+#ifndef USE_XML_LIBRARY
+  GetDlgItem(IDC_FILTERIMPORT)->EnableWindow(FALSE);
+#endif
+
   UpdateData(FALSE);
 
   return FALSE;

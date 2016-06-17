@@ -954,9 +954,8 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-  // Don't support filter processing on non-Windows platforms 
-  // using Microsoft XML libraries
+#if !defined(USE_XML_LIBRARY)
+  // Don't support filter processing if we can't validate
 #else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
@@ -3021,19 +3020,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // = FALSE(0) : set pCmdUI-Enable(FALSE)
   // = TRUE(1)  : set pCmdUI-Enable(TRUE)
 
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-// Don't support importing XML or filter processing on non-Windows platforms 
-// using Microsoft XML libraries
-  switch (nID) {
-    case ID_MENUITEM_IMPORT_XML:
-    case ID_FILTERMENU:
-    case ID_MENUITEM_APPLYFILTER:
-    case ID_MENUITEM_EDITFILTER:
-    case ID_MENUITEM_MANAGEFILTERS:
-      return FALSE;
-    default:
-      break;
-  }
+// Don't support importing XML if we can't validate
+#if !defined(USE_XML_LIBRARY)
+  if (nID == ID_MENUITEM_IMPORT_XML)
+    return FALSE;
 #endif
 
   // Special control IDs e.g. Language dynamic menus should always be true
