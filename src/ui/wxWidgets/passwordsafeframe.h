@@ -28,6 +28,7 @@
 #include "core/PWScore.h"
 #include "core/UIinterface.h"
 #include "core/RUEList.h"
+#include "core/PWSFilters.h"
 #include "./wxutils.h"
 #include <tuple>
 
@@ -565,6 +566,10 @@ public:
   wxMutex m_dblockMutex, m_hideUIMutex;
 
   // Filter-related stuff
+  PWSFilterManager m_FilterManager;
+  // Current filter
+  st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
+
   bool m_bShowExpiry;
   bool m_bFilterActive;
   void ApplyFilters();

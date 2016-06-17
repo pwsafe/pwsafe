@@ -63,7 +63,6 @@
 #include "../../core/core.h"
 #include "../../core/PWScore.h"
 #include "./SelectionCriteria.h"
-#include "../../core/PWSFilters.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -814,7 +813,9 @@ void PasswordSafeFrame::ShowGrid(bool show)
     for (iter = m_core.GetEntryIter(), i = 0;
          iter != m_core.GetEntryEndIter();
          iter++) {
-      m_grid->AddItem(iter->second, i++);
+      if (!m_bFilterActive ||
+          m_FilterManager.PassesFiltering(iter->second, m_core))
+        m_grid->AddItem(iter->second, i++);
     }
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
@@ -838,7 +839,9 @@ void PasswordSafeFrame::ShowTree(bool show)
     for (iter = m_core.GetEntryIter();
          iter != m_core.GetEntryEndIter();
          iter++) {
-      m_tree->AddItem(iter->second);
+      if (!m_bFilterActive ||
+          m_FilterManager.PassesFiltering(iter->second, m_core))
+        m_tree->AddItem(iter->second);
     }
 
     // Empty groups need to be added separately

@@ -155,28 +155,16 @@ void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
   m_bShowExpiry = event.IsChecked();
   m_bFilterActive = m_bShowExpiry; //for now these are synonymous
   if (m_bShowExpiry) {
-    st_filters showexpirefilter;
-    showexpirefilter.Empty();
-    showexpirefilter.fname = _("Entries with a password expiry");
-
-    st_FilterRow fr;
-
-    fr.bFilterComplete = true;
-    fr.ftype = FT_XTIME;
-    fr.mtype = PWSMatch::MT_DATE;
-    fr.rule = PWSMatch::MR_NOTEQUAL;
-    fr.ltype = LC_OR;
-
-    fr.fdate1 = 0;
-    showexpirefilter.vMfldata.push_back(fr);
-    showexpirefilter.num_Mactive = (int)showexpirefilter.vMfldata.size();
-  } else {
-  }
+    CurrentFilter() = m_FilterManager.GetExpireFilter();
+  } else
+    CurrentFilter().Empty();
   ApplyFilters();
 }
 
 void PasswordSafeFrame::ApplyFilters()
 {
+  m_FilterManager.CreateGroups();
+  RefreshViews();
   m_tree->SetFilterState(m_bFilterActive);
   m_grid->SetFilterState(m_bFilterActive);
   UpdateStatusBar();
