@@ -32,7 +32,8 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
-                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp
+                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp \
+				  RUEList.cpp
 
 SRC             = $(LIBSRC)
 
