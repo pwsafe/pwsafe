@@ -15,6 +15,17 @@
 
 #include <wtypes.h>
 
+// Following disables Microsoft's telemetry code
+// added in VS2015
+// See https://www.reddit.com/r/cpp/comments/4ibauu/visual_studio_adding_telemetry_function_calls_to/
+extern "C"
+{
+        void _cdecl __vcrt_initialize_telemetry_provider() {}
+        void _cdecl __telemetry_main_invoke_trigger() {}
+        void _cdecl __telemetry_main_return_trigger() {}
+        void _cdecl __vcrt_uninitialize_telemetry_provider() {}
+};
+
 void pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
   va_list args;
