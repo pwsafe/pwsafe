@@ -932,10 +932,6 @@ private:
   bool m_bFilterActive, m_bUnsavedDisplayed, m_bExpireDisplayed;
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
-  // Special Show Unsaved Changes filter
-  st_filters m_showunsavedfilter;
-  // Special Show Expired/expiring passwords filter
-  st_filters m_showexpirefilter;
 
   // Global Filters
   PWSFilterManager m_FilterManager;

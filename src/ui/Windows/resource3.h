@@ -516,7 +516,6 @@
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
 #define IDS_ENTRYSTATUS                 5739
-#define IDS_NONSAVEDCHANGES             5740
 #define IDS_RECORDSUPDATED              5741
 #define IDS_FILEWRITEFAILURE            5742
 #define IDS_GENERATEPASSWORD            5743
@@ -602,7 +601,6 @@
 #define IDS_EXP_SBASE                   5829
 #define IDS_EXP_SBASE_WARN              5830
 #define IDS_EXP_SBASE_EXP               5831
-#define IDS_EXPIREPASSWORDS             5832
 #define IDS_WZEXPORTTEXT                5833
 #define IDS_WZEXPORTXML                 5834
 #define IDS_WZCOMPARE                   5835

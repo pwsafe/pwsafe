@@ -853,6 +853,44 @@ static inline bool group_pred(const vfiltergroup& v1, const vfiltergroup& v2)
   return v1.size() < v2.size();
 }
 
+PWSFilterManager::PWSFilterManager()
+{
+  // setup predefined filters:
+  {
+    LoadAString(m_expirefilter.fname, IDSC_EXPIREPASSWORDS);
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_XTIME;
+    fr.mtype = PWSMatch::MT_DATE;
+    fr.rule = PWSMatch::MR_NOTEQUAL;
+    fr.ltype = LC_OR;
+
+    fr.fdate1 = 0;
+    m_expirefilter.vMfldata.push_back(fr);
+    m_expirefilter.num_Mactive = (int)m_expirefilter.vMfldata.size();
+
+  }
+  {
+    LoadAString(m_unsavedfilter.fname, IDSC_NONSAVEDCHANGES);
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_ENTRYSTATUS;
+    fr.mtype = PWSMatch::MT_ENTRYSTATUS;
+    fr.rule = PWSMatch::MR_IS;
+    fr.ltype = LC_OR;
+
+    fr.estatus = CItemData::ES_ADDED;
+    m_unsavedfilter.vMfldata.push_back(fr);
+    fr.estatus = CItemData::ES_MODIFIED;
+    m_unsavedfilter.vMfldata.push_back(fr);
+    m_unsavedfilter.num_Mactive = (int)m_unsavedfilter.vMfldata.size();
+  }
+}
+
 void PWSFilterManager::CreateGroups()
 {
   int i(0);

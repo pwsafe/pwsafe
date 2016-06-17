@@ -296,6 +296,8 @@ BEGIN
   IDSC_MISSING_XML_VER     "The filter XML version is missing."
   IDSC_INVALID_XML_VER1    "The filter XML version (%d) is greater than the current schema (%d)."
   IDSC_INVALID_XML_VER2    "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
+  IDSC_EXPIREPASSWORDS     "Entries with a password expiry"
+  IDSC_NONSAVEDCHANGES     "Unsaved changes"
 END
 
 STRINGTABLE

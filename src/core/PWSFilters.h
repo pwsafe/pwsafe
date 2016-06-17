@@ -375,8 +375,13 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
 
 class PWSFilterManager {
  public:
+  PWSFilterManager();
   void CreateGroups();
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
+
+  // predefined filters accessors, use by assigning to m_currentfilter
+  const st_filters &GetExpireFilter() const {return m_expirefilter;}
+  const st_filters &GetUnsavedFilter() const {return m_unsavedfilter;}
 
   st_filters m_currentfilter;
   
@@ -386,6 +391,9 @@ class PWSFilterManager {
  bool PassesAttFiltering(const CItemData *pci, const PWScore &core) const;
 
  vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
+
+  // predefined filters, set up at c'tor
+ st_filters m_expirefilter, m_unsavedfilter;
 };
 
 #endif  /* __PWSFILTERS_H */

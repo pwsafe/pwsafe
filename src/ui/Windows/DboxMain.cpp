@@ -1331,8 +1331,8 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
   // to display, which would have meant that the user should not be able to select them,
   // we need to cancel them
   if (m_ctlItemTree.GetCount() == 0 &&
-      (CurrentFilter() == m_showexpirefilter ||
-       CurrentFilter() == m_showunsavedfilter)) {
+      (CurrentFilter() == m_FilterManager.GetExpireFilter() ||
+       CurrentFilter() == m_FilterManager.GetUnsavedFilter())) {
     OnCancelFilter();
   }
 
@@ -1349,8 +1349,8 @@ void DboxMain::OnUndo()
   // to display, which would have meant that the user should not be able to select them,
   // we need to cancel them
   if (m_ctlItemTree.GetCount() == 0 &&
-      (CurrentFilter() == m_showexpirefilter ||
-       CurrentFilter() == m_showunsavedfilter)) {
+      (CurrentFilter() == m_FilterManager.GetExpireFilter() ||
+       CurrentFilter() == m_FilterManager.GetUnsavedFilter())) {
     OnCancelFilter();
   }
 

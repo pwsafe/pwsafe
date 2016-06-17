@@ -3900,26 +3900,6 @@ void DboxMain::OnShowUnsavedEntries()
 {
   m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
 
-  // Check if it needs setting up the first time
-  if (m_showunsavedfilter.num_Mactive < 3) {
-    CString cs_temp(MAKEINTRESOURCE(IDS_NONSAVEDCHANGES));
-    m_showunsavedfilter.fname = cs_temp;
-
-    st_FilterRow fr;
-
-    fr.bFilterComplete = true;
-    fr.ftype = FT_ENTRYSTATUS;
-    fr.mtype = PWSMatch::MT_ENTRYSTATUS;
-    fr.rule = PWSMatch::MR_IS;
-    fr.ltype = LC_OR;
-
-    fr.estatus = CItemData::ES_ADDED;
-    m_showunsavedfilter.vMfldata.push_back(fr);
-    fr.estatus = CItemData::ES_MODIFIED;
-    m_showunsavedfilter.vMfldata.push_back(fr);
-    m_showunsavedfilter.num_Mactive = (int)m_showunsavedfilter.vMfldata.size();
-  }
-
   if (!m_bExpireDisplayed)
     m_bFilterActive = !m_bFilterActive;
 
@@ -3927,7 +3907,7 @@ void DboxMain::OnShowUnsavedEntries()
     if (m_bExpireDisplayed)
       m_bExpireDisplayed = !m_bExpireDisplayed;
 
-    CurrentFilter() = m_showunsavedfilter;
+    CurrentFilter() = m_FilterManager.GetUnsavedFilter();
   } else
     CurrentFilter().Empty();
 
@@ -3945,24 +3925,6 @@ void DboxMain::OnShowExpireList()
 {
   m_bExpireDisplayed = !m_bExpireDisplayed;
 
-  if (m_bExpireDisplayed) {
-    CString cs_temp(MAKEINTRESOURCE(IDS_EXPIREPASSWORDS));
-    m_showexpirefilter.Empty();
-    m_showexpirefilter.fname = cs_temp;
-
-    st_FilterRow fr;
-
-    fr.bFilterComplete = true;
-    fr.ftype = FT_XTIME;
-    fr.mtype = PWSMatch::MT_DATE;
-    fr.rule = PWSMatch::MR_NOTEQUAL;
-    fr.ltype = LC_OR;
-
-    fr.fdate1 = 0;
-    m_showexpirefilter.vMfldata.push_back(fr);
-    m_showexpirefilter.num_Mactive = (int)m_showexpirefilter.vMfldata.size();
-  }
-
   if (!m_bUnsavedDisplayed)
     m_bFilterActive = !m_bFilterActive;
 
@@ -3970,7 +3932,7 @@ void DboxMain::OnShowExpireList()
     if (m_bUnsavedDisplayed)
       m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
 
-    CurrentFilter() = m_showexpirefilter;
+    CurrentFilter() = m_FilterManager.GetExpireFilter();
   } else
     CurrentFilter().Empty();
 

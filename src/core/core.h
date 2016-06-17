@@ -174,6 +174,8 @@
 #define IDSC_MISSINGXSD                 3345
 #define IDSC_CANTVALIDATEXML            3346
 #define IDSC_FILTERSKEPT                3347
+#define IDSC_EXPIREPASSWORDS            3348
+#define IDSC_NONSAVEDCHANGES            3349
 #define IDSC_EXS_INPUTEMPTY             3350
 #define IDSC_EXS_VARNAMEEMPTY           3351
 #define IDSC_EXS_FIRSTNOTALPHA          3352
