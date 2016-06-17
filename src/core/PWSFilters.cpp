@@ -1177,7 +1177,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
           // Note: purpose drop through to standard 'string' processing
         case PWSMatch::MT_STRING:
           thistest_rc = pci->Matches(st_fldata.fstring.c_str(), (int)ft,
-                                 st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+                                 st_fldata.fcase ? -ifunction : ifunction);
           tests++;
           break;
         case PWSMatch::MT_INTEGER:
@@ -1327,7 +1327,7 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
           for (auto pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
             PWHistEntry pwshe = *pwshe_iter;
             thistest_rc = PWSMatch::Match(st_fldata.fstring, pwshe.password,
-                                          st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+                                          st_fldata.fcase ? -ifunction : ifunction);
             tests++;
             if (thistest_rc)
               break;
@@ -1539,7 +1539,7 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
         case PWSMatch::MT_STRING:
           if (bPresent) {
             thistest_rc = att.Matches(st_fldata.fstring.c_str(), (int)ft,
-              st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+              st_fldata.fcase ? -ifunction : ifunction);
           } else {
             thistest_rc = false;
           }
