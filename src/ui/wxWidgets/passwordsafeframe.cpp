@@ -116,6 +116,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
+  EVT_MENU( ID_SHOWHIDE_UNSAVED, PasswordSafeFrame::OnShowUnsavedEntriesClick )
   EVT_MENU( ID_SHOW_ALL_EXPIRY, PasswordSafeFrame::OnShowAllExpiryClick )
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
   EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
@@ -463,6 +464,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu48->AppendSeparator();
   itemMenu48->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
   itemMenu48->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_SHOWHIDE_UNSAVED, _("Show &Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
   itemMenu48->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
   wxMenu* itemMenu58 = new wxMenu;
   itemMenu58->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
@@ -1927,6 +1929,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case wxID_DELETE:
       evt.Enable(GetSelectedEntry() != NULL);
+      break;
+
+    case ID_SHOWHIDE_UNSAVED:
+      evt.Enable(!m_bShowExpiry);
+      break;
+
+    case ID_SHOW_ALL_EXPIRY:
+      evt.Enable(!m_bShowUnsaved);
       break;
 
     default:

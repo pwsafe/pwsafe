@@ -148,18 +148,36 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 
 //-----------------------------------------------------------------
 // Filters related
-// (Starting with ShowExpiry, implementing top-down as needed)
+// (Starting with predefined filters)
 //-----------------------------------------------------------------
 void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 {
+  if (m_bShowUnsaved)
+    return; // should be disabled - we support only one predefined at a time
+
   m_bShowExpiry = event.IsChecked();
-  m_bFilterActive = m_bShowExpiry; //for now these are synonymous
+  m_bFilterActive = m_bShowExpiry;
   if (m_bShowExpiry) {
     CurrentFilter() = m_FilterManager.GetExpireFilter();
   } else
     CurrentFilter().Empty();
   ApplyFilters();
 }
+
+void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
+{
+  if (m_bShowExpiry)
+    return; // should be disabled - we support only one predefined at a time
+
+  m_bShowUnsaved = event.IsChecked();
+  m_bFilterActive = m_bShowExpiry; //for now these are synonymous
+  if (m_bShowUnsaved) {
+    CurrentFilter() = m_FilterManager.GetUnsavedFilter();
+  } else
+    CurrentFilter().Empty();
+  ApplyFilters();
+}
+
 
 void PasswordSafeFrame::ApplyFilters()
 {
