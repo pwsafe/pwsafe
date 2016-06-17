@@ -1341,11 +1341,8 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
         case PWSMatch::MT_DATE:
           for (auto pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
             const PWHistEntry pwshe = *pwshe_iter;
-            CTime ct(pwshe.changetttdate);
-            CTime ct2;
-            ct2 = CTime(ct.GetYear(), ct.GetMonth(), ct.GetDay(), 0, 0, 0);
-            time_t changetime;
-            changetime = (time_t)ct2.GetTime();
+            // Following throws away hours/min/sec from changetime, for proper date comparison
+            time_t changetime = pwshe.changetttdate - (pwshe.changetttdate % (24*60*60));
             thistest_rc = PWSMatch::Match(st_fldata.fdate1, st_fldata.fdate2,
                                           changetime, ifunction);
             tests++;
