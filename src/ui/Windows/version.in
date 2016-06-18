@@ -24,9 +24,9 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 38, 3
-#define STRPRODUCTVER  "3, 38, 3, @pwsafe_VERSTRING@\0"
-#define SPECIAL_BUILD L""
+#define PRODUCTVER     3, 39, 0
+#define STRPRODUCTVER  "3, 39, 0, @pwsafe_VERSTRING@\0"
+#define SPECIAL_BUILD L"pre"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
