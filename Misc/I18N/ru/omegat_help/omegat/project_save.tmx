@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="3.5.2_1" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.6.0" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -56,7 +56,7 @@
       <tuv lang="EN-US">
         <seg>"Attachment Description"</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T175838Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T175703Z">
         <seg>«Attachment Description»</seg>
       </tuv>
     </tu>
@@ -158,9 +158,25 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>"Group Tree" becomes the entry's group hierarchy to the root</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174640Z" creationid="pm_kan" creationdate="20160617T174640Z">
+        <seg>«Group Tree» — перечень родительских групп до корня.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>"Group Tree: " becomes the entry's group hierachy to the root</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T175327Z">
+        <seg>«Group Tree» — перечень родительских групп до корня.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>"Group Tree: " becomes the entry's group hierarchy to the root</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T175049Z" creationid="pm_kan" creationdate="20160617T175049Z">
         <seg>«Group Tree» — перечень родительских групп до корня.</seg>
       </tuv>
     </tu>
@@ -2200,6 +2216,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;AutoType:&lt;/b0&gt; If this field is not empty, then its content replaces the default value for the AutoType function (which is displayed above and comes from either the &lt;b1&gt;Password Safe&lt;/b1&gt; default or this database's default as set via the &lt;a2&gt;"Manage → Options → Misc."&lt;/a2&gt; tab).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174928Z" creationid="pm_kan" creationdate="20160617T174928Z">
+        <seg>&lt;b0&gt;Автонабор:&lt;/b0&gt; если поле не пусто, его содержимое заменяет на параметры автонабора, установленные по умолчанию (значение по умолчанию указано сверху и берётся из настроек &lt;b1&gt;Password Safe&lt;/b1&gt; для текущего контейнера, задаваемых на вкладке &lt;a2&gt;Управление→Настройки→Разное&lt;/a2&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;AutoType&lt;/b0&gt; provides a means for users to easily and quickly enter user name and password information.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T161634Z">
@@ -2556,6 +2580,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T115559Z">
         <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; &lt;b1&gt;&lt;u2&gt;Настоятельно рекомендуется&lt;/u2&gt;&lt;/b1&gt; делать резервные копии контейнеров как можно чаще.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; Since deleting a row is permanent, you might wish to &lt;b1&gt;disable&lt;/b1&gt; it instead.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T175023Z" creationid="pm_kan" creationdate="20160617T175023Z">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; Так условие удаляется навсегда, в некоторых случаях удобнее &lt;b1&gt;отключить&lt;/b1&gt; его, а не удалить.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4027,8 +4059,8 @@
       <tuv lang="EN-US">
         <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; can work with a &lt;a1&gt;YubiKey&lt;/a1&gt; device to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase), and something you have (the YubiKey device).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163317Z" creationid="pm_kan" creationdate="20151004T163317Z">
-        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; может использовать устройство &lt;a1&gt;YubiKey&lt;/a1&gt; для обеспечения «двуфакторной аутентификации», в этом случае ваш контейнер защищается с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T180109Z" creationid="pm_kan" creationdate="20151004T163317Z">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; может использовать устройство &lt;a1&gt;YubiKey&lt;/a1&gt; для обеспечения «двухфакторной аутентификации», в этом случае ваш контейнер защищается с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
       </tuv>
     </tu>
     <tu>
@@ -5745,6 +5777,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>As we use XML to save these values, field names are case sensitive.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174814Z" creationid="pm_kan" creationdate="20160617T174814Z">
+        <seg>Т. к. используется XML-формат, имена полей чувствительны к регистру.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>As with all data important to you, you should backup your data to another media &lt;u1&gt;regularly&lt;/u1&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T155657Z">
@@ -7249,6 +7289,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Copy the entry to the current database, overwriting its equivalent entry there if the current database is in R-W mode and the existing entry is not protected.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174904Z" creationid="pm_kan" creationdate="20160617T174904Z">
+        <seg>Копирование элемента в текущий контейнер, если он открыт в режиме «чтение/запись», и существующий элемент не является защищённым.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Copy the entry's password to the clipboard when invoking the entry's "Browse to URL"</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T183451Z">
@@ -8474,6 +8522,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Entry-specific shortcuts are defined in the entry's &lt;a0&gt;Additional tab&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174829Z" creationid="pm_kan" creationdate="20160617T174829Z">
+        <seg>Они задаются в диалоге редактирования элемента на складке &lt;a0&gt;Дополнительно&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Erases the &lt;b0&gt;Clipboard&lt;/b0&gt; memory.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T095714Z">
@@ -9338,6 +9394,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>For some sites, you might also need to autotype &lt;i3&gt;slowly&lt;/i3&gt;, for which put &lt;b4&gt;\d100&lt;/b4&gt; at the beginning of your autotype string.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174837Z" creationid="pm_kan" creationdate="20160617T174837Z">
+        <seg>Для сайтов, которым требуется &lt;i3&gt;замедленный&lt;/i3&gt; автонабор, добавьте &lt;b4&gt;\d100&lt;/b4&gt; в начале строки с параметрами автонабора.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>For this reason, this function cannot be changed via the Shortcuts Property Page.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T201642Z">
@@ -9842,9 +9906,25 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then it will be imported with the word "Merged - &lt;i0&gt;datetime&lt;/i0&gt;" appended to its name (where the '&lt;i1&gt;datetime&lt;/i1&gt;' is the date/time of the Merge) and all entries referring to it will now reference the newly named policy.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174801Z" creationid="pm_kan" creationdate="20160617T174801Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Объединено &lt;i0&gt;дата/время&lt;/i0&gt;» (где «&lt;i1&gt;дата/время&lt;/i1&gt;» — дата и время слияния). Все соответствующие элементы будут привязаны к ней.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then the policy will be imported with the words "Imported - &lt;i3&gt;datetime&lt;/i3&gt;" appended to its name (where the '&lt;i4&gt;datetime&lt;/i4&gt;' is the date/time of the Import) and all imported entries refering to it will now reference the newly named policy.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120810T124213Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Импортировано &lt;i3&gt;дата/время&lt;/i3&gt;» (где «&lt;i4&gt;дата/время&lt;/i4&gt;» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then the policy will be imported with the words "Imported - &lt;i3&gt;datetime&lt;/i3&gt;" appended to its name (where the '&lt;i4&gt;datetime&lt;/i4&gt;' is the date/time of the Import) and all imported entries referring to it will now reference the newly named policy.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174749Z" creationid="pm_kan" creationdate="20160617T174749Z">
         <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Импортировано &lt;i3&gt;дата/время&lt;/i3&gt;» (где «&lt;i4&gt;дата/время&lt;/i4&gt;» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
       </tuv>
     </tu>
@@ -10642,6 +10722,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If the Notes field contains more than one line, it will include any embedded carriage return (CR) or line feed (LF).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174819Z" creationid="pm_kan" creationdate="20160617T174819Z">
+        <seg>Если поле заметок состоит из нескольких строк, значение переменной также будет содержать имеющиеся там символы возврата каретки (CR) и переноса строки (LF).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the URL string begins with "\\" or "cmd://" (case insensitive) the field is placed in the &lt;b0&gt;Password Safe&lt;/b0&gt;'s entry's Run Command field and Placeholder substitution is performed (see below).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174706Z" creationid="pm_kan" creationdate="20160617T174706Z">
+        <seg>&lt;b0&gt;&lt;/b0&gt;Если строка URL начинается с «\\» или «cmd://» (независимо от регистра), то значение помещается в поле «Выполнить», но перед этим производится подстановка ключевых последовательностей (см. ниже).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If the URL string begins with "\\" or "cmd://" (case insensitve) the field is placed in the &lt;b0&gt;Password Safe&lt;/b0&gt;'s entry's Run Command field and Placeholder substitution is performed (see below).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152713Z">
@@ -11212,8 +11308,8 @@
       <tuv lang="EN-US">
         <seg>If you wish to protect your database using &lt;s0&gt;both &lt;/s0&gt;your YubiKey and a Safe Combination ("two factor authentication"), then &lt;s1&gt;first &lt;/s1&gt;enter the Safe Combination in the "Safe Combination" and "Verify" fields, &lt;s2&gt;then &lt;/s2&gt;click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120314Z" creationid="pm_kan" creationdate="20140113T120140Z">
-        <seg>Если для защиты контейнера вы желаете &lt;s0&gt;одновременно&lt;/s0&gt; использовать YubiKey и мастер-пароль, («двуфакторная аутентификация»), тогда &lt;s1&gt;сначала&lt;/s1&gt; введите пароль в поля «Пароль» и «Подтверждение», а &lt;s2&gt;затем&lt;/s2&gt; щёлкните на кнопке с надписью YubiKey.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T180024Z" creationid="pm_kan" creationdate="20140113T120140Z">
+        <seg>Если для защиты контейнера вы желаете &lt;s0&gt;одновременно&lt;/s0&gt; использовать YubiKey и мастер-пароль, («двуxфакторная аутентификация»), тогда &lt;s1&gt;сначала&lt;/s1&gt; введите пароль в поля «Пароль» и «Подтверждение», а &lt;s2&gt;затем&lt;/s2&gt; щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11573,6 +11669,14 @@
         <seg>In addition, multiple entries may be selected in the comparision database (left-click in the second column with the Ctrl key pressed for the second and subsequent entries).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T183013Z">
+        <seg>Кроме того, вы можете выделить несколько элементов из сравниваемого контейнера. Для пометки элемента щёлкните левой кнопкой мыши во втором столбце (для пометки второго и последующих элементов удерживайте Ctrl).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In addition, multiple entries may be selected in the comparison database (left-click in the second column with the Ctrl key pressed for the second and subsequent entries).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174921Z" creationid="pm_kan" creationdate="20160617T174921Z">
         <seg>Кроме того, вы можете выделить несколько элементов из сравниваемого контейнера. Для пометки элемента щёлкните левой кнопкой мыши во втором столбце (для пометки второго и последующих элементов удерживайте Ctrl).</seg>
       </tuv>
     </tu>
@@ -12686,6 +12790,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110623T161128Z">
         <seg>Управление историей паролей для существующих элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Manage the password policy</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174733Z" creationid="pm_kan" creationdate="20160617T174733Z">
+        <seg>Управление политиками создания паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -16861,6 +16973,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Supporting multiple selection in the Tree view is under development.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174846Z" creationid="pm_kan" creationdate="20160617T174846Z">
+        <seg>Функционал множественного выделения в древовидном режиме находится в разработке.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Switches on the find bar.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T100908Z">
@@ -16913,6 +17033,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T162639Z">
         <seg>Синхронизировать содержимое открытого контейнера с другим контейнером.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Synchronize the entry to its equivalent in the current database, if the current database is in R-W mode and the existing entry is not protected.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174910Z" creationid="pm_kan" creationdate="20160617T174910Z">
+        <seg>Синхронизация элемента в текущем контейнере с выбранным, если текущий контейнер открыт в режиме «чтение/запись», и существующий элемент не является защищённым.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18057,6 +18185,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182131Z">
         <seg>Таблица описывает настраиваемые параметры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The following values for &lt;i0&gt;&lt;b1&gt;Double Click Action&lt;/b1&gt;&lt;/i0&gt; are available:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T175035Z" creationid="pm_kan" creationdate="20160617T175035Z">
+        <seg>Допустимы следующие значения для &lt;i0&gt;&lt;b1&gt;действия по двойному клику&lt;/b1&gt;&lt;/i0&gt;:</seg>
       </tuv>
     </tu>
     <tu>
@@ -19216,6 +19352,14 @@
         <seg>This allows testers to verify the mini-dump production when &lt;b2&gt;Password Safe&lt;/b2&gt; has a problem to help developers resolve the isssue.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T171100Z">
+        <seg>Используется для проверки механизма создания минидампов процесса &lt;b2&gt;Password Safe&lt;/b2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This allows testers to verify the mini-dump production when &lt;b2&gt;Password Safe&lt;/b2&gt; has a problem to help developers resolve the issue.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174841Z" creationid="pm_kan" creationdate="20160617T174841Z">
         <seg>Используется для проверки механизма создания минидампов процесса &lt;b2&gt;Password Safe&lt;/b2&gt;.</seg>
       </tuv>
     </tu>
@@ -21671,6 +21815,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>View the entry (the comparison database is always in R-O mode as we are unable to provide the Undo facility if it is changed).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174900Z" creationid="pm_kan" creationdate="20160617T174900Z">
+        <seg>Просмотр элемента (сравниваемый контейнер всегда открывается в режиме «только чтение», т. к. для него недоступна отмена последнего действия).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>View the entry (the comparison database is always in R-O mode as we are unable to provide the Undo facitility if it is changed).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T181616Z">
@@ -22747,6 +22899,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T155616Z">
         <seg>В нём также можно задать расширенные условия отбора, позволяющие ограничить набор элементов и полей для слияния с текущим контейнером.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You may also select your own set of symbols to use when generating a password containing them.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174934Z" creationid="pm_kan" creationdate="20160617T174934Z">
+        <seg>Также можно указать свой набор символов для создания пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -26381,7 +26541,7 @@
       <tuv lang="EN-US">
         <seg>Compare</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T180602Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T175303Z">
         <seg>Сравнение</seg>
       </tuv>
     </tu>

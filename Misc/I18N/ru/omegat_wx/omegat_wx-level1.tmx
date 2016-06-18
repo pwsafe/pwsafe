@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.5.3" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.6.0" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -390,14 +390,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>&amp;Edit</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Изменить</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>&amp;Edit Base entry</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -542,14 +534,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>&amp;Manage</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Управление</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>&amp;Manage...</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -590,6 +574,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&amp;New...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>&amp;Создать...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&amp;New/Edit Filter...</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T115423Z">
@@ -610,6 +602,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T110616Z">
         <seg>&amp;OK</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&amp;Open...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>&amp;Открыть...</seg>
       </tuv>
     </tu>
     <tu>
@@ -642,6 +642,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>&amp;Простой текст...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&amp;Properties</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Сво&amp;йства</seg>
       </tuv>
     </tu>
     <tu>
@@ -726,6 +734,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&amp;Save...</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172037Z" creationid="pm_kan" creationdate="20160617T172037Z">
+        <seg>Сох&amp;ранить...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&amp;Selected Fields:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T141630Z">
@@ -778,14 +794,6 @@ Unknown error</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Про&amp;верка</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>&amp;View</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Просмотр</seg>
       </tuv>
     </tu>
     <tu>
@@ -1749,6 +1757,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Configure and backup YubiKeys</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172109Z" creationid="pm_kan" creationdate="20160617T172109Z">
+        <seg>Настройка и резервные копии YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Confirm Close Dialog</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2614,6 +2630,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>E&amp;xit</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Вы&amp;ход</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Easyvision characters</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2666,6 +2690,14 @@ Action:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T104109Z">
         <seg>Редактирование/просмотр элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Edit/View selected entry</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113356Z">
+        <seg>Редактирование/просмотр выбранного элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -3286,6 +3318,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Get &amp;Help</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172151Z" creationid="pm_kan" creationdate="20160617T172151Z">
+        <seg>&amp;Помощь</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Go</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -3366,9 +3406,9 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Hexadecimal is mutually exculsive to all other options.</seg>
+        <seg>Hexadecimal is mutually exclusive to all other options.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T114334Z">
+      <tuv lang="RU-RU">
         <seg>Опция «шестнадцатеричные цифры» несовместима с другими опциями.</seg>
       </tuv>
     </tu>
@@ -3637,6 +3677,14 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Неверный пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Incremented Number [001-999]</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Автонумератор [001-999]</seg>
       </tuv>
     </tu>
     <tu>
@@ -4045,6 +4093,14 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T101638Z" creationid="pm_kan" creationdate="20140705T101638Z">
         <seg>Создать новый контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Manage</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Управление</seg>
       </tuv>
     </tu>
     <tu>
@@ -5313,8 +5369,8 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2016-01-06 21:01+0300
-PO-Revision-Date: 2016-01-05 18:00+0300
+POT-Creation-Date: 2016-06-17 20:10+0300
+PO-Revision-Date: 2016-06-17 18:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5322,11 +5378,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T180151Z" creationid="pm_kan" creationdate="20160106T180151Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172216Z" creationid="pm_kan" creationdate="20160617T172216Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2015-01-06 21:01+0300
-PO-Revision-Date: 2015-01-06 21:01+0300
+POT-Creation-Date: 2016-06-17 20:30+0300
+PO-Revision-Date: 2016-06-17 20:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: 
 Language: ru_RU
@@ -5604,6 +5660,14 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Save &amp;As...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Сохранить &amp;как...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Save Database</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T101650Z" creationid="pm_kan" creationdate="20140705T101650Z">
@@ -5711,8 +5775,8 @@ combination:</seg>
       <tuv lang="EN-US">
         <seg>Select Language</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T150606Z" creationid="pm_kan" creationdate="20141226T150606Z">
-        <seg>Выбрать язык (Select Language)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T173410Z" creationid="pm_kan" creationdate="20141226T150606Z">
+        <seg>Выбрать язык</seg>
       </tuv>
     </tu>
     <tu>
@@ -5902,6 +5966,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Show &amp;Unsaved Changes</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Отобразить &amp;несохранённые изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Show Notes as ToolTips in Tree &amp;&amp; List views</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -5942,6 +6014,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Show entries with E&amp;xpiry dates</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Показать элементы с заданными датами &amp;истечения пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Simultaneous execution disabled?</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T145946Z" creationid="pm_kan" creationdate="20141226T145946Z">
@@ -5958,17 +6038,17 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Sorry, "easy-to-read" and "pronouncable" cannot be both selected</seg>
+        <seg>Sorry, "easy-to-read" and "pronounceable" cannot be both selected</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T105021Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172225Z" creationid="pm_kan" creationdate="20160617T172225Z">
         <seg>Параметры «удобочитаемые» и «произносимые» несовместимы</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Sorry, "pronouncable" and "easy-to-read" cannot be both selected</seg>
+        <seg>Sorry, "pronounceable" and "easy-to-read" cannot be both selected</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T105032Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T172235Z" creationid="pm_kan" creationdate="20160617T172235Z">
         <seg>Параметры «произносимые» и «удобочитаемые» несовместимы</seg>
       </tuv>
     </tu>
@@ -7491,6 +7571,14 @@ Imported %d %ls</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T102814Z" creationid="pm_kan" creationdate="20140705T102814Z">
         <seg>XSendEvent поддерживает большее количество комбинаций, но может быть заблокирован некоторыми приложениями.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>YYYYMMMDD_HHMMSS</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113343Z">
+        <seg>YYYYMMMDD_HHMMSS</seg>
       </tuv>
     </tu>
     <tu>
