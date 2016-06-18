@@ -136,14 +136,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"xml", no_argument, 0, 'x'},
       {"new", no_argument, 0, 'n'},
       {"search", required_argument, 0, 's'},
-      {"subset", required_argument, 0, 'u'},
+      {"subset", required_argument, 0, 'b'},
       {"fields", required_argument, 0, 'f'},
       {"ignore-case", optional_argument, 0, 'c'},
       {"add", required_argument, 0, 'a'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:u:f:ca:",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -192,7 +192,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       else
         return false;
 
-    case 'u':
+    case 'b':
         assert(optarg);
         ua.searchedSubset = Utf82wstring(optarg);
         break;
