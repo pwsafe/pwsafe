@@ -3284,7 +3284,7 @@ void PasswordSafeFrame::UpdateStatusBar()
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_READONLY);
 
-    text <<  m_core.GetNumEntries();
+    text.Clear(); text <<  m_core.GetNumEntries();
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_NUM_ENT);
 
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
