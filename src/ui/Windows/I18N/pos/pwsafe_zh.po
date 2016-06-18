@@ -330,6 +330,11 @@ msgstr "%1: %2\n继续运行脚本吗？"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\n无法找到该文件！\n请核对路径与文件名是否正确！"
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -434,11 +439,6 @@ msgstr ""
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr ""
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [恢复]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2541,10 +2541,6 @@ msgstr "确认删除"
 msgid "Delete Entry"
 msgstr "删除项目"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "删除一个筛选"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr ""
@@ -2600,7 +2596,7 @@ msgid "Display Filter - "
 msgstr "显示筛选 -"
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
 
 #. Resource IDs: (32262)
@@ -2906,6 +2902,10 @@ msgstr "项目仅在比较数据库 (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "项目仅在当前数据库 (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4111,6 +4111,10 @@ msgstr "在备注字段使用行分隔符:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "列表"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5360,6 +5364,10 @@ msgstr "结果摘要:"
 msgid "Right Ctrl key"
 msgstr "右 Ctrl 键"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "首先在第二列右击“Y”作为附加功能"
@@ -5574,10 +5582,6 @@ msgstr "选择一个按钮！"
 msgid "Select all entries"
 msgstr "选择所有项目"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "选择并应用一个筛选"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr ""
@@ -5754,6 +5758,11 @@ msgstr "基本项目快捷方式 - 警告密码将到期"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "快捷键"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -6387,10 +6396,6 @@ msgstr ""
 msgid "This entry has the following %d %s:\n%s"
 msgstr "该项目已有下列 %d %s:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "该项目已受保护！"
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "该项目必须有一个密码！"
@@ -6429,13 +6434,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "该程序链接缺少导出 %s 在文件 %s，本机器可能有一个不兼容版本的 %s！"
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "该程序必需的文件 %s，未被建立在这个系统上！"
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6911,10 +6916,6 @@ msgstr "查看快捷方式"
 msgid "View Shortcuts"
 msgstr "查看快捷方式"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "查看一个筛选"
-
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
 msgstr "查看/编辑选定项目"
@@ -7114,7 +7115,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr ""
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7914,11 +7915,6 @@ msgstr "pwsafe"
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "快捷方式"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "快捷方式到 %s"
 
 #. Resource IDs: (344)
 msgid "shortcuts"

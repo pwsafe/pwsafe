@@ -343,6 +343,11 @@ msgstr "%1: %2\nFortsæt med det kørende script?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr ""
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -446,11 +451,6 @@ msgstr ""
 #. Resource IDs: (363)
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
-msgstr ""
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
 msgstr ""
 
 #. Resource IDs: (333)
@@ -2554,10 +2554,6 @@ msgstr "Bekræft Slet"
 msgid "Delete Entry"
 msgstr "Slet Post"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Slet et filter"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr ""
@@ -2613,7 +2609,7 @@ msgid "Display Filter - "
 msgstr "Vis Filter - "
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
 
 #. Resource IDs: (32262)
@@ -2919,6 +2915,10 @@ msgstr "Poster kun i sammenlignings databasen (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Poster kun i nuværende database (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4124,6 +4124,10 @@ msgstr "Linie afgrænsning i Notat feltet:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "Liste"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5373,6 +5377,10 @@ msgstr ""
 msgid "Right Ctrl key"
 msgstr "Højre Ctrl tast"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "Højreklik på 'Y ' i hvilken som helstr af de første 2 kolonner for ekstra funktioner"
@@ -5587,10 +5595,6 @@ msgstr ""
 msgid "Select all entries"
 msgstr "Vælg alle poster"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Vælg og anvend et filter"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr ""
@@ -5767,6 +5771,11 @@ msgstr ""
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "Genvejs Tast"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -6400,10 +6409,6 @@ msgstr ""
 msgid "This entry has the following %d %s:\n%s"
 msgstr "Denne post har de følgende %d %s:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr ""
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "Denne post skal have en adgangskode."
@@ -6442,13 +6447,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Dette program er forbundet med den manglende eksport %s i filen %s. Denne maskine kan have en inkompatibel version af %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Dette program kræver filen %s, som ikke blev fundet på dette system."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6924,10 +6929,6 @@ msgstr "Se Genvej"
 msgid "View Shortcuts"
 msgstr "Se Genveje"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "Se et filter"
-
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
 msgstr "Se/Rediger valgte adgang"
@@ -7127,7 +7128,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr ""
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7927,11 +7928,6 @@ msgstr "pwsafe"
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "genvej"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "genvej til %s"
 
 #. Resource IDs: (344)
 msgid "shortcuts"

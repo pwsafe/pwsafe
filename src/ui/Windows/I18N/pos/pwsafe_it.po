@@ -356,6 +356,11 @@ msgstr "%1: %2\nContinuare ad eseguire lo script?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\nImpossibile trovare questo file.\nControllare che siano stati forniti nome e percorso corretti."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -460,11 +465,6 @@ msgstr "%s - Trascinate e inserite %s"
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr "%s Provare a salvare la banca dati con un altro nome o uscire senza salvare."
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Recuperate]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2567,10 +2567,6 @@ msgstr "Conferma di cancellazione"
 msgid "Delete Entry"
 msgstr "Cancellare la voce"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Cancellare un filtro"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Eliminare la regola per la password selezionata\n(si può cancellare solo una politica delle combinazioni di sicurezza nota non in uso)"
@@ -2626,8 +2622,8 @@ msgid "Display Filter - "
 msgstr "Filtro di visualizzazione -"
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Visualizzare le impostazioni delle regole o elencare le voci usando questa regola nota\n(l'ultima cosa potrebbe richiedere un po' di tempo dipendentemente dal numero di voci in questa banca dati)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -2932,6 +2928,10 @@ msgstr "Voci solo nella banca dati di confronto (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Voci solo nella banca dati attuale (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4137,6 +4137,10 @@ msgstr "Delimitatore di riga nel campo note:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "Elenco"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5386,6 +5390,10 @@ msgstr "Sommario del risultato:"
 msgid "Right Ctrl key"
 msgstr "Tasto Ctrl destro"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "Cliccare di destro sulla 'Y' in una delle prime due colonne per le funzioni aggiuntive"
@@ -5600,10 +5608,6 @@ msgstr "Selezionare un pulsante."
 msgid "Select all entries"
 msgstr "Selezionare tutte le voci"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Selezionare e applicare un filtro"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Selezionare le voci da confrontare"
@@ -5780,6 +5784,11 @@ msgstr "Voce di base della scorciatoia - avviso di scadenza della password"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "Tasto scorciatoia"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -6413,10 +6422,6 @@ msgstr "Questa voce ha il seguente %d %ls:\n%ls\nPer favore confermate per prose
 msgid "This entry has the following %d %s:\n%s"
 msgstr "Questa voce ha il seguente %d %s:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "Questa voce è protetta."
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "Questa voce deve avere una password."
@@ -6455,13 +6460,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Questo programma è collegato all'esportazione mancante %s nel file %s. Questo computer potrebbe avere una versione non compatibile di %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Questo programma richiede il file %s, che non è stato trovato su questo sistema."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6937,10 +6942,6 @@ msgstr "Visualizzare la scorciatoia"
 msgid "View Shortcuts"
 msgstr "Visualizzare le scorciatoie"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "Visualizzare un filtro"
-
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
 msgstr "Visualizzare/modificare voce selezionata"
@@ -7140,8 +7141,8 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr "YubiKey per PasswordSafe può essere acquistata su http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
-msgstr "YubiKey iniziata con successo, chiudete questa finestra di dialogo e attivatela."
+msgid "YubiKey initialized successfully, close this message box and activate it."
+msgstr ""
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
@@ -7940,11 +7941,6 @@ msgstr "pwsafe"
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "scorciatoia"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "scorciatoia a %s"
 
 #. Resource IDs: (344)
 msgid "shortcuts"

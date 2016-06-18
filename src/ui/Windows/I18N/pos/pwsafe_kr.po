@@ -343,6 +343,11 @@ msgstr "%1: %2\n스크립트를 계속 실행하시겠습니까?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\n파일을 찾을 수 없습니다.\n경로와 파일이름이 정확한지 확인해 주십시오."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -447,11 +452,6 @@ msgstr ""
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr ""
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [복구됨]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2554,10 +2554,6 @@ msgstr "삭제 확인"
 msgid "Delete Entry"
 msgstr "항목 삭제"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "필터 삭제"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr ""
@@ -2613,7 +2609,7 @@ msgid "Display Filter - "
 msgstr "표시 필터"
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
 
 #. Resource IDs: (32262)
@@ -2919,6 +2915,10 @@ msgstr "비교 데이터베이스에만 존재하는 항목들(%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "현재 데이터베이스에만 존재하는 항목들(%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4124,6 +4124,10 @@ msgstr "노트 필드의 개행 문자:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "목록"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5373,6 +5377,10 @@ msgstr "결과 요약:"
 msgid "Right Ctrl key"
 msgstr "오른쪽 Ctrl 키"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "추가 기능을 위해 처음 두 컬럼의 'Y'를 마우스 오른쪽 버튼으로 클릭"
@@ -5587,10 +5595,6 @@ msgstr "버튼을 누르십시오."
 msgid "Select all entries"
 msgstr "모든 항목 선택"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "선택하여 필터 적용"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr ""
@@ -5767,6 +5771,11 @@ msgstr "기본 항목의 단축항목 - 비밀번호 만료 예정"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "단축키"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -6400,10 +6409,6 @@ msgstr ""
 msgid "This entry has the following %d %s:\n%s"
 msgstr "이 항목은 다음과 같은 %d %s을 가지고 있습니다:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "이 항목은 보호되었습니다"
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "이 항목은 반드시 비밀번호를 가져야 합니다."
@@ -6442,13 +6447,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "이 프로그램은 시스템에서 찾을 수 없는 %s 파일을 필요로 합니다"
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6924,10 +6929,6 @@ msgstr "바로가기 보기"
 msgid "View Shortcuts"
 msgstr "바로가기 보기"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "필터 보기"
-
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
 msgstr "선택한 항목을 편집"
@@ -7127,7 +7128,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr ""
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7927,11 +7928,6 @@ msgstr "pwsafe"
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "바로가기"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "%s로의 바로가기"
 
 #. Resource IDs: (344)
 msgid "shortcuts"

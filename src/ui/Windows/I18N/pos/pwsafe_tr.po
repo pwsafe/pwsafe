@@ -343,6 +343,11 @@ msgstr "%1: %2\nScript'i çalıştırmaya devam edilsin mi?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\nBu dosya bulunamıyor.\nDoğru dosya yolu ve adının verildiğini doğrulayın."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -447,11 +452,6 @@ msgstr "%s - Sürükle & Bırak %s"
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr "%s Veritabanını başka bir isimle kaydetmeyi deneyin ya da kaydetmeden çıkın."
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Kurtarıldı]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2554,10 +2554,6 @@ msgstr "Silme Onayı"
 msgid "Delete Entry"
 msgstr "Girdi Sil"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Bir filtre sil"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Seçilmiş şifre planını sil\n(sadece kullanılmayan bir İsimlendirilmiş Şifre Planı silinebilir)"
@@ -2613,8 +2609,8 @@ msgid "Display Filter - "
 msgstr "Görünüm Filtresi -"
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Plan ayarlarını göster yada bu isimlendirilmiş şifre planını kullanan girdileri listele\n(İkinci seçenek bu veritabanındaki girdi sayısına bağlı olarak biraz zaman alabilir)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32067)
 msgid "Display subset of Password"
@@ -2919,6 +2915,10 @@ msgstr "Sadece karşılaştırma veritabanında olan girdiler (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Sadece geçerli veritabanında olan girdiler (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4124,6 +4124,10 @@ msgstr "Notlar alanında satır ayıracı:"
 #. Resource IDs: (370, 1152)
 msgid "List"
 msgstr "Listele"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347, 1466, 1467)
 msgid "List1"
@@ -5373,6 +5377,10 @@ msgstr "Sonuç özeti:"
 msgid "Right Ctrl key"
 msgstr "Sağ Ctrl tuşu"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "Daha fazla fonksiyon için ilk iki sütundan birindeki 'Y' ye sağ tıklayın."
@@ -5587,10 +5595,6 @@ msgstr "Bir düğme seçin."
 msgid "Select all entries"
 msgstr "Tüm girdileri seç"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Bir filtre seç ve uygula"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Karşılaştırmak için bir girdi seç"
@@ -5767,6 +5771,11 @@ msgstr "Kısayol Temel girdisi - uyarı, şifre süresi dolacak"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "Kısayol Tuşu"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452, 509)
 msgid "Shortcuts"
@@ -6400,10 +6409,6 @@ msgstr "Bu girdi aşağıdaki %d %ls ye(ya) sahip:\n%ls\nLütfen devam etmek iç
 msgid "This entry has the following %d %s:\n%s"
 msgstr "Bu girdi aşağıdaki %d %s ye(ya) sahip:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "Bu girdi korumalı."
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "Bu girdinin bir şifresi olmalı."
@@ -6442,13 +6447,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Bu program %s duş verisine bağlı (%s dosyasındaki). Bu makine uyumsuz %s sürümüne sahip olabilir."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Bu program sistemde bulunmayan %s dosyasını gerektiriyor."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6924,10 +6929,6 @@ msgstr "kısayolu Göster"
 msgid "View Shortcuts"
 msgstr "Kısayolları Göster"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "Bir filtreyi göster"
-
 #. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
 msgstr "Seçili girdiyi göster/düzenle"
@@ -7127,7 +7128,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr ""
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7927,11 +7928,6 @@ msgstr "pwsafe"
 #. Resource IDs: (205)
 msgid "shortcut"
 msgstr "kısayol"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "şuna kısayol: %s"
 
 #. Resource IDs: (213)
 msgid "shortcuts"

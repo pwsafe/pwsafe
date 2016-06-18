@@ -360,6 +360,11 @@ msgstr "%1: %2\nPokračovat v běhu skriptu??"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\nSoubor nenalezen.\nZkontroluj cestu a název souboru."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -464,11 +469,6 @@ msgstr "%s - Drag & Drop %s"
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr "%s Buď zkuste uložit databázi s jiným jménem nebo ukončete bez uložení."
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Obnoveno]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2590,10 +2590,6 @@ msgstr "Potvrdit smazání"
 msgid "Delete Entry"
 msgstr "Smazat záznam"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Smazat filtr"
-
 #. Resource IDs: (368)
 #, fuzzy
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
@@ -2650,9 +2646,8 @@ msgid "Display Filter - "
 msgstr "Filtr zobrazení - "
 
 #. Resource IDs: (368)
-#, fuzzy
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Zobraz nastavení politiky nebo seznam záznamů používající tuto pojmenovanou politiku\n(To druhé může chvíli zabrat v závislosti na počtu záznamů v této databázi)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32067)
 msgid "Display subset of Password"
@@ -2958,6 +2953,10 @@ msgstr "Záznamy pouze v porovnávané databázi (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Záznami pouze v současné databázi (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4163,6 +4162,10 @@ msgstr "Oddělovač řádek v poli Poznámky:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "Seznam"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5414,6 +5417,10 @@ msgstr "Shrnutí zprávy:"
 msgid "Right Ctrl key"
 msgstr "Klávesa pravý Ctrl"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "Klepni pravým tlačítkem na 'Y' v kterémkoliv z prvních dvou sloupců pro další možnosti"
@@ -5628,10 +5635,6 @@ msgstr "Vybrat tlačítko."
 msgid "Select all entries"
 msgstr "Vybrat všechny záznamy"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Vybrat a aplikovat filtr"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Vybrat záznam k porovnání"
@@ -5808,6 +5811,11 @@ msgstr "Zkratka základního záznamu - heslu vyprší platnost"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "Klávesová zkratka"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452, 509)
 msgid "Shortcuts"
@@ -6441,10 +6449,6 @@ msgstr "Tento záznam má následující %d %ls:\n%ls\nProsím potvrďte pro pok
 msgid "This entry has the following %d %s:\n%s"
 msgstr "Tento záznam má následující %d %s:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "Tento záznam je zamčen."
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "Tento záznam musí mít heslo."
@@ -6483,13 +6487,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Tento program je propojen s chybějícím exportem %s v souboru %s. Tento stroj může mít nekompatibilní vrzi %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Tento program potřebuje soubor %s, který nebyl nalezen."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -6966,10 +6970,6 @@ msgstr "Zobraz zkratku"
 msgid "View Shortcuts"
 msgstr "Zobraz zkratky"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "Zobraz filtr"
-
 #. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
 msgstr "Zobraz/edituj vybraný záznam"
@@ -7169,8 +7169,8 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr "YubiKey pro PasswordSafe může být zakoupeno na http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
-msgstr "YubiKey bylo úspěšně nainicializováno, zavřete tento dialog a aktivujte YubiKey."
+msgid "YubiKey initialized successfully, close this message box and activate it."
+msgstr ""
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
@@ -7969,11 +7969,6 @@ msgstr "pwsafe"
 #. Resource IDs: (205)
 msgid "shortcut"
 msgstr "zkratka"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "zkratka pro %s"
 
 #. Resource IDs: (213)
 msgid "shortcuts"

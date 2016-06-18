@@ -356,6 +356,11 @@ msgstr "%1: %2\nFolytatja a szkript futtatását?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\nA fájl nem található.Ellenőrizze hogy a helyes elérési utat és fájlnevet adta-e meg."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -460,11 +465,6 @@ msgstr "%s - Áthúzás %s"
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr "%s Mentse az adatbázist más néven vagy lépjen ki mentés nélkül."
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Helyreállítva]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2567,10 +2567,6 @@ msgstr "Törlés megerősítése"
 msgid "Delete Entry"
 msgstr "Bejegyzés törlése"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Szűrő törlése"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Kiválasztott jelszószabály törlése\n(csak nem használt, nevesített jelszószabály törölhető)"
@@ -2626,8 +2622,8 @@ msgid "Display Filter - "
 msgstr "Szűrő megjelenítése - "
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Szabály beállításainak megjelenítése vagy a nevesített szabályt használó bejegyzések listázása\n(Ez utóbbi eltarthat egy darabig, az adatbázisban található bejegyzések számától függően)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32067)
 msgid "Display subset of Password"
@@ -2932,6 +2928,10 @@ msgstr "Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) sze
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4137,6 +4137,10 @@ msgstr "Sorhatároló karakter a Megjegyzés mezőben:"
 #. Resource IDs: (370, 1152)
 msgid "List"
 msgstr "Lista"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347, 1466, 1467)
 msgid "List1"
@@ -5386,6 +5390,10 @@ msgstr "Eredményösszesítő:"
 msgid "Right Ctrl key"
 msgstr "Jobb Ctrl billentyű"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "További funkciókért kattintson az 'Y'-ra az első két oszlop valamelyikében."
@@ -5600,10 +5608,6 @@ msgstr "Válasszon egy gombot."
 msgid "Select all entries"
 msgstr "Minden bejegyzés kijelölése"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Szűrő kiválasztása és alkalmazása"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Válasszon bejegyzést az összehasonlításhoz"
@@ -5779,6 +5783,11 @@ msgstr ""
 
 #. Resource IDs: (356)
 msgid "Shortcut Key"
+msgstr ""
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
 msgstr ""
 
 #. Resource IDs: (452, 509)
@@ -6413,10 +6422,6 @@ msgstr ""
 msgid "This entry has the following %d %s:\n%s"
 msgstr ""
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr ""
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr ""
@@ -6455,12 +6460,12 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
 msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
+msgid "This program requires the file %Ts, which was not found on this system."
 msgstr ""
 
 #. Resource IDs: (344)
@@ -6937,10 +6942,6 @@ msgstr "Billentyűparancs megtekintése"
 msgid "View Shortcuts"
 msgstr "Billentyűparancsok megtekintése"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "egy szűrő megtekintése"
-
 #. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
 msgstr "A kiválasztott bejegyzés megtekintése/szerkesztése"
@@ -7140,7 +7141,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr "A PasswordSafe-hez a YubiKey megvásárolható ezen a címen: http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -7940,11 +7941,6 @@ msgstr "pwsafe"
 #. Resource IDs: (205)
 msgid "shortcut"
 msgstr "parancsikon"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "parancsikon ehhez: %s"
 
 #. Resource IDs: (213)
 msgid "shortcuts"

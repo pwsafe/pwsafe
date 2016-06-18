@@ -433,6 +433,11 @@ msgstr "%1: %2\nDoorgaan met uitvoer van script?"
 msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
 msgstr "%1\nKan dit bestand niet vinden. \nControleer of goede pad en bestandsnaam zijn opgegeven."
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%Ts [Recovered]"
+msgstr ""
+
 #. Resource IDs: (341)
 #, c-format
 msgid "%d"
@@ -537,11 +542,6 @@ msgstr "%s -Slepen & Neerzetten  %s"
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
 msgstr "%s Bewaar database met een andere naam of sluit af zonder te bewaren."
-
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr "%s [Hersteld]"
 
 #. Resource IDs: (333)
 #, c-format
@@ -2644,10 +2644,6 @@ msgstr "Verwijder Bevestiging"
 msgid "Delete Entry"
 msgstr "Verwijder Vermelding"
 
-#. Resource IDs: (352)
-msgid "Delete a filter"
-msgstr "Verwijder een filter"
-
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Verwijder geselecteerd Wachtwoordbeleid\n(alleen niet gebruikte Benoemd Wachtwoordbeleid mag verwijderd worden)"
@@ -2703,8 +2699,8 @@ msgid "Display Filter - "
 msgstr "Toon Filter -"
 
 #. Resource IDs: (368)
-msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Toon beleids instellingen of toon vermeldingen die dit benoemde beleid gebruiken\n(Dit laatste kan even duren, afhankelijk van het aantal vermeldingen in deze database)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -3009,6 +3005,10 @@ msgstr "Vermeldingen alleen in de vergeleken database (%s):"
 #, c-format
 msgid "Entries only in current database (%s):"
 msgstr "Vermeldingen alleen in de huidige database (%s):"
+
+#. Resource IDs: (546)
+msgid "Entries using Named Password Policy: "
+msgstr ""
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
@@ -4214,6 +4214,10 @@ msgstr "Regelscheidingsteken in Opmerkingen veld:"
 #. Resource IDs: (1152)
 msgid "List"
 msgstr "Lijst"
+
+#. Resource IDs: (34200)
+msgid "List entries using this policy"
+msgstr ""
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -5463,6 +5467,10 @@ msgstr "Resultaat samenvatting:"
 msgid "Right Ctrl key"
 msgstr "Rechter Ctrl toets"
 
+#. Resource IDs: (375)
+msgid "Right click a Named Password Policy to list the entries using it"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
 msgstr "Rechtermuis klik op de 'Y' in een van de 2 eerste kolommen voor meer functies"
@@ -5677,10 +5685,6 @@ msgstr "Selecteer een knop."
 msgid "Select all entries"
 msgstr "Selecteer alle vermeldingen"
 
-#. Resource IDs: (352)
-msgid "Select and apply a filter"
-msgstr "Selecteer een filter en pas dit toe"
-
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Selecteer vermelding om te vergelijken"
@@ -5857,6 +5861,11 @@ msgstr "Snelkoppeling Basis vermelding - wachtwoord gaat verlopen"
 #. Resource IDs: (356)
 msgid "Shortcut Key"
 msgstr "Snelkoppeling toets"
+
+#. Resource IDs: (346)
+#, c-format
+msgid "Shortcut to %s"
+msgstr ""
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -6490,10 +6499,6 @@ msgstr "De vermelding heeft de volgende %d %ls:\n%ls\nBevestig om door te gaan (
 msgid "This entry has the following %d %s:\n%s"
 msgstr "Deze vermelding heeft de volgende %d %s:\n%s"
 
-#. Resource IDs: (1429)
-msgid "This entry is protected."
-msgstr "De vermelding is beschermd."
-
 #. Resource IDs: (329)
 msgid "This entry must have a password."
 msgstr "Deze vermelding moet een wachtwoord hebben."
@@ -6532,13 +6537,13 @@ msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Dit programma is verbonden aan het ontbrekende export %s in het bestand %s. Deze computer heeft waarschijnlijk een ongeschikte versie van %s."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
-msgid "This program requires the file %s, which was not found on this system."
-msgstr "Dit programma vereist het bestand %s, welke niet gevonden werd op deze computer."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -7014,10 +7019,6 @@ msgstr "Bekijk Snelkoppeling"
 msgid "View Shortcuts"
 msgstr "Bekijk Snelkoppelingen"
 
-#. Resource IDs: (352)
-msgid "View a filter"
-msgstr "Bekijk een filter"
-
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
 msgstr "Bekijk/Bewerk geselecteerd vermelding"
@@ -7217,7 +7218,7 @@ msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/Passwo
 msgstr "YubiKey voor PasswordSafe kan gekocht worden op http://www.yubico.com/PasswordSafe"
 
 #. Resource IDs: (376)
-msgid "YubiKey initialized sucessfully, close this message box and activate it."
+msgid "YubiKey initialized successfully, close this message box and activate it."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)
@@ -8017,11 +8018,6 @@ msgstr "pwsafe"
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "Snelkoppeling"
-
-#. Resource IDs: (346)
-#, c-format
-msgid "shortcut to %s"
-msgstr "Snelkoppeling naar %s"
 
 #. Resource IDs: (344)
 msgid "shortcuts"
