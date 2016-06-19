@@ -690,7 +690,7 @@ CItemData::FieldType String2FieldType(const stringT& str)
     auto itr = ftmap.find(str);
     if (itr != ftmap.end())
        return itr->second;
-    return CItem::LAST_DATA;;
+    throw std::invalid_argument("Invalid field: " + toutf8(str));
 }
 
 CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
