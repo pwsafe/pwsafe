@@ -38,8 +38,10 @@ static const char *status_text(int status);
 
 // These are the new operations. Each returns the code to exit with
 static int CreateNewSafe(const StringX& filename);
-static int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                            const wstring &restrictToEntries, const wstring &fieldsToSearch);
+template <typename SearchCallback>
+static void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
+                            const wstring &restrictToEntries, const wstring &fieldsToSearch,
+                            SearchCallback cb);
 static int AddEntry(PWScore &core, const wstring &fieldValues);
 
 StringX GetPassphrase(const wstring& prompt);
@@ -57,7 +59,8 @@ static void usage(char *pname)
        << "\t safe --exp[=file] --text|--xml" << endl
   << "\t safe --new" << endl
   << "\t safe --add=filed=value,field=value,..." << endl
-  << "\t safe --search=<search text> [--ignore-case] [--subset<OP><string>[/iI]] [--fields=<comma-separated fieldnames>]" << endl
+  << "\t safe --search=<search text> [--ignore-case] [--subset=<Field><OP><string>[/iI]] [--fields=<comma-separated fieldnames>]"
+  << "[--delete|--update:Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
   << "\t\t where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
   << "\t\t\t = => exactly similar" << endl
   << "\t\t\t ^ => begins-with" << endl
@@ -88,9 +91,10 @@ void Split(const wstring &str, const wstring &sep, CallbackType cb)
 }
 
 struct UserArgs {
-  UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false} {}
+  UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false}, confirmed{false}, SearchAction{Print} {}
   StringX safe, fname;
   enum {Unset, Import, Export, CreateNew, Search, Add} Operation;
+  enum {Print, Delete, Update} SearchAction;
   enum {Unknown, XML, Text} Format;
 
   // The arg taken by the main operation
@@ -100,6 +104,81 @@ struct UserArgs {
   wstring searchedFields;
   wstring searchedSubset;
   bool ignoreCase;
+  bool confirmed;
+  wstring opArg2;
+};
+
+inline bool IsNullEntry(const CItemData &ci) { return !ci.HasUUID(); }
+
+struct SearchAction {
+  int action;
+  using FieldValue = std::tuple<CItemData::FieldType, wstring>;
+  using FieldUpdates = std::vector< FieldValue >;
+  FieldUpdates updates;
+  CItemData found;
+  bool confirmed;
+  PWScore *core;
+  FieldUpdates ParseFieldUpdates(int a, const wstring &updates) {
+    FieldUpdates u;
+    if (a == UserArgs::Update) {
+      Split(updates, L"[;,]", [&u](const wstring &nameval) {
+        std::wsmatch m;
+        if (std::regex_match(nameval, m, std::wregex(L"([^=:]+)[=:](.+)"))) {
+          u.push_back( std::make_tuple(String2FieldType(m.str(1)), m.str(2)) );
+        }
+        else {
+          wcerr << L"Could not parse field value to be updated: " << nameval << endl;
+        }
+      });
+    }
+    return u;
+  }
+  SearchAction(PWScore *c, int a, const wstring &actArgs, bool conf):
+  core{c}, action{a}, updates{ParseFieldUpdates(a, actArgs)}, confirmed{conf}
+  {}
+  int Execute() {
+    if ( !IsNullEntry(found) ) {
+      switch (action) {
+        case UserArgs::Delete:
+          return core->Execute(DeleteEntryCommand::Create(core, found));
+          break;
+        case UserArgs::Update:
+        {
+          MultiCommands *mc = MultiCommands::Create(core);
+          for_each(updates.begin(), updates.end(), [mc, this](const FieldValue &fv) {
+            mc->Add( UpdateEntryCommand::Create( core, found, std::get<0>(fv), std2stringx(std::get<1>(fv))) );
+          });
+          return core->Execute(mc);
+        }
+        case UserArgs::Print:
+          return PWScore::SUCCESS;
+        default:
+          assert(false);
+          return PWScore::FAILURE;
+      }
+    }
+    return PWScore::SUCCESS;
+  }
+
+  void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
+    if (!IsNullEntry(found))
+      throw std::domain_error("Search matches multiple arguments. Operation aborted");
+
+    switch (action) {
+      case UserArgs::Print:
+        wcout << data.GetGroup() << " - " << data.GetTitle() << " - " << data.GetUser() << endl;
+        break;
+      case UserArgs::Delete:
+      case UserArgs::Update:
+        found = data;
+        break;
+    }
+  }
+
+  SearchAction& operator=(const SearchAction&) = delete;
+  SearchAction& operator=(const SearchAction&&) = delete;
+  SearchAction( const SearchAction& ) = delete;
+  SearchAction( const SearchAction&& ) = delete;
 };
 
 void Utf82StringX(const char* filename, StringX& sname)
@@ -140,10 +219,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"fields", required_argument, 0, 'f'},
       {"ignore-case", optional_argument, 0, 'c'},
       {"add", required_argument, 0, 'a'},
+      {"update", required_argument, 0, 'u'},
+      {"print", no_argument, 0, 'p'},
+      {"delete", no_argument, 0, 'd'},
+      {"yes", no_argument, 0, 'y'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdy",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -213,6 +296,24 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.opArg = Utf82wstring(optarg);
         break;
 
+    case 'y':
+        ua.confirmed = true;
+        break;
+
+    case 'd':
+        ua.SearchAction = UserArgs::Delete;
+        break;
+
+    case 'p':
+        ua.SearchAction = UserArgs::Print;
+        break;
+
+    case 'u':
+        ua.SearchAction = UserArgs::Update;
+        assert(optarg);
+        ua.opArg2 = Utf82wstring(optarg);
+        break;
+
     default:
       cerr << "Unknown option: " << char(c) << endl;
       return false;
@@ -258,7 +359,16 @@ int main(int argc, char *argv[])
     if (status == PWScore::SUCCESS)
       status = core.WriteCurFile();
   } else if ( ua.Operation == UserArgs::Search ) {
-    status = SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields);
+    SearchAction sa{&core, ua.SearchAction, ua.opArg2, ua.confirmed};
+    SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset,
+                     ua.searchedFields, [&sa](const pws_os::CUUID &uuid, const CItemData &data) {
+                       sa(uuid, data);
+                     });
+    status = sa.Execute();
+    if (status == PWScore::SUCCESS && (ua.SearchAction == UserArgs::Update
+                                       || ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
+      status = core.WriteCurFile();
+    }
   } else if (ua.Operation == UserArgs::Add) {
     status = AddEntry(core, ua.opArg);
   }
@@ -708,55 +818,33 @@ CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
   return fields;
 }
 
-bool ItemMatches(const CItemData &item, const StringX &searchText)
-{
-  using FT = CItemData::FieldType;
-  FT fields[] = {   CItemData::GROUP,
-                    CItemData::TITLE,
-                    CItemData::USER,
-                    CItemData::PASSWORD,
-                    CItemData::NOTES,
-                    CItemData::URL,
-                    CItemData::EMAIL,
-                    CItemData::RUNCMD,
-                    CItemData::AUTOTYPE,
-                    CItemData::XTIME_INT
-  };
-
-  return std::find_if( std::begin(fields), std::end(fields), [&item, &searchText](FT f) {
-    return item.GetFieldValue(f).find(searchText) != StringX::npos;
-  }) != std::end(fields);
-
-}
-
-int SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                     const wstring &restrictToEntries, const wstring &fieldsToSearch)
+template <typename SearchCallback>
+void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
+                     const wstring &restrictToEntries, const wstring &fieldsToSearch,
+                     SearchCallback cb)
 {
   assert( !searchText.empty() );
 
   std::vector<Restriction> restrictions = ParseSearchedEntryRestrictions(restrictToEntries);
 
   if ( !restrictToEntries.empty() && restrictions.empty() ) {
-    cerr << "Could not parse [" << restrictToEntries << " ]for restricting searched entries" << endl;
-    return PWScore::FAILURE;
+    throw std::invalid_argument( "Could not parse [" + toutf8(restrictToEntries) + " ]for restricting searched entries" );
   }
 
   CItemData::FieldBits fields = ParseFieldsToSearh(fieldsToSearch);
   if (fieldsToSearch.empty())
     fields.set();
   if ( !fieldsToSearch.empty() && fields.none() ) {
-    cerr << "Could not parse [" << fieldsToSearch << " ]for restricting searched fields" << endl;
-    return PWScore::FAILURE;
+    throw std::invalid_argument( "Could not parse [" + toutf8(fieldsToSearch) + " ]for restricting searched fields");
   }
 
   const Restriction dummy{ CItem::LAST_DATA, PWSMatch::MR_INVALID, wstring{}, true};
   const Restriction r = restrictions.size() > 0? restrictions[0]: dummy;
 
   ::FindMatches(std2stringx(searchText), ignoreCase, fields, restrictions.size() > 0, r.value, r.field, r.rule, r.caseSensitive,
-              core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [](ItemListIter itr){
-                wcout << itr->second.GetGroup() << " - " << itr->second.GetTitle() << " - " << itr->second.GetUser() << endl;
+              core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [&cb](ItemListIter itr){
+                cb(itr->first, itr->second);
   });
-  return PWScore::SUCCESS;
 }
 
 int AddEntry(PWScore &core, const wstring &fieldValues)
