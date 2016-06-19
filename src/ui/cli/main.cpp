@@ -342,6 +342,7 @@ int main(int argc, char *argv[])
     return ret;
 
   int status = PWScore::SUCCESS;
+  try {
   if (ua.Operation == UserArgs::Export) {
     CItemData::FieldBits all(~0L);
     int N;
@@ -375,6 +376,9 @@ int main(int argc, char *argv[])
   if (status != PWScore::SUCCESS) {
     cout << "Operation returned status: " << status_text(status) << endl;
     goto done;
+  }
+  }catch( const std::exception &e) {
+    cerr << e.what() << endl;
   }
  done:
   core.UnlockFile(ua.safe.c_str());
