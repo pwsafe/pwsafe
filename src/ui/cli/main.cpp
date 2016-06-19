@@ -597,7 +597,7 @@ std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictT
 {
   std::vector<Restriction> restrictions;
   if ( !restrictToEntries.empty() ) {
-    std::wregex restrictPattern(L"([[:alpha:]]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
+    std::wregex restrictPattern(L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
     std::wsregex_iterator pos(restrictToEntries.cbegin(), restrictToEntries.cend(), restrictPattern);
     std::wsregex_iterator end;
     for_each( pos, end, [&restrictions](const wsmatch &m) {
