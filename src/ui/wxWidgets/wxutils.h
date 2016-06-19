@@ -292,5 +292,34 @@ private:
   wxMutexTryLocker& operator=(const wxMutexTryLocker&);
 };
 
-#endif
+#ifdef __WXGTK20__
+/* We need to add one more format to support DnD into Firefox, that wants
+ "text/plain" ("text/plain;charset=utf-8")
+ https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Recommended_Drag_Types
+ https://hg.mozilla.org/mozilla-central/file/tip/widget/gtk/nsDragService.cpp
+ [no need to use it with clipboard, Firefox works fine with STRING/UTF8_STRING in clipboard]
+ */
+
+class wxTextDataObjectEx : public wxTextDataObject {
+public:
+  wxTextDataObjectEx(const wxString &text = wxEmptyString) : wxTextDataObject(text) {};
+
+  virtual size_t GetFormatCount(Direction dir = Get) const wxOVERRIDE {
+    // add one more format
+    return wxTextDataObject::GetFormatCount(dir) + 1;
+  }
+
+  virtual void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const wxOVERRIDE {
+    wxTextDataObject::GetAllFormats(formats, dir);
+    // set type for new format (for some reason "text/plain;charset=utf-8" don't work)
+    formats[wxTextDataObject::GetFormatCount(dir)].SetId("text/plain");
+  }
+  // No need to override SetData, wxTextDataObject put "preferred format" text
+  // into all formats
+};
+#else
+typedef wxTextDataObject wxTextDataObjectEx;
+#endif // __WXGTK20__
+
+#endif // __WXUTILS_H__
 
