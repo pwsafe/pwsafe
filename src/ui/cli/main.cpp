@@ -12,6 +12,11 @@
 #include <getopt.h>
 #include <regex>
 
+#include "./search.h"
+#include "./argutils.h"
+#include "./searchaction.h"
+#include "./strutils.h"
+
 #include "../../core/PWScore.h"
 #include "os/file.h"
 #include "core/PWSdirs.h"
@@ -21,8 +26,6 @@
 #include "../../core/core.h"
 
 #include <termios.h>
-
-#include "../wxWidgets/SearchUtils.h"
 
 using namespace std;
 
@@ -38,16 +41,10 @@ static const char *status_text(int status);
 
 // These are the new operations. Each returns the code to exit with
 static int CreateNewSafe(const StringX& filename);
-template <typename SearchCallback>
-static void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                            const wstring &restrictToEntries, const wstring &fieldsToSearch,
-                            SearchCallback cb);
 static int AddEntry(PWScore &core, const wstring &fieldValues);
 
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
-
-CItemData::FieldType String2FieldType(const stringT& str);
 
 //-----------------------------------------------------------------
 
@@ -68,134 +65,6 @@ static void usage(char *pname)
   << "\t\t\t ^ => contains"
   << "\t\t\t ! => negation" << endl
   << "\t\t a trailing /i or /I at the end of subset string makes the operation case insensitive or sensitive respectively" << endl;
-}
-
-std::ostream& operator<<(std::ostream& os, const StringX& str)
-{
-    return os << str.c_str();
-}
-
-std::ostream& operator<<(std::ostream& os, const wstring& str)
-{
-    return os << str.c_str();
-}
-
-template <class CallbackType>
-void Split(const wstring &str, const wstring &sep, CallbackType cb)
-{
-  // we have to create a temp variable like this, or else it crashes in Xcode 6
-  std::wregex r(sep);
-  std::wsregex_token_iterator pos(str.cbegin(), str.cend(), r, -1);
-  std::wsregex_token_iterator end;
-  for_each( pos, end, cb );
-}
-
-struct UserArgs {
-  UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false}, confirmed{false}, SearchAction{Print} {}
-  StringX safe, fname;
-  enum {Unset, Import, Export, CreateNew, Search, Add} Operation;
-  enum {Print, Delete, Update} SearchAction;
-  enum {Unknown, XML, Text} Format;
-
-  // The arg taken by the main operation
-  wstring opArg;
-
-  // used for search
-  wstring searchedFields;
-  wstring searchedSubset;
-  bool ignoreCase;
-  bool confirmed;
-  wstring opArg2;
-};
-
-inline bool IsNullEntry(const CItemData &ci) { return !ci.HasUUID(); }
-
-struct SearchAction {
-  int action;
-  using FieldValue = std::tuple<CItemData::FieldType, wstring>;
-  using FieldUpdates = std::vector< FieldValue >;
-  FieldUpdates updates;
-  CItemData found;
-  bool confirmed;
-  PWScore *core;
-  FieldUpdates ParseFieldUpdates(int a, const wstring &updates) {
-    FieldUpdates u;
-    if (a == UserArgs::Update) {
-      Split(updates, L"[;,]", [&u](const wstring &nameval) {
-        std::wsmatch m;
-        if (std::regex_match(nameval, m, std::wregex(L"([^=:]+)[=:](.+)"))) {
-          u.push_back( std::make_tuple(String2FieldType(m.str(1)), m.str(2)) );
-        }
-        else {
-          wcerr << L"Could not parse field value to be updated: " << nameval << endl;
-        }
-      });
-    }
-    return u;
-  }
-  SearchAction(PWScore *c, int a, const wstring &actArgs, bool conf):
-  core{c}, action{a}, updates{ParseFieldUpdates(a, actArgs)}, confirmed{conf}
-  {}
-  int Execute() {
-    if ( !IsNullEntry(found) ) {
-      switch (action) {
-        case UserArgs::Delete:
-          return core->Execute(DeleteEntryCommand::Create(core, found));
-          break;
-        case UserArgs::Update:
-        {
-          MultiCommands *mc = MultiCommands::Create(core);
-          for_each(updates.begin(), updates.end(), [mc, this](const FieldValue &fv) {
-            mc->Add( UpdateEntryCommand::Create( core, found, std::get<0>(fv), std2stringx(std::get<1>(fv))) );
-          });
-          return core->Execute(mc);
-        }
-        case UserArgs::Print:
-          return PWScore::SUCCESS;
-        default:
-          assert(false);
-          return PWScore::FAILURE;
-      }
-    }
-    return PWScore::SUCCESS;
-  }
-
-  void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
-    if (!IsNullEntry(found))
-      throw std::domain_error("Search matches multiple arguments. Operation aborted");
-
-    switch (action) {
-      case UserArgs::Print:
-        wcout << data.GetGroup() << " - " << data.GetTitle() << " - " << data.GetUser() << endl;
-        break;
-      case UserArgs::Delete:
-      case UserArgs::Update:
-        found = data;
-        break;
-    }
-  }
-
-  SearchAction& operator=(const SearchAction&) = delete;
-  SearchAction& operator=(const SearchAction&&) = delete;
-  SearchAction( const SearchAction& ) = delete;
-  SearchAction( const SearchAction&& ) = delete;
-};
-
-void Utf82StringX(const char* filename, StringX& sname)
-{
-    CUTF8Conv conv;
-    if (!conv.FromUTF8((const unsigned char *)filename, strlen(filename),
-                       sname)) {
-        cerr << "Could not convert " << filename << " to StringX" << endl;
-        exit(2);
-    }
-}
-
-wstring Utf82wstring(const char* utf8str)
-{
-  StringX sx;
-  Utf82StringX(utf8str, sx);
-  return stringx2std(sx);
 }
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
@@ -324,6 +193,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
   return true;
 }
 
+
 int main(int argc, char *argv[])
 {
   UserArgs ua;
@@ -360,12 +230,9 @@ int main(int argc, char *argv[])
     if (status == PWScore::SUCCESS)
       status = core.WriteCurFile();
   } else if ( ua.Operation == UserArgs::Search ) {
-    SearchAction sa{&core, ua.SearchAction, ua.opArg2, ua.confirmed};
-    SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset,
-                     ua.searchedFields, [&sa](const pws_os::CUUID &uuid, const CItemData &data) {
-                       sa(uuid, data);
-                     });
-    status = sa.Execute();
+    unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua.opArg2, ua.confirmed));
+    SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields, *sa);
+    status = sa->Execute();
     if (status == PWScore::SUCCESS && (ua.SearchAction == UserArgs::Update
                                        || ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
       status = core.WriteCurFile();
@@ -677,49 +544,6 @@ StringX GetPassphrase(const wstring& prompt)
     return StringX(wpk.c_str());
 }
 
-struct Restriction {
-  CItemData::FieldType field;
-  PWSMatch::MatchRule rule;
-  wstring value;
-  bool caseSensitive;
-};
-
-PWSMatch::MatchRule Str2MatchRule( const wstring &s)
-{
-  static const std::map<wstring, PWSMatch::MatchRule> rulemap{
-    {L"==", PWSMatch::MR_EQUALS},
-    {L"!==", PWSMatch::MR_NOTEQUAL},
-    {L"^=", PWSMatch::MR_BEGINS},
-    {L"!^=", PWSMatch::MR_NOTBEGIN},
-    {L"$=", PWSMatch::MR_ENDS},
-    {L"!$=", PWSMatch::MR_NOTEND},
-    {L"~=", PWSMatch::MR_CONTAINS},
-    {L"!~=", PWSMatch::MR_NOTCONTAIN}
-  };
-  const auto itr = rulemap.find(s);
-  if ( itr != rulemap.end() )
-    return itr->second;
-  return PWSMatch::MR_INVALID;
-}
-
-bool CaseSensitive(const wstring &str)
-{
-  assert(str.length() == 0 || (str.length() == 2 && str[0] == '/' && (str[1] == L'i' || str[1] == 'I')));
-  return str.length() == 0 || str[0] == L'i';
-}
-std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
-{
-  std::vector<Restriction> restrictions;
-  if ( !restrictToEntries.empty() ) {
-    std::wregex restrictPattern(L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
-    std::wsregex_iterator pos(restrictToEntries.cbegin(), restrictToEntries.cend(), restrictPattern);
-    std::wsregex_iterator end;
-    for_each( pos, end, [&restrictions](const wsmatch &m) {
-      restrictions.push_back( {String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))} );
-    });
-  }
-  return restrictions;
-}
 
 int OpenCore(PWScore& core, const StringX& safe)
 {
@@ -762,94 +586,7 @@ int OpenCore(PWScore& core, const StringX& safe)
   }
   return status;
 }
-using String2FieldTypeMap = std::map<stringT, CItemData::FieldType>;
 
-// Reverse of CItemData::FieldName
-String2FieldTypeMap  InitFieldTypeMap()
-{
-    String2FieldTypeMap ftmap;
-    stringT retval;
-    LoadAString(retval, IDSC_FLDNMGROUPTITLE);      ftmap[retval] = CItem::GROUPTITLE;
-    LoadAString(retval, IDSC_FLDNMUUID);            ftmap[retval] = CItem::UUID;
-    LoadAString(retval, IDSC_FLDNMGROUP);           ftmap[retval] = CItem::GROUP;
-    LoadAString(retval, IDSC_FLDNMTITLE);           ftmap[retval] = CItem::TITLE;
-    LoadAString(retval, IDSC_FLDNMUSERNAME);        ftmap[retval] = CItem::USER;
-    LoadAString(retval, IDSC_FLDNMNOTES);           ftmap[retval] = CItem::NOTES;
-    LoadAString(retval, IDSC_FLDNMPASSWORD);        ftmap[retval] = CItem::PASSWORD;
-#undef CTIME
-    LoadAString(retval, IDSC_FLDNMCTIME);           ftmap[retval] = CItem::CTIME;
-    LoadAString(retval, IDSC_FLDNMPMTIME);          ftmap[retval] = CItem::PMTIME;
-    LoadAString(retval, IDSC_FLDNMATIME);           ftmap[retval] = CItem::ATIME;
-    LoadAString(retval, IDSC_FLDNMXTIME);           ftmap[retval] = CItem::XTIME;
-    LoadAString(retval, IDSC_FLDNMRMTIME);          ftmap[retval] = CItem::RMTIME;
-    LoadAString(retval, IDSC_FLDNMURL);             ftmap[retval] = CItem::URL;
-    LoadAString(retval, IDSC_FLDNMAUTOTYPE);        ftmap[retval] = CItem::AUTOTYPE;
-    LoadAString(retval, IDSC_FLDNMPWHISTORY);       ftmap[retval] = CItem::PWHIST;
-    LoadAString(retval, IDSC_FLDNMPWPOLICY);        ftmap[retval] = CItem::POLICY;
-    LoadAString(retval, IDSC_FLDNMXTIMEINT);        ftmap[retval] = CItem::XTIME_INT;
-    LoadAString(retval, IDSC_FLDNMRUNCOMMAND);      ftmap[retval] = CItem::RUNCMD;
-    LoadAString(retval, IDSC_FLDNMDCA);             ftmap[retval] = CItem::DCA;
-    LoadAString(retval, IDSC_FLDNMSHIFTDCA);        ftmap[retval] = CItem::SHIFTDCA;
-    LoadAString(retval, IDSC_FLDNMEMAIL);           ftmap[retval] = CItem::EMAIL;
-    LoadAString(retval, IDSC_FLDNMPROTECTED);       ftmap[retval] = CItem::PROTECTED;
-    LoadAString(retval, IDSC_FLDNMSYMBOLS);         ftmap[retval] = CItem::SYMBOLS;
-    LoadAString(retval, IDSC_FLDNMPWPOLICYNAME);    ftmap[retval] = CItem::POLICYNAME;
-    LoadAString(retval, IDSC_FLDNMKBSHORTCUT);      ftmap[retval] = CItem::KBSHORTCUT;
-    return ftmap;;
-}
-
-CItemData::FieldType String2FieldType(const stringT& str)
-{
-    static const String2FieldTypeMap ftmap = InitFieldTypeMap();
-    auto itr = ftmap.find(str);
-    if (itr != ftmap.end())
-       return itr->second;
-    throw std::invalid_argument("Invalid field: " + toutf8(str));
-}
-
-CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
-{
-  CItemData::FieldBits fields;
-  if ( !fieldsToSearch.empty() ) {
-    Split(fieldsToSearch, L",", [&fields](const wstring &field) {
-      CItemData::FieldType ft = String2FieldType(field);
-      if (ft != CItemData::LAST_DATA)
-        fields.set(ft);
-      else
-        throw std::invalid_argument("Could not parse field name: " + toutf8(field));
-    });
-  }
-  return fields;
-}
-
-template <typename SearchCallback>
-void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                     const wstring &restrictToEntries, const wstring &fieldsToSearch,
-                     SearchCallback cb)
-{
-  assert( !searchText.empty() );
-
-  std::vector<Restriction> restrictions = ParseSearchedEntryRestrictions(restrictToEntries);
-
-  if ( !restrictToEntries.empty() && restrictions.empty() ) {
-    throw std::invalid_argument( "Could not parse [" + toutf8(restrictToEntries) + " ]for restricting searched entries" );
-  }
-
-  CItemData::FieldBits fields = ParseFieldsToSearh(fieldsToSearch);
-  if (fieldsToSearch.empty())
-    fields.set();
-  if ( !fieldsToSearch.empty() && fields.none() ) {
-    throw std::invalid_argument( "Could not parse [" + toutf8(fieldsToSearch) + " ]for restricting searched fields");
-  }
-
-  const Restriction dummy{ CItem::LAST_DATA, PWSMatch::MR_INVALID, wstring{}, true};
-  const Restriction r = restrictions.size() > 0? restrictions[0]: dummy;
-
-  ::FindMatches(std2stringx(searchText), ignoreCase, fields, restrictions.size() > 0, r.value, r.field, r.rule, r.caseSensitive,
-              core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [&cb](ItemListIter itr){
-                cb(itr->first, itr->second);
-  });
-}
 
 int AddEntry(PWScore &core, const wstring &fieldValues)
 {

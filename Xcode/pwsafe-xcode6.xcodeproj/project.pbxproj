@@ -114,6 +114,10 @@
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
 		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
 		E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */; };
+		E6EBC8111D16F47F00AF61CD /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC80F1D16F47F00AF61CD /* search.cpp */; };
+		E6EBC8141D16F9B600AF61CD /* argutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8121D16F9B600AF61CD /* argutils.cpp */; };
+		E6EBC8171D17165300AF61CD /* searchaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8151D17165300AF61CD /* searchaction.cpp */; };
+		E6EBC81A1D17184F00AF61CD /* strutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8181D17184F00AF61CD /* strutils.cpp */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
@@ -608,6 +612,14 @@
 		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
 		E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedTaskChain.cpp; sourceTree = "<group>"; };
 		E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedTaskChain.h; sourceTree = "<group>"; };
+		E6EBC80F1D16F47F00AF61CD /* search.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = search.cpp; sourceTree = "<group>"; };
+		E6EBC8101D16F47F00AF61CD /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = search.h; sourceTree = "<group>"; };
+		E6EBC8121D16F9B600AF61CD /* argutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = argutils.cpp; sourceTree = "<group>"; };
+		E6EBC8131D16F9B600AF61CD /* argutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = argutils.h; sourceTree = "<group>"; };
+		E6EBC8151D17165300AF61CD /* searchaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = searchaction.cpp; sourceTree = "<group>"; };
+		E6EBC8161D17165300AF61CD /* searchaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = searchaction.h; sourceTree = "<group>"; };
+		E6EBC8181D17184F00AF61CD /* strutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = strutils.cpp; sourceTree = "<group>"; };
+		E6EBC8191D17184F00AF61CD /* strutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strutils.h; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -756,6 +768,14 @@
 			isa = PBXGroup;
 			children = (
 				E66D293A1D02B54600C9BCBF /* main.cpp */,
+				E6EBC80F1D16F47F00AF61CD /* search.cpp */,
+				E6EBC8101D16F47F00AF61CD /* search.h */,
+				E6EBC8121D16F9B600AF61CD /* argutils.cpp */,
+				E6EBC8131D16F9B600AF61CD /* argutils.h */,
+				E6EBC8151D17165300AF61CD /* searchaction.cpp */,
+				E6EBC8161D17165300AF61CD /* searchaction.h */,
+				E6EBC8181D17184F00AF61CD /* strutils.cpp */,
+				E6EBC8191D17184F00AF61CD /* strutils.h */,
 			);
 			name = "pwsafe-cli";
 			path = ../src/ui/cli;
@@ -1609,7 +1629,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6EBC81A1D17184F00AF61CD /* strutils.cpp in Sources */,
 				E6299FB71D0323A300D03FD1 /* main.cpp in Sources */,
+				E6EBC8171D17165300AF61CD /* searchaction.cpp in Sources */,
+				E6EBC8141D16F9B600AF61CD /* argutils.cpp in Sources */,
+				E6EBC8111D16F47F00AF61CD /* search.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
