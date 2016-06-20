@@ -48,12 +48,12 @@ struct SearchAndDelete: public SearchAction {
 };
 
 struct SearchAndUpdate: public SearchAction {
+  PWScore *core;
   using FieldValue = std::tuple<CItemData::FieldType, wstring>;
   using FieldUpdates = std::vector< FieldValue >;
   FieldUpdates updates;
   CItemData found;
   bool confirmed;
-  PWScore *core;
   FieldUpdates ParseFieldUpdates(const wstring &updates) {
     FieldUpdates u;
     Split(updates, L"[;,]", [&u](const wstring &nameval) {

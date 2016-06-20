@@ -15,7 +15,7 @@
 #include "../../core/Match.h"
 
 struct UserArgs {
-  UserArgs() : Operation(Unset), Format(Unknown), ignoreCase{false}, confirmed{false}, SearchAction{Print} {}
+  UserArgs() : Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false} {}
   StringX safe, fname;
   enum {Unset, Import, Export, CreateNew, Search, Add} Operation;
   enum {Print, Delete, Update} SearchAction;
