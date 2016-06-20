@@ -30,6 +30,14 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="../src/ui/cli/main.cpp"/>
+    <File Name="../src/ui/cli/argutils.cpp"/>
+    <File Name="../src/ui/cli/argutils.h"/>
+    <File Name="../src/ui/cli/search.cpp"/>
+    <File Name="../src/ui/cli/search.h"/>
+    <File Name="../src/ui/cli/searchaction.cpp"/>
+    <File Name="../src/ui/cli/searchaction.h"/>
+    <File Name="../src/ui/cli/strutils.cpp"/>
+    <File Name="../src/ui/cli/strutils.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug">
     <Project Name="core"/>
