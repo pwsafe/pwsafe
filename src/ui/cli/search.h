@@ -11,10 +11,9 @@
 
 #include <string>
 #include "../../os/UUID.h"
+#include "../../core/PWScore.h"
 
-class PWScore;
 class SearchAction;
-class CItemData;
 
 struct SearchAction
 {
@@ -29,6 +28,7 @@ struct SearchAction
   
 };
 
+CItemData::FieldBits ParseFieldsToSearh(const std::wstring &fieldsToSearch);
 
 void SearchForEntries(PWScore &core, const std::wstring &searchText, bool ignoreCase,
                       const std::wstring &restrictToEntries, const std::wstring &fieldsToSearch,

@@ -31,9 +31,8 @@ struct Restriction {
   bool caseSensitive;
 };
 
-static std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries);
-static CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch);
-static bool CaseSensitive(const wstring &str);
+std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries);
+bool CaseSensitive(const wstring &str);
 
 void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                       const wstring &restrictToEntries, const wstring &fieldsToSearch,
@@ -63,7 +62,7 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                 });
 }
 
-static std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
+std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
 {
   std::vector<Restriction> restrictions;
   if ( !restrictToEntries.empty() ) {
@@ -77,7 +76,7 @@ static std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &re
   return restrictions;
 }
 
-static CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
+CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
 {
   CItemData::FieldBits fields;
   if ( !fieldsToSearch.empty() ) {
@@ -89,7 +88,7 @@ static CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
   return fields;
 }
 
-static bool CaseSensitive(const wstring &str)
+bool CaseSensitive(const wstring &str)
 {
   assert(str.length() == 0 || (str.length() == 2 && str[0] == '/' && (str[1] == L'i' || str[1] == 'I')));
   return str.length() == 0 || str[0] == L'i';
