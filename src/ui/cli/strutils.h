@@ -11,6 +11,7 @@
 
 #include <iosfwd>
 #include <sstream>
+#include <regex>
 
 #include "../../core/StringX.h"
 
@@ -35,6 +36,16 @@ inline std::ostream& operator<<(std::ostream& os, const std::wstring& str)
 void Utf82StringX(const char* filename, StringX& sname);
 
 std::wstring Utf82wstring(const char* utf8str);
+
+template <class CallbackType>
+void Split(const std::wstring &str, const std::wstring &sep, CallbackType cb)
+{
+  // we have to create a temp variable like this, or else it crashes in Xcode 6
+  std::wregex r(sep);
+  std::wsregex_token_iterator pos(str.cbegin(), str.cend(), r, -1);
+  std::wsregex_token_iterator end;
+  for_each( pos, end, cb );
+}
 
 
 #endif /* defined(__pwsafe_xcode6__strutils__) */

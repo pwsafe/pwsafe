@@ -8,6 +8,7 @@
 
 #include "./search.h"
 #include "./argutils.h"
+#include "./strutils.h"
 
 #include <string>
 #include <vector>

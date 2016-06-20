@@ -9,8 +9,6 @@
 #ifndef __pwsafe_xcode6__argutils__
 #define __pwsafe_xcode6__argutils__
 
-#include <regex>
-
 #include "../../core/PWScore.h"
 #include "../../core/Match.h"
 
@@ -34,16 +32,6 @@ struct UserArgs {
 
 CItemData::FieldType String2FieldType(const std::wstring& str);
 PWSMatch::MatchRule Str2MatchRule( const std::wstring &s);
-
-template <class CallbackType>
-void Split(const std::wstring &str, const std::wstring &sep, CallbackType cb)
-{
-  // we have to create a temp variable like this, or else it crashes in Xcode 6
-  std::wregex r(sep);
-  std::wsregex_token_iterator pos(str.cbegin(), str.cend(), r, -1);
-  std::wsregex_token_iterator end;
-  for_each( pos, end, cb );
-}
 
 
 
