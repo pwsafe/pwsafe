@@ -164,6 +164,9 @@
     <ClCompile Include="ItemAtt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RUEList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlowFish.h">
@@ -350,6 +353,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RUEList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
