@@ -83,10 +83,7 @@ static CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
   if ( !fieldsToSearch.empty() ) {
     Split(fieldsToSearch, L",", [&fields](const wstring &field) {
       CItemData::FieldType ft = String2FieldType(field);
-      if (ft != CItemData::LAST_DATA)
-        fields.set(ft);
-      else
-        throw std::invalid_argument("Could not parse field name: " + toutf8(field));
+      fields.set(ft);
     });
   }
   return fields;
