@@ -144,6 +144,8 @@
     <File Name="../src/core/KeyWrap.h"/>
     <File Name="../src/core/pbkdf2.cpp"/>
     <File Name="../src/core/pbkdf2.h"/>
+    <File Name="../src/core/RUEList.cpp"/>
+    <File Name="../src/core/RUEList.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
