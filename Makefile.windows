@@ -8,8 +8,13 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM := 3.39
-RELEASE_SPECIAL := pre
+include version.mfc
+ifeq ($(VER_REV),)
+	RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+else
+	RELEASENUM := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
+endif
+RELEASE_SPECIAL := $(VER_SPECIAL)
 
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 

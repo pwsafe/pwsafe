@@ -1,18 +1,18 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-export VER_MAJOR := 0
-export VER_MINOR := 98
-export VER_REV := 1
-export VER_SPECIAL := BETA
 
-# Since we use wxWidgets 3.x, while many distros still provide 2.8
+# Since we use wxWidgets 3.x, while some distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
 # Alternately, you can just set WX_CONFIG in your shell environment
 # export WX_CONFIG=$(HOME)/src/wxWidgets-3.0.2/wx-config
 
-# Shouldn't change anything below here
-
+# version numbers are defined in version.wx
+include version.wx
+export VER_MAJOR
+export VER_MINOR
+export VER_REV
+export VER_SPECIAL
 export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
 export RELEASE_SPECIAL := $(VER_SPECIAL)
 export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)

@@ -10,18 +10,55 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 
 # Version configuration:
+# version.mfc for Windows MFC build, version.wx for all the rest
+# version file has the following format:
+# VER_MAJOR = 3
+# VER_MINOR = 39
+# VER_REV = 0
+# VER_SPECIAL = pre
+# where VER_MAJOR and VAR_MINOR are mandatory, and all except
+# VER_SPECIAL must be integers
+
 if (WIN32 AND NOT WX_WINDOWS)
-     set (pwsafe_VERSION_MAJOR 3)
-     set (pwsafe_VERSION_MINOR 39)
-     set (pwsafe_REVISION 0)
-     set (pwsafe_SPECIALBUILD "pre")
+   set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.mfc")
 else (WIN32 AND NOT WX_WINDOWS)
-     set (pwsafe_VERSION_MAJOR 0)
-     set (pwsafe_VERSION_MINOR 98)
-     set (pwsafe_REVISION 1)
-     set (pwsafe_SPECIALBUILD "BETA")
+   set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.wx")
 endif (WIN32 AND NOT WX_WINDOWS)
-set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
+
+if (NOT EXISTS ${VERSION_FILE})
+  message (FATAL_ERROR "Missing ${VERSION_FILE} - unable to proceed")
+endif (NOT EXISTS ${VERSION_FILE})
+
+file ( STRINGS ${VERSION_FILE} VERSION_LIST )
+
+foreach ( VERSION_ITEM IN ITEMS ${VERSION_LIST} )
+  if (${VERSION_ITEM} MATCHES "^[ ]*VER_MAJOR[ ]*=[ ]*([0-9]+)")
+    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
+            pwsafe_VERSION_MAJOR ${VERSION_ITEM})
+  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_MINOR[ ]*=[ ]*([0-9]+)")
+    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
+            pwsafe_VERSION_MINOR ${VERSION_ITEM})
+  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_REV[ ]*=[ ]*([0-9]+)")
+    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
+            pwsafe_REVISION ${VERSION_ITEM})
+  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_SPECIAL[ ]*=[ ]*(.+)")
+    string (REGEX REPLACE ".*=[ ]*(.+)" "\\1"
+            pwsafe_SPECIALBUILD ${VERSION_ITEM})
+  endif ()
+endforeach ( VERSION_ITEM )
+
+if (NOT pwsafe_VERSION_MAJOR)
+  message (FATAL_ERROR "VER_MAJOR undefined in ${VERSION_FILE} - unable to proceed")
+endif (NOT pwsafe_VERSION_MAJOR)
+if (NOT pwsafe_VERSION_MINOR)
+  message (FATAL_ERROR "VER_MINOR undefined in ${VERSION_FILE} - unable to proceed")
+endif (NOT pwsafe_VERSION_MINOR)
+
+if (pwsafe_REVISION)
+   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
+else ()
+   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}")
+endif (pwsafe_REVISION)
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
@@ -302,8 +339,14 @@ endif (NOT WIN32)
 ## Common:
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MINOR}")
-set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
-set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}-${pwsafe_SPECIALBUILD}")
+if (pwsafe_REVISION)
+   set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
+endif (pwsafe_REVISION)
+if (pwsafe_SPECIALBUILD)
+   set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}-${pwsafe_SPECIALBUILD}")
+else ()
+   set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}")
+endif (pwsafe_SPECIALBUILD)
 set (CPACK_PACKAGE_CONTACT "Rony Shapiro <ronys@pwsafe.org>")
 set (CPACK_PACKAGE_VENDOR "Rony Shapiro")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password database utility.")
