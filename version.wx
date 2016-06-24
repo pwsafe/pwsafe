@@ -1,4 +1,4 @@
-# This file uniquely determines version of Windows/MFC build
+# This file uniquely determines version of wxWidgets build
 # for all build systems
 # VER_MAJOR and VAR_MINOR are mandatory, all except VER_SPECIAL must
 # be integers
