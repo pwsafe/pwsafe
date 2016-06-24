@@ -1,6 +1,6 @@
 # This file uniquely determines version of Windows/MFC build
 # for all build systems
-# VER_MAJOR and VAR_MINOR are mandatory, all except VER_SPECIAL must
+# VER_MAJOR and VER_MINOR are mandatory, all except VER_SPECIAL must
 # be integers
 
 VER_MAJOR = 3

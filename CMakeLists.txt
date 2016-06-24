@@ -12,11 +12,11 @@ include(CheckIncludeFile)
 # Version configuration:
 # version.mfc for Windows MFC build, version.wx for all the rest
 # version file has the following format:
-# VER_MAJOR = 3
-# VER_MINOR = 39
-# VER_REV = 0
-# VER_SPECIAL = pre
-# where VER_MAJOR and VAR_MINOR are mandatory, and all except
+# VER_MAJOR = n
+# VER_MINOR = n
+# VER_REV = n
+# VER_SPECIAL = text [or not set]
+# where VER_MAJOR and VER_MINOR are mandatory, and all except
 # VER_SPECIAL must be integers
 
 if (WIN32 AND NOT WX_WINDOWS)
@@ -221,9 +221,9 @@ endif (USE_ASAN)
 endif (MSVC)
 
 if (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.cmake")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
 else (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.cmake")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
 endif (WIN32 AND NOT WX_WINDOWS)
 
 configure_file (

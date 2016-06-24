@@ -13,20 +13,22 @@
 // pre_build.vbs
 //
 // version.h is also created in the specified build directory
-// by cmake using version.cmake as the template, with the version
-// specified in the toplevel CMakeLists.cmake
+// by cmake using version.in as the template
+//
+// In both cases, the version information is retrieved from the toplevel version.mfc file.
 //
 // When building via cmake in the build directory, make sure version.h
 // is removed from the source tree.
 
-// Format: Major, Minor, Build, Revision
-//   Build  = 0 for all Formally Released versions
-//   Build != 0 for all Intermediate versions
+// Format: Major, Minor, Revision
+//   Revision  = 0 for all Formally Released versions
+//   Revision != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 39, 0
-#define STRPRODUCTVER  "3, 39, 0, @pwsafe_VERSTRING@\0"
-#define SPECIAL_BUILD L"pre"
+#define PRODUCTVER     @pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@
+#define STRPRODUCTVER  "@pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@, @pwsafe_VERSTRING@\0"
+#define SPECIAL_BUILD L"@pwsafe_SPECIALBUILD@"
+
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 

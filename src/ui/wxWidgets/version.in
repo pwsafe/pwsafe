@@ -15,15 +15,31 @@
 
 #include <wx/string.h>
 
+// When building under Windows using Visual Studio, version.h is created in
+// the source tree from version.in via the pre_build.vbs script
+//
+// When building using cmake under Windows or Linux, version.h is also created in
+// the specified build directory by cmake using version.in as the template.
+//
+// In both cases, the version information retrieved from the toplevel version.wx file.
+//
+// When building via cmake in the build directory, make sure version.h
+// is removed from the source tree.
+
+// Format: Major, Minor, Revision
+//   Revision  = 0 for all Formally Released versions
+//   Revision != 0 for all Intermediate versions
+// Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
+
 #ifdef linux
 #define APPNAME _T("PasswordSafe (linux)")
 #else
 #define APPNAME _T("PasswordSafe (wxWidgets)")
 #endif
 
-#define MAJORVERSION 0
-#define MINORVERSION 98
-#define REVISION     1
+#define MAJORVERSION @pwsafe_VERSION_MAJOR@
+#define MINORVERSION @pwsafe_VERSION_MINOR@
+#define REVISION     @pwsafe_REVISION@
 #define VCS_VERSION "@pwsafe_VERSTRING@"
 
 // LINUXPRODVER is for Misc/make-latest-xml.pl

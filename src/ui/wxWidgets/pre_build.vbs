@@ -13,6 +13,8 @@
 ' For the stdout.WriteLine to work, this Pre-Build Event script
 ' MUST be executed via cscript command.
 
+' THIS IS THE wxWidgets VERSION
+
 Option Explicit
 
 Const ForReading = 1, ForWriting = 2, ForAppending = 8 
@@ -36,12 +38,26 @@ Set objShell = WScript.CreateObject("WScript.Shell")
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
 ' Update Git revision info
-Dim strGit, strProjectDir, strGitPGM, strVersionIn, strVersionHeader
-Dim objVerInFile, objVerHFile
+Dim strGit, strSolutionDir, strProjectDir, strGitPGM
+Dim strVersionWX, strVersionIn, strVersionHeader
+Dim objVerWXFile, objVerInFile, objVerHFile
 Dim strLine, strGitRev
 
 strGit = objShell.ExpandEnvironmentStrings("%GitDir%")
 strProjectDir = objShell.ExpandEnvironmentStrings("%ProjectDir%")
+
+' To prevent changing configure-14.vbs and so UserVariables-14.props
+' to retrieve value of $(SolutionDir) macro into an environmental variable
+Dim fso, strCurrentDirectory
+Set fso = CreateObject("Scripting.FileSystemObject")
+strCurrentDirectory = fso.GetAbsolutePathName(".")
+If Right(strCurrentDirectory, 1) <> "\" Then
+  strCurrentDirectory = strCurrentDirectory & "\"
+End If
+
+' Remove "src/ui/wxWidgets/"
+strSolutionDir = Left(strCurrentDirectory, Len(strCurrentDirectory) - Len("src/ui/wxWidgets/"))
+Set fso = Nothing
 
 ' Remove double quotes
 strGit = Replace(strGit, Chr(34), "", 1, -1, vbTextCompare)
@@ -54,9 +70,13 @@ End If
 If Right(strProjectDir, 1) <> "\" Then
   strProjectDir = strProjectDir & "\"
 End If
+If Right(strSolutionDir, 1) <> "\" Then
+  strSolutionDir = strSolutionDir & "\"
+End If
 
 strGitPGM = strGit + "bin\git.exe"
 strVersionIn = strProjectDir + "version.in"
+strVersionWX = strSolutionDir + "version.wx"
 strVersionHeader = strProjectDir + "version.h"
 
 stdout.WriteLine " "
@@ -64,6 +84,12 @@ If Not objFSO.FileExists(strVersionIn) Then
   stdout.WriteLine " *** Can't find " & strVersionIn & vbCRLF & _
          " *** Please check source tree"
   WScript.Quit(98)
+End If
+
+If Not objFSO.FileExists(strVersionWX) Then
+  stdout.WriteLine " *** Can't find " & strVersionWX & vbCRLF & _
+         " *** Please check source tree"
+  WScript.Quit(96)
 End If
 
 If Not objFSO.FileExists(strGitPGM) Then
@@ -124,12 +150,69 @@ End If
 
 stdout.WriteLine "strGitRev=" & strGitRev & vbCRLF
 
-' Read version.in, write version.h, substitute @pwsafe_VERSTRING@ with strGitRev
+' Read version.wx to get 
+Dim strMajor, strMinor, strRevision, strSpecialBuild
+Set objVerWXFile = objFSO.OpenTextFile(strVersionWX, ForReading)
+
+' Set defaults in case not in version.wx file
+strMajor = "0"
+strMinor = "0"
+strRevision = "0"
+strSpecialBuild = ""
+
+Do While Not objVerWXFile.AtEndOfStream
+  Dim arrStrings, numStrings, i
+  strLine = objVerWXFile.ReadLine()
+  result = InStr(strLine, "VER_MAJOR")
+  If result <> 0 AND Left(strLine, 1) <> "#" Then
+    arrStrings = Split(strLine)
+    strMajor = arrStrings(2)
+  End If
+  result = InStr(strLine, "VER_MINOR")
+  If result <> 0 AND Left(strLine, 1) <> "#" Then
+    arrStrings = Split(strLine)
+    strMinor = arrStrings(2)
+  End If
+  result = InStr(strLine, "VER_REV")
+  If result <> 0 AND Left(strLine, 1) <> "#" Then
+    arrStrings = Split(strLine)
+    strRevision = arrStrings(2)
+  End If
+  result = InStr(strLine, "VER_SPECIAL")
+  If result <> 0 AND Left(strLine, 1) <> "#" Then
+    arrStrings = Split(strLine)
+    numStrings = UBound(arrStrings)
+    strSpecialBuild = arrStrings(2)    
+    for i = 3 To numStrings
+      strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
+    Next
+  End If
+Loop
+
+objVerWXFile.Close
+
+' Read version.in, write version.h, substitute @pwsafe_....@ variables
 Set objVerInFile = objFSO.OpenTextFile(strVersionIn, ForReading)
 Set objVerHFile = objFSO.OpenTextFile(strVersionHeader, ForWriting, True, TristateFalse)
 
 Do While Not objVerInFile.AtEndOfStream
   strLine = objVerInFile.ReadLine()
+  result = InStr(strLine, "@pwsafe_VERSION_MAJOR@")
+  If result <> 0 Then
+    strLine = Replace(strLine, "@pwsafe_VERSION_MAJOR@", strMajor)
+  End If
+  result = InStr(strLine, "@pwsafe_VERSION_MINOR@")
+  If result <> 0 Then
+    strLine = Replace(strLine, "@pwsafe_VERSION_MINOR@", strMinor)
+  End If
+  result = InStr(strLine, "@pwsafe_REVISION@")
+  If result <> 0 Then
+    strLine = Replace(strLine, "@pwsafe_REVISION@", strRevision)
+  End If
+  result = InStr(strLine, "@pwsafe_SPECIALBUILD@")
+  If result <> 0 Then
+    strLine = Replace(strLine, "@pwsafe_SPECIALBUILD@", strSpecialBuild)
+  End If
   result = InStr(strLine, "@pwsafe_VERSTRING@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_VERSTRING@", strGitRev)
@@ -141,6 +224,7 @@ objVerInFile.Close
 objVerHFile.Close
 
 ' Tidy up objects before exiting
+Set objVerWXFile = Nothing
 Set objVerInFile = Nothing
 Set objVerHFile = Nothing
 
