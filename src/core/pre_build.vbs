@@ -38,7 +38,7 @@ strConfig = objShell.ExpandEnvironmentStrings("%ConfigurationName%")
 
 strConfigLC = LCase(strConfig)
 
-' Rather than assume that wxWidgets or other non-MFC configurations and
+' Rather than assume that wxWidgets or other non-MFC configurations end
 ' with 'wx', just use known MFC configurations
 Select Case strConfigLC
   Case "debug", "release", "debug64", "release64"

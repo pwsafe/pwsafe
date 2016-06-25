@@ -12,11 +12,11 @@ include(CheckIncludeFile)
 # Version configuration:
 # version.mfc for Windows MFC build, version.wx for all the rest
 # version file has the following format:
-# VER_MAJOR = 3
-# VER_MINOR = 39
-# VER_REV = 0
-# VER_SPECIAL = pre
-# where VER_MAJOR and VAR_MINOR are mandatory, and all except
+# VER_MAJOR = n
+# VER_MINOR = n
+# VER_REV = n (default 0)
+# VER_SPECIAL = text [or not set]
+# where VER_MAJOR and VER_MINOR are mandatory, and all except
 # VER_SPECIAL must be integers
 
 if (WIN32 AND NOT WX_WINDOWS)
@@ -47,17 +47,17 @@ foreach ( VERSION_ITEM IN ITEMS ${VERSION_LIST} )
   endif ()
 endforeach ( VERSION_ITEM )
 
-if (NOT pwsafe_VERSION_MAJOR)
+if (NOT DEFINED pwsafe_VERSION_MAJOR)
   message (FATAL_ERROR "VER_MAJOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT pwsafe_VERSION_MAJOR)
-if (NOT pwsafe_VERSION_MINOR)
+endif (NOT DEFINED pwsafe_VERSION_MAJOR)
+if (NOT DEFINED pwsafe_VERSION_MINOR)
   message (FATAL_ERROR "VER_MINOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT pwsafe_VERSION_MINOR)
+endif (NOT DEFINED pwsafe_VERSION_MINOR)
 
 if (pwsafe_REVISION)
    set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 else ()
-   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}")
+   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.0")
 endif (pwsafe_REVISION)
 
 # Configurable options:
@@ -221,9 +221,9 @@ endif (USE_ASAN)
 endif (MSVC)
 
 if (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.cmake")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
 else (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.cmake")
+  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
 endif (WIN32 AND NOT WX_WINDOWS)
 
 configure_file (

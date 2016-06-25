@@ -78,7 +78,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PreBuildEvent>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript "$(SolutionDir)\src\ui\Windows\pre_build.vbs"</Command>
       <Message>Pre-build event command script</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -105,7 +105,7 @@
       <NoEntryPoint>true</NoEntryPoint>
     </Link>
     <PreBuildEvent>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript ..\pre_build.vbs</Command>
       <Message>Pre-build event command script</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
