@@ -4,9 +4,9 @@
 # OSK_VER_MAJOR = n
 # OSK_VER_MINOR = n
 # OSK_VER_REV = n (default 0)
-# where VER_MAJOR and VER_MINOR are mandatory, and all must be integers
+# where OSK_VER_MAJOR and OSK_VER_MINOR are mandatory, and all must be integers
 
-set (VERSION_FILE "${PROJECT_SOURCE_DIR}/versionDLLs.mfc")
+set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.mfc")
 
 if (NOT EXISTS ${VERSION_FILE})
   message (FATAL_ERROR "Missing ${VERSION_FILE} - unable to proceed")
@@ -27,12 +27,12 @@ foreach ( VERSION_ITEM IN ITEMS ${VERSION_LIST} )
   endif ()
 endforeach ( VERSION_ITEM )
 
-if (NOT pwsafe_osk_VERSION_MAJOR)
+if (NOT DEFINED pwsafe_osk_VERSION_MAJOR)
   message (FATAL_ERROR "OSK_VER_MAJOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT pwsafe_osk_VERSION_MAJOR)
-if (NOT pwsafe_osk_VERSION_MINOR)
+endif (NOT DEFINED pwsafe_osk_VERSION_MAJOR)
+if (NOT DEFINED pwsafe_osk_VERSION_MINOR)
   message (FATAL_ERROR "OSK_VER_MINOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT pwsafe_osk_VERSION_MINOR)
+endif (NOT DEFINED pwsafe_osk_VERSION_MINOR)
 
 if (pwsafe_osk_REVISION)
    set (pwsafe_osk_VERSION "${pwsafe_osk_VERSION_MAJOR}.${pwsafe_osk_VERSION_MINOR}.${pwsafe_osk_REVISION}")

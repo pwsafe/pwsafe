@@ -79,7 +79,7 @@ End If
 
 strGitPGM = strGit + "bin\git.exe"
 strVersionIn = strProjectDir + "version.in"
-strVersionMFC = strSolutionDir + "version" + strDLL + ".mfc"
+strVersionMFC = strSolutionDir + "version.mfc"
 strVersionHeader = strProjectDir + strLanguage + "version.h"
 
 stdout.WriteLine " "

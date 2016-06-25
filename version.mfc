@@ -7,3 +7,14 @@ VER_MAJOR = 3
 VER_MINOR = 39
 VER_REV = 0
 VER_SPECIAL = pre
+
+# Following values for "helper" dlls used by MFC build:
+# 'AT' for pws_at.dll (AutoType helper), 'OSK' for pws_osk.dll (Virtual Keyboard data)
+
+AT_VER_MAJOR = 1
+AT_VER_MINOR = 1
+AT_VER_REV = 0
+
+OSK_VER_MAJOR = 1
+OSK_VER_MINOR = 1
+OSK_VER_REV = 0
