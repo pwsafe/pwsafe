@@ -30,26 +30,31 @@ think a bit and the report errors: "CMake Error at [...] (message):
   GTEST_MAIN_LIBRARY)
 To fix this, click on GTEST_ROOT and set it to the directory where
 gtest is installed on your machine - for example: C:/local/src/gtest-svn/.
-This should enable cmake to at least fine the include directory.
+This should enable cmake to at least find the include directory.
 Note: if you do not use the default locations for the built libraries
 (e.g. different directories for the VS2012 & VS2015 builds), cmake will
-not find the libraries but you can specify the relative path to the ROOT e.g.
+not find the libraries but you can specify the pathe relative to the
+GTEST_ROOT, e.g.,
 GTEST_ROOT               C:/local/src/gtest-svn
 GTEST_LIBRARY            .\build-vc14\Release
 GTEST_LIBRARY_DEBUG      .\build-vc14\Debug
 GTEST_MAIN_LIBRARY       .\build-vc14\Release
 GTEST_MAIN_LIBRARY_DEBUG .\build-vc14\Debug
 
-4. If you wish to support Xerces XML processing, make sure that you have mot
-checked NO_XML and check the "Advanced" checkbox, and set the values of
-XercesC_INCLUDE_DIR, XercesC_LIBRARY_DEBUG and XercesC_LIBRARY_RELEASE
-to the correct values.  Note: Currently only 32-bit compilations are supported.
+4. XML support: For the MFC build, you can choose either: (a)
+XML_MSXML, which will use Microsoft's implementation for XML
+validation, (b) XML_XERCESC, which uses the XercesC library, or (c)
+neither, in which case the compiled program will not be able to import
+XML data.
+The wx build doesn't support XML_MSXML.
+For Xerces XML processing, check the "Advanced" checkbox, and set the
+values of XercesC_INCLUDE_DIR, XercesC_LIBRARY_DEBUG and
+XercesC_LIBRARY_RELEASE to the correct values.
+Note: Currently only 32-bit compilations are supported.
 For example:
 XercesC_INCLUDE_DIR     C:/local/xerces-c-3.1.3-x86_64-windows-vc-14.0/include
 XercesC_LIBRARY_DEBUG   C:/local/xerces-c-3.1.3-x86-windows-vc-14.0/lib
 XercesC_LIBRARY_RELEASE C:/local/xerces-c-3.1.3-x86-windows-vc-14.0/lib
-
-Note: Microsoft XML is not yet supported via Cmake.
 
 5. If you wish to build the wxWidgets version, check the box WX_WINDOWS and
 pick a different _build directory (e.g. _build_wx) so that your MFC files are
