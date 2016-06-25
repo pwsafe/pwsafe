@@ -13,9 +13,9 @@
 // pre-build step that uses git's 'describe' function and
 // replaces "GITREV" with current git commit info.
 
-// Format: Major, Minor, Build, Revision
-//   Build  = 0 for all Formally Released versions
-//   Build != 0 for all Intermediate versions
+// Format: Major, Minor, Revision
+//   Revision  = 0 for all Formally Released versions
+//   Revision != 0 for all Intermediate versions
 
 #define FILEVER           1, 1, 0
 #define PRODUCTVER        1, 1, 0

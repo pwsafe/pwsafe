@@ -1,0 +1,12 @@
+# This file uniquely determines version of Windows/MFC build
+# for all build systems
+# VER_MAJOR and VER_MINOR are mandatory. All values must be integers
+# 'AT' for pws_at.dll (AutoType helper), 'OSK' for pws_osk.dll (Virtual Keyboard data)
+
+AT_VER_MAJOR = 1
+AT_VER_MINOR = 1
+AT_VER_REV = 0
+
+OSK_VER_MAJOR = 1
+OSK_VER_MINOR = 1
+OSK_VER_REV = 0
