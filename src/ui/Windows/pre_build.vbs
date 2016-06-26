@@ -194,7 +194,7 @@ Dim objVerMFCFile
 Set objVerMFCFile = objFSO.OpenTextFile(strVersionMFC, ForReading)
 
 Do While Not objVerMFCFile.AtEndOfStream
-  Dim arrStrings, numStrings, i
+  Dim arrStrings
   strLine = objVerMFCFile.ReadLine()
   result = InStr(strLine, "VER_MAJOR")
   If result <> 0 AND Left(strLine, 1) <> "#" Then
@@ -213,6 +213,7 @@ Do While Not objVerMFCFile.AtEndOfStream
   End If
   result = InStr(strLine, "VER_SPECIAL")
   If result <> 0 AND Left(strLine, 1) <> "#" Then
+    Dim numStrings, i
     arrStrings = Split(strLine)
     numStrings = UBound(arrStrings)
     strSpecialBuild = arrStrings(2)    
@@ -343,11 +344,11 @@ Do While Not objVerInFile.AtEndOfStream
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_at_VERSION_MAJOR@", strATMajor)
   End If
-  result = InStr(strLine, "@pwsafe_VERSION_MINOR@")
+  result = InStr(strLine, "@pwsafe_at_VERSION_MINOR@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_at_VERSION_MINOR@", strATMinor)
   End If
-  result = InStr(strLine, "@pwsafe_REVISION@")
+  result = InStr(strLine, "@pwsafe_at_REVISION@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_at_REVISION@", strATRevision)
   End If
@@ -356,18 +357,19 @@ Do While Not objVerInFile.AtEndOfStream
     strLine = Replace(strLine, "@pwsafe_at_VERSTRING@", strGitRev)
   End If
   
+  result = InStr(strLine, "@pwsafe_osk_VERSION_MAJOR@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_osk_VERSION_MAJOR@", strOSKMajor)
   End If
-  result = InStr(strLine, "@pwsafe_VERSION_MINOR@")
+  result = InStr(strLine, "@pwsafe_osk_VERSION_MINOR@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_osk_VERSION_MINOR@", strOSKMinor)
   End If
-  result = InStr(strLine, "@pwsafe_REVISION@")
+  result = InStr(strLine, "@pwsafe_osk_REVISION@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_osk_REVISION@", strOSKRevision)
   End If
-  result = InStr(strLine, "@pwsafe_at_VERSTRING@")
+  result = InStr(strLine, "@pwsafe_osk_VERSTRING@")
   If result <> 0 Then
     strLine = Replace(strLine, "@pwsafe_osk_VERSTRING@", strGitRev)
   End If

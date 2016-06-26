@@ -126,12 +126,7 @@ stdout.WriteLine " "
 ' If strGitRev is of the form heads/master-0-g5f69087, drop everything
 ' to the left of the rightmost g. Otherwise, this is a branch/WIP, leave full
 ' info
-
-Dim result
-
-result = InStr(strGitRev, "heads/master-0-")
-
-If result <> 0 Then
+If InStr(strGitRev, "heads/master-0-") <> 0 Then
   strGitRev = Replace(strGitRev, "heads/master-0-", "")
 End If
 
@@ -170,7 +165,7 @@ Dim objVerWXFile
 Set objVerWXFile = objFSO.OpenTextFile(strVersionWX, ForReading)
 
 Do While Not objVerWXFile.AtEndOfStream
-  Dim arrStrings, numStrings, i
+  Dim arrStrings
   strLine = objVerWXFile.ReadLine()
   result = InStr(strLine, "VER_MAJOR")
   If result <> 0 AND Left(strLine, 1) <> "#" Then
@@ -189,6 +184,7 @@ Do While Not objVerWXFile.AtEndOfStream
   End If
   result = InStr(strLine, "VER_SPECIAL")
   If result <> 0 AND Left(strLine, 1) <> "#" Then
+    Dim numStrings, i
     arrStrings = Split(strLine)
     numStrings = UBound(arrStrings)
     strSpecialBuild = arrStrings(2)    
