@@ -18,6 +18,10 @@
 #include "../../core/PWSprefs.h"
 #include <set>
 
+#if !wxCHECK_VERSION(3,1,0)
+#define wxOVERRIDE
+#endif
+
 inline wxString& operator << ( wxString& str, const wxPoint& pt) {
   return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');
 }

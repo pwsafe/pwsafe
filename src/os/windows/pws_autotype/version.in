@@ -13,13 +13,14 @@
 // pre-build step that uses git's 'describe' function and
 // replaces "GITREV" with current git commit info.
 
-// Format: Major, Minor, Build, Revision
-//   Build  = 0 for all Formally Released versions
-//   Build != 0 for all Intermediate versions
+// Format: Major, Minor, Revision
+//   Revision  = 0 for all Formally Released versions
+//   Revision != 0 for all Intermediate versions
 
-#define FILEVER          1, 1, 0
-#define PRODUCTVER       1, 1, 0
-#define STRATFILEVER     "1, 1, 0, GITREV\0"
-#define STRATPRODUCTVER  STRATFILEVER
+#define PRODUCTVER     @pwsafe_at_VERSION_MAJOR@, @pwsafe_at_VERSION_MINOR@, @pwsafe_at_REVISION@
+#define STRATPRODUCTVER  "@pwsafe_at_VERSION_MAJOR@, @pwsafe_at_VERSION_MINOR@, @pwsafe_at_REVISION@, @pwsafe_at_VERSTRING@\0"
+
+#define FILEVER        PRODUCTVER
+#define STRATFILEVER   STRATPRODUCTVER
 
 #endif // _VERSION_H_

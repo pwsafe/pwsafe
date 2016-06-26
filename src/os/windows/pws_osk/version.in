@@ -17,9 +17,10 @@
 //   Revision  = 0 for all Formally Released versions
 //   Revision != 0 for all Intermediate versions
 
-#define FILEVER           1, 1, 0
-#define PRODUCTVER        1, 1, 0
-#define STROSKFILEVER     "1, 1, 0 , GITREV\0"
-#define STROSKPRODUCTVER  STROSKFILEVER
+#define PRODUCTVER     @pwsafe_osk_VERSION_MAJOR@, @pwsafe_osk_VERSION_MINOR@, @pwsafe_osk_REVISION@
+#define STROSKPRODUCTVER "@pwsafe_osk_VERSION_MAJOR@, @pwsafe_osk_VERSION_MINOR@, @pwsafe_osk_REVISION@, @pwsafe_osk_VERSTRING@\0"
+
+#define FILEVER        PRODUCTVER
+#define STROSKFILEVER  STROSKPRODUCTVER
 
 #endif // _VERSION_H_
