@@ -280,7 +280,8 @@ if (NOT WIN32)
 else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
    if (NOT WX_WINDOWS)
-      set(CMAKE_MFC_FLAG 1)
+      set (CMAKE_MFC_FLAG 1)
+      set (PWS_DLL_LIBS "pws_at" "pws_osk")
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
                             _BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
                             LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
@@ -303,7 +304,7 @@ elseif (WIN32)
    set (YUBILIB "YkLib22")
   endif ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
-      ${YUBILIB} pws_at pws_osk version Rpcrt4 htmlhelp SetupAPI Hid
+      ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid
       Dbghelp Urlmon ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11

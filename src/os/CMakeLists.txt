@@ -24,8 +24,11 @@ if (NOT NO_YUBI)
         windows/yubi/YkLib.cpp)
 endif ()
 
+if (NOT WX_WINDOWS)
     add_subdirectory (windows/pws_autotype)
     add_subdirectory (windows/pws_osk)
+endif (NOT WX_WINDOWS)
+
 if (NOT NO_YUBI)
     add_subdirectory (windows/yubi)
 endif ()
