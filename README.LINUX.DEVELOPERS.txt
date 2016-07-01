@@ -46,6 +46,7 @@ For Fedora:
 cmake (See note 1 below)
 gcc-c++
 git
+gtest-devel
 libXt-devel
 libXtst-devel
 libuuid-devel
