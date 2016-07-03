@@ -187,39 +187,32 @@ WScript.Quit(rc)
 ' Subroutines
 Sub GetMainVersionInfo
 
-' Get version information from files
-Dim result
+' Get Executable & Language DLL version information from files
 Dim objVerMFCFile
 
 Set objVerMFCFile = objFSO.OpenTextFile(strVersionMFC, ForReading)
 
 Do While Not objVerMFCFile.AtEndOfStream
-  Dim arrStrings
+  Dim arrStrings, numStrings
+
   strLine = objVerMFCFile.ReadLine()
-  result = InStr(strLine, "VER_MAJOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strMajor = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_MINOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strMinor = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_REV")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strRevision = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_SPECIAL")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    Dim numStrings, i
-    arrStrings = Split(strLine)
-    numStrings = UBound(arrStrings)
-    strSpecialBuild = arrStrings(2)    
-    for i = 3 To numStrings
-      strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
-    Next
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
+    If arrStrings(0) = "VER_MAJOR" Then
+      strMajor = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_MINOR" Then
+      strMinor = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_REV" Then
+      strRevision = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_SPECIAL" Then
+      Dim i
+      strSpecialBuild = arrStrings(2)    
+      for i = 3 To numStrings
+        strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
+      Next
+    End If
   End If
 Loop
 
@@ -233,45 +226,32 @@ End Sub
 
 Sub GetDLLVersionInfo
 
-' Get version information from files
-Dim result
+' Get DLL version information from files
 Dim objVerMFCFile
 
 Set objVerMFCFile = objFSO.OpenTextFile(strVersionMFC, ForReading)
 
 Do While Not objVerMFCFile.AtEndOfStream
-  Dim arrStrings, numStrings, i
+  Dim arrStrings, numStrings
+
   strLine = objVerMFCFile.ReadLine()
-  result = InStr(strLine, "AT_VER_MAJOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strATMajor = arrStrings(2)
-  End If
-  result = InStr(strLine, "AT_VER_MINOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strATMinor = arrStrings(2)
-  End If
-  result = InStr(strLine, "AT_VER_REV")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strATRevision = arrStrings(2)
-  End If
-  
-  result = InStr(strLine, "OSK_VER_MAJOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strOSKMajor = arrStrings(2)
-  End If
-  result = InStr(strLine, "OSK_VER_MINOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strOSKMinor = arrStrings(2)
-  End If
-  result = InStr(strLine, "OSK_VER_REV")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strOSKRevision = arrStrings(2)
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
+    If arrStrings(0) = "AT_VER_MAJOR" Then
+      strATMajor = arrStrings(2)
+    ElseIf arrStrings(0) = "AT_VER_MINOR" Then
+      strATMinor = arrStrings(2)
+    ElseIf arrStrings(0) = "AT_VER_REV" Then
+      strATRevision = arrStrings(2)
+    ElseIf arrStrings(0) = "OSK_VER_MAJOR" Then
+      strOSKMajor = arrStrings(2)
+    ElseIf arrStrings(0) = "OSK_VER_MINOR" Then
+      strOSKMinor = arrStrings(2)
+    ElseIf arrStrings(0) = "OSK_VER_REV" Then
+      strOSKRevision = arrStrings(2)
+    End If
   End If
 Loop
 

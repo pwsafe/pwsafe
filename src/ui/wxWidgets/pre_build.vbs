@@ -159,38 +159,32 @@ WScript.Quit(rc)
 Sub GetVersionInfo
 
 ' Get version information from files
-Dim result
 Dim objVerWXFile
 
 Set objVerWXFile = objFSO.OpenTextFile(strVersionWX, ForReading)
 
 Do While Not objVerWXFile.AtEndOfStream
-  Dim arrStrings
+  Dim arrStrings, numStrings
+
   strLine = objVerWXFile.ReadLine()
-  result = InStr(strLine, "VER_MAJOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strMajor = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_MINOR")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strMinor = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_REV")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    arrStrings = Split(strLine)
-    strRevision = arrStrings(2)
-  End If
-  result = InStr(strLine, "VER_SPECIAL")
-  If result <> 0 AND Left(strLine, 1) <> "#" Then
-    Dim numStrings, i
-    arrStrings = Split(strLine)
-    numStrings = UBound(arrStrings)
-    strSpecialBuild = arrStrings(2)    
-    for i = 3 To numStrings
-      strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
-    Next
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
+    If arrStrings(0) = "VER_MAJOR" Then
+      strMajor = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_MINOR" Then
+      strMinor = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_REV" Then
+      strRevision = arrStrings(2)
+    ElseIf arrStrings(0) = "VER_SPECIAL" Then
+      Dim numStrings, i
+      numStrings = UBound(arrStrings)
+      strSpecialBuild = arrStrings(2)    
+      for i = 3 To numStrings
+        strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
+      Next
+    End If
   End If
 Loop
 
