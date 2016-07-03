@@ -1,5 +1,5 @@
-Password Safe 3.38.3 Release Notes ???? 2016
-============================================
+Password Safe 3.39 Release Notes July 2016
+==========================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.38.3
-====================
+Bugs fixed in 3.39
+==================
 [1334] An empty group is now correctly changed to a normal group when
 an entry is copied into it via Drag & Drop.
 [1330] Duplication of an alias or shortcut base entry now correctly
@@ -21,8 +21,8 @@ Policies.
 [] When renaming a group, all empty subgroups are now correctly renamed.
 [] Disable switch to read-only when unlocking with changes pending.
 
-Changes to Existing Features in 3.38.3
-======================================
+Changes to Existing Features in 3.39
+====================================
 [806] The group will be saved as an "empty group" when the last entry with this
 group value is deleted. This is similar to the action of the filesystem when
 the last file within a folder/directory is deleted.
@@ -30,8 +30,8 @@ the last file within a folder/directory is deleted.
 now no longer includes any trailing spaces.  This is different to the
 standard Microsoft processing in their products.
 
-New Features for 3.38.3
-=======================
+New Features for 3.39
+=====================
 [] Support Drag & Drop of empty groups and groups containing empty
 groups between multiple instances of PasswordSafe.  Note: Prior versions
 of PasswordSafe will not recognise or process empty groups.

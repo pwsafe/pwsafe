@@ -4,6 +4,6 @@
 # be integers
 
 VER_MAJOR = 0
-VER_MINOR = 98
-VER_REV = 1
+VER_MINOR = 99
+VER_REV = 0
 VER_SPECIAL = BETA
