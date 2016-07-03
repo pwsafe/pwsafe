@@ -193,10 +193,13 @@ Dim objVerMFCFile
 Set objVerMFCFile = objFSO.OpenTextFile(strVersionMFC, ForReading)
 
 Do While Not objVerMFCFile.AtEndOfStream
-  Dim arrStrings
+  Dim arrStrings, numStrings
+
   strLine = objVerMFCFile.ReadLine()
-  If Len(strLine) <> 0 Then
-    arrStrings = Split(strLine)
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
     If arrStrings(0) = "VER_MAJOR" Then
       strMajor = arrStrings(2)
     ElseIf arrStrings(0) = "VER_MINOR" Then
@@ -204,8 +207,7 @@ Do While Not objVerMFCFile.AtEndOfStream
     ElseIf arrStrings(0) = "VER_REV" Then
       strRevision = arrStrings(2)
     ElseIf arrStrings(0) = "VER_SPECIAL" Then
-      Dim numStrings, i
-      numStrings = UBound(arrStrings)
+      Dim i
       strSpecialBuild = arrStrings(2)    
       for i = 3 To numStrings
         strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
@@ -230,10 +232,13 @@ Dim objVerMFCFile
 Set objVerMFCFile = objFSO.OpenTextFile(strVersionMFC, ForReading)
 
 Do While Not objVerMFCFile.AtEndOfStream
-  Dim arrStrings, numStrings, i
+  Dim arrStrings, numStrings
+
   strLine = objVerMFCFile.ReadLine()
-  If Len(strLine) <> 0 Then
-    arrStrings = Split(strLine)
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
     If arrStrings(0) = "AT_VER_MAJOR" Then
       strATMajor = arrStrings(2)
     ElseIf arrStrings(0) = "AT_VER_MINOR" Then

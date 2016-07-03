@@ -164,10 +164,13 @@ Dim objVerWXFile
 Set objVerWXFile = objFSO.OpenTextFile(strVersionWX, ForReading)
 
 Do While Not objVerWXFile.AtEndOfStream
-  Dim arrStrings
+  Dim arrStrings, numStrings
+
   strLine = objVerWXFile.ReadLine()
-  If Len(strLine) <> 0 Then
-    arrStrings = Split(strLine)
+  arrStrings = Split(strLine)
+  numStrings = UBound(arrStrings)
+
+  If numStrings >= 2 Then
     If arrStrings(0) = "VER_MAJOR" Then
       strMajor = arrStrings(2)
     ElseIf arrStrings(0) = "VER_MINOR" Then
