@@ -178,8 +178,7 @@ Do While Not objVerWXFile.AtEndOfStream
     ElseIf arrStrings(0) = "VER_REV" Then
       strRevision = arrStrings(2)
     ElseIf arrStrings(0) = "VER_SPECIAL" Then
-      Dim numStrings, i
-      numStrings = UBound(arrStrings)
+      Dim i
       strSpecialBuild = arrStrings(2)    
       for i = 3 To numStrings
         strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
