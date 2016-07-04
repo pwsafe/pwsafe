@@ -6,8 +6,9 @@
 ' http://www.opensource.org/licenses/artistic-license-2.0.php
 '
 
-' This section does "Update Revision Number in Resources"
-' Requires environment variables ProjectDir & GitDir
+' This script sets the version information for the PasswordSafe executable,
+' language DLL and helper DLLs
+' It requires environment variables ProjectDir, SolutionDir & GitDir
 ' set in UserVariables.vsprops
 
 ' For the stdout.WriteLine to work, this Pre-Build Event script
