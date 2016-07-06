@@ -6,8 +6,8 @@
 ' http://www.opensource.org/licenses/artistic-license-2.0.php
 '
 
-' This section does "Update Revision Number in Resources"
-' Requires environment variables ProjectDir & GitDir
+' This script sets the version information for the PasswordSafe executable.
+' It requires environment variables ProjectDir, SolutionDir & GitDir
 ' set in UserVariables.vsprops
 
 ' For the stdout.WriteLine to work, this Pre-Build Event script
@@ -178,8 +178,7 @@ Do While Not objVerWXFile.AtEndOfStream
     ElseIf arrStrings(0) = "VER_REV" Then
       strRevision = arrStrings(2)
     ElseIf arrStrings(0) = "VER_SPECIAL" Then
-      Dim numStrings, i
-      numStrings = UBound(arrStrings)
+      Dim i
       strSpecialBuild = arrStrings(2)    
       for i = 3 To numStrings
         strSpecialBuild = strSpecialBuild + " " + arrStrings(i)
