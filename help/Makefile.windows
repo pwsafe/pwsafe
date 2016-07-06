@@ -2,7 +2,7 @@
 # Makefile to compile all versions of the pwsafe help
 #
 # We're not checking any dependencies, just invoking the 
-# compiler whenver we're called.
+# compiler whenever we're called.
 # We're ignoring the return status of hhc, since it's != 0 even
 # when compiles OK.
 #
