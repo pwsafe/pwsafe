@@ -365,7 +365,7 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		if (newlen)
 		{
 			newTable[index++] = (WORD)newlen;
-			wcsncpy_s((wchar_t *)&newTable[index], newtable_size - index, pBuf, newlen);
+      wcsncpy((wchar_t *)&newTable[index], pBuf, newlen);
 			index += newlen;
 			m_bTranslatedStrings++;
 		}
@@ -373,7 +373,8 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		{
 			newTable[index++] = (WORD)len;
 			if (len)
-				wcsncpy_s((wchar_t *)&newTable[index], newtable_size - index, p, len);
+        wcsncpy((wchar_t *)&newTable[index], p, len);
+
 			index += len;
          if (len){
 				m_bDefaultStrings++;
