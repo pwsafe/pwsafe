@@ -207,7 +207,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -264,7 +264,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -314,7 +314,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -377,7 +377,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -433,7 +433,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -485,7 +485,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -494,7 +494,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -542,13 +542,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -606,7 +606,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -615,7 +615,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -669,13 +669,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -730,7 +730,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -739,7 +739,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -790,7 +790,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
