@@ -15,7 +15,7 @@
 struct UserArgs {
   UserArgs() : Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false} {}
   StringX safe, fname;
-  enum {Unset, Import, Export, CreateNew, Search, Add} Operation;
+  enum OpType {Unset, Import, Export, CreateNew, Search, Add} Operation;
   enum {Print, Delete, Update} SearchAction;
   enum {Unknown, XML, Text} Format;
   

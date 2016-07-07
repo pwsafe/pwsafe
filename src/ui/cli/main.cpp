@@ -10,7 +10,8 @@
 #include <sstream>
 #include <unistd.h>
 #include <getopt.h>
-#include <regex>
+#include <string>
+#include <map>
 
 #include "./search.h"
 #include "./argutils.h"
@@ -34,14 +35,20 @@ static void echoOff();
 static void echoOn();
 
 int OpenCore(PWScore& core, const StringX& safe);
+int SaveCore(PWScore &core, const UserArgs &);
 
 static int ImportText(PWScore &core, const StringX &fname);
 static int ImportXML(PWScore &core, const StringX &fname);
+static int Import(PWScore &core, const UserArgs &ua);
+static int Export(PWScore &core, const UserArgs &ua);
+static int Search(PWScore &core, const UserArgs &ua);
+static int SaveAfterSearch(PWScore &core, const UserArgs &ua);
+
 static const char *status_text(int status);
 
 // These are the new operations. Each returns the code to exit with
-static int CreateNewSafe(const StringX& filename);
-static int AddEntry(PWScore &core, const wstring &fieldValues);
+static int AddEntry(PWScore &core, const UserArgs &ua);
+static int CreateNewSafe(PWScore &core, const StringX& filename);
 
 StringX GetPassphrase(const wstring& prompt);
 StringX GetNewPassphrase();
@@ -49,6 +56,28 @@ StringX GetNewPassphrase();
 //-----------------------------------------------------------------
 
 static struct termios oldTermioFlags; // to restore tty echo
+
+using pre_op_fn = function<int(PWScore &, const StringX &)>;
+using main_op_fn = function<int(PWScore &, const UserArgs &)>;
+using post_op_fn = function<int(PWScore &, const UserArgs &)>;
+
+auto null_op = [](PWScore &, const UserArgs &)-> int{ return PWScore::SUCCESS;};
+
+struct pws_op {
+  pre_op_fn pre_op;
+  main_op_fn main_op;
+  post_op_fn post_op;
+};
+
+
+const map<UserArgs::OpType, pws_op> pws_ops = {
+  { UserArgs::Import,     {OpenCore, Import, SaveCore}},
+  { UserArgs::Export,     {OpenCore, Export, null_op}},
+  { UserArgs::CreateNew,  {CreateNewSafe, null_op, SaveCore}},
+  { UserArgs::Add,        {OpenCore, AddEntry, SaveCore}},
+  { UserArgs::Search,     {OpenCore, Search, SaveAfterSearch}}
+};
+
 
 static void usage(char *pname)
 {
@@ -202,53 +231,27 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-    if (ua.Operation == UserArgs::CreateNew) {
-        return CreateNewSafe(ua.safe);
+  int status = 1;
+  auto itr = pws_ops.find(ua.Operation);
+  if (itr != pws_ops.end()) {
+    PWScore core;
+    try {
+      status = itr->second.pre_op(core, ua.safe);
+      if ( status == PWScore::SUCCESS) {
+        status = itr->second.main_op(core, ua);
+        if (status == PWScore::SUCCESS)
+          status = itr->second.post_op(core, ua);
+      }
+    }
+    catch(const exception &e) {
+      cerr << e.what() << endl;
+      status = PWScore::FAILURE;
     }
 
-  PWScore core;
-  int ret = OpenCore(core, ua.safe);
-  if (ret != PWScore::SUCCESS)
-    return ret;
-
-  int status = PWScore::SUCCESS;
-  try {
-  if (ua.Operation == UserArgs::Export) {
-    CItemData::FieldBits all(~0L);
-    int N;
-    if (ua.Format == UserArgs::XML) {
-      status = core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', L"", N);
-    } else { // export text
-      status = core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
-    }
-  } else if (ua.Operation == UserArgs::Import) { // Import
-    if (ua.Format == UserArgs::XML) {
-      status = ImportXML(core, ua.fname);
-    } else { // import text
-      status = ImportText(core, ua.fname);
-    }
-    if (status == PWScore::SUCCESS)
-      status = core.WriteCurFile();
-  } else if ( ua.Operation == UserArgs::Search ) {
-    unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua.opArg2, ua.confirmed));
-    SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields, *sa);
-    status = sa->Execute();
-    if (status == PWScore::SUCCESS && (ua.SearchAction == UserArgs::Update
-                                       || ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
-      status = core.WriteCurFile();
-    }
-  } else if (ua.Operation == UserArgs::Add) {
-    status = AddEntry(core, ua.opArg);
+    core.UnlockFile(ua.safe.c_str());
+    return status;
   }
-  if (status != PWScore::SUCCESS) {
-    cout << "Operation returned status: " << status_text(status) << endl;
-    goto done;
-  }
-  }catch( const std::exception &e) {
-    cerr << e.what() << endl;
-  }
- done:
-  core.UnlockFile(ua.safe.c_str());
+  cerr << "No main operation specified" << endl;
   return status;
 }
 
@@ -294,6 +297,12 @@ static const char *status_text(int status)
   case PWScore::NO_ENTRIES_EXPORTED: return "NO_ENTRIES_EXPORTED";
   default: return "UNKNOWN ?!";
   }
+}
+
+int Import(PWScore &core, const UserArgs &ua)
+{
+  return ua.Format == UserArgs::XML?
+      ImportXML(core, ua.fname): ImportText(core, ua.fname);
 }
 
 static int
@@ -489,7 +498,16 @@ ImportXML(PWScore &core, const StringX &fname)
   return rc;
 }
 
-static int CreateNewSafe(const StringX& filename)
+static int Export(PWScore &core, const UserArgs &ua)
+{
+  CItemData::FieldBits all(~0L);
+  int N;
+  return ua.Format == UserArgs::XML?
+    core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N):
+      core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
+}
+
+static int CreateNewSafe(PWScore &core, const StringX& filename)
 {
     if ( pws_os::FileExists(filename.c_str()) ) {
         cerr << filename << " - already exists" << endl;
@@ -497,16 +515,10 @@ static int CreateNewSafe(const StringX& filename)
     }
 
     const StringX passkey = GetNewPassphrase();
-
-    PWScore core;
     core.SetCurFile(filename);
     core.NewFile(passkey);
-    const int status = core.WriteCurFile();
 
-    if (status != PWScore::SUCCESS)
-        cerr << "Could not create " << filename << ": " << status_text(status);
-
-    return status;
+    return PWScore::SUCCESS;
 }
 
 StringX GetNewPassphrase()
@@ -588,8 +600,10 @@ int OpenCore(PWScore& core, const StringX& safe)
 }
 
 
-int AddEntry(PWScore &core, const wstring &fieldValues)
+int AddEntry(PWScore &core, const UserArgs &ua)
 {
+  const wstring fieldValues{ua.opArg};
+
   CItemData item;
   item.CreateUUID();
   int status = PWScore::SUCCESS;
@@ -610,4 +624,25 @@ int AddEntry(PWScore &core, const wstring &fieldValues)
     status = core.WriteCurFile();
 
   return status;
+}
+
+int Search(PWScore &core, const UserArgs &ua)
+{
+  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua.opArg2, ua.confirmed));
+  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields, *sa);
+  return sa->Execute();
+}
+
+int SaveAfterSearch(PWScore &core, const UserArgs &ua)
+{
+  if ( (ua.SearchAction == UserArgs::Update ||
+        ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
+    return core.WriteCurFile();
+  }
+  return PWScore::SUCCESS;
+}
+
+int SaveCore(PWScore &core, const UserArgs &)
+{
+  return core.WriteCurFile();
 }
