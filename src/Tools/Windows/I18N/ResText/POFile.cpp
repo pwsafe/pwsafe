@@ -170,6 +170,28 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
     return TRUE;
 }
 
+bool CheckStringInFile(const wchar_t *filename, wchar_t *search)
+{
+  bool brc(false);
+  std::wifstream pofile;
+  pofile.open(filename);
+
+  if (pofile.is_open()) {
+    while (!pofile.eof()) {
+      std::wstring line;
+
+      getline(pofile, line);
+      if (line.find(search, 0) != std::wstring::npos) {
+        brc = true;
+        break;
+      }
+    }
+    pofile.close();
+  }
+
+  return brc;
+}
+
 BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 {
     //since stream classes still expect the filepath in char and not wchar_t
@@ -215,23 +237,29 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
         File << L"\"Content-Type: text/plain; charset=UTF-8\\n\"\n";
         File << L"\"Content-Transfer-Encoding: 8bit\\n\"\n\n";
     }
-    File << L"\n";
-    File << L"# msgid/msgstr fields for Accelerator keys\n";
-    File << L"# Format is: \"ID:xxxxxx:VACS+X\" where:\n";
-    File << L"#    ID:xxxxx = the menu ID corresponding to the accelerator\n";
-    File << L"#    V = Virtual key (or blank if not used) - nearly always set!\n";
-    File << L"#    A = Alt key     (or blank if not used)\n";
-    File << L"#    C = Ctrl key    (or blank if not used)\n";
-    File << L"#    S = Shift key   (or blank if not used)\n";
-    File << L"#    X = upper case character\n";
-    File << L"# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n";
-    File << L"\n";
-    File << L"# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n";
-    File << L"# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n";
-    File << L"\n";
-    File << L"# ONLY change the msgstr field. Do NOT change any other.\n";
-    File << L"# If you do not want to change an Accelerator Key, copy msgid to msgstr\n";
-    File << L"\n";
+
+    // The problem here is that the next comments are added every time the PO file is created
+    // from an existing PO file even if it is already there!
+
+    // Try to see if already there
+    if (!CheckStringInFile(lpszHeaderFile, L"# msgid/msgstr fields for Accelerator keys\n")) {
+      File << L"# msgid/msgstr fields for Accelerator keys\n";
+      File << L"# Format is: \"ID:xxxxxx:VACS+X\" where:\n";
+      File << L"#    ID:xxxxx = the menu ID corresponding to the accelerator\n";
+      File << L"#    V = Virtual key (or blank if not used) - nearly always set!\n";
+      File << L"#    A = Alt key     (or blank if not used)\n";
+      File << L"#    C = Ctrl key    (or blank if not used)\n";
+      File << L"#    S = Shift key   (or blank if not used)\n";
+      File << L"#    X = upper case character\n";
+      File << L"# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n";
+      File << L"\n";
+      File << L"# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n";
+      File << L"# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n";
+      File << L"\n";
+      File << L"# ONLY change the msgstr field. Do NOT change any other.\n";
+      File << L"# If you do not want to change an Accelerator Key, copy msgid to msgstr\n";
+      File << L"\n";
+    }
 
     for (std::map<std::wstring, RESOURCEENTRY>::iterator I = this->begin(); I != this->end(); ++I)
     {
