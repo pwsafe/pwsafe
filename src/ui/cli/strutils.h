@@ -47,5 +47,7 @@ void Split(const std::wstring &str, const std::wstring &sep, CallbackType cb)
   for_each( pos, end, cb );
 }
 
+const char *status_text(int status);
+
 
 #endif /* defined(__pwsafe_xcode6__strutils__) */

@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <unistd.h>
 #include <getopt.h>
 #include <string>
 #include <map>
@@ -17,6 +16,8 @@
 #include "./argutils.h"
 #include "./searchaction.h"
 #include "./strutils.h"
+#include "./diff.h"
+#include "./safeutils.h"
 
 #include "../../core/PWScore.h"
 #include "os/file.h"
@@ -26,15 +27,8 @@
 #include "core/XML/XMLDefs.h"
 #include "../../core/core.h"
 
-#include <termios.h>
-
 using namespace std;
 
-// Fwd declarations:
-static void echoOff();
-static void echoOn();
-
-int OpenCore(PWScore& core, const StringX& safe);
 int SaveCore(PWScore &core, const UserArgs &);
 
 static int ImportText(PWScore &core, const StringX &fname);
@@ -44,18 +38,12 @@ static int Export(PWScore &core, const UserArgs &ua);
 static int Search(PWScore &core, const UserArgs &ua);
 static int SaveAfterSearch(PWScore &core, const UserArgs &ua);
 
-static const char *status_text(int status);
-
 // These are the new operations. Each returns the code to exit with
 static int AddEntry(PWScore &core, const UserArgs &ua);
 static int CreateNewSafe(PWScore &core, const StringX& filename);
 
-StringX GetPassphrase(const wstring& prompt);
-StringX GetNewPassphrase();
 
 //-----------------------------------------------------------------
-
-static struct termios oldTermioFlags; // to restore tty echo
 
 using pre_op_fn = function<int(PWScore &, const StringX &)>;
 using main_op_fn = function<int(PWScore &, const UserArgs &)>;
@@ -71,11 +59,12 @@ struct pws_op {
 
 
 const map<UserArgs::OpType, pws_op> pws_ops = {
-  { UserArgs::Import,     {OpenCore, Import, SaveCore}},
-  { UserArgs::Export,     {OpenCore, Export, null_op}},
-  { UserArgs::CreateNew,  {CreateNewSafe, null_op, SaveCore}},
-  { UserArgs::Add,        {OpenCore, AddEntry, SaveCore}},
-  { UserArgs::Search,     {OpenCore, Search, SaveAfterSearch}}
+  { UserArgs::Import,     {OpenCore,        Import,     SaveCore}},
+  { UserArgs::Export,     {OpenCore,        Export,     null_op}},
+  { UserArgs::CreateNew,  {CreateNewSafe,   null_op,    SaveCore}},
+  { UserArgs::Add,        {OpenCore,        AddEntry,   SaveCore}},
+  { UserArgs::Search,     {OpenCore,        Search,     SaveAfterSearch}},
+  { UserArgs::Diff,       {OpenCore,        Diff,       null_op}}
 };
 
 
@@ -93,7 +82,9 @@ static void usage(char *pname)
   << "\t\t\t $ => ends with"
   << "\t\t\t ^ => contains"
   << "\t\t\t ! => negation" << endl
-  << "\t\t a trailing /i or /I at the end of subset string makes the operation case insensitive or sensitive respectively" << endl;
+  << "\t\t a trailing /i or /I at the end of subset string makes the operation case insensitive or sensitive respectively" << endl
+  << "\t safe --diff=<othersafe> [--ignore-case] [--subset=<Field><OP><string>[/iI]] [--fields=<comma-separated fieldnames>]"
+  << "\t\t[-u | -c | -s ] [ --diffprog=path]" << endl;
 }
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
@@ -121,10 +112,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"print", no_argument, 0, 'p'},
       {"delete", no_argument, 0, 'd'},
       {"yes", no_argument, 0, 'y'},
+      {"diff", required_argument, 0, 'r'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdy",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdyr:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -173,14 +165,24 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       else
         return false;
 
+    case 'r':
+      if (ua.Operation == UserArgs::Unset) {
+        ua.Operation = UserArgs::Diff;
+        assert(optarg);
+        ua.opArg = Utf82wstring(optarg);
+        break;
+      }
+      else
+        return false;
+
     case 'b':
         assert(optarg);
-        ua.subset = Utf82wstring(optarg);
+        ua.SetSubset(Utf82wstring(optarg));
         break;
 
     case 'f':
         assert(optarg);
-        ua.fields = Utf82wstring(optarg);
+        ua.SetFields(Utf82wstring(optarg));
         break;
 
     case 'c':
@@ -256,49 +258,6 @@ int main(int argc, char *argv[])
 }
 
 //-----------------------------------------------------------------
-static void echoOff()
-{
-  struct termios nflags;
-  tcgetattr(fileno(stdin), &oldTermioFlags);
-  nflags = oldTermioFlags;
-  nflags.c_lflag &= ~ECHO;
-  nflags.c_lflag |= ECHONL;
-
-  if (tcsetattr(fileno(stdin), TCSANOW, &nflags) != 0) {
-    cerr << "Couldn't turn off echo\n";
-  }
-}
-
-static void echoOn()
-{
-  if (tcsetattr(fileno(stdin), TCSANOW, &oldTermioFlags) != 0) {
-    cerr << "Couldn't restore echo\n";
-  }
-}
-
-static const char *status_text(int status)
-{
-  switch (status) {
-  case PWScore::SUCCESS: return "SUCCESS";
-  case PWScore::FAILURE: return "FAILURE";
-  case PWScore::CANT_OPEN_FILE: return "CANT_OPEN_FILE";
-  case PWScore::USER_CANCEL: return "USER_CANCEL";
-  case PWScore::WRONG_PASSWORD: return "WRONG_PASSWORD";
-  case PWScore::BAD_DIGEST: return "BAD_DIGEST";
-  case PWScore::UNKNOWN_VERSION: return "UNKNOWN_VERSION";
-  case PWScore::NOT_SUCCESS: return "NOT_SUCCESS";
-  case PWScore::ALREADY_OPEN: return "ALREADY_OPEN";
-  case PWScore::INVALID_FORMAT: return "INVALID_FORMAT";
-  case PWScore::USER_EXIT: return "USER_EXIT";
-  case PWScore::XML_FAILED_VALIDATION: return "XML_FAILED_VALIDATION";
-  case PWScore::XML_FAILED_IMPORT: return "XML_FAILED_IMPORT";
-  case PWScore::LIMIT_REACHED: return "LIMIT_REACHED";
-  case PWScore::UNIMPLEMENTED: return "UNIMPLEMENTED";
-  case PWScore::NO_ENTRIES_EXPORTED: return "NO_ENTRIES_EXPORTED";
-  default: return "UNKNOWN ?!";
-  }
-}
-
 int Import(PWScore &core, const UserArgs &ua)
 {
   return ua.Format == UserArgs::XML?
@@ -519,84 +478,6 @@ static int CreateNewSafe(PWScore &core, const StringX& filename)
     core.NewFile(passkey);
 
     return PWScore::SUCCESS;
-}
-
-StringX GetNewPassphrase()
-{
-    StringX passphrase[2];
-    wstring prompt[2] = {L"Enter passphrase: ", L"Enter the same passphrase again"};
-
-    do {
-        passphrase[0] = GetPassphrase(prompt[0]);
-        passphrase[1] = GetPassphrase(prompt[1]);
-
-        if (passphrase[0] != passphrase[1]) {
-            cerr << "The two passphrases do not match. Please try again" << endl;
-            continue;
-        }
-        if (passphrase[0].length() == 0) {
-            cerr << "Invalid passphrase. Please try again" << endl;
-            continue;
-        }
-
-        break;
-    }
-    while(1);
-
-    return passphrase[0];
-}
-
-StringX GetPassphrase(const wstring& prompt)
-{
-    wstring wpk;
-    wcout << prompt;
-    echoOff();
-    wcin >> wpk;
-    echoOn();
-    return StringX(wpk.c_str());
-}
-
-
-int OpenCore(PWScore& core, const StringX& safe)
-{
-  if (!pws_os::FileExists(safe.c_str())) {
-    wcerr << safe << " - file not found" << endl;
-    return 2;
-  }
-
-  StringX pk = GetPassphrase(L"Enter Password: ");
-
-  int status;
-  status = core.CheckPasskey(safe, pk);
-  if (status != PWScore::SUCCESS) {
-    cout << "CheckPasskey returned: " << status_text(status) << endl;
-    return status;
-  }
-  {
-    CUTF8Conv conv;
-    const char *user = getlogin() != NULL ? getlogin() : "unknown";
-    StringX locker;
-    if (!conv.FromUTF8((const unsigned char *)user, strlen(user), locker)) {
-      cerr << "Could not convert user " << user << " to StringX" << endl;
-      return 2;
-    }
-    stringT lk(locker.c_str());
-    if (!core.LockFile(safe.c_str(), lk)) {
-      wcout << L"Couldn't lock file " << safe
-      << L": locked by " << locker << endl;
-      status = -1;
-      return status;
-    }
-  }
-  // Since we may be writing the same file we're reading,
-  // it behooves us to set the Current File and use its' related
-  // functions
-  core.SetCurFile(safe);
-  status = core.ReadCurFile(pk);
-  if (status != PWScore::SUCCESS) {
-    cout << "ReadFile returned: " << status_text(status) << endl;
-  }
-  return status;
 }
 
 

@@ -9,13 +9,22 @@
 #ifndef __pwsafe_xcode6__argutils__
 #define __pwsafe_xcode6__argutils__
 
+#include <vector>
+
 #include "../../core/PWScore.h"
 #include "../../core/Match.h"
+
+struct Restriction {
+  CItemData::FieldType field;
+  PWSMatch::MatchRule rule;
+  std::wstring value;
+  bool caseSensitive;
+};
 
 struct UserArgs {
   UserArgs() : Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false} {}
   StringX safe, fname;
-  enum OpType {Unset, Import, Export, CreateNew, Search, Add} Operation;
+  enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation;
   enum {Print, Delete, Update} SearchAction;
   enum {Unknown, XML, Text} Format;
   
@@ -23,11 +32,14 @@ struct UserArgs {
   std::wstring opArg;
   
   // used for search, diff, etc.
-  std::wstring fields;
-  std::wstring subset;
+  CItemData::FieldBits fields;
+  std::vector<Restriction> subset;
   bool ignoreCase;
   bool confirmed;
   std::wstring opArg2;
+
+  void SetFields(const std::wstring &f);
+  void SetSubset(const std::wstring &s);
 };
 
 CItemData::FieldType String2FieldType(const std::wstring& str);

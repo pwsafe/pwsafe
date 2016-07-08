@@ -7,6 +7,7 @@
 //
 
 #include "argutils.h"
+#include "./strutils.h"
 
 #include <map>
 #include <regex>
@@ -79,3 +80,28 @@ PWSMatch::MatchRule Str2MatchRule( const wstring &s)
   return PWSMatch::MR_INVALID;
 }
 
+void UserArgs::SetFields(const wstring &f)
+{
+  fields.reset();
+  Split(f, L",", [this](const wstring &field) {
+    CItemData::FieldType ft = String2FieldType(field);
+    fields.set(ft);
+  });
+}
+
+inline bool CaseSensitive(const wstring &str)
+{
+  assert(str.length() == 0 || (str.length() == 2 && str[0] == '/' && (str[1] == L'i' || str[1] == 'I')));
+  return str.length() == 0 || str[0] == L'i';
+}
+
+
+void UserArgs::SetSubset(const std::wstring &s)
+{
+  std::wregex restrictPattern(L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
+  std::wsregex_iterator pos(s.cbegin(), s.cend(), restrictPattern);
+  std::wsregex_iterator end;
+  for_each( pos, end, [this](const wsmatch &m) {
+    subset.push_back( {String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))} );
+  });
+}

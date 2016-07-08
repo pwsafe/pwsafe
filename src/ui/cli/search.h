@@ -10,10 +10,11 @@
 #define __pwsafe_xcode6__search__
 
 #include <string>
+#include <vector>
 #include "../../os/UUID.h"
 #include "../../core/PWScore.h"
+#include "./argutils.h"
 
-class SearchAction;
 
 struct SearchAction
 {
@@ -28,10 +29,8 @@ struct SearchAction
   
 };
 
-CItemData::FieldBits ParseFieldsToSearh(const std::wstring &fieldsToSearch);
-
 void SearchForEntries(PWScore &core, const std::wstring &searchText, bool ignoreCase,
-                      const std::wstring &restrictToEntries, const std::wstring &fieldsToSearch,
+                      const std::vector<Restriction> &restrictToEntries, const CItemData::FieldBits &fieldsToSearch,
                       SearchAction &cb);
 
 #endif /* defined(__pwsafe_xcode6__search__) */

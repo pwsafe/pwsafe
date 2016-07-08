@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 #include <exception>
-#include <regex>
 
 #include "../../core/Util.h"
 #include "../../core/PWScore.h"
@@ -24,35 +23,17 @@
 
 using namespace std;
 
-struct Restriction {
-  CItemData::FieldType field;
-  PWSMatch::MatchRule rule;
-  wstring value;
-  bool caseSensitive;
-};
-
-std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries);
-bool CaseSensitive(const wstring &str);
 
 void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                      const wstring &restrictToEntries, const wstring &fieldsToSearch,
+                      const std::vector<Restriction> &restrictions, const CItemData::FieldBits &fieldsToSearch,
                       SearchAction &cb)
 {
   assert( !searchText.empty() );
   
-  vector<Restriction> restrictions = ParseSearchedEntryRestrictions(restrictToEntries);
-  
-  if ( !restrictToEntries.empty() && restrictions.empty() ) {
-    throw invalid_argument( "Could not parse [" + toutf8(restrictToEntries) + " ]for restricting searched entries" );
-  }
-  
-  CItemData::FieldBits fields = ParseFieldsToSearh(fieldsToSearch);
-  if (fieldsToSearch.empty())
+  CItemData::FieldBits fields = fieldsToSearch;
+  if (fields.none())
     fields.set();
-  if ( !fieldsToSearch.empty() && fields.none() ) {
-    throw std::invalid_argument( "Could not parse [" + toutf8(fieldsToSearch) + " ]for restricting searched fields");
-  }
-  
+
   const Restriction dummy{ CItem::LAST_DATA, PWSMatch::MR_INVALID, std::wstring{}, true};
   const Restriction r = restrictions.size() > 0? restrictions[0]: dummy;
   
@@ -61,36 +42,3 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                   cb(itr->first, itr->second);
                 });
 }
-
-std::vector<Restriction> ParseSearchedEntryRestrictions(const wstring &restrictToEntries)
-{
-  std::vector<Restriction> restrictions;
-  if ( !restrictToEntries.empty() ) {
-    std::wregex restrictPattern(L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
-    std::wsregex_iterator pos(restrictToEntries.cbegin(), restrictToEntries.cend(), restrictPattern);
-    std::wsregex_iterator end;
-    for_each( pos, end, [&restrictions](const wsmatch &m) {
-      restrictions.push_back( {String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))} );
-    });
-  }
-  return restrictions;
-}
-
-CItemData::FieldBits ParseFieldsToSearh(const wstring &fieldsToSearch)
-{
-  CItemData::FieldBits fields;
-  if ( !fieldsToSearch.empty() ) {
-    Split(fieldsToSearch, L",", [&fields](const wstring &field) {
-      CItemData::FieldType ft = String2FieldType(field);
-      fields.set(ft);
-    });
-  }
-  return fields;
-}
-
-bool CaseSensitive(const wstring &str)
-{
-  assert(str.length() == 0 || (str.length() == 2 && str[0] == '/' && (str[1] == L'i' || str[1] == 'I')));
-  return str.length() == 0 || str[0] == L'i';
-}
-
