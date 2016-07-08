@@ -175,12 +175,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
     case 'b':
         assert(optarg);
-        ua.searchedSubset = Utf82wstring(optarg);
+        ua.subset = Utf82wstring(optarg);
         break;
 
     case 'f':
         assert(optarg);
-        ua.searchedFields = Utf82wstring(optarg);
+        ua.fields = Utf82wstring(optarg);
         break;
 
     case 'c':
@@ -629,7 +629,7 @@ int AddEntry(PWScore &core, const UserArgs &ua)
 int Search(PWScore &core, const UserArgs &ua)
 {
   unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua.opArg2, ua.confirmed));
-  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.searchedSubset, ua.searchedFields, *sa);
+  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields, *sa);
   return sa->Execute();
 }
 

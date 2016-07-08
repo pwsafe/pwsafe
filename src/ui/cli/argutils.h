@@ -22,9 +22,9 @@ struct UserArgs {
   // The arg taken by the main operation
   std::wstring opArg;
   
-  // used for search
-  std::wstring searchedFields;
-  std::wstring searchedSubset;
+  // used for search, diff, etc.
+  std::wstring fields;
+  std::wstring subset;
   bool ignoreCase;
   bool confirmed;
   std::wstring opArg2;
