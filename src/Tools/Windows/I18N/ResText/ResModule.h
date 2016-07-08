@@ -129,6 +129,20 @@ private:
     std::map<INT_PTR, std::wstring> m_currentHeaderDataDialogs;
     std::map<INT_PTR, std::wstring> m_currentHeaderDataStrings;
     std::map<INT_PTR, std::wstring> m_currentHeaderDataMenus;
+    
+    struct TypeName_s {
+      LPCTSTR m_Type; LPTSTR m_Name;
+      TypeName_s(LPCTSTR t, LPTSTR n) : m_Type(t), m_Name(n) {}
+    };
+
+    struct LangWriter {
+      CResModule *m_module;
+      LangWriter(CResModule *m) : m_module(m) {}
+      void operator()(TypeName_s &tn);
+    };
+
+    std::vector<TypeName_s> m_TypeNames;
+
     BOOL            m_bQuiet;
 
     bool            m_bRTL;

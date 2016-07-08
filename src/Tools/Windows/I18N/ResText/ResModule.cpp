@@ -32,6 +32,8 @@
 #define RT_RIBBON MAKEINTRESOURCE(28)
 #endif
 
+#include <iostream>
+using namespace std;
 
 #define MYERROR {CUtils::Error(); return FALSE;}
 
@@ -118,12 +120,14 @@ BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lp
         if (!m_bQuiet)
             _ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
         nEntries = m_StringEntries.size();
+
         if (!m_bQuiet)
             _ftprintf(stdout, L"Extracting Accelerators...");
         EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
         if (!m_bQuiet)
             _ftprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
         nEntries = m_StringEntries.size();
+
         if (!m_bQuiet)
             _ftprintf(stdout, L"Extracting Ribbons........");
         EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameCallback, (LONG_PTR)this);
@@ -198,6 +202,7 @@ DONE_ERROR:
 
 BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszDestLangDllPath, LPCTSTR lpszPOFilePath)
 {
+    LangWriter writeLang(this);
     if (!CopyFile(lpszSrcLangDllPath, lpszDestLangDllPath, FALSE))
         MYERROR;
 
@@ -237,39 +242,52 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
         count++;
     } while ((m_hUpdateRes == NULL)&&(count < 10));
 
-    if (m_hUpdateRes == NULL)
+    if (m_hUpdateRes == NULL) {
+        cerr << "BeginUpdateResource failed!" << endl;
         MYERROR;
+    }
 
 
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating StringTable...");
     bRes = EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, (LONG_PTR)this);
+    for_each(m_TypeNames.begin(), m_TypeNames.end(), writeLang); m_TypeNames.clear();
+
     if (!m_bQuiet)
         _ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedStrings, m_bDefaultStrings);
 
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating Dialogs.......");
     bRes = EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameWriteCallback, (LONG_PTR)this);
+    for_each(m_TypeNames.begin(), m_TypeNames.end(), writeLang); m_TypeNames.clear();
+
     if (!m_bQuiet)
         _ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
 
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating Menus.........");
     bRes = EnumResourceNames(m_hResDll, RT_MENU, EnumResNameWriteCallback, (LONG_PTR)this);
+    for_each(m_TypeNames.begin(), m_TypeNames.end(), writeLang); m_TypeNames.clear();
+
     if (!m_bQuiet)
         _ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
 
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating Accelerators..");
     bRes = EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameWriteCallback, (LONG_PTR)this);
+    for_each(m_TypeNames.begin(), m_TypeNames.end(), writeLang); m_TypeNames.clear();
+
     if (!m_bQuiet)
         _ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
 
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating Ribbons.......");
     bRes = EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, (LONG_PTR)this);
+    for_each(m_TypeNames.begin(), m_TypeNames.end(), writeLang); m_TypeNames.clear();
+
     if (!m_bQuiet)
         _ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
+
     bRes = TRUE;
     if (!EndUpdateResource(m_hUpdateRes, !bRes))
         MYERROR;
@@ -2043,6 +2061,12 @@ DONE_ERROR:
     MYERROR;
 }
 
+void CResModule::LangWriter::operator()(TypeName_s &tn)
+{
+  EnumResourceLanguages(m_module->m_hResDll, tn.m_Type, tn.m_Name,
+    (ENUMRESLANGPROC)EnumResWriteLangCallback, LONG_PTR(m_module));
+}
+
 BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
 {
     CResModule* lpResModule = (CResModule*)lParam;
@@ -2091,14 +2115,17 @@ BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszT
     return TRUE;
 }
 
-#pragma warning(push)
-#pragma warning(disable: 4189)
-BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
+//#pragma warning(push)
+//#pragma warning(disable: 4189)
+BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE , LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
 {
     CResModule* lpResModule = (CResModule*)lParam;
-    return EnumResourceLanguages(hModule, lpszType, lpszName, (ENUMRESLANGPROC)&lpResModule->EnumResWriteLangCallback, lParam);
+    lpResModule->m_TypeNames.push_back(TypeName_s(lpszType, lpszName));
+    //	return EnumResourceLanguages(hModule, lpszType, lpszName, 
+    //                 (ENUMRESLANGPROC)EnumResWriteLangCallback, lParam);
+    return TRUE;
 }
-#pragma warning(pop)
+//#pragma warning(pop)
 
 BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, WORD wLanguage, LONG_PTR lParam)
 {
