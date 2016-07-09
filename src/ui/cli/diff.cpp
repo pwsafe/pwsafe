@@ -19,16 +19,26 @@ inline time_t modtime(const StringX &file) {
 
 void print_unified_single(wchar_t tag, const CompareData &cd)
 {
-  for_each(cd.cbegin(), cd.cend(), [](const st_CompareData &d) {
-    wcout << L"-" << d.group << L">>" << d.title << L'[' << d.user << ']' << endl;
+  for_each(cd.cbegin(), cd.cend(), [tag](const st_CompareData &d) {
+    wcout << tag << d.group << L">>" << d.title << L'[' << d.user << ']' << endl;
   });
 }
 
 void print_different_fields(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
 {
   for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
-    if (fields.test(bit))
-      wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
+    if (fields.test(bit)) {
+          wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
+    }
+  }
+}
+
+static void print_field_labels(const CItemData::FieldBits fields)
+{
+  for( unsigned char bit = 0; bit < CItem::LAST_DATA; bit++) {
+    if (fields.test(bit)) {
+      wcout << CItemData::FieldName(static_cast<CItem::FieldType>(bit)) << '\t';
+    }
   }
 }
 
@@ -45,13 +55,20 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     const CItemData &item = core.Find(d.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
 
-    wcout << L"@@ " << d.group << L">>" << d.title << L'[' << d.user << ']'
-          << L" -" << item.GetRMTime() << L','
-          << L" +" << otherItem.GetRMTime() << L" @@" << endl;
 
+    wcout << L"@@ " << d.group << L">>" << d.title << L'[' << d.user << ']';
+    if (item.IsRecordModificationTimeSet())
+      wcout << L" -" << item.GetRMTimeL();
+    if (otherItem.IsRecordModificationTimeSet())
+      wcout << L" +" << otherItem.GetRMTimeL();
+    wcout << L" @@" << endl;
+
+    print_field_labels(d.bsDiffs);
+    wcout << endl;
     print_different_fields('-', item, d.bsDiffs);
     wcout << endl;
     print_different_fields('+', otherItem, d.bsDiffs);
+    wcout << endl;
   });
 
   print_unified_single(L'+', comparison);
