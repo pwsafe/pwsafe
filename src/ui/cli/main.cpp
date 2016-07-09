@@ -98,21 +98,21 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     int option_index = 0;
     static struct option long_options[] = {
       // name, has_arg, flag, val
-      {"import", optional_argument, 0, 'i'},
-      {"export", optional_argument, 0, 'e'},
-      {"text", no_argument, 0, 't'},
-      {"xml", no_argument, 0, 'x'},
-      {"new", no_argument, 0, 'n'},
-      {"search", required_argument, 0, 's'},
-      {"subset", required_argument, 0, 'b'},
-      {"fields", required_argument, 0, 'f'},
-      {"ignore-case", optional_argument, 0, 'c'},
-      {"add", required_argument, 0, 'a'},
-      {"update", required_argument, 0, 'u'},
-      {"print", no_argument, 0, 'p'},
-      {"delete", no_argument, 0, 'd'},
-      {"yes", no_argument, 0, 'y'},
-      {"diff", required_argument, 0, 'r'},
+      {"import",      optional_argument,  0, 'i'},
+      {"export",      optional_argument,  0, 'e'},
+      {"text",        no_argument,        0, 't'},
+      {"xml",         no_argument,        0, 'x'},
+      {"new",         no_argument,        0, 'n'},
+      {"search",      required_argument,  0, 's'},
+      {"subset",      required_argument,  0, 'b'},
+      {"fields",      required_argument,  0, 'f'},
+      {"ignore-case", optional_argument,  0, 'c'},
+      {"add",         required_argument,  0, 'a'},
+      {"update",      required_argument,  0, 'u'},
+      {"print",       no_argument,        0, 'p'},
+      {"delete",      no_argument,        0, 'd'},
+      {"yes",         no_argument,        0, 'y'},
+      {"diff",        required_argument,  0, 'r'},
       {0, 0, 0, 0}
     };
 
