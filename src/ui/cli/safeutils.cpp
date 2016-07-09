@@ -25,7 +25,7 @@ int OpenCore(PWScore& core, const StringX& safe)
     return 2;
   }
 
-  StringX pk = GetPassphrase(L"Enter Password: ");
+  StringX pk = GetPassphrase(L"Enter Password [" + stringx2std(safe) + L"]: ");
 
   int status;
   status = core.CheckPasskey(safe, pk);
