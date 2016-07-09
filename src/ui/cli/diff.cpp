@@ -77,7 +77,9 @@ int Diff(PWScore &core, const UserArgs &ua)
   CompareData current, comparison, conflicts, identical;
   PWScore otherCore;
   constexpr bool treatWhitespacesAsEmpty = false;
-  int status = OpenCore(otherCore, std2stringx(ua.opArg));
+  const StringX otherSafe{std2stringx(ua.opArg)};
+
+  int status = OpenCore(otherCore, otherSafe);
   if ( status == PWScore::SUCCESS ) {
     core.Compare( &otherCore,
                   ua.fields,
@@ -105,7 +107,7 @@ int Diff(PWScore &core, const UserArgs &ua)
         assert(false);
         break;
     }
-                         
+    otherCore.UnlockFile(otherSafe.c_str());
   }
   return PWScore::SUCCESS;
 }
