@@ -10,22 +10,38 @@ using namespace std;
 
 #include "../../core/PWScore.h"
 
-inline time_t modtime(const StringX &file) {
+inline StringX modtime(const StringX &file) {
   time_t ctime, mtime, atime;
   if (pws_os::GetFileTimes(stringx2std(file), ctime, mtime, atime))
-    return mtime;
-  return 0;
+    return PWSUtil::ConvertToDateTimeString(mtime, PWSUtil::TMC_EXPORT_IMPORT);
+  return StringX{};
+}
+
+wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
+{
+  if ( !gtu.group.empty() )
+    os << gtu.group << L" >> ";
+
+  assert( !gtu.title.empty() );
+  os << gtu.title;
+
+  if ( !gtu.user.empty() ) {
+    os << L'[' << gtu.user << L']';
+  }
+
+  return os;
 }
 
 void print_unified_single(wchar_t tag, const CompareData &cd)
 {
   for_each(cd.cbegin(), cd.cend(), [tag](const st_CompareData &d) {
-    wcout << tag << d.group << L">>" << d.title << L'[' << d.user << ']' << endl;
+    wcout << tag << st_GroupTitleUser{d.group, d.title, d.user} << endl;
   });
 }
 
 void print_different_fields(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
 {
+  wcout << tag;
   for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
     if (fields.test(bit)) {
           wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
@@ -42,6 +58,12 @@ static void print_field_labels(const CItemData::FieldBits fields)
   }
 }
 
+void print_rmtime(const CItemData &i)
+{
+  if (i.IsRecordModificationTimeSet())
+    wcout << L" -" << i.GetRMTimeExp();
+}
+
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/)
@@ -56,11 +78,9 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
 
 
-    wcout << L"@@ " << d.group << L">>" << d.title << L'[' << d.user << ']';
-    if (item.IsRecordModificationTimeSet())
-      wcout << L" -" << item.GetRMTimeL();
-    if (otherItem.IsRecordModificationTimeSet())
-      wcout << L" +" << otherItem.GetRMTimeL();
+    wcout << L"@@ " << st_GroupTitleUser{d.group, d.title, d.user};
+    print_rmtime(item);
+    print_rmtime(otherItem);
     wcout << L" @@" << endl;
 
     print_field_labels(d.bsDiffs);
