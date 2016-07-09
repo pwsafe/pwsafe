@@ -32,7 +32,9 @@ struct Restriction {
 struct UserArgs {
   UserArgs():   Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false},
                 dfmt{DiffFmt::Unified}
-  {}
+  {
+    fields.set();
+  }
   StringX safe, fname;
   enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation;
   enum {Print, Delete, Update} SearchAction;
