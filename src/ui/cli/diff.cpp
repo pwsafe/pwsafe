@@ -119,5 +119,5 @@ int Diff(PWScore &core, const UserArgs &ua)
     }
     otherCore.UnlockFile(otherSafe.c_str());
   }
-  return PWScore::SUCCESS;
+  return status;
 }
