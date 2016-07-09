@@ -10,7 +10,6 @@
 #include "./argutils.h"
 #include "./strutils.h"
 
-#include <string>
 #include <vector>
 #include <exception>
 
@@ -25,7 +24,7 @@ using namespace std;
 
 
 void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
-                      const std::vector<Restriction> &restrictions, const CItemData::FieldBits &fieldsToSearch,
+                      const Restriction &r, const CItemData::FieldBits &fieldsToSearch,
                       SearchAction &cb)
 {
   assert( !searchText.empty() );
@@ -34,10 +33,7 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
   if (fields.none())
     fields.set();
 
-  const Restriction dummy{ CItem::LAST_DATA, PWSMatch::MR_INVALID, std::wstring{}, true};
-  const Restriction r = restrictions.size() > 0? restrictions[0]: dummy;
-  
-  ::FindMatches(std2stringx(searchText), ignoreCase, fields, restrictions.size() > 0, r.value, r.field, r.rule, r.caseSensitive,
+  ::FindMatches(std2stringx(searchText), ignoreCase, fields, r.valid(), r.value, r.field, r.rule, r.caseSensitive,
                 core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [&cb](ItemListIter itr){
                   cb(itr->first, itr->second);
                 });

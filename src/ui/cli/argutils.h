@@ -9,8 +9,6 @@
 #ifndef __pwsafe_xcode6__argutils__
 #define __pwsafe_xcode6__argutils__
 
-#include <vector>
-
 #include "../../core/PWScore.h"
 #include "../../core/Match.h"
 
@@ -19,6 +17,16 @@ struct Restriction {
   PWSMatch::MatchRule rule;
   std::wstring value;
   bool caseSensitive;
+  Restriction(CItemData::FieldType f, PWSMatch::MatchRule r,
+              const std::wstring &v, bool caseSensitive = false):
+              field{f}, rule{r}, value{v}, caseSensitive{false}
+  {}
+  Restriction(): field{CItem::LAST_DATA}, rule{PWSMatch::MR_INVALID}, caseSensitive{false}
+  {}
+  bool valid() const { return field != CItem::LAST_DATA     &&
+                              rule != PWSMatch::MR_INVALID  &&
+                              !value.empty();
+  }
 };
 
 struct UserArgs {
@@ -33,7 +41,7 @@ struct UserArgs {
   
   // used for search, diff, etc.
   CItemData::FieldBits fields;
-  std::vector<Restriction> subset;
+  Restriction subset;
   bool ignoreCase;
   bool confirmed;
   std::wstring opArg2;

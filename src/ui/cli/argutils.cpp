@@ -87,6 +87,8 @@ void UserArgs::SetFields(const wstring &f)
     CItemData::FieldType ft = String2FieldType(field);
     fields.set(ft);
   });
+  if (fields.none())
+    throw std::invalid_argument("Invalid field: " + toutf8(f));
 }
 
 inline bool CaseSensitive(const wstring &str)
@@ -98,10 +100,9 @@ inline bool CaseSensitive(const wstring &str)
 
 void UserArgs::SetSubset(const std::wstring &s)
 {
-  std::wregex restrictPattern(L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?(;|$)");
-  std::wsregex_iterator pos(s.cbegin(), s.cend(), restrictPattern);
-  std::wsregex_iterator end;
-  for_each( pos, end, [this](const wsmatch &m) {
-    subset.push_back( {String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))} );
-  });
+  const std::wregex restrictPattern{L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?$"};
+  wsmatch m;
+  if (regex_search(s, m, restrictPattern))
+    subset = Restriction{String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))};
+  throw std::invalid_argument("Invalid subset: " + toutf8(s));
 }
