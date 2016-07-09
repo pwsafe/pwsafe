@@ -79,10 +79,20 @@ int Diff(PWScore &core, const UserArgs &ua)
   constexpr bool treatWhitespacesAsEmpty = false;
   const StringX otherSafe{std2stringx(ua.opArg)};
 
+  CItemData::FieldBits safeFields{ua.fields};
+  safeFields.reset(CItem::POLICY);
+  for( unsigned char bit = 0; bit < CItem::LAST_DATA; bit++) {
+    if (ua.fields.test(bit) && CItemData::IsTextField(bit)) {
+      safeFields.set(bit);
+    }
+  }
+  safeFields.reset(CItem::POLICY);
+  safeFields.reset(CItem::RMTIME);
+
   int status = OpenCore(otherCore, otherSafe);
   if ( status == PWScore::SUCCESS ) {
     core.Compare( &otherCore,
-                  ua.fields,
+                  safeFields,
                          ua.subset.valid(),
                          treatWhitespacesAsEmpty,
                          ua.subset.value,
