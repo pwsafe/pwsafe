@@ -113,10 +113,13 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"delete",      no_argument,        0, 'd'},
       {"yes",         no_argument,        0, 'y'},
       {"diff",        required_argument,  0, 'r'},
+      {"unified",     no_argument,        0, 'g'},
+      {"context",     no_argument,        0, 'j'},
+      {"sidebyside",  no_argument,        0, 'k'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdyr:",
+    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdyr:gjk",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -212,6 +215,18 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.SearchAction = UserArgs::Update;
         assert(optarg);
         ua.opArg2 = Utf82wstring(optarg);
+        break;
+
+      case 'g':
+        ua.dfmt = UserArgs::DiffFmt::Unified;
+        break;
+
+      case 'j':
+        ua.dfmt = UserArgs::DiffFmt::Context;
+        break;
+
+      case 'k':
+        ua.dfmt = UserArgs::DiffFmt::SideBySide;
         break;
 
     default:

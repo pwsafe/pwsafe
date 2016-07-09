@@ -30,7 +30,9 @@ struct Restriction {
 };
 
 struct UserArgs {
-  UserArgs() : Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false} {}
+  UserArgs():   Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false},
+                dfmt{DiffFmt::Unified}
+  {}
   StringX safe, fname;
   enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation;
   enum {Print, Delete, Update} SearchAction;
@@ -45,6 +47,9 @@ struct UserArgs {
   bool ignoreCase;
   bool confirmed;
   std::wstring opArg2;
+
+  enum class DiffFmt { Unified, Context, SideBySide };
+  DiffFmt dfmt;
 
   void SetFields(const std::wstring &f);
   void SetSubset(const std::wstring &s);
