@@ -89,6 +89,8 @@
 		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
 		E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
+		E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908DE1D30C8980050CFF1 /* diff.cpp */; };
+		E6B908E31D30C8980050CFF1 /* safeutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908E01D30C8980050CFF1 /* safeutils.cpp */; };
 		E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
 		E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
 		E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
@@ -573,6 +575,10 @@
 		E6B5C6421232B3D000AC8B45 /* dragbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dragbar.h; sourceTree = "<group>"; };
 		E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSDragBar.cpp; sourceTree = "<group>"; };
 		E6B5C6441232B3D000AC8B45 /* PWSDragBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSDragBar.h; sourceTree = "<group>"; };
+		E6B908DE1D30C8980050CFF1 /* diff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = diff.cpp; sourceTree = "<group>"; };
+		E6B908DF1D30C8980050CFF1 /* diff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diff.h; sourceTree = "<group>"; };
+		E6B908E01D30C8980050CFF1 /* safeutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = safeutils.cpp; sourceTree = "<group>"; };
+		E6B908E11D30C8980050CFF1 /* safeutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safeutils.h; sourceTree = "<group>"; };
 		E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdvancedSelectionDlg.cpp; sourceTree = "<group>"; };
 		E6BA47801216DB9C00193879 /* AdvancedSelectionDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedSelectionDlg.h; sourceTree = "<group>"; };
 		E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportTextWarningDlg.cpp; sourceTree = "<group>"; };
@@ -767,6 +773,10 @@
 		E66D29301D02B49B00C9BCBF /* pwsafe-cli */ = {
 			isa = PBXGroup;
 			children = (
+				E6B908DE1D30C8980050CFF1 /* diff.cpp */,
+				E6B908DF1D30C8980050CFF1 /* diff.h */,
+				E6B908E01D30C8980050CFF1 /* safeutils.cpp */,
+				E6B908E11D30C8980050CFF1 /* safeutils.h */,
 				E66D293A1D02B54600C9BCBF /* main.cpp */,
 				E6EBC80F1D16F47F00AF61CD /* search.cpp */,
 				E6EBC8101D16F47F00AF61CD /* search.h */,
@@ -1631,8 +1641,10 @@
 			files = (
 				E6EBC81A1D17184F00AF61CD /* strutils.cpp in Sources */,
 				E6299FB71D0323A300D03FD1 /* main.cpp in Sources */,
+				E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */,
 				E6EBC8171D17165300AF61CD /* searchaction.cpp in Sources */,
 				E6EBC8141D16F9B600AF61CD /* argutils.cpp in Sources */,
+				E6B908E31D30C8980050CFF1 /* safeutils.cpp in Sources */,
 				E6EBC8111D16F47F00AF61CD /* search.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

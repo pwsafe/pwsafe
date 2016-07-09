@@ -2,6 +2,7 @@
 #include "./strutils.h"
 
 #include "../../core/PWScore.h"
+#include "../../os/file.h"
 
 #include <iostream>
 #include <unistd.h>
