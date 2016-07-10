@@ -370,6 +370,7 @@ set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
 set (CPACK_RPM_PACKAGE_GROUP "Applications/Utils")
+set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/man" "/usr/share/man/man1" "/usr/share/locale" "/usr/share/locale/da" "/usr/share/locale/da/LC_MESSAGES" "/usr/share/locale/de" "/usr/share/locale/de/LC_MESSAGES" "/usr/share/locale/es" "/usr/share/locale/es/LC_MESSAGES" "/usr/share/locale/fr" "/usr/share/locale/fr/LC_MESSAGES" "/usr/share/locale/it" "/usr/share/locale/it/LC_MESSAGES" "/usr/share/locale/ko" "/usr/share/locale/ko/LC_MESSAGES" "/usr/share/locale/nl" "/usr/share/locale/nl/LC_MESSAGES" "/usr/share/locale/pl" "/usr/share/locale/pl/LC_MESSAGES" "/usr/share/locale/ru" "/usr/share/locale/ru/LC_MESSAGES" "/usr/share/locale/sv" "/usr/share/locale/sv/LC_MESSAGES" "/usr/share/locale/zh" "/usr/share/locale/zh/LC_MESSAGES")
 include(CPack)
 ### End of packaging section
 ### End of CMakeLists.txt
