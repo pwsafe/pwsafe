@@ -545,7 +545,10 @@ int SaveAfterSearch(PWScore &core, const UserArgs &ua)
   return PWScore::SUCCESS;
 }
 
-int SaveCore(PWScore &core, const UserArgs &)
+int SaveCore(PWScore &core, const UserArgs &ua)
 {
-  return core.WriteCurFile();
+  if (!ua.dry_run)
+    return core.WriteCurFile();
+
+  return PWScore::SUCCESS;
 }
