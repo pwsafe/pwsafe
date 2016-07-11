@@ -60,6 +60,12 @@ void trashMemory(void *buffer, size_t length)
     std::memset(buffer, 0x55, length);
     std::memset(buffer, 0xAA, length);
     std::memset(buffer,    0, length);
+#ifdef __GNUC__
+    // break compiler optimization of this function for gcc
+    // see trick used in google's boring ssl:
+    // https://boringssl.googlesource.com/boringssl/+/ad1907fe73334d6c696c8539646c21b11178f20f%5E!/#F0
+    __asm__ __volatile__("" : : "r"(buffer) : "memory");
+#endif
   }
 }
 #ifdef _WIN32
