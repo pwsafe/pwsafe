@@ -1,7 +1,8 @@
 # Baby Makefile for Linux
 #
 
-SRC         = main.cpp search.cpp argutils.cpp searchaction.cpp strutils.cpp
+SRC         = main.cpp search.cpp argutils.cpp searchaction.cpp strutils.cpp \
+			  safeutils.cpp diff.cpp
 
 COREPATH        = ../../core
 OSPATH          = ../../os
