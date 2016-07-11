@@ -118,10 +118,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"unified",     no_argument,        0, 'g'},
       {"context",     no_argument,        0, 'j'},
       {"sidebyside",  no_argument,        0, 'k'},
+      {"dry-run",     no_argument,        0, 'n'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjk",
+    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjkn",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -229,6 +230,10 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
       case 'k':
         ua.dfmt = UserArgs::DiffFmt::SideBySide;
+        break;
+
+      case 'n':
+        ua.dry_run = true;
         break;
 
     default:

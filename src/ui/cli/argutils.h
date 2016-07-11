@@ -40,6 +40,8 @@ struct UserArgs {
   enum {Print, Delete, Update} SearchAction;
   enum {Unknown, XML, Text} Format;
   
+  bool dry_run{false};
+
   // The arg taken by the main operation
   std::wstring opArg;
   
