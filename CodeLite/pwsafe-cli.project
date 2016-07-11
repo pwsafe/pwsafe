@@ -38,6 +38,10 @@
     <File Name="../src/ui/cli/searchaction.h"/>
     <File Name="../src/ui/cli/strutils.cpp"/>
     <File Name="../src/ui/cli/strutils.h"/>
+    <File Name="../src/ui/cli/diff.cpp"/>
+    <File Name="../src/ui/cli/diff.h"/>
+    <File Name="../src/ui/cli/safeutils.cpp"/>
+    <File Name="../src/ui/cli/safeutils.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug">
     <Project Name="core"/>
