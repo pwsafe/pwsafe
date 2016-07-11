@@ -4,6 +4,7 @@ set (RESTEXT_SRCS
     ResModule.cpp
     ResText.cpp
     stdafx.cpp
+    UnicodeUtils.cpp
     Utils.cpp
 )
 
