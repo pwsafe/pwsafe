@@ -28,6 +28,8 @@
 #include "../os/typedefs.h"
 #include "./PwsPlatform.h"
 
+extern void trashMemory(void *buffer, size_t length);
+
 namespace S_Alloc
 {
   template <typename T>
@@ -115,9 +117,7 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          std::memset(p, 0x55, N);
-          std::memset(p, 0xAA, N);
-          std::memset(p,    0, N);
+          trashMemory(p, N);
         }
         std::free(p);
       }
