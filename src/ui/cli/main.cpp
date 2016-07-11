@@ -153,7 +153,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       break;
     case 'n':
       if (ua.Operation == UserArgs::Unset)
-        ua.Operation = UserArgs::Import;
+        ua.Operation = UserArgs::CreateNew;
       else
         return false;
       break;
