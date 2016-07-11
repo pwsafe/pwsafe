@@ -30,16 +30,12 @@ struct Restriction {
 };
 
 struct UserArgs {
-  UserArgs():   Operation(Unset), SearchAction{Print}, Format(Unknown), ignoreCase{false}, confirmed{false},
-                dfmt{DiffFmt::Unified}
-  {
-    fields.set();
-  }
+  UserArgs()  { fields.set(); }
   StringX safe, fname;
-  enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation;
-  enum {Print, Delete, Update} SearchAction;
-  enum {Unknown, XML, Text} Format;
-  
+  enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation{Unset};
+  enum {Print, Delete, Update} SearchAction{Print};
+  enum {Unknown, XML, Text} Format{Unknown};
+
   bool dry_run{false};
 
   // The arg taken by the main operation
@@ -48,12 +44,12 @@ struct UserArgs {
   // used for search, diff, etc.
   CItemData::FieldBits fields;
   Restriction subset;
-  bool ignoreCase;
-  bool confirmed;
+  bool ignoreCase{false};
+  bool confirmed{false};
   std::wstring opArg2;
 
   enum class DiffFmt { Unified, Context, SideBySide };
-  DiffFmt dfmt;
+  DiffFmt dfmt{DiffFmt::Unified};
 
   void SetFields(const std::wstring &f);
   void SetSubset(const std::wstring &s);
