@@ -102,24 +102,24 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"export",      optional_argument,  0, 'e'},
       {"text",        no_argument,        0, 't'},
       {"xml",         no_argument,        0, 'x'},
-      {"new",         no_argument,        0, 'n'},
+      {"new",         no_argument,        0, 'c'},
       {"search",      required_argument,  0, 's'},
       {"subset",      required_argument,  0, 'b'},
       {"fields",      required_argument,  0, 'f'},
-      {"ignore-case", optional_argument,  0, 'c'},
+      {"ignore-case", optional_argument,  0, 'o'},
       {"add",         required_argument,  0, 'a'},
       {"update",      required_argument,  0, 'u'},
       {"print",       no_argument,        0, 'p'},
-      {"delete",      no_argument,        0, 'd'},
+      {"delete",      no_argument,        0, 'r'},
       {"yes",         no_argument,        0, 'y'},
-      {"diff",        required_argument,  0, 'r'},
+      {"diff",        required_argument,  0, 'd'},
       {"unified",     no_argument,        0, 'g'},
       {"context",     no_argument,        0, 'j'},
       {"sidebyside",  no_argument,        0, 'k'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txns:b:f:ca:u:pdyr:gjk",
+    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjk",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -151,7 +151,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       else
         return false;
       break;
-    case 'n':
+    case 'c':
       if (ua.Operation == UserArgs::Unset)
         ua.Operation = UserArgs::CreateNew;
       else
@@ -168,7 +168,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       else
         return false;
 
-    case 'r':
+    case 'd':
       if (ua.Operation == UserArgs::Unset) {
         ua.Operation = UserArgs::Diff;
         assert(optarg);
@@ -188,7 +188,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.SetFields(Utf82wstring(optarg));
         break;
 
-    case 'c':
+    case 'o':
         if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
           ua.ignoreCase = true;
         break;
@@ -203,7 +203,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.confirmed = true;
         break;
 
-    case 'd':
+    case 'r':
         ua.SearchAction = UserArgs::Delete;
         break;
 
