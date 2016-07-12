@@ -42,6 +42,7 @@ static int SaveAfterSearch(PWScore &core, const UserArgs &ua);
 static int AddEntry(PWScore &core, const UserArgs &ua);
 static int CreateNewSafe(PWScore &core, const StringX& filename);
 static int Sync(PWScore &core, const UserArgs &ua);
+static int Merge(PWScore &core, const UserArgs &ua);
 
 //-----------------------------------------------------------------
 
@@ -65,7 +66,8 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::Add,        {OpenCore,        AddEntry,   SaveCore}},
   { UserArgs::Search,     {OpenCore,        Search,     SaveAfterSearch}},
   { UserArgs::Diff,       {OpenCore,        Diff,       null_op}},
-  { UserArgs::Sync,       {OpenCore,        Sync,       SaveCore}}
+  { UserArgs::Sync,       {OpenCore,        Sync,       SaveCore}},
+  { UserArgs::Merge,       {OpenCore,       Merge,      SaveCore}},
 };
 
 
@@ -122,10 +124,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"dry-run",     no_argument,        0, 'n'},
       {"synchronize", no_argument,        0, 'z'},
       {"synch",       no_argument,        0, 'z'},
+      {"merge",       no_argument,        0, 'm'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:",
+    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -166,6 +169,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     case 'z':
       assert(optarg);
       ua.SetMainOp(UserArgs::Sync, optarg);
+      break;
+
+    case 'm':
+      assert(optarg);
+      ua.SetMainOp(UserArgs::Merge, optarg);
       break;
 
     case 'b':
@@ -556,6 +564,26 @@ int Sync(PWScore &core, const UserArgs &ua)
                       numUpdated,
                       &rpt,               // Must be non-null
                       NULL                // Cancel mechanism. We don't need one
+    );
+    otherCore.UnlockFile(otherSafe.c_str());
+  }
+  return status;
+}
+
+int Merge(PWScore &core, const UserArgs &ua)
+{
+  const StringX otherSafe{std2stringx(ua.opArg)};
+  PWScore otherCore;
+  int status = OpenCore(otherCore, otherSafe);
+  if ( status == PWScore::SUCCESS ) {
+    CReport rpt;
+    core.Merge(&otherCore,
+               ua.subset.valid(),  // filter?
+               ua.subset.value,    // filter value
+               ua.subset.field,    // field to filter by
+               ua.subset.rule,     // type of match rule for filtering
+               &rpt,               // Must be non-null
+               NULL                // Cancel mechanism. We don't need one
     );
     otherCore.UnlockFile(otherSafe.c_str());
   }

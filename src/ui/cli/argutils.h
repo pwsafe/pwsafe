@@ -35,7 +35,7 @@ struct UserArgs {
   UserArgs()  { fields.set(); }
   StringX safe;
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
-               Diff, Sync} Operation{Unset};
+               Diff, Sync, Merge} Operation{Unset};
   enum {Print, Delete, Update} SearchAction{Print};
   enum {Unknown, XML, Text} Format{Unknown};
 
