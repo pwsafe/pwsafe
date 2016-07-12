@@ -48,6 +48,7 @@ void print_different_fields(wchar_t tag, const CItemData &item, const CItemData:
           wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
     }
   }
+  wcout << endl;
 }
 
 static void print_field_labels(const CItemData::FieldBits fields)
@@ -57,12 +58,13 @@ static void print_field_labels(const CItemData::FieldBits fields)
       wcout << CItemData::FieldName(static_cast<CItem::FieldType>(bit)) << '\t';
     }
   }
+  wcout << endl;
 }
 
-void print_rmtime(const CItemData &i)
+void print_rmtime(wchar_t tag, const CItemData &i)
 {
   if (i.IsRecordModificationTimeSet())
-    wcout << L" -" << i.GetRMTimeExp();
+    wcout << L' ' << tag << i.GetRMTimeExp();
 }
 
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
@@ -80,16 +82,13 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
 
 
     wcout << L"@@ " << st_GroupTitleUser{d.group, d.title, d.user};
-    print_rmtime(item);
-    print_rmtime(otherItem);
+    print_rmtime('-', item);
+    print_rmtime('+', otherItem);
     wcout << L" @@" << endl;
 
     print_field_labels(d.bsDiffs);
-    wcout << endl;
     print_different_fields('-', item, d.bsDiffs);
-    wcout << endl;
     print_different_fields('+', otherItem, d.bsDiffs);
-    wcout << endl;
   });
 
   print_unified_single(L'+', comparison);
