@@ -28,6 +28,9 @@
 #include "../os/typedefs.h"
 #include "./PwsPlatform.h"
 
+// Using extern definition here instead of including "Util.h" because Util.h
+// references the StringX class and by including "Util.h" here, the StringX
+// class isn't fully defined yet.
 extern void trashMemory(void *buffer, size_t length);
 
 namespace S_Alloc
