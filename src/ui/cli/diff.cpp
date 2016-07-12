@@ -18,6 +18,11 @@ inline StringX modtime(const StringX &file) {
   return StringX{};
 }
 
+void print_safe_file(const wchar_t *tag, const PWScore &core)
+{
+  wcout << tag << L' ' << core.GetCurFile() << L" " << modtime(core.GetCurFile()) << endl;
+}
+
 wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
 {
   if ( !gtu.group.empty() )
@@ -40,12 +45,62 @@ void print_unified_single(wchar_t tag, const CompareData &cd)
   });
 }
 
+void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core)
+{
+  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
+    wcout << L"***************" << endl
+          << L"*** " << st_GroupTitleUser{d.group, d.title, d.user} << L" ***" << endl;
+
+    const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
+    for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
+      const CItem::FieldType ft = static_cast<CItem::FieldType>(bit);
+      if ( !item.GetFieldValue(ft).empty() ) {
+        wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+      }
+    }
+  });
+}
+
+
 void print_different_fields(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
 {
   wcout << tag;
   for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
     if (fields.test(bit)) {
           wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
+    }
+  }
+  wcout << endl;
+}
+
+inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fields,
+                const CItemData &item, const CItemData &otherItem)
+{
+  const StringX val{item.GetFieldValue(ft)};
+  if (val.empty())
+    return L'+';
+
+  // The two items were compared & found to be differing on this field
+  // only show this tag for fields there were compared
+  if (fields.test(ft))
+    return '!';
+
+  // This field was not compared, it could be different. Print it only if
+  // it is the same in both items
+  if (val == otherItem.GetFieldValue(ft))
+    return L' ';
+
+  // Don't print it
+  return L'-';
+}
+void context_print_differences(const CItemData &item, const CItemData &otherItem,
+                                  const CItemData::FieldBits &fields)
+{
+  for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
+    const CItem::FieldType ft = static_cast<CItem::FieldType>(bit);
+    const wchar_t tag = context_tag(ft, fields, item, otherItem);
+    if (tag != L'-') {
+      wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
     }
   }
   wcout << endl;
@@ -71,8 +126,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/)
 {
-  wcout << L"--- " << core.GetCurFile() << L" " << modtime(core.GetCurFile()) << endl;
-  wcout << L"+++ " << otherCore.GetCurFile() << L" " << modtime(otherCore.GetCurFile()) << endl;
+  print_safe_file(L"---", core);
+  print_safe_file(L"+++", otherCore);
 
   print_unified_single(L'-', current);
 
@@ -98,7 +153,27 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &identical)
 {
+  print_safe_file(L"***", core);
+  print_safe_file(L"---", otherCore);
 
+  context_print_items('!', current, core);
+
+  for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
+    const CItemData &item = core.Find(d.uuid0)->second;
+    const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
+
+    wcout << L"*** " << st_GroupTitleUser{d.group, d.title, d.user};
+    print_rmtime(' ', item);
+    wcout << L" ***" << endl;
+
+    wcout << L"--- " << st_GroupTitleUser{d.group, d.title, d.user};
+    print_rmtime(' ', otherItem);
+    wcout << L" ---" << endl;
+
+    context_print_differences(item, otherItem, d.bsDiffs);
+  });
+
+  context_print_items('+', comparison, otherCore);
 }
 
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
