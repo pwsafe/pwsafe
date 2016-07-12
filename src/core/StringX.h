@@ -117,7 +117,7 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          trashMemory(p, N);
+          trashMemory((void *)p, N);
         }
         std::free(p);
       }
