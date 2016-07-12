@@ -32,7 +32,8 @@ struct Restriction {
 struct UserArgs {
   UserArgs()  { fields.set(); }
   StringX safe, fname;
-  enum OpType {Unset, Import, Export, CreateNew, Search, Add, Diff} Operation{Unset};
+  enum OpType {Unset, Import, Export, CreateNew, Search, Add,
+               Diff, Sync} Operation{Unset};
   enum {Print, Delete, Update} SearchAction{Print};
   enum {Unknown, XML, Text} Format{Unknown};
 

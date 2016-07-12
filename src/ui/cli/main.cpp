@@ -41,7 +41,7 @@ static int SaveAfterSearch(PWScore &core, const UserArgs &ua);
 // These are the new operations. Each returns the code to exit with
 static int AddEntry(PWScore &core, const UserArgs &ua);
 static int CreateNewSafe(PWScore &core, const StringX& filename);
-
+static int Sync(PWScore &core, const UserArgs &ua);
 
 //-----------------------------------------------------------------
 
@@ -64,7 +64,8 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::CreateNew,  {CreateNewSafe,   null_op,    SaveCore}},
   { UserArgs::Add,        {OpenCore,        AddEntry,   SaveCore}},
   { UserArgs::Search,     {OpenCore,        Search,     SaveAfterSearch}},
-  { UserArgs::Diff,       {OpenCore,        Diff,       null_op}}
+  { UserArgs::Diff,       {OpenCore,        Diff,       null_op}},
+  { UserArgs::Sync,       {OpenCore,        Sync,       SaveCore}}
 };
 
 
@@ -119,10 +120,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"context",     no_argument,        0, 'j'},
       {"sidebyside",  no_argument,        0, 'k'},
       {"dry-run",     no_argument,        0, 'n'},
+      {"synchronize", no_argument,        0, 'z'},
+      {"synch",       no_argument,        0, 'z'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjkn",
+    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -174,6 +177,16 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     case 'd':
       if (ua.Operation == UserArgs::Unset) {
         ua.Operation = UserArgs::Diff;
+        assert(optarg);
+        ua.opArg = Utf82wstring(optarg);
+        break;
+      }
+      else
+        return false;
+
+    case 'z':
+      if (ua.Operation == UserArgs::Unset) {
+        ua.Operation = UserArgs::Sync;
         assert(optarg);
         ua.opArg = Utf82wstring(optarg);
         break;
@@ -551,4 +564,26 @@ int SaveCore(PWScore &core, const UserArgs &ua)
     return core.WriteCurFile();
 
   return PWScore::SUCCESS;
+}
+
+int Sync(PWScore &core, const UserArgs &ua)
+{
+  const StringX otherSafe{std2stringx(ua.opArg)};
+  int status = OpenCore(otherCore, otherSafe);
+  if ( status == PWScore::SUCCESS ) {
+    CReport rpt;
+    int numUpdated = 0;
+    core.Synchronize(&otherCore,
+                      ua.fields,          // fields to sync
+                      ua.subset.valid(),  // filter?
+                      ua.subset.value,    // filter value
+                      ua.subset.field,    // field to filter by
+                      ua.subset.rule,     // type of match rule for filtering
+                      &numUpdated,
+                      &rpt,               // Must be non-null
+                      NULL                // Cancel mechanism. We don't need one
+    );
+    otherCore.UnlockFile(otherSafe.c_str());
+  }
+  return status;
 }
