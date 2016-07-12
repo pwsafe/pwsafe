@@ -31,8 +31,8 @@ using namespace std;
 
 int SaveCore(PWScore &core, const UserArgs &);
 
-static int ImportText(PWScore &core, const StringX &fname);
-static int ImportXML(PWScore &core, const StringX &fname);
+static int ImportText(PWScore &core, const stringT &fname);
+static int ImportXML(PWScore &core, const stringT &fname);
 static int Import(PWScore &core, const UserArgs &ua);
 static int Export(PWScore &core, const UserArgs &ua);
 static int Search(PWScore &core, const UserArgs &ua);
@@ -132,18 +132,10 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
     switch (c) {
     case 'i':
-      if (ua.Operation == UserArgs::Unset)
-        ua.Operation = UserArgs::Import;
-      else
-        return false;
-      if (optarg) Utf82StringX(optarg, ua.fname);
+      ua.SetMainOp(UserArgs::Import, optarg);
       break;
     case 'e':
-      if (ua.Operation == UserArgs::Unset)
-        ua.Operation = UserArgs::Export;
-      else
-        return false;
-      if (optarg) Utf82StringX(optarg, ua.fname);
+      ua.SetMainOp(UserArgs::Export, optarg);
       break;
     case 'x':
       if (ua.Format == UserArgs::Unknown)
@@ -158,41 +150,23 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         return false;
       break;
     case 'c':
-      if (ua.Operation == UserArgs::Unset)
-        ua.Operation = UserArgs::CreateNew;
-      else
-        return false;
+      ua.SetMainOp(UserArgs::CreateNew);
       break;
 
     case 's':
-      if (ua.Operation == UserArgs::Unset) {
-        ua.Operation = UserArgs::Search;
-        assert(optarg);
-        ua.opArg = Utf82wstring(optarg);
-        break;
-      }
-      else
-        return false;
+      assert(optarg);
+      ua.SetMainOp(UserArgs::Search, optarg);
+      break;
 
     case 'd':
-      if (ua.Operation == UserArgs::Unset) {
-        ua.Operation = UserArgs::Diff;
-        assert(optarg);
-        ua.opArg = Utf82wstring(optarg);
-        break;
-      }
-      else
-        return false;
+      assert(optarg);
+      ua.SetMainOp(UserArgs::Diff, optarg);
+      break;
 
     case 'z':
-      if (ua.Operation == UserArgs::Unset) {
-        ua.Operation = UserArgs::Sync;
-        assert(optarg);
-        ua.opArg = Utf82wstring(optarg);
-        break;
-      }
-      else
-        return false;
+      assert(optarg);
+      ua.SetMainOp(UserArgs::Sync, optarg);
+      break;
 
     case 'b':
         assert(optarg);
@@ -210,9 +184,8 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         break;
 
     case 'a':
-        ua.Operation = UserArgs::Add;
         assert(optarg);
-        ua.opArg = Utf82wstring(optarg);
+        ua.SetMainOp(UserArgs::Add, optarg);
         break;
 
     case 'y':
@@ -253,8 +226,8 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       cerr << "Unknown option: " << char(c) << endl;
       return false;
     }
-    if (ua.fname.empty())
-      ua.fname = (ua.Format == UserArgs::XML) ? L"file.xml" : L"file.txt";
+    if (ua.opArg.empty())
+      ua.opArg = (ua.Format == UserArgs::XML) ? L"file.xml" : L"file.txt";
   }
   return true;
 }
@@ -296,11 +269,11 @@ int main(int argc, char *argv[])
 int Import(PWScore &core, const UserArgs &ua)
 {
   return ua.Format == UserArgs::XML?
-      ImportXML(core, ua.fname): ImportText(core, ua.fname);
+      ImportXML(core, ua.opArg): ImportText(core, ua.opArg);
 }
 
 static int
-ImportText(PWScore &core, const StringX &fname)
+ImportText(PWScore &core, const stringT &fname)
 {
   int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numNoPolicy(0);
   std::wstring strError;
@@ -318,7 +291,7 @@ ImportText(PWScore &core, const StringX &fname)
   rpt.WriteLine();
 
   Command *pcmd = NULL;
-  int rc = core.ImportPlaintextFile(ImportedPrefix, fname, fieldSeparator,
+  int rc = core.ImportPlaintextFile(ImportedPrefix, std2stringx(fname), fieldSeparator,
                                     delimiter, bImportPSWDsOnly,
                                     strError,
                                     numImported, numSkipped,
@@ -372,7 +345,7 @@ ImportText(PWScore &core, const StringX &fname)
 }
 
 static int
-ImportXML(PWScore &core, const StringX &fname)
+ImportXML(PWScore &core, const stringT &fname)
 {
   const std::wstring XSDfn(L"pwsafe.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
@@ -497,8 +470,8 @@ static int Export(PWScore &core, const UserArgs &ua)
   CItemData::FieldBits all(~0L);
   int N;
   return ua.Format == UserArgs::XML?
-    core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N):
-      core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
+    core.WriteXMLFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', N):
+      core.WritePlaintextFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', N);
 }
 
 static int CreateNewSafe(PWScore &core, const StringX& filename)
@@ -569,6 +542,7 @@ int SaveCore(PWScore &core, const UserArgs &ua)
 int Sync(PWScore &core, const UserArgs &ua)
 {
   const StringX otherSafe{std2stringx(ua.opArg)};
+  PWScore otherCore;
   int status = OpenCore(otherCore, otherSafe);
   if ( status == PWScore::SUCCESS ) {
     CReport rpt;
@@ -579,7 +553,7 @@ int Sync(PWScore &core, const UserArgs &ua)
                       ua.subset.value,    // filter value
                       ua.subset.field,    // field to filter by
                       ua.subset.rule,     // type of match rule for filtering
-                      &numUpdated,
+                      numUpdated,
                       &rpt,               // Must be non-null
                       NULL                // Cancel mechanism. We don't need one
     );

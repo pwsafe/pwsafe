@@ -12,6 +12,8 @@
 #include "../../core/PWScore.h"
 #include "../../core/Match.h"
 
+#include "./strutils.h"
+
 struct Restriction {
   CItemData::FieldType field;
   PWSMatch::MatchRule rule;
@@ -31,7 +33,7 @@ struct Restriction {
 
 struct UserArgs {
   UserArgs()  { fields.set(); }
-  StringX safe, fname;
+  StringX safe;
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
                Diff, Sync} Operation{Unset};
   enum {Print, Delete, Update} SearchAction{Print};
@@ -54,6 +56,13 @@ struct UserArgs {
 
   void SetFields(const std::wstring &f);
   void SetSubset(const std::wstring &s);
+  void SetMainOp(OpType op, const char *arg = nullptr) {
+    if (Operation != Unset)
+      throw std::invalid_argument("Only one main operation can be specified");
+    Operation = op;
+    if (arg)
+      opArg = Utf82wstring(arg);
+  }
 };
 
 CItemData::FieldType String2FieldType(const std::wstring& str);
