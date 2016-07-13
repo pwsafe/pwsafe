@@ -211,10 +211,9 @@ wostream & print_in_column(const CItemData &item)
   wostringstream os;
   os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()};
   print_rmtime( L' ', os << setw(colwidth) << setfill(L' ') << left, item);
-  wcout << setw(colwidth) << setfill(L' ') << left;
   wstring line{os.str()};
   line.resize(colwidth, L' ');
-  return wcout << setw(colwidth) << line;
+  return wcout << setw(colwidth) << setfill(L' ') << left << line;
 }
 
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
