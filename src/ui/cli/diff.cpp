@@ -239,6 +239,8 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   // print a separator line
   wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
 
+  // These remain constant in the next print loop
+  wcout << setw(colwidth) << setfill(L' ') << left;
 
   // print the orig (left or main) safe in left column
   for_each( current.cbegin(), current.cend(), [&core, &safeFields](const st_CompareData &cd) {
@@ -246,7 +248,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     print_sbs_hdr(item) << L'|' << endl;;
     for_each(begin(diff_fields), end(diff_fields), [&safeFields, &item](CItemData::FieldType ft) {
       if (safeFields.test(ft) && !item.GetFieldValue(ft).empty()) {
-        wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|' << endl;
+        wcout << field_to_line(item, ft) << L'|' << endl;
       }
     });
   });
@@ -268,8 +270,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     for_each(begin(diff_fields), end(diff_fields), [&cd, &item, &otherItem](CItemData::FieldType ft) {
       // print the fields if they were actually found to be different
       if (cd.bsDiffs.test(ft)) {
-        wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|'
-              << setw(colwidth) << setfill(L' ') << left << field_to_line(otherItem, ft) << endl;
+        wcout << field_to_line(item, ft) << L'|' << field_to_line(otherItem, ft) << endl;
       }
     });
   });
@@ -289,8 +290,8 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     for_each(begin(diff_fields), end(diff_fields), [&safeFields, &otherItem](CItemData::FieldType ft) {
       // print the fields that were compared, unless empty
       if (safeFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
-        wcout << setw(colwidth+1) << setfill(L' ') << right << L'|'
-              << setw(colwidth) << setfill(L' ') << left << field_to_line(otherItem, ft) << endl;
+        wcout << setw(colwidth+1) << right << L'|' // fill up left column with space
+              << left << field_to_line(otherItem, ft) << endl;
       }
     });
   });
