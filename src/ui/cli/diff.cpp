@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 
 using namespace std;
 
@@ -142,10 +143,11 @@ static void print_field_labels(const CItemData::FieldBits fields)
   wcout << endl;
 }
 
-void print_rmtime(wchar_t tag, const CItemData &i)
+inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
 {
   if (i.IsRecordModificationTimeSet())
-    wcout << L' ' << tag << i.GetRMTimeExp();
+    os << L' ' << tag << i.GetRMTimeExp();
+  return os;
 }
 
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
@@ -163,8 +165,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
 
 
     wcout << L"@@ " << st_GroupTitleUser{d.group, d.title, d.user};
-    print_rmtime('-', item);
-    print_rmtime('+', otherItem);
+    print_rmtime('-', wcout, item);
+    print_rmtime('+', wcout, otherItem);
     wcout << L" @@" << endl;
 
     print_field_labels(d.bsDiffs);
@@ -189,11 +191,11 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
     const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
 
     wcout << L"*** " << st_GroupTitleUser{d.group, d.title, d.user};
-    print_rmtime(' ', item);
+    print_rmtime(' ', wcout, item);
     wcout << L" ***" << endl;
 
     wcout << L"--- " << st_GroupTitleUser{d.group, d.title, d.user};
-    print_rmtime(' ', otherItem);
+    print_rmtime(' ', wcout, otherItem);
     wcout << L" ---" << endl;
 
     context_print_differences(item, otherItem, d.bsDiffs);
@@ -202,11 +204,46 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
   context_print_items('+', comparison, otherCore);
 }
 
+const size_t colwidth = 80;
+
+wostream & print_in_column(const CItemData &item)
+{
+  wostringstream os;
+  os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()};
+  print_rmtime( L' ', os << setw(colwidth) << setfill(L' ') << left, item);
+  wcout << setw(colwidth) << setfill(L' ') << left;
+  wstring line{os.str()};
+  line.resize(colwidth, L' ');
+  return wcout << setw(colwidth) << line;
+}
+
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
-                         const CompareData &conflicts, const CompareData &identical)
+                         const CompareData &conflicts, const CompareData &/*identical*/)
 {
+  wostringstream os;
+  os << setw(colwidth) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
+  wcout.write(os.str().c_str(), colwidth);
+  wcout << L'|' << otherCore.GetCurFile() << L" " << modtime(otherCore.GetCurFile()) << endl;
+  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
 
+  for_each( current.cbegin(), current.cend(), [&core](const st_CompareData &cd) {
+    print_in_column(core.Find(cd.uuid0)->second) << L'|' << endl;;
+  });
+
+  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
+
+  for_each( conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &cd) {
+    print_in_column(core.Find(cd.uuid0)->second) << L'|';
+    print_in_column(otherCore.Find(cd.uuid1)->second) << endl;
+  });
+
+  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
+
+  for_each( comparison.cbegin(), comparison.cend(), [&otherCore](const st_CompareData &cd) {
+    wcout << setw(colwidth+1) << setfill(L' ') << right << L'|';
+    print_in_column(otherCore.Find(cd.uuid1)->second) << endl;
+  });
 }
 
 
