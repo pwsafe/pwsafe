@@ -64,7 +64,7 @@ wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
   return os;
 }
 
-void print_unified_single(wchar_t tag, const CompareData &cd)
+void unified_print_hdr(wchar_t tag, const CompareData &cd)
 {
   for_each(cd.cbegin(), cd.cend(), [tag](const st_CompareData &d) {
     wcout << tag << st_GroupTitleUser{d.group, d.title, d.user} << endl;
@@ -87,7 +87,7 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
 }
 
 
-void print_different_fields(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
+void unified_print_item(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
 {
   wcout << tag;
   for_each( begin(diff_fields), end(diff_fields), [&fields, &item](CItemData::FieldType ft) {
@@ -157,7 +157,7 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
   print_safe_file(L"---", core);
   print_safe_file(L"+++", otherCore);
 
-  print_unified_single(L'-', current);
+  unified_print_hdr(L'-', current);
 
   for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
     const CItemData &item = core.Find(d.uuid0)->second;
@@ -170,11 +170,11 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     wcout << L" @@" << endl;
 
     print_field_labels(d.bsDiffs);
-    print_different_fields('-', item, d.bsDiffs);
-    print_different_fields('+', otherItem, d.bsDiffs);
+    unified_print_item('-', item, d.bsDiffs);
+    unified_print_item('+', otherItem, d.bsDiffs);
   });
 
-  print_unified_single(L'+', comparison);
+  unified_print_hdr(L'+', comparison);
 }
 
 static void context_diff(const PWScore &core, const PWScore &otherCore,
@@ -206,7 +206,7 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 
 const size_t colwidth = 80;
 
-wostream & print_in_column(const CItemData &item)
+wostream & print_sbs_hdr(const CItemData &item)
 {
   wostringstream os;
   os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()};
@@ -238,7 +238,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
 
   for_each( current.cbegin(), current.cend(), [&core, &safeFields](const st_CompareData &cd) {
     const CItemData &item = core.Find(cd.uuid0)->second;
-    print_in_column(item) << L'|' << endl;;
+    print_sbs_hdr(item) << L'|' << endl;;
     for_each(begin(diff_fields), end(diff_fields), [&safeFields, &item](CItemData::FieldType ft) {
       if (safeFields.test(ft) && !item.GetFieldValue(ft).empty()) {
         wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|' << endl;
@@ -251,8 +251,8 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   for_each( conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &cd) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
-    print_in_column(item) << L'|';
-    print_in_column(otherItem) << endl;
+    print_sbs_hdr(item) << L'|';
+    print_sbs_hdr(otherItem) << endl;
     for_each(begin(diff_fields), end(diff_fields), [&cd, &item, &otherItem](CItemData::FieldType ft) {
       if (cd.bsDiffs.test(ft)) {
         wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|'
@@ -266,7 +266,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   for_each( comparison.cbegin(), comparison.cend(), [&otherCore, &safeFields](const st_CompareData &cd) {
     wcout << setw(colwidth+1) << setfill(L' ') << right << L'|';
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
-    print_in_column(otherItem) << endl;
+    print_sbs_hdr(otherItem) << endl;
     for_each(begin(diff_fields), end(diff_fields), [&safeFields, &otherItem](CItemData::FieldType ft) {
       if (safeFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
         wcout << setw(colwidth+1) << setfill(L' ') << right << L'|'
