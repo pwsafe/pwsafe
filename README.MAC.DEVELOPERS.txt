@@ -100,13 +100,13 @@ in "wx3", then do
 
 wx3 $ mkdir static-debug
 wx3 $ cd static-debug
-wx3/static/debug $ <path-to-pwsafe's osx-build-wx> -d
-wx3/static/debug $ make
+wx3/static-debug $ <path-to-pwsafe's osx-build-wx> -d
+wx3/static-debug $ make
 
 That would build the Debug configuration of wxWidgets in wx3/static-debug.  It would generate
 static libraries of wxWidgets with universal binaries for i386 and x86_64 in static-debug/lib.
 You can do the same thing again, but the directory name should be something like 
-"static-release", and pass -r to osx-build-wx to build the Release configuration
+"static-release", and omit the -d to osx-build-wx to build the Release configuration
 
 Note that osx-build-wx doesn't actually run make: you need to run it yourself.
 
