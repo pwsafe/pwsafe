@@ -63,7 +63,7 @@ int OpenCore(PWScore& core, const StringX& safe)
 StringX GetPassphrase(const wstring& prompt)
 {
     wstring wpk;
-    wcout << prompt;
+    wcerr << prompt;
     echoOff();
     wcin >> wpk;
     echoOn();
