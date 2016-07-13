@@ -11,6 +11,31 @@ using namespace std;
 
 #include "../../core/PWScore.h"
 
+const CItem::FieldType diff_fields[] = {
+    CItem::GROUP,
+    CItem::TITLE,
+    CItem::USER,
+    CItem::PASSWORD,
+    CItem::EMAIL,
+    CItem::NOTES,
+    CItem::URL,
+    CItem::AUTOTYPE,
+    CItem::CTIME,
+    CItem::PMTIME,
+    CItem::ATIME,
+    CItem::XTIME,
+    CItem::XTIME_INT,
+    CItem::PWHIST,
+    CItem::POLICY,
+    CItem::POLICYNAME,
+    CItem::SYMBOLS,
+    CItem::RUNCMD,
+    CItem::DCA,
+    CItem::SHIFTDCA,
+    CItem::KBSHORTCUT,
+    CItem::PROTECTED
+};
+
 inline StringX modtime(const StringX &file) {
   time_t ctime, mtime, atime;
   if (pws_os::GetFileTimes(stringx2std(file), ctime, mtime, atime))
@@ -52,12 +77,11 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
           << L"*** " << st_GroupTitleUser{d.group, d.title, d.user} << L" ***" << endl;
 
     const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
-    for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
-      const CItem::FieldType ft = static_cast<CItem::FieldType>(bit);
+    for_each(begin(diff_fields), end(diff_fields), [&item, tag]( CItemData::FieldType ft) {
       if ( !item.GetFieldValue(ft).empty() ) {
         wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
       }
-    }
+    });
   });
 }
 
@@ -65,11 +89,11 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
 void print_different_fields(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
 {
   wcout << tag;
-  for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
-    if (fields.test(bit)) {
-          wcout << item.GetFieldValue(static_cast<CItem::FieldType>(bit)) << '\t';
+  for_each( begin(diff_fields), end(diff_fields), [&fields, &item](CItemData::FieldType ft) {
+    if (fields.test(ft)) {
+      wcout << item.GetFieldValue(ft) << '\t';
     }
-  }
+  });
   wcout << endl;
 }
 
@@ -96,23 +120,23 @@ inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fiel
 void context_print_differences(const CItemData &item, const CItemData &otherItem,
                                   const CItemData::FieldBits &fields)
 {
-  for( size_t bit = 0; bit < CItem::LAST_DATA; bit++) {
-    const CItem::FieldType ft = static_cast<CItem::FieldType>(bit);
+  for_each( begin(diff_fields), end(diff_fields),
+              [&fields, &item, &otherItem](CItemData::FieldType ft) {
     const wchar_t tag = context_tag(ft, fields, item, otherItem);
     if (tag != L'-') {
       wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
     }
-  }
+  });
   wcout << endl;
 }
 
 static void print_field_labels(const CItemData::FieldBits fields)
 {
-  for( unsigned char bit = 0; bit < CItem::LAST_DATA; bit++) {
-    if (fields.test(bit)) {
-      wcout << CItemData::FieldName(static_cast<CItem::FieldType>(bit)) << '\t';
+  for_each( begin(diff_fields), end(diff_fields), [&fields](CItemData::FieldType ft) {
+    if (fields.test(ft)) {
+      wcout << CItemData::FieldName(ft) << '\t';
     }
-  }
+  });
   wcout << endl;
 }
 
@@ -193,11 +217,12 @@ int Diff(PWScore &core, const UserArgs &ua)
 
   CItemData::FieldBits safeFields{ua.fields};
   safeFields.reset(CItem::POLICY);
-  for( unsigned char bit = 0; bit < CItem::LAST_DATA; bit++) {
-    if (ua.fields.test(bit) && CItemData::IsTextField(bit)) {
-      safeFields.set(bit);
+  for_each( begin(diff_fields), end(diff_fields),
+                [&ua, &safeFields](CItemData::FieldType ft) {
+    if (ua.fields.test(ft) && CItemData::IsTextField(ft)) {
+      safeFields.set(ft);
     }
-  }
+  });
   safeFields.reset(CItem::POLICY);
   safeFields.reset(CItem::RMTIME);
 
