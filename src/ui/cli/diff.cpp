@@ -100,19 +100,20 @@ void print_different_fields(wchar_t tag, const CItemData &item, const CItemData:
 inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fields,
                 const CItemData &item, const CItemData &otherItem)
 {
-  const StringX val{item.GetFieldValue(ft)};
-  if (val.empty())
-    return L'+';
-
   // The two items were compared & found to be differing on this field
   // only show this tag for fields there were compared
   if (fields.test(ft))
     return '!';
 
+  const StringX val{item.GetFieldValue(ft)};
+
   // This field was not compared, it could be different. Print it only if
   // it is the same in both items
   if (val == otherItem.GetFieldValue(ft))
     return L' ';
+
+  if (val.empty())
+    return L'+';
 
   // Don't print it
   return L'-';
@@ -124,7 +125,8 @@ void context_print_differences(const CItemData &item, const CItemData &otherItem
               [&fields, &item, &otherItem](CItemData::FieldType ft) {
     const wchar_t tag = context_tag(ft, fields, item, otherItem);
     if (tag != L'-') {
-      wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+      wcout << tag << L' ' << item.FieldName(ft) << L": "
+            << (tag == L' '? item.GetFieldValue(ft) : otherItem.GetFieldValue(ft)) << endl;
     }
   });
   wcout << endl;
