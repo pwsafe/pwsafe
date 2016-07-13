@@ -92,7 +92,9 @@ void unified_print_item(wchar_t tag, const CItemData &item, const CItemData::Fie
   wcout << tag;
   for_each( begin(diff_fields), end(diff_fields), [&fields, &item](CItemData::FieldType ft) {
     if (fields.test(ft)) {
-      wcout << item.GetFieldValue(ft) << '\t';
+      // make sure we print at least one char, for table'izing with "column" tool
+      const StringX val{item.GetFieldValue(ft)};
+      wcout << (val.empty()? L"----": val) << L'\t';
     }
   });
   wcout << endl;
@@ -137,7 +139,7 @@ static void print_field_labels(const CItemData::FieldBits fields)
 {
   for_each( begin(diff_fields), end(diff_fields), [&fields](CItemData::FieldType ft) {
     if (fields.test(ft)) {
-      wcout << CItemData::FieldName(ft) << '\t';
+      wcout << CItemData::FieldName(ft) << L'\t';
     }
   });
   wcout << endl;
