@@ -216,9 +216,19 @@ wostream & print_in_column(const CItemData &item)
   return wcout << setw(colwidth) << setfill(L' ') << left << line;
 }
 
+wstring field_to_line(const CItemData &item, const CItemData::FieldType ft)
+{
+  wostringstream os;
+  os << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
+  wstring line{os.str()};
+  line.resize(colwidth, L' ');
+  return line;
+}
+
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
-                         const CompareData &conflicts, const CompareData &/*identical*/)
+                         const CompareData &conflicts, const CompareData &/*identical*/,
+                         const CItemData::FieldBits &safeFields)
 {
   wostringstream os;
   os << setw(colwidth) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
@@ -226,22 +236,43 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   wcout << L'|' << otherCore.GetCurFile() << L" " << modtime(otherCore.GetCurFile()) << endl;
   wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
 
-  for_each( current.cbegin(), current.cend(), [&core](const st_CompareData &cd) {
-    print_in_column(core.Find(cd.uuid0)->second) << L'|' << endl;;
+  for_each( current.cbegin(), current.cend(), [&core, &safeFields](const st_CompareData &cd) {
+    const CItemData &item = core.Find(cd.uuid0)->second;
+    print_in_column(item) << L'|' << endl;;
+    for_each(begin(diff_fields), end(diff_fields), [&safeFields, &item](CItemData::FieldType ft) {
+      if (safeFields.test(ft) && !item.GetFieldValue(ft).empty()) {
+        wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|' << endl;
+      }
+    });
   });
 
   wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
 
   for_each( conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &cd) {
-    print_in_column(core.Find(cd.uuid0)->second) << L'|';
-    print_in_column(otherCore.Find(cd.uuid1)->second) << endl;
+    const CItemData &item = core.Find(cd.uuid0)->second;
+    const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
+    print_in_column(item) << L'|';
+    print_in_column(otherItem) << endl;
+    for_each(begin(diff_fields), end(diff_fields), [&cd, &item, &otherItem](CItemData::FieldType ft) {
+      if (cd.bsDiffs.test(ft)) {
+        wcout << setw(colwidth) << setfill(L' ') << left << field_to_line(item, ft) << L'|'
+              << setw(colwidth) << setfill(L' ') << left << field_to_line(otherItem, ft) << endl;
+      }
+    });
   });
 
   wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
 
-  for_each( comparison.cbegin(), comparison.cend(), [&otherCore](const st_CompareData &cd) {
+  for_each( comparison.cbegin(), comparison.cend(), [&otherCore, &safeFields](const st_CompareData &cd) {
     wcout << setw(colwidth+1) << setfill(L' ') << right << L'|';
-    print_in_column(otherCore.Find(cd.uuid1)->second) << endl;
+    const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
+    print_in_column(otherItem) << endl;
+    for_each(begin(diff_fields), end(diff_fields), [&safeFields, &otherItem](CItemData::FieldType ft) {
+      if (safeFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
+        wcout << setw(colwidth+1) << setfill(L' ') << right << L'|'
+              << setw(colwidth) << setfill(L' ') << left << field_to_line(otherItem, ft) << endl;
+      }
+    });
   });
 }
 
@@ -286,7 +317,7 @@ int Diff(PWScore &core, const UserArgs &ua)
         context_diff(core, otherCore, current, comparison, conflicts, identical);
         break;
       case UserArgs::DiffFmt::SideBySide:
-        sidebyside_diff(core, otherCore, current, comparison, conflicts, identical);
+        sidebyside_diff(core, otherCore, current, comparison, conflicts, identical, safeFields);
         break;
       default:
         assert(false);
