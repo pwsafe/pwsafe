@@ -90,6 +90,17 @@ static void usage(char *pname)
   << "\t\t[-u | -c | -s ] [ --diffprog=path]" << endl;
 }
 
+constexpr bool no_dup_short_option2(uint32_t bits, const option *p)
+{
+  return p->name == 0 ||
+          (!(bits & (1 << (p->val - 'a'))) && no_dup_short_option2(bits | (1 << (p->val - 'a')), p+1));
+}
+
+constexpr bool no_dup_short_option(const struct option *p)
+{
+  return no_dup_short_option2(uint32_t{}, p);
+}
+
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
   if (argc < 3) // must give us a safe and an operation
@@ -99,14 +110,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
   while (1) {
     int option_index = 0;
-    static struct option long_options[] = {
+    static constexpr struct option long_options[] = {
       // name, has_arg, flag, val
       {"import",      optional_argument,  0, 'i'},
       {"export",      optional_argument,  0, 'e'},
       {"text",        no_argument,        0, 't'},
       {"xml",         no_argument,        0, 'x'},
       {"create",      no_argument,        0, 'c'},
-      {"new",         no_argument,        0, 'c'},
+    //  {"new",         no_argument,        0, 'c'},
       {"search",      required_argument,  0, 's'},
       {"subset",      required_argument,  0, 'b'},
       {"fields",      required_argument,  0, 'f'},
@@ -115,7 +126,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"update",      required_argument,  0, 'u'},
       {"print",       no_argument,        0, 'p'},
       {"remove",      no_argument,        0, 'r'},
-      {"delete",      no_argument,        0, 'r'},
+    //  {"delete",      no_argument,        0, 'r'},
       {"yes",         no_argument,        0, 'y'},
       {"diff",        required_argument,  0, 'd'},
       {"unified",     no_argument,        0, 'g'},
@@ -123,10 +134,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"sidebyside",  no_argument,        0, 'k'},
       {"dry-run",     no_argument,        0, 'n'},
       {"synchronize", no_argument,        0, 'z'},
-      {"synch",       no_argument,        0, 'z'},
+    //  {"synch",       no_argument,        0, 'z'},
       {"merge",       no_argument,        0, 'm'},
       {0, 0, 0, 0}
     };
+
+    static_assert(no_dup_short_option(long_options), "Short option used twice");
 
     int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:",
                         long_options, &option_index);
