@@ -53,6 +53,7 @@ struct UserArgs {
 
   enum class DiffFmt { Unified, Context, SideBySide };
   DiffFmt dfmt{DiffFmt::Unified};
+  unsigned int colwidth{60}; // for side-by-side diff
 
   void SetFields(const std::wstring &f);
   void SetSubset(const std::wstring &s);

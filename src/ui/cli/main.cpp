@@ -136,6 +136,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"synchronize", no_argument,        0, 'z'},
     //  {"synch",       no_argument,        0, 'z'},
       {"merge",       no_argument,        0, 'm'},
+      {"colwidth",    required_argument,  0, 'w'},
       {0, 0, 0, 0}
     };
 
@@ -241,6 +242,11 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
       case 'n':
         ua.dry_run = true;
+        break;
+
+      case 'w':
+        assert(optarg);
+        ua.colwidth = atoi(optarg);
         break;
 
     default:

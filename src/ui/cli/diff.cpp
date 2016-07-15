@@ -206,94 +206,98 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
   context_print_items('+', comparison, otherCore);
 }
 
-const size_t colwidth = 80;
-
-wostream & print_sbs_hdr(const CItemData &item)
+wostream & print_sbs_hdr(const CItemData &item, unsigned int cols)
 {
   wostringstream os;
   os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()};
-  print_rmtime( L' ', os << setw(colwidth) << setfill(L' ') << left, item);
+  print_rmtime( L' ', os << setw(cols) << setfill(L' ') << left, item);
   wstring line{os.str()};
-  line.resize(colwidth, L' ');
-  return wcout << setw(colwidth) << setfill(L' ') << left << line;
+  line.resize(cols, L' ');
+  return wcout << setw(cols) << setfill(L' ') << left << line;
 }
 
-wstring field_to_line(const CItemData &item, const CItemData::FieldType ft)
+wstring field_to_line(const CItemData &item, const CItemData::FieldType ft, unsigned int cols)
 {
   wostringstream os;
   os << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
   wstring line{os.str()};
-  line.resize(colwidth, L' ');
+  line.resize(cols, L' ');
   return line;
 }
 
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/,
-                         const CItemData::FieldBits &safeFields)
+                         const CItemData::FieldBits &safeFields, unsigned int cols)
 {
   // print a header line with safe filenames and modtimes
   wostringstream os;
-  os << setw(colwidth) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
-  wcout.write(os.str().c_str(), colwidth);
+  os << setw(cols) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
+  wcout.write(os.str().c_str(), cols);
   wcout << L'|' << otherCore.GetCurFile() << L" " << modtime(otherCore.GetCurFile()) << endl;
 
   // print a separator line
-  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
+  wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // These remain constant in the next print loop
-  wcout << setw(colwidth) << setfill(L' ') << left;
+  wcout << setw(cols) << setfill(L' ') << left;
 
   // print the orig (left or main) safe in left column
-  for_each( current.cbegin(), current.cend(), [&core, &safeFields](const st_CompareData &cd) {
+  for_each( current.cbegin(), current.cend(),
+        [&core, &safeFields, cols](const st_CompareData &cd) {
     const CItemData &item = core.Find(cd.uuid0)->second;
-    print_sbs_hdr(item) << L'|' << endl;;
-    for_each(begin(diff_fields), end(diff_fields), [&safeFields, &item](CItemData::FieldType ft) {
+    print_sbs_hdr(item, cols) << L'|' << endl;;
+    for_each(begin(diff_fields), end(diff_fields),
+          [&safeFields, &item, cols](CItemData::FieldType ft) {
       if (safeFields.test(ft) && !item.GetFieldValue(ft).empty()) {
-        wcout << field_to_line(item, ft) << L'|' << endl;
+        wcout << field_to_line(item, ft, cols) << L'|' << endl;
       }
     });
   });
 
   // print a separator line
-  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
+  wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the conflicting items, one field at a time in one line. Orig safe item's files go to
   // left column, the comparison safe's items to the right.
-  for_each( conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &cd) {
+  for_each( conflicts.cbegin(), conflicts.cend(),
+        [&core, &otherCore, cols](const st_CompareData &cd) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
 
     // print item headers (GTU + item modification time) in respective columns
-    print_sbs_hdr(item) << L'|';
-    print_sbs_hdr(otherItem) << endl;
+    print_sbs_hdr(item, cols) << L'|';
+    print_sbs_hdr(otherItem, cols) << endl;
 
-    wcout << setw(colwidth) << setfill(L' ') << left;
-    for_each(begin(diff_fields), end(diff_fields), [&cd, &item, &otherItem](CItemData::FieldType ft) {
+    wcout << setw(cols) << setfill(L' ') << left;
+    for_each(begin(diff_fields), end(diff_fields),
+          [&cd, &item, &otherItem, cols](CItemData::FieldType ft) {
       // print the fields if they were actually found to be different
       if (cd.bsDiffs.test(ft)) {
-        wcout << field_to_line(item, ft) << L'|' << field_to_line(otherItem, ft) << endl;
+        wcout << field_to_line(item, ft, cols) << L'|' << field_to_line(otherItem, ft, cols) << endl;
       }
     });
   });
 
   // print a separator line
-  wcout << setfill(L'-') << setw(2*colwidth+1) << L'-' << endl;
+  wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the comparison safe in right column
-  for_each( comparison.cbegin(), comparison.cend(), [&otherCore, &safeFields](const st_CompareData &cd) {
+  for_each( comparison.cbegin(), comparison.cend(),
+      [&otherCore, &safeFields, cols](const st_CompareData &cd) {
 
     // fill up the left column with space and end with '|'
-    wcout << setw(colwidth+1) << setfill(L' ') << right << L'|';
+    wcout << setw(cols+1) << setfill(L' ') << right << L'|';
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
 
     // print the header for the item in right column
-    print_sbs_hdr(otherItem) << endl;
-    for_each(begin(diff_fields), end(diff_fields), [&safeFields, &otherItem](CItemData::FieldType ft) {
+    print_sbs_hdr(otherItem, cols) << endl;
+    for_each(begin(diff_fields), end(diff_fields),
+        [&safeFields, &otherItem, cols](CItemData::FieldType ft) {
       // print the fields that were compared, unless empty
       if (safeFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
-        wcout << setw(colwidth+1) << right << L'|' // fill up left column with space
-              << left << field_to_line(otherItem, ft) << endl;
+        wcout << setw(cols+1) << right << L'|' // fill up left column with space
+              << left << field_to_line(otherItem, ft, cols) << endl;
       }
     });
   });
@@ -340,7 +344,7 @@ int Diff(PWScore &core, const UserArgs &ua)
         context_diff(core, otherCore, current, comparison, conflicts, identical);
         break;
       case UserArgs::DiffFmt::SideBySide:
-        sidebyside_diff(core, otherCore, current, comparison, conflicts, identical, safeFields);
+        sidebyside_diff(core, otherCore, current, comparison, conflicts, identical, safeFields, ua.colwidth);
         break;
       default:
         assert(false);
