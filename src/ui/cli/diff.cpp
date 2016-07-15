@@ -230,6 +230,9 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &conflicts, const CompareData &/*identical*/,
                          const CItemData::FieldBits &comparedFields, unsigned int cols)
 {
+  if ( current.empty() && conflicts.empty() && comparison.empty() )
+    return; // print nothing if safes are identical
+
   // print a header line with safe filenames and modtimes
   wostringstream os;
   os << setw(cols) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
@@ -256,7 +259,8 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   });
 
   // print a separator line
-  wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
+  if ( !current.empty() )
+    wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the conflicting items, one field at a time in one line. Orig safe item's files go to
   // left column, the comparison safe's items to the right.
@@ -280,7 +284,8 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   });
 
   // print a separator line
-  wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
+  if ( !conflicts.empty() )
+    wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the comparison safe in right column
   for_each( comparison.cbegin(), comparison.cend(),
