@@ -228,7 +228,7 @@ wstring field_to_line(const CItemData &item, const CItemData::FieldType ft, unsi
 static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/,
-                         const CItemData::FieldBits &safeFields, unsigned int cols)
+                         const CItemData::FieldBits &comparedFields, unsigned int cols)
 {
   // print a header line with safe filenames and modtimes
   wostringstream os;
@@ -244,12 +244,12 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
 
   // print the orig (left or main) safe in left column
   for_each( current.cbegin(), current.cend(),
-        [&core, &safeFields, cols](const st_CompareData &cd) {
+        [&core, &comparedFields, cols](const st_CompareData &cd) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     print_sbs_hdr(item, cols) << L'|' << endl;;
     for_each(begin(diff_fields), end(diff_fields),
-          [&safeFields, &item, cols](CItemData::FieldType ft) {
-      if (safeFields.test(ft) && !item.GetFieldValue(ft).empty()) {
+          [&comparedFields, &item, cols](CItemData::FieldType ft) {
+      if (comparedFields.test(ft) && !item.GetFieldValue(ft).empty()) {
         wcout << field_to_line(item, ft, cols) << L'|' << endl;
       }
     });
@@ -284,7 +284,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
 
   // print the comparison safe in right column
   for_each( comparison.cbegin(), comparison.cend(),
-      [&otherCore, &safeFields, cols](const st_CompareData &cd) {
+      [&otherCore, &comparedFields, cols](const st_CompareData &cd) {
 
     // fill up the left column with space and end with '|'
     wcout << setw(cols+1) << setfill(L' ') << right << L'|';
@@ -293,9 +293,9 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     // print the header for the item in right column
     print_sbs_hdr(otherItem, cols) << endl;
     for_each(begin(diff_fields), end(diff_fields),
-        [&safeFields, &otherItem, cols](CItemData::FieldType ft) {
+        [&comparedFields, &otherItem, cols](CItemData::FieldType ft) {
       // print the fields that were compared, unless empty
-      if (safeFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
+      if (comparedFields.test(ft) && !otherItem.GetFieldValue(ft).empty()) {
         wcout << setw(cols+1) << right << L'|' // fill up left column with space
               << left << field_to_line(otherItem, ft, cols) << endl;
       }
