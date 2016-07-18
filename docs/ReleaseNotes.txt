@@ -1,4 +1,4 @@
-Password Safe 3.39.1 Release Notes July 2016
+Password Safe 3.39.2 Release Notes ???? 2016
 ============================================
 
 This note describe the new features, fixed bugs and known problems
