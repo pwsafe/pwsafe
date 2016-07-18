@@ -56,7 +56,7 @@ void print_safe_file(const wchar_t *tag, const PWScore &core)
 inline wostream& print_field_value(wostream &os, wchar_t tag,
                                     const CItemData &item, CItemData::FieldType ft)
 {
-  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
 }
 
 wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
@@ -97,8 +97,8 @@ void unified_print_fields(const CItemData &item, const CItemData &otherItem,
   for_each( begin(diff_fields) + 3, end(diff_fields),
               [&fields, &item, &otherItem](CItemData::FieldType ft) {
     if (fields.test(ft)) {
-      print_field_value(wcout, L'-', item, ft);
-      print_field_value(wcout, L'+', otherItem, ft);
+      print_field_value(wcout, L'-', item, ft) << endl;
+      print_field_value(wcout, L'+', otherItem, ft) << endl;
     }
   });
 }
@@ -163,7 +163,7 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
     const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
     for_each(begin(diff_fields), end(diff_fields), [&item, tag]( CItemData::FieldType ft) {
       if ( !item.GetFieldValue(ft).empty() ) {
-        wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+        print_field_value(wcout, tag, item, ft) << endl;
       }
     });
   });
@@ -176,8 +176,7 @@ void context_print_differences(const CItemData &item, const CItemData &otherItem
               [&fields, &item, &otherItem](CItemData::FieldType ft) {
     const wchar_t tag = context_tag(ft, fields, item, otherItem);
     if (tag != L'-') {
-      wcout << tag << L' ' << item.FieldName(ft) << L": "
-            << (tag == L' '? item.GetFieldValue(ft) : otherItem.GetFieldValue(ft)) << endl;
+      print_field_value(wcout, tag, tag == L' '? item: otherItem, ft) << endl;
     }
   });
   wcout << endl;
@@ -254,7 +253,7 @@ struct field_to_line
   }
   wstring operator()(CItemData::FieldType ft) const {
     wostringstream os;
-    os << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
+    print_field_value(os, L' ', item, ft);
     wstring line{os.str()};
     line.resize(columns, L' ');
     return line;
