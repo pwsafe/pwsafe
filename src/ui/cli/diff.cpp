@@ -106,6 +106,29 @@ void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
   });
 }
 
+using item_diff_func_t = function<void(const CItemData &item,
+                                       const CItemData &otherItem,
+                                       const CItemData::FieldBits &fields,
+                                       CItemData::FieldType ft)>;
+
+void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
+                            const CItemData::FieldBits &fields, item_diff_func_t diff_fn)
+{
+  for_each( begin(diff_fields), end(diff_fields),
+              [&fields, &item, &otherItem, &diff_fn](CItemData::FieldType ft) {
+    switch(ft) {
+      case CItem::GROUP:
+      case CItem::TITLE:
+      case CItem::USER:
+        break;
+      default:
+        diff_fn(item, otherItem, fields, ft);
+        break;
+    }
+  });
+}
+
+
 //////////////////////////////////////////////////////////////////
 // Unified diff
 //////////
@@ -119,20 +142,17 @@ void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
 void unified_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                             const CItemData::FieldBits &fields)
 {
-  for_each( begin(diff_fields), end(diff_fields),
-              [&fields, &item, &otherItem](CItemData::FieldType ft) {
-    switch(ft) {
-      case CItem::GROUP:
-      case CItem::TITLE:
-      case CItem::USER:
-        break;
-      default:
-        if (fields.test(ft)) {
-          print_field_value(wcout, L'-', item, ft) << endl;
-          print_field_value(wcout, L'+', otherItem, ft) << endl;
-        }
+   auto diff_fn = []( const CItemData &item,
+                      const CItemData &otherItem,
+                      const CItemData::FieldBits &fields,
+                      CItemData::FieldType ft ) {
+    if (fields.test(ft)) {
+      print_field_value(wcout, L'-', item, ft) << endl;
+      print_field_value(wcout, L'+', otherItem, ft) << endl;
     }
-  });
+  };
+
+  print_conflicting_item(item, otherItem, fields, diff_fn);
 }
 
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
@@ -197,14 +217,17 @@ void context_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
 void context_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                                   const CItemData::FieldBits &fields)
 {
-  for_each( begin(diff_fields), end(diff_fields),
-              [&fields, &item, &otherItem](CItemData::FieldType ft) {
+  auto diff_fn = []( const CItemData &item,
+                     const CItemData &otherItem,
+                     const CItemData::FieldBits &fields,
+                     CItemData::FieldType ft ) {
     const wchar_t tag = context_tag(ft, fields, item, otherItem);
     if (tag != L'-') {
       print_field_value(wcout, tag, tag == L' '? item: otherItem, ft) << endl;
     }
-  });
-  wcout << endl;
+  };
+
+  print_conflicting_item(item, otherItem, fields, diff_fn);
 }
 
 static void context_diff(const PWScore &core, const PWScore &otherCore,
