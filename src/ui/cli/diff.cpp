@@ -96,9 +96,16 @@ void unified_print_common_item(const CItemData &item, const CItemData &otherItem
 {
   for_each( begin(diff_fields) + 3, end(diff_fields),
               [&fields, &item, &otherItem](CItemData::FieldType ft) {
-    if (fields.test(ft)) {
-      print_field_value(wcout, L'-', item, ft) << endl;
-      print_field_value(wcout, L'+', otherItem, ft) << endl;
+    switch(ft) {
+      case CItem::GROUP:
+      case CItem::TITLE:
+      case CItem::USER:
+        break;
+      default:
+        if (fields.test(ft)) {
+          print_field_value(wcout, L'-', item, ft) << endl;
+          print_field_value(wcout, L'+', otherItem, ft) << endl;
+        }
     }
   });
 }
