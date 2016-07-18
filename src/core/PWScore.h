@@ -44,6 +44,7 @@ struct st_DBProperties {
   StringX database;
   StringX databaseformat;
   StringX numgroups;
+  StringX numemptygroups;
   StringX numentries;
   StringX numattachments;
   StringX whenlastsaved;

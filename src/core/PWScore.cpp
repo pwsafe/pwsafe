@@ -3224,6 +3224,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   std::vector<std::wstring> aryGroups;
   GetUniqueGroups(aryGroups);
   Format(st_dbp.numgroups, L"%d", aryGroups.size());
+  Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)
     Format(st_dbp.numattachments, L"%d", m_attlist.size());

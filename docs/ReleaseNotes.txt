@@ -13,6 +13,11 @@ Bugs fixed in 3.39.1
 [] Fixed a regression that crept into 3.39, breaking non-English
 language support.
 
+
+New Features for 3.39.2
+=======================
+[] The database properties page now includes the number of empty groups.
+
 Bugs fixed in 3.39
 ==================
 [1334] An empty group is now correctly changed to a normal group when
