@@ -96,7 +96,7 @@ void unified_print_unique_items(wchar_t tag, const CompareData &cd)
 void unified_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                             const CItemData::FieldBits &fields)
 {
-  for_each( begin(diff_fields) + 3, end(diff_fields),
+  for_each( begin(diff_fields), end(diff_fields),
               [&fields, &item, &otherItem](CItemData::FieldType ft) {
     switch(ft) {
       case CItem::GROUP:
