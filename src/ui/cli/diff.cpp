@@ -83,13 +83,13 @@ inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
   return os;
 }
 
-//////////////////////////////////////////////////////////////////
-// Unified diff
-//////////
-void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
+using unique_hdr_func_t = function<void(const st_CompareData &cd, wchar_t tag)>;
+
+void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
+                            unique_hdr_func_t hdr_fn)
 {
-  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
-    wcout << tag << st_GroupTitleUser{d.group, d.title, d.user} << endl;
+  for_each(cd.cbegin(), cd.cend(), [tag, &core, &hdr_fn](const st_CompareData &d) {
+    hdr_fn(d, tag);
     const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
     for_each( begin(diff_fields), end(diff_fields), [&item, tag](CItemData::FieldType ft) {
       switch(ft) {
@@ -103,6 +103,16 @@ void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
           }
       }
     });
+  });
+}
+
+//////////////////////////////////////////////////////////////////
+// Unified diff
+//////////
+void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
+{
+  print_unique_items(tag, cd, core, [](const st_CompareData &cd, wchar_t tag) {
+    wcout << tag << st_GroupTitleUser{cd.group, cd.title, cd.user} << endl;
   });
 }
 
@@ -178,16 +188,9 @@ inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fiel
 
 void context_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
 {
-  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
+  print_unique_items(tag, cd, core,  [](const st_CompareData &cd, wchar_t /*tag*/) {
     wcout << L"***************" << endl
-          << L"*** " << st_GroupTitleUser{d.group, d.title, d.user} << L" ***" << endl;
-
-    const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
-    for_each(begin(diff_fields), end(diff_fields), [&item, tag]( CItemData::FieldType ft) {
-      if ( !item.GetFieldValue(ft).empty() ) {
-        print_field_value(wcout, tag, item, ft) << endl;
-      }
-    });
+          << L"*** " << st_GroupTitleUser{cd.group, cd.title, cd.user} << L" ***" << endl;
   });
 }
 
