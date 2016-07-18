@@ -128,6 +128,22 @@ void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
   });
 }
 
+using conflict_hdr_func_t = function<void(const st_CompareData &cd,
+                                          const CItemData &item,
+                                          const CItemData &otherItem)>;
+
+void print_conflicts(const CompareData &conflicts, const PWScore &core,
+                            const PWScore &otherCore, conflict_hdr_func_t hdr_fn,
+                            item_diff_func_t diff_fn)
+{
+  for_each( conflicts.cbegin(), conflicts.cend(),
+                    [&core, &otherCore, &hdr_fn, &diff_fn](const st_CompareData &cd) {
+    const CItemData &item = core.Find(cd.uuid0)->second;
+    const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
+    hdr_fn(cd, item, otherItem);
+    print_conflicting_item(item, otherItem, cd.bsDiffs, diff_fn);
+  });
+}
 
 //////////////////////////////////////////////////////////////////
 // Unified diff
@@ -139,22 +155,6 @@ void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
   });
 }
 
-void unified_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
-                            const CItemData::FieldBits &fields)
-{
-   auto diff_fn = []( const CItemData &item,
-                      const CItemData &otherItem,
-                      const CItemData::FieldBits &fields,
-                      CItemData::FieldType ft ) {
-    if (fields.test(ft)) {
-      print_field_value(wcout, L'-', item, ft) << endl;
-      print_field_value(wcout, L'+', otherItem, ft) << endl;
-    }
-  };
-
-  print_conflicting_item(item, otherItem, fields, diff_fn);
-}
-
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/)
@@ -164,18 +164,26 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
 
   unified_print_unique_items(L'-', current, core);
 
-  for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
-    const CItemData &item = core.Find(d.uuid0)->second;
-    const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
-
-
-    wcout << L"@@ " << st_GroupTitleUser{d.group, d.title, d.user};
+  auto hdr_fn = [](const st_CompareData &cd,
+                   const CItemData &item,
+                   const CItemData &otherItem) {
+    wcout << L"@@ " << st_GroupTitleUser{cd.group, cd.title, cd.user};
     print_rmtime('-', wcout, item);
     print_rmtime('+', wcout, otherItem);
     wcout << L" @@" << endl;
+  };
 
-    unified_print_conflicting_item(item, otherItem, d.bsDiffs);
-  });
+  auto item_fn = []( const CItemData &item,
+                      const CItemData &otherItem,
+                      const CItemData::FieldBits &fields,
+                      CItemData::FieldType ft ) {
+    if (fields.test(ft)) {
+      print_field_value(wcout, L'-', item, ft) << endl;
+      print_field_value(wcout, L'+', otherItem, ft) << endl;
+    }
+  };
+
+  print_conflicts(conflicts, core, otherCore, hdr_fn, item_fn);
 
   unified_print_unique_items(L'+', comparison, otherCore);
 }
@@ -214,22 +222,6 @@ void context_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
   });
 }
 
-void context_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
-                                  const CItemData::FieldBits &fields)
-{
-  auto diff_fn = []( const CItemData &item,
-                     const CItemData &otherItem,
-                     const CItemData::FieldBits &fields,
-                     CItemData::FieldType ft ) {
-    const wchar_t tag = context_tag(ft, fields, item, otherItem);
-    if (tag != L'-') {
-      print_field_value(wcout, tag, tag == L' '? item: otherItem, ft) << endl;
-    }
-  };
-
-  print_conflicting_item(item, otherItem, fields, diff_fn);
-}
-
 static void context_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &identical)
@@ -239,20 +231,29 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 
   context_print_unique_items('!', current, core);
 
-  for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
-    const CItemData &item = core.Find(d.uuid0)->second;
-    const CItemData &otherItem = otherCore.Find(d.uuid1)->second;
-
-    wcout << L"*** " << st_GroupTitleUser{d.group, d.title, d.user};
+  auto hdr_fn = [](const st_CompareData &cd,
+                   const CItemData &item,
+                   const CItemData &otherItem) {
+    wcout << L"*** " << st_GroupTitleUser{cd.group, cd.title, cd.user};
     print_rmtime(' ', wcout, item);
     wcout << L" ***" << endl;
 
-    wcout << L"--- " << st_GroupTitleUser{d.group, d.title, d.user};
+    wcout << L"--- " << st_GroupTitleUser{cd.group, cd.title, cd.user};
     print_rmtime(' ', wcout, otherItem);
     wcout << L" ---" << endl;
+  };
 
-    context_print_conflicting_item(item, otherItem, d.bsDiffs);
-  });
+  auto item_fn = []( const CItemData &item,
+                     const CItemData &otherItem,
+                     const CItemData::FieldBits &fields,
+                     CItemData::FieldType ft ) {
+    const wchar_t tag = context_tag(ft, fields, item, otherItem);
+    if (tag != L'-') {
+      print_field_value(wcout, tag, tag == L' '? item: otherItem, ft) << endl;
+    }
+  };
+
+  print_conflicts(conflicts, core, otherCore, hdr_fn, item_fn);
 
   context_print_unique_items('+', comparison, otherCore);
 }
