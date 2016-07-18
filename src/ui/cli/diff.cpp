@@ -86,10 +86,23 @@ inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
 //////////////////////////////////////////////////////////////////
 // Unified diff
 //////////
-void unified_print_unique_items(wchar_t tag, const CompareData &cd)
+void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
 {
-  for_each(cd.cbegin(), cd.cend(), [tag](const st_CompareData &d) {
+  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
     wcout << tag << st_GroupTitleUser{d.group, d.title, d.user} << endl;
+    const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
+    for_each( begin(diff_fields), end(diff_fields), [&item, tag](CItemData::FieldType ft) {
+      switch(ft) {
+        case CItem::GROUP:
+        case CItem::TITLE:
+        case CItem::USER:
+          break;
+        default:
+          if ( !item.GetFieldValue(ft).empty() ) {
+            print_field_value(wcout, tag, item, ft) << endl;
+          }
+      }
+    });
   });
 }
 
@@ -119,7 +132,7 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
   wcout << safe_file_hdr(L"---", core) << endl;
   wcout << safe_file_hdr(L"+++", otherCore) << endl;
 
-  unified_print_unique_items(L'-', current);
+  unified_print_unique_items(L'-', current, core);
 
   for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
     const CItemData &item = core.Find(d.uuid0)->second;
@@ -134,7 +147,7 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     unified_print_conflicting_item(item, otherItem, d.bsDiffs);
   });
 
-  unified_print_unique_items(L'+', comparison);
+  unified_print_unique_items(L'+', comparison, otherCore);
 }
 
 
