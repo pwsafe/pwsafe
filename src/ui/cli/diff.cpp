@@ -86,18 +86,22 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
   });
 }
 
-
-void unified_print_item(wchar_t tag, const CItemData &item, const CItemData::FieldBits &fields)
+inline wostream& print_field_value(wostream &os, wchar_t tag,
+                                    const CItemData &item, CItemData::FieldType ft)
 {
-  wcout << tag;
-  for_each( begin(diff_fields), end(diff_fields), [&fields, &item](CItemData::FieldType ft) {
+  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+}
+
+void unified_print_fields(const CItemData &item, const CItemData &otherItem,
+                            const CItemData::FieldBits &fields)
+{
+  for_each( begin(diff_fields) + 3, end(diff_fields),
+              [&fields, &item, &otherItem](CItemData::FieldType ft) {
     if (fields.test(ft)) {
-      // make sure we print at least one char, for table'izing with "column" tool
-      const StringX val{item.GetFieldValue(ft)};
-      wcout << (val.empty()? L"----": val) << L'\t';
+      print_field_value(wcout, L'-', item, ft);
+      print_field_value(wcout, L'+', otherItem, ft);
     }
   });
-  wcout << endl;
 }
 
 inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fields,
@@ -135,16 +139,6 @@ void context_print_differences(const CItemData &item, const CItemData &otherItem
   wcout << endl;
 }
 
-static void print_field_labels(const CItemData::FieldBits fields)
-{
-  for_each( begin(diff_fields), end(diff_fields), [&fields](CItemData::FieldType ft) {
-    if (fields.test(ft)) {
-      wcout << CItemData::FieldName(ft) << L'\t';
-    }
-  });
-  wcout << endl;
-}
-
 inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
 {
   if (i.IsRecordModificationTimeSet())
@@ -171,9 +165,7 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     print_rmtime('+', wcout, otherItem);
     wcout << L" @@" << endl;
 
-    print_field_labels(d.bsDiffs);
-    unified_print_item('-', item, d.bsDiffs);
-    unified_print_item('+', otherItem, d.bsDiffs);
+    unified_print_fields(item, otherItem, d.bsDiffs);
   });
 
   unified_print_hdr(L'+', comparison);
