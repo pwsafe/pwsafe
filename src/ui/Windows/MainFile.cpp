@@ -1540,6 +1540,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   CGeneralMsgBox gmb;
   OrderedItemList OIL;
   CString cs_temp;
+  std::vector<StringX> vEmptyGroups;
 
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTEXPORTDB);
@@ -1554,6 +1555,18 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
     MakeOrderedItemList(OIL, m_ctlItemTree.GetSelectedItem());
+
+    // Get empty groups being exported
+    std::vector<StringX> vAllEmptyGroups;
+    vAllEmptyGroups = m_core.GetEmptyGroups();
+
+    // Now prune empty groups vestor
+    StringX sxPath = GetGroupName(true) + L".";
+    const size_t len = sxPath.length();
+    for (size_t i = 0; i < vAllEmptyGroups.size(); i++) {
+      if (vAllEmptyGroups[i].substr(0, len) == sxPath)
+        vEmptyGroups.push_back(vAllEmptyGroups[i]);
+    }
   } else {
     // Note: Only selected entry but...
     // if Alias - use entry with base's password
@@ -1582,7 +1595,8 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.SetReadOnly(false);
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
-  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), prpt);
+  rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), 
+                                   vEmptyGroups, prpt);
 
   OIL.clear();
   export_core.ClearData();

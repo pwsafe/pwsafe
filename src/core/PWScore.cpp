@@ -653,7 +653,8 @@ private:
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                             PWScore *pINcore, PWSfile::VERSION version, CReport *pRpt)
+                             PWScore *pINcore, PWSfile::VERSION version, 
+                             std::vector<StringX> &vEmptyGroups, CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version
@@ -679,6 +680,11 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   out->SetHeader(m_hdr);
 
   out->SetNHashIters(GetHashIters());
+
+  // Write out empty groups
+  if (vEmptyGroups.size() > 0) {
+    out->SetEmptyGroups(vEmptyGroups);
+  }
 
   // Build a list of Named Password Polices used by exported entries
   std::vector<StringX> vPWPolicies;
@@ -3477,7 +3483,11 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
 {
   if (find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) ==
            m_vEmptyGroups.end()) {
+    // Add it
     m_vEmptyGroups.push_back(sxEmptyGroup);
+
+    // Then sort it.  Could use std::set but unnecessary complication/overhead
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     return true;
   } else
     return false;
@@ -3501,8 +3511,12 @@ void PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGr
   iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxOldGroup);
   ASSERT(iter !=  m_vEmptyGroups.end());
 
+  // Delete old name
   m_vEmptyGroups.erase(iter);
+  // Add new name
   m_vEmptyGroups.push_back(sxNewGroup);
+  // Sort it
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 }
 
 void PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath)
@@ -3517,6 +3531,9 @@ void PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxN
       m_vEmptyGroups[ig].replace(0, len - 1, sxNewPath);
     }
   }
+
+  // Now sort it
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 }
 
 bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)

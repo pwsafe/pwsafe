@@ -8,15 +8,16 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.39.2
+=======================
+[] The database properties page now includes the number of empty groups.
+[] Empty sub-groups are included when exporting a group to a new PasswordSafe
+database.
+
 Bugs fixed in 3.39.1
 ====================
 [] Fixed a regression that crept into 3.39, breaking non-English
 language support.
-
-
-New Features for 3.39.2
-=======================
-[] The database properties page now includes the number of empty groups.
 
 Bugs fixed in 3.39
 ==================
