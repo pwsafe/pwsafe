@@ -12,6 +12,7 @@ using namespace std;
 
 #include "../../core/PWScore.h"
 
+// We only work with these fields for diff'ing & printing
 const CItem::FieldType diff_fields[] = {
     CItem::GROUP,
     CItem::TITLE,
@@ -37,6 +38,9 @@ const CItem::FieldType diff_fields[] = {
     CItem::PROTECTED
 };
 
+//////////////////////////////////////////////////////////
+// Common functions
+///////////////
 inline StringX modtime(const StringX &file) {
   time_t ctime, mtime, atime;
   if (pws_os::GetFileTimes(stringx2std(file), ctime, mtime, atime))
@@ -47,6 +51,12 @@ inline StringX modtime(const StringX &file) {
 void print_safe_file(const wchar_t *tag, const PWScore &core)
 {
   wcout << tag << L' ' << core.GetCurFile() << L" " << modtime(core.GetCurFile()) << endl;
+}
+
+inline wostream& print_field_value(wostream &os, wchar_t tag,
+                                    const CItemData &item, CItemData::FieldType ft)
+{
+  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
 }
 
 wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
@@ -64,32 +74,21 @@ wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
   return os;
 }
 
+inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
+{
+  if (i.IsRecordModificationTimeSet())
+    os << L' ' << tag << i.GetRMTimeExp();
+  return os;
+}
+
+//////////////////////////////////////////////////////////////////
+// Unified diff
+//////////
 void unified_print_hdr(wchar_t tag, const CompareData &cd)
 {
   for_each(cd.cbegin(), cd.cend(), [tag](const st_CompareData &d) {
     wcout << tag << st_GroupTitleUser{d.group, d.title, d.user} << endl;
   });
-}
-
-void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core)
-{
-  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
-    wcout << L"***************" << endl
-          << L"*** " << st_GroupTitleUser{d.group, d.title, d.user} << L" ***" << endl;
-
-    const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
-    for_each(begin(diff_fields), end(diff_fields), [&item, tag]( CItemData::FieldType ft) {
-      if ( !item.GetFieldValue(ft).empty() ) {
-        wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
-      }
-    });
-  });
-}
-
-inline wostream& print_field_value(wostream &os, wchar_t tag,
-                                    const CItemData &item, CItemData::FieldType ft)
-{
-  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
 }
 
 void unified_print_fields(const CItemData &item, const CItemData &otherItem,
@@ -102,48 +101,6 @@ void unified_print_fields(const CItemData &item, const CItemData &otherItem,
       print_field_value(wcout, L'+', otherItem, ft);
     }
   });
-}
-
-inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fields,
-                const CItemData &item, const CItemData &otherItem)
-{
-  // The two items were compared & found to be differing on this field
-  // only show this tag for fields there were compared
-  if (fields.test(ft))
-    return '!';
-
-  const StringX val{item.GetFieldValue(ft)};
-
-  // This field was not compared, it could be different. Print it only if
-  // it is the same in both items
-  if (val == otherItem.GetFieldValue(ft))
-    return L' ';
-
-  if (val.empty())
-    return L'+';
-
-  // Don't print it
-  return L'-';
-}
-void context_print_differences(const CItemData &item, const CItemData &otherItem,
-                                  const CItemData::FieldBits &fields)
-{
-  for_each( begin(diff_fields), end(diff_fields),
-              [&fields, &item, &otherItem](CItemData::FieldType ft) {
-    const wchar_t tag = context_tag(ft, fields, item, otherItem);
-    if (tag != L'-') {
-      wcout << tag << L' ' << item.FieldName(ft) << L": "
-            << (tag == L' '? item.GetFieldValue(ft) : otherItem.GetFieldValue(ft)) << endl;
-    }
-  });
-  wcout << endl;
-}
-
-inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
-{
-  if (i.IsRecordModificationTimeSet())
-    os << L' ' << tag << i.GetRMTimeExp();
-  return os;
 }
 
 static void unified_diff(const PWScore &core, const PWScore &otherCore,
@@ -169,6 +126,61 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
   });
 
   unified_print_hdr(L'+', comparison);
+}
+
+
+/////////////////////////////////////////////////////////////////
+// Context diff
+////////
+inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fields,
+                const CItemData &item, const CItemData &otherItem)
+{
+  // The two items were compared & found to be differing on this field
+  // only show this tag for fields there were compared
+  if (fields.test(ft))
+    return '!';
+
+  const StringX val{item.GetFieldValue(ft)};
+
+  // This field was not compared, it could be different. Print it only if
+  // it is the same in both items
+  if (val == otherItem.GetFieldValue(ft))
+    return L' ';
+
+  if (val.empty())
+    return L'+';
+
+  // Don't print it
+  return L'-';
+}
+
+void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core)
+{
+  for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
+    wcout << L"***************" << endl
+          << L"*** " << st_GroupTitleUser{d.group, d.title, d.user} << L" ***" << endl;
+
+    const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
+    for_each(begin(diff_fields), end(diff_fields), [&item, tag]( CItemData::FieldType ft) {
+      if ( !item.GetFieldValue(ft).empty() ) {
+        wcout << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft) << endl;
+      }
+    });
+  });
+}
+
+void context_print_differences(const CItemData &item, const CItemData &otherItem,
+                                  const CItemData::FieldBits &fields)
+{
+  for_each( begin(diff_fields), end(diff_fields),
+              [&fields, &item, &otherItem](CItemData::FieldType ft) {
+    const wchar_t tag = context_tag(ft, fields, item, otherItem);
+    if (tag != L'-') {
+      wcout << tag << L' ' << item.FieldName(ft) << L": "
+            << (tag == L' '? item.GetFieldValue(ft) : otherItem.GetFieldValue(ft)) << endl;
+    }
+  });
+  wcout << endl;
 }
 
 static void context_diff(const PWScore &core, const PWScore &otherCore,
@@ -197,6 +209,11 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 
   context_print_items('+', comparison, otherCore);
 }
+
+
+//////////////////////////////////////////////
+// Side-by-side diff
+//////////
 
 // TODO: convert to lambda when using C++14
 template <class left_line_t, class right_line_t>
@@ -296,7 +313,9 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   sbs_print<blank, field_to_line>(core, otherCore, comparison, comparedFields, cols);
 }
 
-
+///////////////////////////////////
+// dispatcher. Called from main()
+/////////
 int Diff(PWScore &core, const UserArgs &ua)
 {
   CompareData current, comparison, conflicts, identical;
