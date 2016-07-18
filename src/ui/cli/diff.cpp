@@ -291,7 +291,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     return; // print nothing if safes are identical
 
   // print a header line with safe filenames and modtimes
-  wstring hdr_left{safe_file_hdr(L"-", core)}, hdr_right{safe_file_hdr(L"+", otherCore)};
+  wstring hdr_left{safe_file_hdr(L"", core)}, hdr_right{safe_file_hdr(L"", otherCore)};
   hdr_left.resize(cols, L' ');
   hdr_right.resize(cols, L' ');
   wcout << hdr_left << L'|' << hdr_right << endl;
