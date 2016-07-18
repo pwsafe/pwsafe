@@ -74,20 +74,27 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
 static void usage(char *pname)
 {
   cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
-       << "\t safe --exp[=file] --text|--xml" << endl
-  << "\t safe --new" << endl
-  << "\t safe --add=filed=value,field=value,..." << endl
-  << "\t safe --search=<search text> [--ignore-case] [--subset=<Field><OP><string>[/iI]] [--fields=<comma-separated fieldnames>]"
-  << "[--delete|--update:Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
-  << "\t\t where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
-  << "\t\t\t = => exactly similar" << endl
-  << "\t\t\t ^ => begins-with" << endl
-  << "\t\t\t $ => ends with"
-  << "\t\t\t ^ => contains"
-  << "\t\t\t ! => negation" << endl
-  << "\t\t a trailing /i or /I at the end of subset string makes the operation case insensitive or sensitive respectively" << endl
-  << "\t safe --diff=<othersafe> [--ignore-case] [--subset=<Field><OP><string>[/iI]] [--fields=<comma-separated fieldnames>]"
-  << "\t\t[-u | -c | -s ] [ --diffprog=path]" << endl;
+       << "       " << pname << " safe --exp[=file] --text|--xml" << endl
+       << "       " << pname << " safe --new" << endl
+       << "       " << pname << " safe --add=field1=value1,field2=value2,..." << endl
+       << "       " << pname << " safe --search=<text> [--ignore-case]" << endl
+       << "       " << "\t\t\t" << " [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]" << endl
+       << "       " << "\t\t\t" << " [--delete|--update:Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
+       << "       " << pname << " safe --diff=<other-safe>  [--subset=<Field><OP><Value>[/iI] " << endl
+       << "       " << "\t\t\t" << " [--fields=f1,f2,..] [--unified|--context|--sidebyside]" << endl
+       << "       " << "\t\t\t" << " [--colwidth=column-size]" << endl
+       << "       " << pname << " safe --sync=<other-safe>  [--subset=<Field><OP><string>[/iI]]" << endl
+       << "       " << "\t\t\t" << " [--fields=f1,f2,..] [--yes]" << endl
+       << "       " << pname << " safe --merge=<other-safe> [--subset=<Field><OP><Value>[/iI]] [--yes]" << endl
+       << endl
+       << "       " << "where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
+       << "       " << " = => exactly similar" << endl
+       << "       " << " ^ => begins-with" << endl
+       << "       " << " $ => ends with" << endl
+       << "       " << " ^ => contains" << endl
+       << "       " << " ! => negation" << endl
+       << "       " << "a trailing /i => case insensitive, /I => case sensitive" << endl
+       ;
 }
 
 constexpr bool no_dup_short_option2(uint32_t bits, const option *p)
@@ -264,7 +271,7 @@ int main(int argc, char *argv[])
 {
   UserArgs ua;
   if (!parseArgs(argc, argv, ua)) {
-    usage(argv[0]);
+    usage(basename(argv[0]));
     return 1;
   }
 
