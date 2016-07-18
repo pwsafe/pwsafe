@@ -91,7 +91,7 @@ void unified_print_unique_items(wchar_t tag, const CompareData &cd)
   });
 }
 
-void unified_print_common_item(const CItemData &item, const CItemData &otherItem,
+void unified_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                             const CItemData::FieldBits &fields)
 {
   for_each( begin(diff_fields) + 3, end(diff_fields),
@@ -129,7 +129,7 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
     print_rmtime('+', wcout, otherItem);
     wcout << L" @@" << endl;
 
-    unified_print_common_item(item, otherItem, d.bsDiffs);
+    unified_print_conflicting_item(item, otherItem, d.bsDiffs);
   });
 
   unified_print_unique_items(L'+', comparison);
@@ -161,7 +161,7 @@ inline wchar_t context_tag(CItem::FieldType ft, const CItemData::FieldBits &fiel
   return L'-';
 }
 
-void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core)
+void context_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
 {
   for_each(cd.cbegin(), cd.cend(), [tag, &core](const st_CompareData &d) {
     wcout << L"***************" << endl
@@ -176,7 +176,7 @@ void context_print_items(wchar_t tag, const CompareData &cd, const PWScore &core
   });
 }
 
-void context_print_differences(const CItemData &item, const CItemData &otherItem,
+void context_print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                                   const CItemData::FieldBits &fields)
 {
   for_each( begin(diff_fields), end(diff_fields),
@@ -196,7 +196,7 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
   print_safe_file(L"***", core);
   print_safe_file(L"---", otherCore);
 
-  context_print_items('!', current, core);
+  context_print_unique_items('!', current, core);
 
   for_each(conflicts.cbegin(), conflicts.cend(), [&core, &otherCore](const st_CompareData &d) {
     const CItemData &item = core.Find(d.uuid0)->second;
@@ -210,10 +210,10 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
     print_rmtime(' ', wcout, otherItem);
     wcout << L" ---" << endl;
 
-    context_print_differences(item, otherItem, d.bsDiffs);
+    context_print_conflicting_item(item, otherItem, d.bsDiffs);
   });
 
-  context_print_items('+', comparison, otherCore);
+  context_print_unique_items('+', comparison, otherCore);
 }
 
 
