@@ -76,11 +76,12 @@ wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
   return os;
 }
 
-inline wostream & print_rmtime(wchar_t tag, wostream &os, const CItemData &i)
+inline wstring rmtime(wchar_t tag, const CItemData &i)
 {
+  wstringstream os;
   if (i.IsRecordModificationTimeSet())
     os << L' ' << tag << i.GetRMTimeExp();
-  return os;
+  return os.str();
 }
 
 using unique_hdr_func_t = function<void(const st_CompareData &cd, wchar_t tag)>;
@@ -167,10 +168,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
   auto hdr_fn = [](const st_CompareData &cd,
                    const CItemData &item,
                    const CItemData &otherItem) {
-    wcout << L"@@ " << st_GroupTitleUser{cd.group, cd.title, cd.user};
-    print_rmtime('-', wcout, item);
-    print_rmtime('+', wcout, otherItem);
-    wcout << L" @@" << endl;
+    wcout << L"@@ " << st_GroupTitleUser{cd.group, cd.title, cd.user}
+          << rmtime(L'-', item) << rmtime(L'+', otherItem) << L" @@" << endl;
   };
 
   auto item_fn = []( const CItemData &item,
@@ -234,13 +233,10 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
   auto hdr_fn = [](const st_CompareData &cd,
                    const CItemData &item,
                    const CItemData &otherItem) {
-    wcout << L"*** " << st_GroupTitleUser{cd.group, cd.title, cd.user};
-    print_rmtime(' ', wcout, item);
-    wcout << L" ***" << endl;
-
-    wcout << L"--- " << st_GroupTitleUser{cd.group, cd.title, cd.user};
-    print_rmtime(' ', wcout, otherItem);
-    wcout << L" ---" << endl;
+    wcout << L"*** " << st_GroupTitleUser{cd.group, cd.title, cd.user}
+          << rmtime(' ', item) << L" ***" << endl
+          << L"--- " << st_GroupTitleUser{cd.group, cd.title, cd.user}
+          << rmtime(' ', otherItem) << L" ---" << endl;
   };
 
   auto item_fn = []( const CItemData &item,
@@ -294,8 +290,8 @@ struct field_to_line
   {}
   wstring operator()() const {
     wostringstream os;
-    os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()};
-    print_rmtime( L' ', os << setw(columns) << setfill(L' ') << left, item);
+    os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()}
+       << rmtime( L' ', item);
     wstring hdr{os.str()};
     hdr.resize(columns, L' ');
     return hdr;
