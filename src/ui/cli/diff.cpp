@@ -48,9 +48,11 @@ inline StringX modtime(const StringX &file) {
   return StringX{};
 }
 
-void print_safe_file(const wchar_t *tag, const PWScore &core)
+inline wstring safe_file_hdr(const wchar_t *tag, const PWScore &core)
 {
-  wcout << tag << L' ' << core.GetCurFile() << L" " << modtime(core.GetCurFile()) << endl;
+  wstringstream os;
+  os << tag << L' ' << core.GetCurFile() << L" " << modtime(core.GetCurFile());
+  return os.str();
 }
 
 inline wostream& print_field_value(wostream &os, wchar_t tag,
@@ -114,8 +116,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &/*identical*/)
 {
-  print_safe_file(L"---", core);
-  print_safe_file(L"+++", otherCore);
+  wcout << safe_file_hdr(L"---", core) << endl;
+  wcout << safe_file_hdr(L"+++", otherCore) << endl;
 
   unified_print_unique_items(L'-', current);
 
@@ -193,8 +195,8 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
                          const CompareData &conflicts, const CompareData &identical)
 {
-  print_safe_file(L"***", core);
-  print_safe_file(L"---", otherCore);
+  wcout << safe_file_hdr(L"***", core) << endl;
+  wcout << safe_file_hdr(L"---", otherCore) << endl;
 
   context_print_unique_items('!', current, core);
 
@@ -289,10 +291,10 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     return; // print nothing if safes are identical
 
   // print a header line with safe filenames and modtimes
-  wostringstream os;
-  os << setw(cols) << left << core.GetCurFile() << L" " << modtime(core.GetCurFile());
-  wcout.write(os.str().c_str(), cols);
-  wcout << L'|' << otherCore.GetCurFile() << L" " << modtime(otherCore.GetCurFile()) << endl;
+  wstring hdr_left{safe_file_hdr(L"-", core)}, hdr_right{safe_file_hdr(L"+", otherCore)};
+  hdr_left.resize(cols, L' ');
+  hdr_right.resize(cols, L' ');
+  wcout << hdr_left << L'|' << hdr_right << endl;
 
   // print a separator line
   wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
