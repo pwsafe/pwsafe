@@ -46,7 +46,7 @@ void Split(const std::wstring &str, const std::wstring &sep, CallbackType cb)
   std::wregex r(sep);
   std::wsregex_token_iterator pos(str.cbegin(), str.cend(), r, -1);
   std::wsregex_token_iterator end;
-  for_each( pos, end, cb );
+  for_each( pos, end, [&cb](const std::wstring &token) { if (!token.empty()) cb(token);} );
 }
 
 const char *status_text(int status);
