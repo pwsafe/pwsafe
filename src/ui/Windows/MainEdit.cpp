@@ -842,6 +842,7 @@ void DboxMain::OnDelete()
                                      GetPref(PWSprefs::DeleteQuestion));
   bool dodelete = true;
   int num_children = 0;
+  m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
 
   // Find number of child items, ask for confirmation if > 0
   StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
@@ -850,9 +851,45 @@ void DboxMain::OnDelete()
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
-        // ALWAYS ask if deleting a group - unless it is empty!
-        num_children = m_ctlItemTree.CountChildren(hStartItem);
+        // ALWAYS ask if deleting a group - unless it is empty or
+        // only contains empty groups!
+        m_sxOriginalGroup = m_ctlItemTree.GetGroup(hStartItem);
+        num_children = m_ctlItemTree.CountLeafChildren(hStartItem);
         bAskForDeleteConfirmation = num_children != 0;
+
+        // If the user just wants to delete an empty group or
+        // a group only containing empty groups - delete!
+        if (num_children == 0) {
+          MultiCommands *pmcmd = MultiCommands::Create(&m_core);
+          const StringX sxPath2 = m_sxOriginalGroup + L".";
+          const int len = sxPath2.length();
+          std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
+          for (size_t i = 0; i < vEmptyGroups.size(); i++) {
+            if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
+              pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, vEmptyGroups[i],
+                DBEmptyGroupsCommand::EG_DELETE));
+            }
+          }
+
+          // Was this empty group the only child of its parent?
+          // If so - make it empty too.
+          HTREEITEM parent = m_ctlItemTree.GetParentItem(hStartItem);
+          num_children = m_ctlItemTree.CountChildren(parent);
+          if (num_children == 1 && parent != NULL && parent != TVI_ROOT) {
+            StringX sxPath= m_ctlItemTree.GetGroup(parent);
+            pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          }
+
+          // Now do it
+          Execute(pmcmd);
+
+          // Clear current group as just deleted
+          m_TreeViewGroup = L"";
+
+          ChangeOkUpdate();
+          return;
+        }
       } else {
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
       }
@@ -861,6 +898,7 @@ void DboxMain::OnDelete()
     // Ignore if more than one selected - List view only
     if (m_ctlItemList.GetSelectedCount() > 1)
       return;
+
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
       pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
@@ -886,7 +924,29 @@ void DboxMain::OnDelete()
   }
 
   if (dodelete) {
-    Delete();
+    // Here we delete an entry or a group containing entries
+    MultiCommands *pmcmd = MultiCommands::Create(&m_core);
+    Delete(pmcmd);
+
+    // If we were originally deleting a group with entries, we now need to delete
+    // resulting empty groups (after all sub-entries deleted) and the original group
+    if (!m_sxOriginalGroup.empty()) {
+      const StringX sxPath2 = m_sxOriginalGroup + L".";
+      const int len = sxPath2.length();
+      std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
+      for (size_t i = 0; i < vEmptyGroups.size(); i++) {
+        if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
+          pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, vEmptyGroups[i],
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
+    }
+
+    // Now do it
+    if (pmcmd->GetSize() > 0) {
+      Execute(pmcmd);
+    }
+
     // Only refresh views if an entry or a non-empty group was deleted
     // If we refresh when deleting an empty group, the user will lose all
     // other empty groups
@@ -897,7 +957,7 @@ void DboxMain::OnDelete()
   }
 }
 
-void DboxMain::Delete()
+void DboxMain::Delete(MultiCommands *pmcmd)
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism
@@ -905,7 +965,6 @@ void DboxMain::Delete()
   // 3. Executes, updates UI.
 
   CItemData *pci = getSelectedItem();
-  MultiCommands *pmcmd = MultiCommands::Create(&m_core);
 
   if (pci != NULL) {
     // Easy option - just one entry
@@ -925,13 +984,16 @@ void DboxMain::Delete()
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+    // Only interested in children of the parent - not grand-children etc.
+    const int numchildren = m_ctlItemTree.CountChildren(parent, false);
 
     // We need to collect bases and dependents separately, deleting the latter first
     // so that an undo will add bases first.
     std::vector<Command *> vbases, vdeps, vemptygrps;
 
     // Generate commands
-    Delete(ti, vbases, vdeps, vemptygrps);
+    // Note - as deleting a group - don't make this top level group empty
+    Delete(ti, vbases, vdeps, vemptygrps, true);
 
     // Delete normal and dependent entries
     std::for_each(vdeps.begin(), vdeps.end(),
@@ -947,11 +1009,14 @@ void DboxMain::Delete()
       [&](Command *cmd) {pmcmd->Add(cmd);});
 
     m_ctlItemTree.SelectItem(parent);
-    m_TreeViewGroup = L"";
-  }
 
-  if (pmcmd->GetSize() > 0) {
-    Execute(pmcmd);
+    // If this was the last group - make parent empty.
+    if (numchildren == 1) {
+      const StringX sxPath = m_ctlItemTree.GetGroup(parent);
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+        DBEmptyGroupsCommand::EG_ADD));
+    }
+    m_TreeViewGroup = L"";
   }
 }
 
@@ -987,7 +1052,8 @@ struct FindGroupFromHTREEITEM {
 void DboxMain::Delete(HTREEITEM ti,
                       std::vector<Command *> &vbases,
                       std::vector<Command *> &vdeps,
-                      std::vector<Command *> &vemptygrps)
+                      std::vector<Command *> &vemptygrps,
+                      bool bExcludeTopGroup)
 {
   // Delete a group
   // Create a multicommand, iterate over tree's children,
@@ -1000,7 +1066,7 @@ void DboxMain::Delete(HTREEITEM ti,
   if (m_ctlItemTree.IsLeaf(ti)) {
     // normal bottom out of recursion
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
-    if (pci->IsBase())
+    if (pci->IsBase() || pci->IsNormal())
       vbases.push_back(Delete(pci));
     else
       vdeps.push_back(Delete(pci));
@@ -1011,7 +1077,8 @@ void DboxMain::Delete(HTREEITEM ti,
   
   StringX sxPath = m_ctlItemTree.GetGroup(ti);
   // Check if an Empty Group
-  if (m_ctlItemTree.ItemHasChildren(ti) != 0) {
+  if (m_ctlItemTree.ItemHasChildren(ti) != 0 && !bExcludeTopGroup &&
+    m_sxOriginalGroup == sxPath) {
     // Non-empty group - convert to empty if user want to keep it
     vemptygrps.push_back(DBEmptyGroupsCommand::Create(&m_core, sxPath,
       DBEmptyGroupsCommand::EG_ADD));

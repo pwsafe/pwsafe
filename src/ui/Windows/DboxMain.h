@@ -323,13 +323,14 @@ public:
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
   void FixListIndexes();
-  void Delete(); // "Top level" delete, calls the following 2 and Execute()
+  void Delete(MultiCommands *pmcmd); // "Top level" delete, calls the following 2 and Execute()
   Command *Delete(const CItemData *pci); // create command for deleting a single item
   // For deleting a group:
   void Delete(HTREEITEM ti,
               std::vector<Command *> &vbases,
               std::vector<Command *> &vdeps,
-              std::vector<Command *> &vemptygrps); 
+              std::vector<Command *> &vemptygrps,
+              bool bExcludeTopGroup = false); 
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
   void RestoreGUIStatusEx();
@@ -852,14 +853,16 @@ private:
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
-  StringX m_sxSelectedGroup;              // to restore Tree group selection upon un-minimize
+  StringX m_sxSelectedGroup;               // to restore Tree group selection upon un-minimize
   pws_os::CUUID m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
   pws_os::CUUID m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
-  StringX m_sxVisibleGroup;               // to restore Tree group position  upon un-minimize
+  StringX m_sxVisibleGroup;                // to restore Tree group position  upon un-minimize
+
+  StringX m_sxOriginalGroup;                 // Needed when doing recursive deletions of groups
 
   bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
-  StringX m_savedDBprefs;  // used across minimize/restore events
+  StringX m_savedDBprefs;                 // used across minimize/restore events
 
   PWSclipboard m_clipboard;
 
