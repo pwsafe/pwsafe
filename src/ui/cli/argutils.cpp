@@ -80,15 +80,19 @@ PWSMatch::MatchRule Str2MatchRule( const wstring &s)
   return PWSMatch::MR_INVALID;
 }
 
-void UserArgs::SetFields(const wstring &f)
+CItemData::FieldBits ParseFields(const wstring &f)
 {
-  fields.reset();
-  Split(f, L",", [this](const wstring &field) {
+  CItemData::FieldBits fields;
+  Split(f, L",", [&fields](const wstring &field) {
     CItemData::FieldType ft = String2FieldType(field);
     fields.set(ft);
   });
-  if (fields.none())
-    throw std::invalid_argument("Invalid field: " + toutf8(f));
+  return fields;
+}
+
+void UserArgs::SetFields(const wstring &f)
+{
+  fields = ParseFields(f);
 }
 
 inline bool CaseSensitive(const wstring &str)

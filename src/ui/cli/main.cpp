@@ -131,7 +131,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"ignore-case", optional_argument,  0, 'o'},
       {"add",         required_argument,  0, 'a'},
       {"update",      required_argument,  0, 'u'},
-      {"print",       no_argument,        0, 'p'},
+      {"print",       optional_argument,  0, 'p'},
       {"remove",      no_argument,        0, 'r'},
     //  {"delete",      no_argument,        0, 'r'},
       {"yes",         no_argument,        0, 'y'},
@@ -227,6 +227,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
     case 'p':
         ua.SearchAction = UserArgs::Print;
+        if (optarg) ua.opArg2 = Utf82wstring(optarg);
         break;
 
     case 'u':

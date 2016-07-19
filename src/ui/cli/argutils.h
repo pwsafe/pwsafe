@@ -68,7 +68,7 @@ struct UserArgs {
 
 CItemData::FieldType String2FieldType(const std::wstring& str);
 PWSMatch::MatchRule Str2MatchRule( const std::wstring &s);
-
+CItemData::FieldBits ParseFields(const std::wstring &f);
 
 
 #endif /* defined(__pwsafe_xcode6__argutils__) */

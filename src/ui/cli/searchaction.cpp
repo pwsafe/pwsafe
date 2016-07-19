@@ -20,10 +20,42 @@ using namespace std;
 
 inline bool IsNullEntry(const CItemData &ci) { return !ci.HasUUID(); }
 
+constexpr auto known_fields = {
+  CItemData::GROUP,
+  CItemData::TITLE,
+  CItemData::USER,
+  CItemData::NOTES,
+  CItemData::PASSWORD,
+  CItemData::CTIME,
+  CItemData::PMTIME,
+  CItemData::ATIME,
+  CItemData::XTIME,
+  CItemData::RMTIME,
+  CItemData::URL,
+  CItemData::PWHIST,
+  CItemData::POLICY,
+  CItemData::XTIME_INT,
+  CItemData::RUNCMD,
+  CItemData::DCA,
+  CItemData::EMAIL,
+  CItemData::PROTECTED,
+  CItemData::SYMBOLS,
+  CItemData::SHIFTDCA,
+  CItemData::POLICYNAME,
+  CItemData::KBSHORTCUT
+};
+
 struct SearchAndPrint: public SearchAction
 {
+  CItemData::FieldBits ftp; // fields to print
+  SearchAndPrint(const wstring &f): ftp{ParseFields(f)}
+  {}
   virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
     wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
+    for (auto ft : known_fields) {
+      if (ftp.test(ft))
+        wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
+    }
   }
   virtual int Execute() { return PWScore::SUCCESS; }
 };
@@ -92,7 +124,7 @@ SearchAction* CreateSearchAction(int action, PWScore *core, const wstring &actio
 {
   switch(action) {
     case UserArgs::Print:
-      return new SearchAndPrint;
+      return new SearchAndPrint(actionArgs);
     case UserArgs::Delete:
       return new SearchAndDelete{core, confirmed};
     case UserArgs::Update:
