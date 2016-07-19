@@ -79,7 +79,7 @@ static void usage(char *pname)
        << "       " << pname << " safe --add=field1=value1,field2=value2,..." << endl
        << "       " << pname << " safe --search=<text> [--ignore-case]" << endl
        << "       " << "\t\t\t" << " [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]" << endl
-       << "       " << "\t\t\t" << " [--delete|--update:Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
+       << "       " << "\t\t\t" << " [--delete|--update=Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
        << "       " << pname << " safe --diff=<other-safe>  [--subset=<Field><OP><Value>[/iI] " << endl
        << "       " << "\t\t\t" << " [--fields=f1,f2,..] [--unified|--context|--sidebyside]" << endl
        << "       " << "\t\t\t" << " [--colwidth=column-size]" << endl
