@@ -15,6 +15,8 @@
 
 #include "../../core/StringX.h"
 
+struct st_GroupTitleUser;
+
 template <typename IntType>
 std::string tostr(IntType i)
 {
@@ -49,5 +51,6 @@ void Split(const std::wstring &str, const std::wstring &sep, CallbackType cb)
 
 const char *status_text(int status);
 
+std::wostream & operator<<( std::wostream &os, const st_GroupTitleUser &gtu);
 
 #endif /* defined(__pwsafe_xcode6__strutils__) */

@@ -23,7 +23,7 @@ inline bool IsNullEntry(const CItemData &ci) { return !ci.HasUUID(); }
 struct SearchAndPrint: public SearchAction
 {
   virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
-    wcout << data.GetGroup() << " - " << data.GetTitle() << " - " << data.GetUser() << endl;
+    wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
   }
   virtual int Execute() { return PWScore::SUCCESS; }
 };

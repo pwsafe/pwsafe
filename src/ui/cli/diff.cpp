@@ -61,21 +61,6 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
   return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
 }
 
-wostream & operator<<( wostream &os, const st_GroupTitleUser &gtu)
-{
-  if ( !gtu.group.empty() )
-    os << gtu.group << L" >> ";
-
-  assert( !gtu.title.empty() );
-  os << gtu.title;
-
-  if ( !gtu.user.empty() ) {
-    os << L'[' << gtu.user << L']';
-  }
-
-  return os;
-}
-
 inline wstring rmtime(wchar_t tag, const CItemData &i)
 {
   wstringstream os;
