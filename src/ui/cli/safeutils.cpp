@@ -38,7 +38,7 @@ int OpenCore(PWScore& core, const StringX& safe)
     const char *user = getlogin() != NULL ? getlogin() : "unknown";
     StringX locker;
     if (!conv.FromUTF8((const unsigned char *)user, strlen(user), locker)) {
-      cerr << "Could not convert user " << user << " to StringX" << endl;
+      wcerr << "Could not convert user " << user << " to StringX" << endl;
       return 2;
     }
     stringT lk(locker.c_str());
@@ -81,11 +81,11 @@ StringX GetNewPassphrase()
         passphrase[1] = GetPassphrase(prompt[1]);
 
         if (passphrase[0] != passphrase[1]) {
-            cerr << "The two passphrases do not match. Please try again" << endl;
+            wcerr << "The two passphrases do not match. Please try again" << endl;
             continue;
         }
         if (passphrase[0].length() == 0) {
-            cerr << "Invalid passphrase. Please try again" << endl;
+            wcerr << "Invalid passphrase. Please try again" << endl;
             continue;
         }
 
@@ -105,14 +105,14 @@ static void echoOff()
   nflags.c_lflag |= ECHONL;
 
   if (tcsetattr(fileno(stdin), TCSANOW, &nflags) != 0) {
-    cerr << "Couldn't turn off echo\n";
+    wcerr << "Couldn't turn off echo\n";
   }
 }
 
 static void echoOn()
 {
   if (tcsetattr(fileno(stdin), TCSANOW, &oldTermioFlags) != 0) {
-    cerr << "Couldn't restore echo\n";
+    wcerr << "Couldn't restore echo\n";
   }
 }
 

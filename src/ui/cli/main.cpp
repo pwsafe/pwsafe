@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <getopt.h>
+#include <libgen.h>
 #include <string>
 #include <map>
 
@@ -73,7 +74,7 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
 
 static void usage(char *pname)
 {
-  cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
+  wcerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
        << "       " << pname << " safe --exp[=file] --text|--xml" << endl
        << "       " << pname << " safe --new" << endl
        << "       " << pname << " safe --add=field1=value1,field2=value2,..." << endl
@@ -258,7 +259,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         break;
 
     default:
-      cerr << "Unknown option: " << char(c) << endl;
+      wcerr << L"Unknown option: " << static_cast<wchar_t>(c) << endl;
       return false;
     }
     if (ua.opArg.empty())
@@ -289,14 +290,14 @@ int main(int argc, char *argv[])
       }
     }
     catch(const exception &e) {
-      cerr << e.what() << endl;
+      wcerr << e.what() << endl;
       status = PWScore::FAILURE;
     }
 
     core.UnlockFile(ua.safe.c_str());
     return status;
   }
-  cerr << "No main operation specified" << endl;
+  wcerr << L"No main operation specified" << endl;
   return status;
 }
 
@@ -512,7 +513,7 @@ static int Export(PWScore &core, const UserArgs &ua)
 static int CreateNewSafe(PWScore &core, const StringX& filename)
 {
     if ( pws_os::FileExists(filename.c_str()) ) {
-        cerr << filename << " - already exists" << endl;
+        wcerr << filename << L" - already exists" << endl;
         exit(1);
     }
 
