@@ -30,6 +30,8 @@ New Features for 3.39.2
 [] The database properties page now includes the number of empty groups.
 [] Empty sub-groups are included when exporting a group to a new PasswordSafe
 database.
+[] Adding an empty group will also cause the database to be saved if the user has
+selected the option "Save immediately on Add or Edit".
 
 Bugs fixed in 3.39.1
 ====================

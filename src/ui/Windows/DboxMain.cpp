@@ -1561,8 +1561,8 @@ void DboxMain::SetChanged(ChangeType changed)
   switch (changed) {
     case Data:
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
-        !m_bInAddGroup && m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-        // Don't save if just adding group as it will just 'disappear'!
+          m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+        // Also save if adding group as it will be in the empty group list!
         // Or if not the current version of the DB
         Save();
       } else {
