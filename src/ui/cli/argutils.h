@@ -55,14 +55,27 @@ struct UserArgs {
   DiffFmt dfmt{DiffFmt::Unified};
   unsigned int colwidth{60}; // for side-by-side diff
 
+  // used by add & update
+  using FieldValue = std::tuple<CItemData::FieldType, StringX>;
+  using FieldUpdates = std::vector< FieldValue >;
+  FieldUpdates fieldValues;
+  void SetFieldValues(const stringT &namevals);
+
   void SetFields(const std::wstring &f);
   void SetSubset(const std::wstring &s);
   void SetMainOp(OpType op, const char *arg = nullptr) {
     if (Operation != Unset)
       throw std::invalid_argument("Only one main operation can be specified");
     Operation = op;
-    if (arg)
-      opArg = Utf82wstring(arg);
+    if (arg) {
+      switch (op) {
+        case Add:
+          SetFieldValues(Utf82wstring(arg));
+          break;
+        default:
+          break;
+      }
+    }
   }
 };
 

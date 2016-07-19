@@ -234,7 +234,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     case 'u':
         ua.SearchAction = UserArgs::Update;
         assert(optarg);
-        ua.opArg2 = Utf82wstring(optarg);
+        ua.SetFieldValues(Utf82wstring(optarg));
         break;
 
       case 'g':
@@ -532,15 +532,10 @@ int AddEntry(PWScore &core, const UserArgs &ua)
   CItemData item;
   item.CreateUUID();
   int status = PWScore::SUCCESS;
-  Split(fieldValues, L"[,;]", [&item, &status](const wstring &nameval) {
-    std::wsmatch m;
-    if (std::regex_match(nameval, m, std::wregex(L"([^=]+)=(.+)"))) {
-      item.SetFieldValue(String2FieldType(m.str(1)), std2stringx(m.str(2)));
-    }
-    else {
-      wcerr << L"Could not parse field value " << endl;
-      status = PWScore::FAILURE;
-    }
+  using FieldValue = UserArgs::FieldValue;
+
+  for_each(ua.fieldValues.begin(), ua.fieldValues.end(), [&item](const FieldValue &fv) {
+    item.SetFieldValue(get<0>(fv), get<1>(fv));
   });
 
   if (status == PWScore::SUCCESS)
@@ -553,7 +548,7 @@ int AddEntry(PWScore &core, const UserArgs &ua)
 
 int Search(PWScore &core, const UserArgs &ua)
 {
-  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua.opArg2, ua.confirmed));
+  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua));
   SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields, *sa);
   return sa->Execute();
 }

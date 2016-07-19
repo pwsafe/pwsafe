@@ -11,7 +11,8 @@
 
 class PWScore;
 class SearchAction;
+class UserArgs;
 
-SearchAction* CreateSearchAction(int action, PWScore *core, const std::wstring &actionArgs, bool confirmed);
+SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua);
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

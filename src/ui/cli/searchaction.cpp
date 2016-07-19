@@ -80,33 +80,21 @@ struct SearchAndDelete: public SearchAction {
 };
 
 struct SearchAndUpdate: public SearchAction {
+  using FieldUpdates = UserArgs::FieldUpdates ;
+  using FieldValue = UserArgs::FieldValue;
+
   PWScore *core;
-  using FieldValue = std::tuple<CItemData::FieldType, wstring>;
-  using FieldUpdates = std::vector< FieldValue >;
   FieldUpdates updates;
   CItemData found;
   bool confirmed;
-  FieldUpdates ParseFieldUpdates(const wstring &updates) {
-    FieldUpdates u;
-    Split(updates, L"[;,]", [&u](const wstring &nameval) {
-      std::wsmatch m;
-      if (std::regex_match(nameval, m, std::wregex(L"([^=:]+)[=:](.+)"))) {
-        u.push_back( std::make_tuple(String2FieldType(m.str(1)), m.str(2)) );
-      }
-      else {
-        wcerr << L"Could not parse field value to be updated: " << nameval << endl;
-      }
-    });
-    return u;
-  }
-  SearchAndUpdate(PWScore *c, const std::wstring &actArgs, bool conf):
-  core{c}, updates{ParseFieldUpdates(actArgs)}, confirmed{conf}
+  SearchAndUpdate(PWScore *c, const FieldUpdates &u, bool conf):
+  core{c}, updates{u}, confirmed{conf}
   {}
   int Execute() {
     if ( !IsNullEntry(found) ) {
       MultiCommands *mc = MultiCommands::Create(core);
       for_each(updates.begin(), updates.end(), [mc, this](const FieldValue &fv) {
-        mc->Add( UpdateEntryCommand::Create( core, found, std::get<0>(fv), std2stringx(std::get<1>(fv))) );
+        mc->Add( UpdateEntryCommand::Create( core, found, std::get<0>(fv), std::get<1>(fv)) );
       });
       return core->Execute(mc);
     }
@@ -120,15 +108,15 @@ struct SearchAndUpdate: public SearchAction {
   }
 };
 
-SearchAction* CreateSearchAction(int action, PWScore *core, const wstring &actionArgs, bool confirmed)
+SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua)
 {
   switch(action) {
     case UserArgs::Print:
-      return new SearchAndPrint(actionArgs);
+      return new SearchAndPrint(ua.opArg2);
     case UserArgs::Delete:
-      return new SearchAndDelete{core, confirmed};
+      return new SearchAndDelete{core, ua.confirmed};
     case UserArgs::Update:
-      return new SearchAndUpdate{core, actionArgs, confirmed};
+      return new SearchAndUpdate{core, ua.fieldValues, ua.confirmed};
     default:
       throw std::logic_error{"unexpected search action type: " + tostr(action)};
   }

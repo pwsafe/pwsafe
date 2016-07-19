@@ -110,3 +110,15 @@ void UserArgs::SetSubset(const std::wstring &s)
     subset = Restriction{String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))};
   throw std::invalid_argument("Invalid subset: " + toutf8(s));
 }
+
+void UserArgs::SetFieldValues(const wstring &updates) {
+  Split(updates, L"[;,]", [this, &updates](const wstring &nameval) {
+    std::wsmatch m;
+    if (std::regex_match(nameval, m, std::wregex(L"([^=:]+)[=:](.+)"))) {
+      fieldValues.push_back( std::make_tuple(String2FieldType(m.str(1)), std2stringx(m.str(2))) );
+    }
+    else {
+      throw std::invalid_argument{"Could not parse field value to be updated: " + toutf8(updates)};
+    }
+  });
+}
