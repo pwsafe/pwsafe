@@ -524,6 +524,27 @@ static int CreateNewSafe(PWScore &core, const StringX& filename)
     return PWScore::SUCCESS;
 }
 
+void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates)
+{
+  auto pnitr = find_if(updates.begin(),
+                       updates.end(),
+                       [](const UserArgs::FieldValue &fv) {
+    return get<0>(fv) == CItemData::POLICYNAME;
+  });
+
+  if (pnitr != updates.end()) {
+    const StringX polname{get<1>(*pnitr)};
+    if ( !core.GetPolicyFromName(polname, pwp) )
+      throw std::invalid_argument("No such password policy: " + toutf8(stringx2std(polname)));
+  }
+  else {
+    StringX polname;
+    LoadAString(polname, IDSC_DEFAULT_POLICY);
+    if (!core.GetPolicyFromName(polname, pwp)) {
+      assert(false);
+    }
+  }
+}
 
 int AddEntry(PWScore &core, const UserArgs &ua)
 {
@@ -532,6 +553,20 @@ int AddEntry(PWScore &core, const UserArgs &ua)
   item.CreateUUID();
   int status = PWScore::SUCCESS;
   using FieldValue = UserArgs::FieldValue;
+
+  // Check if the user specified a password also
+  auto pwitr = find_if(ua.fieldValues.begin(),
+                       ua.fieldValues.end(),
+                       [](const FieldValue &fv) {
+    return get<0>(fv) == CItemData::PASSWORD;
+  });
+
+  if ( pwitr == ua.fieldValues.end() ) {
+    // User didnot specify a password on command-line. Generate one
+    PWPolicy pwp;
+    InitPWPolicy(pwp, core, ua.fieldValues);
+    item.SetFieldValue(CItemData::PASSWORD, pwp.MakeRandomPassword());
+  }
 
   for_each(ua.fieldValues.begin(), ua.fieldValues.end(), [&item](const FieldValue &fv) {
     item.SetFieldValue(get<0>(fv), get<1>(fv));
