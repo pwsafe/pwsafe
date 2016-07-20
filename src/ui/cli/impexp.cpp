@@ -1,6 +1,7 @@
 #include "./impexp.h"
 
 #include "./argutils.h"
+#include "../../os/file.h"
 
 #include "core/PWSdirs.h"
 

@@ -33,6 +33,7 @@
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
+		E61C265E1D3FD0C000CA0370 /* impexp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61C265C1D3FD0C000CA0370 /* impexp.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
 		E6299FB71D0323A300D03FD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66D293A1D02B54600C9BCBF /* main.cpp */; };
 		E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
@@ -255,6 +256,8 @@
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
 		E6112A62131D720E00AA1454 /* ExpiredList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpiredList.h; sourceTree = "<group>"; };
+		E61C265C1D3FD0C000CA0370 /* impexp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = impexp.cpp; sourceTree = "<group>"; };
+		E61C265D1D3FD0C000CA0370 /* impexp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = impexp.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6299FB91D07161E00D03FD1 /* SearchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUtils.h; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 		E66D29301D02B49B00C9BCBF /* pwsafe-cli */ = {
 			isa = PBXGroup;
 			children = (
+				E61C265C1D3FD0C000CA0370 /* impexp.cpp */,
+				E61C265D1D3FD0C000CA0370 /* impexp.h */,
 				E6B908DE1D30C8980050CFF1 /* diff.cpp */,
 				E6B908DF1D30C8980050CFF1 /* diff.h */,
 				E6B908E01D30C8980050CFF1 /* safeutils.cpp */,
@@ -1668,6 +1673,7 @@
 				E6EE842611E87E9800B01518 /* PWHistory.cpp in Sources */,
 				E6EE842711E87E9800B01518 /* PWPolicy.cpp in Sources */,
 				E6EE842811E87E9800B01518 /* PWSAuxParse.cpp in Sources */,
+				E61C265E1D3FD0C000CA0370 /* impexp.cpp in Sources */,
 				E6EE842911E87E9800B01518 /* PWScore.cpp in Sources */,
 				A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */,
 				E6EE842A11E87E9800B01518 /* PWSdirs.cpp in Sources */,
