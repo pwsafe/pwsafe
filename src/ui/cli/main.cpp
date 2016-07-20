@@ -527,7 +527,6 @@ static int CreateNewSafe(PWScore &core, const StringX& filename)
 
 int AddEntry(PWScore &core, const UserArgs &ua)
 {
-  const wstring fieldValues{ua.opArg};
 
   CItemData item;
   item.CreateUUID();
