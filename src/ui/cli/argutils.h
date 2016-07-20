@@ -73,6 +73,7 @@ struct UserArgs {
           SetFieldValues(Utf82wstring(arg));
           break;
         default:
+          opArg = Utf82wstring(arg);
           break;
       }
     }
