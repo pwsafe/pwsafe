@@ -2,7 +2,7 @@
 #
 
 SRC         = main.cpp search.cpp argutils.cpp searchaction.cpp strutils.cpp \
-			  safeutils.cpp diff.cpp
+			  safeutils.cpp diff.cpp impexp.cpp
 
 COREPATH        = ../../core
 OSPATH          = ../../os
