@@ -20,7 +20,7 @@ struct SearchAction
   std::vector<const CItemData *> itemids;
 
   SearchAction() {}
-  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) = 0;
+  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) final;
   virtual int Execute() = 0;
 
   SearchAction& operator=(const SearchAction&) = delete;

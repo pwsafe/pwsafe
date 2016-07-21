@@ -11,14 +11,11 @@
 #include "./searchaction.h"
 #include "./strutils.h"
 
-#include "./search.h"
 #include "./argutils.h"
 
 #include "../../core/PWScore.h"
 
 using namespace std;
-
-inline bool IsNullEntry(const CItemData &ci) { return !ci.HasUUID(); }
 
 constexpr auto known_fields = {
   CItemData::GROUP,
@@ -45,35 +42,42 @@ constexpr auto known_fields = {
   CItemData::KBSHORTCUT
 };
 
+void SearchAction::operator()(const pws_os::CUUID &uuid, const CItemData &data)
+{
+  itemids.push_back(&data);
+}
+
 struct SearchAndPrint: public SearchAction
 {
   CItemData::FieldBits ftp; // fields to print
   SearchAndPrint(const wstring &f): ftp{ParseFields(f)}
   {}
-  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
-    wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
-    for (auto ft : known_fields) {
-      if (ftp.test(ft))
-        wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
-    }
+  virtual int Execute() {
+    for_each( itemids.begin(), itemids.end(), [this](const CItemData *p) {
+      const CItemData &data = *p;
+      wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
+      for (auto ft : known_fields) {
+        if (ftp.test(ft))
+          wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
+      }
+    });
+    return PWScore::SUCCESS;
   }
-  virtual int Execute() { return PWScore::SUCCESS; }
 };
 
 struct SearchAndDelete: public SearchAction {
   PWScore *core;
   bool confirmed;
   
-  SearchAndDelete(PWScore *core, bool conf): core{core}, confirmed{conf} {}
-  CItemData found;
-  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
-    if (!IsNullEntry(found))
-      throw std::domain_error("Search matches multiple arguments. Operation aborted");
-    found = data;
-  };
+  SearchAndDelete(PWScore *core, bool conf): core{core}, confirmed{conf}
+  {}
   virtual int Execute() {
-    if ( !IsNullEntry(found) ) {
-      return core->Execute(DeleteEntryCommand::Create(core, found));
+    if ( !itemids.empty() ) {
+      MultiCommands *mc = MultiCommands::Create(core);
+      for_each(itemids.begin(), itemids.end(), [this, mc](const CItemData *p) {
+        mc->Add(DeleteEntryCommand::Create(core, *p));
+      });
+      return core->Execute(mc);
     }
     return PWScore::SUCCESS;
   };
@@ -85,26 +89,21 @@ struct SearchAndUpdate: public SearchAction {
 
   PWScore *core;
   FieldUpdates updates;
-  CItemData found;
   bool confirmed;
   SearchAndUpdate(PWScore *c, const FieldUpdates &u, bool conf):
   core{c}, updates{u}, confirmed{conf}
   {}
   int Execute() {
-    if ( !IsNullEntry(found) ) {
-      MultiCommands *mc = MultiCommands::Create(core);
-      for_each(updates.begin(), updates.end(), [mc, this](const FieldValue &fv) {
-        mc->Add( UpdateEntryCommand::Create( core, found, std::get<0>(fv), std::get<1>(fv)) );
+    if ( !itemids.empty() ) {
+      MultiCommands *mc{MultiCommands::Create(core)};
+      for_each(itemids.begin(), itemids.end(), [this, mc](const CItemData *p) {
+        for_each(updates.begin(), updates.end(), [mc, p, this](const FieldValue &fv) {
+          mc->Add( UpdateEntryCommand::Create(core, *p, std::get<0>(fv), std::get<1>(fv)) );
+        });
       });
       return core->Execute(mc);
     }
     return PWScore::SUCCESS;
-  }
-  
-  void operator()(const pws_os::CUUID &uuid, const CItemData &data) {
-    if (!IsNullEntry(found))
-      throw std::domain_error("Search matches multiple arguments. Operation aborted");
-    found = data;
   }
 };
 
