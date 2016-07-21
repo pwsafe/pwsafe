@@ -89,7 +89,7 @@ public:
 
   friend CPWFiltersDlg;
 
-  void Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
+  void Init(CWnd *pParent, st_filters *pfilters, const FilterType &filtertype,
     bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes);
 
 protected:
@@ -183,7 +183,7 @@ private:
 
   bool m_bInitDone, m_bStatusBarOK, m_bSetFieldActive, m_bSetLogicActive;
   int m_numfilters;
-  int m_iType;
+  FilterType m_iType;
   UINT m_FLD_ComboID, m_LGC_ComboID;
 
   // Needed to make the row height bigger

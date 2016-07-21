@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWFilterLC::CPWFilterLC()
-  : m_pPWF(NULL), m_iType(0), m_pfilters(NULL), m_bInitDone(false),
+  : m_pPWF(NULL), m_iType(DFTYPE_INVALID), m_pfilters(NULL), m_bInitDone(false),
    m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
    m_bSetFieldActive(false), m_bSetLogicActive(false),
    m_iItem(-1), m_numfilters(0), m_pFont(NULL),
@@ -75,7 +75,7 @@ void CPWFilterLC::OnDestroy()
   CListCtrl::OnDestroy();
 }
 
-void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
+void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const FilterType &filtertype,
   bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes)
 {
   m_pPWF = static_cast<CPWFiltersDlg *>(pParent);
