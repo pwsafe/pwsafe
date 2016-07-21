@@ -1,7 +1,7 @@
 #pragma once
 
 class PWScore;
-class UserArgs;
+struct UserArgs;
 
 int Import(PWScore &core, const UserArgs &ua);
 int Export(PWScore &core, const UserArgs &ua);

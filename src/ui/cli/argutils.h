@@ -20,8 +20,8 @@ struct Restriction {
   std::wstring value;
   bool caseSensitive;
   Restriction(CItemData::FieldType f, PWSMatch::MatchRule r,
-              const std::wstring &v, bool caseSensitive = false):
-              field{f}, rule{r}, value{v}, caseSensitive{false}
+              const std::wstring &v, bool cs = false):
+              field{f}, rule{r}, value{v}, caseSensitive{cs}
   {}
   Restriction(): field{CItem::LAST_DATA}, rule{PWSMatch::MR_INVALID}, caseSensitive{false}
   {}
