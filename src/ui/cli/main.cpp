@@ -32,9 +32,6 @@ using namespace std;
 
 int SaveCore(PWScore &core, const UserArgs &);
 
-static int Search(PWScore &core, const UserArgs &ua);
-static int SaveAfterSearch(PWScore &core, const UserArgs &ua);
-
 // These are the new operations. Each returns the code to exit with
 static int AddEntry(PWScore &core, const UserArgs &ua);
 static int CreateNewSafe(PWScore &core, const StringX& filename);
@@ -365,22 +362,6 @@ int AddEntry(PWScore &core, const UserArgs &ua)
     status = core.WriteCurFile();
 
   return status;
-}
-
-int Search(PWScore &core, const UserArgs &ua)
-{
-  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua));
-  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields, *sa);
-  return sa->Execute();
-}
-
-int SaveAfterSearch(PWScore &core, const UserArgs &ua)
-{
-  if ( (ua.SearchAction == UserArgs::Update ||
-        ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
-    return core.WriteCurFile();
-  }
-  return PWScore::SUCCESS;
 }
 
 int SaveCore(PWScore &core, const UserArgs &ua)

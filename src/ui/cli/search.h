@@ -31,5 +31,7 @@ struct SearchAction
 void SearchForEntries(PWScore &core, const std::wstring &searchText, bool ignoreCase,
                       const Restriction &restrictToEntries, const CItemData::FieldBits &fieldsToSearch,
                       SearchAction &cb);
+int Search(PWScore &core, const UserArgs &ua);
+int SaveAfterSearch(PWScore &core, const UserArgs &ua);
 
 #endif /* defined(__pwsafe_xcode6__search__) */

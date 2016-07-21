@@ -9,6 +9,7 @@
 #include "./search.h"
 #include "./argutils.h"
 #include "./strutils.h"
+#include "./searchaction.h"
 
 #include <vector>
 #include <exception>
@@ -37,4 +38,20 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                 core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [&cb](ItemListIter itr){
                   cb(itr->first, itr->second);
                 });
+}
+
+int SaveAfterSearch(PWScore &core, const UserArgs &ua)
+{
+  if ( (ua.SearchAction == UserArgs::Update ||
+        ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
+    return core.WriteCurFile();
+  }
+  return PWScore::SUCCESS;
+}
+
+int Search(PWScore &core, const UserArgs &ua)
+{
+  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua));
+  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields, *sa);
+  return sa->Execute();
 }
