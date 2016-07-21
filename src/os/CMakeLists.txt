@@ -52,7 +52,7 @@ endif ()
     mac/UUID.cpp
     mac/media.cpp
     )
-  elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  elseif (${CMAKE_SYSTEM_NAME} MATCHES "(Linux|FreeBSD)")
   set (OS_SRCS
     unix/KeySend.cpp
     unix/UUID.cpp

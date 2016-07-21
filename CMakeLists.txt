@@ -111,6 +111,9 @@ if (NOT WIN32 OR WX_WINDOWS)
 endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
+    if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+      set( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
+    endif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   CHECK_INCLUDE_FILE("uuid/uuid.h" UUID_H)
   if (NOT UUID_H)
     message(FATAL_ERROR
