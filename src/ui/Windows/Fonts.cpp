@@ -32,7 +32,12 @@ static LOGFONT dfltPasswordLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FIXED_PITCH,
   L'C', L'o', L'u', L'r', L'i', L'e', L'r', L'\0'};
 
-// Bug in MS TreeCtrl and CreateDragImage.  During Drag, it doesn't show
+// Not the best as should be able to get from resource file but difficult
+static LOGFONT dfltAddEditLogfont = {
+  -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
+  L'M', L'S', L' ', L'S', L'a', L'n', L's', L' ', L'S', L'e', L'r', L'i', L'f', L'\0' };
+
+// Bug in MS TreeCtrl and CreateDragImage. During Drag, it doesn't show
 // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
 static LOGFONT DragFixLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, DEFAULT_PITCH | FF_SWISS,
@@ -52,6 +57,11 @@ void Fonts::DeleteInstance()
     m_pCurrentFont->DeleteObject();
     delete m_pCurrentFont;
     m_pCurrentFont = NULL;
+  }
+  if (m_pAddEditFont != NULL) {
+    m_pAddEditFont->DeleteObject();
+    delete m_pAddEditFont;
+    m_pAddEditFont = NULL;
   }
   if (m_pModifiedFont != NULL) {
     m_pModifiedFont->DeleteObject();
@@ -80,6 +90,7 @@ void Fonts::DeleteInstance()
 Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
 {
   m_pCurrentFont = new CFont;
+  m_pAddEditFont = new CFont;
   m_pModifiedFont = new CFont;
   m_pDragFixFont = new CFont;
   m_pPasswordFont = new CFont;
@@ -109,6 +120,29 @@ void Fonts::SetCurrentFont(LOGFONT *pLF)
   m_pCurrentFont->CreateFontIndirect(pLF);
 }
 
+void Fonts::GetAddEditFont(LOGFONT *pLF)
+{
+  ASSERT(pLF != NULL && m_pAddEditFont != NULL);
+  if (pLF == NULL || m_pAddEditFont == NULL)
+    return;
+
+  m_pAddEditFont->GetLogFont(pLF);
+}
+
+void Fonts::SetAddEditFont(LOGFONT *pLF)
+{
+  ASSERT(pLF != NULL);
+  if (pLF == NULL)
+    return;
+
+  if (m_pAddEditFont == NULL) {
+    m_pAddEditFont = new CFont;
+  } else {
+    m_pAddEditFont->DeleteObject();
+  }
+  m_pAddEditFont->CreateFontIndirect(pLF);
+}
+
 void Fonts::GetPasswordFont(LOGFONT *pLF)
 {
   ASSERT(pLF != NULL && m_pPasswordFont != NULL);
@@ -121,6 +155,11 @@ void Fonts::GetPasswordFont(LOGFONT *pLF)
 void Fonts::GetDefaultPasswordFont(LOGFONT &lf)
 {
   memcpy(&lf, &dfltPasswordLogfont, sizeof(LOGFONT));
+}
+
+void Fonts::GetDefaultAddEditFont(LOGFONT &lf)
+{
+  memcpy(&lf, &dfltAddEditLogfont, sizeof(LOGFONT));
 }
 
 void Fonts::SetPasswordFont(LOGFONT *pLF)
@@ -205,7 +244,6 @@ void Fonts::ExtractFont(const CString &str, LOGFONT &lf)
 
   wcscpy_s(lf.lfFaceName, LF_FACESIZE, s);
 }
-
 
 void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {

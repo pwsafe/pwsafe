@@ -199,6 +199,8 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("NotesFont"), _T(""), ptApplication},                         // application
   {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
   {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
+  {_T("AddEditFont"), _T(""), ptApplication },                      // application
+  { _T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication }, // application
 };
 
 PWSprefs *PWSprefs::GetInstance()

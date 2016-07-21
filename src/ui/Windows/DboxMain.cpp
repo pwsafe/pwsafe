@@ -419,6 +419,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
+  ON_COMMAND(ID_MENUITEM_CHANGEADDEDITFONT, OnChangeAddEditFont)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
   ON_COMMAND(ID_MENUITEM_CHANGENOTESFONT, OnChangeNotesFont)
@@ -639,6 +640,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXPANDALL, true, true, true, false},
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, true},
+  {ID_MENUITEM_CHANGEADDEDITFONT, true, true, true, true},
   {ID_MENUITEM_CHANGEPSWDFONT, true, true, true, true},
   {ID_MENUITEM_CHANGENOTESFONT, true, true, true, true},
   {ID_MENUITEM_VKEYBOARDFONT, true, true, true, true},
@@ -817,6 +819,7 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges));
 
   // Set up fonts before playing with Tree/List views
+  LOGFONT LF;
 
   // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
   // If it's not available, fall back to font used in pre-3.18 versions, rather than
@@ -844,13 +847,25 @@ void DboxMain::InitPasswordSafe()
     pFonts->SetCurrentFont(&dfltTreeListFont);
   }
 
+  // Set up Add/Edit font too.
+  CString szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+
+  if (!szAddEditFont.IsEmpty()) {
+    pFonts->ExtractFont(szAddEditFont, LF);
+    pFonts->SetAddEditFont(&LF);
+  } else {
+    // Not set - use add/Edit dialog font - difficult to get so use hard
+    // coded default
+    pFonts->GetDefaultAddEditFont(LF);
+    pFonts->SetAddEditFont(&LF);
+  }
+
   // Set up Password font too.
   CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
   if (!szPasswordFont.IsEmpty()) {
-    LOGFONT Passwordfont;
-    pFonts->ExtractFont(szPasswordFont, Passwordfont);
-    pFonts->SetPasswordFont(&Passwordfont);
+    pFonts->ExtractFont(szPasswordFont, LF);
+    pFonts->SetPasswordFont(&LF);
   } else {
     // Not set - use default password font
     pFonts->SetPasswordFont(NULL);
@@ -860,12 +875,10 @@ void DboxMain::InitPasswordSafe()
   CString szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
 
   if (!szNotesFont.IsEmpty()) {
-    LOGFONT NotesFont;
-    pFonts->ExtractFont(szNotesFont, NotesFont);
-    pFonts->SetNotesFont(&NotesFont);
+    pFonts->ExtractFont(szNotesFont, LF);
+    pFonts->SetNotesFont(&LF);
   } else {
     // Not set - use tree/list font set above
-    LOGFONT LF;
     pFonts->GetCurrentFont(&LF);
     pFonts->SetNotesFont(&LF);
   }

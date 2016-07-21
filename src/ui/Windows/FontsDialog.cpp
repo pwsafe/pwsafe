@@ -50,6 +50,9 @@ CFontsDialog::CFontsDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter
     case TREELISTFONT:
       uiID = IDS_TREEFONT;
       break;
+    case ADDEDITFONT:
+      uiID = IDS_ADDEDITFONT;
+      break;
     case NOTESFONT:
       uiID = IDS_NOTESFONT;
       break;
@@ -138,6 +141,9 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
         case CFontsDialog::TREELISTFONT:
         case CFontsDialog::NOTESFONT:
           memcpy(&dfltFont, &dfltTreeListFont, sizeof(LOGFONT));
+          break;
+        case CFontsDialog::ADDEDITFONT:
+          Fonts::GetInstance()->GetDefaultAddEditFont(dfltFont);
           break;
         case CFontsDialog::VKEYBOARDFONT:
           // Shouldn't get here as processed earlier

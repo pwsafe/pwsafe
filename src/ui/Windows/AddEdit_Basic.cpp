@@ -203,6 +203,16 @@ BOOL CAddEdit_Basic::OnInitDialog()
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
+  // Get Add/Edit font
+  CFont *pFont = pFonts->GetAddEditFont();
+
+  // Change font size of the group, title, username, URL & email fields
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  m_ex_URL.SetFont(pFont);
+  m_ex_email.SetFont(pFont);
+
   // Need to get change notifications
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
 
