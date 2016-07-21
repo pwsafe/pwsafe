@@ -34,6 +34,15 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+
+  // Change font size of the group, title & username fields and the base entry name
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  GetDlgItem(IDC_MYBASE)->SetFont(pFont);
+
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
   std::vector<std::wstring> aryGroups;

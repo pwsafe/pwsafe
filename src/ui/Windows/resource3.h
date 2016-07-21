@@ -751,6 +751,7 @@
 #define IDS_NOMEDIATYPE                 5993
 #define IDS_CLICKTOLISTENTRIES          5994
 #define IDS_NUMEMPTYGROUPS              5995
+#define IDS_ADDEDITFONT                 5996
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

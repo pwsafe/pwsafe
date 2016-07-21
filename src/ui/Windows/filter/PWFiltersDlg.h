@@ -72,5 +72,5 @@ private:
   HACCEL m_hAccel;
 
   int m_numfilters;
-  int m_iType;
+  FilterType m_iType;
 };

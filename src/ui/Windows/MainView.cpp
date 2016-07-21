@@ -2187,6 +2187,11 @@ void DboxMain::OnChangeTreeFont()
   ChangeFont(CFontsDialog::TREELISTFONT);
 }
 
+void DboxMain::OnChangeAddEditFont()
+{
+  ChangeFont(CFontsDialog::ADDEDITFONT);
+}
+
 void DboxMain::OnChangeNotesFont()
 {
   ChangeFont(CFontsDialog::NOTESFONT);
@@ -2220,6 +2225,12 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       pOldFont = m_ctlItemTree.GetFont();
       pOldFont->GetLogFont(&lf);
       dflt_lf = dfltTreeListFont;
+      break;
+    case CFontsDialog::ADDEDITFONT:
+      pref_Font = PWSprefs::AddEditFont;
+      pref_FontSampleText = PWSprefs::AddEditSampleText;
+      pFonts->GetAddEditFont(&lf);
+      pFonts->GetDefaultAddEditFont(dflt_lf);
       break;
     case CFontsDialog::PASSWORDFONT:
       pref_Font = PWSprefs::PasswordFont;
@@ -2287,6 +2298,10 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         CalcHeaderWidths();
         // Reset column widths
         AutoResizeColumns();
+        break;
+      case CFontsDialog::ADDEDITFONT:
+        // Transfer the new font to the selected Add/Edit fields
+        pFonts->SetAddEditFont(&lf);
         break;
       case CFontsDialog::PASSWORDFONT:
         // Transfer the new font to the passwords

@@ -32,6 +32,8 @@ New Features for 3.39.2
 database.
 [] Adding an empty group will also cause the database to be saved if the user has
 selected the option "Save immediately on Add or Edit".
+[810] Allow selection of a larger font for the Group, Title, Username, URL and email fields
+in the Add/Edit entry dialog and the Group, Title and Username in the Create Shortcut dialog.
 
 Bugs fixed in 3.39.1
 ====================
