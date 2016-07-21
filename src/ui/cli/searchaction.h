@@ -9,9 +9,26 @@
 #ifndef __pwsafe_xcode6__searchaction__
 #define __pwsafe_xcode6__searchaction__
 
-class PWScore;
-class SearchAction;
+#include <vector>
+
+#include "../../core/PWScore.h"
+
 class UserArgs;
+
+struct SearchAction
+{
+  std::vector<const CItemData *> itemids;
+
+  SearchAction() {}
+  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) = 0;
+  virtual int Execute() = 0;
+
+  SearchAction& operator=(const SearchAction&) = delete;
+  SearchAction& operator=(const SearchAction&&) = delete;
+  SearchAction( const SearchAction& ) = delete;
+  SearchAction( const SearchAction&& ) = delete;
+
+};
 
 SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua);
 
