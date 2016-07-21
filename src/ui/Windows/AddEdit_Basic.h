@@ -83,7 +83,6 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
-  afx_msg void OnPasskeySetFocus();
   afx_msg void OnENSetFocusPassword();
   afx_msg void OnENSetFocusPassword2();
   afx_msg void OnENChangePassword();
