@@ -44,6 +44,7 @@ struct st_DBProperties {
   StringX database;
   StringX databaseformat;
   StringX numgroups;
+  StringX numemptygroups;
   StringX numentries;
   StringX numattachments;
   StringX whenlastsaved;
@@ -142,7 +143,7 @@ public:
                 bool bUpdateSig = true);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
-                      CReport *pRpt = NULL);
+                      std::vector<StringX> &vEmptyGroups, CReport *pRpt = NULL);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)

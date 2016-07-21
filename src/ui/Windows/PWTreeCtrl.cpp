@@ -961,7 +961,28 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
 }
 
 // Returns the number of children of this group
-int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
+// If bRecurse is true - also count grandchildren, great-grandchildren etc. etc.
+// Otherwise only immediate children
+int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem, bool bRecurse) const
+{
+  // Walk the Tree!
+  int num = 0;
+  if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
+    HTREEITEM hChildItem = GetChildItem(hStartItem);
+    while (hChildItem != NULL) {
+      if (ItemHasChildren(hChildItem) && bRecurse) {
+        num += CountChildren(hChildItem);
+      } else {
+        num++;
+      }
+      hChildItem = GetNextSiblingItem(hChildItem);
+    }
+  }
+  return num;
+}
+
+// Returns the number of non-node children of this group
+int CPWTreeCtrl::CountLeafChildren(HTREEITEM hStartItem) const
 {
   // Walk the Tree!
   int num = 0;
@@ -969,9 +990,11 @@ int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
     HTREEITEM hChildItem = GetChildItem(hStartItem);
     while (hChildItem != NULL) {
       if (ItemHasChildren(hChildItem)) {
-        num += CountChildren(hChildItem);
+        num += CountLeafChildren(hChildItem);
       } else {
-        num++;
+        // Only add if this is a leaf
+        if (GetItemData(hChildItem) != NULL)
+          num++;
       }
       hChildItem = GetNextSiblingItem(hChildItem);
     }
@@ -1164,7 +1187,12 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     // If original group was empty, need to update the vector of empty groups
     CSecString sOldGroup(GetGroup(hitemDrag));
     if (app.GetMainDlg()->IsEmptyGroup(sOldGroup)) {
-      CSecString sNewGroup = sPrefix + CSecString(GROUP_SEP2) + sOldGroup;
+      CSecString sNewGroup;
+      if (sPrefix.IsEmpty())
+        sNewGroup = CSecString(GetItemText(hitemDrag));
+      else
+        sNewGroup = sPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
+
       pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
         sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
     }
@@ -1189,11 +1217,26 @@ bool CPWTreeCtrl::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   DWORD_PTR itemData = GetItemData(hitemDrag);
 
   if (itemData == 0) { // we're dragging a group
-    HTREEITEM hChild = GetChildItem(hitemDrag);
+    // Are we copying an empty group?
+    if (CountChildren(hitemDrag) == 0) {
+      // Yes - add new empty group in the right place
+      CSecString sxPath, DropPrefix;
+      DropPrefix = GetPrefix(hitemDrop);
+      if (DropPrefix.IsEmpty())
+        sxPath = CSecString(GetItemText(hitemDrag));
+      else
+        sxPath = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
 
-    while (hChild != NULL) {
-      CopyItem(pmulticmds, hChild, hitemDrop, Prefix);
-      hChild = GetNextItem(hChild, TVGN_NEXT);
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+        DBEmptyGroupsCommand::EG_ADD));
+    } else {
+      // No - copy items
+      HTREEITEM hChild = GetChildItem(hitemDrag);
+
+      while (hChild != NULL) {
+        CopyItem(pmulticmds, hChild, hitemDrop, Prefix);
+        hChild = GetNextItem(hChild, TVGN_NEXT);
+      }
     }
   } else { // we're dragging a leaf
     CItemData *pci = (CItemData *)itemData;
@@ -1489,6 +1532,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
   if (m_bWithinThisInstance) {
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
+    
+    // Only interested in children of the parent - not grand-children etc.
+    const int numchildren = CountChildren(parent, false);
+
     if (m_hitemDrag != hitemDrop &&
         !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
         parent != hitemDrop) {
@@ -1499,9 +1546,27 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
           UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
 
+        StringX sxDropGroup(L"");
         switch (dropEffect) {
         case DROPEFFECT_MOVE:
-          MoveItem(pmulticmds, m_hitemDrag, hitemDrop, GetGroup(m_hitemDrop));
+          // If item was last entry in the parent group, be it a leaf or a node,
+          // make it an empty group
+          if (numchildren == 1) {
+            const StringX sxPath = GetGroup(parent);
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          }
+
+          if (IsLeaf(m_hitemDrop)) {
+            CItemData *pci = (CItemData *)GetItemData(m_hitemDrop);
+            ASSERT(pci != NULL);
+            sxDropGroup = pci->GetGroup();
+          } else {
+            sxDropGroup = GetGroup(m_hitemDrop);
+          }
+
+          // Move tree item (entry or group)
+          MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxDropGroup);
           break;
         case DROPEFFECT_COPY:
           CopyItem(pmulticmds, m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
@@ -1608,7 +1673,13 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !app.GetMainDlg()->IsDBReadOnly()) {
-    app.GetMainDlg()->Delete(); // XXX assume we've a selected item here!
+    MultiCommands *pmcmd = MultiCommands::Create(app.GetMainDlg()->GetCore());
+    app.GetMainDlg()->Delete(pmcmd); // XXX assume we've a selected item here!
+   
+    // Now do it
+    if (pmcmd->GetSize() > 0) {
+      app.GetMainDlg()->Execute(pmcmd);
+    }
   }
 
   // wrong place to clean up imagelist?
