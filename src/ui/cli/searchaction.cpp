@@ -50,7 +50,7 @@ void SearchAction::operator()(const pws_os::CUUID &uuid, const CItemData &data)
 struct SearchAndPrint: public SearchAction
 {
   CItemData::FieldBits ftp; // fields to print
-  SearchAndPrint(const wstring &f): SearchAction(false), ftp{ParseFields(f)}
+  SearchAndPrint(const wstring &f): SearchAction(true), ftp{ParseFields(f)}
   {}
   virtual int Execute() {
     for_each( itemids.begin(), itemids.end(), [this](const CItemData *p) {
