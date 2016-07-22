@@ -77,6 +77,7 @@ wchar_t Confirm(const wstring &prompt, const wstring &ops,
         choice = 0;
         break;
       default:
+        if (ops.find(choice) != wstring::npos) return choice;
         wcerr << L"Huh (" << choice << L")?" << endl;
         choice = 0;
         break;
