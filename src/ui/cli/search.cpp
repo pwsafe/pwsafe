@@ -59,8 +59,8 @@ wchar_t Confirm(const wstring &prompt, const wstring &ops,
   options += L"p?";
   wchar_t choice{};
   do {
-    wcout << prompt << L" [" << options << L"]?";
     wcout << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()} << endl;
+    wcout << prompt << L" [" << options << L"]? ";
     wcin >> choice;
     switch( choice ) {
       case L'p':
