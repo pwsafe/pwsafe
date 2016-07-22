@@ -1822,6 +1822,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
   const int subgroup_object = bAdvanced ? pst_ADV->subgroup_object : CItemData::GROUP;
   const int subgroup_function = bAdvanced ? pst_ADV->subgroup_function : 0;
+  std::wstring exportgroup(L"");
 
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTEXPORTXML);
@@ -1835,7 +1836,13 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2XML ? m_ctlItemTree.GetSelectedItem() : NULL;
+    HTREEITEM hi(NULL);
+    if (nID == ID_MENUITEM_EXPORTGRP2XML) {
+      // As exporting a group, set subgroup to be this group
+      // so that only empty groups within it are exported rather than all.
+      hi = m_ctlItemTree.GetSelectedItem();
+      exportgroup = m_ctlItemTree.GetGroup(hi) + L".";
+    }
     MakeOrderedItemList(OIL, hi);
   } else {
     // Note: Only selected entry but...
@@ -1864,7 +1871,8 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   // Do the export
   int rc = m_core.WriteXMLFile(sx_Filename, bsFields, subgroup_name,
                                subgroup_object, subgroup_function,
-                               delimiter, numExported, &OIL,
+                               delimiter, exportgroup, 
+                               numExported, &OIL,
                                m_bFilterActive, prpt);
 
   OIL.clear(); // cleanup soonest

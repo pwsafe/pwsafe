@@ -3039,7 +3039,7 @@ struct ExportFullXml {
   {
     bool bFilterActive = false;
     return core.WriteXMLFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, numExported, il, bFilterActive, rpt);
+                          delimiter, wxT(""), numExported, il, bFilterActive, rpt);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced XML Export Options");
