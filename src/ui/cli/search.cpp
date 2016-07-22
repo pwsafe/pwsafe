@@ -24,9 +24,10 @@
 using namespace std;
 
 
+using CbType = function<void(const pws_os::CUUID &, const CItemData &, bool *)>;
 void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
                       const Restriction &r, const CItemData::FieldBits &fieldsToSearch,
-                      SearchAction &cb)
+                      CbType cb)
 {
   assert( !searchText.empty() );
   
@@ -35,8 +36,9 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
     fields.set();
 
   ::FindMatches(std2stringx(searchText), ignoreCase, fields, r.valid(), r.value, r.field, r.rule, r.caseSensitive,
-                core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{}, [&cb](ItemListIter itr){
-                  cb(itr->first, itr->second);
+                core.GetEntryIter(), core.GetEntryEndIter(), get_second<ItemList>{},
+                  [&cb](ItemListIter itr, bool *keep_going){
+                  cb(itr->first, itr->second, keep_going);
                 });
 }
 
@@ -49,9 +51,76 @@ int SaveAfterSearch(PWScore &core, const UserArgs &ua)
   return PWScore::SUCCESS;
 }
 
+
+wchar_t Confirm(const wstring &prompt, const wstring &ops,
+            const wstring &help, const CItemData &item)
+{
+  wstring options{ops};
+  options += L"p?";
+  wchar_t choice{};
+  do {
+    wcout << prompt << L" [" << options << L"]?";
+    wcin >> choice;
+    switch( choice ) {
+      case L'p':
+      {
+        auto fields = {CItem::GROUP, CItem::TITLE, CItem::USER,
+                       CItem::EMAIL, CItem::URL, CItem::AUTOTYPE};
+        for(auto f: fields)
+          wcout << item.FieldName(f) << L": " << item.GetFieldValue(f) << endl;
+        choice = 0;
+        break;
+      }
+      case L'?':
+        wcout << help << L"[p]rint - print all fields for this item" << endl
+                      << L"[?}     - print this help message" << endl;
+        choice = 0;
+        break;
+      default:
+        wcerr << L"Huh (" << choice << L")?" << endl;
+        choice = 0;
+        break;
+    }
+  } while( !choice );
+  return choice;
+}
+
 int Search(PWScore &core, const UserArgs &ua)
 {
   unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua));
-  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields, *sa);
-  return sa->Execute();
+
+  const wchar_t help[] = L"[y]es   - yes for this item\n"
+                          "[n]o    - no for this item\n"
+                          "[a]ll   - yes for this item and all remaining items\n"
+                          "[q]uit  - no for this item all remaining items\n"
+                          "a[b]ort - abort operation, even for previous items\n";
+  wchar_t choice{sa->confirmed? L'a': 0};
+  SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields,
+      [&sa, &choice, help](const pws_os::CUUID &uuid,
+                           const CItemData &data,
+                           bool *keep_going) {
+
+    if( choice != L'a' )
+      choice = Confirm(L"Update this record", L"ynaqb", help, data);
+
+    switch(choice) {
+      case L'y': case L'a':
+        sa->operator()(uuid, data);
+        break;
+      case L'n':
+        break;
+      case L'q': case L'b':
+        *keep_going = false;
+        break;
+      default:
+        assert(false);
+        break;
+    }
+
+  });
+
+  if (choice != L'b')
+    return sa->Execute();
+
+  return PWScore::SUCCESS;
 }

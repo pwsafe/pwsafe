@@ -42,7 +42,8 @@ void FindMatches(const StringX& searchText, bool fCaseSensitive,
     {CItemData::XTIME_INT, &CItemData::GetXTimeInt},
   };
 
-  for ( Iter itr = begin; itr != end; ++itr) {
+  bool keep_going = true;
+  for ( Iter itr = begin; itr != end && keep_going; ++itr) {
     const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
     if (fUseSubgroups && !afn(itr).Matches(stringT(subgroupText.c_str()), subgroupObject, fn))
       continue;
@@ -75,7 +76,7 @@ void FindMatches(const StringX& searchText, bool fCaseSensitive,
     }
 
     if (found) {
-      cb(itr);
+      cb(itr, &keep_going);
     }
   }
 }
