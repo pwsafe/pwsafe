@@ -50,7 +50,7 @@ void SearchAction::operator()(const pws_os::CUUID &uuid, const CItemData &data)
 struct SearchAndPrint: public SearchAction
 {
   CItemData::FieldBits ftp; // fields to print
-  SearchAndPrint(const wstring &f): ftp{ParseFields(f)}
+  SearchAndPrint(const wstring &f): SearchAction(false), ftp{ParseFields(f)}
   {}
   virtual int Execute() {
     for_each( itemids.begin(), itemids.end(), [this](const CItemData *p) {
@@ -67,9 +67,8 @@ struct SearchAndPrint: public SearchAction
 
 struct SearchAndDelete: public SearchAction {
   PWScore *core;
-  bool confirmed;
   
-  SearchAndDelete(PWScore *core, bool conf): core{core}, confirmed{conf}
+  SearchAndDelete(PWScore *core, bool conf): SearchAction(conf), core{core}
   {}
   virtual int Execute() {
     if ( !itemids.empty() ) {
@@ -89,9 +88,8 @@ struct SearchAndUpdate: public SearchAction {
 
   PWScore *core;
   FieldUpdates updates;
-  bool confirmed;
   SearchAndUpdate(PWScore *c, const FieldUpdates &u, bool conf):
-  core{c}, updates{u}, confirmed{conf}
+  SearchAction(conf), core{c}, updates{u}
   {}
   int Execute() {
     if ( !itemids.empty() ) {

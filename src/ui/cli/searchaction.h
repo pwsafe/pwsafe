@@ -17,9 +17,10 @@ class UserArgs;
 
 struct SearchAction
 {
+  bool confirmed{false};
   std::vector<const CItemData *> itemids;
 
-  SearchAction() {}
+  SearchAction(bool conf): confirmed{conf} {}
   virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) final;
   virtual int Execute() = 0;
 
