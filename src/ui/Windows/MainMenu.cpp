@@ -1276,9 +1276,18 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
           minfo.dwMenuData = IDR_POPEDITGROUP;
           menu.SetMenuInfo(&minfo);
 
-          CMenu* pPopup = menu.GetSubMenu(0);
+          CMenu *pPopup = menu.GetSubMenu(0);
           ASSERT_VALID(pPopup);
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+
+          // Deal with empty groups before removing protect menu items
+          if (m_ctlItemTree.CountLeafChildren(ti) == 0) {
+            // This is an empty group or, if it has sub-groups, they are
+            // all empty too - so remove export to XML or plain text
+            CMenu *pExportPopup = pPopup->GetSubMenu(7);
+            pExportPopup->RemoveMenu(ID_MENUITEM_EXPORTGRP2PLAINTEXT, MF_BYCOMMAND);
+            pExportPopup->RemoveMenu(ID_MENUITEM_EXPORTGRP2XML, MF_BYCOMMAND);
+          }
 
           int numProtected, numUnprotected;
           bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
@@ -1412,7 +1421,6 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     if (!pci->HasAttRef()) {
       pPopup->RemoveMenu(ID_MENUITEM_EXPORT_ATTACHMENT, MF_BYCOMMAND);
-
     }
 
     if (m_IsListView) {
