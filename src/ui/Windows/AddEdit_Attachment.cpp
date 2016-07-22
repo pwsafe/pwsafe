@@ -20,6 +20,7 @@
 #include "PWFileDialog.h"
 
 #include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "os/file.h"
 
@@ -128,6 +129,14 @@ BOOL CAddEdit_Attachment::PreTranslateMessage(MSG* pMsg)
 BOOL CAddEdit_Attachment::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
+
+  // Get Add/Edit font
+  Fonts *pFonts = Fonts::GetInstance();
+  CFont *pFont = pFonts->GetAddEditFont();
+
+  // Change font size of the attachment name and file name fields
+  GetDlgItem(IDC_ATT_NAME)->SetFont(pFont);
+  GetDlgItem(IDC_ATT_FILE)->SetFont(pFont);
 
   // Keep initial size and position of static image control
   m_AttStatic.GetClientRect(m_initial_clientrect);

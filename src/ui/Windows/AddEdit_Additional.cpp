@@ -17,6 +17,7 @@
 #include "AddEdit_Additional.h"
 #include "AddEdit_PropertySheet.h"
 #include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "HKModifiers.h"
 
@@ -139,6 +140,14 @@ BOOL CAddEdit_Additional::OnInitDialog()
   CAddEdit_PropertyPage::OnInitDialog();
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
+
+  // Get Add/Edit font
+  Fonts *pFonts = Fonts::GetInstance();
+  CFont *pFont = pFonts->GetAddEditFont();
+
+  // Change font size of the autotype & run fields
+  m_ex_autotype.SetFont(pFont);
+  m_ex_runcommand.SetFont(pFont);
 
   m_stc_warning.SetColour(RGB(255, 0, 0));
   m_stc_warning.ShowWindow(SW_HIDE);
