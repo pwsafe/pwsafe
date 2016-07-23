@@ -89,7 +89,7 @@ wchar_t Confirm(const wstring &prompt, const wstring &ops,
 
 int Search(PWScore &core, const UserArgs &ua)
 {
-  unique_ptr<SearchAction> sa(CreateSearchAction(ua.SearchAction, &core, ua));
+  unique_ptr<SearchAction> sa(CreateSearchAction(&core, ua));
 
   const wchar_t help[] = L"[y]es   - yes for this item\n"
                           "[n]o    - no for this item\n"

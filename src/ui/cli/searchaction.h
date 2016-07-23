@@ -31,6 +31,6 @@ struct SearchAction
 
 };
 
-SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua);
+SearchAction* CreateSearchAction(PWScore *core, const UserArgs &ua);
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

@@ -105,9 +105,9 @@ struct SearchAndUpdate: public SearchAction {
   }
 };
 
-SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua)
+SearchAction* CreateSearchAction(PWScore *core, const UserArgs &ua)
 {
-  switch(action) {
+  switch(ua.SearchAction) {
     case UserArgs::Print:
       return new SearchAndPrint(ua.opArg2);
     case UserArgs::Delete:
@@ -115,6 +115,6 @@ SearchAction* CreateSearchAction(int action, PWScore *core, const UserArgs &ua)
     case UserArgs::Update:
       return new SearchAndUpdate{core, ua.fieldValues, ua.confirmed};
     default:
-      throw std::logic_error{"unexpected search action type: " + tostr(action)};
+      throw std::logic_error{"unexpected search action type: " + tostr(ua.SearchAction)};
   }
 }
