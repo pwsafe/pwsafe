@@ -42,79 +42,44 @@ constexpr auto known_fields = {
   CItemData::KBSHORTCUT
 };
 
-void SearchAction::OnMatch(const pws_os::CUUID &uuid, const CItemData &data)
-{
-  itemids.push_back(&data);
+int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp) {
+  for_each( items.begin(), items.end(), [&ftp](const CItemData *p) {
+    const CItemData &data = *p;
+    wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
+    for (auto ft : known_fields) {
+      if (ftp.test(ft))
+        wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
+    }
+  });
+  return PWScore::SUCCESS;
 }
 
-struct SearchAndPrint: public SearchAction
+int DeleteSearchResults(const ItemPtrVec &items, PWScore &core)
 {
-  CItemData::FieldBits ftp; // fields to print
-  SearchAndPrint(const wstring &f): SearchAction(true), ftp{ParseFields(f)}
-  {}
-  virtual int Execute() {
-    for_each( itemids.begin(), itemids.end(), [this](const CItemData *p) {
-      const CItemData &data = *p;
-      wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
-      for (auto ft : known_fields) {
-        if (ftp.test(ft))
-          wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
-      }
+  if ( !items.empty() ) {
+    MultiCommands *mc = MultiCommands::Create(&core);
+    for_each(items.begin(), items.end(), [mc, &core](const CItemData *p) {
+      mc->Add(DeleteEntryCommand::Create(&core, *p));
     });
-    return PWScore::SUCCESS;
+    return core.Execute(mc);
   }
+  return PWScore::SUCCESS;
 };
 
-struct SearchAndDelete: public SearchAction {
-  PWScore *core;
-  
-  SearchAndDelete(PWScore *core, bool conf): SearchAction(conf), core{core}
-  {}
-  virtual int Execute() {
-    if ( !itemids.empty() ) {
-      MultiCommands *mc = MultiCommands::Create(core);
-      for_each(itemids.begin(), itemids.end(), [this, mc](const CItemData *p) {
-        mc->Add(DeleteEntryCommand::Create(core, *p));
+using FieldValue = UserArgs::FieldValue;
+
+int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdates &updates) {
+  if ( !items.empty() ) {
+    MultiCommands *mc{MultiCommands::Create(&core)};
+    for_each(items.begin(), items.end(), [&core, mc, &updates](const CItemData *p) {
+      for_each(updates.begin(), updates.end(), [mc, p, &core](const FieldValue &fv) {
+        mc->Add( UpdateEntryCommand::Create(&core, *p, std::get<0>(fv), std::get<1>(fv)) );
       });
-      return core->Execute(mc);
-    }
-    return PWScore::SUCCESS;
-  };
-};
-
-struct SearchAndUpdate: public SearchAction {
-  using FieldUpdates = UserArgs::FieldUpdates ;
-  using FieldValue = UserArgs::FieldValue;
-
-  PWScore *core;
-  FieldUpdates updates;
-  SearchAndUpdate(PWScore *c, const FieldUpdates &u, bool conf):
-  SearchAction(conf), core{c}, updates{u}
-  {}
-  int Execute() {
-    if ( !itemids.empty() ) {
-      MultiCommands *mc{MultiCommands::Create(core)};
-      for_each(itemids.begin(), itemids.end(), [this, mc](const CItemData *p) {
-        for_each(updates.begin(), updates.end(), [mc, p, this](const FieldValue &fv) {
-          mc->Add( UpdateEntryCommand::Create(core, *p, std::get<0>(fv), std::get<1>(fv)) );
-        });
-      });
-      return core->Execute(mc);
-    }
-    return PWScore::SUCCESS;
+    });
+    return core.Execute(mc);
   }
-};
-
-SearchAction* CreateSearchAction(PWScore *core, const UserArgs &ua)
-{
-  switch(ua.SearchAction) {
-    case UserArgs::Print:
-      return new SearchAndPrint(ua.opArg2);
-    case UserArgs::Delete:
-      return new SearchAndDelete{core, ua.confirmed};
-    case UserArgs::Update:
-      return new SearchAndUpdate{core, ua.fieldValues, ua.confirmed};
-    default:
-      throw std::logic_error{"unexpected search action type: " + tostr(ua.SearchAction)};
-  }
+  return PWScore::SUCCESS;
 }
+
+constexpr wchar_t SearchActionTraits<UserArgs::Delete>::prompt[];
+constexpr wchar_t SearchActionTraits<UserArgs::Update>::prompt[];

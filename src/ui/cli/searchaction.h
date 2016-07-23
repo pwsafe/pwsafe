@@ -12,25 +12,34 @@
 #include <vector>
 
 #include "../../core/PWScore.h"
+#include "./argutils.h"
 
-class UserArgs;
+using ItemPtrVec = std::vector<const CItemData *>;
+using FieldUpdates = UserArgs::FieldUpdates ;
 
-struct SearchAction
+int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp);
+int DeleteSearchResults(const ItemPtrVec &items, PWScore &core);
+int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdates &updates);
+
+template <int action>
+struct SearchActionTraits
+{};
+
+template <>
+struct SearchActionTraits<UserArgs::Print>
 {
-  bool confirmed{false};
-  std::vector<const CItemData *> itemids;
-
-  SearchAction(bool conf): confirmed{conf} {}
-  virtual void OnMatch(const pws_os::CUUID &uuid, const CItemData &data) final;
-  virtual int Execute() = 0;
-
-  SearchAction& operator=(const SearchAction&) = delete;
-  SearchAction& operator=(const SearchAction&&) = delete;
-  SearchAction( const SearchAction& ) = delete;
-  SearchAction( const SearchAction&& ) = delete;
-
 };
 
-SearchAction* CreateSearchAction(PWScore *core, const UserArgs &ua);
+template <>
+struct SearchActionTraits<UserArgs::Delete>
+{
+  static constexpr wchar_t prompt[] = L"Delete Item";
+};
+
+template <>
+struct SearchActionTraits<UserArgs::Update>
+{
+  static constexpr wchar_t prompt[] = L"Update Item";
+};
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */
