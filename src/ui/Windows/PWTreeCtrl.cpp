@@ -693,6 +693,10 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
+      // Mark database as modified
+      app.GetMainDlg()->SetChanged(DboxMain::Data);
+      app.GetMainDlg()->ChangeOkUpdate();
+
       app.GetMainDlg()->ResetInAddGroup();
       *pLResult = TRUE;
     }

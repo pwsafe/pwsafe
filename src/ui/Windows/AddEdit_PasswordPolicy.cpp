@@ -16,6 +16,7 @@
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
 #include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "core/core.h"
 #include "core/PwsPlatform.h"
@@ -178,6 +179,13 @@ static void setupBuddy(CWnd *p, int spinid, int id, size_t &length, short min = 
 BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
+
+  // Get Add/Edit font
+  Fonts *pFonts = Fonts::GetInstance();
+  CFont *pFont = pFonts->GetAddEditFont();
+
+  // Change font size of the user supplied symbol fields
+  m_symbols.SetFont(pFont);
 
   // Populate the combo box
   m_cbxPolicyNames.ResetContent();

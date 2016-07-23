@@ -445,9 +445,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR &delimiter, int &numExported,
+                          const TCHAR &delimiter, const stringT &exportgroup, int &numExported,
                           const OrderedItemList *il,
-                          const bool &bFilterActive, CReport *pRpt)
+                          const bool &bFilterActive,
+                          CReport *pRpt)
 {
   numExported = 0;
 
@@ -566,10 +567,22 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
   if (!m_vEmptyGroups.empty()) {
     // Write out empty groups stored in database
+    // However, if exporting a group, only export empty groups
+    // contained within it
+    std::vector<StringX> vsubemptygroups;
+    if (!exportgroup.empty()) {
+      for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+        if (m_vEmptyGroups[n].substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
+          vsubemptygroups.push_back(m_vEmptyGroups[n]);
+      }
+    } else {
+      vsubemptygroups = m_vEmptyGroups;
+    }
+
     ostringstreamT os;
     os << "\t<EmptyGroups>" << endl;
-    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
-      stringT sTemp = PWSUtil::GetSafeXMLString(m_vEmptyGroups[n]);
+    for (size_t n = 0; n < vsubemptygroups.size(); n++) {
+      stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
       os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
     }
     os << "\t</EmptyGroups>" << endl << endl;

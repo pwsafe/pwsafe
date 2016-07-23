@@ -197,6 +197,7 @@ public:
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR &delimiter,
+                   const stringT &exportgroup,
                    int &numExported, const OrderedItemList *pOIL = NULL,
                    const bool &bFilterActive = false,
                    CReport *pRpt = NULL);
