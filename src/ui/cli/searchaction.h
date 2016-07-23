@@ -21,7 +21,7 @@ struct SearchAction
   std::vector<const CItemData *> itemids;
 
   SearchAction(bool conf): confirmed{conf} {}
-  virtual void operator()(const pws_os::CUUID &uuid, const CItemData &data) final;
+  virtual void OnMatch(const pws_os::CUUID &uuid, const CItemData &data) final;
   virtual int Execute() = 0;
 
   SearchAction& operator=(const SearchAction&) = delete;

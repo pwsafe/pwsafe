@@ -107,7 +107,7 @@ int Search(PWScore &core, const UserArgs &ua)
 
     switch(choice) {
       case L'y': case L'a':
-        sa->operator()(uuid, data);
+        sa->OnMatch(uuid, data);
         break;
       case L'n':
         break;

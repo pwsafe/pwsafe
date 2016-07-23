@@ -42,7 +42,7 @@ constexpr auto known_fields = {
   CItemData::KBSHORTCUT
 };
 
-void SearchAction::operator()(const pws_os::CUUID &uuid, const CItemData &data)
+void SearchAction::OnMatch(const pws_os::CUUID &uuid, const CItemData &data)
 {
   itemids.push_back(&data);
 }
