@@ -1155,6 +1155,7 @@ int DboxMain::Save(const SaveType savetype)
   }
 
   m_core.ResetStateAfterSave();
+  m_core.ResetOriginalGroupDisplayAfterSave();
   m_core.ClearChangedNodes();
   SetChanged(Clear);
   ChangeOkUpdate();
@@ -1352,6 +1353,7 @@ int DboxMain::SaveAs()
   // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
   rc = m_core.WriteFile(newfile, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
   m_core.ResetStateAfterSave();
+  m_core.ResetOriginalGroupDisplayAfterSave();
   m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
@@ -1841,7 +1843,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
       // As exporting a group, set subgroup to be this group
       // so that only empty groups within it are exported rather than all.
       hi = m_ctlItemTree.GetSelectedItem();
-      exportgroup = m_ctlItemTree.GetGroup(hi) + L".";
+      exportgroup = std::wstring(m_mapTreeItemToGroup[hi].c_str()) + std::wstring(L".");
     }
     MakeOrderedItemList(OIL, hi);
   } else {

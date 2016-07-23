@@ -458,7 +458,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   m_bEditLabelCompleted = false;
 
   /*
-    Allowed formats:
+    Allowed formats for an entry are:
     1.   title
       If preference ShowUsernameInTree is set:
       2.   title [username]
@@ -497,6 +497,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       currentPassword.FindOneOf(L"[]{}") != -1)
       return;
   }
+
   // In case we have to revert:
   m_eLabel = CSecString(GetItemText(ti));
   // Allow in-place editing
@@ -644,25 +645,25 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // Only items visible will be changed - e.g. if password is not shown and the user
   // puts a new password in the new display text, it will be ignored.
 
-  /* Allowed formats:
-  1.   title
-  If preference ShowUsernameInTree is set:
-    2.   title [username]
-    If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-      3.   title [username] {password}
+  /* Allowed formats for an entry:
+    1.   title
+    If preference ShowUsernameInTree is set:
+      2.   title [username]
+      If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+        3.   title [username] {password}
 
-  There can only be one of each:
-      open square brace
-      close square brace
-      open curly brace
-      close curly brace
+    There can only be one of each:
+        open square brace
+        close square brace
+        open curly brace
+        close curly brace
 
-  If pos_xtb = position of x = open/close, t = square/curly brackes, then
+    If pos_xtb = position of x = open/close, t = square/curly brackes, then
 
-  pos_osb < pos_csb < pos_ocb < pos_ccb
+    pos_osb < pos_csb < pos_ocb < pos_ccb
 
-  Title and Password are mandatory fields within the PWS database and so, if specified,
-  these fields cannot be empty.
+    Title and Password are mandatory fields within the PWS database and so, if specified,
+    these fields cannot be empty.
   */
 
   CommandInterface *pcore = (CommandInterface *)app.GetCore();
@@ -848,12 +849,13 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
       if (app.GetMainDlg()->IsEmptyGroup(sxOldPath)) {
         // Rename single empty group
-        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath, DBEmptyGroupsCommand::EG_RENAME));
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+                        DBEmptyGroupsCommand::EG_RENAME));
       } else {
         // Rename any empty groups within this group
         // Get current empty groups
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
-          DBEmptyGroupsCommand::EG_RENAMEPATH));
+                        DBEmptyGroupsCommand::EG_RENAMEPATH));
 
         // Update map of groups
         app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
@@ -892,7 +894,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         StringX sxParent = sxNewPath.substr(0, iLast_Group_Separator);
         if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
           pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
-            DBEmptyGroupsCommand::EG_DELETE));
+                          DBEmptyGroupsCommand::EG_DELETE));
         }
       }
 
@@ -1017,6 +1019,7 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
     if (ItemHasChildren(parent))
       break;
     app.GetMainDlg()->m_mapGroupToTreeItem.erase(sxPath);
+    app.GetMainDlg()->m_mapTreeItemToGroup.erase(hItem);
     hItem = parent;
   } while (parent != TVI_ROOT && parent != NULL);
 }
@@ -1112,6 +1115,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
       } else
         ti = si;
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
+      app.GetMainDlg()->m_mapTreeItemToGroup[ti] = sxPath2Root;
     } while (!sxPath.empty());
 
     if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
@@ -1859,6 +1863,8 @@ void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
       CollapseBranch(hItem);
     } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   }
+
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
 }
 
 HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 

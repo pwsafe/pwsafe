@@ -471,7 +471,9 @@ public:
   PWPolicy m_pwp;
 
   // Mapping Group to Tree Item to save searching all the time!
+  // Be nice to have a bimap implementation
   std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
+  std::map<HTREEITEM, StringX> m_mapTreeItemToGroup;
   void GetAllGroups(std::vector<std::wstring> &vGroups) const;
 
   // Process Special Shortcuts for Tree & List controls
