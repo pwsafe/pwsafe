@@ -74,7 +74,7 @@ wchar_t Confirm(const wstring &prompt, const wstring &ops,
       }
       case L'?':
         wcout << help << L"[p]rint - print all fields for this item" << endl
-                      << L"[?}     - print this help message" << endl;
+                      << L"[?]     - print this help message" << endl;
         choice = 0;
         break;
       default:
