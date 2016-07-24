@@ -158,6 +158,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
                                          FALSE : TRUE);
   GetDlgItem(IDC_READONLY)->ShowWindow(m_bHideReadOnly ? SW_HIDE : SW_SHOW);
 
+  CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
+  if (create_bn) // not always there
+    create_bn->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
+
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
@@ -446,6 +450,9 @@ void CPasskeyEntry::OnComboEditChange()
 void CPasskeyEntry::OnBnClickedReadonly()
 {
   m_PKE_ReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
+  CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
+  if (create_bn) // not always there
+    create_bn->EnableWindow(!m_PKE_ReadOnly);
 }
 
 void CPasskeyEntry::OnComboSelChange()
