@@ -1124,9 +1124,6 @@ void DboxMain::OnRename()
       m_bInRename = false;
     }
   }
-
-  SetChanged(Data);
-  ChangeOkUpdate();
 }
 
 void DboxMain::OnEdit()
