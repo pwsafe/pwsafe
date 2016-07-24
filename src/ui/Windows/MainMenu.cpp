@@ -751,21 +751,24 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         }
       }
 
-      CMenu GGsubMenu;
-      CString GGstr;
-      GGsubMenu.CreatePopupMenu();
-      // Re-use entry menu texts
-      GGstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
-      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                           ID_MENUITEM_EXPORTGRP2PLAINTEXT, GGstr);
-      GGstr.LoadString(IDS_EXPORTENT2XML);
-      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                           ID_MENUITEM_EXPORTGRP2XML, GGstr);
-      GGstr.LoadString(IDS_EXPORTENT2DB);
-      GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                           ID_MENUITEM_EXPORTGRP2DB, GGstr);
-      GGstr.LoadString(IDS_EXPORTGRPMENU);
-      pPopupMenu->AppendMenu(MF_POPUP, (UINT)GGsubMenu.Detach(), GGstr);
+      // Only allow export of a group to anything if non-empty
+      if (m_ctlItemTree.CountLeafChildren(m_ctlItemTree.GetSelectedItem()) != 0) {
+        CMenu GGsubMenu;
+        CString GGstr;
+        GGsubMenu.CreatePopupMenu();
+        // Re-use entry menu texts
+        GGstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+          ID_MENUITEM_EXPORTGRP2PLAINTEXT, GGstr);
+        GGstr.LoadString(IDS_EXPORTENT2XML);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+          ID_MENUITEM_EXPORTGRP2XML, GGstr);
+        GGstr.LoadString(IDS_EXPORTENT2DB);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+          ID_MENUITEM_EXPORTGRP2DB, GGstr);
+        GGstr.LoadString(IDS_EXPORTGRPMENU);
+        pPopupMenu->AppendMenu(MF_POPUP, (UINT)GGsubMenu.Detach(), GGstr);
+      }
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
@@ -1283,10 +1286,14 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
           // Deal with empty groups before removing protect menu items
           if (m_ctlItemTree.CountLeafChildren(ti) == 0) {
             // This is an empty group or, if it has sub-groups, they are
-            // all empty too - so remove export to XML or plain text
+            // all empty too - so remove export to anything
             CMenu *pExportPopup = pPopup->GetSubMenu(7);
             pExportPopup->RemoveMenu(ID_MENUITEM_EXPORTGRP2PLAINTEXT, MF_BYCOMMAND);
             pExportPopup->RemoveMenu(ID_MENUITEM_EXPORTGRP2XML, MF_BYCOMMAND);
+            pExportPopup->RemoveMenu(ID_MENUITEM_EXPORTGRP2DB, MF_BYCOMMAND);
+
+            // Since nothing left, remove this pop completely
+            pPopup->RemoveMenu(7, MF_BYPOSITION);
           }
 
           int numProtected, numUnprotected;
