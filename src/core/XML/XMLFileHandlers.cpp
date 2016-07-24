@@ -602,6 +602,12 @@ void XMLFileHandlers::AddXMLEntries()
 
   // Then add any Empty Groups imported that are not already in the database
   if (!m_vEmptyGroups.empty()) {
+    if (!m_ImportedPrefix.empty()) {
+      const StringX sxNewPath = StringX(m_ImportedPrefix.c_str()) + StringX(L".");
+      for (size_t i = 0; i < m_vEmptyGroups.size(); i++) {
+        m_vEmptyGroups[i] = sxNewPath + m_vEmptyGroups[i];
+      }
+    }
     Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
                            DBEmptyGroupsCommand::EG_ADDALL);
     m_pmulticmds->Add(pcmd);
