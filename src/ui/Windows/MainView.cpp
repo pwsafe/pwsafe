@@ -4132,7 +4132,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
     return;
 
-  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
+  if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) ||
+      (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
 
   //pws_os::Trace(L"SaveGUIStatusEx\n");
@@ -4142,7 +4143,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   HTREEITEM ti;
 
   // Note: User can have different entries selected/visible in Tree & List Views
-  if ((iView & iListOnly) == iListOnly) {
+  if ((iView & iListOnly) == iListOnly && m_ctlItemList.GetItemCount() > 0) {
     m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
     m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
@@ -4168,7 +4169,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }
-  if ((iView & iTreeOnly) == iTreeOnly) {
+  if ((iView & iTreeOnly) == iTreeOnly && m_ctlItemTree.GetCount() > 0) {
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
@@ -4226,7 +4227,8 @@ void DboxMain::RestoreGUIStatusEx()
   if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
     return;
 
-  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
+  if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) || 
+      (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
 
   m_bInRestoreWindows = true;
