@@ -3384,6 +3384,9 @@ void DboxMain::SetToolBarPositions()
       m_statusBar.Invalidate();
     }
   }
+
+  m_ctlItemList.Invalidate();
+  m_ctlItemTree.Invalidate();
 }
 
 void DboxMain::OnToolBarClearFind()
