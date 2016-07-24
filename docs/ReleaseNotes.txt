@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.39.2
 ====================
+[1345] Removed the ability to create a new database when read-only is
+checked.
 [1342, 1343] Fix group issues:
 - Users can now delete an empty group via the Edit or right-click context menu.
 - When deleting the only item (entry or group) in a group, its parent now
