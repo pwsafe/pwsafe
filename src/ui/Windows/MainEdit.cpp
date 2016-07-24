@@ -1119,7 +1119,7 @@ void DboxMain::OnRename()
       }
       m_bInRename = true;
       m_ctlItemTree.EditLabel(hItem);
-      if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
+      if (m_ctlItemTree.WasLabelEdited())
         RefreshViews();
       m_bInRename = false;
     }

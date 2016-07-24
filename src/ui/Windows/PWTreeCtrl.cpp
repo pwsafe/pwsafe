@@ -934,9 +934,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
 
-  // Update view
-  app.GetMainDlg()->RefreshViews();
-
   return;
 
 bad_exit:

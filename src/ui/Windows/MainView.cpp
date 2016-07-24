@@ -1487,6 +1487,9 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // If on indent or button
         if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
           m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+
+          // Update display state
+          SaveGroupDisplayState();
           *pLResult = 1L; // We have toggled the group
           return;
         }
