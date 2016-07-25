@@ -160,7 +160,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
   if (create_bn) // not always there
-    create_bn->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
+    create_bn->EnableWindow((m_bForceReadOnly || m_PKE_ReadOnly) ? FALSE : TRUE);
 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
