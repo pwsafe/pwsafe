@@ -34,13 +34,13 @@ else (WIN32)
     )
   # English help is a special case: default -> helpEN.zip
   add_custom_command(OUTPUT "helpEN.zip"
-    COMMAND "zip" "-qr" "${CMAKE_CURRENT_BINARY_DIR}/helpEN" "./*"
+    COMMAND "zip" "-Xqr" "${CMAKE_CURRENT_BINARY_DIR}/helpEN" "./*"
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/default"
     )
   # Other languages are amenable to a macro:
   macro(make_help LANG)
     add_custom_command(OUTPUT "help${LANG}.zip"
-      COMMAND "zip" "-qr" "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}" "./*"
+      COMMAND "zip" "-Xqr" "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}" "./*"
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/pwsafe${LANG}"
       )
   endmacro(make_help)

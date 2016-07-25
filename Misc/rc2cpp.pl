@@ -18,7 +18,6 @@
 
 use strict;
 use warnings;
-use locale;
 use File::Basename;
 
 sub usage {
