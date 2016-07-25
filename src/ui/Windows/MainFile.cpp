@@ -97,9 +97,10 @@ BOOL DboxMain::OpenOnInit()
   */
   StringX passkey;
   BOOL retval(FALSE);
-  bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
+  // bReadOnly can only be from -r command line parameter unless user
+  // has set the System Option to open read-only by default
+  bool bReadOnly = m_core.IsReadOnly();
   if (!bReadOnly) {
-    // Command line not set - use config for first open
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
 
