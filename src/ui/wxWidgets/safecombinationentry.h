@@ -95,28 +95,32 @@ public:
 
   ////@begin CSafeCombinationEntry event handler declarations
 
-  /// wxEVT_ACTIVATE event handler to do post initialization
-  void OnActivate( wxActivateEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
   void OnEllipsisClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
+  void OnReadonlyClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
   void OnNewDbClick( wxCommandEvent& event );
-
-#ifndef NO_YUBI
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
-  void OnYubibtnClick( wxCommandEvent& event );
-
-////@end CSafeCombinationEntry event handler declarations
-  void OnPollingTimer(wxTimerEvent& timerEvent);
-#endif
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancel( wxCommandEvent& event );
+
+////@end CSafeCombinationEntry event handler declarations
+
+  /// wxEVT_ACTIVATE event handler to do post initialization
+  void OnActivate( wxActivateEvent& event );
+
+#ifndef NO_YUBI
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
+  void OnPollingTimer(wxTimerEvent& timerEvent);
+#endif
 
   /// combobox event handlers, to change the read-only checkbox accordingly
   void OnDBSelectionChange( wxCommandEvent& event );
@@ -135,8 +139,7 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-
-////@begin CSafeCombinationEntry member variables
+  
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
   CSafeCombinationCtrl* m_combinationEntry;
@@ -148,8 +151,6 @@ public:
 
 private:
   StringX m_password;
-////@end CSafeCombinationEntry member variables
- private:
   wxString m_filename;
   bool m_readOnly;
   PWScore &m_core;
@@ -162,6 +163,7 @@ private:
 #endif
   void ProcessPhrase();
   void UpdateReadOnlyCheckbox();
+  void UpdateNew(bool isRO);
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_
