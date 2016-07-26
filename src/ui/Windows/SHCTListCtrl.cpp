@@ -82,9 +82,6 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS)
     return;
 
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
-
   // GetSubItemRect for the first column gives the total width
   // Therefore need to get it from GetColmnWidth
   const int iColWidth = GetColumnWidth(0);
@@ -178,9 +175,6 @@ update:
   UpdateWindow();
 
 exit:
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
-
   if (m_item >= 0)
     SetItemState(m_item, SHCT_SHORTCUTKEYS, LVIS_SELECTED | LVIS_DROPHILITED);
 }

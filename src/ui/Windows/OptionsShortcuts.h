@@ -69,8 +69,6 @@ public:
   void OnMenuShortcutKillFocus(const int item, const UINT id,
                              const WORD wVirtualKeyCode, const WORD wModifiers);
 
-  void ClearWarning() {m_stc_warning.ShowWindow(SW_HIDE);}
-
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
   {return m_KBShortcutMap[lParam];}
 
@@ -92,7 +90,6 @@ protected:
   CAppHotKey m_AppHotKeyCtrl;
   CSHCTListCtrl m_ShortcutLC;
   CListCtrl m_EntryShortcutLC;
-  CStaticExtn m_stc_warning;
   //}}AFX_DATA
 
   int32 m_AppHotKeyValue;
@@ -122,7 +119,6 @@ protected:
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnResetColumnWidth();
-  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   afx_msg void OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 

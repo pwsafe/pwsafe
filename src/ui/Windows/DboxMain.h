@@ -356,6 +356,7 @@ public:
   CItemData *GetLastSelected() const;
   StringX GetGroupName(const bool bFullPath = false) const;
   void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
+  void UpdateNotesTooltipFont();
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}

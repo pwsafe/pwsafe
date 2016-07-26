@@ -18,6 +18,7 @@
 #include "resource3.h"  // String resources
 
 #include "OptionsShortcuts.h" // Must be after resource.h
+#include "GeneralMsgBox.h"
 
 #include <algorithm>
 
@@ -66,7 +67,6 @@ void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_APPHOTKEY_CTRL, m_AppHotKeyCtrl);
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_ENTSHORTCUTLIST, m_EntryShortcutLC);
-  DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
 }
 
 BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
@@ -218,9 +218,6 @@ BOOL COptionsShortcuts::OnInitDialog()
   AddTool(IDC_ENTSHORTCUTLIST, IDS_KBS_TOOLTIP1);
   ActivateToolTip();
 
-  m_stc_warning.ShowWindow(SW_HIDE);
-  m_stc_warning.SetColour(RGB(255, 0, 0));
-
   return TRUE;
 }
 
@@ -361,8 +358,6 @@ void COptionsShortcuts::OnResetAll()
     m_ShortcutLC.SetItemText(i, 0, str);  // SHCT_SHORTCUTKEYS
   }
 
-  ClearWarning();
-
   m_ShortcutLC.RedrawItems(0, m_ShortcutLC.GetItemCount());
   m_ShortcutLC.UpdateWindow();
 }
@@ -491,8 +486,9 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
   return;
 
 set_warning:
-  m_stc_warning.SetWindowText(cs_warning);
-  m_stc_warning.ShowWindow(SW_SHOW);
+  CGeneralMsgBox gmb;
+  CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
+  gmb.MessageBox(cs_warning, cs_title, MB_OK | MB_ICONSTOP);
 }
 
 void COptionsShortcuts::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -615,21 +611,6 @@ void COptionsShortcuts::RefreshKBShortcuts()
   m_KBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
 }
 
-HBRUSH COptionsShortcuts::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  // Database preferences - controls + associated static text
-  switch (pWnd->GetDlgCtrlID()) {
-    case IDC_STATIC_SHCTWARNING:
-      pDC->SetTextColor(RGB(255, 0, 0));
-      pDC->SetBkMode(TRANSPARENT);
-      break;
-  }
-
-  return hbr;
-}
-
 void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
@@ -686,7 +667,6 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
 int COptionsShortcuts::CheckAppHotKey()
 {
   int32 iAppHotKey;
-  m_stc_warning.ShowWindow(SW_HIDE);
   
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
   m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
@@ -741,8 +721,10 @@ int COptionsShortcuts::CheckAppHotKey()
       
       cs_msg.LoadString(ierror);
       cs_errmsg.Format(IDS_KBS_INVALID, cs_msg);
-      m_stc_warning.SetWindowText(cs_errmsg);
-      m_stc_warning.ShowWindow(SW_SHOW);
+
+      CGeneralMsgBox gmb;
+      CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
+      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
 
       // Get new keyboard shortcut
       m_iOldAppHotKey = iAppHotKey = (wPWSModifiers << 16) + wVirtualKeyCode;
@@ -764,8 +746,10 @@ int COptionsShortcuts::CheckAppHotKey()
 
       cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, cs_HotKey,
                        sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
-      m_stc_warning.SetWindowText(cs_errmsg);
-      m_stc_warning.ShowWindow(SW_SHOW);
+
+      CGeneralMsgBox gmb;
+      CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
+      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP); gmb;
 
       ((CHotKeyCtrl *)GetDlgItem(IDC_APPHOTKEY_CTRL))->SetFocus();
 
@@ -788,8 +772,10 @@ int COptionsShortcuts::CheckAppHotKey()
       Remove(sxMenuItemName, L'&');
       CString cs_override(MAKEINTRESOURCE(IDS_APPHOTKEY_OVERRIDE));
       cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
-      m_stc_warning.SetWindowText(cs_errmsg);
-      m_stc_warning.ShowWindow(SW_SHOW);
+
+      CGeneralMsgBox gmb;
+      CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
+      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
 
       // We have warned them - so now accept
       m_bWarnUserKBShortcut = !m_bWarnUserKBShortcut;

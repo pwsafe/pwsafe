@@ -36,6 +36,9 @@ New Features for 3.39.2
 database.
 [] Adding an empty group will also cause the database to be saved if the user has
 selected the option "Save immediately on Add or Edit".
+[811] The user's selected Notes font is now used for Tooltips in the Tree and List
+views if the Display preference 'Show Notes as Tooltips in Tree & List views' is
+set.
 [810] Allow font selection for all the user input fields in the Add/Edit entry
 and the Create Shortcut dialogs.
 

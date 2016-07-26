@@ -32,7 +32,6 @@ CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_
 
 CInfoDisplay::~CInfoDisplay()
 {
-  ::DeleteObject(m_font);
 }
 
 BEGIN_MESSAGE_MAP(CInfoDisplay, CWnd)
@@ -48,8 +47,7 @@ void CInfoDisplay::OnPaint()
 {
   CPaintDC dc(this); // device context for painting
 
-  CFont *pFont = GetFont();
-  dc.SelectObject(pFont);
+  dc.SelectObject(m_pfont);
 
   // First, we compute the maximum line width, and set the rectangle wide enough to
   // hold this.  Then we use DrawText/DT_CALCRECT to compute the height
@@ -242,7 +240,7 @@ void CInfoDisplay::PostNcDestroy()
 
 LRESULT CInfoDisplay::OnSetFont(WPARAM wParam, LPARAM lParam)
 {
-  m_font = (HFONT)wParam;
+  m_pfont = (CFont *)wParam;
   if (LOWORD(lParam)) { /* force redraw */
     Invalidate();
     UpdateWindow();
@@ -253,5 +251,5 @@ LRESULT CInfoDisplay::OnSetFont(WPARAM wParam, LPARAM lParam)
 
 LRESULT CInfoDisplay::OnGetFont(WPARAM, LPARAM)
 {
-  return (LRESULT)m_font;
+  return (LRESULT)m_pfont;
 }
