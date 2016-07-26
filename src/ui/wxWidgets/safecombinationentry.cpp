@@ -67,23 +67,17 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
 ////@begin CSafeCombinationEntry event table entries
   EVT_ACTIVATE( CSafeCombinationEntry::OnActivate )
-
   EVT_BUTTON( ID_ELLIPSIS, CSafeCombinationEntry::OnEllipsisClick )
-
   EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
-
 #ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN, CSafeCombinationEntry::OnYubibtnClick )
-
   EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
 #endif
-
   EVT_BUTTON( wxID_OK, CSafeCombinationEntry::OnOk )
-
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
-
   EVT_COMBOBOX(ID_DBASECOMBOBOX, CSafeCombinationEntry::OnDBSelectionChange)
-////@end CSafeCombinationEntry event table entries
+  EVT_CHECKBOX(ID_READONLY, CSafeCombinationEntry::OnReadonlyClick)
+                ////@end CSafeCombinationEntry event table entries
 END_EVENT_TABLE()
 
 
@@ -194,7 +188,7 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_version = new wxStaticText( itemDialog1, wxID_STATIC, _("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -386,7 +380,7 @@ void CSafeCombinationEntry::ProcessPhrase()
   case PWScore::WRONG_PASSWORD:
   default:
     if (m_tries >= 2) {
-      errmess = _("Three strikes - yer out!");
+      errmess = _("Too many retries - exiting");
     } else {
       m_tries++;
       errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
@@ -450,6 +444,12 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   wxString cf(wxT("pwsafe")); // reasonable default for first time user
   stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));
   stringT dir = PWSdirs::GetSafeDir();
+
+  // Following is since I couldn't get UpdateNew() to work correctly
+  // when app read-only is set externally, and we really don't
+  // want the mixup of a new read-only db...
+  if (m_readOnly)
+    return;
 
   while (1) {
     wxFileDialog fd(this, _("Please choose a name for the new database"),
@@ -545,5 +545,22 @@ void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
     ro->SetValue( writeable? m_core.IsReadOnly(): true );
     ro->Enable(writeable);
+    UpdateNew(!writeable);
   }
+}
+
+void CSafeCombinationEntry::UpdateNew(bool isRO)
+{
+  FindWindow(ID_NEWDB)->Enable(!isRO);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
+ */
+
+void CSafeCombinationEntry::OnReadonlyClick( wxCommandEvent& event )
+{
+  m_readOnly = event.IsChecked();
+  UpdateNew(m_readOnly);
 }
