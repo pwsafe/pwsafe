@@ -2195,6 +2195,8 @@ void DboxMain::OnChangeAddEditFont()
 void DboxMain::OnChangeNotesFont()
 {
   ChangeFont(CFontsDialog::NOTESFONT);
+  
+  UpdateNotesTooltipFont();
 }
 
 void DboxMain::OnChangePswdFont()
@@ -3839,6 +3841,12 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
   m_pNotesDisplay->ShowWindow(!sx_notes.empty() ? SW_SHOWNA : SW_HIDE);
 
   return !sx_notes.empty();
+}
+
+void DboxMain::UpdateNotesTooltipFont()
+{
+  CFont *pNotes = Fonts::GetInstance()->GetNotesFont();
+  m_pNotesDisplay->SendMessage(WM_SETFONT, (WPARAM)pNotes, 1);
 }
 
 CItemData *DboxMain::GetLastSelected() const

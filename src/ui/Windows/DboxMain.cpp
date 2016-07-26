@@ -966,7 +966,12 @@ void DboxMain::InitPasswordSafe()
     // failed
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
+  } else {
+    // Set up user font
+    CFont *pNotes = Fonts::GetInstance()->GetNotesFont();
+    m_pNotesDisplay->SendMessage(WM_SETFONT, (WPARAM)pNotes, 0);
   }
+  
 #if !defined(USE_XML_LIBRARY)
   // Don't support filter processing if we can't validate
 #else

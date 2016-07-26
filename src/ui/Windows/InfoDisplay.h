@@ -24,16 +24,19 @@ class CInfoDisplay : public CWnd
 public:
   CInfoDisplay(bool use_current_monitor=true);
   virtual ~CInfoDisplay();
+  
   BOOL Create(int x, int y, LPCWSTR caption, CWnd * parent);
 
 protected:
-  DECLARE_MESSAGE_MAP()
-  HFONT m_font;
-  bool m_use_current_monitor;
+  virtual void PostNcDestroy();
+  
   afx_msg void OnPaint();
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg LRESULT OnSetFont(WPARAM, LPARAM);
   afx_msg LRESULT OnGetFont(WPARAM, LPARAM);
-
-  virtual void PostNcDestroy();
+  
+  DECLARE_MESSAGE_MAP()
+  
+  CFont *m_pfont;
+  bool m_use_current_monitor;
 };
