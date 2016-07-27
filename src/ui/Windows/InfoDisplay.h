@@ -27,6 +27,8 @@ public:
   
   BOOL Create(int x, int y, LPCWSTR caption, CWnd * parent);
 
+  void SetWindowTextFont(CFont *pFont);
+
 protected:
   virtual void PostNcDestroy();
   
@@ -37,6 +39,7 @@ protected:
   
   DECLARE_MESSAGE_MAP()
   
-  CFont *m_pfont;
+  CFont *m_pTextFont;
+  HFONT m_font;
   bool m_use_current_monitor;
 };

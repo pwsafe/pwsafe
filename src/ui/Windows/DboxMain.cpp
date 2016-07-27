@@ -969,7 +969,7 @@ void DboxMain::InitPasswordSafe()
   } else {
     // Set up user font
     CFont *pNotes = Fonts::GetInstance()->GetNotesFont();
-    m_pNotesDisplay->SendMessage(WM_SETFONT, (WPARAM)pNotes, 0);
+    m_pNotesDisplay->SetWindowTextFont(pNotes);
   }
   
 #if !defined(USE_XML_LIBRARY)
