@@ -160,7 +160,7 @@ struct has_prompt_t {
   typedef char yes_type;
   typedef long no_type;
 
-  template <typename C> static yes_type test( typeof(&C::prompt) );
+  template <typename C> static yes_type test( decltype(&C::prompt) );
   template <typename C> static no_type test(...);
 
   enum { value = (sizeof(decltype(test<T>(0))) == sizeof(yes_type))};
