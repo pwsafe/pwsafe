@@ -1083,6 +1083,7 @@ void DboxMain::RefreshViews(const int iView)
   if (iView & iTreeOnly) {
     m_ctlItemTree.SetRedraw(FALSE);
     m_mapGroupToTreeItem.clear();
+    m_mapTreeItemToGroup.clear();
     m_ctlItemTree.DeleteAllItems();
   }
   m_bBoldItem = false;
@@ -1271,6 +1272,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       m_ctlItemList.DeleteAllItems();
       m_mapGroupToTreeItem.clear();
+      m_mapTreeItemToGroup.clear();
       m_ctlItemTree.DeleteAllItems();
       m_bBoldItem = false;
       m_LastFoundTreeItem = NULL;
@@ -1485,6 +1487,9 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // If on indent or button
         if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
           m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+
+          // Update display state
+          SaveGroupDisplayState();
           *pLResult = 1L; // We have toggled the group
           return;
         }
@@ -1714,6 +1719,7 @@ void DboxMain::ClearData(const bool clearMRE)
     m_ctlItemList.UnlockWindowUpdate();
     m_ctlItemTree.LockWindowUpdate();
     m_mapGroupToTreeItem.clear();
+    m_mapTreeItemToGroup.clear();
     m_ctlItemTree.DeleteAllItems();
     m_ctlItemTree.UnlockWindowUpdate();
     m_bBoldItem = false;
@@ -3888,7 +3894,8 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
 {
   // When a group node is renamed, need to update the group to HTREEITEM map
   // We need to build a new map, as we can't erase & add while iterating.
-  std::map<StringX, HTREEITEM> new_map;
+  std::map<StringX, HTREEITEM> new_mapGroupToTreeItem;
+  std::map<HTREEITEM, StringX> new_mapTreeItemToGroup;
 
   size_t len = sxOldPath.length();
   std::map<StringX, HTREEITEM>::iterator iter;
@@ -3899,7 +3906,7 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
     if (iter->first.length() == len) {
       if (wcsncmp(sxOldPath.c_str(), iter->first.c_str(), len) == 0) {
         HTREEITEM ti = iter->second;
-        new_map.insert(make_pair(sxNewPath, ti));
+        new_mapGroupToTreeItem.insert(make_pair(sxNewPath, ti));
         continue;
       }
     } 
@@ -3912,14 +3919,22 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
       if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {
         HTREEITEM ti = iter->second;
         StringX sxNewGroup = sxNewPath + iter->first.substr(len);
-        new_map.insert(make_pair(sxNewGroup, ti));
+        new_mapGroupToTreeItem.insert(make_pair(sxNewGroup, ti));
         continue;
       }
     }
-    new_map.insert(*iter);
+    new_mapGroupToTreeItem.insert(*iter);
   } // for
-  ASSERT(new_map.size() == m_mapGroupToTreeItem.size());
-  m_mapGroupToTreeItem = new_map;
+
+  ASSERT(new_mapGroupToTreeItem.size() == m_mapGroupToTreeItem.size());
+  m_mapGroupToTreeItem = new_mapGroupToTreeItem;
+
+  // Now recreate reverse look
+  m_mapTreeItemToGroup.clear();
+  for (iter = m_mapGroupToTreeItem.begin();
+    iter != m_mapGroupToTreeItem.end(); iter++) {
+    m_mapTreeItemToGroup.insert(make_pair(iter->second, iter->first));
+  }
 }
 
 void DboxMain::OnShowUnsavedEntries()
@@ -4125,10 +4140,11 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED || IsIconic())
     return;
 
-  if (m_core.GetNumEntries() == 0)
+  if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
     return;
 
-  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
+  if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) ||
+      (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
 
   //pws_os::Trace(L"SaveGUIStatusEx\n");
@@ -4138,7 +4154,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   HTREEITEM ti;
 
   // Note: User can have different entries selected/visible in Tree & List Views
-  if ((iView & iListOnly) == iListOnly) {
+  if ((iView & iListOnly) == iListOnly && m_ctlItemList.GetItemCount() > 0) {
     m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
     m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
@@ -4164,7 +4180,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }
-  if ((iView & iTreeOnly) == iTreeOnly) {
+  if ((iView & iTreeOnly) == iTreeOnly && m_ctlItemTree.GetCount() > 0) {
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
@@ -4190,7 +4206,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
         m_TUUIDSelectedAtMinimize = pci->GetUUID();
       } else {
         // Group: save entry text
-        m_sxSelectedGroup = m_ctlItemTree.GetGroup(ti);
+        m_sxSelectedGroup = m_mapTreeItemToGroup[ti];
       }
     } // ti != NULL
 
@@ -4209,7 +4225,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
         m_TUUIDVisibleAtMinimize = pci->GetUUID();
       } else {
         // Group: save entry text
-        m_sxVisibleGroup = m_ctlItemTree.GetGroup(ti);
+        m_sxVisibleGroup = m_mapTreeItemToGroup[ti];
       }
     } // ti != NULL
   }
@@ -4222,7 +4238,8 @@ void DboxMain::RestoreGUIStatusEx()
   if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
     return;
 
-  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
+  if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) || 
+      (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
 
   m_bInRestoreWindows = true;
@@ -4232,7 +4249,6 @@ void DboxMain::RestoreGUIStatusEx()
   m_ctlItemTree.SetRestoreMode(true);
   if (!m_vGroupDisplayState.empty()) {
     SetGroupDisplayState(m_vGroupDisplayState);
-    m_vGroupDisplayState.clear();
   }
   m_ctlItemTree.SetRestoreMode(false);
   m_bIsRestoring = false;
@@ -4375,6 +4391,7 @@ vector<bool> DboxMain::GetGroupDisplayState()
     return v;
 
   while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
+    StringX sxPath = m_mapTreeItemToGroup[hItem];
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
       bool bState = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) &
                              TVIS_EXPANDED) != 0;
@@ -4396,19 +4413,12 @@ void DboxMain::SetGroupDisplayState(const vector<bool> &displaystatus)
   if (m_ctlItemTree.GetSafeHwnd() == NULL || displaystatus.empty())
     return;
 
-  const vector<bool> dstatus(displaystatus);
-  const size_t num = dstatus.size();
-  if (num == 0)
-    return;
-
   HTREEITEM hItem = NULL;
   size_t i(0);
-  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
+  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) && i != displaystatus.size()) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      m_ctlItemTree.Expand(hItem, dstatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
+      m_ctlItemTree.Expand(hItem, displaystatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
       i++;
-      if (i == num)
-        break;
     }
   }
 }

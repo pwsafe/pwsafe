@@ -306,6 +306,10 @@ public:
   bool AnyToUndo() const;
   bool AnyToRedo() const;
 
+  // Related to above
+  void ResetOriginalGroupDisplayAfterSave()
+  {m_OrigDisplayStatus = m_hdr.m_displaystatus;}
+
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
@@ -554,6 +558,7 @@ private:
   
   // Changed groups
   std::vector<StringX> m_vnodes_modified;
+
   // Following are private in PWScore, public in CommandInterface:
   virtual const std::vector<StringX> &GetVnodesModified() const
   {return m_vnodes_modified;}

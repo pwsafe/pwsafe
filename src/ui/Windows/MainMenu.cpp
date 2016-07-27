@@ -1281,7 +1281,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
           CMenu *pPopup = menu.GetSubMenu(0);
           ASSERT_VALID(pPopup);
-          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+          m_TreeViewGroup = m_mapTreeItemToGroup[ti];
 
           // Deal with empty groups before removing protect menu items
           if (m_ctlItemTree.CountLeafChildren(ti) == 0) {

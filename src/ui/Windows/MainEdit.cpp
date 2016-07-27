@@ -69,7 +69,7 @@ void DboxMain::OnAdd()
         if (pci != NULL) { // leaf selected
           m_TreeViewGroup = pci->GetGroup();
         } else { // node selected
-          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+          m_TreeViewGroup = m_mapTreeItemToGroup[ti];
         }
       }
     } else { // list view
@@ -345,7 +345,7 @@ void DboxMain::OnAddGroup()
         m_TreeViewGroup = L"";
       } else  {
         HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-        m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+        m_TreeViewGroup = m_mapTreeItemToGroup[ti];
       }
     }
 
@@ -403,7 +403,7 @@ void DboxMain::OnDuplicateGroup()
   ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
 
   // Get complete group name
-  StringX sxCurrentPath = (StringX)m_ctlItemTree.GetGroup(ti); // e.g., a.b.c
+  StringX sxCurrentPath = m_mapTreeItemToGroup[ti]; // e.g., a.b.c
   StringX sxCurrentGroup = (StringX)m_ctlItemTree.GetItemText(ti); // e.g., c
   size_t grplen = sxCurrentPath.length();
 
@@ -485,7 +485,7 @@ void DboxMain::OnDuplicateGroup()
         bVNodeStates.push_back(bState);
 
         // Get group name & check if empty
-        StringX subPath = (StringX)m_ctlItemTree.GetGroup(hNextItem); // e.g., a.b.c
+        StringX subPath = m_mapTreeItemToGroup[hNextItem]; // e.g., a.b.c
         if (IsEmptyGroup(subPath)) {
           ASSERT(subPath.length() >= grplen);
           subPath = subPath.substr(grplen);
@@ -629,6 +629,7 @@ void DboxMain::OnDuplicateGroup()
       m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
 
     m_mapGroupToTreeItem[sxNewPath] = ng_ti;
+    m_mapTreeItemToGroup[ng_ti] = sxNewPath;
 
     MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
     Command *pcmd(NULL), *pcmd_undo(NULL), *pcmd_redo(NULL);
@@ -853,7 +854,7 @@ void DboxMain::OnDelete()
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         // ALWAYS ask if deleting a group - unless it is empty or
         // only contains empty groups!
-        m_sxOriginalGroup = m_ctlItemTree.GetGroup(hStartItem);
+        m_sxOriginalGroup = m_mapTreeItemToGroup[hStartItem];
         num_children = m_ctlItemTree.CountLeafChildren(hStartItem);
         bAskForDeleteConfirmation = num_children != 0;
 
@@ -876,7 +877,7 @@ void DboxMain::OnDelete()
           HTREEITEM parent = m_ctlItemTree.GetParentItem(hStartItem);
           num_children = m_ctlItemTree.CountChildren(parent);
           if (num_children == 1 && parent != NULL && parent != TVI_ROOT) {
-            StringX sxPath= m_ctlItemTree.GetGroup(parent);
+            StringX sxPath= m_mapTreeItemToGroup[parent];
             pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxPath,
               DBEmptyGroupsCommand::EG_ADD));
           }
@@ -977,7 +978,7 @@ void DboxMain::Delete(MultiCommands *pmcmd)
     // Check if last entry in group and if so - add group to empty groups
     if (bLastEntry) {
       pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
-        DBEmptyGroupsCommand::EG_ADD));
+                 DBEmptyGroupsCommand::EG_ADD));
     }
   } else
   if (m_ctlItemTree.IsWindowVisible()) {
@@ -1075,7 +1076,7 @@ void DboxMain::Delete(HTREEITEM ti,
   // Here if we have a bona fide group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
   
-  StringX sxPath = m_ctlItemTree.GetGroup(ti);
+  StringX sxPath = m_mapTreeItemToGroup[ti];
   // Check if an Empty Group
   if (m_ctlItemTree.ItemHasChildren(ti) != 0 && !bExcludeTopGroup &&
     m_sxOriginalGroup == sxPath) {
@@ -1118,7 +1119,7 @@ void DboxMain::OnRename()
       }
       m_bInRename = true;
       m_ctlItemTree.EditLabel(hItem);
-      if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
+      if (m_ctlItemTree.WasLabelEdited())
         RefreshViews();
       m_bInRename = false;
     }
