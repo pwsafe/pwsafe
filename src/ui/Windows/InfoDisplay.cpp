@@ -26,12 +26,14 @@ extern HRGN GetWorkAreaRegion();
 
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
-CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor)
+CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor),
+  m_font(NULL), m_pTextFont(NULL)
 {
 }
 
 CInfoDisplay::~CInfoDisplay()
 {
+  ::DeleteObject(m_font);
 }
 
 BEGIN_MESSAGE_MAP(CInfoDisplay, CWnd)
@@ -47,7 +49,8 @@ void CInfoDisplay::OnPaint()
 {
   CPaintDC dc(this); // device context for painting
 
-  dc.SelectObject(m_pfont);
+  // The user may have specified a font
+  dc.SelectObject(m_pTextFont != NULL ? m_pTextFont : GetFont());
 
   // First, we compute the maximum line width, and set the rectangle wide enough to
   // hold this.  Then we use DrawText/DT_CALCRECT to compute the height
@@ -240,7 +243,7 @@ void CInfoDisplay::PostNcDestroy()
 
 LRESULT CInfoDisplay::OnSetFont(WPARAM wParam, LPARAM lParam)
 {
-  m_pfont = (CFont *)wParam;
+  m_font = (HFONT)wParam;
   if (LOWORD(lParam)) { /* force redraw */
     Invalidate();
     UpdateWindow();
@@ -251,5 +254,10 @@ LRESULT CInfoDisplay::OnSetFont(WPARAM wParam, LPARAM lParam)
 
 LRESULT CInfoDisplay::OnGetFont(WPARAM, LPARAM)
 {
-  return (LRESULT)m_pfont;
+  return (LRESULT)m_font;
+}
+
+void CInfoDisplay::SetWindowTextFont(CFont *pFont)
+{
+  m_pTextFont = pFont;
 }
