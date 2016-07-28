@@ -720,7 +720,7 @@ int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
                            int & /*numValidated*/, int & /*numImported*/, int & /*numSkipped*/,
                            int & /*numPWHErrors*/, int & /*numRenamed*/,
                            int & /*numNoPolicy*/,  int & /*numRenamedPolicies*/,
-                           int & /*numShortcutsRemoved*/,
+                           int & /*numShortcutsRemoved*/, int & /* numEmptyGroupsImported */,
                            CReport & /*rpt*/, Command *& /*pcommand*/)
 {
   return UNIMPLEMENTED;
@@ -733,7 +733,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            int &numValidated, int &numImported, int &numSkipped,
                            int &numPWHErrors, int &numRenamed,
                            int &numNoPolicy, int &numRenamedPolicies,
-                           int &numShortcutsRemoved,
+                           int &numShortcutsRemoved, int &numEmptyGroupsImported,
                            CReport &rpt, Command *&pcommand)
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
@@ -770,6 +770,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numNoPolicy = iXML.getNumNoPolicies();
   numRenamedPolicies = iXML.getNumRenamedPolicies();
   numShortcutsRemoved = iXML.getNumShortcutsRemoved();
+  numEmptyGroupsImported = iXML.getNumEmptyGroupsImported();
 
   strXMLErrors = iXML.getXMLErrors();
   strSkippedList = iXML.getSkippedList();

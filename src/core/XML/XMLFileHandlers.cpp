@@ -92,6 +92,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numNoPolicies = 0;
       m_numRenamedPolicies = 0;
       m_numShortcutsRemoved = 0;
+      m_numEmptyGroupsImported = 0;
       m_bEntryBeingProcessed = false;
       break;
     case XLE_ENTRY:
@@ -352,8 +353,11 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_EGNAME:
       if (!m_sxElemContent.empty() &&
-          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) == m_vEmptyGroups.end())
+          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) 
+                  == m_vEmptyGroups.end()) {
         m_vEmptyGroups.push_back(m_sxElemContent);
+        m_numEmptyGroupsImported++;
+      }
       break;
 
     // MUST be in the same order as enum beginning STR_GROUP...

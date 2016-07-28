@@ -212,6 +212,7 @@ public:
                           int &numImported, int &numSkipped,
                           int &numPWHErrors, int &numRenamed, int &numNoPolicy,
                           CReport &rpt, Command *&pcommand);
+
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
                     const stringT &strXSDFileName,
@@ -221,11 +222,13 @@ public:
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed,
                     int &numNoPolicy,  int &numRenamedPolicies,
-                    int &numShortcutsRemoved,
+                    int &numShortcutsRemoved, int &numEmptyGroupsImported,
                     CReport &rpt, Command *&pcommand);
+
   int ImportKeePassV1TXTFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
                              UINT &uiReasonCode, CReport &rpt, Command *&pcommand);
+
   int ImportKeePassV1CSVFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
                              UINT &uiReasonCode, CReport &rpt, Command *&pcommand);
