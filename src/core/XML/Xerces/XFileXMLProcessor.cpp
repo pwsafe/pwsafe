@@ -173,7 +173,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     } else {
       pSAX2Handler->AddXMLEntries();
 
-      // Get numbers (may have been modified by AddXMLEntries
+      // Get numbers (may have been modified by AddXMLEntries)
       m_numEntriesImported = pSAX2Handler->getNumEntries();
       m_numEntriesSkipped = pSAX2Handler->getNumSkipped();
       m_numEntriesRenamed = pSAX2Handler->getNumRenamed();
@@ -181,13 +181,13 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_numNoPolicies = pSAX2Handler->getNumNoPolicies();
       m_numRenamedPolicies = pSAX2Handler->getNumRenamedPolicies();
       m_numShortcutsRemoved = pSAX2Handler->getNumShortcutsRemoved();
+      m_numEmptyGroupsImported = pSAX2Handler->getNumEmptyGroupsImported();
 
       // Get lists
       m_strXMLErrors = pSAX2Handler->getXMLErrors();
       m_strSkippedList = pSAX2Handler->getSkippedList();
       m_strPWHErrorList = pSAX2Handler->getPWHErrorList();
       m_strRenameList = pSAX2Handler->getRenameList();
-
 
       if (b_into_empty) {
         pSAX2Handler->AddDBPreferences();

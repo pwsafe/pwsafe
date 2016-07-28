@@ -242,6 +242,8 @@ BEGIN
   IDSC_UNKNOWN             "Unknown"
   IDSC_ENTRY               "entry"
   IDSC_ENTRIES             "entries"
+  IDSC_EMPTYGROUP          "empty group"
+  IDSC_EMPTYGROUPS         "empty groups"
 END
 
 STRINGTABLE
@@ -383,6 +385,7 @@ BEGIN
   IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
   IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
   IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
+  IDSC_IMPORTEDEMPTYGROUPS  "including %d empty group(s)."
 END
 
 STRINGTABLE
@@ -404,7 +407,7 @@ BEGIN
   IDSC_SYNCHUPDATED        "\nThe following %ls %ls updated:"
   IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %ls updated"
   IDSC_MERGECONFLICTS      "Conflicting entries for \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n  Adding merged entry as \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n    Differing field(s): %ls"
-  IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
+  IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
   IDSC_MERGED              "merged"

@@ -12,6 +12,7 @@ Bugs fixed in 3.39.2
 ====================
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
+[] Empty groups are now added when merging one PasswordSafe database into another.
 [1345] Removed the ability to create a new database when read-only is
 checked.
 [1342, 1343] Fix group issues:

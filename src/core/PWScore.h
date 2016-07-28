@@ -185,6 +185,10 @@ public:
                    const int &subgroup_object, const int &subgroup_function,
                    int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
 
+  // Used for Empty Groups during Merge
+  bool MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
+                      const int &iFunction) const;
+
   // Export databases
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
@@ -212,6 +216,7 @@ public:
                           int &numImported, int &numSkipped,
                           int &numPWHErrors, int &numRenamed, int &numNoPolicy,
                           CReport &rpt, Command *&pcommand);
+
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
                     const stringT &strXSDFileName,
@@ -221,11 +226,13 @@ public:
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed,
                     int &numNoPolicy,  int &numRenamedPolicies,
-                    int &numShortcutsRemoved,
+                    int &numShortcutsRemoved, int &numEmptyGroupsImported,
                     CReport &rpt, Command *&pcommand);
+
   int ImportKeePassV1TXTFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
                              UINT &uiReasonCode, CReport &rpt, Command *&pcommand);
+
   int ImportKeePassV1CSVFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
                              UINT &uiReasonCode, CReport &rpt, Command *&pcommand);

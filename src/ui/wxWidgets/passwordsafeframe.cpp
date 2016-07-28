@@ -2804,7 +2804,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   wxString XMLFilename = dlg.filepath;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
   int numRenamedPolicies, numNoPolicy;
-  int numShortcutsRemoved;
+  int numShortcutsRemoved, numEmptyGroupsImported;
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   wxBeginBusyCursor();  // This may take a while!
@@ -2822,6 +2822,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
                             numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
+                            numEmptyGroupsImported,
                             rpt, pcmd);
   wxEndBusyCursor();  // Restore normal cursor
 
@@ -2883,11 +2884,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
         cs_temp.Printf(_("File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for details."),
                        dlg.filepath.c_str(), numValidated, numImported,
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
-
+        // TODO -Tell user if any empty groups imported
       } else {
         const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
         const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
         cs_temp.Printf(_("Validated %d %ls\n\nImported %d %ls"), numValidated, cs_validate, numImported, cs_imported);
+
+        // TODO -Tell user if any empty groups imported
       }
 
       RefreshViews();
