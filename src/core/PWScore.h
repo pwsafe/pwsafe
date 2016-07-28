@@ -185,6 +185,10 @@ public:
                    const int &subgroup_object, const int &subgroup_function,
                    int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
 
+  // Used for Empty Groups during Merge
+  bool MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
+                      const int &iFunction) const;
+
   // Export databases
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
