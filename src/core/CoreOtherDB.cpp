@@ -793,8 +793,9 @@ stringT PWScore::Merge(PWScore *pothercore,
   const StringX sxsubgroup_name = subgroup_name.c_str();
 
   for (size_t i = 0; i < vOtherEmptyGroups.size(); i++) {
-    if (subgroup_bset &&
-      !MatchGroupName(sxsubgroup_name, vOtherEmptyGroups[i], subgroup_function))
+    // Don't add group if already in this DB or if it doesn't meet subgroup test
+    if (IsEmptyGroup(vOtherEmptyGroups[i]) || (subgroup_bset &&
+          !MatchGroupName(sxsubgroup_name, vOtherEmptyGroups[i], subgroup_function)))
       continue;
 
     pmulticmds->Add(DBEmptyGroupsCommand::Create(this, vOtherEmptyGroups[i],
