@@ -1,4 +1,5 @@
 #include "./safeutils.h"
+#include "./safeutils-internal.h"
 #include "./strutils.h"
 
 #include "../../core/PWScore.h"
@@ -118,7 +119,8 @@ static void echoOn()
   }
 }
 
-int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
+int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues,
+                      wostream &errstream)
 {
 
   CItemData item;
@@ -137,7 +139,7 @@ int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
   });
 
   if (!got_title) {
-    wcerr << L"Title must be specified for new entries" << endl;
+    errstream << L"Title must be specified for new entries" << endl;
     return PWScore::FAILURE;
   }
 
@@ -160,7 +162,7 @@ int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
 
 int AddEntry(PWScore &core, const UserArgs &ua)
 {
-  return AddEntryWithFields(core, ua.fieldValues);
+  return AddEntryWithFields(core, ua.fieldValues, wcerr);
 }
 
 void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates)
