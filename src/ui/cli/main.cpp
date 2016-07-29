@@ -358,8 +358,6 @@ int AddEntry(PWScore &core, const UserArgs &ua)
 
   if (status == PWScore::SUCCESS)
     status = core.Execute(AddEntryCommand::Create(&core, item));
-  if (status == PWScore::SUCCESS)
-    status = core.WriteCurFile();
 
   return status;
 }
