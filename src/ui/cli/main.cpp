@@ -338,14 +338,22 @@ int AddEntry(PWScore &core, const UserArgs &ua)
   int status = PWScore::SUCCESS;
   using FieldValue = UserArgs::FieldValue;
 
+  bool got_passwd{false}, got_title{false};
   // Check if the user specified a password also
-  auto pwitr = find_if(ua.fieldValues.begin(),
-                       ua.fieldValues.end(),
-                       [](const FieldValue &fv) {
-    return get<0>(fv) == CItemData::PASSWORD;
+  find_if(ua.fieldValues.begin(), ua.fieldValues.end(),
+              [&got_title, &got_passwd](const FieldValue &fv) {
+    const auto field{get<0>(fv)};
+    got_passwd = got_passwd || (field == CItemData::PASSWORD);
+    got_title  = got_title  || (field == CItemData::TITLE);
+    return got_title && got_passwd;
   });
 
-  if ( pwitr == ua.fieldValues.end() ) {
+  if (!got_title) {
+    wcerr << L"Title must be specified for new entries" << endl;
+    return PWScore::FAILURE;
+  }
+
+  if ( !got_passwd ) {
     // User didnot specify a password on command-line. Generate one
     PWPolicy pwp;
     InitPWPolicy(pwp, core, ua.fieldValues);
