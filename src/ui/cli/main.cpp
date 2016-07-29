@@ -26,14 +26,12 @@
 #include "core/UTF8Conv.h"
 #include "core/Report.h"
 #include "core/XML/XMLDefs.h"
-#include "../../core/core.h"
 
 using namespace std;
 
 int SaveCore(PWScore &core, const UserArgs &);
 
 // These are the new operations. Each returns the code to exit with
-static int AddEntry(PWScore &core, const UserArgs &ua);
 static int CreateNewSafe(PWScore &core, const StringX& filename);
 static int Sync(PWScore &core, const UserArgs &ua);
 static int Merge(PWScore &core, const UserArgs &ua);
@@ -306,73 +304,6 @@ static int CreateNewSafe(PWScore &core, const StringX& filename)
     core.NewFile(passkey);
 
     return PWScore::SUCCESS;
-}
-
-void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates)
-{
-  auto pnitr = find_if(updates.begin(),
-                       updates.end(),
-                       [](const UserArgs::FieldValue &fv) {
-    return get<0>(fv) == CItemData::POLICYNAME;
-  });
-
-  if (pnitr != updates.end()) {
-    const StringX polname{get<1>(*pnitr)};
-    if ( !core.GetPolicyFromName(polname, pwp) )
-      throw std::invalid_argument("No such password policy: " + toutf8(stringx2std(polname)));
-  }
-  else {
-    StringX polname;
-    LoadAString(polname, IDSC_DEFAULT_POLICY);
-    if (!core.GetPolicyFromName(polname, pwp)) {
-      assert(false);
-    }
-  }
-}
-
-int AddEntry(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
-{
-
-  CItemData item;
-  item.CreateUUID();
-  int status = PWScore::SUCCESS;
-  using FieldValue = UserArgs::FieldValue;
-
-  bool got_passwd{false}, got_title{false};
-  // Check if the user specified a password also
-  find_if(fieldValues.begin(), fieldValues.end(),
-              [&got_title, &got_passwd](const FieldValue &fv) {
-    const auto field{get<0>(fv)};
-    got_passwd = got_passwd || (field == CItemData::PASSWORD);
-    got_title  = got_title  || (field == CItemData::TITLE);
-    return got_title && got_passwd;
-  });
-
-  if (!got_title) {
-    wcerr << L"Title must be specified for new entries" << endl;
-    return PWScore::FAILURE;
-  }
-
-  if ( !got_passwd ) {
-    // User didnot specify a password on command-line. Generate one
-    PWPolicy pwp;
-    InitPWPolicy(pwp, core, fieldValues);
-    item.SetFieldValue(CItemData::PASSWORD, pwp.MakeRandomPassword());
-  }
-
-  for_each(fieldValues.begin(), fieldValues.end(), [&item](const FieldValue &fv) {
-    item.SetFieldValue(get<0>(fv), get<1>(fv));
-  });
-
-  if (status == PWScore::SUCCESS)
-    status = core.Execute(AddEntryCommand::Create(&core, item));
-
-  return status;
-}
-
-int AddEntry(PWScore &core, const UserArgs &ua)
-{
-  return AddEntry(core, ua.fieldValues);
 }
 
 int SaveCore(PWScore &core, const UserArgs &ua)

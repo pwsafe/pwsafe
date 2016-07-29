@@ -3,6 +3,7 @@
 
 #include "../../core/PWScore.h"
 #include "../../os/file.h"
+#include "../../core/core.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -17,6 +18,7 @@ static void echoOff();
 static void echoOn();
 static struct termios oldTermioFlags; // to restore tty echo
 
+static void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates);
 
 int OpenCore(PWScore& core, const StringX& safe)
 {
@@ -113,6 +115,73 @@ static void echoOn()
 {
   if (tcsetattr(fileno(stdin), TCSANOW, &oldTermioFlags) != 0) {
     wcerr << "Couldn't restore echo\n";
+  }
+}
+
+int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
+{
+
+  CItemData item;
+  item.CreateUUID();
+  int status = PWScore::SUCCESS;
+  using FieldValue = UserArgs::FieldValue;
+
+  bool got_passwd{false}, got_title{false};
+  // Check if the user specified a password also
+  find_if(fieldValues.begin(), fieldValues.end(),
+              [&got_title, &got_passwd](const FieldValue &fv) {
+    const auto field{get<0>(fv)};
+    got_passwd = got_passwd || (field == CItemData::PASSWORD);
+    got_title  = got_title  || (field == CItemData::TITLE);
+    return got_title && got_passwd;
+  });
+
+  if (!got_title) {
+    wcerr << L"Title must be specified for new entries" << endl;
+    return PWScore::FAILURE;
+  }
+
+  if ( !got_passwd ) {
+    // User didnot specify a password on command-line. Generate one
+    PWPolicy pwp;
+    InitPWPolicy(pwp, core, fieldValues);
+    item.SetFieldValue(CItemData::PASSWORD, pwp.MakeRandomPassword());
+  }
+
+  for_each(fieldValues.begin(), fieldValues.end(), [&item](const FieldValue &fv) {
+    item.SetFieldValue(get<0>(fv), get<1>(fv));
+  });
+
+  if (status == PWScore::SUCCESS)
+    status = core.Execute(AddEntryCommand::Create(&core, item));
+
+  return status;
+}
+
+int AddEntry(PWScore &core, const UserArgs &ua)
+{
+  return AddEntryWithFields(core, ua.fieldValues);
+}
+
+void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates)
+{
+  auto pnitr = find_if(updates.begin(),
+                       updates.end(),
+                       [](const UserArgs::FieldValue &fv) {
+    return get<0>(fv) == CItemData::POLICYNAME;
+  });
+
+  if (pnitr != updates.end()) {
+    const StringX polname{get<1>(*pnitr)};
+    if ( !core.GetPolicyFromName(polname, pwp) )
+      throw std::invalid_argument("No such password policy: " + toutf8(stringx2std(polname)));
+  }
+  else {
+    StringX polname;
+    LoadAString(polname, IDSC_DEFAULT_POLICY);
+    if (!core.GetPolicyFromName(polname, pwp)) {
+      assert(false);
+    }
   }
 }
 
