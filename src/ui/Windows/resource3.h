@@ -40,6 +40,7 @@
 #define IDS_OTHEREDITORLOCATION         5109
 #define IDS_MIGRATETOAPPDATA            5110
 #define IDS_CLEARPWHISTORY              5111
+#define IDS_SAVEIMMEDIATELY             5112
 
 // Program strings
 #define IDS_FILEERROR1                  5210

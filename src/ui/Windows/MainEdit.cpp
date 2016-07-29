@@ -189,13 +189,11 @@ void DboxMain::OnAdd()
 
     SortListView();
     m_ctlItemList.SetFocus();
-    SetChanged(Data);
 
     // Find the new entry again as DisplayInfo now updated
     ItemListIter iter = m_core.Find(newentry_uuid);
     UpdateToolBarForSelectedItem(&iter->second);
 
-    ChangeOkUpdate();
     m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
@@ -207,6 +205,8 @@ void DboxMain::OnAdd()
     else
       m_ctlItemList.SetFocus();
 
+    SetChanged(DATA);
+    ChangeOkUpdate();
   } // rc == OK
   
   // Delete Add Property Sheet
@@ -315,9 +315,11 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     UpdateEntryImages(iter->second);
 
   m_ctlItemList.SetFocus();
-  SetChanged(Data);
-  ChangeOkUpdate();
+
   m_RUEList.AddRUEntry(ci_temp.GetUUID());
+
+  SetChanged(DATA);
+  ChangeOkUpdate();
 }
 
 //Add a group (tree view only)
@@ -374,6 +376,8 @@ void DboxMain::OnAddGroup()
     // Needed by PWTreeCtrl::OnEndLabelEdit in case user doesn't change the group name
     m_bInAddGroup = true;
     m_ctlItemTree.EditLabel(newGroup);
+
+    SetChanged(DATA);
   }
 }
 
@@ -395,7 +399,7 @@ void DboxMain::OnDuplicateGroup()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  bool bRefresh(true), bState;
+  bool bRefresh(true), bState, bChanged(false);
   // Get selected group
   HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
 
@@ -575,6 +579,7 @@ void DboxMain::OnDuplicateGroup()
           pmulti_cmd_egrps->Insert(pcmd_undo);
           pmulti_cmd_egrps->Add(pcmd_redo);
           Execute(pmulti_cmd_egrps);
+          bChanged = true;
         } else
           bRefresh = false;
         break;
@@ -585,6 +590,7 @@ void DboxMain::OnDuplicateGroup()
           pmulti_cmd_base->Add(pmulti_cmd_egrps);
         pmulti_cmd_base->Add(pcmd_redo);
         Execute(pmulti_cmd_base);
+        bChanged = true;
         break;
       case 2:
         // Only dependents
@@ -593,6 +599,7 @@ void DboxMain::OnDuplicateGroup()
           pmulti_cmd_deps->Add(pmulti_cmd_egrps);
         pmulti_cmd_deps->Add(pcmd_redo);
         Execute(pmulti_cmd_deps);
+        bChanged = true;
         break;
       case 3:
       {
@@ -605,6 +612,7 @@ void DboxMain::OnDuplicateGroup()
           pmulti_cmds->Add(pmulti_cmd_egrps);
         pmulti_cmds->Add(pcmd_redo);
         Execute(pmulti_cmds);
+        bChanged = true;
         break;
       }
       default:
@@ -647,6 +655,7 @@ void DboxMain::OnDuplicateGroup()
     pmulti_cmds->Add(pcmd);
     pmulti_cmds->Add(pcmd_redo);
     Execute(pmulti_cmds);
+    bChanged = true;
     bRefresh = true;
   }
 
@@ -670,6 +679,11 @@ void DboxMain::OnDuplicateGroup()
   } // bRefresh
 
   m_ctlItemTree.SelectItem(ti);
+
+  if (bChanged) {
+    SetChanged(DATA);
+    ChangeOkUpdate();
+  }
 }
 
 void DboxMain::OnProtect(UINT nID)
@@ -694,13 +708,13 @@ void DboxMain::OnProtect(UINT nID)
                                                nID == ID_MENUITEM_UNPROTECT ? L"0" : L"1");
     Execute(pcmd);
 
-    SetChanged(Data);
+    SetChanged(DATA);
+    ChangeOkUpdate();
   } else {
     // Group
     ASSERT(nID == ID_MENUITEM_PROTECTGROUP || nID == ID_MENUITEM_UNPROTECTGROUP);
     ChangeSubtreeEntriesProtectStatus(nID);
   }
-  ChangeOkUpdate();
 }
 
 void DboxMain::OnCompareEntries()
@@ -791,8 +805,13 @@ void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
       hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
     }
   }
-  if (pmulticmds->GetSize() != 0)
+
+  if (pmulticmds->GetSize() != 0) {
     Execute(pmulticmds);
+
+    SetChanged(DATA);
+    ChangeOkUpdate();
+  }
 }
 
 bool DboxMain::GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected)
@@ -946,6 +965,8 @@ void DboxMain::OnDelete()
     // Now do it
     if (pmcmd->GetSize() > 0) {
       Execute(pmcmd);
+
+      SetChanged(DATA);
     }
 
     // Only refresh views if an entry or a non-empty group was deleted
@@ -1121,7 +1142,10 @@ void DboxMain::OnRename()
       m_ctlItemTree.EditLabel(hItem);
       if (m_ctlItemTree.WasLabelEdited())
         RefreshViews();
+
       m_bInRename = false;
+
+      SetChanged(DATA);
     }
   }
 }
@@ -1389,7 +1413,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   Execute(pmulticmds, pcore);
 
-  SetChanged(Data);
+  SetChanged(DATA);
   ChangeOkUpdate();
 
   // Order may have changed as a result of edit
@@ -1465,7 +1489,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     Execute(pcmd, pcore);
-    SetChanged(Data);
+    SetChanged(DATA);
 
     // DisplayInfo's copied and changed, get up-to-date version
     DisplayInfo *pdi = static_cast<DisplayInfo *>
@@ -1550,14 +1574,15 @@ void DboxMain::OnDuplicateEntry()
 
     InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     FixListIndexes();
-    SetChanged(Data);
 
     int rc = SelectEntry(pdi->list_index);
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
-    ChangeOkUpdate();
     m_RUEList.AddRUEntry(ci2.GetUUID());
+
+    SetChanged(DATA);
+    ChangeOkUpdate();
   }
 }
 
@@ -2268,7 +2293,8 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   // Clear set
   setGTU.clear();
 
-  SetChanged(Data);
+  SetChanged(DATA);
+
   FixListIndexes();
   RefreshViews();
 

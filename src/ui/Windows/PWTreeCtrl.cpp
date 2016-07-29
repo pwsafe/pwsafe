@@ -252,14 +252,14 @@ void CPWTreeCtrl::OnPaint()
 {
   CTreeCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 void CPWTreeCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CTreeCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 BOOL CPWTreeCtrl::PreTranslateMessage(MSG *pMsg)
@@ -695,7 +695,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       app.GetMainDlg()->Execute(pmulticmds);
 
       // Mark database as modified
-      app.GetMainDlg()->SetChanged(DboxMain::Data);
+      app.GetMainDlg()->SetChanged(DboxMain::DATA);
       app.GetMainDlg()->ChangeOkUpdate();
 
       app.GetMainDlg()->ResetInAddGroup();
@@ -924,7 +924,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     delete pmulticmds;
 
   // Mark database as modified
-  app.GetMainDlg()->SetChanged(DboxMain::Data);
+  app.GetMainDlg()->SetChanged(DboxMain::DATA);
   app.GetMainDlg()->ChangeOkUpdate();
 
   // put edited text in right order by sorting
@@ -1617,7 +1617,7 @@ exit:
   SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {
-    app.GetMainDlg()->SetChanged(DboxMain::Data);
+    app.GetMainDlg()->SetChanged(DboxMain::DATA);
     app.GetMainDlg()->ChangeOkUpdate();
     if (app.GetMainDlg()->IsFilterActive())
       app.GetMainDlg()->RefreshViews();
@@ -1813,7 +1813,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
   }
 }
 
@@ -1831,7 +1831,8 @@ void CPWTreeCtrl::OnExpandAll()
   EnsureVisible(GetSelectedItem());
   SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
+  app.GetMainDlg()->SetChanged(DboxMain::GROUPDISPLAY);
 }
 
 void CPWTreeCtrl::OnCollapseAll() 
@@ -1847,7 +1848,8 @@ void CPWTreeCtrl::OnCollapseAll()
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
+  app.GetMainDlg()->SetChanged(DboxMain::GROUPDISPLAY);
 }
 
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
@@ -1861,7 +1863,7 @@ void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
     } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   }
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 

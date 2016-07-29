@@ -292,7 +292,7 @@ int DboxMain::New()
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
         // Reset changed flag
-        SetChanged(Clear);
+        SetChanged(CLEARDATA);
         break;
     }
   }
@@ -470,7 +470,7 @@ int DboxMain::Close(const bool bTrySave)
         return rc;
 
       // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-      SetChanged(Clear);
+      SetChanged(CLEARDATA);
     }
   }
 
@@ -715,7 +715,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     return rc;
 
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(Clear);
+  SetChanged(CLEARDATA);
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -1158,7 +1158,7 @@ int DboxMain::Save(const SaveType savetype)
   m_core.ResetStateAfterSave();
   m_core.ResetOriginalGroupDisplayAfterSave();
   m_core.ClearChangedNodes();
-  SetChanged(Clear);
+  SetChanged(CLEARDATA);
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1200,7 +1200,7 @@ int DboxMain::SaveIfChanged()
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
   if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-       m_core.GetNumEntries() > 0) {
+      (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     int rc = Save();
     if (rc != PWScore::SUCCESS)
       return PWScore::USER_CANCEL;
@@ -1374,7 +1374,7 @@ int DboxMain::SaveAs()
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
-  SetChanged(Clear);
+  SetChanged(CLEARDATA);
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -2198,6 +2198,7 @@ void DboxMain::OnImportText()
       {
         if (pcmd != NULL) {
           Execute(pcmd);
+
           const size_t n = ((MultiCommands *)pcmd)->GetSize();
           for (size_t i = 0; i < n; i++) {
             int iw;
@@ -2244,6 +2245,7 @@ void DboxMain::OnImportText()
 
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
 
+        SetChanged(DATA);
         ChangeOkUpdate();
         RefreshViews();
         break;
@@ -2346,10 +2348,15 @@ void DboxMain::OnImportKeePassV1CSV()
       }
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
           Execute(pcmd);
+
+          SetChanged(DATA);
+          ChangeOkUpdate();
+        }
+
         RefreshViews();
-        ChangeOkUpdate();
+
         // May need to update menu/toolbar if original database was empty
         if (bWasEmpty)
           UpdateMenuAndToolBar(m_bOpen);
@@ -2454,11 +2461,14 @@ void DboxMain::OnImportKeePassV1TXT()
       }
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
           Execute(pcmd);
 
+          SetChanged(DATA);
+          ChangeOkUpdate();
+        }
+
         RefreshViews();
-        ChangeOkUpdate();
         // May need to update menu/toolbar if original database was empty
         if (bWasEmpty)
           UpdateMenuAndToolBar(m_bOpen);
@@ -2640,12 +2650,14 @@ void DboxMain::OnImportXML()
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
                          fd.GetFileName(), numValidated, numImported,
                          cs_skipped, cs_renamed, cs_PWHErrors);
-
-          ChangeOkUpdate();
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
+        }
+
+        if (pcmd != NULL) {
+          SetChanged(DATA);
           ChangeOkUpdate();
         }
 
@@ -2752,7 +2764,7 @@ void DboxMain::ChangeMode(bool promptUser)
     }
 
     // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-    SetChanged(Clear);
+    SetChanged(CLEARDATA);
 
     // Clear the Commands
     m_core.ClearCommands();
@@ -2871,7 +2883,12 @@ void DboxMain::OnCompare()
                           &m_SaveWZAdvValues[WZAdvanced::COMPARE]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
-  wizard.DoModal();
+  INT_PTR rc = wizard.DoModal();
+
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
+    SetChanged(DATA);
+    ChangeOkUpdate();
+  }
 }
 
 void DboxMain::OnMerge()
@@ -2885,8 +2902,12 @@ void DboxMain::OnMerge()
 
   INT_PTR rc = wizard.DoModal();
 
-  if (rc == ID_WIZFINISH)
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
+    SetChanged(DATA);
+    ChangeOkUpdate();
+
     UpdateToolBarDoUndo();
+  }
 }
 
 void DboxMain::OnSynchronize()
@@ -2903,7 +2924,7 @@ void DboxMain::OnSynchronize()
   INT_PTR rc = wizard.DoModal();
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0)
-    SetChanged(Data);
+    SetChanged(DATA);
 }
 
 stringT DboxMain::DoMerge(PWScore *pothercore,
@@ -3436,7 +3457,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   }
   Execute(pmulticmds);
 
-  SetChanged(Data);
+  SetChanged(DATA);
   ChangeOkUpdate();
   // May need to update menu/toolbar if database was previously empty
   if (bWasEmpty)
@@ -3506,7 +3527,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
     pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry));
     Execute(pmulticmds, ptocore);
 
-    SetChanged(Data);
+    SetChanged(DATA);
     ChangeOkUpdate();
     return TRUE;
   }
@@ -3604,7 +3625,7 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
 
   RefreshViews();
 
-  SetChanged(Data);
+  SetChanged(DATA);
   ChangeOkUpdate();
 
   // May need to update menu/toolbar if database was previously empty
@@ -3692,7 +3713,7 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
 
     RefreshViews();
 
-    SetChanged(Data);
+    SetChanged(DATA);
     ChangeOkUpdate();
     return TRUE;
   }

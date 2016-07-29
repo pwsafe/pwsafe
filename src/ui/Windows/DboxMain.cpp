@@ -1071,7 +1071,7 @@ LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
   SetHeaderInfo();
 
   // Now show the user
-  RefreshViews(iListOnly);
+  RefreshViews(LISTONLY);
 
   return 0L;
 }
@@ -1090,7 +1090,7 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
   SetHeaderInfo();
 
   // Now show the user
-  RefreshViews(iListOnly);
+  RefreshViews(LISTONLY);
 
   return 0L;
 }
@@ -1355,12 +1355,16 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 
   UpdateToolBarDoUndo();
 
-  SaveGUIStatusEx(iBothViews);
+  SaveGUIStatusEx(BOTHVIEWS);
 }
 
 void DboxMain::OnUndo()
 {
   m_core.Undo();
+
+  // If user has set preference "Save immediately", then undoing a change 
+  // should resave - ISSUE did the commands being undone change the DB?
+  SetChanged(DATA);
   
   // See if we have any special filters active that now do not have any entries
   // to display, which would have meant that the user should not be able to select them,
@@ -1377,7 +1381,7 @@ void DboxMain::OnUndo()
   UpdateMenuAndToolBar(m_bOpen);
   UpdateStatusBar();
 
-  SaveGUIStatusEx(iBothViews);
+  SaveGUIStatusEx(BOTHVIEWS);
 }
 
 void DboxMain::OnRedo()
@@ -1385,11 +1389,15 @@ void DboxMain::OnRedo()
   SaveGUIStatus();
   m_core.Redo();
 
+  // If user has set preference "Save immediately", then redoing a change 
+  // should resave - ISSUE do the commands being redone change the DB?
+  SetChanged(DATA);
+
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
   UpdateStatusBar();
 
-  SaveGUIStatusEx(iBothViews);
+  SaveGUIStatusEx(BOTHVIEWS);
 }
 
 void DboxMain::FixListIndexes()
@@ -1577,32 +1585,35 @@ void DboxMain::SetChanged(ChangeType changed)
     return;
 
   switch (changed) {
-    case Data:
+    case DATA:
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
           m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-        // Also save if adding group as it will be in the empty group list!
-        // Or if not the current version of the DB
         Save();
       } else {
         m_core.SetDBChanged(true);
       }
       break;
-    case Clear:
-      m_core.SetChanged(false, false);
+    case CLEARDATA:
+      m_core.SetDBChanged(false);
+      m_core.SetDBPrefsChanged(false);
       m_bTSUpdated = false;
       break;
-    case TimeStamp:
+    case DBPREFS:
+      m_core.SetDBPrefsChanged(true);
+      break;
+    case CLEARDBPREFS:
+      m_core.SetDBPrefsChanged(false);
+      break;
+    case TIMESTAMP:
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
         m_bTSUpdated = true;
       break;
-    case DBPrefs:
-      m_core.SetDBPrefsChanged(true);
+    case GROUPDISPLAY:
+      m_core.SetGroupDisplayChanged(true);
       break;
-    case ClearDBPrefs:
-      m_core.SetDBPrefsChanged(false);
+    case CLEARGROUPDISPLAY:
+      m_core.SetGroupDisplayChanged(false);
       break;
-    default:
-      ASSERT(0);
   }
 }
 
@@ -2594,7 +2605,7 @@ void DboxMain::UpdateAccessTime(const pws_os::CUUID &uuid)
       return;
     CItemData &item = iter->second;
     item.SetATime();
-    SetChanged(TimeStamp);
+    SetChanged(TIMESTAMP);
 
     if (!IsGUIEmpty() &&
         (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
