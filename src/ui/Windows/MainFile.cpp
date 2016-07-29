@@ -2561,7 +2561,7 @@ void DboxMain::OnImportXML()
     CString XMLFilename = fd.GetPathName();
     //num* must be initialised because ImportXMLFile doesn't set them in case of validation errors
     int numValidated(0), numImported(0), numSkipped(0), numRenamed(0), numPWHErrors(0);
-    int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0);
+    int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0), numEmptyGroupsImported(0);
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
@@ -2583,6 +2583,7 @@ void DboxMain::OnImportXML()
                               strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                               numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
                               numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
+                              numEmptyGroupsImported,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -2677,6 +2678,12 @@ void DboxMain::OnImportXML()
         cs_tmp.Format(IDSC_REMOVEDKBSHORTCUTS, cs_imported);
         rpt.WriteLine((LPCWSTR)cs_tmp);
       }
+    }
+
+    if ((rc == PWScore::SUCCESS || rc == PWScore::OK_WITH_ERRORS) && numEmptyGroupsImported != 0) {
+      CString cs_tmp;
+      cs_tmp.Format(IDSC_IMPORTEDEMPTYGROUPS, numEmptyGroupsImported);
+      rpt.WriteLine((LPCWSTR)cs_tmp);
     }
 
     rpt.EndReport();

@@ -281,6 +281,9 @@
 #define IDSC_VALIDATE_ORPHAN_ATT        3454
 #define IDSC_VALIDATE_ATTACHMENT        3455
 #define IDCS_VALIDATE_NOTSET            3456
+#define IDSC_EMPTYGROUP                 3457
+#define IDSC_EMPTYGROUPS                3458
+#define IDSC_IMPORTEDEMPTYGROUPS        3459
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

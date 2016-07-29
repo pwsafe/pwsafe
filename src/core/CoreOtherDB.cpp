@@ -353,6 +353,17 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   return u1.compare(u2) < 0;
 }
 
+bool PWScore::MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
+                             const int &iFunction) const
+{
+  ASSERT(iFunction != 0); // must be positive or negative!
+
+  // Can't have these comparisons for empty group names
+  ASSERT(iFunction != PWSMatch::MR_PRESENT && iFunction != PWSMatch::MR_NOTPRESENT);
+
+  return PWSMatch::Match(stValue, subgroup_name, iFunction);
+}
+
 // Merge flags indicating differing fields if group, title and user are identical
 #define MRG_PASSWORD   0x8000
 #define MRG_NOTES      0x4000
@@ -411,6 +422,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   int numConflicts = 0;
   int numAliasesAdded = 0;
   int numShortcutsAdded = 0;
+  int numEmptyGroupsAdded = 0;
   uuid_array_t base_uuid, new_base_uuid;
   bool bTitleRenamed(false);
   StringX sx_merged;
@@ -775,6 +787,22 @@ stringT PWScore::Merge(PWScore *pothercore,
     return _T("");
   }
 
+  // OK now merge empty groups
+  std::vector<StringX> vOtherEmptyGroups;
+  vOtherEmptyGroups = pothercore->GetEmptyGroups();
+  const StringX sxsubgroup_name = subgroup_name.c_str();
+
+  for (size_t i = 0; i < vOtherEmptyGroups.size(); i++) {
+    // Don't add group if already in this DB or if it doesn't meet subgroup test
+    if (IsEmptyGroup(vOtherEmptyGroups[i]) || (subgroup_bset &&
+          !MatchGroupName(sxsubgroup_name, vOtherEmptyGroups[i], subgroup_function)))
+      continue;
+
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(this, vOtherEmptyGroups[i],
+      DBEmptyGroupsCommand::EG_ADD));
+    numEmptyGroupsAdded++;
+  }
+
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
@@ -786,18 +814,20 @@ stringT PWScore::Merge(PWScore *pothercore,
   }
 
   // Tell the user we're done & provide short merge report
-  stringT str_entries, str_conflicts, str_aliases, str_shortcuts;
-  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
+  stringT str_entries, str_conflicts, str_aliases, str_shortcuts, str_emptygroups;
+  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded + numEmptyGroupsAdded;
   LoadAString(str_entries, totalAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
   LoadAString(str_conflicts, numConflicts == 1 ? IDSC_CONFLICT : IDSC_CONFLICTS);
   LoadAString(str_aliases, numAliasesAdded == 1 ? IDSC_ALIAS : IDSC_ALIASES);
   LoadAString(str_shortcuts, numShortcutsAdded == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
+  LoadAString(str_emptygroups, numEmptyGroupsAdded == 1 ? IDSC_EMPTYGROUP : IDSC_EMPTYGROUPS);
 
   Format(str_results, IDSC_MERGECOMPLETED,
                    totalAdded, str_entries.c_str(),
                    numConflicts, str_conflicts.c_str(),
                    numAliasesAdded, str_aliases.c_str(),
-                   numShortcutsAdded, str_shortcuts.c_str());
+                   numShortcutsAdded, str_shortcuts.c_str(),
+                   numEmptyGroupsAdded, str_emptygroups.c_str());
   pRpt->WriteLine(str_results.c_str());
 
   return str_results;
