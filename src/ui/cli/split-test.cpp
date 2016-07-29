@@ -59,27 +59,24 @@ TEST_F(SplitTest, ReturnEntireStringIfNoSeparatorMatch) {
   EXPECT_EQ(L"Hello, world!", tokens[0]);
 }
 
-TEST_F(SplitTest, CountsEmptyTokensBetweenSeparator) {
+TEST_F(SplitTest, IgnoreEmptyTokensBetweenSeparator) {
   vector<wstring> tokens;
   Split( L"Hello,, world!", L",", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(3, tokens.size());
+  EXPECT_EQ(2, tokens.size());
   EXPECT_EQ(L"Hello", tokens[0]);
-  EXPECT_TRUE(tokens[1].empty()) << "Includes empty tokens between separators";
-  EXPECT_EQ(L" world!", tokens[2]);
+  EXPECT_EQ(L" world!", tokens[1]);
 }
 
-TEST_F(SplitTest, CountsEmptyTokensBeforeAndAfterSeparator) {
+TEST_F(SplitTest, IgnoresEmptyTokensBeforeAndAfterSeparator) {
   vector<wstring> tokens;
   Split( L",Hello, world!,", L",", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(4, tokens.size());
-  EXPECT_TRUE(tokens[0].empty()) << "Includes empty tokens before separator";
-  EXPECT_EQ(L"Hello", tokens[1]);
-  EXPECT_EQ(L" world!", tokens[2]);
-  EXPECT_TRUE(tokens[3].empty()) << "Includes empty tokens after separator";
+  EXPECT_EQ(2, tokens.size());
+  EXPECT_EQ(L"Hello", tokens[0]);
+  EXPECT_EQ(L" world!", tokens[1]);
 }
 
 
