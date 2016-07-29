@@ -651,10 +651,18 @@ void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& /* evt */)
 
 void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
+  const wxString &label =evt.GetLabel();
+
+  if (label.empty()) {
+    // empty entry or group names are a non-no...
+    evt.Veto();
+    return;
+  }
+
   switch (evt.GetId()) {
     case ID_TREECTRL:
     {
-      if (evt.GetLabel().Find(wxT('.')) == wxNOT_FOUND) {
+      if (label.Find(wxT('.')) == wxNOT_FOUND) {
       // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
       wxTreeEvent newEvt(evt);
       newEvt.SetId(ID_TREECTRL_1);
