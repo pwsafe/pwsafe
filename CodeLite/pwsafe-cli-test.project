@@ -25,6 +25,7 @@
     <File Name="../src/ui/cli/search.cpp"/>
     <File Name="../src/ui/cli/strutils.cpp"/>
     <File Name="../src/ui/cli/argutils.cpp"/>
+    <File Name="../src/ui/cli/searchaction.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -50,6 +51,7 @@
         <Library Value="os"/>
         <Library Value="core"/>
         <Library Value="uuid"/>
+        <Library Value="xerces-c"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
