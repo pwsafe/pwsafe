@@ -515,7 +515,7 @@ void CManageFiltersDlg::OnFilterCopy()
   }
   if (bCopied) {
     m_bDBFiltersChanged = true;
-    GetMainDlg()->SetChanged(DboxMain::Data);
+    GetMainDlg()->SetChanged(DboxMain::DATA);
     GetMainDlg()->ChangeOkUpdate();
   }
 
@@ -551,7 +551,7 @@ void CManageFiltersDlg::OnFilterDelete()
   m_MapFilters.erase(flt_key);
   if (m_selectedfilterpool == FPOOL_DATABASE) {
     m_bDBFiltersChanged = true;
-    GetMainDlg()->SetChanged(DboxMain::Data);
+    GetMainDlg()->SetChanged(DboxMain::DATA);
     GetMainDlg()->ChangeOkUpdate();
   }
 

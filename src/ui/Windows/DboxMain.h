@@ -259,9 +259,9 @@ public:
 
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
-  enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
+  enum ViewType {LISTONLY = 1, TREEONLY = 2, BOTHVIEWS = 3};
 
-  void RefreshViews(const int iView = iBothViews);
+  void RefreshViews(const ViewType iView = BOTHVIEWS);
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
@@ -269,7 +269,7 @@ public:
   void SelectFirstEntry();
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
-  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
+  enum ChangeType {DATA, CLEARDATA, DBPREFS, CLEARDBPREFS, TIMESTAMP, GROUPDISPLAY, CLEARGROUPDISPLAY};
   void SetChanged(ChangeType changed);
   void ChangeOkUpdate();
 
@@ -333,7 +333,7 @@ public:
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
   void RestoreGUIStatusEx();
-  void SaveGUIStatusEx(const int iView);
+  void SaveGUIStatusEx(const ViewType iView);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
@@ -563,7 +563,7 @@ public:
   CMenuTipManager m_menuTipManager;
 
   int InsertItemIntoGUITreeList(CItemData &itemData, int iIndex = -1, 
-                 const bool bSort = true, const int iView = iBothViews);
+                 const bool bSort = true, const ViewType iView = BOTHVIEWS);
 
   BOOL SelItemOk();
   void setupBars();
@@ -913,7 +913,7 @@ private:
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
-  void RebuildGUI(const int iView = iBothViews);
+  void RebuildGUI(const ViewType iView = BOTHVIEWS);
   void UpdateEntryinGUI(CItemData &ci);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   

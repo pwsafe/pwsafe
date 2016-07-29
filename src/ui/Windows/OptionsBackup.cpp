@@ -153,6 +153,7 @@ BOOL COptionsBackup::OnInitDialog()
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   AddTool(IDC_BACKUPBEFORESAVE,        IDS_BACKUPBEFORESAVE);
   AddTool(IDC_USERBACKUPOTHERLOCATION, IDS_USERBACKUPOTHERLOCATION);
+  AddTool(IDC_SAVEIMMEDIATELY,         IDS_SAVEIMMEDIATELY);
   ActivateToolTip();
 
   return TRUE;

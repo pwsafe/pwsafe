@@ -349,24 +349,23 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  // Use following calls to 'SetChanged' & 'SetDBChanged' sparingly
+  // Use following call to 'SetDBChanged' sparingly
   // outside of core
-  void SetChanged(const bool bDBChanged, const bool bDBprefschanged)
-  {m_bDBChanged = bDBChanged; 
-   m_bDBPrefsChanged = bDBprefschanged;
-   NotifyDBModified();}
   void SetDBChanged(bool bDBChanged, bool bNotify = true)
   {m_bDBChanged = bDBChanged;
     if (bNotify) NotifyDBModified();}
   void SetDBPrefsChanged(bool bDBprefschanged)
   {m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
+  void SetGroupDisplayChanged(const bool bGroupDisplayChanged)
+  {m_bGroupDisplayChanged = bGroupDisplayChanged;}
 
   bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
 
   bool IsChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
+  bool HasGroupDisplayChanged() const {return m_bGroupDisplayChanged;}
   bool HaveHeaderPreferencesChanged(const StringX &prefString)
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
@@ -431,6 +430,7 @@ public:
   {m_vEmptyGroups = vEmptyGroups; SetDBChanged(true);}
   const std::vector<StringX> &GetEmptyGroups() {return m_vEmptyGroups;}
   bool IsEmptyGroup(const StringX &sxEmptyGroup);
+  size_t GetNumberEmptyGroups() {return m_vEmptyGroups.size();}
 
   // Keyboard shortcuts
   bool AddKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);
@@ -538,6 +538,7 @@ private:
 
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;
+  bool m_bGroupDisplayChanged;
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 

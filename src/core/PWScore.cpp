@@ -134,6 +134,7 @@ PWScore::PWScore() :
                      m_LockCount(0), m_LockCount2(0),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
+                     m_bGroupDisplayChanged(false),
                      m_IsReadOnly(false), m_bUniqueGTUValidated(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
@@ -484,7 +485,9 @@ void PWScore::ReInit(bool bNewFile)
   // Clear any unknown preferences from previous databases
   PWSprefs::GetInstance()->ClearUnknownPrefs();
 
-  SetChanged(false, false);
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
+  SetGroupDisplayChanged(false);
 }
 
 void PWScore::NewFile(const StringX &passkey)
@@ -492,7 +495,8 @@ void PWScore::NewFile(const StringX &passkey)
   ClearData();
   SetPassKey(passkey);
   m_ReadFileVersion = PWSfile::VCURRENT;
-  SetChanged(false, false);
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
 }
 
 // functor object type for for_each:
@@ -595,7 +599,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   // Update info only if written version is same as read version
   // (otherwise we're exporting, not saving)
   if (version == m_ReadFileVersion) {
-    SetChanged(false, false);
+    SetDBChanged(false);
+    SetDBPrefsChanged(false);
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
   }
@@ -789,6 +794,10 @@ void PWScore::Undo()
     m_undo_iter--;
 
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
+
+  // If user has set Save Immediately, then a Undo changes the DB and it should be
+  // saved (with or without an intermediate backup)
+  NotifyDBModified();
 }
 
 void PWScore::Redo()
@@ -802,6 +811,10 @@ void PWScore::Redo()
     m_redo_iter++;
 
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
+  
+  // If user has set Save Immediately, then a Redo changes the DB and it should be
+  // saved (with or without an intermediate backup)
+  NotifyDBModified();
 }
 
 bool PWScore::AnyToUndo() const
@@ -1052,7 +1065,8 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   } // !m_isAuxCore
 
   ClearData(); //Before overwriting old data, but after opening the file...
-  SetChanged(false, false);
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
 
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
@@ -1545,7 +1559,8 @@ bool PWScore::WasDisplayStatusChanged() const
   // m_OrigDisplayStatus is set while reading file.
   // m_hdr.m_displaystatus may be changed via SetDisplayStatus
   // Only for V3 and later
-  return m_ReadFileVersion >= PWSfile::V30 && m_hdr.m_displaystatus != m_OrigDisplayStatus;
+  return m_ReadFileVersion >= PWSfile::V30 &&
+         (m_hdr.m_displaystatus != m_OrigDisplayStatus || m_bGroupDisplayChanged);
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
