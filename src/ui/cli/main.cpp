@@ -330,7 +330,7 @@ void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &up
   }
 }
 
-int AddEntry(PWScore &core, const UserArgs &ua)
+int AddEntry(PWScore &core, const UserArgs::FieldUpdates &fieldValues)
 {
 
   CItemData item;
@@ -340,7 +340,7 @@ int AddEntry(PWScore &core, const UserArgs &ua)
 
   bool got_passwd{false}, got_title{false};
   // Check if the user specified a password also
-  find_if(ua.fieldValues.begin(), ua.fieldValues.end(),
+  find_if(fieldValues.begin(), fieldValues.end(),
               [&got_title, &got_passwd](const FieldValue &fv) {
     const auto field{get<0>(fv)};
     got_passwd = got_passwd || (field == CItemData::PASSWORD);
@@ -356,11 +356,11 @@ int AddEntry(PWScore &core, const UserArgs &ua)
   if ( !got_passwd ) {
     // User didnot specify a password on command-line. Generate one
     PWPolicy pwp;
-    InitPWPolicy(pwp, core, ua.fieldValues);
+    InitPWPolicy(pwp, core, fieldValues);
     item.SetFieldValue(CItemData::PASSWORD, pwp.MakeRandomPassword());
   }
 
-  for_each(ua.fieldValues.begin(), ua.fieldValues.end(), [&item](const FieldValue &fv) {
+  for_each(fieldValues.begin(), fieldValues.end(), [&item](const FieldValue &fv) {
     item.SetFieldValue(get<0>(fv), get<1>(fv));
   });
 
@@ -368,6 +368,11 @@ int AddEntry(PWScore &core, const UserArgs &ua)
     status = core.Execute(AddEntryCommand::Create(&core, item));
 
   return status;
+}
+
+int AddEntry(PWScore &core, const UserArgs &ua)
+{
+  return AddEntry(core, ua.fieldValues);
 }
 
 int SaveCore(PWScore &core, const UserArgs &ua)
