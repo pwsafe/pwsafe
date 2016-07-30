@@ -13,4 +13,12 @@ TEST(AddEntryTest, AddEntryWithTitleOnly) {
   EXPECT_FALSE(entry.GetPassword().empty()) << "Password should be auto-generated";
 }
 
+TEST(AddEntryTest, AddEntryWithoutTitle) {
+  PWScore core;
+  std::wostringstream os;
+  int ret = AddEntryWithFields(core, {}, os);
+  EXPECT_NE(ret, PWScore::SUCCESS);
+  EXPECT_EQ(core.GetNumEntries(), 0);
+}
+
 }  // namespace
