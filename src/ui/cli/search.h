@@ -10,7 +10,7 @@
 #define __pwsafe_xcode6__search__
 
 class PWScore;
-class UserArgs;
+struct UserArgs;
 
 int Search(PWScore &core, const UserArgs &ua);
 int SaveAfterSearch(PWScore &core, const UserArgs &ua);

@@ -1,6 +1,6 @@
 #pragma once
 
-class UserArgs;
+struct UserArgs;
 class PWScore;
 
 int Diff(PWScore &core, const UserArgs &ua);
