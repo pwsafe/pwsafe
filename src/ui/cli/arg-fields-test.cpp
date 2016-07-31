@@ -35,14 +35,14 @@ TEST(ParseFieldArgsTest, ThrowsOnInvalidField) {
   EXPECT_TRUE(thrown);
 }
 
-TEST(ParseeFieldValue, ParsesSingleFieldValue) {
+TEST(ParsesFieldValue, ParsesSingleFieldValue) {
   UserArgs::FieldUpdates upd = ParseFieldValues(L"Username=example");
   EXPECT_EQ(upd.size(), 1);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::USER);
   EXPECT_EQ(std::get<1>(upd[0]), L"example");
 }
 
-TEST(ParseeFieldValue, ParsesMultipleFieldValue) {
+TEST(ParsesFieldValue, ParsesMultipleFieldValue) {
   UserArgs::FieldUpdates upd = ParseFieldValues(L"Group=NewGroup,URL=example.com,Username=example");
   EXPECT_EQ(upd.size(), 3);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
