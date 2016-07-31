@@ -72,7 +72,10 @@ void PasswordSafeFrame::DoEdit(CItemData item)
 {
   int rc = 0;
   if (!item.IsShortcut()) {
-    AddEditPropSheet editDbox(this, m_core, AddEditPropSheet::EDIT, &item, this);
+    bool read_only = m_core.IsReadOnly() || item.IsProtected();
+    AddEditPropSheet editDbox(this, m_core,
+                              read_only ? AddEditPropSheet::VIEW : AddEditPropSheet::EDIT,
+                              &item, this);
     rc = editDbox.ShowModal();
   } else {
     EditShortcut editDbox(this, m_core, &item);
