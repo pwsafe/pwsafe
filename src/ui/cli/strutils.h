@@ -53,4 +53,26 @@ const char *status_text(int status);
 
 std::wostream & operator<<( std::wostream &os, const st_GroupTitleUser &gtu);
 
+template <class string_t>
+inline string_t trimleft(const string_t &s)
+{
+    const typename string_t::value_type space = L' ';
+    const auto nonspace = s.find_first_not_of(space);
+    return nonspace == string_t::npos? string_t{}: string_t{s, nonspace};
+}
+
+template <class string_t>
+inline string_t trimright(const string_t &s)
+{
+    const typename string_t::value_type space = L' ';
+    const auto last = s.find_last_not_of(space);
+    return string_t{s, 0, last == string_t::npos? 0: last+1};
+}
+
+template <class string_t>
+inline string_t trim(const string_t &s)
+{
+    return trimright(trimleft(s));
+}
+
 #endif /* defined(__pwsafe_xcode6__strutils__) */

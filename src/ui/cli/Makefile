@@ -5,7 +5,8 @@ SRC         = main.cpp search.cpp argutils.cpp searchaction.cpp strutils.cpp \
 			  safeutils.cpp diff.cpp impexp.cpp
 
 TESTSRC         = add-entry-test.cpp arg-fields-test.cpp split-test.cpp \
-				  safeutils.cpp argutils.cpp searchaction.cpp strutils.cpp
+				  safeutils.cpp argutils.cpp searchaction.cpp strutils.cpp \
+				  trim-test.cpp
 
 COREPATH        = ../../core
 OSPATH          = ../../os
