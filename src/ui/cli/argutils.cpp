@@ -116,7 +116,7 @@ UserArgs::FieldUpdates ParseFieldValues(const wstring &updates)
   UserArgs::FieldUpdates fieldValues;
   Split(updates, L"[;,]", [&fieldValues](const wstring &nameval) {
     std::wsmatch m;
-    if (std::regex_match(nameval, m, std::wregex(L"([^=:]+)[=:](.+)"))) {
+    if (std::regex_match(nameval, m, std::wregex(L"([^=:]+?)[=:](.+)"))) {
       fieldValues.push_back( std::make_tuple(String2FieldType(m.str(1)), std2stringx(m.str(2))) );
     }
     else {
