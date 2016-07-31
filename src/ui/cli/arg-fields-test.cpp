@@ -53,4 +53,20 @@ TEST(ParsesFieldValue, ParsesMultipleFieldValue) {
   EXPECT_EQ(std::get<1>(upd[2]), L"example");
 }
 
+TEST(ParsesFieldValue, ParsesSingleFieldValueWithSpacesAfterSeparator) {
+  UserArgs::FieldUpdates upd;
+  ASSERT_NO_THROW(upd = ParseFieldValues(L"Group= NewGroup"));
+  EXPECT_EQ(upd.size(), 1);
+  EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
+  EXPECT_EQ(std::get<1>(upd[0]), L" NewGroup");
+}
+
+TEST(ParsesFieldValue, ParsesSingleFieldValueWithSpacesBeforeSeparator) {
+  UserArgs::FieldUpdates upd;
+  ASSERT_NO_THROW(upd = ParseFieldValues(L"Group =NewGroup"));
+  EXPECT_EQ(upd.size(), 1);
+  EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
+  EXPECT_EQ(std::get<1>(upd[0]), L"NewGroup");
+}
+
 }  // namespace

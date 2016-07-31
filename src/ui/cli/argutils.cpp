@@ -101,14 +101,19 @@ inline bool CaseSensitive(const wstring &str)
   return str.length() == 0 || str[0] == L'i';
 }
 
-
-void UserArgs::SetSubset(const std::wstring &s)
+Restriction ParseSubset(const std::wstring &s)
 {
   const std::wregex restrictPattern{L"([[:alpha:]-]+)([!]?[=^$~]=)([^;]+?)(/[iI])?$"};
   wsmatch m;
   if (regex_search(s, m, restrictPattern))
-    subset = Restriction{String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))};
+    return Restriction{String2FieldType(m.str(1)), Str2MatchRule(m.str(2)), m.str(3), CaseSensitive(m.str(4))};
   throw std::invalid_argument("Invalid subset: " + toutf8(s));
+}
+
+
+void UserArgs::SetSubset(const std::wstring &s)
+{
+  subset = ParseSubset(s);
 }
 
 UserArgs::FieldUpdates ParseFieldValues(const wstring &updates)
