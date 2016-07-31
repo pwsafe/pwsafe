@@ -1558,7 +1558,8 @@ void PWScore::GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
     const CItemData &ci = iter->second;
-    setGroups.insert(ci.GetGroup().c_str());
+    if (ci.IsGroupSet())
+      setGroups.insert(ci.GetGroup().c_str());
   }
 
   vUniqueGroups.clear();
