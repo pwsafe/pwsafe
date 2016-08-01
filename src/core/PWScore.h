@@ -429,8 +429,8 @@ public:
   // Empty Groups
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
   {m_vEmptyGroups = vEmptyGroups; SetDBChanged(true);}
-  const std::vector<StringX> &GetEmptyGroups() {return m_vEmptyGroups;}
-  bool IsEmptyGroup(const StringX &sxEmptyGroup);
+  const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
+  bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
 
   // Keyboard shortcuts
   bool AddKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);

@@ -3230,7 +3230,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 
   std::vector<std::wstring> aryGroups;
   GetUniqueGroups(aryGroups);
-  Format(st_dbp.numgroups, L"%d", aryGroups.size());
+  Format(st_dbp.numgroups, L"%d", aryGroups.size() + m_vEmptyGroups.size());
   Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)
@@ -3474,7 +3474,7 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
   }
 }
 
-bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup)
+bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup) const
 {
   return find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) !=
                    m_vEmptyGroups.end();
