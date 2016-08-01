@@ -33,7 +33,11 @@ ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 else
 	XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 	PLATFORM=unix
-	EXTLIBS=-luuid -lxerces-c
+	GTEST_DIR=/usr/src/gtest
+	GTEST_HEADERS=/usr/include/gtest/*.h /usr/include/gtest/internal/*.h
+	GTEST_SRCS=$(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
+	GTEST_OBJ = $(OBJPATH)/gtest-all.o
+	EXTLIBS=-luuid -lxerces-c -lpthread $(GTEST_OBJ)
 endif
 
 CXXFLAGS += $(CPPFLAGS) -Wall -I$(COREPATH) -I../.. $(XERCESCPPFLAGS) -DUNICODE
@@ -69,7 +73,11 @@ deepclean: clean
 setup:
 	@mkdir -p $(OBJPATH) $(BINPATH)
 
-test: $(TESTEXE)
+test: $(GTEST_OBJ) $(TESTEXE)
+
+$(GTEST_OBJ): $(GTEST_SRCS_) $(GTEST_HEADERS)
+	$(CXX) -g $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c -o $@ \
+	$(GTEST_DIR)/src/gtest-all.cc
 
 $(TESTEXE): $(LIBS) $(TESTOBJ)
 	$(CXX) -v -g $(CXXFLAGS) $(filter %.o,$^)  -o $@  $(LD_FLAGS) \
