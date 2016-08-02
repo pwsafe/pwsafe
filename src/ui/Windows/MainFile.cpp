@@ -454,7 +454,7 @@ void DboxMain::OnClose()
 
 int DboxMain::Close(const bool bTrySave)
 {
-  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? L"true" : L"false");
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -3837,7 +3837,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
                      cs_datetime.substr( 0, 4) +  // YYYY
                      cs_datetime.substr( 5, 2) +  // MM
                      cs_datetime.substr( 8, 2) +  // DD
-                     StringX(_T("_")) +
+                     StringX(L"_") +
                      cs_datetime.substr(11, 2) +  // HH
                      cs_datetime.substr(14, 2) +  // MM
                      cs_datetime.substr(17, 2);   // SS
@@ -3917,7 +3917,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
 void DboxMain::CleanUpAndExit(const bool bNormalExit)
 {
-  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? L"true" : L"false");
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled

@@ -28,22 +28,22 @@ void CEditInt::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   DWORD dw = GetSel();
 
   switch(nChar) {
-    case _T('+'):
-    case _T('-'):
+    case L'+':
+    case L'-':
       if (LOWORD(dw) != 0)
         return;
       break;
-    case _T('0'):
-    case _T('1'):
-    case _T('2'):
-    case _T('3'):
-    case _T('4'):
-    case _T('5'):
-    case _T('6'):
-    case _T('7'):
-    case _T('8'):
-    case _T('9'):
-    case _T('\b'):
+    case L'0':
+    case L'1':
+    case L'2':
+    case L'3':
+    case L'4':
+    case L'5':
+    case L'6':
+    case L'7':
+    case L'8':
+    case L'9':
+    case L'\b':
       break;
     default:
       return;

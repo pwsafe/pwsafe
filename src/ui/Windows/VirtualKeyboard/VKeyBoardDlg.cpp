@@ -209,9 +209,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   // Try to load DLL
 #if defined(_DEBUG) || defined(DEBUG)
-  TCHAR *dll_name = _T("pws_osk_D.dll");
+  wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  TCHAR *dll_name = _T("pws_osk.dll");
+  wchar_t *dll_name = L"pws_osk.dll";
 #endif
   HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
@@ -359,9 +359,9 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
 #if defined(_DEBUG) || defined(DEBUG)
-  TCHAR *dll_name = _T("pws_osk_D.dll");
+  wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  TCHAR *dll_name = _T("pws_osk.dll");
+  wchar_t *dll_name = L"pws_osk.dll";
 #endif
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 

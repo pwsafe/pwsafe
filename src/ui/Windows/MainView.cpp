@@ -62,7 +62,7 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::DatabaseModified(bool bChanged)
 {
-  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
   // Callback from PWScore if the database has been changed
   // (entries or preferences stored in the database) also
@@ -2046,7 +2046,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
-    pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
+    //pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     m_vGroupDisplayState = GetGroupDisplayState();
 
     if (!LockDataBase())
@@ -2068,8 +2068,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // once a day, we want to check the expired entries list
     CheckExpireList();
   } else {
-    pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
-          m_IdleLockCountDown, nIDEvent);
+    //pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
+    //      m_IdleLockCountDown, nIDEvent);
   }
 }
 
@@ -2082,7 +2082,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup).
 
-  pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
+  //pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (wParam) {
@@ -2186,8 +2186,9 @@ bool DboxMain::IsWorkstationLocked() const
       CloseDesktop(hDesktop);
     }
   }
-  if (bResult)
-    pws_os::Trace(L"IsWorkstationLocked() returning true");
+
+  //if (bResult)
+  //  pws_os::Trace(L"IsWorkstationLocked() returning true");
   return bResult;
 }
 

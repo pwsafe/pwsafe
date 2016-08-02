@@ -78,7 +78,7 @@ void CYubiMixin::yubiRequestHMACSha1(const CSecString &challenge)
       m_pending = true;
       yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
     } else {
-      TRACE(_T("m_yk.writeChallengeBegin() failed"));
+      pws_os::Trace(L"m_yk.writeChallengeBegin() failed");
     }
     trashMemory(chalBuf, chalLength);
   }

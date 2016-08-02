@@ -35,7 +35,7 @@ static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
   : CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
+    m_YubiSN(L""), m_YubiSK(L""), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
@@ -165,7 +165,7 @@ void CYubiCfgDlg::yubiInserted(void)
     HideSK();
     m_YubiSK = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
   } else 
-    m_YubiSK = _T("");
+    m_YubiSK = L"";
   ReadYubiSN();
   GetDlgItem(IDC_YUBI_SN)->SetWindowText(m_YubiSN);
   UpdateData(FALSE);
@@ -173,7 +173,7 @@ void CYubiCfgDlg::yubiInserted(void)
 
 void CYubiCfgDlg::yubiRemoved(void)
 {
-  m_YubiSN = _T("");
+  m_YubiSN = L"";
   m_YubiSK = CSecString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
   ShowSK();
   UpdateData(FALSE);
@@ -215,7 +215,7 @@ void CYubiCfgDlg::OnBnClickedOk()
       m_core.WriteCurFile();
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
-      const CString err = _T("Failed to update YubiKey");
+      const CString err = L"Failed to update YubiKey";
       GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_YUBI_API)->SetWindowText(err);
     }

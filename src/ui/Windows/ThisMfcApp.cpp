@@ -366,14 +366,14 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   // Find resource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
-                      _T("pwsafe%s%s.dll") : _T("pwsafe%s_%s.dll");
+                      L"pwsafe%s%s.dll" : L"pwsafe%s_%s.dll";
   cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                               pws_os::LOAD_LIBRARY_APP));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
-    cs_ResPath.Format(_T("pwsafe%s.dll"), cs_LANG);
+    cs_ResPath.Format(L"pwsafe%s.dll", cs_LANG);
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                                 pws_os::LOAD_LIBRARY_APP));
   }

@@ -22,7 +22,7 @@ PWSclipboard::PWSclipboard()
   memset(m_digest, 0, sizeof(m_digest));
 
   // Spelling counts - must be exact!
-  CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(_T("Clipboard Viewer Ignore"));
+  CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(L"Clipboard Viewer Ignore");
 }
 
 PWSclipboard::~PWSclipboard()
@@ -37,7 +37,7 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(TCHAR));
   LPTSTR pDummyGlobalLock = (LPTSTR)::GlobalLock(hDummyGlobalMemory);
 
-  PWSUtil::strCopy(pDummyGlobalLock, 2, _T("\0") , 1);
+  PWSUtil::strCopy(pDummyGlobalLock, 2, L"\0" , 1);
   ::GlobalUnlock(hDummyGlobalMemory);
 
   // Real data
@@ -85,7 +85,7 @@ bool PWSclipboard::ClearData()
       ctx.Final(digest);
       if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
         trashMemory((void *)pData, dwlength);
-        StringX blank(_T(""));
+        StringX blank(L"");
         SetData(blank, false);
         memset(m_digest, 0, SHA256::HASHLEN);
       }

@@ -1575,7 +1575,7 @@ const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey
   if (!sxMenuItemName.empty()) {
     // These may have the shortcut hardcoded after a tab character e.g. "\tF1" for Help
     // Remove the tab and shortcut
-    size_t found = sxMenuItemName.find_first_of(_T("\t"));
+    size_t found = sxMenuItemName.find_first_of(L"\t");
     if (found != StringX::npos)
       sxMenuItemName.erase(found);
   }

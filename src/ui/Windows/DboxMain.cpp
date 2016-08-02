@@ -152,7 +152,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
-  m_hUser32 = HMODULE(pws_os::LoadLibrary(_T("User32.dll"), pws_os::LOAD_LIBRARY_SYS));
+  m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
   if (m_hUser32 != NULL) {
     m_pfcnShutdownBlockReasonCreate = PSBR_CREATE(pws_os::GetFunction(m_hUser32,
                                                                       "ShutdownBlockReasonCreate"));
@@ -224,7 +224,7 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
   m_bWTSRegistered = false;
-  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(_T("wtsapi32.dll"), pws_os::LOAD_LIBRARY_SYS));
+  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(L"wtsapi32.dll", pws_os::LOAD_LIBRARY_SYS));
   if (hWTSAPI32 == NULL)
     return;
 
@@ -2046,8 +2046,8 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 {
   PWS_LOGIT_ARGS("bUpdateWindows=%s, bShow=%s",
-    bUpdateWindows ? _T("true") : _T("false"), 
-    bShow ? _T("true") : _T("false"));
+    bUpdateWindows ? L"true" : L"false", 
+    bShow ? L"true" : L"false");
 
   // This restores the data in the main dialog.
   // If currently locked, it checks the user knows the correct passphrase first
@@ -2299,7 +2299,7 @@ exit:
 BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
 {
   static const TCHAR *tcValidKeys = 
-          _T("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+          L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   // Convert ASCII letters to Upper case
   if (wVirtualKeyCode >= 'a' && wVirtualKeyCode <= 'z')
