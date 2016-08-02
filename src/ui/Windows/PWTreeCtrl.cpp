@@ -1327,7 +1327,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
     HGLOBAL hg;
     HDROP hdrop;
     UINT nFiles;
-    TCHAR szDraggedFile[MAX_PATH];
+    wchar_t szDraggedFile[MAX_PATH];
 
     //pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
     hg = pDataObject->GetGlobalData(CF_HDROP);

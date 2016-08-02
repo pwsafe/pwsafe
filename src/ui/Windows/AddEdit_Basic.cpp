@@ -1158,7 +1158,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Write out text
   fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
-             self->M_realnotes().GetLength() * sizeof(TCHAR), fd);
+             self->M_realnotes().GetLength() * sizeof(wchar_t), fd);
 
   // Close file before invoking editor
   fclose(fd);
