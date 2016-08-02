@@ -64,7 +64,7 @@ void CYubiMixin::yubiRequestHMACSha1(const CSecString &challenge)
     // Prepare the HMAC-SHA1 challenge here
 
     BYTE chalBuf[SHA1_MAX_BLOCK_SIZE];
-    BYTE chalLength = BYTE(challenge.GetLength()*sizeof(TCHAR));
+    BYTE chalLength = BYTE(challenge.GetLength() * sizeof(wchar_t));
     memset(chalBuf, 0, SHA1_MAX_BLOCK_SIZE);
     if (chalLength > SHA1_MAX_BLOCK_SIZE)
       chalLength = SHA1_MAX_BLOCK_SIZE;

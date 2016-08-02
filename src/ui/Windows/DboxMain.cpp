@@ -1144,7 +1144,7 @@ BOOL DboxMain::OnInitDialog()
       std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
                                                    DEFAULT_SUFFIX);
       std::wstring dir = PWSdirs::GetSafeDir();
-      if (dir[dir.length()-1] != TCHAR('\\')) dir += L"\\";
+      if (dir[dir.length()-1] != L'\\') dir += L"\\";
       fname = dir + fname;
       if (pws_os::FileExists(fname)) 
         bOOI = OpenOnInit();
@@ -2298,7 +2298,7 @@ exit:
 
 BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
 {
-  static const TCHAR *tcValidKeys = 
+  static const wchar_t *tcValidKeys = 
           L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   // Convert ASCII letters to Upper case

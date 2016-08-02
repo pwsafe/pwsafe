@@ -363,7 +363,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     if (us4.length() > 0) {
       UserStreams[4].Type = LastReservedStream + 5;
       UserStreams[4].Buffer = (void *)us4.c_str();
-      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(TCHAR));
+      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(wchar_t));
     }
 
     MINIDUMP_USER_STREAM_INFORMATION musi;
