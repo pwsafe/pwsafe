@@ -900,7 +900,7 @@ void CWZSelectDB::yubiShowChallengeSent()
 {
   // A request's in the air, setup GUI to wait for reply
   m_yubi_status.ShowWindow(SW_HIDE);
-  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_status.SetWindowText(L"");
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
 }
@@ -912,8 +912,8 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetPos(0);
-    m_yubi_status.SetWindowText(_T(""));
-    TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
+    m_yubi_status.SetWindowText(L"");
+    pws_os::Trace(L"yubiCheckCompleted: YKLIB_OK");
     m_pending = false;
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     m_state |= KEYPRESENT;
@@ -943,7 +943,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), yrc);
+    pws_os::Trace(L"yubiCompleted(%d)\n", yrc);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }

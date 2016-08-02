@@ -257,7 +257,7 @@ void CPasskeySetup::ProcessPhrase()
 {
   // OnOK clears the passkey, so we save it
   const CSecString save_passkey = m_passkey;
-  TRACE(_T("CPasskeySetup::ProcessPhrase(%s)\n"), m_passkey);
+  TRACE(L"CPasskeySetup::ProcessPhrase(%s)\n", m_passkey);
   CPKBaseDlg::OnOK();
   m_passkey = save_passkey;
 }

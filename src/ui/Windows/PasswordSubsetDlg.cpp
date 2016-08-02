@@ -283,7 +283,7 @@ void CPasswordSubsetDlg::OnCopy()
   cs_data.ReleaseBuffer(len);
 
   // Remove blanks from between the characters
-  cs_data.Remove(_T(' '));
+  cs_data.Remove(L' ');
   GetMainDlg()->SetClipboardData(cs_data);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

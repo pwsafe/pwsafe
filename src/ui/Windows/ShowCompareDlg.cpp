@@ -99,7 +99,7 @@ BOOL CShowCompareDlg::OnInitDialog()
 
 CString ConvertKeyBoardShortcut(int32 &iKBShortcut)
 {
-  CString kbs(_T(""));
+  CString kbs(L"");
   if (iKBShortcut != 0) {
     CString cs_temp;
     WORD wVirtualKeyCode = iKBShortcut & 0xff;

@@ -763,6 +763,10 @@ void PWScore::ResetStateAfterSave()
 
 int PWScore::Execute(Command *pcmd)
 {
+  // If we have undone some previous commands, then this new command must
+  // go on the end of the currently executed commands in the 
+  // command chain and so we must delete any old commands
+  // that have been undone first
   if (m_redo_iter != m_vpcommands.end()) {
     std::vector<Command *>::iterator cmd_Iter;
 
@@ -772,9 +776,15 @@ int PWScore::Execute(Command *pcmd)
     m_vpcommands.erase(m_redo_iter, m_vpcommands.end());
   }
 
+  // Put this command on the end of the command chain and reset iterators
+  // to the end for undo/redo
   m_vpcommands.push_back(pcmd);
   m_undo_iter = m_redo_iter = m_vpcommands.end();
+
+  // Execute it
   int rc = pcmd->Execute();
+
+  // Set undo iterator to this one
   m_undo_iter--;
 
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
@@ -783,11 +793,16 @@ int PWScore::Execute(Command *pcmd)
 
 void PWScore::Undo()
 {
+  // Undo last executed command
   ASSERT(m_undo_iter != m_vpcommands.end());
+
+  // Reset next command to redo (i.e. the one we just about to undo)
   m_redo_iter = m_undo_iter;
 
+  // Undo it
   (*m_undo_iter)->Undo();
 
+  // Reset iterator so that we know next command to undo
   if (m_undo_iter == m_vpcommands.begin())
     m_undo_iter = m_vpcommands.end();
   else
@@ -802,11 +817,16 @@ void PWScore::Undo()
 
 void PWScore::Redo()
 {
+  // Redo last undone command
   ASSERT(m_redo_iter != m_vpcommands.end());
+
+  // Reset next command to undo (i.e. the one we just about to redo)
   m_undo_iter = m_redo_iter;
 
+  // Redo it
   (*m_redo_iter)->Redo();
 
+  // Reset iterator so that we know next command to redo
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
 

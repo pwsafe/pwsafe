@@ -67,7 +67,7 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
+      //pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_DDstatic.EndDrop();
     }
     return sCode;
@@ -91,7 +91,6 @@ public:
   DROPEFFECT StartDragging(RECT *rClient)
   {
     //pws_os::Trace(L"CStaticDataSource::StartDragging\n");
-
     DelayRenderData(CF_UNICODETEXT);
     DelayRenderData(CF_TEXT);
 
@@ -338,7 +337,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
       }
       pws_os::Trace(L"m_pDataSource->StartDragging() failed\n");
     } else {
-      pws_os::Trace(L"CDDStatic::OnMouseMove() show cursor\n");
+      //pws_os::Trace(L"CDDStatic::OnMouseMove() show cursor\n");
       while (ShowCursor(TRUE) < 0)
         ;
     }
@@ -414,23 +413,23 @@ void CDDStatic::SendToClipboard()
 
 BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
-  pws_os::Trace(L"CDDStatic::OnRenderGlobalData: %s; ci == %p\n",
-          lpFormatEtc->cfFormat == CF_UNICODETEXT ? L"CF_UNICODETEXT" : L"CF_TEXT",
-          m_pci);
+  //pws_os::Trace(L"CDDStatic::OnRenderGlobalData: %s; ci == %p\n",
+  //        lpFormatEtc->cfFormat == CF_UNICODETEXT ? L"CF_UNICODETEXT" : L"CF_TEXT",
+  //        m_pci);
 
   if (lpFormatEtc->cfFormat != CF_UNICODETEXT &&
       lpFormatEtc->cfFormat != CF_TEXT)
     return FALSE;
 
   if (m_hgDataTXT != NULL) {
-    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
+    //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     GlobalUnlock(m_hgDataTXT);
     GlobalFree(m_hgDataTXT);
     m_hgDataTXT = NULL;
   }
 
   if (m_hgDataUTXT != NULL) {
-    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
+    //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     GlobalUnlock(m_hgDataUTXT);
     GlobalFree(m_hgDataUTXT);
     m_hgDataUTXT = NULL;
@@ -439,7 +438,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   StringX cs_dragdata;
   if (m_pci == NULL) {
     if (m_groupname.empty()) {
-      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - mpci == NULL\n");
+      //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - mpci == NULL\n");
       return FALSE;
     } else {
       cs_dragdata = m_groupname;
@@ -490,7 +489,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
       ASSERT(dwBufLen != 0);
       lpszA = new char[dwBufLen];
-      pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
+      //pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
       WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
       lpszW = NULL;
     }
@@ -533,7 +532,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       pws_os::Trace(L"CDDStatic::OnRenderGlobalData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - enough room - copy our data\n");
+      //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -565,13 +564,16 @@ bad_return:
       *phgData = NULL;
     }
   } else {
+    /*
     pws_os::Trace(L"CDDStatic::OnRenderGlobalData - D&D Data:");
     if (lpFormatEtc->cfFormat == CF_UNICODETEXT) {
       pws_os::Trace(L"\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
-      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
+      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);   // data is NOT Unicode
     }
+    */
   }
+
   // Unlock our buffer
   if (lpData != NULL)
     GlobalUnlock(*phgData);
