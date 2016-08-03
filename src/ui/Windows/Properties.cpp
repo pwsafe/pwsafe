@@ -46,10 +46,13 @@ BOOL CProperties::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  CString ngroups;
+  ngroups.Format(IDS_NUMGROUPS_E,
+     m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
+
   GetDlgItem(IDC_DATABASENAME)->SetWindowText(m_pdbp->database.c_str());
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());
-  GetDlgItem(IDC_NUMGROUPS)->SetWindowText(m_pdbp->numgroups.c_str());
-  GetDlgItem(IDC_NUMEMPTYGROUPS)->SetWindowText(m_pdbp->numemptygroups.c_str());
+  GetDlgItem(IDC_NUMGROUPS)->SetWindowText(ngroups);
   GetDlgItem(IDC_NUMENTRIES)->SetWindowText(m_pdbp->numentries.c_str());
   GetDlgItem(IDC_NUMATTACHMENTS)->SetWindowText(m_pdbp->numattachments.c_str());
   GetDlgItem(IDC_SAVEDON)->SetWindowText(m_pdbp->whenlastsaved.c_str());
