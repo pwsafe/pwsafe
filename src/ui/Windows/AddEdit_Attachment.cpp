@@ -320,7 +320,7 @@ void CAddEdit_Attachment::OnAttExport()
   CString filter;
   CSimpleArray<GUID> aguidFileTypes;
   HRESULT hResult;
-  stringT soutputfile;
+  std::wstring soutputfile;
 
   wchar_t fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);

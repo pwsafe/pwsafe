@@ -127,7 +127,7 @@ private:
   int m_save[N_NOHEX]; // save cb's state when disabling hex
   UINT m_savelen[N_HEX_LENGTHS];
 
-  stringT m_PolicyName;
+  std::wstring m_PolicyName;
   PWPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;

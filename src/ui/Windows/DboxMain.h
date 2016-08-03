@@ -411,7 +411,7 @@ public:
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}
 
-  stringT DoMerge(PWScore *pothercore,
+  std::wstring DoMerge(PWScore *pothercore,
                   const bool bAdvanced, CReport *prpt, bool *pbCancel);
   bool DoCompare(PWScore *pothercore,
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
@@ -428,7 +428,7 @@ public:
                  const StringX &sx_ExportKey, int &numExported, CReport *prpt);
 
   int TestSelection(const bool bAdvanced,
-                    const stringT &subgroup_name,
+                    const std::wstring &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
                     const OrderedItemList *pOIL) const
@@ -824,7 +824,7 @@ private:
                          CItemData::FieldType ft, bool bUpdateGUI);
   virtual void GUISetupDisplayInfo(CItemData &ci);
   virtual void GUIRefreshEntry(const CItemData &ci);
-  virtual void UpdateWizard(const stringT &s);
+  virtual void UpdateWizard(const std::wstring &s);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 

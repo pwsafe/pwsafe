@@ -52,7 +52,7 @@ public:
   {return app.GetMainDlg()->getSelectedItem();}
 
   int WZPSHTestSelection(const bool bAdvanced,
-                         const stringT &subgroup_name,
+                         const std::wstring &subgroup_name,
                          const int &subgroup_object,
                          const int &subgroup_function,
                          const OrderedItemList *pOIL)
@@ -66,8 +66,8 @@ public:
                       bool *pbCancel)
   {return app.GetMainDlg()->DoCompare(pothercore, bAdvanced, prpt, pbCancel);}
 
-  stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
-                       bool *pbCancel)
+  std::wstring WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
+                            bool *pbCancel)
   {return app.GetMainDlg()->DoMerge(pothercore, bAdvanced, prpt, pbCancel);}
 
   void WZPSHDoSynchronize(PWScore *pothercore,

@@ -205,7 +205,7 @@ void DboxMain::GUIRefreshEntry(const CItemData &ci)
   UpdateEntryImages(ci);
 }
 
-void DboxMain::UpdateWizard(const stringT &s)
+void DboxMain::UpdateWizard(const std::wstring &s)
 {
   if (m_pWZWnd != NULL)
     m_pWZWnd->SetWindowText(s.c_str());
