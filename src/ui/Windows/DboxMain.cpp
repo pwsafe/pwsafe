@@ -1740,8 +1740,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
     pcore->SetCurFile(curFile);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems) != 0) {
-      extern void RelativizePath(stringT &);
-      stringT cf = curFile.c_str(); // relativize and set pref
+      extern void RelativizePath(std::wstring &);
+      std::wstring cf = curFile.c_str(); // relativize and set pref
       RelativizePath(cf);
       PWSprefs::GetInstance()->SetPref(PWSprefs::CurrentFile, cf.c_str());
     }

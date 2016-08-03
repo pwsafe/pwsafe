@@ -259,7 +259,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
-  stringT str_extn(L"");
+  std::wstring str_extn(L"");
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
@@ -273,10 +273,10 @@ BOOL CWZSelectDB::OnInitDialog()
       GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
 
-      stringT drive, dir, file, ext;
+      std::wstring drive, dir, file, ext;
       pws_os::splitpath(m_pWZPSH->WZPSHGetCurFile().c_str(), drive, dir, file, ext);
 
-      stringT str_file = file + L".export";
+      std::wstring str_file = file + L".export";
 
       // Create new DB
       const PWSfile::VERSION current_version = m_pWZPSH->GetDBVersion();

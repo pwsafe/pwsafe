@@ -861,7 +861,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         if (CheckFile(*arg)) {
           fileGiven = true;
           // We send core the full path 'cause otherwise incr. backups & such get confused.
-          stringT abspath = pws_os::fullpath(arg->GetString());
+          std::wstring abspath = pws_os::fullpath(arg->GetString());
           if (abspath.empty()) // Should never happen, but try to slog on if so.
             abspath = arg->GetString();
           m_core.SetCurFile(abspath.c_str());
@@ -1004,7 +1004,7 @@ BOOL ThisMfcApp::InitInstance()
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor);
 
   if (m_core.GetCurFile().empty()) {
-    stringT path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
+    std::wstring path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
     pws_os::AddDrive(path);
     m_core.SetCurFile(path.c_str());
   }

@@ -1068,7 +1068,7 @@ int DboxMain::Save(const SaveType savetype)
   CString cs_msg, cs_temp;
   CGeneralMsgBox gmb;
   std::wstring NewName;
-  stringT bu_fname; // used to undo backup if save failed
+  std::wstring bu_fname; // used to undo backup if save failed
 
   const StringX sxCurrFile = m_core.GetCurFile();
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
@@ -1407,7 +1407,7 @@ void DboxMain::OnExportVx(UINT nID)
 
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
   PWSfile::VERSION export_version = PWSfile::UNKNOWN_VERSION;
-  stringT sfx = L"";
+  std::wstring sfx = L"";
   int fdf = IDS_FDF_DB_ALL;
 
   switch (nID) {
@@ -1910,7 +1910,7 @@ void DboxMain::OnExportAttachment()
   CSimpleArray<GUID> aguidFileTypes;
   HRESULT hResult;
   StringX sxAttFileName;
-  stringT soutputfile;
+  std::wstring soutputfile;
   CImage AttImage;
   int iAttType(0);  // -1 not an image, 0 not yet tested, +1 an image
 
@@ -2927,8 +2927,8 @@ void DboxMain::OnSynchronize()
     SetChanged(DATA);
 }
 
-stringT DboxMain::DoMerge(PWScore *pothercore,
-                          const bool bAdvanced, CReport *prpt, bool *pbCancel)
+std::wstring DboxMain::DoMerge(PWScore *pothercore,
+                               const bool bAdvanced, CReport *prpt, bool *pbCancel)
 {
   CGeneralMsgBox gmb;
   CString cs_title, cs_temp,cs_text;
@@ -3733,15 +3733,15 @@ void DboxMain::OnOK()
   }
 }
 
-void RelativizePath(stringT &curfile)
+void RelativizePath(std::wstring &curfile)
 {
   // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
   // from latter's path. This supports DoK usage
   if (SysInfo::IsUnderPw2go()) {
-    const stringT execDir = pws_os::getexecdir();
-    stringT execDrive, dontCare;
+    const std::wstring execDir = pws_os::getexecdir();
+    std::wstring execDrive, dontCare;
     pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-    stringT fileDrive, fileDir, fileFile, fileExt;
+    std::wstring fileDrive, fileDir, fileFile, fileExt;
     pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
     ToUpper(fileDrive); ToUpper(execDrive);
     if (fileDrive == execDrive) {
@@ -3804,7 +3804,7 @@ void DboxMain::SavePreferencesOnExit()
     RegistryAnonymity();
   } else
     if (!m_core.GetCurFile().empty()) {
-      stringT curFile = m_core.GetCurFile().c_str();
+      std::wstring curFile = m_core.GetCurFile().c_str();
       RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
