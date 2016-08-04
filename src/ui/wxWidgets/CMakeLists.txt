@@ -49,6 +49,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/SystemTrayMenuId.h
     src/ui/wxWidgets/safecombinationprompt.h
     src/ui/wxWidgets/TimedTaskChain.h
+    src/ui/wxWidgets/passwordsubset.h
     )
 
 
@@ -101,6 +102,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/SelectionCriteria.cpp
     src/ui/wxWidgets/SizeRestrictedPanel.cpp
     src/ui/wxWidgets/TimedTaskChain.cpp
+    src/ui/wxWidgets/passwordsubset.cpp
     )
   
 if(HAVE_YKPERS_H)
