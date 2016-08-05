@@ -130,6 +130,7 @@ private:
 
   bool m_bInitdone;
   int m_iPointSize;
+  int m_NotesFirstVisibleLine;
 
   CBitmap m_CopyPswdBitmap;
 };
