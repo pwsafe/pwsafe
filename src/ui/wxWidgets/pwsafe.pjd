@@ -32747,10 +32747,10 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
                 <string name="proxy-Background colour">""</string>
                 <string name="proxy-Base class">"wxBitmapButton"</string>
                 <string name="proxy-Bitmap">""</string>
-                <string name="proxy-Bitmap (disabled)">""</string>
+                <string name="proxy-Bitmap (disabled)">"graphics/toolbar/new/copypassword_disabled.xpm"</string>
                 <string name="proxy-Bitmap (focused)">""</string>
                 <string name="proxy-Bitmap (hover)">""</string>
-                <string name="proxy-Bitmap (selected)">""</string>
+                <string name="proxy-Bitmap (selected)">"graphics/toolbar/new/copypassword.xpm"</string>
                 <long name="proxy-Border">5</long>
                 <string name="proxy-Class">"wxBitmapButton"</string>
                 <string name="proxy-Custom arguments">""</string>
@@ -32840,7 +32840,7 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
               <string name="proxy-Id name">"wxID_STATIC"</string>
               <long name="proxy-Id value">5105</long>
               <string name="proxy-Implementation filename">""</string>
-              <string name="proxy-Label">"Static text"</string>
+              <string name="proxy-Label">""</string>
               <string name="proxy-Member variable name">"m_error"</string>
               <string name="proxy-Name">""</string>
               <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -32879,6 +32879,7 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
             </document>
             <document>
               <string name="proxy-type">"wbButtonProxy"</string>
+              <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCloseClick|DESTROYWINDOW|ID_CPASSWORDSUBSET|CPasswordSubset"</string>
               <string name="filename">""</string>
               <string name="icon-name">"dialogcontrol"</string>
               <long name="is-transient">0</long>

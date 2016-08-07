@@ -527,6 +527,7 @@ public:
   void DoBrowse(CItemData &item, bool bAutotype);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
+  void DoPasswordSubset(CItemData &item);
 
   // These 3 fns are called via wxEvtHandler::CallAfter in sequence for autotyping
   void MinimizeOrHideBeforeAutotyping();

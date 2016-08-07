@@ -85,6 +85,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
   void OnBitmapbuttonClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
+  void OnCloseClick( wxCommandEvent& event );
+
 ////@end CPasswordSubset event handler declarations
 
 ////@begin CPasswordSubset member function declarations

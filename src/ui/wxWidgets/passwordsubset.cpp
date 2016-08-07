@@ -26,6 +26,8 @@
 #include "passwordsubset.h"
 
 ////@begin XPM images
+#include "graphics/toolbar/new/copypassword.xpm"
+#include "graphics/toolbar/new/copypassword_disabled.xpm"
 ////@end XPM images
 
 
@@ -44,6 +46,7 @@ BEGIN_EVENT_TABLE( CPasswordSubset, wxDialog )
 
 ////@begin CPasswordSubset event table entries
   EVT_BUTTON( ID_BITMAPBUTTON, CPasswordSubset::OnBitmapbuttonClick )
+  EVT_BUTTON( wxID_CLOSE, CPasswordSubset::OnCloseClick )
 ////@end CPasswordSubset event table entries
 
 END_EVENT_TABLE()
@@ -143,9 +146,13 @@ void CPasswordSubset::CreateControls()
   itemGridSizer4->Add(m_vals, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  itemBitmapButton10->SetBitmapSelected(itemBitmapButton10BitmapSel);
+  wxBitmap itemBitmapButton10BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
+  itemBitmapButton10->SetBitmapDisabled(itemBitmapButton10BitmapDisabled);
   itemGridSizer4->Add(itemBitmapButton10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_error = new wxStaticText( itemDialog1, wxID_STATIC, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_error = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_error->SetForegroundColour(wxColour(255, 0, 0));
   itemBoxSizer2->Add(m_error, 0, wxGROW|wxALL, 5);
 
@@ -176,6 +183,16 @@ wxBitmap CPasswordSubset::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CPasswordSubset bitmap retrieval
   wxUnusedVar(name);
+  if (name == wxT("graphics/toolbar/new/copypassword.xpm"))
+  {
+    wxBitmap bitmap(copypassword_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/toolbar/new/copypassword_disabled.xpm"))
+  {
+    wxBitmap bitmap(copypassword_disabled_xpm);
+    return bitmap;
+  }
   return wxNullBitmap;
 ////@end CPasswordSubset bitmap retrieval
 }
@@ -219,3 +236,15 @@ void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON in CPasswordSubset. 
 }
 
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
+ */
+
+void CPasswordSubset::OnCloseClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CPasswordSubset.
+  // Before editing this code, remove the block markers.
+  EndModal(wxID_CLOSE);
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CPasswordSubset.
+}

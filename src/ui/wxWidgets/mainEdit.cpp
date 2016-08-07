@@ -844,6 +844,13 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
   }
 }
 
+void PasswordSafeFrame::DoPasswordSubset(CItemData& item )
+{
+  CPasswordSubset psDlg(this);
+  psDlg.ShowModal(); // TBD - pass password...
+  UpdateAccessTime(item);
+}
+
 void PasswordSafeFrame::OnUndo(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
@@ -860,5 +867,8 @@ void PasswordSafeFrame::OnRedo(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
 {
-  UNREFERENCED_PARAMETER(evt);
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != NULL)
+    DoPasswordSubset(*item);
 }
