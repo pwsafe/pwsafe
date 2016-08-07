@@ -111,7 +111,8 @@ bool CRUEList::DeleteRUEntry(const pws_os::CUUID &RUEuuid)
   return true;
 }
 
-bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
+bool CRUEList::GetPWEntry(size_t index, CItemData &ci) const
+{
   if ((m_maxentries == 0) || m_RUEList.empty() ||
      (index > (m_maxentries - 1)) ||
      (index > (m_RUEList.size() - 1)))
@@ -122,7 +123,9 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
   ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry);
   if (pw_listpos == m_core.GetEntryEndIter()) {
     // Entry does not exist anymore!
-    m_RUEList.erase(m_RUEList.begin() + index);
+    // We break constness here since this is "housekeeping", and
+    // doesn't affect the object's semantics
+    const_cast<CRUEList *>(this)->m_RUEList.erase(m_RUEList.begin() + index);
     return false;
   } else { // valid pw_listpos
     ci = m_core.GetEntry(pw_listpos);

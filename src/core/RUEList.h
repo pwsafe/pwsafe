@@ -59,7 +59,7 @@ public:
   bool IsEmpty() const {return m_RUEList.empty();}
   size_t GetMax() const {return m_maxentries;}
   bool GetAllMenuItemStrings(std::vector<RUEntryData> &) const;
-  bool GetPWEntry(size_t, CItemData &); // NOT const!
+  bool GetPWEntry(size_t, CItemData &) const; // "logically" const!
   void GetRUEList(UUIDList &RUElist) const;
 
   // Data setting
