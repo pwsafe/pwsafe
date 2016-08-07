@@ -36,6 +36,7 @@
 #include "createshortcutdlg.h"
 #include "wxutils.h"
 #include "guiinfo.h"
+#include "passwordsubset.h"
 
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
@@ -855,4 +856,9 @@ void PasswordSafeFrame::OnRedo(wxCommandEvent& evt)
   UNREFERENCED_PARAMETER(evt);
 //  SaveGUIStatus();
   m_core.Redo();
+}
+
+void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
+{
+  UNREFERENCED_PARAMETER(evt);
 }

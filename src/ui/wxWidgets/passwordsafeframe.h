@@ -389,6 +389,8 @@ public:
   
   void OnVisitWebsite(wxCommandEvent&);
 
+  void OnPasswordSubset(wxCommandEvent& evt);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources

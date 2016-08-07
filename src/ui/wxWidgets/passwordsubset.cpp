@@ -43,6 +43,7 @@ IMPLEMENT_DYNAMIC_CLASS( CPasswordSubset, wxDialog )
 BEGIN_EVENT_TABLE( CPasswordSubset, wxDialog )
 
 ////@begin CPasswordSubset event table entries
+  EVT_BUTTON( ID_BITMAPBUTTON, CPasswordSubset::OnBitmapbuttonClick )
 ////@end CPasswordSubset event table entries
 
 END_EVENT_TABLE()
@@ -103,6 +104,8 @@ CPasswordSubset::~CPasswordSubset()
 void CPasswordSubset::Init()
 {
 ////@begin CPasswordSubset member initialisation
+  m_vals = NULL;
+  m_error = NULL;
 ////@end CPasswordSubset member initialisation
 }
 
@@ -136,15 +139,21 @@ void CPasswordSubset::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Values:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl9 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_vals = new wxTextCtrl( itemDialog1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+  itemGridSizer4->Add(m_vals, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
   itemGridSizer4->Add(itemBitmapButton10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton11 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemButton11, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  m_error = new wxStaticText( itemDialog1, wxID_STATIC, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_error->SetForegroundColour(wxColour(255, 0, 0));
+  itemBoxSizer2->Add(m_error, 0, wxGROW|wxALL, 5);
 
+  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer2->Add(itemButton12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+
+  // Connect events and objects
+  itemTextCtrl6->Connect(ID_TEXTCTRL, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), NULL, this);
 ////@end CPasswordSubset content construction
 }
 
@@ -183,3 +192,30 @@ wxIcon CPasswordSubset::GetIconResource( const wxString& name )
   return wxNullIcon;
 ////@end CPasswordSubset icon retrieval
 }
+
+
+/*!
+ * wxEVT_CHAR event handler for ID_TEXTCTRL
+ */
+
+void CPasswordSubset::OnChar( wxKeyEvent& event )
+{
+////@begin wxEVT_CHAR event handler for ID_TEXTCTRL in CPasswordSubset.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_CHAR event handler for ID_TEXTCTRL in CPasswordSubset. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
+ */
+
+void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON in CPasswordSubset.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON in CPasswordSubset. 
+}
+
