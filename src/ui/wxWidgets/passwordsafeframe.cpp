@@ -1067,6 +1067,15 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
   return NULL;
 }
 
+// Following is "generalized" GetSelectedEntry to support section via RUE
+CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const
+{
+  if (!IsRUEEvent(evt))
+    return GetSelectedEntry();
+  else
+    return m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL;
+}
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
@@ -1486,7 +1495,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoBrowse(*item, false); //false => no autotype
 }
@@ -1498,7 +1507,7 @@ void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item) {
     DoBrowse(*item, true); //true => autotype
   }
@@ -1511,7 +1520,7 @@ void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoEmail(*item);
 }
@@ -1523,7 +1532,7 @@ void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoRun(*item);
 }
@@ -1535,7 +1544,7 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item) {
 #ifdef __WXMAC__
     Lower();

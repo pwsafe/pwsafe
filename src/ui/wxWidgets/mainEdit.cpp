@@ -273,7 +273,7 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyPassword(*item);
 }
@@ -297,7 +297,7 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyRunCmd(*item);
 }
@@ -317,7 +317,7 @@ void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
 void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyUsername(*item);
 }
@@ -336,7 +336,7 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyNotes(*item);
 }
@@ -355,7 +355,7 @@ void PasswordSafeFrame::DoCopyNotes(CItemData &item)
 void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyURL(*item);
 }
@@ -367,7 +367,7 @@ void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
 void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoCopyEmail(*item);
 }

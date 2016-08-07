@@ -450,6 +450,7 @@ public:
   void ViewReport(CReport& rpt);
 
   CItemData *GetSelectedEntry() const;
+  CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
   void SetTrayStatus(bool locked);
