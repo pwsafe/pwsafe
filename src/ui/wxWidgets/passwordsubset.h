@@ -40,8 +40,8 @@
 
 ////@begin control identifiers
 #define ID_CPASSWORDSUBSET 10000
-#define ID_TEXTCTRL 10001
-#define ID_TEXTCTRL1 10002
+#define ID_TEXTCTRL_POS 10001
+#define ID_TEXTCTRL_VAL 10002
 #define ID_BITMAPBUTTON 10003
 #define SYMBOL_CPASSWORDSUBSET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CPASSWORDSUBSET_TITLE _("Show a subset of the Password")
@@ -79,7 +79,7 @@ public:
 
 ////@begin CPasswordSubset event handler declarations
 
-  /// wxEVT_CHAR event handler for ID_TEXTCTRL
+  /// wxEVT_CHAR event handler for ID_TEXTCTRL_POS
   void OnChar( wxKeyEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
