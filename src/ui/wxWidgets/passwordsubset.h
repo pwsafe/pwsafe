@@ -18,7 +18,7 @@
 /*!
  * Includes
  */
-
+#include "core/StringX.h"
 ////@begin includes
 ////@end includes
 
@@ -63,7 +63,8 @@ class CPasswordSubset: public wxDialog
 public:
   /// Constructors
   CPasswordSubset();
-  CPasswordSubset( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDSUBSET_IDNAME, const wxString& caption = SYMBOL_CPASSWORDSUBSET_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDSUBSET_POSITION, const wxSize& size = SYMBOL_CPASSWORDSUBSET_SIZE, long style = SYMBOL_CPASSWORDSUBSET_STYLE );
+  CPasswordSubset( wxWindow* parent, const StringX &password,
+                   wxWindowID id = SYMBOL_CPASSWORDSUBSET_IDNAME, const wxString& caption = SYMBOL_CPASSWORDSUBSET_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDSUBSET_POSITION, const wxSize& size = SYMBOL_CPASSWORDSUBSET_SIZE, long style = SYMBOL_CPASSWORDSUBSET_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDSUBSET_IDNAME, const wxString& caption = SYMBOL_CPASSWORDSUBSET_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDSUBSET_POSITION, const wxSize& size = SYMBOL_CPASSWORDSUBSET_SIZE, long style = SYMBOL_CPASSWORDSUBSET_STYLE );
@@ -101,7 +102,8 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-
+ private:
+  const StringX &m_password;
 ////@begin CPasswordSubset member variables
   wxTextCtrl* m_vals;
   wxStaticText* m_error;

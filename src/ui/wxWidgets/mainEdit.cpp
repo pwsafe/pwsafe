@@ -846,8 +846,8 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
 
 void PasswordSafeFrame::DoPasswordSubset(CItemData& item )
 {
-  CPasswordSubset psDlg(this);
-  psDlg.ShowModal(); // TBD - pass password...
+  CPasswordSubset psDlg(this, item.GetPassword());
+  psDlg.ShowModal();
   UpdateAccessTime(item);
 }
 

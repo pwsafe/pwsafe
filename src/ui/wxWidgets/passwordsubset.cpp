@@ -23,6 +23,7 @@
 ////@begin includes
 ////@end includes
 
+#include <wx/regex.h>
 #include "passwordsubset.h"
 
 ////@begin XPM images
@@ -57,11 +58,14 @@ END_EVENT_TABLE()
  */
 
 CPasswordSubset::CPasswordSubset()
+: m_password(wxEmptyString)
 {
   Init();
 }
 
-CPasswordSubset::CPasswordSubset( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CPasswordSubset::CPasswordSubset( wxWindow* parent, const StringX &password,
+                                  wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+  : m_password(password)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -217,10 +221,17 @@ wxIcon CPasswordSubset::GetIconResource( const wxString& name )
 
 void CPasswordSubset::OnChar( wxKeyEvent& event )
 {
-////@begin wxEVT_CHAR event handler for ID_TEXTCTRL in CPasswordSubset.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_CHAR event handler for ID_TEXTCTRL in CPasswordSubset. 
+  static wxRegEx charSet("[[:digit:]]|[[:space:]]|,|-|;");
+  wxASSERT(charSet.IsValid());
+  wxChar uc = event.GetUnicodeKey();
+  if (uc != WXK_NONE) {
+    if (charSet.Matches(wxString(uc, 1))) {
+      event.Skip(); // accept
+      // TBD: check against valid pos regexp and update vals accordingly
+    }
+  } else { // process non-char key as usual
+    event.Skip();
+  }
 }
 
 
@@ -243,6 +254,7 @@ void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
 
 void CPasswordSubset::OnCloseClick( wxCommandEvent& event )
 {
+  wxUnusedVar(event);
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CPasswordSubset.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CLOSE);
