@@ -274,7 +274,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && m_core.IsDBChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -291,8 +291,8 @@ int DboxMain::New()
         else
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
-        // Reset changed flag
-        SetChanged(CLEARDATA);
+        // Reset changed flags to prevent further attempts to save
+        SetDBChanged(false);
         break;
     }
   }
@@ -470,7 +470,7 @@ int DboxMain::Close(const bool bTrySave)
         return rc;
 
       // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-      SetChanged(CLEARDATA);
+      SetDBChanged(false);
     }
   }
 
@@ -710,12 +710,14 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     return PWScore::ALREADY_OPEN;
   }
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return rc;
+  if (m_bOpen) {
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return rc;
+  }
 
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(CLEARDATA);
+  SetDBChanged(false);
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -933,6 +935,9 @@ void DboxMain::PostOpenProcessing()
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
+
+  // Now enable notification of DB changes
+  ResumeOnDBNotification();
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -1112,6 +1117,20 @@ int DboxMain::Save(const SaveType savetype)
                 return SaveAs();
             }
 
+            case ST_SAVEIMMEDIATELY:
+            {
+              cs_temp.LoadString(IDS_NOIBACKUP);
+              cs_msg.Format(IDS_NOIBACKUP3, cs_temp);
+              gmb.SetTitle(IDS_FILEWRITEERROR);
+              gmb.SetMsg(cs_msg);
+              gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+              gmb.AddButton(IDS_YES, IDS_YES);
+              gmb.AddButton(IDS_NO, IDS_NO, TRUE, TRUE);
+
+              if (gmb.DoModal() == IDS_NO)
+                return PWScore::SUCCESS;
+            }
+
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -1155,10 +1174,14 @@ int DboxMain::Save(const SaveType savetype)
     return rc;
   }
 
+  // Reset all indications that the file is changed as we have just saved it
   m_core.ResetStateAfterSave();
   m_core.ResetOriginalGroupDisplayAfterSave();
   m_core.ClearChangedNodes();
-  SetChanged(CLEARDATA);
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
+  m_bEntryTimestampsChanged = false;
+
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1183,15 +1206,14 @@ int DboxMain::SaveIfChanged()
   PWS_LOGIT;
 
   /*
-   * Save silently (without asking user) iff:
-   * 1. NOT read-only AND
-   * 2. (timestamp updates OR tree view display vector changed) AND
-   * 3. Database NOT empty
-   *
-   * Less formally:
-   *
-   * If MaintainDateTimeStamps set and not read-only, save without asking
-   * user: "they get what it says on the tin".
+    Save silently (without asking user) iff:
+    1. NOT read-only AND
+    2. (timestamp updates OR tree view display vector changed) AND
+    3. Database NOT empty
+
+    Less formally:
+     If MaintainDateTimeStamps set and not read-only, save without asking
+     user: "they get what it says on the tin".
    */
 
   if (m_core.IsReadOnly())
@@ -1199,7 +1221,7 @@ int DboxMain::SaveIfChanged()
 
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+  if ((m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
       (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     int rc = Save();
     if (rc != PWScore::SUCCESS)
@@ -1212,7 +1234,7 @@ int DboxMain::SaveIfChanged()
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
@@ -1235,6 +1257,12 @@ int DboxMain::SaveIfChanged()
     }
   }
   return PWScore::SUCCESS;
+}
+
+int DboxMain::SaveImmediately()
+{
+  // Get normal save to do this (code already there for intermediate backups)
+  return Save(ST_SAVEIMMEDIATELY);
 }
 
 void DboxMain::OnSaveAs()
@@ -1353,9 +1381,6 @@ int DboxMain::SaveAs()
   // Note: Writing out in in V4 DB format if the DB is already V4,
   // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
   rc = m_core.WriteFile(newfile, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
-  m_core.ResetStateAfterSave();
-  m_core.ResetOriginalGroupDisplayAfterSave();
-  m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid); // restore uuid after failed save-as
@@ -1363,6 +1388,7 @@ int DboxMain::SaveAs()
     DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
+
   if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile().c_str());
 
@@ -1374,7 +1400,15 @@ int DboxMain::SaveAs()
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
-  SetChanged(CLEARDATA);
+
+  // Reset all indications that the file is changed as we have just saved it
+  m_core.ResetStateAfterSave();
+  m_core.ResetOriginalGroupDisplayAfterSave();
+  m_core.ClearChangedNodes();
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
+  m_bEntryTimestampsChanged = false;
+
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1386,6 +1420,7 @@ int DboxMain::SaveAs()
     m_ctlItemList.Invalidate();
     m_ctlItemTree.Invalidate();
   }
+
   RefreshViews();
 
   app.AddToMRU(newfile.c_str());
@@ -2245,7 +2280,6 @@ void DboxMain::OnImportText()
 
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
 
-        SetChanged(DATA);
         ChangeOkUpdate();
         RefreshViews();
         break;
@@ -2349,9 +2383,9 @@ void DboxMain::OnImportKeePassV1CSV()
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
         if (pcmd != NULL) {
+          // Do it
           Execute(pcmd);
 
-          SetChanged(DATA);
           ChangeOkUpdate();
         }
 
@@ -2462,9 +2496,9 @@ void DboxMain::OnImportKeePassV1TXT()
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
         if (pcmd != NULL) {
+          // Do it
           Execute(pcmd);
 
-          SetChanged(DATA);
           ChangeOkUpdate();
         }
 
@@ -2657,7 +2691,6 @@ void DboxMain::OnImportXML()
         }
 
         if (pcmd != NULL) {
-          SetChanged(DATA);
           ChangeOkUpdate();
         }
 
@@ -2758,13 +2791,13 @@ void DboxMain::ChangeMode(bool promptUser)
          return;
 
       // User said No to the save - so we must back-out all changes since last save
-      while (m_core.IsChanged()) {
+      while (m_core.IsDBChanged()) {
         OnUndo();
       }
     }
 
     // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-    SetChanged(CLEARDATA);
+    SetDBChanged(false);
 
     // Clear the Commands
     m_core.ClearCommands();
@@ -2886,7 +2919,6 @@ void DboxMain::OnCompare()
   INT_PTR rc = wizard.DoModal();
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
-    SetChanged(DATA);
     ChangeOkUpdate();
   }
 }
@@ -2903,7 +2935,6 @@ void DboxMain::OnMerge()
   INT_PTR rc = wizard.DoModal();
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
-    SetChanged(DATA);
     ChangeOkUpdate();
 
     UpdateToolBarDoUndo();
@@ -2923,8 +2954,8 @@ void DboxMain::OnSynchronize()
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   INT_PTR rc = wizard.DoModal();
 
-  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0)
-    SetChanged(DATA);
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() == 0)
+    SetDBChanged(false);
 }
 
 std::wstring DboxMain::DoMerge(PWScore *pothercore,
@@ -3138,6 +3169,12 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
   CmpRes.DoModal();
 
   if (CmpRes.m_OriginalDBChanged) {
+    // We didn't save after each change within the ComapreResults dialog
+    // So potentially do it now
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+      SaveImmediately();
+
+    // Have to update views as user may have changed/added entries
     FixListIndexes();
     RefreshViews();
   }
@@ -3455,9 +3492,10 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ci_temp.SetStatus(CItemData::ES_ADDED);
     pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
   }
+
+  // Do it
   Execute(pmulticmds);
 
-  SetChanged(DATA);
   ChangeOkUpdate();
   // May need to update menu/toolbar if database was previously empty
   if (bWasEmpty)
@@ -3525,9 +3563,10 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   if (bUpdated) {
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
     pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry));
+
+    // Do it
     Execute(pmulticmds, ptocore);
 
-    SetChanged(DATA);
     ChangeOkUpdate();
     return TRUE;
   }
@@ -3620,12 +3659,14 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
     return FALSE;
 
   CWaitCursor waitCursor;
+
+  // Do it
   Execute(pmulticmds);
+
   waitCursor.Restore();
 
   RefreshViews();
 
-  SetChanged(DATA);
   ChangeOkUpdate();
 
   // May need to update menu/toolbar if database was previously empty
@@ -3713,7 +3754,6 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
 
     RefreshViews();
 
-    SetChanged(DATA);
     ChangeOkUpdate();
     return TRUE;
   }
@@ -3822,7 +3862,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
   INT_PTR rc;
 
   if (saveType == ST_FAILSAFESAVE &&
-      (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
+      (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged())) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
@@ -3849,7 +3889,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   if (saveType == ST_NORMALEXIT) {
     bool bAutoSave = true; // false if user saved or decided not to
-    if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+    if (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
       rc = gmb.MessageBox(cs_msg, AfxGetAppName(),
@@ -3867,7 +3907,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
           bAutoSave = false;
           break;
       }
-    } // core.IsChanged()
+    } // core.IsDBChanged()
 
     /*
     * Save silently (without asking user) iff:
@@ -3887,8 +3927,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     */
 
     if (bAutoSave && !m_core.IsReadOnly() &&
-      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-      m_core.GetNumEntries() > 0) {
+        (m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
+        m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
       switch (rc) {
         case PWScore::SUCCESS:

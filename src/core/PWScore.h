@@ -349,23 +349,21 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  // Use following call to 'SetDBChanged' sparingly
-  // outside of core
-  void SetDBChanged(bool bDBChanged, bool bNotify = true)
-  {m_bDBChanged = bDBChanged;
-    if (bNotify) NotifyDBModified();}
+  // Use following call to 'SetDBChanged' sparingly outside of core
+  // Note: the database is only changed by executing a command and so
+  // the changed state is set during the main PWScore::Execute and
+  // potentially reset during an Undo
+  void SetDBChanged(bool bDBChanged)
+  {m_bDBChanged = bDBChanged;}
   void SetDBPrefsChanged(bool bDBprefschanged)
-  {m_bDBPrefsChanged = bDBprefschanged;
-   NotifyDBModified();}
-  void SetGroupDisplayChanged(const bool bGroupDisplayChanged)
-  {m_bGroupDisplayChanged = bGroupDisplayChanged;}
+  {m_bDBPrefsChanged = bDBprefschanged;}
 
   bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
 
-  bool IsChanged() const {return m_bDBChanged;}
+  bool IsDBChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
-  bool HasGroupDisplayChanged() const {return m_bGroupDisplayChanged;}
+  bool HasGroupDisplayChanged() const {return m_hdr.m_displaystatus != m_OrigDisplayStatus;}
   bool HaveHeaderPreferencesChanged(const StringX &prefString)
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
@@ -375,6 +373,8 @@ public:
   {m_bNotifyDB = false;}
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
+  bool GetDBNotificationState()
+  {return m_bNotifyDB;}
 
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
@@ -538,7 +538,7 @@ private:
 
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;
-  bool m_bGroupDisplayChanged;
+  bool m_bEntryTimestampsChanged;
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 
@@ -568,9 +568,9 @@ private:
   std::vector<StringX> m_vnodes_modified;
 
   // Following are private in PWScore, public in CommandInterface:
-  virtual const std::vector<StringX> &GetVnodesModified() const
+  virtual const std::vector<StringX> &Get_vNodesModified() const
   {return m_vnodes_modified;}
-  virtual void SetVnodesModified(const std::vector<StringX> &mvm)
+  virtual void Set_vNodesModified(const std::vector<StringX> &mvm)
   {m_vnodes_modified = mvm;}
   void AddChangedNodes(StringX path);
 

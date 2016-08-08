@@ -65,12 +65,16 @@ void DboxMain::DatabaseModified(bool bChanged)
   PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
   // Callback from PWScore if the database has been changed
-  // (entries or preferences stored in the database) also
+  // (entries or preferences stored in the database)
 
   // First if the password list has been changed, invalidate
   // the indices vector in Find
   InvalidateSearch();
   OnHideFindToolBar();
+
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+    SaveImmediately();
 
   // This is to prevent Windows (Vista & later) from shutting down
   // if the database has been modified (including preferences
@@ -388,7 +392,7 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = bIsRO ? FALSE : TRUE;
-    BOOL SaveState = (!bIsRO && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
+    BOOL SaveState = (!bIsRO && (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
@@ -1491,7 +1495,6 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
           // Update display state
           SaveGroupDisplayState();
-          SetChanged(GROUPDISPLAY);
 
           *pLResult = 1L; // We have toggled the group
           return;
@@ -1745,8 +1748,12 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     if (!m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
+        // Do not create and execute a DBPrefsCommand as this may cause
+        // a "Save Immediately" every time the user changes the sort direction
+        // It will be saved when the DB is next saved either directly or
+        // via a different DB change (entry, group or other DB preference)
         const StringX prefString(prefs->Store());
-        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPREFS : CLEARDBPREFS);
+        SetDBPrefsChanged(m_core.HaveHeaderPreferencesChanged(prefString));
       }
       ChangeOkUpdate();
     }
@@ -2026,11 +2033,15 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
 void DboxMain::OnExpandAll()
 {
   m_ctlItemTree.OnExpandAll();
+
+  SaveGroupDisplayState();
 }
 
 void DboxMain::OnCollapseAll()
 {
   m_ctlItemTree.OnCollapseAll();
+
+  SaveGroupDisplayState();
 }
 
 static void Hider(CWnd *pWnd)
@@ -2139,7 +2150,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Now try and save changes
-  if (m_core.IsChanged() ||  m_bTSUpdated || m_core.HaveDBPrefsChanged()) {
+  if (m_core.IsDBChanged() || m_bEntryTimestampsChanged || m_core.HaveDBPrefsChanged()) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;

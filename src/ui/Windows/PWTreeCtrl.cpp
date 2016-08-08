@@ -694,8 +694,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
-      // Mark database as modified
-      app.GetMainDlg()->SetChanged(DboxMain::DATA);
       app.GetMainDlg()->ChangeOkUpdate();
 
       app.GetMainDlg()->ResetInAddGroup();
@@ -923,8 +921,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   else
     delete pmulticmds;
 
-  // Mark database as modified
-  app.GetMainDlg()->SetChanged(DboxMain::DATA);
   app.GetMainDlg()->ChangeOkUpdate();
 
   // put edited text in right order by sorting
@@ -1616,8 +1612,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 exit:
   SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
+
   if (retval == TRUE) {
-    app.GetMainDlg()->SetChanged(DboxMain::DATA);
     app.GetMainDlg()->ChangeOkUpdate();
     if (app.GetMainDlg()->IsFilterActive())
       app.GetMainDlg()->RefreshViews();
@@ -1832,7 +1828,6 @@ void CPWTreeCtrl::OnExpandAll()
   SetRedraw(TRUE);
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
-  app.GetMainDlg()->SetChanged(DboxMain::GROUPDISPLAY);
 }
 
 void CPWTreeCtrl::OnCollapseAll() 
@@ -1849,7 +1844,6 @@ void CPWTreeCtrl::OnCollapseAll()
   SetRedraw(TRUE);
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
-  app.GetMainDlg()->SetChanged(DboxMain::GROUPDISPLAY);
 }
 
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)

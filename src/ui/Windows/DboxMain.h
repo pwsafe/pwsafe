@@ -212,7 +212,7 @@ public:
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
 
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   // Find entry by title and user name, exact match
@@ -269,8 +269,22 @@ public:
   void SelectFirstEntry();
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
-  enum ChangeType {DATA, CLEARDATA, DBPREFS, CLEARDBPREFS, TIMESTAMP, GROUPDISPLAY, CLEARGROUPDISPLAY};
-  void SetChanged(ChangeType changed);
+
+  // We should not need these as the DB is only changed by executing a command
+  // either that affects an entry or group or a DB preference
+  void SetDBChanged(const bool bState) {m_core.SetDBChanged(bState);}
+  void SetDBPrefsChanged(const bool bState) {m_core.SetDBPrefsChanged(bState);}
+
+  // These specific changed states are only needed when no other change has been made
+  // AND the user has requested that:
+  // 1. Maintain timestamps or
+  // 2. Open database with the group display the same as when last saved
+  // NOTE: The DB core is not informed of these changes as they are only used by the UI
+  // to determine if the DB should be saved on close/exit if no other changes have been made
+  void SetEntryTimestampsChanged(const bool bEntryTimestampsChanged)
+  {m_bEntryTimestampsChanged = bEntryTimestampsChanged;}
+
+  // This updates the Save menu/toolbar button depending if there are unsaved changes
   void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
@@ -299,7 +313,10 @@ public:
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
+  bool GetDBNotificationState() {return m_core.GetDBNotificationState();}
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
+  void SetDBprefsState(const bool bState) { m_bDBState = bState; }
+  void SetTimeStampState(const bool bState) {m_bEntryTimestampsChanged = bState;}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
@@ -543,7 +560,9 @@ public:
   bool m_bSortAscending;
   int m_iTypeSortColumn;
 
-  bool m_bTSUpdated;
+  bool m_bDBState;
+  bool m_bEntryTimestampsChanged;
+  bool m_bGroupDisplayChanged;
   INT_PTR m_iSessionEndingStatus;
 
   // Used for Advanced functions
@@ -673,7 +692,6 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
-
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -881,6 +899,7 @@ private:
   void SetIdleLockCounter(UINT iMinutes); // set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
+  int SaveImmediately();
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
   void TellUserAboutExpiredPasswords();
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);

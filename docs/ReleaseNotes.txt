@@ -30,6 +30,15 @@ checked.
 - After deleting an empty group via the context menu, adding a new entry now
   has the correct group list.
 
+Changes to Existing Features in 3.39.2
+======================================
+[] Save Immediately has been enhanced to apply to all changes to the database
+and not just after an edit or addition of an entry. It is STRONGLY recommended
+that, if enabled, then the option to "Create intermediate backups" is also
+enabled. Note, changes made via the Compare database results dialog will not
+cause a database save for each action but will after the compare results dialog
+has been closed.
+
 New Features for 3.39.2
 =======================
 [] The database properties page now includes the number of empty groups.
