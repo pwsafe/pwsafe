@@ -118,7 +118,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
   m_core(*app.GetCore()),
-  m_bTSUpdated(false),
+  m_bEntryTimestampsChanged(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
   m_bOpen(false), 
@@ -1361,10 +1361,6 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 void DboxMain::OnUndo()
 {
   m_core.Undo();
-
-  // If user has set preference "Save immediately", then undoing a change 
-  // should resave - ISSUE did the commands being undone change the DB?
-  SetChanged(DATA);
   
   // See if we have any special filters active that now do not have any entries
   // to display, which would have meant that the user should not be able to select them,
@@ -1388,10 +1384,6 @@ void DboxMain::OnRedo()
 {
   SaveGUIStatus();
   m_core.Redo();
-
-  // If user has set preference "Save immediately", then redoing a change 
-  // should resave - ISSUE do the commands being redone change the DB?
-  SetChanged(DATA);
 
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
@@ -1577,46 +1569,6 @@ void DboxMain::SetStartSilent(bool state)
   }
 }
 
-void DboxMain::SetChanged(ChangeType changed)
-{
-  PWS_LOGIT_ARGS("changed=%d", changed);
-
-  if (m_core.IsReadOnly())
-    return;
-
-  switch (changed) {
-    case DATA:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
-          m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-        Save();
-      } else {
-        m_core.SetDBChanged(true);
-      }
-      break;
-    case CLEARDATA:
-      m_core.SetDBChanged(false);
-      m_core.SetDBPrefsChanged(false);
-      m_bTSUpdated = false;
-      break;
-    case DBPREFS:
-      m_core.SetDBPrefsChanged(true);
-      break;
-    case CLEARDBPREFS:
-      m_core.SetDBPrefsChanged(false);
-      break;
-    case TIMESTAMP:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
-        m_bTSUpdated = true;
-      break;
-    case GROUPDISPLAY:
-      m_core.SetGroupDisplayChanged(true);
-      break;
-    case CLEARGROUPDISPLAY:
-      m_core.SetGroupDisplayChanged(false);
-      break;
-  }
-}
-
 void DboxMain::ChangeOkUpdate()
 {
   if (!m_bInitDone || 
@@ -1625,12 +1577,12 @@ void DboxMain::ChangeOkUpdate()
 
   CMenu *pmenu = GetMenu();
 
-  // Don't need to worry about R-O, as IsChanged can't be true in this case
+  // Don't need to worry about R-O, as IsDBChanged can't be true in this case
   pmenu->EnableMenuItem(ID_MENUITEM_SAVE,
-    (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) ? MF_ENABLED : MF_GRAYED);
+    (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
-      (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) ? TRUE : FALSE);
+      (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) ? TRUE : FALSE);
   }
   UpdateStatusBar();
 }
@@ -2133,7 +2085,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       if (m_core.IsReadOnly())
         flags |= GCP_READONLY;
       if (CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
-          m_core.IsChanged())
+          m_core.IsDBChanged())
         flags |= GCP_HIDEREADONLY;
 
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
@@ -2605,7 +2557,7 @@ void DboxMain::UpdateAccessTime(const pws_os::CUUID &uuid)
       return;
     CItemData &item = iter->second;
     item.SetATime();
-    SetChanged(TIMESTAMP);
+    SetEntryTimestampsChanged(true);
 
     if (!IsGUIEmpty() &&
         (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
@@ -2691,7 +2643,7 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
     }
   }
 
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) {
     // Windows XP or earlier - we ask user, Vista and later - we don't as we have
     // already set ShutdownBlockReasonCreate
     if (!pws_os::IsWindowsVistaOrGreater()) {
@@ -2781,7 +2733,7 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
-      s = m_core.IsChanged() ? L"*" : L" ";
+      s = m_core.IsDBChanged() ? L"*" : L" ";
       s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
@@ -3242,7 +3194,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
-      if ((!m_core.IsChanged() && !m_core.HaveDBPrefsChanged()) ||
+      if ((!m_core.IsDBChanged() && !m_core.HaveDBPrefsChanged()) ||
             m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
@@ -3305,7 +3257,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_SHOWHIDE_UNSAVED:
       // Filter sub-menu mutally exclusive with use of inernal filters for
       // display of unsaved entries or expired entries
-      if (!m_core.IsChanged() || 
+      if (!m_core.IsDBChanged() ||
           (m_bFilterActive && !m_bUnsavedDisplayed))
         iEnable = FALSE;
       break;

@@ -46,8 +46,8 @@ unit of work.
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bSaveDBChanged(false), m_bUniqueGTUValidated(false),
-m_bNotifyGUI(true), m_RC(0), m_bState(false)
+:  m_pcomInt(pcomInt), m_bSaveDBChanged(false),
+m_bUniqueGTUValidated(false), m_bNotifyGUI(true), m_RC(0)
 {
 }
 
@@ -58,16 +58,16 @@ Command::~Command()
 // Save/restore state
 void Command::SaveState()
 {
-  m_bSaveDBChanged = m_pcomInt->IsChanged();
+  m_bSaveDBChanged = m_pcomInt->IsDBChanged();
   m_bUniqueGTUValidated = m_pcomInt->GetUniqueGTUValidated();
-  m_saved_vnodes_modified = m_pcomInt->GetVnodesModified();
+  m_saved_vNodes_Modified = m_pcomInt->Get_vNodesModified();
 }
 
 void Command::RestoreState()
 {
   m_pcomInt->SetDBChanged(m_bSaveDBChanged);
   m_pcomInt->SetUniqueGTUValidated(m_bUniqueGTUValidated);
-  m_pcomInt->SetVnodesModified(m_saved_vnodes_modified);
+  m_pcomInt->Set_vNodesModified(m_saved_vNodes_Modified);
 }
 
 // ------------------------------------------------
@@ -100,7 +100,6 @@ int MultiCommands::Execute()
     m_vRCs.push_back(rc);
   }
 
-  m_bState = true;
   return 0;
 }
 
@@ -112,8 +111,6 @@ void MultiCommands::Undo()
     if (*cmd_rIter != NULL)
       (*cmd_rIter)->Undo();
   }
-
-  m_bState = false;
 }
 
 void MultiCommands::Add(Command *pcmd)
@@ -182,6 +179,7 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 void MultiCommands::ResetSavedState(bool bNewDBState)
 {
   Command::ResetSavedState(bNewDBState);
+
   std::vector<Command *>::iterator cmd_Iter;
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     (*cmd_Iter)->ResetSavedState(bNewDBState);
@@ -221,7 +219,6 @@ void UpdateGUICommand::Undo()
 DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
   : Command(pcomInt), m_sxNewDBPrefs(sxDBPrefs)
 {
-  m_bOldState = PWSprefs::GetInstance()->IsDBprefsChanged();
   m_sxOldDBPrefs = PWSprefs::GetInstance()->Store();
 }
 
@@ -235,23 +232,17 @@ int DBPrefsCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
                                       CUUID::NullUUID());
   }
-
-  m_bState = true;
   return 0;
 }
 
 void DBPrefsCommand::Undo()
 {
   PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
-  if (!m_pcomInt->IsReadOnly())
-    m_pcomInt->SetDBPrefsChanged(m_bOldState);
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
                                       CUUID::NullUUID());
   }
-
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -265,7 +256,6 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
   m_bSingleAdd(false)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
@@ -275,7 +265,6 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
   m_bSingleAdd(true)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 int DBPolicyNamesCommand::Execute()
@@ -302,14 +291,11 @@ int DBPolicyNamesCommand::Execute()
           break;
       }
     }
-    m_pcomInt->SetDBChanged(true);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
                                         CUUID::NullUUID());
     }
-
-    m_bState = true;
   }
   return 0;
 }
@@ -318,14 +304,11 @@ void DBPolicyNamesCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly()) {
     m_pcomInt->SetPasswordPolicies(m_OldMapPSWDPLC);
-    m_pcomInt->SetDBChanged(m_bOldState);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
                                         CUUID::NullUUID());
     }
-
-    m_bState = false;
   }
 }
 
@@ -340,7 +323,6 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
   m_function(function), m_bSingleGroup(false)
 {
   m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
@@ -350,7 +332,6 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
   m_bSingleGroup(true)
 {
   m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 
@@ -411,9 +392,6 @@ int DBEmptyGroupsCommand::Execute()
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
                                         CUUID::NullUUID());
     }
-    m_pcomInt->SetDBChanged(true);
-
-    m_bState = true;
   }
   return 0;
 }
@@ -454,13 +432,11 @@ void DBEmptyGroupsCommand::Undo()
           break;
       }
     }
-    m_pcomInt->SetDBChanged(m_bOldState);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
                                         CUUID::NullUUID());
     }
-    m_bState = false;
   }
 }
 
@@ -514,8 +490,6 @@ int AddEntryCommand::Execute()
   if (tttXTime != time_t(0)) {
     m_pcomInt->AddExpiryEntry(m_ci);
   }
-
-  m_bState = true;
   return 0;
 }
 
@@ -530,7 +504,6 @@ void AddEntryCommand::Undo()
   }
 
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -612,7 +585,6 @@ int DeleteEntryCommand::Execute()
   m_pcomInt->DoDeleteEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
   m_pcomInt->RemoveExpiryEntry(m_ci);
-  m_bState = true;
   return 0;
 }
 
@@ -656,7 +628,6 @@ void DeleteEntryCommand::Undo()
   }
 
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -697,8 +668,6 @@ int EditEntryCommand::Execute()
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
     m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
-
-  m_bState = true;
   return 0;
 }
 
@@ -719,7 +688,6 @@ void EditEntryCommand::Undo()
   }
 
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -766,7 +734,6 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
       m_pcomInt->UpdateExpiryEntry(pos->second);
 
     pos->second.SetStatus(es);
-    m_pcomInt->SetDBChanged(true, false);
     m_pcomInt->AddChangedNodes(pos->second.GetGroup());
   }
 }
@@ -784,7 +751,6 @@ int UpdateEntryCommand::Execute()
   if (m_ftype == CItemData::XTIME)
     m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
 
-  m_bState = true;
   return 0;
 }
 
@@ -796,7 +762,6 @@ void UpdateEntryCommand::Undo()
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
                                       m_entry_uuid, m_ftype);
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -831,7 +796,6 @@ int UpdatePasswordCommand::Execute()
       m_pcomInt->UpdateExpiryEntry(pos->second);
     }
     pos->second.SetStatus(CItemData::ES_MODIFIED);
-    m_pcomInt->SetDBChanged(true, false);
     m_pcomInt->AddChangedNodes(pos->second.GetGroup());
   }
 
@@ -839,7 +803,6 @@ int UpdatePasswordCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                       m_entry_uuid);
 
-  m_bState = true;
   return 0;
 }
 
@@ -861,7 +824,6 @@ void UpdatePasswordCommand::Undo()
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                       m_entry_uuid);
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -885,7 +847,6 @@ int AddDependentEntryCommand::Execute()
     return 0;
 
   m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  m_bState = true;
   return 0;
 }
 
@@ -896,7 +857,6 @@ void AddDependentEntryCommand::Undo()
 
   m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -937,7 +897,6 @@ int AddDependentEntriesCommand::Execute()
   int rc =  m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
                                              m_type, m_iVia,
                                              m_pmapDeletedItems, m_pmapSaveStatus);
-  m_bState = true;
   return rc;
 }
 
@@ -954,7 +913,6 @@ void AddDependentEntriesCommand::Undo()
   }
 
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -978,7 +936,6 @@ int RemoveDependentEntryCommand::Execute()
     return 0;
 
   m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  m_bState = true;
   return 0;
 }
 
@@ -989,7 +946,6 @@ void RemoveDependentEntryCommand::Undo()
 
   m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -1013,7 +969,6 @@ int MoveDependentEntriesCommand::Execute()
     return 0;
 
   m_pcomInt->DoMoveDependentEntries(m_from_baseuuid, m_to_baseuuid, m_type);
-  m_bState = true;
   return 0;
 }
 
@@ -1024,7 +979,6 @@ void MoveDependentEntriesCommand::Undo()
 
   m_pcomInt->DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -1046,7 +1000,6 @@ int UpdatePasswordHistoryCommand::Execute()
 
   int rc = m_pcomInt->DoUpdatePasswordHistory(m_iAction, m_new_default_max,
                                               m_mapSavedHistory);
-  m_bState = true;
   return rc;
 }
 
@@ -1057,7 +1010,6 @@ void UpdatePasswordHistoryCommand::Undo()
 
   m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
   RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -1077,7 +1029,6 @@ int RenameGroupCommand::Execute()
     return 0;
 
   int rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
-  m_bState = true;
   return rc;
 }
 
@@ -1088,5 +1039,4 @@ void RenameGroupCommand::Undo()
 
   m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
   RestoreState();
-  m_bState = false;
 }

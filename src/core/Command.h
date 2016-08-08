@@ -46,21 +46,23 @@ public:
   {m_bSaveDBChanged = bNewDBState;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
+  void SaveOldDBState(const bool bState)
+  {m_bOldDBState = bState;}
+
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
   void SaveState();
   void RestoreState();
 
-protected:
   CommandInterface *m_pcomInt;
+  bool m_bOldDBState;
   bool m_bSaveDBChanged;
   bool m_bUniqueGTUValidated;
   bool m_bNotifyGUI;
   int m_RC;
-  bool m_bState;
 
   // Changed groups
-  std::vector<StringX> m_saved_vnodes_modified;
+  std::vector<StringX> m_saved_vNodes_Modified;
 };
 
 // GUI related commands
@@ -127,7 +129,6 @@ private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
   StringX m_sxOldDBPrefs;
   StringX m_sxNewDBPrefs;
-  bool m_bOldState;
 };
 
 class DBPolicyNamesCommand : public Command
@@ -156,7 +157,7 @@ private:
   StringX m_sxPolicyName;
   PWPolicy m_st_ppp;
   Function m_function;
-  bool m_bOldState, m_bSingleAdd;
+  bool m_bSingleAdd;
 };
 
 class DBEmptyGroupsCommand : public Command
@@ -189,7 +190,7 @@ private:
   std::vector<StringX> m_vNewEmptyGroups;
   StringX m_sxEmptyGroup, m_sxOldGroup, m_sxNewGroup;
   Function m_function;
-  bool m_bOldState, m_bSingleGroup;
+  bool m_bSingleGroup;
 };
 
 class DeleteEntryCommand;
