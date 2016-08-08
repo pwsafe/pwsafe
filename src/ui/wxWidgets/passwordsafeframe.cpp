@@ -227,7 +227,11 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(wxID_ADD,           PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_DELETE,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_MERGE,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_CHANGECOMBO,     PasswordSafeFrame::OnUpdateUI )
+EVT_UPDATE_UI(ID_IMPORTMENU,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -1847,6 +1851,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_ADDGROUP:
+      evt.Enable(m_currentView == TREE && !m_core.IsReadOnly());
+      break;
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
       evt.Enable(m_currentView == TREE);
@@ -1854,7 +1860,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(m_currentView == TREE && m_tree->GetSelection().IsOk() &&
+      evt.Enable(m_currentView == TREE && !m_core.IsReadOnly() &&
+                 m_tree->GetSelection().IsOk() &&
                  m_tree->GetSelection() != m_tree->GetRootItem() &&
                  m_tree->ItemIsGroup(m_tree->GetSelection()));
       break;
@@ -1896,13 +1903,13 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_CREATESHORTCUT:
     {
       CItemData* item = GetSelectedEntry();
-      evt.Enable(item && (item->IsNormal() || item->IsShortcutBase()));
+      evt.Enable(item && !m_core.IsReadOnly() &&
+                 (item->IsNormal() || item->IsShortcutBase()));
       break;
     }
-    case ID_DUPLICATEENTRY:
+    case ID_EDIT:
     case ID_COPYPASSWORD:
     case ID_AUTOTYPE:
-    case ID_EDIT:
     case ID_PASSWORDSUBSET:
       // not allowed if a group is selected in tree view
       evt.Enable(m_currentView == GRID || GetSelectedEntry() != NULL );
@@ -1925,11 +1932,17 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SYNCHRONIZE:
+    case ID_CHANGECOMBO:
       evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
 
+    case wxID_ADD:
+      evt.Enable(!m_core.IsReadOnly());
+      break;
+
     case wxID_DELETE:
-      evt.Enable(GetSelectedEntry() != NULL);
+    case ID_DUPLICATEENTRY:
+      evt.Enable(!m_core.IsReadOnly() && GetSelectedEntry() != NULL);
       break;
 
     case ID_SHOWHIDE_UNSAVED:
@@ -1938,6 +1951,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SHOW_ALL_EXPIRY:
       evt.Enable(!m_bShowUnsaved);
+      break;
+
+    case ID_MERGE:
+    case ID_IMPORTMENU:
+      evt.Enable(!m_core.IsReadOnly());
       break;
 
     default:

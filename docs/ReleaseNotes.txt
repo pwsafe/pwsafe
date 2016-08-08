@@ -13,22 +13,10 @@ Bugs fixed in 3.39.2
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
 [] Empty groups are now added when merging one PasswordSafe database into another.
+[1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is
 checked.
-[1342, 1343] Fix group issues:
-- Users can now delete an empty group via the Edit or right-click context menu.
-- When deleting the only item (entry or group) in a group, its parent now
-  becomes an empty group.
-- Dragging the last entry or group out of its parent group now keeps the parent
-  group as an empty group.
-- Dragging (copy or move) of an empty group onto a root entry now correctly
-  places it in the root of the tree.
-- When deleting an empty group, its parent is now made an empty group if it doesn't
-  contain any entries or sub-groups.
-- Deleting a group containing one or more empty groups now works correctly deleting
-  all sub-groups and entries.
-- After deleting an empty group via the context menu, adding a new entry now
-  has the correct group list.
+[1342, 1343] Fix multiple empty group issues.
 
 Changes to Existing Features in 3.39.2
 ======================================

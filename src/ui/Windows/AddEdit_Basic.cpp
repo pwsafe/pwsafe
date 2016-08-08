@@ -57,7 +57,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
                           pAEMD),
-  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false)
+  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false), m_NotesFirstVisibleLine(-1)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -998,11 +998,24 @@ void CAddEdit_Basic::OnENSetFocusNotes()
   UpdateData(TRUE);
   ShowNotes();
   UpdateData(FALSE);
+
+  // Try to put window back as it was before hidden
+  if (m_NotesFirstVisibleLine > 0) {
+    // Then scroll correctly
+    int nNewFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
+    pws_os::Trace(L"SetFocus: NewFirstLine: %d\n", nNewFirstVisibleLine);
+    if (m_NotesFirstVisibleLine != nNewFirstVisibleLine)
+      m_ex_notes.LineScroll(m_NotesFirstVisibleLine - nNewFirstVisibleLine, 0);
+  }
 }
 
 void CAddEdit_Basic::OnENKillFocusNotes()
 {
   UpdateData(TRUE);
+
+  // Save first visible line
+  m_NotesFirstVisibleLine = m_isNotesHidden ? -1 : m_ex_notes.GetFirstVisibleLine();
+
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
     HideNotes();
   } else

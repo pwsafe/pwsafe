@@ -137,7 +137,8 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
-  CreateButtons(wxOK|wxCANCEL|wxHELP);
+  int flags = (m_type == VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
+  CreateButtons(flags);
   CreateControls();
   LayoutDialog();
   Centre();
