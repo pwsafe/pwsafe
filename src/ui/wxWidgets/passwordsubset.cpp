@@ -26,6 +26,7 @@
 #include <sstream>
 #include <wx/regex.h>
 #include "passwordsubset.h"
+#include "pwsclip.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"
@@ -151,11 +152,17 @@ void CPasswordSubset::CreateControls()
   m_vals = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_VAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   itemGridSizer4->Add(m_vals, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
   wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
   itemBitmapButton10->SetBitmapSelected(itemBitmapButton10BitmapSel);
+  wxBitmap itemBitmapButton10BitmapFocus(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  itemBitmapButton10->SetBitmapFocus(itemBitmapButton10BitmapFocus);
   wxBitmap itemBitmapButton10BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
   itemBitmapButton10->SetBitmapDisabled(itemBitmapButton10BitmapDisabled);
+  wxBitmap itemBitmapButton10BitmapHover(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  itemBitmapButton10->SetBitmapHover(itemBitmapButton10BitmapHover);
+  if (CPasswordSubset::ShowToolTips())
+    itemBitmapButton10->SetToolTip(_("Copy values"));
   itemGridSizer4->Add(itemBitmapButton10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_error = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
@@ -274,10 +281,17 @@ void CPasswordSubset::OnChar( wxKeyEvent& event )
 
 void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON in CPasswordSubset.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON in CPasswordSubset. 
+  wxUnusedVar(event);
+  wxString val_str = m_vals->GetLineText(0);
+  wxString reduced_str;
+  // we always put the char at the specified position plus a space.
+  // so here we undo that.
+  if (!val_str.empty()) {
+    wxASSERT(val_str.length() % 2 == 0);
+    for (size_t i = 0; i < val_str.length(); i += 2)
+      reduced_str += val_str[i];
+    PWSclipboard::GetInstance()->SetData(reduced_str.wc_str());
+  }
 }
 
 
