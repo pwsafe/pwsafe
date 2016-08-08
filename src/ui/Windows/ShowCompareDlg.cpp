@@ -99,7 +99,7 @@ BOOL CShowCompareDlg::OnInitDialog()
 
 CString ConvertKeyBoardShortcut(int32 &iKBShortcut)
 {
-  CString kbs(_T(""));
+  CString kbs(L"");
   if (iKBShortcut != 0) {
     CString cs_temp;
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
@@ -319,7 +319,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     time_t t1(0), t2(0);
     short int si1, si2;
     StringX sxValue1, sxValue2;
-    stringT sFieldName = pci->FieldName((CItemData::FieldType)i);
+    std::wstring sFieldName = pci->FieldName((CItemData::FieldType)i);
 
     // Get field values
     // For aliases - use base entry passwords
@@ -529,7 +529,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             sxValue2 = L"";
 
           if (bShowAll || sxValue1 != sxValue2) {
-            stringT str;
+            std::wstring str;
             Format(str, L"%s - %d", sFieldName.c_str(), n+1);
             iPos = m_ListCtrl.InsertItem(iPos, str.c_str());
             m_ListCtrl.SetItemText(iPos, 1, sxValue1.c_str());

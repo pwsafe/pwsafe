@@ -103,14 +103,14 @@ void CPWListCtrl::OnPaint()
 {
   CListCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)

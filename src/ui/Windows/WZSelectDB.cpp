@@ -259,7 +259,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
-  stringT str_extn(L"");
+  std::wstring str_extn(L"");
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
@@ -273,10 +273,10 @@ BOOL CWZSelectDB::OnInitDialog()
       GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
 
-      stringT drive, dir, file, ext;
+      std::wstring drive, dir, file, ext;
       pws_os::splitpath(m_pWZPSH->WZPSHGetCurFile().c_str(), drive, dir, file, ext);
 
-      stringT str_file = file + L".export";
+      std::wstring str_file = file + L".export";
 
       // Create new DB
       const PWSfile::VERSION current_version = m_pWZPSH->GetDBVersion();
@@ -900,7 +900,7 @@ void CWZSelectDB::yubiShowChallengeSent()
 {
   // A request's in the air, setup GUI to wait for reply
   m_yubi_status.ShowWindow(SW_HIDE);
-  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_status.SetWindowText(L"");
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
 }
@@ -912,8 +912,8 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetPos(0);
-    m_yubi_status.SetWindowText(_T(""));
-    TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
+    m_yubi_status.SetWindowText(L"");
+    pws_os::Trace(L"yubiCheckCompleted: YKLIB_OK");
     m_pending = false;
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     m_state |= KEYPRESENT;
@@ -943,7 +943,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), yrc);
+    pws_os::Trace(L"yubiCompleted(%d)\n", yrc);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }

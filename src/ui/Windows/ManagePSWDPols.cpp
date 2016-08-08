@@ -866,7 +866,7 @@ void CManagePSWDPols::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
+static void WindowsRowPutter(int row, const std::wstring &name, const std::wstring &value,
                              void *table)
 {
   // Callback function used by st_PSWDPolicy::Policy2Table

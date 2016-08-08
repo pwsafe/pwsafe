@@ -757,6 +757,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (!status) {
     return XML_FAILED_VALIDATION;
   }
+
   numValidated = iXML.getNumEntriesValidated();
 
   validation = false;
@@ -782,9 +783,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
     pcommand = NULL;
     return XML_FAILED_IMPORT;
   }
-
-  if (numImported > 0)
-    SetDBChanged(true);
 
   return ((numRenamed + numPWHErrors) == 0) ? SUCCESS : OK_WITH_ERRORS;
 }
@@ -1452,9 +1450,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
 
-  if (numImported > 0)
-    SetDBChanged(true);
-
   return ((numSkipped + numRenamed + numPWHErrors + numshortcutsremoved)) == 0 ?
              SUCCESS : OK_WITH_ERRORS;
 }
@@ -1825,7 +1820,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     rpt.WriteLine(sx_imported.c_str());
   }
 
-  SetDBChanged(true);
   return SUCCESS;
 }
 
@@ -2310,9 +2304,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop
-
-  if (numImported > 0)
-    SetDBChanged(true);
 
   return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }

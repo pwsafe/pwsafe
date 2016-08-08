@@ -62,18 +62,23 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::DatabaseModified(bool bChanged)
 {
-  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
   // Callback from PWScore if the database has been changed
-  // entries or preferences stored in the database
+  // (entries or preferences stored in the database)
 
-  // Callback from PWScore if the password list has been changed,
-  // invalidating the indices vector in Find
+  // First if the password list has been changed, invalidate
+  // the indices vector in Find
   InvalidateSearch();
   OnHideFindToolBar();
 
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+    SaveImmediately();
+
   // This is to prevent Windows (Vista & later) from shutting down
-  // if the database has been modified (including preferences stored in the DB)
+  // if the database has been modified (including preferences
+  // stored in the DB)
   static bool bCurrentState(false);
 
   // Don't do anything if status unchanged or not at least Vista
@@ -160,7 +165,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Rebuild the entire tree view
-      RebuildGUI(iTreeOnly);
+      RebuildGUI(TREEONLY);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Refresh one entry ListView row and in the tree if the Title/Username/Password
@@ -177,7 +182,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
-      RebuildGUI(iTreeOnly);
+      RebuildGUI(TREEONLY);
       break;
     default:
       break;
@@ -204,7 +209,7 @@ void DboxMain::GUIRefreshEntry(const CItemData &ci)
   UpdateEntryImages(ci);
 }
 
-void DboxMain::UpdateWizard(const stringT &s)
+void DboxMain::UpdateWizard(const std::wstring &s)
 {
   if (m_pWZWnd != NULL)
     m_pWZWnd->SetWindowText(s.c_str());
@@ -387,7 +392,7 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = bIsRO ? FALSE : TRUE;
-    BOOL SaveState = (!bIsRO && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
+    BOOL SaveState = (!bIsRO && (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
@@ -1065,7 +1070,7 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
 
 // Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
-void DboxMain::RefreshViews(const int iView)
+void DboxMain::RefreshViews(const ViewType iView)
 {
   PWS_LOGIT_ARGS("iView=%d", iView);
 
@@ -1076,11 +1081,11 @@ void DboxMain::RefreshViews(const int iView)
   m_bInRefresh = true;
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     m_ctlItemList.SetRedraw(FALSE);
     m_ctlItemList.DeleteAllItems();
   }
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     m_ctlItemTree.SetRedraw(FALSE);
     m_mapGroupToTreeItem.clear();
     m_mapTreeItemToGroup.clear();
@@ -1111,11 +1116,11 @@ void DboxMain::RefreshViews(const int iView)
   }
 
   // re-enable and force redraw!
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     m_ctlItemList.SetRedraw(TRUE); 
     m_ctlItemList.Invalidate();
   }
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     m_ctlItemTree.SetRedraw(TRUE);
     m_ctlItemTree.Invalidate();
   }
@@ -1490,6 +1495,7 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
           // Update display state
           SaveGroupDisplayState();
+
           *pLResult = 1L; // We have toggled the group
           return;
         }
@@ -1562,7 +1568,7 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 // {kjp} temporary objects created and copied.
 //
 int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
-                                const bool bSort, const int iView)
+                                const bool bSort, const ViewType iView)
 {
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi != NULL && pdi->list_index != -1) {
@@ -1580,9 +1586,9 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     ci.SetDisplayInfo(pdi);
   }
 
-  if (iView & iListOnly)
+  if (iView & LISTONLY)
     pdi->list_index = -1;
-  if (iView & iTreeOnly)
+  if (iView & TREEONLY)
     pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
@@ -1597,7 +1603,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
   StringX username = ci.GetUser();
   StringX sx_fielddata(L"");
 
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     // Insert the first column data (it will be empty if an image is in 1st column)
     if (!m_bImageInLV) {
       sx_fielddata = GetListViewItemText(ci, 0);
@@ -1615,7 +1621,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       SetEntryImage(iResult, nImage);
   }
 
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     HTREEITEM ti;
     StringX treeDispString = (LPCWSTR)m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
@@ -1637,7 +1643,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     pdi->tree_item = ti;
   }
 
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     // Set the data in the rest of the columns
     // First get the 1st line of the Notes field
     StringX sxnotes, line1(L"");
@@ -1742,8 +1748,12 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     if (!m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
+        // Do not create and execute a DBPrefsCommand as this may cause
+        // a "Save Immediately" every time the user changes the sort direction
+        // It will be saved when the DB is next saved either directly or
+        // via a different DB change (entry, group or other DB preference)
         const StringX prefString(prefs->Store());
-        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);
+        SetDBPrefsChanged(m_core.HaveHeaderPreferencesChanged(prefString));
       }
       ChangeOkUpdate();
     }
@@ -2023,11 +2033,15 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
 void DboxMain::OnExpandAll()
 {
   m_ctlItemTree.OnExpandAll();
+
+  SaveGroupDisplayState();
 }
 
 void DboxMain::OnCollapseAll()
 {
   m_ctlItemTree.OnCollapseAll();
+
+  SaveGroupDisplayState();
 }
 
 static void Hider(CWnd *pWnd)
@@ -2043,7 +2057,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
-    pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
+    //pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     m_vGroupDisplayState = GetGroupDisplayState();
 
     if (!LockDataBase())
@@ -2065,8 +2079,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // once a day, we want to check the expired entries list
     CheckExpireList();
   } else {
-    pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
-          m_IdleLockCountDown, nIDEvent);
+    //pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
+    //      m_IdleLockCountDown, nIDEvent);
   }
 }
 
@@ -2079,7 +2093,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup).
 
-  pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
+  //pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (wParam) {
@@ -2136,7 +2150,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Now try and save changes
-  if (m_core.IsChanged() ||  m_bTSUpdated || m_core.HaveDBPrefsChanged()) {
+  if (m_core.IsDBChanged() || m_bEntryTimestampsChanged || m_core.HaveDBPrefsChanged()) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
@@ -2183,8 +2197,9 @@ bool DboxMain::IsWorkstationLocked() const
       CloseDesktop(hDesktop);
     }
   }
-  if (bResult)
-    pws_os::Trace(L"IsWorkstationLocked() returning true");
+
+  //if (bResult)
+  //  pws_os::Trace(L"IsWorkstationLocked() returning true");
   return bResult;
 }
 
@@ -2778,7 +2793,7 @@ void DboxMain::OnResetColumns()
   AutoResizeColumns();
 
   // Refresh the ListView
-  RefreshViews(iListOnly);
+  RefreshViews(LISTONLY);
 
   // Reset Column Chooser dialog but only if already created
   if (m_pCC != NULL)
@@ -4125,12 +4140,12 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   }
 }
 
-void DboxMain::RebuildGUI(const int iView)
+void DboxMain::RebuildGUI(const ViewType iView)
 {
   RefreshViews(iView);
 }
 
-void DboxMain::SaveGUIStatusEx(const int iView)
+void DboxMain::SaveGUIStatusEx(const ViewType iView)
 {
   PWS_LOGIT_ARGS("iView=%d", iView);
 
@@ -4154,7 +4169,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   HTREEITEM ti;
 
   // Note: User can have different entries selected/visible in Tree & List Views
-  if ((iView & iListOnly) == iListOnly && m_ctlItemList.GetItemCount() > 0) {
+  if ((iView & LISTONLY) == LISTONLY && m_ctlItemList.GetItemCount() > 0) {
     m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
     m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
@@ -4180,7 +4195,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }
-  if ((iView & iTreeOnly) == iTreeOnly && m_ctlItemTree.GetCount() > 0) {
+
+  if ((iView & TREEONLY) == TREEONLY && m_ctlItemTree.GetCount() > 0) {
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 

@@ -94,7 +94,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                 (WPARAM)CPWPropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
       return TRUE;
 
-    // Now update preferences as per user's wishes
+    // Now update a copy of the preferences as per user's wishes
     UpdateCopyPreferences();
 
     // Now end it all so that OnApply isn't called again
@@ -272,7 +272,7 @@ void COptions_PropertySheet::UpdateCopyPreferences()
 
   // Now update the Application preferences.
   // In PropertyPage alphabetic order
-  // Note: Updating the copy values - especially important for DB preferences!!!
+  // Note: Updating the COPY values - especially important for DB preferences!!!
 
   // Backup
   prefs->SetPref(PWSprefs::BackupBeforeEverySave,

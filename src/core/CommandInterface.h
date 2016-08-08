@@ -22,9 +22,10 @@ class CommandInterface {
  public:
   CommandInterface() {}
   // Methods used both by PWScore and Commands:
-  virtual bool IsChanged() const = 0;
+  virtual bool IsDBChanged() const = 0;
+  virtual bool HaveDBPrefsChanged() const = 0;
   virtual bool IsReadOnly() const = 0;
-  virtual void SetDBChanged(bool bDBChanged, bool bNotify = true) = 0;
+  virtual void SetDBChanged(bool bDBChanged) = 0;
   virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
   virtual bool HaveHeaderPreferencesChanged(const StringX &prefString) = 0;
 
@@ -70,8 +71,8 @@ class CommandInterface {
   virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
 
-  virtual const std::vector<StringX> &GetVnodesModified() const = 0;
-  virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
+  virtual const std::vector<StringX> &Get_vNodesModified() const = 0;
+  virtual void Set_vNodesModified(const std::vector<StringX> &) = 0;
   virtual void AddChangedNodes(StringX path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;

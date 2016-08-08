@@ -22,7 +22,7 @@ PWSclipboard::PWSclipboard()
   memset(m_digest, 0, sizeof(m_digest));
 
   // Spelling counts - must be exact!
-  CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(_T("Clipboard Viewer Ignore"));
+  CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(L"Clipboard Viewer Ignore");
 }
 
 PWSclipboard::~PWSclipboard()
@@ -34,14 +34,14 @@ PWSclipboard::~PWSclipboard()
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   // Dummy data
-  HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(TCHAR));
+  HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(wchar_t));
   LPTSTR pDummyGlobalLock = (LPTSTR)::GlobalLock(hDummyGlobalMemory);
 
-  PWSUtil::strCopy(pDummyGlobalLock, 2, _T("\0") , 1);
+  PWSUtil::strCopy(pDummyGlobalLock, 2, L"\0" , 1);
   ::GlobalUnlock(hDummyGlobalMemory);
 
   // Real data
-  size_t uGlobalMemSize = (data.length() + 1) * sizeof(TCHAR);
+  size_t uGlobalMemSize = (data.length() + 1) * sizeof(wchar_t);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
   LPTSTR pGlobalLock = (LPTSTR)::GlobalLock(hGlobalMemory);
 
@@ -58,8 +58,8 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
     // of course, we don't want an extra copy of a password floating around
     // in memory, so we'll use the hash
     SHA256 ctx;
-    const TCHAR *str = data.c_str();
-    ctx.Update((const unsigned char *)str, data.length()*sizeof(TCHAR));
+    const wchar_t *str = data.c_str();
+    ctx.Update((const unsigned char *)str, data.length() * sizeof(wchar_t));
     ctx.Final(m_digest);
   }
   return m_set;
@@ -74,7 +74,7 @@ bool PWSclipboard::ClearData()
     HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
     if (hData != NULL) {
       LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
-      SIZE_T dwlength = ::GlobalSize(hData) - sizeof(TCHAR); // less trailing null
+      SIZE_T dwlength = ::GlobalSize(hData) - sizeof(wchar_t); // less trailing null
       if (dwlength < 1)
         return !m_set;
 
@@ -85,7 +85,7 @@ bool PWSclipboard::ClearData()
       ctx.Final(digest);
       if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
         trashMemory((void *)pData, dwlength);
-        StringX blank(_T(""));
+        StringX blank(L"");
         SetData(blank, false);
         memset(m_digest, 0, SHA256::HASHLEN);
       }

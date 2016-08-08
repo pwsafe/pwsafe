@@ -47,7 +47,7 @@ void CPWSRecentFileList::ReadList()
 
 void CPWSRecentFileList::WriteList()
 {
-  extern void RelativizePath(stringT &);
+  extern void RelativizePath(std::wstring &);
   PWSprefs *pref = PWSprefs::GetInstance();
   // writes to registry or config file
   if (pref->IsUsingRegistry()) {

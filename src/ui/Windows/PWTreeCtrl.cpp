@@ -89,7 +89,7 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
+      //pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_tree.EndDrop();
     }
     return sCode;
@@ -252,14 +252,14 @@ void CPWTreeCtrl::OnPaint()
 {
   CTreeCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 void CPWTreeCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CTreeCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 BOOL CPWTreeCtrl::PreTranslateMessage(MSG *pMsg)
@@ -304,7 +304,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd *, COleDataObject *pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() Found a file!\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -316,7 +316,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd *, COleDataObject *pDataObject,
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   if (pil != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() hide cursor\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() hide cursor\n");
     while (ShowCursor(FALSE) >= 0)
       ;
   }
@@ -330,7 +330,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd *pWnd, COleDataObject *pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragOver() Found a file!\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnDragOver() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -434,7 +434,7 @@ void CPWTreeCtrl::OnDragLeave()
   //We leave or window, so we need to clean DropTarget selection
   SelectDropTarget(NULL);
   // ShowCursor's semantics are VERY odd - RTFM
-  pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
+  //pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 }
@@ -694,8 +694,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
-      // Mark database as modified
-      app.GetMainDlg()->SetChanged(DboxMain::Data);
       app.GetMainDlg()->ChangeOkUpdate();
 
       app.GetMainDlg()->ResetInAddGroup();
@@ -923,8 +921,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   else
     delete pmulticmds;
 
-  // Mark database as modified
-  app.GetMainDlg()->SetChanged(DboxMain::Data);
   app.GetMainDlg()->ChangeOkUpdate();
 
   // put edited text in right order by sorting
@@ -1327,9 +1323,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
     HGLOBAL hg;
     HDROP hdrop;
     UINT nFiles;
-    TCHAR szDraggedFile[MAX_PATH];
+    wchar_t szDraggedFile[MAX_PATH];
 
-    pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
     hg = pDataObject->GetGlobalData(CF_HDROP);
     if (hg == NULL) {
       pws_os::Trace(L"CPWTreeCtrl::OnDrop() No global data\n");
@@ -1352,7 +1348,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
     }
 
     DragQueryFile(hdrop, 0, szDraggedFile, MAX_PATH);
-    pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
+    //pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
     GlobalUnlock(hg);
     m_droppedFile = szDraggedFile;
     app.GetMainDlg()->PostMessage(PWS_MSG_DROPPED_FILE);
@@ -1616,8 +1612,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 exit:
   SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
+
   if (retval == TRUE) {
-    app.GetMainDlg()->SetChanged(DboxMain::Data);
     app.GetMainDlg()->ChangeOkUpdate();
     if (app.GetMainDlg()->IsFilterActive())
       app.GetMainDlg()->RefreshViews();
@@ -1655,7 +1651,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   pil->DragMove(ptAction);
   pil->DragEnter(this, ptAction);
 
-  pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() hide cursor\n");
+  //pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() hide cursor\n");
   while (ShowCursor(FALSE) >= 0)
     ;
   SetCapture();
@@ -1728,7 +1724,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
     }
   }
 
-  pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() show cursor\n");
+  //pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 
@@ -1813,7 +1809,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
   }
 }
 
@@ -1831,7 +1827,7 @@ void CPWTreeCtrl::OnExpandAll()
   EnsureVisible(GetSelectedItem());
   SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 void CPWTreeCtrl::OnCollapseAll() 
@@ -1847,7 +1843,7 @@ void CPWTreeCtrl::OnCollapseAll()
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
@@ -1861,7 +1857,7 @@ void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
     } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   }
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
@@ -1924,7 +1920,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   } else {
     const StringX DragPathParent = GetGroup(GetParentItem(m_hitemDrag));
     m_nDragPathLen = DragPathParent.length();
-    pws_os::Trace(L"DragPathParent: %s; len: %d\n", DragPathParent.c_str(), m_nDragPathLen);
+    //pws_os::Trace(L"DragPathParent: %s; len: %d\n", DragPathParent.c_str(), m_nDragPathLen);
 
     StringX DragPath = GetGroup(m_hitemDrag);
     // Check if this is an empty group
@@ -1941,14 +1937,13 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
       DragPath += StringX(L".");
       const size_t draglen = DragPath.length();
-      pws_os::Trace(L"DragPath: %s; len: %d\n", DragPath.c_str(), DragPath.length());
+      //pws_os::Trace(L"DragPath: %s; len: %d\n", DragPath.c_str(), DragPath.length());
 
       for (size_t i = 0; i < vAllEmptyGroups.size(); i++) {
-        pws_os::Trace(L"vAllEmptyGroups[%d]: %s\n", i, vAllEmptyGroups[i].c_str());
         if (CompareNoCase(vAllEmptyGroups[i].substr(0, draglen), DragPath) == 0) {
-          StringX veg = vAllEmptyGroups[i].substr(m_nDragPathLen == 0 ? 0 : m_nDragPathLen + 1, StringX::npos);
+          StringX veg = vAllEmptyGroups[i].substr(m_nDragPathLen == 0 ? 0 : m_nDragPathLen + 1,
+                 StringX::npos);
           vEmptyGroups.push_back(veg);
-          pws_os::Trace(L"Added: %s\n", veg.c_str());
         }
       }
     }
@@ -1962,7 +1957,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   }
 
   // Now process empty groups
-  pws_os::Trace(L"nemptygroups: %d\n", vEmptyGroups.size());
   if (!vEmptyGroups.empty()) {
     if (outDDmemfile.GetLength() == 0) {
       // No entries written but as we are going to write empty groups
@@ -1996,7 +1990,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     unsigned char *buffer = new unsigned char[len];
     outDDmemfile.SeekToBegin();
     outDDmemfile.Read(buffer, len);
-    pws_os::Trace(L"outDDmemfile: len: %d: data: \n", len);
+    //pws_os::Trace(L"outDDmemfile: len: %d: data: \n", len);
     pws_os::HexDump(buffer, len, L"", 32);
     delete[] buffer;
   }
@@ -2278,7 +2272,7 @@ BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
 BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
   if (m_hgDataALL != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n");
     LPVOID lpData = GlobalLock(m_hgDataALL);
     SIZE_T memsize = GlobalSize(m_hgDataALL);
     if (lpData != NULL && memsize > 0) {
@@ -2290,7 +2284,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataTXT != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataTXT);
     SIZE_T memsize = GlobalSize(m_hgDataTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2302,7 +2296,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataUTXT != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataUTXT);
     SIZE_T memsize = GlobalSize(m_hgDataUTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2316,10 +2310,10 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   BOOL retval;
   if (lpFormatEtc->cfFormat == CF_UNICODETEXT ||
       lpFormatEtc->cfFormat == CF_TEXT) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderTextData\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderTextData\n");
     retval = RenderTextData(lpFormatEtc->cfFormat, phGlobal);
   } else if (lpFormatEtc->cfFormat == m_tcddCPFID) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderAllData\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderAllData\n");
     m_cfdropped = m_tcddCPFID;
     retval = RenderAllData(phGlobal);
   } else
@@ -2390,7 +2384,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - Alloc global memory\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -2415,7 +2409,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
       pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n");
+      //pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -2453,12 +2447,14 @@ bad_return:
       *phgData = NULL;
     }
   } else {
+    /*
     pws_os::Trace(L"CPWTreeCtrl::RenderTextData - D&D Data:\n");
     if (cfFormat == CF_UNICODETEXT) {
       pws_os::Trace(L"\t\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
       pws_os::Trace(L"\t\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
     }
+    */
   }
 
   if (lpData != NULL)
@@ -2504,7 +2500,7 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - Alloc global memory\n");
+    //pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - Alloc global memory\n");
     m_hgDataALL = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(m_hgDataALL != NULL);
     if (m_hgDataALL == NULL)
@@ -2528,7 +2524,7 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
       pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n");
+      //pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)

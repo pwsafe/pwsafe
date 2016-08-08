@@ -356,7 +356,6 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       else
         att.DecRefcount();
     }
-    NotifyDBModified();
   } // pos != m_pwlist.end()
 }
 
@@ -438,6 +437,7 @@ void PWScore::ClearData(void)
   m_base2shortcuts_mmap.clear();
 
   // Clear out unknown fields
+  m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
 
   // Clear out database filters
@@ -451,6 +451,22 @@ void PWScore::ClearData(void)
 
   // Clear out commands
   ClearCommands();
+
+  // Clear changed nodes
+  ClearChangedNodes();
+
+  // Clear expired password entries
+  m_ExpireCandidates.clear();
+
+  // Clear entry keyboard shortcuts
+  m_KBShortcutMap.clear();
+
+  // Clear any unknown preferences from previous databases
+  PWSprefs::GetInstance()->ClearUnknownPrefs();
+
+  // Reset state of unchanged DB
+  SetDBChanged(false);
+  SetDBPrefsChanged(false);
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -463,28 +479,8 @@ void PWScore::ReInit(bool bNewFile)
   else
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
-  const unsigned int BS = TwoFish::BLOCKSIZE;
-  if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
-    delete[] m_passkey;
-    m_passkey = NULL;
-    m_passkey_len = 0;
-  }
-
-  m_nRecordsWithUnknownFields = 0;
-  m_UHFL.clear();
-  ClearChangedNodes();
-
-  // Clear expired password entries
-  m_ExpireCandidates.clear();
-
-  // Clear entry keyboard shortcuts
-  m_KBShortcutMap.clear();
-
-  // Clear any unknown preferences from previous databases
-  PWSprefs::GetInstance()->ClearUnknownPrefs();
-
-  SetChanged(false, false);
+  // Clear all internal variables
+  ClearData();
 }
 
 void PWScore::NewFile(const StringX &passkey)
@@ -492,7 +488,6 @@ void PWScore::NewFile(const StringX &passkey)
   ClearData();
   SetPassKey(passkey);
   m_ReadFileVersion = PWSfile::VCURRENT;
-  SetChanged(false, false);
 }
 
 // functor object type for for_each:
@@ -595,7 +590,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   // Update info only if written version is same as read version
   // (otherwise we're exporting, not saving)
   if (version == m_ReadFileVersion) {
-    SetChanged(false, false);
+    SetDBChanged(false);
+    SetDBPrefsChanged(false);
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
   }
@@ -758,6 +754,26 @@ void PWScore::ResetStateAfterSave()
 
 int PWScore::Execute(Command *pcmd)
 {
+  /*
+    NOTES:    
+    1. *ALL* USER ACTIONS (e.g. simple such as delete one entry or
+      complex such as import a file, merge a DB or D&D) MUST PRODUCE *ONLY
+      ONE* CALL TO THIS MEMBER FUNCTION AS THIS INVOKES "Save Immediately"
+      IF THE USER HAS ENABLED THE PREFERENCE.  IT IS THE RESPONSIBILTY OF
+      THE UI TO ENSURE THAT A SINGLE USER ACTION GENERATES ONLY ONE CALL
+      THIS ROUTINE OTHERWISE MULTIPLE SAVES AND, POTENTIALLY, INTERMEDIATE
+      BACKUPS MAY BE GENERATED.
+
+    2. ALL COMMANDS UPDATE THE DATABASE (except UpdateGUICommand, which is
+      always used in combination with a command that does) AND SO WILL GENERATE
+      A "Save Immediately" SAVE AND CREATION OF AN INTERMEDIATE BACKUP IF
+      THE USER HAS ENABLED THESE PREFERENCES.
+   */
+
+  // If we have undone some previous commands, then this new command must
+  // go on the end of the currently executed commands in the 
+  // command chain and so we must delete any old commands
+  // that have been undone first
   if (m_redo_iter != m_vpcommands.end()) {
     std::vector<Command *>::iterator cmd_Iter;
 
@@ -767,40 +783,74 @@ int PWScore::Execute(Command *pcmd)
     m_vpcommands.erase(m_redo_iter, m_vpcommands.end());
   }
 
+  // Put this command on the end of the command chain and reset iterators
+  // to the end for undo/redo
   m_vpcommands.push_back(pcmd);
   m_undo_iter = m_redo_iter = m_vpcommands.end();
+
+  // Save current state
+  pcmd->SaveOldDBState(m_bDBChanged);
+
+  // Execute it
   int rc = pcmd->Execute();
+
+  // Set undo iterator to this one
   m_undo_iter--;
 
+  // If user has set Save Immediately, then a Execute changes the DB and it should be
+  // saved (with or without an intermediate backup)
+  NotifyDBModified();
+
+  // Then tell the UI update the GUI
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
   return rc;
 }
 
 void PWScore::Undo()
 {
+  // Undo last executed command
   ASSERT(m_undo_iter != m_vpcommands.end());
+
+  // Reset next command to redo (i.e. the one we just about to undo)
   m_redo_iter = m_undo_iter;
 
+  // Undo it
   (*m_undo_iter)->Undo();
 
+  // Reset iterator so that we know next command to undo
   if (m_undo_iter == m_vpcommands.begin())
     m_undo_iter = m_vpcommands.end();
   else
     m_undo_iter--;
 
+  // If user has set Save Immediately, then a Undo changes the DB and it should be
+  // saved (with or without an intermediate backup)
+  NotifyDBModified();
+
+  // Then tell the UI update the GUI
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
 }
 
 void PWScore::Redo()
 {
+  // Redo last undone command
   ASSERT(m_redo_iter != m_vpcommands.end());
+
+  // Reset next command to undo (i.e. the one we just about to redo)
   m_undo_iter = m_redo_iter;
 
+  // Redo it
   (*m_redo_iter)->Redo();
 
+  // Reset iterator so that we know next command to redo
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
+  
+  // If user has set Save Immediately, then a Redo changes the DB and it should be
+  // saved (with or without an intermediate backup)
+  NotifyDBModified();
 
+  // Then tell the UI update the GUI
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
 }
 
@@ -1051,8 +1101,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     }
   } // !m_isAuxCore
 
-  ClearData(); //Before overwriting old data, but after opening the file...
-  SetChanged(false, false);
+  ClearData(); // Before overwriting old data, but after opening the file...
 
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
@@ -1545,7 +1594,8 @@ bool PWScore::WasDisplayStatusChanged() const
   // m_OrigDisplayStatus is set while reading file.
   // m_hdr.m_displaystatus may be changed via SetDisplayStatus
   // Only for V3 and later
-  return m_ReadFileVersion >= PWSfile::V30 && m_hdr.m_displaystatus != m_OrigDisplayStatus;
+  return m_ReadFileVersion >= PWSfile::V30 &&
+         (m_hdr.m_displaystatus != m_OrigDisplayStatus);
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
@@ -3297,10 +3347,13 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
 {
   // Currently only 2 user fields in DB header
-  m_hdr.m_dbname = st_dbp.db_name;
-  m_hdr.m_dbdesc = st_dbp.db_description;
+  if (m_hdr.m_dbname != st_dbp.db_name ||
+      m_hdr.m_dbdesc != st_dbp.db_description) {
+    m_hdr.m_dbname = st_dbp.db_name;
+    m_hdr.m_dbdesc = st_dbp.db_description;
 
-  SetDBChanged(true);
+    SetDBChanged(true);
+  }
 }
 
 void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,

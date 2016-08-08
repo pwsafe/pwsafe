@@ -313,7 +313,7 @@ int CWZFinish::ExecuteAction()
                                 THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 
     if (m_pExecuteThread == NULL) {
-      pws_os::Trace(_T("Unable to create Execute thread\n"));
+      pws_os::Trace(L"Unable to create Execute thread\n");
       return PWScore::FAILURE;
     }
 

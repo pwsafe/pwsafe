@@ -40,6 +40,7 @@
 #define IDS_OTHEREDITORLOCATION         5109
 #define IDS_MIGRATETOAPPDATA            5110
 #define IDS_CLEARPWHISTORY              5111
+#define IDS_SAVEIMMEDIATELY             5112
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -754,6 +755,7 @@
 #define IDS_NUMEMPTYGROUPS              5995
 #define IDS_ADDEDITFONT                 5996
 #define IDS_SHORTCUT_WARNING            5997
+#define IDS_NOIBACKUP3                  5998
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001

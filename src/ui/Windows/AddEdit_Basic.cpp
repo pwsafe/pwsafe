@@ -1148,7 +1148,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(self->m_szTempName, _T("w+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == NULL) {
     return 0;
   }
 
@@ -1158,7 +1158,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Write out text
   fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
-             self->M_realnotes().GetLength() * sizeof(TCHAR), fd);
+             self->M_realnotes().GetLength() * sizeof(wchar_t), fd);
 
   // Close file before invoking editor
   fclose(fd);
@@ -1196,7 +1196,6 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     return 0;
   }
 
-  pws_os::Trace(L"%d\n", sizeof(self->m_szTempName));
   WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.
@@ -1223,7 +1222,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Now get what the user saved in this file and put it back into Notes field
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(m_szTempName, _T("r+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(m_szTempName, L"r+b")) == NULL) {
     goto error_exit;
   }
 
