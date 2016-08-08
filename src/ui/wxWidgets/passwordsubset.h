@@ -103,8 +103,9 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
  private:
-  const StringX &m_password;
+  const StringX m_password;
 ////@begin CPasswordSubset member variables
+  wxTextCtrl* m_pos;
   wxTextCtrl* m_vals;
   wxStaticText* m_error;
 ////@end CPasswordSubset member variables

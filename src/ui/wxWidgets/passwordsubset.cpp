@@ -23,6 +23,7 @@
 ////@begin includes
 ////@end includes
 
+#include <sstream>
 #include <wx/regex.h>
 #include "passwordsubset.h"
 
@@ -111,6 +112,7 @@ CPasswordSubset::~CPasswordSubset()
 void CPasswordSubset::Init()
 {
 ////@begin CPasswordSubset member initialisation
+  m_pos = NULL;
   m_vals = NULL;
   m_error = NULL;
 ////@end CPasswordSubset member initialisation
@@ -138,8 +140,8 @@ void CPasswordSubset::CreateControls()
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Positions:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_POS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pos = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_POS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemGridSizer4->Add(m_pos, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemGridSizer4->Add(5, 5, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -164,7 +166,7 @@ void CPasswordSubset::CreateControls()
   itemBoxSizer2->Add(itemButton12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   // Connect events and objects
-  itemTextCtrl6->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), NULL, this);
+  m_pos->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), NULL, this);
 ////@end CPasswordSubset content construction
 }
 
@@ -222,15 +224,46 @@ wxIcon CPasswordSubset::GetIconResource( const wxString& name )
 void CPasswordSubset::OnChar( wxKeyEvent& event )
 {
   static wxRegEx charSet("[[:digit:]]|[[:space:]]|,|-|;");
-  wxASSERT(charSet.IsValid());
+  static wxRegEx seps(",|;");
+
+  wxASSERT(charSet.IsValid() && seps.IsValid());
+
   wxChar uc = event.GetUnicodeKey();
   if (uc != WXK_NONE) {
+    const int N = m_password.length();
     if (charSet.Matches(wxString(uc, 1))) {
-      event.Skip(); // accept
-      // TBD: check against valid pos regexp and update vals accordingly
+      event.Skip(true); // accept
+      // Check against valid pos regexp and update vals accordingly
+      wxString pos_str = m_pos->GetLineText(0);
+      pos_str += uc; // since accepted char will only be added to control later
+      // could have used xwStringTokenizer in following, but this way we also convert to int
+      // and catch bad usage of '-'
+      seps.Replace(&pos_str, wxT(" ")); // replace ';' and ',' with ' ' for stream tokenizing
+      m_vals->Clear();
+      m_error->SetLabel(wxEmptyString);
+      
+      std::wistringstream is(pos_str.wc_str());
+      int pos;
+      while (is >> pos) {
+	if (pos > 0 && pos <= N)
+	  *m_vals << m_password[pos - 1] << wxT(" ");
+	else if (pos < 0 && pos >= -N)
+	  *m_vals << m_password[N + pos] << wxT(" ");
+	else {
+	  m_error->SetLabel(_("Invalid position"));
+	}
+      }
+      if (!is.eof()) {
+	m_error->SetLabel(_("Invalid position"));
+      }
+    } else {
+      if (uc == WXK_BACK)
+	event.Skip(true); // handle backspace
+      else
+	event.Skip(false); // not a char that we want to accept
     }
   } else { // process non-char key as usual
-    event.Skip();
+    event.Skip(true);
   }
 }
 
