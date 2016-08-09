@@ -36,10 +36,17 @@ void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
   } else {
     EnableToolTips();
     // Delay initial show & reshow
-    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    if (delayTimeFactor == 0) {
+      // Special case for Question Mark 'button'
+      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 30000);
+    } else {
+      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+      m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    }
     m_pToolTipCtrl->SetMaxTipWidth(300);
   }
 }

@@ -78,6 +78,9 @@ void COptionsSystem::DoDataExchange(CDataExchange *pDX)
   DDX_Check(pDX, IDC_MIGRATETOAPPDATA, m_Migrate2Appdata);
   DDX_Check(pDX, IDC_DEFAULTOPENRO, m_DefaultOpenRO);
   DDX_Check(pDX, IDC_MULTIPLEINSTANCES, m_MultipleInstances);
+
+  DDX_Control(pDX, IDC_REGDELHELP, m_Help1);
+  DDX_Control(pDX, IDC_MIGRATETOAPPDATAHELP, m_Help2);
   //}}AFX_DATA_MAP
 }
 
@@ -171,9 +174,19 @@ BOOL COptionsSystem::OnInitDialog()
 
   OnUseSystemTray();
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 2);
-  AddTool(IDC_REGDEL,           IDS_REGDEL);
-  AddTool(IDC_MIGRATETOAPPDATA, IDS_MIGRATETOAPPDATA);
+  m_Help1.Init(IDB_QUESTIONMARK);
+  m_Help2.Init(IDB_QUESTIONMARK);
+
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
+  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+  AddTool(IDC_REGDELHELP,           IDS_REGDEL);
+  AddTool(IDC_MIGRATETOAPPDATAHELP, IDS_MIGRATETOAPPDATA);
+
+  if (!boffermigrate2appdata) {
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+  }
+
   ActivateToolTip();
 
   return TRUE;  // return TRUE unless you set the focus to a control

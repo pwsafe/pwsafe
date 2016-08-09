@@ -14,6 +14,8 @@
 // COptionsBackup dialog
 #include "resource.h"
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
+
 #include "core/PWSprefs.h"
 
 class COptionsBackup : public COptions_PropertyPage
@@ -47,6 +49,7 @@ protected:
   CString m_currentFileBasename;
 
   CButtonExtn m_chkbox;
+  CTBMStatic m_Help1, m_Help2, m_Help3;
 
   // Overrides
   // ClassWizard generate virtual function overrides

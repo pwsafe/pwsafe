@@ -18,6 +18,7 @@
 #include "SHCTListCtrl.h"
 #include "PWHdrCtrlNoChng.h"
 #include "ControlExtns.h"
+#include "TBMStatic.h"
 
 #include "core/coredefs.h"
 
@@ -95,6 +96,8 @@ protected:
   int32 m_AppHotKeyValue;
   int m_iColWidth, m_iDefColWidth;
   BOOL m_bAppHotKeyEnabled;
+
+  CTBMStatic m_Help1, m_Help2;
 
   // Overrides
   // ClassWizard generate virtual function overrides

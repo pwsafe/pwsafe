@@ -15,6 +15,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
 
 class COptionsPasswordHistory : public COptions_PropertyPage
 {
@@ -35,6 +36,7 @@ protected:
   //}}AFX_DATA
 
   CButtonExtn m_chkbox;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   // Overrides
   // ClassWizard generate virtual function overrides

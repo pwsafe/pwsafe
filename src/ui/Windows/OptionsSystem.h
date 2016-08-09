@@ -13,6 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
 
 class COptionsSystem : public COptions_PropertyPage
 {
@@ -38,6 +39,8 @@ protected:
   BOOL m_DeleteRegistry, m_saveDeleteRegistry;
   BOOL m_Migrate2Appdata, m_saveMigrate2Appdata;
   BOOL m_InitialHotkeyState;
+
+  CTBMStatic m_Help1, m_Help2;
   //}}AFX_DATA
 
   // Overrides

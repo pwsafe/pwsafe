@@ -408,6 +408,9 @@
     <ClCompile Include="PWPListEntries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TBMStatic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -813,6 +816,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWPListEntries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TBMStatic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1692,6 +1698,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\toolbar\new\exportV4_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\question_mark.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

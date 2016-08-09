@@ -385,6 +385,7 @@
 #define IDB_EXPORTV4_NEW                544
 #define IDB_EXPORTV4_NEW_D              545
 #define IDD_NPWP_LIST_ENTRIES           546
+#define IDB_QUESTIONMARK                547
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -825,14 +826,28 @@
 #define IDC_CMB_AVALIABLEMEDIATYPES     1524
 #define IDC_STATIC_TUTORIAL             1525
 #define IDC_NPWP_LIST_ENTRIES           1526
+#define IDC_BACKUPBEFORESAVEHELP        1527
+#define IDC_USERBACKUPOTHERLOCATIONHELP 1528
+#define IDC_SAVEIMMEDIATELYHELP         1529
+#define IDC_MAINTAINDATETIMESTAMPSHELP  1530
+#define IDC_OTHERBROWSERLOCATIONHELP    1531
+#define IDC_OTHEREDITORLOCATIONHELP     1532
+#define IDC_RESETPWHISTORYOFFHELP       1533
+#define IDC_RESETPWHISTORYONHELP        1534
+#define IDC_SETMAXPWHISTORYHELP         1535
+#define IDC_CLEARPWHISTORYHELP          1536
+#define IDC_SHORTCUTLISTHELP            1537
+#define IDC_ENTSHORTCUTLISTHELP         1538
+#define IDC_REGDELHELP                  1539
+#define IDC_MIGRATETOAPPDATAHELP        1541
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        547
+#define _APS_NEXT_RESOURCE_VALUE        548
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1527
+#define _APS_NEXT_CONTROL_VALUE         1542
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif
