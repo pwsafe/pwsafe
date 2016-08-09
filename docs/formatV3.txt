@@ -337,9 +337,10 @@ Credit Card Number          0x1c        Text          N              [24]
 Credit Card Expiration      0x1d        Text          N              [24]
 Credit Card Verif. Value    0x1e        Text          N              [24]
 Credit Card PIN             0x1f        Text          N              [24]
-Unknown (testing)           0xdf        -             N              [25]
-Implementation-specific     0xe0-0xfe   -             N              [26]
-End of Entry                0xff        [empty]       Y              [27]
+QR Code                     0x20        Text          N              [25]
+Unknown (testing)           0xdf        -             N              [26]
+Implementation-specific     0xe0-0xfe   -             N              [27]
+End of Entry                0xff        [empty]       Y              [28]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -516,11 +517,14 @@ least 10 bytes.
 - CVV (CVV2) is three or four digits.
 - PIN is four to twelve digits long (ISO-9564)
 
-[25] Reserved for testing forward compatability.
+[25] UTF-8 encoded text used for QR code generation. Content will be converted
+to QR code without any further encoding.
 
-[26] Reserved for application-specific use. See 4.2.2.
+[26] Reserved for testing forward compatability.
 
-[27] An explicit end of entry field is useful for supporting new fields
+[27] Reserved for application-specific use. See 4.2.2.
+
+[28] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility
