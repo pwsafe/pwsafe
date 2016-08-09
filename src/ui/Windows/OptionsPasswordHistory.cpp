@@ -56,6 +56,11 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
 
   DDX_Control(pDX, IDC_SAVEPWHISTORY, m_chkbox);
+
+  DDX_Control(pDX, IDC_RESETPWHISTORYOFFHELP, m_Help1);
+  DDX_Control(pDX, IDC_RESETPWHISTORYONHELP, m_Help2);
+  DDX_Control(pDX, IDC_SETMAXPWHISTORYHELP, m_Help3);
+  DDX_Control(pDX, IDC_CLEARPWHISTORYHELP, m_Help4);
   //}}AFX_DATA_MAP
 }
 
@@ -99,12 +104,17 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
   GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  AddTool(IDC_RESETPWHISTORYOFF, IDS_RESETPWHISTORYOFF);
-  AddTool(IDC_RESETPWHISTORYON,  IDS_RESETPWHISTORYON);
-  AddTool(IDC_SETMAXPWHISTORY,   IDS_SETMAXPWHISTORY);
-  AddTool(IDC_CLEARPWHISTORY,    IDS_CLEARPWHISTORY);
+  m_Help1.Init(IDB_QUESTIONMARK);
+  m_Help2.Init(IDB_QUESTIONMARK);
+  m_Help3.Init(IDB_QUESTIONMARK);
+  m_Help4.Init(IDB_QUESTIONMARK);
+
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
+  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+  AddTool(IDC_RESETPWHISTORYOFFHELP, IDS_RESETPWHISTORYOFF);
+  AddTool(IDC_RESETPWHISTORYONHELP,  IDS_RESETPWHISTORYON);
+  AddTool(IDC_SETMAXPWHISTORYHELP,   IDS_SETMAXPWHISTORY);
+  AddTool(IDC_CLEARPWHISTORYHELP,    IDS_CLEARPWHISTORY);
   ActivateToolTip();
 
   return TRUE;  // return TRUE unless you set the focus to a control

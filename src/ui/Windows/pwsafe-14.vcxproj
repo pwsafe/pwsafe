@@ -914,6 +914,7 @@
     <ClCompile Include="Subclass.cpp" />
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
+    <ClCompile Include="TBMStatic.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
@@ -1047,6 +1048,7 @@
     <ClInclude Include="Subclass.h" />
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
+    <ClInclude Include="TBMStatic.h" />
     <ClInclude Include="ThisMfcApp.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
@@ -1375,6 +1377,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />

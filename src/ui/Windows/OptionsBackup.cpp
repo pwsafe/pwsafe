@@ -85,6 +85,10 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_BACKUPMAXINC, m_MaxNumIncBackups);
 
   DDX_Control(pDX, IDC_SAVEIMMEDIATELY, m_chkbox);
+
+  DDX_Control(pDX, IDC_BACKUPBEFORESAVEHELP, m_Help1);
+  DDX_Control(pDX, IDC_USERBACKUPOTHERLOCATIONHELP, m_Help2);
+  DDX_Control(pDX, IDC_SAVEIMMEDIATELYHELP, m_Help3);
   //}}AFX_DATA_MAP
 }
 
@@ -149,11 +153,15 @@ BOOL COptionsBackup::OnInitDialog()
   OnComboChanged();
   OnBackupBeforeSave();
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  AddTool(IDC_BACKUPBEFORESAVE,        IDS_BACKUPBEFORESAVE);
-  AddTool(IDC_USERBACKUPOTHERLOCATION, IDS_USERBACKUPOTHERLOCATION);
-  AddTool(IDC_SAVEIMMEDIATELY,         IDS_SAVEIMMEDIATELY);
+  m_Help1.Init(IDB_QUESTIONMARK);
+  m_Help2.Init(IDB_QUESTIONMARK);
+  m_Help3.Init(IDB_QUESTIONMARK);
+
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
+  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+  AddTool(IDC_BACKUPBEFORESAVEHELP,        IDS_BACKUPBEFORESAVE);
+  AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
+  AddTool(IDC_SAVEIMMEDIATELYHELP,         IDS_SAVEIMMEDIATELY);
   ActivateToolTip();
 
   return TRUE;

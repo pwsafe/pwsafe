@@ -120,6 +120,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/Subclass.h
             src/ui/Windows/SysColStatic.h
             src/ui/Windows/SystemTray.h
+            src/ui/Windows/TBMStatic.h
             src/ui/Windows/ThisMfcApp.h
             src/ui/Windows/ViewReport.h
             src/ui/Windows/VirtualKeyboard/VKBButton.h
@@ -260,6 +261,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/Subclass.cpp
             src/ui/Windows/SysColStatic.cpp
             src/ui/Windows/SystemTray.cpp
+            src/ui/Windows/TBMStatic.cpp
             src/ui/Windows/ThisMfcApp.cpp
             src/ui/Windows/ViewReport.cpp
             src/ui/Windows/VirtualKeyboard/VKBButton.cpp
