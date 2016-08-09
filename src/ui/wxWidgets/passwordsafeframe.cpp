@@ -1012,7 +1012,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
 
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
       prompt += wxT(": ");
@@ -1606,7 +1606,7 @@ void PasswordSafeFrame::SetChanged(ChangeType changed)
       }
       break;
     case Clear:
-      m_core.SetChanged(false, false);
+      m_core.SetDBChanged(false);
       m_bTSUpdated = false;
       break;
     case TimeStamp:
@@ -1858,7 +1858,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.IsChanged() || m_core.HaveDBPrefsChanged());
+      evt.Enable(m_core.IsDBChanged() || m_core.HaveDBPrefsChanged());
       break;
 
     case ID_ADDGROUP:
@@ -1976,8 +1976,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
 bool PasswordSafeFrame::IsClosed() const
 {
-  return m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 && !m_core.IsChanged()
-                    && !m_core.AnyToUndo() && !m_core.AnyToRedo();
+  return (m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 &&
+          !m_core.IsDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
 // Implementation of UIinterface methods
@@ -1996,7 +1996,7 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     }
     if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
   }
-  else if (m_core.IsChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
+  else if (m_core.IsDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
     if (m_currentView == TREE) {
       if (m_grid != NULL)
@@ -2233,7 +2233,7 @@ int PasswordSafeFrame::New()
 {
   int rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && m_core.IsDBChanged()) {
     wxString msg(_("Do you want to save changes to the password database: "));
     msg += m_core.GetCurFile().c_str();
     wxMessageDialog mbox(this, msg, GetTitle(), wxCANCEL | wxYES_NO | wxICON_QUESTION);
@@ -2357,7 +2357,7 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
   m_savedDBPrefs = towxstring(PWSprefs::GetInstance()->Store());
 
   //Save alerts the user
-  if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
+  if (!m_core.IsDBChanged() || Save() == PWScore::SUCCESS) {
     ClearData();
     return true;
   }
@@ -3311,7 +3311,7 @@ void PasswordSafeFrame::UpdateStatusBar()
 
     //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
 
-    text = m_core.IsChanged() ? wxT("*") : wxT(" ");
+    text = m_core.IsDBChanged() ? wxT("*") : wxT(" ");
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_MODIFIED);
 
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
