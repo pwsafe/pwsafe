@@ -10,6 +10,7 @@
 #include "./argutils.h"
 #include "./strutils.h"
 #include "./searchaction.h"
+#include "./search-internal.h"
 
 #include <vector>
 #include <exception>
@@ -106,7 +107,7 @@ struct SearchWithConfirmation
                             "[q]uit  - no for this item all remaining items\n"
                             "a[b]ort - abort operation, even for previous items\n";
 
-    wchar_t choice{};
+    wchar_t choice{ ua.confirmed? L'a': 0 };
 
     SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields,
         [matchfn, &choice, help](const pws_os::CUUID &uuid,
@@ -187,13 +188,18 @@ int DoSearch(PWScore &core, const UserArgs &ua, action_func_t afn)
 
 int Search(PWScore &core, const UserArgs &ua)
 {
+  return SearchInternal(core, ua, wcout);
+}
+
+int SearchInternal(PWScore &core, const UserArgs &ua, wostream &os)
+{
   switch( ua.SearchAction) {
 
     case UserArgs::Print:
     {
       CItemData::FieldBits ftp = ParseFields(ua.opArg2);
-      return DoSearch<UserArgs::Print>(core, ua, [&core, &ftp](const ItemPtrVec &matches) {
-        return PrintSearchResults(matches, core, ftp);
+      return DoSearch<UserArgs::Print>(core, ua, [&core, &ftp, &os](const ItemPtrVec &matches) {
+        return PrintSearchResults(matches, core, ftp, os);
       });
     }
 

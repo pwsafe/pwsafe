@@ -45,6 +45,7 @@
     <File Name="../src/ui/cli/impexp.cpp"/>
     <File Name="../src/ui/cli/impexp.h"/>
     <File Name="../src/ui/cli/safeutils-internal.h"/>
+    <File Name="../src/ui/cli/search-internal.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug">
     <Project Name="core"/>

@@ -42,13 +42,14 @@ constexpr auto known_fields = {
   CItemData::KBSHORTCUT
 };
 
-int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp) {
-  for_each( items.begin(), items.end(), [&ftp](const CItemData *p) {
+int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp,
+                            std::wostream &os) {
+  for_each( items.begin(), items.end(), [&ftp, &os](const CItemData *p) {
     const CItemData &data = *p;
-    wcout << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
+    os << st_GroupTitleUser{data.GetGroup(), data.GetTitle(), data.GetUser()} << endl;
     for (auto ft : known_fields) {
       if (ftp.test(ft))
-        wcout << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
+        os << data.FieldName(ft) << L": " << data.GetFieldValue(ft) << endl;
     }
   });
   return PWScore::SUCCESS;
