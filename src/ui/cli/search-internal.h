@@ -3,6 +3,6 @@
 #include <iosfwd>
 
 class PWScore;
-class UserArgs;
+struct UserArgs;
 
 int SearchInternal(PWScore &core, const UserArgs &ua, std::wostream &os);
