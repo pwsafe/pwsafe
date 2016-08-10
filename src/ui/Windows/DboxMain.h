@@ -316,7 +316,6 @@ public:
   bool GetDBNotificationState() {return m_core.GetDBNotificationState();}
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
-  void SetTimeStampState(const bool bState) {m_bEntryTimestampsChanged = bState;}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}

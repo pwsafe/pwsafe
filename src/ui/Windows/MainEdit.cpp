@@ -1155,9 +1155,11 @@ void DboxMain::OnEdit()
           EditShortcut(pci);
         } else {
           EditItem(GetBaseEntry(pci));
+          UpdateAccessTime(pci->GetUUID());
         }
       }  else {
         EditItem(pci);
+        UpdateAccessTime(pci->GetUUID());
       }
     } catch (CString &err) {
       CGeneralMsgBox gmb;
