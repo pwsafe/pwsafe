@@ -44,6 +44,7 @@
     <File Name="../src/ui/cli/safeutils.h"/>
     <File Name="../src/ui/cli/impexp.cpp"/>
     <File Name="../src/ui/cli/impexp.h"/>
+    <File Name="../src/ui/cli/safeutils-internal.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug">
     <Project Name="core"/>

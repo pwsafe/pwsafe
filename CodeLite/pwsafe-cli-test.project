@@ -26,6 +26,9 @@
     <File Name="../src/ui/cli/strutils.cpp"/>
     <File Name="../src/ui/cli/argutils.cpp"/>
     <File Name="../src/ui/cli/searchaction.cpp"/>
+    <File Name="../src/ui/cli/add-entry-test.cpp"/>
+    <File Name="../src/ui/cli/safeutils.cpp"/>
+    <File Name="../src/ui/cli/trim-test.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
