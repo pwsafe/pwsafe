@@ -26,7 +26,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   m_save_bShowUsernameInTree(FALSE), m_save_bShowPasswordInTree(FALSE), 
   m_save_bExplorerTypeTree(FALSE), m_save_bPreExpiryWarn(FALSE),
   m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
-  m_save_bHighlightChanges(FALSE),
+  m_save_bSaveImmediately(TRUE), m_save_bHighlightChanges(FALSE),
   m_pp_backup(NULL), m_pp_display(NULL), m_pp_misc(NULL),
   m_pp_passwordhistory(NULL), m_pp_security(NULL),
   m_pp_shortcuts(NULL), m_pp_system(NULL)
@@ -125,7 +125,7 @@ void COptions_PropertySheet::SetupInitialValues()
   // Backup Data
   CString cs_backupPrefix, cs_backupDir;
   m_OPTMD.CurrentFile = GetMainDlg()->GetCurFile().c_str();
-  m_OPTMD.SaveImmediately =
+  m_OPTMD.SaveImmediately = m_save_bSaveImmediately = 
       prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   m_OPTMD.BackupBeforeSave =
       prefs->GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
@@ -308,11 +308,15 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.PreExpiryWarnDays, true);
   prefs->SetPref(PWSprefs::ClosedTrayIconColour,
                  m_OPTMD.TrayIconColour, true);
-  if (m_save_bHighlightChanges != m_OPTMD.HighlightChanges) {
-    prefs->SetPref(PWSprefs::HighlightChanges,
-                   m_OPTMD.HighlightChanges == TRUE, true);
-    m_bRefreshViews = true;
-  }
+  prefs->SetPref(PWSprefs::HighlightChanges,
+                  m_OPTMD.HighlightChanges == TRUE, true);
+  
+  // Changes are highlighted only if "hightlight changes" is true and 
+  // "save immediately" is false.
+  // So only need to refresh view if the new combination is different
+  // to the original combination
+  m_bRefreshViews = (m_save_bHighlightChanges && !m_save_bSaveImmediately) != 
+                    (m_OPTMD.HighlightChanges && !m_OPTMD.SaveImmediately);
 
   // Misc
   prefs->SetPref(PWSprefs::DeleteQuestion,

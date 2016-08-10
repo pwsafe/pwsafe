@@ -35,6 +35,7 @@ public:
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   void UpdateRowHeight(bool bInvalidate);
+
 protected:
   //{{AFX_MSG(CPWListCtrl)
   afx_msg void OnDestroy();

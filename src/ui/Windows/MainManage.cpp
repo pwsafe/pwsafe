@@ -387,9 +387,12 @@ void DboxMain::OnOptions()
       }
     }
 
+    m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+    m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+
     if (pOptionsPS->RefreshViews()) {
-      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
-      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
       RefreshViews();
     }
 
