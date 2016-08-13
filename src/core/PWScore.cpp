@@ -133,8 +133,7 @@ PWScore::PWScore() :
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_bDBChanged(false), m_bDBPrefsChanged(false),
-                     m_IsReadOnly(false), m_bUniqueGTUValidated(false),
+                     m_IsReadOnly(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
                      m_iAppHotKey(0)
@@ -164,9 +163,67 @@ PWScore::~PWScore()
   }
 
   m_UHFL.clear();
-  m_vnodes_modified.clear();
+  m_vNodes_Modified.clear();
 
   delete m_pFileSig;
+}
+
+void PWScore::SetDBChanged(bool bDBChanged)
+{
+  pws_os::Trace(_T("SetDBChanged to : %s\n"), bDBChanged ? _T("true") : _T("false"));
+  st_DBS.bDBChanged = bDBChanged;
+}
+
+void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
+{
+  pws_os::Trace(_T("SetDBPrefsChanged to : %s\n"), bDBprefschanged ? _T("true") : _T("false"));
+  st_DBS.bDBPrefsChanged = bDBprefschanged;
+}
+
+bool PWScore::IsDBChanged() const
+{
+  pws_os::Trace(_T("IsDBChanged : %s\n"), st_DBS.bDBChanged ? _T("true") : _T("false"));
+  return st_DBS.bDBChanged;
+}
+
+bool PWScore::HaveDBPrefsChanged() const
+{
+  pws_os::Trace(_T("HaveDBPrefsChanged : %s\n"), st_DBS.bDBPrefsChanged ? _T("true") : _T("false"));
+  return st_DBS.bDBPrefsChanged;
+}
+
+bool PWScore::HaveEmptyGroupsChanged() const
+{
+  pws_os::Trace(_T("HaveEmptyGroupsChanged : %s\n"), st_DBS.bEmptyGroupsChanged ? 
+                   _T("true") : _T("false"));
+  return st_DBS.bEmptyGroupsChanged;
+}
+
+bool PWScore::HavePasswordPolicyNamesChanged() const
+{
+  pws_os::Trace(_T("HavePasswordPolicyNamesChanged : %s\n"), st_DBS.bPolicyNamesChanged ?
+                   _T("true") : _T("false"));
+  return st_DBS.bPolicyNamesChanged;
+}
+
+bool PWScore::HasGroupDisplayChanged() const
+{
+  bool bChanged = m_hdr.m_displaystatus != m_OrigDisplayStatus;
+  pws_os::Trace(_T("HasGroupDisplayChanged : %s\n"), bChanged ? _T("true") : _T("false"));
+  return bChanged;
+}
+
+bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
+{
+  bool bChanged = _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;
+  pws_os::Trace(_T("HaveHeaderPreferencesChanged : %s\n"), bChanged != 0 ? _T("true") : _T("false"));
+  return bChanged;
+}
+
+bool PWScore::HasAnythingBeenChanged()
+{
+  return (st_DBS.bDBChanged || st_DBS.bDBPrefsChanged || st_DBS.bEmptyGroupsChanged ||
+          st_DBS.bPolicyNamesChanged);
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
@@ -258,8 +315,6 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
 
   if (iKBShortcut != 0)
     VERIFY(AddKBShortcut(iKBShortcut, item.GetUUID()));
-
-  m_bDBChanged = true;
 }
 
 bool PWScore::ConfirmDelete(const CItemData *pci)
@@ -339,7 +394,6 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     if (iKBShortcut != 0)
       VERIFY(DelKBShortcut(iKBShortcut, item.GetUUID()));
 
-    m_bDBChanged = true;
     m_pwlist.erase(pos); // at last!
 
     if (item.NumberUnknownFields() > 0)
@@ -397,8 +451,6 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
     if (inewKBShortcut != 0)
       VERIFY(AddKBShortcut(inewKBShortcut, new_ci.GetUUID()));
   }
-
-  m_bDBChanged = true;
 }
 
 #if 0
@@ -465,8 +517,7 @@ void PWScore::ClearData(void)
   PWSprefs::GetInstance()->ClearUnknownPrefs();
 
   // Reset state of unchanged DB
-  SetDBChanged(false);
-  SetDBPrefsChanged(false);
+  st_DBS.Clear();
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -590,8 +641,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   // Update info only if written version is same as read version
   // (otherwise we're exporting, not saving)
   if (version == m_ReadFileVersion) {
-    SetDBChanged(false);
-    SetDBPrefsChanged(false);
+    st_DBS.Clear();
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
   }
@@ -731,31 +781,48 @@ void PWScore::ClearCommands()
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
 
-void PWScore::ResetStateAfterSave()
+void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
 {
-  PWS_LOGIT;
-
-  // After a Save/SaveAs, need to change all saved DB modified states
-  // in any commands in the list that can be undone or redone
-  // State = whether DB changed (false: no, true: yes)
-
-  // After a save, all commands in the undo/redo chain should now have
-  //   saved state = changed
-  std::vector<Command *>::iterator cmd_iter;
-  for (cmd_iter = m_vpcommands.begin(); cmd_iter != m_vpcommands.end(); cmd_iter++) {
-    (*cmd_iter)->ResetSavedState(true);
+  // Commands ALWAYS update the DB either an entry/group or a DB preference
+  // Need to know if entry/group or DB preference
+  Command::CommandType ct = pcmd->GetCommandType();
+  if (ct == Command::MultiCommand) {
+    // Need to check each one
+    std::vector<Command *>::iterator cmd_iter;
+    MultiCommands *pmulticmd = dynamic_cast<MultiCommands *>(pcmd);
+    for (cmd_iter = pmulticmd->m_vpcmds.begin();
+         cmd_iter != pmulticmd->m_vpcmds.end(); cmd_iter++) {
+      GetChangedStatus(*cmd_iter, st_Command);
+    }
+  } else {
+    // { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames };
+    switch (ct) {
+    case Command::GUIUpdate:
+      // No change to DB at all
+      break;
+    case Command::DB:
+      st_Command.bDBChanged = true;
+      break;
+    case Command::DBEmptyGroup:
+      st_Command.bEmptyGroupsChanged = true;
+      break;
+    case Command::DBPolicyNames:
+      st_Command.bPolicyNamesChanged = true;
+      break;
+    case Command::DBPrefs:
+      st_Command.bDBPrefsChanged = true;
+      break;
+    case Command::MultiCommand:
+      ASSERT(0);
+    }
   }
 
-  // However, the next command in the list (redo) should now have
-  //   saved state = unchanged.
-  if (m_redo_iter != m_vpcommands.end())
-    (*m_redo_iter)->ResetSavedState(false);
 }
 
 int PWScore::Execute(Command *pcmd)
 {
   /*
-    NOTES:    
+    NOTES:
     1. *ALL* USER ACTIONS (e.g. simple such as delete one entry or
       complex such as import a file, merge a DB or D&D) MUST PRODUCE *ONLY
       ONE* CALL TO THIS MEMBER FUNCTION AS THIS INVOKES "Save Immediately"
@@ -770,16 +837,17 @@ int PWScore::Execute(Command *pcmd)
       THE USER HAS ENABLED THESE PREFERENCES.
    */
 
-  // If we have undone some previous commands, then this new command must
-  // go on the end of the currently executed commands in the 
-  // command chain and so we must delete any old commands
-  // that have been undone first
+   // If we have undone some previous commands, then this new command must
+   // go on the end of the currently executed commands in the 
+   // command chain and so we must delete any old commands
+   // that have been undone first
   if (m_redo_iter != m_vpcommands.end()) {
     std::vector<Command *>::iterator cmd_Iter;
 
     for (cmd_Iter = m_redo_iter; cmd_Iter != m_vpcommands.end(); cmd_Iter++) {
       delete (*cmd_Iter);
     }
+
     m_vpcommands.erase(m_redo_iter, m_vpcommands.end());
   }
 
@@ -788,11 +856,18 @@ int PWScore::Execute(Command *pcmd)
   m_vpcommands.push_back(pcmd);
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 
-  // Save current state
-  pcmd->SaveOldDBState(m_bDBChanged);
+  // Get & set new DB status
+  pcmd->SaveChangedState(Command::PreExecute, st_DBS);
 
   // Execute it
   int rc = pcmd->Execute();
+
+  // Now set changed status
+  // First get what this command changes, then update the final state
+  st_DBStatus st_Command;
+  GetChangedStatus(pcmd, st_Command);
+  pcmd->SaveChangedState(Command::CommandAction, st_Command);
+  pcmd->SaveChangedState(Command::PostExecute, st_DBS);
 
   // Set undo iterator to this one
   m_undo_iter--;
@@ -817,11 +892,15 @@ void PWScore::Undo()
   // Undo it
   (*m_undo_iter)->Undo();
 
+  // Restore previous state
+  (*m_undo_iter)->RestoreChangedState(st_DBS);
+
   // Reset iterator so that we know next command to undo
-  if (m_undo_iter == m_vpcommands.begin())
+  if (m_undo_iter == m_vpcommands.begin()) {
     m_undo_iter = m_vpcommands.end();
-  else
+  } else {
     m_undo_iter--;
+  }
 
   // If user has set Save Immediately, then a Undo changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -839,12 +918,23 @@ void PWScore::Redo()
   // Reset next command to undo (i.e. the one we just about to redo)
   m_undo_iter = m_redo_iter;
 
+  // Shouldn't need to save pre-execute status in command as already there
+  // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
+  // and so might have changed.  Great if they didn't!
+  (*m_redo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
+
   // Redo it
   (*m_redo_iter)->Redo();
 
+  // Now set changed status
+  // First get what this command changes, then update the final state
+  // Don't need to save command action status in command as already there
+  (*m_redo_iter)->SaveChangedState(Command::PostExecute, st_DBS);
+
   // Reset iterator so that we know next command to redo
-  if (m_redo_iter != m_vpcommands.end())
+  if (m_redo_iter != m_vpcommands.end()) {
     m_redo_iter++;
+  }
   
   // If user has set Save Immediately, then a Redo changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -1181,8 +1271,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (pRpt != NULL)
     pRpt->EndReport();
 
-  SetDBChanged(bValidateRC);
-
   // Setup file signature for checking file integrity upon backup.
   // Goal is to prevent overwriting a good backup with a corrupt file.
   if (a_filename == m_currfile) {
@@ -1360,7 +1448,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePasskey(const StringX &newPasskey)
 {
   SetPassKey(newPasskey);
-  SetDBChanged(true);
+  st_DBS.bDBChanged = true;
 }
 
 // functor object type for find_if:
@@ -2196,9 +2284,9 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
 
-  m_bUniqueGTUValidated = true;
+  st_DBS.bUniqueGTUValidated = true;
   if (st_vr.TotalIssues() > 0) {
-    SetDBChanged(true);
+    st_DBS.bDBChanged = true;
     return true;
   } else {
     return false;
@@ -2273,7 +2361,7 @@ bool PWScore::InitialiseGTU(GTUSet &setGTU)
       return false;
     }
   }
-  m_bUniqueGTUValidated = true;
+  st_DBS.bUniqueGTUValidated = true;
   return true;
 }
 
@@ -2926,7 +3014,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
+    m_pUIIF->DatabaseModified(st_DBS.bDBChanged || st_DBS.bDBPrefsChanged);
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
@@ -3006,16 +3094,16 @@ void PWScore::UnlockFile2(const stringT &filename)
 
 bool PWScore::IsNodeModified(StringX &path) const
 {
-  return std::find(m_vnodes_modified.begin(),
-                   m_vnodes_modified.end(), path) != m_vnodes_modified.end();
+  return std::find(m_vNodes_Modified.begin(),
+                   m_vNodes_Modified.end(), path) != m_vNodes_Modified.end();
 }
 
 void PWScore::AddChangedNodes(StringX path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {
-    if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), nextpath) == m_vnodes_modified.end())
-      m_vnodes_modified.push_back(nextpath);
+    if (std::find(m_vNodes_Modified.begin(), m_vNodes_Modified.end(), nextpath) == m_vNodes_Modified.end())
+      m_vNodes_Modified.push_back(nextpath);
     size_t i = nextpath.find_last_of(_T("."));
     if (i == nextpath.npos)
       i = 0;
@@ -3352,7 +3440,7 @@ void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
     m_hdr.m_dbname = st_dbp.db_name;
     m_hdr.m_dbdesc = st_dbp.db_description;
 
-    SetDBChanged(true);
+    st_DBS.bDBChanged = true;
   }
 }
 
@@ -3487,6 +3575,15 @@ void PWScore::SetYubiSK(const unsigned char *sk)
   }
 }
 
+void PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
+{
+  if (m_MapPSWDPLC != MapPSWDPLC) {
+    st_DBS.bPolicyNamesChanged = true;
+
+    m_MapPSWDPLC = MapPSWDPLC;
+  }
+}
+
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 {
   PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
@@ -3523,7 +3620,16 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
   }
   if (bDoIt) {
     m_MapPSWDPLC[sxPolicyName] = st_pp;
-    SetDBChanged(true);
+    st_DBS.bDBChanged = true;
+  }
+}
+
+void PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
+{
+  if (m_vEmptyGroups != vEmptyGroups) {
+    st_DBS.bEmptyGroupsChanged;
+
+    m_vEmptyGroups = vEmptyGroups;
   }
 }
 
@@ -3632,14 +3738,14 @@ void PWScore::SetHashIters(uint32 value)
 {
   if (value != m_hashIters) {
     m_hashIters = value;
-    SetDBPrefsChanged(true);
+    st_DBS.bDBPrefsChanged = true;
   }
 }
 
 void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
 {
   ASSERT(HasAtt(attuuid));
-  m_bDBChanged = true;
+  st_DBS.bDBChanged = true;
   m_attlist.erase(m_attlist.find(attuuid));
 }
 

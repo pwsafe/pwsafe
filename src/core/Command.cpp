@@ -19,35 +19,32 @@
 // ------------------------------------------------
 
 /*
+  The base class provides Save/restore state functions to enable Undo/Redo to be
+  correctly performed.
 
-The base class provides Save/restore state functions to enable Undo/Redo to be
-correctly performed.
+  All GUI functions should ONLY use Command-derived classes to update any values in
+  the core.  None should be updated directly.
 
-All GUI functions should ONLY use Command-derived classes to update any values in
-the core.  None should be updated directly.
+  The MultiCommands derived class allows multiple commands to be lumped together
+  as one unit of work (in terms of Execute, Undo & Redo)
 
-The MultiCommands derived class allows multiple commands to be lumped together
-as one unit of work (in terms of Execute, Undo & Redo)
+  All other derived classes are aptly named to indicate their function.
 
-All other derived classes are aptly named to indicate their function.
+  There are 2 special derived classes:
+  1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
+  after any change.  For MultiCommands, it is normal to turn off GUI notification
+  during the execution of the individual commands and only notify the GUI at the
+  end (e.g. after importing a lot of entries or after undoing the importing of these
+  entries).  Flags can be set on when to do this notification.
 
-There are 2 special derived classes:
-1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
-after any change.  For MultiCommands, it is normal to turn off GUI notification
-during the execution of the individual commands and only notify the GUI at the
-end (e.g. after importing a lot of entries or after undoing the importing of these
-entries).  Flags can be set on when to do this notification.
-
-2. GUICommand - which allows the GUI to add GUI related commands to a MultiCommand
-unit of work.
-
+  2. GUICommand - which allows the GUI to add GUI related commands to a MultiCommand
+  unit of work.
 */
 
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bSaveDBChanged(false),
-m_bUniqueGTUValidated(false), m_bNotifyGUI(true), m_RC(0)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0)
 {
 }
 
@@ -55,19 +52,31 @@ Command::~Command()
 {
 }
 
-// Save/restore state
-void Command::SaveState()
+// The following should only be called from PWScore Execute/Undo/Redo
+void Command::SaveChangedState(StateType st, st_DBStatus &stst)
 {
-  m_bSaveDBChanged = m_pcomInt->IsDBChanged();
-  m_bUniqueGTUValidated = m_pcomInt->GetUniqueGTUValidated();
-  m_saved_vNodes_Modified = m_pcomInt->Get_vNodesModified();
+  switch (st) {
+    case CommandAction:
+      // Set what the command changes
+      m_Command = stst;
+      break;
+    case PreExecute:
+      // Save current pre-command execute state
+      m_PreCommand = stst;
+      break;
+    case PostExecute:
+      // Here we generate new state from pre-execute state and command action states
+      // Effectively post-execute state = pre-execute state + command action state
+      // and, unlike the other calls, return the result
+      stst = m_PostCommand = m_PreCommand + m_Command;
+      break;
+  }
 }
 
-void Command::RestoreState()
+// The following should only be called from PWScore Execute/Undo/Redo
+void Command::RestoreChangedState(st_DBStatus &stst)
 {
-  m_pcomInt->SetDBChanged(m_bSaveDBChanged);
-  m_pcomInt->SetUniqueGTUValidated(m_bUniqueGTUValidated);
-  m_pcomInt->Set_vNodesModified(m_saved_vNodes_Modified);
+  stst = m_PreCommand;
 }
 
 // ------------------------------------------------
@@ -173,16 +182,6 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
   } else {
     rc = m_vRCs[ncmd - 1];
     return true;
-  }
-}
-
-void MultiCommands::ResetSavedState(bool bNewDBState)
-{
-  Command::ResetSavedState(bNewDBState);
-
-  std::vector<Command *>::iterator cmd_Iter;
-  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    (*cmd_Iter)->ResetSavedState(bNewDBState);
   }
 }
 
@@ -467,8 +466,6 @@ AddEntryCommand::~AddEntryCommand()
 
 int AddEntryCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -502,8 +499,6 @@ void AddEntryCommand::Undo()
     m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
                                       m_ci.GetEntryType());
   }
-
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -570,9 +565,6 @@ int DeleteEntryCommand::Execute()
     return 1;
 
   // Here if we actually have an entry to delete:
-
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -626,8 +618,6 @@ void DeleteEntryCommand::Undo()
       }
     }
   }
-
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -650,8 +640,6 @@ EditEntryCommand::~EditEntryCommand()
 
 int EditEntryCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -686,8 +674,6 @@ void EditEntryCommand::Undo()
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
     m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
-
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -740,8 +726,6 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
 
 int UpdateEntryCommand::Execute()
 {
-  SaveState();
-
   Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
 
   if (m_bNotifyGUI)
@@ -757,7 +741,6 @@ int UpdateEntryCommand::Execute()
 void UpdateEntryCommand::Undo()
 {
   Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status, UpdateGUICommand::WN_UNDO);
-  RestoreState();
 
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
@@ -782,8 +765,6 @@ UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
 
 int UpdatePasswordCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -819,8 +800,6 @@ void UpdatePasswordCommand::Undo()
     pos->second.SetXTime(m_tttOldXTime);
   }
 
-  RestoreState();
-
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                       m_entry_uuid);
@@ -841,8 +820,6 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
 
 int AddDependentEntryCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -856,7 +833,6 @@ void AddDependentEntryCommand::Undo()
     return;
 
   m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -883,8 +859,6 @@ AddDependentEntriesCommand::~AddDependentEntriesCommand()
 
 int AddDependentEntriesCommand::Execute()
 {
-  SaveState();
-
   if (m_type == CItemData::ET_ALIAS) {
     m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
   } else { // if !alias, assume shortcut
@@ -911,8 +885,6 @@ void AddDependentEntriesCommand::Undo()
   } else { // if !alias, assume shortcut
     m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
   }
-
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -930,8 +902,6 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
 
 int RemoveDependentEntryCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -945,7 +915,6 @@ void RemoveDependentEntryCommand::Undo()
     return;
 
   m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -963,8 +932,6 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
 
 int MoveDependentEntriesCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -978,7 +945,6 @@ void MoveDependentEntriesCommand::Undo()
     return;
 
   m_pcomInt->DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -993,8 +959,6 @@ UpdatePasswordHistoryCommand::UpdatePasswordHistoryCommand(CommandInterface *pco
 
 int UpdatePasswordHistoryCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -1009,7 +973,6 @@ void UpdatePasswordHistoryCommand::Undo()
     return;
 
   m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
-  RestoreState();
 }
 
 // ------------------------------------------------
@@ -1023,8 +986,6 @@ RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
 
 int RenameGroupCommand::Execute()
 {
-  SaveState();
-
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -1038,5 +999,4 @@ void RenameGroupCommand::Undo()
     return;
 
   m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
-  RestoreState();
 }

@@ -22,6 +22,7 @@ class CommandInterface;
 
 #include <map>
 #include <vector>
+#include <algorithm>
 
 /**
  * Command-derived classes are used to support undo/redo.
@@ -31,38 +32,77 @@ class CommandInterface;
  * no Command object can be created on the stack.
  */
 
+struct st_DBStatus {
+  bool bDBChanged;
+  bool bDBPrefsChanged;
+  bool bEmptyGroupsChanged;
+  bool bPolicyNamesChanged;
+  bool bUniqueGTUValidated;
+
+  std::vector<StringX> vNodes_Modified;
+
+  st_DBStatus() : 
+    bDBChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
+    bPolicyNamesChanged(false), bUniqueGTUValidated(false)
+  {}
+
+  void Clear() {
+     bDBChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged = 
+       bUniqueGTUValidated = false;
+     vNodes_Modified.clear();
+  }
+
+  st_DBStatus operator+(const st_DBStatus& other) const {
+    st_DBStatus res;
+    res.bDBChanged = bDBChanged || other.bDBChanged;
+    res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
+    res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
+    res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
+    res.bUniqueGTUValidated = bUniqueGTUValidated || other.bUniqueGTUValidated;
+
+    // Add the StringX vectors, sort and remove duplicates
+    res.vNodes_Modified = vNodes_Modified;
+    res.vNodes_Modified.insert(res.vNodes_Modified.end(), other.vNodes_Modified.begin(),
+                               other.vNodes_Modified.end());
+    std::sort(res.vNodes_Modified.begin(), res.vNodes_Modified.end());
+    res.vNodes_Modified.erase(std::unique(res.vNodes_Modified.begin(), res.vNodes_Modified.end()),
+                              res.vNodes_Modified.end());
+    return res;
+  }
+};
+
 // Base Command class
 
 class Command
 {
 public:
+  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames };
+  enum StateType { CommandAction = 0, PreExecute, PostExecute};
+
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() {return Execute();} // common case
   virtual void Undo() = 0;
 
   void SetNoGUINotify() {m_bNotifyGUI = false;}
-  virtual void ResetSavedState(bool bNewDBState) // overrode in MultiCommands
-  {m_bSaveDBChanged = bNewDBState;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  void SaveOldDBState(const bool bState)
-  {m_bOldDBState = bState;}
+  void SaveChangedState(StateType st, st_DBStatus &stst);
+  void RestoreChangedState(st_DBStatus &stst);
+
+  CommandType GetCommandType() { return DB; }
 
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
-  void SaveState();
-  void RestoreState();
 
   CommandInterface *m_pcomInt;
-  bool m_bOldDBState;
-  bool m_bSaveDBChanged;
-  bool m_bUniqueGTUValidated;
+
+  st_DBStatus m_PreCommand;
+  st_DBStatus m_PostCommand;
+  st_DBStatus m_Command;
+
   bool m_bNotifyGUI;
   int m_RC;
-
-  // Changed groups
-  std::vector<StringX> m_saved_vNodes_Modified;
 };
 
 // GUI related commands
@@ -106,6 +146,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return GUIUpdate; }
+
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
   UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
@@ -124,6 +166,8 @@ public:
   { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBPrefs; }
 
 private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
@@ -145,6 +189,8 @@ public:
   { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBPolicyNames; }
 
 private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
@@ -177,6 +223,8 @@ public:
   { return new DBEmptyGroupsCommand(pcomInt, sxOldGroup, sxNewGroup, function); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEmptyGroup; }
 
 private:
   DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
@@ -452,11 +500,12 @@ public:
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
-  void ResetSavedState(bool bNewDBState);
+
+  CommandType GetCommandType() { return MultiCommand; }
+  std::vector<Command *> m_vpcmds;
 
  private:
   MultiCommands(CommandInterface *pcomInt);
-  std::vector<Command *> m_vpcmds;
   std::vector<int> m_vRCs;
 };
 
