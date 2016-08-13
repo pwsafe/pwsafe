@@ -284,10 +284,8 @@ public:
   // to ensure uniqueness. Returns false if title was modified.
   bool MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
                        const StringX &user, const int IDS_MESSAGE);
-  void SetUniqueGTUValidated(bool bState)
-  {m_bUniqueGTUValidated = bState;}
   bool GetUniqueGTUValidated() const
-  {return m_bUniqueGTUValidated;}
+  {return st_DBS.bUniqueGTUValidated;}
 
   // Access to individual entries in database
   ItemListIter GetEntryIter()
@@ -309,7 +307,6 @@ public:
   void Undo();
   void Redo();
   void ClearCommands();
-  void ResetStateAfterSave();
   bool AnyToUndo() const;
   bool AnyToRedo() const;
 
@@ -353,19 +350,25 @@ public:
   // Note: the database is only changed by executing a command and so
   // the changed state is set during the main PWScore::Execute and
   // potentially reset during an Undo
-  void SetDBChanged(bool bDBChanged)
-  {m_bDBChanged = bDBChanged;}
-  void SetDBPrefsChanged(bool bDBprefschanged)
-  {m_bDBPrefsChanged = bDBprefschanged;}
+  // Moved to PWScore.cpp to allow tracing and break points!
+  void SetDBChanged(bool bDBChanged);
+  void SetDBPrefsChanged(bool bDBprefschanged);
+
+  bool IsDBChanged() const;
+  bool HaveDBPrefsChanged() const;
+  bool HaveEmptyGroupsChanged() const;
+  bool HavePasswordPolicyNamesChanged() const;
+  bool HasGroupDisplayChanged() const;
+  bool HaveHeaderPreferencesChanged(const StringX &prefString);
+  bool HasAnythingBeenChanged();
+
+  void ClearDBStatus() { st_DBS.Clear(); }
+  
+  // PWScore::Execute uses this to set the changed status
+  void GetChangedStatus(Command *pcmd, st_DBStatus &st_Command);
 
   bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
-
-  bool IsDBChanged() const {return m_bDBChanged;}
-  bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
-  bool HasGroupDisplayChanged() const {return m_hdr.m_displaystatus != m_OrigDisplayStatus;}
-  bool HaveHeaderPreferencesChanged(const StringX &prefString)
-  {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
   // Callback to be notified if the database changes
   void NotifyDBModified();
@@ -398,7 +401,7 @@ public:
 
   // Changed nodes
   void ClearChangedNodes()
-  {m_vnodes_modified.clear();}
+  {m_vNodes_Modified.clear();}
   bool IsNodeModified(StringX &path) const;
 
   void GetRUEList(UUIDList &RUElist)
@@ -419,15 +422,13 @@ public:
 
   const PSWDPolicyMap &GetPasswordPolicies()
   {return m_MapPSWDPLC;}
-  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
-  {m_MapPSWDPLC = MapPSWDPLC; SetDBChanged(true);}
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
 
   void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                  const bool bAllowReplace = false);
 
   // Empty Groups
-  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
-  {m_vEmptyGroups = vEmptyGroups; SetDBChanged(true);}
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
   const std::vector<StringX> & GetEmptyGroups() const {return m_vEmptyGroups;}
   bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
   size_t GetNumberEmptyGroups() {return m_vEmptyGroups.size();}
@@ -536,11 +537,9 @@ private:
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
 
-  bool m_bDBChanged;
-  bool m_bDBPrefsChanged;
-  bool m_bEntryTimestampsChanged;
   bool m_IsReadOnly;
-  bool m_bUniqueGTUValidated;
+
+  st_DBStatus st_DBS;
 
   PWSfileHeader m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
@@ -565,13 +564,10 @@ private:
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
   
   // Changed groups
-  std::vector<StringX> m_vnodes_modified;
+  std::vector<StringX> m_vNodes_Modified;
+  std::vector<StringX> m_saved_vNodes_Modified;
 
   // Following are private in PWScore, public in CommandInterface:
-  virtual const std::vector<StringX> &Get_vNodesModified() const
-  {return m_vnodes_modified;}
-  virtual void Set_vNodesModified(const std::vector<StringX> &mvm)
-  {m_vnodes_modified = mvm;}
   void AddChangedNodes(StringX path);
 
   // EmptyGroups

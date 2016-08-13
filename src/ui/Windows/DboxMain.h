@@ -270,9 +270,9 @@ public:
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
 
-  // We should not need these as the DB is only changed by executing a command
-  // either that affects an entry or group or a DB preference
-  void SetDBChanged(const bool bState) {m_core.SetDBChanged(bState);}
+  // We should not need this as the DB is only changed by executing a command
+  // that affects a DB preference - see if can be removed from the functions
+  // RestoreWindows, OnSize & OnColumnClick so that can be removed completely
   void SetDBPrefsChanged(const bool bState) {m_core.SetDBPrefsChanged(bState);}
 
   // These specific changed states are only needed when no other change has been made
