@@ -285,7 +285,7 @@ public:
   bool MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
                        const StringX &user, const int IDS_MESSAGE);
   bool GetUniqueGTUValidated() const
-  {return st_DBS.bUniqueGTUValidated;}
+  {return m_bUniqueGTUValidated;}
 
   // Access to individual entries in database
   ItemListIter GetEntryIter()
@@ -557,6 +557,7 @@ private:
   PWSfile::VERSION m_ReadFileVersion;
 
   bool m_IsReadOnly;
+  bool m_bUniqueGTUValidated;
 
   st_DBStatus st_DBS;
 
