@@ -168,64 +168,6 @@ PWScore::~PWScore()
   delete m_pFileSig;
 }
 
-void PWScore::SetDBChanged(bool bDBChanged)
-{
-  pws_os::Trace(_T("SetDBChanged to : %s\n"), bDBChanged ? _T("true") : _T("false"));
-  st_DBS.bDBChanged = bDBChanged;
-}
-
-void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
-{
-  pws_os::Trace(_T("SetDBPrefsChanged to : %s\n"), bDBprefschanged ? _T("true") : _T("false"));
-  st_DBS.bDBPrefsChanged = bDBprefschanged;
-}
-
-bool PWScore::IsDBChanged() const
-{
-  pws_os::Trace(_T("IsDBChanged : %s\n"), st_DBS.bDBChanged ? _T("true") : _T("false"));
-  return st_DBS.bDBChanged;
-}
-
-bool PWScore::HaveDBPrefsChanged() const
-{
-  pws_os::Trace(_T("HaveDBPrefsChanged : %s\n"), st_DBS.bDBPrefsChanged ? _T("true") : _T("false"));
-  return st_DBS.bDBPrefsChanged;
-}
-
-bool PWScore::HaveEmptyGroupsChanged() const
-{
-  pws_os::Trace(_T("HaveEmptyGroupsChanged : %s\n"), st_DBS.bEmptyGroupsChanged ? 
-                   _T("true") : _T("false"));
-  return st_DBS.bEmptyGroupsChanged;
-}
-
-bool PWScore::HavePasswordPolicyNamesChanged() const
-{
-  pws_os::Trace(_T("HavePasswordPolicyNamesChanged : %s\n"), st_DBS.bPolicyNamesChanged ?
-                   _T("true") : _T("false"));
-  return st_DBS.bPolicyNamesChanged;
-}
-
-bool PWScore::HasGroupDisplayChanged() const
-{
-  bool bChanged = m_hdr.m_displaystatus != m_OrigDisplayStatus;
-  pws_os::Trace(_T("HasGroupDisplayChanged : %s\n"), bChanged ? _T("true") : _T("false"));
-  return bChanged;
-}
-
-bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
-{
-  bool bChanged = _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;
-  pws_os::Trace(_T("HaveHeaderPreferencesChanged : %s\n"), bChanged != 0 ? _T("true") : _T("false"));
-  return bChanged;
-}
-
-bool PWScore::HasAnythingBeenChanged()
-{
-  return (st_DBS.bDBChanged || st_DBS.bDBPrefsChanged || st_DBS.bEmptyGroupsChanged ||
-          st_DBS.bPolicyNamesChanged);
-}
-
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
                                            DWORD dwMajorMinor)
 {
@@ -494,12 +436,15 @@ void PWScore::ClearData(void)
 
   // Clear out database filters
   m_MapFilters.clear();
+  m_InitialMapFilters.clear();
 
   // Clear out policies
   m_MapPSWDPLC.clear();
+  m_InitialMapPSWDPLC.clear();
 
   // Clear out Empty Groups
   m_vEmptyGroups.clear();
+  m_InitialvEmptyGroups.clear();
 
   // Clear out commands
   ClearCommands();
@@ -604,7 +549,6 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   out->SetFilters(m_MapFilters);
   out->SetPasswordPolicies(m_MapPSWDPLC);
   out->SetEmptyGroups(m_vEmptyGroups);
-
 
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
@@ -791,7 +735,7 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
     std::vector<Command *>::iterator cmd_iter;
     MultiCommands *pmulticmd = dynamic_cast<MultiCommands *>(pcmd);
     for (cmd_iter = pmulticmd->m_vpcmds.begin();
-         cmd_iter != pmulticmd->m_vpcmds.end(); cmd_iter++) {
+      cmd_iter != pmulticmd->m_vpcmds.end(); cmd_iter++) {
       GetChangedStatus(*cmd_iter, st_Command);
     }
   } else {
@@ -803,6 +747,9 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
     case Command::DB:
       st_Command.bDBChanged = true;
       break;
+    case Command::DBEntry:
+      st_Command.bEntryChanged = true;
+      break;
     case Command::DBEmptyGroup:
       st_Command.bEmptyGroupsChanged = true;
       break;
@@ -812,11 +759,13 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
     case Command::DBPrefs:
       st_Command.bDBPrefsChanged = true;
       break;
+    case Command::DBFilters:
+      st_Command.bDBFiltersChanged = true;
+      break;
     case Command::MultiCommand:
       ASSERT(0);
     }
   }
-
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -869,6 +818,10 @@ int PWScore::Execute(Command *pcmd)
   pcmd->SaveChangedState(Command::CommandAction, st_Command);
   pcmd->SaveChangedState(Command::PostExecute, st_DBS);
 
+  // Override bEmptyGroupsChanged & bPolicyNamesChanged based on original values
+  st_DBS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
+  st_DBS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+
   // Set undo iterator to this one
   m_undo_iter--;
 
@@ -888,6 +841,12 @@ void PWScore::Undo()
 
   // Reset next command to redo (i.e. the one we just about to undo)
   m_redo_iter = m_undo_iter;
+
+  // Shouldn't need to save pre-execute status in command as already there
+  // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
+  // and so might have changed.
+  // Also, user may have saved the DB in between.
+  (*m_undo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
 
   // Undo it
   (*m_undo_iter)->Undo();
@@ -920,7 +879,8 @@ void PWScore::Redo()
 
   // Shouldn't need to save pre-execute status in command as already there
   // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
-  // and so might have changed.  Great if they didn't!
+  // and so might have changed.
+  // Also, user may have saved the DB in between.
   (*m_redo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
 
   // Redo it
@@ -1171,7 +1131,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   }
 
   m_hdr = in->GetHeader();
-  m_OrigDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
+
   m_RUEList = m_hdr.m_RUEList;
 
   if (!m_isAuxCore) { // aux. core does not modify db prefs in pref singleton
@@ -1202,6 +1162,15 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (in->GetFilters() != NULL) m_MapFilters = *in->GetFilters();
   if (in->GetPasswordPolicies() != NULL) m_MapPSWDPLC = *in->GetPasswordPolicies();
   if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
+
+  // Set initial values
+  m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
+  m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
+  m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
+  m_InitialMapFilters = m_MapFilters;             // for HaveDBFiltersChanged
+
+  // We keep this vector sorted for comparison - other apps may not
+  std::sort(m_InitialvEmptyGroups.begin(), m_InitialvEmptyGroups.end());
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -1679,11 +1648,11 @@ const std::vector<bool> &PWScore::GetDisplayStatus() const
 
 bool PWScore::WasDisplayStatusChanged() const
 {
-  // m_OrigDisplayStatus is set while reading file.
+  // m_InitialDisplayStatus is set while reading and saving a file.
   // m_hdr.m_displaystatus may be changed via SetDisplayStatus
   // Only for V3 and later
   return m_ReadFileVersion >= PWSfile::V30 &&
-         (m_hdr.m_displaystatus != m_OrigDisplayStatus);
+         (m_hdr.m_displaystatus != m_InitialDisplayStatus);
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
@@ -3014,7 +2983,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(st_DBS.bDBChanged || st_DBS.bDBPrefsChanged);
+    m_pUIIF->DatabaseModified(st_DBS.bDBChanged || st_DBS.bEntryChanged || st_DBS.bDBPrefsChanged);
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
@@ -3620,7 +3589,7 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
   }
   if (bDoIt) {
     m_MapPSWDPLC[sxPolicyName] = st_pp;
-    st_DBS.bDBChanged = true;
+    st_DBS.bPolicyNamesChanged = true;
   }
 }
 
@@ -3646,7 +3615,8 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
     // Add it
     m_vEmptyGroups.push_back(sxEmptyGroup);
 
-    // Then sort it.  Could use std::set but unnecessary complication/overhead
+    // Then sort it for when we campare.
+    // Could use std::set but unnecessary complication/overhead
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     return true;
   } else
@@ -3675,7 +3645,7 @@ void PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGr
   m_vEmptyGroups.erase(iter);
   // Add new name
   m_vEmptyGroups.push_back(sxNewGroup);
-  // Sort it
+  // Sort it for when we campare.
   std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 }
 
@@ -3692,7 +3662,7 @@ void PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxN
     }
   }
 
-  // Now sort it
+  // Now sort it for when we campare.
   std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 }
 

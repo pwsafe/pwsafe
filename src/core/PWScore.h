@@ -311,8 +311,11 @@ public:
   bool AnyToRedo() const;
 
   // Related to above
-  void ResetOriginalGroupDisplayAfterSave()
-  {m_OrigDisplayStatus = m_hdr.m_displaystatus;}
+  void ResetInitialValuesAfterSave()
+  { m_InitialDisplayStatus = m_hdr.m_displaystatus;
+    m_InitialvEmptyGroups = m_vEmptyGroups;
+    m_InitialMapPSWDPLC = m_MapPSWDPLC;
+    m_InitialMapFilters = m_MapFilters; }
 
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -350,18 +353,33 @@ public:
   // Note: the database is only changed by executing a command and so
   // the changed state is set during the main PWScore::Execute and
   // potentially reset during an Undo
-  // Moved to PWScore.cpp to allow tracing and break points!
-  void SetDBChanged(bool bDBChanged);
-  void SetDBPrefsChanged(bool bDBprefschanged);
+  void PWScore::SetDBChanged(bool bDBChanged)
+  { st_DBS.bDBChanged = bDBChanged; }
+  void PWScore::SetDBEntryChanged(bool bEntryChanged)
+  { st_DBS.bEntryChanged = bEntryChanged; }
+  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
+  { st_DBS.bDBPrefsChanged = bDBprefschanged; }
 
-  bool IsDBChanged() const;
-  bool HaveDBPrefsChanged() const;
-  bool HaveEmptyGroupsChanged() const;
-  bool HavePasswordPolicyNamesChanged() const;
-  bool HasGroupDisplayChanged() const;
-  bool HaveHeaderPreferencesChanged(const StringX &prefString);
-  bool HasAnythingBeenChanged();
-
+  bool PWScore::HasDBChanged() const
+  { return st_DBS.bDBChanged; }
+  bool PWScore::HaveDBEntriesChanged() const
+  { return st_DBS.bEntryChanged; }
+  bool PWScore::HaveDBPrefsChanged() const
+  { return st_DBS.bDBPrefsChanged; }
+  bool PWScore::HaveEmptyGroupsChanged() const
+  { return st_DBS.bEmptyGroupsChanged; }
+  bool PWScore::HavePasswordPolicyNamesChanged() const
+  { return st_DBS.bPolicyNamesChanged; }
+  bool PWScore::HaveDBFiltersChanged() const
+  { return st_DBS.bDBFiltersChanged; }
+  bool PWScore::HasGroupDisplayChanged() const
+  { return m_hdr.m_displaystatus != m_InitialDisplayStatus; }
+  bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
+  { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
+  bool PWScore::HasAnythingBeenChanged()
+  { return (st_DBS.bDBChanged || st_DBS.bEntryChanged || st_DBS.bDBPrefsChanged ||
+            st_DBS.bEmptyGroupsChanged || st_DBS.bPolicyNamesChanged ||
+            st_DBS.bDBFiltersChanged); }
   void ClearDBStatus() { st_DBS.Clear(); }
   
   // PWScore::Execute uses this to set the changed status
@@ -398,6 +416,7 @@ public:
 
   // Filters
   PWSFilters m_MapFilters;
+  PWSFilters m_InitialMapFilters;
 
   // Changed nodes
   void ClearChangedNodes()
@@ -542,7 +561,7 @@ private:
   st_DBStatus st_DBS;
 
   PWSfileHeader m_hdr;
-  std::vector<bool> m_OrigDisplayStatus;
+  std::vector<bool> m_InitialDisplayStatus; // for WasDisplayStatusChanged (stored in header)
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
@@ -572,6 +591,7 @@ private:
 
   // EmptyGroups
   std::vector<StringX> m_vEmptyGroups;
+  std::vector<StringX> m_InitialvEmptyGroups;
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
@@ -612,6 +632,7 @@ private:
 
   stringT GetXMLPWPolicies(const OrderedItemList *pOIL = NULL);
   PSWDPolicyMap m_MapPSWDPLC;
+  PSWDPolicyMap m_InitialMapPSWDPLC;  // Needed for HavePasswordPolicyNamesChanged
 
   KBShortcutMap m_KBShortcutMap;
   int32 m_iAppHotKey;

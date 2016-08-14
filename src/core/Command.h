@@ -34,30 +34,34 @@ class CommandInterface;
 
 struct st_DBStatus {
   bool bDBChanged;
+  bool bEntryChanged;
   bool bDBPrefsChanged;
   bool bEmptyGroupsChanged;
   bool bPolicyNamesChanged;
+  bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
   bool bUniqueGTUValidated;
 
   std::vector<StringX> vNodes_Modified;
 
   st_DBStatus() : 
-    bDBChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
-    bPolicyNamesChanged(false), bUniqueGTUValidated(false)
+    bDBChanged(false), bEntryChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
+    bPolicyNamesChanged(false), bDBFiltersChanged(false), bUniqueGTUValidated(false)
   {}
 
   void Clear() {
-     bDBChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged = 
-       bUniqueGTUValidated = false;
+    bDBChanged = bEntryChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
+       bDBFiltersChanged = bUniqueGTUValidated = false;
      vNodes_Modified.clear();
   }
 
   st_DBStatus operator+(const st_DBStatus& other) const {
     st_DBStatus res;
     res.bDBChanged = bDBChanged || other.bDBChanged;
+    res.bEntryChanged = bEntryChanged || other.bEntryChanged;
     res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
     res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
     res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
+    res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;
     res.bUniqueGTUValidated = bUniqueGTUValidated || other.bUniqueGTUValidated;
 
     // Add the StringX vectors, sort and remove duplicates
@@ -76,7 +80,9 @@ struct st_DBStatus {
 class Command
 {
 public:
-  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames };
+  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBEntry, DBPrefs, DBEmptyGroup, DBPolicyNames,
+                     DBFilters /* To be implemented */ };
+
   enum StateType { CommandAction = 0, PreExecute, PostExecute};
 
   virtual ~Command();
@@ -90,7 +96,7 @@ public:
   void SaveChangedState(StateType st, st_DBStatus &stst);
   void RestoreChangedState(st_DBStatus &stst);
 
-  CommandType GetCommandType() { return DB; }
+  virtual CommandType GetCommandType() { return DB; }
 
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
@@ -253,6 +259,9 @@ public:
   ~AddEntryCommand();
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
+
   friend class DeleteEntryCommand; // allow access to c'tor
 
 private:
@@ -275,6 +284,9 @@ public:
   ~DeleteEntryCommand();
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
+
   friend class AddEntryCommand; // allow access to c'tor
 
 private:
@@ -298,6 +310,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return DBEntry; }
+
 private:
   EditEntryCommand(CommandInterface *pcomInt, const CItemData &old_ci,
                    const CItemData &new_ci);
@@ -315,6 +329,8 @@ public:
   { return new UpdateEntryCommand(pcomInt, ci, ftype, value); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
 
 private:
   UpdateEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
@@ -343,6 +359,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return DBEntry; }
+
 private:
   UpdatePasswordCommand(CommandInterface *pcomInt,
                         CItemData &ci, const StringX sxNewPassword);
@@ -362,6 +380,8 @@ public:
   { return new AddDependentEntryCommand(pcomInt, base_uuid, entry_uuid, type); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
 
 private:
   AddDependentEntryCommand(CommandInterface *pcomInt,
@@ -386,6 +406,8 @@ public:
   ~AddDependentEntriesCommand();
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
 
 private:
   AddDependentEntriesCommand(CommandInterface *pcomInt,
@@ -416,6 +438,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return DBEntry; }
+
 private:
   RemoveDependentEntryCommand(CommandInterface *pcomInt,
                               const pws_os::CUUID &base_uuid,
@@ -438,6 +462,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return DBEntry; }
+
 private:
   MoveDependentEntriesCommand(CommandInterface *pcomInt,
                               const pws_os::CUUID &from_baseuuid,
@@ -459,6 +485,8 @@ public:
   int Execute();
   void Undo();
 
+  CommandType GetCommandType() { return DBEntry; }
+
 private:
   UpdatePasswordHistoryCommand(CommandInterface *pcomInt, int iAction,
                                int new_default_max);
@@ -475,6 +503,8 @@ public:
   { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
   int Execute();
   void Undo();
+
+  CommandType GetCommandType() { return DBEntry; }
 
 private:
   RenameGroupCommand(CommandInterface *pcomInt,
