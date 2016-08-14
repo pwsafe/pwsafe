@@ -274,7 +274,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsDBChanged()) {
+  if (!m_core.IsReadOnly() && m_core.HasAnythingBeenChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -1175,7 +1175,7 @@ int DboxMain::Save(const SaveType savetype)
   }
 
   // Reset all indications that the file is changed as we have just saved it
-  m_core.ResetOriginalGroupDisplayAfterSave();
+  m_core.ResetInitialValuesAfterSave();
   m_core.ClearChangedNodes();
   m_core.ClearDBStatus();
   m_bEntryTimestampsChanged = false;
@@ -1232,7 +1232,7 @@ int DboxMain::SaveIfChanged()
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-  if (m_core.IsDBChanged() || m_core.HaveDBPrefsChanged()) {
+  if (m_core.HasAnythingBeenChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
@@ -1400,7 +1400,7 @@ int DboxMain::SaveAs()
   app.SetTooltipText(m_core.GetCurFile().c_str());
 
   // Reset all indications that the file is changed as we have just saved it
-  m_core.ResetOriginalGroupDisplayAfterSave();
+  m_core.ResetInitialValuesAfterSave();
   m_core.ClearChangedNodes();
   m_core.ClearDBStatus();
   m_bEntryTimestampsChanged = false;
@@ -2789,7 +2789,7 @@ void DboxMain::ChangeMode(bool promptUser)
        }
 
       // User said No to the save - so we must back-out all changes since last save
-      while (m_core.IsDBChanged()) {
+      while (m_core.HasAnythingBeenChanged()) {
         OnUndo();
       }
     }
@@ -3909,7 +3909,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
           bAutoSave = false;
           break;
       }
-    } // core.IsDBChanged()
+    } // core.HasAnythingBeenChanged()
 
     /*
     * Save silently (without asking user) iff:
