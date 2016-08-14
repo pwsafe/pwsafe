@@ -845,7 +845,7 @@ void PWScore::Undo()
   // Shouldn't need to save pre-execute status in command as already there
   // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
   // and so might have changed.
-  // Also, user may have saved the DB in between.
+  // Also, user may have saved the DB inbetween.
   (*m_undo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
 
   // Undo it
@@ -2253,7 +2253,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
 
-  st_DBS.bUniqueGTUValidated = true;
+  m_bUniqueGTUValidated = true;
   if (st_vr.TotalIssues() > 0) {
     st_DBS.bDBChanged = true;
     return true;
@@ -2330,7 +2330,8 @@ bool PWScore::InitialiseGTU(GTUSet &setGTU)
       return false;
     }
   }
-  st_DBS.bUniqueGTUValidated = true;
+
+  m_bUniqueGTUValidated = true;
   return true;
 }
 

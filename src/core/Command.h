@@ -39,18 +39,17 @@ struct st_DBStatus {
   bool bEmptyGroupsChanged;
   bool bPolicyNamesChanged;
   bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
-  bool bUniqueGTUValidated;
 
   std::vector<StringX> vNodes_Modified;
 
   st_DBStatus() : 
     bDBChanged(false), bEntryChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
-    bPolicyNamesChanged(false), bDBFiltersChanged(false), bUniqueGTUValidated(false)
+    bPolicyNamesChanged(false), bDBFiltersChanged(false)
   {}
 
   void Clear() {
     bDBChanged = bEntryChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
-       bDBFiltersChanged = bUniqueGTUValidated = false;
+       bDBFiltersChanged = false;
      vNodes_Modified.clear();
   }
 
@@ -62,7 +61,6 @@ struct st_DBStatus {
     res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
     res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
     res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;
-    res.bUniqueGTUValidated = bUniqueGTUValidated || other.bUniqueGTUValidated;
 
     // Add the StringX vectors, sort and remove duplicates
     res.vNodes_Modified = vNodes_Modified;
