@@ -40,9 +40,9 @@ TEST_F(CommandsTest, AddItem)
   ItemListConstIter iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
   core.Undo();
-  EXPECT_FALSE(core.IsDBChanged());
+  EXPECT_FALSE(core.HaveDBEntriesChanged());
   EXPECT_EQ(0, core.GetNumEntries());
 
   delete pcmd;
@@ -72,7 +72,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   pmulticmds->Add(AddEntryCommand::Create(&core, si, base_uuid));
   core.Execute(pmulticmds);
   EXPECT_EQ(2, core.GetNumEntries());
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   // Check that the base entry is correctly marked
   ItemListConstIter iter = core.Find(base_uuid);
@@ -81,11 +81,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Undo();
   EXPECT_EQ(0, core.GetNumEntries());
-  EXPECT_FALSE(core.IsDBChanged());
+  EXPECT_FALSE(core.HaveDBEntriesChanged());
 
   core.Redo();
   EXPECT_EQ(2, core.GetNumEntries());
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   // Delete base, expect both to be gone
   // Get base from core for correct type
@@ -94,11 +94,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Execute(pcmd1);
   EXPECT_EQ(0, core.GetNumEntries());
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   core.Undo();
   EXPECT_EQ(2, core.GetNumEntries());
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   // Now just delete the shortcut, check that
   // base is left, and that it reverts to a normal entry
@@ -108,11 +108,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   core.Execute(pcmd2);
   ASSERT_EQ(1, core.GetNumEntries());
   EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   // Get core to delete any existing commands
   core.ClearCommands();
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 }
 
 TEST_F(CommandsTest, EditEntry)
@@ -124,10 +124,7 @@ TEST_F(CommandsTest, EditEntry)
 
   Command *pcmd = AddEntryCommand::Create(&core, it);
   core.Execute(pcmd);
-  EXPECT_TRUE(core.IsDBChanged());
-
-  core.SetDBChanged(false);
-  EXPECT_FALSE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 
   ItemListConstIter iter = core.Find(it.GetUUID());
   ASSERT_NE(core.GetEntryEndIter(), iter);
@@ -137,9 +134,11 @@ TEST_F(CommandsTest, EditEntry)
   it2.SetTitle(L"NoDramamine");
   pcmd = EditEntryCommand::Create(&core, it, it2);
   core.Execute(pcmd);
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
   core.Undo();
-  EXPECT_FALSE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
+  core.Undo();
+  EXPECT_FALSE(core.HaveDBEntriesChanged());
   core.Redo();
-  EXPECT_TRUE(core.IsDBChanged());
+  EXPECT_TRUE(core.HaveDBEntriesChanged());
 }
