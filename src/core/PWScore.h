@@ -356,15 +356,12 @@ public:
   // potentially reset during an Undo
   void PWScore::SetDBChanged(bool bDBChanged)
   { m_stDBCS.bDBChanged = bDBChanged; }
-  void PWScore::SetDBEntryChanged(bool bEntryChanged)
-  { m_stDBCS.bEntryChanged = bEntryChanged; }
   void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
   { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
-
+  void ClearDBChanges() // E.g., when opening New DB
+  { m_stDBCS.Clear(); }
   bool PWScore::HasDBChanged() const
   { return m_stDBCS.bDBChanged; }
-  bool PWScore::HaveDBEntriesChanged() const
-  { return m_stDBCS.bEntryChanged; }
   bool PWScore::HaveDBPrefsChanged() const
   { return m_stDBCS.bDBPrefsChanged; }
   bool PWScore::HaveEmptyGroupsChanged() const
@@ -377,11 +374,8 @@ public:
   { return m_hdr.m_displaystatus != m_InitialDisplayStatus; }
   bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
   { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
-  bool PWScore::HasAnythingBeenChanged()
-  { return (m_stDBCS.bDBChanged || m_stDBCS.bEntryChanged || m_stDBCS.bDBPrefsChanged ||
-            m_stDBCS.bEmptyGroupsChanged || m_stDBCS.bPolicyNamesChanged ||
-            m_stDBCS.bDBFiltersChanged); }
-  void ClearDBStatus() { m_stDBCS.Clear(); }
+  bool PWScore::HasAnythingChanged() const
+  { return m_stDBCS.HasAnythingChanged(); }
   
   // PWScore::Execute uses this to set the changed status
   void GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command);

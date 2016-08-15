@@ -36,7 +36,7 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBEntry, DBPrefs, DBEmptyGroup, DBPolicyNames,
+  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames,
                      DBFilters /* To be implemented */ };
 
   enum StateType { CommandAction = 0, PreExecute, PostExecute};
@@ -216,8 +216,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
   friend class DeleteEntryCommand; // allow access to c'tor
 
 private:
@@ -240,8 +238,6 @@ public:
   ~DeleteEntryCommand();
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() { return DBEntry; }
 
   friend class AddEntryCommand; // allow access to c'tor
 
@@ -266,8 +262,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
 private:
   EditEntryCommand(CommandInterface *pcomInt, const CItemData &old_ci,
                    const CItemData &new_ci);
@@ -285,8 +279,6 @@ public:
   { return new UpdateEntryCommand(pcomInt, ci, ftype, value); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() { return DBEntry; }
 
 private:
   UpdateEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
@@ -315,8 +307,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
 private:
   UpdatePasswordCommand(CommandInterface *pcomInt,
                         CItemData &ci, const StringX sxNewPassword);
@@ -336,8 +326,6 @@ public:
   { return new AddDependentEntryCommand(pcomInt, base_uuid, entry_uuid, type); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() { return DBEntry; }
 
 private:
   AddDependentEntryCommand(CommandInterface *pcomInt,
@@ -362,8 +350,6 @@ public:
   ~AddDependentEntriesCommand();
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() { return DBEntry; }
 
 private:
   AddDependentEntriesCommand(CommandInterface *pcomInt,
@@ -394,8 +380,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
 private:
   RemoveDependentEntryCommand(CommandInterface *pcomInt,
                               const pws_os::CUUID &base_uuid,
@@ -418,8 +402,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
 private:
   MoveDependentEntriesCommand(CommandInterface *pcomInt,
                               const pws_os::CUUID &from_baseuuid,
@@ -441,8 +423,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEntry; }
-
 private:
   UpdatePasswordHistoryCommand(CommandInterface *pcomInt, int iAction,
                                int new_default_max);
@@ -459,8 +439,6 @@ public:
   { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() { return DBEntry; }
 
 private:
   RenameGroupCommand(CommandInterface *pcomInt,

@@ -274,7 +274,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.HasAnythingBeenChanged()) {
+  if (!m_core.IsReadOnly() && m_core.HasAnythingChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -292,7 +292,7 @@ int DboxMain::New()
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
         // Reset changed flags to prevent further attempts to save
-        m_core.ClearDBStatus();
+        m_core.ClearDBChanges();
         break;
     }
   }
@@ -717,7 +717,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   }
 
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  m_core.ClearDBStatus();
+  m_core.ClearDBChanges();
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -1177,7 +1177,7 @@ int DboxMain::Save(const SaveType savetype)
   // Reset all indications that the file is changed as we have just saved it
   m_core.ResetInitialValuesAfterSave();
   m_core.ClearChangedNodes();
-  m_core.ClearDBStatus();
+  m_core.ClearDBChanges();
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -1232,7 +1232,7 @@ int DboxMain::SaveIfChanged()
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-  if (m_core.HasAnythingBeenChanged()) {
+  if (m_core.HasAnythingChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
@@ -1402,7 +1402,7 @@ int DboxMain::SaveAs()
   // Reset all indications that the file is changed as we have just saved it
   m_core.ResetInitialValuesAfterSave();
   m_core.ClearChangedNodes();
-  m_core.ClearDBStatus();
+  m_core.ClearDBChanges();
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -2784,12 +2784,12 @@ void DboxMain::ChangeMode(bool promptUser)
        CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
        if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO) {
          // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-         m_core.ClearDBStatus();
+         m_core.ClearDBChanges();
          return;
        }
 
       // User said No to the save - so we must back-out all changes since last save
-      while (m_core.HasAnythingBeenChanged()) {
+      while (m_core.HasAnythingChanged()) {
         OnUndo();
       }
     }
@@ -3864,7 +3864,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   INT_PTR rc;
 
-  if (saveType == ST_FAILSAFESAVE && m_core.HasAnythingBeenChanged()) {
+  if (saveType == ST_FAILSAFESAVE && m_core.HasAnythingChanged()) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
@@ -3891,7 +3891,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   if (saveType == ST_NORMALEXIT) {
     bool bAutoSave = true; // false if user saved or decided not to
-    if (m_core.HasAnythingBeenChanged()) {
+    if (m_core.HasAnythingChanged()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
       rc = gmb.MessageBox(cs_msg, AfxGetAppName(),
@@ -3909,7 +3909,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
           bAutoSave = false;
           break;
       }
-    } // core.HasAnythingBeenChanged()
+    } // core.HasAnythingChanged()
 
     /*
     * Save silently (without asking user) iff:

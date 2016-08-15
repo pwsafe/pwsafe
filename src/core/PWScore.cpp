@@ -747,9 +747,6 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
     case Command::DB:
       st_Command.bDBChanged = true;
       break;
-    case Command::DBEntry:
-      st_Command.bEntryChanged = true;
-      break;
     case Command::DBEmptyGroup:
       st_Command.bEmptyGroupsChanged = true;
       break;
@@ -3024,7 +3021,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(m_stDBCS.bDBChanged || m_stDBCS.bEntryChanged || m_stDBCS.bDBPrefsChanged);
+    m_pUIIF->DatabaseModified(m_stDBCS.bDBChanged || m_stDBCS.bDBPrefsChanged);
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,

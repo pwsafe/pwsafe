@@ -25,16 +25,15 @@ class CommandInterface {
   virtual bool IsReadOnly() const = 0;
 
   virtual void SetDBChanged(bool bDBChanged) = 0;
-  virtual void SetDBEntryChanged(bool bEntryChanged) = 0;
   virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
+  virtual void ClearDBChanges() = 0; // E.g., when opening New DB
 
   virtual bool HasDBChanged() const = 0;
-  virtual bool HaveDBEntriesChanged() const = 0;
   virtual bool HaveDBPrefsChanged() const = 0;
   virtual bool HaveEmptyGroupsChanged() const = 0;
   virtual bool HavePasswordPolicyNamesChanged() const = 0;
   virtual bool HaveHeaderPreferencesChanged(const StringX &prefString) = 0;
-  virtual bool HasAnythingBeenChanged() = 0;
+  virtual bool HasAnythingChanged() const = 0;
 
  /* virtual void SetUniqueGTUValidated(bool bState) = 0;*/
   virtual bool GetUniqueGTUValidated() const = 0;
