@@ -12,6 +12,7 @@
 #include <vector>
 #include <set>
 #include <list>
+#include <algorithm>  // For std::sort & std::unique used by st_DBChangeStatus
 
 #include "os/UUID.h"
 #include "ItemData.h"
@@ -73,6 +74,85 @@ struct st_GroupTitleUser {
 struct st_PWH_status {
   StringX pwh;
   CItemData::EntryStatus es;
+};
+
+struct st_DBChangeStatus {
+  bool bDBChanged;
+  bool bEntryChanged;
+  bool bDBPrefsChanged;
+  bool bEmptyGroupsChanged;
+  bool bPolicyNamesChanged;
+  bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
+
+  std::vector<StringX> vNodes_Modified;
+
+  st_DBChangeStatus() :
+    bDBChanged(false), bEntryChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
+    bPolicyNamesChanged(false), bDBFiltersChanged(false)
+  {}
+
+  st_DBChangeStatus(const st_DBChangeStatus &that)
+    : bDBChanged(that.bDBChanged), bEntryChanged(that.bEntryChanged), bDBPrefsChanged(that.bDBPrefsChanged), bEmptyGroupsChanged(that.bEmptyGroupsChanged),
+    bPolicyNamesChanged(that.bPolicyNamesChanged), bDBFiltersChanged(that.bDBFiltersChanged),
+    vNodes_Modified(that.vNodes_Modified)
+  {}
+
+  st_DBChangeStatus &operator=(const st_DBChangeStatus &that)
+  {
+    if (this != &that) {
+      bDBChanged = that.bDBChanged;
+      bEntryChanged = that.bEntryChanged;
+      bDBPrefsChanged = that.bDBPrefsChanged;
+      bEmptyGroupsChanged = that.bEmptyGroupsChanged;
+      bPolicyNamesChanged = that.bPolicyNamesChanged;
+      bDBFiltersChanged = that.bDBFiltersChanged;
+      vNodes_Modified = that.vNodes_Modified;
+    }
+    return *this;
+  }
+
+  void Clear() {
+    bDBChanged = bEntryChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
+      bDBFiltersChanged = false;
+    vNodes_Modified.clear();
+  }
+
+  bool operator==(const st_DBChangeStatus& that) const
+  {
+    if (this != &that) {
+      if (bDBChanged != that.bDBChanged &&
+          bEntryChanged != that.bEntryChanged &&
+          bDBPrefsChanged != that.bDBPrefsChanged &&
+          bEmptyGroupsChanged != that.bEmptyGroupsChanged &&
+          bPolicyNamesChanged != that.bPolicyNamesChanged &&
+          bDBFiltersChanged != that.bDBFiltersChanged &&
+          vNodes_Modified != that.vNodes_Modified)
+        return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_DBChangeStatus& that) const
+  { return !(*this == that); }
+
+  st_DBChangeStatus operator+(const st_DBChangeStatus& other) const {
+    st_DBChangeStatus res;
+    res.bDBChanged = bDBChanged || other.bDBChanged;
+    res.bEntryChanged = bEntryChanged || other.bEntryChanged;
+    res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
+    res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
+    res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
+    res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;
+
+    // Add the StringX vectors, sort and remove duplicates
+    res.vNodes_Modified = vNodes_Modified;
+    res.vNodes_Modified.insert(res.vNodes_Modified.end(), other.vNodes_Modified.begin(),
+      other.vNodes_Modified.end());
+    std::sort(res.vNodes_Modified.begin(), res.vNodes_Modified.end());
+    res.vNodes_Modified.erase(std::unique(res.vNodes_Modified.begin(), res.vNodes_Modified.end()),
+      res.vNodes_Modified.end());
+    return res;
+  }
 };
 
 typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;

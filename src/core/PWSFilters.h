@@ -337,6 +337,21 @@ enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSI
 struct st_Filterkey {
   FilterPool fpool;
   stringT cs_filtername;
+
+  bool operator==(const st_Filterkey& that) const
+  {
+    if (this != &that) {
+      if (fpool != that.fpool &&
+          cs_filtername != that.cs_filtername)
+        return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_Filterkey& that) const
+  {
+    return !(*this == that);
+  }
 };
 
 // Following is for map<> compare function

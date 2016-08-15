@@ -312,7 +312,8 @@ public:
 
   // Related to above
   void ResetInitialValuesAfterSave()
-  { m_InitialDisplayStatus = m_hdr.m_displaystatus;
+  { m_InitialDBPreferences = m_hdr.m_prefString;
+    m_InitialDisplayStatus = m_hdr.m_displaystatus;
     m_InitialvEmptyGroups = m_vEmptyGroups;
     m_InitialMapPSWDPLC = m_MapPSWDPLC;
     m_InitialMapFilters = m_MapFilters; }
@@ -354,36 +355,36 @@ public:
   // the changed state is set during the main PWScore::Execute and
   // potentially reset during an Undo
   void PWScore::SetDBChanged(bool bDBChanged)
-  { st_DBS.bDBChanged = bDBChanged; }
+  { m_stDBCS.bDBChanged = bDBChanged; }
   void PWScore::SetDBEntryChanged(bool bEntryChanged)
-  { st_DBS.bEntryChanged = bEntryChanged; }
+  { m_stDBCS.bEntryChanged = bEntryChanged; }
   void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
-  { st_DBS.bDBPrefsChanged = bDBprefschanged; }
+  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
 
   bool PWScore::HasDBChanged() const
-  { return st_DBS.bDBChanged; }
+  { return m_stDBCS.bDBChanged; }
   bool PWScore::HaveDBEntriesChanged() const
-  { return st_DBS.bEntryChanged; }
+  { return m_stDBCS.bEntryChanged; }
   bool PWScore::HaveDBPrefsChanged() const
-  { return st_DBS.bDBPrefsChanged; }
+  { return m_stDBCS.bDBPrefsChanged; }
   bool PWScore::HaveEmptyGroupsChanged() const
-  { return st_DBS.bEmptyGroupsChanged; }
+  { return m_stDBCS.bEmptyGroupsChanged; }
   bool PWScore::HavePasswordPolicyNamesChanged() const
-  { return st_DBS.bPolicyNamesChanged; }
+  { return m_stDBCS.bPolicyNamesChanged; }
   bool PWScore::HaveDBFiltersChanged() const
-  { return st_DBS.bDBFiltersChanged; }
+  { return m_stDBCS.bDBFiltersChanged; }
   bool PWScore::HasGroupDisplayChanged() const
   { return m_hdr.m_displaystatus != m_InitialDisplayStatus; }
   bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
   { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
   bool PWScore::HasAnythingBeenChanged()
-  { return (st_DBS.bDBChanged || st_DBS.bEntryChanged || st_DBS.bDBPrefsChanged ||
-            st_DBS.bEmptyGroupsChanged || st_DBS.bPolicyNamesChanged ||
-            st_DBS.bDBFiltersChanged); }
-  void ClearDBStatus() { st_DBS.Clear(); }
+  { return (m_stDBCS.bDBChanged || m_stDBCS.bEntryChanged || m_stDBCS.bDBPrefsChanged ||
+            m_stDBCS.bEmptyGroupsChanged || m_stDBCS.bPolicyNamesChanged ||
+            m_stDBCS.bDBFiltersChanged); }
+  void ClearDBStatus() { m_stDBCS.Clear(); }
   
   // PWScore::Execute uses this to set the changed status
-  void GetChangedStatus(Command *pcmd, st_DBStatus &st_Command);
+  void GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command);
 
   bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
@@ -559,9 +560,10 @@ private:
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 
-  st_DBStatus st_DBS;
+  st_DBChangeStatus m_stDBCS;
 
   PWSfileHeader m_hdr;
+  StringX m_InitialDBPreferences;
   std::vector<bool> m_InitialDisplayStatus; // for WasDisplayStatusChanged (stored in header)
 
   // THE password database

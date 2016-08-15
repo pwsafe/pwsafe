@@ -22,7 +22,6 @@ class CommandInterface;
 
 #include <map>
 #include <vector>
-#include <algorithm>
 
 /**
  * Command-derived classes are used to support undo/redo.
@@ -31,47 +30,6 @@ class CommandInterface;
  * when appropriate. All constructors are non-public, to ensure that
  * no Command object can be created on the stack.
  */
-
-struct st_DBStatus {
-  bool bDBChanged;
-  bool bEntryChanged;
-  bool bDBPrefsChanged;
-  bool bEmptyGroupsChanged;
-  bool bPolicyNamesChanged;
-  bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
-
-  std::vector<StringX> vNodes_Modified;
-
-  st_DBStatus() : 
-    bDBChanged(false), bEntryChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
-    bPolicyNamesChanged(false), bDBFiltersChanged(false)
-  {}
-
-  void Clear() {
-    bDBChanged = bEntryChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
-       bDBFiltersChanged = false;
-     vNodes_Modified.clear();
-  }
-
-  st_DBStatus operator+(const st_DBStatus& other) const {
-    st_DBStatus res;
-    res.bDBChanged = bDBChanged || other.bDBChanged;
-    res.bEntryChanged = bEntryChanged || other.bEntryChanged;
-    res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
-    res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
-    res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
-    res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;
-
-    // Add the StringX vectors, sort and remove duplicates
-    res.vNodes_Modified = vNodes_Modified;
-    res.vNodes_Modified.insert(res.vNodes_Modified.end(), other.vNodes_Modified.begin(),
-                               other.vNodes_Modified.end());
-    std::sort(res.vNodes_Modified.begin(), res.vNodes_Modified.end());
-    res.vNodes_Modified.erase(std::unique(res.vNodes_Modified.begin(), res.vNodes_Modified.end()),
-                              res.vNodes_Modified.end());
-    return res;
-  }
-};
 
 // Base Command class
 
@@ -91,19 +49,19 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  void SaveChangedState(StateType st, st_DBStatus &stst);
-  void RestoreChangedState(st_DBStatus &stst);
+  void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
+  void RestoreChangedState(st_DBChangeStatus &stDBCS);
 
   virtual CommandType GetCommandType() { return DB; }
+
+  st_DBChangeStatus m_PreCommand;
+  st_DBChangeStatus m_PostCommand;
+  st_DBChangeStatus m_Command;
 
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
 
   CommandInterface *m_pcomInt;
-
-  st_DBStatus m_PreCommand;
-  st_DBStatus m_PostCommand;
-  st_DBStatus m_Command;
 
   bool m_bNotifyGUI;
   int m_RC;
