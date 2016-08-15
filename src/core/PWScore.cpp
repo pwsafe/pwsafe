@@ -462,7 +462,7 @@ void PWScore::ClearData(void)
   PWSprefs::GetInstance()->ClearUnknownPrefs();
 
   // Reset state of unchanged DB
-  st_DBS.Clear();
+  m_stDBCS.Clear();
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -585,7 +585,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   // Update info only if written version is same as read version
   // (otherwise we're exporting, not saving)
   if (version == m_ReadFileVersion) {
-    st_DBS.Clear();
+    m_stDBCS.Clear();
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
   }
@@ -725,7 +725,7 @@ void PWScore::ClearCommands()
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
 
-void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
+void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
 {
   // Commands ALWAYS update the DB either an entry/group or a DB preference
   // Need to know if entry/group or DB preference
@@ -768,6 +768,24 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBStatus &st_Command)
   }
 }
 
+bool DBFiltersChanged(PWSFilters mapFilters1, PWSFilters mapFilters2)
+{
+  // Determine if the DB filters have changed
+  PWSFilters mf1, mf2;
+
+  PWSFilters::const_iterator citer;
+  for (citer = mapFilters1.begin(); citer != mapFilters1.end(); citer++) {
+    if (citer->first.fpool == FPOOL_DATABASE)
+      mf1.insert(*citer);
+  }
+  for (citer = mapFilters2.begin(); citer != mapFilters2.end(); citer++) {
+    if (citer->first.fpool == FPOOL_DATABASE)
+      mf2.insert(*citer);
+  }
+
+  return mf1 != mf2;
+}
+
 int PWScore::Execute(Command *pcmd)
 {
   /*
@@ -806,21 +824,26 @@ int PWScore::Execute(Command *pcmd)
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 
   // Get & set new DB status
-  pcmd->SaveChangedState(Command::PreExecute, st_DBS);
+  pcmd->SaveChangedState(Command::PreExecute, m_stDBCS);
 
   // Execute it
   int rc = pcmd->Execute();
 
   // Now set changed status
   // First get what this command changes, then update the final state
-  st_DBStatus st_Command;
+  st_DBChangeStatus st_Command;
   GetChangedStatus(pcmd, st_Command);
   pcmd->SaveChangedState(Command::CommandAction, st_Command);
-  pcmd->SaveChangedState(Command::PostExecute, st_DBS);
+  pcmd->SaveChangedState(Command::PostExecute, m_stDBCS);
 
-  // Override bEmptyGroupsChanged & bPolicyNamesChanged based on original values
-  st_DBS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
-  st_DBS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
+  // and bDBFiltersChanged based on original values as multiple changes
+  // could revert to unchanged since last saved
+  const StringX prefString(PWSprefs::GetInstance()->Store());
+  m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
+  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
 
   // Set undo iterator to this one
   m_undo_iter--;
@@ -842,17 +865,24 @@ void PWScore::Undo()
   // Reset next command to redo (i.e. the one we just about to undo)
   m_redo_iter = m_undo_iter;
 
-  // Shouldn't need to save pre-execute status in command as already there
-  // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
-  // and so might have changed.
-  // Also, user may have saved the DB inbetween.
-  (*m_undo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
-
   // Undo it
   (*m_undo_iter)->Undo();
 
-  // Restore previous state
-  (*m_undo_iter)->RestoreChangedState(st_DBS);
+  // Is the current change status the same as expected from post the previous
+  // execution of this command.  If so, we should be able to just set the status to
+  // the PreExecute values stored in this command.
+  // If not, then ????
+  if (m_stDBCS == (*m_undo_iter)->m_PostCommand)
+    (*m_undo_iter)->RestoreChangedState(m_stDBCS);
+
+  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
+  // and bDBFiltersChanged based on original values as multiple changes
+  // could revert to unchanged since last saved
+  const StringX prefString(PWSprefs::GetInstance()->Store());
+  m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
+  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
 
   // Reset iterator so that we know next command to undo
   if (m_undo_iter == m_vpcommands.begin()) {
@@ -881,7 +911,7 @@ void PWScore::Redo()
   // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
   // and so might have changed.
   // Also, user may have saved the DB in between.
-  (*m_redo_iter)->SaveChangedState(Command::PreExecute, st_DBS);
+  (*m_redo_iter)->SaveChangedState(Command::PreExecute, m_stDBCS);
 
   // Redo it
   (*m_redo_iter)->Redo();
@@ -889,7 +919,16 @@ void PWScore::Redo()
   // Now set changed status
   // First get what this command changes, then update the final state
   // Don't need to save command action status in command as already there
-  (*m_redo_iter)->SaveChangedState(Command::PostExecute, st_DBS);
+  (*m_redo_iter)->SaveChangedState(Command::PostExecute, m_stDBCS);
+
+  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
+  // and bDBFiltersChanged based on original values as multiple changes
+  // could revert to unchanged since last saved
+  const StringX prefString(PWSprefs::GetInstance()->Store());
+  m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
+  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
 
   // Reset iterator so that we know next command to redo
   if (m_redo_iter != m_vpcommands.end()) {
@@ -1164,6 +1203,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
 
   // Set initial values
+  m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
   m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
   m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
   m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
@@ -1417,7 +1457,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePasskey(const StringX &newPasskey)
 {
   SetPassKey(newPasskey);
-  st_DBS.bDBChanged = true;
+  m_stDBCS.bDBChanged = true;
 }
 
 // functor object type for find_if:
@@ -2255,7 +2295,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   m_bUniqueGTUValidated = true;
   if (st_vr.TotalIssues() > 0) {
-    st_DBS.bDBChanged = true;
+    m_stDBCS.bDBChanged = true;
     return true;
   } else {
     return false;
@@ -2984,7 +3024,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(st_DBS.bDBChanged || st_DBS.bEntryChanged || st_DBS.bDBPrefsChanged);
+    m_pUIIF->DatabaseModified(m_stDBCS.bDBChanged || m_stDBCS.bEntryChanged || m_stDBCS.bDBPrefsChanged);
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
@@ -3410,7 +3450,7 @@ void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
     m_hdr.m_dbname = st_dbp.db_name;
     m_hdr.m_dbdesc = st_dbp.db_description;
 
-    st_DBS.bDBChanged = true;
+    m_stDBCS.bDBChanged = true;
   }
 }
 
@@ -3548,7 +3588,7 @@ void PWScore::SetYubiSK(const unsigned char *sk)
 void PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
 {
   if (m_MapPSWDPLC != MapPSWDPLC) {
-    st_DBS.bPolicyNamesChanged = true;
+    m_stDBCS.bPolicyNamesChanged = true;
 
     m_MapPSWDPLC = MapPSWDPLC;
   }
@@ -3590,14 +3630,14 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
   }
   if (bDoIt) {
     m_MapPSWDPLC[sxPolicyName] = st_pp;
-    st_DBS.bPolicyNamesChanged = true;
+    m_stDBCS.bPolicyNamesChanged = true;
   }
 }
 
 void PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
 {
   if (m_vEmptyGroups != vEmptyGroups) {
-    st_DBS.bEmptyGroupsChanged;
+    m_stDBCS.bEmptyGroupsChanged;
 
     m_vEmptyGroups = vEmptyGroups;
   }
@@ -3709,14 +3749,14 @@ void PWScore::SetHashIters(uint32 value)
 {
   if (value != m_hashIters) {
     m_hashIters = value;
-    st_DBS.bDBPrefsChanged = true;
+    m_stDBCS.bDBPrefsChanged = true;
   }
 }
 
 void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
 {
   ASSERT(HasAtt(attuuid));
-  st_DBS.bDBChanged = true;
+  m_stDBCS.bDBChanged = true;
   m_attlist.erase(m_attlist.find(attuuid));
 }
 

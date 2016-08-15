@@ -53,30 +53,30 @@ Command::~Command()
 }
 
 // The following should only be called from PWScore Execute/Undo/Redo
-void Command::SaveChangedState(StateType st, st_DBStatus &stst)
+void Command::SaveChangedState(StateType st, st_DBChangeStatus &stDBCS)
 {
   switch (st) {
     case CommandAction:
       // Set what the command changes
-      m_Command = stst;
+      m_Command = stDBCS;
       break;
     case PreExecute:
       // Save current pre-command execute state
-      m_PreCommand = stst;
+      m_PreCommand = stDBCS;
       break;
     case PostExecute:
       // Here we generate new state from pre-execute state and command action states
       // Effectively post-execute state = pre-execute state + command action state
       // and, unlike the other calls, return the result
-      stst = m_PostCommand = m_PreCommand + m_Command;
+      stDBCS = m_PostCommand = (m_PreCommand + m_Command);
       break;
   }
 }
 
 // The following should only be called from PWScore Execute/Undo/Redo
-void Command::RestoreChangedState(st_DBStatus &stst)
+void Command::RestoreChangedState(st_DBChangeStatus &stDBCS)
 {
-  stst = m_PreCommand;
+  stDBCS = m_PreCommand;
 }
 
 // ------------------------------------------------

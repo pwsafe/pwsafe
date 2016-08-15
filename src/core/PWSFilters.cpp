@@ -553,12 +553,14 @@ struct XMLFilterWriterToString {
   XMLFilterWriterToString(coStringXStream &os, bool bWithFormatting) :
   m_os(os), m_bWithFormatting(bWithFormatting)
   {}
+
   // operator
   void operator()(pair<const st_Filterkey, st_filters> p)
   {
     string xml = GetFilterXML(p.second, m_bWithFormatting);
     m_os << xml.c_str();
   }
+
 private:
   XMLFilterWriterToString& operator=(const XMLFilterWriterToString&); // Do not implement
   coStringXStream &m_os;
