@@ -52,18 +52,21 @@ public:
   void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
   void RestoreChangedState(st_DBChangeStatus &stDBCS);
 
-  virtual CommandType GetCommandType() { return DB; }
+  virtual CommandType GetCommandType() const { return DB; }
+
+  const st_DBChangeStatus &GetPostCommandStatus() const
+  { return m_PostCommand; }
+  
+protected:
+  Command(CommandInterface *pcomInt); // protected constructor!
+
+  CommandInterface *m_pcomInt;
+  bool m_bNotifyGUI;
 
   st_DBChangeStatus m_PreCommand;
   st_DBChangeStatus m_PostCommand;
   st_DBChangeStatus m_Command;
 
-protected:
-  Command(CommandInterface *pcomInt); // protected constructor!
-
-  CommandInterface *m_pcomInt;
-
-  bool m_bNotifyGUI;
   int m_RC;
 };
 

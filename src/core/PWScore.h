@@ -513,6 +513,8 @@ private:
 
   // End of Command Interface implementations
 
+  void SetChangedStatus(); // used by Execute/Undo/Redo
+  
   void ProcessReadEntry(CItemData &ci_temp,
                         std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                         std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,

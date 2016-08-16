@@ -783,6 +783,20 @@ bool DBFiltersChanged(PWSFilters mapFilters1, PWSFilters mapFilters2)
   return mf1 != mf2;
 }
 
+void PWScore::SetChangedStatus()
+{
+  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
+  // and bDBFiltersChanged based on original values as multiple changes
+  // could revert to unchanged since last saved
+  if (!GetCurFile().empty()) { // mainly for coretest
+    const StringX prefString(PWSprefs::GetInstance()->Store());
+    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  }
+  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
+  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
+  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
+}
+
 int PWScore::Execute(Command *pcmd)
 {
   /*
@@ -833,16 +847,7 @@ int PWScore::Execute(Command *pcmd)
   pcmd->SaveChangedState(Command::CommandAction, st_Command);
   pcmd->SaveChangedState(Command::PostExecute, m_stDBCS);
 
-  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
-  // and bDBFiltersChanged based on original values as multiple changes
-  // could revert to unchanged since last saved
-  if (!GetCurFile().empty()) { // mainly for coretest
-    const StringX prefString(PWSprefs::GetInstance()->Store());
-    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
-  }
-  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
-  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
-  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
+  SetChangedStatus();
 
   // Set undo iterator to this one
   m_undo_iter--;
@@ -871,19 +876,10 @@ void PWScore::Undo()
   // execution of this command.  If so, we should be able to just set the status to
   // the PreExecute values stored in this command.
   // If not, then ????
-  if (m_stDBCS == (*m_undo_iter)->m_PostCommand)
+  if (m_stDBCS == (*m_undo_iter)->GetPostCommandStatus())
     (*m_undo_iter)->RestoreChangedState(m_stDBCS);
 
-  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
-  // and bDBFiltersChanged based on original values as multiple changes
-  // could revert to unchanged since last saved
-  if (!GetCurFile().empty()) { // mainly for coretest
-    const StringX prefString(PWSprefs::GetInstance()->Store());
-    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
-  }
-  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
-  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
-  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
+  SetChangedStatus();
 
   // Reset iterator so that we know next command to undo
   if (m_undo_iter == m_vpcommands.begin()) {
@@ -922,16 +918,7 @@ void PWScore::Redo()
   // Don't need to save command action status in command as already there
   (*m_redo_iter)->SaveChangedState(Command::PostExecute, m_stDBCS);
 
-  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
-  // and bDBFiltersChanged based on original values as multiple changes
-  // could revert to unchanged since last saved
-  if (!GetCurFile().empty()) { // mainly for coretest
-    const StringX prefString(PWSprefs::GetInstance()->Store());
-    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
-  }
-  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
-  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
-  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
+  SetChangedStatus();
 
   // Reset iterator so that we know next command to redo
   if (m_redo_iter != m_vpcommands.end()) {
