@@ -136,10 +136,16 @@ TEST_F(CommandsTest, EditEntry)
   pcmd = EditEntryCommand::Create(&core, it, it2);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it2.GetTitle());
   core.Undo();
   EXPECT_TRUE(core.HasDBChanged());
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
   core.Undo();
+  EXPECT_EQ(core.GetNumEntries(), 0);
   EXPECT_FALSE(core.HasDBChanged());
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
+  EXPECT_EQ(core.GetNumEntries(), 1);
 }

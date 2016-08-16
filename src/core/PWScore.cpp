@@ -877,8 +877,10 @@ void PWScore::Undo()
   // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
   // and bDBFiltersChanged based on original values as multiple changes
   // could revert to unchanged since last saved
-  const StringX prefString(PWSprefs::GetInstance()->Store());
-  m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  if (!GetCurFile().empty()) { // mainly for coretest
+    const StringX prefString(PWSprefs::GetInstance()->Store());
+    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  }
   m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
   m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
   m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
@@ -923,8 +925,10 @@ void PWScore::Redo()
   // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
   // and bDBFiltersChanged based on original values as multiple changes
   // could revert to unchanged since last saved
-  const StringX prefString(PWSprefs::GetInstance()->Store());
-  m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  if (!GetCurFile().empty()) { // mainly for coretest
+    const StringX prefString(PWSprefs::GetInstance()->Store());
+    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
+  }
   m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
   m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
   m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
