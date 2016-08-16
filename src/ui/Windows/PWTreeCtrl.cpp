@@ -955,8 +955,8 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   // ItemHasChildren() won't work in the general case
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
-  ASSERT(status);
-  return (i != GROUP && i != EMPTY_GROUP);
+  // if on empty space, hItem's NULL, status is false
+  return (status && i != GROUP && i != EMPTY_GROUP);
 }
 
 // Returns the number of children of this group
