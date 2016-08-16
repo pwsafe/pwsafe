@@ -19,8 +19,6 @@ class CommandsTest : public ::testing::Test
 {
 protected:
   CommandsTest() {}
-  void SetUp() {}
-  PWScore core;
 };
 
 
@@ -28,6 +26,7 @@ protected:
 
 TEST_F(CommandsTest, AddItem)
 {
+  PWScore core;
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"a title");
@@ -50,6 +49,7 @@ TEST_F(CommandsTest, AddItem)
 
 TEST_F(CommandsTest, CreateShortcutEntry)
 {
+  PWScore core;
   CItemData bi, si;
   bi.CreateUUID();
   bi.SetTitle(L"base entry");
@@ -117,6 +117,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
 TEST_F(CommandsTest, EditEntry)
 {
+  PWScore core;
   CItemData it;
   it.CreateUUID();
   it.SetTitle(L"NoDrama");
