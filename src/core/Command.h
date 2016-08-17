@@ -56,6 +56,9 @@ public:
 
   const st_DBChangeStatus &GetPostCommandStatus() const
   { return m_PostCommand; }
+
+  const st_DBChangeStatus &GetCommandStatus() const
+  { return m_Command; }
   
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!

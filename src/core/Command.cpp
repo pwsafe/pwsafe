@@ -46,6 +46,9 @@ using pws_os::CUUID;
 Command::Command(CommandInterface *pcomInt)
 :  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0)
 {
+  m_PreCommand.Clear();
+  m_PostCommand.Clear();
+  m_Command.Clear();
 }
 
 Command::~Command()

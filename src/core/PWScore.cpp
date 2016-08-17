@@ -876,8 +876,18 @@ void PWScore::Undo()
   // execution of this command.  If so, we should be able to just set the status to
   // the PreExecute values stored in this command.
   // If not, then ????
-  if (m_stDBCS == (*m_undo_iter)->GetPostCommandStatus())
+  if (m_stDBCS == (*m_undo_iter)->GetPostCommandStatus()) {
     (*m_undo_iter)->RestoreChangedState(m_stDBCS);
+  } else {
+    // What to do here?  Check if current state is unchanged (save performed?)
+    // so that new state is the same as if the command was executed
+    // IF NOT UNCHANGED THEN SOMEONE HAS CHANGED THE STATUS BYPASSING COMMANDS
+    if (!m_stDBCS.HasAnythingChanged()) {
+      m_stDBCS = (*m_undo_iter)->GetCommandStatus();
+    } else {
+      ASSERT(0);
+    }
+  }
 
   SetChangedStatus();
 
