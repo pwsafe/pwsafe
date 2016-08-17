@@ -114,7 +114,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return GUIUPDATE; }
+  CommandType GetCommandType() const { return GUIUPDATE; }
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
@@ -135,7 +135,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPREFS; }
+  CommandType GetCommandType() const { return DBPREFS; }
 
 private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
@@ -158,7 +158,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPOLICYNAMES; }
+  CommandType GetCommandType() const { return DBPOLICYNAMES; }
 
 private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
@@ -192,7 +192,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEMPTYGROUP; }
+  CommandType GetCommandType() const { return DBEMPTYGROUP; }
 
 private:
   DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
@@ -461,7 +461,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBHEADER; }
+  CommandType GetCommandType() const { return DBHEADER; }
 
 private:
   ChangeDBHeaderCommand(CommandInterface *pcomInt,
@@ -489,7 +489,7 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
 
-  CommandType GetCommandType() { return MULTICOMMAND; }
+  CommandType GetCommandType() const { return MULTICOMMAND; }
   std::vector<Command *> m_vpcmds;
 
  private:
