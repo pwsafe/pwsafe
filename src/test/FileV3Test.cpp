@@ -114,8 +114,8 @@ TEST_F(FileV3Test, HeaderTest)
   hdr1.m_lastsavedby = _T("aUser");
   hdr1.m_lastsavedon = _T("aMachine");
   hdr1.m_whatlastsaved = _T("PasswordSafe test framework");
-  hdr1.m_dbname = fname.c_str();
-  hdr1.m_dbdesc = _T("Test the header's persistency");
+  hdr1.m_DB_Name = fname.c_str();
+  hdr1.m_DB_Description = _T("Test the header's persistency");
 
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
   fw.SetHeader(hdr1);

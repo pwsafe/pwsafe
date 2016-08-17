@@ -315,7 +315,6 @@ int DboxMain::New()
     DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
-  m_core.ClearChangedNodes();
 
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
@@ -1176,8 +1175,6 @@ int DboxMain::Save(const SaveType savetype)
 
   // Reset all indications that the file is changed as we have just saved it
   m_core.ResetInitialValuesAfterSave();
-  m_core.ClearChangedNodes();
-  m_core.ClearDBChanges();
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -1401,8 +1398,6 @@ int DboxMain::SaveAs()
 
   // Reset all indications that the file is changed as we have just saved it
   m_core.ResetInitialValuesAfterSave();
-  m_core.ClearChangedNodes();
-  m_core.ClearDBChanges();
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -2749,8 +2744,9 @@ void DboxMain::OnImportXML()
 
 void DboxMain::OnProperties()
 {
-  st_DBProperties st_dbp;
-  m_core.GetDBProperties(st_dbp);
+  st_DBProperties st_initialdbp, st_dbp;
+  m_core.GetDBProperties(st_initialdbp);
+  st_dbp = st_initialdbp;
 
   CProperties dlg(&st_dbp, IsDBReadOnly(), this);
 
@@ -2758,8 +2754,26 @@ void DboxMain::OnProperties()
 
   if (rc == IDOK && dlg.HasDataChanged()) {
     // Update user fields in header
-    m_core.SetHeaderUserFields(st_dbp);
-    ChangeOkUpdate();
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+    if (st_dbp.db_name != st_initialdbp.db_name) {
+      Command *pcmd_name = ChangeDBHeaderCommand::Create(&m_core,
+        st_dbp.db_name, PWSfile::HDR_DBNAME);
+      pmulticmds->Add(pcmd_name);
+    }
+
+    if (st_dbp.db_description != st_initialdbp.db_description) {
+      Command *pcmd_desc = ChangeDBHeaderCommand::Create(&m_core,
+        st_dbp.db_description, PWSfile::HDR_DBDESC);
+      pmulticmds->Add(pcmd_desc);
+    }
+
+    if (pmulticmds->GetSize() > 0) {
+      // Do it
+      Execute(pmulticmds);
+      ChangeOkUpdate();
+    } else {
+      delete pmulticmds;
+    }
   }
 }
 

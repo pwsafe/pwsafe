@@ -15,6 +15,7 @@ class CReport;
 class CommandInterface;
 
 #include "ItemData.h"
+#include "PWSfile.h"
 #include "StringX.h"
 #include "os/UUID.h"
 
@@ -36,8 +37,7 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBEMPTYGROUP, DBPOLICYNAMES,
-                     DBFILTERS /* To be implemented */ };
+  enum CommandType { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES};
 
   enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
 
@@ -451,6 +451,24 @@ private:
                      StringX sxOldPath, StringX sxNewPath);
 
    StringX m_sxOldPath, m_sxNewPath;
+};
+
+class ChangeDBHeaderCommand : public Command {
+public:
+  static ChangeDBHeaderCommand *Create(CommandInterface *pcomInt,
+    const StringX sxNewValue, const PWSfile::HeaderType ht)
+  { return new ChangeDBHeaderCommand(pcomInt, sxNewValue, ht); }
+  int Execute();
+  void Undo();
+
+  CommandType GetCommandType() { return DBHEADER; }
+
+private:
+  ChangeDBHeaderCommand(CommandInterface *pcomInt,
+    StringX sxOldValue, const PWSfile::HeaderType ht);
+
+  StringX m_sxOldValue, m_sxNewValue;
+  PWSfile::HeaderType m_ht;
 };
 
 // Derived MultiCommands class

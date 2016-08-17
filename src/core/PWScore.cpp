@@ -664,7 +664,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // Get current DB name and save in exported DB description
   std::wstring sx_dontcare, sx_file, sx_extn;
   pws_os::splitpath(pINcore->GetCurFile().c_str(), sx_dontcare, sx_dontcare, sx_file, sx_extn);
-  Format(m_hdr.m_dbdesc, IDSC_EXPORTDESCRIPTION, (sx_file + sx_extn).c_str());
+  Format(m_hdr.m_DB_Description, IDSC_EXPORTDESCRIPTION, (sx_file + sx_extn).c_str());
 
   // Set new header
   out->SetHeader(m_hdr);
@@ -745,19 +745,21 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
       // No change to DB at all
       break;
     case Command::DB:
+      // This includes any change to entries
       st_Command.bDBChanged = true;
+      break;
+    case Command::DBPREFS:
+      st_Command.bDBPrefsChanged = true;
+      break;
+    case Command::DBHEADER:
+      // Excludes DB preferences which are handled separately via DBPREFS
+      st_Command.bDBHeaderChanged = true;
       break;
     case Command::DBEMPTYGROUP:
       st_Command.bEmptyGroupsChanged = true;
       break;
     case Command::DBPOLICYNAMES:
       st_Command.bPolicyNamesChanged = true;
-      break;
-    case Command::DBPREFS:
-      st_Command.bDBPrefsChanged = true;
-      break;
-    case Command::DBFILTERS:
-      st_Command.bDBFiltersChanged = true;
       break;
     case Command::MULTICOMMAND:
       ASSERT(0);
@@ -792,6 +794,16 @@ void PWScore::SetChangedStatus()
     const StringX prefString(PWSprefs::GetInstance()->Store());
     m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
   }
+
+  //  Need to check if the DB header has changed
+  m_stDBCS.bDBHeaderChanged = (m_InitialDBName != m_hdr.m_DB_Name) ||
+    (m_InitialDBDesc != m_hdr.m_DB_Description);
+  
+  // We won't explicitly save the Recently Used Entry list (also in the header)
+  // unless something else has changed in the DB i.e. we don't test
+  //   (m_InitialRUEList != m_RUEList)
+
+  // These are also in the header!!!
   m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
   m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
   m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
@@ -873,9 +885,9 @@ void PWScore::Undo()
   (*m_undo_iter)->Undo();
 
   // Is the current change status the same as expected from post the previous
-  // execution of this command.  If so, we should be able to just set the status to
-  // the PreExecute values stored in this command.
-  // If not, then ????
+  // execution of this command? (Unless the last 2 changes changed the same area!)
+  // If so, we should be able to just set the status to the PreExecute values
+  // stored in this command.
   if (m_stDBCS == (*m_undo_iter)->GetPostCommandStatus()) {
     (*m_undo_iter)->RestoreChangedState(m_stDBCS);
   } else {
@@ -1203,11 +1215,14 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
 
   // Set initial values
+  m_InitialDBName = m_hdr.m_DB_Name;              // for detecting header changes
+  m_InitialDBDesc = m_hdr.m_DB_Description;       // for detecting header changes
   m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
   m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
   m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
   m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
   m_InitialMapFilters = m_MapFilters;             // for HaveDBFiltersChanged
+  m_InitialRUEList = m_RUEList;                   // for detecting header changes
 
   // We keep this vector sorted for comparison - other apps may not
   std::sort(m_InitialvEmptyGroups.begin(), m_InitialvEmptyGroups.end());
@@ -3368,6 +3383,16 @@ void PWScore::UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath
   DoRenameGroup(sxNewPath, sxOldPath);
 }
 
+int PWScore::DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht)
+{
+  return SetHeaderItem(sxNewValue, ht);
+}
+
+void PWScore::UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht)
+{
+  DoChangeHeader(sxOldValue, ht);
+}
+
 void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 {
   st_dbp.database = m_currfile;
@@ -3438,20 +3463,39 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     LoadAString(st_dbp.unknownfields, IDSC_NONE);
   }
 
-  st_dbp.db_name = m_hdr.m_dbname;
-  st_dbp.db_description = m_hdr.m_dbdesc;
+  st_dbp.db_name = m_hdr.m_DB_Name;
+  st_dbp.db_description = m_hdr.m_DB_Description;
 }
 
-void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
+StringX PWScore::GetHeaderItem(PWSfile::HeaderType ht)
 {
-  // Currently only 2 user fields in DB header
-  if (m_hdr.m_dbname != st_dbp.db_name ||
-      m_hdr.m_dbdesc != st_dbp.db_description) {
-    m_hdr.m_dbname = st_dbp.db_name;
-    m_hdr.m_dbdesc = st_dbp.db_description;
-
-    m_stDBCS.bDBChanged = true;
+  switch (ht) {
+  case PWSfile::HDR_DBNAME:
+    return m_hdr.m_DB_Name;
+  case PWSfile::HDR_DBDESC:
+    return m_hdr.m_DB_Description;
+  default:
+    ASSERT(0);
+    return StringX(_T(""));
   }
+}
+
+int PWScore::SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht)
+{
+  int rc = PWScore::SUCCESS;
+  switch (ht) {
+  case PWSfile::HDR_DBNAME:
+    m_hdr.m_DB_Name = sxNewValue;
+    break;
+  case PWSfile::HDR_DBDESC:
+    m_hdr.m_DB_Description = sxNewValue;
+    break;
+  default:
+    ASSERT(0);
+    rc = PWScore::FAILURE;
+  }
+
+  return rc;
 }
 
 void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,

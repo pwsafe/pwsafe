@@ -1003,3 +1003,31 @@ void RenameGroupCommand::Undo()
 
   m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
 }
+
+// ------------------------------------------------
+// ChangeDBHeaderCommand
+// ------------------------------------------------
+
+ChangeDBHeaderCommand::ChangeDBHeaderCommand(CommandInterface *pcomInt,
+  const StringX sxNewValue, const PWSfile::HeaderType ht)
+  : Command(pcomInt), m_sxNewValue(sxNewValue), m_ht(ht)
+{}
+
+int ChangeDBHeaderCommand::Execute()
+{
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
+  m_sxOldValue = m_pcomInt->GetHeaderItem(m_ht);
+
+  int rc = m_pcomInt->DoChangeHeader(m_sxNewValue, m_ht);
+  return rc;
+}
+
+void ChangeDBHeaderCommand::Undo()
+{
+  if (m_pcomInt->IsReadOnly())
+    return;
+
+  m_pcomInt->UndoChangeHeader(m_sxOldValue, m_ht);
+}
