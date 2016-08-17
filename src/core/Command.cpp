@@ -59,15 +59,15 @@ Command::~Command()
 void Command::SaveChangedState(StateType st, st_DBChangeStatus &stDBCS)
 {
   switch (st) {
-    case CommandAction:
+    case COMMANDACTION:
       // Set what the command changes
       m_Command = stDBCS;
       break;
-    case PreExecute:
+    case PREEXECUTE:
       // Save current pre-command execute state
       m_PreCommand = stDBCS;
       break;
-    case PostExecute:
+    case POSTEXECUTE:
       // Here we generate new state from pre-execute state and command action states
       // Effectively post-execute state = pre-execute state + command action state
       // and, unlike the other calls, return the result

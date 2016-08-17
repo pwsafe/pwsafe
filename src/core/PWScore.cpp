@@ -730,7 +730,7 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
   // Commands ALWAYS update the DB either an entry/group or a DB preference
   // Need to know if entry/group or DB preference
   Command::CommandType ct = pcmd->GetCommandType();
-  if (ct == Command::MultiCommand) {
+  if (ct == Command::MULTICOMMAND) {
     // Need to check each one
     std::vector<Command *>::iterator cmd_iter;
     MultiCommands *pmulticmd = dynamic_cast<MultiCommands *>(pcmd);
@@ -739,27 +739,27 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
       GetChangedStatus(*cmd_iter, st_Command);
     }
   } else {
-    // { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames };
+    // { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBEMPTYGROUP, DBPOLICYNAMES };
     switch (ct) {
-    case Command::GUIUpdate:
+    case Command::GUIUPDATE:
       // No change to DB at all
       break;
     case Command::DB:
       st_Command.bDBChanged = true;
       break;
-    case Command::DBEmptyGroup:
+    case Command::DBEMPTYGROUP:
       st_Command.bEmptyGroupsChanged = true;
       break;
-    case Command::DBPolicyNames:
+    case Command::DBPOLICYNAMES:
       st_Command.bPolicyNamesChanged = true;
       break;
-    case Command::DBPrefs:
+    case Command::DBPREFS:
       st_Command.bDBPrefsChanged = true;
       break;
-    case Command::DBFilters:
+    case Command::DBFILTERS:
       st_Command.bDBFiltersChanged = true;
       break;
-    case Command::MultiCommand:
+    case Command::MULTICOMMAND:
       ASSERT(0);
     }
   }
@@ -835,7 +835,7 @@ int PWScore::Execute(Command *pcmd)
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 
   // Get & set new DB status
-  pcmd->SaveChangedState(Command::PreExecute, m_stDBCS);
+  pcmd->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
 
   // Execute it
   int rc = pcmd->Execute();
@@ -844,8 +844,8 @@ int PWScore::Execute(Command *pcmd)
   // First get what this command changes, then update the final state
   st_DBChangeStatus st_Command;
   GetChangedStatus(pcmd, st_Command);
-  pcmd->SaveChangedState(Command::CommandAction, st_Command);
-  pcmd->SaveChangedState(Command::PostExecute, m_stDBCS);
+  pcmd->SaveChangedState(Command::COMMANDACTION, st_Command);
+  pcmd->SaveChangedState(Command::POSTEXECUTE, m_stDBCS);
 
   SetChangedStatus();
 
@@ -918,7 +918,7 @@ void PWScore::Redo()
   // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
   // and so might have changed.
   // Also, user may have saved the DB in between.
-  (*m_redo_iter)->SaveChangedState(Command::PreExecute, m_stDBCS);
+  (*m_redo_iter)->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
 
   // Redo it
   (*m_redo_iter)->Redo();
@@ -926,7 +926,7 @@ void PWScore::Redo()
   // Now set changed status
   // First get what this command changes, then update the final state
   // Don't need to save command action status in command as already there
-  (*m_redo_iter)->SaveChangedState(Command::PostExecute, m_stDBCS);
+  (*m_redo_iter)->SaveChangedState(Command::POSTEXECUTE, m_stDBCS);
 
   SetChangedStatus();
 

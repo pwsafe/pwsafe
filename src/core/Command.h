@@ -36,10 +36,10 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames,
-                     DBFilters /* To be implemented */ };
+  enum CommandType { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBEMPTYGROUP, DBPOLICYNAMES,
+                     DBFILTERS /* To be implemented */ };
 
-  enum StateType { CommandAction = 0, PreExecute, PostExecute};
+  enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
 
   virtual ~Command();
   virtual int Execute() = 0;
@@ -114,7 +114,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return GUIUpdate; }
+  CommandType GetCommandType() { return GUIUPDATE; }
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
@@ -135,7 +135,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPrefs; }
+  CommandType GetCommandType() { return DBPREFS; }
 
 private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
@@ -158,7 +158,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPolicyNames; }
+  CommandType GetCommandType() { return DBPOLICYNAMES; }
 
 private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
@@ -192,7 +192,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEmptyGroup; }
+  CommandType GetCommandType() { return DBEMPTYGROUP; }
 
 private:
   DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
@@ -471,7 +471,7 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
 
-  CommandType GetCommandType() { return MultiCommand; }
+  CommandType GetCommandType() { return MULTICOMMAND; }
   std::vector<Command *> m_vpcmds;
 
  private:

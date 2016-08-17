@@ -78,7 +78,7 @@ struct st_PWH_status {
 
 struct st_DBChangeStatus {
   bool bDBChanged; // One or more entries added, removed or modified
-  bool bDBPrefsChanged; // One or more prefreences changed
+  bool bDBPrefsChanged; // One or more preferences changed
   bool bEmptyGroupsChanged; // Set of empty groups has changed
   bool bPolicyNamesChanged; // One or more Policy names changed
   bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
