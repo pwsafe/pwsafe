@@ -78,20 +78,23 @@ struct st_PWH_status {
 
 struct st_DBChangeStatus {
   bool bDBChanged; // One or more entries added, removed or modified
-  bool bDBPrefsChanged; // One or more prefreences changed
+  bool bDBHeaderChanged; // Other header info (DB Name, Desctription and maybe Recently Used Entries)
+  bool bDBPrefsChanged; // One or more DB preferences changed
   bool bEmptyGroupsChanged; // Set of empty groups has changed
-  bool bPolicyNamesChanged; // One or more Policy names changed
-  bool bDBFiltersChanged;  // To be implemented - requires update to DB filters to be via a command
+  bool bPolicyNamesChanged; // One or more Policy names add, deleted or modified
+  bool bDBFiltersChanged;  // One of the DB filers add, deleted or modified
+                           // Currently changes to filters do not go via a Command
 
   std::vector<StringX> vNodes_Modified;
 
   st_DBChangeStatus() :
-    bDBChanged(false), bDBPrefsChanged(false), bEmptyGroupsChanged(false),
+    bDBChanged(false), bDBPrefsChanged(false), bDBHeaderChanged(false), bEmptyGroupsChanged(false),
     bPolicyNamesChanged(false), bDBFiltersChanged(false)
   {}
 
   st_DBChangeStatus(const st_DBChangeStatus &that)
-    : bDBChanged(that.bDBChanged), bDBPrefsChanged(that.bDBPrefsChanged), bEmptyGroupsChanged(that.bEmptyGroupsChanged),
+    : bDBChanged(that.bDBChanged), bDBPrefsChanged(that.bDBPrefsChanged), 
+    bDBHeaderChanged(that.bDBHeaderChanged), bEmptyGroupsChanged(that.bEmptyGroupsChanged),
     bPolicyNamesChanged(that.bPolicyNamesChanged), bDBFiltersChanged(that.bDBFiltersChanged),
     vNodes_Modified(that.vNodes_Modified)
   {}
@@ -101,6 +104,7 @@ struct st_DBChangeStatus {
     if (this != &that) {
       bDBChanged = that.bDBChanged;
       bDBPrefsChanged = that.bDBPrefsChanged;
+      bDBHeaderChanged = that.bDBHeaderChanged;
       bEmptyGroupsChanged = that.bEmptyGroupsChanged;
       bPolicyNamesChanged = that.bPolicyNamesChanged;
       bDBFiltersChanged = that.bDBFiltersChanged;
@@ -110,14 +114,14 @@ struct st_DBChangeStatus {
   }
 
   void Clear() {
-    bDBChanged = bDBPrefsChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
+    bDBChanged = bDBPrefsChanged = bDBHeaderChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
       bDBFiltersChanged = false;
     vNodes_Modified.clear();
   }
 
   bool HasAnythingChanged() const
   {
-    return (bDBChanged || bDBPrefsChanged ||
+    return (bDBChanged || bDBPrefsChanged || bDBHeaderChanged ||
             bEmptyGroupsChanged || bPolicyNamesChanged ||
             bDBFiltersChanged);
   }
@@ -127,6 +131,7 @@ struct st_DBChangeStatus {
     if (this != &that) {
       return (bDBChanged == that.bDBChanged &&
               bDBPrefsChanged == that.bDBPrefsChanged &&
+              bDBHeaderChanged == that.bDBHeaderChanged &&
               bEmptyGroupsChanged == that.bEmptyGroupsChanged &&
               bPolicyNamesChanged == that.bPolicyNamesChanged &&
               bDBFiltersChanged == that.bDBFiltersChanged &&
@@ -142,6 +147,7 @@ struct st_DBChangeStatus {
     st_DBChangeStatus res;
     res.bDBChanged = bDBChanged || other.bDBChanged;
     res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
+    res.bDBHeaderChanged = bDBHeaderChanged || other.bDBHeaderChanged;
     res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
     res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
     res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;

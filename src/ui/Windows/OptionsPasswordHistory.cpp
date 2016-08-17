@@ -87,7 +87,22 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
-  m_chkbox.ResetBkgColour();//Use current window's background
+  m_chkbox.ResetBkgColour(); // Use current window's background
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVEPWHISTORY)->EnableWindow(FALSE);
+
+    GetDlgItem(IDC_STATIC_MANAGEPWH)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHISTORYNOACTION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RESETPWHISTORYOFF)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RESETPWHISTORYON)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SETMAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEARPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
+  }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -216,10 +231,15 @@ HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_NUMPWSDHIST:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_SAVEPWHISTORY:
+    case IDC_STATIC_MANAGEPWH:
+    case IDC_PWHISTORYNOACTION:
+    case IDC_RESETPWHISTORYOFF:
+    case IDC_RESETPWHISTORYON:
+    case IDC_SETMAXPWHISTORY:
+    case IDC_CLEARPWHISTORY:
+    case IDC_STATIC_UPDATEPWHISTORY:
+    case IDC_UPDATEPROTECTEDPWH:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

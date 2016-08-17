@@ -77,6 +77,10 @@ class CommandInterface {
   virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
 
+  virtual int DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht) = 0;
+  virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht) = 0;
+  virtual StringX GetHeaderItem(PWSfile::HeaderType ht) = 0;
+
   virtual void AddChangedNodes(StringX path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;

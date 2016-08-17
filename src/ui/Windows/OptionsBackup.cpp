@@ -117,8 +117,20 @@ BOOL COptionsBackup::OnInitDialog()
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
   m_chkbox.ResetBkgColour(); //Use current window's background
 
-  if (!GetMainDlg()->IsDBReadOnly())
+  if (GetMainDlg()->IsDBOpen() && !GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    CString cs_Preference_Warning;
+    CString cs_temp(MAKEINTRESOURCE(GetMainDlg()->IsDBOpen() ? IDS_DB_READ_ONLY : IDS_NO_DB));
+
+    cs_Preference_Warning.Format(IDS_STATIC_DB_PREFS_RO_WARNING, cs_temp);
+    GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->SetWindowText(cs_Preference_Warning);
+
+    GetDlgItem(IDC_SAVEIMMEDIATELY)->EnableWindow(FALSE);
+  }
 
   if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order

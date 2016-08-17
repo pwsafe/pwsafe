@@ -46,6 +46,9 @@ using pws_os::CUUID;
 Command::Command(CommandInterface *pcomInt)
 :  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0)
 {
+  m_PreCommand.Clear();
+  m_PostCommand.Clear();
+  m_Command.Clear();
 }
 
 Command::~Command()
@@ -56,15 +59,15 @@ Command::~Command()
 void Command::SaveChangedState(StateType st, st_DBChangeStatus &stDBCS)
 {
   switch (st) {
-    case CommandAction:
+    case COMMANDACTION:
       // Set what the command changes
       m_Command = stDBCS;
       break;
-    case PreExecute:
+    case PREEXECUTE:
       // Save current pre-command execute state
       m_PreCommand = stDBCS;
       break;
-    case PostExecute:
+    case POSTEXECUTE:
       // Here we generate new state from pre-execute state and command action states
       // Effectively post-execute state = pre-execute state + command action state
       // and, unlike the other calls, return the result
@@ -999,4 +1002,32 @@ void RenameGroupCommand::Undo()
     return;
 
   m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
+}
+
+// ------------------------------------------------
+// ChangeDBHeaderCommand
+// ------------------------------------------------
+
+ChangeDBHeaderCommand::ChangeDBHeaderCommand(CommandInterface *pcomInt,
+  const StringX sxNewValue, const PWSfile::HeaderType ht)
+  : Command(pcomInt), m_sxNewValue(sxNewValue), m_ht(ht)
+{}
+
+int ChangeDBHeaderCommand::Execute()
+{
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
+  m_sxOldValue = m_pcomInt->GetHeaderItem(m_ht);
+
+  int rc = m_pcomInt->DoChangeHeader(m_sxNewValue, m_ht);
+  return rc;
+}
+
+void ChangeDBHeaderCommand::Undo()
+{
+  if (m_pcomInt->IsReadOnly())
+    return;
+
+  m_pcomInt->UndoChangeHeader(m_sxOldValue, m_ht);
 }

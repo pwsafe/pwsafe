@@ -315,6 +315,7 @@ public:
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
   bool GetDBNotificationState() {return m_core.GetDBNotificationState();}
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
+  bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}

@@ -312,11 +312,22 @@ public:
 
   // Related to above
   void ResetInitialValuesAfterSave()
-  { m_InitialDBPreferences = m_hdr.m_prefString;
+  {
+    m_InitialDBName = m_hdr.m_DB_Name;
+    m_InitialDBDesc = m_hdr.m_DB_Description;
+    m_InitialDBPreferences = m_hdr.m_prefString;
     m_InitialDisplayStatus = m_hdr.m_displaystatus;
     m_InitialvEmptyGroups = m_vEmptyGroups;
     m_InitialMapPSWDPLC = m_MapPSWDPLC;
-    m_InitialMapFilters = m_MapFilters; }
+    m_InitialMapFilters = m_MapFilters;
+    m_InitialRUEList = m_RUEList;
+
+    // Clear changes
+    m_stDBCS.Clear();
+
+    // Clear changed nodes
+    m_vNodes_Modified.clear();
+  }
 
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -405,7 +416,8 @@ public:
   void SetHeader(const PWSfileHeader &hdr) { m_hdr = hdr; }
 
   void GetDBProperties(st_DBProperties &st_dbp);
-  void SetHeaderUserFields(st_DBProperties &st_dbp);
+  StringX GetHeaderItem(PWSfile::HeaderType ht);
+  int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
 
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}
 
@@ -506,6 +518,9 @@ private:
   virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
 
+  virtual int DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht);
+  virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht);
+
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
   virtual void RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup);
@@ -559,6 +574,7 @@ private:
   st_DBChangeStatus m_stDBCS;
 
   PWSfileHeader m_hdr;
+  StringX m_InitialDBName, m_InitialDBDesc;
   StringX m_InitialDBPreferences;
   std::vector<bool> m_InitialDisplayStatus; // for WasDisplayStatusChanged (stored in header)
 
@@ -596,6 +612,7 @@ private:
   int m_nRecordsWithUnknownFields;
 
   UUIDList m_RUEList;
+  UUIDList m_InitialRUEList;
 
   bool m_bNotifyDB;
 

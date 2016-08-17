@@ -15,6 +15,7 @@ class CReport;
 class CommandInterface;
 
 #include "ItemData.h"
+#include "PWSfile.h"
 #include "StringX.h"
 #include "os/UUID.h"
 
@@ -36,10 +37,9 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { GUIUpdate = -1, MultiCommand, DB, DBPrefs, DBEmptyGroup, DBPolicyNames,
-                     DBFilters /* To be implemented */ };
+  enum CommandType { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES};
 
-  enum StateType { CommandAction = 0, PreExecute, PostExecute};
+  enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
 
   virtual ~Command();
   virtual int Execute() = 0;
@@ -56,6 +56,9 @@ public:
 
   const st_DBChangeStatus &GetPostCommandStatus() const
   { return m_PostCommand; }
+
+  const st_DBChangeStatus &GetCommandStatus() const
+  { return m_Command; }
   
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
@@ -111,7 +114,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return GUIUpdate; }
+  CommandType GetCommandType() { return GUIUPDATE; }
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
@@ -132,7 +135,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPrefs; }
+  CommandType GetCommandType() { return DBPREFS; }
 
 private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
@@ -155,7 +158,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBPolicyNames; }
+  CommandType GetCommandType() { return DBPOLICYNAMES; }
 
 private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
@@ -189,7 +192,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() { return DBEmptyGroup; }
+  CommandType GetCommandType() { return DBEMPTYGROUP; }
 
 private:
   DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
@@ -450,6 +453,24 @@ private:
    StringX m_sxOldPath, m_sxNewPath;
 };
 
+class ChangeDBHeaderCommand : public Command {
+public:
+  static ChangeDBHeaderCommand *Create(CommandInterface *pcomInt,
+    const StringX sxNewValue, const PWSfile::HeaderType ht)
+  { return new ChangeDBHeaderCommand(pcomInt, sxNewValue, ht); }
+  int Execute();
+  void Undo();
+
+  CommandType GetCommandType() { return DBHEADER; }
+
+private:
+  ChangeDBHeaderCommand(CommandInterface *pcomInt,
+    StringX sxOldValue, const PWSfile::HeaderType ht);
+
+  StringX m_sxOldValue, m_sxNewValue;
+  PWSfile::HeaderType m_ht;
+};
+
 // Derived MultiCommands class
 class MultiCommands : public Command
 {
@@ -468,7 +489,7 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
 
-  CommandType GetCommandType() { return MultiCommand; }
+  CommandType GetCommandType() { return MULTICOMMAND; }
   std::vector<Command *> m_vpcmds;
 
  private:

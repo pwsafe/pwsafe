@@ -840,6 +840,9 @@
 #define IDC_ENTSHORTCUTLISTHELP         1538
 #define IDC_REGDELHELP                  1539
 #define IDC_MIGRATETOAPPDATAHELP        1541
+#define IDC_STATIC_INITIALTREEVIEW      1542
+#define IDC_STATIC_UNLOCKDIFFICULTY     1543
+#define IDC_STATIC_MANAGEPWH            1544
 
 // Next default values for new objects
 // 
@@ -847,7 +850,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        548
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1542
+#define _APS_NEXT_CONTROL_VALUE         1545
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif
