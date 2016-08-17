@@ -118,7 +118,17 @@ BOOL COptionsMisc::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].ResetBkgColour();//Use current window's background
+    m_chkbox[i].ResetBkgColour(); // Use current window's background
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_DEFAUTOTYPE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DB_DEF_AUTOTYPE_TEXT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_MAINTAINDATETIMESTAMPS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEDEFUSER)->EnableWindow(FALSE);
   }
 
   OnUseDefUser();
@@ -395,7 +405,7 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_USERNAME:
+    case IDC_DEFUSERNAME:
     case IDC_STATIC_USERNAME:
     case IDC_STATIC_DEFAUTOTYPE:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
