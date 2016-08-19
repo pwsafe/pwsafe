@@ -133,7 +133,7 @@ PWScore::PWScore() :
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_IsReadOnly(false),
+                     m_bIsReadOnly(false), m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
                      m_iAppHotKey(0)
@@ -463,6 +463,9 @@ void PWScore::ClearData(void)
 
   // Reset state of unchanged DB
   m_stDBCS.Clear();
+
+  // OK now closed
+  m_bIsOpen = false;
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -791,7 +794,10 @@ void PWScore::SetChangedStatus()
   // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
   // and bDBFiltersChanged based on original values as multiple changes
   // could revert to unchanged since last saved
-  if (!GetCurFile().empty()) { // mainly for coretest
+
+  // Check if DB is open (can't use empty file name to mean no DB as that
+  // is the case when a databse has been retored but not yet saved)
+  if (m_bIsOpen) {
     const StringX prefString(PWSprefs::GetInstance()->Store());
     m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
   }
@@ -947,7 +953,7 @@ void PWScore::Redo()
   m_undo_iter = m_redo_iter;
 
   // Shouldn't need to save pre-execute status in command as already there
-  // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
+  // BUT (in MFC) OnSize & OnColumnClick call SetDBPrefsChanged
   // and so might have changed.
   // Also, user may have saved the DB in between.
   (*m_redo_iter)->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
@@ -1318,6 +1324,9 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Make return code negative if validation errors
   if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
+
+  // OK DB open
+  m_bIsOpen = true;
 
   return closeStatus;
 }
@@ -3550,7 +3559,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   iErrorCode = SUCCESS;
   locker = _T(""); // Important!
 
-  if (m_IsReadOnly) {
+  if (m_bIsReadOnly) {
     // We know the file did exist but this will also determine if it is R-O
     bool isRO;
     if (pws_os::FileExists(m_currfile.c_str(), isRO) && isRO) {
@@ -3619,7 +3628,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   }
 
   // Swap Read/Write : Read/Only status
-  m_IsReadOnly = !m_IsReadOnly;
+  m_bIsReadOnly = !m_bIsReadOnly;
 
   return true;
 }

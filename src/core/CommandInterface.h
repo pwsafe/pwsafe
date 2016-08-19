@@ -24,7 +24,6 @@ class CommandInterface {
   // Methods used both by PWScore and Commands:
   virtual bool IsReadOnly() const = 0;
 
-  virtual void SetDBChanged(bool bDBChanged) = 0;
   virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
 
   virtual bool HasDBChanged() const = 0;

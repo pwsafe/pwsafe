@@ -1217,6 +1217,26 @@ int DboxMain::SaveIfChanged()
      user: "they get what it says on the tin".
    */
 
+  // Deal with unsaved but changed restored DB
+  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+    CGeneralMsgBox gmb;
+
+    gmb.SetTitle(IDS_UNSAVEDRESTOREDDB);
+    gmb.SetMsg(IDS_SAVEDRESTOREDDB);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_YES, IDS_YES, TRUE, TRUE);
+    gmb.AddButton(IDS_NO, IDS_NO);
+
+    if (gmb.DoModal() == IDS_NO)
+      return PWScore::USER_DECLINED_SAVE;
+
+    int rc = SaveAs();
+    if (rc == PWScore::SUCCESS)
+      m_bRestoredDBUnsaved = false;
+
+    return rc;
+  }
+
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
@@ -1287,7 +1307,8 @@ int DboxMain::SaveAs()
 
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
 
-  // Only need to warn user if current DB is prior to V3 - no implications if saving V4 as V4 or V3 as V3
+  // Only need to warn user if current DB is prior to V3 - no implications
+  // if saving V4 as V4 or V3 as V3
   if (current_version < PWSfile::V30 && 
       current_version != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
@@ -1426,6 +1447,9 @@ int DboxMain::SaveAs()
     // and so cause toolbar to be the correct version
     m_core.SetReadOnly(false);
   }
+
+  // In case it was an unsaved restored DB
+  m_bRestoredDBUnsaved = false;
 
   return PWScore::SUCCESS;
 }

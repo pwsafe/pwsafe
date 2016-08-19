@@ -541,6 +541,7 @@ public:
   bool m_bOpen;
   bool m_bInRestoreWindowsData;
   bool m_bUserDeclinedSave;
+  bool m_bRestoredDBUnsaved;
 
   bool m_bSetup;          // invoked with '--setup'?
   bool m_bNoValidation;   // invoked with '--novalidate'?

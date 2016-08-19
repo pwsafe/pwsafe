@@ -150,8 +150,8 @@ public:
   {return WriteFile(filename, PWSfile::V20, false);}
 
   // R/O file status
-  void SetReadOnly(bool state) {m_IsReadOnly = state;}
-  bool IsReadOnly() const {return m_IsReadOnly;};
+  void SetReadOnly(bool state) {m_bIsReadOnly = state;}
+  bool IsReadOnly() const {return m_bIsReadOnly;};
 
   // Check/Change master passphrase
   int CheckPasskey(const StringX &filename, const StringX &passkey);
@@ -342,12 +342,10 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  // Use following call to 'SetDBChanged' sparingly outside of core
+  // Use following call to 'SetDBPrefsChanged' sparingly outside of core
   // Note: the database is only changed by executing a command and so
-  // the changed state is set during the main PWScore::Execute and
+  // the changed state is set during the main PWScore::Execute/Redo and
   // potentially reset during an Undo
-  void PWScore::SetDBChanged(bool bDBChanged)
-  { m_stDBCS.bDBChanged = bDBChanged; }
   void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
   { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
 
@@ -561,8 +559,10 @@ private:
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
 
-  bool m_IsReadOnly;
+  bool m_bIsReadOnly;
   bool m_bUniqueGTUValidated;
+  bool m_bNotifyDB;
+  bool m_bIsOpen;
 
   st_DBChangeStatus m_stDBCS;
 
@@ -606,8 +606,6 @@ private:
 
   UUIDList m_RUEList;
   UUIDList m_InitialRUEList;
-
-  bool m_bNotifyDB;
 
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;

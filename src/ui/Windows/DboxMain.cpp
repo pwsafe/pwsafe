@@ -146,7 +146,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
-  m_bUserDeclinedSave(false),
+  m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -668,7 +668,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
-  {ID_MENUITEM_RESTORESAFE, true, false, true, false},
+  {ID_MENUITEM_RESTORESAFE, true, false, true, true},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
