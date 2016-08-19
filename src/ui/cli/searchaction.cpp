@@ -95,15 +95,47 @@ int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core,
 
 int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core)
 {
-  PWPolicy pwp;
-  const int ret = InitPWPolicy(pwp, core);
-  if ( PWScore::SUCCESS == ret ) {
-    for( auto p: items ) {
-      auto it = core.Find(p->GetUUID());
-      it->second.SetPassword( pwp.MakeRandomPassword() );
+  // Helper class to (1) find the correct policy for an entry and (2) to
+  // initialize the default policy only once & only if required
+  class PWPolicyForEntry
+  {
+    PWScore *core;
+    std::unique_ptr<PWPolicy> defpwp;
+
+  public:
+    PWPolicyForEntry(PWScore *c): core{c} {}
+    PWPolicy Get(const CItemData *entry)
+    {
+      PWPolicy pwp;
+      if ( entry->IsPolicyNameSet() ) {
+        if ( core->GetPolicyFromName( entry->GetPolicyName(), pwp ) )
+          return pwp;
+      }
+
+      if ( entry->IsPasswordPolicySet() ) {
+        entry->GetPWPolicy(pwp);
+        return pwp;
+      }
+
+      if ( !defpwp ) {
+        defpwp.reset( new PWPolicy );
+        auto initfn = [this]() {
+          if ( InitPWPolicy(*defpwp, *core) != PWScore::SUCCESS )
+              throw std::logic_error("Could not initialize default password policy");
+        };
+        initfn();
+      };
+
+      return *defpwp;
     }
+  };
+
+  PWPolicyForEntry pol(&core);
+  for( auto p: items ) {
+    auto it = core.Find(p->GetUUID());
+    it->second.SetPassword( pol.Get(p).MakeRandomPassword() );
   }
-  return ret;
+  return PWScore::SUCCESS;
 }
 
 constexpr wchar_t SearchActionTraits<UserArgs::Delete>::prompt[];
