@@ -94,6 +94,21 @@ TEST_F(SearchTest, SearchAndUpdate) {
   EXPECT_EQ( entry.GetURL(), L"nowaysuchadomainexists.pwsafe" );
 }
 
+TEST_F(SearchTest, SearchAndClearFields) {
+  UserArgs ua;
+
+  ua.Operation = UserArgs::OpType::Search;
+  ua.opArg = L"SomeTitle";
+  ua.confirmed = true;
+  ua.SearchAction = UserArgs::ClearFields;
+  ua.opArg2 = L"Notes";
+
+  SearchInternal(core, ua, os);
+
+  EXPECT_EQ( core.GetNumEntries(), 1 );
+  const CItemData &entry = core.GetEntryIter()->second;
+  EXPECT_TRUE( entry.IsNotesEmpty() );
+}
 
 
 }  // namespace

@@ -36,7 +36,7 @@ struct UserArgs {
   StringX safe;
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
                Diff, Sync, Merge} Operation{Unset};
-  enum {Print, Delete, Update} SearchAction{Print};
+  enum {Print, Delete, Update, ClearFields} SearchAction{Print};
   enum {Unknown, XML, Text} Format{Unknown};
 
   bool dry_run{false};

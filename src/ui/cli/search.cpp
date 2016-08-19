@@ -46,9 +46,14 @@ void SearchForEntries(PWScore &core, const wstring &searchText, bool ignoreCase,
 
 int SaveAfterSearch(PWScore &core, const UserArgs &ua)
 {
-  if ( (ua.SearchAction == UserArgs::Update ||
-        ua.SearchAction == UserArgs::Delete) && core.IsChanged() ) {
-    return core.WriteCurFile();
+  switch (ua.SearchAction) {
+    case UserArgs::Update:
+    case UserArgs::Delete:
+    case UserArgs::ClearFields:
+      if ( core.IsChanged() ) return core.WriteCurFile();
+      break;
+    case UserArgs::Print:
+      break;
   }
   return PWScore::SUCCESS;
 }
@@ -212,6 +217,14 @@ int SearchInternal(PWScore &core, const UserArgs &ua, wostream &os)
       return DoSearch<UserArgs::Update>(core, ua, [&core, &ua](const ItemPtrVec &matches) {
         return UpdateSearchResults(matches, core, ua.fieldValues);
       });
+
+    case UserArgs::ClearFields:
+    {
+      CItemData::FieldBits ftp = ParseFields(ua.opArg2);
+      return DoSearch<UserArgs::ClearFields>(core, ua, [&core, &ua, &ftp](const ItemPtrVec &matches) {
+        return ClearFieldsOfSearchResults(matches, core, ftp);
+      });
+    }
 
     default:
       assert(false);

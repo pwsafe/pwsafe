@@ -20,6 +20,7 @@ using FieldUpdates = UserArgs::FieldUpdates ;
 int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp, std::wostream &os);
 int DeleteSearchResults(const ItemPtrVec &items, PWScore &core);
 int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdates &updates);
+int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp);
 
 template <int action>
 struct SearchActionTraits
@@ -40,6 +41,12 @@ template <>
 struct SearchActionTraits<UserArgs::Update>
 {
   static constexpr wchar_t prompt[] = L"Update Item";
+};
+
+template <>
+struct SearchActionTraits<UserArgs::ClearFields>
+{
+  static constexpr wchar_t prompt[] = L"Clear files of item";
 };
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

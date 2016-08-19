@@ -126,6 +126,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"print",       optional_argument,  0, 'p'},
     //  {"remove",      no_argument,        0, 'r'},
       {"delete",      no_argument,        0, 'r'},
+      {"clear",       required_argument,  0, 'l'},
       {"yes",         no_argument,        0, 'y'},
       {"diff",        required_argument,  0, 'd'},
       {"unified",     no_argument,        0, 'g'},
@@ -226,6 +227,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.SearchAction = UserArgs::Update;
         assert(optarg);
         ua.SetFieldValues(Utf82wstring(optarg));
+        break;
+
+    case 'l':
+        ua.SearchAction = UserArgs::ClearFields;
+        assert(optarg);
+        ua.opArg2 = Utf82wstring(optarg);;
         break;
 
       case 'g':

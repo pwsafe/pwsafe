@@ -82,5 +82,16 @@ int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdat
   return PWScore::SUCCESS;
 }
 
+int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core,
+                                  const CItemData::FieldBits &ftp) {
+  for( auto p: items ) {
+    ItemListIter it = core.Find(p->GetUUID());
+    for (auto ft : known_fields)
+      if (ftp.test(ft)) it->second.ClearField(ft);
+  }
+  return PWScore::SUCCESS;
+}
+
 constexpr wchar_t SearchActionTraits<UserArgs::Delete>::prompt[];
 constexpr wchar_t SearchActionTraits<UserArgs::Update>::prompt[];
+constexpr wchar_t SearchActionTraits<UserArgs::ClearFields>::prompt[];
