@@ -4,7 +4,7 @@
 #include "./argutils.h"
 
 class PWScore;
-class PWPolicy;
+struct PWPolicy;
 
 int OpenCore(PWScore& core, const StringX& safe);
 StringX GetNewPassphrase();
