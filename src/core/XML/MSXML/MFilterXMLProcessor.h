@@ -33,7 +33,7 @@ public:
 
 private:
   Asker *m_pAsker;
-  PWSFilters &m_MapFilters;
+  PWSFilters &m_MapXMLFilters;   // So as not to confuse with UI & core
   FilterPool m_FPool;
   stringT m_strXMLErrors;
   stringT m_strRenameList;

@@ -1031,3 +1031,40 @@ void ChangeDBHeaderCommand::Undo()
 
   m_pcomInt->UndoChangeHeader(m_sxOldValue, m_ht);
 }
+
+// ------------------------------------------------
+// DBFiltersCommand
+// ------------------------------------------------
+
+DBFiltersCommand::DBFiltersCommand(CommandInterface *pcomInt,
+  PWSFilters &MapFilters)
+  : Command(pcomInt), m_NewMapFilters(MapFilters)
+{
+  m_OldMapFilters = pcomInt->GetDBFilters();
+}
+
+int DBFiltersCommand::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->SetDBFilters(m_NewMapFilters);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+        CUUID::NullUUID());
+    }
+  }
+  return 0;
+}
+
+void DBFiltersCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->SetDBFilters(m_OldMapFilters);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+        CUUID::NullUUID());
+    }
+  }
+}
+

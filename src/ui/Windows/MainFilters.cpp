@@ -74,8 +74,8 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
   fk.fpool = (FilterPool)m_currentfilterpool;
   fk.cs_filtername = m_selectedfiltername;
 
-  mf_iter = m_MapFilters.find(fk);
-  if (mf_iter == m_MapFilters.end())
+  mf_iter = m_MapAllFilters.find(fk);
+  if (mf_iter == m_MapAllFilters.end())
     return false;
 
   CurrentFilter() = mf_iter->second;
@@ -105,6 +105,7 @@ void DboxMain::OnSetFilter()
   CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS, bCanHaveAttachments, &sMediaTypes);
 
   INT_PTR rc = sf.DoModal();
+
   if (rc == IDOK) {
     // If filters currently active - update and re-apply
     // If not, just update
@@ -114,8 +115,8 @@ void DboxMain::OnSetFilter()
     st_Filterkey fk;
     fk.fpool = FPOOL_SESSION;
     fk.cs_filtername = CurrentFilter().fname;
-    m_MapFilters.erase(fk);
-    m_MapFilters.insert(PWSFilters::Pair(fk, CurrentFilter()));
+    m_MapAllFilters.erase(fk);
+    m_MapAllFilters.insert(PWSFilters::Pair(fk, CurrentFilter()));
 
     m_currentfilterpool = fk.fpool;
     m_selectedfiltername = fk.cs_filtername.c_str();
@@ -222,30 +223,36 @@ void DboxMain::OnManageFilters()
   fkl.fpool = FPOOL_DATABASE;
   fkl.cs_filtername = L"";
 
-  if (!m_MapFilters.empty()) {
-    mf_lower_iter = m_MapFilters.lower_bound(fkl);
+  // Find & delete DB filters only
+  if (!m_MapAllFilters.empty()) {
+    mf_lower_iter = m_MapAllFilters.lower_bound(fkl);
 
     // Check that there are some first!
     if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
       // Now find upper bound of database filters
       fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
       fku.cs_filtername = L"";
-      mf_upper_iter = m_MapFilters.upper_bound(fku);
+      mf_upper_iter = m_MapAllFilters.upper_bound(fku);
 
       // Delete existing database filters (if any)
-      m_MapFilters.erase(mf_lower_iter, mf_upper_iter);
+      m_MapAllFilters.erase(mf_lower_iter, mf_upper_iter);
     }
   }
 
+  // Get current core filters
+  PWSFilters core_filters = m_core.GetDBFilters();
+  const PWSFilters original_core_filters = m_core.GetDBFilters();
+
   // Now add any existing database filters
-  for (mf_iter = m_core.m_MapFilters.begin();
-       mf_iter != m_core.m_MapFilters.end(); mf_iter++) {
-    m_MapFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
+  for (mf_iter = core_filters.begin();
+    mf_iter != core_filters.end(); mf_iter++) {
+    m_MapAllFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
   }
 
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
 
-  CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters, bCanHaveAttachments);
+  // m_MapAllFilters will be updated by this dialog if user adds, deletes or changes a filter
+  CManageFiltersDlg mf(this, m_bFilterActive, m_MapAllFilters, bCanHaveAttachments);
   mf.SetCurrentData(m_currentfilterpool, CurrentFilter().fname.c_str());
   mf.DoModal();
 
@@ -253,22 +260,34 @@ void DboxMain::OnManageFilters()
   if (!mf.HasDBFiltersChanged())
     return;
 
-  m_core.m_MapFilters.clear();
+  // Clear core filters ready to replace with new ones
+  core_filters.clear();
 
-  if (!m_MapFilters.empty()) {
-    mf_lower_iter = m_MapFilters.lower_bound(fkl);
+  // Get DB filters populated via CManageFiltersDlg
+  if (!m_MapAllFilters.empty()) {
+    mf_lower_iter = m_MapAllFilters.lower_bound(fkl);
 
     // Check that there are some first!
     if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
       // Now find upper bound of database filters
       fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
       fku.cs_filtername = L"";
-      mf_upper_iter = m_MapFilters.upper_bound(fku);
+      mf_upper_iter = m_MapAllFilters.upper_bound(fku);
 
       // Copy database filters (if any) to the core
-      CopyDBFilters copy_db_filters(m_core.m_MapFilters);
+      CopyDBFilters copy_db_filters(core_filters);
       for_each(mf_lower_iter, mf_upper_iter, copy_db_filters);
     }
+  }
+
+  // However, we need to check as user may have edited the filter more thn once 
+  // and reverted any changes!
+  if (core_filters != original_core_filters) {
+    // Now update DB filters in core
+    Command *pcmd = DBFiltersCommand::Create(&m_core, core_filters);
+
+    // Do it
+    Execute(pcmd);
   }
 }
 
@@ -389,7 +408,7 @@ void DboxMain::ImportFilters()
     CWaitCursor waitCursor;  // This may take a while!
 
     MFCAsker q;
-    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, L"",
+    rc = m_MapAllFilters.ImportFilterXMLFile(FPOOL_IMPORTED, L"",
                                           std::wstring(XMLFilename),
                                           XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor

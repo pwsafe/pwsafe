@@ -78,12 +78,11 @@ struct st_PWH_status {
 
 struct st_DBChangeStatus {
   bool bDBChanged; // One or more entries added, removed or modified
-  bool bDBHeaderChanged; // Other header info (DB Name, Desctription and maybe Recently Used Entries)
   bool bDBPrefsChanged; // One or more DB preferences changed
+  bool bDBHeaderChanged; // Other header info (DB Name, Desctription and maybe Recently Used Entries)
   bool bEmptyGroupsChanged; // Set of empty groups has changed
   bool bPolicyNamesChanged; // One or more Policy names add, deleted or modified
   bool bDBFiltersChanged;  // One of the DB filers add, deleted or modified
-                           // Currently changes to filters do not go via a Command
 
   std::vector<StringX> vNodes_Modified;
 
@@ -121,6 +120,7 @@ struct st_DBChangeStatus {
 
   bool HasAnythingChanged() const
   {
+    // Doesn't test bGroupDisplayChanged as dependent on preference
     return (bDBChanged || bDBPrefsChanged || bDBHeaderChanged ||
             bEmptyGroupsChanged || bPolicyNamesChanged ||
             bDBFiltersChanged);
@@ -128,6 +128,7 @@ struct st_DBChangeStatus {
   
   bool operator==(const st_DBChangeStatus& that) const
   {
+    // Doesn't test bGroupDisplayChanged as dependent on preference
     if (this != &that) {
       return (bDBChanged == that.bDBChanged &&
               bDBPrefsChanged == that.bDBPrefsChanged &&

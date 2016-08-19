@@ -310,25 +310,6 @@ public:
   bool AnyToUndo() const;
   bool AnyToRedo() const;
 
-  // Related to above
-  void ResetInitialValuesAfterSave()
-  {
-    m_InitialDBName = m_hdr.m_DB_Name;
-    m_InitialDBDesc = m_hdr.m_DB_Description;
-    m_InitialDBPreferences = m_hdr.m_prefString;
-    m_InitialDisplayStatus = m_hdr.m_displaystatus;
-    m_InitialvEmptyGroups = m_vEmptyGroups;
-    m_InitialMapPSWDPLC = m_MapPSWDPLC;
-    m_InitialMapFilters = m_MapFilters;
-    m_InitialRUEList = m_RUEList;
-
-    // Clear changes
-    m_stDBCS.Clear();
-
-    // Clear changed nodes
-    m_vNodes_Modified.clear();
-  }
-
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
@@ -369,8 +350,7 @@ public:
   { m_stDBCS.bDBChanged = bDBChanged; }
   void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
   { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
-  void ClearDBChanges() // E.g., when opening New DB
-  { m_stDBCS.Clear(); }
+
   bool PWScore::HasDBChanged() const
   { return m_stDBCS.bDBChanged; }
   bool PWScore::HaveDBPrefsChanged() const
@@ -413,21 +393,17 @@ public:
   bool WasDisplayStatusChanged() const;
 
   const PWSfileHeader &GetHeader() const {return m_hdr;}
-  void SetHeader(const PWSfileHeader &hdr) { m_hdr = hdr; }
 
   void GetDBProperties(st_DBProperties &st_dbp);
   StringX GetHeaderItem(PWSfile::HeaderType ht);
-  int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
 
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}
 
-  // Filters
-  PWSFilters m_MapFilters;
-  PWSFilters m_InitialMapFilters;
+  // Filters, if any
+  const PWSFilters &GetDBFilters()
+  { return m_MapDBFilters; }
 
   // Changed nodes
-  void ClearChangedNodes()
-  {m_vNodes_Modified.clear();}
   bool IsNodeModified(StringX &path) const;
 
   void GetRUEList(UUIDList &RUElist)
@@ -448,24 +424,16 @@ public:
 
   const PSWDPolicyMap &GetPasswordPolicies()
   {return m_MapPSWDPLC;}
-  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
-
-  void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
-                 const bool bAllowReplace = false);
 
   // Empty Groups
-  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
   const std::vector<StringX> & GetEmptyGroups() const {return m_vEmptyGroups;}
   bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
   size_t GetNumberEmptyGroups() const {return m_vEmptyGroups.size();}
 
-  // Keyboard shortcuts
-  bool AddKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);
-  bool DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);
   const pws_os::CUUID & GetKBShortcut(const int32 &iKBShortcut);
-  const KBShortcutMap &GetAllKBShortcuts() {return m_KBShortcutMap;}
-  void SetAppHotKey(const int32 &iAppHotKey) {m_iAppHotKey = iAppHotKey;}
+  const KBShortcutMap &GetAllKBShortcuts() { return m_KBShortcutMap; }
   int32 GetAppHotKey() const {return m_iAppHotKey;}
+  void SetAppHotKey(const int32 &iAppHotKey) { m_iAppHotKey = iAppHotKey; }
 
   uint32 GetHashIters() const;
   void SetHashIters(uint32 value);
@@ -528,8 +496,32 @@ private:
 
   // End of Command Interface implementations
 
-  void SetChangedStatus(); // used by Execute/Undo/Redo
-  
+  //***** Make all calls that change the core private
+  //   This excludes Group Display and RUE List which should not be via 
+  //   Commands as no requirement to Undo/Redo and whose save is UI driven.
+  void SetChangedStatus(); // Used by Execute/Undo/Redo
+  void SetInitialValues(); // Called after successful read/write of a database
+
+  // Update header
+  int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
+
+  // Set empty groups
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
+
+  // Set/Add Password Policies
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
+  void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
+    const bool bAllowReplace = false);
+
+  // Set DB filters
+  void SetDBFilters(const PWSFilters &MapDBFilters);
+
+  // Keyboard shortcuts
+  bool AddKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);
+  bool DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);
+
+  //*****
+
   void ProcessReadEntry(CItemData &ci_temp,
                         std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                         std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
@@ -541,6 +533,7 @@ private:
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
+
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, size_t len,
                        unsigned char *ciphertext) const;
@@ -649,6 +642,9 @@ private:
   stringT GetXMLPWPolicies(const OrderedItemList *pOIL = NULL);
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMap m_InitialMapPSWDPLC;  // Needed for HavePasswordPolicyNamesChanged
+  
+  PWSFilters m_MapDBFilters;  // DB filters only
+  PWSFilters m_InitialMapDBFilters;
 
   KBShortcutMap m_KBShortcutMap;
   int32 m_iAppHotKey;

@@ -65,7 +65,8 @@ void DboxMain::DatabaseModified(bool bChanged)
   PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
   // Callback from PWScore if the database has been changed
-  // (entries or preferences stored in the database)
+  // (entries, preferences, header information,
+  //  filters or password policies stored in the database)
 
   // First if the password list has been changed, invalidate
   // the indices vector in Find
@@ -73,8 +74,14 @@ void DboxMain::DatabaseModified(bool bChanged)
   OnHideFindToolBar();
 
   // Save Immediately if user requested it
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
-    SaveImmediately();
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      bChanged = false;
+  }
+
+  // Update menu/toolbar according to change state
+  ChangeOkUpdate();
 
   // This is to prevent Windows (Vista & later) from shutting down
   // if the database has been modified (including preferences
@@ -1151,7 +1158,6 @@ void DboxMain::RestoreWindows()
   if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
     if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
       PWSprefs::GetInstance()->Load(m_savedDBprefs);
-      m_core.SetDBPrefsChanged(true);
     }
     m_savedDBprefs = EMPTYSAVEDDBPREFS;
   }
@@ -1325,7 +1331,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
           if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
             prefs->Load(m_savedDBprefs);
-            m_core.SetDBPrefsChanged(true);
           }
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }

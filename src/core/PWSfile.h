@@ -130,8 +130,8 @@ public:
   virtual uint32 GetNHashIters() const {return 0;}
   virtual void SetNHashIters(uint32 ) {}
 
-  void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
-  const PWSFilters *GetFilters() const {return &m_MapFilters;}
+  void SetDBFilters(const PWSFilters &MapDBFilters) { m_MapDBFilters = MapDBFilters;}
+  const PWSFilters *GetDBFilters() const {return &m_MapDBFilters;}
 
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
   const PSWDPolicyMap *GetPasswordPolicies() const {return &m_MapPSWDPLC;}
@@ -178,7 +178,7 @@ protected:
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
-  PWSFilters m_MapFilters;
+  PWSFilters m_MapDBFilters;
   PSWDPolicyMap m_MapPSWDPLC;
   std::vector<StringX> m_vEmptyGroups;
   ulong64 m_fileLength;

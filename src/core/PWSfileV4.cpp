@@ -651,9 +651,9 @@ int PWSfileV4::WriteHeader()
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_DB_Description);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
-  if (!m_MapFilters.empty()) {
+  if (!m_MapDBFilters.empty()) {
     coStringXStream oss;  // XML is always char not wchar_t
-    m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
+    m_MapDBFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
@@ -1123,7 +1123,7 @@ int PWSfileV4::ReadHeader()
           m_UHFL.push_back(unkhfe);
           break;
         }
-        int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+        int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                   XSDFilename.c_str(),
                                                   strErrors, m_pAsker);
         if (rc != PWScore::SUCCESS) {

@@ -26,7 +26,6 @@ class CommandInterface {
 
   virtual void SetDBChanged(bool bDBChanged) = 0;
   virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
-  virtual void ClearDBChanges() = 0; // E.g., when opening New DB
 
   virtual bool HasDBChanged() const = 0;
   virtual bool HaveDBPrefsChanged() const = 0;
@@ -112,7 +111,10 @@ class CommandInterface {
   virtual void RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup) = 0;
   virtual void RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual const std::vector<StringX> & GetEmptyGroups() const = 0;
-  
+
+  virtual const PWSFilters &GetDBFilters() = 0;
+  virtual void SetDBFilters(const PWSFilters &MapDBFilters) = 0;
+ 
   virtual ~CommandInterface() {}
 };
 

@@ -151,7 +151,7 @@ int DboxMain::RestoreSafe()
    
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
   if (rc == PWScore::USER_DECLINED_SAVE)
-    m_core.ClearDBChanges();
+    m_bUserDeclinedSave = true;
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);

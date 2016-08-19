@@ -92,6 +92,13 @@ public:
   void Init(CWnd *pParent, st_filters *pfilters, const FilterType &filtertype,
     bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes);
 
+  bool IsPWHIST_Set() const { return m_bPWHIST_Set; }
+  bool IsPOLICY_Set() const { return m_bPOLICY_Set; }
+  bool IsAttachment_Set() const { return m_bATTACHMENT_Set; }
+  bool IsHistoryGood() const { return m_GoodHistory; }
+  bool IsPolicyGood() const { return m_GoodPolicy; }
+  bool IsAttachmentGood() const { return m_GoodAttachment; }
+
 protected:
   std::vector<FieldType> m_vlast_ft;           // Last combo selected item
   std::vector<PWSMatch::MatchType> m_vlast_mt; // Last selected matchtype
@@ -103,10 +110,14 @@ protected:
   std::vector<st_Lcbxdata> m_vLcbx_data;     // Logic (AND/OR) combobox strings
   std::vector<st_Fcbxdata> m_vWCFcbx_data;   // Working copy Field combobox & fieldtypes
 
+  st_filters *m_pfilters;
+
   WCHAR *m_pwchTip;
 
   BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
+
+  enum CheckImage { CHECKED = 0, UNCHECKED };
 
   //{{AFX_MSG(CPWFilterLC)
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -117,22 +128,13 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-public:
-  st_filters *m_pfilters;
-  bool IsPWHIST_Set() const {return m_bPWHIST_Set;}
-  bool IsPOLICY_Set() const {return m_bPOLICY_Set;}
-  bool IsAttachment_Set() const { return m_bATTACHMENT_Set; }
-  bool IsHistoryGood() const {return m_GoodHistory;}
-  bool IsPolicyGood() const {return m_GoodPolicy;}
-  bool IsAttachmentGood() const { return m_GoodAttachment; }
-
 private:
   void SetUpComboBoxData();
   void DrawComboBox(const int iSubItem, const int index);
   void DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
                        COLORREF crText, COLORREF crBkgnd,
                        CRect &rect, bool bBold, bool bOpaque);
-  void DrawImage(CDC *pDC, CRect &rect, int nImage);
+  void DrawImage(CDC *pDC, CRect &rect, CheckImage nImage);
   void CloseKillCombo();
   void DropDownCombo(const UINT nID);
 

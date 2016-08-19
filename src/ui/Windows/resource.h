@@ -270,6 +270,7 @@
 #define IDB_UNCHECKED                   427
 #define IDB_EMPTY                       428
 #define IDB_BLANK                       429
+#define IDB_CHECKED_DISABLED            430
 #define IDB_DRAGGROUP_NEW               431
 #define IDB_DRAGTITLE_NEW               432
 #define IDB_DRAGUSER_NEW                433
@@ -308,6 +309,7 @@
 #define IDD_ADDEDIT_ADDITIONAL          466
 #define IDD_ADDEDIT_DATETIMES           467
 #define IDD_ADDEDIT_PASSWORDPOLICY      468
+#define IDB_UNCHECKED_DISABLED          469
 #define IDB_EXCLAMATION                 470
 #define IDB_CHANGEVKBDFONTMENU_CLASSIC  471
 #define IDB_CHANGEVKBDFONTMENU_NEW      472
@@ -386,6 +388,7 @@
 #define IDB_EXPORTV4_NEW_D              545
 #define IDD_NPWP_LIST_ENTRIES           546
 #define IDB_QUESTIONMARK                547
+#define IDB_EMPTY_DISABLED              549
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002

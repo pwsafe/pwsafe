@@ -62,7 +62,7 @@ class MFilterSAX2ContentHandler: public ISAXContentHandler
 public:
   // Local variables & function
   stringT m_strXMLErrors;
-  PWSFilters *m_MapFilters;
+  PWSFilters *m_MapXMLFilters;  // So as not to confuse with UI & core
   FilterPool m_FPool;
   int m_type;
 
@@ -72,7 +72,7 @@ public:
 
   void SetVariables(Asker *pAsker, PWSFilters *mapfilters, const FilterPool fpool, 
                     const bool &bValidation)
-  {m_pAsker = pAsker; m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
+  {m_pAsker = pAsker; m_MapXMLFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(BSTR *schema_version)
   {m_pSchema_Version = schema_version;}
 

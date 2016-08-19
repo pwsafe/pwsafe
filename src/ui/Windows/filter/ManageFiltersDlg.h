@@ -67,6 +67,9 @@ public:
 // Dialog Data
   enum { IDD = IDD_MANAGEFILTERS };
 
+  enum CheckImage {
+    CHECKED = 0, CHECKED_DISABLED, EMPTY, EMPTY_DISABLED };
+
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -91,7 +94,8 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  PWSFilters &m_MapFilters;
+  // This dialog's filter map - so as not to confuse with DboxMain and PWScore
+  PWSFilters &m_MapMFDFilters;
   std::vector<st_Filterkey> m_vcs_filters;
 
   CString GetFieldTypeName(FieldType ft);
@@ -100,7 +104,7 @@ private:
   void DisplayFilterProperties(st_filters *pfilter);
   void UpdateFilterList();
   void ResetColumns();
-  void DrawImage(CDC *pDC, CRect &rect, int nImage);
+  void DrawImage(CDC *pDC, CRect &rect, CheckImage nImage);
   void SortFilterView();
   static int CALLBACK FLTCompareFunc(LPARAM lParam1, LPARAM lParam2, 
                                      LPARAM pSelf);
@@ -120,5 +124,6 @@ private:
   int m_iSortColumn, m_bSortAscending;
 
   bool m_bCanHaveAttachments;
+  bool m_bDBReadOnly;
   std::set<StringX> m_sMediaTypes;
 };
