@@ -179,11 +179,17 @@ void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &up
       throw std::invalid_argument("No such password policy: " + toutf8(stringx2std(polname)));
   }
   else {
-    StringX polname;
-    LoadAString(polname, IDSC_DEFAULT_POLICY);
-    if (!core.GetPolicyFromName(polname, pwp)) {
-      assert(false);
-    }
+    if ( InitPWPolicy(pwp, core) != PWScore::SUCCESS )
+      throw std::logic_error("Error initializing default password policy");
   }
 }
 
+int InitPWPolicy(PWPolicy &pwp, PWScore &core)
+{
+  StringX polname;
+  LoadAString(polname, IDSC_DEFAULT_POLICY);
+  if ( !core.GetPolicyFromName(polname, pwp) ) {
+    return PWScore::FAILURE;
+  }
+  return PWScore::SUCCESS;
+}

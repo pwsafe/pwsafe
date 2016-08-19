@@ -110,5 +110,22 @@ TEST_F(SearchTest, SearchAndClearFields) {
   EXPECT_TRUE( entry.IsNotesEmpty() );
 }
 
+TEST_F(SearchTest, SearchAndChangePasswords) {
+  UserArgs ua;
+
+  ua.Operation = UserArgs::OpType::Search;
+  ua.opArg = L"SomeTitle";
+  ua.confirmed = true;
+  ua.SearchAction = UserArgs::ChangePassword;
+
+  const StringX before = core.GetEntryIter()->second.GetPassword();
+  SearchInternal(core, ua, os);
+
+  EXPECT_EQ( core.GetNumEntries(), 1 );
+  const StringX after = core.GetEntryIter()->second.GetPassword();
+
+  EXPECT_NE( before, after );
+}
+
 
 }  // namespace

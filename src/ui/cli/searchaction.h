@@ -21,6 +21,7 @@ int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::
 int DeleteSearchResults(const ItemPtrVec &items, PWScore &core);
 int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdates &updates);
 int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp);
+int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core);
 
 template <int action>
 struct SearchActionTraits
@@ -47,6 +48,12 @@ template <>
 struct SearchActionTraits<UserArgs::ClearFields>
 {
   static constexpr wchar_t prompt[] = L"Clear files of item";
+};
+
+template <>
+struct SearchActionTraits<UserArgs::ChangePassword>
+{
+  static constexpr wchar_t prompt[] = L"Change password of item";
 };
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

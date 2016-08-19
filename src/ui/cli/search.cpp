@@ -50,6 +50,7 @@ int SaveAfterSearch(PWScore &core, const UserArgs &ua)
     case UserArgs::Update:
     case UserArgs::Delete:
     case UserArgs::ClearFields:
+    case UserArgs::ChangePassword:
       if ( core.IsChanged() ) return core.WriteCurFile();
       break;
     case UserArgs::Print:
@@ -225,6 +226,11 @@ int SearchInternal(PWScore &core, const UserArgs &ua, wostream &os)
         return ClearFieldsOfSearchResults(matches, core, ftp);
       });
     }
+
+    case UserArgs::ChangePassword:
+      return DoSearch<UserArgs::ChangePassword>(core, ua, [&core, &ua](const ItemPtrVec &matches) {
+        return ChangePasswordOfSearchResults(matches, core);
+      });
 
     default:
       assert(false);

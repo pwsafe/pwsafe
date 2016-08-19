@@ -10,6 +10,7 @@
 
 #include "./searchaction.h"
 #include "./strutils.h"
+#include "./safeutils.h"
 
 #include "./argutils.h"
 
@@ -92,6 +93,20 @@ int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core,
   return PWScore::SUCCESS;
 }
 
+int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core)
+{
+  PWPolicy pwp;
+  const int ret = InitPWPolicy(pwp, core);
+  if ( PWScore::SUCCESS == ret ) {
+    for( auto p: items ) {
+      auto it = core.Find(p->GetUUID());
+      it->second.SetPassword( pwp.MakeRandomPassword() );
+    }
+  }
+  return ret;
+}
+
 constexpr wchar_t SearchActionTraits<UserArgs::Delete>::prompt[];
 constexpr wchar_t SearchActionTraits<UserArgs::Update>::prompt[];
 constexpr wchar_t SearchActionTraits<UserArgs::ClearFields>::prompt[];
+constexpr wchar_t SearchActionTraits<UserArgs::ChangePassword>::prompt[];
