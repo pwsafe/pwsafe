@@ -133,7 +133,7 @@ PWScore::PWScore() :
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_IsReadOnly(false),
+                     m_bIsReadOnly(false), m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
                      m_iAppHotKey(0)
@@ -435,8 +435,8 @@ void PWScore::ClearData(void)
   m_UHFL.clear();
 
   // Clear out database filters
-  m_MapFilters.clear();
-  m_InitialMapFilters.clear();
+  m_MapDBFilters.clear();
+  m_InitialMapDBFilters.clear();
 
   // Clear out policies
   m_MapPSWDPLC.clear();
@@ -450,7 +450,7 @@ void PWScore::ClearData(void)
   ClearCommands();
 
   // Clear changed nodes
-  ClearChangedNodes();
+  m_vNodes_Modified.clear();
 
   // Clear expired password entries
   m_ExpireCandidates.clear();
@@ -463,6 +463,9 @@ void PWScore::ClearData(void)
 
   // Reset state of unchanged DB
   m_stDBCS.Clear();
+
+  // OK now closed
+  m_bIsOpen = false;
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -539,6 +542,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     m_pFileSig = NULL;
   }
 
+  // If writing in a prior version format (ie. exporting) - save the header
+  const PWSfileHeader saved_hdr = m_hdr;
+
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
   m_hdr.m_RUEList = m_RUEList;
@@ -546,7 +552,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   out->SetHeader(m_hdr);
   out->SetUnknownHeaderFields(m_UHFL);
   out->SetNHashIters(GetHashIters());
-  out->SetFilters(m_MapFilters);
+  out->SetDBFilters(m_MapDBFilters);
   out->SetPasswordPolicies(m_MapPSWDPLC);
   out->SetEmptyGroups(m_vEmptyGroups);
 
@@ -555,6 +561,10 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 
     if (status != PWSfile::SUCCESS) {
       delete out;
+
+      if (version < m_ReadFileVersion) // Exporting - restore saved header
+        m_hdr = saved_hdr;
+
       return status;
     }
 
@@ -574,20 +584,29 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
       m_hdr = out->GetHeader(); // update time saved, etc.
     }
   }
+
   catch (...) {
     out->Close();
     delete out;
+
+    if (version < m_ReadFileVersion) // Exporting - restore saved header
+      m_hdr = saved_hdr;
+
     return FAILURE;
   }
+
   out->Close();
   delete out;
 
   // Update info only if written version is same as read version
   // (otherwise we're exporting, not saving)
   if (version == m_ReadFileVersion) {
-    m_stDBCS.Clear();
+    // Set/Reset everything as "unchanged"
+    SetInitialValues();
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
+  } else {
+    m_hdr = saved_hdr;  // Exporting - restore saved header
   }
 
   // Create new signature if required
@@ -741,7 +760,7 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
   } else {
     // { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBEMPTYGROUP, DBPOLICYNAMES };
     switch (ct) {
-    case Command::GUIUPDATE:
+    case Command::NONE:
       // No change to DB at all
       break;
     case Command::DB:
@@ -761,28 +780,13 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
     case Command::DBPOLICYNAMES:
       st_Command.bPolicyNamesChanged = true;
       break;
+    case Command::DBFILTERS:
+      st_Command.bDBFiltersChanged= true;
+      break;
     case Command::MULTICOMMAND:
       ASSERT(0);
     }
   }
-}
-
-bool DBFiltersChanged(PWSFilters mapFilters1, PWSFilters mapFilters2)
-{
-  // Determine if the DB filters have changed
-  PWSFilters mf1, mf2;
-
-  PWSFilters::const_iterator citer;
-  for (citer = mapFilters1.begin(); citer != mapFilters1.end(); citer++) {
-    if (citer->first.fpool == FPOOL_DATABASE)
-      mf1.insert(*citer);
-  }
-  for (citer = mapFilters2.begin(); citer != mapFilters2.end(); citer++) {
-    if (citer->first.fpool == FPOOL_DATABASE)
-      mf2.insert(*citer);
-  }
-
-  return mf1 != mf2;
 }
 
 void PWScore::SetChangedStatus()
@@ -790,7 +794,10 @@ void PWScore::SetChangedStatus()
   // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
   // and bDBFiltersChanged based on original values as multiple changes
   // could revert to unchanged since last saved
-  if (!GetCurFile().empty()) { // mainly for coretest
+
+  // Check if DB is open (can't use empty file name to mean no DB as that
+  // is the case when a databse has been retored but not yet saved)
+  if (m_bIsOpen) {
     const StringX prefString(PWSprefs::GetInstance()->Store());
     m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
   }
@@ -800,13 +807,32 @@ void PWScore::SetChangedStatus()
     (m_InitialDBDesc != m_hdr.m_DB_Description);
   
   // We won't explicitly save the Recently Used Entry list (also in the header)
-  // unless something else has changed in the DB i.e. we don't test
-  //   (m_InitialRUEList != m_RUEList)
+  // nor the group display bitmap in the DB unless something else has changed
+  // in the DB
 
   // These are also in the header!!!
   m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
   m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
-  m_stDBCS.bDBFiltersChanged = DBFiltersChanged(m_InitialMapFilters, m_MapFilters);
+  m_stDBCS.bDBFiltersChanged = m_InitialMapDBFilters != m_MapDBFilters;
+}
+
+// Related to above
+void PWScore::SetInitialValues()
+{
+  m_InitialDBName = m_hdr.m_DB_Name;              // for detecting header changes
+  m_InitialDBDesc = m_hdr.m_DB_Description;       // for detecting header changes
+  m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
+  m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
+  m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
+  m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
+  m_InitialMapDBFilters = m_MapDBFilters;             // for HaveDBFiltersChanged
+  m_InitialRUEList = m_RUEList;                   // for detecting header changes
+
+  // Clear changes
+  m_stDBCS.Clear();
+
+  // Clear changed nodes
+  m_vNodes_Modified.clear();
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -927,7 +953,7 @@ void PWScore::Redo()
   m_undo_iter = m_redo_iter;
 
   // Shouldn't need to save pre-execute status in command as already there
-  // BUT (in MFC) RestoreWindows, OnSize & OnColumnClick call SetDBPrefsChanged
+  // BUT (in MFC) OnSize & OnColumnClick call SetDBPrefsChanged
   // and so might have changed.
   // Also, user may have saved the DB in between.
   (*m_redo_iter)->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
@@ -1210,19 +1236,12 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   bool go = true;
 
   m_hashIters = in->GetNHashIters();
-  if (in->GetFilters() != NULL) m_MapFilters = *in->GetFilters();
+  if (in->GetDBFilters() != NULL) m_MapDBFilters = *in->GetDBFilters();
   if (in->GetPasswordPolicies() != NULL) m_MapPSWDPLC = *in->GetPasswordPolicies();
   if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
 
   // Set initial values
-  m_InitialDBName = m_hdr.m_DB_Name;              // for detecting header changes
-  m_InitialDBDesc = m_hdr.m_DB_Description;       // for detecting header changes
-  m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
-  m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
-  m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
-  m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
-  m_InitialMapFilters = m_MapFilters;             // for HaveDBFiltersChanged
-  m_InitialRUEList = m_RUEList;                   // for detecting header changes
+  SetInitialValues();
 
   // We keep this vector sorted for comparison - other apps may not
   std::sort(m_InitialvEmptyGroups.begin(), m_InitialvEmptyGroups.end());
@@ -1305,6 +1324,9 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Make return code negative if validation errors
   if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
+
+  // OK DB open
+  m_bIsOpen = true;
 
   return closeStatus;
 }
@@ -3039,7 +3061,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(m_stDBCS.bDBChanged || m_stDBCS.bDBPrefsChanged);
+    m_pUIIF->DatabaseModified(HasAnythingChanged());
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
@@ -3537,7 +3559,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   iErrorCode = SUCCESS;
   locker = _T(""); // Important!
 
-  if (m_IsReadOnly) {
+  if (m_bIsReadOnly) {
     // We know the file did exist but this will also determine if it is R-O
     bool isRO;
     if (pws_os::FileExists(m_currfile.c_str(), isRO) && isRO) {
@@ -3606,7 +3628,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   }
 
   // Swap Read/Write : Read/Only status
-  m_IsReadOnly = !m_IsReadOnly;
+  m_bIsReadOnly = !m_bIsReadOnly;
 
   return true;
 }
@@ -3635,6 +3657,15 @@ void PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
     m_stDBCS.bPolicyNamesChanged = true;
 
     m_MapPSWDPLC = MapPSWDPLC;
+  }
+}
+
+void PWScore::SetDBFilters(const PWSFilters &MapDBFilters)
+{
+  if (m_MapDBFilters != MapDBFilters) {
+    m_stDBCS.bDBFiltersChanged = true;
+
+    m_MapDBFilters = MapDBFilters;
   }
 }
 

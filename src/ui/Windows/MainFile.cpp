@@ -274,7 +274,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.HasAnythingChanged()) {
+  if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasAnythingChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -291,8 +291,8 @@ int DboxMain::New()
         else
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
-        // Reset changed flags to prevent further attempts to save
-        m_core.ClearDBChanges();
+        // Set flag to prevent further attempts to save
+        m_bUserDeclinedSave = true;
         break;
     }
   }
@@ -306,6 +306,9 @@ int DboxMain::New()
     */
     return PWScore::USER_CANCEL;
   }
+
+  // Reset flag as new file
+  m_bUserDeclinedSave = false;
 
   m_core.SetCurFile(cs_newfile);
   m_core.ClearFileUUID();
@@ -322,6 +325,7 @@ int DboxMain::New()
   ChangeOkUpdate();
   UpdateSystemTray(UNLOCKED);
   m_RUEList.ClearEntries();
+
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
@@ -715,8 +719,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       return rc;
   }
 
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  m_core.ClearDBChanges();
+  // Set flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  m_bUserDeclinedSave = true;
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -779,6 +783,9 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   CurrentFilter().Empty();
   m_bFilterActive = false;
   ApplyFilters();
+
+  // Reset flag as new file
+  m_bUserDeclinedSave = false;
 
   // Zero entry UUID selected and first visible at minimize and group text
   m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
@@ -1111,7 +1118,7 @@ int DboxMain::Save(const SaveType savetype)
               gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
 
               if (gmb.DoModal() == IDS_EXIT)
-                return PWScore::SUCCESS;
+                return PWScore::USER_CANCEL;
               else
                 return SaveAs();
             }
@@ -1127,7 +1134,7 @@ int DboxMain::Save(const SaveType savetype)
               gmb.AddButton(IDS_NO, IDS_NO, TRUE, TRUE);
 
               if (gmb.DoModal() == IDS_NO)
-                return PWScore::SUCCESS;
+                return PWScore::USER_CANCEL;
             }
 
             case ST_INVALID:
@@ -1173,8 +1180,7 @@ int DboxMain::Save(const SaveType savetype)
     return rc;
   }
 
-  // Reset all indications that the file is changed as we have just saved it
-  m_core.ResetInitialValuesAfterSave();
+  // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -1211,12 +1217,32 @@ int DboxMain::SaveIfChanged()
      user: "they get what it says on the tin".
    */
 
+  // Deal with unsaved but changed restored DB
+  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+    CGeneralMsgBox gmb;
+
+    gmb.SetTitle(IDS_UNSAVEDRESTOREDDB);
+    gmb.SetMsg(IDS_SAVEDRESTOREDDB);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_YES, IDS_YES, TRUE, TRUE);
+    gmb.AddButton(IDS_NO, IDS_NO);
+
+    if (gmb.DoModal() == IDS_NO)
+      return PWScore::USER_DECLINED_SAVE;
+
+    int rc = SaveAs();
+    if (rc == PWScore::SUCCESS)
+      m_bRestoredDBUnsaved = false;
+
+    return rc;
+  }
+
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
+  if (!m_bUserDeclinedSave && (m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
       (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     int rc = Save();
     if (rc != PWScore::SUCCESS)
@@ -1281,7 +1307,8 @@ int DboxMain::SaveAs()
 
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
 
-  // Only need to warn user if current DB is prior to V3 - no implications if saving V4 as V4 or V3 as V3
+  // Only need to warn user if current DB is prior to V3 - no implications
+  // if saving V4 as V4 or V3 as V3
   if (current_version < PWSfile::V30 && 
       current_version != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
@@ -1396,8 +1423,7 @@ int DboxMain::SaveAs()
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
 
-  // Reset all indications that the file is changed as we have just saved it
-  m_core.ResetInitialValuesAfterSave();
+  // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
 
   ChangeOkUpdate();
@@ -1421,6 +1447,9 @@ int DboxMain::SaveAs()
     // and so cause toolbar to be the correct version
     m_core.SetReadOnly(false);
   }
+
+  // In case it was an unsaved restored DB
+  m_bRestoredDBUnsaved = false;
 
   return PWScore::SUCCESS;
 }
@@ -1519,13 +1548,12 @@ void DboxMain::OnExportVx(UINT nID)
   // of pointers and because the entries have pointers to their
   // display info, which would be tried to be freed twice.
   // Do bare minimum - save header information only
-  const PWSfileHeader saved_hdr = m_core.GetHeader();
+
+  // Save & Restore of header whilst exporting now perfomed in
+  // PWScore::WriteFile
 
   // Now export it in the requested version
   rc = m_core.WriteFile(newfile, export_version, false);
-
-  // Restore current database header
-  m_core.SetHeader(saved_hdr);
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
@@ -2798,7 +2826,7 @@ void DboxMain::ChangeMode(bool promptUser)
        CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
        if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO) {
          // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-         m_core.ClearDBChanges();
+         m_bUserDeclinedSave = true;
          return;
        }
 
@@ -3992,7 +4020,7 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
   m_menuManager.Cleanup();
 
   // Clear out filters
-  m_MapFilters.clear();
+  m_MapAllFilters.clear();
 
   // If we are called normally, then exit gracefully. If not, force the issue
   // after the caller has processed the current message by posting another message

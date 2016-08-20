@@ -145,13 +145,15 @@ int DboxMain::RestoreSafe()
   StringX currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return rc;
-   
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  if (rc == PWScore::USER_DECLINED_SAVE)
-    m_core.ClearDBChanges();
+  if (m_bOpen) {
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return rc;
+
+    // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+    if (rc == PWScore::USER_DECLINED_SAVE)
+      m_bUserDeclinedSave = true;
+  }
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);
@@ -239,9 +241,13 @@ int DboxMain::RestoreSafe()
   }
 
   m_core.SetCurFile(L"");    // Force a Save As...
-  m_core.SetDBChanged(true); // So that the restored file will be saved
+  // Rather than set the DB as having been changed to force it to
+  // be saved, use new variable
+  m_bRestoredDBUnsaved = true;
+
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
+  
   ChangeOkUpdate();
   RefreshViews();
 

@@ -146,6 +146,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
+  m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -1011,7 +1012,7 @@ void DboxMain::InitPasswordSafe()
     MFCAsker q;
     int rc;
     CWaitCursor waitCursor;  // This may take a while!
-    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
+    rc = m_MapAllFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
                                           wsAutoLoad,
                                           XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor

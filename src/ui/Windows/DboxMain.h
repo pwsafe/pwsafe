@@ -540,6 +540,8 @@ public:
   bool m_bIsRestoring;
   bool m_bOpen;
   bool m_bInRestoreWindowsData;
+  bool m_bUserDeclinedSave;
+  bool m_bRestoredDBUnsaved;
 
   bool m_bSetup;          // invoked with '--setup'?
   bool m_bNoValidation;   // invoked with '--novalidate'?
@@ -960,7 +962,7 @@ private:
 
   // Global Filters
   PWSFilterManager m_FilterManager;
-  PWSFilters m_MapFilters;
+  PWSFilters m_MapAllFilters;  // Includes DB and temporary (added, imported, autoloaded etc.)
   FilterPool m_currentfilterpool;
   CString m_selectedfiltername;
 

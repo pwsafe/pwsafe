@@ -37,7 +37,8 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES};
+  enum CommandType { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
+    DBFILTERS };
 
   enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
 
@@ -114,7 +115,7 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() const { return GUIUPDATE; }
+  CommandType GetCommandType() const { return NONE; }
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
@@ -469,6 +470,24 @@ private:
 
   StringX m_sxOldValue, m_sxNewValue;
   PWSfile::HeaderType m_ht;
+};
+
+class DBFiltersCommand : public Command {
+public:
+  static DBFiltersCommand *Create(CommandInterface *pcomInt,
+    PWSFilters &MapFilters)
+  { return new DBFiltersCommand(pcomInt, MapFilters); }
+
+  int Execute();
+  void Undo();
+
+  CommandType GetCommandType() const { return DBFILTERS; }
+
+private:
+  DBFiltersCommand(CommandInterface *pcomInt, PWSFilters &MapFilters);
+
+  PWSFilters m_NewMapFilters;
+  PWSFilters m_OldMapFilters;
 };
 
 // Derived MultiCommands class
