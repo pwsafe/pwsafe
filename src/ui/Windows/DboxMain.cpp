@@ -668,7 +668,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
-  {ID_MENUITEM_RESTORESAFE, true, false, true, true},
+  {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},

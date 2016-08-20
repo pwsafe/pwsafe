@@ -245,9 +245,6 @@ int DboxMain::RestoreSafe()
   // be saved, use new variable
   m_bRestoredDBUnsaved = true;
 
-  // Set a DB open (update menu & toolbar)
-  UpdateMenuAndToolBar(true);
-
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
   

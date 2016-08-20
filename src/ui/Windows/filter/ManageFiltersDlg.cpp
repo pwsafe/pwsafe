@@ -54,6 +54,8 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   }
 
   const COLORREF crTransparent = RGB(192, 192, 192);
+
+  // Load all images as list in enum CheckImage and in the order specified in it
   CBitmap bitmap;
   BITMAP bm;
   bitmap.LoadBitmap(IDB_CHECKED);

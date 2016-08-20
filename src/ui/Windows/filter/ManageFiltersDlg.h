@@ -67,8 +67,7 @@ public:
 // Dialog Data
   enum { IDD = IDD_MANAGEFILTERS };
 
-  enum CheckImage {
-    CHECKED = 0, CHECKED_DISABLED, EMPTY, EMPTY_DISABLED };
+  enum CheckImage { CHECKED = 0, CHECKED_DISABLED, EMPTY, EMPTY_DISABLED };
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

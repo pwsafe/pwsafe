@@ -117,7 +117,7 @@ protected:
   BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
 
-  enum CheckImage { CHECKED = 0, UNCHECKED };
+  enum CheckImageLC { CHECKEDLC = 0, UNCHECKEDLC };
 
   //{{AFX_MSG(CPWFilterLC)
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -134,7 +134,7 @@ private:
   void DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
                        COLORREF crText, COLORREF crBkgnd,
                        CRect &rect, bool bBold, bool bOpaque);
-  void DrawImage(CDC *pDC, CRect &rect, CheckImage nImage);
+  void DrawImage(CDC *pDC, CRect &rect, CheckImageLC nImage);
   void CloseKillCombo();
   void DropDownCombo(const UINT nID);
 
