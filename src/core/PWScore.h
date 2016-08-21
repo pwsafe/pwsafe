@@ -424,6 +424,7 @@ public:
   // Empty Groups
   const std::vector<StringX> & GetEmptyGroups() const {return m_vEmptyGroups;}
   bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
+  bool DoesGroupContainEmptyGroups(const StringX &sxGroup);
   size_t GetNumberEmptyGroups() const {return m_vEmptyGroups.size();}
 
   const pws_os::CUUID & GetKBShortcut(const int32 &iKBShortcut);

@@ -3170,7 +3170,6 @@ void PWScore::AddChangedNodes(StringX path)
 }
 
 // functor objects for updating password history for each entry
-
 struct HistoryUpdater {
   HistoryUpdater(int &num_altered,
                  SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
@@ -3732,7 +3731,7 @@ void PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
 bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup) const
 {
   return find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) !=
-                   m_vEmptyGroups.end();
+    m_vEmptyGroups.end();
 }
 
 bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
@@ -3748,6 +3747,28 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
     return true;
   } else
     return false;
+}
+
+// functor object type for find_if:
+struct ContainsEmptyGroup {
+  bool operator()(StringX &sx) {
+    return (sx.substr(0, m_prefix.length())  == m_prefix);
+  }
+
+  ContainsEmptyGroup(const StringX &prefix)
+    : m_prefix(prefix) {}
+
+private:
+  ContainsEmptyGroup& operator=(const ContainsEmptyGroup&); // Do not implement
+  const StringX &m_prefix;
+};
+
+bool PWScore::DoesGroupContainEmptyGroups(const StringX &sxPrefix)
+{
+  // sxPrefix must end with the group delimiter (".")
+  ContainsEmptyGroup ctn(sxPrefix);
+  return find_if(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), ctn) !=
+    m_vEmptyGroups.end();
 }
 
 bool PWScore::RemoveEmptyGroup(const StringX &sxEmptyGroup)
