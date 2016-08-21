@@ -1711,13 +1711,13 @@ CItemData *DboxMain::getSelectedItem()
   return pci;
 }
 
-void DboxMain::ClearData(const bool clearMRE)
+void DboxMain::ClearData(const bool bClearMRE)
 {
   PWS_LOGIT;
 
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
-  if (clearMRE)
+  if (bClearMRE)
     m_RUEList.ClearEntries();
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
@@ -4371,11 +4371,14 @@ void DboxMain::RestoreGUIStatusEx()
   m_bInRestoreWindows = false;
 }
 
-void DboxMain::SaveGroupDisplayState()
+void DboxMain::SaveGroupDisplayState(const bool bClear)
 {
-  PWS_LOGIT;
+  PWS_LOGIT_ARGS("bClear=%ls", bClear ? L"true" : L"false");
 
-  vector <bool> v = GetGroupDisplayState(); // update it
+  vector <bool> v;
+  if (!bClear)
+      v = GetGroupDisplayState(); // update or clear it
+
   m_core.SetDisplayStatus(v); // store it
 }
 

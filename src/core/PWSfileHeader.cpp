@@ -15,7 +15,6 @@ PWSfileHeader::PWSfileHeader()
     m_whatlastsaved(_T("")),
     m_DB_Name(_T("")), m_DB_Description(_T("")), m_yubi_sk(NULL)
 {
-  m_RUEList.clear();
 }
 
 PWSfileHeader::PWSfileHeader(const PWSfileHeader &h) 

@@ -343,7 +343,7 @@ public:
               std::vector<Command *> &vemptygrps,
               bool bExcludeTopGroup = false); 
 
-  void SaveGroupDisplayState(); // call when tree expansion state changes
+  void SaveGroupDisplayState(const bool bClear = false); // call when tree expansion state changes
   void RestoreGUIStatusEx();
   void SaveGUIStatusEx(const ViewType iView);
 
@@ -622,7 +622,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool clearMRE = true);
+  void ClearData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();
