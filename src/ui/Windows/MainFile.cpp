@@ -573,9 +573,11 @@ BOOL DboxMain::OnOpenMRU(UINT nID)
   // Save just in case need to restore if user cancels
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
+
   // Read-only status can be overridden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem),
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
+
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();
@@ -675,6 +677,7 @@ int DboxMain::Open(const UINT uiTitle)
       sx_Filename = LPCWSTR(fd.GetPathName());
 
       rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
+
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -921,9 +924,7 @@ void DboxMain::PostOpenProcessing()
   CheckExpireList(true);
   TellUserAboutExpiredPasswords();
 
-  UUIDList RUElist;
-  m_core.GetRUEList(RUElist);
-  m_RUEList.SetRUEList(RUElist);
+  m_RUEList.SetRUEList(m_core.GetRUEList());
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -1164,9 +1165,13 @@ int DboxMain::Save(const SaveType savetype)
       return PWScore::FAILURE;
   } // switch on file version
 
-  UUIDList RUElist;
-  m_RUEList.GetRUEList(RUElist);
-  m_core.SetRUEList(RUElist);
+  // Set DB header information not set via a Command i.e.
+  // GroupDisplay and RUEList
+  SaveGroupDisplayState();
+
+  UUIDList RUEList;
+  m_RUEList.GetRUEList(RUEList);
+  m_core.SetRUEList(RUEList);
 
   // We are saving the current DB. Retain current version
   rc = m_core.WriteFile(sxCurrFile, current_version);
@@ -1240,11 +1245,20 @@ int DboxMain::SaveIfChanged()
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
-  // Note: RUE list saved here via time stamp being updated.
-  // Otherwise it won't be saved unless something else has changed
-  if (!m_bUserDeclinedSave && (m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
+  // Here we save the DB if the DB has at least one entry or empty group AND:
+  //  Entry Access Times have been changed OR
+  //  The Group Display has changed and the User specified to use it at open time OR
+  //  RUE list has changed and the user wants them saved
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (!m_bUserDeclinedSave &&
+      (m_bEntryTimestampsChanged || 
+       (prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) == PWSprefs::AsPerLastSave && 
+            m_core.HasGroupDisplayChanged()) ||
+       (prefs->GetPref(PWSprefs::MaxREItems) > 0 &&
+            m_core.HasRUEListChanged())) &&
       (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     int rc = Save();
+
     if (rc != PWScore::SUCCESS)
       return PWScore::USER_CANCEL;
     else
@@ -1396,8 +1410,15 @@ int DboxMain::SaveAs()
   pws_os::CUUID file_uuid = m_core.GetFileUUID();
   m_core.ClearFileUUID();
 
+  // Set DB header information not set via a Command i.e.
+  // GroupDisplay and RUEList
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  SaveGroupDisplayState(prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != 
+    PWSprefs::AsPerLastSave);
+
   UUIDList RUElist;
-  m_RUEList.GetRUEList(RUElist);
+  if (prefs->GetPref(PWSprefs::MaxREItems) > 0)
+    m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
   // Note: Writing out in in V4 DB format if the DB is already V4,
@@ -3971,7 +3992,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     */
 
     if (bAutoSave && !m_core.IsReadOnly() &&
-        (m_bEntryTimestampsChanged || m_core.WasDisplayStatusChanged()) &&
+        (m_bEntryTimestampsChanged || m_core.HasGroupDisplayChanged()) &&
         m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
       switch (rc) {

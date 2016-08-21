@@ -95,7 +95,7 @@ public:
 
   enum BoolPrefs {AlwaysOnTop, ShowPWDefault,
     ShowPasswordInTree,
-    SortAscending,
+    SortAscending, // Obsoleted in 3.40 as moved to application config file
     UseDefaultUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
     PWUseDigits, PWUseSymbols, PWUseHexDigits, PWUseEasyVision,
     DontAskQuestion, DeleteQuestion, DCShowsPassword,
@@ -125,6 +125,7 @@ public:
     UseAltAutoType,  // Only under X-Windows
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
+    ListSortAscending,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

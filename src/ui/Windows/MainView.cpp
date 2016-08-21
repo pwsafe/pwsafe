@@ -1711,13 +1711,13 @@ CItemData *DboxMain::getSelectedItem()
   return pci;
 }
 
-void DboxMain::ClearData(const bool clearMRE)
+void DboxMain::ClearData(const bool bClearMRE)
 {
   PWS_LOGIT;
 
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
-  if (clearMRE)
+  if (bClearMRE)
     m_RUEList.ClearEntries();
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
@@ -1750,18 +1750,6 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_bSortAscending = !m_bSortAscending;
     PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
-    if (!m_core.GetCurFile().empty() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (!m_core.IsReadOnly()) {
-        // Do not create and execute a DBPrefsCommand as this may cause
-        // a "Save Immediately" every time the user changes the sort direction
-        // It will be saved when the DB is next saved either directly or
-        // via a different DB change (entry, group or other DB preference)
-        const StringX prefString(prefs->Store());
-        SetDBPrefsChanged(m_core.HaveHeaderPreferencesChanged(prefString));
-      }
-      ChangeOkUpdate();
-    }
   } else {
     // Turn off all previous sort arrows
     // Note: not sure where, as user may have played with the columns!
@@ -4383,11 +4371,14 @@ void DboxMain::RestoreGUIStatusEx()
   m_bInRestoreWindows = false;
 }
 
-void DboxMain::SaveGroupDisplayState()
+void DboxMain::SaveGroupDisplayState(const bool bClear)
 {
-  PWS_LOGIT;
+  PWS_LOGIT_ARGS("bClear=%ls", bClear ? L"true" : L"false");
 
-  vector <bool> v = GetGroupDisplayState(); // update it
+  vector <bool> v;
+  if (!bClear)
+      v = GetGroupDisplayState(); // update or clear it
+
   m_core.SetDisplayStatus(v); // store it
 }
 

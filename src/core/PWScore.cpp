@@ -822,10 +822,12 @@ void PWScore::SetInitialValues()
   m_InitialDBName = m_hdr.m_DB_Name;              // for detecting header changes
   m_InitialDBDesc = m_hdr.m_DB_Description;       // for detecting header changes
   m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
-  m_InitialDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
   m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
   m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
-  m_InitialMapDBFilters = m_MapDBFilters;             // for HaveDBFiltersChanged
+  m_InitialMapDBFilters = m_MapDBFilters;         // for HaveDBFiltersChanged
+
+  // NOTE: These two are not tested for "Save Immediately" but only when the DB is closed
+  m_InitialDisplayStatus = m_hdr.m_displaystatus; // for HasGroupDisplayChanged
   m_InitialRUEList = m_RUEList;                   // for detecting header changes
 
   // Clear changes
@@ -1710,7 +1712,7 @@ void PWScore::SetDisplayStatus(const std::vector<bool> &s)
   PWS_LOGIT;
 
   // DON'T set m_bDBChanged!
-  // Application should use WasDisplayStatusChanged()
+  // Application should use HasGroupDisplayChanged()
   // to determine if state has changed.
   // This allows app to silently save without nagging user
   m_hdr.m_displaystatus = s;
@@ -1723,13 +1725,22 @@ const std::vector<bool> &PWScore::GetDisplayStatus() const
   return m_hdr.m_displaystatus;
 }
 
-bool PWScore::WasDisplayStatusChanged() const
+bool PWScore::HasGroupDisplayChanged() const
 {
   // m_InitialDisplayStatus is set while reading and saving a file.
-  // m_hdr.m_displaystatus may be changed via SetDisplayStatus
+  // m_hdr.m_displaystatus may be changed via PWScore::SetDisplayStatus
   // Only for V3 and later
   return m_ReadFileVersion >= PWSfile::V30 &&
          (m_hdr.m_displaystatus != m_InitialDisplayStatus);
+}
+
+bool PWScore::HasRUEListChanged() const
+{
+  // m_InitialRUEList is set while reading and saving a file.
+  // m_hdr.m_RUEList may be changed via PWScore::SetRUEList
+  // Only for V3 and later
+  return m_ReadFileVersion >= PWSfile::V30 &&
+         (m_hdr.m_RUEList != m_InitialRUEList);
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.

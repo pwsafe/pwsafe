@@ -342,27 +342,26 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  // Use following call to 'SetDBPrefsChanged' sparingly outside of core
-  // Note: the database is only changed by executing a command and so
-  // the changed state is set during the main PWScore::Execute/Redo and
-  // potentially reset during an Undo
-  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
-  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
-
   bool PWScore::HasDBChanged() const
   { return m_stDBCS.bDBChanged; }
   bool PWScore::HaveDBPrefsChanged() const
   { return m_stDBCS.bDBPrefsChanged; }
+  bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
+  { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
   bool PWScore::HaveEmptyGroupsChanged() const
   { return m_stDBCS.bEmptyGroupsChanged; }
   bool PWScore::HavePasswordPolicyNamesChanged() const
   { return m_stDBCS.bPolicyNamesChanged; }
   bool PWScore::HaveDBFiltersChanged() const
   { return m_stDBCS.bDBFiltersChanged; }
-  bool PWScore::HasGroupDisplayChanged() const
-  { return m_hdr.m_displaystatus != m_InitialDisplayStatus; }
-  bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
-  { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
+
+  // Note GroupDisplay & RUE list not checked for Save Immediately processing
+  // Also, these are changed by user indirect action and therefore changes are NOT
+  // implemented via a Command (do not require Undo/Redo processing)
+  bool PWScore::HasGroupDisplayChanged() const;
+  bool PWScore::HasRUEListChanged() const;
+
+  // NOTE - GroupDisplay & RUE list are NOT checked via this call
   bool PWScore::HasAnythingChanged() const
   { return m_stDBCS.HasAnythingChanged(); }
   
@@ -388,7 +387,6 @@ public:
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
   const std::vector<bool> &GetDisplayStatus() const;
-  bool WasDisplayStatusChanged() const;
 
   const PWSfileHeader &GetHeader() const {return m_hdr;}
 
@@ -404,8 +402,8 @@ public:
   // Changed nodes
   bool IsNodeModified(StringX &path) const;
 
-  void GetRUEList(UUIDList &RUElist)
-  {RUElist = m_RUEList;}
+  const UUIDList &GetRUEList()
+  {return m_RUEList;}
   void SetRUEList(const UUIDList &RUElist)
   {m_RUEList = RUElist;}
 
@@ -503,6 +501,10 @@ private:
   // Update header
   int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
 
+  // Update DB preferences
+  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
+  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
+
   // Set empty groups
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
 
@@ -569,7 +571,7 @@ private:
   PWSfileHeader m_hdr;
   StringX m_InitialDBName, m_InitialDBDesc;
   StringX m_InitialDBPreferences;
-  std::vector<bool> m_InitialDisplayStatus; // for WasDisplayStatusChanged (stored in header)
+  std::vector<bool> m_InitialDisplayStatus; // for HasGroupDisplayChanged (stored in header)
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData

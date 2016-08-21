@@ -196,7 +196,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       bpref = PWSprefs::ShowPasswordInTree;
       break;
     case XLE_PREF_SORTASCENDING:
-      bpref = PWSprefs::SortAscending;
+      // Obsolete in 3.40 - keep but do nothing
       break;
     case XLE_PREF_USEDEFAULTUSER:
       bpref = PWSprefs::UseDefaultUser;

@@ -71,7 +71,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("AlwaysOnTop"), false, ptApplication},                // application
   {_T("ShowPWDefault"), false, ptDatabase},                 // database
   {_T("ShowPasswordInTree"), false, ptDatabase},            // database
-  {_T("SortAscending"), true, ptDatabase},                  // database
+  {_T("SortAscending"), true, ptObsolete},                  // obsolete in 3.40 - replaced by new app pref
   {_T("UseDefaultUser"), false, ptDatabase},                // database
   {_T("SaveImmediately"), true, ptDatabase},                // database
   {_T("PWUseLowercase"), true, ptDatabase},                 // database
@@ -130,6 +130,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UseAltAutoType"), false, ptApplication},             //application
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
+  {_T("ListSortAscending"), true, ptApplication},           //application
 };
 
 // Default value = -1 means set at runtime
@@ -200,7 +201,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
   {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
   {_T("AddEditFont"), _T(""), ptApplication },                      // application
-  { _T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication }, // application
+  {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
 };
 
 PWSprefs *PWSprefs::GetInstance()

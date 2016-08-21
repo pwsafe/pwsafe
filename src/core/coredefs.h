@@ -120,7 +120,8 @@ struct st_DBChangeStatus {
 
   bool HasAnythingChanged() const
   {
-    // Doesn't test bGroupDisplayChanged as dependent on preference
+    // Doesn't test if Group Display or RUEList changed
+    // as dependent on preference
     return (bDBChanged || bDBPrefsChanged || bDBHeaderChanged ||
             bEmptyGroupsChanged || bPolicyNamesChanged ||
             bDBFiltersChanged);

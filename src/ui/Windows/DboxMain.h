@@ -270,11 +270,6 @@ public:
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
 
-  // We should not need this as the DB is only changed by executing a command
-  // that affects a DB preference - see if can be removed from the functions
-  // RestoreWindows, OnSize & OnColumnClick so that can be removed completely
-  void SetDBPrefsChanged(const bool bState) {m_core.SetDBPrefsChanged(bState);}
-
   // These specific changed states are only needed when no other change has been made
   // AND the user has requested that:
   // 1. Maintain timestamps or
@@ -348,7 +343,7 @@ public:
               std::vector<Command *> &vemptygrps,
               bool bExcludeTopGroup = false); 
 
-  void SaveGroupDisplayState(); // call when tree expansion state changes
+  void SaveGroupDisplayState(const bool bClear = false); // call when tree expansion state changes
   void RestoreGUIStatusEx();
   void SaveGUIStatusEx(const ViewType iView);
 
@@ -627,7 +622,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool clearMRE = true);
+  void ClearData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();
