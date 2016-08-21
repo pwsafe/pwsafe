@@ -252,7 +252,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 
   m_hmac.Update(&type, 1);
   m_hmac.Update(buf, sizeof(buf));
-  m_hmac.Update(data, len32);
+  m_hmac.Update(data, length);
 
   return PWSfile::WriteCBC(type, data, length);
 }
@@ -345,7 +345,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
 
     m_hmac.Update(&type, 1);
     m_hmac.Update(buf, sizeof(buf));
-    m_hmac.Update(data, len32);
+    m_hmac.Update(data, length);
   }
 
   return numRead;
