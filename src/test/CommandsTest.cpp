@@ -149,3 +149,34 @@ TEST_F(CommandsTest, EditEntry)
   EXPECT_TRUE(core.HasDBChanged());
   EXPECT_EQ(core.GetNumEntries(), 1);
 }
+
+TEST_F(CommandsTest, RenameGroup)
+{
+  PWScore core;
+  CItemData di;
+  di.CreateUUID();
+  di.SetTitle(L"b title");
+  di.SetPassword(L"b password");
+  di.SetGroup(L"Group0.Alpha");
+  const pws_os::CUUID uuid = di.GetUUID();
+
+  Command *pcmd = AddEntryCommand::Create(&core, di);
+  
+  core.Execute(pcmd);
+  ItemListConstIter iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(di, core.GetEntry(iter));
+  EXPECT_TRUE(core.HasDBChanged());
+  
+  pcmd = RenameGroupCommand::Create(&core, L"Group0.Alpha", L"Group0.Beta");
+  core.Execute(pcmd);
+  iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Beta");
+  core.Undo();
+  iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Alpha");
+
+  delete pcmd;
+}
