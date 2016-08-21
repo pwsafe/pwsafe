@@ -1750,18 +1750,6 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_bSortAscending = !m_bSortAscending;
     PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
-    if (!m_core.GetCurFile().empty() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (!m_core.IsReadOnly()) {
-        // Do not create and execute a DBPrefsCommand as this may cause
-        // a "Save Immediately" every time the user changes the sort direction
-        // It will be saved when the DB is next saved either directly or
-        // via a different DB change (entry, group or other DB preference)
-        const StringX prefString(prefs->Store());
-        SetDBPrefsChanged(m_core.HaveHeaderPreferencesChanged(prefString));
-      }
-      ChangeOkUpdate();
-    }
   } else {
     // Turn off all previous sort arrows
     // Note: not sure where, as user may have played with the columns!

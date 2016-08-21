@@ -342,13 +342,6 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  // Use following call to 'SetDBPrefsChanged' sparingly outside of core
-  // Note: the database is only changed by executing a command and so
-  // the changed state is set during the main PWScore::Execute/Redo and
-  // potentially reset during an Undo
-  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
-  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
-
   bool PWScore::HasDBChanged() const
   { return m_stDBCS.bDBChanged; }
   bool PWScore::HaveDBPrefsChanged() const
@@ -502,6 +495,10 @@ private:
 
   // Update header
   int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
+
+  // Update DB preferences
+  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
+  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
 
   // Set empty groups
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);

@@ -27,6 +27,9 @@ that, if enabled, then the option to "Create intermediate backups" is also
 enabled. Note, changes made via the Compare database results dialog will not
 cause a database save for each action but will after the compare results dialog
 has been closed.
+[]The last sort direction in List View (ascending or descending) on closing
+a database is now stored in the application configuration file and is no longer
+stored in the database header.
 
 New Features for 3.39.2
 =======================
