@@ -263,7 +263,7 @@ void CManagePasswordPolicies::CreateControls()
     FindWindow(wxID_CANCEL)->Show(false);
 
     FindWindow(wxID_OK)->SetLabel(_("Close"));
-    FindWindow(wxID_EDIT)->SetLabel(_("View"));
+    FindWindow(ID_EDIT_PP)->SetLabel(_("View"));
   }
 
   // We have 2 grids, but we show only one at a time,
@@ -401,7 +401,7 @@ void CManagePasswordPolicies::UpdateNames()
     m_PolicyNames->SetCellValue(nPos, 0, iter->first.c_str());
     wxString useCount;
     if (iter->second.usecount != 0)
-      useCount.Printf(wxT("%d"),iter->second.usecount);
+      useCount << iter->second.usecount;
     else
       useCount = _("Not used");
     m_PolicyNames->SetCellValue(nPos, 1, useCount);
