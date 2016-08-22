@@ -37,7 +37,7 @@ class CommandInterface;
 class Command
 {
 public:
-  enum CommandType { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
+  enum CommandDBChange { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
     DBFILTERS };
 
   enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
@@ -53,7 +53,7 @@ public:
   void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
   void RestoreChangedState(st_DBChangeStatus &stDBCS);
 
-  virtual CommandType GetCommandType() const { return DB; }
+  CommandDBChange GetCommandChange() const { return m_CommandDBChange; }
 
   const st_DBChangeStatus &GetPostCommandStatus() const
   { return m_PostCommand; }
@@ -72,6 +72,7 @@ protected:
   st_DBChangeStatus m_Command;
 
   int m_RC;
+  CommandDBChange m_CommandDBChange;
 };
 
 // GUI related commands
@@ -115,8 +116,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() const { return NONE; }
-
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
   UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
@@ -135,8 +134,6 @@ public:
   { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() const { return DBPREFS; }
 
 private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
@@ -158,8 +155,6 @@ public:
   { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() const { return DBPOLICYNAMES; }
 
 private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
@@ -192,8 +187,6 @@ public:
   { return new DBEmptyGroupsCommand(pcomInt, sxOldGroup, sxNewGroup, function); }
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() const { return DBEMPTYGROUP; }
 
 private:
   DBEmptyGroupsCommand(CommandInterface *pcomInt, const std::vector<StringX> &vEmptyGroups,
@@ -462,8 +455,6 @@ public:
   int Execute();
   void Undo();
 
-  CommandType GetCommandType() const { return DBHEADER; }
-
 private:
   ChangeDBHeaderCommand(CommandInterface *pcomInt,
     StringX sxOldValue, const PWSfile::HeaderType ht);
@@ -480,8 +471,6 @@ public:
 
   int Execute();
   void Undo();
-
-  CommandType GetCommandType() const { return DBFILTERS; }
 
 private:
   DBFiltersCommand(CommandInterface *pcomInt, PWSFilters &MapFilters);
@@ -508,7 +497,6 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
 
-  CommandType GetCommandType() const { return MULTICOMMAND; }
   std::vector<Command *> m_vpcmds;
 
  private:
