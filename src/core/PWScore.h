@@ -471,7 +471,7 @@ private:
                                     SaveTypePWMap *pmapSaveTypePW = NULL);
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW);
-  virtual void DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
+  virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
                                       const pws_os::CUUID &to_baseuuid, 
                                       const CItemData::EntryType type);
 
@@ -487,8 +487,8 @@ private:
 
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
-  virtual void RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup);
-  virtual void RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath);
+  virtual bool RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup);
+  virtual bool RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
 
@@ -501,20 +501,20 @@ private:
   // Update header
   int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
 
-  // Update DB preferences
-  void PWScore::SetDBPrefsChanged(bool bDBprefschanged)
+  // Update DB preferences - not sure why this is still here (called by DBPrefsCommand::Execute)
+  void SetDBPrefsChanged(bool bDBprefschanged)
   { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
 
   // Set empty groups
-  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
+  bool SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
 
   // Set/Add Password Policies
-  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
-  void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
-    const bool bAllowReplace = false);
+  bool SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
+  bool AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
+                const bool bAllowReplace = false);
 
   // Set DB filters
-  void SetDBFilters(const PWSFilters &MapDBFilters);
+  bool SetDBFilters(const PWSFilters &MapDBFilters);
 
   // Keyboard shortcuts
   bool AddKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid);

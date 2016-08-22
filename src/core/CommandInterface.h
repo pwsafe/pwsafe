@@ -64,7 +64,7 @@ class CommandInterface {
                                     SaveTypePWMap *pmapSaveTypePW = NULL) = 0;
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW) = 0;
-  virtual void DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
+  virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
                                       const pws_os::CUUID &to_baseuuid, 
                                       const CItemData::EntryType type) = 0;
 
@@ -99,20 +99,20 @@ class CommandInterface {
   virtual void RemoveExpiryEntry(const CItemData &ci) = 0;
 
   virtual const PSWDPolicyMap &GetPasswordPolicies() = 0;
-  virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
-  virtual void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
+  virtual bool SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
+  virtual bool AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                          const bool bAllowReplace = false) = 0;
   virtual bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const = 0;
 
-  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
+  virtual bool SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup) = 0;
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup) = 0;
-  virtual void RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup) = 0;
-  virtual void RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual bool RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup) = 0;
+  virtual bool RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
   virtual const std::vector<StringX> & GetEmptyGroups() const = 0;
 
   virtual const PWSFilters &GetDBFilters() = 0;
-  virtual void SetDBFilters(const PWSFilters &MapDBFilters) = 0;
+  virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
  
   virtual ~CommandInterface() {}
 };

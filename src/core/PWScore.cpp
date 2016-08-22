@@ -748,7 +748,7 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
 {
   // Commands ALWAYS update the DB either an entry/group or a DB preference
   // Need to know if entry/group or DB preference
-  Command::CommandType ct = pcmd->GetCommandType();
+  Command::CommandDBChange ct = pcmd->GetCommandChange();
   if (ct == Command::MULTICOMMAND) {
     // Need to check each one
     std::vector<Command *>::iterator cmd_iter;
@@ -955,9 +955,7 @@ void PWScore::Redo()
   m_undo_iter = m_redo_iter;
 
   // Shouldn't need to save pre-execute status in command as already there
-  // BUT (in MFC) OnSize & OnColumnClick call SetDBPrefsChanged
-  // and so might have changed.
-  // Also, user may have saved the DB in between.
+  // BUT user may have saved the DB in between.
   (*m_redo_iter)->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
 
   // Redo it
@@ -1496,7 +1494,6 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePasskey(const StringX &newPasskey)
 {
   SetPassKey(newPasskey);
-  m_stDBCS.bDBChanged = true;
 }
 
 // functor object type for find_if:
@@ -2343,7 +2340,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   m_bUniqueGTUValidated = true;
   if (st_vr.TotalIssues() > 0) {
-    m_stDBCS.bDBChanged = true;
+    m_stDBCS.bDBChanged = true; // Should this be via a Command - can't see how!
     return true;
   } else {
     return false;
@@ -2607,7 +2604,7 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
     iter->second.SetNormal();
 }
 
-void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
+bool PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
                                      const CUUID &to_baseuuid,
                                      const CItemData::EntryType type)
 {
@@ -2618,7 +2615,7 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
     pmmap = &m_base2shortcuts_mmap;
   } else {
     ASSERT(0);
-    return;
+    return false;
   }
 
   ItemMMapIter from_itr;
@@ -2626,7 +2623,7 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
 
   from_itr = pmmap->find(from_baseuuid);
   if (from_itr == pmmap->end())
-    return;
+    return false;
 
   lastfromElement = pmmap->upper_bound(from_baseuuid);
 
@@ -2637,6 +2634,7 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
 
   // Now delete all old base entries
   pmmap->erase(from_baseuuid);
+  return true;
 }
 
 int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
@@ -3339,8 +3337,8 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
     case  2:   // reset on - exclude protected entries
       updater = &reset_on;
       break;
-    case -3:   // setmax - include protected entries
-    case  3:   // setmax - exclude protected entries
+    case -3:   // setmax   - include protected entries
+    case  3:   // setmax   - exclude protected entries
       updater = &set_max;
       break;
     case -4:   // clearall - include protected entries
@@ -3662,22 +3660,24 @@ void PWScore::SetYubiSK(const unsigned char *sk)
   }
 }
 
-void PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
+bool PWScore::SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
 {
+  bool brc(false);
   if (m_MapPSWDPLC != MapPSWDPLC) {
-    m_stDBCS.bPolicyNamesChanged = true;
-
     m_MapPSWDPLC = MapPSWDPLC;
+    brc = true;
   }
+  return brc;
 }
 
-void PWScore::SetDBFilters(const PWSFilters &MapDBFilters)
+bool PWScore::SetDBFilters(const PWSFilters &MapDBFilters)
 {
+  bool brc(false);
   if (m_MapDBFilters != MapDBFilters) {
-    m_stDBCS.bDBFiltersChanged = true;
-
     m_MapDBFilters = MapDBFilters;
+    brc = true;
   }
+  return brc;
 }
 
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
@@ -3702,7 +3702,7 @@ bool PWScore::DecrementPasswordPolicy(const StringX &sxPolicyName)
   }
 }
 
-void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
+bool PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                         const bool bAllowReplace)
 {
   bool bDoIt(false);
@@ -3716,17 +3716,18 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
   }
   if (bDoIt) {
     m_MapPSWDPLC[sxPolicyName] = st_pp;
-    m_stDBCS.bPolicyNamesChanged = true;
   }
+  return bDoIt;
 }
 
-void PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
+bool PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
 {
+  bool brc(false);
   if (m_vEmptyGroups != vEmptyGroups) {
-    m_stDBCS.bEmptyGroupsChanged;
-
     m_vEmptyGroups = vEmptyGroups;
+    brc = true;
   }
+  return brc;
 }
 
 bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup) const
@@ -3762,35 +3763,45 @@ bool PWScore::RemoveEmptyGroup(const StringX &sxEmptyGroup)
     return false;
 }
 
-void PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup)
+bool PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup)
 {
+  bool bChanged(false);
   std::vector<StringX>::iterator iter;
   iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxOldGroup);
-  ASSERT(iter !=  m_vEmptyGroups.end());
-
-  // Delete old name
-  m_vEmptyGroups.erase(iter);
-  // Add new name
-  m_vEmptyGroups.push_back(sxNewGroup);
-  // Sort it for when we campare.
-  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+  if (iter != m_vEmptyGroups.end()) {
+    // Delete old name
+    m_vEmptyGroups.erase(iter);
+    // Add new name
+    m_vEmptyGroups.push_back(sxNewGroup);
+    // Sort it for when we campare.
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+    bChanged = true;
+  } else {
+    ASSERT(0);
+  }
+  return bChanged;
 }
 
-void PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath)
+bool PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath)
 {
   // Rename all empty group paths below this renamed group so that they 
   // stay within this new group tree
-  const StringX sxOldPath2 = sxOldPath + L".";
-  const size_t len = sxOldPath2.length();
+  bool bChanged(false);
 
-  for (size_t ig = 0; ig < m_vEmptyGroups.size(); ig++) {
-    if (m_vEmptyGroups[ig].length() > len && m_vEmptyGroups[ig].substr(0, len) == sxOldPath2) {
-      m_vEmptyGroups[ig].replace(0, len - 1, sxNewPath);
+  if (sxOldPath != sxNewPath) {
+    const StringX sxOldPath2 = sxOldPath + L".";
+    const size_t len = sxOldPath2.length();
+    for (size_t ig = 0; ig < m_vEmptyGroups.size(); ig++) {
+      if (m_vEmptyGroups[ig].length() > len && m_vEmptyGroups[ig].substr(0, len) == sxOldPath2) {
+        m_vEmptyGroups[ig].replace(0, len - 1, sxNewPath);
+        bChanged = true;
+      }
     }
-  }
 
-  // Now sort it for when we campare.
-  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+    // Now sort it for when we campare.
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+  }
+  return bChanged;
 }
 
 bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
@@ -3835,14 +3846,15 @@ void PWScore::SetHashIters(uint32 value)
 {
   if (value != m_hashIters) {
     m_hashIters = value;
-    m_stDBCS.bDBPrefsChanged = true;
+    //m_stDBCS.bDBPrefsChanged = true; // Can't do this outside a Command
   }
 }
 
 void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
 {
+  // Should be a Command setting new CommandDBChange enum value
   ASSERT(HasAtt(attuuid));
-  m_stDBCS.bDBChanged = true;
+  //m_stDBCS.bDBChanged = true; // Can't do this outside a Command
   m_attlist.erase(m_attlist.find(attuuid));
 }
 
