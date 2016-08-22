@@ -186,8 +186,6 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   //                        "2008-10-06T21:20:56+01:00"
   //                        "2008-10-06T21:20:56-01:00"
 
-  stringT xtime_str;
-
   int ndigits(14);
   const int idigits[18] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24};
   int yyyy, mon, dd, hh, min, ss, tz_hh(0), tz_mm(0);
@@ -256,7 +254,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
 
   // Add timezone offsets
   if (tz_hh != 0 || tz_mm != 0) {
-    t += (tz_hh < 0 ? -1 : -1) * (tz_hh * 60 + tz_mm) * 60;
+    t -= (tz_hh * 60 + tz_mm) * 60;
   }
 
   return true;
@@ -267,7 +265,6 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
   //  String format must be "yyyy-mm-dd"
   //                        "0123456789"
 
-  stringT xtime_str;
   const int ndigits = 8;
   const int idigits[ndigits] = {0, 1, 2, 3, 5, 6, 8, 9};
   int yyyy, mon, dd;
