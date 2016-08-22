@@ -850,18 +850,13 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
                         DBEmptyGroupsCommand::EG_RENAME));
       } else {
-        // Check if there are empty subgroups to rename
-        StringX sxPrefix;
-        size_t last_group_sep = sxOldPath.find_last_of(L".");
-        sxPrefix = sxOldPath.substr(0, last_group_sep + 1); // Must include trailing group separator
-        if (app.GetMainDlg()->DoesGroupContainEmptyGroups(sxPrefix)) {
-          // Rename any empty groups within this group
-          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
-            DBEmptyGroupsCommand::EG_RENAMEPATH));
+        // Rename any empty groups within this group
+        // Get current empty groups
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+                        DBEmptyGroupsCommand::EG_RENAMEPATH));
 
-          // Update map of groups
-          app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
-        }
+        // Update map of groups
+        app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
       }
 
     } // good group name (no GROUP_SEP)

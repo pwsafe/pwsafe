@@ -398,8 +398,6 @@ public:
 
   bool IsEmptyGroup(const StringX &sxEmptyGroup)
   {return m_core.IsEmptyGroup(sxEmptyGroup);}
-  bool DoesGroupContainEmptyGroups(const StringX &sxPrefix)
-  {return m_core.DoesGroupContainEmptyGroups(sxPrefix);}
   
   // Entry keyboard shortcuts
   const KBShortcutMap &GetAllKBShortcuts() const {return m_core.GetAllKBShortcuts();}
