@@ -92,8 +92,8 @@ void PasswordSafeFrame::DoEdit(CItemData item)
       CItemData& origItem = m_core.GetEntry(iter);
       //The Item is updated in DB by AddEditPropSheet
       UpdateAccessTime(origItem);
-      SetChanged(Data);
       UpdateSelChanged(&origItem);
+      UpdateStatusBar();
     }
     else {
       wxFAIL_MSG(wxT("Item being edited not found in currently loaded DB"));
@@ -119,7 +119,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
-    SetChanged(Data);
+    UpdateStatusBar();
   }
 }
 
@@ -385,7 +385,7 @@ void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
     if (rc == wxID_OK) {
       UpdateAccessTime(*item);
       Show(true);
-      SetChanged(Data);
+      UpdateStatusBar();
     }
   }
 }
@@ -461,7 +461,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
     wxUnusedVar(iter); // used in assert only
 //    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
 //    FixListIndexes();
-    SetChanged(Data);
+    UpdateStatusBar();
 
 //    int rc = SelectEntry(pdi->list_index);
 //    if (rc == 0) {

@@ -487,8 +487,6 @@ public:
   Command *Delete(wxTreeItemId tid); // for group delete
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut
   void UpdateAccessTime(CItemData &ci);
-  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
-  void SetChanged(ChangeType changed);
   void CreateMainToolbar();
   void ReCreateMainToolbar();
   void ReCreateDragToolbar();
@@ -550,6 +548,7 @@ public:
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;
+  bool m_bRestoredDBUnsaved;
   CRUEList m_RUEList;
   GUIInfo* m_guiInfo;
   bool m_bTSUpdated;

@@ -182,7 +182,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
     }
 
     m_core.SetCurFile(wxEmptyString);    // Force a Save As...
-    m_core.SetDBChanged(true); // So that the restored file will be saved
+    m_bRestoredDBUnsaved = true; // So that the restored file will be saved
 
     SetTitle(_("Password Safe - <Untitled Restored Backup>"));
 
