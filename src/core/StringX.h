@@ -98,7 +98,6 @@ namespace S_Alloc
       pointer allocate(size_type n, const_pointer hint = 0) {
         UNREFERENCED_PARAMETER(hint);
         pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
-        // pws_os::Trace(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if (p == NULL)
           throw std::bad_alloc();
         return p;

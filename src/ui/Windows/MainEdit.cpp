@@ -1042,8 +1042,6 @@ Command *DboxMain::Delete(const CItemData *pci)
   // Normal, base, alias, shortcut...
   // ONLY called when deleting a group and all its entries
   ASSERT(pci != NULL);
-  //pws_os::Trace(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
-  //      pci->GetTitle().c_str());
 
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
@@ -1843,14 +1841,11 @@ void DboxMain::OnAutoType()
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
-    //pws_os::Trace(L"OnAutoType: Using Tree found item\n");
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-    //pws_os::Trace(L"OnAutoType: Using List found item\n");
   } else {
     pci = getSelectedItem();
-    //pws_os::Trace(L"OnAutoType: Using Selected item\n");
   }
 
   if (pci == NULL)

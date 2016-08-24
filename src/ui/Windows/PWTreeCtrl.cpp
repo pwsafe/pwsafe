@@ -89,7 +89,6 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      //pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_tree.EndDrop();
     }
     return sCode;
@@ -115,14 +114,12 @@ public:
     DelayRenderData(CF_TEXT);
 
     m_tree.m_cfdropped = 0;
-    //pws_os::Trace(L"CPWTDataSource::StartDragging - calling DoDragDrop\n");
     DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
                                rClient, m_DropSource);
     // Cleanup:
     // Standard processing is for the recipient to do this!!!
     if (de == DROPEFFECT_NONE) {
       if (m_tree.m_hgDataALL != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataALL);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataALL);
         if (lpData != NULL && memsize > 0) {
@@ -133,7 +130,6 @@ public:
         m_tree.m_hgDataALL = NULL;
       }
       if (m_tree.m_hgDataTXT != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataTXT);
         if (lpData != NULL && memsize > 0) {
@@ -144,7 +140,6 @@ public:
         m_tree.m_hgDataTXT = NULL;
       }
       if (m_tree.m_hgDataUTXT != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataUTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataUTXT);
         if (lpData != NULL && memsize > 0) {
@@ -304,7 +299,6 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd *, COleDataObject *pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -316,7 +310,6 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd *, COleDataObject *pDataObject,
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   if (pil != NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() hide cursor\n");
     while (ShowCursor(FALSE) >= 0)
       ;
   }
@@ -330,7 +323,6 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd *pWnd, COleDataObject *pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnDragOver() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -433,8 +425,8 @@ void CPWTreeCtrl::OnDragLeave()
   m_bWithinThisInstance = false;
   //We leave or window, so we need to clean DropTarget selection
   SelectDropTarget(NULL);
+
   // ShowCursor's semantics are VERY odd - RTFM
-  //pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 }
@@ -1325,7 +1317,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
     UINT nFiles;
     wchar_t szDraggedFile[MAX_PATH];
 
-    //pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
     hg = pDataObject->GetGlobalData(CF_HDROP);
     if (hg == NULL) {
       pws_os::Trace(L"CPWTreeCtrl::OnDrop() No global data\n");
@@ -1348,7 +1339,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
     }
 
     DragQueryFile(hdrop, 0, szDraggedFile, MAX_PATH);
-    //pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
     GlobalUnlock(hg);
     m_droppedFile = szDraggedFile;
     app.GetMainDlg()->PostMessage(PWS_MSG_DROPPED_FILE);
@@ -1365,7 +1355,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
   }
 
   m_TickCount = 0;
-  //pws_os::Trace(L"CPWTreeCtrl::OnDrop() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 
@@ -1651,7 +1640,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   pil->DragMove(ptAction);
   pil->DragEnter(this, ptAction);
 
-  //pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() hide cursor\n");
   while (ShowCursor(FALSE) >= 0)
     ;
   SetCapture();
@@ -1724,7 +1712,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
     }
   }
 
-  //pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 
@@ -1920,7 +1907,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   } else {
     const StringX DragPathParent = GetGroup(GetParentItem(m_hitemDrag));
     m_nDragPathLen = DragPathParent.length();
-    //pws_os::Trace(L"DragPathParent: %s; len: %d\n", DragPathParent.c_str(), m_nDragPathLen);
 
     StringX DragPath = GetGroup(m_hitemDrag);
     // Check if this is an empty group
@@ -1937,7 +1923,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
       DragPath += StringX(L".");
       const size_t draglen = DragPath.length();
-      //pws_os::Trace(L"DragPath: %s; len: %d\n", DragPath.c_str(), DragPath.length());
 
       for (size_t i = 0; i < vAllEmptyGroups.size(); i++) {
         if (CompareNoCase(vAllEmptyGroups[i].substr(0, draglen), DragPath) == 0) {
@@ -1990,7 +1975,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     unsigned char *buffer = new unsigned char[len];
     outDDmemfile.SeekToBegin();
     outDDmemfile.Read(buffer, len);
-    //pws_os::Trace(L"outDDmemfile: len: %d: data: \n", len);
     pws_os::HexDump(buffer, len, L"", 32);
     delete[] buffer;
   }
@@ -2272,7 +2256,6 @@ BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
 BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
   if (m_hgDataALL != NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n");
     LPVOID lpData = GlobalLock(m_hgDataALL);
     SIZE_T memsize = GlobalSize(m_hgDataALL);
     if (lpData != NULL && memsize > 0) {
@@ -2284,7 +2267,6 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataTXT != NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataTXT);
     SIZE_T memsize = GlobalSize(m_hgDataTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2296,7 +2278,6 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataUTXT != NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataUTXT);
     SIZE_T memsize = GlobalSize(m_hgDataUTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2310,10 +2291,8 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   BOOL retval;
   if (lpFormatEtc->cfFormat == CF_UNICODETEXT ||
       lpFormatEtc->cfFormat == CF_TEXT) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderTextData\n");
     retval = RenderTextData(lpFormatEtc->cfFormat, phGlobal);
   } else if (lpFormatEtc->cfFormat == m_tcddCPFID) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - RenderAllData\n");
     m_cfdropped = m_tcddCPFID;
     retval = RenderAllData(phGlobal);
   } else
@@ -2358,7 +2337,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
-    //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
   } else {
     // They want it in ASCII - use lpszW temporarily
@@ -2384,7 +2362,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -2409,7 +2386,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
       pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      //pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -2425,9 +2401,7 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  //pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  //pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -2500,7 +2474,6 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    //pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - Alloc global memory\n");
     m_hgDataALL = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(m_hgDataALL != NULL);
     if (m_hgDataALL == NULL)
@@ -2524,7 +2497,6 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
       pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      //pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
