@@ -342,27 +342,27 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  bool PWScore::HasDBChanged() const
+  bool HasDBChanged() const
   { return m_stDBCS.bDBChanged; }
-  bool PWScore::HaveDBPrefsChanged() const
+  bool HaveDBPrefsChanged() const
   { return m_stDBCS.bDBPrefsChanged; }
-  bool PWScore::HaveHeaderPreferencesChanged(const StringX &prefString)
+  bool HaveHeaderPreferencesChanged(const StringX &prefString)
   { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
-  bool PWScore::HaveEmptyGroupsChanged() const
+  bool HaveEmptyGroupsChanged() const
   { return m_stDBCS.bEmptyGroupsChanged; }
-  bool PWScore::HavePasswordPolicyNamesChanged() const
+  bool HavePasswordPolicyNamesChanged() const
   { return m_stDBCS.bPolicyNamesChanged; }
-  bool PWScore::HaveDBFiltersChanged() const
+  bool HaveDBFiltersChanged() const
   { return m_stDBCS.bDBFiltersChanged; }
 
   // Note GroupDisplay & RUE list not checked for Save Immediately processing
   // Also, these are changed by user indirect action and therefore changes are NOT
   // implemented via a Command (do not require Undo/Redo processing)
-  bool PWScore::HasGroupDisplayChanged() const;
-  bool PWScore::HasRUEListChanged() const;
+  bool HasGroupDisplayChanged() const;
+  bool HasRUEListChanged() const;
 
   // NOTE - GroupDisplay & RUE list are NOT checked via this call
-  bool PWScore::HasAnythingChanged() const
+  bool HasAnythingChanged() const
   { return m_stDBCS.HasAnythingChanged(); }
   
   // PWScore::Execute uses this to set the changed status
