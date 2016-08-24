@@ -42,15 +42,12 @@ every time a password is copied from the database to the clipboard.</p>
 
 <h3>Database locking</h3>
 
-<p> When the database is locked automatically due to one of the events
-below, all information about the database, execpt its file name, is
-cleared from memory.  Any open dialogs are closed and any changes in-progress,
-but not completed, will be lost.  The database is then saved, if possible,
-so that any completed changes made are retained.  As part of the clearing
-process, all previous changes that could have been undone or even redone are
-also cleared as they probably contain information that should not be kept in
-memory. Therefore, on restoring the database, it will not be possible to undo
-any previous changes made to the now saved database.</p>
+<p> When the database is locked due to one of the events
+below, the database is saved, and then all its data is cleared from
+memory. The database is then saved.  As part of the clearing
+process, the undo/redo log is also erased, as this may also contain
+sensitive information. This means that undo/redo of pre-lock changes
+will not be available upon unlock.</p> 
 
 <ul>
 <li><b>Lock password database on minimized</b><br>
