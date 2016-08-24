@@ -1703,5 +1703,14 @@
     <Image Include="graphics\question_mark.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\checked_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\unchecked_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\empty_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

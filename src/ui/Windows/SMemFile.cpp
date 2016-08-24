@@ -25,7 +25,6 @@ BYTE* CSMemFile::Alloc(SIZE_T nBytes)
     return NULL;
   }
 
-  //pws_os::Trace(L"SMemfile:Alloc Size=%d\n", nBytes);
   m_size = nBytes;
   return lpNewMem;
 }
@@ -44,7 +43,6 @@ BYTE* CSMemFile::Realloc(BYTE* lpOldMem, SIZE_T nBytes)
   BYTE* lpNewMem = (BYTE *)malloc(nBytes);
 
   if (lpNewMem == NULL) {
-    //pws_os::Trace(L"SMemfile:Realloc Old size=%d, New Size=%d FAILED\n", old_size, nBytes);
     trashMemory(lpOldMem, old_size);
     free(lpOldMem);
     m_size = 0;
@@ -55,7 +53,6 @@ BYTE* CSMemFile::Realloc(BYTE* lpOldMem, SIZE_T nBytes)
   trashMemory(lpOldMem, old_size);
   free(lpOldMem);
 
-  //pws_os::Trace(L"SMemfile:Realloc Old size=%d, New Size=%d\n", old_size, nBytes);
   m_size = nBytes;
   return lpNewMem;
 }
@@ -65,7 +62,6 @@ void CSMemFile::Free(BYTE* lpMem)
   size_t mem_size = _msize((void *)lpMem);
   ASSERT(m_size == mem_size);
   m_size = 0;
-  //pws_os::Trace(L"SMemfile:Free Memory at %p, Size=%d\n", lpMem, mem_size);
   if (lpMem == NULL)
     return;
 

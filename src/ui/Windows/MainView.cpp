@@ -1259,8 +1259,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
   switch (nType) {
     case SIZE_MINIMIZED:
-      //pws_os::Trace(L"OnSize:SIZE_MINIMIZED\n");
-
       // Called when minimize button select on main dialog control box
       // or the system menu or by right clicking in the Taskbar
       // AFTER THE WINDOW HAS BEEN MINIMIZED!!!
@@ -1367,10 +1365,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
       break;
     case SIZE_MAXHIDE:
-      //pws_os::Trace(L"OnSize:SIZE_MAXHIDE\n");
-      break;
     case SIZE_MAXSHOW:
-      //pws_os::Trace(L"OnSize:SIZE_MAXSHOW\n");
       break;
   } // nType switch statement
   m_bSizing = false;
@@ -2050,7 +2045,6 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
-    //pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     m_vGroupDisplayState = GetGroupDisplayState();
 
     if (!LockDataBase())
@@ -2071,9 +2065,6 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   } else if (nIDEvent == TIMER_EXPENT) {
     // once a day, we want to check the expired entries list
     CheckExpireList();
-  } else {
-    //pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
-    //      m_IdleLockCountDown, nIDEvent);
   }
 }
 
@@ -2085,8 +2076,6 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // Handle Lock/Unlock, Fast User Switching and Remote access.
   // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup).
-
-  //pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (wParam) {
@@ -2191,8 +2180,6 @@ bool DboxMain::IsWorkstationLocked() const
     }
   }
 
-  //if (bResult)
-  //  pws_os::Trace(L"IsWorkstationLocked() returning true");
   return bResult;
 }
 
@@ -4154,8 +4141,6 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
   if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) ||
       (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
-
-  //pws_os::Trace(L"SaveGUIStatusEx\n");
 
   CItemData *pci(NULL);
   POSITION pos;
