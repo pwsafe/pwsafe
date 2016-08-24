@@ -1217,6 +1217,11 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->Load(m_hdr.m_prefString);
 
+    // Ensure obsolete DB preferences are removed when opening a DB saved
+    // by an earlier version
+    m_hdr.m_prefString = prefs->Store();
+    prefs->Load(m_hdr.m_prefString);
+
     // prepare handling of pre-2.0 DEFUSERCHR conversion
     if (m_ReadFileVersion == PWSfile::V17) {
       in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
