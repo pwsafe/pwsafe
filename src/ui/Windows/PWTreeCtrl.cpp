@@ -180,7 +180,8 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_tcddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_tcddCPFID != 0);
 
-  // instantiate "proxy" objects for D&D.
+  // Instantiate "proxy" objects for D&D.
+
   // The members are currently pointers mainly to hide
   // their implementation from the header file. If this changes,
   // e.g., if we make them nested classes, then they should
@@ -192,10 +193,15 @@ CPWTreeCtrl::CPWTreeCtrl()
 
 CPWTreeCtrl::~CPWTreeCtrl()
 {
-  // see comment in constructor re these member variables
+  // See comment in constructor re these member variables
+
+  // Don't delete m_Data Source but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_DataSource->ExternalRelease();
+
+  // delete the Drop Target & Source
   delete m_DropTarget;
   delete m_DropSource;
-  delete m_DataSource;
 }
 
 BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
