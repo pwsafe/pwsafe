@@ -846,6 +846,10 @@
 #define IDC_STATIC_INITIALTREEVIEW      1542
 #define IDC_STATIC_UNLOCKDIFFICULTY     1543
 #define IDC_STATIC_MANAGEPWH            1544
+#define IDC_LOCKONMINIMIZEHELP          1545
+#define IDC_LOCKONWORKSTATIONLOCKHELP   1546
+#define IDC_LOCKONIDLEHELP              1547
+
 
 // Next default values for new objects
 // 
@@ -853,7 +857,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        548
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1545
+#define _APS_NEXT_CONTROL_VALUE         1548
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

@@ -1377,6 +1377,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\checked_disabled.bmp" />
+    <Image Include="graphics\empty_disabled.bmp" />
     <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
@@ -1393,6 +1395,7 @@
     <Image Include="graphics\toolbar\new\exportV3_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportV4.bmp" />
     <Image Include="graphics\toolbar\new\exportV4_disabled.bmp" />
+    <Image Include="graphics\unchecked_disabled.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>

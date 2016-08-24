@@ -69,8 +69,13 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
-  //}}AFX_DATA_MAP
+
   DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
+
+  DDX_Control(pDX, IDC_LOCKONMINIMIZEHELP, m_Help1);
+  DDX_Control(pDX, IDC_LOCKONWORKSTATIONLOCKHELP, m_Help2);
+  DDX_Control(pDX, IDC_LOCKONIDLEHELP, m_Help3);
+  //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
@@ -121,6 +126,16 @@ BOOL COptionsSecurity::OnInitDialog()
   pslider->SetRange(MinHIslider, MaxHIslider);
   pslider->SetTicFreq(1);
   pslider->SetPos(m_HashIterSliderValue);
+
+  m_Help1.Init(IDB_QUESTIONMARK);
+  m_Help2.Init(IDB_QUESTIONMARK);
+  m_Help3.Init(IDB_QUESTIONMARK);
+
+  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
+  AddTool(IDC_LOCKONMINIMIZEHELP, IDS_DBLOCK);
+  AddTool(IDC_LOCKONWORKSTATIONLOCKHELP, IDS_DBLOCK);
+  AddTool(IDC_LOCKONIDLEHELP, IDS_DBLOCK);
+  ActivateToolTip();
 
   return TRUE;
 }
@@ -223,6 +238,8 @@ BOOL COptionsSecurity::OnApply()
 
 BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
 {
+  RelayToolTipEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
