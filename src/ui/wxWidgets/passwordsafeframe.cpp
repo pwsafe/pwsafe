@@ -255,7 +255,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bFilterActive(false)
 {
@@ -1019,23 +1020,12 @@ int PasswordSafeFrame::SaveIfChanged()
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
+  // Offer to save existing database if it was modified.
+  //
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
   if ((m_bTSUpdated || m_core.HasAnythingChanged()) &&
-       m_core.GetNumEntries() > 0) {
-    int rc = Save();
-    if (rc != PWScore::SUCCESS)
-      return PWScore::USER_CANCEL;
-    else
-      return PWScore::SUCCESS;
-  }
-
-  // offer to save existing database if it was modified.
-  // used before loading another
-  // returns PWScore::SUCCESS if save succeeded or if user decided
-  // not to save
-
-  if (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()) {
+      m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
       prompt += wxT(": ");
