@@ -135,10 +135,13 @@ CDDStatic::~CDDStatic()
 {
   m_pDropTarget->Revoke();
 
-  // see comment in constructor re these member variables
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
   delete m_pDropTarget;
   delete m_pDropSource;
-  delete m_pDataSource;
 }
 
 void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
