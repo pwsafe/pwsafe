@@ -255,7 +255,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bFilterActive(false)
 {
@@ -783,6 +784,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    m_core.ResumeOnDBNotification();
   } else {
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
@@ -889,6 +891,12 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
   return dragbar;
 }
 
+int PasswordSafeFrame::SaveImmediately()
+{
+  // Get normal save to do this (code already there for intermediate backups)
+  return Save(ST_SAVEIMMEDIATELY);
+}
+
 int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 {
   stringT bu_fname; // used to undo backup if save failed
@@ -918,6 +926,11 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
+
+            case ST_SAVEIMMEDIATELY:
+              if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
+                _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
+                return PWScore::USER_CANCEL;
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -1007,8 +1020,10 @@ int PasswordSafeFrame::SaveIfChanged()
         // Make sure that file was successfully written
         if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
-        else
+        else {
+          m_bRestoredDBUnsaved = false;
           return rc;
+        }
       case wxID_NO:
         return PWScore::USER_DECLINED_SAVE;
       default:
@@ -1104,7 +1119,10 @@ CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemD
 
 void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
-  DoOpen(_("Please Choose a Database to Open:"));
+  int rc = DoOpen(_("Please Choose a Database to Open:"));
+
+  if (rc == PWScore::SUCCESS)
+    m_core.ResumeOnDBNotification();
 }
 
 
@@ -1154,7 +1172,6 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 
 int PasswordSafeFrame::Open(const wxString &fname)
 {
-
   //Check that this file isn't already open
   if (wxFileName(fname).SameAs(towxstring(m_core.GetCurFile()))) {
     //It is the same damn file
@@ -2001,6 +2018,13 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
   } else {
     wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
   }
+
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      modified = false;
+  }
 }
 
 void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
@@ -2561,6 +2585,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
   switch(Open(dbfile))
   {
     case PWScore::SUCCESS:
+      m_core.ResumeOnDBNotification();
       break;
 
     case PWScore::USER_CANCEL:
