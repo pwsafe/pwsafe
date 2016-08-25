@@ -105,7 +105,7 @@ class CPWTDataSource : public COleDataSource
 {
 public:
   CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
-    : m_tree(*parent), m_DropSource(ds) {}
+    : m_tree(*parent), m_pDropSource(ds) {}
 
   DROPEFFECT StartDragging(CLIPFORMAT cpfmt, LPCRECT rClient)
   {
@@ -115,7 +115,7 @@ public:
 
     m_tree.m_cfdropped = 0;
     DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                               rClient, m_DropSource);
+                               rClient, m_pDropSource);
     // Cleanup:
     // Standard processing is for the recipient to do this!!!
     if (de == DROPEFFECT_NONE) {
@@ -158,7 +158,7 @@ public:
 
 private:
   CPWTreeCtrl &m_tree;
-  COleDropSource *m_DropSource;
+  COleDropSource *m_pDropSource;
 };
 
 /**
@@ -180,22 +180,28 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_tcddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_tcddCPFID != 0);
 
-  // instantiate "proxy" objects for D&D.
+  // Instantiate "proxy" objects for D&D.
+
   // The members are currently pointers mainly to hide
   // their implementation from the header file. If this changes,
   // e.g., if we make them nested classes, then they should
   // be non-pointers.
-  m_DropTarget = new CPWTDropTarget(this);
-  m_DropSource = new CPWTDropSource(this);
-  m_DataSource = new CPWTDataSource(this, m_DropSource);
+  m_pDropTarget = new CPWTDropTarget(this);
+  m_pDropSource = new CPWTDropSource(this);
+  m_pDataSource = new CPWTDataSource(this, m_pDropSource);
 }
 
 CPWTreeCtrl::~CPWTreeCtrl()
 {
-  // see comment in constructor re these member variables
-  delete m_DropTarget;
-  delete m_DropSource;
-  delete m_DataSource;
+  // See comment in constructor re these member variables
+
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
+  delete m_pDropTarget;
+  delete m_pDropSource;
 }
 
 BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
@@ -222,7 +228,7 @@ void CPWTreeCtrl::Initialize()
 {
   // This should really be in OnCreate(), but for some reason,
   // it was never called.
-  m_DropTarget->Register(this);
+  m_pDropTarget->Register(this);
 }
 
 void CPWTreeCtrl::ActivateND(const bool bActivate)
@@ -240,7 +246,7 @@ void CPWTreeCtrl::OnDestroy()
     pimagelist->DeleteImageList();
     delete pimagelist;
   }
-  m_DropTarget->Revoke();
+  m_pDropTarget->Revoke();
 }
 
 void CPWTreeCtrl::OnPaint()
@@ -1656,7 +1662,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Start dragging
   m_bDropped = false;
-  DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
+  DROPEFFECT de = m_pDataSource->StartDragging(m_tcddCPFID, &rClient);
 
   // If inter-process Move, we need to delete original
   if (m_cfdropped == m_tcddCPFID &&
@@ -1678,7 +1684,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   delete pil;
 
   if (de == DROPEFFECT_NONE) {
-    pws_os::Trace(L"m_DataSource->StartDragging() failed\n");
+    pws_os::Trace(L"m_pDataSource->StartDragging() failed\n");
     // Do cleanup - otherwise this is the responsibility of the recipient!
     if (m_hgDataALL != NULL) {
       LPVOID lpData = GlobalLock(m_hgDataALL);

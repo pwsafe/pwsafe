@@ -129,10 +129,11 @@ private:
 
   // in an ideal world, following would be is-a, rather than has-a
   // (multiple inheritance) Microsoft doesn't really support this, however...
-  CPWTDropTarget *m_DropTarget;
-  CPWTDropSource *m_DropSource;
-  CPWTDataSource *m_DataSource;
+  CPWTDropTarget *m_pDropTarget;
+  CPWTDropSource *m_pDropSource;
+  CPWTDataSource *m_pDataSource;
   friend class CPWTDataSource;
+
   // Clipboard format for our Drag & Drop
   CLIPFORMAT m_tcddCPFID;
   HGLOBAL m_hgDataALL, m_hgDataUTXT, m_hgDataTXT;

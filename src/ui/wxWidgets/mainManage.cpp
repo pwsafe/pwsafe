@@ -144,11 +144,11 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   }
 
   //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(_("Please Choose a Backup to restore:"),
+  wxString wxbf = wxFileSelector(_("Please Choose a Backup to Restore:"),
                                  dir,
                                  currbackup.GetFullName(),
                                  wxT("bak"),
-                                 _("Password Safe Backups (*.bak)|*.bak"),
+                                 _("Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"),
                                  wxFD_OPEN|wxFD_FILE_MUST_EXIST,
                                  this);
   if (wxbf.empty())

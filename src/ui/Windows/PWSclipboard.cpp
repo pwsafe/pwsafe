@@ -48,10 +48,12 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str(), data.length());
   ::GlobalUnlock(hGlobalMemory);
 
-  COleDataSource *pods = new COleDataSource; // deleted automagically
+  COleDataSource *pods = new COleDataSource; // deleted automagically by SetClipboard below
   pods->CacheGlobalData(CF_CLIPBOARD_VIEWER_IGNORE, hDummyGlobalMemory);
   pods->CacheGlobalData(cfFormat, hGlobalMemory);
   pods->SetClipboard();
+  pods = NULL; // As deleted by SetClipboard above
+
   m_set = isSensitive; // don't set if !isSensitive, so won't be cleared
   if (m_set) {
     // identify data in clipboard as ours, so as not to clear the wrong data later
