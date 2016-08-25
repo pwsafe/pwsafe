@@ -171,6 +171,9 @@
     <ClInclude Include="TimedTaskChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="passwordsubset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -326,6 +329,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="passwordsubset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
