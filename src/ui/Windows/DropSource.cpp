@@ -41,7 +41,5 @@ DROPEFFECT CDataSource::StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT c
 
   Empty();
 
-  //InternalRelease();
-
   return dropEffect;
 }

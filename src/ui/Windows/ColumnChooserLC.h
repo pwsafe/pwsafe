@@ -43,9 +43,12 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDataSource m_CCDataSource;
-  CDropTarget m_CCDropTarget;
-  CImageList* m_pDragImage;
+  CDataSource *m_pCCDataSource;
+  CDropTarget *m_pCCDropTarget;
+  COleDropSource *m_pCCDropSource;
+  friend class CDataSource;
+
+  CImageList *m_pDragImage;
   int m_iItem;
   // Clipboard format for Column Chooser Drag & Drop
   CLIPFORMAT m_ccddCPFID;
