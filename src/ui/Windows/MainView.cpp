@@ -1823,6 +1823,8 @@ void DboxMain::OnHeaderBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   NMHEADER *phdn = (NMHEADER *)pNotifyStruct;
 
   *pLResult = (m_bImageInLV && phdn->iItem == 0) ? TRUE : FALSE;
+
+  SaveColumnWidths();
 }
 
 void DboxMain::OnHeaderEndDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -2518,7 +2520,7 @@ BOOL DboxMain::SendEmail(const CString &cs_Email)
   return rc ? TRUE : FALSE;
 }
 
-void DboxMain::SetColumns()
+void DboxMain::SetDefaultColumns()
 {
   // User hasn't yet saved the columns he/she wants and so gets our order!
   // Or - user has reset the columns (popup menu from right click on Header)
@@ -2593,7 +2595,6 @@ void DboxMain::SetColumns()
 void DboxMain::SetColumns(const CString cs_ListColumns)
 {
   //  User has saved the columns he/she wants and now we are putting them back
-
   CString cs_header;
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
@@ -2714,7 +2715,7 @@ void DboxMain::DeleteColumn(const int iType)
   m_ctlItemList.DeleteColumn(m_nColumnIndexByType[iType]);
 }
 
-void DboxMain::SetHeaderInfo()
+void DboxMain::SetHeaderInfo(const bool bSetWidths)
 {
   HDITEM hdi_get;
   // CHeaderCtrl get values
@@ -2734,7 +2735,9 @@ void DboxMain::SetHeaderInfo()
 
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     const int iIndex = m_nColumnIndexByOrder[iOrder];
-    m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
+    if (bSetWidths)
+      m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
+
     m_LVHdrCtrl.GetItem(iIndex, &hdi_get);
     ASSERT(iOrder == hdi_get.iOrder);
     m_nColumnIndexByType[hdi_get.lParam] = iIndex;
@@ -2746,7 +2749,45 @@ void DboxMain::SetHeaderInfo()
     m_iTypeSortColumn = CItemData::TITLE;
 
   SortListView();
-  AutoResizeColumns();
+
+  if (bSetWidths)
+    AutoResizeColumns();
+}
+
+void DboxMain::SaveColumnWidths()
+{
+  // We need to save the current column widths
+  // Zero it out first
+  for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
+    m_nSaveColumnHeaderWidthByType[iType] = 0;
+  }
+
+  // Now save current widths according to type
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+
+  for (int icol = 0; icol < m_LVHdrCtrl.GetItemCount(); icol++) {
+    m_LVHdrCtrl.GetItem(icol, &hdi);
+    m_nSaveColumnHeaderWidthByType[hdi.lParam] = m_ctlItemList.GetColumnWidth(icol);
+  }
+}
+
+void DboxMain::RestoreColumnWidths()
+{
+  // Now put back the column widths!
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+
+  for (int icol = 0; icol < m_LVHdrCtrl.GetItemCount(); icol++) {
+    m_LVHdrCtrl.GetItem(icol, &hdi);
+    int iWidth = m_nSaveColumnHeaderWidthByType[hdi.lParam];
+
+    // If not there previously (i.e. new column dragged in) use AutoSize
+    if (iWidth == 0)
+      iWidth = LVSCW_AUTOSIZE_USEHEADER;
+
+    m_ctlItemList.SetColumnWidth(icol, iWidth);
+  }
 }
 
 void DboxMain::OnResetColumns()
@@ -2767,7 +2808,7 @@ void DboxMain::OnResetColumns()
     m_nColumnIndexByType[itype] = -1;
 
   // Set default columns
-  SetColumns();
+  SetDefaultColumns();
 
   // Reset the column widths
   AutoResizeColumns();
@@ -2812,6 +2853,8 @@ void DboxMain::AutoResizeColumns()
 
 void DboxMain::OnColumnPicker()
 {
+  SaveColumnWidths();
+
   SetupColumnChooser(true);
 }
 
@@ -2970,7 +3013,9 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::PASSWORD:
     case CItemData::NOTES:
     case CItemData::URL:
+    case CItemData::AUTOTYPE:
     case CItemData::EMAIL:
+    case CItemData::PROTECTED:
     case CItemData::SYMBOLS:
     case CItemData::RUNCMD:
     case CItemData::POLICY:
@@ -3026,6 +3071,7 @@ void DboxMain::CalcHeaderWidths()
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;
     else
       m_nColumnHeaderWidthByType[iType] = -4;
+
     m_iheadermaxwidth = max(m_iheadermaxwidth, m_nColumnHeaderWidthByType[iType]);
   } // for
 }
