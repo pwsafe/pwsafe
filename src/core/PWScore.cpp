@@ -791,18 +791,18 @@ void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
 
 void PWScore::SetChangedStatus()
 {
-  // Override bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
-  // and bDBFiltersChanged based on original values as multiple changes
-  // could revert to unchanged since last saved
+  // Update bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
+  // and bDBFiltersChanged by checking against original values set in
+  // SetInitialValues. This bypasses the need to check do/undo/revert.
 
   // Check if DB is open (can't use empty file name to mean no DB as that
-  // is the case when a databse has been retored but not yet saved)
+  // is the case when a database has been restored but not yet saved)
   if (m_bIsOpen) {
     const StringX prefString(PWSprefs::GetInstance()->Store());
     m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
   }
 
-  //  Need to check if the DB header has changed
+  //  Check if the DB header has changed
   m_stDBCS.bDBHeaderChanged = (m_InitialDBName != m_hdr.m_DB_Name) ||
     (m_InitialDBDesc != m_hdr.m_DB_Description);
   
@@ -811,9 +811,9 @@ void PWScore::SetChangedStatus()
   // in the DB
 
   // These are also in the header!!!
-  m_stDBCS.bEmptyGroupsChanged = m_InitialvEmptyGroups != m_vEmptyGroups;
-  m_stDBCS.bPolicyNamesChanged = m_InitialMapPSWDPLC != m_MapPSWDPLC;
-  m_stDBCS.bDBFiltersChanged = m_InitialMapDBFilters != m_MapDBFilters;
+  m_stDBCS.bEmptyGroupsChanged = (m_InitialvEmptyGroups != m_vEmptyGroups);
+  m_stDBCS.bPolicyNamesChanged = (m_InitialMapPSWDPLC != m_MapPSWDPLC);
+  m_stDBCS.bDBFiltersChanged = (m_InitialMapDBFilters != m_MapDBFilters);
 }
 
 // Related to above
@@ -841,18 +841,18 @@ int PWScore::Execute(Command *pcmd)
 {
   /*
     NOTES:
-    1. *ALL* USER ACTIONS (e.g. simple such as delete one entry or
-      complex such as import a file, merge a DB or D&D) MUST PRODUCE *ONLY
-      ONE* CALL TO THIS MEMBER FUNCTION AS THIS INVOKES "Save Immediately"
-      IF THE USER HAS ENABLED THE PREFERENCE.  IT IS THE RESPONSIBILTY OF
-      THE UI TO ENSURE THAT A SINGLE USER ACTION GENERATES ONLY ONE CALL
-      THIS ROUTINE OTHERWISE MULTIPLE SAVES AND, POTENTIALLY, INTERMEDIATE
+    1. *ALL* USER ACTIONS (e.g., simple such as delete one entry or
+      complex such as import a file, merge a DB or drag&drop) MUST call this
+      member function EXACTLY ONCE, since this invokes "Save Immediately"
+      if the preference for this is set.
+      IT IS THE RESPONSIBILTY OF THE UI TO ENSURE THAT A SINGLE USER ACTION GENERATES
+      ONLY ONE CALL THIS ROUTINE. OTHERWISE MULTIPLE SAVES AND, POTENTIALLY, INTERMEDIATE
       BACKUPS MAY BE GENERATED.
 
     2. ALL COMMANDS UPDATE THE DATABASE (except UpdateGUICommand, which is
       always used in combination with a command that does) AND SO WILL GENERATE
-      A "Save Immediately" SAVE AND CREATION OF AN INTERMEDIATE BACKUP IF
-      THE USER HAS ENABLED THESE PREFERENCES.
+      A "Save Immediately" SAVE AND CREATE AN INTERMEDIATE BACKUP if
+      the save immediate preference is set.
    */
 
    // If we have undone some previous commands, then this new command must
@@ -892,7 +892,7 @@ int PWScore::Execute(Command *pcmd)
   // Set undo iterator to this one
   m_undo_iter--;
 
-  // If user has set Save Immediately, then a Execute changes the DB and it should be
+  // If user has set Save Immediately, then Execute() changes the DB and it should be
   // saved (with or without an intermediate backup)
   NotifyDBModified();
 
@@ -906,7 +906,7 @@ void PWScore::Undo()
   // Undo last executed command
   ASSERT(m_undo_iter != m_vpcommands.end());
 
-  // Reset next command to redo (i.e. the one we just about to undo)
+  // Reset next command to redo (i.e., the one we just about to undo)
   m_redo_iter = m_undo_iter;
 
   // Undo it
@@ -938,7 +938,7 @@ void PWScore::Undo()
     m_undo_iter--;
   }
 
-  // If user has set Save Immediately, then a Undo changes the DB and it should be
+  // If user has set Save Immediately, then Undo changes the DB and it should be
   // saved (with or without an intermediate backup)
   NotifyDBModified();
 
@@ -973,7 +973,7 @@ void PWScore::Redo()
     m_redo_iter++;
   }
   
-  // If user has set Save Immediately, then a Redo changes the DB and it should be
+  // If user has set Save Immediately, then Redo changes the DB and it should be
   // saved (with or without an intermediate backup)
   NotifyDBModified();
 
