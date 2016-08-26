@@ -1204,6 +1204,8 @@ int DboxMain::Save(const SaveType savetype)
   if (savetype != ST_NORMALEXIT)
     RefreshViews();
 
+  UpdateStatusBar();
+
   return PWScore::SUCCESS;
 }
 
@@ -1471,6 +1473,8 @@ int DboxMain::SaveAs()
 
   // In case it was an unsaved restored DB
   m_bRestoredDBUnsaved = false;
+
+  UpdateStatusBar();
 
   return PWScore::SUCCESS;
 }

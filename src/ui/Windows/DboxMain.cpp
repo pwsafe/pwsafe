@@ -1358,6 +1358,8 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 
   UpdateToolBarDoUndo();
 
+  UpdateStatusBar();
+
   SaveGUIStatusEx(BOTHVIEWS);
 }
 
@@ -1587,7 +1589,6 @@ void DboxMain::ChangeOkUpdate()
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
            m_core.HasAnythingChanged() ? TRUE : FALSE);
   }
-  UpdateStatusBar();
 }
 
 void DboxMain::OnAbout()
@@ -2736,7 +2737,7 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
-      s = m_core.HasDBChanged() ? L"*" : L" ";
+      s = m_core.HasAnythingChanged() ? L"*" : L" ";
       s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
