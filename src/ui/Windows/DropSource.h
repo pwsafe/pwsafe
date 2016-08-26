@@ -19,7 +19,7 @@ enum {
   FROMTREE_RSC = 8  // From TreeCtrl - right mouse D&D - create Shortcut allowed
 };
 
-class CDataSource : protected COleDataSource
+class CDataSource : public COleDataSource
 {
 public:
   CDataSource();

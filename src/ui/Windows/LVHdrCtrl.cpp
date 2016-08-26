@@ -30,11 +30,23 @@ CLVHdrCtrl::CLVHdrCtrl()
   CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
   m_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_ccddCPFID != 0);
+
+  m_pHdrDataSource = new CDataSource();
+  m_pHdrDropTarget = new CDropTarget();
+  m_pHdrDropSource = new COleDropSource();
 }
 
 CLVHdrCtrl::~CLVHdrCtrl()
 {
-  m_HdrDropTarget.Revoke();
+  m_pHdrDropTarget->Revoke();
+
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pHdrDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
+  delete m_pHdrDropTarget;
+  delete m_pHdrDropSource;
 }
 
 BEGIN_MESSAGE_MAP(CLVHdrCtrl, CHeaderCtrl)
