@@ -2927,82 +2927,115 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
 
 CString DboxMain::GetHeaderText(int iType) const
 {
+  // ***
+  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
+  //   It would be nice to use the compiler to tell us if anything is omitted but
+  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
+  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
+  //   CItemData::LAST_FIELD [260].
+  //   Using CItemData::LAST_DATA does prevent adding "non-data" fields into the
+  //   List View, for example CItemData::ENTRYTYPE.
+  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
+  //   to complain!
+  //   See same comment in DboxMain::InitPasswordSafe & & DboxMain::GetHeaderWidth
+  // ***
+
   CString cs_header;
+  UINT iID(0);
   switch (iType) {
     case CItemData::UUID:
-      cs_header.LoadString(IDS_ICON);
+      iID = IDS_ICON;
       break;
     case CItemData::GROUP:
-      cs_header.LoadString(IDS_GROUP);
+      iID = IDS_GROUP;
       break;
     case CItemData::TITLE:
-      cs_header.LoadString(IDS_TITLE);
+      iID = IDS_TITLE;
       break;
     case CItemData::USER:
-      cs_header.LoadString(IDS_USERNAME);
+      iID = IDS_USERNAME;
       break;
     case CItemData::PASSWORD:
-      cs_header.LoadString(IDS_PASSWORD);
+      iID = IDS_PASSWORD;
       break;
     case CItemData::URL:
-      cs_header.LoadString(IDS_URL);
+      iID = IDS_URL;
       break;
     case CItemData::AUTOTYPE:
-      cs_header.LoadString(IDS_AUTOTYPE);
+      iID = IDS_AUTOTYPE;
       break;
     case CItemData::EMAIL:
-      cs_header.LoadString(IDS_EMAIL);
+      iID = IDS_EMAIL;
       break;
     case CItemData::SYMBOLS:
-      cs_header.LoadString(IDS_SYMBOLS);
+      iID = IDS_SYMBOLS;
       break;
     case CItemData::RUNCMD:
-      cs_header.LoadString(IDS_RUNCOMMAND);
+      iID = IDS_RUNCOMMAND;
       break;
     case CItemData::NOTES:
-      cs_header.LoadString(IDS_NOTES);
+      iID = IDS_NOTES;
       break;
     case CItemData::CTIME:        
-      cs_header.LoadString(IDS_CREATED);
+      iID = IDS_CREATED;
       break;
     case CItemData::PMTIME:
-      cs_header.LoadString(IDS_PASSWORDMODIFIED);
+      iID = IDS_PASSWORDMODIFIED;
       break;
     case CItemData::ATIME:
-      cs_header.LoadString(IDS_LASTACCESSED);
+      iID = IDS_LASTACCESSED;
       break;
     case CItemData::XTIME:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+      iID = IDS_PASSWORDEXPIRYDATE;
       break;
     case CItemData::XTIME_INT:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+      iID = IDS_PASSWORDEXPIRYDATEINT;
       break;
     case CItemData::RMTIME:
-      cs_header.LoadString(IDS_LASTMODIFIED);
+      iID = IDS_LASTMODIFIED;
       break;
     case CItemData::POLICY:        
-      cs_header.LoadString(IDS_PWPOLICY);
+      iID = IDS_PWPOLICY;
       break;
     case CItemData::POLICYNAME:        
-      cs_header.LoadString(IDS_POLICYNAME);
+      iID = IDS_POLICYNAME;
       break;
     case CItemData::PROTECTED:        
-      cs_header.LoadString(IDS_PROTECTED);
+      iID = IDS_PROTECTED;
       break;
     case CItemData::KBSHORTCUT:        
-      cs_header.LoadString(IDS_KBSHORTCUT);
+      iID = IDS_KBSHORTCUT;
       break;
     case CItemData::ATTREF:
-      cs_header.LoadString(IDS_ATTREF);
+      iID = IDS_ATTREF;
       break;
+    case CItemData::PWHIST:  // Not displayed in ListView
     default:
-      cs_header.Empty();
+      break;
   }
+
+  if (iID == 0)
+    cs_header.Empty();
+  else
+    cs_header.LoadString(iID);
+
   return cs_header;
 }
 
 int DboxMain::GetHeaderWidth(int iType) const
 {
+  // ***
+  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
+  //   It would be nice to use the compiler to tell us if anything is omitted but
+  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
+  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
+  //   CItemData::LAST_FIELD [260].
+  //   Using CItemData::LAST_DATA does prevent adding "non-data" fields into the
+  //   List View, for example CItemData::ENTRYTYPE.
+  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
+  //   to complain!
+  //   See same comment in DboxMain::InitPasswordSafe & DboxMain::GetHeaderText
+  // ***
   int nWidth(0);
 
   switch (iType) {
@@ -3032,6 +3065,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::RMTIME:
       nWidth = m_iDateTimeFieldWidth;
       break;
+    case CItemData::PWHIST:  // Not displayed in ListView
     default:
       break;
   }
