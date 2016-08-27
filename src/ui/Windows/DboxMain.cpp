@@ -1434,6 +1434,7 @@ void DboxMain::FixListIndexes()
     if (m_bFilterActive &&
         !m_FilterManager.PassesFiltering(*pci, m_core))
       continue;
+
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     pdi->list_index = i;

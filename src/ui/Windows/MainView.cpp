@@ -675,14 +675,20 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   UpdateTreeItem(hItem, ci);
 
   // Deal with List View
+  bool bSortedFieldChanged(false);
+  int iSortColumn = m_nColumnIndexByType[m_iTypeSortColumn];
+
   // Change the first column data - it is empty (as already set)
   if (!m_bImageInLV) {
     sx_fielddata = GetListViewItemText(ci, 0);
   }
 
   sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, 0);
-  if (sx_oldfielddata != sx_fielddata)
+  if (sx_oldfielddata != sx_fielddata) {
     m_ctlItemList.SetItemText(iIndex, 0, sx_fielddata.c_str());
+    if (iSortColumn == 0)
+      bSortedFieldChanged = true;
+  }
 
   if (m_bImageInLV)
     SetEntryImage(iIndex, nImage);
@@ -709,10 +715,31 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   for (int i = 1; i < m_nColumns; i++) {
     sx_fielddata = GetListViewItemText(ci, i);
     sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, i);
-    if (sx_oldfielddata != sx_fielddata)
+    if (sx_oldfielddata != sx_fielddata) {
       m_ctlItemList.SetItemText(iIndex, i, sx_fielddata.c_str());
+      if (iSortColumn == i)
+        bSortedFieldChanged = true;
+    }
   }
-  m_ctlItemList.Update(iIndex);
+
+  // Unfortunately can't just update this one entry as it may have moved
+  // if the field corresponding to the sort column has changed.
+  // If sorted column field unchanged, just update this one entry.
+  // If sorted column field changed, need to refresh the whole List view
+  if (!bSortedFieldChanged)
+    m_ctlItemList.Update(iIndex);
+  else
+    RefreshViews(LISTONLY);
+
+  // The iIndex might have changed as the edit could have changed the position
+  // in the list depending on what entry field has changed
+  for (int iItem = 0; iItem < m_ctlItemList.GetItemCount(); iItem++) {
+    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+    if (ci.GetUUID() == pci->GetUUID()) {
+      m_ctlItemList.EnsureVisible(iItem, false);
+      break;
+    }
+  }
 }
 
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -4221,6 +4248,9 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
   if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) ||
       (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
+
+  // Fix any index issues firat
+  FixListIndexes();
 
   CItemData *pci(NULL);
   POSITION pos;
