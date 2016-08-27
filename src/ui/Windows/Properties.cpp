@@ -12,6 +12,8 @@
 #include "Properties.h"
 #include "InputBox.h"
 
+#include "DboxMain.h"
+
 // CProperties dialog
 
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
@@ -46,9 +48,18 @@ BOOL CProperties::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  CString ngroups;
+  CString ngroups, cs_numGroups;
+#if 0
+  // Use groups based on the entries
   ngroups.Format(IDS_NUMGROUPS_E,
      m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
+#endif
+  // Use groups based on the groups that are displayed in Tree view
+  // cf. Windows Explorer
+  std::vector<std::wstring> vGroups;
+  GetMainDlg()->GetAllGroups(vGroups);
+  cs_numGroups.Format(L"%d", vGroups.size());
+  ngroups.Format(IDS_NUMGROUPS_E, cs_numGroups, m_pdbp->numemptygroups.c_str());
 
   GetDlgItem(IDC_DATABASENAME)->SetWindowText(m_pdbp->database.c_str());
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());
