@@ -1091,6 +1091,10 @@ LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
   // Reset values
   SetHeaderInfo(false);
 
+  // Update row height if added Notes column
+  if (wType == CItemData::NOTES)
+    m_ctlItemList.UpdateRowHeight(true);
+
   // Now show the user
   RefreshViews(LISTONLY);
 
@@ -1111,6 +1115,10 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
   SetHeaderInfo(false);
 
   RestoreColumnWidths();
+
+  // Update row height if deleted Notes column
+  if (wType == CItemData::NOTES)
+    m_ctlItemList.UpdateRowHeight(true);
 
   // Now show the user
   RefreshViews(LISTONLY);

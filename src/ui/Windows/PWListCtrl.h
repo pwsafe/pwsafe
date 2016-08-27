@@ -69,6 +69,9 @@ private:
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
 
+  // Determine if Notes column displayed in List View
+  bool IsNotesColumnPresent();
+
   // Filter
   bool m_bFilterActive;
 
