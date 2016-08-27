@@ -903,10 +903,13 @@ void DboxMain::InitPasswordSafe()
   CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths).c_str();
 
   if (cs_ListColumns.IsEmpty())
-    SetColumns();
+    SetDefaultColumns();
   else
     SetColumns(cs_ListColumns);
 
+  // ***
+  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
+  // ***
   m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
   switch (m_iTypeSortColumn) {
     case CItemData::UUID:  // Used for sorting on Image!
@@ -937,7 +940,7 @@ void DboxMain::InitPasswordSafe()
       break;
   }
 
-  // refresh list will add and size password column if necessary...
+  // Refresh list will add and size password column if necessary...
   RefreshViews();
 
   setupBars(); // Just to keep things a little bit cleaner
@@ -1055,7 +1058,10 @@ LRESULT DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
   }
 
   // Now update header info
-  SetHeaderInfo();
+  SetHeaderInfo(false);
+
+  // Restore saved column widths
+  RestoreColumnWidths();
 
   return 0L;
 }
@@ -1071,7 +1077,7 @@ LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
   AddColumn((int)wType, (int)afterIndex);
 
   // Reset values
-  SetHeaderInfo();
+  SetHeaderInfo(false);
 
   // Now show the user
   RefreshViews(LISTONLY);
@@ -1090,7 +1096,9 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
   DeleteColumn((int)wType);
 
   // Reset values
-  SetHeaderInfo();
+  SetHeaderInfo(false);
+
+  RestoreColumnWidths();
 
   // Now show the user
   RefreshViews(LISTONLY);
@@ -1358,6 +1366,8 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 
   UpdateToolBarDoUndo();
 
+  UpdateStatusBar();
+
   SaveGUIStatusEx(BOTHVIEWS);
 }
 
@@ -1587,7 +1597,6 @@ void DboxMain::ChangeOkUpdate()
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
            m_core.HasAnythingChanged() ? TRUE : FALSE);
   }
-  UpdateStatusBar();
 }
 
 void DboxMain::OnAbout()
@@ -2736,7 +2745,7 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
-      s = m_core.HasDBChanged() ? L"*" : L" ";
+      s = m_core.HasAnythingChanged() ? L"*" : L" ";
       s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);

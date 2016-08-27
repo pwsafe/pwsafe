@@ -1798,7 +1798,6 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   }
 
   m_ilastaction = iaction;
-  UpdateStatusBar();
 }
 
 void DboxMain::OnShowFindToolbar()

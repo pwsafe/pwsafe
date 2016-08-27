@@ -294,7 +294,9 @@ public:
   void UpdateListItemPassword(const int lindex, const StringX &sxnewPassword)
   {UpdateListItemField(lindex, CItemData::PASSWORD, sxnewPassword);}
   
-  void SetHeaderInfo();
+  void SetHeaderInfo(const bool bSetWidths = true);
+  void RestoreColumnWidths();
+  void SaveColumnWidths();
   CString GetHeaderText(int iType) const;
   int GetHeaderWidth(int iType) const;
   void CalcHeaderWidths();
@@ -867,6 +869,7 @@ private:
   int m_nColumnTypeByIndex[CItem::LAST_DATA];
   int m_nColumnWidthByIndex[CItem::LAST_DATA];
   int m_nColumnHeaderWidthByType[CItem::LAST_DATA];
+  int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
@@ -904,7 +907,7 @@ private:
   void RestoreGroupDisplayState();
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
-  void SetColumns();  // default order
+  void SetDefaultColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);
   void SetupColumnChooser(const bool bShowHide);

@@ -337,6 +337,7 @@ void DboxMain::OnOptions()
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
     m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
+
     // Make a sunken or recessed border around the first pane
     m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
                             m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
