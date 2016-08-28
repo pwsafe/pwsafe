@@ -17,7 +17,7 @@ been specified.
 positions or columns are added or removed.
 [] The user specified Notes font is now also applied to the Notes column in the
 List view.
-[] Entry Protected sttaus and AutoType string is now correclty displayed in the
+[] Entry Protected state and AutoType string is now correctly displayed in the
 List view.
 [] After entry has been edited from List View, it now remains visible after
 Edit/Undo/Redo even if the change alters its position within the view.
