@@ -904,7 +904,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
     case PWSfile::VCURRENT:
     case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
-        int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+        unsigned int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
         std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
@@ -2291,7 +2291,6 @@ int PasswordSafeFrame::New()
 
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
-  wxString cs_msg, cs_title, cs_temp;
   wxString cs_text(_("Please choose a name for the new database"));
 
   wxString cf(wxT("pwsafe")); // reasonable default for first time user

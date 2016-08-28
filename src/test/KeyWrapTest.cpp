@@ -18,7 +18,7 @@
 
 static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,
                                 const unsigned char *eout,
-                                const unsigned char *key, int keylen);
+                                const unsigned char *key, unsigned int keylen);
 
 TEST(KeyWrapTest, AES_keywrap)
 {
@@ -86,7 +86,7 @@ TEST(KeyWrapTest, AES_keywrap)
 
 static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,
                                 const unsigned char *eout,
-                                const unsigned char *key, int keylen)
+                                const unsigned char *key, unsigned int keylen)
 {
   unsigned char *otmp = NULL, *ptmp = NULL;
   int ret = 0;

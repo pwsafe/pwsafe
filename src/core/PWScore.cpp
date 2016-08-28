@@ -42,7 +42,7 @@ extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 using pws_os::CUUID;
 
 unsigned char PWScore::m_session_key[32];
-unsigned char PWScore::m_session_initialized = false;
+bool PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
@@ -1184,7 +1184,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     if (ibak_number_str.find_first_not_of(_T("0123456789")) != stringT::npos)
       continue;
     istringstreamT is(ibak_number_str);
-    int n;
+    unsigned int n;
     is >> n;
     file_nums.push_back(n);
   }
@@ -1208,7 +1208,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
       nnn++;
     // Now we need to determine who to delete.
     size_t next = 999 - (maxnumincbackups - nnn);
-    int m = 1;
+    unsigned int m = 1;
     for (x = 0; x < file_nums.size(); x++)
       if (file_nums[x] < next)
         file_nums[x] = next <= 999 ? next++ : m++;
@@ -1231,7 +1231,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   }
 }
 
-bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
+bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
                             const stringT &userBackupPrefix,
                             const stringT &userBackupDir, stringT &bu_fname)
 {

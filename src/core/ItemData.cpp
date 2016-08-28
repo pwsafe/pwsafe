@@ -1933,7 +1933,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       break;
     default:
       // unknowns!
-      SetUnknownField(char(type), len, data);
+      SetUnknownField(type, len, data);
       break;
   }
   return true;

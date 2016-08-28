@@ -67,7 +67,7 @@ wstring pws_os::towc(const char *val)
 {
   wstring retval(L"");
   assert(val != NULL);
-  int len = strlen(val);
+  size_t len = strlen(val);
   int wsize;
   const char *p = val;
   wchar_t wvalue;

@@ -48,7 +48,7 @@ public:
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-  int WriteContentFields(unsigned char *content, size_t len);
+  size_t WriteContentFields(unsigned char *content, size_t len);
   // Following allocates content, caller responsible for deallocating
   size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);

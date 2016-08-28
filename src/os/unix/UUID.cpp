@@ -73,7 +73,7 @@ pws_os::CUUID::CUUID(const StringX &s)
   unsigned char *uu = m_uuid;
 
   int x;
-  for (int i = 0; i < 16; i++) {
+  for (unsigned int i = 0; i < 16; i++) {
     iStringXStream is(s.substr(i*2, 2));
     is >> hex >> x;
     uu[i] = static_cast<unsigned char>(x);

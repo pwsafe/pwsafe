@@ -38,7 +38,7 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
   ulong32  blkno;
   unsigned long stored, left, x, y;
   unsigned char *buf[2];
-  const int BlockSize = hmac->GetBlockSize();
+  const unsigned int BlockSize = hmac->GetBlockSize();
 
   ASSERT(password != NULL);
   ASSERT(salt     != NULL);

@@ -309,7 +309,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
 
   const size_t N = sx_autotype.length();
   const StringX sxZeroes = _T("000");
-  int gNumIts;
+  unsigned int gNumIts;
 
   for (size_t n = 0; n < N; n++){
     curChar = sx_autotype[n];
@@ -577,7 +577,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           ks.SendString(sxtmp);
           // start collecting new delay
           sxtmp = _T("");
-          int newdelay = 0;
+          unsigned int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sxautotype[n])) {
@@ -643,7 +643,6 @@ static UINT ParseRunCommand(const StringX &sxInputString,
                             stringT &serrmsg, StringX::size_type &st_column)
 {
   // tokenize into separate elements
-  std::vector<st_RunCommandTokens>::iterator rc_iter;
   std::vector<size_t> v_pos;
   StringX::iterator str_Iter;
   st_RunCommandTokens st_rctoken;
@@ -684,7 +683,7 @@ static UINT ParseRunCommand(const StringX &sxInputString,
       st_rctoken.sxname = sxInputString.substr(st_startpos, st_next - st_startpos);
       st_rctoken.sxindex = _T("");
       st_rctoken.index = 0;
-      st_rctoken.is_variable  = st_startpos == 0 ? false : true;
+      st_rctoken.is_variable  = st_startpos != 0;
       st_rctoken.has_brackets = false;
       v_rctokens.push_back(st_rctoken);
       v_pos.push_back(st_startpos);
