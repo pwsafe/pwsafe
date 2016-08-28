@@ -907,50 +907,12 @@ void DboxMain::InitPasswordSafe()
   else
     SetColumns(cs_ListColumns);
 
-  // ***
-  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
-  //   It would be nice to use the compiler to tell us if anything is omitted but
-  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
-  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
-  //   CItemData::LAST_FIELD [260].
-  //   Using CItemData::LAST_DATA does prevent adding "non-data" fields into the
-  //   List View, for example CItemData::ENTRYTYPE.
-  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
-  //   to complain!
-  //   See same comment in DboxMain::GetHeaderText & DboxMain::GetHeaderWidth
-  // ***
-  m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
-  switch (m_iTypeSortColumn) {
-    case CItemData::UUID:  // Used for sorting on Image!
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::NOTES:
-    case CItemData::PASSWORD:
-    case CItemData::CTIME:
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::XTIME:
-    case CItemData::XTIME_INT:
-    case CItemData::RMTIME:
-    case CItemData::URL:
-    case CItemData::EMAIL:
-    case CItemData::SYMBOLS:
-    case CItemData::RUNCMD:
-    case CItemData::AUTOTYPE:
-    case CItemData::POLICY:
-    case CItemData::POLICYNAME:
-    case CItemData::PROTECTED:
-    case CItemData::KBSHORTCUT:
-    case CItemData::ATTREF:
-      break;
-    case CItemData::PWHIST:  // Not displayed in ListView
-      break;
-    default:
-      // Title is a mandatory column - so can't go wrong!
-      m_iTypeSortColumn = CItemData::TITLE;
-      break;
-  }
+  CString cs_Header;  /* Not used here but needed for GetHeaderColumnProperties call */
+  int iWidth;         /* Not used here but needed for GetHeaderColumnProperties call */
+  int iType;
+  iType = m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
+
+  GetHeaderColumnProperties(iType, cs_Header, iWidth, m_iTypeSortColumn);
 
   // Refresh list will add and size password column if necessary...
   RefreshViews();

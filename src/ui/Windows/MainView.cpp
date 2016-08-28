@@ -2567,26 +2567,28 @@ void DboxMain::SetDefaultColumns()
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                  rect.Width() / 3, false);
 
-  cs_header = GetHeaderText(CItemData::TITLE);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
+  GetHeaderColumnProperties(CItemData::TITLE, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(0, cs_header);
   hdi.lParam = CItemData::TITLE;
   m_LVHdrCtrl.SetItem(0, &hdi);
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
 
-  cs_header = GetHeaderText(CItemData::USER);
+  GetHeaderColumnProperties(CItemData::USER, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(1, cs_header);
   hdi.lParam = CItemData::USER;
   m_LVHdrCtrl.SetItem(1, &hdi);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
 
-  cs_header = GetHeaderText(CItemData::NOTES);
+  GetHeaderColumnProperties(CItemData::NOTES, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(2, cs_header);
   hdi.lParam = CItemData::NOTES;
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-    cs_header = GetHeaderText(CItemData::PASSWORD);
+    GetHeaderColumnProperties(CItemData::PASSWORD, cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
@@ -2602,8 +2604,9 @@ void DboxMain::SetDefaultColumns()
                                     CItemData::XTIME, CItemData::RMTIME,
                                     CItemData::POLICY,
   };
+
   for (int i = 0; i < sizeof(defCols)/sizeof(defCols[0]); i++) {
-    cs_header = GetHeaderText(defCols[i]);
+    GetHeaderColumnProperties(defCols[i], cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
     hdi.lParam = defCols[i];
     m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
@@ -2652,11 +2655,13 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   }
 
   int icol(0);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
     iType = *vi_IterColumns;
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     // Images (if present) must be the first column!
     if (iType == CItemData::UUID && icol != 0)
       continue;
@@ -2719,6 +2724,8 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
 {
   // Add new column of type iType after current column index iIndex
   CString cs_header;
+  int iWidth;
+  int iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
   HDITEM hdi;
   int iNewIndex(iIndex);
 
@@ -2727,12 +2734,12 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
     iNewIndex = m_nColumns;
 
   hdi.mask = HDI_LPARAM | HDI_WIDTH;
-  cs_header = GetHeaderText(iType);
+  GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
   ASSERT(!cs_header.IsEmpty());
   iNewIndex = m_ctlItemList.InsertColumn(iNewIndex, cs_header);
   ASSERT(iNewIndex != -1);
   hdi.lParam = iType;
-  hdi.cxy = GetHeaderWidth(iType);
+  hdi.cxy = iWidth;
   m_LVHdrCtrl.SetItem(iNewIndex, &hdi);
 }
 
@@ -2933,13 +2940,15 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
 
   // and repopulate
   int iItem;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (i = CItem::LAST_DATA - 1; i >= 0; i--) {
     // Can't play with Title or User columns
     if (i == CItemData::TITLE || i == CItemData::USER)
       continue;
 
     if (m_nColumnIndexByType[i] == -1) {
-      cs_header = GetHeaderText(i);
+      GetHeaderColumnProperties(i, cs_header, iWidth, iSortColumn);
       if (!cs_header.IsEmpty()) {
         iItem = m_pCC->m_ccListCtrl.InsertItem(0, cs_header);
         m_pCC->m_ccListCtrl.SetItemData(iItem, (DWORD)i);
@@ -2952,7 +2961,8 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
     m_pCC->ShowWindow(m_pCC->IsWindowVisible() ? SW_HIDE : SW_SHOW);
 }
 
-CString DboxMain::GetHeaderText(int iType) const
+void DboxMain::GetHeaderColumnProperties(const int &iType, CString &cs_Header, int &iWidth,
+  int &iSortColumn)
 {
   // ***
   //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
@@ -2960,14 +2970,14 @@ CString DboxMain::GetHeaderText(int iType) const
   //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
   //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
   //   CItemData::LAST_FIELD [260].
-  //   Using CItemData::LAST_DATA does prevent adding "non-data" fields into the
-  //   List View, for example CItemData::ENTRYTYPE.
+  //   The one field outside CItemData::LAST_DATA is CItemData::ENTRYTYPE but this
+  //   is shown by the image in the CItemData::UUID column if selected
   //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
   //   to complain!
-  //   See same comment in DboxMain::InitPasswordSafe & & DboxMain::GetHeaderWidth
   // ***
 
-  CString cs_header;
+  cs_Header.Empty();
+  iWidth = m_nColumnHeaderWidthByType[iType];
   UINT iID(0);
   switch (iType) {
     case CItemData::UUID:
@@ -3005,21 +3015,26 @@ CString DboxMain::GetHeaderText(int iType) const
       break;
     case CItemData::CTIME:        
       iID = IDS_CREATED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::PMTIME:
       iID = IDS_PASSWORDMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::ATIME:
       iID = IDS_LASTACCESSED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME:
       iID = IDS_PASSWORDEXPIRYDATE;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME_INT:
       iID = IDS_PASSWORDEXPIRYDATEINT;
       break;
     case CItemData::RMTIME:
       iID = IDS_LASTMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::POLICY:        
       iID = IDS_PWPOLICY;
@@ -3037,66 +3052,15 @@ CString DboxMain::GetHeaderText(int iType) const
       iID = IDS_ATTREF;
       break;
     case CItemData::PWHIST:  // Not displayed in ListView
+      break;
     default:
+      // Not found, however as Title is a mandatory column - so can't go wrong!
+      iSortColumn = CItemData::TITLE;
       break;
   }
 
-  if (iID == 0)
-    cs_header.Empty();
-  else
-    cs_header.LoadString(iID);
-
-  return cs_header;
-}
-
-int DboxMain::GetHeaderWidth(int iType) const
-{
-  // ***
-  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
-  //   It would be nice to use the compiler to tell us if anything is omitted but
-  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
-  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
-  //   CItemData::LAST_FIELD [260].
-  //   Using CItemData::LAST_DATA does prevent adding "non-data" fields into the
-  //   List View, for example CItemData::ENTRYTYPE.
-  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
-  //   to complain!
-  //   See same comment in DboxMain::InitPasswordSafe & DboxMain::GetHeaderText
-  // ***
-  int nWidth(0);
-
-  switch (iType) {
-    case CItemData::UUID:
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::PASSWORD:
-    case CItemData::NOTES:
-    case CItemData::URL:
-    case CItemData::AUTOTYPE:
-    case CItemData::EMAIL:
-    case CItemData::PROTECTED:
-    case CItemData::SYMBOLS:
-    case CItemData::RUNCMD:
-    case CItemData::POLICY:
-    case CItemData::POLICYNAME: 
-    case CItemData::XTIME_INT:
-    case CItemData::KBSHORTCUT:
-    case CItemData::ATTREF:
-      nWidth = m_nColumnHeaderWidthByType[iType];
-      break;
-    case CItemData::CTIME:        
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::XTIME:
-    case CItemData::RMTIME:
-      nWidth = m_iDateTimeFieldWidth;
-      break;
-    case CItemData::PWHIST:  // Not displayed in ListView
-    default:
-      break;
-  }
-  return nWidth;
+  if (iID != 0)
+    cs_Header.LoadString(iID);
 }
 
 void DboxMain::CalcHeaderWidths()
@@ -3125,9 +3089,10 @@ void DboxMain::CalcHeaderWidths()
 
   m_iheadermaxwidth = -1;
   CString cs_header;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
 
   for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     if (!cs_header.IsEmpty())
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;
     else

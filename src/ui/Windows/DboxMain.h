@@ -297,8 +297,8 @@ public:
   void SetHeaderInfo(const bool bSetWidths = true);
   void RestoreColumnWidths();
   void SaveColumnWidths();
-  CString GetHeaderText(int iType) const;
-  int GetHeaderWidth(int iType) const;
+  void GetHeaderColumnProperties(const int &iType, CString &csText, int &iWidth,
+    int &iSortColumn);
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
