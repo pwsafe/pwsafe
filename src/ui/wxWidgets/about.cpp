@@ -291,7 +291,6 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Clear();
   *m_newVerStatus << _("Trying to contact server...");
   m_newVerStatus->Show();
-  stringT latext_xml;
   wxURL url(L"https://pwsafe.org/latest.xml");
   CheckVersion::CheckStatus status = CheckVersion::UP2DATE;
   stringT latest_xml;

@@ -223,7 +223,7 @@ TEST_F(FileV4Test, AttTest)
 
 TEST_F(FileV4Test, HdrItemAttTest)
 {
-  PWSfileHeader hdr1, hdr2;
+  PWSfileHeader hdr1;
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
 
   pws_os::CUUID att_uuid = attItem.GetUUID();

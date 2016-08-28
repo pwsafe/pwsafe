@@ -40,7 +40,6 @@ ItemAttTest::ItemAttTest()
 {
   fullfileName = pws_os::fullpath(L"data/image1.jpg");
 
-  stringT sFileName, sFilePath;
   stringT sDrive, sDir, sFName, sExtn;
   pws_os::splitpath(fullfileName, sDrive, sDir, sFName, sExtn);
   fileName = sFName + sExtn;
