@@ -726,18 +726,32 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   // if the field corresponding to the sort column has changed.
   // If sorted column field unchanged, just update this one entry.
   // If sorted column field changed, need to refresh the whole List view
-  if (!bSortedFieldChanged)
+  if (!bSortedFieldChanged) {
     m_ctlItemList.Update(iIndex);
-  else
+  }  else {
+    // Unselect current entry
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    while (pos) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
+      m_ctlItemList.SetItemState(i, 0, LVIS_FOCUSED | LVIS_SELECTED);
+    }
+
+    // Would like to just sort the list but this seems to leave both the old and the
+    // new list entry visible on Undo until Refresh(F5) performed.  So refresh list
     RefreshViews(LISTONLY);
 
-  // The iIndex might have changed as the edit could have changed the position
-  // in the list depending on what entry field has changed
-  for (int iItem = 0; iItem < m_ctlItemList.GetItemCount(); iItem++) {
-    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
-    if (ci.GetUUID() == pci->GetUUID()) {
-      m_ctlItemList.EnsureVisible(iItem, false);
-      break;
+    // The iIndex might have changed as the edit could have changed the position
+    // in the list depending on what entry field has changed
+    for (int iItem = 0; iItem < m_ctlItemList.GetItemCount(); iItem++) {
+      CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+      if (ci.GetUUID() == pci->GetUUID()) {
+        // Now reselect it and make visible
+        m_ctlItemList.SetItemState(iItem,
+                                   LVIS_FOCUSED | LVIS_SELECTED,
+                                   LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.EnsureVisible(iItem, false);
+        break;
+      }
     }
   }
 }
@@ -2326,10 +2340,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         m_ctlItemList.SetUpFont();
         m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
 
-        // Recalculate header widths
+        // Recalculate header widths but don't change column widths
         CalcHeaderWidths();
-        // Reset column widths
-        AutoResizeColumns();
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
@@ -2345,6 +2357,9 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       case CFontsDialog::NOTESFONT:
         // Transfer the new font to the Notes field
         pFonts->SetNotesFont(&lf);
+
+        // Recalculating row height
+        m_ctlItemList.UpdateRowHeight(true);
         break;
       case CFontsDialog::VKEYBOARDFONT:
         // Note Virtual Keyboard font is not kept in Fonts class - so set manually
@@ -2759,11 +2774,13 @@ void DboxMain::SetHeaderInfo(const bool bSetWidths)
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItem::LAST_DATA; i++)
-    m_nColumnIndexByType[i] = 
-    m_nColumnIndexByOrder[i] =
-    m_nColumnTypeByIndex[i] =
-    m_nColumnWidthByIndex[i] = -1;
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
+    m_nColumnIndexByType[i] = m_nColumnIndexByOrder[i] =  m_nColumnTypeByIndex[i] = -1;
+
+    // Only reset column width if we are going to set them
+    if (bSetWidths)
+      m_nColumnWidthByIndex[i] = -1;
+  }
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
@@ -4213,9 +4230,6 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
   if ((m_ctlItemList.IsWindowVisible() && m_ctlItemList.GetItemCount() == 0) ||
       (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
-
-  // Fix any index issues firat
-  FixListIndexes();
 
   CItemData *pci(NULL);
   POSITION pos;
