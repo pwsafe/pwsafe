@@ -10,7 +10,6 @@
 // CProperties dialog - this is what's displayed when user selects File->Properties
 
 #include "PWDialog.h"
-#include "TBMStatic.h"
 
 #include "core/PWScore.h"
 
@@ -30,7 +29,6 @@ public:
 protected:
   CStatic m_stc_name;
   CStatic m_stc_description;
-  CTBMStatic m_Help;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();

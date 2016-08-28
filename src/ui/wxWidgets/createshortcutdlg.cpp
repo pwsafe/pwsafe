@@ -99,7 +99,7 @@ void CreateShortcutDlg::ItemFieldsToDialog()
 {
   // Populate the combo box
   std::vector<stringT> aryGroups;
-  m_core.GetUniqueGroups(aryGroups);
+  m_core.GetAllGroups(aryGroups);
   for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
     m_groupCtrl->Append(aryGroups[igrp].c_str());
   }

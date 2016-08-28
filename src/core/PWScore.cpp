@@ -1745,26 +1745,9 @@ bool PWScore::HasRUEListChanged() const
          (m_hdr.m_RUEList != m_InitialRUEList);
 }
 
-// GetUniqueGroups - returns an array of all group names, with no duplicates.
-void PWScore::GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const
-{
-  // use the fact that set eliminates dups for us
-  std::set<stringT> setGroups;
 
-  ItemListConstIter iter;
-
-  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
-    const CItemData &ci = iter->second;
-    if (ci.IsGroupSet())
-      setGroups.insert(ci.GetGroup().c_str());
-  }
-
-  vUniqueGroups.clear();
-  // copy unique results from set to caller's vector
-  copy(setGroups.begin(), setGroups.end(), back_inserter(vUniqueGroups));
-}
-
-// GetAllGroups - returns an array of all group names (Exploter style), with no duplicates.
+// GetAllGroups - returns an array of all unique group prefix names
+// e.g., "A", "A.B", "A.B.C"
 void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
 {
   // use the fact that set eliminates dups for us
@@ -1784,7 +1767,7 @@ void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
         sxGroup.erase(0, pos + 1);
       }
 
-      if (vTokens.size() == 0) {
+      if (vTokens.empty()) {
         // Only one token == original group
         sxPath = sxGroup;
       } else {
@@ -1810,7 +1793,7 @@ void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
       sxGroup.erase(0, pos + 1);
     }
 
-    if (vTokens.size() == 0) {
+    if (vTokens.empty()) {
       // Only one token == original group
       sxPath = sxGroup;
     } else {
@@ -3502,11 +3485,9 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
                           m_hdr.m_nCurrentMajorVersion,
                           m_hdr.m_nCurrentMinorVersion);
 
-  std::vector<std::wstring> vUniqueGroups, vAllGroups;
-  GetUniqueGroups(vUniqueGroups);
+  std::vector<std::wstring> vAllGroups;
   GetAllGroups(vAllGroups);
-  Format(st_dbp.numgroups, L"%d / %d", vAllGroups.size() + m_vEmptyGroups.size(),
-                                       vUniqueGroups.size() + m_vEmptyGroups.size());
+  Format(st_dbp.numgroups, L"%d", vAllGroups.size() + m_vEmptyGroups.size());
   Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)

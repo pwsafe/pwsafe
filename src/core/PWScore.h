@@ -253,8 +253,8 @@ public:
   // Set application data
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
 
-  // Return list of unique groups
-  void GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const;
+  // GetAllGroups - returns an array of all unique group prefix names in m_pwlist
+  // e.g., "A", "A.B", "A.B.C"
   void GetAllGroups(std::vector<stringT> &vAllGroups) const;
   // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,

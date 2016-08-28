@@ -769,4 +769,3 @@
 #define IDS_NO_DB                       6022
 #define IDS_SAVEDRESTOREDDB             6023
 #define IDS_UNSAVEDRESTOREDDB           6024
-#define IDS_GROUPCOUNTHELP              6025

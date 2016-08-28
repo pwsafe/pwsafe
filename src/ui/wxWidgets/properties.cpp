@@ -114,7 +114,7 @@ void CProperties::Init()
                                       m_core.GetHeader().m_nCurrentMajorVersion,
                                       m_core.GetHeader().m_nCurrentMinorVersion);
   std::vector<stringT> aryGroups;
-  m_core.GetUniqueGroups(aryGroups);
+  m_core.GetAllGroups(aryGroups);
   auto nEmptyGroups = m_core.GetEmptyGroups().size();
   m_numgroups << aryGroups.size() +  nEmptyGroups
               << wxT(" (") << nEmptyGroups << _(" empty)");

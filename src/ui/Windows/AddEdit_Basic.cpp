@@ -288,7 +288,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
 
-  // The core function "GetUniqueGroups(vGroups)" returns the group list by
+  // The core function "GetAllGroups(vGroups)" returns the group list by
   // going through the entries in the database. This will not include empty
   // groups.  However, we already maintain this list in the UI to save the
   // display status, so use this instead.
