@@ -217,13 +217,19 @@ BOOL COptionsShortcuts::OnInitDialog()
   m_EntryShortcutLC.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER); // TITLE
   m_EntryShortcutLC.SetColumnWidth(3, LVSCW_AUTOSIZE_USEHEADER); // USER
 
-  m_Help1.Init(IDB_QUESTIONMARK);
-  m_Help2.Init(IDB_QUESTIONMARK);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
-  AddTool(IDC_ENTSHORTCUTLISTHELP, IDS_KBS_TOOLTIP1);
-  AddTool(IDC_SHORTCUTLISTHELP, IDS_SHCT_TOOLTIP);
-  ActivateToolTip();
+    AddTool(IDC_ENTSHORTCUTLISTHELP, IDS_KBS_TOOLTIP1);
+    AddTool(IDC_SHORTCUTLISTHELP, IDS_SHCT_TOOLTIP);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }

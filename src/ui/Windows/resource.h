@@ -849,7 +849,7 @@
 #define IDC_LOCKONMINIMIZEHELP          1545
 #define IDC_LOCKONWORKSTATIONLOCKHELP   1546
 #define IDC_LOCKONIDLEHELP              1547
-
+#define IDC_GROUPCOUNTHELP              1548
 
 // Next default values for new objects
 // 
@@ -857,7 +857,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        548
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1548
+#define _APS_NEXT_CONTROL_VALUE         1549
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

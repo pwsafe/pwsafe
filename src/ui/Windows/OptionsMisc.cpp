@@ -156,16 +156,24 @@ BOOL COptionsMisc::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_AutotypeDelay);
 
-  m_Help1.Init(IDB_QUESTIONMARK);
-  m_Help2.Init(IDB_QUESTIONMARK);
-  m_Help3.Init(IDB_QUESTIONMARK);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
-  AddTool(IDC_MAINTAINDATETIMESTAMPSHELP, IDS_MAINTAINDATETIMESTAMPS);
-  AddTool(IDC_OTHERBROWSERLOCATIONHELP,   IDS_OTHERBROWSERLOCATION);
-  AddTool(IDC_OTHEREDITORLOCATIONHELP,    IDS_OTHEREDITORLOCATION);
-  ActivateToolTip();
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_MAINTAINDATETIMESTAMPSHELP, IDS_MAINTAINDATETIMESTAMPS);
+    AddTool(IDC_OTHERBROWSERLOCATIONHELP, IDS_OTHERBROWSERLOCATION);
+    AddTool(IDC_OTHEREDITORLOCATIONHELP, IDS_OTHEREDITORLOCATION);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }

@@ -1764,6 +1764,71 @@ void PWScore::GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const
   copy(setGroups.begin(), setGroups.end(), back_inserter(vUniqueGroups));
 }
 
+// GetAllGroups - returns an array of all group names (Exploter style), with no duplicates.
+void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
+{
+  // use the fact that set eliminates dups for us
+  std::set<stringT> setGroups;
+
+  ItemListConstIter iter;
+
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    const CItemData &ci = iter->second;
+    if (ci.IsGroupSet()) {
+      StringX sxPath, token, sxGroup = ci.GetGroup();
+      std::vector<StringX> vTokens;
+      size_t pos = 0;
+      while ((pos = sxGroup.find(_T('.'))) != StringX::npos) {
+        token = sxGroup.substr(0, pos);
+        vTokens.push_back(token);
+        sxGroup.erase(0, pos + 1);
+      }
+
+      if (vTokens.size() == 0) {
+        // Only one token == original group
+        sxPath = sxGroup;
+      } else {
+        sxPath = vTokens[0];
+      }
+
+      setGroups.insert(sxPath.c_str());
+      for (size_t i = 1; i < vTokens.size(); i++) {
+        sxPath += StringX(_T(".")) + vTokens[i];
+        setGroups.insert(sxPath.c_str());
+      }
+    }
+  }
+
+  // Now add Empty groups in the same manner
+  for (size_t iEG = 0; iEG < m_vEmptyGroups.size(); iEG++) {
+    StringX sxPath, token, sxGroup = m_vEmptyGroups[iEG];
+    std::vector<StringX> vTokens;
+    size_t pos = 0;
+    while ((pos = sxGroup.find(_T('.'))) != StringX::npos) {
+      token = sxGroup.substr(0, pos);
+      vTokens.push_back(token);
+      sxGroup.erase(0, pos + 1);
+    }
+
+    if (vTokens.size() == 0) {
+      // Only one token == original group
+      sxPath = sxGroup;
+    } else {
+      sxPath = vTokens[0];
+    }
+
+    setGroups.insert(sxPath.c_str());
+    for (size_t i = 1; i < vTokens.size(); i++) {
+      sxPath += StringX(_T(".")) + vTokens[i];
+      setGroups.insert(sxPath.c_str());
+    }
+  }
+
+  vAllGroups.clear();
+  // copy unique results from set to caller's vector
+  copy(setGroups.begin(), setGroups.end(), back_inserter(vAllGroups));
+}
+
 // GetPolicyNames - returns an array of all password policy names
 // They are in sort order as a map is always sorted by its key
 void PWScore::GetPolicyNames(std::vector<stringT> &vNames) const
@@ -3437,9 +3502,11 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
                           m_hdr.m_nCurrentMajorVersion,
                           m_hdr.m_nCurrentMinorVersion);
 
-  std::vector<std::wstring> aryGroups;
-  GetUniqueGroups(aryGroups);
-  Format(st_dbp.numgroups, L"%d", aryGroups.size() + m_vEmptyGroups.size());
+  std::vector<std::wstring> vUniqueGroups, vAllGroups;
+  GetUniqueGroups(vUniqueGroups);
+  GetAllGroups(vAllGroups);
+  Format(st_dbp.numgroups, L"%d / %d", vAllGroups.size() + m_vEmptyGroups.size(),
+                                       vUniqueGroups.size() + m_vEmptyGroups.size());
   Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)

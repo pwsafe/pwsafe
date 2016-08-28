@@ -26,13 +26,14 @@ DboxMain *CPWPropertyPage::GetMainDlg() const
   return app.GetMainDlg();
 }
 
-void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
+bool CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, Flags)) {
     pws_os::Trace(L"Unable To create ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
+    return false;
   } else {
     EnableToolTips();
     // Delay initial show & reshow
@@ -49,6 +50,7 @@ void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
     }
     m_pToolTipCtrl->SetMaxTipWidth(300);
   }
+  return true;
 }
 
 void CPWPropertyPage::AddTool(int DlgItemID, int ResID)

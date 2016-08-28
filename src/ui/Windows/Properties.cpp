@@ -36,6 +36,8 @@ void CProperties::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE_NAME, m_stc_name);
   DDX_Control(pDX, IDC_DATABASE_DESCRIPTION, m_stc_description);
+
+  DDX_Control(pDX, IDC_GROUPCOUNTHELP, m_Help);
 }
 
 BEGIN_MESSAGE_MAP(CProperties, CPWDialog)
@@ -48,18 +50,10 @@ BOOL CProperties::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  CString ngroups, cs_numGroups;
-#if 0
-  // Use groups based on the entries
+  CString ngroups;
+  // Use groups based on Explorer type tree and the number of entries
   ngroups.Format(IDS_NUMGROUPS_E,
      m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
-#endif
-  // Use groups based on the groups that are displayed in Tree view
-  // cf. Windows Explorer
-  std::vector<std::wstring> vGroups;
-  GetMainDlg()->GetAllGroups(vGroups);
-  cs_numGroups.Format(L"%d", vGroups.size());
-  ngroups.Format(IDS_NUMGROUPS_E, cs_numGroups, m_pdbp->numemptygroups.c_str());
 
   GetDlgItem(IDC_DATABASENAME)->SetWindowText(m_pdbp->database.c_str());
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());
@@ -106,11 +100,23 @@ BOOL CProperties::OnInitDialog()
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
   }
 
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help.Init(IDB_QUESTIONMARK);
+
+    AddTool(IDC_GROUPCOUNTHELP, IDS_GROUPCOUNTHELP);
+    ActivateToolTip();
+  } else {
+    m_Help.EnableWindow(FALSE);
+    m_Help.ShowWindow(SW_HIDE);
+  }
+
   return TRUE;
 }
 
 BOOL CProperties::PreTranslateMessage(MSG *pMsg)
 {
+  RelayToolTipEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
     PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
     return TRUE;
