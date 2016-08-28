@@ -675,14 +675,20 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   UpdateTreeItem(hItem, ci);
 
   // Deal with List View
+  bool bSortedFieldChanged(false);
+  int iSortColumn = m_nColumnIndexByType[m_iTypeSortColumn];
+
   // Change the first column data - it is empty (as already set)
   if (!m_bImageInLV) {
     sx_fielddata = GetListViewItemText(ci, 0);
   }
 
   sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, 0);
-  if (sx_oldfielddata != sx_fielddata)
+  if (sx_oldfielddata != sx_fielddata) {
     m_ctlItemList.SetItemText(iIndex, 0, sx_fielddata.c_str());
+    if (iSortColumn == 0)
+      bSortedFieldChanged = true;
+  }
 
   if (m_bImageInLV)
     SetEntryImage(iIndex, nImage);
@@ -709,10 +715,45 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   for (int i = 1; i < m_nColumns; i++) {
     sx_fielddata = GetListViewItemText(ci, i);
     sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, i);
-    if (sx_oldfielddata != sx_fielddata)
+    if (sx_oldfielddata != sx_fielddata) {
       m_ctlItemList.SetItemText(iIndex, i, sx_fielddata.c_str());
+      if (iSortColumn == i)
+        bSortedFieldChanged = true;
+    }
   }
-  m_ctlItemList.Update(iIndex);
+
+  // Unfortunately can't just update this one entry as it may have moved
+  // if the field corresponding to the sort column has changed.
+  // If sorted column field unchanged, just update this one entry.
+  // If sorted column field changed, need to refresh the whole List view
+  if (!bSortedFieldChanged) {
+    m_ctlItemList.Update(iIndex);
+  }  else {
+    // Unselect current entry
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    while (pos) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
+      m_ctlItemList.SetItemState(i, 0, LVIS_FOCUSED | LVIS_SELECTED);
+    }
+
+    // Would like to just sort the list but this seems to leave both the old and the
+    // new list entry visible on Undo until Refresh(F5) performed.  So refresh list
+    RefreshViews(LISTONLY);
+
+    // The iIndex might have changed as the edit could have changed the position
+    // in the list depending on what entry field has changed
+    for (int iItem = 0; iItem < m_ctlItemList.GetItemCount(); iItem++) {
+      CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+      if (ci.GetUUID() == pci->GetUUID()) {
+        // Now reselect it and make visible
+        m_ctlItemList.SetItemState(iItem,
+                                   LVIS_FOCUSED | LVIS_SELECTED,
+                                   LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.EnsureVisible(iItem, false);
+        break;
+      }
+    }
+  }
 }
 
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -2299,10 +2340,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         m_ctlItemList.SetUpFont();
         m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
 
-        // Recalculate header widths
+        // Recalculate header widths but don't change column widths
         CalcHeaderWidths();
-        // Reset column widths
-        AutoResizeColumns();
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
@@ -2318,6 +2357,9 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       case CFontsDialog::NOTESFONT:
         // Transfer the new font to the Notes field
         pFonts->SetNotesFont(&lf);
+
+        // Recalculating row height
+        m_ctlItemList.UpdateRowHeight(true);
         break;
       case CFontsDialog::VKEYBOARDFONT:
         // Note Virtual Keyboard font is not kept in Fonts class - so set manually
@@ -2540,26 +2582,28 @@ void DboxMain::SetDefaultColumns()
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                  rect.Width() / 3, false);
 
-  cs_header = GetHeaderText(CItemData::TITLE);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
+  GetHeaderColumnProperties(CItemData::TITLE, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(0, cs_header);
   hdi.lParam = CItemData::TITLE;
   m_LVHdrCtrl.SetItem(0, &hdi);
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
 
-  cs_header = GetHeaderText(CItemData::USER);
+  GetHeaderColumnProperties(CItemData::USER, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(1, cs_header);
   hdi.lParam = CItemData::USER;
   m_LVHdrCtrl.SetItem(1, &hdi);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
 
-  cs_header = GetHeaderText(CItemData::NOTES);
+  GetHeaderColumnProperties(CItemData::NOTES, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(2, cs_header);
   hdi.lParam = CItemData::NOTES;
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-    cs_header = GetHeaderText(CItemData::PASSWORD);
+    GetHeaderColumnProperties(CItemData::PASSWORD, cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
@@ -2575,8 +2619,9 @@ void DboxMain::SetDefaultColumns()
                                     CItemData::XTIME, CItemData::RMTIME,
                                     CItemData::POLICY,
   };
+
   for (int i = 0; i < sizeof(defCols)/sizeof(defCols[0]); i++) {
-    cs_header = GetHeaderText(defCols[i]);
+    GetHeaderColumnProperties(defCols[i], cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
     hdi.lParam = defCols[i];
     m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
@@ -2625,11 +2670,13 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   }
 
   int icol(0);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
     iType = *vi_IterColumns;
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     // Images (if present) must be the first column!
     if (iType == CItemData::UUID && icol != 0)
       continue;
@@ -2692,6 +2739,8 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
 {
   // Add new column of type iType after current column index iIndex
   CString cs_header;
+  int iWidth;
+  int iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
   HDITEM hdi;
   int iNewIndex(iIndex);
 
@@ -2700,12 +2749,12 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
     iNewIndex = m_nColumns;
 
   hdi.mask = HDI_LPARAM | HDI_WIDTH;
-  cs_header = GetHeaderText(iType);
+  GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
   ASSERT(!cs_header.IsEmpty());
   iNewIndex = m_ctlItemList.InsertColumn(iNewIndex, cs_header);
   ASSERT(iNewIndex != -1);
   hdi.lParam = iType;
-  hdi.cxy = GetHeaderWidth(iType);
+  hdi.cxy = iWidth;
   m_LVHdrCtrl.SetItem(iNewIndex, &hdi);
 }
 
@@ -2725,11 +2774,13 @@ void DboxMain::SetHeaderInfo(const bool bSetWidths)
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItem::LAST_DATA; i++)
-    m_nColumnIndexByType[i] = 
-    m_nColumnIndexByOrder[i] =
-    m_nColumnTypeByIndex[i] =
-    m_nColumnWidthByIndex[i] = -1;
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
+    m_nColumnIndexByType[i] = m_nColumnIndexByOrder[i] =  m_nColumnTypeByIndex[i] = -1;
+
+    // Only reset column width if we are going to set them
+    if (bSetWidths)
+      m_nColumnWidthByIndex[i] = -1;
+  }
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
@@ -2906,13 +2957,15 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
 
   // and repopulate
   int iItem;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (i = CItem::LAST_DATA - 1; i >= 0; i--) {
     // Can't play with Title or User columns
     if (i == CItemData::TITLE || i == CItemData::USER)
       continue;
 
     if (m_nColumnIndexByType[i] == -1) {
-      cs_header = GetHeaderText(i);
+      GetHeaderColumnProperties(i, cs_header, iWidth, iSortColumn);
       if (!cs_header.IsEmpty()) {
         iItem = m_pCC->m_ccListCtrl.InsertItem(0, cs_header);
         m_pCC->m_ccListCtrl.SetItemData(iItem, (DWORD)i);
@@ -2925,117 +2978,106 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
     m_pCC->ShowWindow(m_pCC->IsWindowVisible() ? SW_HIDE : SW_SHOW);
 }
 
-CString DboxMain::GetHeaderText(int iType) const
+void DboxMain::GetHeaderColumnProperties(const int &iType, CString &cs_Header, int &iWidth,
+  int &iSortColumn)
 {
-  CString cs_header;
+  // ***
+  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
+  //   It would be nice to use the compiler to tell us if anything is omitted but
+  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
+  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
+  //   CItemData::LAST_FIELD [260].
+  //   The one field outside CItemData::LAST_DATA is CItemData::ENTRYTYPE but this
+  //   is shown by the image in the CItemData::UUID column if selected
+  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
+  //   to complain!
+  // ***
+
+  cs_Header.Empty();
+  iWidth = m_nColumnHeaderWidthByType[iType];
+  UINT iID(0);
   switch (iType) {
     case CItemData::UUID:
-      cs_header.LoadString(IDS_ICON);
+      iID = IDS_ICON;
       break;
     case CItemData::GROUP:
-      cs_header.LoadString(IDS_GROUP);
+      iID = IDS_GROUP;
       break;
     case CItemData::TITLE:
-      cs_header.LoadString(IDS_TITLE);
+      iID = IDS_TITLE;
       break;
     case CItemData::USER:
-      cs_header.LoadString(IDS_USERNAME);
+      iID = IDS_USERNAME;
       break;
     case CItemData::PASSWORD:
-      cs_header.LoadString(IDS_PASSWORD);
+      iID = IDS_PASSWORD;
       break;
     case CItemData::URL:
-      cs_header.LoadString(IDS_URL);
+      iID = IDS_URL;
       break;
     case CItemData::AUTOTYPE:
-      cs_header.LoadString(IDS_AUTOTYPE);
+      iID = IDS_AUTOTYPE;
       break;
     case CItemData::EMAIL:
-      cs_header.LoadString(IDS_EMAIL);
+      iID = IDS_EMAIL;
       break;
     case CItemData::SYMBOLS:
-      cs_header.LoadString(IDS_SYMBOLS);
+      iID = IDS_SYMBOLS;
       break;
     case CItemData::RUNCMD:
-      cs_header.LoadString(IDS_RUNCOMMAND);
+      iID = IDS_RUNCOMMAND;
       break;
     case CItemData::NOTES:
-      cs_header.LoadString(IDS_NOTES);
+      iID = IDS_NOTES;
       break;
     case CItemData::CTIME:        
-      cs_header.LoadString(IDS_CREATED);
+      iID = IDS_CREATED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::PMTIME:
-      cs_header.LoadString(IDS_PASSWORDMODIFIED);
+      iID = IDS_PASSWORDMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::ATIME:
-      cs_header.LoadString(IDS_LASTACCESSED);
+      iID = IDS_LASTACCESSED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+      iID = IDS_PASSWORDEXPIRYDATE;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME_INT:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+      iID = IDS_PASSWORDEXPIRYDATEINT;
       break;
     case CItemData::RMTIME:
-      cs_header.LoadString(IDS_LASTMODIFIED);
+      iID = IDS_LASTMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::POLICY:        
-      cs_header.LoadString(IDS_PWPOLICY);
+      iID = IDS_PWPOLICY;
       break;
     case CItemData::POLICYNAME:        
-      cs_header.LoadString(IDS_POLICYNAME);
+      iID = IDS_POLICYNAME;
       break;
     case CItemData::PROTECTED:        
-      cs_header.LoadString(IDS_PROTECTED);
+      iID = IDS_PROTECTED;
       break;
     case CItemData::KBSHORTCUT:        
-      cs_header.LoadString(IDS_KBSHORTCUT);
+      iID = IDS_KBSHORTCUT;
       break;
     case CItemData::ATTREF:
-      cs_header.LoadString(IDS_ATTREF);
+      iID = IDS_ATTREF;
+      break;
+    case CItemData::PWHIST:  // Not displayed in ListView
       break;
     default:
-      cs_header.Empty();
-  }
-  return cs_header;
-}
-
-int DboxMain::GetHeaderWidth(int iType) const
-{
-  int nWidth(0);
-
-  switch (iType) {
-    case CItemData::UUID:
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::PASSWORD:
-    case CItemData::NOTES:
-    case CItemData::URL:
-    case CItemData::AUTOTYPE:
-    case CItemData::EMAIL:
-    case CItemData::PROTECTED:
-    case CItemData::SYMBOLS:
-    case CItemData::RUNCMD:
-    case CItemData::POLICY:
-    case CItemData::POLICYNAME: 
-    case CItemData::XTIME_INT:
-    case CItemData::KBSHORTCUT:
-    case CItemData::ATTREF:
-      nWidth = m_nColumnHeaderWidthByType[iType];
-      break;
-    case CItemData::CTIME:        
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::XTIME:
-    case CItemData::RMTIME:
-      nWidth = m_iDateTimeFieldWidth;
-      break;
-    default:
+      // Not found, however as Title is a mandatory column - so can't go wrong!
+      iSortColumn = CItemData::TITLE;
       break;
   }
-  return nWidth;
+
+  if (iID != 0)
+    cs_Header.LoadString(iID);
 }
 
 void DboxMain::CalcHeaderWidths()
@@ -3064,9 +3106,10 @@ void DboxMain::CalcHeaderWidths()
 
   m_iheadermaxwidth = -1;
   CString cs_header;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
 
   for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     if (!cs_header.IsEmpty())
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;
     else

@@ -111,7 +111,8 @@ public:
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
     // 'UNKNOWNFIELDS' should be last
-    UNKNOWNFIELDS = 0x104
+    UNKNOWNFIELDS = 0x104,
+    LAST_FIELD
   };
 
   // Status returns from "ProcessInputRecordField"

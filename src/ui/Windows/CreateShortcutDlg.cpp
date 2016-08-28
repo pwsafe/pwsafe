@@ -45,10 +45,10 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
-  std::vector<std::wstring> aryGroups;
-  app.GetCore()->GetUniqueGroups(aryGroups);
-  for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
-       iter != aryGroups.end(); ++iter) {
+  std::vector<std::wstring> vUniqueGroups;
+  app.GetCore()->GetUniqueGroups(vUniqueGroups);
+  for (std::vector<std::wstring>::iterator iter = vUniqueGroups.begin();
+       iter != vUniqueGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
   }
 

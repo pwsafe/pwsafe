@@ -13,6 +13,14 @@ Bugs fixed in 3.39.2
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
 [] Empty groups are now added when merging one PasswordSafe database into another.
+[] List view column widths are no longer reset when dragging columns to different
+positions or columns are added or removed.
+[] The user specified Notes font is now also applied to the Notes column in the
+List view.
+[] Entry Protected state and AutoType string is now correctly displayed in the
+List view.
+[] After entry has been edited from List View, it now remains visible after
+Edit/Undo/Redo even if the change alters its position within the view.
 [1347] Prevent a user from trying to copy a filter to a read-only database.
 [1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is

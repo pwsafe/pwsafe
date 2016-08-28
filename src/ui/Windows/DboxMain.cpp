@@ -907,38 +907,12 @@ void DboxMain::InitPasswordSafe()
   else
     SetColumns(cs_ListColumns);
 
-  // ***
-  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
-  // ***
-  m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
-  switch (m_iTypeSortColumn) {
-    case CItemData::UUID:  // Used for sorting on Image!
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::NOTES:
-    case CItemData::PASSWORD:
-    case CItemData::CTIME:
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::XTIME:
-    case CItemData::XTIME_INT:
-    case CItemData::RMTIME:
-    case CItemData::URL:
-    case CItemData::EMAIL:
-    case CItemData::SYMBOLS:
-    case CItemData::RUNCMD:
-    case CItemData::AUTOTYPE:
-    case CItemData::POLICY:
-    case CItemData::PROTECTED:
-    case CItemData::KBSHORTCUT:
-      break;
-    case CItemData::PWHIST:  // Not displayed in ListView
-    default:
-      // Title is a mandatory column - so can't go wrong!
-      m_iTypeSortColumn = CItemData::TITLE;
-      break;
-  }
+  CString cs_Header;  /* Not used here but needed for GetHeaderColumnProperties call */
+  int iWidth;         /* Not used here but needed for GetHeaderColumnProperties call */
+  int iType;
+  iType = m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
+
+  GetHeaderColumnProperties(iType, cs_Header, iWidth, m_iTypeSortColumn);
 
   // Refresh list will add and size password column if necessary...
   RefreshViews();
@@ -1079,6 +1053,10 @@ LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
   // Reset values
   SetHeaderInfo(false);
 
+  // Update row height if added Notes column
+  if (wType == CItemData::NOTES)
+    m_ctlItemList.UpdateRowHeight(true);
+
   // Now show the user
   RefreshViews(LISTONLY);
 
@@ -1099,6 +1077,10 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
   SetHeaderInfo(false);
 
   RestoreColumnWidths();
+
+  // Update row height if deleted Notes column
+  if (wType == CItemData::NOTES)
+    m_ctlItemList.UpdateRowHeight(true);
 
   // Now show the user
   RefreshViews(LISTONLY);
@@ -1414,6 +1396,7 @@ void DboxMain::FixListIndexes()
     if (m_bFilterActive &&
         !m_FilterManager.PassesFiltering(*pci, m_core))
       continue;
+
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     pdi->list_index = i;

@@ -270,12 +270,12 @@ void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
   m_pDragFixFont->CreateFontIndirect(&DragFixLogfont);
 }
 
-LONG Fonts::CalcHeight() const
+LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
 {
   //Get max height from current/modified/password font
   TEXTMETRIC tm;
   HDC hDC = ::GetDC(NULL);
-  
+
   HFONT hFontOld = (HFONT)SelectObject(hDC, m_pCurrentFont->GetSafeHandle());
 
   // Current
@@ -293,6 +293,14 @@ LONG Fonts::CalcHeight() const
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
     height = tm.tmHeight + tm.tmExternalLeading;
+
+  if (bIncludeNotesFont) {
+    // Notes - only for List View if Notes column present
+    SelectObject(hDC, m_pNotesFont->GetSafeHandle());
+    GetTextMetrics(hDC, &tm);
+    if (height < tm.tmHeight + tm.tmExternalLeading)
+      height = tm.tmHeight + tm.tmExternalLeading;
+  }
 
   // Tidy up
   SelectObject(hDC, hFontOld);

@@ -911,6 +911,9 @@ void DboxMain::PostOpenProcessing()
   // Clear any saved group information
   m_TreeViewGroup = L"";
 
+  // Make row height update
+  m_ctlItemList.UpdateRowHeight(true);
+
   RefreshViews();
   SetInitialDatabaseDisplay();
   m_bDBNeedsReading = false;

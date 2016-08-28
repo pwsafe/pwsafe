@@ -165,16 +165,24 @@ BOOL COptionsBackup::OnInitDialog()
   OnComboChanged();
   OnBackupBeforeSave();
 
-  m_Help1.Init(IDB_QUESTIONMARK);
-  m_Help2.Init(IDB_QUESTIONMARK);
-  m_Help3.Init(IDB_QUESTIONMARK);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
-  AddTool(IDC_BACKUPBEFORESAVEHELP,        IDS_BACKUPBEFORESAVE);
-  AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
-  AddTool(IDC_SAVEIMMEDIATELYHELP,         IDS_SAVEIMMEDIATELY);
-  ActivateToolTip();
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_BACKUPBEFORESAVEHELP, IDS_BACKUPBEFORESAVE);
+    AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
+    AddTool(IDC_SAVEIMMEDIATELYHELP, IDS_SAVEIMMEDIATELY);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }

@@ -43,7 +43,7 @@ public:
 
   void ExtractFont(const CString& str, LOGFONT &lf);
 
-  LONG CalcHeight() const;
+  LONG CalcHeight(const bool bIncludeNotesFont = false) const;
 
 private:
   Fonts();

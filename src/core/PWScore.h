@@ -255,6 +255,7 @@ public:
 
   // Return list of unique groups
   void GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const;
+  void GetAllGroups(std::vector<stringT> &vAllGroups) const;
   // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);

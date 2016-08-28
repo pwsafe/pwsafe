@@ -119,18 +119,28 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
   GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
 
-  m_Help1.Init(IDB_QUESTIONMARK);
-  m_Help2.Init(IDB_QUESTIONMARK);
-  m_Help3.Init(IDB_QUESTIONMARK);
-  m_Help4.Init(IDB_QUESTIONMARK);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
-  AddTool(IDC_RESETPWHISTORYOFFHELP, IDS_RESETPWHISTORYOFF);
-  AddTool(IDC_RESETPWHISTORYONHELP,  IDS_RESETPWHISTORYON);
-  AddTool(IDC_SETMAXPWHISTORYHELP,   IDS_SETMAXPWHISTORY);
-  AddTool(IDC_CLEARPWHISTORYHELP,    IDS_CLEARPWHISTORY);
-  ActivateToolTip();
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_RESETPWHISTORYOFFHELP, IDS_RESETPWHISTORYOFF);
+    AddTool(IDC_RESETPWHISTORYONHELP, IDS_RESETPWHISTORYON);
+    AddTool(IDC_SETMAXPWHISTORYHELP, IDS_SETMAXPWHISTORY);
+    AddTool(IDC_CLEARPWHISTORYHELP, IDS_CLEARPWHISTORY);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE

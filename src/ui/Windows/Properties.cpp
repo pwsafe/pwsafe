@@ -12,6 +12,8 @@
 #include "Properties.h"
 #include "InputBox.h"
 
+#include "DboxMain.h"
+
 // CProperties dialog
 
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
@@ -34,6 +36,8 @@ void CProperties::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE_NAME, m_stc_name);
   DDX_Control(pDX, IDC_DATABASE_DESCRIPTION, m_stc_description);
+
+  DDX_Control(pDX, IDC_GROUPCOUNTHELP, m_Help);
 }
 
 BEGIN_MESSAGE_MAP(CProperties, CPWDialog)
@@ -47,6 +51,7 @@ BOOL CProperties::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   CString ngroups;
+  // Use groups based on Explorer type tree and the number of entries
   ngroups.Format(IDS_NUMGROUPS_E,
      m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
 
@@ -95,11 +100,23 @@ BOOL CProperties::OnInitDialog()
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
   }
 
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help.Init(IDB_QUESTIONMARK);
+
+    AddTool(IDC_GROUPCOUNTHELP, IDS_GROUPCOUNTHELP);
+    ActivateToolTip();
+  } else {
+    m_Help.EnableWindow(FALSE);
+    m_Help.ShowWindow(SW_HIDE);
+  }
+
   return TRUE;
 }
 
 BOOL CProperties::PreTranslateMessage(MSG *pMsg)
 {
+  RelayToolTipEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
     PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
     return TRUE;

@@ -229,24 +229,24 @@ BOOL CAddEdit_Basic::OnInitDialog()
   }
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    InitToolTip();
+    if (InitToolTip()) {
+      AddTool(IDC_STATIC_GROUP, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_TITLE, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_NOTES, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_URL, IDS_CLICKTOCOPY);
+      AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
+      AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
+      AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
 
-    AddTool(IDC_STATIC_GROUP,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_TITLE,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_NOTES,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_URL,      IDS_CLICKTOCOPY);
-    AddTool(IDC_COPYPASSWORD,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_EMAIL,    IDS_CLICKTOCOPYPLUS1);
-    AddTool(IDC_LAUNCH,          IDS_CLICKTOGOPLUS);
-    AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
+      if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+        AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
+      }
 
-    if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-      AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
+      ActivateToolTip();
     }
-
-    ActivateToolTip();
 
     m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
