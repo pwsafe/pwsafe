@@ -1403,6 +1403,16 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       DBEmptyGroupsCommand::EG_DELETE));
   }
 
+  DisplayInfo *pdi = (DisplayInfo *)pci_original->GetDisplayInfo();
+  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+
+  // Check if last entry in group and if so - add group to empty groups
+  if (bLastEntry) {
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, pci_original->GetGroup(),
+      DBEmptyGroupsCommand::EG_ADD));
+  }
+
   // Do it
   Execute(pmulticmds, pcore);
 
@@ -1433,8 +1443,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Reselect entry, where-ever it may be
   iter = m_core.Find(original_uuid);
   if (iter != End()) {
-    DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    SelectEntry(pdi->list_index);
+    DisplayInfo *pnew_di = (DisplayInfo *)iter->second.GetDisplayInfo();
+    SelectEntry(pnew_di->list_index);
   }
 }
 
@@ -1479,15 +1489,27 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     ci_edit.SetXTime((time_t)0);
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
+    MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
-    // Do it
-    Execute(pcmd, pcore);
+    pmulticmds->Add(EditEntryCommand::Create(pcore, ci_original, ci_edit));
+
+    DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
+    bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+      (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+
+    // Check if last entry in group and if so - add group to empty groups
+    if (bLastEntry) {
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, ci_original.GetGroup(),
+        DBEmptyGroupsCommand::EG_ADD));
+    }
+
+      // Do it
+      Execute(pmulticmds, pcore);
 
     // DisplayInfo's copied and changed, get up-to-date version
-    DisplayInfo *pdi = static_cast<DisplayInfo *>
+    DisplayInfo *pnew_di = static_cast<DisplayInfo *>
          (pcore->GetEntry(pcore->Find(ci_original.GetUUID())).GetDisplayInfo());
-    rc = SelectEntry(pdi->list_index);
+    rc = SelectEntry(pnew_di->list_index);
 
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
