@@ -274,7 +274,7 @@ int PWSfileV4::WriteRecord(const CItemAtt &att)
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
+size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 {
   if (len == 0)
     return SUCCESS;
@@ -380,7 +380,7 @@ int PWSfileV4::ReadRecord(CItemData &item)
       RestoreState();
       status = WRONG_RECORD;
     }
-  } else if (unsigned(fpos) == m_effectiveFileLength)
+  } else if (fpos == m_effectiveFileLength)
     status = END_OF_FILE;
   else // fpos >= effectiveFileLength !?
     status = READ_FAIL;
@@ -665,7 +665,7 @@ int PWSfileV4::WriteHeader()
     if (num > 255)
       num = 255;  // Only save up to max as defined by FormatV3.
 
-    int buflen = (num * sizeof(uuid_array_t)) + 1;
+    size_t buflen = (num * sizeof(uuid_array_t)) + 1;
     unsigned char *buf = new unsigned char[buflen];
     buf[0] = (unsigned char)num;
     unsigned char *buf_ptr = buf + 1;
@@ -962,7 +962,7 @@ bool PWSfileV4::CKeyBlocks::RemoveKeyBlock(const StringX &passkey)
     return false;
 
   KeyBlockFinder find_kb(passkey);
-  const unsigned old_size = m_kbs.size();
+  const unsigned long old_size = m_kbs.size();
   m_kbs.erase(remove_if(m_kbs.begin(), m_kbs.end(), find_kb),
                m_kbs.end());
 

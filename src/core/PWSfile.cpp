@@ -346,7 +346,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   SAFE_FWRITE(ipthing, 1, 8, out);
 
   ConvertString(passwd, pwd, passlen);
-  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), thesalt, SaltLength);
+  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
   delete[] pwd; // gross - ConvertString allocates.
   try {
@@ -411,7 +411,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char *pwd = NULL;
     size_t passlen = 0;
     ConvertString(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), salt, SaltLength);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertString allocates.
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {

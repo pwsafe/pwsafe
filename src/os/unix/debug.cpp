@@ -23,7 +23,8 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_list args;
   va_start(args, lpszFormat);
 
-  int num_required, num_written;
+  unsigned int num_required;
+  int num_written;
 
   num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list

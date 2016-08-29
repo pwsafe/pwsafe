@@ -133,7 +133,7 @@ public:
                const bool bValidate = false, const size_t iMAXCHARS = 0,
                CReport *pRpt = NULL);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
-  bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
+  bool BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir, stringT &bu_fname);
 
@@ -526,7 +526,7 @@ private:
   uint32 m_hashIters; // for new or currently open db.
 
   static unsigned char m_session_key[32];
-  static unsigned char m_session_initialized;
+  static bool m_session_initialized;
 
   HANDLE m_lockFileHandle;
   HANDLE m_lockFileHandle2;

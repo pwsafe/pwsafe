@@ -37,7 +37,7 @@ public:
   operator const unsigned char *() const;
   operator const char *() const;
 
-  int GetLength() const {return TIME_LEN;} // size of representation
+  unsigned int GetLength() const {return TIME_LEN;} // size of representation
   
 
 private:

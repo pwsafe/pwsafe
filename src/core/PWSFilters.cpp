@@ -1496,7 +1496,6 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
 
     int tests(0);
     bool thisgroup_rc = false;
-    vfiltergroup::const_iterator Fltnum_citer;
     for (auto num_iter = group.begin();
       num_iter != group.end(); num_iter++) {
       const int &num = *num_iter;

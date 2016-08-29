@@ -217,7 +217,7 @@ static uint32 mds_column_mult(unsigned char in, int col)
 /* Computes [y0 y1 y2 y3] = MDS . [x0 x1 x2 x3] */
 static void mds_mult(const unsigned char *in, unsigned char *out)
 {
-  int x;
+  unsigned int x;
   uint32 tmp;
   for (tmp = x = 0; x < 4; x++) {
     tmp ^= mds_column_mult(in[x], x);

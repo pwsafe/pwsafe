@@ -164,7 +164,7 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   va_list args;
   va_start(args, fmt);
 
-  int len = GetStringBufSize(fmt, args);
+  unsigned int len = GetStringBufSize(fmt, args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 
@@ -184,7 +184,7 @@ template<class T> void Format(T &s, int fmt, ...)
   T fmt_str;
   LoadAString(fmt_str, fmt);
 
-  int len = GetStringBufSize(fmt_str.c_str(), args);
+  unsigned int len = GetStringBufSize(fmt_str.c_str(), args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 

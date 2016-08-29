@@ -453,8 +453,8 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 * Note that it's the caller's responsibility to delete the BlowFish object allocated here
 */
 
-BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
-                                 const unsigned char *salt, int saltlen)
+BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, unsigned int passlen,
+                                 const unsigned char *salt, unsigned int saltlen)
 {
   unsigned char passkey[SHA1::HASHLEN];
   pws_os::mlock(passkey, sizeof(passkey));

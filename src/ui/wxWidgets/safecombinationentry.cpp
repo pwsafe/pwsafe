@@ -439,7 +439,6 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   // 2. Get a password
   // 3. Set m_filespec && m_passkey to returned value!
   wxString newfile;
-  wxString cs_msg, cs_title, cs_temp;
 
   wxString cf(wxT("pwsafe")); // reasonable default for first time user
   stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));

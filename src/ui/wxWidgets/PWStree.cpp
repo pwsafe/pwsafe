@@ -387,7 +387,6 @@ void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft
   else if (ft == CItemData::TITLE || ft == CItemData::START ||
        (ft == CItemData::USER && prefs->GetPref(PWSprefs::ShowUsernameInTree)) ||
        (ft == CItemData::PASSWORD && prefs->GetPref(PWSprefs::ShowPasswordInTree))) {
-    wxRect rc;
     wxTreeItemId ti = Find(item);
     if (ti.IsOk()) {
       SetItemText(ti, ItemDisplayString(item));

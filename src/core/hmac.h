@@ -22,8 +22,8 @@ public:
   HMAC_BASE() {}
   virtual ~HMAC_BASE() {}
 
-  virtual int GetBlockSize() const = 0;
-  virtual int GetHashLen() const = 0;
+  virtual unsigned int GetBlockSize() const = 0;
+  virtual unsigned int GetHashLen() const = 0;
 
   virtual void Init(const unsigned char *key, unsigned long keylen) = 0;
   virtual void Update(const unsigned char *in, unsigned long inlen) = 0;
@@ -35,7 +35,7 @@ public:
   {Init(key, keylen); Update(in, inlen); Final(digest);}
 };
 
-template<class H, int HASHLEN, int BLOCKSIZE>
+template<class H, unsigned int HASHLEN, unsigned int BLOCKSIZE>
 class HMAC : public HMAC_BASE
 {
 public:
@@ -72,8 +72,8 @@ public:
 
   ~HMAC(){delete Hash;}
 
-  int GetBlockSize() const {return BLOCKSIZE;}
-  int GetHashLen() const {return HASHLEN;}
+  unsigned int GetBlockSize() const {return BLOCKSIZE;}
+  unsigned int GetHashLen() const {return HASHLEN;}
   bool IsInited() const {return Hash != NULL;}
 
   void Init(const unsigned char *key, unsigned long keylen)
@@ -92,7 +92,7 @@ public:
     }
 
     unsigned char k_ipad[BLOCKSIZE];
-    for (int i = 0; i < BLOCKSIZE; i++)
+    for (unsigned int i = 0; i < BLOCKSIZE; i++)
       k_ipad[i] = K[i] ^ 0x36;
     Hash->Update(k_ipad, BLOCKSIZE);
     memset(k_ipad, 0, BLOCKSIZE);
@@ -113,7 +113,7 @@ public:
     delete(Hash);
     Hash = NULL;
     unsigned char k_opad[BLOCKSIZE];
-    for (int i = 0; i < BLOCKSIZE; i++)
+    for (unsigned int i = 0; i < BLOCKSIZE; i++)
       k_opad[i] = K[i] ^ 0x5c;
 
     memset(K, 0, BLOCKSIZE);

@@ -282,7 +282,7 @@ class dereference {
     const value_type& operator()(const_iterator itr) { return *itr; }
 };
 
-extern int GetStringBufSize(const TCHAR *fmt, va_list args);
+extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:

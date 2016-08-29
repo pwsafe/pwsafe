@@ -146,8 +146,6 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
     return;
   }
 
-  StringX buffer(_T(""));
-
   st_file_element_data edata;
   m_pValidator->GetElementInfo(qname, edata);
 

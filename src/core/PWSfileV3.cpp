@@ -715,7 +715,7 @@ int PWSfileV3::ReadHeader()
           if (utf8status) {
             StringX tlen = text.substr(0, 4);
             iStringXStream is(tlen);
-            int ulen = 0;
+            unsigned int ulen = 0;
             is >> hex >> ulen;
             StringX uh = text.substr(4);
             m_hdr.m_lastsavedby = uh.substr(0, ulen);
@@ -880,7 +880,7 @@ int PWSfileV3::ReadHeader()
             for (int n = 0; n < num; n++) {
               if (j > recordlength) break;  // Error
 
-              int namelength, symbollength;
+              unsigned int namelength, symbollength;
 
               sxTemp = text.substr(j, 2) + sxBlank;
               iStringXStream tmp_is(sxTemp);
@@ -913,7 +913,7 @@ int PWSfileV3::ReadHeader()
 
               pair< map<StringX, PWPolicy>::iterator, bool > pr;
               pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-              if (pr.second == false) break; // Error
+              if (!pr.second) break; // Error
             }
           }
         } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
