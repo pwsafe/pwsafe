@@ -35,13 +35,15 @@ that, if enabled, then the option to "Create intermediate backups" is also
 enabled. Note, changes made via the Compare database results dialog will not
 cause a database save for each action but will after the compare results dialog
 has been closed.
-[]The last sort direction in List View (ascending or descending) on closing
+[] The last sort direction in List View (ascending or descending) on closing
 a database is now stored in the application configuration file and is no longer
 stored in the database header.
+[] The number of groups shown in the database properties dialog is now counted
+in the same manner as directories/folders in a file system e.g. Windows Explorer.
+This includes emoty groups. The actual number of empty groups is also shown.
 
 New Features for 3.39.2
 =======================
-[] The database properties page now includes the number of empty groups.
 [] Empty sub-groups are included when exporting a group to a new PasswordSafe
 database.
 [] Adding an empty group will also cause the database to be saved if the user has
