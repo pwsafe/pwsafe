@@ -39,8 +39,9 @@ has been closed.
 a database is now stored in the application configuration file and is no longer
 stored in the database header.
 [] The number of groups shown in the database properties dialog is now counted
-in the same manner as directories/folders in a file system e.g. Windows Explorer.
-This includes emoty groups. The actual number of empty groups is also shown.
+in the same manner as directories/folders in a file system, e.g.,
+Windows Explorer. This includes empty groups. The number of empty
+groups is also shown.
 
 New Features for 3.39.2
 =======================
