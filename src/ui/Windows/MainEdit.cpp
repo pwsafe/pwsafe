@@ -1198,7 +1198,8 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
   CItemData ci_original(*pci);
-  pci = NULL; // Set to NULL - should use ci_original
+
+  pci = NULL; // Set to NULL - use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
 
@@ -1288,6 +1289,11 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // with a new one having the edited values and the same uuid.
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
   Command *pcmd(NULL);
+
+  // Determine if last entry in this group just in case the user changes the group
+  DisplayInfo *pdi = (DisplayInfo *)pci_original->GetDisplayInfo();
+  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
   StringX newPassword = ci_new.GetPassword();
 
@@ -1403,14 +1409,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       DBEmptyGroupsCommand::EG_DELETE));
   }
 
-  DisplayInfo *pdi = (DisplayInfo *)pci_original->GetDisplayInfo();
-  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
-                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
-
-  // Check if last entry in group and if so - add group to empty groups
-  if (bLastEntry) {
+  // Check if group changed and last entry in group and, if so,
+  // add original group to empty groups
+  if (bLastEntry && pci_original->GetGroup() != sxNewGroup) {
     pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, pci_original->GetGroup(),
       DBEmptyGroupsCommand::EG_ADD));
+
+    // If new group currently empty - it isn't now
+    if (IsEmptyGroup(sxNewGroup)) {
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+        DBEmptyGroupsCommand::EG_DELETE));
+    }
   }
 
   // Do it
@@ -1456,10 +1465,17 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
   CItemData ci_edit(*pci);
+
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
   CItemData ci_original(*pci);
-  pci = NULL; // Set to NULL - should use ci_original
+
+  pci = NULL; // Set to NULL - use ci_original
+
+  // Determine if last entry in this group just in case the user changes the group
+  DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
+  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
   const CItemData *pbci = GetBaseEntry(&ci_original);
 
@@ -1493,18 +1509,22 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     pmulticmds->Add(EditEntryCommand::Create(pcore, ci_original, ci_edit));
 
-    DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
-    bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
-      (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
-
-    // Check if last entry in group and if so - add group to empty groups
-    if (bLastEntry) {
+    // Check if group changed and last entry in group and, if so,
+    // add original group to empty groups
+    const StringX &sxNewGroup = ci_edit.GetGroup();
+    if (bLastEntry && ci_original.GetGroup() != sxNewGroup) {
       pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, ci_original.GetGroup(),
         DBEmptyGroupsCommand::EG_ADD));
+
+      // If new group currently empty - it isn't now
+      if (IsEmptyGroup(sxNewGroup)) {
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+          DBEmptyGroupsCommand::EG_DELETE));
+      }
     }
 
-      // Do it
-      Execute(pmulticmds, pcore);
+    // Do it
+    Execute(pmulticmds, pcore);
 
     // DisplayInfo's copied and changed, get up-to-date version
     DisplayInfo *pnew_di = static_cast<DisplayInfo *>
