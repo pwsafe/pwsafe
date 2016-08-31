@@ -463,6 +463,19 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       return GetShiftDCA();
     case KBSHORTCUT: /* 19 */
       return GetKBShortcut();
+
+    // Not sure this makes sense for ATTREF, BASEUUID, ALIASUUID & SHORTCUTUUID
+    // but stops the ASSERT by dropping through
+    case ATTREF:
+    {
+      pws_os::CUUID attuuid = GetAttUUID();
+      str = attuuid;
+      break;
+    }
+    case BASEUUID:
+    case ALIASUUID:
+    case SHORTCUTUUID:
+      break;
     default:
       ASSERT(0);
     }
