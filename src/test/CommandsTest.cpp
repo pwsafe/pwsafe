@@ -180,3 +180,51 @@ TEST_F(CommandsTest, RenameGroup)
 
   delete pcmd;
 }
+
+TEST_F(CommandsTest, CountGroups)
+{
+  PWScore core;
+  CItemData di;
+  std::vector<stringT> vGroups;
+
+  di.CreateUUID();
+  di.SetTitle(L"b title");
+  di.SetPassword(L"b password");
+  const pws_os::CUUID uuid = di.GetUUID();
+
+  Command *pcmd = AddEntryCommand::Create(&core, di);  
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_TRUE(vGroups.empty());
+
+  auto iter = core.Find(di.GetUUID());
+  CItemData di2 = core.GetEntry(iter);
+  di2.SetGroup(L"g1");
+  pcmd = EditEntryCommand::Create(&core, di, di2);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(1, vGroups.size());
+
+  iter = core.Find(di.GetUUID());
+  di = core.GetEntry(iter);
+  di.SetGroup(L"g1.g1-1");
+  pcmd = EditEntryCommand::Create(&core, di2, di);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(2, vGroups.size());
+
+  std::vector<StringX> eg;
+  eg.push_back(L"e1");
+  pcmd = DBEmptyGroupsCommand::Create(&core, eg, DBEmptyGroupsCommand::EG_ADDALL);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(3, vGroups.size());
+}
