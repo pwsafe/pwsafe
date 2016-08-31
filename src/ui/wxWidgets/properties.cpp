@@ -116,7 +116,7 @@ void CProperties::Init()
   std::vector<stringT> aryGroups;
   m_core.GetAllGroups(aryGroups);
   auto nEmptyGroups = m_core.GetEmptyGroups().size();
-  m_numgroups << aryGroups.size() +  nEmptyGroups
+  m_numgroups << aryGroups.size()
               << wxT(" (") << nEmptyGroups << _(" empty)");
 
   m_numentries << m_core.GetNumEntries();
