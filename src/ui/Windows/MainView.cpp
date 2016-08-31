@@ -367,7 +367,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       break;
     case CItemData::ATTREF:
       if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
-        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
+        iResult = pLHS_PCI->HasAttRef() ? 1 : -1;
       break;
     default:
       ASSERT(FALSE);
@@ -3405,8 +3405,8 @@ void DboxMain::SetToolBarPositions()
     return;
 
   CRect rect, dragrect;
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+  RepositionBars(AFX_IDW_TOOLBAR, AFX_IDW_CONTROLBAR_LAST, 0);
+  RepositionBars(AFX_IDW_TOOLBAR, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   CDDStatic *DDs[] = { &m_DDGroup, &m_DDTitle, &m_DDUser,
                        &m_DDPassword, &m_DDNotes, &m_DDURL, &m_DDemail,
