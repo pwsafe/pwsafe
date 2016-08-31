@@ -1746,45 +1746,15 @@ bool PWScore::HasRUEListChanged() const
 }
 
 
-// GetAllGroups - returns an array of all unique group prefix names
-// e.g., "A", "A.B", "A.B.C"
-void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
+static void collectGroups(const StringX &sxg, std::set<stringT> &setGroups)
 {
-  // use the fact that set eliminates dups for us
-  std::set<stringT> setGroups;
-
-  ItemListConstIter iter;
-
-  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
-    const CItemData &ci = iter->second;
-    if (ci.IsGroupSet()) {
-      StringX sxPath, token, sxGroup = ci.GetGroup();
-      std::vector<StringX> vTokens;
-      size_t pos = 0;
-      while ((pos = sxGroup.find(_T('.'))) != StringX::npos) {
-        token = sxGroup.substr(0, pos);
-        vTokens.push_back(token);
-        sxGroup.erase(0, pos + 1);
-      }
-
-      if (vTokens.empty()) {
-        // Only one token == original group
-        sxPath = sxGroup;
-      } else {
-        sxPath = vTokens[0];
-      }
-
-      setGroups.insert(sxPath.c_str());
-      for (size_t i = 1; i < vTokens.size(); i++) {
-        sxPath += StringX(_T(".")) + vTokens[i];
-        setGroups.insert(sxPath.c_str());
-      }
-    }
-  }
-
-  // Now add Empty groups in the same manner
-  for (size_t iEG = 0; iEG < m_vEmptyGroups.size(); iEG++) {
-    StringX sxPath, token, sxGroup = m_vEmptyGroups[iEG];
+  StringX sxGroup(sxg);
+  if (sxGroup.find(_T('.')) == StringX::npos) {
+    // We have exactly one group
+    setGroups.insert(sxGroup.c_str());
+  } else {
+    // We have > 1 group. Tokenize:
+    StringX sxPath, token;
     std::vector<StringX> vTokens;
     size_t pos = 0;
     while ((pos = sxGroup.find(_T('.'))) != StringX::npos) {
@@ -1792,19 +1762,38 @@ void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
       vTokens.push_back(token);
       sxGroup.erase(0, pos + 1);
     }
-
-    if (vTokens.empty()) {
-      // Only one token == original group
-      sxPath = sxGroup;
-    } else {
-      sxPath = vTokens[0];
-    }
+    vTokens.push_back(sxGroup); // rightmost subgroup, e.g., "b" in "a.b"
+    ASSERT(vTokens.size() >= 2);
+    sxPath = vTokens[0];
 
     setGroups.insert(sxPath.c_str());
     for (size_t i = 1; i < vTokens.size(); i++) {
       sxPath += StringX(_T(".")) + vTokens[i];
       setGroups.insert(sxPath.c_str());
     }
+  } // > 1 group
+}
+
+// GetAllGroups - returns an array of all unique group prefix names
+// e.g., "A", "A.B", "A.B.C"
+void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
+{
+  // use the fact that set eliminates dups for us
+  std::set<stringT> setGroups;
+
+  // Start with groups that have elements
+  for (auto iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    const CItemData &ci = iter->second;
+    if (ci.IsGroupSet()) {
+      // We have at least one group
+      collectGroups(ci.GetGroup(), setGroups);
+    } // IsGroupSet()
+  } // for m_pwlist
+
+  // Now add Empty groups in the same manner
+  for (auto iter2 = m_vEmptyGroups.begin(); iter2 != m_vEmptyGroups.end(); iter2++) {
+    ASSERT(!iter2->empty());
+    collectGroups(*iter2, setGroups);
   }
 
   vAllGroups.clear();
@@ -3487,7 +3476,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 
   std::vector<std::wstring> vAllGroups;
   GetAllGroups(vAllGroups);
-  Format(st_dbp.numgroups, L"%d", vAllGroups.size() + m_vEmptyGroups.size());
+  Format(st_dbp.numgroups, L"%d", vAllGroups.size());
   Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
   Format(st_dbp.numentries, L"%d", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)
