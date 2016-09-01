@@ -914,6 +914,10 @@ void DboxMain::PostOpenProcessing()
   // Make row height update
   m_ctlItemList.UpdateRowHeight(true);
 
+  // Set highlighting - need to do it here as SaveImmediately is a DB preference
+  m_ctlItemTree.SetHighlightChanges(PWSprefs::GetInstance()->GetPref(PWSprefs::HighlightChanges) &&
+                                    !PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately));
+
   RefreshViews();
   SetInitialDatabaseDisplay();
   m_bDBNeedsReading = false;
@@ -1599,7 +1603,9 @@ void DboxMain::OnExportEntryDB()
   wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;;
 }
 
 void DboxMain::OnExportGroupDB()
@@ -1613,7 +1619,9 @@ void DboxMain::OnExportGroupDB()
   wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
@@ -1713,7 +1721,9 @@ void DboxMain::OnExportText()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_TEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportEntryText()
@@ -1726,7 +1736,9 @@ void DboxMain::OnExportEntryText()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportGroupText()
@@ -1739,7 +1751,9 @@ void DboxMain::OnExportGroupText()
     &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPTEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
@@ -1846,7 +1860,9 @@ void DboxMain::OnExportXML()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_XML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportEntryXML()
@@ -1859,7 +1875,9 @@ void DboxMain::OnExportEntryXML()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportGroupXML()
@@ -1872,7 +1890,9 @@ void DboxMain::OnExportGroupXML()
     &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPXML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
@@ -2981,7 +3001,9 @@ void DboxMain::OnCompare()
                           &m_SaveWZAdvValues[WZAdvanced::COMPARE]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
     ChangeOkUpdate();
@@ -2999,13 +3021,18 @@ void DboxMain::OnMerge()
                           this, WZAdvanced::MERGE,
                           &m_SaveWZAdvValues[WZAdvanced::MERGE]);
 
+  m_bWizardActive = true;
   INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
     ChangeOkUpdate();
 
     UpdateToolBarDoUndo();
   }
+
+  // Couldn't do this whilst wizard open
+  SetToolBarPositions();
 }
 
 void DboxMain::OnSynchronize()
@@ -3018,13 +3045,18 @@ void DboxMain::OnSynchronize()
                           this, WZAdvanced::SYNCH,
                           &m_SaveWZAdvValues[WZAdvanced::SYNCH]);
 
+  m_bWizardActive = true;
   INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
 
   if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
     ChangeOkUpdate();
 
     UpdateToolBarDoUndo();
   }
+
+  // Couldn't do this whilst wizard open
+  SetToolBarPositions();
 }
 
 std::wstring DboxMain::DoMerge(PWScore *pothercore,

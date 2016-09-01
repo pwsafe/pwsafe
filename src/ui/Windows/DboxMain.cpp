@@ -135,7 +135,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bUnsavedDisplayed(false), m_RUEList(*app.GetCore()),
   m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false),
+  m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
@@ -816,8 +816,6 @@ void DboxMain::InitPasswordSafe()
   // Initialise DropTargets - should be in OnCreate()s, really
   m_LVHdrCtrl.Initialize(&m_LVHdrCtrl);
   m_ctlItemTree.Initialize();
-  m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges) &&
-                                    !prefs->GetPref(PWSprefs::SaveImmediately));
 
   // Set up fonts before playing with Tree/List views
   LOGFONT LF;

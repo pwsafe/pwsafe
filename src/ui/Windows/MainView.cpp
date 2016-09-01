@@ -572,7 +572,7 @@ void DboxMain::setupBars()
   if (!m_MainToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
                               WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
                               CBRS_TOP | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
+                              CRect(0, 0, 0, 0), AFX_IDW_CONTROLBAR_LAST)) {
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
@@ -587,7 +587,7 @@ void DboxMain::setupBars()
   if (!m_FindToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
                               WS_CHILD    | WS_VISIBLE |
                               CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
+                              CRect(0, 0, 0, 0), AFX_IDW_CONTROLBAR_LAST - 1)) {
     pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
@@ -3369,6 +3369,12 @@ void DboxMain::OnCustomizeToolbar()
   UpdateToolBarForSelectedItem(pci);
 }
 
+void DboxMain::OnShowFindToolbar()
+{
+  // Show Find Toolbar
+  SetFindToolBar(true);
+}
+
 void DboxMain::OnHideFindToolBar()
 {
   SetFindToolBar(false);
@@ -3392,8 +3398,8 @@ void DboxMain::SetFindToolBar(bool bShow)
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
 
-  if (bShow)
-    m_core.ResumeOnDBNotification();
+  if ((m_FindToolBar.IsWindowVisible() && bShow) || (!m_FindToolBar.IsWindowVisible() && !bShow))
+    return;  // Nothing to do
 
   m_FindToolBar.ShowFindToolBar(bShow);
   SetToolBarPositions();
@@ -3402,6 +3408,10 @@ void DboxMain::SetFindToolBar(bool bShow)
 void DboxMain::SetToolBarPositions()
 {
   if (m_FindToolBar.GetSafeHwnd() == NULL)
+    return;
+
+  // We mustn't do this if a Wizard dialog is open
+  if (m_bWizardActive)
     return;
 
   CRect rect, dragrect;

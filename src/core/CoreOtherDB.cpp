@@ -936,6 +936,9 @@ void PWScore::Synchronize(PWScore *pothercore,
   std::vector<StringX> vs_updated;
   numUpdated = 0;
 
+  // Stop updating the GUI whilst Synchronise is in progress
+  SuspendOnDBNotification();
+
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_MERGESYNC);
@@ -1028,7 +1031,6 @@ void PWScore::Synchronize(PWScore *pothercore,
       vs_updated.push_back(sx_updated);
 
       Command *pcmd = EditEntryCommand::Create(this, curItem, updItem);
-      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
       // Update the Wizard page
@@ -1056,6 +1058,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   // See if user has cancelled
   if (pbCancel != NULL && *pbCancel) {
     delete pmulticmds;
+    ResumeOnDBNotification();
     return;
   }
 
@@ -1063,6 +1066,9 @@ void PWScore::Synchronize(PWScore *pothercore,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
+
+  // Resume updating the GUI after Synchronise has completed
+  ResumeOnDBNotification();
 
   // See if user has cancelled too late - reset flag so incorrect information not given to user
   if (pbCancel != NULL && *pbCancel) {
