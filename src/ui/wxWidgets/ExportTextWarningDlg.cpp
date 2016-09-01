@@ -22,12 +22,20 @@
 
 #include "SafeCombinationCtrl.h"
 #include "ExportTextWarningDlg.h"
-#include "./SelectionCriteria.h"
+#include "SelectionCriteria.h"
+#include "os/file.h"
 
 #include <wx/statline.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
+#endif
+
+#ifndef NO_YUBI
+#include "graphics/Yubikey-button.xpm"
+
+#define ID_YUBIBTN 10001
+#define ID_YUBISTATUS 10002
 #endif
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
@@ -36,6 +44,10 @@ IMPLEMENT_CLASS( CExportTextWarningDlgBase, wxDialog )
 
 BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
   EVT_BUTTON( ID_ADVANCED, CExportTextWarningDlgBase::OnAdvancedSelection )
+#ifndef NO_YUBI
+  EVT_BUTTON( ID_YUBIBTN, CExportTextWarningDlgBase::OnYubibtnClick )
+  EVT_TIMER(POLLING_TIMER_ID, CExportTextWarningDlgBase::OnPollingTimer)
+#endif
 END_EVENT_TABLE()
 
 
@@ -61,8 +73,21 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* pwdCtrl = new wxBoxSizer(wxHORIZONTAL);
   pwdCtrl->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")));
   pwdCtrl->AddSpacer(ColSeparation);
-  pwdCtrl->Add(new CSafeCombinationCtrl(this, wxID_ANY, &passKey), wxSizerFlags().Expand().Proportion(1));
+  m_combinationEntry = new CSafeCombinationCtrl(this, wxID_ANY, &passKey);
+  pwdCtrl->Add(m_combinationEntry, wxSizerFlags().Expand().Proportion(1));
   dlgSizer->Add(pwdCtrl, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
+#ifndef NO_YUBI
+  auto yubiSizer = new wxBoxSizer(wxHORIZONTAL);
+  yubiSizer->AddSpacer(ColSeparation);
+  auto yubiBtn = new wxBitmapButton(this , ID_YUBIBTN, wxBitmap(Yubikey_button_xpm),
+                                    wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  yubiSizer->Add(yubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
+
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
+                                         wxDefaultPosition, wxDefaultSize, 0 );
+  yubiSizer->Add(yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  dlgSizer->Add(yubiSizer);
+#endif
   dlgSizer->AddSpacer(RowSeparation);
 
   delimiter = wxT('\xbb');
@@ -92,6 +117,11 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);
+#ifndef NO_YUBI
+  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
+#endif
 }
 
 CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
@@ -105,3 +135,32 @@ void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
   UNREFERENCED_PARAMETER(evt);
   DoAdvancedSelection();
 }
+
+#ifndef NO_YUBI
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void CExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
+{
+  m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
+  if (Validate() && TransferDataFromWindow()) {
+    StringX response;
+    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+    if (PerformChallengeResponse(this, passKey, response, oldYubiChallenge)) {
+      passKey = response;
+      EndModal(wxID_OK);
+      return;
+    }
+  }
+}
+
+void CExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == POLLING_TIMER_ID) {
+    HandlePollingTimer(); // in CYubiMixin
+  }
+}
+#endif
+
