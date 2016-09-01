@@ -164,7 +164,6 @@ void PWScore::Compare(PWScore *pothercore,
          1... ....  POLICYNAME [0x18] - not checked by default
          .1.. ....  KBSHORTCUT [0x19] - not checked by default
 
-
         */
         bsConflicts.reset();
         StringX sxCurrentPassword, sxComparisonPassword;
@@ -921,6 +920,19 @@ void PWScore::Synchronize(PWScore *pothercore,
           update requested fields
   */
 
+  CItemData::FieldBits bsSyncFields(bsFields);
+
+  // These fields just do not make sense to synchronise
+  CItemData::FieldType ftInappropriateSyncFields[] = { 
+    CItemData::GROUPTITLE, CItemData::UUID,
+    CItemData::UUID, CItemData::ATTREF,
+    CItemData::BASEUUID, CItemData::ALIASUUID, CItemData::SHORTCUTUUID };
+
+  // Turn them off
+  for (int i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
+    bsSyncFields.reset(ftInappropriateSyncFields[i]);
+  }
+
   std::vector<StringX> vs_updated;
   numUpdated = 0;
 
@@ -983,8 +995,8 @@ void PWScore::Synchronize(PWScore *pothercore,
 
       bool bUpdated(false);
       // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
-      for (size_t i = 2; i < bsFields.size(); i++) {
-        if (bsFields.test(i)) {
+      for (size_t i = 2; i < bsSyncFields.size(); i++) {
+        if (bsSyncFields.test(i)) {
           StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
 
           // Special processing for password policies (default & named)
