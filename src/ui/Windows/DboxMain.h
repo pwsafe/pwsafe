@@ -1025,6 +1025,8 @@ private:
   bool m_bInRename;
   // When in AddGroup and where AddGroup initiated
   bool m_bInAddGroup, m_bWhitespaceRightClick;
+  // When Wizard dialog is active
+  bool m_bWizardActive;
 
   // Change languages on the fly
   void SetLanguage(LCID lcid);

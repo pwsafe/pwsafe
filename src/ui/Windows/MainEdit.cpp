@@ -1842,12 +1842,6 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   m_ilastaction = iaction;
 }
 
-void DboxMain::OnShowFindToolbar()
-{
-  // Show Find Toolbar
-  SetFindToolBar(true);
-}
-
 void DboxMain::OnClearClipboard()
 {
   UpdateLastClipboardAction(-1);

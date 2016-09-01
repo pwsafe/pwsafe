@@ -13,9 +13,9 @@ class CPWFileDialog : public CFileDialog
 public:
   CPWFileDialog(BOOL bOpenFileDialog, LPCWSTR lpszDefExt = NULL, LPCWSTR lpszFileName = NULL,
                 DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, LPCWSTR lpszFilter = NULL,
-                CWnd* pParentWnd = NULL, DWORD dwSize = 0)
+                CWnd* pParentWnd = NULL, DWORD dwSize = 0, BOOL bVistaStyle = TRUE)
   : CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter,
-                pParentWnd, dwSize) {}
+                pParentWnd, dwSize, bVistaStyle) {}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);

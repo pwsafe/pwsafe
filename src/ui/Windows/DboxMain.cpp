@@ -135,7 +135,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bUnsavedDisplayed(false), m_RUEList(*app.GetCore()),
   m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false),
+  m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
@@ -342,7 +342,6 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   //{{AFX_MSG_MAP(DboxMain)
-
   ON_REGISTERED_MESSAGE(app.m_uiRegMsg, OnAreYouMe)
   ON_REGISTERED_MESSAGE(app.m_uiWH_SHELL, OnWH_SHELL_CallBack)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUTOOLBAR_START, ID_MENUTOOLBAR_END, OnUpdateMenuToolbar)
@@ -463,21 +462,21 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Double-click on filter indicator on StatusBar
   ON_COMMAND(IDB_FILTER_ACTIVE, OnCancelFilter)
 
-  ON_WM_CONTEXTMENU()
-
   // Windows Messages
+  ON_WM_CONTEXTMENU()
   ON_WM_DESTROY()
+  ON_WM_DRAWITEM()
   ON_WM_INITMENU()
   ON_WM_INITMENUPOPUP()
+  ON_WM_MEASUREITEM()
   ON_WM_MOVE()
   ON_WM_SIZE()
+  ON_WM_SIZING()
   ON_WM_SYSCOMMAND()
   ON_WM_TIMER()
   ON_WM_WINDOWPOSCHANGING()
 
-  ON_WM_DRAWITEM()
-  ON_WM_MEASUREITEM()
-
+  // Nofication messages
   ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
   ON_NOTIFY(NM_CLICK, IDC_ITEMTREE, OnTreeItemSelected)
   ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
@@ -494,7 +493,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
 
-  ON_WM_SIZING()
   ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_TRAYUNLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
@@ -531,7 +529,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
   ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
 
-  //}}AFX_MSG_MAP
   ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
   ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)  // Note: can't be in OnUpdateMenuToolbar!
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnTrayCopyUsername)
@@ -559,6 +556,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 // Command ID, OpenRW, OpenRO, Empty, Closed
@@ -818,8 +816,6 @@ void DboxMain::InitPasswordSafe()
   // Initialise DropTargets - should be in OnCreate()s, really
   m_LVHdrCtrl.Initialize(&m_LVHdrCtrl);
   m_ctlItemTree.Initialize();
-  m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges) &&
-                                    !prefs->GetPref(PWSprefs::SaveImmediately));
 
   // Set up fonts before playing with Tree/List views
   LOGFONT LF;

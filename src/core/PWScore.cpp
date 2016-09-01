@@ -360,7 +360,8 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   // Assumes that old_uuid == new_uuid
   ASSERT(old_ci.GetUUID() == new_ci.GetUUID());
   m_pwlist[old_ci.GetUUID()] = new_ci;
-  if (old_ci.GetEntryType() != new_ci.GetEntryType() || old_ci.IsProtected() != new_ci.IsProtected())
+  if (old_ci.GetEntryType() != new_ci.GetEntryType() || old_ci.GetStatus() != new_ci.GetStatus() ||
+      old_ci.IsProtected() != new_ci.IsProtected())
     GUIRefreshEntry(new_ci);
 
   // Check if we need to update Expiry vector
