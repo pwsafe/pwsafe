@@ -924,8 +924,7 @@ void PWScore::Synchronize(PWScore *pothercore,
 
   // These fields just do not make sense to synchronise
   CItemData::FieldType ftInappropriateSyncFields[] = { 
-    CItemData::GROUPTITLE, CItemData::UUID,
-    CItemData::UUID, CItemData::ATTREF,
+    CItemData::GROUPTITLE, CItemData::UUID, CItemData::ATTREF,
     CItemData::BASEUUID, CItemData::ALIASUUID, CItemData::SHORTCUTUUID };
 
   // Turn them off
