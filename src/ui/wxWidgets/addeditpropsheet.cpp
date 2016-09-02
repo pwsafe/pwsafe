@@ -867,7 +867,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   std::vector<stringT>::iterator sviter;
 
   // Populate the group combo box
-  m_core.GetUniqueGroups(svec);
+  m_core.GetAllGroups(svec);
   for (sviter = svec.begin(); sviter != svec.end(); sviter++)
     m_groupCtrl->Append(sviter->c_str());
 

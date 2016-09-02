@@ -50,11 +50,11 @@ public:
   // Local variables & functions
   void SetVariables(Asker *pAsker, PWSFilters *mapfilters, const FilterPool fpool, 
                     const bool &bValidation)
-  {m_pAsker = pAsker; m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
+  {m_pAsker = pAsker; m_MapXMLFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(int ischema_version)
   {m_iSchema_Version = ischema_version;}
 
-  PWSFilters *m_MapFilters;
+  PWSFilters *m_MapXMLFilters;  // So as not to confuse with UI & core
   FilterPool m_FPool;
   int m_type;
 

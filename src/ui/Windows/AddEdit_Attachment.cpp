@@ -71,7 +71,7 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-   m_bInitdone(false), m_AttName(_T("")), m_AttFileName(_T("")), m_attType(NO_ATTACHMENT)
+   m_bInitdone(false), m_AttName(L""), m_AttFileName(L""), m_attType(NO_ATTACHMENT)
 {
 }
 
@@ -320,7 +320,7 @@ void CAddEdit_Attachment::OnAttExport()
   CString filter;
   CSimpleArray<GUID> aguidFileTypes;
   HRESULT hResult;
-  stringT soutputfile;
+  std::wstring soutputfile;
 
   wchar_t fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);

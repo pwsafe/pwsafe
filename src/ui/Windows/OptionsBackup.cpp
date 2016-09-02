@@ -85,6 +85,10 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_BACKUPMAXINC, m_MaxNumIncBackups);
 
   DDX_Control(pDX, IDC_SAVEIMMEDIATELY, m_chkbox);
+
+  DDX_Control(pDX, IDC_BACKUPBEFORESAVEHELP, m_Help1);
+  DDX_Control(pDX, IDC_USERBACKUPOTHERLOCATIONHELP, m_Help2);
+  DDX_Control(pDX, IDC_SAVEIMMEDIATELYHELP, m_Help3);
   //}}AFX_DATA_MAP
 }
 
@@ -113,8 +117,20 @@ BOOL COptionsBackup::OnInitDialog()
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
   m_chkbox.ResetBkgColour(); //Use current window's background
 
-  if (!GetMainDlg()->IsDBReadOnly())
+  if (GetMainDlg()->IsDBOpen() && !GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    CString cs_Preference_Warning;
+    CString cs_temp(MAKEINTRESOURCE(GetMainDlg()->IsDBOpen() ? IDS_DB_READ_ONLY : IDS_NO_DB));
+
+    cs_Preference_Warning.Format(IDS_STATIC_DB_PREFS_RO_WARNING, cs_temp);
+    GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->SetWindowText(cs_Preference_Warning);
+
+    GetDlgItem(IDC_SAVEIMMEDIATELY)->EnableWindow(FALSE);
+  }
 
   if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
@@ -149,11 +165,24 @@ BOOL COptionsBackup::OnInitDialog()
   OnComboChanged();
   OnBackupBeforeSave();
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  AddTool(IDC_BACKUPBEFORESAVE,        IDS_BACKUPBEFORESAVE);
-  AddTool(IDC_USERBACKUPOTHERLOCATION, IDS_USERBACKUPOTHERLOCATION);
-  ActivateToolTip();
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_BACKUPBEFORESAVEHELP, IDS_BACKUPBEFORESAVE);
+    AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
+    AddTool(IDC_SAVEIMMEDIATELYHELP, IDS_SAVEIMMEDIATELY);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }

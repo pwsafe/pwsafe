@@ -19,8 +19,6 @@ class CommandsTest : public ::testing::Test
 {
 protected:
   CommandsTest() {}
-  void SetUp() {}
-  PWScore core;
 };
 
 
@@ -28,6 +26,7 @@ protected:
 
 TEST_F(CommandsTest, AddItem)
 {
+  PWScore core;
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"a title");
@@ -40,7 +39,9 @@ TEST_F(CommandsTest, AddItem)
   ItemListConstIter iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
+  EXPECT_TRUE(core.HasDBChanged());
   core.Undo();
+  EXPECT_FALSE(core.HasDBChanged());
   EXPECT_EQ(0, core.GetNumEntries());
 
   delete pcmd;
@@ -48,6 +49,7 @@ TEST_F(CommandsTest, AddItem)
 
 TEST_F(CommandsTest, CreateShortcutEntry)
 {
+  PWScore core;
   CItemData bi, si;
   bi.CreateUUID();
   bi.SetTitle(L"base entry");
@@ -70,6 +72,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   pmulticmds->Add(AddEntryCommand::Create(&core, si, base_uuid));
   core.Execute(pmulticmds);
   EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_TRUE(core.HasDBChanged());
 
   // Check that the base entry is correctly marked
   ItemListConstIter iter = core.Find(base_uuid);
@@ -78,9 +81,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Undo();
   EXPECT_EQ(0, core.GetNumEntries());
+  EXPECT_FALSE(core.HasDBChanged());
 
   core.Redo();
   EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_TRUE(core.HasDBChanged());
 
   // Delete base, expect both to be gone
   // Get base from core for correct type
@@ -89,9 +94,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
   core.Execute(pcmd1);
   EXPECT_EQ(0, core.GetNumEntries());
+  EXPECT_TRUE(core.HasDBChanged());
 
   core.Undo();
   EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_TRUE(core.HasDBChanged());
 
   // Now just delete the shortcut, check that
   // base is left, and that it reverts to a normal entry
@@ -101,7 +108,123 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   core.Execute(pcmd2);
   ASSERT_EQ(1, core.GetNumEntries());
   EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
+  EXPECT_TRUE(core.HasDBChanged());
 
   // Get core to delete any existing commands
   core.ClearCommands();
+  EXPECT_TRUE(core.HasDBChanged());
+}
+
+TEST_F(CommandsTest, EditEntry)
+{
+  PWScore core;
+  CItemData it;
+  it.CreateUUID();
+  it.SetTitle(L"NoDrama");
+  it.SetPassword(L"PolishTrumpetsSq4are");
+
+  Command *pcmd = AddEntryCommand::Create(&core, it);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+
+  ItemListConstIter iter = core.Find(it.GetUUID());
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  CItemData it2(core.GetEntry(iter));
+  EXPECT_EQ(it, it2);
+
+  it2.SetTitle(L"NoDramamine");
+  pcmd = EditEntryCommand::Create(&core, it, it2);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it2.GetTitle());
+  core.Undo();
+  EXPECT_TRUE(core.HasDBChanged());
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
+  core.Undo();
+  EXPECT_EQ(core.GetNumEntries(), 0);
+  EXPECT_FALSE(core.HasDBChanged());
+  core.Redo();
+  EXPECT_TRUE(core.HasDBChanged());
+  EXPECT_EQ(core.GetNumEntries(), 1);
+}
+
+TEST_F(CommandsTest, RenameGroup)
+{
+  PWScore core;
+  CItemData di;
+  di.CreateUUID();
+  di.SetTitle(L"b title");
+  di.SetPassword(L"b password");
+  di.SetGroup(L"Group0.Alpha");
+  const pws_os::CUUID uuid = di.GetUUID();
+
+  Command *pcmd = AddEntryCommand::Create(&core, di);
+  
+  core.Execute(pcmd);
+  ItemListConstIter iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(di, core.GetEntry(iter));
+  EXPECT_TRUE(core.HasDBChanged());
+  
+  pcmd = RenameGroupCommand::Create(&core, L"Group0.Alpha", L"Group0.Beta");
+  core.Execute(pcmd);
+  iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Beta");
+  core.Undo();
+  iter = core.Find(uuid);
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Alpha");
+
+  delete pcmd;
+}
+
+TEST_F(CommandsTest, CountGroups)
+{
+  PWScore core;
+  CItemData di;
+  std::vector<stringT> vGroups;
+
+  di.CreateUUID();
+  di.SetTitle(L"b title");
+  di.SetPassword(L"b password");
+  const pws_os::CUUID uuid = di.GetUUID();
+
+  Command *pcmd = AddEntryCommand::Create(&core, di);  
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_TRUE(vGroups.empty());
+
+  auto iter = core.Find(di.GetUUID());
+  CItemData di2 = core.GetEntry(iter);
+  di2.SetGroup(L"g1");
+  pcmd = EditEntryCommand::Create(&core, di, di2);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(1, vGroups.size());
+
+  iter = core.Find(di.GetUUID());
+  di = core.GetEntry(iter);
+  di.SetGroup(L"g1.g1-1");
+  pcmd = EditEntryCommand::Create(&core, di2, di);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(2, vGroups.size());
+
+  std::vector<StringX> eg;
+  eg.push_back(L"e1");
+  pcmd = DBEmptyGroupsCommand::Create(&core, eg, DBEmptyGroupsCommand::EG_ADDALL);
+  core.Execute(pcmd);
+  delete pcmd;
+
+  core.GetAllGroups(vGroups);
+  EXPECT_EQ(3, vGroups.size());
 }

@@ -13,6 +13,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
+
 #include "resource.h"
 
 class COptionsMisc : public COptions_PropertyPage
@@ -47,6 +49,7 @@ protected:
   //}}AFX_DATA
 
   CButtonExtn m_chkbox[2];
+  CTBMStatic m_Help1, m_Help2, m_Help3;
 
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 

@@ -229,24 +229,24 @@ BOOL CAddEdit_Basic::OnInitDialog()
   }
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    InitToolTip();
+    if (InitToolTip()) {
+      AddTool(IDC_STATIC_GROUP, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_TITLE, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_NOTES, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_URL, IDS_CLICKTOCOPY);
+      AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
+      AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
+      AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
+      AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
 
-    AddTool(IDC_STATIC_GROUP,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_TITLE,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_NOTES,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_URL,      IDS_CLICKTOCOPY);
-    AddTool(IDC_COPYPASSWORD,    IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_EMAIL,    IDS_CLICKTOCOPYPLUS1);
-    AddTool(IDC_LAUNCH,          IDS_CLICKTOGOPLUS);
-    AddTool(IDC_SENDEMAIL,       IDS_CLICKTOSEND);
+      if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+        AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
+      }
 
-    if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-      AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
+      ActivateToolTip();
     }
-
-    ActivateToolTip();
 
     m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
@@ -288,10 +288,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
 
-  // The core function "GetUniqueGroups(vGroups)" returns the group list by
-  // going through the entries in the database. This will not include empty
-  // groups.  However, we already maintain this list in the UI to save the
-  // display status, so use this instead.
   std::vector<std::wstring> vGroups;
   GetMainDlg()->GetAllGroups(vGroups);
 
@@ -1148,7 +1144,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(self->m_szTempName, _T("w+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == NULL) {
     return 0;
   }
 
@@ -1158,7 +1154,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Write out text
   fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
-             self->M_realnotes().GetLength() * sizeof(TCHAR), fd);
+             self->M_realnotes().GetLength() * sizeof(wchar_t), fd);
 
   // Close file before invoking editor
   fclose(fd);
@@ -1196,7 +1192,6 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     return 0;
   }
 
-  pws_os::Trace(L"%d\n", sizeof(self->m_szTempName));
   WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.
@@ -1223,7 +1218,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Now get what the user saved in this file and put it back into Notes field
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(m_szTempName, _T("r+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(m_szTempName, L"r+b")) == NULL) {
     goto error_exit;
   }
 

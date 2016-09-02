@@ -243,7 +243,8 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+  m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_bShowExpiry(false), m_bFilterActive(false)
 {
@@ -254,7 +255,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bFilterActive(false)
 {
@@ -782,6 +784,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    m_core.ResumeOnDBNotification();
   } else {
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
@@ -888,6 +891,12 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
   return dragbar;
 }
 
+int PasswordSafeFrame::SaveImmediately()
+{
+  // Get normal save to do this (code already there for intermediate backups)
+  return Save(ST_SAVEIMMEDIATELY);
+}
+
 int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 {
   stringT bu_fname; // used to undo backup if save failed
@@ -917,6 +926,11 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
+
+            case ST_SAVEIMMEDIATELY:
+              if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
+                _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
+                return PWScore::USER_CANCEL;
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -969,9 +983,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
     return rc;
   }
 
-  m_core.ResetStateAfterSave();
-  m_core.ClearChangedNodes();
-  SetChanged(Clear);
+  UpdateStatusBar();
 //  ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -992,27 +1004,42 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
 int PasswordSafeFrame::SaveIfChanged()
 {
+  // Deal with unsaved but changed restored DB
+  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+    wxMessageDialog dlg(this,
+                        _("Do you wish to save the this restored database as new database?"),
+                        _("Unsaved restored database"),
+                        (wxICON_QUESTION | wxCANCEL |
+                         wxYES_NO | wxYES_DEFAULT));
+    int rc = dlg.ShowModal();
+    switch (rc) {
+      case wxID_CANCEL:
+        return PWScore::USER_CANCEL;
+      case wxID_YES:
+        rc = SaveAs();
+        // Make sure that file was successfully written
+        if (rc != PWScore::SUCCESS)
+          return PWScore::CANT_OPEN_FILE;
+        else {
+          m_bRestoredDBUnsaved = false;
+          return rc;
+        }
+      case wxID_NO:
+        return PWScore::USER_DECLINED_SAVE;
+      default:
+        ASSERT(0);
+    }
+  }
+
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
+  // Offer to save existing database if it was modified.
+  //
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-       m_core.GetNumEntries() > 0) {
-    int rc = Save();
-    if (rc != PWScore::SUCCESS)
-      return PWScore::USER_CANCEL;
-    else
-      return PWScore::SUCCESS;
-  }
-
-
-  // offer to save existing database if it was modified.
-  // used before loading another
-  // returns PWScore::SUCCESS if save succeeded or if user decided
-  // not to save
-
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if ((m_bTSUpdated || m_core.HasAnythingChanged()) &&
+      m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
       prompt += wxT(": ");
@@ -1032,8 +1059,7 @@ int PasswordSafeFrame::SaveIfChanged()
         if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
       case wxID_NO:
-        // Reset changed flag
-        SetChanged(Clear);
+        UpdateStatusBar();
         break;
       default:
         ASSERT(0);
@@ -1082,7 +1108,10 @@ CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemD
 
 void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
-  DoOpen(_("Please Choose a Database to Open:"));
+  int rc = DoOpen(_("Please Choose a Database to Open:"));
+
+  if (rc == PWScore::SUCCESS)
+    m_core.ResumeOnDBNotification();
 }
 
 
@@ -1132,7 +1161,6 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 
 int PasswordSafeFrame::Open(const wxString &fname)
 {
-
   //Check that this file isn't already open
   if (wxFileName(fname).SameAs(towxstring(m_core.GetCurFile()))) {
     //It is the same damn file
@@ -1340,8 +1368,6 @@ int PasswordSafeFrame::SaveAs()
   m_core.SetRUEList(RUElist);
 
   int rc = m_core.WriteFile(newfile, curver);
-  m_core.ResetStateAfterSave();
-  m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid);
@@ -1363,7 +1389,7 @@ int PasswordSafeFrame::SaveAs()
   app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SetTitle(towxstring(m_core.GetCurFile()));
-  SetChanged(Clear);
+  UpdateStatusBar();
 #if 0
   ChangeOkUpdate();
 
@@ -1385,6 +1411,9 @@ int PasswordSafeFrame::SaveAs()
     // and so cause toolbar to be the correct version
     m_core.SetReadOnly(false);
   }
+
+  // In case it was an unsaved restored DB
+  m_bRestoredDBUnsaved = false;
 
   return PWScore::SUCCESS;
 }
@@ -1591,39 +1620,6 @@ void PasswordSafeFrame::SaveSettings(void) const
   m_grid->SaveSettings();
 }
 
-void PasswordSafeFrame::SetChanged(ChangeType changed)
-{
-  if (m_core.IsReadOnly())
-    return;
-
-  switch (changed) {
-    case Data:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-        // Don't save if just adding group as it will just 'disappear'!
-        Save();
-      } else {
-        m_core.SetDBChanged(true);
-      }
-      break;
-    case Clear:
-      m_core.SetChanged(false, false);
-      m_bTSUpdated = false;
-      break;
-    case TimeStamp:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
-        m_bTSUpdated = true;
-      break;
-    case DBPrefs:
-      m_core.SetDBPrefsChanged(true);
-      break;
-    case ClearDBPrefs:
-      m_core.SetDBPrefsChanged(false);
-      break;
-    default:
-      ASSERT(0);
-  }
-  UpdateStatusBar();
-}
 
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
 {
@@ -1647,7 +1643,7 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci.SetATime();
-    SetChanged(TimeStamp);
+    UpdateStatusBar();
 #ifdef NOTYET
     // Need to update view if there
     if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
@@ -1858,7 +1854,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.IsChanged() || m_core.HaveDBPrefsChanged());
+      evt.Enable(m_core.HasDBChanged() || m_core.HaveDBPrefsChanged());
       break;
 
     case ID_ADDGROUP:
@@ -1976,8 +1972,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
 bool PasswordSafeFrame::IsClosed() const
 {
-  return m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 && !m_core.IsChanged()
-                    && !m_core.AnyToUndo() && !m_core.AnyToRedo();
+  return (m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 &&
+          !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
 // Implementation of UIinterface methods
@@ -1996,7 +1992,7 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     }
     if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
   }
-  else if (m_core.IsChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
+  else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
     if (m_currentView == TREE) {
       if (m_grid != NULL)
@@ -2010,6 +2006,13 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     }
   } else {
     wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
+  }
+
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      modified = false;
   }
 }
 
@@ -2233,7 +2236,7 @@ int PasswordSafeFrame::New()
 {
   int rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && m_core.HasDBChanged()) {
     wxString msg(_("Do you want to save changes to the password database: "));
     msg += m_core.GetCurFile().c_str();
     wxMessageDialog mbox(this, msg, GetTitle(), wxCANCEL | wxYES_NO | wxICON_QUESTION);
@@ -2251,8 +2254,7 @@ int PasswordSafeFrame::New()
         else
           return PWScore::CANT_OPEN_FILE;
     case wxID_NO:
-      // Reset changed flag
-      SetChanged(Clear);
+      UpdateStatusBar();
       break;
     default:
       ASSERT(0);
@@ -2277,8 +2279,6 @@ int PasswordSafeFrame::New()
     DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
-  m_core.ClearChangedNodes();
-
   SetLabel(PWSUtil::NormalizeTTT(wxT("Password Safe - ") + cs_newfile).c_str());
 
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -2356,7 +2356,7 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
   m_savedDBPrefs = towxstring(PWSprefs::GetInstance()->Store());
 
   //Save alerts the user
-  if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
+  if (!m_core.HasDBChanged() || Save() == PWScore::SUCCESS) {
     ClearData();
     return true;
   }
@@ -2411,8 +2411,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     if (m_savedDBPrefs != wxEmptyString) {
       const StringX savedPrefs = tostringx(m_savedDBPrefs);
       PWSprefs::GetInstance()->Load(savedPrefs);
-      if (m_core.HaveHeaderPreferencesChanged(savedPrefs))
-        m_core.SetDBPrefsChanged(true);
       m_savedDBPrefs = wxEmptyString;
     }
   }
@@ -2575,6 +2573,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
   switch(Open(dbfile))
   {
     case PWScore::SUCCESS:
+      m_core.ResumeOnDBNotification();
       break;
 
     case PWScore::USER_CANCEL:
@@ -3219,7 +3218,6 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
     PWSprefs *prefs =  PWSprefs::GetInstance();
 
     const StringX sxSavePrefString(prefs->Store());
-    const bool bSaveIfDBPrefsChanged = prefs->IsDBprefsChanged();
 
     // Save all the 'other core' preferences in the copy - to use for
     // 'other' default Password Policy when needed in Compare, Merge & Sync
@@ -3230,7 +3228,6 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 
     // Reset database preferences - first to defaults then add saved changes!
     prefs->Load(sxSavePrefString);
-    prefs->SetDBprefsChanged(bSaveIfDBPrefsChanged);
 
     if (rc == PWScore::SUCCESS) {
         Merge(tostringx(dlg.GetOtherSafePath()), &othercore, dlg.GetSelectionCriteria());
@@ -3278,7 +3275,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)
-    SetChanged(Data);
+    UpdateStatusBar();
 
 #ifdef NOT_YET
   ChangeOkUpdate();
@@ -3310,7 +3307,7 @@ void PasswordSafeFrame::UpdateStatusBar()
 
     //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
 
-    text = m_core.IsChanged() ? wxT("*") : wxT(" ");
+    text = m_core.HasDBChanged() ? wxT("*") : wxT(" ");
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_MODIFIED);
 
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");

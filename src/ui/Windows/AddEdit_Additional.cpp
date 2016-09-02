@@ -163,11 +163,12 @@ BOOL CAddEdit_Additional::OnInitDialog()
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
   if (M_uicaller() != IDS_ADDENTRY) {
-    InitToolTip();
-    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
-    ActivateToolTip();
+    if (InitToolTip()) {
+      AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+      AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+      AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
+      ActivateToolTip();
+    }
 
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);

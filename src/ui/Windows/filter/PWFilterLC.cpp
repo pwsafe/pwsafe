@@ -87,6 +87,8 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const FilterType &fi
   EnableToolTips(TRUE);
 
   const COLORREF crTransparent = RGB(192, 192, 192);
+
+  // Load all images as list in enum CheckImageLC and in the order specified in it
   CBitmap bitmap;
   BITMAP bm;
   bitmap.LoadBitmap(IDB_CHECKED);
@@ -2189,7 +2191,7 @@ void CPWFilterLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
             iy = inner_rect.CenterPoint().y;
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
-            DrawImage(pDC, inner_rect, bFilterActive ? 0 : 1);
+            DrawImage(pDC, inner_rect, bFilterActive ? CHECKEDLC : UNCHECKEDLC);
             *pLResult = CDRF_SKIPDEFAULT;
             break;
           case FLC_ADD_BUTTON:
@@ -2272,7 +2274,7 @@ void CPWFilterLC::DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
   }
 }
 
-void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, int nImage)
+void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, CheckImageLC nImage)
 {
   // Draw check image in given rectangle
   if (rect.IsRectEmpty() || nImage < 0) {

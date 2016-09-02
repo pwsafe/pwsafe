@@ -499,6 +499,7 @@
     <ClInclude Include="PasswordPolicy.h" />
     <ClInclude Include="passwordsafeframe.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
+    <ClInclude Include="passwordsubset.h" />
     <ClInclude Include="properties.h" />
     <ClInclude Include="pwsafeapp.h" />
     <ClInclude Include="pwsclip.h" />
@@ -558,6 +559,7 @@
     <ClCompile Include="PasswordPolicy.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
+    <ClCompile Include="passwordsubset.cpp" />
     <ClCompile Include="properties.cpp" />
     <ClCompile Include="pwsafeapp.cpp" />
     <ClCompile Include="pwsclip.cpp" />

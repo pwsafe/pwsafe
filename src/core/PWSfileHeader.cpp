@@ -13,9 +13,8 @@ PWSfileHeader::PWSfileHeader()
     m_prefString(_T("")), m_whenlastsaved(0),
     m_lastsavedby(_T("")), m_lastsavedon(_T("")),
     m_whatlastsaved(_T("")),
-    m_dbname(_T("")), m_dbdesc(_T("")), m_yubi_sk(NULL)
+    m_DB_Name(_T("")), m_DB_Description(_T("")), m_yubi_sk(NULL)
 {
-  m_RUEList.clear();
 }
 
 PWSfileHeader::PWSfileHeader(const PWSfileHeader &h) 
@@ -26,7 +25,7 @@ PWSfileHeader::PWSfileHeader(const PWSfileHeader &h)
     m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
     m_whatlastsaved(h.m_whatlastsaved),
-    m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc), m_RUEList(h.m_RUEList)
+    m_DB_Name(h.m_DB_Name), m_DB_Description(h.m_DB_Description), m_RUEList(h.m_RUEList)
 {
   if (h.m_yubi_sk != NULL) {
     m_yubi_sk = new unsigned char[YUBI_SK_LEN];
@@ -55,8 +54,8 @@ PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
     m_lastsavedby = h.m_lastsavedby;
     m_lastsavedon = h.m_lastsavedon;
     m_whatlastsaved = h.m_whatlastsaved;
-    m_dbname = h.m_dbname;
-    m_dbdesc = h.m_dbdesc;
+    m_DB_Name = h.m_DB_Name;
+    m_DB_Description = h.m_DB_Description;
     m_RUEList = h.m_RUEList;
     if (h.m_yubi_sk != NULL) {
       if (m_yubi_sk)
@@ -82,8 +81,8 @@ bool PWSfileHeader::operator==(const PWSfileHeader &h) const
                  m_lastsavedby == h.m_lastsavedby &&
                  m_lastsavedon == h.m_lastsavedon &&
                  m_whatlastsaved == h.m_whatlastsaved &&
-                 m_dbname == h.m_dbname &&
-                 m_dbdesc == h.m_dbdesc &&
+                 m_DB_Name == h.m_DB_Name &&
+                 m_DB_Description == h.m_DB_Description &&
                  m_RUEList == h.m_RUEList);
   if (!retval)
     return false;

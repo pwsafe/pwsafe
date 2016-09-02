@@ -64,7 +64,7 @@ void CYubiMixin::yubiRequestHMACSha1(const CSecString &challenge)
     // Prepare the HMAC-SHA1 challenge here
 
     BYTE chalBuf[SHA1_MAX_BLOCK_SIZE];
-    BYTE chalLength = BYTE(challenge.GetLength()*sizeof(TCHAR));
+    BYTE chalLength = BYTE(challenge.GetLength() * sizeof(wchar_t));
     memset(chalBuf, 0, SHA1_MAX_BLOCK_SIZE);
     if (chalLength > SHA1_MAX_BLOCK_SIZE)
       chalLength = SHA1_MAX_BLOCK_SIZE;
@@ -78,7 +78,7 @@ void CYubiMixin::yubiRequestHMACSha1(const CSecString &challenge)
       m_pending = true;
       yubiShowChallengeSent(); // request's in the air, setup GUI to wait for reply
     } else {
-      TRACE(_T("m_yk.writeChallengeBegin() failed"));
+      pws_os::Trace(L"m_yk.writeChallengeBegin() failed");
     }
     trashMemory(chalBuf, chalLength);
   }

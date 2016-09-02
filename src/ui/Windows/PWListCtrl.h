@@ -35,6 +35,7 @@ public:
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   void UpdateRowHeight(bool bInvalidate);
+
 protected:
   //{{AFX_MSG(CPWListCtrl)
   afx_msg void OnDestroy();
@@ -67,6 +68,9 @@ private:
   UINT_PTR m_nHoverNDTimerID, m_nShowNDTimerID;
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
+
+  // Determine if Notes column displayed in List View
+  bool IsNotesColumnPresent();
 
   // Filter
   bool m_bFilterActive;

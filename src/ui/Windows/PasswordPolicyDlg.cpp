@@ -87,7 +87,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
     m_Symbols = m_oldSymbols = m_st_default_pp.symbols.c_str();
   else {
     // empty, set to appropriate default
-    stringT st_symbols;
+    std::wstring st_symbols;
     if (m_PWEasyVision == TRUE)
       st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
     else if (m_PWMakePronounceable == TRUE)
@@ -1102,7 +1102,7 @@ void CPasswordPolicyDlg::OnSymbolReset()
 
 void CPasswordPolicyDlg::do_reset_symbols(bool restore_defaults)
 {
-  stringT st_symbols;
+  std::wstring st_symbols;
   if (m_PWEasyVision == TRUE)
     st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_PWMakePronounceable == TRUE)

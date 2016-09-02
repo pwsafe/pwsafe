@@ -66,7 +66,7 @@ public:
 private:
   XFilterXMLProcessor& operator=(const XFilterXMLProcessor&); // Do not implement
   Asker *m_pAsker;
-  PWSFilters &m_MapFilters;
+  PWSFilters &m_MapXMLFilters; // So as not to confuse with UI & core
   FilterPool m_FPool;
   stringT m_strXMLErrors;
   bool m_bValidation;

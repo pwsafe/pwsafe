@@ -480,17 +480,17 @@ int PWSfileV3::WriteHeader()
                         m_hdr.m_whatlastsaved);
   if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
-  if (!m_hdr.m_dbname.empty()) {
-    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
+  if (!m_hdr.m_DB_Name.empty()) {
+    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_DB_Name);
     if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
-  if (!m_hdr.m_dbdesc.empty()) {
-    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
+  if (!m_hdr.m_DB_Description.empty()) {
+    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_DB_Description);
     if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
-  if (!m_MapFilters.empty()) {
+  if (!m_MapDBFilters.empty()) {
     coStringXStream oss;  // XML is always char not wchar_t
-    m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
+    m_MapDBFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
@@ -750,13 +750,13 @@ int PWSfileV3::ReadHeader()
       case HDR_DBNAME:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbname = text;
+        m_hdr.m_DB_Name = text;
         break;
 
       case HDR_DBDESC:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbdesc = text;
+        m_hdr.m_DB_Description = text;
         break;
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
@@ -787,9 +787,9 @@ int PWSfileV3::ReadHeader()
           m_UHFL.push_back(unkhfe);
           break;
         }
-        int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
-                                                  XSDFilename.c_str(),
-                                                  strErrors, m_pAsker);
+        int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+                                                    XSDFilename.c_str(),
+                                                    strErrors, m_pAsker);
         if (rc != PWScore::SUCCESS) {
           // Can't parse it - treat as an unknown field,
           // Notify user that filter won't be available

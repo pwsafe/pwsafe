@@ -463,7 +463,7 @@ public:
   CPWStatusBar* m_statusBar;
   ////@end PasswordSafeFrame member variables
  private:
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0,
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   //we need to restrict the size of individual text fields, to prevent creating
@@ -477,6 +477,7 @@ public:
   int SaveIfChanged();
   int SaveAs(void);
   int Save(SaveType st = ST_INVALID);
+  int SaveImmediately();
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
@@ -487,8 +488,6 @@ public:
   Command *Delete(wxTreeItemId tid); // for group delete
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut
   void UpdateAccessTime(CItemData &ci);
-  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
-  void SetChanged(ChangeType changed);
   void CreateMainToolbar();
   void ReCreateMainToolbar();
   void ReCreateDragToolbar();
@@ -550,6 +549,7 @@ public:
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;
+  bool m_bRestoredDBUnsaved;
   CRUEList m_RUEList;
   GUIInfo* m_guiInfo;
   bool m_bTSUpdated;

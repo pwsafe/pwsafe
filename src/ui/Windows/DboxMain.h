@@ -212,7 +212,7 @@ public:
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
 
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   // Find entry by title and user name, exact match
@@ -259,9 +259,9 @@ public:
 
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
-  enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
+  enum ViewType {LISTONLY = 1, TREEONLY = 2, BOTHVIEWS = 3};
 
-  void RefreshViews(const int iView = iBothViews);
+  void RefreshViews(const ViewType iView = BOTHVIEWS);
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
@@ -269,8 +269,17 @@ public:
   void SelectFirstEntry();
 
   int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
-  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
-  void SetChanged(ChangeType changed);
+
+  // These specific changed states are only needed when no other change has been made
+  // AND the user has requested that:
+  // 1. Maintain timestamps or
+  // 2. Open database with the group display the same as when last saved
+  // NOTE: The DB core is not informed of these changes as they are only used by the UI
+  // to determine if the DB should be saved on close/exit if no other changes have been made
+  void SetEntryTimestampsChanged(const bool bEntryTimestampsChanged)
+  {m_bEntryTimestampsChanged = bEntryTimestampsChanged;}
+
+  // This updates the Save menu/toolbar button depending if there are unsaved changes
   void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
@@ -285,9 +294,11 @@ public:
   void UpdateListItemPassword(const int lindex, const StringX &sxnewPassword)
   {UpdateListItemField(lindex, CItemData::PASSWORD, sxnewPassword);}
   
-  void SetHeaderInfo();
-  CString GetHeaderText(int iType) const;
-  int GetHeaderWidth(int iType) const;
+  void SetHeaderInfo(const bool bSetWidths = true);
+  void RestoreColumnWidths();
+  void SaveColumnWidths();
+  void GetHeaderColumnProperties(const int &iType, CString &csText, int &iWidth,
+    int &iSortColumn);
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
@@ -299,7 +310,10 @@ public:
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
+  bool GetDBNotificationState() {return m_core.GetDBNotificationState();}
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
+  bool IsDBOpen() const { return m_bOpen; }
+  void SetDBprefsState(const bool bState) { m_bDBState = bState; }
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
@@ -331,9 +345,9 @@ public:
               std::vector<Command *> &vemptygrps,
               bool bExcludeTopGroup = false); 
 
-  void SaveGroupDisplayState(); // call when tree expansion state changes
+  void SaveGroupDisplayState(const bool bClear = false); // call when tree expansion state changes
   void RestoreGUIStatusEx();
-  void SaveGUIStatusEx(const int iView);
+  void SaveGUIStatusEx(const ViewType iView);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
@@ -411,7 +425,7 @@ public:
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}
 
-  stringT DoMerge(PWScore *pothercore,
+  std::wstring DoMerge(PWScore *pothercore,
                   const bool bAdvanced, CReport *prpt, bool *pbCancel);
   bool DoCompare(PWScore *pothercore,
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
@@ -428,7 +442,7 @@ public:
                  const StringX &sx_ExportKey, int &numExported, CReport *prpt);
 
   int TestSelection(const bool bAdvanced,
-                    const stringT &subgroup_name,
+                    const std::wstring &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
                     const OrderedItemList *pOIL) const
@@ -523,6 +537,8 @@ public:
   bool m_bIsRestoring;
   bool m_bOpen;
   bool m_bInRestoreWindowsData;
+  bool m_bUserDeclinedSave;
+  bool m_bRestoredDBUnsaved;
 
   bool m_bSetup;          // invoked with '--setup'?
   bool m_bNoValidation;   // invoked with '--novalidate'?
@@ -543,7 +559,9 @@ public:
   bool m_bSortAscending;
   int m_iTypeSortColumn;
 
-  bool m_bTSUpdated;
+  bool m_bDBState;
+  bool m_bEntryTimestampsChanged;
+  bool m_bGroupDisplayChanged;
   INT_PTR m_iSessionEndingStatus;
 
   // Used for Advanced functions
@@ -563,7 +581,7 @@ public:
   CMenuTipManager m_menuTipManager;
 
   int InsertItemIntoGUITreeList(CItemData &itemData, int iIndex = -1, 
-                 const bool bSort = true, const int iView = iBothViews);
+                 const bool bSort = true, const ViewType iView = BOTHVIEWS);
 
   BOOL SelItemOk();
   void setupBars();
@@ -606,7 +624,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool clearMRE = true);
+  void ClearData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();
@@ -673,7 +691,6 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
-
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -824,7 +841,7 @@ private:
                          CItemData::FieldType ft, bool bUpdateGUI);
   virtual void GUISetupDisplayInfo(CItemData &ci);
   virtual void GUIRefreshEntry(const CItemData &ci);
-  virtual void UpdateWizard(const stringT &s);
+  virtual void UpdateWizard(const std::wstring &s);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
@@ -852,6 +869,7 @@ private:
   int m_nColumnTypeByIndex[CItem::LAST_DATA];
   int m_nColumnWidthByIndex[CItem::LAST_DATA];
   int m_nColumnHeaderWidthByType[CItem::LAST_DATA];
+  int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
@@ -881,6 +899,7 @@ private:
   void SetIdleLockCounter(UINT iMinutes); // set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
+  int SaveImmediately();
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
   void TellUserAboutExpiredPasswords();
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
@@ -888,7 +907,7 @@ private:
   void RestoreGroupDisplayState();
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
-  void SetColumns();  // default order
+  void SetDefaultColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);
   void SetupColumnChooser(const bool bShowHide);
@@ -913,7 +932,7 @@ private:
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
-  void RebuildGUI(const int iView = iBothViews);
+  void RebuildGUI(const ViewType iView = BOTHVIEWS);
   void UpdateEntryinGUI(CItemData &ci);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   
@@ -941,7 +960,7 @@ private:
 
   // Global Filters
   PWSFilterManager m_FilterManager;
-  PWSFilters m_MapFilters;
+  PWSFilters m_MapAllFilters;  // Includes DB and temporary (added, imported, autoloaded etc.)
   FilterPool m_currentfilterpool;
   CString m_selectedfiltername;
 
@@ -1006,6 +1025,8 @@ private:
   bool m_bInRename;
   // When in AddGroup and where AddGroup initiated
   bool m_bInAddGroup, m_bWhitespaceRightClick;
+  // When Wizard dialog is active
+  bool m_bWizardActive;
 
   // Change languages on the fly
   void SetLanguage(LCID lcid);

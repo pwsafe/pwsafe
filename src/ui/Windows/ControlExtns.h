@@ -332,7 +332,7 @@ class CSymbolEdit : public CEdit
   // Construction
 public:
   CSymbolEdit();
-  void SetValidSym(const stringT &s);
+  void SetValidSym(const std::wstring &s);
 
 protected:
   //{{AFX_MSG(CSymbolEdit)
@@ -342,7 +342,7 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 private:
-  stringT m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
+  std::wstring m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
 };
 
 /////////////////////////////////////////////////////////////////////////////

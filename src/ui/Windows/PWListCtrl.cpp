@@ -61,6 +61,23 @@ void CPWListCtrl::ActivateND(const bool bActivate)
   }
 }
 
+bool CPWListCtrl::IsNotesColumnPresent()
+{
+  CHeaderCtrl *pHeader = GetHeaderCtrl();
+  if (pHeader == NULL)
+    return false;
+
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+  
+  for (int icol = 0; icol < pHeader->GetItemCount(); icol++) {
+    pHeader->GetItem(icol, &hdi);
+    if (hdi.lParam == CItemData::NOTES)
+      return true;    
+  }
+  return false;
+}
+
 void CPWListCtrl::SetUpFont()
 {
   Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
@@ -103,14 +120,14 @@ void CPWListCtrl::OnPaint()
 {
   CListCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
@@ -377,6 +394,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
   static CFont *pCurrentFont = NULL;
   static CFont *pPasswordFont = NULL;
+  static CFont *pNotesFont = NULL;
   static CDC *pDC = NULL;
 
   HDITEM hdi = {0};
@@ -391,6 +409,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       bchanged_item_font = bchanged_subitem_font = false;
       pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
+      pNotesFont = Fonts::GetInstance()->GetNotesFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
@@ -417,6 +436,12 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pDC->SelectObject(pPasswordFont);
         *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
       } else
+        if (hdi.lParam == CItemData::NOTES) {
+          // Use Notes font
+          bchanged_subitem_font = true;
+          pDC->SelectObject(pNotesFont);
+          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+        } else
       if (m_bUseHighLighting) {
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(pci, cf);
@@ -457,16 +482,20 @@ void CPWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
   if (!Fonts::GetInstance())
      return;
   
-  int padding=4;
+  int padding = 4;
   if (GetExtendedStyle() & LVS_EX_GRIDLINES)
-     padding+=2;
+     padding += 2;
   
-  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight()+padding;
-  //Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
+  const bool bNotesDisplayed = IsNotesColumnPresent();
+  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight(bNotesDisplayed) + 
+    padding;
+
+  // Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
   ModifyStyle(LVS_OWNERDRAWFIXED, 0);
 }
 
-void CPWListCtrl::UpdateRowHeight(bool bInvalidate){
+void CPWListCtrl::UpdateRowHeight(bool bInvalidate)
+{
   // We need to change WINDOWPOS to trigger MeasureItem 
   // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
   CRect rc;
@@ -481,11 +510,10 @@ void CPWListCtrl::UpdateRowHeight(bool bInvalidate){
   ModifyStyle(0, LVS_OWNERDRAWFIXED);
 
   SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
-  if (bInvalidate)
-  {
+  if (bInvalidate) {
     Invalidate();
     int idx = GetTopIndex();
-    if (idx >=0)
+    if (idx >= 0)
       EnsureVisible(idx, FALSE);
   }
 }

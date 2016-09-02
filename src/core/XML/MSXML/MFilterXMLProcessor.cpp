@@ -28,7 +28,7 @@
 
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_MapXMLFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
 {
 }
 
@@ -74,7 +74,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Create ErrorHandlerImpl object
   MFilterSAX2ErrorHandler *pEH = new MFilterSAX2ErrorHandler;
 
-  pCH->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
+  pCH->SetVariables(m_pAsker, &m_MapXMLFilters, m_FPool, m_bValidation);
 
   //  Set Content Handler
   hr = pSAX2Reader->putContentHandler(pCH);

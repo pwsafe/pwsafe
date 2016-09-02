@@ -100,7 +100,7 @@ void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
   
-  hDbgHelp = HMODULE(pws_os::LoadLibrary(_T("DbgHelp.dll"), pws_os::LOAD_LIBRARY_SYS));
+  hDbgHelp = HMODULE(pws_os::LoadLibrary(L"DbgHelp.dll", pws_os::LOAD_LIBRARY_SYS));
   if (hDbgHelp == NULL)
     return;
 
@@ -358,12 +358,12 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     UserStreams[3].Buffer = (void *)&szUserStream3[0];
     UserStreams[3].BufferSize = (ULONG)((wcslen(szUserStream3) + 1) * sizeof(wchar_t));
 
-    stringT us4 = PWSLog::GetLog()->DumpLog();
+    std::wstring us4 = PWSLog::GetLog()->DumpLog();
 
     if (us4.length() > 0) {
       UserStreams[4].Type = LastReservedStream + 5;
       UserStreams[4].Buffer = (void *)us4.c_str();
-      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(TCHAR));
+      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(wchar_t));
     }
 
     MINIDUMP_USER_STREAM_INFORMATION musi;

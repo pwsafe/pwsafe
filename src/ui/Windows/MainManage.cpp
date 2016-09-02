@@ -145,12 +145,15 @@ int DboxMain::RestoreSafe()
   StringX currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return rc;
-   
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(Clear);
+  if (m_bOpen) {
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return rc;
+
+    // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+    if (rc == PWScore::USER_DECLINED_SAVE)
+      m_bUserDeclinedSave = true;
+  }
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);
@@ -238,9 +241,13 @@ int DboxMain::RestoreSafe()
   }
 
   m_core.SetCurFile(L"");    // Force a Save As...
-  m_core.SetDBChanged(true); // So that the restored file will be saved
+  // Rather than set the DB as having been changed to force it to
+  // be saved, use new variable
+  m_bRestoredDBUnsaved = true;
+
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
+  
   ChangeOkUpdate();
   RefreshViews();
 
@@ -264,6 +271,9 @@ void DboxMain::OnOptions()
     bAppHotKeyEnabled = FALSE;
   else
     bAppHotKeyEnabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+
+  // Get current status of how the user wants to the initial display
+  bool bTreeOpenStatus = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != PWSprefs::AsPerLastSave;
 
   // Disable Hotkey around this as the user may press the current key when 
   // selecting the new key!
@@ -327,6 +337,7 @@ void DboxMain::OnOptions()
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
     m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
+
     // Make a sunken or recessed border around the first pane
     m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
                             m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
@@ -384,14 +395,14 @@ void DboxMain::OnOptions()
       }
     }
 
+    m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+    m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+
     if (pOptionsPS->RefreshViews()) {
-      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
-      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
       RefreshViews();
     }
-
-    if (pOptionsPS->SaveGroupDisplayState())
-      SaveGroupDisplayState();
 
     if (pOptionsPS->UpdateShortcuts()) {
       // Create vector of shortcuts for user's config file
@@ -494,6 +505,7 @@ void DboxMain::OnOptions()
         }
         pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
+
         if (bNeedGUITreeUpdate) {
           pcmd = UpdateGUICommand::Create(&m_core,
                                                   UpdateGUICommand::WN_EXECUTE_REDO,
@@ -501,12 +513,19 @@ void DboxMain::OnOptions()
           pmulticmds->Add(pcmd);
         }
       }
+
+      // Save group display if the user has switched to Explorer mode or
+      // has changed the TreeDisplayStatusAtOpen to AsPerLastSave
+      if (pOptionsPS->SaveGroupDisplayState() ||
+        (!bTreeOpenStatus &&
+          prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen, true) == PWSprefs::AsPerLastSave)) {
+        SaveGroupDisplayState();
+      }
     }
 
     const int iAction = pOptionsPS->GetPWHAction();
     const int new_default_max = pOptionsPS->GetPWHistoryMax();
     size_t ipwh_exec(0);
-    int num_altered(0);
 
     if (iAction != 0) {
       pcmd = UpdateGUICommand::Create(&m_core,
@@ -527,8 +546,11 @@ void DboxMain::OnOptions()
 
     // If DB preferences changed and/or password history options
     if (pmulticmds != NULL) {
+      int num_altered(0);
       if (pmulticmds->GetSize() > 0) {
+        // Do it
         Execute(pmulticmds);
+
         if (ipwh_exec > 0) {
           // We did do PWHistory update
           if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
@@ -562,20 +584,15 @@ void DboxMain::OnOptions()
               gmb.AfxMessageBox(cs_Msg);
             }
           }
+
+          if (num_altered > 0) {
+            ChangeOkUpdate();
+          }
         } 
       } else {
         // Was created but no commands added in the end.
         delete pmulticmds;
       }
-    }
-
-    if (m_core.HaveDBPrefsChanged() || num_altered > 0) {
-      if (m_core.HaveDBPrefsChanged())
-        SetChanged(DBPrefs);
-      if (num_altered > 0)
-        SetChanged(Data);
-      
-      ChangeOkUpdate();
     }
   }
 
@@ -707,6 +724,8 @@ void DboxMain::OnManagePasswordPolicies()
     Command *pcmd = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
                              DBPolicyNamesCommand::NP_REPLACEALL);
     pmulticmds->Add(pcmd);
+
+    // Do it
     Execute(pmulticmds);
 
     // Update Minidump user streams

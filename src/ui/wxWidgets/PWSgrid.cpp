@@ -333,7 +333,7 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
       }
     }
   }
-  if (m_core.IsChanged())
+  if (m_core.HasDBChanged())
     OnPasswordListModified();
 }
 

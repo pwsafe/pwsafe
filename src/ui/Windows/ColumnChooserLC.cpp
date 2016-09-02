@@ -30,10 +30,21 @@ CColumnChooserLC::CColumnChooserLC()
   CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
   m_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_ccddCPFID != 0);
+
+  m_pCCDropTarget = new CDropTarget();
+  m_pCCDropSource = new COleDropSource();
+  m_pCCDataSource = new CDataSource();
 }
 
 CColumnChooserLC::~CColumnChooserLC()
 {
+  // Don't delete m_pCCDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pCCDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
+  delete m_pCCDropTarget;
+  delete m_pCCDropSource;
 }
 
 BEGIN_MESSAGE_MAP(CColumnChooserLC, CListCtrl)
@@ -156,7 +167,7 @@ void CColumnChooserLC::CompleteMove()
 
 void CColumnChooserLC::OnDestroy()
 {
-  m_CCDropTarget.Revoke();
+  m_pCCDropTarget->Revoke();
 }
 
 // Sort the items based on iType

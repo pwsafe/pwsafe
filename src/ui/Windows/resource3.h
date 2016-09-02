@@ -40,6 +40,8 @@
 #define IDS_OTHEREDITORLOCATION         5109
 #define IDS_MIGRATETOAPPDATA            5110
 #define IDS_CLEARPWHISTORY              5111
+#define IDS_SAVEIMMEDIATELY             5112
+#define IDS_DBLOCK                      5113
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -465,8 +467,7 @@
 #define IDS_RUNCMDCOPIED                5678
 #define IDS_COL_MENUITEM                5680
 #define IDS_COL_SHORTCUT                5681
-#define IDS_SHCT_TOOLTIP0               5682
-#define IDS_SHCT_TOOLTIP1               5683
+#define IDS_SHCT_TOOLTIP                5682
 #define IDS_SHCT_WARNING1               5684
 #define IDS_SHCT_WARNING2               5685
 #define IDS_SHCT_WARNING3               5686
@@ -754,6 +755,7 @@
 #define IDS_NUMEMPTYGROUPS              5995
 #define IDS_ADDEDITFONT                 5996
 #define IDS_SHORTCUT_WARNING            5997
+#define IDS_NOIBACKUP3                  5998
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
@@ -761,3 +763,9 @@
 #define IDS_YUBI_UNINITIALIZED          6003
 #define IDS_YUBI_INIT_FAILED            6004
 #define IDS_YUBI_INIT_SUCCESS           6005
+
+#define IDS_STATIC_DB_PREFS_RO_WARNING  6020
+#define IDS_DB_READ_ONLY                6021
+#define IDS_NO_DB                       6022
+#define IDS_SAVEDRESTOREDDB             6023
+#define IDS_UNSAVEDRESTOREDDB           6024

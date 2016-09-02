@@ -43,8 +43,10 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDataSource m_HdrDataSource;
-  CDropTarget m_HdrDropTarget;
+  CDataSource *m_pHdrDataSource;
+  CDropTarget *m_pHdrDropTarget;
+  COleDropSource *m_pHdrDropSource;
+
   CImageList* m_pDragImage;
   LPARAM m_dwHDRType;
   int m_iDDType;

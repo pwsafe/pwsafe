@@ -62,18 +62,30 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::DatabaseModified(bool bChanged)
 {
-  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
   // Callback from PWScore if the database has been changed
-  // entries or preferences stored in the database
+  // (entries, preferences, header information,
+  //  filters or password policies stored in the database)
 
-  // Callback from PWScore if the password list has been changed,
-  // invalidating the indices vector in Find
+  // First if the password list has been changed, invalidate
+  // the indices vector in Find
   InvalidateSearch();
   OnHideFindToolBar();
 
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      bChanged = false;
+  }
+
+  // Update menu/toolbar according to change state
+  ChangeOkUpdate();
+
   // This is to prevent Windows (Vista & later) from shutting down
-  // if the database has been modified (including preferences stored in the DB)
+  // if the database has been modified (including preferences
+  // stored in the DB)
   static bool bCurrentState(false);
 
   // Don't do anything if status unchanged or not at least Vista
@@ -160,7 +172,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Rebuild the entire tree view
-      RebuildGUI(iTreeOnly);
+      RebuildGUI(TREEONLY);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Refresh one entry ListView row and in the tree if the Title/Username/Password
@@ -177,7 +189,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
-      RebuildGUI(iTreeOnly);
+      RebuildGUI(TREEONLY);
       break;
     default:
       break;
@@ -204,7 +216,7 @@ void DboxMain::GUIRefreshEntry(const CItemData &ci)
   UpdateEntryImages(ci);
 }
 
-void DboxMain::UpdateWizard(const stringT &s)
+void DboxMain::UpdateWizard(const std::wstring &s)
 {
   if (m_pWZWnd != NULL)
     m_pWZWnd->SetWindowText(s.c_str());
@@ -355,7 +367,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       break;
     case CItemData::ATTREF:
       if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
-        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
+        iResult = pLHS_PCI->HasAttRef() ? 1 : -1;
       break;
     default:
       ASSERT(FALSE);
@@ -387,7 +399,7 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = bIsRO ? FALSE : TRUE;
-    BOOL SaveState = (!bIsRO && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
+    BOOL SaveState = (!bIsRO && (m_core.HasAnythingChanged())) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
@@ -560,7 +572,7 @@ void DboxMain::setupBars()
   if (!m_MainToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
                               WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
                               CBRS_TOP | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
+                              CRect(0, 0, 0, 0), AFX_IDW_CONTROLBAR_LAST)) {
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
@@ -575,7 +587,7 @@ void DboxMain::setupBars()
   if (!m_FindToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
                               WS_CHILD    | WS_VISIBLE |
                               CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
+                              CRect(0, 0, 0, 0), AFX_IDW_CONTROLBAR_LAST - 1)) {
     pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
@@ -663,14 +675,20 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   UpdateTreeItem(hItem, ci);
 
   // Deal with List View
+  bool bSortedFieldChanged(false);
+  int iSortColumn = m_nColumnIndexByType[m_iTypeSortColumn];
+
   // Change the first column data - it is empty (as already set)
   if (!m_bImageInLV) {
     sx_fielddata = GetListViewItemText(ci, 0);
   }
 
   sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, 0);
-  if (sx_oldfielddata != sx_fielddata)
+  if (sx_oldfielddata != sx_fielddata) {
     m_ctlItemList.SetItemText(iIndex, 0, sx_fielddata.c_str());
+    if (iSortColumn == 0)
+      bSortedFieldChanged = true;
+  }
 
   if (m_bImageInLV)
     SetEntryImage(iIndex, nImage);
@@ -697,10 +715,45 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
   for (int i = 1; i < m_nColumns; i++) {
     sx_fielddata = GetListViewItemText(ci, i);
     sx_oldfielddata = m_ctlItemList.GetItemText(iIndex, i);
-    if (sx_oldfielddata != sx_fielddata)
+    if (sx_oldfielddata != sx_fielddata) {
       m_ctlItemList.SetItemText(iIndex, i, sx_fielddata.c_str());
+      if (iSortColumn == i)
+        bSortedFieldChanged = true;
+    }
   }
-  m_ctlItemList.Update(iIndex);
+
+  // Unfortunately can't just update this one entry as it may have moved
+  // if the field corresponding to the sort column has changed.
+  // If sorted column field unchanged, just update this one entry.
+  // If sorted column field changed, need to refresh the whole List view
+  if (!bSortedFieldChanged) {
+    m_ctlItemList.Update(iIndex);
+  }  else {
+    // Unselect current entry
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    while (pos) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
+      m_ctlItemList.SetItemState(i, 0, LVIS_FOCUSED | LVIS_SELECTED);
+    }
+
+    // Would like to just sort the list but this seems to leave both the old and the
+    // new list entry visible on Undo until Refresh(F5) performed.  So refresh list
+    RefreshViews(LISTONLY);
+
+    // The iIndex might have changed as the edit could have changed the position
+    // in the list depending on what entry field has changed
+    for (int iItem = 0; iItem < m_ctlItemList.GetItemCount(); iItem++) {
+      CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+      if (ci.GetUUID() == pci->GetUUID()) {
+        // Now reselect it and make visible
+        m_ctlItemList.SetItemState(iItem,
+                                   LVIS_FOCUSED | LVIS_SELECTED,
+                                   LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.EnsureVisible(iItem, false);
+        break;
+      }
+    }
+  }
 }
 
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -1065,7 +1118,7 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
 
 // Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
-void DboxMain::RefreshViews(const int iView)
+void DboxMain::RefreshViews(const ViewType iView)
 {
   PWS_LOGIT_ARGS("iView=%d", iView);
 
@@ -1076,11 +1129,11 @@ void DboxMain::RefreshViews(const int iView)
   m_bInRefresh = true;
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     m_ctlItemList.SetRedraw(FALSE);
     m_ctlItemList.DeleteAllItems();
   }
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     m_ctlItemTree.SetRedraw(FALSE);
     m_mapGroupToTreeItem.clear();
     m_mapTreeItemToGroup.clear();
@@ -1111,11 +1164,11 @@ void DboxMain::RefreshViews(const int iView)
   }
 
   // re-enable and force redraw!
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     m_ctlItemList.SetRedraw(TRUE); 
     m_ctlItemList.Invalidate();
   }
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     m_ctlItemTree.SetRedraw(TRUE);
     m_ctlItemTree.Invalidate();
   }
@@ -1146,7 +1199,6 @@ void DboxMain::RestoreWindows()
   if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
     if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
       PWSprefs::GetInstance()->Load(m_savedDBprefs);
-      m_core.SetDBPrefsChanged(true);
     }
     m_savedDBprefs = EMPTYSAVEDDBPREFS;
   }
@@ -1248,8 +1300,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
   switch (nType) {
     case SIZE_MINIMIZED:
-      //pws_os::Trace(L"OnSize:SIZE_MINIMIZED\n");
-
       // Called when minimize button select on main dialog control box
       // or the system menu or by right clicking in the Taskbar
       // AFTER THE WINDOW HAS BEEN MINIMIZED!!!
@@ -1320,7 +1370,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
           if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
             prefs->Load(m_savedDBprefs);
-            m_core.SetDBPrefsChanged(true);
           }
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
@@ -1357,10 +1406,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
       break;
     case SIZE_MAXHIDE:
-      //pws_os::Trace(L"OnSize:SIZE_MAXHIDE\n");
-      break;
     case SIZE_MAXSHOW:
-      //pws_os::Trace(L"OnSize:SIZE_MAXSHOW\n");
       break;
   } // nType switch statement
   m_bSizing = false;
@@ -1490,6 +1536,7 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
           // Update display state
           SaveGroupDisplayState();
+
           *pLResult = 1L; // We have toggled the group
           return;
         }
@@ -1562,7 +1609,7 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 // {kjp} temporary objects created and copied.
 //
 int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
-                                const bool bSort, const int iView)
+                                const bool bSort, const ViewType iView)
 {
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi != NULL && pdi->list_index != -1) {
@@ -1580,9 +1627,9 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     ci.SetDisplayInfo(pdi);
   }
 
-  if (iView & iListOnly)
+  if (iView & LISTONLY)
     pdi->list_index = -1;
-  if (iView & iTreeOnly)
+  if (iView & TREEONLY)
     pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
@@ -1597,7 +1644,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
   StringX username = ci.GetUser();
   StringX sx_fielddata(L"");
 
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     // Insert the first column data (it will be empty if an image is in 1st column)
     if (!m_bImageInLV) {
       sx_fielddata = GetListViewItemText(ci, 0);
@@ -1615,7 +1662,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       SetEntryImage(iResult, nImage);
   }
 
-  if (iView & iTreeOnly) {
+  if (iView & TREEONLY) {
     HTREEITEM ti;
     StringX treeDispString = (LPCWSTR)m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
@@ -1637,7 +1684,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     pdi->tree_item = ti;
   }
 
-  if (iView & iListOnly) {
+  if (iView & LISTONLY) {
     // Set the data in the rest of the columns
     // First get the 1st line of the Notes field
     StringX sxnotes, line1(L"");
@@ -1700,13 +1747,13 @@ CItemData *DboxMain::getSelectedItem()
   return pci;
 }
 
-void DboxMain::ClearData(const bool clearMRE)
+void DboxMain::ClearData(const bool bClearMRE)
 {
   PWS_LOGIT;
 
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
-  if (clearMRE)
+  if (bClearMRE)
     m_RUEList.ClearEntries();
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
@@ -1739,14 +1786,6 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_bSortAscending = !m_bSortAscending;
     PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
-    if (!m_core.GetCurFile().empty() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (!m_core.IsReadOnly()) {
-        const StringX prefString(prefs->Store());
-        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);
-      }
-      ChangeOkUpdate();
-    }
   } else {
     // Turn off all previous sort arrows
     // Note: not sure where, as user may have played with the columns!
@@ -1825,6 +1864,8 @@ void DboxMain::OnHeaderBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   NMHEADER *phdn = (NMHEADER *)pNotifyStruct;
 
   *pLResult = (m_bImageInLV && phdn->iItem == 0) ? TRUE : FALSE;
+
+  SaveColumnWidths();
 }
 
 void DboxMain::OnHeaderEndDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -2023,11 +2064,15 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
 void DboxMain::OnExpandAll()
 {
   m_ctlItemTree.OnExpandAll();
+
+  SaveGroupDisplayState();
 }
 
 void DboxMain::OnCollapseAll()
 {
   m_ctlItemTree.OnCollapseAll();
+
+  SaveGroupDisplayState();
 }
 
 static void Hider(CWnd *pWnd)
@@ -2043,7 +2088,6 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
-    pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     m_vGroupDisplayState = GetGroupDisplayState();
 
     if (!LockDataBase())
@@ -2064,9 +2108,6 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   } else if (nIDEvent == TIMER_EXPENT) {
     // once a day, we want to check the expired entries list
     CheckExpireList();
-  } else {
-    pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
-          m_IdleLockCountDown, nIDEvent);
   }
 }
 
@@ -2078,8 +2119,6 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // Handle Lock/Unlock, Fast User Switching and Remote access.
   // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup).
-
-  pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (wParam) {
@@ -2136,7 +2175,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Now try and save changes
-  if (m_core.IsChanged() ||  m_bTSUpdated || m_core.HaveDBPrefsChanged()) {
+  if (m_core.HasAnythingChanged() || m_bEntryTimestampsChanged) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
@@ -2183,8 +2222,7 @@ bool DboxMain::IsWorkstationLocked() const
       CloseDesktop(hDesktop);
     }
   }
-  if (bResult)
-    pws_os::Trace(L"IsWorkstationLocked() returning true");
+
   return bResult;
 }
 
@@ -2302,10 +2340,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         m_ctlItemList.SetUpFont();
         m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
 
-        // Recalculate header widths
+        // Recalculate header widths but don't change column widths
         CalcHeaderWidths();
-        // Reset column widths
-        AutoResizeColumns();
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
@@ -2321,6 +2357,9 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       case CFontsDialog::NOTESFONT:
         // Transfer the new font to the Notes field
         pFonts->SetNotesFont(&lf);
+
+        // Recalculating row height
+        m_ctlItemList.UpdateRowHeight(true);
         break;
       case CFontsDialog::VKEYBOARDFONT:
         // Note Virtual Keyboard font is not kept in Fonts class - so set manually
@@ -2523,7 +2562,7 @@ BOOL DboxMain::SendEmail(const CString &cs_Email)
   return rc ? TRUE : FALSE;
 }
 
-void DboxMain::SetColumns()
+void DboxMain::SetDefaultColumns()
 {
   // User hasn't yet saved the columns he/she wants and so gets our order!
   // Or - user has reset the columns (popup menu from right click on Header)
@@ -2543,26 +2582,28 @@ void DboxMain::SetColumns()
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                  rect.Width() / 3, false);
 
-  cs_header = GetHeaderText(CItemData::TITLE);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
+  GetHeaderColumnProperties(CItemData::TITLE, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(0, cs_header);
   hdi.lParam = CItemData::TITLE;
   m_LVHdrCtrl.SetItem(0, &hdi);
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
 
-  cs_header = GetHeaderText(CItemData::USER);
+  GetHeaderColumnProperties(CItemData::USER, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(1, cs_header);
   hdi.lParam = CItemData::USER;
   m_LVHdrCtrl.SetItem(1, &hdi);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
 
-  cs_header = GetHeaderText(CItemData::NOTES);
+  GetHeaderColumnProperties(CItemData::NOTES, cs_header, iWidth, iSortColumn);
   m_ctlItemList.InsertColumn(2, cs_header);
   hdi.lParam = CItemData::NOTES;
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-    cs_header = GetHeaderText(CItemData::PASSWORD);
+    GetHeaderColumnProperties(CItemData::PASSWORD, cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
@@ -2578,8 +2619,9 @@ void DboxMain::SetColumns()
                                     CItemData::XTIME, CItemData::RMTIME,
                                     CItemData::POLICY,
   };
+
   for (int i = 0; i < sizeof(defCols)/sizeof(defCols[0]); i++) {
-    cs_header = GetHeaderText(defCols[i]);
+    GetHeaderColumnProperties(defCols[i], cs_header, iWidth, iSortColumn);
     m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
     hdi.lParam = defCols[i];
     m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
@@ -2598,7 +2640,6 @@ void DboxMain::SetColumns()
 void DboxMain::SetColumns(const CString cs_ListColumns)
 {
   //  User has saved the columns he/she wants and now we are putting them back
-
   CString cs_header;
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
@@ -2629,11 +2670,13 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   }
 
   int icol(0);
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
     iType = *vi_IterColumns;
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     // Images (if present) must be the first column!
     if (iType == CItemData::UUID && icol != 0)
       continue;
@@ -2696,6 +2739,8 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
 {
   // Add new column of type iType after current column index iIndex
   CString cs_header;
+  int iWidth;
+  int iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
   HDITEM hdi;
   int iNewIndex(iIndex);
 
@@ -2704,12 +2749,12 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
     iNewIndex = m_nColumns;
 
   hdi.mask = HDI_LPARAM | HDI_WIDTH;
-  cs_header = GetHeaderText(iType);
+  GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
   ASSERT(!cs_header.IsEmpty());
   iNewIndex = m_ctlItemList.InsertColumn(iNewIndex, cs_header);
   ASSERT(iNewIndex != -1);
   hdi.lParam = iType;
-  hdi.cxy = GetHeaderWidth(iType);
+  hdi.cxy = iWidth;
   m_LVHdrCtrl.SetItem(iNewIndex, &hdi);
 }
 
@@ -2719,7 +2764,7 @@ void DboxMain::DeleteColumn(const int iType)
   m_ctlItemList.DeleteColumn(m_nColumnIndexByType[iType]);
 }
 
-void DboxMain::SetHeaderInfo()
+void DboxMain::SetHeaderInfo(const bool bSetWidths)
 {
   HDITEM hdi_get;
   // CHeaderCtrl get values
@@ -2729,17 +2774,21 @@ void DboxMain::SetHeaderInfo()
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItem::LAST_DATA; i++)
-    m_nColumnIndexByType[i] = 
-    m_nColumnIndexByOrder[i] =
-    m_nColumnTypeByIndex[i] =
-    m_nColumnWidthByIndex[i] = -1;
+  for (int i = 0; i < CItem::LAST_DATA; i++) {
+    m_nColumnIndexByType[i] = m_nColumnIndexByOrder[i] =  m_nColumnTypeByIndex[i] = -1;
+
+    // Only reset column width if we are going to set them
+    if (bSetWidths)
+      m_nColumnWidthByIndex[i] = -1;
+  }
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     const int iIndex = m_nColumnIndexByOrder[iOrder];
-    m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
+    if (bSetWidths)
+      m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
+
     m_LVHdrCtrl.GetItem(iIndex, &hdi_get);
     ASSERT(iOrder == hdi_get.iOrder);
     m_nColumnIndexByType[hdi_get.lParam] = iIndex;
@@ -2751,7 +2800,45 @@ void DboxMain::SetHeaderInfo()
     m_iTypeSortColumn = CItemData::TITLE;
 
   SortListView();
-  AutoResizeColumns();
+
+  if (bSetWidths)
+    AutoResizeColumns();
+}
+
+void DboxMain::SaveColumnWidths()
+{
+  // We need to save the current column widths
+  // Zero it out first
+  for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
+    m_nSaveColumnHeaderWidthByType[iType] = 0;
+  }
+
+  // Now save current widths according to type
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+
+  for (int icol = 0; icol < m_LVHdrCtrl.GetItemCount(); icol++) {
+    m_LVHdrCtrl.GetItem(icol, &hdi);
+    m_nSaveColumnHeaderWidthByType[hdi.lParam] = m_ctlItemList.GetColumnWidth(icol);
+  }
+}
+
+void DboxMain::RestoreColumnWidths()
+{
+  // Now put back the column widths!
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+
+  for (int icol = 0; icol < m_LVHdrCtrl.GetItemCount(); icol++) {
+    m_LVHdrCtrl.GetItem(icol, &hdi);
+    int iWidth = m_nSaveColumnHeaderWidthByType[hdi.lParam];
+
+    // If not there previously (i.e. new column dragged in) use AutoSize
+    if (iWidth == 0)
+      iWidth = LVSCW_AUTOSIZE_USEHEADER;
+
+    m_ctlItemList.SetColumnWidth(icol, iWidth);
+  }
 }
 
 void DboxMain::OnResetColumns()
@@ -2772,13 +2859,13 @@ void DboxMain::OnResetColumns()
     m_nColumnIndexByType[itype] = -1;
 
   // Set default columns
-  SetColumns();
+  SetDefaultColumns();
 
   // Reset the column widths
   AutoResizeColumns();
 
   // Refresh the ListView
-  RefreshViews(iListOnly);
+  RefreshViews(LISTONLY);
 
   // Reset Column Chooser dialog but only if already created
   if (m_pCC != NULL)
@@ -2817,6 +2904,8 @@ void DboxMain::AutoResizeColumns()
 
 void DboxMain::OnColumnPicker()
 {
+  SaveColumnWidths();
+
   SetupColumnChooser(true);
 }
 
@@ -2868,13 +2957,15 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
 
   // and repopulate
   int iItem;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
+
   for (i = CItem::LAST_DATA - 1; i >= 0; i--) {
     // Can't play with Title or User columns
     if (i == CItemData::TITLE || i == CItemData::USER)
       continue;
 
     if (m_nColumnIndexByType[i] == -1) {
-      cs_header = GetHeaderText(i);
+      GetHeaderColumnProperties(i, cs_header, iWidth, iSortColumn);
       if (!cs_header.IsEmpty()) {
         iItem = m_pCC->m_ccListCtrl.InsertItem(0, cs_header);
         m_pCC->m_ccListCtrl.SetItemData(iItem, (DWORD)i);
@@ -2887,115 +2978,106 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
     m_pCC->ShowWindow(m_pCC->IsWindowVisible() ? SW_HIDE : SW_SHOW);
 }
 
-CString DboxMain::GetHeaderText(int iType) const
+void DboxMain::GetHeaderColumnProperties(const int &iType, CString &cs_Header, int &iWidth,
+  int &iSortColumn)
 {
-  CString cs_header;
+  // ***
+  //   REMEMBER TO ADD HERE IF THE FIELD IS GOING TO BE AVAILABLE IN LISTVIEW!!!
+  //   It would be nice to use the compiler to tell us if anything is omitted but
+  //   CIteData::FieldType enum has internal fields and unused gaps plus it would mean
+  //   that arrays would be significantly bigger (CItemData::LAST_DATA [67] vs
+  //   CItemData::LAST_FIELD [260].
+  //   The one field outside CItemData::LAST_DATA is CItemData::ENTRYTYPE but this
+  //   is shown by the image in the CItemData::UUID column if selected
+  //   Lastly, "switch" is based on "int" not "CItemData::FieldType" for the compiler
+  //   to complain!
+  // ***
+
+  cs_Header.Empty();
+  iWidth = m_nColumnHeaderWidthByType[iType];
+  UINT iID(0);
   switch (iType) {
     case CItemData::UUID:
-      cs_header.LoadString(IDS_ICON);
+      iID = IDS_ICON;
       break;
     case CItemData::GROUP:
-      cs_header.LoadString(IDS_GROUP);
+      iID = IDS_GROUP;
       break;
     case CItemData::TITLE:
-      cs_header.LoadString(IDS_TITLE);
+      iID = IDS_TITLE;
       break;
     case CItemData::USER:
-      cs_header.LoadString(IDS_USERNAME);
+      iID = IDS_USERNAME;
       break;
     case CItemData::PASSWORD:
-      cs_header.LoadString(IDS_PASSWORD);
+      iID = IDS_PASSWORD;
       break;
     case CItemData::URL:
-      cs_header.LoadString(IDS_URL);
+      iID = IDS_URL;
       break;
     case CItemData::AUTOTYPE:
-      cs_header.LoadString(IDS_AUTOTYPE);
+      iID = IDS_AUTOTYPE;
       break;
     case CItemData::EMAIL:
-      cs_header.LoadString(IDS_EMAIL);
+      iID = IDS_EMAIL;
       break;
     case CItemData::SYMBOLS:
-      cs_header.LoadString(IDS_SYMBOLS);
+      iID = IDS_SYMBOLS;
       break;
     case CItemData::RUNCMD:
-      cs_header.LoadString(IDS_RUNCOMMAND);
+      iID = IDS_RUNCOMMAND;
       break;
     case CItemData::NOTES:
-      cs_header.LoadString(IDS_NOTES);
+      iID = IDS_NOTES;
       break;
     case CItemData::CTIME:        
-      cs_header.LoadString(IDS_CREATED);
+      iID = IDS_CREATED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::PMTIME:
-      cs_header.LoadString(IDS_PASSWORDMODIFIED);
+      iID = IDS_PASSWORDMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::ATIME:
-      cs_header.LoadString(IDS_LASTACCESSED);
+      iID = IDS_LASTACCESSED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+      iID = IDS_PASSWORDEXPIRYDATE;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::XTIME_INT:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+      iID = IDS_PASSWORDEXPIRYDATEINT;
       break;
     case CItemData::RMTIME:
-      cs_header.LoadString(IDS_LASTMODIFIED);
+      iID = IDS_LASTMODIFIED;
+      iWidth = m_iDateTimeFieldWidth;
       break;
     case CItemData::POLICY:        
-      cs_header.LoadString(IDS_PWPOLICY);
+      iID = IDS_PWPOLICY;
       break;
     case CItemData::POLICYNAME:        
-      cs_header.LoadString(IDS_POLICYNAME);
+      iID = IDS_POLICYNAME;
       break;
     case CItemData::PROTECTED:        
-      cs_header.LoadString(IDS_PROTECTED);
+      iID = IDS_PROTECTED;
       break;
     case CItemData::KBSHORTCUT:        
-      cs_header.LoadString(IDS_KBSHORTCUT);
+      iID = IDS_KBSHORTCUT;
       break;
     case CItemData::ATTREF:
-      cs_header.LoadString(IDS_ATTREF);
+      iID = IDS_ATTREF;
+      break;
+    case CItemData::PWHIST:  // Not displayed in ListView
       break;
     default:
-      cs_header.Empty();
-  }
-  return cs_header;
-}
-
-int DboxMain::GetHeaderWidth(int iType) const
-{
-  int nWidth(0);
-
-  switch (iType) {
-    case CItemData::UUID:
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::PASSWORD:
-    case CItemData::NOTES:
-    case CItemData::URL:
-    case CItemData::EMAIL:
-    case CItemData::SYMBOLS:
-    case CItemData::RUNCMD:
-    case CItemData::POLICY:
-    case CItemData::POLICYNAME: 
-    case CItemData::XTIME_INT:
-    case CItemData::KBSHORTCUT:
-    case CItemData::ATTREF:
-      nWidth = m_nColumnHeaderWidthByType[iType];
-      break;
-    case CItemData::CTIME:        
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::XTIME:
-    case CItemData::RMTIME:
-      nWidth = m_iDateTimeFieldWidth;
-      break;
-    default:
+      // Not found, however as Title is a mandatory column - so can't go wrong!
+      iSortColumn = CItemData::TITLE;
       break;
   }
-  return nWidth;
+
+  if (iID != 0)
+    cs_Header.LoadString(iID);
 }
 
 void DboxMain::CalcHeaderWidths()
@@ -3024,13 +3106,15 @@ void DboxMain::CalcHeaderWidths()
 
   m_iheadermaxwidth = -1;
   CString cs_header;
+  int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
 
   for (int iType = 0; iType < CItem::LAST_DATA; iType++) {
-    cs_header = GetHeaderText(iType);
+    GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     if (!cs_header.IsEmpty())
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;
     else
       m_nColumnHeaderWidthByType[iType] = -4;
+
     m_iheadermaxwidth = max(m_iheadermaxwidth, m_nColumnHeaderWidthByType[iType]);
   } // for
 }
@@ -3285,6 +3369,12 @@ void DboxMain::OnCustomizeToolbar()
   UpdateToolBarForSelectedItem(pci);
 }
 
+void DboxMain::OnShowFindToolbar()
+{
+  // Show Find Toolbar
+  SetFindToolBar(true);
+}
+
 void DboxMain::OnHideFindToolBar()
 {
   SetFindToolBar(false);
@@ -3308,8 +3398,8 @@ void DboxMain::SetFindToolBar(bool bShow)
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
 
-  if (bShow)
-    m_core.ResumeOnDBNotification();
+  if ((m_FindToolBar.IsWindowVisible() && bShow) || (!m_FindToolBar.IsWindowVisible() && !bShow))
+    return;  // Nothing to do
 
   m_FindToolBar.ShowFindToolBar(bShow);
   SetToolBarPositions();
@@ -3320,9 +3410,13 @@ void DboxMain::SetToolBarPositions()
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
 
+  // We mustn't do this if a Wizard dialog is open
+  if (m_bWizardActive)
+    return;
+
   CRect rect, dragrect;
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+  RepositionBars(AFX_IDW_TOOLBAR, AFX_IDW_CONTROLBAR_LAST, 0);
+  RepositionBars(AFX_IDW_TOOLBAR, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   CDDStatic *DDs[] = { &m_DDGroup, &m_DDTitle, &m_DDUser,
                        &m_DDPassword, &m_DDNotes, &m_DDURL, &m_DDemail,
@@ -4125,12 +4219,12 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   }
 }
 
-void DboxMain::RebuildGUI(const int iView)
+void DboxMain::RebuildGUI(const ViewType iView)
 {
   RefreshViews(iView);
 }
 
-void DboxMain::SaveGUIStatusEx(const int iView)
+void DboxMain::SaveGUIStatusEx(const ViewType iView)
 {
   PWS_LOGIT_ARGS("iView=%d", iView);
 
@@ -4147,14 +4241,12 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       (m_ctlItemTree.IsWindowVisible() && m_ctlItemTree.GetCount() == 0))
     return;
 
-  //pws_os::Trace(L"SaveGUIStatusEx\n");
-
   CItemData *pci(NULL);
   POSITION pos;
   HTREEITEM ti;
 
   // Note: User can have different entries selected/visible in Tree & List Views
-  if ((iView & iListOnly) == iListOnly && m_ctlItemList.GetItemCount() > 0) {
+  if ((iView & LISTONLY) == LISTONLY && m_ctlItemList.GetItemCount() > 0) {
     m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
     m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
@@ -4180,7 +4272,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }
-  if ((iView & iTreeOnly) == iTreeOnly && m_ctlItemTree.GetCount() > 0) {
+
+  if ((iView & TREEONLY) == TREEONLY && m_ctlItemTree.GetCount() > 0) {
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
@@ -4362,11 +4455,14 @@ void DboxMain::RestoreGUIStatusEx()
   m_bInRestoreWindows = false;
 }
 
-void DboxMain::SaveGroupDisplayState()
+void DboxMain::SaveGroupDisplayState(const bool bClear)
 {
-  PWS_LOGIT;
+  PWS_LOGIT_ARGS("bClear=%ls", bClear ? L"true" : L"false");
 
-  vector <bool> v = GetGroupDisplayState(); // update it
+  vector <bool> v;
+  if (!bClear)
+      v = GetGroupDisplayState(); // update or clear it
+
   m_core.SetDisplayStatus(v); // store it
 }
 

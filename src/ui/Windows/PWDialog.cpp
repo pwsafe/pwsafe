@@ -26,17 +26,22 @@ DboxMain *CPWDialog::GetMainDlg() const
   return app.GetMainDlg();
 }
 
-void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
+bool CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, Flags)) {
     pws_os::Trace(L"Unable To create ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
+    return false;
   } else {
     EnableToolTips();
-    // Delay initial show & reshow
-    if (delayTimeFactor > 0) {
+    if (delayTimeFactor == 0) {
+      // Special case for Question Mark 'button'
+      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 30000);
+    } else {
       int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
       m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
       m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
@@ -44,6 +49,7 @@ void CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
     }
     m_pToolTipCtrl->SetMaxTipWidth(300);
   }
+  return true;
 }
 
 void CPWDialog::AddTool(int DlgItemID, int ResID)

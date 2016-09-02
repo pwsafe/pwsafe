@@ -12,6 +12,8 @@
 #include "Properties.h"
 #include "InputBox.h"
 
+#include "DboxMain.h"
+
 // CProperties dialog
 
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
@@ -48,7 +50,7 @@ BOOL CProperties::OnInitDialog()
 
   CString ngroups;
   ngroups.Format(IDS_NUMGROUPS_E,
-     m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
+                 m_pdbp->numgroups.c_str(), m_pdbp->numemptygroups.c_str());
 
   GetDlgItem(IDC_DATABASENAME)->SetWindowText(m_pdbp->database.c_str());
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());

@@ -1166,7 +1166,7 @@ CSymbolEdit::CSymbolEdit() : CEdit(), m_validSym(CPasswordCharPool::GetDefaultSy
 {
 }
 
-void CSymbolEdit::SetValidSym(const stringT &s)
+void CSymbolEdit::SetValidSym(const std::wstring &s)
 {
   // Set the member variable.
   // it's the caller's responsibility to decide

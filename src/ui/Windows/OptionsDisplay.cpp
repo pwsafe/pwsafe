@@ -108,12 +108,25 @@ BOOL COptionsDisplay::OnInitDialog()
 
   for (int i = 0; i < 4; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].ResetBkgColour();//Use current window's background
+    m_chkbox[i].ResetBkgColour(); // Use current window's background
   }
+
   for (int i = 0; i < 3; i++) {
     m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
     m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
-    m_radiobtn[i].ResetBkgColour();//Use current window's background
+    m_radiobtn[i].ResetBkgColour(); // Use current window's background
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_DEFUNSHOWINTREE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWSHOWINEDIT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFNOTESSHOWINEDIT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_INITIALTREEVIEW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_TREE_DISPLAY_COLLAPSED)->EnableWindow(FALSE);
+    GetDlgItem(IDC_TREE_DISPLAY_EXPANDED)->EnableWindow(FALSE);
+    GetDlgItem(IDC_TREE_DISPLAY_LASTSAVE)->EnableWindow(FALSE);
   }
 
   if (m_ShowUsernameInTree == FALSE) {
@@ -242,6 +255,7 @@ HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_DEFPWSHOWINTREE:
     case IDC_DEFPWSHOWINEDIT:
     case IDC_DEFNOTESSHOWINEDIT:
+    case IDC_STATIC_INITIALTREEVIEW:
     case IDC_TREE_DISPLAY_COLLAPSED:
     case IDC_TREE_DISPLAY_EXPANDED:
     case IDC_TREE_DISPLAY_LASTSAVE:

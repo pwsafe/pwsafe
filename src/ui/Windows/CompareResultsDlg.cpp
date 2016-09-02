@@ -78,7 +78,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
   m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
-  m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
+  m_OriginalDBChanged(false),
   m_bTreatWhiteSpaceasEmpty(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
@@ -127,6 +127,11 @@ END_MESSAGE_MAP()
 
 BOOL CCompareResultsDlg::OnInitDialog()
 {
+  // We do not allow Save Immediately for actions performed via the
+  // CompareResults dialog - these include copy, edit, synchronise
+  m_bDBNotificationState = GetMainDlg()->GetDBNotificationState();
+  GetMainDlg()->SuspendOnDBNotification();
+
   std::vector<UINT> vibottombtns;
   vibottombtns.push_back(IDOK);
 
@@ -389,6 +394,10 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
 
 void CCompareResultsDlg::OnCancel()
 {
+  // Reset Save Immediately if set originally
+  if (m_bDBNotificationState)
+    GetMainDlg()->ResumeOnDBNotification();
+
   m_menuManager.Cleanup();
 
   CPWResizeDialog::OnCancel();
@@ -396,6 +405,10 @@ void CCompareResultsDlg::OnCancel()
 
 void CCompareResultsDlg::OnOK()
 {
+  // Reset Save Immediately if set originally
+  if (m_bDBNotificationState)
+    GetMainDlg()->ResumeOnDBNotification();
+
   m_menuManager.Cleanup();
 
   CPWResizeDialog::OnOK();

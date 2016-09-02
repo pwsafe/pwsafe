@@ -13,14 +13,40 @@ Bugs fixed in 3.39.2
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
 [] Empty groups are now added when merging one PasswordSafe database into another.
+[] List view column widths are no longer reset when dragging columns to different
+positions or columns are added or removed.
+[] The user specified Notes font is now also applied to the Notes column in the
+List view.
+[] Entry Protected state and AutoType string is now correctly displayed in the
+List view.
+[] After entry has been edited from List View, it now remains visible after
+Edit/Undo/Redo even if the change alters its position within the view.
+[1347] Prevent a user from trying to copy a filter to a read-only database.
 [1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is
 checked.
 [1342, 1343] Fix multiple empty group issues.
+[1335] If "Minimize after Autotype" option is set, it will also be honoured for
+the user action: "Browse to URL + Autotype".
+
+Changes to Existing Features in 3.39.2
+======================================
+[] Save Immediately has been enhanced to apply to all changes to the database
+and not just after an edit or addition of an entry. It is STRONGLY recommended
+that, if enabled, then the option to "Create intermediate backups" is also
+enabled. Note, changes made via the Compare database results dialog will not
+cause a database save for each action but will after the compare results dialog
+has been closed.
+[] The last sort direction in List View (ascending or descending) on closing
+a database is now stored in the application configuration file and is no longer
+stored in the database header.
+[] The number of groups shown in the database properties dialog is now counted
+in the same manner as directories/folders in a file system, e.g.,
+Windows Explorer. This includes empty groups. The number of empty
+groups is also shown.
 
 New Features for 3.39.2
 =======================
-[] The database properties page now includes the number of empty groups.
 [] Empty sub-groups are included when exporting a group to a new PasswordSafe
 database.
 [] Adding an empty group will also cause the database to be saved if the user has

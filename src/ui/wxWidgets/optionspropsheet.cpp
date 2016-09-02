@@ -212,7 +212,7 @@ void COptions::CreateControls()
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
 
-  wxCheckBox* itemCheckBox4 = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after Edit or Add"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox4 = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after any change"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox4->SetValue(false);
   itemBoxSizer3->Add(itemCheckBox4, 0, wxALIGN_LEFT|wxALL, 5);
 

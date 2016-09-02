@@ -69,8 +69,13 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
-  //}}AFX_DATA_MAP
+
   DDX_Slider(pDX, IDC_HASHITERSLIDER, m_HashIterSliderValue);
+
+  DDX_Control(pDX, IDC_LOCKONMINIMIZEHELP, m_Help1);
+  DDX_Control(pDX, IDC_LOCKONWORKSTATIONLOCKHELP, m_Help2);
+  DDX_Control(pDX, IDC_LOCKONIDLEHELP, m_Help3);
+  //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
@@ -92,7 +97,20 @@ BOOL COptionsSecurity::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].ResetBkgColour();//Use current window's background
+    m_chkbox[i].ResetBkgColour(); // Use current window's background
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_COPYPSWDURL)->EnableWindow(FALSE);
+    GetDlgItem(IDC_LOCK_TIMER)->EnableWindow(FALSE);
+    GetDlgItem(IDC_IDLESPIN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_IDLEMINS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_UNLOCKDIFFICULTY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_HASHITERSLIDER)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_HASHITER_MIN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_HASHITER_MAX)->EnableWindow(FALSE);
   }
 
   OnLockOnIdleTimeout();
@@ -108,6 +126,24 @@ BOOL COptionsSecurity::OnInitDialog()
   pslider->SetRange(MinHIslider, MaxHIslider);
   pslider->SetTicFreq(1);
   pslider->SetPos(m_HashIterSliderValue);
+
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+
+    AddTool(IDC_LOCKONMINIMIZEHELP, IDS_DBLOCK);
+    AddTool(IDC_LOCKONWORKSTATIONLOCKHELP, IDS_DBLOCK);
+    AddTool(IDC_LOCKONIDLEHELP, IDS_DBLOCK);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }
@@ -210,6 +246,8 @@ BOOL COptionsSecurity::OnApply()
 
 BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
 {
+  RelayToolTipEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
@@ -238,10 +276,12 @@ void COptionsSecurity::OnHelp()
 
 void COptionsSecurity::OnLockOnIdleTimeout() 
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
-  GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
-  GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
-  GetDlgItem(IDC_STATIC_IDLEMINS)->EnableWindow(enable);
+  if (GetMainDlg()->IsDBOpen() && !GetMainDlg()->IsDBReadOnly()) {
+    BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
+    GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
+    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
+    GetDlgItem(IDC_STATIC_IDLEMINS)->EnableWindow(enable);
+  }
 }
 
 HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -250,9 +290,10 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_STATIC_IDLEMINS:
     case IDC_COPYPSWDURL:
     case IDC_LOCK_TIMER:
+    case IDC_STATIC_IDLEMINS:
+    case IDC_STATIC_UNLOCKDIFFICULTY:
     case IDC_STATIC_HASHITER:
     case IDC_STATIC_HASHITER_MIN:
     case IDC_STATIC_HASHITER_MAX:

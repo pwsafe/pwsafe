@@ -67,6 +67,9 @@ void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_APPHOTKEY_CTRL, m_AppHotKeyCtrl);
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_ENTSHORTCUTLIST, m_EntryShortcutLC);
+
+  DDX_Control(pDX, IDC_ENTSHORTCUTLISTHELP, m_Help1);
+  DDX_Control(pDX, IDC_SHORTCUTLISTHELP, m_Help2);
 }
 
 BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
@@ -214,9 +217,19 @@ BOOL COptionsShortcuts::OnInitDialog()
   m_EntryShortcutLC.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER); // TITLE
   m_EntryShortcutLC.SetColumnWidth(3, LVSCW_AUTOSIZE_USEHEADER); // USER
 
-  InitToolTip();
-  AddTool(IDC_ENTSHORTCUTLIST, IDS_KBS_TOOLTIP1);
-  ActivateToolTip();
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+
+    AddTool(IDC_ENTSHORTCUTLISTHELP, IDS_KBS_TOOLTIP1);
+    AddTool(IDC_SHORTCUTLISTHELP, IDS_SHCT_TOOLTIP);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }

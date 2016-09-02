@@ -15,6 +15,7 @@ class CReport;
 class CommandInterface;
 
 #include "ItemData.h"
+#include "PWSfile.h"
 #include "StringX.h"
 #include "os/UUID.h"
 
@@ -36,31 +37,42 @@ class CommandInterface;
 class Command
 {
 public:
+  enum CommandDBChange { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
+    DBFILTERS };
+
+  enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
+
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() {return Execute();} // common case
   virtual void Undo() = 0;
 
   void SetNoGUINotify() {m_bNotifyGUI = false;}
-  virtual void ResetSavedState(bool bNewDBState) // overrode in MultiCommands
-  {m_bSaveDBChanged = bNewDBState;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
+  void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
+  void RestoreChangedState(st_DBChangeStatus &stDBCS);
+
+  CommandDBChange GetCommandChange() const { return m_CommandDBChange; }
+
+  const st_DBChangeStatus &GetPostCommandStatus() const
+  { return m_PostCommand; }
+
+  const st_DBChangeStatus &GetCommandStatus() const
+  { return m_Command; }
+  
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
-  void SaveState();
-  void RestoreState();
 
-protected:
   CommandInterface *m_pcomInt;
-  bool m_bSaveDBChanged;
-  bool m_bUniqueGTUValidated;
   bool m_bNotifyGUI;
-  int m_RC;
-  bool m_bState;
 
-  // Changed groups
-  std::vector<StringX> m_saved_vnodes_modified;
+  st_DBChangeStatus m_PreCommand;
+  st_DBChangeStatus m_PostCommand;
+  st_DBChangeStatus m_Command;
+
+  int m_RC;
+  CommandDBChange m_CommandDBChange;
 };
 
 // GUI related commands
@@ -127,7 +139,6 @@ private:
   DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
   StringX m_sxOldDBPrefs;
   StringX m_sxNewDBPrefs;
-  bool m_bOldState;
 };
 
 class DBPolicyNamesCommand : public Command
@@ -156,7 +167,7 @@ private:
   StringX m_sxPolicyName;
   PWPolicy m_st_ppp;
   Function m_function;
-  bool m_bOldState, m_bSingleAdd;
+  bool m_bSingleAdd;
 };
 
 class DBEmptyGroupsCommand : public Command
@@ -189,7 +200,7 @@ private:
   std::vector<StringX> m_vNewEmptyGroups;
   StringX m_sxEmptyGroup, m_sxOldGroup, m_sxNewGroup;
   Function m_function;
-  bool m_bOldState, m_bSingleGroup;
+  bool m_bSingleGroup;
 };
 
 class DeleteEntryCommand;
@@ -204,6 +215,7 @@ public:
   ~AddEntryCommand();
   int Execute();
   void Undo();
+
   friend class DeleteEntryCommand; // allow access to c'tor
 
 private:
@@ -226,6 +238,7 @@ public:
   ~DeleteEntryCommand();
   int Execute();
   void Undo();
+
   friend class AddEntryCommand; // allow access to c'tor
 
 private:
@@ -434,6 +447,38 @@ private:
    StringX m_sxOldPath, m_sxNewPath;
 };
 
+class ChangeDBHeaderCommand : public Command {
+public:
+  static ChangeDBHeaderCommand *Create(CommandInterface *pcomInt,
+    const StringX sxNewValue, const PWSfile::HeaderType ht)
+  { return new ChangeDBHeaderCommand(pcomInt, sxNewValue, ht); }
+  int Execute();
+  void Undo();
+
+private:
+  ChangeDBHeaderCommand(CommandInterface *pcomInt,
+    StringX sxOldValue, const PWSfile::HeaderType ht);
+
+  StringX m_sxOldValue, m_sxNewValue;
+  PWSfile::HeaderType m_ht;
+};
+
+class DBFiltersCommand : public Command {
+public:
+  static DBFiltersCommand *Create(CommandInterface *pcomInt,
+    PWSFilters &MapFilters)
+  { return new DBFiltersCommand(pcomInt, MapFilters); }
+
+  int Execute();
+  void Undo();
+
+private:
+  DBFiltersCommand(CommandInterface *pcomInt, PWSFilters &MapFilters);
+
+  PWSFilters m_NewMapFilters;
+  PWSFilters m_OldMapFilters;
+};
+
 // Derived MultiCommands class
 class MultiCommands : public Command
 {
@@ -451,11 +496,11 @@ public:
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
-  void ResetSavedState(bool bNewDBState);
+
+  std::vector<Command *> m_vpcmds;
 
  private:
   MultiCommands(CommandInterface *pcomInt);
-  std::vector<Command *> m_vpcmds;
   std::vector<int> m_vRCs;
 };
 

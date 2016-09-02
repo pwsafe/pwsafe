@@ -19,55 +19,67 @@
 // ------------------------------------------------
 
 /*
+  The base class provides Save/restore state functions to enable Undo/Redo to be
+  correctly performed.
 
-The base class provides Save/restore state functions to enable Undo/Redo to be
-correctly performed.
+  All GUI functions should ONLY use Command-derived classes to update any values in
+  the core.  None should be updated directly.
 
-All GUI functions should ONLY use Command-derived classes to update any values in
-the core.  None should be updated directly.
+  The MultiCommands derived class allows multiple commands to be lumped together
+  as one unit of work (in terms of Execute, Undo & Redo)
 
-The MultiCommands derived class allows multiple commands to be lumped together
-as one unit of work (in terms of Execute, Undo & Redo)
+  All other derived classes are aptly named to indicate their function.
 
-All other derived classes are aptly named to indicate their function.
+  There are 2 special derived classes:
+  1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
+  after any change.  For MultiCommands, it is normal to turn off GUI notification
+  during the execution of the individual commands and only notify the GUI at the
+  end (e.g. after importing a lot of entries or after undoing the importing of these
+  entries).  Flags can be set on when to do this notification.
 
-There are 2 special derived classes:
-1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
-after any change.  For MultiCommands, it is normal to turn off GUI notification
-during the execution of the individual commands and only notify the GUI at the
-end (e.g. after importing a lot of entries or after undoing the importing of these
-entries).  Flags can be set on when to do this notification.
-
-2. GUICommand - which allows the GUI to add GUI related commands to a MultiCommand
-unit of work.
-
+  2. GUICommand - which allows the GUI to add GUI related commands to a MultiCommand
+  unit of work.
 */
 
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bSaveDBChanged(false), m_bUniqueGTUValidated(false),
-m_bNotifyGUI(true), m_RC(0), m_bState(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE)
 {
+  m_PreCommand.Clear();
+  m_PostCommand.Clear();
+  m_Command.Clear();
 }
 
 Command::~Command()
 {
 }
 
-// Save/restore state
-void Command::SaveState()
+// The following should only be called from PWScore Execute/Undo/Redo
+void Command::SaveChangedState(StateType st, st_DBChangeStatus &stDBCS)
 {
-  m_bSaveDBChanged = m_pcomInt->IsChanged();
-  m_bUniqueGTUValidated = m_pcomInt->GetUniqueGTUValidated();
-  m_saved_vnodes_modified = m_pcomInt->GetVnodesModified();
+  switch (st) {
+    case COMMANDACTION:
+      // Set what the command changes
+      m_Command = stDBCS;
+      break;
+    case PREEXECUTE:
+      // Save current pre-command execute state
+      m_PreCommand = stDBCS;
+      break;
+    case POSTEXECUTE:
+      // Here we generate new state from pre-execute state and command action states
+      // Effectively post-execute state = pre-execute state + command action state
+      // and, unlike the other calls, return the result
+      stDBCS = m_PostCommand = (m_PreCommand + m_Command);
+      break;
+  }
 }
 
-void Command::RestoreState()
+// The following should only be called from PWScore Execute/Undo/Redo
+void Command::RestoreChangedState(st_DBChangeStatus &stDBCS)
 {
-  m_pcomInt->SetDBChanged(m_bSaveDBChanged);
-  m_pcomInt->SetUniqueGTUValidated(m_bUniqueGTUValidated);
-  m_pcomInt->SetVnodesModified(m_saved_vnodes_modified);
+  stDBCS = m_PreCommand;
 }
 
 // ------------------------------------------------
@@ -77,6 +89,7 @@ void Command::RestoreState()
 MultiCommands::MultiCommands(CommandInterface *pcomInt)
   : Command(pcomInt)
 {
+  m_CommandDBChange = MULTICOMMAND;
 }
 
 MultiCommands::~MultiCommands()
@@ -100,7 +113,6 @@ int MultiCommands::Execute()
     m_vRCs.push_back(rc);
   }
 
-  m_bState = true;
   return 0;
 }
 
@@ -112,8 +124,6 @@ void MultiCommands::Undo()
     if (*cmd_rIter != NULL)
       (*cmd_rIter)->Undo();
   }
-
-  m_bState = false;
 }
 
 void MultiCommands::Add(Command *pcmd)
@@ -179,15 +189,6 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
   }
 }
 
-void MultiCommands::ResetSavedState(bool bNewDBState)
-{
-  Command::ResetSavedState(bNewDBState);
-  std::vector<Command *>::iterator cmd_Iter;
-  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    (*cmd_Iter)->ResetSavedState(bNewDBState);
-  }
-}
-
 // ------------------------------------------------
 // UpdateGUICommand
 // ------------------------------------------------
@@ -221,7 +222,6 @@ void UpdateGUICommand::Undo()
 DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
   : Command(pcomInt), m_sxNewDBPrefs(sxDBPrefs)
 {
-  m_bOldState = PWSprefs::GetInstance()->IsDBprefsChanged();
   m_sxOldDBPrefs = PWSprefs::GetInstance()->Store();
 }
 
@@ -229,29 +229,26 @@ int DBPrefsCommand::Execute()
 {
   PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
   if (!m_pcomInt->IsReadOnly())
-    m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs));
+    m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs)); //?????
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
                                       CUUID::NullUUID());
   }
-
-  m_bState = true;
+  m_CommandDBChange = DBPREFS;
   return 0;
 }
 
 void DBPrefsCommand::Undo()
 {
-  PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
-  if (!m_pcomInt->IsReadOnly())
-    m_pcomInt->SetDBPrefsChanged(m_bOldState);
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBPREFS) {
+    PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
 
-  if (m_bNotifyGUI) {
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
-                                      CUUID::NullUUID());
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
+        CUUID::NullUUID());
+    }
   }
-
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -265,7 +262,6 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
   m_bSingleAdd(false)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
@@ -275,26 +271,30 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
   m_bSingleAdd(true)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 int DBPolicyNamesCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    bool bChanged(false);
     if (m_bSingleAdd) {
-      m_pcomInt->AddPolicy(m_sxPolicyName, m_st_ppp);
+      bChanged = m_pcomInt->AddPolicy(m_sxPolicyName, m_st_ppp);
     } else {
       switch (m_function) {
-       case NP_ADDNEW:
+        case NP_ADDNEW:
         {
           PSWDPolicyMapIter iter;
+          int count(0);
           for (iter = m_NewMapPSWDPLC.begin(); iter != m_NewMapPSWDPLC.end(); iter++) {
-            m_pcomInt->AddPolicy(iter->first, iter->second);
+            if (m_pcomInt->AddPolicy(iter->first, iter->second))
+              count++;
           }
+          bChanged = count > 0;
           break;
         }
         case NP_REPLACEALL:
-          m_pcomInt->SetPasswordPolicies(m_NewMapPSWDPLC);
+          if (m_OldMapPSWDPLC != m_NewMapPSWDPLC)
+            bChanged = m_pcomInt->SetPasswordPolicies(m_NewMapPSWDPLC);
           break;
         default:
           // Unknown function
@@ -302,30 +302,26 @@ int DBPolicyNamesCommand::Execute()
           break;
       }
     }
-    m_pcomInt->SetDBChanged(true);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
                                         CUUID::NullUUID());
     }
-
-    m_bState = true;
+    if (bChanged)
+      m_CommandDBChange = DBPOLICYNAMES;
   }
   return 0;
 }
 
 void DBPolicyNamesCommand::Undo()
 {
-  if (!m_pcomInt->IsReadOnly()) {
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBPOLICYNAMES) {
     m_pcomInt->SetPasswordPolicies(m_OldMapPSWDPLC);
-    m_pcomInt->SetDBChanged(m_bOldState);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
                                         CUUID::NullUUID());
     }
-
-    m_bState = false;
   }
 }
 
@@ -340,7 +336,6 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
   m_function(function), m_bSingleGroup(false)
 {
   m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
@@ -350,7 +345,6 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
   m_bSingleGroup(true)
 {
   m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
-  m_bOldState = pcomInt->IsChanged();
 }
 
 
@@ -370,17 +364,18 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 int DBEmptyGroupsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    bool bChanged(false);
     if (m_bSingleGroup) {
       // Single Empty Group functions
       switch (m_function) {
         case EG_ADD:
-          m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
+          bChanged = m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
           break;
         case EG_DELETE:
-          m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
+          bChanged = m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
           break;
         case EG_RENAME:
-          m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
+          bChanged = m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
           break;
         default:
           // Ignore multi-group functions
@@ -391,15 +386,24 @@ int DBEmptyGroupsCommand::Execute()
       // Multi-Empty Group functions
       switch (m_function) {
         case EG_ADDALL:
+        {
+          int count(0);
           for (size_t n = 0; n < m_vNewEmptyGroups.size(); n++) {
-            m_pcomInt->AddEmptyGroup(m_vNewEmptyGroups[n]);
+            if (m_pcomInt->AddEmptyGroup(m_vNewEmptyGroups[n]))
+              count++;
+          }
+          bChanged = count > 0;
+          break;
+        }
+        case EG_REPLACEALL:
+          if (m_vOldEmptyGroups != m_vNewEmptyGroups) {
+            bChanged = m_pcomInt->SetEmptyGroups(m_vNewEmptyGroups);
           }
           break;
-        case EG_REPLACEALL:
-          m_pcomInt->SetEmptyGroups(m_vNewEmptyGroups);
-          break;
         case EG_RENAMEPATH:
-          m_pcomInt->RenameEmptyGroupPaths(m_sxOldGroup, m_sxNewGroup);
+          if (m_sxOldGroup != m_sxNewGroup) {
+            bChanged = m_pcomInt->RenameEmptyGroupPaths(m_sxOldGroup, m_sxNewGroup);
+          }
           break;
         default:
           // Ignore single group functions
@@ -407,20 +411,21 @@ int DBEmptyGroupsCommand::Execute()
           break;
       }
     }
-    if (m_bNotifyGUI) {
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
-                                        CUUID::NullUUID());
-    }
-    m_pcomInt->SetDBChanged(true);
+    if (bChanged) {
+      if (m_bNotifyGUI) {
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
+          CUUID::NullUUID());
 
-    m_bState = true;
+        m_CommandDBChange = DBEMPTYGROUP;
+      }
+    }
   }
   return 0;
 }
 
 void DBEmptyGroupsCommand::Undo()
 {
-  if (!m_pcomInt->IsReadOnly()) {
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBEMPTYGROUP) {
     if (m_bSingleGroup) {
       // Single Empty Group functions
       switch (m_function) {
@@ -454,13 +459,10 @@ void DBEmptyGroupsCommand::Undo()
           break;
       }
     }
-    m_pcomInt->SetDBChanged(m_bOldState);
-
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
-                                        CUUID::NullUUID());
+        CUUID::NullUUID());
     }
-    m_bState = false;
   }
 }
 
@@ -491,46 +493,41 @@ AddEntryCommand::~AddEntryCommand()
 
 int AddEntryCommand::Execute()
 {
-  SaveState();
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->DoAddEntry(m_ci, &m_att);
+    m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
+    if (m_ci.IsDependent()) {
+      m_pcomInt->DoAddDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
+        m_ci.GetEntryType());
+    }
 
-  m_pcomInt->DoAddEntry(m_ci, &m_att);
-  m_pcomInt->AddChangedNodes(m_ci.GetGroup());
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
+        m_ci.GetUUID());
+    }
 
-  if (m_ci.IsDependent()) {
-    m_pcomInt->DoAddDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
-                                   m_ci.GetEntryType());
+    time_t tttXTime;
+    m_ci.GetXTime(tttXTime);
+    if (tttXTime != time_t(0)) {
+      m_pcomInt->AddExpiryEntry(m_ci);
+    }
+    m_CommandDBChange = DB;
   }
-
-  if (m_bNotifyGUI) {
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
-                                      m_ci.GetUUID());
-  }
-
-  time_t tttXTime;
-  m_ci.GetXTime(tttXTime);
-  if (tttXTime != time_t(0)) {
-    m_pcomInt->AddExpiryEntry(m_ci);
-  }
-
-  m_bState = true;
   return 0;
 }
 
 void AddEntryCommand::Undo()
 {
-  DeleteEntryCommand dec(m_pcomInt, m_ci, this);
-  dec.Execute();
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    DeleteEntryCommand dec(m_pcomInt, m_ci, this);
+    dec.Execute();
 
-  if (m_ci.IsDependent()) {
-    m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
-                                      m_ci.GetEntryType());
+    if (m_ci.IsDependent()) {
+      m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
+        m_ci.GetEntryType());
+    }
   }
-
-  RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -583,6 +580,10 @@ DeleteEntryCommand::~DeleteEntryCommand()
 
 int DeleteEntryCommand::Execute()
 {
+  // Get out quick if R-O
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
   // There's at least one case where we may get here with an entry
   // that's already been deleted: Consider a base and its shortcut
   // both in the same group, and the group's being deleted:
@@ -596,13 +597,6 @@ int DeleteEntryCommand::Execute()
   if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter())
     return 1;
 
-  // Here if we actually have an entry to delete:
-
-  SaveState();
-
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
                                       m_ci.GetUUID());
@@ -612,51 +606,51 @@ int DeleteEntryCommand::Execute()
   m_pcomInt->DoDeleteEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
   m_pcomInt->RemoveExpiryEntry(m_ci);
-  m_bState = true;
+
+  m_CommandDBChange = DB;
   return 0;
 }
 
 void DeleteEntryCommand::Undo()
 {
-  if (m_ci.IsDependent()) {
-    // Check if dep entry hasn't already been added - can happen if
-    // base and dep in group that's being undeleted.
-    if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-      Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
-      pcmd->Execute();
-      delete pcmd;
-    }
-  } else {
-    AddEntryCommand undo(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
-    undo.Execute();
-    if (m_ci.IsShortcutBase()) { // restore dependents
-      for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-           iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL);
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    if (m_ci.IsDependent()) {
+      // Check if dep entry hasn't already been added - can happen if
+      // base and dep in group that's being undeleted.
+      if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
         pcmd->Execute();
         delete pcmd;
       }
-    } else if (m_ci.IsAliasBase()) {
-      // Undeleting an alias base means making all the dependents refer to the alias
-      // again. Perhaps the easiest approach is to delete the existing entries
-      // and create new aliases.
-      for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-           iter != m_dependents.end(); iter++) {
-        // Need to check that alias still exists - could have been deleted in group along with item
-        // being undone, in which case it will be added separately
-        if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
-          continue;
-        DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
-        delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this);
-        pcmd->Execute(); // in with the new!
-        delete pcmd;
-      }
-    }
-  }
-
-  RestoreState();
-  m_bState = false;
+    } else {
+      AddEntryCommand undo(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
+      undo.Execute();
+      if (m_ci.IsShortcutBase()) { // restore dependents
+        for (std::vector<CItemData>::iterator iter = m_dependents.begin();
+          iter != m_dependents.end(); iter++) {
+          Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL);
+          pcmd->Execute();
+          delete pcmd;
+        }
+      } else if (m_ci.IsAliasBase()) {
+        // Undeleting an alias base means making all the dependents refer to the alias
+        // again. Perhaps the easiest approach is to delete the existing entries
+        // and create new aliases.
+        for (std::vector<CItemData>::iterator iter = m_dependents.begin();
+          iter != m_dependents.end(); iter++) {
+          // Need to check that alias still exists - could have been deleted in group along with item
+          // being undone, in which case it will be added separately
+          if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
+            continue;
+          DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
+          delExAlias.Execute(); // out with the old...
+          Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this);
+          pcmd->Execute(); // in with the new!
+          delete pcmd;
+        }
+      } // IsAliasBase
+    } // !IsDependent
+  } // R/W & change to undo
 }
 
 // ------------------------------------------------
@@ -679,47 +673,40 @@ EditEntryCommand::~EditEntryCommand()
 
 int EditEntryCommand::Execute()
 {
-  SaveState();
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->DoReplaceEntry(m_old_ci, m_new_ci);
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
+    m_pcomInt->AddChangedNodes(m_old_ci.GetGroup());
+    m_pcomInt->AddChangedNodes(m_new_ci.GetGroup());
 
-  m_pcomInt->DoReplaceEntry(m_old_ci, m_new_ci);
+    if (m_bNotifyGUI) {
+      const CUUID entry_uuid = m_old_ci.GetUUID();
+      // If the entry's group has changed, refresh the entire tree, otherwise, just the entry
+      // in the tree and list views
+      UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
+        UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
+      m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    }
 
-  m_pcomInt->AddChangedNodes(m_old_ci.GetGroup());
-  m_pcomInt->AddChangedNodes(m_new_ci.GetGroup());
-
-  if (m_bNotifyGUI) {
-    const CUUID entry_uuid = m_old_ci.GetUUID();
-    // If the entry's group has changed, refresh the entire tree, otherwise, just the entry
-    // in the tree and list views
-    UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
-      UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    m_CommandDBChange = DB;
   }
-
-  m_bState = true;
   return 0;
 }
 
 void EditEntryCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoReplaceEntry(m_new_ci, m_old_ci);
 
-  m_pcomInt->DoReplaceEntry(m_new_ci, m_old_ci);
-
-  if (m_bNotifyGUI) {
-    const CUUID entry_uuid = m_old_ci.GetUUID();
-    // If the entry's group has changed, refresh the entire tree, otherwise, just the entry
-    // in the tree and list views
-    UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
-      UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    if (m_bNotifyGUI) {
+      const CUUID entry_uuid = m_old_ci.GetUUID();
+      // If the entry's group has changed, refresh the entire tree, otherwise, just the entry
+      // in the tree and list views
+      UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
+        UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
+      m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    }
   }
-
-  RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -743,9 +730,6 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
                               CItemData::EntryStatus es,
                               UpdateGUICommand::ExecuteFn efn)
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
   ItemListIter pos = m_pcomInt->Find(entry_uuid);
   if (pos != m_pcomInt->GetEntryEndIter()) {
     if (ftype != CItemData::PASSWORD)
@@ -766,37 +750,36 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
       m_pcomInt->UpdateExpiryEntry(pos->second);
 
     pos->second.SetStatus(es);
-    m_pcomInt->SetDBChanged(true, false);
     m_pcomInt->AddChangedNodes(pos->second.GetGroup());
   }
 }
 
 int UpdateEntryCommand::Execute()
 {
-  SaveState();
+  if (!m_pcomInt->IsReadOnly()) {
+    Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
 
-  Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
+    if (m_bNotifyGUI)
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
+        m_entry_uuid, m_ftype);
 
-  if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-                                      m_entry_uuid, m_ftype);
+    if (m_ftype == CItemData::XTIME)
+      m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
 
-  if (m_ftype == CItemData::XTIME)
-    m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
-
-  m_bState = true;
+    m_CommandDBChange = DB;
+  }
   return 0;
 }
 
 void UpdateEntryCommand::Undo()
 {
-  Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status, UpdateGUICommand::WN_UNDO);
-  RestoreState();
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status, UpdateGUICommand::WN_UNDO);
 
-  if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-                                      m_entry_uuid, m_ftype);
-  m_bState = false;
+    if (m_bNotifyGUI)
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
+        m_entry_uuid, m_ftype);
+  }
 }
 
 // ------------------------------------------------
@@ -817,51 +800,44 @@ UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
 
 int UpdatePasswordCommand::Execute()
 {
-  SaveState();
-
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
-  if (pos != m_pcomInt->GetEntryEndIter()) {
-    pos->second.UpdatePassword(m_sxNewPassword);
-    time_t tttNewXTime;
-    pos->second.GetXTime(tttNewXTime);
-    if (m_tttOldXTime != tttNewXTime) {
-      m_pcomInt->UpdateExpiryEntry(pos->second);
+  if (!m_pcomInt->IsReadOnly() && m_sxOldPassword != m_sxNewPassword) {
+    ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
+    if (pos != m_pcomInt->GetEntryEndIter()) {
+      pos->second.UpdatePassword(m_sxNewPassword);
+      time_t tttNewXTime;
+      pos->second.GetXTime(tttNewXTime);
+      if (m_tttOldXTime != tttNewXTime) {
+        m_pcomInt->UpdateExpiryEntry(pos->second);
+      }
+      pos->second.SetStatus(CItemData::ES_MODIFIED);
+      m_pcomInt->AddChangedNodes(pos->second.GetGroup());
     }
-    pos->second.SetStatus(CItemData::ES_MODIFIED);
-    m_pcomInt->SetDBChanged(true, false);
-    m_pcomInt->AddChangedNodes(pos->second.GetGroup());
+
+    m_CommandDBChange = DB;
+
+    if (m_bNotifyGUI)
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
+        m_entry_uuid);
+
   }
-
-  if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
-                                      m_entry_uuid);
-
-  m_bState = true;
   return 0;
 }
 
 void UpdatePasswordCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
+    if (pos != m_pcomInt->GetEntryEndIter()) {
+      pos->second.SetPassword(m_sxOldPassword);
+      pos->second.SetPWHistory(m_sxOldPWHistory);
+      pos->second.SetStatus(m_old_status);
+      pos->second.SetXTime(m_tttOldXTime);
+    }
 
-  ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
-  if (pos != m_pcomInt->GetEntryEndIter()) {
-    pos->second.SetPassword(m_sxOldPassword);
-    pos->second.SetPWHistory(m_sxOldPWHistory);
-    pos->second.SetStatus(m_old_status);
-    pos->second.SetXTime(m_tttOldXTime);
+    if (m_bNotifyGUI)
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
+        m_entry_uuid);
   }
-
-  RestoreState();
-
-  if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
-                                      m_entry_uuid);
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -879,24 +855,19 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
 
 int AddDependentEntryCommand::Execute()
 {
-  SaveState();
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  m_bState = true;
+    m_CommandDBChange = DB;
+  }
   return 0;
 }
 
 void AddDependentEntryCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  RestoreState();
-  m_bState = false;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
+  }
 }
 
 // ------------------------------------------------
@@ -923,38 +894,34 @@ AddDependentEntriesCommand::~AddDependentEntriesCommand()
 
 int AddDependentEntriesCommand::Execute()
 {
-  SaveState();
+  int rc(0);
+  if (!m_pcomInt->IsReadOnly()) {
+    if (m_type == CItemData::ET_ALIAS) {
+      m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
+    } else { // if !alias, assume shortcut
+      m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
+    }
 
-  if (m_type == CItemData::ET_ALIAS) {
-    m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-  } else { // if !alias, assume shortcut
-    m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
+    rc = m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
+      m_type, m_iVia,
+      m_pmapDeletedItems, m_pmapSaveStatus);
+
+    m_CommandDBChange = DB;
   }
-
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  int rc =  m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
-                                             m_type, m_iVia,
-                                             m_pmapDeletedItems, m_pmapSaveStatus);
-  m_bState = true;
   return rc;
 }
 
 void AddDependentEntriesCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
 
-  m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
-  if (m_type == CItemData::ET_ALIAS) {
-    m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-  } else { // if !alias, assume shortcut
-    m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
+    if (m_type == CItemData::ET_ALIAS) {
+      m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
+    } else { // if !alias, assume shortcut
+      m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
+    }
   }
-
-  RestoreState();
-  m_bState = false;
 }
 
 // ------------------------------------------------
@@ -972,24 +939,19 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
 
 int RemoveDependentEntryCommand::Execute()
 {
-  SaveState();
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  m_bState = true;
+    m_CommandDBChange = DB;
+  }
   return 0;
 }
 
 void RemoveDependentEntryCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
-  RestoreState();
-  m_bState = false;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
+  }
 }
 
 // ------------------------------------------------
@@ -1007,24 +969,18 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
 
 int MoveDependentEntriesCommand::Execute()
 {
-  SaveState();
-
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  m_pcomInt->DoMoveDependentEntries(m_from_baseuuid, m_to_baseuuid, m_type);
-  m_bState = true;
+  if (!m_pcomInt->IsReadOnly()) {
+    if (m_pcomInt->DoMoveDependentEntries(m_from_baseuuid, m_to_baseuuid, m_type))
+      m_CommandDBChange = DB;
+  }
   return 0;
 }
 
 void MoveDependentEntriesCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
-  RestoreState();
-  m_bState = false;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
+  }
 }
 
 // ------------------------------------------------
@@ -1039,25 +995,21 @@ UpdatePasswordHistoryCommand::UpdatePasswordHistoryCommand(CommandInterface *pco
 
 int UpdatePasswordHistoryCommand::Execute()
 {
-  SaveState();
+  int rc(0);
+  if (!m_pcomInt->IsReadOnly()) {
+    rc = m_pcomInt->DoUpdatePasswordHistory(m_iAction, m_new_default_max,
+                               m_mapSavedHistory);
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  int rc = m_pcomInt->DoUpdatePasswordHistory(m_iAction, m_new_default_max,
-                                              m_mapSavedHistory);
-  m_bState = true;
+    m_CommandDBChange = DB;
+  }
   return rc;
 }
 
 void UpdatePasswordHistoryCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
-  RestoreState();
-  m_bState = false;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
+  }
 }
 
 // ------------------------------------------------
@@ -1071,22 +1023,89 @@ RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
 
 int RenameGroupCommand::Execute()
 {
-  SaveState();
+  int rc(0);
+  if (!m_pcomInt->IsReadOnly() && m_sxOldPath != m_sxNewPath) {
+    rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
 
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  int rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
-  m_bState = true;
+    m_CommandDBChange = DB;
+  }
   return rc;
 }
 
 void RenameGroupCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
-  RestoreState();
-  m_bState = false;
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
+  }
 }
+
+// ------------------------------------------------
+// ChangeDBHeaderCommand
+// ------------------------------------------------
+
+ChangeDBHeaderCommand::ChangeDBHeaderCommand(CommandInterface *pcomInt,
+  const StringX sxNewValue, const PWSfile::HeaderType ht)
+  : Command(pcomInt), m_sxNewValue(sxNewValue), m_ht(ht)
+{
+  m_sxOldValue = m_pcomInt->GetHeaderItem(m_ht);
+}
+
+int ChangeDBHeaderCommand::Execute()
+{
+  int rc(0);
+  if (!m_pcomInt->IsReadOnly() && m_sxOldValue != m_sxNewValue) {
+    rc = m_pcomInt->DoChangeHeader(m_sxNewValue, m_ht);
+
+    m_CommandDBChange = DBHEADER;
+  }
+  return rc;
+}
+
+void ChangeDBHeaderCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBHEADER) {
+    m_pcomInt->UndoChangeHeader(m_sxOldValue, m_ht);
+  }
+}
+
+// ------------------------------------------------
+// DBFiltersCommand
+// ------------------------------------------------
+
+DBFiltersCommand::DBFiltersCommand(CommandInterface *pcomInt,
+  PWSFilters &MapFilters)
+  : Command(pcomInt), m_NewMapFilters(MapFilters)
+{
+  m_OldMapFilters = pcomInt->GetDBFilters();
+}
+
+int DBFiltersCommand::Execute()
+{
+  if (!m_pcomInt->IsReadOnly() && m_OldMapFilters != m_NewMapFilters) {
+    bool bChanged(false);
+    bChanged = m_pcomInt->SetDBFilters(m_NewMapFilters);
+
+    if (bChanged) {
+      m_CommandDBChange = DBFILTERS;
+
+      if (m_bNotifyGUI) {
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+          CUUID::NullUUID());
+      }
+    }
+  }
+  return 0;
+}
+
+void DBFiltersCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBFILTERS) {
+    m_pcomInt->SetDBFilters(m_OldMapFilters);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+        CUUID::NullUUID());
+    }
+  }
+}
+

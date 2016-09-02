@@ -70,7 +70,8 @@ public:
     XTIME = 0x0a,        // password e'X'piry time
     RESERVED = 0x0b      /* MUST NOT USE */,
     RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
-    URL = 0x0d, AUTOTYPE = 0x0e,
+    URL = 0x0d,
+    AUTOTYPE = 0x0e,
     PWHIST = 0x0f,
     POLICY = 0x10,       // string encoding of item-specific password policy
     XTIME_INT = 0x11,
@@ -110,7 +111,8 @@ public:
     // Internal fields only - used in filters
     ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
     // 'UNKNOWNFIELDS' should be last
-    UNKNOWNFIELDS = 0x104
+    UNKNOWNFIELDS = 0x104,
+    LAST_FIELD
   };
 
   // Status returns from "ProcessInputRecordField"

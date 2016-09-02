@@ -49,6 +49,7 @@ protected:
   uint32 m_HashIter;
 
   CButtonExtn m_chkbox[2];
+  CTBMStatic m_Help1, m_Help2, m_Help3;
 
   // Overrides
   // ClassWizard generate virtual function overrides

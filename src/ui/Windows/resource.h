@@ -270,6 +270,7 @@
 #define IDB_UNCHECKED                   427
 #define IDB_EMPTY                       428
 #define IDB_BLANK                       429
+#define IDB_CHECKED_DISABLED            430
 #define IDB_DRAGGROUP_NEW               431
 #define IDB_DRAGTITLE_NEW               432
 #define IDB_DRAGUSER_NEW                433
@@ -308,6 +309,7 @@
 #define IDD_ADDEDIT_ADDITIONAL          466
 #define IDD_ADDEDIT_DATETIMES           467
 #define IDD_ADDEDIT_PASSWORDPOLICY      468
+#define IDB_UNCHECKED_DISABLED          469
 #define IDB_EXCLAMATION                 470
 #define IDB_CHANGEVKBDFONTMENU_CLASSIC  471
 #define IDB_CHANGEVKBDFONTMENU_NEW      472
@@ -385,6 +387,8 @@
 #define IDB_EXPORTV4_NEW                544
 #define IDB_EXPORTV4_NEW_D              545
 #define IDD_NPWP_LIST_ENTRIES           546
+#define IDB_QUESTIONMARK                547
+#define IDB_EMPTY_DISABLED              549
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -825,14 +829,34 @@
 #define IDC_CMB_AVALIABLEMEDIATYPES     1524
 #define IDC_STATIC_TUTORIAL             1525
 #define IDC_NPWP_LIST_ENTRIES           1526
+#define IDC_BACKUPBEFORESAVEHELP        1527
+#define IDC_USERBACKUPOTHERLOCATIONHELP 1528
+#define IDC_SAVEIMMEDIATELYHELP         1529
+#define IDC_MAINTAINDATETIMESTAMPSHELP  1530
+#define IDC_OTHERBROWSERLOCATIONHELP    1531
+#define IDC_OTHEREDITORLOCATIONHELP     1532
+#define IDC_RESETPWHISTORYOFFHELP       1533
+#define IDC_RESETPWHISTORYONHELP        1534
+#define IDC_SETMAXPWHISTORYHELP         1535
+#define IDC_CLEARPWHISTORYHELP          1536
+#define IDC_SHORTCUTLISTHELP            1537
+#define IDC_ENTSHORTCUTLISTHELP         1538
+#define IDC_REGDELHELP                  1539
+#define IDC_MIGRATETOAPPDATAHELP        1541
+#define IDC_STATIC_INITIALTREEVIEW      1542
+#define IDC_STATIC_UNLOCKDIFFICULTY     1543
+#define IDC_STATIC_MANAGEPWH            1544
+#define IDC_LOCKONMINIMIZEHELP          1545
+#define IDC_LOCKONWORKSTATIONLOCKHELP   1546
+#define IDC_LOCKONIDLEHELP              1547
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        547
+#define _APS_NEXT_RESOURCE_VALUE        548
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1527
+#define _APS_NEXT_CONTROL_VALUE         1548
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

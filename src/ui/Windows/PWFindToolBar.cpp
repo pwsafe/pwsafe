@@ -254,11 +254,11 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
     m_bitmode = 2;
   }
 
-
   CBitmap bmTemp;
   m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
   m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
   m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
+
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarClassicBMs[i]);
     m_ImageLists[0].Add(&bmTemp, crClassicBackground);
@@ -400,7 +400,6 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     GetItemRect(0, &rt);
     const int iBtnHeight = rt.Height();
     const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
-    const int iHeight = iBtnHeight;
     bool switchFont = (iFontHeight <= (iBtnHeight + 3));
 
     /**
@@ -418,7 +417,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
       VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
     }
 
-    SetHeight(iHeight);
+    SetHeight(iBtnHeight + 4);  // Add border
 
     if (switchFont)
       m_findedit.SetFont(&m_FindTextFont);

@@ -274,7 +274,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasAnythingChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -291,8 +291,8 @@ int DboxMain::New()
         else
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
-        // Reset changed flag
-        SetChanged(Clear);
+        // Set flag to prevent further attempts to save
+        m_bUserDeclinedSave = true;
         break;
     }
   }
@@ -307,6 +307,9 @@ int DboxMain::New()
     return PWScore::USER_CANCEL;
   }
 
+  // Reset flag as new file
+  m_bUserDeclinedSave = false;
+
   m_core.SetCurFile(cs_newfile);
   m_core.ClearFileUUID();
 
@@ -315,7 +318,6 @@ int DboxMain::New()
     DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
-  m_core.ClearChangedNodes();
 
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
@@ -323,6 +325,7 @@ int DboxMain::New()
   ChangeOkUpdate();
   UpdateSystemTray(UNLOCKED);
   m_RUEList.ClearEntries();
+
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
@@ -454,7 +457,7 @@ void DboxMain::OnClose()
 
 int DboxMain::Close(const bool bTrySave)
 {
-  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? L"true" : L"false");
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -469,8 +472,8 @@ int DboxMain::Close(const bool bTrySave)
       if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
         return rc;
 
-      // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-      SetChanged(Clear);
+      // No need to reset DB changed flag to stop being asked again here as
+      // done in ClearData call below (which calls m_core.ClearData()
     }
   }
 
@@ -570,9 +573,11 @@ BOOL DboxMain::OnOpenMRU(UINT nID)
   // Save just in case need to restore if user cancels
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
+
   // Read-only status can be overridden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem),
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
+
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();
@@ -672,6 +677,7 @@ int DboxMain::Open(const UINT uiTitle)
       sx_Filename = LPCWSTR(fd.GetPathName());
 
       rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
+
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -701,21 +707,23 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   StringX passkey;
   CString cs_temp, cs_title, cs_text, cs_msg;
 
-  //Check that this file isn't already open
+  // Check that this file isn't already open
   if (sx_Filename == m_core.GetCurFile() && !m_bDBNeedsReading) {
-    //It is the same damn file
+    // It is the same damn file
     cs_text.LoadString(IDS_ALREADYOPEN);
     cs_title.LoadString(IDS_OPENDATABASE);
     gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::ALREADY_OPEN;
   }
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return rc;
+  if (m_bOpen) {
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return rc;
+  }
 
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(Clear);
+  // Set flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  m_bUserDeclinedSave = true;
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -778,6 +786,9 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   CurrentFilter().Empty();
   m_bFilterActive = false;
   ApplyFilters();
+
+  // Reset flag as new file
+  m_bUserDeclinedSave = false;
 
   // Zero entry UUID selected and first visible at minimize and group text
   m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
@@ -900,6 +911,13 @@ void DboxMain::PostOpenProcessing()
   // Clear any saved group information
   m_TreeViewGroup = L"";
 
+  // Make row height update
+  m_ctlItemList.UpdateRowHeight(true);
+
+  // Set highlighting - need to do it here as SaveImmediately is a DB preference
+  m_ctlItemTree.SetHighlightChanges(PWSprefs::GetInstance()->GetPref(PWSprefs::HighlightChanges) &&
+                                    !PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately));
+
   RefreshViews();
   SetInitialDatabaseDisplay();
   m_bDBNeedsReading = false;
@@ -913,9 +931,7 @@ void DboxMain::PostOpenProcessing()
   CheckExpireList(true);
   TellUserAboutExpiredPasswords();
 
-  UUIDList RUElist;
-  m_core.GetRUEList(RUElist);
-  m_RUEList.SetRUEList(RUElist);
+  m_RUEList.SetRUEList(m_core.GetRUEList());
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -933,6 +949,9 @@ void DboxMain::PostOpenProcessing()
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
+
+  // Now enable notification of DB changes
+  ResumeOnDBNotification();
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -1068,7 +1087,7 @@ int DboxMain::Save(const SaveType savetype)
   CString cs_msg, cs_temp;
   CGeneralMsgBox gmb;
   std::wstring NewName;
-  stringT bu_fname; // used to undo backup if save failed
+  std::wstring bu_fname; // used to undo backup if save failed
 
   const StringX sxCurrFile = m_core.GetCurFile();
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
@@ -1107,9 +1126,23 @@ int DboxMain::Save(const SaveType savetype)
               gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
 
               if (gmb.DoModal() == IDS_EXIT)
-                return PWScore::SUCCESS;
+                return PWScore::USER_CANCEL;
               else
                 return SaveAs();
+            }
+
+            case ST_SAVEIMMEDIATELY:
+            {
+              cs_temp.LoadString(IDS_NOIBACKUP);
+              cs_msg.Format(IDS_NOIBACKUP3, cs_temp);
+              gmb.SetTitle(IDS_FILEWRITEERROR);
+              gmb.SetMsg(cs_msg);
+              gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+              gmb.AddButton(IDS_YES, IDS_YES);
+              gmb.AddButton(IDS_NO, IDS_NO, TRUE, TRUE);
+
+              if (gmb.DoModal() == IDS_NO)
+                return PWScore::USER_CANCEL;
             }
 
             case ST_INVALID:
@@ -1139,9 +1172,13 @@ int DboxMain::Save(const SaveType savetype)
       return PWScore::FAILURE;
   } // switch on file version
 
-  UUIDList RUElist;
-  m_RUEList.GetRUEList(RUElist);
-  m_core.SetRUEList(RUElist);
+  // Set DB header information not set via a Command i.e.
+  // GroupDisplay and RUEList
+  SaveGroupDisplayState();
+
+  UUIDList RUEList;
+  m_RUEList.GetRUEList(RUEList);
+  m_core.SetRUEList(RUEList);
 
   // We are saving the current DB. Retain current version
   rc = m_core.WriteFile(sxCurrFile, current_version);
@@ -1155,10 +1192,9 @@ int DboxMain::Save(const SaveType savetype)
     return rc;
   }
 
-  m_core.ResetStateAfterSave();
-  m_core.ResetOriginalGroupDisplayAfterSave();
-  m_core.ClearChangedNodes();
-  SetChanged(Clear);
+  // Reset all indications entry times changed
+  m_bEntryTimestampsChanged = false;
+
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1175,6 +1211,8 @@ int DboxMain::Save(const SaveType savetype)
   if (savetype != ST_NORMALEXIT)
     RefreshViews();
 
+  UpdateStatusBar();
+
   return PWScore::SUCCESS;
 }
 
@@ -1183,25 +1221,53 @@ int DboxMain::SaveIfChanged()
   PWS_LOGIT;
 
   /*
-   * Save silently (without asking user) iff:
-   * 1. NOT read-only AND
-   * 2. (timestamp updates OR tree view display vector changed) AND
-   * 3. Database NOT empty
-   *
-   * Less formally:
-   *
-   * If MaintainDateTimeStamps set and not read-only, save without asking
-   * user: "they get what it says on the tin".
+    Save silently (without asking user) iff:
+    1. NOT read-only AND
+    2. (timestamp updates OR tree view display vector changed) AND
+    3. Database NOT empty
+
+    Less formally:
+     If MaintainDateTimeStamps set and not read-only, save without asking
+     user: "they get what it says on the tin".
    */
+
+  // Deal with unsaved but changed restored DB
+  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+    CGeneralMsgBox gmb;
+
+    gmb.SetTitle(IDS_UNSAVEDRESTOREDDB);
+    gmb.SetMsg(IDS_SAVEDRESTOREDDB);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_YES, IDS_YES, TRUE, TRUE);
+    gmb.AddButton(IDS_NO, IDS_NO);
+
+    if (gmb.DoModal() == IDS_NO)
+      return PWScore::USER_DECLINED_SAVE;
+
+    int rc = SaveAs();
+    if (rc == PWScore::SUCCESS)
+      m_bRestoredDBUnsaved = false;
+
+    return rc;
+  }
 
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
-  // Note: RUE list saved here via time stamp being updated.
-  // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-       m_core.GetNumEntries() > 0) {
+  // Here we save the DB if the DB has at least one entry or empty group AND:
+  //  Entry Access Times have been changed OR
+  //  The Group Display has changed and the User specified to use it at open time OR
+  //  RUE list has changed and the user wants them saved
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (!m_bUserDeclinedSave &&
+      (m_bEntryTimestampsChanged || 
+       (prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) == PWSprefs::AsPerLastSave && 
+            m_core.HasGroupDisplayChanged()) ||
+       (prefs->GetPref(PWSprefs::MaxREItems) > 0 &&
+            m_core.HasRUEListChanged())) &&
+      (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     int rc = Save();
+
     if (rc != PWScore::SUCCESS)
       return PWScore::USER_CANCEL;
     else
@@ -1212,7 +1278,7 @@ int DboxMain::SaveIfChanged()
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if (m_core.HasAnythingChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
@@ -1237,6 +1303,12 @@ int DboxMain::SaveIfChanged()
   return PWScore::SUCCESS;
 }
 
+int DboxMain::SaveImmediately()
+{
+  // Get normal save to do this (code already there for intermediate backups)
+  return Save(ST_SAVEIMMEDIATELY);
+}
+
 void DboxMain::OnSaveAs()
 {
   SaveAs();
@@ -1258,7 +1330,8 @@ int DboxMain::SaveAs()
 
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
 
-  // Only need to warn user if current DB is prior to V3 - no implications if saving V4 as V4 or V3 as V3
+  // Only need to warn user if current DB is prior to V3 - no implications
+  // if saving V4 as V4 or V3 as V3
   if (current_version < PWSfile::V30 && 
       current_version != PWSfile::UNKNOWN_VERSION) {
     CGeneralMsgBox gmb;
@@ -1346,16 +1419,20 @@ int DboxMain::SaveAs()
   pws_os::CUUID file_uuid = m_core.GetFileUUID();
   m_core.ClearFileUUID();
 
+  // Set DB header information not set via a Command i.e.
+  // GroupDisplay and RUEList
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  SaveGroupDisplayState(prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != 
+    PWSprefs::AsPerLastSave);
+
   UUIDList RUElist;
-  m_RUEList.GetRUEList(RUElist);
+  if (prefs->GetPref(PWSprefs::MaxREItems) > 0)
+    m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
   // Note: Writing out in in V4 DB format if the DB is already V4,
   // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
   rc = m_core.WriteFile(newfile, current_version == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
-  m_core.ResetStateAfterSave();
-  m_core.ResetOriginalGroupDisplayAfterSave();
-  m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid); // restore uuid after failed save-as
@@ -1363,6 +1440,7 @@ int DboxMain::SaveAs()
     DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
+
   if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile().c_str());
 
@@ -1374,7 +1452,10 @@ int DboxMain::SaveAs()
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
-  SetChanged(Clear);
+
+  // Reset all indications entry times changed
+  m_bEntryTimestampsChanged = false;
+
   ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1386,6 +1467,7 @@ int DboxMain::SaveAs()
     m_ctlItemList.Invalidate();
     m_ctlItemTree.Invalidate();
   }
+
   RefreshViews();
 
   app.AddToMRU(newfile.c_str());
@@ -1395,6 +1477,11 @@ int DboxMain::SaveAs()
     // and so cause toolbar to be the correct version
     m_core.SetReadOnly(false);
   }
+
+  // In case it was an unsaved restored DB
+  m_bRestoredDBUnsaved = false;
+
+  UpdateStatusBar();
 
   return PWScore::SUCCESS;
 }
@@ -1407,7 +1494,7 @@ void DboxMain::OnExportVx(UINT nID)
 
   const PWSfile::VERSION current_version = m_core.GetReadFileVersion();
   PWSfile::VERSION export_version = PWSfile::UNKNOWN_VERSION;
-  stringT sfx = L"";
+  std::wstring sfx = L"";
   int fdf = IDS_FDF_DB_ALL;
 
   switch (nID) {
@@ -1493,13 +1580,12 @@ void DboxMain::OnExportVx(UINT nID)
   // of pointers and because the entries have pointers to their
   // display info, which would be tried to be freed twice.
   // Do bare minimum - save header information only
-  const PWSfileHeader saved_hdr = m_core.GetHeader();
+
+  // Save & Restore of header whilst exporting now perfomed in
+  // PWScore::WriteFile
 
   // Now export it in the requested version
   rc = m_core.WriteFile(newfile, export_version, false);
-
-  // Restore current database header
-  m_core.SetHeader(saved_hdr);
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
@@ -1517,7 +1603,9 @@ void DboxMain::OnExportEntryDB()
   wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;;
 }
 
 void DboxMain::OnExportGroupDB()
@@ -1531,7 +1619,9 @@ void DboxMain::OnExportGroupDB()
   wizard.SetDBVersion(m_core.GetReadFileVersion());
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
@@ -1631,7 +1721,9 @@ void DboxMain::OnExportText()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_TEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportEntryText()
@@ -1644,7 +1736,9 @@ void DboxMain::OnExportEntryText()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportGroupText()
@@ -1657,7 +1751,9 @@ void DboxMain::OnExportGroupText()
     &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPTEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
@@ -1764,7 +1860,9 @@ void DboxMain::OnExportXML()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_XML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportEntryXML()
@@ -1777,7 +1875,9 @@ void DboxMain::OnExportEntryXML()
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportGroupXML()
@@ -1790,7 +1890,9 @@ void DboxMain::OnExportGroupXML()
     &m_SaveWZAdvValues[WZAdvanced::EXPORT_GROUPXML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
@@ -1910,7 +2012,7 @@ void DboxMain::OnExportAttachment()
   CSimpleArray<GUID> aguidFileTypes;
   HRESULT hResult;
   StringX sxAttFileName;
-  stringT soutputfile;
+  std::wstring soutputfile;
   CImage AttImage;
   int iAttType(0);  // -1 not an image, 0 not yet tested, +1 an image
 
@@ -2198,6 +2300,7 @@ void DboxMain::OnImportText()
       {
         if (pcmd != NULL) {
           Execute(pcmd);
+
           const size_t n = ((MultiCommands *)pcmd)->GetSize();
           for (size_t i = 0; i < n; i++) {
             int iw;
@@ -2346,10 +2449,15 @@ void DboxMain::OnImportKeePassV1CSV()
       }
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
+          // Do it
           Execute(pcmd);
+
+          ChangeOkUpdate();
+        }
+
         RefreshViews();
-        ChangeOkUpdate();
+
         // May need to update menu/toolbar if original database was empty
         if (bWasEmpty)
           UpdateMenuAndToolBar(m_bOpen);
@@ -2454,11 +2562,14 @@ void DboxMain::OnImportKeePassV1TXT()
       }
       case PWScore::SUCCESS:
       default: // deliberate fallthrough
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
+          // Do it
           Execute(pcmd);
 
+          ChangeOkUpdate();
+        }
+
         RefreshViews();
-        ChangeOkUpdate();
         // May need to update menu/toolbar if original database was empty
         if (bWasEmpty)
           UpdateMenuAndToolBar(m_bOpen);
@@ -2602,8 +2713,11 @@ void DboxMain::OnImportXML()
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
           Execute(pcmd);
+
+          ChangeOkUpdate();
+        }
 
         if (!strXMLErrors.empty() ||
             numRenamed > 0 || numPWHErrors > 0) {
@@ -2640,13 +2754,10 @@ void DboxMain::OnImportXML()
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
                          fd.GetFileName(), numValidated, numImported,
                          cs_skipped, cs_renamed, cs_PWHErrors);
-
-          ChangeOkUpdate();
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
-          ChangeOkUpdate();
         }
 
         RefreshViews();
@@ -2709,8 +2820,9 @@ void DboxMain::OnImportXML()
 
 void DboxMain::OnProperties()
 {
-  st_DBProperties st_dbp;
-  m_core.GetDBProperties(st_dbp);
+  st_DBProperties st_initialdbp, st_dbp;
+  m_core.GetDBProperties(st_initialdbp);
+  st_dbp = st_initialdbp;
 
   CProperties dlg(&st_dbp, IsDBReadOnly(), this);
 
@@ -2718,8 +2830,26 @@ void DboxMain::OnProperties()
 
   if (rc == IDOK && dlg.HasDataChanged()) {
     // Update user fields in header
-    m_core.SetHeaderUserFields(st_dbp);
-    ChangeOkUpdate();
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+    if (st_dbp.db_name != st_initialdbp.db_name) {
+      Command *pcmd_name = ChangeDBHeaderCommand::Create(&m_core,
+        st_dbp.db_name, PWSfile::HDR_DBNAME);
+      pmulticmds->Add(pcmd_name);
+    }
+
+    if (st_dbp.db_description != st_initialdbp.db_description) {
+      Command *pcmd_desc = ChangeDBHeaderCommand::Create(&m_core,
+        st_dbp.db_description, PWSfile::HDR_DBDESC);
+      pmulticmds->Add(pcmd_desc);
+    }
+
+    if (pmulticmds->GetSize() > 0) {
+      // Do it
+      Execute(pmulticmds);
+      ChangeOkUpdate();
+    } else {
+      delete pmulticmds;
+    }
   }
 }
 
@@ -2742,17 +2872,17 @@ void DboxMain::ChangeMode(bool promptUser)
        // But ask just in case
        CGeneralMsgBox gmb;
        CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
-       if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO)
+       if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO) {
+         // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+         m_bUserDeclinedSave = true;
          return;
+       }
 
       // User said No to the save - so we must back-out all changes since last save
-      while (m_core.IsChanged()) {
+      while (m_core.HasAnythingChanged()) {
         OnUndo();
       }
     }
-
-    // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-    SetChanged(Clear);
 
     // Clear the Commands
     m_core.ClearCommands();
@@ -2871,7 +3001,15 @@ void DboxMain::OnCompare()
                           &m_SaveWZAdvValues[WZAdvanced::COMPARE]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
-  wizard.DoModal();
+  m_bWizardActive = true;
+  INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
+
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
+    ChangeOkUpdate();
+
+    UpdateToolBarDoUndo();
+  }
 }
 
 void DboxMain::OnMerge()
@@ -2883,10 +3021,18 @@ void DboxMain::OnMerge()
                           this, WZAdvanced::MERGE,
                           &m_SaveWZAdvValues[WZAdvanced::MERGE]);
 
+  m_bWizardActive = true;
   INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
 
-  if (rc == ID_WIZFINISH)
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
+    ChangeOkUpdate();
+
     UpdateToolBarDoUndo();
+  }
+
+  // Couldn't do this whilst wizard open
+  SetToolBarPositions();
 }
 
 void DboxMain::OnSynchronize()
@@ -2899,15 +3045,22 @@ void DboxMain::OnSynchronize()
                           this, WZAdvanced::SYNCH,
                           &m_SaveWZAdvValues[WZAdvanced::SYNCH]);
 
-  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
   INT_PTR rc = wizard.DoModal();
+  m_bWizardActive = false;
 
-  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0)
-    SetChanged(Data);
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0) {
+    ChangeOkUpdate();
+
+    UpdateToolBarDoUndo();
+  }
+
+  // Couldn't do this whilst wizard open
+  SetToolBarPositions();
 }
 
-stringT DboxMain::DoMerge(PWScore *pothercore,
-                          const bool bAdvanced, CReport *prpt, bool *pbCancel)
+std::wstring DboxMain::DoMerge(PWScore *pothercore,
+                               const bool bAdvanced, CReport *prpt, bool *pbCancel)
 {
   CGeneralMsgBox gmb;
   CString cs_title, cs_temp,cs_text;
@@ -3117,6 +3270,12 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
   CmpRes.DoModal();
 
   if (CmpRes.m_OriginalDBChanged) {
+    // We didn't save after each change within the ComapreResults dialog
+    // So potentially do it now
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+      SaveImmediately();
+
+    // Have to update views as user may have changed/added entries
     FixListIndexes();
     RefreshViews();
   }
@@ -3434,10 +3593,12 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ci_temp.SetStatus(CItemData::ES_ADDED);
     pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
   }
+
+  // Do it
   Execute(pmulticmds);
 
-  SetChanged(Data);
   ChangeOkUpdate();
+
   // May need to update menu/toolbar if database was previously empty
   if (bWasEmpty)
     UpdateMenuAndToolBar(m_bOpen);
@@ -3504,9 +3665,10 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   if (bUpdated) {
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
     pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry));
+
+    // Do it
     Execute(pmulticmds, ptocore);
 
-    SetChanged(Data);
     ChangeOkUpdate();
     return TRUE;
   }
@@ -3599,12 +3761,14 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
     return FALSE;
 
   CWaitCursor waitCursor;
+
+  // Do it
   Execute(pmulticmds);
+
   waitCursor.Restore();
 
   RefreshViews();
 
-  SetChanged(Data);
   ChangeOkUpdate();
 
   // May need to update menu/toolbar if database was previously empty
@@ -3692,7 +3856,6 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
 
     RefreshViews();
 
-    SetChanged(Data);
     ChangeOkUpdate();
     return TRUE;
   }
@@ -3712,15 +3875,15 @@ void DboxMain::OnOK()
   }
 }
 
-void RelativizePath(stringT &curfile)
+void RelativizePath(std::wstring &curfile)
 {
   // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
   // from latter's path. This supports DoK usage
   if (SysInfo::IsUnderPw2go()) {
-    const stringT execDir = pws_os::getexecdir();
-    stringT execDrive, dontCare;
+    const std::wstring execDir = pws_os::getexecdir();
+    std::wstring execDrive, dontCare;
     pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-    stringT fileDrive, fileDir, fileFile, fileExt;
+    std::wstring fileDrive, fileDir, fileFile, fileExt;
     pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
     ToUpper(fileDrive); ToUpper(execDrive);
     if (fileDrive == execDrive) {
@@ -3783,7 +3946,7 @@ void DboxMain::SavePreferencesOnExit()
     RegistryAnonymity();
   } else
     if (!m_core.GetCurFile().empty()) {
-      stringT curFile = m_core.GetCurFile().c_str();
+      std::wstring curFile = m_core.GetCurFile().c_str();
       RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
@@ -3798,10 +3961,12 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 {
   PWS_LOGIT_ARGS("saveType=%d", saveType);
 
+  if (!m_bOpen)
+    return PWScore::SUCCESS;
+
   INT_PTR rc;
 
-  if (saveType == ST_FAILSAFESAVE &&
-      (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
+  if (saveType == ST_FAILSAFESAVE && m_core.HasAnythingChanged()) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
@@ -3816,7 +3981,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
                      cs_datetime.substr( 0, 4) +  // YYYY
                      cs_datetime.substr( 5, 2) +  // MM
                      cs_datetime.substr( 8, 2) +  // DD
-                     StringX(_T("_")) +
+                     StringX(L"_") +
                      cs_datetime.substr(11, 2) +  // HH
                      cs_datetime.substr(14, 2) +  // MM
                      cs_datetime.substr(17, 2);   // SS
@@ -3828,7 +3993,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   if (saveType == ST_NORMALEXIT) {
     bool bAutoSave = true; // false if user saved or decided not to
-    if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+    if (m_core.HasAnythingChanged()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
       rc = gmb.MessageBox(cs_msg, AfxGetAppName(),
@@ -3846,11 +4011,11 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
           bAutoSave = false;
           break;
       }
-    } // core.IsChanged()
+    } // core.HasAnythingChanged()
 
     /*
     * Save silently (without asking user) iff:
-    * 0. User didn't explicitly save OR say that she doesn't want to AND
+    * 0. User didn't explicitly save OR say that he/she doesn't want to AND
     * 1. NOT read-only AND
     * 2. (timestamp updates OR tree view display vector changed) AND
     * 3. Database NOT empty
@@ -3866,8 +4031,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     */
 
     if (bAutoSave && !m_core.IsReadOnly() &&
-      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-      m_core.GetNumEntries() > 0) {
+        (m_bEntryTimestampsChanged || m_core.HasGroupDisplayChanged()) &&
+        m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
       switch (rc) {
         case PWScore::SUCCESS:
@@ -3896,7 +4061,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
 void DboxMain::CleanUpAndExit(const bool bNormalExit)
 {
-  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? _T("true") : _T("false"));
+  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? L"true" : L"false");
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
@@ -3915,7 +4080,7 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
   m_menuManager.Cleanup();
 
   // Clear out filters
-  m_MapFilters.clear();
+  m_MapAllFilters.clear();
 
   // If we are called normally, then exit gracefully. If not, force the issue
   // after the caller has processed the current message by posting another message

@@ -872,7 +872,7 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
 void CAddEdit_PasswordPolicy::OnSymbolReset()
 {
-  stringT symbols;
+  std::wstring symbols;
   if (m_pweasyvision)
     symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_pwmakepronounceable)

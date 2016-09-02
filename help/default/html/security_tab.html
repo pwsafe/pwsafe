@@ -40,23 +40,34 @@ contents of the clipboard.</p>
 <p>When checked, a prompt is displayed requesting user confirmation
 every time a password is copied from the database to the clipboard.</p>
 
-<h3>Lock password database on minimized</h3>
+<h3>Database locking</h3>
 
-<p>When checked, locks the password database when the program is
+<p> When the database is locked due to one of the events
+below, the database is saved, and then all its data is cleared from
+memory. As part of the clearing
+process, the undo/redo log is also erased, as this may also contain
+sensitive information. This means that undo/redo of pre-lock changes
+will not be available upon unlock.</p> 
+
+<ul>
+<li><b>Lock password database on minimized</b><br>
+
+<p>When checked, the program locks the password database when the application is
 minimized. When maximized again for use, a password is required to
-access the program.</p>
+access the database.</p>
 
-<h3>Lock password database on workstation lock</h3>
+<li><b>Lock password database on workstation lock</b><br>
 
 <p>Checking this causes the password database to lock when the
-workstation is locked, preventing unauthorized access by users that may
+workstation is locked preventing unauthorized access by users that may
 have access to the workstation.</p>
 
-<h3>Lock password database after....</h3>
+<li><b>Lock password database after....</b><br>
 
 <p>Checking this option and setting a time causes <b>Password Safe</b>
-to lock the password database after the set
-interval has passed without user actions in the application.</p>
+to lock the password database after the set interval has passed without
+user actions in the application.</p>
+</ul>
 
 <h3>'Browse to URL' copies password to clipboard</h3>
 

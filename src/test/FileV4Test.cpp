@@ -62,8 +62,8 @@ void FileV4Test::SetUp()
   hdr.m_lastsavedby = _T("aUser");
   hdr.m_lastsavedon = _T("aMachine");
   hdr.m_whatlastsaved = _T("PasswordSafe test framework");
-  hdr.m_dbname = fname.c_str();
-  hdr.m_dbdesc = _T("Test the header's persistency");
+  hdr.m_DB_Name = fname.c_str();
+  hdr.m_DB_Description = _T("Test the header's persistency");
 
   fullItem.CreateUUID();
   fullItem.SetTitle(title);

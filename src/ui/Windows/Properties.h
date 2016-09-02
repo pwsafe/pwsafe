@@ -10,6 +10,7 @@
 // CProperties dialog - this is what's displayed when user selects File->Properties
 
 #include "PWDialog.h"
+
 #include "core/PWScore.h"
 
 class CProperties : public CPWDialog

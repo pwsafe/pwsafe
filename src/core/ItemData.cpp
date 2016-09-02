@@ -409,60 +409,72 @@ StringX CItemData::GetFieldValue(FieldType ft) const
 {
   if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&
       ft != NOTES && ft != PWHIST) {
+    // Standard String fields
     return GetField(ft);
   } else {
+    // Non-string fields or string fields that need special processing
     StringX str(_T(""));
     switch (ft) {
-    case GROUPTITLE: /* 00 */
+    case GROUPTITLE:  /* 0x00 */
       str = GetGroup() + TCHAR('.') + GetTitle();
       break;
-    case UUID:       /* 01 */
-      {
-        uuid_array_t uuid_array = {0};
-        GetUUID(uuid_array);
-        str = CUUID(uuid_array, true);
-        break;
-      }
-    case NOTES:      /* 05 */
-      return GetNotes();
-    case CTIME:      /* 07 */
-      return GetCTimeL();
-    case PMTIME:     /* 08 */
-      return GetPMTimeL();
-    case ATIME:      /* 09 */
-      return GetATimeL();
-    case XTIME:      /* 0a */
-      {
-        int32 xint(0);
-        str = GetXTimeL();
-        GetXTimeInt(xint);
-        if (xint != 0)
-          str += _T(" *");
-        return str;
-      }
-    case RESERVED:   /* 0b */
+    case UUID:        /* 0x01 */
+    {
+      uuid_array_t uuid_array = {0};
+      GetUUID(uuid_array);
+      str = CUUID(uuid_array, true);
       break;
-    case RMTIME:     /* 0c */
+    }
+    case NOTES:        /* 0x05 */
+      return GetNotes();
+    case CTIME:        /* 0x07 */
+      return GetCTimeL();
+    case PMTIME:       /* 0x08 */
+      return GetPMTimeL();
+    case ATIME:        /* 0x09 */
+      return GetATimeL();
+    case XTIME:        /* 0x0a */
+    {
+      int32 xint(0);
+      str = GetXTimeL();
+      GetXTimeInt(xint);
+      if (xint != 0)
+        str += _T(" *");
+      return str;
+    }
+    case RESERVED:     /* 0x0b */
+      break;
+    case RMTIME:       /* 0x0c */
       return GetRMTimeL();
-    case PWHIST:     /* 0f */
+    case PWHIST:       /* 0x0f */
       return GetPWHistory();
-    case XTIME_INT:  /* 11 */
+    case XTIME_INT:    /* 0x11 */
       return GetXTimeInt();
-    case DCA:        /* 13 */
+    case DCA:          /* 0x13 */
       return GetDCA();
-    case PROTECTED:  /* 15 */
-      {
-        unsigned char uc;
-        StringX sxProtected = _T("");
-        GetProtected(uc);
-        if (uc != 0)
-          LoadAString(sxProtected, IDSC_YES);
-        return sxProtected;
-      }
-    case SHIFTDCA:   /* 17 */
+    case PROTECTED:    /* 0x15 */
+    {
+      unsigned char uc;
+      StringX sxProtected = _T("");
+      GetProtected(uc);
+      if (uc != 0)
+        LoadAString(sxProtected, IDSC_YES);
+      return sxProtected;
+    }
+    case SHIFTDCA:     /* 0x17 */
       return GetShiftDCA();
-    case KBSHORTCUT: /* 19 */
+    case KBSHORTCUT:   /* 0x19 */
       return GetKBShortcut();
+    case ATTREF:       /* 0x1a */
+    case BASEUUID:     /* 0x41 */
+    case ALIASUUID:    /* 0x42 */
+    case SHORTCUTUUID: /* 0x43 */
+    {
+      uuid_array_t uuid_array = { 0 };
+      GetUUID(uuid_array, ft);
+      str = CUUID(uuid_array, true);
+      break;
+    }
     default:
       ASSERT(0);
     }
@@ -524,9 +536,10 @@ void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
   if (fiter == m_fields.end()) {
     pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!\n"));
     memset(uuid_array, 0, length);
-  } else
+  } else {
     CItem::GetField(fiter->second,
                     static_cast<unsigned char *>(uuid_array), length);
+  }
 }
 
 const CUUID CItemData::GetUUID(FieldType ft) const

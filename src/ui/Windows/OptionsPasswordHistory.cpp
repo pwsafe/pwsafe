@@ -56,6 +56,11 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
 
   DDX_Control(pDX, IDC_SAVEPWHISTORY, m_chkbox);
+
+  DDX_Control(pDX, IDC_RESETPWHISTORYOFFHELP, m_Help1);
+  DDX_Control(pDX, IDC_RESETPWHISTORYONHELP, m_Help2);
+  DDX_Control(pDX, IDC_SETMAXPWHISTORYHELP, m_Help3);
+  DDX_Control(pDX, IDC_CLEARPWHISTORYHELP, m_Help4);
   //}}AFX_DATA_MAP
 }
 
@@ -82,7 +87,22 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
-  m_chkbox.ResetBkgColour();//Use current window's background
+  m_chkbox.ResetBkgColour(); // Use current window's background
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVEPWHISTORY)->EnableWindow(FALSE);
+
+    GetDlgItem(IDC_STATIC_MANAGEPWH)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHISTORYNOACTION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RESETPWHISTORYOFF)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RESETPWHISTORYON)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SETMAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEARPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
+  }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -99,13 +119,28 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
   GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
 
-  InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 4);
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  AddTool(IDC_RESETPWHISTORYOFF, IDS_RESETPWHISTORYOFF);
-  AddTool(IDC_RESETPWHISTORYON,  IDS_RESETPWHISTORYON);
-  AddTool(IDC_SETMAXPWHISTORY,   IDS_SETMAXPWHISTORY);
-  AddTool(IDC_CLEARPWHISTORY,    IDS_CLEARPWHISTORY);
-  ActivateToolTip();
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_RESETPWHISTORYOFFHELP, IDS_RESETPWHISTORYOFF);
+    AddTool(IDC_RESETPWHISTORYONHELP, IDS_RESETPWHISTORYON);
+    AddTool(IDC_SETMAXPWHISTORYHELP, IDS_SETMAXPWHISTORY);
+    AddTool(IDC_CLEARPWHISTORYHELP, IDS_CLEARPWHISTORY);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -206,10 +241,15 @@ HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_NUMPWSDHIST:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_SAVEPWHISTORY:
+    case IDC_STATIC_MANAGEPWH:
+    case IDC_PWHISTORYNOACTION:
+    case IDC_RESETPWHISTORYOFF:
+    case IDC_RESETPWHISTORYON:
+    case IDC_SETMAXPWHISTORY:
+    case IDC_CLEARPWHISTORY:
+    case IDC_STATIC_UPDATEPWHISTORY:
+    case IDC_UPDATEPROTECTEDPWH:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

@@ -82,6 +82,30 @@ been specified.</td>
 <td>Empty groups are now added when merging one PasswordSafe database into another.</td>
 </tr>
 <tr>
+<td align="center" width="100">[]</td>
+<td>List view column widths are no longer reset when dragging columns to different
+positions or columns are added or removed.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>The user specified Notes font is now also applied to the Notes column in the
+List view.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Entry Protected state and AutoType string is now correctly displayed in the
+List view.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>After entry has been edited from List View, it now remains visible after
+Edit/Undo/Redo even if the change alters its position within the view.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1347);return false;">1347</a></td>
+<td>Prevent a user from trying to copy a filter to a read-only database.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1346);return false;">1346</a></td>
 <td>The Notes window no longer scrolls when re-activated after losing focus.</td>
 </tr>
@@ -95,6 +119,41 @@ checked.</td>
 <a href="nojs.html" onclick="BR(1342);return false;">1342</a></td>
 <td>Fix multiple empty group issues.</td>
 </tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1335);return false;">1335</a><br>
+<a href="nojs.html" onclick="BR(1342);return false;">1342</a></td>
+<td>If "Minimize after Autotype" option is set, it will also be honoured for the
+user action: "Browse to URL + Autotype".</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h4><a name="V3.39.2Changes"></a>Changes to Existing Features in V3.39.2</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Save Immediately has been enhanced to apply to all changes to the database
+and not just after an edit or addition of an entry. It is <b>strongly</b>
+recommended that, if enabled, then the option to "Create intermediate backups"
+is also enabled. Note, changes made via the Compare database results dialog will
+not cause a database save for each action but will after the compare results
+dialog has been closed.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>The last sort direction in List View (ascending or descending) on closing
+a database is now stored in the application configuration file and is no longer
+stored in the database header.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>The number of groups shown in the database properties dialog is now counted
+in the same manner as directories/folders in a file system, e.g., Windows Explorer.
+This includes empty groups. The number of empty groups is also shown.</td>
+</tr>
 </tbody>
 </table>
 
@@ -103,10 +162,6 @@ checked.</td>
 <h4><a name="V3.39.2New"></a>New Features for V3.39.2</h4>
 <table>
 <tbody>
-<tr>
-<td align="center" width="100">[]</td>
-<td>The database properties page now includes the number of empty groups.</td>
-</tr>
 <tr>
 <td align="center" width="100">[]</td>
 <td>Empty sub-groups are included when exporting a group to a new PasswordSafe
