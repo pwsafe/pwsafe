@@ -599,7 +599,7 @@ void DboxMain::setupBars()
   m_FindToolBar.SetWindowText(L"Find");
 
 
-  // Set dragbar & toolbar according to graphic capabilities, overridable by user choice.
+  // Set Toolbar according to graphic capabilities, overridable by user choice.
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
   } else {
@@ -616,22 +616,24 @@ void DboxMain::setupBars()
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
 
-  m_DDGroup.EnableWindow(TRUE);
-  m_DDGroup.ShowWindow(SW_SHOW);
-  m_DDTitle.EnableWindow(TRUE);
-  m_DDTitle.ShowWindow(SW_SHOW);
-  m_DDUser.EnableWindow(TRUE);
-  m_DDUser.ShowWindow(SW_SHOW);
-  m_DDPassword.EnableWindow(TRUE);
-  m_DDPassword.ShowWindow(SW_SHOW);
-  m_DDNotes.EnableWindow(TRUE);
-  m_DDNotes.ShowWindow(SW_SHOW);
-  m_DDURL.EnableWindow(TRUE);
-  m_DDURL.ShowWindow(SW_SHOW);
-  m_DDemail.EnableWindow(TRUE);
-  m_DDemail.ShowWindow(SW_SHOW);
-  m_DDAutotype.EnableWindow(TRUE);
-  m_DDAutotype.ShowWindow(SW_SHOW);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar)) {
+    m_DDGroup.EnableWindow(TRUE);
+    m_DDGroup.ShowWindow(SW_SHOW);
+    m_DDTitle.EnableWindow(TRUE);
+    m_DDTitle.ShowWindow(SW_SHOW);
+    m_DDUser.EnableWindow(TRUE);
+    m_DDUser.ShowWindow(SW_SHOW);
+    m_DDPassword.EnableWindow(TRUE);
+    m_DDPassword.ShowWindow(SW_SHOW);
+    m_DDNotes.EnableWindow(TRUE);
+    m_DDNotes.ShowWindow(SW_SHOW);
+    m_DDURL.EnableWindow(TRUE);
+    m_DDURL.ShowWindow(SW_SHOW);
+    m_DDemail.EnableWindow(TRUE);
+    m_DDemail.ShowWindow(SW_SHOW);
+    m_DDAutotype.EnableWindow(TRUE);
+    m_DDAutotype.ShowWindow(SW_SHOW);
+  }
 }
 
 void DboxMain::UpdateListItemField(const int lindex, const int type, const StringX &newText)
