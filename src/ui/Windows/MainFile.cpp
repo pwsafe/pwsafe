@@ -1605,7 +1605,7 @@ void DboxMain::OnExportEntryDB()
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   m_bWizardActive = true;
   wizard.DoModal();
-  m_bWizardActive = false;;
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnExportGroupDB()
