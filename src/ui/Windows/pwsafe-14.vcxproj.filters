@@ -21,6 +21,9 @@
     <ClCompile Include="AddEdit_Additional.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddEdit_Attachment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="AddEdit_Basic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,6 +57,9 @@
     <ClCompile Include="CompareResultsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CompareWithSelectDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ConfirmDeleteDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -67,6 +73,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CryptKeyEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CWTreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DboxMain.cpp">
@@ -99,6 +108,12 @@
     <ClCompile Include="EditShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EntryKBHotKey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExpPswdLC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ExpPWListDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,6 +144,9 @@
     <ClCompile Include="filter\FilterIntegerDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filter\FilterMediaTypeDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="filter\FilterPasswordDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -151,6 +169,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InfoDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LVHdrCtrl.cpp">
@@ -178,6 +199,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filter\ManageFiltersDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagePSWDPols.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenuShortcuts.cpp">
@@ -225,7 +249,13 @@
     <ClCompile Include="PasskeySetup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PasswordPolicyDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PasswordSubsetDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Properties.cpp">
@@ -249,10 +279,16 @@
     <ClCompile Include="PWFindToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWHistListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PWHdrCtrlNoChng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWPListEntries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWPropertyPage.cpp">
@@ -276,6 +312,9 @@
     <ClCompile Include="PWStatusBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWSversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PWToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -291,7 +330,13 @@
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SCWListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SecString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filter\SetFiltersDlg.cpp">
@@ -312,6 +357,9 @@
     <ClCompile Include="Shortcut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShowCompareDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SingleInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -327,10 +375,19 @@
     <ClCompile Include="SystemTray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TBMStatic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ThisMfcApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ViewReport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualKeyboard\VKBButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WZPropertyPage.cpp">
@@ -348,67 +405,10 @@
     <ClCompile Include="WZAdvanced.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExpPswdLC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagePSWDPols.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PasswordPolicyDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWSversion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWHistListCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShowCompareDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CompareWithSelectDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CWTreeCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SCWListCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EntryKBHotKey.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="YubiCfgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PKBaseDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualKeyboard\VKBButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AddEdit_Attachment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="filter\FilterMediaTypeDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWPListEntries.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TBMStatic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -417,6 +417,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddEdit_Additional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddEdit_Attachment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddEdit_Basic.h">
@@ -452,6 +455,9 @@
     <ClInclude Include="CompareResultsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CompareWithSelectDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ConfirmDeleteDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -468,6 +474,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CryptKeyEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CWTreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DboxMain.h">
@@ -497,6 +506,12 @@
     <ClInclude Include="EditShortcutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EntryKBHotKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpPswdLC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ExpPWListDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -522,6 +537,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\FilterIntegerDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\FilterMediaTypeDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\FilterPasswordDlg.h">
@@ -551,6 +569,9 @@
     <ClInclude Include="InfoDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InputBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="jprdebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -558,6 +579,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\ManageFiltersDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagePSWDPols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MenuShortcuts.h">
@@ -605,10 +629,16 @@
     <ClInclude Include="PasskeySetup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PasswordPolicyDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PasswordSafe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordSubsetDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKBaseDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Properties.h">
@@ -635,7 +665,13 @@
     <ClInclude Include="PWHdrCtrlNoChng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWHistListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWPListEntries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWPropertyPage.h">
@@ -650,10 +686,16 @@
     <ClInclude Include="PWSclipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWSFaultHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWSRecentFileList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWStatusBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWSversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWToolBar.h">
@@ -680,7 +722,13 @@
     <ClInclude Include="SampleTextDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SCWListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SecString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\SetFiltersDlg.h">
@@ -701,6 +749,9 @@
     <ClInclude Include="Shortcut.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShowCompareDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SingleInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -717,6 +768,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemTray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TBMStatic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThisMfcApp.h">
@@ -761,64 +815,10 @@
     <ClInclude Include="WZExecuteThreadParms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExpPswdLC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSFaultHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ManagePSWDPols.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PasswordPolicyDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWHistListCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CompareWithSelectDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShowCompareDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CWTreeCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SCWListCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EntryKBHotKey.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="YubiCfgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PKBaseDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="YubiMixin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AddEdit_Attachment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="filter\FilterMediaTypeDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWPListEntries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TBMStatic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,6 +18,7 @@
 #include "VKresource.h"
 #include "VKresource3.h"
 
+#include "../Windowsdef.h"
 #include "../PasswordSafe.h" // for app extern declaration
 #include "../ThisMfcApp.h" // for NoSysEnvWarnings()
 #include "../GeneralMsgBox.h"

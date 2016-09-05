@@ -128,6 +128,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/VirtualKeyboard/VKresource.h
             src/ui/Windows/VirtualKeyboard/VKresource3.h
             src/ui/Windows/VirtualKeyboard/VKShiftState.h
+            src/ui/Windows/Windowsdefs.h
             src/ui/Windows/WZAdvanced.h
             src/ui/Windows/WZExecuteThreadParms.h
             src/ui/Windows/WZFinish.h

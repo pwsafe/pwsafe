@@ -13,6 +13,7 @@ Passkey?  That's Russian for 'pass'.  You know, passkey
 down the streetsky.  [Groucho Marx]
 */
 
+#include "Windowsdef.h"
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
@@ -121,16 +122,19 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
   ON_WM_DESTROY()
   ON_WM_TIMER()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
-  ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
-  ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_BN_CLICKED(IDC_READONLY, OnBnClickedReadonly)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
-  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+
+  ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
+  ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
+
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

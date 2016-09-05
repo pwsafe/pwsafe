@@ -9,6 +9,8 @@
 //
 
 #include "stdafx.h"
+
+#include "Windowsdef.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
 #include "SecString.h"

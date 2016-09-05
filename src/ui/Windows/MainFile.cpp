@@ -12,6 +12,7 @@
 
 #include "PasswordSafe.h"
 
+#include "Windowsdef.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PasskeySetup.h"

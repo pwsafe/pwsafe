@@ -11,6 +11,7 @@
 
 #include "stdafx.h"
 
+#include "Windowsdef.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
