@@ -7,7 +7,9 @@
 */
 
 #include "stdafx.h"
+
 #include "passwordsafe.h"
+#include "Windowsdefs.h"
 #include "DboxMain.h"
 
 #include "WZSelectDB.h"
@@ -865,7 +867,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
         OnPassKey2Change();
         break;
       case IDC_VERIFY2:
-        OnVerify2Change();;
+        OnVerify2Change();
         break;
       default:
         // Error!

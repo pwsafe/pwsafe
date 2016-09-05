@@ -8,8 +8,8 @@
 
 #include "stdafx.h"
 
+#include "Windowsdefs.h"
 #include "SCWListCtrl.h"
-#include "DboxMain.h" // For TIMER_FIND
 #include "Fonts.h"
 #include "ShowCompareDlg.h"
 

@@ -1056,6 +1056,7 @@
     <ClInclude Include="VirtualKeyboard\VKShiftState.h" />
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h" />
+    <ClInclude Include="Windowsdefs.h" />
     <ClInclude Include="WZAdvanced.h" />
     <ClInclude Include="WZExecuteThreadParms.h" />
     <ClInclude Include="WZFinish.h" />

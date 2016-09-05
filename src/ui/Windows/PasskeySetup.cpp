@@ -10,9 +10,9 @@
 
 #include "stdafx.h"
 
+#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
-#include "DboxMain.h"
 #include "GeneralMsgBox.h"
 #include "Options_PropertySheet.h"
 #include "PasskeySetup.h"
@@ -67,13 +67,15 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
+  ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_WM_TIMER()
+
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 

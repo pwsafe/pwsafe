@@ -10,12 +10,17 @@
 //
 
 #include "stdafx.h"
+
+#include "Windowsdefs.h"
+#include "LVHdrCtrl.h"
+
+#include "resource3.h"
+
+#include "core/itemdata.h" // For CItemData::UUID
+
 #include <afxole.h>         // MFC OLE classes
 #include <afxodlgs.h>       // MFC OLE dialog classes
 #include <afxdisp.h >       // MFC OLE automation classes
-#include "LVHdrCtrl.h"
-#include "DboxMain.h"       // For PWS_MSG_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "core/itemdata.h" // For CItemData::UUID
 
 // LVHdrCtrl
 

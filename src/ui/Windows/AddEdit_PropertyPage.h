@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "Windowsdefs.h"
 #include "PWPropertyPage.h"
 #include "SecString.h"
 #include "ControlExtns.h"
+
 #include "core/ItemData.h"
 #include "core/ItemAtt.h"
 #include "core/PWSprefs.h"

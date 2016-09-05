@@ -903,9 +903,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_SENDEMAIL, tc_dummy);
       }
 
-      if (!pci->IsRunCommandEmpty())
+      if (!pci->IsRunCommandEmpty()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_RUNCOMMAND, tc_dummy);
+      }
 
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_AUTOTYPE, tc_dummy);

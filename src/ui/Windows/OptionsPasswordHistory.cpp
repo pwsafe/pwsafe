@@ -204,7 +204,7 @@ BOOL COptionsPasswordHistory::OnKillActive()
   }
   //End check
 
-  return COptions_PropertyPage::OnKillActive();;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsPasswordHistory::OnHelp()
