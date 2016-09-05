@@ -388,6 +388,7 @@
 #define IDB_EXPORTV4_NEW_D              545
 #define IDD_NPWP_LIST_ENTRIES           546
 #define IDB_QUESTIONMARK                547
+#define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
@@ -854,7 +855,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        548
+#define _APS_NEXT_RESOURCE_VALUE        549
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1548
 #define _APS_NEXT_SYMED_VALUE           540
