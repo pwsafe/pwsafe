@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "Windowsdef.h"
+#include "Windowsdefs.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 

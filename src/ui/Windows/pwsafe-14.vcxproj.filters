@@ -440,6 +440,9 @@
     <ClInclude Include="AdvancedDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AdvancedValues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ChangeAliasPswd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -798,9 +801,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WZPropertySheet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AdvancedValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WZFinish.h">

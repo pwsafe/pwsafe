@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 
-#include "Windowsdef.h"
+#include "Windowsdefs.h"
 #include "LVHdrCtrl.h"
 
 #include "resource3.h"

@@ -13,7 +13,7 @@ Passkey?  That's Russian for 'pass'.  You know, passkey
 down the streetsky.  [Groucho Marx]
 */
 
-#include "Windowsdef.h"
+#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"

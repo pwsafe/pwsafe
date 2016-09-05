@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 
-#include "Windowsdef.h"
+#include "Windowsdefs.h"
 #include "PWListCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"

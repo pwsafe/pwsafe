@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 
-#include "Windowsdef.h"
+#include "Windowsdefs.h"
 #include "SCWListCtrl.h"
 #include "Fonts.h"
 #include "ShowCompareDlg.h"
