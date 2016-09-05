@@ -875,6 +875,7 @@
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="ImgStatic.cpp" />
     <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
@@ -916,6 +917,7 @@
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TBMStatic.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
+    <ClCompile Include="ViewAttachmentDlg.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
@@ -1005,6 +1007,7 @@
     <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="ImgStatic.h" />
     <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
@@ -1050,6 +1053,7 @@
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="TBMStatic.h" />
     <ClInclude Include="ThisMfcApp.h" />
+    <ClInclude Include="ViewAttachmentDlg.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />

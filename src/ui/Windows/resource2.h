@@ -58,7 +58,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORT2V3FORMAT     32025
 #define ID_MENUITEM_EXPORT2V4FORMAT     32026
 
-
 // Edit menu
 #define ID_EDITMENU                     32050
 #define ID_MENUITEM_ADD                 32051
@@ -107,6 +106,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTGRP2XML       32094
 #define ID_MENUITEM_EXPORTGRP2DB        32095
 #define ID_MENUITEM_EXPORT_ATTACHMENT   32096
+#define ID_MENUITEM_VIEWATTACHMENT      32097
 
 // View menu
 #define ID_VIEWMENU                     32101
