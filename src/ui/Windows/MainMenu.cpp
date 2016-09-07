@@ -935,6 +935,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           ASSERT(0);
       }
 
+      if (pci->HasAttRef()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
+      }
+
       CMenu EEsubMenu;
       CString EEstr;
       EEsubMenu.CreatePopupMenu();
@@ -1429,6 +1434,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     if (!pci->HasAttRef()) {
       pPopup->RemoveMenu(ID_MENUITEM_EXPORT_ATTACHMENT, MF_BYCOMMAND);
+      pPopup->RemoveMenu(ID_MENUITEM_VIEWATTACHMENT, MF_BYCOMMAND);
     }
 
     if (m_IsListView) {

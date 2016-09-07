@@ -388,6 +388,7 @@
 #define IDB_EXPORTV4_NEW_D              545
 #define IDD_NPWP_LIST_ENTRIES           546
 #define IDB_QUESTIONMARK                547
+#define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
@@ -849,14 +850,18 @@
 #define IDC_LOCKONMINIMIZEHELP          1545
 #define IDC_LOCKONWORKSTATIONLOCKHELP   1546
 #define IDC_LOCKONIDLEHELP              1547
+#define IDC_ZOOM                        1548
+#define IDC_ZOOM_VALUE                  1549
+#define IDC_IMAGE_HSCROLL               1550
+#define IDC_IMAGE_VSCROLL               1551
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        548
+#define _APS_NEXT_RESOURCE_VALUE        549
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1548
+#define _APS_NEXT_CONTROL_VALUE         1552
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

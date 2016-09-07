@@ -396,6 +396,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
   ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
   ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
+  ON_COMMAND(ID_MENUITEM_VIEWATTACHMENT, OnViewAttachment)
   ON_COMMAND(ID_MENUITEM_UNDO, OnUndo)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
@@ -619,6 +620,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
   {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   {ID_MENUITEM_EDITBASEENTRY, true, true, false, false},
+  {ID_MENUITEM_VIEWATTACHMENT, true, true, false, false},
   {ID_MENUITEM_UNDO, true, false, true, false},
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
@@ -3109,6 +3111,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_COPYNOTESFLD:
     case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_COPYEMAIL:
+    case ID_MENUITEM_VIEWATTACHMENT:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -3142,6 +3145,11 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
             case ID_MENUITEM_BROWSEURLPLUS:
             case ID_MENUITEM_COPYURL:
               if (pcix->IsURLEmpty()) {
+                iEnable = FALSE;
+              }
+              break;
+            case ID_MENUITEM_VIEWATTACHMENT:
+              if (!pcix->HasAttRef()) {
                 iEnable = FALSE;
               }
               break;

@@ -23,44 +23,13 @@
 #include "Fonts.h"
 
 #include "os/file.h"
+#include "os/debug.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
 
 #include <Shellapi.h>
 #include <algorithm>
-
-BEGIN_MESSAGE_MAP(CDragDropAttachment, CStatic)
-  ON_WM_DROPFILES()
-END_MESSAGE_MAP()
-
-void CDragDropAttachment::OnDropFiles(HDROP hDropInfo)
-{
-  CStatic::OnDropFiles(hDropInfo);
-
-  UINT nCntFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, 0, 0);
-
-  // Shouldn't have zero files if called!
-  if (nCntFiles == 0)
-    return;
-
-  if (nCntFiles > 1) {
-    const CString cs_errmsg = L"Sorry, currently there is a limit of only one attachment per entry";
-    ::AfxMessageBox(cs_errmsg);
-    return;
-  }
-
-  wchar_t szBuf[MAX_PATH];
-  ::DragQueryFile(hDropInfo, 0, szBuf, sizeof(szBuf));
-
-  // Get parent to process this file
-  CWnd *pWnd = GetParent();
-  ASSERT(pWnd);
-
-  // Use SendMessage rather than PastMessage so that szBuf doesn't go out of scope
-  // Send nCntFiles even though only one attachment is supported at the moment
-  pWnd->SendMessage(PWS_MSG_DROPPED_FILE, (WPARAM)szBuf, nCntFiles);
-}
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Attachment property page
@@ -92,15 +61,13 @@ void CAddEdit_Attachment::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_FILEMTIME, m_csFileMTime);
 
     DDX_Control(pDX, IDC_STATIC_NOPREVIEW, m_stcNoPreview);
-
-    if (pDX->m_bSaveAndValidate == 0)
-      DDX_Control(pDX, IDC_ATT_IMAGE, m_AttStatic);
+    DDX_Control(pDX, IDC_ATT_IMAGE, m_stImgAttachment);
     //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Attachment)
-  ON_WM_PAINT()
+  //ON_WM_PAINT()
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -138,14 +105,6 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   GetDlgItem(IDC_ATT_NAME)->SetFont(pFont);
   GetDlgItem(IDC_ATT_FILE)->SetFont(pFont);
 
-  // Keep initial size and position of static image control
-  m_AttStatic.GetClientRect(m_initial_clientrect);
-  m_AttStatic.GetWindowRect(m_initial_windowrect);
-  ScreenToClient(&m_initial_windowrect);
-
-  m_xoffset = m_initial_windowrect.left - m_initial_clientrect.left;
-  m_yoffset = m_initial_windowrect.top - m_initial_clientrect.top;
-
   // Check initial state
   if (!M_pci()->HasAttRef()) {
     m_attType = NO_ATTACHMENT;
@@ -164,11 +123,11 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
     m_csFileCTime = M_attachment().GetFileCTime().c_str();
     if (m_csFileCTime.IsEmpty())
-      m_csFileCTime = L"N/A";
+      m_csFileCTime.LoadString(IDS_NA);
 
     m_csFileMTime = M_attachment().GetFileMTime().c_str();
     if (m_csFileMTime.IsEmpty())
-      m_csFileMTime = L"N/A";
+      m_csFileMTime.LoadString(IDS_NA);
 
     ShowPreview();
   }
@@ -230,11 +189,14 @@ void CAddEdit_Attachment::OnHelp()
 void CAddEdit_Attachment::OnPaint()
 {
   CAddEdit_PropertyPage::OnPaint();
+}
 
-  if (!m_AttImage.IsNull()) {
-    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
-      m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
-  }
+BOOL CAddEdit_Attachment::OnEraseBkgnd(CDC * /*pDC */)
+{
+  if (m_stImgAttachment.IsImageLoaded())
+    m_stImgAttachment.RedrawWindow();
+
+  return 1;
 }
 
 LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
@@ -261,7 +223,7 @@ void CAddEdit_Attachment::OnAttImport()
 {
   CString filter;
   CSimpleArray<GUID> aguidFileTypes;
-  HRESULT hResult;
+  HRESULT hr;
 
   UpdateData(TRUE);
 
@@ -270,8 +232,8 @@ void CAddEdit_Attachment::OnAttImport()
     // Remove last separator
     const CString cs_allimages(MAKEINTRESOURCE(IDS_ALL_IMAGE_FILES));
     const DWORD dwExclude = CImage::excludeOther;
-    hResult = m_AttImage.GetImporterFilterString(filter, aguidFileTypes, cs_allimages, dwExclude);
-    ASSERT(hResult >= 0);
+    hr = m_AttImage.GetImporterFilterString(filter, aguidFileTypes, cs_allimages, dwExclude);
+    ASSERT(hr >= 0);
 
     // Make better visually
     filter = filter.Right(filter.GetLength() - cs_allimages.GetLength());
@@ -319,7 +281,7 @@ void CAddEdit_Attachment::OnAttExport()
 {
   CString filter;
   CSimpleArray<GUID> aguidFileTypes;
-  HRESULT hResult;
+  HRESULT hr;
   std::wstring soutputfile;
 
   wchar_t fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
@@ -336,8 +298,8 @@ void CAddEdit_Attachment::OnAttExport()
       if (m_AttImage.IsNull())
         return;
 
-      hResult = m_AttImage.GetExporterFilterString(filter, aguidFileTypes);
-      if (FAILED(hResult))
+      hr = m_AttImage.GetExporterFilterString(filter, aguidFileTypes);
+      if (FAILED(hr))
         return;
 
       // Extensions look much nicer in lower case
@@ -374,13 +336,14 @@ void CAddEdit_Attachment::OnAttExport()
         // CImage to save it (which may well change its size)
         if (_wcsicmp(ext, new_ext) == 0) {
           int rc = M_attachment().Export(soutputfile);
-          hResult = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
+          hr = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
         } else {
-          hResult = m_AttImage.Save(soutputfile.c_str());
+          hr = m_AttImage.Save(soutputfile.c_str());
         }
-        if (FAILED(hResult)) {
+
+        if (FAILED(hr)) {
           CGeneralMsgBox gmb;
-          const CString cs_errmsg = L"Failed to save image";
+          const CString cs_errmsg(MAKEINTRESOURCE(IDS_IMAGE_SAVE_FAILED));
           gmb.AfxMessageBox(cs_errmsg);
           return;
         }
@@ -429,43 +392,24 @@ void CAddEdit_Attachment::OnAttExport()
   
   bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
   if (!bUpdateFileTimes) {
-    CGeneralMsgBox gmb;
-    const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
-    gmb.AfxMessageBox(cs_errmsg);
+    pws_os::Trace(L"Unable to open newly exported file to set file times.");
   }
 }
 
 void CAddEdit_Attachment::OnAttRemove()
 {
-  if (!m_AttImage.IsNull()) {
-    CBrush brDialog, brBlack;
-    CRect rect;
-    CDC *dc = m_AttStatic.GetDC();
+  if (m_stImgAttachment.IsImageLoaded())
+    m_stImgAttachment.ClearImage();
 
-    // Redraw current interior (using StretchBlt with SRCERASE leaves a black box)
-    m_AttStatic.GetClientRect(rect);
-    brDialog.CreateSolidBrush(::GetSysColor(COLOR_3DFACE));
-    dc->FillRect(&rect, &brDialog);
-    brDialog.DeleteObject();
-
-    // Reset static control size and repaint
-    m_AttStatic.MoveWindow(&m_initial_windowrect, TRUE);
-
-    // Redraw black frame
-    brBlack.CreateSolidBrush(RGB(0, 0, 0));
-    dc->FrameRect(&m_initial_clientrect, &brBlack);
-    brBlack.DeleteObject();
-
-    // Destory image
+  if (!m_AttImage.IsNull())
     m_AttImage.Destroy();
-  }
 
   m_AttFileName = m_AttName = L"";
   m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
   M_attachment().Clear();
 
   m_ae_psh->SetChanged(true);
-  m_AttStatic.SetWindowText(L"");
+  m_stImgAttachment.SetWindowText(L"");
 
   m_attType = NO_ATTACHMENT;
 
@@ -484,7 +428,7 @@ void CAddEdit_Attachment::OnAttRemove()
    
    // Currently only accept one attachment per entry
    // If already have one, don't allow drop of any more
-   m_AttStatic.DragAcceptFiles(bHasAttachment || bIsRO ? FALSE : TRUE);
+   m_stImgAttachment.DragAcceptFiles(bHasAttachment || bIsRO ? FALSE : TRUE);
 
    // Set up buttons
    GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment && !bIsRO);
@@ -496,12 +440,12 @@ void CAddEdit_Attachment::OnAttRemove()
 
    switch (m_attType) {
      case ATTACHMENT_NOT_IMAGE:
-       m_AttStatic.ShowWindow(SW_HIDE);
+       m_stImgAttachment.ShowWindow(SW_HIDE);
        m_stcNoPreview.ShowWindow(SW_SHOW);
        break;
      case NO_ATTACHMENT:
      case ATTACHMENT_IS_IMAGE:
-       m_AttStatic.ShowWindow(SW_SHOW);
+       m_stImgAttachment.ShowWindow(SW_SHOW);
        m_stcNoPreview.ShowWindow(SW_HIDE);
        break;
    }
@@ -510,7 +454,9 @@ void CAddEdit_Attachment::OnAttRemove()
 void CAddEdit_Attachment::ShowPreview()
 {
   CItemAtt &att = M_attachment();
-  HRESULT hResult;
+  HRESULT hr(S_OK);
+
+  int rc(0);
 
   // Assume not an image
   m_attType = ATTACHMENT_NOT_IMAGE;
@@ -523,6 +469,7 @@ void CAddEdit_Attachment::ShowPreview()
     int status = att.Import(LPCWSTR(m_AttFileName));
     if (status != PWScore::SUCCESS) {
       // most likely file error - TBD better error reporting
+      rc = 1;
       goto load_error;
     }
 
@@ -535,20 +482,22 @@ void CAddEdit_Attachment::ShowPreview()
     m_csSize = szFileSize;
     m_csFileCTime = att.GetFileCTime().c_str();
     if (m_csFileCTime.IsEmpty())
-      m_csFileCTime = L"N/A";
+      m_csFileCTime.LoadString(IDS_NA);
     m_csFileMTime = att.GetFileMTime().c_str();
     if (m_csFileMTime.IsEmpty())
-      m_csFileMTime = L"N/A";
+      m_csFileMTime.LoadString(IDS_NA);
 
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
-      hResult = m_AttImage.Load(m_AttFileName);
-      if (FAILED(hResult)) {
-        goto load_error;
+      hr = m_AttImage.Load(m_AttFileName);
+      if (SUCCEEDED(hr)) {
+        hr = m_stImgAttachment.Load(m_AttFileName);
       } 
 
-      // Success - was an image
-      m_attType = ATTACHMENT_IS_IMAGE;
+      if (SUCCEEDED(hr)) {
+        // Success - was an image
+        m_attType = ATTACHMENT_IS_IMAGE;
+      }
     }
 
     // Create UUID if not already present
@@ -566,31 +515,43 @@ void CAddEdit_Attachment::ShowPreview()
       HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
       ASSERT(gMemory);
 
+      if (gMemory == NULL) {
+        rc = 2;
+        goto load_error;
+      }
+
       BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
       ASSERT(pBuffer);
+
+      if (pBuffer == NULL) {
+        rc = 3;
+        GlobalFree(gMemory);
+        goto load_error;
+      }
 
       // Load image into buffer
       att.GetContent(pBuffer, imagesize);
 
       // Put it into a IStream
       IStream *pStream = NULL;
-      hResult = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
-      if (hResult == S_OK) {
+      hr = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
+      if (SUCCEEDED(hr)) {
         // Load it
-        hResult = m_AttImage.Load(pStream);
-      } else {
-        // Reset result so that user gets error dialog below
-        // as we couldn't create the IStream object
-        hResult = E_FAIL;
+        hr = m_AttImage.Load(pStream);
+        if (SUCCEEDED(hr)) {
+          hr = m_stImgAttachment.Load(pStream);
+        }
       }
 
       // Clean up - no real need to trash the buffer
-      pStream->Release();
+      if (pStream != NULL)
+        pStream->Release();
+
       GlobalUnlock(gMemory);
       GlobalFree(gMemory);
 
       // Check image load (or previous error of putting content into an IStream)
-      if (FAILED(hResult)) {
+      if (FAILED(hr)) {
         goto load_error;
       }
 
@@ -599,63 +560,9 @@ void CAddEdit_Attachment::ShowPreview()
     }
   }
 
-  // Now draw image
-  // Use original size if image is bigger otherwise resize and centre control to fit
-  if (!m_AttImage.IsNull()) {
-    int image_h = m_AttImage.GetHeight();
-    int image_w = m_AttImage.GetWidth();
-    CPoint centre_point = m_initial_clientrect.CenterPoint();
-
-    if (image_h < m_initial_clientrect.Height() && image_w < m_initial_clientrect.Width()) {
-      // Centre image
-      int iNewLeft = centre_point.x - image_w / 2;
-      int iNewTop = centre_point.y - image_h / 2;
-      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset, image_w, image_h, TRUE);
-
-      // Get new client rectangle
-      m_AttStatic.GetClientRect(m_clientrect);
-    } else {
-      // Use initial (maximum size) client rectangle
-      // But might need to resize if the image aspect ratio is different to the control
-      m_clientrect = m_initial_clientrect;
-
-      double dWidth = m_initial_clientrect.Width();
-      double dHeight = m_initial_clientrect.Height();
-      double dAspectRatio = dWidth / dHeight;
-
-      double dImageWidth = image_w;
-      double dImageHeight = image_h;
-      double dImageAspectRatio = dImageWidth / dImageHeight;
-
-      // If the aspect ratios are the same then the control rectangle
-      // will do, otherwise we need to calculate the new rectangle
-      if (dImageAspectRatio > dAspectRatio) {
-        int nNewHeight = (int)(dWidth / dImageWidth * dImageHeight);
-        //int nCenteringFactor = (m_initial_clientrect.Height() - nNewHeight) / 2;
-        m_clientrect.SetRect(0, 0, (int)dWidth, nNewHeight);
-
-      } else if (dImageAspectRatio < dAspectRatio) {
-        int nNewWidth = (int)(dHeight / dImageHeight * dImageWidth);
-        //int nCenteringFactor = (m_initial_clientrect.Width() - nNewWidth) / 2;
-        m_clientrect.SetRect(0, 0, nNewWidth, (int)(dHeight));
-      }
-
-      int iNewLeft = centre_point.x - m_clientrect.Width() / 2;
-      int iNewTop = centre_point.y - m_clientrect.Height() / 2;
-      m_AttStatic.MoveWindow(iNewLeft + m_xoffset, iNewTop + m_yoffset,
-                             m_clientrect.Width(), m_clientrect.Height(), TRUE);
-    }
-
-    // Now paint it
-    m_AttImage.StretchBlt(m_AttStatic.GetDC()->GetSafeHdc(), 0, 0,
-                          m_clientrect.Width(), m_clientrect.Height(), SRCCOPY);
-  }
-
   return;
 
 load_error:
   // Ooops???
-  CGeneralMsgBox gmb;
-  const CString cs_errmsg = L"Failed to load image";
-  gmb.AfxMessageBox(cs_errmsg);
+  m_stImgAttachment.IssueError(rc, hr);
 }

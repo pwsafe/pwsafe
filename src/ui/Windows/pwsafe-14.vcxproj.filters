@@ -162,6 +162,9 @@
     <ClCompile Include="GeneralMsgBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImgStatic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ImportTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -381,6 +384,9 @@
     <ClCompile Include="ThisMfcApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ViewAttachmentDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ViewReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -561,6 +567,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HKModifiers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgStatic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImportTextDlg.h">
@@ -779,6 +788,9 @@
     <ClInclude Include="ThisMfcApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ViewAttachmentDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ViewReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -819,6 +831,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="YubiMixin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Windowsdefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

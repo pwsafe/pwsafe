@@ -686,6 +686,7 @@ public:
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
   afx_msg void OnEditBaseEntry();
+  afx_msg void OnViewAttachment();
   afx_msg void OnUndo();
   afx_msg void OnRedo();
   afx_msg void OnRunCommand();

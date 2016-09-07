@@ -591,7 +591,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -716,7 +716,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -875,6 +875,7 @@
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="ImgStatic.cpp" />
     <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
@@ -916,6 +917,7 @@
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TBMStatic.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
+    <ClCompile Include="ViewAttachmentDlg.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
@@ -1005,6 +1007,7 @@
     <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="ImgStatic.h" />
     <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
@@ -1050,6 +1053,7 @@
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="TBMStatic.h" />
     <ClInclude Include="ThisMfcApp.h" />
+    <ClInclude Include="ViewAttachmentDlg.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />
