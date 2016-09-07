@@ -56,6 +56,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/FontsDialog.h
             src/ui/Windows/GeneralMsgBox.h
             src/ui/Windows/HKModifiers.h
+            src/ui/Windows/ImgStatic.h
             src/ui/Windows/ImportTextDlg.h
             src/ui/Windows/ImportXMLDlg.h
             src/ui/Windows/InfoDisplay.h
@@ -123,6 +124,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/TBMStatic.h
             src/ui/Windows/ThisMfcApp.h
             src/ui/Windows/ViewReport.h
+            src/ui/Windows/ViewAttachmentDlg.h
             src/ui/Windows/VirtualKeyboard/VKBButton.h
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.h
             src/ui/Windows/VirtualKeyboard/VKresource.h
@@ -195,6 +197,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/Fonts.cpp
             src/ui/Windows/FontsDialog.cpp
             src/ui/Windows/GeneralMsgBox.cpp
+            src/ui/Windows/ImgStatic.cpp
             src/ui/Windows/ImportTextDlg.cpp
             src/ui/Windows/ImportXMLDlg.cpp
             src/ui/Windows/InfoDisplay.cpp
@@ -265,6 +268,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/TBMStatic.cpp
             src/ui/Windows/ThisMfcApp.cpp
             src/ui/Windows/ViewReport.cpp
+            src/ui/Windows/ViewAttachmentDlg.cpp
             src/ui/Windows/VirtualKeyboard/VKBButton.cpp
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.cpp
             src/ui/Windows/WZAdvanced.cpp
