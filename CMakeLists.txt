@@ -308,7 +308,7 @@ elseif (WIN32)
   endif ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
       ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid
-      Dbghelp Urlmon ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
+      Dbghelp Urlmon gdiplus ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
   ${CMAKE_REQUIRED_LIBRARIES})

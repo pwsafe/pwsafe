@@ -24,7 +24,8 @@ public:
   HRESULT Load(CString &szFilePath);
   HRESULT Load(IStream* piStream);
 
-  //Frees the image data
+  void EnableScrollBars(const bool bEnable) { m_bUseScrollBars = bEnable; }
+  void SetZoomFactor(int iZoom);
   void ClearImage();
   void IssueError(int rc, HRESULT hr);
 
@@ -35,6 +36,8 @@ protected:
   //{{AFX_MSG(CImgStatic)
   afx_msg BOOL OnEraseBkgnd(CDC *pDC);
   afx_msg void OnDropFiles(HDROP hDropInfo);
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -42,7 +45,9 @@ protected:
 private:
   void FreeStream();
 
+  CScrollBar m_HScroll, m_VScroll;
   IStream *m_pStream;
-  bool m_bImageLoaded;
+  bool m_bInitDone, m_bImageLoaded, m_bUseScrollBars;
   ULONG_PTR m_gdiplusToken;
+  int m_iZoomFactor, m_iHPos, m_iVPos;
 };
