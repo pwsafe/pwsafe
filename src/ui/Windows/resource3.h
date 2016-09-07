@@ -770,3 +770,9 @@
 #define IDS_SAVEDRESTOREDDB             6023
 #define IDS_UNSAVEDRESTOREDDB           6024
 #define IDS_VIEWATTACHMENT              6025
+#define IDS_IMAGE_SAVE_FAILED           6026
+#define IDS_IMAGE_LOAD_FAILED           6027
+#define IDS_IMAGE_LIMIT_1               6028
+#define IDS_IMAGE_IMPORT_FAILED         6029
+#define IDS_MEM_ALLOC_FAILED            6030
+#define IDS_MEM_LOCK_FAILED             6031

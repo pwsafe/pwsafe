@@ -15,6 +15,7 @@
 
 #include "GeneralMsgBox.h"
 #include "os/debug.h"
+#include "resource3.h"
 
 #pragma warning(push)
 #pragma warning(disable:4458) // declaration of 'xxx' hides class member
@@ -63,7 +64,7 @@ void CImgStatic::OnDropFiles(HDROP hDropInfo)
     return;
 
   if (nCntFiles > 1) {
-    const CString cs_errmsg = L"Sorry, currently there is a limit of only one attachment per entry";
+    const CString cs_errmsg(MAKEINTRESOURCE(IDS_IMAGE_LIMIT_1));
     ::AfxMessageBox(cs_errmsg);
     return;
   }
@@ -267,8 +268,7 @@ void CImgStatic::ClearImage()
 void CImgStatic::IssueError(int rc, HRESULT hr)
 {
   CGeneralMsgBox gmb;
-  CString cs_errmsg, cs_title;
-  cs_title = L"Failed to load image";
+  CString cs_errmsg, cs_title(MAKEINTRESOURCE(IDS_IMAGE_LOAD_FAILED));
   switch (rc) {
   case 0:
     // Use hr value - but need to convert to Windows error code
@@ -283,13 +283,13 @@ void CImgStatic::IssueError(int rc, HRESULT hr)
     }
     break;
   case 1:
-    cs_errmsg = L"Unable to import image.";
+    cs_errmsg.LoadString(IDS_IMAGE_IMPORT_FAILED);
     break;
   case 2:
-    cs_errmsg = L"Unable to obtain memory to load image.";
+    cs_errmsg.LoadString(IDS_MEM_ALLOC_FAILED);
     break;
   case 3:
-    cs_errmsg = L"Unable to lock memory";
+    cs_errmsg.LoadString(IDS_MEM_LOCK_FAILED);
     break;
   }
 

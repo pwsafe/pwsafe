@@ -125,11 +125,11 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
     m_csFileCTime = M_attachment().GetFileCTime().c_str();
     if (m_csFileCTime.IsEmpty())
-      m_csFileCTime = L"N/A";
+      m_csFileCTime.LoadString(IDS_NA);
 
     m_csFileMTime = M_attachment().GetFileMTime().c_str();
     if (m_csFileMTime.IsEmpty())
-      m_csFileMTime = L"N/A";
+      m_csFileMTime.LoadString(IDS_NA);
 
     ShowPreview();
   }
@@ -345,7 +345,7 @@ void CAddEdit_Attachment::OnAttExport()
 
         if (FAILED(hr)) {
           CGeneralMsgBox gmb;
-          const CString cs_errmsg = L"Failed to save image";
+          const CString cs_errmsg(MAKEINTRESOURCE(IDS_IMAGE_SAVE_FAILED));
           gmb.AfxMessageBox(cs_errmsg);
           return;
         }
@@ -394,9 +394,7 @@ void CAddEdit_Attachment::OnAttExport()
   
   bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
   if (!bUpdateFileTimes) {
-    CGeneralMsgBox gmb;
-    const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
-    gmb.AfxMessageBox(cs_errmsg);
+    pws_os::Trace(L"Unable to open newly exported file to set file times.");
   }
 }
 
@@ -486,10 +484,10 @@ void CAddEdit_Attachment::ShowPreview()
     m_csSize = szFileSize;
     m_csFileCTime = att.GetFileCTime().c_str();
     if (m_csFileCTime.IsEmpty())
-      m_csFileCTime = L"N/A";
+      m_csFileCTime.LoadString(IDS_NA);
     m_csFileMTime = att.GetFileMTime().c_str();
     if (m_csFileMTime.IsEmpty())
-      m_csFileMTime = L"N/A";
+      m_csFileMTime.LoadString(IDS_NA);
 
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
