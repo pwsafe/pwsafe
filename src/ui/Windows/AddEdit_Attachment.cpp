@@ -61,9 +61,7 @@ void CAddEdit_Attachment::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_FILEMTIME, m_csFileMTime);
 
     DDX_Control(pDX, IDC_STATIC_NOPREVIEW, m_stcNoPreview);
-
-    //if (pDX->m_bSaveAndValidate == 0)
-      DDX_Control(pDX, IDC_ATT_IMAGE, m_stImgAttachment);
+    DDX_Control(pDX, IDC_ATT_IMAGE, m_stImgAttachment);
     //}}AFX_DATA_MAP
 }
 

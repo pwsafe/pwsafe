@@ -24,7 +24,7 @@
 
 CImgStatic::CImgStatic()
   : CStatic(), m_pStream(NULL), m_bInitDone(false), m_bImageLoaded(false),
-  m_bUseScrollBars(false), m_iZoomFactor(0), m_iHPos(0), m_iVPos(0), m_gdiplusToken(0)
+  m_bUseScrollBars(false), m_iZoomFactor(10), m_iHPos(0), m_iVPos(0), m_gdiplusToken(0)
 {
   // Initialise Gdiplus graphics
   Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -258,19 +258,21 @@ void CImgStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     RECT rc;
     GetClientRect(&rc);
 
-    UINT uiHHeight = GetSystemMetrics(SM_CYHSCROLL);
-    UINT uiVWidth = GetSystemMetrics(SM_CXVSCROLL);
-    CRect rectH, rectV;
-    rectH = rc;
-    rectH.top = rectH.bottom - uiHHeight;
-    rectH.right -= uiVWidth;
+    if (m_bUseScrollBars) {
+      UINT uiHHeight = GetSystemMetrics(SM_CYHSCROLL);
+      UINT uiVWidth = GetSystemMetrics(SM_CXVSCROLL);
+      CRect rectH, rectV;
+      rectH = rc;
+      rectH.top = rectH.bottom - uiHHeight;
+      rectH.right -= uiVWidth;
 
-    rectV = rc;
-    rectV.left = rectV.right - uiVWidth;
-    rectV.bottom -= uiHHeight;
+      rectV = rc;
+      rectV.left = rectV.right - uiVWidth;
+      rectV.bottom -= uiHHeight;
 
-    m_HScroll.MoveWindow(rectH);
-    m_VScroll.MoveWindow(rectV);
+      m_HScroll.MoveWindow(rectH);
+      m_VScroll.MoveWindow(rectV);
+    }
 
     // Get Gdiplus graphics object
     Gdiplus::Graphics grp(lpDrawItemStruct->hDC);
