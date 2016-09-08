@@ -1484,14 +1484,11 @@ bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci) const
 
 bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &core) const
 {
-  bool thistest_rc, bPresent;
+  bool thistest_rc;
+  const bool bPresent = pci->HasAttRef();
   bool bValue(false);
 
-  bPresent = pci->HasAttRef();
   
-  // Only reference att if bPresent is true
-  const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
-
   for (auto group_iter = m_vAflgroups.begin();
        group_iter != m_vAflgroups.end(); group_iter++) {
     const vfiltergroup &group = *group_iter;
@@ -1539,6 +1536,8 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
           break;
         case PWSMatch::MT_STRING:
           if (bPresent) {
+            const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
+
             thistest_rc = att.Matches(st_fldata.fstring.c_str(), (int)ft,
               st_fldata.fcase ? -ifunction : ifunction);
           } else {
@@ -1548,6 +1547,8 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
           break;
         case PWSMatch::MT_DATE:
           if (bPresent) {
+            const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
+
             time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
             if (st_fldata.fdatetype == 1 /* Relative */) {
               time_t now;
