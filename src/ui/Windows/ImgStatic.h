@@ -47,7 +47,7 @@ private:
 
   CScrollBar m_HScroll, m_VScroll;
   IStream *m_pStream;
-  bool m_bInitDone, m_bImageLoaded, m_bUseScrollBars;
+  bool m_bInitDone, m_bImageLoaded, m_bUseScrollBars, m_bZooming;
   ULONG_PTR m_gdiplusToken;
   int m_iZoomFactor, m_iHPos, m_iVPos;
 };

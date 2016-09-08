@@ -24,7 +24,8 @@
 
 CImgStatic::CImgStatic()
   : CStatic(), m_pStream(NULL), m_bInitDone(false), m_bImageLoaded(false),
-  m_bUseScrollBars(false), m_iZoomFactor(10), m_iHPos(0), m_iVPos(0), m_gdiplusToken(0)
+  m_bUseScrollBars(false), m_bZooming(false), 
+  m_iZoomFactor(10), m_iHPos(0), m_iVPos(0), m_gdiplusToken(0)
 {
   // Initialise Gdiplus graphics
   Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -228,7 +229,9 @@ void CImgStatic::SetZoomFactor(int iZoom)
       m_VScroll.ShowWindow(m_iZoomFactor <= 10 ? SW_HIDE : SW_SHOW);
     }
 
-    Invalidate();
+    m_bZooming = true;
+    RedrawWindow();
+    m_bZooming = false;
   }
 }
 
@@ -302,6 +305,9 @@ void CImgStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 BOOL CImgStatic::OnEraseBkgnd(CDC *pDC)
 {
+  if (m_bZooming)
+    return TRUE;
+  
   if (m_bImageLoaded) {
     RECT rc;
     GetClientRect(&rc);
@@ -387,7 +393,9 @@ void CImgStatic::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 
     pScrollBar->SetScrollPos(nPos, TRUE);
 
+    m_bZooming = true;
     RedrawWindow();
+    m_bZooming = false;
   }
 }
 
@@ -431,7 +439,9 @@ void CImgStatic::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 
     pScrollBar->SetScrollPos(nPos, TRUE);
 
+    m_bZooming = true;
     RedrawWindow();
+    m_bZooming = false;
   }
 }
 
