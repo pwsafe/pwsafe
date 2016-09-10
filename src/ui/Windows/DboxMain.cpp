@@ -1543,13 +1543,14 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
         UpdateLastClipboardAction(CItemData::PASSWORD);
       }
 
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
-        // Need to save display status for when we return from minimize
-        m_vGroupDisplayState = GetGroupDisplayState();
-        ShowWindow(SW_MINIMIZE);
-      } else {
-        ShowWindow(SW_HIDE);
-      }
+      if (bDoAutotype)
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
+          // Need to save display status for when we return from minimize
+          m_vGroupDisplayState = GetGroupDisplayState();
+          ShowWindow(SW_MINIMIZE);
+        } else {
+          ShowWindow(SW_HIDE);
+        }
 
       UpdateAccessTime(uuid);
     }
