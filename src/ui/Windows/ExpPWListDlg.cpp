@@ -198,7 +198,7 @@ BOOL CExpPWListDlg::OnInitDialog()
     int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
     m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int nHeaderWidth = m_expPWListCtrl.GetColumnWidth(i);
-    m_expPWListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+    m_expPWListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
   }
 
   // Redraw

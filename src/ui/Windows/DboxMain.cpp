@@ -3382,8 +3382,8 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
     rc = (fWork) ? mi.rcWork : mi.rcMonitor;
   }
 
-  prc->left = max(rc.left, min(rc.right-w, prc->left));
-  prc->top = max(rc.top, min(rc.bottom-h, prc->top));
+  prc->left = std::max(rc.left, std::min(rc.right-w, prc->left));
+  prc->top = std::max(rc.top, std::min(rc.bottom-h, prc->top));
   prc->right = prc->left + w;
   prc->bottom = prc->top + h;
 }

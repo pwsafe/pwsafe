@@ -2011,8 +2011,8 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     m_ComboBox.GetClientRect(&combo_rect);
     IMAGEINFO imageinfo;
     m_pCheckImageList->GetImageInfo(0, &imageinfo);
-    m_rowheight = max(combo_rect.Height(),
-      abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
+    m_rowheight = std::max(combo_rect.Height(),
+      (int)abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
 
     m_pImageList = new CImageList;
     m_pImageList->Create(1, m_rowheight, ILC_COLOR4, 1, 1);
@@ -2044,7 +2044,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
         (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
       int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
       int ht2 = ht * ifit;
-      sz.cy = min(ht2, sz.cy);
+      sz.cy = std::min((long)ht2, sz.cy);
     }
   }
 

@@ -515,7 +515,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         }
 
         LoadAString(sFieldName, IDS_PWHENTRY);
-        size_t maxentries = max(pwhistlist1.size(), pwhistlist2.size());
+        size_t maxentries = std::max(pwhistlist1.size(), pwhistlist2.size());
         StringX sxBlank = L" ";
         for (size_t n = 0; n < maxentries; n++) {
           m_ListCtrl.SetItemData(iPos, LVCFMT_RIGHT);
