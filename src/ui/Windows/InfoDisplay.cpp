@@ -72,14 +72,15 @@ void CInfoDisplay::OnPaint()
     while(TRUE) { /* scan string */
       CSecString line;
       int p = s.Find(L"\n");
-      if (p < 0)
+      if (p < 0) {
         line = s;
-      else { /* one line */
+      }  else { /* one line */
         line = s.Left(p);
         s = s.Mid(p + 1);
       } /* one line */
+
       CSize sz = dc.GetTextExtent(line);
-      box.cx = max(box.cx, sz.cx);
+      box.cx = std::max(box.cx, sz.cx);
       box.cy += tm.tmHeight + tm.tmInternalLeading;
       if (p < 0)
         break;

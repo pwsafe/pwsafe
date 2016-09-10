@@ -111,8 +111,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
   ON_BN_CLICKED(IDC_PWH_COPY_ALL, OnPWHCopyAll)
 
-  ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
-  ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+  ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
   ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, OnHistListClick)
 
@@ -126,11 +125,12 @@ END_MESSAGE_MAP()
 
 BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
 {
-  RelayToolTipEvent(pMsg);
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
+
+  RelayToolTipEvent(pMsg);
 
   return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
 }
@@ -290,7 +290,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
     m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
-    m_PWHistListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+    m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
   }
   m_PWHistListCtrl.SetRedraw(TRUE);
 

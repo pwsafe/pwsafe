@@ -619,8 +619,8 @@ void CGeneralMsgBox::CreateBtns()
     // Finding the minimum dimension needed to properly show any button
     CSize dimBtn = dc.GetTextExtent(btndata.strBtn);
 
-    m_dimBtn.cx = max(m_dimBtn.cx, dimBtn.cx);
-    m_dimBtn.cy = max(m_dimBtn.cy, dimBtn.cy);
+    m_dimBtn.cx = std::max(m_dimBtn.cx, dimBtn.cx);
+    m_dimBtn.cy = std::max(m_dimBtn.cy, dimBtn.cy);
 
     // Creating the button with MFC's CButton help.
     CButton btnCtrl;
