@@ -559,9 +559,9 @@ void CPasskeyEntry::SetHeight(const int num)
 
   if ((rect.top - sz.cy) < 0 || 
       (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
-    int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
+    int ifit = std::max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
     int ht2 = ht * ifit;
-    sz.cy = min(ht2, sz.cy);
+    sz.cy = std::min((long)ht2, sz.cy);
   }
 
   m_MRU_combo.SetWindowPos(NULL, 0, 0, sz.cx, sz.cy, SWP_NOMOVE | SWP_NOZORDER);

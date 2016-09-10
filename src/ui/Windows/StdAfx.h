@@ -5,6 +5,20 @@
 //      are changed infrequently
 //
 
+// The following is needed because gdiplustypes.h uses the Windows macros
+// min & max but these "can" cause the error "C3861: 'min': identifier not found"
+// when building under VS2015.
+// However, although the code below prevents this, it REQUIRES the use
+// of std::min & std::max everywhere.  As not macros, these also require
+// the arguments to be the same type e.g. "int, int" or "long, long" etc.
+// unlike the Windows macros min & max.
+#define NOMINMAX
+#include <algorithm>
+namespace Gdiplus {
+  using std::min;
+  using std::max;
+};
+
 #define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components

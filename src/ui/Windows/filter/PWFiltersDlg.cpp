@@ -382,8 +382,8 @@ void CPWFiltersDlg::UpdateDialogMaxWidth()
     int iw1 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterLC.GetColumnWidth(i);
-    m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
-    itotalwidth += max(iw1, iw2);
+    m_FilterLC.SetColumnWidth(i, std::max(iw1, iw2));
+    itotalwidth += std::max(iw1, iw2);
   }
   m_FilterLC.SetColumnWidth(FLC_NUM_COLUMNS - 1, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterLC.GetColumnWidth(FLC_NUM_COLUMNS - 1);

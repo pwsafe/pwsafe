@@ -201,8 +201,8 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterLC.GetItemRect(0, &rect, LVIR_BOUNDS);
   IMAGEINFO imageinfo;
   m_pCheckImageList->GetImageInfo(0, &imageinfo);
-  int irowheight = max(rect.Height(),
-                       abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
+  int irowheight = std::max(rect.Height(),
+                       (int)abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
   m_pImageList = new CImageList;
   m_pImageList->Create(1, irowheight, ILC_COLOR4, 1, 1);
   m_FilterLC.SetImageList(m_pImageList, LVSIL_SMALL);
@@ -822,7 +822,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     int iw1 =  m_FilterProperties.GetColumnWidth(j);
     m_FilterProperties.SetColumnWidth(j, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterProperties.GetColumnWidth(j);
-    m_FilterProperties.SetColumnWidth(j, max(iw1, iw2));
+    m_FilterProperties.SetColumnWidth(j, std::max(iw1, iw2));
   }
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterProperties.SetRedraw(TRUE);
@@ -909,13 +909,13 @@ void CManageFiltersDlg::ResetColumns()
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME) + 6;
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE_USEHEADER);
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
-  m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, max(iw1, iw2));
+  m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, std::max(iw1, iw2));
 
   m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, LVSCW_AUTOSIZE);
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_SOURCE);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, LVSCW_AUTOSIZE_USEHEADER);
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_SOURCE);
-  m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, max(iw1, iw2));
+  m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, std::max(iw1, iw2));
 
   m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);

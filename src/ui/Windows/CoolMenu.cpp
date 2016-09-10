@@ -149,7 +149,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
     dc.SelectObject(pOldFont);
 
     // height of item is just height of a standard menu item
-    lpmis->itemHeight = max(GetSystemMetrics(SM_CYMENU), rcText.Height());
+    lpmis->itemHeight = std::max(GetSystemMetrics(SM_CYMENU), rcText.Height());
 
     // width is width of text plus a bunch of stuff
     int cx = rcText.Width();    // text width

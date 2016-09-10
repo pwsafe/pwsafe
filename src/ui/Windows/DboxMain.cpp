@@ -557,7 +557,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSENDEMAIL1, ID_MENUITEM_TRAYSENDEMAILMAX, OnUpdateTraySendEmail)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXT, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -3382,8 +3382,8 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
     rc = (fWork) ? mi.rcWork : mi.rcMonitor;
   }
 
-  prc->left = max(rc.left, min(rc.right-w, prc->left));
-  prc->top = max(rc.top, min(rc.bottom-h, prc->top));
+  prc->left = std::max(rc.left, std::min(rc.right-w, prc->left));
+  prc->top = std::max(rc.top, std::min(rc.bottom-h, prc->top));
   prc->right = prc->left + w;
   prc->bottom = prc->top + h;
 }
