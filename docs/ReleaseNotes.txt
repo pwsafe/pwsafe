@@ -1,5 +1,5 @@
-Password Safe 3.39.2 Release Notes ???? 2016
-============================================
+Password Safe 3.40pre Release Notes September 2016
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.39.2
-====================
+Bugs fixed in 3.40pre
+=====================
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
 [] Empty groups are now added when merging one PasswordSafe database into another.
@@ -29,8 +29,8 @@ checked.
 [1335] If "Minimize after Autotype" option is set, it will also be honoured for
 the user action: "Browse to URL + Autotype".
 
-Changes to Existing Features in 3.39.2
-======================================
+Changes to Existing Features in 3.40pre
+=======================================
 [] Save Immediately has been enhanced to apply to all changes to the database
 and not just after an edit or addition of an entry. It is STRONGLY recommended
 that, if enabled, then the option to "Create intermediate backups" is also
@@ -45,8 +45,8 @@ in the same manner as directories/folders in a file system, e.g.,
 Windows Explorer. This includes empty groups. The number of empty
 groups is also shown.
 
-New Features for 3.39.2
-=======================
+New Features for 3.40pre
+========================
 [] Empty sub-groups are included when exporting a group to a new PasswordSafe
 database.
 [] Adding an empty group will also cause the database to be saved if the user has
