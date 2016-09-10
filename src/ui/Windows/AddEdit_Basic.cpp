@@ -716,7 +716,8 @@ void CAddEdit_Basic::ShowPassword()
   m_ex_password.Invalidate();
 
   // Don't need verification as the user can see the password entered
-  m_password2.Empty();
+  m_password2 = L"1234567890123456789012345678901234567890";
+  m_ex_password2.SetSecure(false);
   m_ex_password2.EnableWindow(FALSE);
   m_ex_password2.SetPasswordChar(0);
   m_ex_password2.Invalidate();
@@ -728,6 +729,7 @@ void CAddEdit_Basic::HidePassword()
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
 
   m_ex_password.SetSecure(true);
+  m_ex_password2.SetSecure(true);
 
   // Set password character so that the password is not displayed
   m_ex_password.SetPasswordChar(PSSWDCHAR);
