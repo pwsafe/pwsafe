@@ -33,6 +33,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool bRTL = false;
     bool bUseHeader = false;
     bool bAdjustEOLs = false;
+    bool bShowDefault = false;
     //parse the command line
     std::vector<tstring> arguments;
     std::vector<tstring> switches;
@@ -66,6 +67,8 @@ int _tmain(int argc, _TCHAR* argv[])
             bUseHeader = true;
         if (wcscmp(I->c_str(), L"adjusteols")==0)
             bAdjustEOLs = true;
+        if (wcscmp(I->c_str(), L"showdefault") == 0)
+            bShowDefault = true;
     }
     std::vector<tstring>::iterator arg = arguments.begin();
 
@@ -125,6 +128,7 @@ int _tmain(int argc, _TCHAR* argv[])
             module.SetLanguage(wLang);
             module.SetRTL(bRTL);
             module.SetAdjustEOLs(bAdjustEOLs);
+            module.SetShowDefault(bShowDefault);
             if (!module.CreateTranslatedResources(sSrcDllFile.c_str(), sDstDllFile.c_str(), sPoFile.c_str()))
                 return -1;
             bShowHelp = false;
@@ -146,6 +150,7 @@ int _tmain(int argc, _TCHAR* argv[])
         _ftprintf(stdout, L"-quiet: don't print progress messages\n");
         _ftprintf(stdout, L"-rtl  : change the controls to RTL reading\n");
         _ftprintf(stdout, L"-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n");
+        _ftprintf(stdout, L"-showdefault  : print untranslated values to stderr\n");
         _ftprintf(stdout, L"\n");
         _ftprintf(stdout, L"Note: when extracting resources, C-resource header files can be specified\n");
         _ftprintf(stdout, L"like this: <resource.dll>*<resource.h>*<resource.h>*...\n");
