@@ -90,6 +90,7 @@ public:
     void    SetLanguage(WORD wLangID) {m_wTargetLang = wLangID;}
     void    SetRTL(bool bRTL = true) {m_bRTL = bRTL;}
     void    SetAdjustEOLs(bool bAdjustEOLs = true) {m_bAdjustEOLs = bAdjustEOLs;}
+    void    SetShowDefault(bool bShowDefault = true) { m_bShowDefault = bShowDefault; }
 
 private:
     static  BOOL CALLBACK EnumResNameCallback(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam);
@@ -147,6 +148,7 @@ private:
 
     bool            m_bRTL;
     bool            m_bAdjustEOLs;
+    bool            m_bShowDefault;
 
     int             m_bTranslatedStrings;
     int             m_bDefaultStrings;

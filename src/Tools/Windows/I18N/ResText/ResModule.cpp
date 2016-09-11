@@ -68,6 +68,7 @@ CResModule::CResModule(void)
     , m_bQuiet(false)
     , m_bRTL(false)
     , m_bAdjustEOLs(false)
+    , m_bShowDefault(false)
 {
 }
 
@@ -438,8 +439,12 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
             if (len)
                 wcsncpy((wchar_t *)&newTable[index], p, len);
             index += len;
-            if (len)
+            if (len) {
                 m_bDefaultStrings++;
+                if (m_bShowDefault && wcslen(msgid.c_str())) {
+                    _ftprintf(stderr, L"Default string: <%s>\n", msgid.c_str());
+                }
+            }
         }
         p += len;
         delete [] pBuf;
@@ -2180,8 +2185,12 @@ void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * tran
         if (dest)
             wcscpy((wchar_t *)&dest[(*count)], src);
         (*count) += wcslen(src) + 1;
-        if (wcslen(src))
+        if (wcslen(src)) {
             (*def)++;
+            if (m_bShowDefault) {
+                _ftprintf(stderr, L"Default other: <%s>\n", src);
+            }
+        }
     }
     delete [] pBuf;
 }
