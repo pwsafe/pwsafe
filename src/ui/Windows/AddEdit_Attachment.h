@@ -49,13 +49,13 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Attachment)
   afx_msg void OnHelp();
-  afx_msg void OnPaint();
-  afx_msg BOOL OnEraseBkgnd(CDC *pDC);
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
 
   afx_msg void OnAttImport();
   afx_msg void OnAttExport();
   afx_msg void OnAttRemove();
+  afx_msg void OnAttAttach();
+  afx_msg void OnListEntries();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -65,6 +65,7 @@ private:
   void ShowPreview();
 
   bool m_bInitdone;
+  int m_iAttachmentRefcount;
   ATT_TYPE m_attType;
 
   CSecString m_AttName;
@@ -74,6 +75,7 @@ private:
   CStatic m_stcNoPreview;
   CImage m_AttImage;
   CImgStatic m_stImgAttachment;
+  CStatic m_stReferences;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

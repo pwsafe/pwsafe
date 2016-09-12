@@ -252,7 +252,7 @@ void CExpPWListDlg::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                              LPARAM closure)
 {
-  CExpPWListDlg *self = (CExpPWListDlg*)closure;
+  CExpPWListDlg *self = (CExpPWListDlg *)closure;
   int nSortColumn = self->m_iSortedColumn;
   const st_ExpLocalListEntry pLHS = self->m_vExpLocalListEntries[lParam1];
   const st_ExpLocalListEntry pRHS = self->m_vExpLocalListEntries[lParam2];

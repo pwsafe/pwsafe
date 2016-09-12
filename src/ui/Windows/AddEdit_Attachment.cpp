@@ -18,6 +18,7 @@
 #include "AddEdit_PropertySheet.h"
 
 #include "PWFileDialog.h"
+#include "SelectAttachment.h"
 
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
@@ -40,7 +41,8 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-   m_bInitdone(false), m_AttName(L""), m_AttFileName(L""), m_attType(NO_ATTACHMENT)
+  m_bInitdone(false), m_iAttachmentRefcount(0),
+  m_AttName(L""), m_AttFileName(L""), m_attType(NO_ATTACHMENT)
 {
 }
 
@@ -62,21 +64,22 @@ void CAddEdit_Attachment::DoDataExchange(CDataExchange* pDX)
 
     DDX_Control(pDX, IDC_STATIC_NOPREVIEW, m_stcNoPreview);
     DDX_Control(pDX, IDC_ATT_IMAGE, m_stImgAttachment);
+    DDX_Control(pDX, IDC_STATIC_REFERENCEDBY, m_stReferences);
     //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Attachment)
-  //ON_WM_PAINT()
-
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_STN_CLICKED(IDC_STATIC_REFERENCEDBY, OnListEntries)
 
   // Our message handlers
   ON_BN_CLICKED(IDC_ATT_IMPORT, OnAttImport)
   ON_BN_CLICKED(IDC_ATT_EXPORT, OnAttExport)
   ON_BN_CLICKED(IDC_ATT_REMOVE, OnAttRemove)
+  ON_BN_CLICKED(IDC_ATT_ATTACH, OnAttAttach)
 
   // For dropped files
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
@@ -88,6 +91,23 @@ BOOL CAddEdit_Attachment::PreTranslateMessage(MSG* pMsg)
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
+  }
+
+  // Do tooltips 
+  if (pMsg->message == WM_MOUSEMOVE) {
+    if (m_pToolTipCtrl != NULL) {
+      // Change to allow tooltip on disabled controls
+      MSG msg = *pMsg;
+      msg.hwnd = (HWND)m_pToolTipCtrl->SendMessage(TTM_WINDOWFROMPOINT, 0,
+                         (LPARAM)&msg.pt);
+      CPoint pt = pMsg->pt;
+      ::ScreenToClient(msg.hwnd, &pt);
+
+      msg.lParam = MAKELONG(pt.x, pt.y);
+
+      // Now let the ToolTip process this message.
+      m_pToolTipCtrl->RelayEvent(&msg);
+    }
   }
 
   return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
@@ -104,6 +124,15 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   // Change font size of the attachment name and file name fields
   GetDlgItem(IDC_ATT_NAME)->SetFont(pFont);
   GetDlgItem(IDC_ATT_FILE)->SetFont(pFont);
+
+  if (InitToolTip()) {
+    AddTool(IDC_ATT_IMPORT, IDS_ATT_IMPORT);
+    AddTool(IDC_ATT_EXPORT, IDS_ATT_EXPORT);
+    AddTool(IDC_ATT_REMOVE, IDS_ATT_REMOVE);
+    AddTool(IDC_ATT_ATTACH, IDS_ATT_ATTACH);
+
+    ActivateToolTip();
+  }
 
   // Check initial state
   if (!M_pci()->HasAttRef()) {
@@ -128,6 +157,8 @@ BOOL CAddEdit_Attachment::OnInitDialog()
     m_csFileMTime = M_attachment().GetFileMTime().c_str();
     if (m_csFileMTime.IsEmpty())
       m_csFileMTime.LoadString(IDS_NA);
+
+    m_iAttachmentRefcount = M_attachment().GetRefcount();
 
     ShowPreview();
   }
@@ -186,19 +217,6 @@ void CAddEdit_Attachment::OnHelp()
   ShowHelp(L"::/html/attachments.html");
 }
 
-void CAddEdit_Attachment::OnPaint()
-{
-  CAddEdit_PropertyPage::OnPaint();
-}
-
-BOOL CAddEdit_Attachment::OnEraseBkgnd(CDC * /*pDC */)
-{
-  if (m_stImgAttachment.IsImageLoaded())
-    m_stImgAttachment.RedrawWindow();
-
-  return 1;
-}
-
 LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
 {
   // Currently only support one attachment per entry
@@ -217,6 +235,36 @@ LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
   // Import file
   OnAttImport();
   return 0;
+}
+
+void CAddEdit_Attachment::OnListEntries()
+{
+  PWScore *pcore = (PWScore *)GetMainDlg()->GetCore();
+
+  pws_os::CUUID att_uuid = M_attachment().GetUUID();
+
+  ItemMMap_Range eq = pcore->GetAttRange(att_uuid);
+
+  std::vector<st_gtui> vgtui;
+
+  for (ItemMMapConstIter it = eq.first; it != eq.second; ++it) {
+    pws_os::CUUID itemUUID = it->second;
+    ItemListIter iter = pcore->Find(itemUUID);
+
+    st_gtui stgtui;
+
+    CItemData &item = pcore->GetEntry(iter);
+    stgtui.sxGroup = item.GetGroup();
+    stgtui.sxTitle = item.GetTitle();
+    stgtui.sxUser = item.GetUser();
+    stgtui.image = GetMainDlg()->GetEntryImage(item);
+
+    vgtui.push_back(stgtui);
+  }
+
+  CViewAttachmentEntriesDlg dlg(this, &vgtui);
+
+  dlg.DoModal();
 }
 
 void CAddEdit_Attachment::OnAttImport()
@@ -323,7 +371,8 @@ void CAddEdit_Attachment::OnAttExport()
         };
       }
 
-      CPWFileDialog fileDlg(FALSE, cs_ext, fname, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
+      CPWFileDialog fileDlg(FALSE, cs_ext, fname,
+                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, this);
       fileDlg.m_pOFN->nFilterIndex = iIndex + 1;  // Not sure why need to add 1 but it seems to work!
 
       if (fileDlg.DoModal() == IDOK) {
@@ -413,43 +462,97 @@ void CAddEdit_Attachment::OnAttRemove()
 
   m_attType = NO_ATTACHMENT;
 
+  // Re-enable user input in case disabled during Attach
+  m_iAttachmentRefcount = 0;
+
   UpdateControls();
   UpdateData(FALSE);
   UpdateWindow();
 }
 
- void CAddEdit_Attachment::UpdateControls()
- {
-   bool bHasAttachment = M_attachment().HasContent();
-   bool bIsRO = (M_uicaller() == IDS_VIEWENTRY ||
-                 (M_uicaller() == IDS_EDITENTRY && M_protected() != 0));
+void CAddEdit_Attachment::OnAttAttach()
+{
+  pws_os::CUUID att_uuid = pws_os::CUUID::NullUUID();
+  bool bOrphaned(false);
+  CSelectAttachment dlg(this, &att_uuid, &bOrphaned);
 
-   ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bIsRO);
-   
-   // Currently only accept one attachment per entry
-   // If already have one, don't allow drop of any more
-   m_stImgAttachment.DragAcceptFiles(bHasAttachment || bIsRO ? FALSE : TRUE);
+  INT_PTR rc = dlg.DoModal();
 
-   // Set up buttons
-   GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment && !bIsRO);
-   GetDlgItem(IDC_ATT_EXPORT)->EnableWindow(bHasAttachment);
-   GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(bHasAttachment && !bIsRO);
+  if (rc >= 0 && att_uuid != pws_os::CUUID::NullUUID()) {
+    // Attach this to current entry
+    M_attachment() = M_pcore()->GetAtt(att_uuid);
 
-   // Don't allow user to change file name if attachment is present
-   ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment || bIsRO);
+    m_AttName = M_attachment().GetTitle();
+    m_AttFileName = M_attachment().GetFilePath() + M_attachment().GetFileName();
 
-   switch (m_attType) {
-     case ATTACHMENT_NOT_IMAGE:
-       m_stImgAttachment.ShowWindow(SW_HIDE);
-       m_stcNoPreview.ShowWindow(SW_SHOW);
-       break;
-     case NO_ATTACHMENT:
-     case ATTACHMENT_IS_IMAGE:
-       m_stImgAttachment.ShowWindow(SW_SHOW);
-       m_stcNoPreview.ShowWindow(SW_HIDE);
-       break;
-   }
- }
+    // Get other properties
+    m_csMediaType = M_attachment().GetMediaType().c_str();
+
+    wchar_t szFileSize[256];
+    StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
+    m_csSize = szFileSize;
+
+    m_csFileCTime = M_attachment().GetFileCTime().c_str();
+    if (m_csFileCTime.IsEmpty())
+      m_csFileCTime.LoadString(IDS_NA);
+
+    m_csFileMTime = M_attachment().GetFileMTime().c_str();
+    if (m_csFileMTime.IsEmpty())
+      m_csFileMTime.LoadString(IDS_NA);
+
+    ShowPreview();
+
+    m_ae_psh->SetChanged(true);
+
+    // Need to prevent user changing any fields otherwise won't be the same attachment
+    M_attachment().IncRefcount();
+    m_iAttachmentRefcount = M_attachment().GetRefcount();
+
+    Invalidate();
+    UpdateControls();
+    UpdateData(FALSE);
+    UpdateWindow();
+  }
+}
+
+void CAddEdit_Attachment::UpdateControls()
+{
+  bool bHasAttachment = M_attachment().HasContent();
+  bool bIsRO = (M_uicaller() == IDS_VIEWENTRY ||
+    (M_uicaller() == IDS_EDITENTRY && M_protected() != 0));
+  BOOL bAttachmentsPresent = (M_pcore()->GetNumAtts() != 0);
+
+  // Other entries reference this attachment - if user changes these fields, then
+  // won't be the same - it does mean that the user can't rename the attachment until
+  // only one entry has it.
+  ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bHasAttachment || bIsRO || m_iAttachmentRefcount > 1);
+  ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment || bIsRO || m_iAttachmentRefcount > 1);
+
+  m_stReferences.EnableWindow(m_iAttachmentRefcount > 1 ? TRUE : FALSE);
+  m_stReferences.ShowWindow(m_iAttachmentRefcount > 1 ? SW_SHOW : SW_HIDE);
+
+  // Currently only accept one attachment per entry
+  // If already have one, don't allow drop of any more
+  m_stImgAttachment.DragAcceptFiles(bHasAttachment || bIsRO ? FALSE : TRUE);
+
+  // Set up buttons
+  GetDlgItem(IDC_ATT_IMPORT)->EnableWindow(!bHasAttachment && !bIsRO);
+  GetDlgItem(IDC_ATT_EXPORT)->EnableWindow(bHasAttachment);
+  GetDlgItem(IDC_ATT_REMOVE)->EnableWindow(bHasAttachment && !bIsRO);
+  GetDlgItem(IDC_ATT_ATTACH)->EnableWindow(!bHasAttachment && !bIsRO && bAttachmentsPresent);
+
+  switch (m_attType) {
+    case ATTACHMENT_NOT_IMAGE:
+      m_stImgAttachment.ShowWindow(SW_HIDE);
+      m_stcNoPreview.ShowWindow(SW_SHOW);
+      break;
+    case NO_ATTACHMENT:
+    case ATTACHMENT_IS_IMAGE:
+      m_stImgAttachment.ShowWindow(SW_SHOW);
+      m_stcNoPreview.ShowWindow(SW_HIDE);
+      break;
+  }
+}
  
 void CAddEdit_Attachment::ShowPreview()
 {
@@ -504,10 +607,6 @@ void CAddEdit_Attachment::ShowPreview()
     if (!att.HasUUID())
       att.CreateUUID();
   } else {// att.HasContent()
-    // This should only be the case during the InitDialog - maybe m_bInitDone
-    // in the logic for this processing rather than att.HasContent
-    ASSERT(!m_bInitdone);
-
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       // Allocate attachment buffer

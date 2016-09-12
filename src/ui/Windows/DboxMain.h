@@ -112,7 +112,8 @@ public:
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
 
-  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
+  enum SaveType {ST_INVALID = -1, ST_CLOSEDB = 0, ST_SAVEIMMEDIATELY,
+                 ST_USERREQUEST, ST_ONLOCK,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
 
   // Find entry by title and user name, exact match
@@ -535,7 +536,7 @@ public:
   void SortListView();
 
   //Version of message functions with return values
-  int Save(const SaveType savetype = DboxMain::ST_INVALID);
+  int Save(const SaveType savetype);
   int SaveAs(void);
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
   int Open(const StringX &sx_Filename, const bool bReadOnly, const bool bHideReadOnly = false);
@@ -649,6 +650,7 @@ public:
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnManagePasswordPolicies();
+  afx_msg void OnManageAttachments();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
   afx_msg void OnSave();
@@ -780,6 +782,8 @@ private:
   pws_os::CUUID m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
   StringX m_sxVisibleGroup;                // to restore Tree group position  upon un-minimize
 
+  std::vector<pws_os::CUUID> m_vToBePurgedAttachments; // Needed across Save on Lock DB
+
   StringX m_sxOriginalGroup;                 // Needed when doing recursive deletions of groups
 
   bool m_inExit; // help U3ExitNow
@@ -799,7 +803,7 @@ private:
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT iMinutes); // set to timer counts
   bool DecrementAndTestIdleLockCounter();
-  int SaveIfChanged();
+  int SaveIfChanged(const SaveType savetype);
   int SaveImmediately();
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
   void TellUserAboutExpiredPasswords();

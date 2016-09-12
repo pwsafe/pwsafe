@@ -18,6 +18,7 @@
 #include "PWFileDialog.h"
 #include "PWPropertySheet.h"
 #include "DboxMain.h"
+#include "ManageAttachments.h"
 #include "PasskeyChangeDlg.h"
 #include "PasskeyEntry.h"
 #include "Options_PropertySheet.h"
@@ -147,7 +148,7 @@ int DboxMain::RestoreSafe()
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   if (m_bOpen) {
-    rc = SaveIfChanged();
+    rc = SaveIfChanged(ST_USERREQUEST);
     if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
       return rc;
 
@@ -738,3 +739,17 @@ void DboxMain::OnManagePasswordPolicies()
   // Delete Manage Password Policies dialog
   delete pDlg;
 }
+
+void DboxMain::OnManageAttachments()
+{
+  CManageAttachments dlg(this);
+
+  dlg.DoModal();
+
+  std::vector<st_att> vAttDetails = dlg.GetAttDetails();
+
+  for (size_t i = 0; i < vAttDetails.size(); i++) {
+
+  }
+}
+

@@ -131,6 +131,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("PurgeOrphanAttachments"), false, ptDatabase },     // database V4
 };
 
 // Default value = -1 means set at runtime
