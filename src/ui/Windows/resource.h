@@ -91,6 +91,7 @@
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
 #define IDR_POPLISTENTRIES              212
+#define IDR_POPATTACHMENTS              213
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
@@ -390,6 +391,9 @@
 #define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
+#define IDD_VIEWAVAILABLEATTACHMENTS    551
+#define IDD_VIEWATTACHMENTENTRIES       552
+#define IDD_MANAGEATTACHMENTS           553
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -834,6 +838,7 @@
 #define IDC_USERBACKUPOTHERLOCATIONHELP 1528
 #define IDC_SAVEIMMEDIATELYHELP         1529
 #define IDC_MAINTAINDATETIMESTAMPSHELP  1530
+#define IDC_PURGEORPHANATTACHMENTSHELP  1530
 #define IDC_OTHERBROWSERLOCATIONHELP    1531
 #define IDC_OTHEREDITORLOCATIONHELP     1532
 #define IDC_RESETPWHISTORYOFFHELP       1533
@@ -863,14 +868,19 @@
 #define IDC_AUTOTYPEHELP                1558
 #define IDC_PASSWORDHELP2               1559
 #define IDC_PWHHELP                     1560
+#define IDC_ATT_ATTACH                  1561
+#define IDC_ORPHANEDATTACHMENTLIST      1562
+#define IDC_ENTRYLIST                   1563
+#define IDC_STATIC_REFERENCEDBY         1564
+#define IDC_PURGEORPHANATTACHMENTS      1565
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        551
+#define _APS_NEXT_RESOURCE_VALUE        554
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1560
+#define _APS_NEXT_CONTROL_VALUE         1566
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

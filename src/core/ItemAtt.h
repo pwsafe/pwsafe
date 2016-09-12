@@ -111,6 +111,10 @@ public:
   unsigned GetRefcount() const {return m_refcount;}
   void IncRefcount() {m_refcount++;}
   void DecRefcount() {ASSERT(m_refcount > 0); m_refcount--;}
+  bool IsOrphaned() { return m_bOrphaned; }
+  void SetOrphaned(bool bOrphaned) { m_bOrphaned = bOrphaned; }
+  bool IsToBePurged() { return m_bToBePurged; }
+  void SetToBePurged(bool bToBePurged) { m_bToBePurged = bToBePurged; }
 
   CItemAtt& operator=(const CItemAtt& second);
 
@@ -123,17 +127,19 @@ public:
   bool Matches(time_t time1, time_t time2, int iObject,
     int iFunction) const;  // time values
 
-  bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
-  bool IsTitleSet() const                  { return IsFieldSet(ATTTITLE);     }
-  bool IsCreationTimeSet() const           { return IsFieldSet(ATTCTIME);     }
+  bool HasUUID() const                     { return IsFieldSet(ATTUUID); }
+  bool IsTitleSet() const                  { return IsFieldSet(ATTTITLE); }
+  bool IsCreationTimeSet() const           { return IsFieldSet(ATTCTIME); }
 
 private:
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 
   EntryStatus m_entrystatus;
-  long m_offset; // location on file, for lazy evaluation
-  unsigned m_refcount; // how many CItemData objects refer to this?
+  long m_offset;          // location on file, for lazy evaluation
+  unsigned m_refcount;    // how many CItemData objects refer to this?
+  bool m_bOrphaned;       // Not linked to any entry
+  bool m_bToBePurged;     // Whether to purge on some type of save
 };
 #endif /* __ITEMATT_H */
 //-----------------------------------------------------------------------------

@@ -336,6 +336,9 @@
     <ClCompile Include="SecString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SelectAttachment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -412,6 +415,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewAttachmentEntriesDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManageAttachments.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -734,6 +743,9 @@
     <ClInclude Include="SecString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SelectAttachment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -828,6 +840,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Windowsdefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewAttachmentEntriesDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManageAttachments.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

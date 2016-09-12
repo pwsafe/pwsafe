@@ -25,7 +25,6 @@
 #include "ExpPWListDlg.h"
 #include "CompareWithSelectDlg.h"
 #include "ShowCompareDlg.h"
-#include "ViewAttachmentDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -2058,40 +2057,6 @@ void DboxMain::OnEditBaseEntry()
       UpdateAccessTime(uuid);
     }
   }
-}
-
-void DboxMain::OnViewAttachment()
-{
-  if (SelItemOk() != TRUE)
-    return;
-
-  CItemData *pci = getSelectedItem();
-  ASSERT(pci != NULL);
-
-  if (!pci->HasAttRef())
-    return;
-
-  ASSERT(m_core.HasAtt(pci->GetAttUUID()));
-  CItemAtt att = m_core.GetAtt(pci->GetAttUUID());
-
-  // Shouldn't be here if no content
-  if (!att.HasContent())
-    return;
-
-  // Get media type before we find we can't load it
-  CString csMediaType = att.GetMediaType().c_str();
-
-  if (csMediaType.Left(5) != L"image") {
-    CGeneralMsgBox gmb;
-    CString csMessage(MAKEINTRESOURCE(IDS_NOPREVIEW_AVAILABLE));
-    CString csTitle(MAKEINTRESOURCE(IDS_VIEWATTACHMENT));
-    gmb.MessageBox(csMessage, csTitle, MB_OK);
-    return;
-  }
-
-  CViewAttachmentDlg viewdlg(this, &att);
-
-  viewdlg.DoModal();
 }
 
 void DboxMain::OnRunCommand()

@@ -285,7 +285,7 @@ int DboxMain::New()
       case IDCANCEL:
         return PWScore::USER_CANCEL;
       case IDYES:
-        rc2 = Save();
+        rc2 = Save(ST_CLOSEDB);
         //  Make sure that writing the file was successful
         if (rc2 == PWScore::SUCCESS)
           break;
@@ -470,7 +470,7 @@ int DboxMain::Close(const bool bTrySave)
 
     if (m_bOpen) {
       // try and save it first
-      int rc = SaveIfChanged();
+      int rc = SaveIfChanged(ST_CLOSEDB);
       if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
         return rc;
 
@@ -496,6 +496,9 @@ int DboxMain::Close(const bool bTrySave)
   m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
   m_sxSelectedGroup = L"";
   m_sxVisibleGroup = L"";
+
+  // Clear purge attachment information (only needed if user closed DB while locked)
+  m_vToBePurgedAttachments.clear();
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
@@ -716,7 +719,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   }
 
   if (m_bOpen) {
-    rc = SaveIfChanged();
+    rc = SaveIfChanged(ST_CLOSEDB);
     if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
       return rc;
   }
@@ -1076,7 +1079,7 @@ void DboxMain::OnClearMRU()
 
 void DboxMain::OnSave()
 {
-  Save();
+  Save(ST_USERREQUEST);
 }
 
 int DboxMain::Save(const SaveType savetype)
@@ -1139,7 +1142,9 @@ int DboxMain::Save(const SaveType savetype)
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                                   userBackupPrefix, userBackupDir, bu_fname)) {
           switch (savetype) {
-            case ST_NORMALEXIT:
+            case ST_CLOSEDB:
+            case ST_USERREQUEST:
+            case ST_ONLOCK:
             {
               cs_temp.LoadString(IDS_NOIBACKUP);
               cs_msg.Format(IDS_NOIBACKUP2, static_cast<LPCWSTR>(cs_temp));
@@ -1170,9 +1175,7 @@ int DboxMain::Save(const SaveType savetype)
             }
 
             case ST_INVALID:
-              // No particular end of PWS exit i.e. user clicked Save or
-              // saving a changed database before opening another
-              gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+              ASSERT(0);
               return PWScore::USER_CANCEL;
 
             default:
@@ -1205,7 +1208,11 @@ int DboxMain::Save(const SaveType savetype)
   m_core.SetRUEList(RUEList);
 
   // We are saving the current DB. Retain current version
-  rc = m_core.WriteFile(sxCurrFile, current_version);
+  bool bPurgeAttachments = false;
+  if (savetype == ST_CLOSEDB && prefs->GetPref(PWSprefs::PurgeOrphanAttachments))
+    bPurgeAttachments = true;
+
+  rc = m_core.WriteFile(sxCurrFile, current_version, true, bPurgeAttachments);
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
@@ -1237,7 +1244,7 @@ int DboxMain::Save(const SaveType savetype)
   }
 
   // Only refresh views if not existing
-  if (savetype != ST_NORMALEXIT)
+  if (savetype != ST_CLOSEDB)
     RefreshViews();
 
   UpdateStatusBar();
@@ -1245,7 +1252,7 @@ int DboxMain::Save(const SaveType savetype)
   return PWScore::SUCCESS;
 }
 
-int DboxMain::SaveIfChanged()
+int DboxMain::SaveIfChanged(const SaveType savetype)
 {
   PWS_LOGIT;
 
@@ -1296,7 +1303,7 @@ int DboxMain::SaveIfChanged()
        (prefs->GetPref(PWSprefs::MaxREItems) > 0 &&
             m_core.HasRUEListChanged())) &&
       (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
-    int rc = Save();
+    int rc = Save(savetype);
 
     if (rc != PWScore::SUCCESS)
       return PWScore::USER_CANCEL;
@@ -1319,7 +1326,7 @@ int DboxMain::SaveIfChanged()
       case IDCANCEL:
         return PWScore::USER_CANCEL;
       case IDYES:
-        rc2 = Save();
+        rc2 = Save(savetype);
         // Make sure that file was successfully written
         if (rc2 == PWScore::SUCCESS)
           break;
@@ -2912,7 +2919,7 @@ void DboxMain::ChangeMode(bool promptUser)
 
   if (!bWasRO) {
     // Try to save if any changes done to database
-    int rc = SaveIfChanged();
+    int rc = SaveIfChanged(ST_USERREQUEST);
     if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
       return;
 
@@ -3919,7 +3926,7 @@ void DboxMain::OnOK()
 
   SavePreferencesOnExit();
 
-  int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
+  int rc = SaveDatabaseOnExit(ST_CLOSEDB);
   if (rc == PWScore::SUCCESS || rc == PWScore::USER_EXIT) {
     CleanUpAndExit();
   }
@@ -4043,7 +4050,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     return (int)rc;
   }
 
-  if (saveType == ST_NORMALEXIT) {
+  if (saveType == ST_CLOSEDB) {
     bool bAutoSave = true; // false if user saved or decided not to
     if (m_core.HasDBChanged()) {
       CGeneralMsgBox gmb;
@@ -4152,7 +4159,7 @@ void DboxMain::OnCancel()
     ShowWindow(SW_MINIMIZE);
   } else {
     SavePreferencesOnExit();
-    int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
+    int rc = SaveDatabaseOnExit(ST_CLOSEDB);
     if (rc == PWScore::SUCCESS) {
       CleanUpAndExit();
     }

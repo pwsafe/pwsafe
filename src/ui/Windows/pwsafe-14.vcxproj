@@ -857,6 +857,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainView.cpp" />
     <ClCompile Include="filter\ManageFiltersDlg.cpp" />
+    <ClCompile Include="ManageAttachments.cpp" />
     <ClCompile Include="ManagePSWDPols.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
@@ -906,6 +907,7 @@
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
     <ClCompile Include="filter\SetHistoryFiltersDlg.cpp" />
     <ClCompile Include="filter\SetPolicyFiltersDlg.cpp" />
+    <ClCompile Include="SelectAttachment.cpp" />
     <ClCompile Include="SHCTHotKey.cpp" />
     <ClCompile Include="SHCTListCtrl.cpp" />
     <ClCompile Include="Shortcut.cpp" />
@@ -918,6 +920,7 @@
     <ClCompile Include="TBMStatic.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
     <ClCompile Include="ViewAttachmentDlg.cpp" />
+    <ClCompile Include="ViewAttachmentEntriesDlg.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
@@ -987,6 +990,7 @@
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
+    <ClInclude Include="ManageAttachments.h" />
     <ClInclude Include="ManagePSWDPols.h" />
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
@@ -1040,6 +1044,7 @@
     <ClInclude Include="filter\SetFiltersDlg.h" />
     <ClInclude Include="filter\SetHistoryFiltersDlg.h" />
     <ClInclude Include="filter\SetPolicyFiltersDlg.h" />
+    <ClInclude Include="SelectAttachment.h" />
     <ClInclude Include="SHCTHotKey.h" />
     <ClInclude Include="SHCTListCtrl.h" />
     <ClInclude Include="Shortcut.h" />
@@ -1053,6 +1058,7 @@
     <ClInclude Include="TBMStatic.h" />
     <ClInclude Include="ThisMfcApp.h" />
     <ClInclude Include="ViewAttachmentDlg.h" />
+    <ClInclude Include="ViewAttachmentEntriesDlg.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />

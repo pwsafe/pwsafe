@@ -132,6 +132,8 @@ void COptions_PropertySheet::SetupInitialValues()
   cs_backupPrefix =
       prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
   m_OPTMD.BackupPrefix = cs_backupPrefix.IsEmpty() ? 0 : 1;
+  m_OPTMD.PurgeOrphanAttachments = 
+      prefs->GetPref(PWSprefs::PurgeOrphanAttachments) ? TRUE : FALSE;
   m_OPTMD.UserBackupPrefix = (LPCWSTR)cs_backupPrefix;
   m_OPTMD.BackupSuffix =
       prefs->GetPref(PWSprefs::BackupSuffix);
@@ -277,6 +279,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   // Backup
   prefs->SetPref(PWSprefs::BackupBeforeEverySave,
                  m_OPTMD.BackupBeforeSave == TRUE, true);
+  prefs->SetPref(PWSprefs::PurgeOrphanAttachments,
+                 m_OPTMD.PurgeOrphanAttachments == TRUE, true);
   prefs->SetPref(PWSprefs::BackupPrefixValue,
                  LPCWSTR(m_OPTMD.UserBackupPrefix), true);
   prefs->SetPref(PWSprefs::BackupSuffix,

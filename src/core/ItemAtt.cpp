@@ -33,13 +33,14 @@ using pws_os::CUUID;
 // Constructors
 
 CItemAtt::CItemAtt()
-  : m_entrystatus(ES_CLEAN), m_offset(-1L), m_refcount(0)
+  : m_entrystatus(ES_CLEAN), m_offset(-1L), m_refcount(0), m_bOrphaned(false), m_bToBePurged(false)
 {
 }
 
 CItemAtt::CItemAtt(const CItemAtt &that) :
   CItem(that), m_entrystatus(that.m_entrystatus),
-  m_offset(that.m_offset), m_refcount(that.m_refcount)
+  m_offset(that.m_offset), m_refcount(that.m_refcount), 
+  m_bOrphaned(that.m_bOrphaned), m_bToBePurged(that.m_bToBePurged)
 {
 }
 
@@ -54,6 +55,8 @@ CItemAtt& CItemAtt::operator=(const CItemAtt &that)
     m_entrystatus = that.m_entrystatus;
     m_offset = that.m_offset;
     m_refcount = that.m_refcount;
+    m_bOrphaned = that.m_bOrphaned;
+    m_bToBePurged = that.m_bToBePurged;
   }
   return *this;
 }
@@ -63,6 +66,8 @@ bool CItemAtt::operator==(const CItemAtt &that) const
   return (m_entrystatus == that.m_entrystatus &&
           m_offset == that.m_offset &&
           m_refcount == that.m_refcount &&
+          m_bOrphaned == that.m_bOrphaned &&
+          m_bToBePurged == that.m_bToBePurged &&
           CItem::operator==(that));
 }
 

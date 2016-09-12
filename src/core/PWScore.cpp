@@ -115,11 +115,11 @@ struct st_ValidateResults {
   int TotalIssues()
   {
     return (num_invalid_UUIDs + num_duplicate_UUIDs +
-      num_empty_titles + num_empty_passwords +
-      num_duplicate_GTU_fixed +
-      num_PWH_fixed + num_excessivetxt_found +
-      num_alias_warnings + num_shortcuts_warnings +
-      num_missing_att + num_orphan_att);
+            num_empty_titles + num_empty_passwords +
+            num_duplicate_GTU_fixed +
+            num_PWH_fixed + num_excessivetxt_found +
+            num_alias_warnings + num_shortcuts_warnings +
+            num_missing_att /*+ num_orphan_att*/);
   }
 };
 
@@ -354,11 +354,10 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     }
 
     if (item.HasAttRef()) {
-      CItemAtt &att = GetAtt(item.GetAttUUID());
-      if (att.GetRefcount() == 1)
-        RemoveAtt(item.GetAttUUID());
-      else
-        att.DecRefcount();
+      RemoveAtt(item.GetAttUUID());
+
+      // Remove from map of attachments to entries
+      UpdateAttEntryMap(false, item.GetUUID(), item.GetUUID());
     }
   } // pos != m_pwlist.end()
 }
@@ -431,9 +430,12 @@ void PWScore::ClearData()
   }
   m_passkey = NULL;
 
-  //Composed of ciphertext, so doesn't need to be overwritten
+  // Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
   m_attlist.clear();
+
+  // Clear out mapping of attachments to entries
+  m_att2item_mmap.clear();
 
   // Clear out out dependents mappings
   m_base2aliases_mmap.clear();
@@ -530,7 +532,7 @@ private:
 };
 
 int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
-                       bool bUpdateSig)
+                       bool bUpdateSig, bool bPurgeAttachments)
 {
   PWS_LOGIT_ARGS("bUpdateSig=%ls", bUpdateSig ? L"true" : L"false");
 
@@ -581,12 +583,16 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
     // Write attachments (only from V4)
-    if (version >= PWSfile::V40)
+    if (version >= PWSfile::V40) {
       for_each(m_attlist.begin(), m_attlist.end(),
                [&](std::pair<CUUID const, CItemAtt> &p)
-               {
-                 p.second.Write(out);
-               } );
+            {
+              if (!bPurgeAttachments ||
+                  (bPurgeAttachments && !p.second.IsToBePurged())) {
+                p.second.Write(out);
+              }
+            } );
+    }
 
     // Update header if V30 or later (no headers before V30)
     if (version >= PWSfile::V30) {
@@ -2131,6 +2137,8 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         // Fix the problem:
         fixedItem.ClearAttUUID();
         bFixed = true;
+      } else {
+        m_att2item_mmap.insert(std::make_pair(ci.GetAttUUID(), ci.GetUUID()));
       }
 
       // Validate entry not in an empty group
@@ -2180,7 +2188,14 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       stATFN.filename = att_iter->second.GetFileName();
       vOrphanAtt.push_back(stATFN);
       st_vr.num_orphan_att++;
-      // NOT removing attachment for now. Add support for exporting orphans later.
+      // Save so that user can re-attach to an entry via UI
+      // Ensure RefCount zero (currently no "ZeroRefCount" function
+      while(att_iter->second.GetRefcount() > 0) {
+        att_iter->second.DecRefcount();
+      };
+
+      // Set orphaned
+      att_iter->second.SetOrphaned(true);
     }
   }
 
@@ -2367,6 +2382,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       } );
     }
 
+#if (0)  // We now handle orphans
     if (st_vr.num_orphan_att > 0) {
       pRpt->WriteLine();
       LoadAString(cs_Error, IDSC_VALIDATE_ORPHAN_ATT);
@@ -2379,6 +2395,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         pRpt->WriteLine(cs_Error);
       } );
     }
+#endif
   } // End of issues report handling
 
   pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
@@ -3930,7 +3947,16 @@ void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
   // Should be a Command setting new CommandDBChange enum value
   ASSERT(HasAtt(attuuid));
   //m_stDBCS.bDBChanged = true; // Can't do this outside a Command
-  m_attlist.erase(m_attlist.find(attuuid));
+  AttListIter att_iter = m_attlist.find(attuuid);
+  if (att_iter != m_attlist.end()) {
+    // Decrement references
+    att_iter->second.DecRefcount();
+
+    // Mark orphaned if no longer references
+    if (att_iter->second.GetRefcount() == 0) {
+      att_iter->second.SetOrphaned(true);
+    }
+  }
 }
 
 std::set<StringX> PWScore::GetAllMediaTypes() const
@@ -3945,4 +3971,31 @@ std::set<StringX> PWScore::GetAllMediaTypes() const
     sMediaTypes.insert(att_iter->second.GetMediaType());
   }
   return sMediaTypes;
+}
+
+void PWScore::UpdateAttEntryMap(bool bAdd, pws_os::CUUID attuuid, pws_os::CUUID entryuuid)
+{
+  if (bAdd) {
+    // Add and mapping
+    m_att2item_mmap.insert(std::make_pair(attuuid, entryuuid));
+  }  else {
+    // Remove a specific mapping
+    std::pair<ItemMMapIter, ItemMMapIter> itpair;
+    itpair = m_att2item_mmap.equal_range(attuuid);
+    for (auto it = itpair.first; it != itpair.second; ++it) {
+      if (it->second == entryuuid) {
+        m_att2item_mmap.erase(it);
+        break;
+      }
+    }
+  }
+}
+
+void PWScore::PutAtt(const CItemAtt &att, pws_os::CUUID entryuuid)
+{
+  // Add it
+  m_attlist[att.GetUUID()] = att;
+
+  // Update map between attachments & entries
+  m_att2item_mmap.insert(std::make_pair(att.GetUUID(), entryuuid));
 }

@@ -141,7 +141,7 @@ public:
   void NewFile(const StringX &passkey);
   int WriteCurFile() {return WriteFile(m_currfile, m_ReadFileVersion);}
   int WriteFile(const StringX &filename, PWSfile::VERSION version,
-                bool bUpdateSig = true);
+                bool bUpdateSig = true, bool bPurgeAttachments = false);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
                       std::vector<StringX> &vEmptyGroups, 
@@ -301,12 +301,29 @@ public:
   {return m_pwlist.end();}
   ItemListConstIter GetEntryEndIter() const
   {return m_pwlist.end();}
+
   CItemData &GetEntry(ItemListIter iter)
   {return iter->second;}
   const CItemData &GetEntry(ItemListConstIter iter) const
   {return iter->second;}
+
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
  
+  // Access to individual attachments in database
+  AttListIter GetAttIter()
+  {return m_attlist.begin();}
+  AttListConstIter GetAttIter() const
+  {return m_attlist.begin();}
+  AttListIter GetAttEndIter()
+  {return m_attlist.end();}
+  AttListConstIter GetAttEndIter() const
+  {return m_attlist.end();}
+
+  CItemAtt &GetAtt(AttListIter iter)
+  {return iter->second;}
+  const CItemAtt &GetAtt(AttListConstIter iter) const
+  {return iter->second;}
+
   // Command functions
   int Execute(Command *pcmd);
   void Undo();
@@ -435,11 +452,19 @@ public:
 
   const CItemAtt &GetAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid)->second;}
   CItemAtt &GetAtt(const pws_os::CUUID &attuuid) {return m_attlist[attuuid];}
-  void PutAtt(const CItemAtt &att) {m_attlist[att.GetUUID()] = att;}
+  void PutAtt(const CItemAtt &att, pws_os::CUUID entryuuid);
   void RemoveAtt(const pws_os::CUUID &attuuid);
   bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
   AttList::size_type GetNumAtts() const {return m_attlist.size();}
+ 
   std::set<StringX> GetAllMediaTypes() const;
+
+  void UpdateAttEntryMap(bool bAdd, pws_os::CUUID attuuid, pws_os::CUUID entryuuid);
+  ItemMMap::size_type GetNumReferences(pws_os::CUUID attuuid) const
+  {return m_att2item_mmap.count(attuuid);}
+
+  ItemMMap_Range GetAttRange(pws_os::CUUID attuuid) const
+  {return m_att2item_mmap.equal_range(attuuid);}
   
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
@@ -572,6 +597,7 @@ private:
 
   // Attachments, if any
   AttList m_attlist;
+  ItemMMap m_att2item_mmap;
   
   // Alias/Shortcut structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base

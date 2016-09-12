@@ -25,6 +25,7 @@
 #include "ExpPWListDlg.h"
 #include "MenuShortcuts.h"
 #include "HKModifiers.h"
+#include "ViewAttachmentDlg.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -1299,7 +1300,7 @@ void DboxMain::OnMove(int x, int y)
   }
 }
 
-void DboxMain::OnSize(UINT nType, int cx, int cy) 
+void DboxMain::OnSize(UINT nType, int cx, int cy)
 {
   PWS_LOGIT_ARGS("nType=%d", nType);
 
@@ -1447,6 +1448,20 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (prefs->GetPref(PWSprefs::UseSystemTray) && app.IsIconVisible() == FALSE) {      
           app.ShowIcon();
         }
+
+        // Resume notification of changes
+        m_core.ResumeOnDBNotification();
+        if (m_FindToolBar.IsVisible())
+          SetFindToolBar(true);
+
+        // Re-apply attachment apply purge status
+        for (size_t i = 0; i < m_vToBePurgedAttachments.size(); i++) {
+          CItemAtt &att = m_core.GetAtt(m_vToBePurgedAttachments[i]);
+          att.SetToBePurged(true);
+        }
+
+        // Now clear information
+        m_vToBePurgedAttachments.clear();
       } else { // m_bSizing == true: here if size changed
         WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
         GetWindowPlacement(&wp);
@@ -2326,13 +2341,22 @@ bool DboxMain::LockDataBase()
 
   // Now try and save changes
   if (m_core.HasDBChanged() || m_bEntryTimestampsChanged) {
-    if (Save() != PWScore::SUCCESS) {
+    if (Save(ST_ONLOCK) != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
       CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
               cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
       gmb.MessageBox(cs_text, cs_title, MB_ICONSTOP);
       return false;
+    }
+  }
+
+  // Save information of attachments to be pruged across this save
+  m_vToBePurgedAttachments.clear();
+  for (auto attPos = m_core.GetAttIter(); attPos != m_core.GetAttEndIter();
+            attPos++) {
+    if (attPos->second.IsToBePurged()) {
+      m_vToBePurgedAttachments.push_back(attPos->second.GetUUID());
     }
   }
 
@@ -4907,4 +4931,38 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       sx_fielddata = ci.GetFieldValue(ft);
   }
   return sx_fielddata;
+}
+
+void DboxMain::OnViewAttachment()
+{
+  if (SelItemOk() != TRUE)
+    return;
+
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
+
+  if (!pci->HasAttRef())
+    return;
+
+  ASSERT(m_core.HasAtt(pci->GetAttUUID()));
+  CItemAtt att = m_core.GetAtt(pci->GetAttUUID());
+
+  // Shouldn't be here if no content
+  if (!att.HasContent())
+    return;
+
+  // Get media type before we find we can't load it
+  CString csMediaType = att.GetMediaType().c_str();
+
+  if (csMediaType.Left(5) != L"image") {
+    CGeneralMsgBox gmb;
+    CString csMessage(MAKEINTRESOURCE(IDS_NOPREVIEW_AVAILABLE));
+    CString csTitle(MAKEINTRESOURCE(IDS_VIEWATTACHMENT));
+    gmb.MessageBox(csMessage, csTitle, MB_OK);
+    return;
+  }
+
+  CViewAttachmentDlg viewdlg(this, &att);
+
+  viewdlg.DoModal();
 }

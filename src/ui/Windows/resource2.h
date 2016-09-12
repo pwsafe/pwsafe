@@ -159,6 +159,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_LANGUAGEMENU                 32158
 #define ID_MENUITEM_PSWD_POLICIES       32159
 #define ID_MENUITEM_YUBIKEY             32160
+#define ID_MENUITEM_ATTACHMENTS         32161
 
 // Help menu
 #define ID_HELPMENU                     32200
@@ -290,3 +291,5 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 // Other
 #define ID_MENUITEM_LISTENTRIES         34200
+#define ID_MENUITEM_LISTATTENTRIES      34201
+#define ID_MENUITEM_MARKFORPURGING      34202

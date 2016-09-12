@@ -349,7 +349,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
             m_AEMD.policyname = L"";
             m_AEMD.pci->SetPolicyName(L"");
             break;
-          }
+        }
 
         m_AEMD.oldipolicy = m_AEMD.ipolicy;
         m_AEMD.oldpwp = m_AEMD.pwp;
