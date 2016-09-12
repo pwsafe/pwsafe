@@ -48,7 +48,7 @@ static bool SafeGetBaseEntry(const CItemData &dep, CItemData &base)
 
 static bool GetRUEntry(CRUEList &RUEList, size_t index, CItemData &ci)
 {
-  bool retval = RUEList.GetPWEntry(index - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
+  bool retval = RUEList.GetPWEntry(index, ci);
 
   if (!retval) {
     CGeneralMsgBox gmb;

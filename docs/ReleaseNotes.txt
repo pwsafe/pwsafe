@@ -21,6 +21,7 @@ List view.
 List view.
 [] After entry has been edited from List View, it now remains visible after
 Edit/Undo/Redo even if the change alters its position within the view.
+[1352] Fixed regression in recent entry processing.
 [1347] Prevent a user from trying to copy a filter to a read-only database.
 [1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is
