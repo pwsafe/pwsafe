@@ -29,6 +29,9 @@ checked.
 [1342, 1343] Fix multiple empty group issues.
 [1335] If "Minimize after Autotype" option is set, it will also be honoured for
 the user action: "Browse to URL + Autotype".
+[1315] Keep selected entry  selected after refreshing the view (F5).
+[1313] Find toolbar no longer closes when it shouldn't. In addition,
+results are updated when entries are added/deleted.
 
 Changes to Existing Features in 3.40pre
 =======================================
