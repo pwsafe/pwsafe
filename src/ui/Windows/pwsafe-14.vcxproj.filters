@@ -426,6 +426,9 @@
     <ClCompile Include="ManageAttachments.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Reuse_Attachment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -852,6 +855,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ManageAttachments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reuse_Attachment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

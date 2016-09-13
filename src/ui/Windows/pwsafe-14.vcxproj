@@ -900,6 +900,7 @@
     <ClCompile Include="PWToolBar.cpp" />
     <ClCompile Include="PWTreeCtrl.cpp" />
     <ClCompile Include="QuerySetDef.cpp" />
+    <ClCompile Include="Reuse_Attachment.cpp" />
     <ClCompile Include="RichEditCtrlExtn.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
@@ -1038,6 +1039,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource2.h" />
     <ClInclude Include="resource3.h" />
+    <ClInclude Include="Reuse_Attachment.h" />
     <ClInclude Include="RichEditCtrlExtn.h" />
     <ClInclude Include="SampleTextDlg.h" />
     <ClInclude Include="SCWListCtrl.h" />
