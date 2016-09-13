@@ -181,6 +181,7 @@ typedef std::multimap<pws_os::CUUID, pws_os::CUUID, std::less<pws_os::CUUID> > I
 typedef ItemMMap::iterator ItemMMapIter;
 typedef ItemMMap::const_iterator ItemMMapConstIter;
 typedef std::pair<pws_os::CUUID, pws_os::CUUID> ItemMMap_Pair;
+typedef std::pair<ItemMMapConstIter, ItemMMapConstIter> ItemMMap_Range;
 
 typedef std::map<pws_os::CUUID, st_SaveTypePW, std::less<pws_os::CUUID> > SaveTypePWMap;
 typedef std::pair<pws_os::CUUID, st_SaveTypePW> SaveTypePWMap_Pair;

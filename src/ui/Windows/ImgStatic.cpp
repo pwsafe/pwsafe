@@ -333,12 +333,14 @@ void CImgStatic::FreeStream()
 {
   // Free up stream
   if (m_bImageLoaded) {
-    m_bImageLoaded = false;
     // Free resources
     if (m_pStream != NULL) {
       m_pStream->Release();
       m_pStream = NULL;
     }
+
+    // Now say gone
+    m_bImageLoaded = false;
   }
 }
 
@@ -347,10 +349,17 @@ void CImgStatic::ClearImage()
   // Get rid of image and return it back to empty CStatic control
   FreeStream();
 
+  RECT rc;
+  GetClientRect(&rc);
   Gdiplus::Graphics grp(GetDC()->GetSafeHdc());
 
-  COLORREF clrCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  grp.Clear(clrCOLOR_3DFACE);
+  // Clear rectangle
+  Gdiplus::Color gdipColor;
+  gdipColor.SetFromCOLORREF(GetSysColor(COLOR_3DFACE));
+
+  Gdiplus::SolidBrush brush(gdipColor);
+  grp.FillRectangle(&brush, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+  grp.Flush();
 }
 
 void CImgStatic::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)

@@ -31,6 +31,7 @@ namespace Gdiplus {
 
 #include <htmlhelp.h>
 #include <afxdlgs.h>
+#include <afxcontrolbars.h>
 
 // Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)

@@ -14,6 +14,8 @@
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
+#include "ThisMfcApp.h"
+
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h" // for DoubleClickAction enums
 #include "core/util.h" // for datetime string
@@ -53,6 +55,7 @@ COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_UserBackupOtherLocation = M_UserBackupOtherLocation();
   m_SaveImmediately = M_SaveImmediately();
   m_BackupBeforeSave = M_BackupBeforeSave();
+  m_PurgeOrphanAttachments = M_PurgeOrphanAttachments();
   m_BackupPrefix = M_BackupPrefix();
   m_MaxNumIncBackups = M_MaxNumIncBackups();
 
@@ -89,6 +92,7 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_BACKUPBEFORESAVEHELP, m_Help1);
   DDX_Control(pDX, IDC_USERBACKUPOTHERLOCATIONHELP, m_Help2);
   DDX_Control(pDX, IDC_SAVEIMMEDIATELYHELP, m_Help3);
+  DDX_Control(pDX, IDC_PURGEORPHANATTACHMENTSHELP, m_Help4);
   //}}AFX_DATA_MAP
 }
 
@@ -169,11 +173,13 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
     m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
 
     // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
     AddTool(IDC_BACKUPBEFORESAVEHELP, IDS_BACKUPBEFORESAVE);
     AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
     AddTool(IDC_SAVEIMMEDIATELYHELP, IDS_SAVEIMMEDIATELY);
+    AddTool(IDC_PURGEORPHANATTACHMENTSHELP, IDS_PURGEORPHANATTACHMENTS);
     ActivateToolTip();
   } else {
     m_Help1.EnableWindow(FALSE);
@@ -182,6 +188,15 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
     m_Help3.EnableWindow(FALSE);
     m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
+  }
+
+  if (app.GetCore()->GetReadFileVersion() < PWSfile::V40) {
+    GetDlgItem(IDC_PURGEORPHANATTACHMENTS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PURGEORPHANATTACHMENTS)->ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
   }
 
   return TRUE;
@@ -198,6 +213,7 @@ LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
           M_UserBackupOtherLocation() != m_UserBackupOtherLocation ||
           M_SaveImmediately()         != m_SaveImmediately         ||
           M_BackupBeforeSave()        != m_BackupBeforeSave        ||
+          M_PurgeOrphanAttachments()  != m_PurgeOrphanAttachments  ||
           M_BackupPrefix()            != m_BackupPrefix            ||
           M_BackupSuffix()            != m_BackupSuffix            ||
           M_BackupLocation()          != m_BackupLocation          ||
@@ -223,6 +239,7 @@ BOOL COptionsBackup::OnApply()
   M_UserBackupOtherLocation() = m_UserBackupOtherLocation;
   M_SaveImmediately() = m_SaveImmediately;
   M_BackupBeforeSave() = m_BackupBeforeSave;
+  M_PurgeOrphanAttachments() = m_PurgeOrphanAttachments;
   M_BackupPrefix() = m_BackupPrefix;
   M_MaxNumIncBackups() = m_MaxNumIncBackups;
 
@@ -481,6 +498,7 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_SAVEIMMEDIATELY:
+    case IDC_PURGEORPHANATTACHMENTS:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

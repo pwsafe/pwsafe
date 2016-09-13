@@ -65,6 +65,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/language/stdafx.h
             src/ui/Windows/LVHdrCtrl.h
             src/ui/Windows/ManagePSWDPols.h
+            src/ui/Windows/ManageAttachments.h
             src/ui/Windows/MenuShortcuts.h
             src/ui/Windows/MenuTipper.h
             src/ui/Windows/MFCmessages.h
@@ -107,10 +108,12 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/resource.h
             src/ui/Windows/resource2.h
             src/ui/Windows/resource3.h
+            src/ui/Windows/Reuse_Attachment.h
             src/ui/Windows/RichEditCtrlExtn.h
             src/ui/Windows/SampleTextDlg.h
             src/ui/Windows/SCWListCtrl.h
             src/ui/Windows/SecString.h
+            src/ui/Windows/SelectAttachment.h
             src/ui/Windows/SHCTHotKey.h
             src/ui/Windows/SHCTListCtrl.h
             src/ui/Windows/Shortcut.h
@@ -213,6 +216,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/MainMenu.cpp
             src/ui/Windows/MainView.cpp
             src/ui/Windows/ManagePSWDPols.cpp
+            src/ui/Windows/ManageAttachments.cpp
             src/ui/Windows/MenuShortcuts.cpp
             src/ui/Windows/MenuTipper.cpp
             src/ui/Windows/MigratePrefs.cpp
@@ -251,10 +255,12 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/PWToolBar.cpp
             src/ui/Windows/PWTreeCtrl.cpp
             src/ui/Windows/QuerySetDef.cpp
+            src/ui/Windows/Reuse_Attachment.cpp
             src/ui/Windows/RichEditCtrlExtn.cpp
             src/ui/Windows/SampleTextDlg.cpp
             src/ui/Windows/SCWListCtrl.cpp
             src/ui/Windows/SecString.cpp
+            src/ui/Windows/SelectAttachment.cpp
             src/ui/Windows/SHCTHotKey.cpp
             src/ui/Windows/SHCTListCtrl.cpp
             src/ui/Windows/Shortcut.cpp

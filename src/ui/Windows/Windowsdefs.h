@@ -5,7 +5,10 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 #pragma once
+
+#include "os/UUID.h"
 
 // Windowsdefs.h
 //-----------------------------------------------------------------------------
@@ -109,3 +112,99 @@ rectangle.
 // Although this limit can be changed to up to 2GB of characters
 // (4GB memory if Unicode), it would make the database size absolutely enormous!
 #define MAXTEXTCHARS       30000
+
+
+// Windows structures and enums
+
+// ... More to be moved here
+
+// Used by SelectAttachments & ManageAttachments
+enum { LCATT_NUM = 0, LCATT_TITLE, LCATT_NAME, LCATT_PATH,
+       LCATT_MEDIA, LCATT_SIZE, LCATT_CTIME, LCATT_FILECTIME, LCATT_FILEMTIME, LCATT_FILEATIME};
+
+struct st_att {
+
+  st_att() : att_uuid(pws_os::CUUID::NullUUID()), bOrphaned(false),
+    bToBePurged(false), bInitalToBePurged(false),
+    sxFileTitle(L""), sxFileName(L""), sxFilePath(L""),
+    sxFileMediaType(L""), tCTime(0),tFileMTime(0), tFileCTime(0), tFileATime(0),
+    size(0), numreferenced(-1)
+  {}
+
+  st_att(const st_att &that)
+    : att_uuid(that.att_uuid), bOrphaned(that.bOrphaned),
+    bToBePurged(that.bToBePurged), bInitalToBePurged(that.bInitalToBePurged),
+    sxFileTitle(that.sxFileTitle), sxFileName(that.sxFileName), sxFilePath(that.sxFilePath),
+    sxFileMediaType(that.sxFileMediaType),
+    tCTime(that.tCTime), tFileMTime(that.tFileMTime), tFileCTime(that.tFileCTime),
+    tFileATime(that.tFileATime), size(that.size), numreferenced(that.numreferenced)
+  {}
+
+  st_att &operator =(const st_att &that)
+  {
+    if (this != &that) {
+      att_uuid = that.att_uuid;
+      bOrphaned = that.bOrphaned;
+      bToBePurged = that.bToBePurged;
+      bInitalToBePurged = that.bInitalToBePurged;
+
+      sxFileTitle = that.sxFileTitle;
+      sxFileName = that.sxFileName;
+      sxFilePath = that.sxFilePath;
+      sxFileMediaType = that.sxFileMediaType;
+
+      tCTime = that.tCTime;
+      tFileCTime = that.tFileCTime;
+      tFileMTime = that.tFileMTime;
+      tFileATime = that.tFileATime;
+
+      size = that.size;
+      numreferenced = that.numreferenced;
+    }
+    return *this;
+  }
+
+  pws_os::CUUID att_uuid;
+  bool bOrphaned;
+  bool bToBePurged;
+  bool bInitalToBePurged;
+
+  StringX sxFileTitle;
+  StringX sxFileName;
+  StringX sxFilePath;
+  StringX sxFileMediaType;
+
+  time_t tCTime;
+  time_t tFileCTime;
+  time_t tFileMTime;
+  time_t tFileATime;
+
+  size_t size;
+  int numreferenced;
+};
+
+// Used by ViewAttachmentEntriesDlg
+struct st_gtui {
+  st_gtui() : sxGroup(L""), sxTitle(L""), sxUser(L""), image(-1)
+  {}
+
+  st_gtui(const st_gtui &that)
+    : sxGroup(that.sxGroup), sxTitle(that.sxTitle), sxUser(that.sxUser),
+    image(that.image) {}
+
+  st_gtui &operator =(const st_gtui &that)
+  {
+    if (this != &that) {
+      sxGroup = that.sxGroup;
+      sxTitle = that.sxTitle;
+      sxUser = that.sxUser;
+      image = that.image;
+    }
+    return *this;
+  }
+
+  StringX sxGroup;
+  StringX sxTitle;
+  StringX sxUser;
+  int image;
+};

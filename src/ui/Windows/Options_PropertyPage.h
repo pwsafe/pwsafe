@@ -21,12 +21,14 @@ class PWScore;
 struct st_Opt_master_data {
   bool bLongPPs;   // Long or Wide PropertyPages
 
+  // Backup Data
   CSecString CurrentFile;
   CSecString UserBackupPrefix;
   CSecString UserBackupOtherLocation;
   BOOL SaveImmediately;
   BOOL BackupBeforeSave;
   BOOL BackupPrefix;
+  BOOL PurgeOrphanAttachments; // (on Save on Close) V4
   int BackupLocation;
   int BackupSuffix;
   int MaxNumIncBackups;
@@ -119,6 +121,7 @@ public:
   inline BOOL &M_SaveImmediately() {return m_OPTMD.SaveImmediately;}
   inline BOOL &M_BackupBeforeSave() {return m_OPTMD.BackupBeforeSave;}
   inline BOOL &M_BackupPrefix() {return m_OPTMD.BackupPrefix;}
+  inline BOOL &M_PurgeOrphanAttachments() { return m_OPTMD.PurgeOrphanAttachments;}
   inline int &M_BackupLocation() {return m_OPTMD.BackupLocation;}
   inline int &M_BackupSuffix() {return m_OPTMD.BackupSuffix;}
   inline int &M_MaxNumIncBackups() {return m_OPTMD.MaxNumIncBackups;}

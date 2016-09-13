@@ -42,6 +42,7 @@
 #define IDS_CLEARPWHISTORY              5111
 #define IDS_SAVEIMMEDIATELY             5112
 #define IDS_DBLOCK                      5113
+#define IDS_PURGEORPHANATTACHMENTS      5114
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -776,3 +777,13 @@
 #define IDS_IMAGE_IMPORT_FAILED         6029
 #define IDS_MEM_ALLOC_FAILED            6030
 #define IDS_MEM_LOCK_FAILED             6031
+#define IDS_ATT_IMPORT                  6032
+#define IDS_ATT_EXPORT                  6033
+#define IDS_ATT_REMOVE                  6034
+#define IDS_ATT_ATTACH                  6035
+#define IDS_NUMREFS                     6036
+#define IDS_FILESIZE                    6037
+#define IDS_PURGEATTACHMENT             6038
+#define IDS_MANAGEATTACHMENTS           6039
+#define IDS_MARKFORPURGING              6040
+#define IDS_UNMARKFORPURGING            6041
