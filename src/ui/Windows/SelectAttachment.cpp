@@ -49,6 +49,7 @@ void CSelectAttachment::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSelectAttachment, CPWDialog)
   ON_BN_CLICKED(IDOK, OnSelect)
   ON_NOTIFY(NM_RCLICK, IDC_ORPHANEDATTACHMENTLIST, OnAttachmentRightClick)
+  ON_NOTIFY(NM_DBLCLK, IDC_ORPHANEDATTACHMENTLIST, OnAttachmentDoubleClick) // 
   ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_COMMAND(ID_MENUITEM_VIEWATTACHMENT, OnViewAttachment)
   ON_COMMAND(ID_MENUITEM_LISTATTENTRIES, OnListAttEntries)
@@ -203,6 +204,19 @@ void CSelectAttachment::OnAttachmentRightClick(NMHDR * /*pNotifyStruct*/, LRESUL
 
     pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
   }
+}
+
+void CSelectAttachment::OnAttachmentDoubleClick(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = 0; // Perform default processing on return
+
+  NMITEMACTIVATE *pitem = (NMITEMACTIVATE *)pNMHDR;
+  int row = pitem->iItem;
+
+  if (row < 0)
+    return;
+
+  OnSelect();
 }
 
 void CSelectAttachment::OnListAttEntries()

@@ -38,6 +38,7 @@ protected:
   afx_msg BOOL OnInitDialog();
   afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnAttachmentRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLResult);
+  afx_msg void OnAttachmentDoubleClick(NMHDR *pNMHDR, LRESULT *pLResult);
   afx_msg void OnListAttEntries();
   afx_msg void OnViewAttachment();
   afx_msg void OnSelect();
