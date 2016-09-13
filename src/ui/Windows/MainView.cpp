@@ -72,7 +72,10 @@ void DboxMain::DatabaseModified(bool bChanged)
   // First if the password list has been changed, invalidate
   // the indices vector in Find
   InvalidateSearch();
-  OnHideFindToolBar();
+
+  BOOL bFindBarShown = m_FindToolBar.IsWindowVisible();
+  if (bFindBarShown)
+    SetFindToolBar(false);
 
   // Save Immediately if user requested it
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
@@ -83,6 +86,9 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Update menu/toolbar according to change state
   ChangeOkUpdate();
+
+  if (bFindBarShown && !m_FindToolBar.IsWindowVisible())
+    SetFindToolBar(true);
 
   // This is to prevent Windows (Vista & later) from shutting down
   // if the database has been modified (including preferences
@@ -117,7 +123,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          bool bUpdateGUI)
 {
   // Callback from PWScore if GUI needs updating
-  // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
+  // Note: For some values of 'ga', 'entry_uuid' & ft are invalid and not used.
  
   // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
   // of the Edit Entry Command where the entry is deleted and then added and
@@ -194,6 +200,11 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     default:
       break;
+  }
+
+  // If find was active - the result might have changed - update
+  if (m_FindToolBar.IsVisible()) {
+    m_FindToolBar.Find();
   }
 }
 
@@ -1394,8 +1405,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
         // Resume notification of changes
         m_core.ResumeOnDBNotification();
-        if (m_FindToolBar.IsVisible())
-          SetFindToolBar(true);
       } else { // m_bSizing == true: here if size changed
         WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
         GetWindowPlacement(&wp);
@@ -1403,10 +1412,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
                                              wp.rcNormalPosition.bottom,
                                              wp.rcNormalPosition.left,
                                              wp.rcNormalPosition.right);
-
-        // Make sure Find toolbar is above Status bar
-        if (m_FindToolBar.IsVisible())
-          SetToolBarPositions();
       }
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -1840,8 +1845,10 @@ void DboxMain::SortListView()
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
 
-  if (!m_bIsRestoring && m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
+  if (!m_bIsRestoring && m_FindToolBar.IsVisible()) {
+    // Redo find as list/entries may have changed
+    m_FindToolBar.Find();
+  }
 }
 
 void DboxMain::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
@@ -3367,9 +3374,64 @@ void DboxMain::OnRefreshWindow()
 {
   PWS_LOGIT;
 
+  // Save selected/highlighted entry
+  pws_os::CUUID entry_uuid(pws_os::CUUID::NullUUID());
+  StringX sxGroupPath;
+
+  if (m_ctlItemTree.IsWindowVisible()) {
+    // Tree view visible
+    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+    if (ti != NULL) {
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      if (pci == NULL) {
+        // It is a group
+        sxGroupPath = m_mapTreeItemToGroup[ti];
+      } else {
+        // An entry
+        entry_uuid = pci->GetUUID();
+      }
+    }
+  } else {
+    // List view visible
+    if (m_ctlItemList.GetSelectedCount() == 1) {
+      POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+      if (pos != NULL) {
+        int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+        CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+        entry_uuid = pci->GetUUID();
+      }
+    }
+  }
+
+
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
   RefreshViews();
+
+  // Try and put selection back
+  HTREEITEM hItem(NULL);
+  int item(-1);
+  if (entry_uuid != CUUID::NullUUID()) {
+    ItemListIter iter = Find(entry_uuid);
+    if (iter != m_core.GetEntryEndIter()) {
+      CItemData &ci = GetEntryAt(iter);
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    }
+  } else if (!sxGroupPath.empty()) {
+    hItem = m_mapGroupToTreeItem[sxGroupPath];
+  }
+
+  // Now select
+  if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
+    m_ctlItemTree.SelectItem(hItem);
+  } else if (item != -1) {
+    m_ctlItemList.SetItemState(item,
+                                    LVIS_FOCUSED | LVIS_SELECTED,
+                                    LVIS_FOCUSED | LVIS_SELECTED);
+  }
+
 }
 
 void DboxMain::OnCustomizeToolbar()
