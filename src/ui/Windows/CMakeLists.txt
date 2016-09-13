@@ -107,6 +107,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/resource.h
             src/ui/Windows/resource2.h
             src/ui/Windows/resource3.h
+            src/ui/Windows/Reuse_Attachment.h
             src/ui/Windows/RichEditCtrlExtn.h
             src/ui/Windows/SampleTextDlg.h
             src/ui/Windows/SCWListCtrl.h
@@ -252,6 +253,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/PWToolBar.cpp
             src/ui/Windows/PWTreeCtrl.cpp
             src/ui/Windows/QuerySetDef.cpp
+            src/ui/Windows/Reuse_Attachment.cpp
             src/ui/Windows/RichEditCtrlExtn.cpp
             src/ui/Windows/SampleTextDlg.cpp
             src/ui/Windows/SCWListCtrl.cpp
