@@ -1253,8 +1253,15 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   if (!m_bInitDone) 
     return;
 
+  BOOL bFindBarShown = m_FindToolBar.IsWindowVisible();
+
   if (nType != SIZE_MINIMIZED) {
     // Position the control bars - don't bother if just been minimized
+
+    // If Find toolbar active - hide it until after we move
+    if (bFindBarShown)
+      SetFindToolBar(false);
+
     CRect rect, dragrect;
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
@@ -1412,6 +1419,11 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     case SIZE_MAXSHOW:
       break;
   } // nType switch statement
+
+    // If Find toolbar was active - reshow it
+  if (bFindBarShown && !m_FindToolBar.IsWindowVisible())
+    SetFindToolBar(true);
+
   m_bSizing = false;
 }
 
