@@ -389,19 +389,6 @@ void CAddEdit_Attachment::OnAttImport()
   if (m_csFileMTime.IsEmpty())
     m_csFileMTime.LoadString(IDS_NA);
 
-  //if (m_csMediaType.Left(5) == L"image") {
-  //  // Should be an image file - but may not be supported by CImage - try..
-  //  hr = m_AttImage.Load(m_AttFileName);
-  //  if (SUCCEEDED(hr)) {
-  //    hr = m_stImgAttachment.Load(m_AttFileName);
-  //  }
-
-  //  if (SUCCEEDED(hr)) {
-  //    // Success - was an image
-  //    m_attType = ATTACHMENT_IS_IMAGE;
-  //  }
-  //}
-
   // Create UUID if not already present
   if (!att_new.HasUUID())
     att_new.CreateUUID();
