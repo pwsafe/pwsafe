@@ -1767,6 +1767,60 @@ CItemData *DboxMain::getSelectedItem()
   return pci;
 }
 
+void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid, StringX &sxGroupPath)
+{
+  if (m_ctlItemTree.IsWindowVisible()) {
+    // Tree view visible
+    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+    if (ti != NULL) {
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      if (pci == NULL) {
+        // It is a group
+        sxGroupPath = m_mapTreeItemToGroup[ti];
+      } else {
+        // An entry
+        entry_uuid = pci->GetUUID();
+      }
+    }
+  } else {
+    // List view visible
+    if (m_ctlItemList.GetSelectedCount() == 1) {
+      POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+      if (pos != NULL) {
+        int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+        CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+        entry_uuid = pci->GetUUID();
+      }
+    }
+  }
+}
+
+void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid, StringX sxGroupPath)
+{
+  // Find the entries
+  HTREEITEM hItem(NULL);
+  int item(-1);
+  if (entry_uuid != CUUID::NullUUID()) {
+    ItemListIter iter = Find(entry_uuid);
+    if (iter != m_core.GetEntryEndIter()) {
+      CItemData &ci = GetEntryAt(iter);
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    }
+  } else if (!sxGroupPath.empty()) {
+    hItem = m_mapGroupToTreeItem[sxGroupPath];
+  }
+
+  // Now select
+  if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
+    m_ctlItemTree.SelectItem(hItem);
+  } else if (item != -1) {
+    m_ctlItemList.SetItemState(item,
+                                    LVIS_FOCUSED | LVIS_SELECTED,
+                                    LVIS_FOCUSED | LVIS_SELECTED);
+  }
+}
 void DboxMain::ClearData(const bool bClearMRE)
 {
   PWS_LOGIT;
@@ -3374,64 +3428,18 @@ void DboxMain::OnRefreshWindow()
 {
   PWS_LOGIT;
 
-  // Save selected/highlighted entry
   pws_os::CUUID entry_uuid(pws_os::CUUID::NullUUID());
   StringX sxGroupPath;
-
-  if (m_ctlItemTree.IsWindowVisible()) {
-    // Tree view visible
-    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-    if (ti != NULL) {
-      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      if (pci == NULL) {
-        // It is a group
-        sxGroupPath = m_mapTreeItemToGroup[ti];
-      } else {
-        // An entry
-        entry_uuid = pci->GetUUID();
-      }
-    }
-  } else {
-    // List view visible
-    if (m_ctlItemList.GetSelectedCount() == 1) {
-      POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
-      if (pos != NULL) {
-        int nItem = m_ctlItemList.GetNextSelectedItem(pos);
-        CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
-        entry_uuid = pci->GetUUID();
-      }
-    }
-  }
-
+  
+  // Save selected/highlighted entry
+  GetSelectedItems(entry_uuid, sxGroupPath);
 
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
   RefreshViews();
 
-  // Try and put selection back
-  HTREEITEM hItem(NULL);
-  int item(-1);
-  if (entry_uuid != CUUID::NullUUID()) {
-    ItemListIter iter = Find(entry_uuid);
-    if (iter != m_core.GetEntryEndIter()) {
-      CItemData &ci = GetEntryAt(iter);
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-      hItem = pdi->tree_item;
-      item = pdi->list_index;
-    }
-  } else if (!sxGroupPath.empty()) {
-    hItem = m_mapGroupToTreeItem[sxGroupPath];
-  }
-
-  // Now select
-  if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
-    m_ctlItemTree.SelectItem(hItem);
-  } else if (item != -1) {
-    m_ctlItemList.SetItemState(item,
-                                    LVIS_FOCUSED | LVIS_SELECTED,
-                                    LVIS_FOCUSED | LVIS_SELECTED);
-  }
-
+  // Try and put selection back - positions in lists may have changed
+  ReSelectItems(entry_uuid, sxGroupPath);
 }
 
 void DboxMain::OnCustomizeToolbar()
