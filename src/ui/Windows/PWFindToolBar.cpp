@@ -580,6 +580,7 @@ void CPWFindToolBar::Find()
         m_lastshown = m_numFound - 1;
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
+
       app.GetMainDlg()->SelectFindEntry(m_indices[m_lastshown], TRUE);
     }
   }
