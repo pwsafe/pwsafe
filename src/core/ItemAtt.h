@@ -14,8 +14,10 @@
 #include "Util.h"
 #include "Match.h"
 #include "Item.h"
-#include "os/UUID.h"
 #include "StringX.h"
+#include "sha1.h"
+
+#include "os/UUID.h"
 
 #include <time.h> // for time_t
 
@@ -91,6 +93,11 @@ public:
   time_t GetFileCTime(time_t &t) const { CItem::GetTime(FILECTIME, t); return t; }
   time_t GetFileMTime(time_t &t) const { CItem::GetTime(FILEMTIME, t); return t; }
   time_t GetFileATime(time_t &t) const { CItem::GetTime(FILEATIME, t); return t; }
+
+  // Content SHA1
+  bool GetContentDigest(unsigned char digest[SHA1::HASHLEN]);
+  bool SetContentDigest(unsigned char digest[SHA1::HASHLEN])
+  { return SetField(CONTENTSHA1, digest, (size_t)SHA1::HASHLEN); }
 
   void SetFileCTime() { SetTime(FILECTIME); }
   void SetFileCTime(time_t t) { CItem::SetTime(FILECTIME, t); }

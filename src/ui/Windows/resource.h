@@ -394,6 +394,7 @@
 #define IDD_VIEWAVAILABLEATTACHMENTS    551
 #define IDD_VIEWATTACHMENTENTRIES       552
 #define IDD_MANAGEATTACHMENTS           553
+#define IDD_REUSEATTACHMENT             554
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -873,14 +874,19 @@
 #define IDC_ENTRYLIST                   1563
 #define IDC_STATIC_REFERENCEDBY         1564
 #define IDC_PURGEORPHANATTACHMENTS      1565
+#define IDC_IMPORTFILENAME              1566
+#define IDC_IMPORTFILEPATH              1567
+#define IDC_EXISTINGFILENAME            1568
+#define IDC_EXISTINGFILEPATH            1569
+#define IDC_EXISTINGFILETITLE           1570
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        554
+#define _APS_NEXT_RESOURCE_VALUE        555
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1566
+#define _APS_NEXT_CONTROL_VALUE         1571
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

@@ -19,10 +19,12 @@
 
 #include "PWFileDialog.h"
 #include "SelectAttachment.h"
+#include "Reuse_Attachment.h"
 
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
 
+#include "os/dir.h"
 #include "os/file.h"
 #include "os/debug.h"
 
@@ -79,7 +81,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_ATT_IMPORT, OnAttImport)
   ON_BN_CLICKED(IDC_ATT_EXPORT, OnAttExport)
   ON_BN_CLICKED(IDC_ATT_REMOVE, OnAttRemove)
-  ON_BN_CLICKED(IDC_ATT_ATTACH, OnAttAttach)
+  ON_BN_CLICKED(IDC_ATT_ATTACH, OnAttLinkExisting)
 
   // For dropped files
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
@@ -316,6 +318,94 @@ void CAddEdit_Attachment::OnAttImport()
   m_csFileCTime = PWSUtil::ConvertToDateTimeString(info.st_ctime, PWSUtil::TMC_LOCALE).c_str();
   m_csFileMTime = PWSUtil::ConvertToDateTimeString(info.st_mtime, PWSUtil::TMC_LOCALE).c_str();
 
+  // Before we import it - check we don't already have it
+  std::vector<pws_os::CUUID> vSimilarFiles;
+  for (auto attPos = M_pcore()->GetAttIter(); attPos != M_pcore()->GetAttEndIter();
+            attPos++) {
+    if (attPos->second.GetContentLength() == info.st_size) {
+      vSimilarFiles.push_back(attPos->first);
+    }
+  }
+
+  CItemAtt &att_new = M_attachment();
+  hr = S_OK;
+
+  // Now import it
+  int status = att_new.Import(LPCWSTR(m_AttFileName));
+  if (status != PWScore::SUCCESS) {
+    // most likely file error - TBD better error reporting
+    rc = 1;
+    goto load_error;
+  }
+
+  if (vSimilarFiles.size() > 0) {
+    unsigned char newfile_digest[SHA1::HASHLEN];
+    att_new.GetContentDigest(newfile_digest);
+    std::wstring spath, sdrive, sdir, sfname, sextn;
+
+    pws_os::splitpath(m_AttFileName, sdrive, sdir, sfname, sextn);
+    spath = pws_os::makepath(sdrive, sdir, L"", L"");
+
+    for (size_t i = 0; i < vSimilarFiles.size(); i++) {
+      unsigned char digest[SHA1::HASHLEN];
+      CItemAtt &att_sim = M_pcore()->GetAtt(vSimilarFiles[i]);
+      att_sim.GetContentDigest(digest);
+      if (memcmp(digest, newfile_digest, SHA1::HASHLEN) == 0) {
+        CReuse_Attachment dlg;
+        dlg.SetFileDetails((sfname + sextn).c_str(), spath.c_str(),
+                            att_sim.GetFileName(), att_sim.GetFilePath(), att_sim.GetTitle());
+        INT_PTR dlgrc = dlg.DoModal();
+        if (dlgrc == IDOK) {
+          // Use orginal
+          // By setting the new attachments UUID to the existing one - it will be detected
+          // later and a link added instead of a whole new attachment
+          M_attachment().SetUUID(vSimilarFiles[i]);
+          att_new.SetUUID(vSimilarFiles[i]);
+
+          // Update fields in attachment and this dialog
+          m_AttName = att_sim.GetTitle();
+          M_attachment().SetTitle(att_sim.GetTitle());
+          m_AttFileName = att_sim.GetFilePath() + att_sim.GetFileName();
+
+          // Prevents user changing anything for this linked attachment
+          m_iAttachmentRefcount = att_sim.GetRefcount() + 1;
+          break;
+        }
+      }
+    }
+  }
+
+  // Get media type before we find we can't load it
+  m_csMediaType = att_new.GetMediaType().c_str();
+
+  // Get other properties
+  wchar_t szFileSize[256];
+  StrFormatByteSize(att_new.GetContentSize(), szFileSize, 256);
+  m_csSize = szFileSize;
+  m_csFileCTime = att_new.GetFileCTime().c_str();
+  if (m_csFileCTime.IsEmpty())
+    m_csFileCTime.LoadString(IDS_NA);
+  m_csFileMTime = att_new.GetFileMTime().c_str();
+  if (m_csFileMTime.IsEmpty())
+    m_csFileMTime.LoadString(IDS_NA);
+
+  //if (m_csMediaType.Left(5) == L"image") {
+  //  // Should be an image file - but may not be supported by CImage - try..
+  //  hr = m_AttImage.Load(m_AttFileName);
+  //  if (SUCCEEDED(hr)) {
+  //    hr = m_stImgAttachment.Load(m_AttFileName);
+  //  }
+
+  //  if (SUCCEEDED(hr)) {
+  //    // Success - was an image
+  //    m_attType = ATTACHMENT_IS_IMAGE;
+  //  }
+  //}
+
+  // Create UUID if not already present
+  if (!att_new.HasUUID())
+    att_new.CreateUUID();
+
   ShowPreview();
 
   m_ae_psh->SetChanged(true);
@@ -323,6 +413,12 @@ void CAddEdit_Attachment::OnAttImport()
   UpdateControls();
   UpdateData(FALSE);
   UpdateWindow();
+
+  return;
+
+load_error:
+  // Ooops???
+  m_stImgAttachment.IssueError(rc, hr);
 }
 
 void CAddEdit_Attachment::OnAttExport()
@@ -447,8 +543,9 @@ void CAddEdit_Attachment::OnAttExport()
 
 void CAddEdit_Attachment::OnAttRemove()
 {
-  if (m_stImgAttachment.IsImageLoaded())
+  if (m_stImgAttachment.IsImageLoaded()) {
     m_stImgAttachment.ClearImage();
+  }
 
   if (!m_AttImage.IsNull())
     m_AttImage.Destroy();
@@ -456,6 +553,7 @@ void CAddEdit_Attachment::OnAttRemove()
   m_AttFileName = m_AttName = L"";
   m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
   M_attachment().Clear();
+  m_iAttachmentRefcount = 0;
 
   m_ae_psh->SetChanged(true);
   m_stImgAttachment.SetWindowText(L"");
@@ -470,7 +568,7 @@ void CAddEdit_Attachment::OnAttRemove()
   UpdateWindow();
 }
 
-void CAddEdit_Attachment::OnAttAttach()
+void CAddEdit_Attachment::OnAttLinkExisting()
 {
   pws_os::CUUID att_uuid = pws_os::CUUID::NullUUID();
   bool bOrphaned(false);
@@ -525,8 +623,13 @@ void CAddEdit_Attachment::UpdateControls()
   // Other entries reference this attachment - if user changes these fields, then
   // won't be the same - it does mean that the user can't rename the attachment until
   // only one entry has it.
-  ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bHasAttachment || bIsRO || m_iAttachmentRefcount > 1);
-  ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bHasAttachment || bIsRO || m_iAttachmentRefcount > 1);
+  ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bIsRO || m_iAttachmentRefcount > 1);
+  ((CEdit *)GetDlgItem(IDC_ATT_FILE))->SetReadOnly(bIsRO || m_iAttachmentRefcount > 1);
+
+  if (bIsRO || m_iAttachmentRefcount > 1) {
+    // If fields now read-only, make dialog the focus rather than the attachment's name
+    SetFocus();
+  }
 
   m_stReferences.EnableWindow(m_iAttachmentRefcount > 1 ? TRUE : FALSE);
   m_stReferences.ShowWindow(m_iAttachmentRefcount > 1 ? SW_SHOW : SW_HIDE);
@@ -565,47 +668,8 @@ void CAddEdit_Attachment::ShowPreview()
   m_attType = ATTACHMENT_NOT_IMAGE;
 
   if (!att.HasContent()) {
-    // No content so filename must not be empty
-    if (m_AttFileName.IsEmpty())
-      return;
-
-    int status = att.Import(LPCWSTR(m_AttFileName));
-    if (status != PWScore::SUCCESS) {
-      // most likely file error - TBD better error reporting
-      rc = 1;
-      goto load_error;
-    }
-
-    // Get media type before we find we can't load it
-    m_csMediaType = att.GetMediaType().c_str();
-
-    // Get other properties
-    wchar_t szFileSize[256];
-    StrFormatByteSize(att.GetContentSize(), szFileSize, 256);
-    m_csSize = szFileSize;
-    m_csFileCTime = att.GetFileCTime().c_str();
-    if (m_csFileCTime.IsEmpty())
-      m_csFileCTime.LoadString(IDS_NA);
-    m_csFileMTime = att.GetFileMTime().c_str();
-    if (m_csFileMTime.IsEmpty())
-      m_csFileMTime.LoadString(IDS_NA);
-
-    if (m_csMediaType.Left(5) == L"image") {
-      // Should be an image file - but may not be supported by CImage - try..
-      hr = m_AttImage.Load(m_AttFileName);
-      if (SUCCEEDED(hr)) {
-        hr = m_stImgAttachment.Load(m_AttFileName);
-      } 
-
-      if (SUCCEEDED(hr)) {
-        // Success - was an image
-        m_attType = ATTACHMENT_IS_IMAGE;
-      }
-    }
-
-    // Create UUID if not already present
-    if (!att.HasUUID())
-      att.CreateUUID();
+    ASSERT(0);
+    // Shouldn't ask for preview if no attachment!
   } else {// att.HasContent()
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..

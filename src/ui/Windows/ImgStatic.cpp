@@ -333,12 +333,14 @@ void CImgStatic::FreeStream()
 {
   // Free up stream
   if (m_bImageLoaded) {
-    m_bImageLoaded = false;
     // Free resources
     if (m_pStream != NULL) {
       m_pStream->Release();
       m_pStream = NULL;
     }
+
+    // Now say gone
+    m_bImageLoaded = false;
   }
 }
 

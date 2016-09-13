@@ -54,7 +54,7 @@ protected:
   afx_msg void OnAttImport();
   afx_msg void OnAttExport();
   afx_msg void OnAttRemove();
-  afx_msg void OnAttAttach();
+  afx_msg void OnAttLinkExisting();
   afx_msg void OnListEntries();
   //}}AFX_MSG
 
@@ -72,10 +72,10 @@ private:
   CSecString m_AttFileName;
   CString m_csSize, m_csFileCTime, m_csFileMTime, m_csMediaType;
 
-  CStatic m_stcNoPreview;
   CImage m_AttImage;
   CImgStatic m_stImgAttachment;
   CStatic m_stReferences;
+  CStatic m_stcNoPreview;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

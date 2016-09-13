@@ -165,10 +165,28 @@ bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
   return true;
 }
 
+bool CItemAtt::GetContentDigest(unsigned char digest[SHA1::HASHLEN])
+{
+  auto fiter = m_fields.find(CONTENTSHA1);
+
+  if (!HasContent() || fiter == m_fields.end()) {
+    memcpy((void *)digest, 0, SHA1::HASHLEN);
+    return false;
+  }
+
+  unsigned char block[SHA1::BLOCKSIZE];
+  size_t len = SHA1::BLOCKSIZE;
+  GetField(fiter->second, static_cast<unsigned char *>(block), len);
+  memcpy((void *)digest, (void *)block, SHA1::HASHLEN);
+  return true;
+}
+
 int CItemAtt::Import(const stringT &fname)
 {
   stringT spath, sdrive, sdir, sfname, sextn;
   time_t atime(0), ctime(0), mtime(0);
+  unsigned char digest[SHA1::HASHLEN];
+  SHA1 ctx;
   int status = PWScore::SUCCESS;
 
   ASSERT(!fname.empty());
@@ -197,6 +215,11 @@ int CItemAtt::Import(const stringT &fname)
   }
 
   SetField(CONTENT, data, flen);
+
+  // Calculate file SHA1 digest (don't need slower SHA256 for file itegrity)
+  ctx.Update((const unsigned char *)data, flen);
+  ctx.Final(digest);
+  SetField(CONTENTSHA1, digest, SHA1::HASHLEN);
 
   // derive the file's path and name
   pws_os::splitpath(fname, sdrive, sdir, sfname, sextn);
@@ -292,7 +315,8 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
     if (!SetTimeField(ft, data, len)) return false;
     break;
   case CONTENT:
-    CItem::SetField(type, data, len);
+  case CONTENTSHA1:
+    CItem::SetField(ft, data, len);
     break;
   case ATTIV:
   case ATTEK:
@@ -329,7 +353,8 @@ int CItemAtt::Read(PWSfile *in)
 
   unsigned char *content = NULL;
   size_t content_len = 0;
-  unsigned char expected_digest[SHA256::HASHLEN] = {0};
+  unsigned char expected_digest[SHA256::HASHLEN] = { 0 };
+  unsigned char content_digest[SHA256::HASHLEN] = {0};
 
   unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
@@ -426,6 +451,7 @@ int CItemAtt::Read(PWSfile *in)
   // - Ensure we have all we need
   // - Check HMAC
   // - Set Content field
+  // - Set Content SHA256 if not read in
   // - Clean-up
 
   if (gotContent && gotAK && gotHMAC) {
@@ -443,6 +469,15 @@ int CItemAtt::Read(PWSfile *in)
                sizeof(calculated_digest)) == 0) {
       SetField(CONTENT, content, content_len);
       status = PWSfile::SUCCESS;
+
+      // If not got content SHA1 - calculate it (don't need slower SHA256 for file itegrity)
+      if (!IsFieldSet(CONTENTSHA1)) {
+        unsigned char digest[SHA1::HASHLEN];
+        SHA1 ctx;
+        ctx.Update((const unsigned char *)content, content_len);
+        ctx.Final(digest);
+        SetField(CONTENTSHA1, digest, SHA1::HASHLEN);
+      }
     } else {
       status = PWSfile::BAD_DIGEST;
     }
