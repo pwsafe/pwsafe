@@ -2570,7 +2570,7 @@ CFont *CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLOR
 
 void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTVCUSTOMDRAW *pNMTVCUSTOMDRAW = (NMTVCUSTOMDRAW *)pNotifyStruct;
+  NMTVCUSTOMDRAW *pTVCD = reinterpret_cast<NMTVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
@@ -2578,13 +2578,13 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static CFont *pcurrentfont;
   static CDC *pDC = NULL;
   
-  HTREEITEM hItem = (HTREEITEM)pNMTVCUSTOMDRAW->nmcd.dwItemSpec;
-  CItemData *pci = (CItemData *)pNMTVCUSTOMDRAW->nmcd.lItemlParam;
+  HTREEITEM hItem = (HTREEITEM)pTVCD->nmcd.dwItemSpec;
+  CItemData *pci = (CItemData *)pTVCD->nmcd.lItemlParam;
 
-  switch (pNMTVCUSTOMDRAW->nmcd.dwDrawStage) {
+  switch (pTVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
-      pDC = CDC::FromHandle(pNMTVCUSTOMDRAW->nmcd.hdc);
+      pDC = CDC::FromHandle(pTVCD->nmcd.hdc);
       bchanged_item_font = false;
       pcurrentfont = Fonts::GetInstance()->GetCurrentFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -2599,10 +2599,18 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
           // Set text color only when current node isn't selected
-          if ( (GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) == 0)
-            pNMTVCUSTOMDRAW->clrText = cf;
+          if ((GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) == 0)
+            pTVCD->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
+      }
+      // If selected - keep highlight colours even if doesn't have focus
+      // NOTE: Unlike the CListCtrl, the style "LVS_SHOWSELALWAYS" MUST be specified
+      // so that this colour change happens.  The joys of MFC!
+      if (pTVCD->nmcd.uItemState & CDIS_SELECTED) {
+        pTVCD->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
+        pTVCD->clrTextBk = GetSysColor(COLOR_HIGHLIGHT);
+        *pLResult |= CDRF_NOTIFYPOSTPAINT;
       }
       break;
 
@@ -2610,7 +2618,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMTVCUSTOMDRAW->nmcd.hdc, (HFONT)pcurrentfont);
+        SelectObject(pTVCD->nmcd.hdc, (HFONT)pcurrentfont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

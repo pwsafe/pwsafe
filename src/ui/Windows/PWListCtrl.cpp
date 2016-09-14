@@ -388,7 +388,7 @@ CFont *CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 
 void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNotifyStruct;
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
@@ -402,12 +402,12 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   HDITEM hdi = {0};
   hdi.mask = HDI_LPARAM;
 
-  CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
+  CItemData *pci = (CItemData *)pLVCD->nmcd.lItemlParam;
 
-  switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
+  switch (pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
-      pDC = CDC::FromHandle(pNMLVCUSTOMDRAW->nmcd.hdc);
+      pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
       bchanged_item_font = bchanged_subitem_font = false;
       pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
@@ -417,6 +417,17 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
+      // If selected - keep highlight colours even if doesn't have focus
+      // Unfortunately, with an OwnerDraw CListCtrl you can't use 
+      // "pLVCD->nmcd.uItemState & CDIS_SELECTED" to test if row selected.
+      // Instead must test the item's state:
+      // NOTE: Unlike the CTreeCtrl, do NOT specify the "LVS_SHOWSELALWAYS" style
+      // as Windows will override this change to the display to the standard
+      // light grey.  The joys of MFC!
+      if (GetItemState(pLVCD->nmcd.dwItemSpec, LVIS_SELECTED) == LVIS_SELECTED) {
+        pLVCD->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
+        pLVCD->clrTextBk = GetSysColor(COLOR_HIGHLIGHT);
+      }
       *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       break;
 
@@ -431,7 +442,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       // Sub-item PrePaint
-      GetHeaderCtrl()->GetItem(pNMLVCUSTOMDRAW->iSubItem, &hdi);
+      GetHeaderCtrl()->GetItem(pLVCD->iSubItem, &hdi);
       if (hdi.lParam == CItemData::PASSWORD) {
         // Use Password font
         bchanged_subitem_font = true;
@@ -451,7 +462,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           bchanged_subitem_font = true;
           pDC->SelectObject(uFont);
           if (!bitem_selected)
-            pNMLVCUSTOMDRAW->clrText = cf;
+            pLVCD->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
