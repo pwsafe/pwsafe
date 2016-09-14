@@ -1290,16 +1290,16 @@ void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
   // Modified for MFC, Checkbox and Radio buttons by DK
 
-  LPNMCUSTOMDRAW lpNMCustomDraw = (LPNMCUSTOMDRAW)pNotifyStruct;
+  NMCUSTOMDRAW *pLVCD = (NMCUSTOMDRAW *)pNotifyStruct;
   *pLResult = CDRF_DODEFAULT;
 
-  switch (lpNMCustomDraw->dwDrawStage) {
+  switch (pLVCD->dwDrawStage) {
     case CDDS_PREPAINT:
       BOOL fChecked = GetCheck() & BST_CHECKED;
-      BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
-      BOOL fFocus = lpNMCustomDraw->uItemState & CDIS_FOCUS;
-      DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
-                 &lpNMCustomDraw->rc, fChecked, fHot, fFocus);
+      BOOL fHot = pLVCD->uItemState & CDIS_HOT;
+      BOOL fFocus = pLVCD->uItemState & CDIS_FOCUS;
+      DrawButton(pLVCD->hdr.hwndFrom, pLVCD->hdc,
+                 &pLVCD->rc, fChecked, fHot, fFocus);
   }
 }
 
