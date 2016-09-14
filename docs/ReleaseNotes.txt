@@ -33,7 +33,7 @@ the user action: "Browse to URL + Autotype".
 [1314] Selected entries in both the Tree and List views now retain their
 highlight when the Find toolbar is opened and even when Password Safe looses
 focus to another application.
-[1313] Find toolbar no longer closes when it shouldn't. In addition,
+[1313, 1318] Find toolbar no longer closes when it shouldn't. In addition,
 results are updated when entries are added/deleted.
 
 Changes to Existing Features in 3.40pre
