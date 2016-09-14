@@ -1500,6 +1500,7 @@ bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePasskey(const StringX &newPasskey)
 {
   SetPassKey(newPasskey);
+  WriteCurFile(); // Save immediately!
 }
 
 // functor object type for find_if:
