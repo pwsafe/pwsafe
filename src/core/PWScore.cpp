@@ -3782,6 +3782,11 @@ bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup) const
 
 bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
 {
+  // Don't add root - can happen when deleting last entry in root
+  // Put check here too just incase caused elsewhere
+  if (sxEmptyGroup.empty())
+    return false;
+
   if (find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) ==
            m_vEmptyGroups.end()) {
     // Add it
