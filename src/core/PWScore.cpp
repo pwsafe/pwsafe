@@ -706,7 +706,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // Only include Named Policies in map that are being used by exported entries
   PSWDPolicyMap ExportMapPSWDPLC;
   PSWDPolicyMapCIter iter;
-  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+  for (iter = pINcore->m_MapPSWDPLC.begin(); iter != pINcore->m_MapPSWDPLC.end(); iter++) {
     if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
       ExportMapPSWDPLC[iter->first] = iter->second;
     }
