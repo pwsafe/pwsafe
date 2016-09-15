@@ -993,8 +993,12 @@ void DboxMain::Delete(MultiCommands *pmcmd)
 
     // Check if last entry in group and if so - add group to empty groups
     if (bLastEntry) {
-      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
-                 DBEmptyGroupsCommand::EG_ADD));
+      StringX sxGroup = pci->GetGroup();
+      if (sxGroup.find(L".") != StringX::npos) {
+        // Only add parent if not root
+        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
+          DBEmptyGroupsCommand::EG_ADD));
+      }
     }
   } else
   if (m_ctlItemTree.IsWindowVisible()) {
