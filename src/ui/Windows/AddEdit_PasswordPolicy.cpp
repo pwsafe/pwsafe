@@ -775,10 +775,10 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
       M_pwp().symbolminlength = (int)m_pwsymbolminlength;
       M_pwp().upperminlength = (int)m_pwupperminlength;
 
-      if (m_pwusesymbols == TRUE) {
+      CString cs_symbols;
+      m_symbols.GetWindowText(cs_symbols);
+      if (m_pwusesymbols == TRUE && !cs_symbols.IsEmpty()) {
         M_iownsymbols() = OWN_SYMBOLS;
-        CString cs_symbols;
-        m_symbols.GetWindowText(cs_symbols);
         M_symbols() = CSecString(cs_symbols);
       } else {
         M_iownsymbols() = DEFAULT_SYMBOLS;
