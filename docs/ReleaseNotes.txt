@@ -23,6 +23,7 @@ List view.
 Edit/Undo/Redo even if the change alters its position within the view.
 [1360] When an entry/group using a Named Password Policy is exported to a
 PasswordSafe database, the referenced policy is now also exported.
+[1355] Fixed tabbing order in Basic AddEdit tab.
 [1352] Fixed regression in recent entry processing.
 [1347] Prevent a user from trying to copy a filter to a read-only database.
 [1346] The Notes window no longer scrolls when re-activated after losing focus. 
