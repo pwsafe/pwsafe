@@ -416,18 +416,6 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       break;
 
     case CDDS_ITEMPREPAINT:
-      // Item PrePaint
-      // If selected - keep highlight colours even if doesn't have focus
-      // Unfortunately, with an OwnerDraw CListCtrl you can't use 
-      // "pLVCD->nmcd.uItemState & CDIS_SELECTED" to test if row selected.
-      // Instead must test the item's state:
-      // NOTE: Unlike the CTreeCtrl, do NOT specify the "LVS_SHOWSELALWAYS" style
-      // as Windows will override this change to the display to the standard
-      // light grey.  The joys of MFC!
-      if (GetItemState(pLVCD->nmcd.dwItemSpec, LVIS_SELECTED) == LVIS_SELECTED) {
-        pLVCD->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
-        pLVCD->clrTextBk = GetSysColor(COLOR_HIGHLIGHT);
-      }
       *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       break;
 

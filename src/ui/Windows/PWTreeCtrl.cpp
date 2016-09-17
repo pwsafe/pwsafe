@@ -2604,14 +2604,6 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
-      // If selected - keep highlight colours even if doesn't have focus
-      // NOTE: Unlike the CListCtrl, the style "LVS_SHOWSELALWAYS" MUST be specified
-      // so that this colour change happens.  The joys of MFC!
-      if (pTVCD->nmcd.uItemState & CDIS_SELECTED) {
-        pTVCD->clrText = GetSysColor(COLOR_HIGHLIGHTTEXT);
-        pTVCD->clrTextBk = GetSysColor(COLOR_HIGHLIGHT);
-        *pLResult |= CDRF_NOTIFYPOSTPAINT;
-      }
       break;
 
     case CDDS_ITEMPOSTPAINT:
