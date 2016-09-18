@@ -189,6 +189,11 @@ BOOL COptionsSystem::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
   }
 
+  if (!bofferdeleteregistry) {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+  }
+
   if (!boffermigrate2appdata) {
     m_Help2.EnableWindow(FALSE);
     m_Help2.ShowWindow(SW_HIDE);
