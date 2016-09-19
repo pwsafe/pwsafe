@@ -1583,7 +1583,11 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 
             // Add it in its new location
             CSecString sxPath, DropPrefix;
-            DropPrefix = GetPrefix(hitemDrop);
+            if (IsLeaf(hitemDrop))
+              DropPrefix = GetPrefix(hitemDrop);
+            else
+              DropPrefix = CSecString(GetGroup(hitemDrop));
+
             if (DropPrefix.IsEmpty())
               sxPath = CSecString(GetItemText(m_hitemDrag));
             else
