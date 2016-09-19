@@ -994,9 +994,9 @@ void DboxMain::Delete(MultiCommands *pmcmd)
     // Check if last entry in group and if so - add group to empty groups
     if (bLastEntry) {
       StringX sxGroup = pci->GetGroup();
-      if (sxGroup.find(L".") != StringX::npos) {
-        // Only add parent if not root
-        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
+      if (!sxGroup.empty()) {
+        // Only add group if not root
+        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
           DBEmptyGroupsCommand::EG_ADD));
       }
     }
