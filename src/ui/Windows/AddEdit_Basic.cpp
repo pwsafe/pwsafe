@@ -896,7 +896,7 @@ void CAddEdit_Basic::OnENChangeNotes()
   // Called for any change - even just clicking on it - so check really changed
   CSecString current_notes;
   m_ex_notes.GetWindowText(current_notes);
-  if (current_notes == M_realnotes())
+  if (current_notes == M_realnotes()  || current_notes == HIDDEN_NOTES)
     return;
 
   m_ae_psh->SetChanged(true);
