@@ -1415,13 +1415,13 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   // TreeView only - use DoubleClick to Expand/Collapse group
   // Skip double clicks near items that not selected (for example, clicks on hierarchy lines)
   if (m_ctlItemTree.IsWindowVisible()) {
-    POINT pt;
-    if(!GetCursorPos(&pt))
-      return;
+    TVHITTESTINFO htinfo = { 0 };
+    CPoint local = ::GetMessagePos();
+    m_ctlItemTree.ScreenToClient(&local);
+    htinfo.pt = local;
+    m_ctlItemTree.HitTest(&htinfo);
 
-    m_ctlItemTree.ScreenToClient(&pt);
-    HTREEITEM hItem = m_ctlItemTree.HitTest(pt);
-    
+    HTREEITEM hItem = htinfo.hItem;
     HTREEITEM hItemSel = m_ctlItemTree.GetSelectedItem();
     
     if (hItem != hItemSel) //Clicked near item, that is different from current
