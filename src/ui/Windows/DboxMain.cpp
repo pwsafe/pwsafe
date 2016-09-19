@@ -1513,6 +1513,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
   CItemData *pci = getSelectedItem();
   if (pci != NULL) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
     StringX sx_pswd;
     if (pci->IsDependent()) {
       CItemData *pbci = GetBaseEntry(pci);
@@ -1538,18 +1539,22 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
                                                           vactionverboffsets);
       LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
 
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+      if (prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
         SetClipboardData(sx_pswd);
         UpdateLastClipboardAction(CItemData::PASSWORD);
       }
 
       if (bDoAutotype)
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
+        if (prefs->GetPref(PWSprefs::MinimizeOnAutotype)) {
           // Need to save display status for when we return from minimize
           m_vGroupDisplayState = GetGroupDisplayState();
           ShowWindow(SW_MINIMIZE);
         } else {
-          ShowWindow(SW_HIDE);
+          // Don't hide unless shown in System Tray!
+          if (prefs->GetPref(PWSprefs::UseSystemTray))
+            ShowWindow(SW_HIDE);
+          else
+            ShowWindow(SW_MINIMIZE);
         }
 
       UpdateAccessTime(uuid);
