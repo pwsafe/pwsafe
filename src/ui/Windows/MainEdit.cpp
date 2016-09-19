@@ -268,16 +268,16 @@ void DboxMain::OnCreateShortcut()
   }
 }
 
-void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
-                                   const StringX &cs_title, const StringX &cs_user,
+void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
+                                   const StringX &sx_title, const StringX &sx_user,
                                    StringX &sxNewDBPrefsString)
 {
   ASSERT(pci != NULL);
 
   CItemData ci_temp;
-  ci_temp.SetGroup(cs_group);
-  ci_temp.SetTitle(cs_title);
-  ci_temp.SetUser(cs_user);
+  ci_temp.SetGroup(sx_group);
+  ci_temp.SetTitle(sx_title);
+  ci_temp.SetUser(sx_user);
   ci_temp.SetPassword(L"[Shortcut]");
   ci_temp.SetShortcut();
   ci_temp.CreateUUID(); // call after setting to shortcut!
@@ -296,6 +296,12 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     pmulticmds->Add(pcmd_undo);
 
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+    pmulticmds->Add(pcmd);
+  }
+
+  if (IsEmptyGroup(sx_group)) {
+    Command *pcmd = DBEmptyGroupsCommand::Create(&m_core, sx_group,
+                                                 DBEmptyGroupsCommand::EG_DELETE);
     pmulticmds->Add(pcmd);
   }
 
