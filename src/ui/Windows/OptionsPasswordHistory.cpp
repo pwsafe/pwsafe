@@ -93,6 +93,8 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(FALSE);
     GetDlgItem(IDC_SAVEPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
 
     GetDlgItem(IDC_STATIC_MANAGEPWH)->EnableWindow(FALSE);
     GetDlgItem(IDC_PWHISTORYNOACTION)->EnableWindow(FALSE);
@@ -102,6 +104,10 @@ BOOL COptionsPasswordHistory::OnInitDialog()
     GetDlgItem(IDC_CLEARPWHISTORY)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
     GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
+  } else {
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_SavePWHistory);
+    GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_SavePWHistory);
+    GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(m_SavePWHistory);
   }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
@@ -110,10 +116,6 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   pspin->SetRange(1, 255);
   pspin->SetBase(10);
   pspin->SetPos(m_PWHistoryNumDefault);
-
-  GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_SavePWHistory);
-  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_SavePWHistory);
-  GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(m_SavePWHistory);
 
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);

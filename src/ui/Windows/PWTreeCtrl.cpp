@@ -1222,7 +1222,11 @@ bool CPWTreeCtrl::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     if (CountChildren(hitemDrag) == 0) {
       // Yes - add new empty group in the right place
       CSecString sxPath, DropPrefix;
-      DropPrefix = GetPrefix(hitemDrop);
+      if (IsLeaf(hitemDrop))
+        DropPrefix = GetPrefix(hitemDrop);
+      else
+        DropPrefix = CSecString(GetGroup(hitemDrop));
+
       if (DropPrefix.IsEmpty())
         sxPath = CSecString(GetItemText(hitemDrag));
       else
@@ -1545,6 +1549,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
           UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
 
         StringX sxDropGroup(L"");
+        bool bEmptyGroup(false);
+
         switch (dropEffect) {
         case DROPEFFECT_MOVE:
           // If item was last entry in the parent group, be it a leaf or a node,
@@ -1560,11 +1566,39 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
             ASSERT(pci != NULL);
             sxDropGroup = pci->GetGroup();
           } else {
-            sxDropGroup = GetGroup(m_hitemDrop);
+            sxDropGroup = GetGroup(m_hitemDrag);
+            if (app.GetCore()->IsEmptyGroup(sxDropGroup)) {
+              bEmptyGroup = true;
+            }
           }
 
-          // Move tree item (entry or group)
-          MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxDropGroup);
+          if (bEmptyGroup) {
+            // Move empty group
+            // If it is, then the user has selected the last entry (groups
+            // before it are, by definition, not empty)
+
+            // Delete it from list of empty groups
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxDropGroup,
+              DBEmptyGroupsCommand::EG_DELETE));
+
+            // Add it in its new location
+            CSecString sxPath, DropPrefix;
+            if (IsLeaf(hitemDrop))
+              DropPrefix = GetPrefix(hitemDrop);
+            else
+              DropPrefix = CSecString(GetGroup(hitemDrop));
+
+            if (DropPrefix.IsEmpty())
+              sxPath = CSecString(GetItemText(m_hitemDrag));
+            else
+              sxPath = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(m_hitemDrag));
+
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          } else {
+            // Move tree item (entry or non-empty group)
+            MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxDropGroup);
+          }
           break;
         case DROPEFFECT_COPY:
           CopyItem(pmulticmds, m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));

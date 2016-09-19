@@ -198,6 +198,12 @@ void CAddEdit_PropertySheet::SetSymbolsChanged(bool bSymbolsChanged)
 
 void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
 {
+  // Can't be modified if protected
+  if (m_AEMD.ucprotected != 0 && bChanged) {
+    ASSERT(0);
+    return;
+  }
+
   if (m_bChanged != bChanged) {
     if (m_AEMD.uicaller == IDS_EDITENTRY)
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);

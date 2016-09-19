@@ -58,14 +58,14 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsSecurity)
-  DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
-  DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-  DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
-  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
   DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
-  DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
+  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
+  DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+  DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
+  DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
+  DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
 
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
@@ -82,8 +82,9 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
-
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
+  ON_EN_KILLFOCUS(IDC_IDLE_TIMEOUT, OnKillFocusIdleTime)
+
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -256,17 +257,18 @@ BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
   return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
-BOOL COptionsSecurity::OnKillActive()
+void COptionsSecurity::OnKillFocusIdleTime()
 {
-  CGeneralMsgBox gmb;
+  CString csText;
+  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  m_IdleTimeOut = _wtoi(csText);
+
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
     ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
-    return FALSE;
   }
-
-  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsSecurity::OnHelp()

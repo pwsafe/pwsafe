@@ -1415,13 +1415,13 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   // TreeView only - use DoubleClick to Expand/Collapse group
   // Skip double clicks near items that not selected (for example, clicks on hierarchy lines)
   if (m_ctlItemTree.IsWindowVisible()) {
-    POINT pt;
-    if(!GetCursorPos(&pt))
-      return;
+    TVHITTESTINFO htinfo = { 0 };
+    CPoint local = ::GetMessagePos();
+    m_ctlItemTree.ScreenToClient(&local);
+    htinfo.pt = local;
+    m_ctlItemTree.HitTest(&htinfo);
 
-    m_ctlItemTree.ScreenToClient(&pt);
-    HTREEITEM hItem = m_ctlItemTree.HitTest(pt);
-    
+    HTREEITEM hItem = htinfo.hItem;
     HTREEITEM hItemSel = m_ctlItemTree.GetSelectedItem();
     
     if (hItem != hItemSel) //Clicked near item, that is different from current
@@ -1513,6 +1513,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
   CItemData *pci = getSelectedItem();
   if (pci != NULL) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
     StringX sx_pswd;
     if (pci->IsDependent()) {
       CItemData *pbci = GetBaseEntry(pci);
@@ -1538,18 +1539,22 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
                                                           vactionverboffsets);
       LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
 
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+      if (prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
         SetClipboardData(sx_pswd);
         UpdateLastClipboardAction(CItemData::PASSWORD);
       }
 
       if (bDoAutotype)
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
+        if (prefs->GetPref(PWSprefs::MinimizeOnAutotype)) {
           // Need to save display status for when we return from minimize
           m_vGroupDisplayState = GetGroupDisplayState();
           ShowWindow(SW_MINIMIZE);
         } else {
-          ShowWindow(SW_HIDE);
+          // Don't hide unless shown in System Tray!
+          if (prefs->GetPref(PWSprefs::UseSystemTray))
+            ShowWindow(SW_HIDE);
+          else
+            ShowWindow(SW_MINIMIZE);
         }
 
       UpdateAccessTime(uuid);
