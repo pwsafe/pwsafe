@@ -3434,12 +3434,21 @@ void DboxMain::OnRefreshWindow()
   // Save selected/highlighted entry
   GetSelectedItems(entry_uuid, sxGroupPath);
 
+  // Stop Find Toolbar during refresh
+  BOOL bFindVisible = m_FindToolBar.IsWindowVisible();
+  if (bFindVisible)
+    OnHideFindToolBar();
+
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
   RefreshViews();
 
   // Try and put selection back - positions in lists may have changed
   ReSelectItems(entry_uuid, sxGroupPath);
+
+  // Put Find Toolbar back if originally present
+  if (bFindVisible)
+    OnShowFindToolbar();
 }
 
 void DboxMain::OnCustomizeToolbar()
