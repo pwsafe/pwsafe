@@ -353,8 +353,12 @@ public:
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
-  void GetSelectedItems(pws_os::CUUID &entry_uuid, StringX &sxGroupPath);
-  void ReSelectItems(pws_os::CUUID entry_uuid, StringX sxGroupPath);
+  void GetSelectedItems(pws_os::CUUID &entry_uuid,
+                        pws_os::CUUID &tree_find_entry_uuid, pws_os::CUUID &list_find_entry_uuid,
+                        StringX &sxGroupPath);
+  void ReSelectItems(pws_os::CUUID entry_uuid,
+                     pws_os::CUUID &tree_find_entry_uuid, pws_os::CUUID &list_find_entry_uuid,
+                     StringX sxGroupPath);
   void UpdateGUIDisplay();
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
                              PWScore *pothercore, CReport *prpt);

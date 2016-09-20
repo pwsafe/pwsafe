@@ -1767,8 +1767,21 @@ CItemData *DboxMain::getSelectedItem()
   return pci;
 }
 
-void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid, StringX &sxGroupPath)
+void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid,
+                                pws_os::CUUID &tree_find_entry_uuid, pws_os::CUUID &list_find_entry_uuid,
+                                StringX &sxGroupPath)
 {
+  // Find last found entries (no groups)
+  if (m_LastFoundTreeItem != NULL) {
+    CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
+    tree_find_entry_uuid = pci->GetUUID();
+  }
+
+  if (m_LastFoundListItem != -1) {
+    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
+    list_find_entry_uuid = pci->GetUUID();
+  }
+
   if (m_ctlItemTree.IsWindowVisible()) {
     // Tree view visible
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
@@ -1795,7 +1808,9 @@ void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid, StringX &sxGroupPath)
   }
 }
 
-void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid, StringX sxGroupPath)
+void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
+                             pws_os::CUUID &tree_find_entry_uuid, pws_os::CUUID &list_find_entry_uuid,
+                             StringX sxGroupPath)
 {
   // Find the entries
   HTREEITEM hItem(NULL);
@@ -1819,6 +1834,25 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid, StringX sxGroupPath)
     m_ctlItemList.SetItemState(item,
                                     LVIS_FOCUSED | LVIS_SELECTED,
                                     LVIS_FOCUSED | LVIS_SELECTED);
+  }
+
+  // Reset last found entries (no groups)
+  if (tree_find_entry_uuid != pws_os::CUUID::NullUUID()) {
+    ItemListIter iter = Find(tree_find_entry_uuid);
+    if (iter != m_core.GetEntryEndIter()) {
+      CItemData &ci = GetEntryAt(iter);
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      m_LastFoundTreeItem = pdi->tree_item;
+    }
+  }
+
+  if (list_find_entry_uuid != pws_os::CUUID::NullUUID()) {
+    ItemListIter iter = Find(list_find_entry_uuid);
+    if (iter != m_core.GetEntryEndIter()) {
+      CItemData &ci = GetEntryAt(iter);
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      m_LastFoundListItem = pdi->list_index;
+    }
   }
 }
 void DboxMain::ClearData(const bool bClearMRE)
@@ -3429,17 +3463,28 @@ void DboxMain::OnRefreshWindow()
   PWS_LOGIT;
 
   pws_os::CUUID entry_uuid(pws_os::CUUID::NullUUID());
+  pws_os::CUUID tree_find_entry_uuid(pws_os::CUUID::NullUUID());
+  pws_os::CUUID list_find_entry_uuid(pws_os::CUUID::NullUUID());
   StringX sxGroupPath;
-  
+ 
   // Save selected/highlighted entry
-  GetSelectedItems(entry_uuid, sxGroupPath);
+  GetSelectedItems(entry_uuid, tree_find_entry_uuid, list_find_entry_uuid, sxGroupPath);
+
+  // Stop Find Toolbar during refresh
+  BOOL bFindVisible = m_FindToolBar.IsWindowVisible();
+  if (bFindVisible)
+    OnHideFindToolBar();
 
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
   RefreshViews();
 
   // Try and put selection back - positions in lists may have changed
-  ReSelectItems(entry_uuid, sxGroupPath);
+  ReSelectItems(entry_uuid, tree_find_entry_uuid, list_find_entry_uuid, sxGroupPath);
+
+  // Put Find Toolbar back if originally present
+  if (bFindVisible)
+    OnShowFindToolbar();
 }
 
 void DboxMain::OnCustomizeToolbar()
