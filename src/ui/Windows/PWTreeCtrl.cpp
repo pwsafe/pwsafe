@@ -2017,7 +2017,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     unsigned char *buffer = new unsigned char[len];
     outDDmemfile.SeekToBegin();
     outDDmemfile.Read(buffer, len);
-    pws_os::HexDump(buffer, len, L"", 32);
+    //pws_os::HexDump(buffer, len, L"", 32);
     delete[] buffer;
   }
 
