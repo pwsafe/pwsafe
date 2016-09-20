@@ -59,7 +59,7 @@ New Features for 3.40
 [] Empty sub-groups are included when exporting a group to a new PasswordSafe
 database.
 [] Adding an empty group will also cause the database to be saved if the user has
-selected the option "Save immediately on Add or Edit".
+selected the option "Save database immediately after any change".
 [811] The user's selected Notes font is now used for Tooltips in the Tree and List
 views if the Display preference 'Show Notes as Tooltips in Tree & List views' is
 set.
