@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-09-20 11:43+0200\n"
+"PO-Revision-Date: 2016-09-20 17:52+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1572,7 +1572,7 @@ msgstr "Alt+"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr "Alternativ Browser"
+msgstr "Alternativ webbläsare"
 
 #. Resource IDs: (65535)
 msgid "Alternate Notes Text Editor"
@@ -2636,7 +2636,7 @@ msgstr "Databas"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr "Databasposters genvägar"
+msgstr "Databasens postgenvägar"
 
 #. Resource IDs: (5758)
 msgid "Database Format"
@@ -5510,7 +5510,7 @@ msgstr "Bearbetad post:"
 
 #. Resource IDs: (65535)
 msgid "Program Shortcuts"
-msgstr "Programs genvägar"
+msgstr "Programgenvägar"
 
 #. Resource IDs: (5058)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -5723,7 +5723,7 @@ msgstr "Återställ"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr "Återställ alla programs genvägar"
+msgstr "Återställ alla programgenvägar"
 
 #. Resource IDs: (32215 - Menu)
 msgid "Reset Column Width"
@@ -6105,7 +6105,7 @@ msgstr "Ange Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Välj ett antal ovan för ett maximalt antal lösenord som sparas"
+msgstr "Välj ett antal ovan för ett maximalt antal lösenord att spara"
 
 #. Resource IDs: (8240)
 msgid "Setswana"
@@ -6369,7 +6369,7 @@ msgstr "Börja spara lösenordshistorik för alla poster upp till antalet poster
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
-msgstr "Börja spara tidigare lösenord"
+msgstr "Börja spara lösenordshistorik"
 
 #. Resource IDs: (1264, 1370, 1408, 1410, 1416, 1423, 1424, 1428, 1464, 1521, 8103)
 msgid "Static"
