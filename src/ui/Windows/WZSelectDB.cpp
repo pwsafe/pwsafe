@@ -45,7 +45,7 @@ IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
        const int nType)
  : CWZPropertyPage(idd, nIDCaption, nType), m_tries(0), m_state(0),
-  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
+  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
   m_bFileExistsUserAsked(false),
   m_filespec(L""), m_passkey(L""), m_passkey2(L""), m_verify2(L""),
   m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
@@ -91,6 +91,7 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
+  DDX_Check(pDX, IDC_EXPORTFILTERS, m_bExportDBFilters);
 
   // Can't use DDX_Text for CSecEditExtn
   m_pctlPasskey->DoDDX(pDX, m_passkey);
@@ -163,6 +164,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
 
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
+  ON_BN_CLICKED(IDC_EXPORTFILTERS, OnExportFilters)
 
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   //}}AFX_MSG_MAP
@@ -262,6 +264,11 @@ BOOL CWZSelectDB::OnInitDialog()
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
   std::wstring str_extn(L"");
+
+  // Hide/disable export filters by default
+  GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(SW_HIDE);
+  GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(FALSE);
+
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
@@ -274,6 +281,12 @@ BOOL CWZSelectDB::OnInitDialog()
       GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
+
+      // Potentially allow user to export DB filters
+      bool bEnableExportFilters = (nID == ID_MENUITEM_EXPORTGRP2DB) &&
+                                   app.GetMainDlg()->GetCore()->GetDBFilters().size() > 0;
+      GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(bEnableExportFilters ? SW_SHOW : SW_HIDE);
+      GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(bEnableExportFilters ? TRUE : FALSE);
 
       std::wstring drive, dir, file, ext;
       pws_os::splitpath(m_pWZPSH->WZPSHGetCurFile().c_str(), drive, dir, file, ext);
@@ -448,6 +461,11 @@ void CWZSelectDB::OnAdvanced()
                                         IDS_WZNEXT));
 
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
+}
+
+void CWZSelectDB::OnExportFilters()
+{
+  m_bExportDBFilters = ((CButton*)GetDlgItem(IDC_EXPORTFILTERS))->GetCheck();
 }
 
 void CWZSelectDB::OnPassKeyChange()
@@ -655,6 +673,7 @@ LRESULT CWZSelectDB::OnWizardNext()
   m_pWZPSH->SetOtherDB(sx_Filename2);
   m_pWZPSH->SetDelimiter(m_defexpdelim.GetAt(0));
   m_pWZPSH->SetAdvanced(m_bAdvanced == BST_CHECKED);
+  m_pWZPSH->SetExportDBFilters(m_bExportDBFilters == BST_CHECKED);
 
   return m_bAdvanced == BST_CHECKED ? 0 : IDD_WZFINISH;
 }

@@ -24,8 +24,9 @@ class CReport;
 struct WZExecuteThreadParms {
   WZExecuteThreadParms()
   : status(0), nID(0), pWZPSH(NULL), pWZFinish(NULL), pcore(NULL),
-  prpt(NULL), sx_Filename(L""), sx_exportpasskey(L""), bAdvanced(false), csResults(L""),
-  numProcessed(0), bCancel(false)
+  prpt(NULL), sx_Filename(L""), sx_exportpasskey(L""), 
+  bAdvanced(false), bExportDBFilters(false),
+  csResults(L""), numProcessed(0), bCancel(false)
   {}
 
   WZExecuteThreadParms(const WZExecuteThreadParms &thpms)
@@ -33,7 +34,8 @@ struct WZExecuteThreadParms {
     pWZFinish(thpms.pWZFinish), pcore(thpms.pcore), prpt(thpms.prpt),
     sx_Filename(thpms.sx_Filename), sx_exportpasskey(thpms.sx_exportpasskey),
     csResults(thpms.csResults),
-    bAdvanced(thpms.bAdvanced), numProcessed(thpms.numProcessed),
+    bAdvanced(thpms.bAdvanced), bExportDBFilters(thpms.bExportDBFilters),
+    numProcessed(thpms.numProcessed),
     bCancel(thpms.bCancel)
   {
   }
@@ -51,6 +53,7 @@ struct WZExecuteThreadParms {
       sx_exportpasskey = thpms.sx_exportpasskey;
       csResults = thpms.csResults;
       bAdvanced = thpms.bAdvanced;
+      bExportDBFilters = thpms.bExportDBFilters;
       numProcessed = thpms.numProcessed;
       bCancel = thpms.bCancel;
     }
@@ -67,6 +70,6 @@ struct WZExecuteThreadParms {
   CReport *prpt;
 
   std::wstring csResults;
-  bool bAdvanced, bCancel;
+  bool bAdvanced, bExportDBFilters, bCancel;
   int numProcessed;
 };

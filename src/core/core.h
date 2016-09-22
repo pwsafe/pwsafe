@@ -284,6 +284,7 @@
 #define IDSC_EMPTYGROUP                 3457
 #define IDSC_EMPTYGROUPS                3458
 #define IDSC_IMPORTEDEMPTYGROUPS        3459
+#define IDSC_FILTERSEXPORTEDTODB        3460
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -310,7 +311,6 @@
 #define IDSC_STATBROWSEPLUS             4030
 #define IDSC_STATRUN                    4031
 #define IDSC_STATSENDEMAIL              4032
-
 
 // Named Policy stuff
 #define IDSC_PUSELOWER                  4100

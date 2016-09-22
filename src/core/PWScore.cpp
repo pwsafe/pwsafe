@@ -664,7 +664,8 @@ private:
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                              PWScore *pINcore, PWSfile::VERSION version, 
-                             std::vector<StringX> &vEmptyGroups, CReport *pRpt)
+                             std::vector<StringX> &vEmptyGroups,
+                             bool bExportDBFilters, CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version
@@ -711,8 +712,19 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
       ExportMapPSWDPLC[iter->first] = iter->second;
     }
   }
+
   out->SetPasswordPolicies(ExportMapPSWDPLC); // Now give it the password policies to write out
 
+  if (bExportDBFilters) {
+    out->SetDBFilters(pINcore->m_MapDBFilters);
+    if (pRpt != NULL) {
+      StringX sx_exportedfilters;
+      LoadAString(sx_exportedfilters, IDSC_FILTERSEXPORTEDTODB);
+      pRpt->WriteLine(sx_exportedfilters.c_str(), true);
+      pRpt->WriteLine();
+    }
+  }
+  
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
 
