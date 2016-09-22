@@ -1188,11 +1188,16 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     // If original group was empty, need to update the vector of empty groups
     CSecString sOldGroup(GetGroup(hitemDrag));
     if (app.GetMainDlg()->IsEmptyGroup(sOldGroup)) {
-      CSecString sNewGroup;
-      if (sPrefix.IsEmpty())
-        sNewGroup = CSecString(GetItemText(hitemDrag));
+      CSecString sNewGroup, DropPrefix;
+      if (IsLeaf(hitemDrop))
+        DropPrefix = GetPrefix(hitemDrop);
       else
-        sNewGroup = sPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
+        DropPrefix = CSecString(GetGroup(hitemDrop));
+
+      if (DropPrefix.IsEmpty())
+        sNewGroup = CSecString(GetItemText(m_hitemDrag));
+      else
+        sNewGroup = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
 
       pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
         sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
