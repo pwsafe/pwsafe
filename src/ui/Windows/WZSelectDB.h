@@ -33,7 +33,7 @@ protected:
   CStaticExtn m_stc_warning;
   CString m_filespec;
   int m_tries, m_state;
-  int m_bAdvanced;
+  int m_bAdvanced, m_bExportDBFilters;
   CButtonBitmapExtn m_ctlSDToggle;
 
   BOOL OnInitDialog();
@@ -52,6 +52,7 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
+  afx_msg void OnExportFilters();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskey2Setfocus();
   afx_msg void OnVerify2keySetfocus();

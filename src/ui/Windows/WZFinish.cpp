@@ -144,7 +144,8 @@ static UINT WZExecuteThread(LPVOID pParam)
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
       status = pthdpms->pWZPSH->WZPSHDoExportDB(pthdpms->sx_Filename,
-                   pthdpms->nID, pthdpms->sx_exportpasskey,
+                   pthdpms->nID, pthdpms->bExportDBFilters,
+                   pthdpms->sx_exportpasskey,
                    pthdpms->numProcessed, pthdpms->prpt);
       break;
     default:
@@ -299,6 +300,7 @@ int CWZFinish::ExecuteAction()
       m_prpt = new CReport;
 
     const bool bAdvanced = m_pWZPSH->GetAdvanced();
+    const bool bExportDBFilters = m_pWZPSH->GetExportDBFilters();
 
     m_thdpms.pWZFinish = this;
     m_thdpms.nID = nID;
@@ -308,6 +310,7 @@ int CWZFinish::ExecuteAction()
     m_thdpms.sx_Filename = sx_Filename2;
     m_thdpms.sx_exportpasskey = m_pWZPSH->GetExportPassKey();
     m_thdpms.bAdvanced = bAdvanced;
+    m_thdpms.bExportDBFilters = bExportDBFilters;
 
     m_pExecuteThread = AfxBeginThread(WZExecuteThread, &m_thdpms,
                                 THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);

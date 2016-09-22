@@ -11,7 +11,7 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.40.1
 ====================
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
-[1363] Empty groups nolonger disappear when moving nested groups into them and
+[1363] Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.
 
 Changes to Existing Features in 3.40.1
@@ -20,7 +20,8 @@ None
 
 New Features for 3.40.1
 =======================
-None
+[813] When exporting a group to a new database, there is now an option to also
+export all filters stored in the database to the new database.
 
 Bugs fixed in 3.40
 ==================

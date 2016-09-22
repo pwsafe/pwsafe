@@ -1626,7 +1626,8 @@ void DboxMain::OnExportGroupDB()
 }
 
 int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
-                         const StringX &sx_ExportKey, int &numExported, CReport *prpt)
+                         const bool bExportDBFilters, const StringX &sx_ExportKey,
+                         int &numExported, CReport *prpt)
 {
   INT_PTR rc;
   PWScore export_core;
@@ -1690,7 +1691,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
   rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), 
-                                   vEmptyGroups, prpt);
+                                   vEmptyGroups, bExportDBFilters, prpt);
 
   OIL.clear();
   export_core.ClearData();
