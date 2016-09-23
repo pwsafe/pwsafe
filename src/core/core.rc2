@@ -377,7 +377,7 @@ BEGIN
   IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%ls' is not in the database."
   IDSC_MISSINGPOLICYNAMES  "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
   IDSC_RENAMEDPOLICYNAMES  "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-  IDSC_IMPORTPOLICY        "%ls  - Imported %ls"
+  IDSC_IMPORTPOLICY        "%ls - Imported %ls"
   IDSC_MERGEPOLICY         "%ls - Merged %ls"
   IDSC_SYNCPOLICY          "%ls - Sync'd %ls"
   IDSC_COPYPOLICY          "%ls - Copied %ls"
@@ -385,7 +385,8 @@ BEGIN
   IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
   IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
   IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
-  IDSC_IMPORTEDEMPTYGROUPS  "including %d empty group(s)."
+  IDSC_IMPORTEDEMPTYGROUPS "including %d empty group(s)."
+  IDSC_FILTERSEXPORTEDTODB "Current database filters have been exported to this database."
 END
 
 STRINGTABLE

@@ -143,7 +143,8 @@ public:
                 bool bUpdateSig = true);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
-                      std::vector<StringX> &vEmptyGroups, CReport *pRpt = NULL);
+                      std::vector<StringX> &vEmptyGroups, 
+                      bool bExportDBFilters, CReport *pRpt = NULL);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)

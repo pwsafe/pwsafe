@@ -339,6 +339,7 @@ public:
                   int &numExported, CReport *prpt);
 
   int DoExportDB(const StringX &sx_Filename, const UINT nID,
+                 const bool bExportDBFilters,
                  const StringX &sx_ExportKey, int &numExported, CReport *prpt);
 
   int TestSelection(const bool bAdvanced,
