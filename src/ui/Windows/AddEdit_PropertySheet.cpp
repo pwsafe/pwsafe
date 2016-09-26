@@ -348,14 +348,71 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
           m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
 
-          // TODO - What if user has removed the old attachment or changed it? (Rony)
+          // Attachments
+          /*
+            Actions:
+              1. Original entry didn't have an attachment - add new imported attachment
+              2. Original entry didn't have an attachment - add existing attachment
+              3. Original entry had an attachment but now has a different one - delete old, add new
+              4. No change to attachments - do nothing (not explicity coded)
+              5. Original entry had an attachment and now doesn't - delete old
+          */
+          const pws_os::CUUID olduuid = m_AEMD.oldattachment.HasUUID() ? 
+                                            m_AEMD.oldattachment.GetUUID() : CUUID::NullUUID();
+          const pws_os::CUUID newuuid = m_AEMD.attachment.HasUUID() ?
+                                            m_AEMD.attachment.GetUUID() : CUUID::NullUUID();
           if (m_AEMD.attachment.HasUUID()) {
-            m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
-            m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+            if (olduuid == CUUID::NullUUID()) {
+              // Action 1 & 2. Add new
+              m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+
+              // Check if already there i.e user attached an existing one
+              // already linked to one or more entries
+              if (m_AEMD.pcore->HasAtt(m_AEMD.attachment.GetUUID())) {
+                // Action 2. Add existing attachment
+                // Increment the count of this attachment
+                m_AEMD.pcore->GetAtt(m_AEMD.attachment.GetUUID()).IncRefcount();
+
+                // No longer orphaned (if it was)
+                m_AEMD.pcore->GetAtt(m_AEMD.attachment.GetUUID()).SetOrphaned(false);
+
+                // Update mapping attachments to entries
+                m_AEMD.pcore->UpdateAttEntryMap(true, m_AEMD.attachment.GetUUID(),
+                                                      m_AEMD.pci->GetUUID());
+              } else {
+                // Action 1. Add new imported attachment
+                
+                // Set datetime added to DB
+                time(&t);
+                m_AEMD.attachment.SetCTime(t);
+
+                // Add to list and update mapping attachments to entries
+                m_AEMD.pcore->PutAtt(m_AEMD.attachment, m_AEMD.pci->GetUUID());
+              }
+            } else if (olduuid != newuuid) {
+              // Action 3. Old removed and new one added
+              // First this will decrement the reference count and, if then zero,
+              // it will be marked as an orphan
+              m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+              
+              // Update entry
+              m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+
+              // Add to DB and update map of attachments to entries
+              m_AEMD.pcore->PutAtt(m_AEMD.attachment, m_AEMD.pci->GetUUID());
+            }
+            /* Action 4 */
           } else {
             m_AEMD.pci->ClearAttUUID();
-            if (m_AEMD.oldattachment.HasUUID())
+            if (m_AEMD.oldattachment.HasUUID()) {
+              // Action 5. This will reduce the attachment reference count
+              // and may make it orphaned
               m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+
+              // Remove from map of attachments to entries
+              m_AEMD.pcore->UpdateAttEntryMap(false, m_AEMD.oldattachment.GetUUID(),
+                                                     m_AEMD.pci->GetUUID());
+            }
           }
         } // m_bIsModified
 
@@ -455,8 +512,6 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
               break;
           }
         }
-
-        // TODO - Add attachment if present (Rony)
 
         if (m_bIsModified)
           SendMessage(PSM_QUERYSIBLINGS,

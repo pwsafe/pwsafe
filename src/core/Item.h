@@ -105,6 +105,7 @@ public:
     ATTIV = 0x72,
     CONTENT = 0x73,
     CONTENTHMAC = 0x74,
+    CONTENTSHA1 = 0x75,
     LAST_ATT,
     UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
     END = 0xff,

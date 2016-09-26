@@ -91,6 +91,7 @@
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
 #define IDR_POPLISTENTRIES              212
+#define IDR_POPATTACHMENTS              213
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
@@ -390,6 +391,10 @@
 #define IDB_QUESTIONMARK                547
 #define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
+#define IDD_VIEWAVAILABLEATTACHMENTS    550
+#define IDD_VIEWATTACHMENTENTRIES       551
+#define IDD_MANAGEATTACHMENTS           552
+#define IDD_REUSEATTACHMENT             553
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -834,6 +839,7 @@
 #define IDC_USERBACKUPOTHERLOCATIONHELP 1528
 #define IDC_SAVEIMMEDIATELYHELP         1529
 #define IDC_MAINTAINDATETIMESTAMPSHELP  1530
+#define IDC_PURGEORPHANATTACHMENTSHELP  1530
 #define IDC_OTHERBROWSERLOCATIONHELP    1531
 #define IDC_OTHEREDITORLOCATIONHELP     1532
 #define IDC_RESETPWHISTORYOFFHELP       1533
@@ -854,16 +860,25 @@
 #define IDC_ZOOM_VALUE                  1549
 #define IDC_IMAGE_HSCROLL               1550
 #define IDC_IMAGE_VSCROLL               1551
-#define IDC_CHECK1                      1552
 #define IDC_EXPORTFILTERS               1552
+#define IDC_ATT_ATTACH                  1553
+#define IDC_ORPHANEDATTACHMENTLIST      1554
+#define IDC_ENTRYLIST                   1555
+#define IDC_STATIC_REFERENCEDBY         1556
+#define IDC_PURGEORPHANATTACHMENTS      1557
+#define IDC_IMPORTFILENAME              1558
+#define IDC_IMPORTFILEPATH              1559
+#define IDC_EXISTINGFILENAME            1560
+#define IDC_EXISTINGFILEPATH            1561
+#define IDC_EXISTINGFILETITLE           1562
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        550
+#define _APS_NEXT_RESOURCE_VALUE        555
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1553
+#define _APS_NEXT_CONTROL_VALUE         1563
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

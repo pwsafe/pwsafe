@@ -181,8 +181,8 @@ BEGIN_MESSAGE_MAP(CViewAttachmentDlg, CPWResizeDialog)
   ON_WM_SIZE()
   ON_WM_HSCROLL()
   ON_BN_CLICKED(IDOK, OnOK)
-  ON_EN_CHANGE(IDC_ZOOM_VALUE, OnZoomChange)
   ON_NOTIFY(TTN_NEEDTEXT, 0, OnZoomTooltipText)
+  ON_EN_CHANGE(IDC_ZOOM_VALUE, OnZoomChange)
 END_MESSAGE_MAP()
 
 // CViewAttachmentDlg message handlers
@@ -424,4 +424,3 @@ void CViewAttachmentDlg::SetZoomEditValue(int nPos)
 
   UpdateData(FALSE);
 }
-

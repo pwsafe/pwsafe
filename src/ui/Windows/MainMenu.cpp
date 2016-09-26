@@ -1043,6 +1043,21 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
       brc = ProcessLanguageMenu(pSubMenu);
       pPopupMenu->EnableMenuItem(iLangPos, MF_BYPOSITION | (brc ? MF_ENABLED : MF_GRAYED));
     }
+
+    // Special processing as if user opens a V3 before opening a V4 DB, the 
+    // manage attachment menu will have gone
+    int iAttPos = app.FindMenuItem(pPopupMenu, ID_MENUITEM_ATTACHMENTS);
+    if (iAttPos < 0 && m_core.GetNumAtts() != 0) {
+      int iPSWDPolicies = app.FindMenuItem(pPopupMenu, ID_MENUITEM_PSWD_POLICIES);
+      if (iPSWDPolicies >= 0) {
+        CString csText(MAKEINTRESOURCE(ID_MENUITEM_ATTACHMENTS));
+        pPopupMenu->InsertMenu(iPSWDPolicies + 1, MF_BYPOSITION  | MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_ATTACHMENTS, csText.Mid(1));
+      }
+    } else
+    if (iAttPos >= 0 && m_core.GetNumAtts() == 0) {
+      pPopupMenu->RemoveMenu(ID_MENUITEM_ATTACHMENTS, MF_BYCOMMAND);
+    }
   }
 
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
