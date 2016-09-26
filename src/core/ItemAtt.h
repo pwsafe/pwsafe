@@ -118,9 +118,9 @@ public:
   unsigned GetRefcount() const {return m_refcount;}
   void IncRefcount() {m_refcount++;}
   void DecRefcount() {ASSERT(m_refcount > 0); m_refcount--;}
-  bool IsOrphaned() { return m_bOrphaned; }
+  bool IsOrphaned() const { return m_bOrphaned; }
   void SetOrphaned(bool bOrphaned) { m_bOrphaned = bOrphaned; }
-  bool IsToBePurged() { return m_bToBePurged; }
+  bool IsToBePurged() const { return m_bToBePurged; }
   void SetToBePurged(bool bToBePurged) { m_bToBePurged = bToBePurged; }
 
   CItemAtt& operator=(const CItemAtt& second);
@@ -145,7 +145,7 @@ private:
   EntryStatus m_entrystatus;
   long m_offset;          // location on file, for lazy evaluation
   unsigned m_refcount;    // how many CItemData objects refer to this?
-  bool m_bOrphaned;       // Not linked to any entry
+  bool m_bOrphaned;       // Not linked to any entry ?? Isn't this iff m_refcount == 0 ??
   bool m_bToBePurged;     // Whether to purge on some type of save
 };
 #endif /* __ITEMATT_H */
