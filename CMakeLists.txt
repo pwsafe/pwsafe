@@ -330,10 +330,10 @@ if (NOT WIN32)
    install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
             DESTINATION "share/locale")
 
-   # Following because "install (DIRECTORY..." copies tree structure, which is not what we
-   # want here. Also "install (TARGETS" doesn't seem to work with custom targets.
-   file (GLOB HELPFILES "help/*.zip")
-   install (FILES ${HELPFILES} DESTINATION "share/doc/passwordsafe/help")
+   install (DIRECTORY ${PROJECT_BINARY_DIR}/help/
+     DESTINATION "share/doc/passwordsafe/help"
+     FILES_MATCHING PATTERN "*.zip")
+
    # TODO - Install following only if on a Debian system (or if we're building a deb?)
    install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
    install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
