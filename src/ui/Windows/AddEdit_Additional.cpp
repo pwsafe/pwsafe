@@ -800,10 +800,14 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       // If Ctrl pressed - just copy un-substituted Autotype string
       // else substitute
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
-        if (M_autotype().IsEmpty())
+        if (M_autotype().IsEmpty()) {
           sxData = PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultAutotypeString);
-        else
+            GetPref(PWSprefs::DefaultAutotypeString);
+          // If still empty, take this default
+          if (sxData.empty()) {
+            sxData = DEFAULT_AUTOTYPE;
+          }
+        } else
           sxData = (LPCWSTR)M_autotype();
       } else {
         sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
