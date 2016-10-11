@@ -776,3 +776,5 @@
 #define IDS_IMAGE_IMPORT_FAILED         6029
 #define IDS_MEM_ALLOC_FAILED            6030
 #define IDS_MEM_LOCK_FAILED             6031
+#define IDS_CLEARMRU                    6032
+#define IDS_CONFIRMCLEARMRU             6033

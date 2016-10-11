@@ -20,6 +20,8 @@ None
 
 New Features for 3.40.1
 =======================
+[814] Users are now asked to confirm the clearing of the recent database list
+before it is cleared to prevent unintentional clearing.
 [813] When exporting a group to a new database, there is now an option to also
 export all filters stored in the database to the new database.
 

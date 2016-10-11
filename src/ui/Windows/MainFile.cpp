@@ -1065,7 +1065,15 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
 
 void DboxMain::OnClearMRU()
 {
-  app.ClearMRU();
+  CGeneralMsgBox gmb;
+  gmb.SetTitle(IDS_CLEARMRU);
+  gmb.SetMsg(IDS_CONFIRMCLEARMRU);
+  gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+  gmb.AddButton(IDS_YES, IDS_YES);
+  gmb.AddButton(IDS_NO, IDS_NO, TRUE, TRUE);
+  if (gmb.DoModal() == IDS_YES) {
+    app.ClearMRU();
+  }
 }
 
 void DboxMain::OnSave()
