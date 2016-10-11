@@ -340,7 +340,8 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bAltGr(false), m_bAltNum(false),
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
-    m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
+    m_bDeadKeyActive(false), m_bDeadKeySaved(false),
+    m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
     m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
     m_bShowPassphrase(BST_UNCHECKED)
 {
@@ -1912,19 +1913,23 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
     m_bSaveRCtrl = m_bRCtrl;
     m_bSaveAltGr = m_bAltGr;
     m_bSaveCapsLock = m_bCapsLock;
+    m_bDeadKeySaved = true;
 
     m_bShift = m_bLCtrl = m_bRCtrl = m_bAltGr = m_bCapsLock = false;
 
     m_State |= VST_MENU;
     m_State &= ~(VST_SHIFT | VST_LCTRL | VST_ALTGR | VST_RCTRL | VST_CAPSLOCK);
   } else {
-    m_State = m_SaveState;
+    if (m_bDeadKeySaved) {
+      m_State = m_SaveState;
 
-    m_bShift = m_bSaveShift;
-    m_bLCtrl = m_bSaveLCtrl;
-    m_bRCtrl = m_bSaveRCtrl;
-    m_bAltGr = m_bSaveAltGr;
-    m_bCapsLock = m_bSaveCapsLock;
+      m_bShift = m_bSaveShift;
+      m_bLCtrl = m_bSaveLCtrl;
+      m_bRCtrl = m_bSaveRCtrl;
+      m_bAltGr = m_bSaveAltGr;
+      m_bCapsLock = m_bSaveCapsLock;
+      m_bDeadKeySaved = false;
+    }
   }
 
   m_cbxKeyBoards.EnableWindow(bEnable);
