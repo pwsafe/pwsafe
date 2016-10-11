@@ -80,5 +80,7 @@ protected:
 
 private:
   void SetExample();
+
+  BOOL VerifyFields();
 };
 

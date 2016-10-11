@@ -217,6 +217,9 @@ BOOL COptionsBackup::OnApply()
 {
   UpdateData(TRUE);
 
+  if (VerifyFields() == FALSE)
+    return FALSE;
+
   M_UserBackupPrefix() = m_UserBackupPrefix;
   M_BackupSuffix() = m_BackupSuffix;
   M_BackupLocation() = m_BackupLocation;
@@ -245,12 +248,18 @@ BOOL COptionsBackup::OnKillActive()
 {
   COptions_PropertyPage::OnKillActive();
 
+  return VerifyFields();
+}
+
+BOOL COptionsBackup::VerifyFields()
+{
+
   if (m_BackupBeforeSave != TRUE)
     return TRUE;
 
   CGeneralMsgBox gmb;
   // Check that correct fields are non-blank.
-  if (m_BackupPrefix == 1  && m_UserBackupPrefix.IsEmpty()) {
+  if (m_BackupPrefix == 1 && m_UserBackupPrefix.IsEmpty()) {
     gmb.AfxMessageBox(IDS_OPTBACKUPPREF);
     ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
     return FALSE;
@@ -277,13 +286,12 @@ BOOL COptionsBackup::OnKillActive()
 
   if (m_BackupSuffix == PWSprefs::BKSFX_IncNumber &&
     ((m_MaxNumIncBackups < 1) || (m_MaxNumIncBackups > 999))) {
-      gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
-      ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
-      return FALSE;
+    gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
+    ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
+    return FALSE;
   }
 
   //End check
-
   return TRUE;
 }
 
