@@ -2722,78 +2722,79 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
 
 void DboxMain::UpdateStatusBar()
 {
-  if (m_toolbarsSetup == TRUE) {
-    CString s;
+  if (m_toolbarsSetup != TRUE)
+    return;
 
-    // Set the width according to the text
-    UINT uiID, uiStyle;
-    int iWidth;
-    CRect rectPane;
-    // calculate text width
-    CClientDC dc(&m_statusBar);
-    CFont *pFont = m_statusBar.GetFont();
-    ASSERT(pFont);
-    dc.SelectObject(pFont);
-    const int iBMWidth = m_statusBar.GetBitmapWidth();
+  CString s;
 
-    if (m_bOpen) {
-      dc.DrawText(m_lastclipboardaction, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
+  // Set the width according to the text
+  UINT uiID, uiStyle;
+  int iWidth;
+  CRect rectPane;
+  // calculate text width
+  CClientDC dc(&m_statusBar);
+  CFont *pFont = m_statusBar.GetFont();
+  ASSERT(pFont);
+  dc.SelectObject(pFont);
+  const int iBMWidth = m_statusBar.GetBitmapWidth();
 
-      s = m_core.HasAnythingChanged() ? L"*" : L" ";
-      s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
-      dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
+  if (m_bOpen) {
+    dc.DrawText(m_lastclipboardaction, &rectPane, DT_CALCRECT);
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
-      s.LoadString(m_core.IsReadOnly() ? IDS_READ_ONLY : IDS_READ_WRITE);
-      dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
+    s = m_core.HasAnythingChanged() ? L"*" : L" ";
+    s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
+    dc.DrawText(s, &rectPane, DT_CALCRECT);
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
 
-      if (m_bFilterActive)
-        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering,
-                 m_core.GetNumEntries());
-      else
-        s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
+    s.LoadString(m_core.IsReadOnly() ? IDS_READ_ONLY : IDS_READ_WRITE);
+    dc.DrawText(s, &rectPane, DT_CALCRECT);
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
-      dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
+    if (m_bFilterActive)
+      s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering,
+                m_core.GetNumEntries());
+    else
+      s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
-      uiID = m_bFilterActive ? IDB_FILTER_ACTIVE : IDS_BLANK;
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
-    } else {
-      s.LoadString(IDSC_STATCOMPANY);
-      m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
+    dc.DrawText(s, &rectPane, DT_CALCRECT);
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
 
-      dc.DrawText(L" ", &rectPane, DT_CALCRECT);
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+    uiID = m_bFilterActive ? IDB_FILTER_ACTIVE : IDS_BLANK;
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
+  } else {
+    s.LoadString(IDSC_STATCOMPANY);
+    m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, L" ");
+    dc.DrawText(L" ", &rectPane, DT_CALCRECT);
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, L" ");
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, L" ");
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, L" ");
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, L" ");
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, L" ");
 
-      m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
-    }
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+    m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
+
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
   }
 
   m_statusBar.Invalidate();

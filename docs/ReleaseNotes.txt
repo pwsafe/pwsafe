@@ -14,6 +14,8 @@ Bugs fixed in 3.40.1
 when exiting Options.
 [1369] The virtual keyboard no longer becomes unusable after clicking on the
 Randomize button.
+[1368] The Status bar now shows the correct number of entries when a database
+is unlocked.
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
 [1363] Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.

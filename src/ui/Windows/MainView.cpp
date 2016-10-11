@@ -2538,6 +2538,7 @@ void DboxMain::UpdateSystemTray(const STATE s)
     default:
     ASSERT(0);
   }
+  UpdateStatusBar();
 }
 
 BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
