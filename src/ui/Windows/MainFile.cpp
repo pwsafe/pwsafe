@@ -1121,6 +1121,23 @@ int DboxMain::Save(const SaveType savetype)
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
         std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
+
+        // Max path can actually be 32K (UNC path), although we generally limit it to MAX_PATH (260)
+        wchar_t wsExpandedPath[MAX_PATH + 1];
+        DWORD dwResult = ExpandEnvironmentStrings(userBackupDir.c_str(),
+                                                  wsExpandedPath, MAX_PATH + 1);
+        if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
+          CGeneralMsgBox gmbx;
+          CString cs_msgx, cs_titlex(MAKEINTRESOURCE(IDS_EXPANDPATH));
+          cs_msg.Format(IDS_CANT_EXPANDPATH, userBackupDir.c_str());
+          gmbx.MessageBox(cs_msgx, cs_titlex, MB_OK | MB_ICONEXCLAMATION);
+
+          gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+          return PWScore::USER_CANCEL;
+        } else {
+          userBackupDir = wsExpandedPath;
+        }
+
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                                   userBackupPrefix, userBackupDir, bu_fname)) {
           switch (savetype) {

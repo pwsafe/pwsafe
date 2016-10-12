@@ -28,6 +28,9 @@ None
 
 New Features for 3.40.1
 =======================
+[815] The database backup location now supports environmental variables e.g. 
+%homedrive% and %homepath%.  If used, the resulting path at that time is
+also shown.
 [814] Users are now asked to confirm the clearing of the recent database list
 before it is cleared to prevent unintentional clearing.
 [813] When exporting a group to a new database, there is now an option to also

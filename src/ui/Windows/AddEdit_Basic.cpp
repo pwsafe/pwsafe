@@ -1095,7 +1095,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     // Find out the users default editor for "txt" files
     DWORD dwSize(MAX_PATH);
     HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
-      szExecName, &dwSize);
+                                      szExecName, &dwSize);
     if (int(stat) != S_OK) {
 #ifdef _DEBUG
       CGeneralMsgBox gmb;

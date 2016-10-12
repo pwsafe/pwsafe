@@ -106,6 +106,7 @@ BEGIN_MESSAGE_MAP(COptionsBackup, COptions_PropertyPage)
   ON_STN_CLICKED(IDC_STATIC_PREFERENCES, OnPreferencesHelp)
   ON_CBN_SELCHANGE(IDC_BACKUPSUFFIX, OnComboChanged)
   ON_EN_KILLFOCUS(IDC_USERBACKUPPREFIXVALUE, OnUserPrefixKillfocus)
+  ON_EN_KILLFOCUS(IDC_USERBACKUPOTHRLOCATIONVALUE, OnUserBkpLocationKillfocus)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -164,6 +165,10 @@ BOOL COptionsBackup::OnInitDialog()
 
   OnComboChanged();
   OnBackupBeforeSave();
+
+  if (m_BackupLocation == 1) {
+    ExpandBackupPath();
+  }
 
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
@@ -253,7 +258,6 @@ BOOL COptionsBackup::OnKillActive()
 
 BOOL COptionsBackup::VerifyFields()
 {
-
   if (m_BackupBeforeSave != TRUE)
     return TRUE;
 
@@ -272,12 +276,32 @@ BOOL COptionsBackup::VerifyFields()
       return FALSE;
     }
 
-    if (m_UserBackupOtherLocation.Right(1) != L"\\") {
-      m_UserBackupOtherLocation += L"\\";
-      UpdateData(FALSE);
+    if (m_csExpandedPath.GetLength() > 0) {
+      if (m_csExpandedPath.Right(1) != L"\\") {
+        m_csExpandedPath += L"\\";
+        m_UserBackupOtherLocation += L"\\";
+        UpdateData(FALSE);
+      }
+    } else {
+      if (m_UserBackupOtherLocation.Right(1) != L"\\") {
+        m_UserBackupOtherLocation += L"\\";
+        UpdateData(FALSE);
+      }
     }
 
-    if (PathIsDirectory(m_UserBackupOtherLocation) == FALSE) {
+    // PathIsDirectory will return OK even if no drive specified i.e.
+    // User specified %homepath% rather than, say, D:%homepath% or %homedrive%%homepath%
+    // This may work but we should enforce a proper expanded form.
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(std::wstring(m_csExpandedPath), cdrive, cdir, dontCare, dontCare);
+
+    if (cdrive.length() == 0) {
+      gmb.AfxMessageBox(IDS_OPTBACKUPNODRIVE);
+      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      return FALSE;
+    }
+
+    if (PathIsDirectory(m_csExpandedPath) == FALSE) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
       ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
@@ -285,7 +309,7 @@ BOOL COptionsBackup::VerifyFields()
   }
 
   if (m_BackupSuffix == PWSprefs::BKSFX_IncNumber &&
-    ((m_MaxNumIncBackups < 1) || (m_MaxNumIncBackups > 999))) {
+      ((m_MaxNumIncBackups < 1) || (m_MaxNumIncBackups > 999))) {
     gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
     ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
     return FALSE;
@@ -360,6 +384,11 @@ void COptionsBackup::OnBackupDirectory()
       ASSERT(0);
       break;
   }
+
+  if (m_BackupLocation == 1) {
+    ExpandBackupPath();
+  }
+
   UpdateData(FALSE);
 }
 
@@ -427,9 +456,60 @@ void COptionsBackup::SetExample()
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(cs_example);
 }
 
+void COptionsBackup::ExpandBackupPath()
+{
+  bool bSetRealPath(false);
+  if (m_BackupLocation == 1) {
+    wchar_t wsExpandedPath[MAX_PATH + 1];
+    DWORD dwResult = ExpandEnvironmentStrings(m_UserBackupOtherLocation,
+                                              wsExpandedPath, MAX_PATH + 1);
+    if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
+      CGeneralMsgBox gmb;
+      CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EXPANDPATH));
+      cs_msg.Format(IDS_CANT_EXPANDPATH, m_UserBackupOtherLocation);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    } else {
+      m_csExpandedPath = wsExpandedPath;
+      if (m_UserBackupOtherLocation != m_csExpandedPath) {
+        bSetRealPath = true;
+      }
+    }
+  }
+
+  if (!bSetRealPath)
+    m_csExpandedPath.Empty();
+
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->EnableWindow(bSetRealPath ? TRUE : FALSE);
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(bSetRealPath ? SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(bSetRealPath ? m_csExpandedPath : L"");
+}
+
 void COptionsBackup::OnUserPrefixKillfocus()
 {
   SetExample();
+}
+
+void COptionsBackup::OnUserBkpLocationKillfocus()
+{
+  // Windows getting the focus
+  CWnd *pWnd = GetFocus();
+
+  // Don't bother verifying data if user is cancelling the whole thing
+  // Rather complicated!!!!
+  if (pWnd == m_options_psh->GetDlgItem(IDCANCEL)) {
+    // Reset value to last good one
+    m_UserBackupOtherLocation = M_UserBackupOtherLocation();
+
+    // Now simulate the pressing of the cancel button
+    WPARAM WParam = MAKEWPARAM(IDCANCEL, BN_CLICKED);
+    m_options_psh->PostMessage(WM_COMMAND, WParam, NULL);
+    return;
+  }
+
+  UpdateData(TRUE);
+  ExpandBackupPath();
+
+  VerifyFields();
 }
 
 void COptionsBackup::OnBrowseForLocation()
@@ -470,6 +550,8 @@ void COptionsBackup::OnBrowseForLocation()
     // free the item id list
     CoTaskMemFree(pIDL);
   }
+
+  ExpandBackupPath();
 }
 
 //  SetSelProc
