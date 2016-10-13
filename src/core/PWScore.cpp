@@ -412,7 +412,7 @@ void PWScore::DoDeleteAtt(const CItemAtt &att)
 }
 #endif
 
-void PWScore::ClearData(void)
+void PWScore::ClearData(const bool bClearPrefs)
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
@@ -459,8 +459,11 @@ void PWScore::ClearData(void)
   // Clear entry keyboard shortcuts
   m_KBShortcutMap.clear();
 
-  // Clear any unknown preferences from previous databases
-  PWSprefs::GetInstance()->ClearUnknownPrefs();
+  if (bClearPrefs) {
+    // Clear any unknown preferences from previous databases
+    // But mustn't do this in main dialog c'tor before command line parsed
+    PWSprefs::GetInstance()->ClearUnknownPrefs();
+  }
 
   // Reset state of unchanged DB
   m_stDBCS.Clear();

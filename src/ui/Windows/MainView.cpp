@@ -1855,11 +1855,11 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     }
   }
 }
-void DboxMain::ClearData(const bool bClearMRE)
+void DboxMain::ClearData(const bool bClearMRE, const bool bClearPrefs)
 {
   PWS_LOGIT;
 
-  m_core.ClearData();  // Clears DB & DB Preferences changed flags
+  m_core.ClearData(bClearPrefs);  // Clears DB & DB Preferences changed flags
 
   if (bClearMRE)
     m_RUEList.ClearEntries();
