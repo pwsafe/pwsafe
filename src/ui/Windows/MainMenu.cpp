@@ -536,6 +536,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
     }
 
+    if (app.GetMRU()->GetNumUsed() == 0) {
+      pPopupMenu->EnableMenuItem(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND | MF_GRAYED);
+      pPopupMenu->EnableMenuItem(ID_MENUITEM_MRUENTRY, MF_BYCOMMAND | MF_GRAYED);
+    }
+
     // Remove the corresponding Export V3/V4
     int isubmenu_pos;
     CMenu *pSubMenu;
