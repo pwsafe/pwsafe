@@ -20,6 +20,7 @@ is unlocked.
 [1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
 on Autotype label now works.
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
+[1364] The Tree view no longer refreshes if a non-display field is changed e.g. Notes.
 [1363] Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.
 

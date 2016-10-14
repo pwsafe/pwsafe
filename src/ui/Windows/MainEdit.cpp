@@ -1275,11 +1275,10 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   return brc;
 }
 
-LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM )
 {
   // Called if user does 'Apply' on the Add/Edit property sheet via
   // Windows Message PWS_MSG_EDIT_APPLY
-  UNREFERENCED_PARAMETER(lParam);
   CAddEdit_PropertySheet *pentry_psh = (CAddEdit_PropertySheet *)wParam;
   UpdateEntry(pentry_psh);
   return 0L;
@@ -1439,7 +1438,27 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   ChangeOkUpdate();
 
   // Order may have changed as a result of edit
-  m_ctlItemTree.SortTree(TVI_ROOT);
+  // Check if we need to though!
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+
+  bool bTreeNeedsSorting = pci_original->GetGroup() != ci_new.GetGroup() ||
+                           pci_original->GetTitle() != ci_new.GetTitle();
+  if (!bTreeNeedsSorting &&
+      (bShowUsernameInTree && pci_original->GetUser() != ci_new.GetUser())) {
+    bTreeNeedsSorting = true;
+  }
+
+  if (!bTreeNeedsSorting &&
+      (bShowPasswordInTree && pci_original->GetPassword() != ci_new.GetPassword())) {
+    bTreeNeedsSorting = true;
+  }
+
+  if (bTreeNeedsSorting) {
+    m_ctlItemTree.SortTree(TVI_ROOT);
+  }
+
   SortListView();
 
   short sh_odca, sh_ndca;
