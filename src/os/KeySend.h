@@ -25,6 +25,7 @@ public:
   CKeySend(bool bForceOldMethod = false, unsigned defaultDelay = 10); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
+  void SendVirtualKey(WORD wVK);
   void ResetKeyboardState() const;
   void SetDelay(unsigned d);
   void SetAndDelay(unsigned d);

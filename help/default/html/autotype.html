@@ -50,6 +50,10 @@ with text that specifies the desired behavior as follows:</p>
 <ul>
 <li><b>\u</b> is replaced by the username associated with the entry.</li>
 <li><b>\p</b> is replaced by the password associated with the entry.</li>
+<li><b>\q</b> is replaced by the last password associated with the entry from the entry's
+password history as long as this entry's password history is still active.  If not active
+or if there are no current old passwords, the field is removed but not replaced with
+anything.</li>
 <li><b>\g</b> is replaced by the group associated with the entry.</li>
 <li><b>\i</b> is replaced by the title associated with the entry.</li>
 <li><b>\l</b> is replaced by the URL associated with the entry (that's the letter ell, not the digit '1').</li>
@@ -118,8 +122,22 @@ SHIFT, etc.</li>
 <li><b>\k</b> (Linux only) stops generating independent keystrokes for modifier keys and only
 simulates the modifications (like making things uppercase) with flags to main key events.</li>
 <li><b>\j</b> and <b>\k</b> could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</li>
-<li>All other text is typed as-is.</li>
+<li><u>All other text is typed as-is.</u></li>
 </ul>
+
+<p>For Windows only, the following special control codes are also implemented (the code
+between the curley brackets is not case sensitive):</p>
+<table style="margin-left:20px; border-spacing:5px">
+<tr><td><b>\{Enter}</b></td><td>Enter key</td></tr>
+<tr><td><b>\{Up}</b></td><td>Up-arrow key</td></tr>
+<tr><td><b>\{Down}</b></td><td>Down-arrow key</td></tr>
+<tr><td><b>{\Left}</b></td><td>Left-arrow key</td></tr>
+<tr><td><b>{\Right}</b></td><td>Right-arrow key</td></tr>
+<tr><td><b>{\Home}</b></td><td>Home key</td></tr>
+<tr><td><b>\{End}</b></td><td>End key</td></tr>
+<tr><td><b>\{PgUp}</b></td><td>Page-up key</td></tr>
+<tr><td><b>\{PgDn}</b></td><td>Page-down key</td></tr>
+</table>
 
 <p>The default autotype sequence in Password Safe is \u\t\p\n. This default can be changed
 via the Manage/Options menu (Misc. tab).</p>

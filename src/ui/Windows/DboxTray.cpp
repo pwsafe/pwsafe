@@ -183,7 +183,8 @@ void DboxMain::OnTrayBrowse(UINT nID)
     std::vector<size_t> vactionverboffsets;
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
                                   ci.GetGroup(), ci.GetTitle(), 
-                                  ci.GetUser(), ci.GetPassword(), 
+                                  ci.GetUser(),
+                                  ci.GetPassword(), ci.GetPreviousPassword(),
                                   ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
                                   vactionverboffsets);
 

@@ -51,6 +51,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.title = L"";
     m_AEMD.username = L"";
     m_AEMD.realpassword = L"";
+    m_AEMD.lastpassword = L"";
     m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
@@ -530,6 +531,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.title = m_AEMD.pci->GetTitle();
   m_AEMD.username = m_AEMD.pci->GetUser();
   m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
+  m_AEMD.lastpassword = m_AEMD.pci->GetPreviousPassword();
   m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();

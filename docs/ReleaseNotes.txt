@@ -36,6 +36,10 @@ also shown.
 before it is cleared to prevent unintentional clearing.
 [813] When exporting a group to a new database, there is now an option to also
 export all filters stored in the database to the new database.
+[796] Autotype has been extended to support the previous password, if present
+in the entry's password history, via the Autotype field '\q'. In addition, for Windows,
+a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
+see Help for details.
 
 Bugs fixed in 3.40
 ==================

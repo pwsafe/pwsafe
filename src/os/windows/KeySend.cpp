@@ -200,6 +200,11 @@ static void newSendVK(WORD vk)
     pws_os::Trace(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
+void CKeySend::SendVirtualKey(WORD wVK)
+{
+  newSendVK(wVK);
+}
+
 void CKeySend::ResetKeyboardState() const
 {
   // We need to make sure that the Control Key is still not down. 

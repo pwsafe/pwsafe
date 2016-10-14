@@ -815,6 +815,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_title(),
                                                 M_username(),
                                                 M_realpassword(),
+                                                M_lastpassword(),
                                                 M_realnotes(),
                                                 M_URL(),
                                                 M_email(),

@@ -40,6 +40,7 @@ struct st_AE_master_data {
   CSecString title;
   CSecString username;
   CSecString realpassword;
+  CSecString lastpassword;
   CSecString oldRealPassword;
   CSecString realnotes;
   CSecString originalrealnotesTRC;
@@ -124,6 +125,7 @@ public:
   CSecString &M_title() {return m_AEMD.title;}
   CSecString &M_username() {return m_AEMD.username;}
   CSecString &M_realpassword() {return m_AEMD.realpassword;}
+  CSecString &M_lastpassword() { return m_AEMD.lastpassword; }
   CSecString &M_oldRealPassword() {return m_AEMD.oldRealPassword;}
   CSecString &M_realnotes() {return m_AEMD.realnotes;}
   CSecString &M_originalrealnotesTRC() {return m_AEMD.originalrealnotesTRC;}

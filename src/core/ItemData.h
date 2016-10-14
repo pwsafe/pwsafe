@@ -132,6 +132,7 @@ public:
   int32 GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
+  StringX GetPreviousPassword() const;
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const {return GetField(POLICY);}
   StringX GetRunCommand() const {return GetField(RUNCMD);}

@@ -2034,18 +2034,20 @@ void DboxMain::OnRunCommand()
   CItemData *pbci = NULL;
 
   const pws_os::CUUID uuid = pci->GetUUID();
-  StringX sx_pswd;
+  StringX sx_pswd, sx_lastpswd;
 
   if (pci->IsDependent()) {
     pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
     if (pci->IsShortcut()) {
       pci = pbci;
       pbci = NULL;
     }
   } else {
     sx_pswd = pci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
   }
 
   StringX sx_RunCommand, sx_Expanded_ES;
@@ -2075,7 +2077,8 @@ void DboxMain::OnRunCommand()
 
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
                                  pci->GetTitle(), pci->GetUser(),
-                                 sx_pswd, pci->GetNotes(),
+                                 sx_pswd, sx_lastpswd,
+                                 pci->GetNotes(),
                                  pci->GetURL(), pci->GetEmail(),
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());

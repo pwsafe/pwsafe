@@ -35,7 +35,8 @@ namespace PWSAuxParse {
 
   StringX GetAutoTypeString(const StringX &sxAutoCmd,
                             const StringX &sxgroup, const StringX &sxtitle,
-                            const StringX &sxuser,  const StringX &sxpwd,
+                            const StringX &sxuser,
+                            const StringX &sxpwd, const StringX &sxlastpwd,
                             const StringX &sxnotes, const StringX &sx_url,
                             const StringX &sx_email,
                             std::vector<size_t> &vactionverboffsets);
