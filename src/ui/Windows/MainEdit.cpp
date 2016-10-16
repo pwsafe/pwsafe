@@ -2066,7 +2066,7 @@ void DboxMain::OnRunCommand()
     }
   } else {
     sx_pswd = pci->GetPassword();
-    sx_lastpswd = pbci->GetPreviousPassword();
+    sx_lastpswd = pci->GetPreviousPassword();
   }
 
   StringX sx_RunCommand, sx_Expanded_ES;
