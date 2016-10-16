@@ -61,6 +61,7 @@ public:
   CFindEditCtrl m_findedit;
   CStaticExtn m_findresults;
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
+  void ChangeFont();
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -84,7 +85,7 @@ private:
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode, m_iFindDirection;
   bool m_bVisible, m_bCaseSensitive;
-  bool m_bAdvanced;
+  bool m_bAdvanced, m_bFontSet;
 
   std::vector<int> m_indices; // array of found items
 

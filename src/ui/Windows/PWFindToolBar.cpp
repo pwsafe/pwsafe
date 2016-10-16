@@ -133,7 +133,7 @@ CPWFindToolBar::CPWFindToolBar()
   m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
-  m_iFindDirection(FIND_DOWN)
+  m_iFindDirection(FIND_DOWN), m_bFontSet(false)
 {
   m_last_bsFields.reset();
   m_last_bsAttFields.reset();
@@ -306,6 +306,20 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
   m_iWMSGID = iWMSGID;
 }
 
+void CPWFindToolBar::ChangeFont()
+{
+  // User has changed the Add/Edit font
+  m_FindTextFont.DeleteObject();
+
+  LOGFONT lf = { 0 };
+  Fonts::GetInstance()->GetAddEditFont(&lf);
+  VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+
+  m_findedit.SetFont(&m_FindTextFont);
+  m_findresults.SetFont(&m_FindTextFont);
+  m_bFontSet = true;
+}
+
 void CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
 {
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
@@ -400,7 +414,6 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     GetItemRect(0, &rt);
     const int iBtnHeight = rt.Height();
     const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
-    bool switchFont = (iFontHeight <= (iBtnHeight + 3));
 
     /**
      *
@@ -409,26 +422,22 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
      * to change size to fit the new font.
      * Therefore we'll only change the font if it's going to fit in
      * the controls, letting it be a little larger than the current size.
+     *
      */
-    if (switchFont) {
-      m_FindTextFont.DeleteObject();
-      LOGFONT lf = {0};
-      Fonts::GetInstance()->GetCurrentFont(&lf);
-      VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+
+     // Initialise font - BR 1371 Change to Add/Edit fon
+    if (!m_bFontSet) {
+      ChangeFont();
     }
 
     SetHeight(iBtnHeight + 4);  // Add border
-
-    if (switchFont)
-      m_findedit.SetFont(&m_FindTextFont);
     m_findedit.ChangeColour();
     m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
-    if (switchFont)
-      m_findresults.SetFont(&m_FindTextFont);
+
     m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
                                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }

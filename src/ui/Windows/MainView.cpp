@@ -2456,6 +2456,9 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
         pFonts->SetAddEditFont(&lf);
+
+        // Change the Find Toolbar font
+        m_FindToolBar.ChangeFont();
         break;
       case CFontsDialog::PASSWORDFONT:
         // Transfer the new font to the passwords

@@ -26,7 +26,8 @@ do not leave duplicated empty groups in the database.
 
 Changes to Existing Features in 3.40.1
 ======================================
-None
+[1371] The font used in the Find toolbar is now set to the user specified Add/Edit
+font instead of the Tree/List view font.
 
 New Features for 3.40.1
 =======================
