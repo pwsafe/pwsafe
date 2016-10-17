@@ -50,7 +50,7 @@ protected:
   CString m_currentFileBasename;
 
   CButtonExtn m_chkbox;
-  CTBMStatic m_Help1, m_Help2, m_Help3;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   // Overrides
   // ClassWizard generate virtual function overrides

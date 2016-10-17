@@ -42,6 +42,7 @@
 #define IDS_CLEARPWHISTORY              5111
 #define IDS_SAVEIMMEDIATELY             5112
 #define IDS_DBLOCK                      5113
+#define IDS_USERBACKUPOTHERLOCATION2    5114
 
 // Program strings
 #define IDS_FILEERROR1                  5210

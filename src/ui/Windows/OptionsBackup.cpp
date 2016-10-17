@@ -88,7 +88,8 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_BACKUPBEFORESAVEHELP, m_Help1);
   DDX_Control(pDX, IDC_USERBACKUPOTHERLOCATIONHELP, m_Help2);
-  DDX_Control(pDX, IDC_SAVEIMMEDIATELYHELP, m_Help3);
+  DDX_Control(pDX, IDC_USERBACKUPOTHERLOCATIONHELP2, m_Help3);
+  DDX_Control(pDX, IDC_SAVEIMMEDIATELYHELP, m_Help4);
   //}}AFX_DATA_MAP
 }
 
@@ -174,10 +175,12 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
     m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
 
     // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
     AddTool(IDC_BACKUPBEFORESAVEHELP, IDS_BACKUPBEFORESAVE);
     AddTool(IDC_USERBACKUPOTHERLOCATIONHELP, IDS_USERBACKUPOTHERLOCATION);
+    AddTool(IDC_USERBACKUPOTHERLOCATIONHELP2, IDS_USERBACKUPOTHERLOCATION2);
     AddTool(IDC_SAVEIMMEDIATELYHELP, IDS_SAVEIMMEDIATELY);
     ActivateToolTip();
   } else {
@@ -187,6 +190,8 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
     m_Help3.EnableWindow(FALSE);
     m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
   }
 
   return TRUE;
@@ -289,11 +294,15 @@ BOOL COptionsBackup::VerifyFields()
       }
     }
 
+    CString csBackupPath = m_csExpandedPath.GetLength() > 0 ?
+                              m_csExpandedPath : m_UserBackupOtherLocation;
+
     // PathIsDirectory will return OK even if no drive specified i.e.
     // User specified %homepath% rather than, say, D:%homepath% or %homedrive%%homepath%
     // This may work but we should enforce a proper expanded form.
     std::wstring cdrive, cdir, dontCare;
-    pws_os::splitpath(std::wstring(m_csExpandedPath), cdrive, cdir, dontCare, dontCare);
+    pws_os::splitpath(std::wstring(csBackupPath),
+                        cdrive, cdir, dontCare, dontCare);
 
     if (cdrive.length() == 0) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNODRIVE);
@@ -301,7 +310,7 @@ BOOL COptionsBackup::VerifyFields()
       return FALSE;
     }
 
-    if (PathIsDirectory(m_csExpandedPath) == FALSE) {
+    if (PathIsDirectory(csBackupPath) == FALSE) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
       ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
@@ -493,6 +502,10 @@ void COptionsBackup::OnUserBkpLocationKillfocus()
 {
   // Windows getting the focus
   CWnd *pWnd = GetFocus();
+
+  // Don't bother verifying data if user is clicking on the other option
+  if (pWnd == GetDlgItem(IDC_DFLTBACKUPLOCATION))
+    return;
 
   // Don't bother verifying data if user is cancelling the whole thing
   // Rather complicated!!!!
