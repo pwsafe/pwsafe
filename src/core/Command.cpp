@@ -194,8 +194,9 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 // ------------------------------------------------
 
 UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
-                                   ExecuteFn When, GUI_Action ga)
-  : Command(pcomInt), m_When(When), m_ga(ga)
+                                   ExecuteFn When, GUI_Action ga,
+                                   const pws_os::CUUID &entryUUID)
+ : Command(pcomInt), m_When(When), m_ga(ga), m_entryUUID(entryUUID)
 {
 }
 
@@ -203,7 +204,7 @@ int UpdateGUICommand::Execute()
 {
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO ||
       m_When == WN_REDO || m_When == WN_ALL) {
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
+    m_pcomInt->NotifyGUINeedsUpdating(m_ga, m_entryUUID);
   }
   return 0;
 }
@@ -211,7 +212,7 @@ int UpdateGUICommand::Execute()
 void UpdateGUICommand::Undo()
 {
   if (m_When == WN_UNDO || m_When == WN_ALL) {
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
+    m_pcomInt->NotifyGUINeedsUpdating(m_ga, m_entryUUID);
   }
 }
 

@@ -1502,6 +1502,8 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
   pci = NULL; // Set to NULL - use ci_original
 
+  pws_os::CUUID entryuuid = ci_original.GetUUID();
+
   // Determine if last entry in this group just in case the user changes the group
   DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
   bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
@@ -1537,6 +1539,12 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
+    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_UNDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+    pmulticmds->Add(pcmd_undo);
+
     pmulticmds->Add(EditEntryCommand::Create(pcore, ci_original, ci_edit));
 
     // Check if group changed and last entry in group and, if so,
@@ -1552,6 +1560,13 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
           DBEmptyGroupsCommand::EG_DELETE));
       }
     }
+
+    Command *pcmd_redo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_REDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+
+    pmulticmds->Add(pcmd_redo);
 
     // Do it
     Execute(pmulticmds, pcore);
