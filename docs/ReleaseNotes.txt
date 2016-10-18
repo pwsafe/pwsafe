@@ -62,7 +62,6 @@ PasswordSafe database, the referenced policy is now also exported.
 [1355] Fixed tabbing order in Basic AddEdit tab.
 [1352] Fixed regression in recent entry processing.
 [1347] Prevent a user from trying to copy a filter to a read-only database.
-[1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is
 checked.
 [1342, 1343] Fix multiple empty group issues.
