@@ -1163,12 +1163,22 @@ void DboxMain::OnEdit()
         if (!m_bViaDCA) {
           EditShortcut(pci);
         } else {
+          // Save entry UUID in case DB locked
+          pws_os::CUUID entryuuid = pci->GetUUID();
           EditItem(GetBaseEntry(pci));
-          UpdateAccessTime(pci->GetUUID());
+
+          // If DB was locked then the pci will not be valid and the number of entries will be zero
+          // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+          UpdateAccessTime(entryuuid);
         }
       }  else {
+        // Save entry UUID in case DB locked
+        pws_os::CUUID entryuuid = pci->GetUUID();
         EditItem(pci);
-        UpdateAccessTime(pci->GetUUID());
+
+        // If DB was locked then the pci will not be valid and the number of entries will be zero
+        // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+        UpdateAccessTime(entryuuid);
       }
     } catch (CString &err) {
       CGeneralMsgBox gmb;

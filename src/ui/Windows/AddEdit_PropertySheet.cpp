@@ -39,6 +39,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   m_AEMD.currentDB = currentDB;
 
+  m_AEMD.entry_uuid = pws_os::CUUID::NullUUID();
+  m_AEMD.base_uuid = pws_os::CUUID::NullUUID();
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   m_AEMD.default_pwp = prefs->GetDefaultPolicy();
@@ -127,8 +130,24 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
 BEGIN_MESSAGE_MAP(CAddEdit_PropertySheet, CPWPropertySheet)
   //{{AFX_MSG_MAP(CAddEdit_PropertySheet)
   ON_WM_SYSCOMMAND()
+  ON_WM_WINDOWPOSCHANGED()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CAddEdit_PropertySheet::OnWindowPosChanged(WINDOWPOS *wpos)
+{
+  // We might be showing after being hidden during locking of DB
+  // If so, pci_original will be incorrect.
+  // pci should be OK as was not in DB but a copy in caller
+  if ((wpos->flags & SWP_SHOWWINDOW) == SWP_SHOWWINDOW) {
+    ItemListIter iter = GetMainDlg()->Find(m_AEMD.entry_uuid);
+    if (iter != GetMainDlg()->End()) {
+      CItemData *pci_original = &GetMainDlg()->GetEntryAt(iter);
+      if (pci_original != m_AEMD.pci_original)
+        m_AEMD.pci_original = pci_original;
+    }
+  }
+}
 
 void CAddEdit_PropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 {
