@@ -85,5 +85,7 @@ private:
   void ExpandBackupPath();
 
   BOOL VerifyFields();
+
+  bool m_bKillActiveInProgress;  // Checked already in OnUserBkpLocationKillfocus
 };
 

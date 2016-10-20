@@ -68,6 +68,8 @@ COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   path = pws_os::makepath(drive, dir, L"", L"");
   m_currentFileDir = path.c_str();
   m_currentFileBasename = base.c_str();
+
+  m_bKillActiveInProgress = false;
 }
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
@@ -256,9 +258,14 @@ BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
 
 BOOL COptionsBackup::OnKillActive()
 {
+  m_bKillActiveInProgress = true;
+
   COptions_PropertyPage::OnKillActive();
 
-  return VerifyFields();
+  BOOL brc = VerifyFields();
+
+  m_bKillActiveInProgress = false;
+  return brc;
 }
 
 BOOL COptionsBackup::VerifyFields()
@@ -275,6 +282,8 @@ BOOL COptionsBackup::VerifyFields()
   }
 
   if (m_BackupLocation == 1) {
+    ExpandBackupPath();
+
     if (m_UserBackupOtherLocation.IsEmpty()) {
       gmb.AfxMessageBox(IDS_OPTBACKUPLOCATION);
       ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
@@ -294,12 +303,12 @@ BOOL COptionsBackup::VerifyFields()
       }
     }
 
-    CString csBackupPath = m_csExpandedPath.GetLength() > 0 ?
-                              m_csExpandedPath : m_UserBackupOtherLocation;
-
     // PathIsDirectory will return OK even if no drive specified i.e.
     // User specified %homepath% rather than, say, D:%homepath% or %homedrive%%homepath%
     // This may work but we should enforce a proper expanded form.
+    CString csBackupPath = m_csExpandedPath.GetLength() > 0 ?
+      m_csExpandedPath : m_UserBackupOtherLocation;
+
     std::wstring cdrive, cdir, dontCare;
     pws_os::splitpath(std::wstring(csBackupPath),
                         cdrive, cdir, dontCare, dontCare);
@@ -383,6 +392,11 @@ void COptionsBackup::OnBackupDirectory()
     case 0:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(FALSE);
       GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
+
+      GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->EnableWindow(FALSE);
+      GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(L"");
+
       m_UserBackupOtherLocation = L"";
       break;
     case 1:
@@ -504,8 +518,11 @@ void COptionsBackup::OnUserBkpLocationKillfocus()
   CWnd *pWnd = GetFocus();
 
   // Don't bother verifying data if user is clicking on the other option
-  if (pWnd == GetDlgItem(IDC_DFLTBACKUPLOCATION))
+  // or browsing for a directory
+  if (pWnd == GetDlgItem(IDC_DFLTBACKUPLOCATION) ||
+      pWnd == GetDlgItem(IDC_BROWSEFORLOCATION)) {
     return;
+  }
 
   // Don't bother verifying data if user is cancelling the whole thing
   // Rather complicated!!!!
@@ -522,7 +539,10 @@ void COptionsBackup::OnUserBkpLocationKillfocus()
   UpdateData(TRUE);
   ExpandBackupPath();
 
-  VerifyFields();
+  // If OnKillActive active - skip it again
+  if (!m_bKillActiveInProgress) {
+    VerifyFields();
+  }
 }
 
 void COptionsBackup::OnBrowseForLocation()
