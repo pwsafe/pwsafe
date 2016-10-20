@@ -117,16 +117,15 @@ of your autotype string. So your autotype string could look like
 \d100\c\u\t\c\p\n
 </pre>
 </li>
-<li><b>\j</b> (Linux only) starts generating independent key events for modifier keys like ALT,
-SHIFT, etc.</li>
+<li><b>\j</b> (Linux only) starts generating independent key events for modifier keys like 
+ALT, SHIFT, etc.</li>
 <li><b>\k</b> (Linux only) stops generating independent keystrokes for modifier keys and only
 simulates the modifications (like making things uppercase) with flags to main key events.</li>
 <li><b>\j</b> and <b>\k</b> could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</li>
 <li><u>All other text is typed as-is.</u></li>
 </ul>
 
-<p>For Windows only, the following special control codes are also implemented (the code
-between the curley brackets is not case sensitive):</p>
+<p>For <u>Windows only</u>, the following special control codes are also implemented:</p>
 <table style="margin-left:20px; border-spacing:5px">
 <tr><td><b>\{Enter}</b></td><td>Enter key</td></tr>
 <tr><td><b>\{Up}</b></td><td>Up-arrow key</td></tr>
@@ -137,10 +136,33 @@ between the curley brackets is not case sensitive):</p>
 <tr><td><b>\{End}</b></td><td>End key</td></tr>
 <tr><td><b>\{PgUp}</b></td><td>Page-up key</td></tr>
 <tr><td><b>\{PgDn}</b></td><td>Page-down key</td></tr>
+<tr><td><b>\{Tab}</b></td><td>Tab key</td></tr>
+<tr><td><b>\{Space}</b></td><td>Space bar</td></tr>
 </table>
+
+<p>The special control code between the curley brackets is not case sensitive and is
+unaffected by the presence of the "\z" Autotype field.</p>
+
+<p>In addition, the following modifiers are available to combine with the above special 
+control codes.  These <u>must</u> precede the code and can be combined in any order.
+They are:</p>
+<table style="margin-left:20px; border-spacing:10px">
+<tr><td><b>!</b></td><td>Alt key</td></tr>
+<tr><td><b>^</b></td><td>Control key</td></tr>
+<tr><td><b>+</b></td><td>Shift key</td></tr>
+</table>
+
+<p>For example:<br>
+"\{+Tab}" is equivalent to "Shift+Tab"<br>
+"\{+^Tab}" is equivalent to "Ctrl+Shift+Tab"<br>
+"\{^Home}" is equivalent to "Control+Home".</p>
+
+<h3>Default AutoType</h3>
 
 <p>The default autotype sequence in Password Safe is \u\t\p\n. This default can be changed
 via the Manage/Options menu (Misc. tab).</p>
+
+<h3>Examples</h3>
 
 <p><b>Example 1:</b>
 The following can be used where the bank account number (12345) must be

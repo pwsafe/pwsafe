@@ -200,9 +200,60 @@ static void newSendVK(WORD vk)
     pws_os::Trace(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
-void CKeySend::SendVirtualKey(WORD wVK)
+void CKeySend::SendVirtualKey(WORD wVK, bool bAlt, bool bCtrl, bool bShift)
 {
-  newSendVK(wVK);
+  UINT status;
+  INPUT input[8] = { cinput, cinput, cinput, cinput, cinput, cinput, cinput, cinput };
+  int i = 0;
+  if (bAlt) {
+    // Add Alt key down
+    input[i].ki.wVk = VK_MENU;
+    i++;
+  }
+
+  if (bCtrl) {
+    // Add Ctrl key down
+    input[i].ki.wVk = VK_CONTROL;
+    i++;
+  }
+
+  if (bShift) {
+    // Add Shift key down
+    input[i].ki.wVk = VK_SHIFT;
+    i++;
+  }
+
+  // Add character key down
+  input[i].ki.wVk = wVK;
+  i++;
+
+  // Add character key up
+  input[i].ki.wVk = wVK;
+  input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+  i++;
+
+  if (bShift) {
+    // Add Shift key up
+    input[i].ki.wVk = VK_SHIFT;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  if (bCtrl) {
+    // Add Ctrl kep up
+    input[i].ki.wVk = VK_CONTROL;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  if (bAlt) {
+    // Add Alt key up
+    input[i].ki.wVk = VK_MENU;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  status = ::SendInput(i, input, sizeof(INPUT));
 }
 
 void CKeySend::ResetKeyboardState() const
