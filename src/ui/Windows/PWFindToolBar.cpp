@@ -84,6 +84,23 @@ const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
   IDB_FINDADVANCEDON_NEW,       // m_iAdvancedOn_BM_offset is this offset
 };
 
+// CFindEditCtrl
+
+CFindEditCtrl::CFindEditCtrl()
+  : m_rectNCBottom(0, 0, 0, 0), m_rectNCTop(0, 0, 0, 0)
+{
+}
+
+CFindEditCtrl::~CFindEditCtrl()
+{
+}
+
+BEGIN_MESSAGE_MAP(CFindEditCtrl, CEditExtn)
+  ON_WM_NCCALCSIZE()
+  ON_WM_NCPAINT()
+  ON_WM_GETDLGCODE()
+END_MESSAGE_MAP()
+
 LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   if (message == WM_SYSCOMMAND && wParam == SC_KEYMENU) {
@@ -119,6 +136,83 @@ LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 exit:
   return CEditExtn::WindowProc(message, wParam, lParam);
 }
+
+void CFindEditCtrl::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp)
+{
+  // Required for vertically centered text
+  CRect rectWnd, rectClient;
+
+  GetClientRect(rectClient);
+
+  // Workaround for calls with an empty Client Rect
+  if (rectClient.Height() == 0) {
+    CEditExtn::OnNcCalcSize(bCalcValidRects, lpncsp);
+    return;
+  }
+
+  // Calculate client area height needed for a font
+  CFont *pFont = GetFont();
+  CRect rectText;
+  rectText.SetRectEmpty();
+
+  CDC *pDC = GetDC();
+
+  CFont *pOld = pDC->SelectObject(pFont);
+  pDC->DrawText(L"Ky", rectText, DT_CALCRECT | DT_LEFT);
+  UINT uiVClientHeight = rectText.Height();
+
+  pDC->SelectObject(pOld);
+  ReleaseDC(pDC);
+
+  // Calculate NC area to center text.
+  GetWindowRect(rectWnd);
+
+  ClientToScreen(rectClient);
+
+  UINT uiCenterOffset = (rectClient.Height() - uiVClientHeight) / 2;
+  UINT uiCY = (rectWnd.Height() - rectClient.Height()) / 2;
+  UINT uiCX = (rectWnd.Width() - rectClient.Width()) / 2;
+
+  rectWnd.OffsetRect(-rectWnd.left, -rectWnd.top);
+  m_rectNCTop = rectWnd;
+
+  m_rectNCTop.DeflateRect(uiCX, uiCY, uiCX, uiCenterOffset + uiVClientHeight + uiCY);
+
+  m_rectNCBottom = rectWnd;
+
+  m_rectNCBottom.DeflateRect(uiCX, uiCenterOffset + uiVClientHeight + uiCY, uiCX, uiCY);
+
+  lpncsp->rgrc[0].top += uiCenterOffset;
+  lpncsp->rgrc[0].bottom -= uiCenterOffset;
+
+  lpncsp->rgrc[0].left += uiCX;
+  lpncsp->rgrc[0].right -= uiCY;
+}
+
+void CFindEditCtrl::OnNcPaint()
+{
+  // Required for vertically centered text
+  CWnd::Default();
+
+  CWindowDC dc(this);
+  CBrush Brush = (this->GetStyle() & ES_READONLY) == ES_READONLY ?
+                      GetSysColor(COLOR_BTNFACE) : GetSysColor(COLOR_WINDOW);
+
+  dc.FillRect(m_rectNCBottom, &Brush);
+  dc.FillRect(m_rectNCTop, &Brush);
+}
+
+UINT CFindEditCtrl::OnGetDlgCode()
+{
+  // Required for vertically centred text
+  if (m_rectNCTop.IsRectEmpty()) {
+    SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+  }
+
+  return CEditExtn::OnGetDlgCode();
+}
+
+// CPWFindToolBar
 
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
@@ -447,6 +541,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
   ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
   ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
   m_findedit.SetFocus();
+
   m_bVisible = bShow;
 }
 

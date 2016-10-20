@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.40.1
 ====================
 [] Ensure shortcut is updated in GUI after editing.
+[] Text in the Find toolbar search edit control is now vertically centered to
+reduce character truncation.
 [1373] An invalid or non-existent backup directory path can no longer be saved
 when exiting Options.
 [1369] The virtual keyboard no longer becomes unusable after clicking on the
