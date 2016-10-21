@@ -397,11 +397,17 @@ void COptionsBackup::OnBackupDirectory()
       GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(L"");
 
+      m_Help3.EnableWindow(FALSE);
+      m_Help3.ShowWindow(SW_HIDE);
+
       m_UserBackupOtherLocation = L"";
       break;
     case 1:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(TRUE);
       GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(TRUE);
+
+      m_Help3.EnableWindow(TRUE);
+      m_Help3.ShowWindow(SW_SHOW);
       break;
     default:
       ASSERT(0);
@@ -502,9 +508,12 @@ void COptionsBackup::ExpandBackupPath()
   if (!bSetRealPath)
     m_csExpandedPath.Empty();
 
-  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->EnableWindow(bSetRealPath ? TRUE : FALSE);
-  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(bSetRealPath ? SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->EnableWindow(TRUE);
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(SW_SHOW);
   GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(bSetRealPath ? m_csExpandedPath : L"");
+
+  m_Help3.EnableWindow(TRUE);
+  m_Help3.ShowWindow(SW_SHOW);
 }
 
 void COptionsBackup::OnUserPrefixKillfocus()
