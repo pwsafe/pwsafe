@@ -820,6 +820,12 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_URL(),
                                                 M_email(),
                                                 vactionverboffsets);
+
+        // Replace any special code that we can - i.e. only \{\t} and \{ }
+        StringX sxTabCode(L"\\{\t}"), sxSpaceCode(L"\\{ }");
+        StringX sxTab(L"\t"), sxSpace(L" ");
+        Replace(sxData, sxTabCode, sxTab);
+        Replace(sxData, sxSpaceCode, sxSpace);
       }
       iaction = CItemData::AUTOTYPE;
       break;
