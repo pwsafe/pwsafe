@@ -668,10 +668,16 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
 void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 {
   CRect rect;
-  m_ctlItemTree.SetItemText(hItem, m_ctlItemTree.MakeTreeDisplayString(ci));
 
-  m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
-  m_ctlItemTree.InvalidateRect(&rect);
+  CSecString csCurrentString = m_ctlItemTree.GetItemText(hItem);
+  CSecString csNewString = m_ctlItemTree.MakeTreeDisplayString(ci);
+
+  if (csCurrentString != csNewString) {
+    m_ctlItemTree.SetItemText(hItem, csNewString);
+
+    m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
+    m_ctlItemTree.InvalidateRect(&rect);
+  }
 }
 
 void DboxMain::UpdateEntryinGUI(CItemData &ci)
@@ -3866,12 +3872,18 @@ void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOne
 
 void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
 {
-  m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+  int icurrentImage, icurrentSelectedImage;
 
-  if (bOneEntry) {
-    CRect rect;
-    m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
-    m_ctlItemTree.InvalidateRect(&rect);
+  m_ctlItemTree.GetItemImage(ti, icurrentImage, icurrentSelectedImage);
+
+  if (icurrentImage != nImage) {
+    m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+
+    if (bOneEntry) {
+      CRect rect;
+      m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
+      m_ctlItemTree.InvalidateRect(&rect);
+    }
   }
 }
 

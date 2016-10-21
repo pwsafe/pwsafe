@@ -1449,23 +1449,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   // Order may have changed as a result of edit
   // Check if we need to though!
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-
-  bool bTreeNeedsSorting = pci_original->GetGroup() != ci_new.GetGroup() ||
-                           pci_original->GetTitle() != ci_new.GetTitle();
-  if (!bTreeNeedsSorting &&
-      (bShowUsernameInTree && pci_original->GetUser() != ci_new.GetUser())) {
-    bTreeNeedsSorting = true;
-  }
-
-  if (!bTreeNeedsSorting &&
-      (bShowPasswordInTree && pci_original->GetPassword() != ci_new.GetPassword())) {
-    bTreeNeedsSorting = true;
-  }
-
-  if (bTreeNeedsSorting) {
+  if (m_ctlItemTree.MakeTreeDisplayString(*pci_original) != 
+      m_ctlItemTree.MakeTreeDisplayString(ci_new)) {
     m_ctlItemTree.SortTree(TVI_ROOT);
   }
 
