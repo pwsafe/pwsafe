@@ -40,6 +40,8 @@ until they are not.
 
 New Features for 3.40.1
 =======================
+[] Implement new AutoType field '\#' to toggle the use of the older mechanism to
+send keyboard input to other applications e.g. browsers.
 [815] The database backup location now supports environmental variables e.g. 
 %homedrive% and %homepath%.  If used, the resulting path at that time is
 also shown.

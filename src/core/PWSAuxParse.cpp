@@ -488,6 +488,11 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += curChar;
           break; // case 'b' & 'z'
 
+        case TCHAR('#'):  // Use older method but allow on/off
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+          break; // case '#'
+
         case TCHAR('d'):  // Delay
         case TCHAR('w'):  // Wait milli-seconds
         case TCHAR('W'):  // Wait seconds
@@ -610,12 +615,12 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   // Accepts string and vector indicating location(s) of command(s)
   // as returned by GetAutoTypeString()
   // processes the later whilst sending the former
-  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z)
+  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z,  \# & \-#)
   StringX sxtmp(_T(""));
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
  
-  bool bForceOldMethod(false), bCapsLock(false);
+  bool bForceOldMethod(false), bForceOldMethod2(false), bCapsLock(false);
  
   StringX::size_type st_index = sxautotype.find(_T("\\z"));
 
@@ -715,6 +720,25 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
             sxtmp += curChar;
+          }
+          break;
+
+        case L'#':
+          // This toggles using the OldMethod as long as \z not specified ANYWHERE
+          // in the Autotype string
+          if (bForceOldMethod) {
+            // User has already used '\z' - ignore this \# - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          } else {
+            // Send what we have
+            if (sxtmp.length() > 0) {
+              ks.SendString(sxtmp);
+              sxtmp.clear();
+            }
+            // Toggle
+            bForceOldMethod2 = !bForceOldMethod2;
+            ks.SetSendMethod(bForceOldMethod2);
           }
           break;
 

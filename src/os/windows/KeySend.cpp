@@ -43,13 +43,10 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
 
   m_impl = new CKeySendImpl;
   m_impl->m_delay = m_delayMS;
-  // We want to use keybd_event (OldSendChar) for Win2K & older,
-  // SendInput (NewSendChar) for newer versions.
-  if (bForceOldMethod)
-    m_impl->m_isOldOS = true;
-  else {
-    m_impl->m_isOldOS = !pws_os::IsWindowsVistaOrGreater();
-  }
+
+  //Set Windows Send Method
+  SetSendMethod(bForceOldMethod);
+
   // get the locale of the current thread.
   // we are assuming that all window and threading in the 
   // current users desktop have the same locale.
@@ -59,6 +56,22 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
 CKeySend::~CKeySend()
 {
   delete m_impl;
+}
+
+void CKeySend::SetSendMethod(const bool bForceOldMethod)
+{
+  // We want to use keybd_event (OldSendChar) for Win2K & older,
+  // SendInput (NewSendChar) for newer versions.
+
+  // However, some key strokes only seem to work with the older method even on the
+  // newer versions of Windows
+  m_impl->m_isOldOS = bForceOldMethod;
+
+  if (bForceOldMethod) {
+    m_impl->m_isOldOS = true;
+  } else {
+    m_impl->m_isOldOS = !pws_os::IsWindowsVistaOrGreater();
+  }
 }
 
 void CKeySend::SendString(const StringX &data)
@@ -270,7 +283,7 @@ void CKeySend::ResetKeyboardState() const
     if (m_impl->m_isOldOS) {
       keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY, 0);
-      keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
+      keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
     } else {
       newSendVK(VK_CONTROL); // Send Ctrl keydown/keyup via SendInput
