@@ -26,16 +26,8 @@ protected:
   // Needed to trap Entry Keyboard Shortcuts if we are in control
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-  // Required for vertically centered text
-  afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp);
-  afx_msg void OnNcPaint();
-  afx_msg UINT OnGetDlgCode();
-
   DECLARE_MESSAGE_MAP()
 
-  // Required for vertically centered text
-  CRect m_rectNCBottom;
-  CRect m_rectNCTop;
 };
 
 class CPWFindToolBar : public CToolBar

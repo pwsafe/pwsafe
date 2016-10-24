@@ -87,7 +87,6 @@ const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
 // CFindEditCtrl
 
 CFindEditCtrl::CFindEditCtrl()
-  : m_rectNCBottom(0, 0, 0, 0), m_rectNCTop(0, 0, 0, 0)
 {
 }
 
@@ -96,9 +95,6 @@ CFindEditCtrl::~CFindEditCtrl()
 }
 
 BEGIN_MESSAGE_MAP(CFindEditCtrl, CEditExtn)
-  ON_WM_NCCALCSIZE()
-  ON_WM_NCPAINT()
-  ON_WM_GETDLGCODE()
 END_MESSAGE_MAP()
 
 LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -135,81 +131,6 @@ LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 exit:
   return CEditExtn::WindowProc(message, wParam, lParam);
-}
-
-void CFindEditCtrl::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp)
-{
-  // Required for vertically centered text
-  CRect rectWnd, rectClient;
-
-  GetClientRect(rectClient);
-
-  // Workaround for calls with an empty Client Rect
-  if (rectClient.Height() == 0) {
-    CEditExtn::OnNcCalcSize(bCalcValidRects, lpncsp);
-    return;
-  }
-
-  // Calculate client area height needed for a font
-  CFont *pFont = GetFont();
-  CRect rectText;
-  rectText.SetRectEmpty();
-
-  CDC *pDC = GetDC();
-
-  CFont *pOld = pDC->SelectObject(pFont);
-  pDC->DrawText(L"Ky", rectText, DT_CALCRECT | DT_LEFT);
-  UINT uiVClientHeight = rectText.Height();
-
-  pDC->SelectObject(pOld);
-  ReleaseDC(pDC);
-
-  // Calculate NC area to center text.
-  GetWindowRect(rectWnd);
-
-  ClientToScreen(rectClient);
-
-  UINT uiCenterOffset = (rectClient.Height() - uiVClientHeight) / 2;
-  UINT uiCY = (rectWnd.Height() - rectClient.Height()) / 2;
-  UINT uiCX = (rectWnd.Width() - rectClient.Width()) / 2;
-
-  rectWnd.OffsetRect(-rectWnd.left, -rectWnd.top);
-  m_rectNCTop = rectWnd;
-
-  m_rectNCTop.DeflateRect(uiCX, uiCY, uiCX, uiCenterOffset + uiVClientHeight + uiCY);
-
-  m_rectNCBottom = rectWnd;
-
-  m_rectNCBottom.DeflateRect(uiCX, uiCenterOffset + uiVClientHeight + uiCY, uiCX, uiCY);
-
-  lpncsp->rgrc[0].top += uiCenterOffset;
-  lpncsp->rgrc[0].bottom -= uiCenterOffset;
-
-  lpncsp->rgrc[0].left += uiCX;
-  lpncsp->rgrc[0].right -= uiCY;
-}
-
-void CFindEditCtrl::OnNcPaint()
-{
-  // Required for vertically centered text
-  CWnd::Default();
-
-  CWindowDC dc(this);
-  CBrush Brush = (this->GetStyle() & ES_READONLY) == ES_READONLY ?
-                      GetSysColor(COLOR_BTNFACE) : GetSysColor(COLOR_WINDOW);
-
-  dc.FillRect(m_rectNCBottom, &Brush);
-  dc.FillRect(m_rectNCTop, &Brush);
-}
-
-UINT CFindEditCtrl::OnGetDlgCode()
-{
-  // Required for vertically centred text
-  if (m_rectNCTop.IsRectEmpty()) {
-    SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
-  }
-
-  return CEditExtn::OnGetDlgCode();
 }
 
 // CPWFindToolBar
@@ -405,11 +326,52 @@ void CPWFindToolBar::ChangeFont()
   // User has changed the Add/Edit font
   m_FindTextFont.DeleteObject();
 
+  CRect rt;
+  GetItemRect(0, &rt);
+  const int iBtnHeight = rt.Height();
+
+  // Use Add/Edit font rather than Tree/List font to determine height
   LOGFONT lf = { 0 };
   Fonts::GetInstance()->GetAddEditFont(&lf);
   VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
-
   m_findedit.SetFont(&m_FindTextFont);
+
+  bool bFontChanged(false);
+
+  do {
+    // Does it fit?  If not, keep reducing point size until it does.
+    TEXTMETRIC tm;
+    HDC hDC = ::GetDC(m_findedit);
+
+    HFONT hFontOld = (HFONT)SelectObject(hDC, m_FindTextFont.GetSafeHandle());
+
+    GetTextMetrics(hDC, &tm);
+    LONG iFontHeight = tm.tmHeight + tm.tmExternalLeading;
+
+    if (iFontHeight > iBtnHeight) {
+      if (lf.lfHeight < 0) {
+        int iPointSize = -::MulDiv(lf.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+        iPointSize--;
+        lf.lfHeight = -MulDiv(iPointSize, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
+      } else {
+        int iPointSize = ::MulDiv(lf.lfHeight - tm.tmInternalLeading, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+        iPointSize--;
+        lf.lfHeight = tm.tmInternalLeading + MulDiv(iPointSize, GetDeviceCaps(hDC, LOGPIXELSY), 72);
+      }
+
+      m_FindTextFont.DeleteObject();
+      VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+      m_findedit.SetFont(&m_FindTextFont);
+
+      bFontChanged = true;
+    } else {
+      bFontChanged = false;
+    }
+
+    SelectObject(hDC, hFontOld);
+    ::ReleaseDC(NULL, hDC);
+  } while(bFontChanged);
+
   m_findresults.SetFont(&m_FindTextFont);
   m_bFontSet = true;
 }
@@ -507,19 +469,21 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     CRect rt;
     GetItemRect(0, &rt);
     const int iBtnHeight = rt.Height();
-    const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
 
     /**
+     * Bjorne's suggestion: Set Find fonts to tree/list view font
+     * However, from BR 1371 it is better to use the Add/Edit font
+     * which is already used for CEdit controls.
      *
-     * Bjorne's suggestion: Set Find fonts to tree/list
-     * Unfortunately, I couldn't get the edit or text (results) controls
-     * to change size to fit the new font.
-     * Therefore we'll only change the font if it's going to fit in
-     * the controls, letting it be a little larger than the current size.
+     * Unfortunately, as unable to change size of the CEdit controls so
+     * that the text fits, we will dynalically reduce the size of the
+     * font until it fits in the CEdit controls.
      *
+     * We also do this if the user changes the Add/Edit font.
+     *
+     * Note: It is better this way as we did not do any sanity checks that
+     * the user hadn't set an enormous point size e.g. 72!
      */
-
-     // Initialise font - BR 1371 Change to Add/Edit fon
     if (!m_bFontSet) {
       ChangeFont();
     }

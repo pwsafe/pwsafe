@@ -34,7 +34,9 @@ e.g. via idle timer, workstation lock etc.
 Changes to Existing Features in 3.40.1
 ======================================
 [1371] The font used in the Find toolbar is now set to the user specified Add/Edit
-font instead of the Tree/List view font.
+font instead of the Tree/List view font. However, if the user selected font is too
+large so that characters are truncated, its point size will be dynamically reduced
+until they are not.
 
 New Features for 3.40.1
 =======================
