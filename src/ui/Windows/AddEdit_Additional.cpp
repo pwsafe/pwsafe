@@ -75,10 +75,8 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
   DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);
-    DDX_Control(pDX, IDC_STATIC_RUNCMD, m_stc_runcommand);
-  }
+  DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);
+  DDX_Control(pDX, IDC_STATIC_RUNCMD, m_stc_runcommand);
 
   // Password History
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
@@ -162,17 +160,15 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    if (InitToolTip()) {
-      AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
-      AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
-      AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
-      ActivateToolTip();
-    }
+  if (InitToolTip()) {
+    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
+    ActivateToolTip();
+  }
 
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-  }
 
   m_KBShortcutCtrl.SetMyParent(this);
 
@@ -397,38 +393,36 @@ HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       return hbr;
     }
 
-    if (M_uicaller() != IDS_ADDENTRY) {
-      COLORREF *pcfOld;
-      switch (nID) {
-        case IDC_STATIC_AUTO:
-          pcfOld = &m_autotype_cfOldColour;
-          break;
-        case IDC_STATIC_RUNCMD:
-          pcfOld = &m_runcmd_cfOldColour;
-          break;
-        default:
-          // Not one of ours - get out quick
-          return hbr;
-          break;
-      }
+    COLORREF *pcfOld;
+    switch (nID) {
+      case IDC_STATIC_AUTO:
+        pcfOld = &m_autotype_cfOldColour;
+        break;
+      case IDC_STATIC_RUNCMD:
+        pcfOld = &m_runcmd_cfOldColour;
+        break;
+      default:
+        // Not one of ours - get out quick
+        return hbr;
+        break;
+    }
 
-      int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
-      BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
-      BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
+    int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
+    BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
+    BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
 
-      if (iFlashing != 0) {
-        pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
-                       OPAQUE : TRANSPARENT);
-        COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
-        *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
-      } else if (bHighlight) {
-        pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
-        COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
-        *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
-      } else if (((CStaticExtn *)pWnd)->GetColourState()) {
-        COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
-        pDC->SetTextColor(cfUser);
-      }
+    if (iFlashing != 0) {
+      pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
+                      OPAQUE : TRANSPARENT);
+      COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
+      *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
+    } else if (bHighlight) {
+      pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
+      COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
+      *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
+    } else if (((CStaticExtn *)pWnd)->GetColourState()) {
+      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+      pDC->SetTextColor(cfUser);
     }
   }
 

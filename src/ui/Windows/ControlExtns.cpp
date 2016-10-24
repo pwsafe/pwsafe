@@ -250,6 +250,9 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
 
+  // Force update colour via CtlColor
+  Invalidate(TRUE);
+
   CEdit::OnKillFocus(pNewWnd);
 }
 
