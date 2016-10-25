@@ -222,7 +222,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
   pspin->SetRange(1, 255);
@@ -837,6 +837,9 @@ void CAddEdit_Additional::OnCheckedSavePasswordHistory()
   M_SavePWHistory() = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck() == BST_CHECKED ?
                            TRUE : FALSE;
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(M_SavePWHistory());
+
+  Invalidate();
   m_ae_psh->SetChanged(true);
 }
 
