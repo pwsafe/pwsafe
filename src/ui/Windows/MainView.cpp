@@ -79,8 +79,7 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Save Immediately if user requested it
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    int rc = SaveImmediately();
-    if (rc == PWScore::SUCCESS)
+    if (SaveImmediately() == PWScore::SUCCESS)
       bChanged = false;
   }
 
@@ -97,13 +96,21 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Don't do anything if status unchanged or not at least Vista
   if (!pws_os::IsWindowsVistaOrGreater() ||
-      m_core.IsReadOnly() || bChanged == bCurrentState)
+    m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 
   bCurrentState = bChanged;
 
+  BlockLogoffShutdown(bChanged);
+}
+
+void DboxMain::BlockLogoffShutdown(const bool bChanged)
+{
   // Only supported on Vista and later
-  if (bCurrentState) {
+  if (!pws_os::IsWindowsVistaOrGreater())
+    return;
+
+  if (bChanged) {
     if (m_pfcnShutdownBlockReasonCreate != NULL) {
       CString cs_stopreason;
       cs_stopreason.Format(IDS_STOPREASON, m_core.GetCurFile().c_str());
@@ -2319,6 +2326,7 @@ bool DboxMain::LockDataBase()
   if (!IsDBReadOnly() && m_bDBInitiallyRO) {
     ChangeMode(false);
   }
+
   return true;
 }
 

@@ -298,7 +298,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   INT_PTR rc;
 
   // do the export
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                   L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);

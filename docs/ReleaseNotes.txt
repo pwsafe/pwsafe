@@ -1,12 +1,17 @@
 Password Safe 3.40.1 Release Notes September 2016
 =================================================
 
-This note describe the new features, fixed bugs and known problems
+This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.txt file. For more 
+Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
+SourceForge Project tickets.  Any beginning with 'G' are issues raised on
+PasswordSafe's GitHub project, where the current source can also be found.
+The ReleaseNotes.html file has hot links to the relevant tickets/issues.
 
 Bugs fixed in 3.40.1
 ====================
@@ -34,6 +39,7 @@ on Autotype label now works.
 do not leave duplicated empty groups in the database.
 [476] Fix application crash if Add/Edit entry dialog open when the database is locked
 e.g. via idle timer, workstation lock etc.
+[G192] Saved changes no longer prevent logoff or system shutdown.
 
 Changes to Existing Features in 3.40.1
 ======================================

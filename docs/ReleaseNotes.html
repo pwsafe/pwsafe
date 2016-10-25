@@ -41,11 +41,17 @@ open('https://sourceforge.net/p/passwordsafe/support-requests/'+ ID +'/',
 '_blank',
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
+// GitHub Issues Tracker
+function GH(ID) {
+remote =
+open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
+'_blank',
+'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
+}
 </script>
 
 <noscript>
-<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items
-will not work! ***</p>
+<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
 </noscript>
 </head>
 
@@ -136,6 +142,10 @@ do not leave duplicated empty groups in the database.</td>
 <td align="center" width="100"><a href="nojs.html" onclick="SR(476);return false;">476</a></td>
 <td>Fix application crash if Add/Edit entry dialog is open when the database is locked
 e.g. via idle timer, workstation lock etc.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="GH(192);return false;">192</a></td>
+<td>Saved changes no longer prevent logoff or system shutdown.</td>
 </tr>
 </tbody>
 </table>
