@@ -509,7 +509,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     m_AEMD.entrysize = m_AEMD.pci->GetSize();
     m_pp_datetimes->UpdateStats();
 
-    if (bIsPSWDModified && m_AEMD.SavePWHistory == TRUE) {
+    // Update the password history only if the password has been changed,
+    // password history is being saved and the Add_Additional property page
+    // has already been shown
+    if (bIsPSWDModified && m_AEMD.SavePWHistory == TRUE && m_pp_additional->HasBeenShown()) {
       m_pp_additional->UpdatePasswordHistory();
     }
     return TRUE;
