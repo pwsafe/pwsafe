@@ -284,7 +284,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     }
 
     time_t t;
-    bool bIsPSWDModified;
+    bool bIsPSWDModified(false);
     short iDCA, iShiftDCA;
 
     switch (m_AEMD.uicaller) {
@@ -336,6 +336,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
           m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
           m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
+
           switch (m_AEMD.ipolicy) {
             case DEFAULT_POLICY:
               m_AEMD.pci->SetPWPolicy(L"");
@@ -388,7 +389,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           }
 
           if (bIsPSWDModified) {
-            m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
+            pciA->UpdatePassword(m_AEMD.realpassword);
             m_AEMD.locPMTime = pciA->GetPMTimeL();
           }
 
@@ -507,6 +508,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     }
     m_AEMD.entrysize = m_AEMD.pci->GetSize();
     m_pp_datetimes->UpdateStats();
+
+    if (bIsPSWDModified && m_AEMD.SavePWHistory == TRUE) {
+      m_pp_additional->UpdatePasswordHistory();
+    }
     return TRUE;
   }
 
@@ -644,6 +649,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   if (m_AEMD.MaxPWHistory == 0)
     m_AEMD.MaxPWHistory = PWSprefs::GetInstance()->
                            GetPref(PWSprefs::NumPWHistoryDefault);
+  
   // PWPolicy fields
   // Note different pci depending on if Alias
   pciA->GetPWPolicy(m_AEMD.pwp);

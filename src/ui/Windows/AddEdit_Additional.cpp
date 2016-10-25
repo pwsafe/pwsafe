@@ -261,37 +261,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   cs_text.LoadString(IDS_PASSWORD);
   m_PWHistListCtrl.InsertColumn(1, cs_text);
 
-  PWHistList::iterator iter;
-  DWORD nIdx;
-  for (iter = M_pwhistlist().begin(), nIdx = 0;
-       iter != M_pwhistlist().end(); iter++, nIdx++) {
-    int nPos = 0;
-    const PWHistEntry pwhentry = *iter;
-    if (pwhentry.changetttdate != 0) {
-      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
-                                                               PWSUtil::TMC_LOCALE);
-      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
-    } else {
-      cs_text.LoadString(IDS_UNKNOWN);
-      cs_text.Trim();
-      nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
-    }
-    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password.c_str());
-    m_PWHistListCtrl.SetItemData(nPos, nIdx);
-  }
-
-  m_PWHistListCtrl.SetRedraw(FALSE);
-  for (int i = 0; i < 2; i++) {
-    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
-    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
-    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
-    m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
-  }
-  m_PWHistListCtrl.SetRedraw(TRUE);
-
-  wchar_t buffer[10];
-  swprintf_s(buffer, 10, L"%lu", M_NumPWHistory());
+  UpdatePasswordHistory();
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
@@ -979,4 +949,40 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
     GetMainDlg()->SetClipboardData(histpasswd);
   }
   *pResult = 0;
+}
+
+void CAddEdit_Additional::UpdatePasswordHistory()
+{
+  // Update Password History
+  m_PWHistListCtrl.SetRedraw(FALSE);
+  m_PWHistListCtrl.DeleteAllItems();
+
+  CString cs_text;
+  PWHistList::iterator iter;
+  DWORD nIdx;
+  for (iter = M_pwhistlist().begin(), nIdx = 0;
+    iter != M_pwhistlist().end(); iter++, nIdx++) {
+    int nPos = 0;
+    const PWHistEntry pwhentry = *iter;
+    if (pwhentry.changetttdate != 0) {
+      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
+                                                               PWSUtil::TMC_LOCALE);
+      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
+    } else {
+      cs_text.LoadString(IDS_UNKNOWN);
+      cs_text.Trim();
+      nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
+    }
+    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password.c_str());
+    m_PWHistListCtrl.SetItemData(nPos, nIdx);
+  }
+
+  for (int i = 0; i < 2; i++) {
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
+    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
+  }
+  m_PWHistListCtrl.SetRedraw(TRUE);
 }

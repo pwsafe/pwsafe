@@ -40,6 +40,7 @@ public:
 
   void OnEntryHotKeyKillFocus();
   void OnEntryHotKeySetFocus();
+  void UpdatePasswordHistory();
 
 protected:
   CEditExtn m_ex_autotype;
