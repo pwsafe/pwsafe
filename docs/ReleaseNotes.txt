@@ -24,6 +24,8 @@ during edit.  This is to reduce unnecessary Tree view refreshes.
 a new entry.
 [] If an entry is saving password history and its password is changed via the Edit
 dialog Apply button, then the password history is now properly updated.
+[1378] Fix application crash if Add/Edit entry dialog open when the database is locked
+e.g. via idle timer, workstation lock etc.
 [1373] An invalid or non-existent backup directory path can no longer be saved
 when exiting Options.
 [1369] The virtual keyboard no longer becomes unusable after clicking on the
@@ -37,8 +39,6 @@ on Autotype label now works.
 [1364] The Tree view no longer refreshes if a non-display field is changed e.g. Notes.
 [1363] Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.
-[476] Fix application crash if Add/Edit entry dialog open when the database is locked
-e.g. via idle timer, workstation lock etc.
 [G192] Saved changes no longer prevent logoff or system shutdown.
 
 Changes to Existing Features in 3.40.1
