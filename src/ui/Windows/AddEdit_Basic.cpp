@@ -145,6 +145,9 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
   DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
 
+  DDX_Control(pDX, IDC_SMARTLABELHELP, m_Help1);
+  DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
+  DDX_Control(pDX, IDC_NOTESHELP, m_Help3);
   //}}AFX_DATA_MAP
 }
 
@@ -227,14 +230,17 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_notes.SetFont(pFonts->GetNotesFont());
   }
 
-  if (InitToolTip()) {
-    AddTool(IDC_STATIC_GROUP, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_TITLE, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_NOTES, IDS_CLICKTOCOPY);
-    AddTool(IDC_STATIC_URL, IDS_CLICKTOCOPY);
-    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_SMARTLABELHELP, IDS_SMARTLABELHELP);
+    AddTool(IDC_PASSWORDHELP, IDS_PASSWORDHELP);
+    AddTool(IDC_NOTESHELP, IDS_NOTESHELP);
+
+    // Old style tooltips
     AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
     AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
     AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
@@ -244,6 +250,13 @@ BOOL CAddEdit_Basic::OnInitDialog()
     }
 
     ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
   }
 
   m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);

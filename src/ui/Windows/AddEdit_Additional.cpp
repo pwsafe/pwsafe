@@ -87,6 +87,9 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_ENTKBSHCTHOTKEY, m_KBShortcutCtrl);
   // Error/Warning messages for user defined keyboard shortcut
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
+
+  DDX_Control(pDX, IDC_AUTOTYPEHELP, m_Help1);
+  DDX_Control(pDX, IDC_PWHHELP, m_Help2);
   //}}AFX_DATA_MAP
 }
 
@@ -94,6 +97,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutoTypeHelp)
 
   ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
@@ -111,8 +115,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
 
   ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
-  ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, OnHistListClick)
-
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -253,6 +255,26 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
   }
 
+  // Initialise m_Help2 MUST be performed before calling UpdatePasswordHistory
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_PWHHELP, IDS_PWHHELP);
+    AddTool(IDC_AUTOTYPEHELP, IDS_AUTOTYPEHELP);
+
+    // Note: clicking on IDC_AUTOTYPEHELP opens AutoType Help rather than
+    // showing a Tooltip
+
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+  }
+
   m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   m_PWHistListCtrl.UpdateRowHeight(false);
   CString cs_text;
@@ -273,6 +295,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   m_stc_warning.SetColour(RGB(255, 0, 0));
   m_stc_warning.ShowWindow(SW_HIDE);
+
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
@@ -347,6 +370,11 @@ void CAddEdit_Additional::OnHotKeyChanged()
 void CAddEdit_Additional::OnHelp()
 {
   ShowHelp(L"::/html/entering_pwd_add.html");
+}
+
+void CAddEdit_Additional::OnAutoTypeHelp()
+{
+  ShowHelp(L"::/html/autotype.html");
 }
 
 HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
@@ -849,6 +877,9 @@ void CAddEdit_Additional::OnClearPWHist()
   m_PWHistListCtrl.DeleteAllItems();
   M_pwhistlist().clear();
   m_ae_psh->SetChanged(true);
+
+  m_Help2.EnableWindow(FALSE);
+  m_Help2.ShowWindow(SW_HIDE);
 }
 
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -939,6 +970,7 @@ void CAddEdit_Additional::OnPWHCopyAll()
   }
 
   GetMainDlg()->SetClipboardData(HistStr);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
 }
 
 
@@ -950,6 +982,7 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
     int i = M_pwhistlist().size() - selectedRow - 1;
     const StringX histpasswd = M_pwhistlist()[i].password;
     GetMainDlg()->SetClipboardData(histpasswd);
+    GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
   }
   *pResult = 0;
 }
@@ -987,5 +1020,9 @@ void CAddEdit_Additional::UpdatePasswordHistory()
     int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
     m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
   }
+
   m_PWHistListCtrl.SetRedraw(TRUE);
+
+  m_Help2.EnableWindow(m_PWHistListCtrl.GetItemCount() == 0 ? FALSE : TRUE);
+  m_Help2.ShowWindow(m_PWHistListCtrl.GetItemCount() == 0 ? SW_HIDE : SW_SHOW);
 }

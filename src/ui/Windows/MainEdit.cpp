@@ -1864,6 +1864,12 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::EMAIL:
       imsg = IDS_EMAILCOPIED;
       break;
+    case CItemData::PWHIST:
+      imsg = IDS_PWHISTORYCOPIED;
+      break;
+    case CItemData::RESERVED:
+      imsg = IDS_OLDPSWDCOPIED;
+      break;
     default:
       ASSERT(0);
       return;

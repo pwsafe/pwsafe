@@ -43,6 +43,11 @@
 #define IDS_SAVEIMMEDIATELY             5112
 #define IDS_DBLOCK                      5113
 #define IDS_USERBACKUPOTHERLOCATION2    5114
+#define IDS_SMARTLABELHELP              5115
+#define IDS_PASSWORDHELP                5116
+#define IDS_NOTESHELP                   5117
+#define IDS_AUTOTYPEHELP                5118
+#define IDS_PWHHELP                     5119
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -782,3 +787,5 @@
 #define IDS_OPTBACKUPNODRIVE            6034
 #define IDS_EXPANDPATH                  6035
 #define IDS_CANT_EXPANDPATH             6036
+#define IDS_PWHISTORYCOPIED             6037
+#define IDS_OLDPSWDCOPIED               6038

@@ -14,6 +14,7 @@
 #include "AddEdit_PropertyPage.h"
 #include "ExtThread.h"
 #include "ControlExtns.h"
+#include "TBMStatic.h"
 
 #include "core/ItemData.h"
 
@@ -68,6 +69,7 @@ public:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_Basic)
+
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
@@ -122,6 +124,8 @@ private:
                         const bool bIsEdit, const CItemData::EntryType InputType, 
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
+
+  CTBMStatic m_Help1, m_Help2, m_Help3;
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
