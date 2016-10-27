@@ -978,11 +978,14 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;
-  if (selectedRow >= 0) { // -1 means user doubleclicked on whitespace
-    int i = M_pwhistlist().size() - selectedRow - 1;
-    const StringX histpasswd = M_pwhistlist()[i].password;
+  if (selectedRow >= 0) {
+    int indx = m_PWHistListCtrl.GetItemData(selectedRow);
+    const StringX histpasswd = M_pwhistlist()[indx].password;
     GetMainDlg()->SetClipboardData(histpasswd);
-    GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
+
+    // Note use of RESERVED for indicating in the Status bar 
+    // that an old password has been copied
+    GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED); 
   }
   *pResult = 0;
 }
@@ -997,7 +1000,7 @@ void CAddEdit_Additional::UpdatePasswordHistory()
   PWHistList::iterator iter;
   DWORD nIdx;
   for (iter = M_pwhistlist().begin(), nIdx = 0;
-    iter != M_pwhistlist().end(); iter++, nIdx++) {
+       iter != M_pwhistlist().end(); iter++, nIdx++) {
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
     if (pwhentry.changetttdate != 0) {
@@ -1023,6 +1026,7 @@ void CAddEdit_Additional::UpdatePasswordHistory()
 
   m_PWHistListCtrl.SetRedraw(TRUE);
 
+  m_PWHistListCtrl.EnableWindow(m_PWHistListCtrl.GetItemCount() == 0 ? FALSE : TRUE);
   m_Help2.EnableWindow(m_PWHistListCtrl.GetItemCount() == 0 ? FALSE : TRUE);
   m_Help2.ShowWindow(m_PWHistListCtrl.GetItemCount() == 0 ? SW_HIDE : SW_SHOW);
 }
