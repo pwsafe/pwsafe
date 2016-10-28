@@ -38,7 +38,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
-  m_ClearPWHistory(false), m_bSortAscending(true),
+  m_bClearPWHistory(false), m_bSortAscending(true),
   m_bInitdone(false), m_iSortedColumn(-1),
   m_bWarnUserKBShortcut(false), m_iOldHotKey(0)
 {
@@ -717,9 +717,10 @@ BOOL CAddEdit_Additional::OnApply()
    *
    */
 
-  if (m_ClearPWHistory == TRUE) {
+  if (m_bClearPWHistory == TRUE) {
     M_pwhistlist().clear();
     M_PWHistory() = M_PWHistory().Left(5);
+    m_bClearPWHistory = false;
   }
 
   if (M_SavePWHistory() == TRUE &&
@@ -873,11 +874,17 @@ void CAddEdit_Additional::OnCheckedSavePasswordHistory()
 
 void CAddEdit_Additional::OnClearPWHist()
 {
-  m_ClearPWHistory = true;
+  m_bClearPWHistory = true;
   m_PWHistListCtrl.DeleteAllItems();
   M_pwhistlist().clear();
   m_ae_psh->SetChanged(true);
 
+  // Update control states
+  m_PWHistListCtrl.EnableWindow(FALSE);
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
+  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(FALSE);
+
+  // Help no longer needed
   m_Help2.EnableWindow(FALSE);
   m_Help2.ShowWindow(SW_HIDE);
 }
@@ -983,8 +990,8 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
     const StringX histpasswd = M_pwhistlist()[indx].password;
     GetMainDlg()->SetClipboardData(histpasswd);
 
-    // Note use of RESERVED for indicating in the Status bar 
-    // that an old password has been copied
+    // Note use of CItemData::RESERVED for indicating in the
+    // Status bar that an old password has been copied
     GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED); 
   }
   *pResult = 0;
@@ -1026,7 +1033,13 @@ void CAddEdit_Additional::UpdatePasswordHistory()
 
   m_PWHistListCtrl.SetRedraw(TRUE);
 
-  m_PWHistListCtrl.EnableWindow(m_PWHistListCtrl.GetItemCount() == 0 ? FALSE : TRUE);
-  m_Help2.EnableWindow(m_PWHistListCtrl.GetItemCount() == 0 ? FALSE : TRUE);
-  m_Help2.ShowWindow(m_PWHistListCtrl.GetItemCount() == 0 ? SW_HIDE : SW_SHOW);
+  // Update controls state
+  const bool bEntriesPresent = m_PWHistListCtrl.GetItemCount() != 0;
+  m_PWHistListCtrl.EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
+
+  // Help no longer needed
+  m_Help2.EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  m_Help2.ShowWindow(bEntriesPresent ? SW_SHOW : SW_HIDE);
 }

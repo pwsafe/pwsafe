@@ -61,7 +61,7 @@ protected:
 
   int m_iSortedColumn;
   bool m_bSortAscending;
-  bool m_ClearPWHistory;
+  bool m_bClearPWHistory;
 
   // Overrides
   // ClassWizard generate virtual function overrides

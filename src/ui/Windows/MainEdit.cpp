@@ -1830,6 +1830,8 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
 {
+  // Note use of CItemData::RESERVED for indicating in the
+  // Status bar that an old password has been copied
   int imsg(0);
   m_lastclipboardaction = L"";
   switch (iaction) {
