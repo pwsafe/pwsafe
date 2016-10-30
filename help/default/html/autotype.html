@@ -115,7 +115,7 @@ words. This is useful for fine-tuning the timing with certain web pages.</li>
 digits, so that, for example, \w5000 will create a half-second delay and 
 then emit the letter '0', which is probably not what you intended (\W5 
 would do the trick, though).</li>
-<li><b>\z</b> (Windows only) invokes the old AutoType mechanism. This mechanism
+<a name="z"></a><li><b>\z</b> (Windows only) invokes the old AutoType mechanism. This mechanism
 may handle non-Latin characters incorrectly, but can make AutoType work on certain 
 problematical web sites. <i><u>If you find that AutoType does not work 
 properly on a particular web site, try this code at the beginning of the 
@@ -198,8 +198,7 @@ number (12345) must be entered before the user and password:
 </pre> 
 </p>
 
-<p><b>Example 2:</b> The following sequence has been suggested by a user 
-as it should clear the username field first before username and password 
+<p><b>Example 2:</b> The following sequence, sent in by a user, clears the username field before username and password
 autotype begins. Non-empty username fields occur all the time. Some 
 sites remember the username even when the user does not want it to or 
 user forgets to clear the don't remember username and, because of 
@@ -212,12 +211,12 @@ non-empty username field first.
 </pre>
 </p>
 
-<p><b>Example 3:</b> The following sequence has been suggested by a user 
-to toggle a checkbox (e.g. disable keeping you logged in):
+<p><b>Example 3:</b> The following sequence, sent in by a user,
+ toggles a checkbox (e.g., disables keeping you logged in):
 <pre> 
 <i>\&#35;\t \&#35;</i>
-</pre> Note: You may need more tabs ('\t') in order to get to the offending
-checkbox on any particular webpage. Also, please see above on possible issues
+</pre> Note: You may need more tabs ('\t') in order to get to the desired
+checkbox on any particular webpage. Also, please see <a href="#z">above</a> on possible issues
 when using the '\z' field. </p> 
 
 <hr>
