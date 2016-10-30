@@ -716,30 +716,27 @@ StringX CItemData::GetPWHistory() const
   return ret;
 }
 
-// Return whether first old password is newer than the second
-// used in std::sort below.
-static bool PWHCompare(const PWHistEntry &pwhe1, const PWHistEntry &pwhe2)
-{
-  return pwhe1.changetttdate > pwhe2.changetttdate;
-}
-
 StringX CItemData::GetPreviousPassword() const
 {
   StringX sxPWH = GetField(PWHIST);
   if (sxPWH == _T("0") || sxPWH == _T("00000")) {
     return _T("");
   } else {
-    // Get all histtory entries
+    // Get all history entries
     size_t num_err, MaxPWHistory;
     PWHistList pwhistlist;
     bool status = CreatePWHistoryList(sxPWH, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
     // If not active or none yet saved, then don't return anything
-    if (!status || pwhistlist.size() == 0)
+    if (!status || pwhistlist.empty())
       return _T("");
 
     // Sort into date order and return last saved
-    std::sort(pwhistlist.begin(), pwhistlist.end(), PWHCompare);
+    std::sort(pwhistlist.begin(), pwhistlist.end(),
+              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
+              {
+                return pwhe1.changetttdate > pwhe2.changetttdate;
+              });
     return pwhistlist[0].password;
   }
 }
