@@ -476,8 +476,8 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
      * which is already used for CEdit controls.
      *
      * Unfortunately, as unable to change size of the CEdit controls so
-     * that the text fits, we will dynalically reduce the size of the
-     * font until it fits in the CEdit controls.
+     * that the text fits, we will dynamically reduce the font size
+     * until it fits in the CEdit controls.
      *
      * We also do this if the user changes the Add/Edit font.
      *
