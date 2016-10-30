@@ -70,19 +70,17 @@ void CPWSRecentFileList::WriteList()
   }
 }
 
-int CPWSRecentFileList::GetNumUsed()
+int CPWSRecentFileList::GetNumUsed() const
 {
   int n = 0;
   const int num_MRU = GetSize();
-  std::wstring *sMRUFiles = new std::wstring[num_MRU];
+  // workaround silly MFC lack of const operator[]:
+  CPWSRecentFileList *self = const_cast<CPWSRecentFileList *>(this);
 
   for (int i = 0; i < num_MRU; i++) {
-    sMRUFiles[i] = (*this)[i];
-    if (!sMRUFiles[i].empty())
+  if (!(*self)[i].IsEmpty())
       n++;
   }
-
-  delete[] sMRUFiles;
 
   return n;
 }

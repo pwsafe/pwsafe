@@ -28,10 +28,10 @@ public:
 
   virtual void ReadList();    // reads from registry or config file
   virtual void WriteList();   // writes to registry or config file
-  bool IsMRUEmpty() {return GetNumUsed() == 0;}
+  bool IsMRUEmpty() const {return GetNumUsed() == 0;}
 
   // Despite what the documentation implies, GetSize returns maximum size not number used
-  int GetMaxSize() { return GetSize(); }
-  int GetNumUsed();
+  int GetMaxSize() const { return GetSize(); }
+  int GetNumUsed() const;
 };
 
