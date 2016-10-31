@@ -34,7 +34,6 @@ public:
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
   //{{AFX_MSG(CAddEdit_PropertySheet)
-  afx_msg void OnWindowPosChanged(WINDOWPOS *wpos);
   //}}AFX_MSG
 
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
