@@ -42,7 +42,7 @@ public:
   void OnEntryHotKeyKillFocus();
   void OnEntryHotKeySetFocus();
   void UpdatePasswordHistory();
-  bool HasBeenShown() { return m_bInitdone; }
+  bool HasBeenShown() const { return m_bInitdone; }
 
 protected:
   CEditExtn m_ex_autotype;
