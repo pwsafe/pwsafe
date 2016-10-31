@@ -928,6 +928,13 @@ BOOL ThisMfcApp::InitInstance()
   // (since user/host/config file may be overridden!)
   bool allDone = false;
 
+  // Load translations before command line parsing (localized messages used in Usage and encrypt/decrypt dialogs)
+  LoadLocalizedStuff();
+#ifndef _DEBUG
+  if (m_hInstResDLL != NULL)
+    LocalizeFaultHandler(m_hInstResDLL);
+#endif
+
   // Note: Even though PWSprefs has not yet been created, parsing the command line
   // will (via DboxMain) fill in values within it!
   bool parseVal = ParseCommandLine(dbox, allDone);
@@ -948,12 +955,6 @@ BOOL ThisMfcApp::InitInstance()
   // Stop compiler warnings
   UNREFERENCED_PARAMETER(pFonts);
   UNREFERENCED_PARAMETER(pPWSver);
-
-  LoadLocalizedStuff();
-#ifndef _DEBUG
-  if (m_hInstResDLL != NULL)
-    LocalizeFaultHandler(m_hInstResDLL);
-#endif
 
   // Update Quiet value if via environmental variable rather than 
   // command line flag
