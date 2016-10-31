@@ -58,7 +58,7 @@ CKeySend::~CKeySend()
   delete m_impl;
 }
 
-void CKeySend::SetSendMethod(const bool bForceOldMethod)
+void CKeySend::SetOldSendMethod(bool bForceOldMethod)
 {
   // We want to use keybd_event (OldSendChar) for Win2K & older,
   // SendInput (NewSendChar) for newer versions.
@@ -388,4 +388,30 @@ void CKeySend::EmulateMods(bool /*emulate*/)
 bool CKeySend::IsEmulatingMods() const
 {
   return false;
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
+{
+  static const std::map<std::wstring, WORD> vkmap = {
+    {L"ENTER", VK_RETURN},
+    {L"UP", VK_UP},
+    {L"DOWN", VK_DOWN},
+    {L"LEFT", VK_LEFT},
+    {L"RIGHT", VK_RIGHT},
+    {L"HOME", VK_HOME},
+    {L"END", VK_END},
+    {L"PGUP", VK_PRIOR},
+    {L"PGDN", VK_NEXT},
+    {L"TAB", VK_TAB},
+    {L"SPACE", VK_SPACE},
+  };
+
+  auto iter = vkmap.find(kname.c_str());
+  if (iter == vkmap.end()) {
+    kval = 0;
+    return false;
+  } else {
+    kval = iter->second;
+    return true;
+  }
 }

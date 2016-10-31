@@ -91,3 +91,11 @@ bool CKeySend::IsEmulatingMods() const
 void CKeySend::SendVirtualKey(WORD, bool, bool, bool)
 {
 }
+void CKeySend::SetOldSendMethod(bool)
+{
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &, WORD &)
+{
+  return false;
+}

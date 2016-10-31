@@ -22,6 +22,21 @@ class CKeySendImpl; // for os-specific stuff
 class CKeySend
 {
 public:
+  static bool LookupVirtualKey(const StringX &kname, WORD &kval); // os-specific
+  /**
+     Above maps the following into OS-specific codes:
+    Enter  Enter key
+    Up     Up-arrow key
+    Down   Down-arrow down key
+    Left   Left-arrow key
+    Right  Right-arrow key
+    Home   Home key
+    End    End key
+    PgUp   Page-up key
+    PgDn   Page-down key
+    Tab    Tab key
+    Space  Space key
+   */
   CKeySend(bool bForceOldMethod = false, unsigned defaultDelay = 10); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
@@ -33,9 +48,7 @@ public:
   void SetCapsLock(bool bstate);
   void BlockInput(bool bi) const;
 
-#ifdef WIN32
-  void SetSendMethod(const bool bForceOldMethod);
-#endif
+  void SetOldSendMethod(bool bForceOldMethod); // currently Windows-only
 
   void SelectAll() const;
   void EmulateMods(bool emulate);

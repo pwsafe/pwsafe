@@ -225,8 +225,8 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   return sxretval;
 }
 
-bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
-                       bool &bAlt, bool &bCtrl, bool &bShift)
+static bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
+                              bool &bAlt, bool &bCtrl, bool &bShift)
 {
   // Currently support special characters (note codes are NOT case sensitive)
   // In addition the following prefixes are supported
@@ -244,22 +244,7 @@ bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
     {Tab}   Tab key
     {Space} Space key
   */
-
-  const std::vector<StringX> vCodes = { _T("ENTER"), _T("UP"), _T("DOWN"),
-                                        _T("LEFT"), _T("RIGHT"),
-                                        _T("HOME"), _T("END"),
-                                        _T("PGUP"), _T("PGDN"),
-                                        _T("TAB"), _T("SPACE") };
-
-  const std::vector<WORD> vVK = { VK_RETURN, VK_UP, VK_DOWN,
-                                  VK_LEFT, VK_RIGHT,
-                                  VK_HOME, VK_END,
-                                  VK_PRIOR, VK_NEXT,
-                                  VK_TAB, VK_SPACE};
-
-  ASSERT(vCodes.size() == vVK.size());
-
-  wVK = 0;
+  
   bAlt = bCtrl = bShift = false;
  
   TCHAR curChar = sx_autotype[n];
@@ -268,7 +253,7 @@ bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
     return false;
   }
 
-  // Find ending curley bracket
+  // Find ending curly bracket
   StringX::size_type iEndBracket = sx_autotype.find_first_of(TCHAR('}'), n);
   if (iEndBracket == StringX::npos)
     return false;
@@ -304,12 +289,8 @@ bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
     }
   }
 
-  // Verify code supported
-  std::vector<StringX>::const_iterator it = std::find(vCodes.begin(), vCodes.end(), sxCode);
-  if (it == vCodes.end())
+  if (!CKeySend::LookupVirtualKey(sxCode, wVK))
     return false;
-
-  wVK = vVK[std::distance(vCodes.cbegin(), it)];
   n = iEndBracket - 1;
   return true;
 }
@@ -738,7 +719,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             }
             // Toggle
             bForceOldMethod2 = !bForceOldMethod2;
-            ks.SetSendMethod(bForceOldMethod2);
+            ks.SetOldSendMethod(bForceOldMethod2);
           }
           break;
 
