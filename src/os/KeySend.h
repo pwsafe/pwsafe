@@ -25,18 +25,26 @@ public:
   CKeySend(bool bForceOldMethod = false, unsigned defaultDelay = 10); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
+  void SendVirtualKey(WORD wVK, bool bAlt, bool bCtrl, bool bShift);
   void ResetKeyboardState() const;
   void SetDelay(unsigned d);
   void SetAndDelay(unsigned d);
   bool isCapsLocked() const ;
   void SetCapsLock(bool bstate);
-  void BlockInput(bool bi) const ;
-#ifdef __PWS_MACINTOSH__  
-  bool SimulateApplicationSwitch();
-#endif  
+  void BlockInput(bool bi) const;
+
+#ifdef WIN32
+  void SetSendMethod(const bool bForceOldMethod);
+#endif
+
   void SelectAll() const;
   void EmulateMods(bool emulate);
   bool IsEmulatingMods() const;
+
+#ifdef __PWS_MACINTOSH__  
+  bool SimulateApplicationSwitch();
+#endif  
+
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;

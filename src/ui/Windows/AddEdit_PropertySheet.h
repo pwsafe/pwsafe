@@ -33,6 +33,10 @@ public:
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
+  //{{AFX_MSG(CAddEdit_PropertySheet)
+  afx_msg void OnWindowPosChanged(WINDOWPOS *wpos);
+  //}}AFX_MSG
+
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
 
   // Get/Set routines needed by DboxMain Add & Edit

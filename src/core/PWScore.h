@@ -119,7 +119,7 @@ public:
   {m_nRecordsWithUnknownFields++;}
 
   // Clear out database structures and associated fields
-  void ClearData();
+  void ClearData(const bool bClearPrefs = true);
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name

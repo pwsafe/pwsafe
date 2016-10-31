@@ -58,6 +58,7 @@ protected:
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
+  virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -67,7 +68,6 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnLockOnIdleTimeout();
   afx_msg void OnLockOnMinimize();
-  afx_msg void OnKillFocusIdleTime();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 

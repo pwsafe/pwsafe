@@ -89,7 +89,7 @@ int DboxMain::BackupSafe()
     dir = cdrive + cdir;
   }
 
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   while (1) {
     CPWFileDialog fd(FALSE,
                      L"bak",

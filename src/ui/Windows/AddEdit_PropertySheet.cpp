@@ -39,6 +39,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   m_AEMD.currentDB = currentDB;
 
+  m_AEMD.entry_uuid = pws_os::CUUID::NullUUID();
+  m_AEMD.base_uuid = pws_os::CUUID::NullUUID();
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   m_AEMD.default_pwp = prefs->GetDefaultPolicy();
@@ -51,6 +54,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.title = L"";
     m_AEMD.username = L"";
     m_AEMD.realpassword = L"";
+    m_AEMD.lastpassword = L"";
     m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
@@ -126,8 +130,24 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
 BEGIN_MESSAGE_MAP(CAddEdit_PropertySheet, CPWPropertySheet)
   //{{AFX_MSG_MAP(CAddEdit_PropertySheet)
   ON_WM_SYSCOMMAND()
+  ON_WM_WINDOWPOSCHANGED()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CAddEdit_PropertySheet::OnWindowPosChanged(WINDOWPOS *wpos)
+{
+  // We might be showing after being hidden during locking of DB
+  // If so, pci_original will be incorrect.
+  // pci should be OK as was not in DB but a copy in caller
+  if ((wpos->flags & SWP_SHOWWINDOW) == SWP_SHOWWINDOW) {
+    ItemListIter iter = GetMainDlg()->Find(m_AEMD.entry_uuid);
+    if (iter != GetMainDlg()->End()) {
+      CItemData *pci_original = &GetMainDlg()->GetEntryAt(iter);
+      if (pci_original != m_AEMD.pci_original)
+        m_AEMD.pci_original = pci_original;
+    }
+  }
+}
 
 void CAddEdit_PropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 {
@@ -264,7 +284,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     }
 
     time_t t;
-    bool bIsPSWDModified;
+    bool bIsPSWDModified(false);
     short iDCA, iShiftDCA;
 
     switch (m_AEMD.uicaller) {
@@ -316,6 +336,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
           m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
           m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
+
           switch (m_AEMD.ipolicy) {
             case DEFAULT_POLICY:
               m_AEMD.pci->SetPWPolicy(L"");
@@ -368,7 +389,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           }
 
           if (bIsPSWDModified) {
-            m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
+            pciA->UpdatePassword(m_AEMD.realpassword);
             m_AEMD.locPMTime = pciA->GetPMTimeL();
           }
 
@@ -487,6 +508,13 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     }
     m_AEMD.entrysize = m_AEMD.pci->GetSize();
     m_pp_datetimes->UpdateStats();
+
+    // Update the password history only if the password has been changed,
+    // password history is being saved and the Add_Additional property page
+    // has already been shown
+    if (bIsPSWDModified && m_AEMD.SavePWHistory == TRUE && m_pp_additional->HasBeenShown()) {
+      m_pp_additional->UpdatePasswordHistory();
+    }
     return TRUE;
   }
 
@@ -530,6 +558,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.title = m_AEMD.pci->GetTitle();
   m_AEMD.username = m_AEMD.pci->GetUser();
   m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
+  m_AEMD.lastpassword = m_AEMD.pci->GetPreviousPassword();
   m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
@@ -623,6 +652,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   if (m_AEMD.MaxPWHistory == 0)
     m_AEMD.MaxPWHistory = PWSprefs::GetInstance()->
                            GetPref(PWSprefs::NumPWHistoryDefault);
+  
   // PWPolicy fields
   // Note different pci depending on if Alias
   pciA->GetPWPolicy(m_AEMD.pwp);

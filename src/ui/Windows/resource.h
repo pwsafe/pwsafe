@@ -854,16 +854,22 @@
 #define IDC_ZOOM_VALUE                  1549
 #define IDC_IMAGE_HSCROLL               1550
 #define IDC_IMAGE_VSCROLL               1551
-#define IDC_CHECK1                      1552
 #define IDC_EXPORTFILTERS               1552
+#define IDC_EXPANDEDUSERBACKUPOTHRLOC   1553
+#define IDC_USERBACKUPOTHERLOCATIONHELP2 1554
+#define IDC_SMARTLABELHELP              1555
+#define IDC_PASSWORDHELP                1556
+#define IDC_NOTESHELP                   1557
+#define IDC_AUTOTYPEHELP                1558
+#define IDC_PWHHELP                     1559
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        550
+#define _APS_NEXT_RESOURCE_VALUE        553
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1553
+#define _APS_NEXT_CONTROL_VALUE         1560
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

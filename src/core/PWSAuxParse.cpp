@@ -225,11 +225,101 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   return sxretval;
 }
 
+bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
+                       bool &bAlt, bool &bCtrl, bool &bShift)
+{
+  // Currently support special characters (note codes are NOT case sensitive)
+  // In addition the following prefixes are supported
+  // Alt = '!'; Ctrl = '^'; Shift = '+' such that {+Tab} == Shift+Tab
+  /*
+    {Enter} Enter key
+    {Up}    Up-arrow key
+    {Down}  Down-arrow down key
+    {Left}  Left-arrow key
+    {Right} Right-arrow key
+    {Home}  Home key
+    {End}   End key
+    {PgUp}  Page-up key
+    {PgDn}  Page-down key
+    {Tab}   Tab key
+    {Space} Space key
+  */
+
+  const std::vector<StringX> vCodes = { _T("ENTER"), _T("UP"), _T("DOWN"),
+                                        _T("LEFT"), _T("RIGHT"),
+                                        _T("HOME"), _T("END"),
+                                        _T("PGUP"), _T("PGDN"),
+                                        _T("TAB"), _T("SPACE") };
+
+  const std::vector<WORD> vVK = { VK_RETURN, VK_UP, VK_DOWN,
+                                  VK_LEFT, VK_RIGHT,
+                                  VK_HOME, VK_END,
+                                  VK_PRIOR, VK_NEXT,
+                                  VK_TAB, VK_SPACE};
+
+  ASSERT(vCodes.size() == vVK.size());
+
+  wVK = 0;
+  bAlt = bCtrl = bShift = false;
+ 
+  TCHAR curChar = sx_autotype[n];
+  if (curChar != TCHAR('{')) {
+    ASSERT(0);
+    return false;
+  }
+
+  // Find ending curley bracket
+  StringX::size_type iEndBracket = sx_autotype.find_first_of(TCHAR('}'), n);
+  if (iEndBracket == StringX::npos)
+    return false;
+
+  StringX sxCode = sx_autotype.substr(n + 1, iEndBracket - n - 1);
+  ToUpper(sxCode);
+
+  // Detect leading Alt, Ctrl or Shift
+  StringX sxfound;
+  std::size_t found = sxCode.find_first_of(_T("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
+  if (found == StringX::npos)
+    return false;
+
+  if (found != 0) {
+    // We have special characters
+    for (size_t iSpecial = 0; iSpecial < found; iSpecial++) {
+      if (sxCode.substr(0, 1) == _T("!") && sxCode.length() > 1) {
+        bAlt = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+      if (sxCode.substr(0, 1) == _T("^") && sxCode.length() > 1) {
+        bCtrl = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+      if (sxCode.substr(0, 1) == _T("+") && sxCode.length() > 1) {
+        bShift = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+    }
+  }
+
+  // Verify code supported
+  std::vector<StringX>::const_iterator it = std::find(vCodes.begin(), vCodes.end(), sxCode);
+  if (it == vCodes.end())
+    return false;
+
+  wVK = vVK[std::distance(vCodes.cbegin(), it)];
+  n = iEndBracket - 1;
+  return true;
+}
+
 StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_group,
                                        const StringX &sx_title,
                                        const StringX &sx_user,
                                        const StringX &sx_pwd,
+                                       const StringX &sx_lastpwd,
                                        const StringX &sx_notes,
                                        const StringX &sx_url,
                                        const StringX &sx_email,
@@ -344,6 +434,9 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('p'):
           sxtmp += sx_pwd;
           break;
+        case TCHAR('q'):
+          sxtmp += sx_lastpwd;
+          break;
         case TCHAR('l'):
           sxtmp += sx_url;
           break;
@@ -395,6 +488,11 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += curChar;
           break; // case 'b' & 'z'
 
+        case TCHAR('#'):  // Use older method but allow on/off
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+          break; // case '#'
+
         case TCHAR('d'):  // Delay
         case TCHAR('w'):  // Wait milli-seconds
         case TCHAR('W'):  // Wait seconds
@@ -415,6 +513,22 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           break; // case 'd', 'w' & 'W'
         }
 
+        case TCHAR('{'):
+        {
+          // Special processing of particular commands - could be expanded later
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+          WORD wVK;
+          bool bAlt, bCtrl, bShift;
+          if (GetSpecialCommand(sx_autotype, n, wVK, bAlt, bCtrl, bShift)) {
+            if (bAlt) sxtmp += _T('!');
+            if (bCtrl) sxtmp += _T('^');
+            if (bShift) sxtmp += _T('+');
+            sxtmp += wVK;
+          }
+          break;
+        }
+
         // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('v'): // vertical tab
@@ -422,7 +536,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('e'): // escape
         case TCHAR('x'): // hex digits (\xNN)
         // and any others we have forgotten!
-        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
+        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognised above>'
         default:
           sxtmp += L'\\';
           sxtmp += curChar;
@@ -445,6 +559,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
   StringX sxtitle = ci.GetTitle();
   StringX sxuser = ci.GetUser();
   StringX sxpwd = ci.GetPassword();
+  StringX sxlastpwd = ci.GetPreviousPassword();
   StringX sxnotes = ci.GetNotes();
   StringX sxurl = ci.GetURL();
   StringX sxemail = ci.GetEmail();
@@ -489,7 +604,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
     }
   }
   return PWSAuxParse::GetAutoTypeString(sxautotype, sxgroup,
-                                        sxtitle, sxuser, sxpwd,
+                                        sxtitle, sxuser, sxpwd, sxlastpwd,
                                         sxnotes, sxurl, sxemail,
                                         vactionverboffsets);
 }
@@ -500,12 +615,12 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   // Accepts string and vector indicating location(s) of command(s)
   // as returned by GetAutoTypeString()
   // processes the later whilst sending the former
-  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z)
+  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z,  \# & \-#)
   StringX sxtmp(_T(""));
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
  
-  bool bForceOldMethod(false), bCapsLock(false);
+  bool bForceOldMethod(false), bForceOldMethod2(false), bCapsLock(false);
  
   StringX::size_type st_index = sxautotype.find(_T("\\z"));
 
@@ -575,8 +690,10 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
 
           // Delay is going to change - send what we have with old delay
           ks.SendString(sxtmp);
+
           // start collecting new delay
-          sxtmp = _T("");
+          sxtmp.clear();
+
           unsigned int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
@@ -596,6 +713,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
 
           break; // case 'd', 'w' & 'W'
         }
+
         case L'z':
           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
               vactionverboffsets.end()) {
@@ -604,6 +722,26 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             sxtmp += curChar;
           }
           break;
+
+        case L'#':
+          // This toggles using the OldMethod as long as \z not specified ANYWHERE
+          // in the Autotype string
+          if (bForceOldMethod) {
+            // User has already used '\z' - ignore this \# - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          } else {
+            // Send what we have
+            if (sxtmp.length() > 0) {
+              ks.SendString(sxtmp);
+              sxtmp.clear();
+            }
+            // Toggle
+            bForceOldMethod2 = !bForceOldMethod2;
+            ks.SetSendMethod(bForceOldMethod2);
+          }
+          break;
+
         case L'b':
           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
               vactionverboffsets.end()) {
@@ -614,6 +752,53 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             sxtmp += L'\b';
           }
           break;
+
+        case L'{':
+        {
+          // Send what we have
+          if (sxtmp.length() > 0) {
+            ks.SendString(sxtmp);
+            sxtmp.clear();
+          }
+
+          // Get this field
+          StringX sxSpecial = sxautotype.substr(n + 1);
+          StringX::size_type iEndBracket = sxSpecial.find(_T('}'));
+          sxSpecial.erase(iEndBracket);
+          StringX::size_type iModifiersLength = sxSpecial.find_last_of(_T("!^+"));
+
+          bool bAlt(false), bCtrl(false), bShift(false);
+          if (iModifiersLength != StringX::npos) {
+            iModifiersLength++;
+            for (size_t i = 0; i < iModifiersLength; i++) {
+              if (sxSpecial[0] == _T('!')) {
+                bAlt = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+              if (sxSpecial[0] == _T('^')) {
+                bCtrl = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+              if (sxSpecial[0] == _T('+')) {
+                bShift = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+            }
+          } else {
+            iModifiersLength = 0;
+          }
+
+          // Get Virtual Key code
+          WORD wVK = sxautotype[n + iModifiersLength + 1];
+          ks.SendVirtualKey(wVK, bAlt, bCtrl, bShift);
+
+          // Skip over modifiers, VK and closing bracket
+          n += iEndBracket + 1;
+          break;
+        }
         default:
           sxtmp += L'\\';
           sxtmp += curChar;
@@ -622,7 +807,9 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
     } else
       sxtmp += curChar;
   }
+
   ks.SendString(sxtmp);
+
   // If we turned off CAPSLOCK, put it back
   if (bCapsLock)
     ks.SetCapsLock(true);

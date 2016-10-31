@@ -87,3 +87,7 @@ bool CKeySend::IsEmulatingMods() const
 {
   return false;
 }
+
+void CKeySend::SendVirtualKey(WORD, bool, bool, bool)
+{
+}

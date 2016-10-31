@@ -42,6 +42,12 @@
 #define IDS_CLEARPWHISTORY              5111
 #define IDS_SAVEIMMEDIATELY             5112
 #define IDS_DBLOCK                      5113
+#define IDS_USERBACKUPOTHERLOCATION2    5114
+#define IDS_SMARTLABELHELP              5115
+#define IDS_PASSWORDHELP                5116
+#define IDS_NOTESHELP                   5117
+#define IDS_AUTOTYPEHELP                5118
+#define IDS_PWHHELP                     5119
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -776,3 +782,10 @@
 #define IDS_IMAGE_IMPORT_FAILED         6029
 #define IDS_MEM_ALLOC_FAILED            6030
 #define IDS_MEM_LOCK_FAILED             6031
+#define IDS_CLEARMRU                    6032
+#define IDS_CONFIRMCLEARMRU             6033
+#define IDS_OPTBACKUPNODRIVE            6034
+#define IDS_EXPANDPATH                  6035
+#define IDS_CANT_EXPANDPATH             6036
+#define IDS_PWHISTORYCOPIED             6037
+#define IDS_OLDPSWDCOPIED               6038

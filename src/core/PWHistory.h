@@ -57,6 +57,7 @@ PWHistEntry() : changetttdate(0), changedate(), password() {}
 PWHistEntry(const PWHistEntry &that) :
   changetttdate(that.changetttdate), changedate(that.changedate),
     password(that.password) {}
+
   PWHistEntry &operator=(const PWHistEntry &that)
   { if (this != &that) {
       changetttdate = that.changetttdate;

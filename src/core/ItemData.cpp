@@ -21,6 +21,7 @@
 #include "PWSfile.h"
 #include "PWSfileV4.h"
 #include "PWStime.h"
+#include "PWHistory.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
@@ -713,6 +714,31 @@ StringX CItemData::GetPWHistory() const
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
+}
+
+StringX CItemData::GetPreviousPassword() const
+{
+  StringX sxPWH = GetField(PWHIST);
+  if (sxPWH == _T("0") || sxPWH == _T("00000")) {
+    return _T("");
+  } else {
+    // Get all history entries
+    size_t num_err, MaxPWHistory;
+    PWHistList pwhistlist;
+    bool status = CreatePWHistoryList(sxPWH, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+
+    // If not active or none yet saved, then don't return anything
+    if (!status || pwhistlist.empty())
+      return _T("");
+
+    // Sort into date order and return last saved
+    std::sort(pwhistlist.begin(), pwhistlist.end(),
+              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
+              {
+                return pwhe1.changetttdate > pwhe2.changetttdate;
+              });
+    return pwhistlist[0].password;
+  }
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,

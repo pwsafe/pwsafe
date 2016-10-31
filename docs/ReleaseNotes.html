@@ -41,11 +41,17 @@ open('https://sourceforge.net/p/passwordsafe/support-requests/'+ ID +'/',
 '_blank',
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
+// GitHub Issues Tracker
+function GH(ID) {
+remote =
+open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
+'_blank',
+'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
+}
 </script>
 
 <noscript>
-<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items
-will not work! ***</p>
+<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
 </noscript>
 </head>
 
@@ -53,13 +59,18 @@ will not work! ***</p>
 
 <h1 align="center">Password Safe 3.40.1 Release Notes September 2016</h1>
 
-<p>This note describe the new features, fixed bugs and known problems
+<p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit the
 <a href="https://pwsafe.org">PasswordSafe project site</a>.
 Details about changes to older releases may be found in the file
 ChangeLog.txt.</p>
+
+<p>Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
+SourceForge Project tickets.  Any beginning with 'G' are issues raised on
+PasswordSafe's GitHub project, where the current source can also be found.
+</p>
 
 <p>Here are the notes for the latest version. Previous versions
 are described <a href="#prev-vers">here</a>.
@@ -73,13 +84,73 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <table>
 <tbody>
 <tr>
+<td align="center" width="100">[]</td>
+<td>Ensure shortcut is updated in GUI after editing.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Text in the Find toolbar search edit control is now vertically centered to
+reduce character truncation.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>An entry in the Tree view is not updated if the visible text is unchanged
+during edit.  This is to reduce unnecessary Tree view refreshes.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Allow user to use the Smart Labels to copy fields to the clipboard when adding
+a new entry.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>If an entry is saving password history and its password is changed via the Edit
+dialog Apply button, then the password history is now properly updated.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1378);return false;">1378</a></td>
+<td>Fix application crash if Add/Edit entry dialog is open when the database is locked
+e.g. via idle timer, workstation lock etc.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1373);return false;">1373</a></td>
+<td>
+An invalid or non-existent backup directory path can no longer be saved
+when exiting Options.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1369);return false;">1369</a></td>
+<td>The virtual keyboard no longer becomes unusable after clicking on the Randomize button.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1368);return false;">1368</a></td>
+<td>The Status bar now shows the correct number of entries when a database is unlocked.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1367);return false;">1367</a></td>
+<td>Command line arguments -h and -u support reinstated.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1366);return false;">1366</a></td>
+<td>Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
+on Autotype label now works.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1365);return false;">1365</a></td>
 <td>Ctrl+F now switches focus back to Find toolbar if it is already open.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1364);return false;">1364</a></td>
+<td>The Tree view no longer refreshes if a non-display field is changed e.g. Notes.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1363);return false;">1363</a></td>
 <td>Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="GH(192);return false;">G192</a></td>
+<td>Saved changes no longer prevent logoff or system shutdown.</td>
 </tr>
 </tbody>
 </table>
@@ -90,8 +161,11 @@ do not leave duplicated empty groups in the database.</td>
 <table>
 <tbody>
 <tr>
-<td align="center" width="100">None</td>
-<td> </td>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1371);return false;">1371</a></td>
+<td>The font used in the Find toolbar is now set to the user specified Add/Edit
+font instead of the Tree/List view font. However, if the user selected font is too
+large so that characters are truncated, its point size will be dynamically reduced
+until they are not.</td>
 </tr>
 </tbody>
 </table>
@@ -102,9 +176,35 @@ do not leave duplicated empty groups in the database.</td>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100">[]</td>
+<td>Implement new AutoType field '\#' to toggle the use of the older mechanism to
+send keyboard input to other applications e.g. browsers.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Add more Help to the Add/Edit Basic and Additional tabs.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(815);return false;">815</a></td>
+<td>The database backup location now supports environmental variables e.g. 
+%homedrive% and %homepath%.  If used, the resulting path at that time is
+also shown.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(814);return false;">814</a></td>
+<td>Clearing the recent database list now requires confirmation.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(813);return false;">813</a></td>
 <td>When exporting a group to a new database, there is now an option to also export
 all filters stored in the database to the new database.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(796);return false;">796</a></td>
+<td>Autotype has been extended to support the previous password, if present
+in the entry's password history, via the Autotype field '\q'. In addition, for Windows,
+a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
+see Help for details.</td>
 </tr>
 </tbody>
 </table>
@@ -159,10 +259,6 @@ PasswordSafe database, the referenced policy is now also exported.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1347);return false;">1347</a></td>
 <td>Prevent a user from trying to copy a filter to a read-only database.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="BR(1346);return false;">1346</a></td>
-<td>The Notes window no longer scrolls when re-activated after losing focus.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1345);return false;">1345</a></td>

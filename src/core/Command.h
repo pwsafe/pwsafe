@@ -110,18 +110,21 @@ public:
     GUI_PWH_CHANGED_IN_DB
   };
 
+  // Note: entryUUID only used in GUI_REFRESH_ENTRY
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
-                                  ExecuteFn When, GUI_Action ga)
-  { return new UpdateGUICommand(pcomInt, When, ga); }
+                                  ExecuteFn When, GUI_Action ga,
+                                  const pws_os::CUUID &entryUUID = pws_os::CUUID::NullUUID())
+  { return new UpdateGUICommand(pcomInt, When, ga, entryUUID); }
   int Execute();
   void Undo();
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
   UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
-                   GUI_Action ga);
+                   GUI_Action ga, const pws_os::CUUID &entryUUID);
   const ExecuteFn m_When;
   const GUI_Action m_ga;
+  pws_os::CUUID m_entryUUID;
 };
 
 // PWS related commands

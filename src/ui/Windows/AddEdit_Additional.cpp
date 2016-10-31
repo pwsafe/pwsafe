@@ -38,7 +38,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
-  m_ClearPWHistory(false), m_bSortAscending(true),
+  m_bClearPWHistory(false), m_bSortAscending(true),
   m_bInitdone(false), m_iSortedColumn(-1),
   m_bWarnUserKBShortcut(false), m_iOldHotKey(0)
 {
@@ -75,10 +75,8 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
   DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);
-    DDX_Control(pDX, IDC_STATIC_RUNCMD, m_stc_runcommand);
-  }
+  DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);
+  DDX_Control(pDX, IDC_STATIC_RUNCMD, m_stc_runcommand);
 
   // Password History
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
@@ -89,6 +87,9 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_ENTKBSHCTHOTKEY, m_KBShortcutCtrl);
   // Error/Warning messages for user defined keyboard shortcut
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
+
+  DDX_Control(pDX, IDC_AUTOTYPEHELP, m_Help1);
+  DDX_Control(pDX, IDC_PWHHELP, m_Help2);
   //}}AFX_DATA_MAP
 }
 
@@ -96,6 +97,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutoTypeHelp)
 
   ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
@@ -113,8 +115,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
 
   ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
-  ON_NOTIFY(NM_DBLCLK, IDC_PWHISTORY_LIST, OnHistListClick)
-
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -162,17 +162,15 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    if (InitToolTip()) {
-      AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
-      AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
-      AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
-      ActivateToolTip();
-    }
+  if (InitToolTip()) {
+    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
+    ActivateToolTip();
+  }
 
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-  }
 
   m_KBShortcutCtrl.SetMyParent(this);
 
@@ -226,7 +224,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
   pspin->SetRange(1, 255);
@@ -257,6 +255,26 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
   }
 
+  // Initialise m_Help2 MUST be performed before calling UpdatePasswordHistory
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_PWHHELP, IDS_PWHHELP);
+    AddTool(IDC_AUTOTYPEHELP, IDS_AUTOTYPEHELP);
+
+    // Note: clicking on IDC_AUTOTYPEHELP opens AutoType Help rather than
+    // showing a Tooltip
+
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+  }
+
   m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   m_PWHistListCtrl.UpdateRowHeight(false);
   CString cs_text;
@@ -265,37 +283,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   cs_text.LoadString(IDS_PASSWORD);
   m_PWHistListCtrl.InsertColumn(1, cs_text);
 
-  PWHistList::iterator iter;
-  DWORD nIdx;
-  for (iter = M_pwhistlist().begin(), nIdx = 0;
-       iter != M_pwhistlist().end(); iter++, nIdx++) {
-    int nPos = 0;
-    const PWHistEntry pwhentry = *iter;
-    if (pwhentry.changetttdate != 0) {
-      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
-                                                               PWSUtil::TMC_LOCALE);
-      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
-    } else {
-      cs_text.LoadString(IDS_UNKNOWN);
-      cs_text.Trim();
-      nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
-    }
-    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password.c_str());
-    m_PWHistListCtrl.SetItemData(nPos, nIdx);
-  }
-
-  m_PWHistListCtrl.SetRedraw(FALSE);
-  for (int i = 0; i < 2; i++) {
-    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
-    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
-    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
-    m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
-  }
-  m_PWHistListCtrl.SetRedraw(TRUE);
-
-  wchar_t buffer[10];
-  swprintf_s(buffer, 10, L"%lu", M_NumPWHistory());
+  UpdatePasswordHistory();
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
@@ -307,6 +295,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   m_stc_warning.SetColour(RGB(255, 0, 0));
   m_stc_warning.ShowWindow(SW_HIDE);
+
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
@@ -383,6 +372,11 @@ void CAddEdit_Additional::OnHelp()
   ShowHelp(L"::/html/entering_pwd_add.html");
 }
 
+void CAddEdit_Additional::OnAutoTypeHelp()
+{
+  ShowHelp(L"::/html/autotype.html");
+}
+
 HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CAddEdit_PropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -397,38 +391,36 @@ HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       return hbr;
     }
 
-    if (M_uicaller() != IDS_ADDENTRY) {
-      COLORREF *pcfOld;
-      switch (nID) {
-        case IDC_STATIC_AUTO:
-          pcfOld = &m_autotype_cfOldColour;
-          break;
-        case IDC_STATIC_RUNCMD:
-          pcfOld = &m_runcmd_cfOldColour;
-          break;
-        default:
-          // Not one of ours - get out quick
-          return hbr;
-          break;
-      }
+    COLORREF *pcfOld;
+    switch (nID) {
+      case IDC_STATIC_AUTO:
+        pcfOld = &m_autotype_cfOldColour;
+        break;
+      case IDC_STATIC_RUNCMD:
+        pcfOld = &m_runcmd_cfOldColour;
+        break;
+      default:
+        // Not one of ours - get out quick
+        return hbr;
+        break;
+    }
 
-      int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
-      BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
-      BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
+    int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
+    BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
+    BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
 
-      if (iFlashing != 0) {
-        pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
-                       OPAQUE : TRANSPARENT);
-        COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
-        *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
-      } else if (bHighlight) {
-        pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
-        COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
-        *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
-      } else if (((CStaticExtn *)pWnd)->GetColourState()) {
-        COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
-        pDC->SetTextColor(cfUser);
-      }
+    if (iFlashing != 0) {
+      pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
+                      OPAQUE : TRANSPARENT);
+      COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
+      *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
+    } else if (bHighlight) {
+      pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
+      COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
+      *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
+    } else if (((CStaticExtn *)pWnd)->GetColourState()) {
+      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+      pDC->SetTextColor(cfUser);
     }
   }
 
@@ -725,9 +717,10 @@ BOOL CAddEdit_Additional::OnApply()
    *
    */
 
-  if (m_ClearPWHistory == TRUE) {
+  if (m_bClearPWHistory == TRUE) {
     M_pwhistlist().clear();
     M_PWHistory() = M_PWHistory().Left(5);
+    m_bClearPWHistory = false;
   }
 
   if (M_SavePWHistory() == TRUE &&
@@ -800,10 +793,14 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       // If Ctrl pressed - just copy un-substituted Autotype string
       // else substitute
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
-        if (M_autotype().IsEmpty())
+        if (M_autotype().IsEmpty()) {
           sxData = PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultAutotypeString);
-        else
+            GetPref(PWSprefs::DefaultAutotypeString);
+          // If still empty, take this default
+          if (sxData.empty()) {
+            sxData = DEFAULT_AUTOTYPE;
+          }
+        } else
           sxData = (LPCWSTR)M_autotype();
       } else {
         sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
@@ -811,10 +808,17 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_title(),
                                                 M_username(),
                                                 M_realpassword(),
+                                                M_lastpassword(),
                                                 M_realnotes(),
                                                 M_URL(),
                                                 M_email(),
                                                 vactionverboffsets);
+
+        // Replace any special code that we can - i.e. only \{\t} and \{ }
+        StringX sxTabCode(L"\\{\t}"), sxSpaceCode(L"\\{ }");
+        StringX sxTab(L"\t"), sxSpace(L" ");
+        Replace(sxData, sxTabCode, sxTab);
+        Replace(sxData, sxSpaceCode, sxSpace);
       }
       iaction = CItemData::AUTOTYPE;
       break;
@@ -862,15 +866,27 @@ void CAddEdit_Additional::OnCheckedSavePasswordHistory()
   M_SavePWHistory() = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck() == BST_CHECKED ?
                            TRUE : FALSE;
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(M_SavePWHistory());
+
+  Invalidate();
   m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_Additional::OnClearPWHist()
 {
-  m_ClearPWHistory = true;
+  m_bClearPWHistory = true;
   m_PWHistListCtrl.DeleteAllItems();
   M_pwhistlist().clear();
   m_ae_psh->SetChanged(true);
+
+  // Update control states
+  m_PWHistListCtrl.EnableWindow(FALSE);
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
+  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(FALSE);
+
+  // Help no longer needed
+  m_Help2.EnableWindow(FALSE);
+  m_Help2.ShowWindow(SW_HIDE);
 }
 
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -961,6 +977,7 @@ void CAddEdit_Additional::OnPWHCopyAll()
   }
 
   GetMainDlg()->SetClipboardData(HistStr);
+  GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
 }
 
 
@@ -968,10 +985,61 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;
-  if (selectedRow >= 0) { // -1 means user doubleclicked on whitespace
-    int i = M_pwhistlist().size() - selectedRow - 1;
-    const StringX histpasswd = M_pwhistlist()[i].password;
+  if (selectedRow >= 0) {
+    int indx = m_PWHistListCtrl.GetItemData(selectedRow);
+    const StringX histpasswd = M_pwhistlist()[indx].password;
     GetMainDlg()->SetClipboardData(histpasswd);
+
+    // Note use of CItemData::RESERVED for indicating in the
+    // Status bar that an old password has been copied
+    GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED); 
   }
   *pResult = 0;
+}
+
+void CAddEdit_Additional::UpdatePasswordHistory()
+{
+  // Update Password History
+  m_PWHistListCtrl.SetRedraw(FALSE);
+  m_PWHistListCtrl.DeleteAllItems();
+
+  CString cs_text;
+  PWHistList::iterator iter;
+  DWORD nIdx;
+  for (iter = M_pwhistlist().begin(), nIdx = 0;
+       iter != M_pwhistlist().end(); iter++, nIdx++) {
+    int nPos = 0;
+    const PWHistEntry pwhentry = *iter;
+    if (pwhentry.changetttdate != 0) {
+      const StringX locTime = PWSUtil::ConvertToDateTimeString(pwhentry.changetttdate,
+                                                               PWSUtil::TMC_LOCALE);
+      nPos = m_PWHistListCtrl.InsertItem(nPos, locTime.c_str());
+    } else {
+      cs_text.LoadString(IDS_UNKNOWN);
+      cs_text.Trim();
+      nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
+    }
+    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password.c_str());
+    m_PWHistListCtrl.SetItemData(nPos, nIdx);
+  }
+
+  for (int i = 0; i < 2; i++) {
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
+    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
+  }
+
+  m_PWHistListCtrl.SetRedraw(TRUE);
+
+  // Update controls state
+  const bool bEntriesPresent = m_PWHistListCtrl.GetItemCount() != 0;
+  m_PWHistListCtrl.EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
+
+  // Help no longer needed
+  m_Help2.EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  m_Help2.ShowWindow(bEntriesPresent ? SW_SHOW : SW_HIDE);
 }

@@ -422,6 +422,7 @@ public:
   // If we have processed it returns 0 else 1
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   bool IsWorkstationLocked() const;
+  void BlockLogoffShutdown(const bool bChanged);
 
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
@@ -531,7 +532,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool bClearMRE = true);
+  void ClearData(const bool bClearMRE = true, const bool bClearPrefs = true);
   int NewFile(StringX &filename);
 
   void SetListView();
@@ -543,7 +544,7 @@ public:
 
   //Version of message functions with return values
   int Save(const SaveType savetype = DboxMain::ST_INVALID);
-  int SaveAs(void);
+  int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
   int Open(const StringX &sx_Filename, const bool bReadOnly, const bool bHideReadOnly = false);
   int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);

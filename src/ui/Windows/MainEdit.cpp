@@ -1163,12 +1163,22 @@ void DboxMain::OnEdit()
         if (!m_bViaDCA) {
           EditShortcut(pci);
         } else {
+          // Save entry UUID in case DB locked
+          pws_os::CUUID entryuuid = pci->GetUUID();
           EditItem(GetBaseEntry(pci));
-          UpdateAccessTime(pci->GetUUID());
+
+          // If DB was locked then the pci will not be valid and the number of entries will be zero
+          // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+          UpdateAccessTime(entryuuid);
         }
       }  else {
+        // Save entry UUID in case DB locked
+        pws_os::CUUID entryuuid = pci->GetUUID();
         EditItem(pci);
-        UpdateAccessTime(pci->GetUUID());
+
+        // If DB was locked then the pci will not be valid and the number of entries will be zero
+        // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+        UpdateAccessTime(entryuuid);
       }
     } catch (CString &err) {
       CGeneralMsgBox gmb;
@@ -1275,11 +1285,10 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   return brc;
 }
 
-LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM )
 {
   // Called if user does 'Apply' on the Add/Edit property sheet via
   // Windows Message PWS_MSG_EDIT_APPLY
-  UNREFERENCED_PARAMETER(lParam);
   CAddEdit_PropertySheet *pentry_psh = (CAddEdit_PropertySheet *)wParam;
   UpdateEntry(pentry_psh);
   return 0L;
@@ -1439,7 +1448,12 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   ChangeOkUpdate();
 
   // Order may have changed as a result of edit
-  m_ctlItemTree.SortTree(TVI_ROOT);
+  // Check if we need to though!
+  if (m_ctlItemTree.MakeTreeDisplayString(*pci_original) != 
+      m_ctlItemTree.MakeTreeDisplayString(ci_new)) {
+    m_ctlItemTree.SortTree(TVI_ROOT);
+  }
+
   SortListView();
 
   short sh_odca, sh_ndca;
@@ -1483,6 +1497,8 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
   pci = NULL; // Set to NULL - use ci_original
 
+  pws_os::CUUID entryuuid = ci_original.GetUUID();
+
   // Determine if last entry in this group just in case the user changes the group
   DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
   bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
@@ -1518,6 +1534,12 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
+    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_UNDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+    pmulticmds->Add(pcmd_undo);
+
     pmulticmds->Add(EditEntryCommand::Create(pcore, ci_original, ci_edit));
 
     // Check if group changed and last entry in group and, if so,
@@ -1533,6 +1555,13 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
           DBEmptyGroupsCommand::EG_DELETE));
       }
     }
+
+    Command *pcmd_redo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_REDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+
+    pmulticmds->Add(pcmd_redo);
 
     // Do it
     Execute(pmulticmds, pcore);
@@ -1801,6 +1830,8 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
 {
+  // Note use of CItemData::RESERVED for indicating in the
+  // Status bar that an old password has been copied
   int imsg(0);
   m_lastclipboardaction = L"";
   switch (iaction) {
@@ -1834,6 +1865,12 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       break;
     case CItemData::EMAIL:
       imsg = IDS_EMAILCOPIED;
+      break;
+    case CItemData::PWHIST:
+      imsg = IDS_PWHISTORYCOPIED;
+      break;
+    case CItemData::RESERVED:
+      imsg = IDS_OLDPSWDCOPIED;
       break;
     default:
       ASSERT(0);
@@ -2034,18 +2071,20 @@ void DboxMain::OnRunCommand()
   CItemData *pbci = NULL;
 
   const pws_os::CUUID uuid = pci->GetUUID();
-  StringX sx_pswd;
+  StringX sx_pswd, sx_lastpswd;
 
   if (pci->IsDependent()) {
     pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
     if (pci->IsShortcut()) {
       pci = pbci;
       pbci = NULL;
     }
   } else {
     sx_pswd = pci->GetPassword();
+    sx_lastpswd = pci->GetPreviousPassword();
   }
 
   StringX sx_RunCommand, sx_Expanded_ES;
@@ -2075,7 +2114,8 @@ void DboxMain::OnRunCommand()
 
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
                                  pci->GetTitle(), pci->GetUser(),
-                                 sx_pswd, pci->GetNotes(),
+                                 sx_pswd, sx_lastpswd,
+                                 pci->GetNotes(),
                                  pci->GetURL(), pci->GetEmail(),
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());

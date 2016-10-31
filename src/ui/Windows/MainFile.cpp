@@ -351,6 +351,7 @@ int DboxMain::New()
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
+
   // re-activate logout detection
   startLockCheckTimer();
   RegisterSessionNotification(true);
@@ -1065,7 +1066,15 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
 
 void DboxMain::OnClearMRU()
 {
-  app.ClearMRU();
+  CGeneralMsgBox gmb;
+  gmb.SetTitle(IDS_CLEARMRU);
+  gmb.SetMsg(IDS_CONFIRMCLEARMRU);
+  gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+  gmb.AddButton(IDS_YES, IDS_YES);
+  gmb.AddButton(IDS_NO, IDS_NO, TRUE, TRUE);
+  if (gmb.DoModal() == IDS_YES) {
+    app.ClearMRU();
+  }
 }
 
 void DboxMain::OnSave()
@@ -1113,6 +1122,23 @@ int DboxMain::Save(const SaveType savetype)
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
         std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
+
+        // Max path can actually be 32K (UNC path), although we generally limit it to MAX_PATH (260)
+        wchar_t wsExpandedPath[MAX_PATH + 1];
+        DWORD dwResult = ExpandEnvironmentStrings(userBackupDir.c_str(),
+                                                  wsExpandedPath, MAX_PATH + 1);
+        if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
+          CGeneralMsgBox gmbx;
+          CString cs_msgx, cs_titlex(MAKEINTRESOURCE(IDS_EXPANDPATH));
+          cs_msg.Format(IDS_CANT_EXPANDPATH, userBackupDir.c_str());
+          gmbx.MessageBox(cs_msgx, cs_titlex, MB_OK | MB_ICONEXCLAMATION);
+
+          gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+          return PWScore::USER_CANCEL;
+        } else {
+          userBackupDir = wsExpandedPath;
+        }
+
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                                   userBackupPrefix, userBackupDir, bu_fname)) {
           switch (savetype) {
@@ -1188,10 +1214,16 @@ int DboxMain::Save(const SaveType savetype)
     // Restore backup, if we have one
     if (!bu_fname.empty() && !sxCurrFile.empty())
       pws_os::RenameFile(bu_fname, sxCurrFile.c_str());
+
     // Show user that we have a problem
     DisplayFileWriteError(rc, sxCurrFile);
+
+    BlockLogoffShutdown(true);
     return rc;
   }
+
+  BlockLogoffShutdown(false);
+
 
   // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
@@ -1246,8 +1278,9 @@ int DboxMain::SaveIfChanged()
       return PWScore::USER_DECLINED_SAVE;
 
     int rc = SaveAs();
-    if (rc == PWScore::SUCCESS)
+    if (rc == PWScore::SUCCESS) {
       m_bRestoredDBUnsaved = false;
+    }
 
     return rc;
   }
@@ -1351,7 +1384,7 @@ int DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
 
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   StringX cf(m_core.GetCurFile());
   if (cf.empty()) {
     CString defname(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
@@ -1439,8 +1472,13 @@ int DboxMain::SaveAs()
     m_core.SetFileUUID(file_uuid); // restore uuid after failed save-as
     m_core.UnlockFile2(newfile.c_str());
     DisplayFileWriteError(rc, newfile);
+
+    BlockLogoffShutdown(true);
+
     return PWScore::CANT_OPEN_FILE;
   }
+
+  BlockLogoffShutdown(false);
 
   if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -3274,8 +3312,9 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
   if (CmpRes.m_OriginalDBChanged) {
     // We didn't save after each change within the ComapreResults dialog
     // So potentially do it now
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
       SaveImmediately();
+    }
 
     // Have to update views as user may have changed/added entries
     FixListIndexes();
@@ -3990,6 +4029,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     cs_newfile = nf.c_str();
     cs_newfile += L".fbak";
     rc = m_core.WriteFile(cs_newfile.c_str(), m_core.GetReadFileVersion());
+    BlockLogoffShutdown(rc == PWScore::SUCCESS ? false : true);
+
     return (int)rc;
   }
 
@@ -4045,6 +4086,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
           return PWScore::USER_CANCEL;
       }
     }
+
     return PWScore::SUCCESS;
   } // ST_NORMALEXIT
 

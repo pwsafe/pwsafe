@@ -137,15 +137,17 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
-    DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
-    DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
-    DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
-    DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
-    DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
-    DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
-  }
+  DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
+  DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
+  DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
+  DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
+  DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
+  DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
+  DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
+
+  DDX_Control(pDX, IDC_SMARTLABELHELP, m_Help1);
+  DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
+  DDX_Control(pDX, IDC_NOTESHELP, m_Help3);
   //}}AFX_DATA_MAP
 }
 
@@ -228,34 +230,43 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_notes.SetFont(pFonts->GetNotesFont());
   }
 
-  if (M_uicaller() != IDS_ADDENTRY) {
-    if (InitToolTip()) {
-      AddTool(IDC_STATIC_GROUP, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_TITLE, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_USERNAME, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_PASSWORD, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_NOTES, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_URL, IDS_CLICKTOCOPY);
-      AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
-      AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
-      AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
-      AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
 
-      if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
-        AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
-      }
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_SMARTLABELHELP, IDS_SMARTLABELHELP);
+    AddTool(IDC_PASSWORDHELP, IDS_PASSWORDHELP);
+    AddTool(IDC_NOTESHELP, IDS_NOTESHELP);
 
-      ActivateToolTip();
+    // Old style tooltips
+    AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
+    AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
+    AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
+
+    if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+      AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
     }
 
-    m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_username.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_password.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_notes.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
   }
+
+  m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_username.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_password.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_notes.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+
 
   m_ex_group.ChangeColour();
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
@@ -403,7 +414,7 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Only deal with Static controls and then
   // Only with our special ones
-  if (nCtlColor == CTLCOLOR_STATIC && M_uicaller() != IDS_ADDENTRY) {
+  if (nCtlColor == CTLCOLOR_STATIC) {
     COLORREF *pcfOld;
     UINT nID = pWnd->GetDlgCtrlID();
     switch (nID) {
@@ -479,7 +490,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_URL()          != M_pci()->GetURL()        ||
               M_email()        != M_pci()->GetEmail()      ||
               (M_ipolicy() != NAMED_POLICY &&
-               M_symbols()      != M_pci()->GetSymbols())  ||
+               M_symbols()     != M_pci()->GetSymbols())   ||
               M_realpassword() != M_oldRealPassword()        )
             return 1L;
           break;
@@ -1031,6 +1042,7 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_title(),
                                                        M_username(),
                                                        M_realpassword(),
+                                                       M_lastpassword(),
                                                        M_realnotes(),
                                                        M_URL(),
                                                        M_email(),
@@ -1095,7 +1107,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     // Find out the users default editor for "txt" files
     DWORD dwSize(MAX_PATH);
     HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
-      szExecName, &dwSize);
+                                      szExecName, &dwSize);
     if (int(stat) != S_OK) {
 #ifdef _DEBUG
       CGeneralMsgBox gmb;

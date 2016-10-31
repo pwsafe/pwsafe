@@ -397,6 +397,7 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPDAYSSPIN)->EnableWindow(FALSE);
     break;
   case ABSOLUTE_EXP:
     m_ae_psh->SetChanged(true);
@@ -405,20 +406,22 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_EXPDAYSSPIN)->EnableWindow(FALSE);
     break;
   case RELATIVE_EXP:
     m_ae_psh->SetChanged(true);
     SetXTime();
-GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPDAYSSPIN)->EnableWindow(TRUE);
     break;
   default:
     ASSERT(0);
   }
+  Invalidate();
 }
-
 
 void CAddEdit_DateTimes::SetXTime()
 {
@@ -461,7 +464,7 @@ void CAddEdit_DateTimes::OnRecurringPswdExpiry()
   // (should suffice for most purposes). For non-recurring, limit is
   // the max that won't overflow time_t
   const int new_max = (m_bRecurringPswdExpiry == TRUE) ? 3650 : m_maxDays;
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
   pspin->SetRange32(1, new_max);
   if (m_numDays > new_max)
     m_numDays = 1;

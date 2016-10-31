@@ -79,8 +79,7 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Save Immediately if user requested it
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    int rc = SaveImmediately();
-    if (rc == PWScore::SUCCESS)
+    if (SaveImmediately() == PWScore::SUCCESS)
       bChanged = false;
   }
 
@@ -97,13 +96,21 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Don't do anything if status unchanged or not at least Vista
   if (!pws_os::IsWindowsVistaOrGreater() ||
-      m_core.IsReadOnly() || bChanged == bCurrentState)
+    m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 
   bCurrentState = bChanged;
 
+  BlockLogoffShutdown(bChanged);
+}
+
+void DboxMain::BlockLogoffShutdown(const bool bChanged)
+{
   // Only supported on Vista and later
-  if (bCurrentState) {
+  if (!pws_os::IsWindowsVistaOrGreater())
+    return;
+
+  if (bChanged) {
     if (m_pfcnShutdownBlockReasonCreate != NULL) {
       CString cs_stopreason;
       cs_stopreason.Format(IDS_STOPREASON, m_core.GetCurFile().c_str());
@@ -668,10 +675,16 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
 void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 {
   CRect rect;
-  m_ctlItemTree.SetItemText(hItem, m_ctlItemTree.MakeTreeDisplayString(ci));
 
-  m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
-  m_ctlItemTree.InvalidateRect(&rect);
+  CSecString csCurrentString = m_ctlItemTree.GetItemText(hItem);
+  CSecString csNewString = m_ctlItemTree.MakeTreeDisplayString(ci);
+
+  if (csCurrentString != csNewString) {
+    m_ctlItemTree.SetItemText(hItem, csNewString);
+
+    m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
+    m_ctlItemTree.InvalidateRect(&rect);
+  }
 }
 
 void DboxMain::UpdateEntryinGUI(CItemData &ci)
@@ -1855,11 +1868,11 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     }
   }
 }
-void DboxMain::ClearData(const bool bClearMRE)
+void DboxMain::ClearData(const bool bClearMRE, const bool bClearPrefs)
 {
   PWS_LOGIT;
 
-  m_core.ClearData();  // Clears DB & DB Preferences changed flags
+  m_core.ClearData(bClearPrefs);  // Clears DB & DB Preferences changed flags
 
   if (bClearMRE)
     m_RUEList.ClearEntries();
@@ -2313,6 +2326,7 @@ bool DboxMain::LockDataBase()
   if (!IsDBReadOnly() && m_bDBInitiallyRO) {
     ChangeMode(false);
   }
+
   return true;
 }
 
@@ -2456,6 +2470,9 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
         pFonts->SetAddEditFont(&lf);
+
+        // Change the Find Toolbar font
+        m_FindToolBar.ChangeFont();
         break;
       case CFontsDialog::PASSWORDFONT:
         // Transfer the new font to the passwords
@@ -2538,6 +2555,7 @@ void DboxMain::UpdateSystemTray(const STATE s)
     default:
     ASSERT(0);
   }
+  UpdateStatusBar();
 }
 
 BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
@@ -3862,12 +3880,18 @@ void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOne
 
 void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
 {
-  m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+  int icurrentImage, icurrentSelectedImage;
 
-  if (bOneEntry) {
-    CRect rect;
-    m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
-    m_ctlItemTree.InvalidateRect(&rect);
+  m_ctlItemTree.GetItemImage(ti, icurrentImage, icurrentSelectedImage);
+
+  if (icurrentImage != nImage) {
+    m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+
+    if (bOneEntry) {
+      CRect rect;
+      m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
+      m_ctlItemTree.InvalidateRect(&rect);
+    }
   }
 }
 
