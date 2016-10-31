@@ -10,6 +10,8 @@
 #include <afxwin.h>
 #endif
 
+#include <map>
+
 #include "../KeySend.h"
 #include "../env.h"
 #include "../debug.h"
@@ -45,7 +47,7 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
   m_impl->m_delay = m_delayMS;
 
   //Set Windows Send Method
-  SetSendMethod(bForceOldMethod);
+  SetOldSendMethod(bForceOldMethod);
 
   // get the locale of the current thread.
   // we are assuming that all window and threading in the 
