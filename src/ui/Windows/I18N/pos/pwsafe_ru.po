@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-10-30 17:00+0300\n"
+"PO-Revision-Date: 2016-11-01 21:03+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1897,6 +1897,10 @@ msgstr "Болгарская (фонетическая)"
 msgid "Bulgarian (Typewriter)"
 msgstr "Болгарская (машинопись)"
 
+#. Resource IDs: (5117)
+msgid "By right-clicking on the Notes field, you can Word Wrap, zoom in or out and even edit using an external editor (specified via Manage->Options Misc. tab)."
+msgstr "В контекстном меню поля заметок можно включить перенос по словам, изменить масштаб или передать текст во внешний редактор (указанный во вкладке «Разное» пункта меню «Сервис→Настройки»)"
+
 #. Resource IDs: (1411)
 msgid "Bytes"
 msgstr "Байт"
@@ -1986,7 +1990,7 @@ msgstr "Невозможно создать промежуточные ката�
 
 #. Resource IDs: (5303)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr "Невозможно обработать элемент, т.к. он удалён из контейнера."
+msgstr "Невозможно обработать элемент, т. к. он удалён из контейнера."
 
 #. Resource IDs: (3398)
 msgid "Cannot read file. Please check file permissions."
@@ -2110,6 +2114,10 @@ msgstr "Очистить поле поиска"
 msgid "Clear History"
 msgstr "Очистить"
 
+#. Resource IDs: (6032)
+msgid "Clear Recent Safe list"
+msgstr "Очистить список ранее использованных контейнеров"
+
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
 msgstr "Очищать буфер обмена при выходе"
@@ -2135,6 +2143,14 @@ msgstr "Щёлкните по этой надписи для получения 
 msgid "Click here to pick field"
 msgstr "Нажмите для выбора поля"
 
+#. Resource IDs: (5119)
+msgid "Click on a row in the Password History and that old password will be copied to the clipboard."
+msgstr "чтобы скопировать старый пароль, щёлкните по нужной строке в списке с историей паролей"
+
+#. Resource IDs: (5118)
+msgid "Click on this button to go to the AutoType page in the Help file."
+msgstr "Нажмите здесь для перехода к справке по автонабору"
+
 #. Resource IDs: (8153)
 msgid "Click to change case."
 msgstr "Нажмите для изменения регистра"
@@ -2151,7 +2167,7 @@ msgstr "Нажмите, чтобы скопировать в буфер обме
 #. Resource IDs: (5721)
 #, fuzzy
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr "Нажмите для копирования в буфер обмена, Ctrl+щелчок — также поместить mailto:значение в поле Ссылка"
+msgstr "Нажмите для копирования в буфер обмена, Ctrl-щелчок — также поместить mailto:значение в поле Ссылка"
 
 #. Resource IDs: (5615)
 msgid "Click to enable/disable this row"
@@ -3018,9 +3034,10 @@ msgstr "Непредвиденная ошибка при чтении файла
 msgid "Encountered an unexpected error while writing %1."
 msgstr "Непредвиденная ошибка при записи файла %1."
 
+# Заголовок диалога при шифровании/расшифровании из ком. строки
 #. Resource IDs: (118)
 msgid "Encrypt/Decrypt"
-msgstr "Шифровать/расшифрования"
+msgstr "Зашифровать/расшифровать"
 
 #. Resource IDs: (5219)
 msgid "Encryption failed"
@@ -3293,6 +3310,11 @@ msgstr "Выход"
 #. Resource IDs: (32109 - MenuEx)
 msgid "Expand All"
 msgstr "Развернуть все"
+
+# заголовок диалога
+#. Resource IDs: (6035)
+msgid "Expand backup directory path"
+msgstr "Раскрытие пути к каталогу для резервных копий"
 
 #. Resource IDs: (32054 - MenuEx)
 msgid "Expand/Collapse Group"
@@ -3855,7 +3877,7 @@ msgstr "Скрывать значок (должна быть задана гор
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
-msgstr "Выделить изменённые элементы"
+msgstr "Выделять изменённые элементы"
 
 #. Resource IDs: (8298)
 msgid "Hindi Traditional"
@@ -3877,7 +3899,7 @@ msgstr "HotKey1"
 
 #. Resource IDs: (5949)
 msgid "However, we can't add either as all combinations are in use."
-msgstr "Модификаторы не могут быть добавлены, т.к. все комбинации заняты."
+msgstr "Модификаторы не могут быть добавлены, т. к. все комбинации заняты."
 
 #. Resource IDs: (8212)
 msgid "Hungarian"
@@ -4040,9 +4062,17 @@ msgstr "Если это контейнер открытый при запуск�
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
 msgstr "Если указанная раскладка поддерживает ввод символов через %s, то эта клавиша будет активна и может быть использована для их выбора.\n\nВозможно, потребуется нажать Shift, чтобы увидеть их."
 
+#. Resource IDs: (5116)
+msgid "If you chose to hide the passowrd e.g. to stop somone \"shoulder surfing\", then you will be prompted to confirm the password by typing it again just in case you might have mistyped the original.  If you don't hide the password, we put a background of numbers in the Confirm Password field so that you can better count, for example to select the 11th character."
+msgstr "Если пароль скрыт (например, чтобы его не подсмотрели), то, чтобы убедиться, что не было допущено опечаток, его нужно повторить в поле подтверждения.  Если же пароль не скрыт, то в этом поле будут выведены цифры для того, чтобы было проще определять позиции символов."
+
 #. Resource IDs: (5919)
 msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
 msgstr "Список символов не может быть пуст, если выбрано его использование. Использование списка символов выключено."
+
+#. Resource IDs: (5114)
+msgid "If you use environmental variables for the backup location, the resulting path will be shown here."
+msgstr "Если в пути к каталогу для резервных копий используются переменные окружения, раскрытый путь будет указан здесь."
 
 #. Resource IDs: (8262)
 msgid "Igbo"
@@ -4625,6 +4655,10 @@ msgstr "Смешанное"
 msgid "Mongolian Cyrillic"
 msgstr "Монгольская (кириллица)"
 
+#. Resource IDs: (5115)
+msgid "Most labels on this tab plus Autotype and RunCmd on the Additional tab are \"Smart\" labels. By clicking on the label, which will briefly flash, the value of the associate field is copied to the clipboard e.g. Title. For the AutoType and RunCmd labels, clicking on the label will perform substitution of AutoType and RunCmd variables before copying but Ctrl+Click will copy the field as-is. Some special AutoType fields will not be substituted as they only function when actually performing AutoType i.e. \\z, \\#, \\d, \\w, \\W and \\{...}."
+msgstr "Имена полей на этой вкладке, а также «Автонабор» и «Выполнить» на вкладке «Дополнительно» являются функциональными. После нажатия на заголовок, он мигнёт, а значение соответствующего поля будет скопировано в буфер обмена. Для полей «Автонабор» и «Выполнить», после щелчка по ним копируется значение с выполненными подстановками, а Ctrl-шелчок скопирует значение так, как оно записано в поле. Некоторые последовательности в поле «Автонабор» не раскрываются, т. к. они влияют только на выполнение автонабора (\\z, \\#, \\d, \\w, \\W и \\{...})."
+
 #. Resource IDs: (32271 - Menu)
 msgid "Move Here"
 msgstr "Переместить сюда"
@@ -4719,6 +4753,11 @@ msgstr "Нет открытых контейнеров"
 #. Resource IDs: (5353)
 msgid "No database open with which to compare against another database!"
 msgstr "Нет открытых контейнеров для сравнения!"
+
+# Сообщение про путь к каталогу резервных копий
+#. Resource IDs: (6034)
+msgid "No drive specified."
+msgstr "Не указан диск."
 
 # Сокращено и убрана подстановки из-за неоднозначности с падежами
 #. Resource IDs: (5737)
@@ -4843,7 +4882,7 @@ msgstr "Заметьте, при выборе восстановления ав�
 
 #. Resource IDs: (5113)
 msgid "Note that when a database is locked, the database is saved, and then all its data is cleared from memory. As part of the clearing process, the undo/redo log is also erased, as this may also contain sensitive information. This means that undo/redo of pre-lock changes will not be available upon unlock."
-msgstr "Примечание. При блокировке контейнера происходит сохранение, а все его данные удаляются из памяти. При очистке памяти удаляется и журнал отката/повтора действий, т.к. он может содержать защищаемую информацию. По этой причине после разблокировки контейнера недоступен откат действий, произведённых до блокировки."
+msgstr "Примечание. При блокировке контейнера происходит сохранение, а все его данные удаляются из памяти. При очистке памяти удаляется и журнал отката/повтора действий, т. к. он может содержать защищаемую информацию. По этой причине после разблокировки контейнера недоступен откат действий, произведённых до блокировки."
 
 #. Resource IDs: (33150 - Menu)
 msgid "Note: Empty fields are shown as »*»"
@@ -4966,6 +5005,10 @@ msgstr "OK"
 #. Resource IDs: (5266)
 msgid "Off"
 msgstr "Выкл."
+
+#. Resource IDs: (6038)
+msgid "Old Pswd copied"
+msgstr "Старый пароль скопирован"
 
 #. Resource IDs: (65535)
 msgid "Old Safe Combination:"
@@ -5124,6 +5167,10 @@ msgstr "История паролей"
 #. Resource IDs: (5603)
 msgid "Password History Filter"
 msgstr "Фильтр по истории паролей"
+
+#. Resource IDs: (6037)
+msgid "Password History copied"
+msgstr "Скопирована история паролей"
 
 #. Resource IDs: (5871)
 msgid "Password Length"
@@ -5342,6 +5389,10 @@ msgstr "Укажите имя нового файла для текущего к
 #, c-format
 msgid "Please confirm delete of the %s filter %s?"
 msgstr "Подтверждаете удаление %s фильтра %s?"
+
+#. Resource IDs: (6033)
+msgid "Please confirm that you wish to clear the recent Safe list."
+msgstr "Подтвердите очистку списка ранее использованных контейнеров."
 
 #. Resource IDs: (5287)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
@@ -7468,10 +7519,15 @@ msgstr "Win32 Unhandled Exception"
 msgid "Windows Registry"
 msgstr "Реестр Windows"
 
+#. Resource IDs: (6036)
+#, c-format
+msgid "Windows can't expand '%s'. Please make sure that you have set this correctly."
+msgstr "Windows не удалось раскрыть путь '%s'. Проверьте, что путь указан верно."
+
 #. Resource IDs: (5972)
 #, c-format
 msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "Windows не может обнаружить «%s». Проверьте, что путь к внешнему редактору указан корректно. Редактирование во внешнем приложении отменено."
+msgstr "Windows не удалось найти «%s». Проверьте, что путь к внешнему редактору указан корректно. Редактирование во внешнем приложении отменено."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
