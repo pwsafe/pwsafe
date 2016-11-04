@@ -12,6 +12,7 @@
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
+#include "os/dir.h"  // for splitpath
 
 #include "sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h"
@@ -20,6 +21,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <limits>
+#include <stdio.h>  // for _fileno
+#include <io.h>     // for _get_osfhandle
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,
@@ -101,7 +104,7 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &pa
 PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
   : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
   m_curversion(v), m_rw(mode), m_defusername(_T("")),
-    m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
+  m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -143,11 +146,12 @@ int PWSfile::Close()
 {
   delete m_fish;
   m_fish = NULL;
+
   if (m_fd != NULL) {
-    fflush(m_fd);
-    fclose(m_fd);
+    pws_os::FClose(m_filename.c_str(), m_fd, m_rw == Write);
     m_fd = NULL;
   }
+
   return SUCCESS;
 }
 
