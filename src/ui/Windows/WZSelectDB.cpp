@@ -86,12 +86,19 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
 
+  const UINT nID = m_pWZPSH->GetID();
+
   //{{AFX_DATA_MAP(CWZSelectDB)
   DDX_Text(pDX, IDC_DATABASE, m_filespec);
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-  DDX_Check(pDX, IDC_EXPORTFILTERS, m_bExportDBFilters);
+
+  if (nID != ID_MENUITEM_COMPARE && 
+      nID != ID_MENUITEM_MERGE   && 
+      nID != ID_MENUITEM_SYNCHRONIZE) {
+    DDX_Check(pDX, IDC_EXPORTFILTERS, m_bExportDBFilters);
+  }
 
   // Can't use DDX_Text for CSecEditExtn
   m_pctlPasskey->DoDDX(pDX, m_passkey);
@@ -103,8 +110,6 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
   DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
-
-  const UINT nID = m_pWZPSH->GetID();
 
   if (nID == ID_MENUITEM_SYNCHRONIZE         ||
       nID == ID_MENUITEM_EXPORT2PLAINTEXT    ||
@@ -265,10 +270,6 @@ BOOL CWZSelectDB::OnInitDialog()
   UINT uifilemsg(IDS_WZDATABASE);
   std::wstring str_extn(L"");
 
-  // Hide/disable export filters by default
-  GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(SW_HIDE);
-  GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(FALSE);
-
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
@@ -318,6 +319,10 @@ BOOL CWZSelectDB::OnInitDialog()
       m_pctlDB->SetWindowText(ExportFileName.c_str());
       m_filespec = ExportFileName.c_str();
       uifilemsg = IDS_WZFILE;
+
+      GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(FALSE);
+
       break;
 
     case ID_MENUITEM_SYNCHRONIZE:
