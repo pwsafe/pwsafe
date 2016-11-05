@@ -1197,7 +1197,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
             if (ifunction == PWSMatch::MR_BETWEEN)
               t2 = now + (st_fldata.fnum2 * 86400);
           }
-          thistest_rc = pci->Matches(t1, t2,
+          thistest_rc = pci->MatchesTime(t1, t2,
                                      (int)ft, ifunction);
           tests++;
           break;
