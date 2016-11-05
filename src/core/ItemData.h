@@ -227,7 +227,7 @@ public:
                int iFunction) const;  // string values
   bool Matches(int num1, int num2, int iObject,
                int iFunction) const;  // integer values
-  bool Matches(time_t time1, time_t time2, int iObject,
+  bool MatchesTime(time_t time1, time_t time2, int iObject,
                int iFunction) const;  // time values
   bool Matches(int16 dca, int iFunction, const bool bShift = false) const;  // DCA values
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
