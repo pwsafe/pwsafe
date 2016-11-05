@@ -422,13 +422,13 @@ void pws_os::FClose(const StringX &filename, std::FILE *fd, const bool &bIsWrite
         int ifileno = _fileno(fd);
         if ((HANDLE)ifileno == INVALID_HANDLE_VALUE) {
           ASSERT(0);
-          return;
+          goto close;
         }
 
         intptr_t iosfhandle = _get_osfhandle(ifileno);
         if ((HANDLE)iosfhandle == INVALID_HANDLE_VALUE) {
           ASSERT(0);
-          return;
+          goto close;
         }
 
         BOOL rc = FlushFileBuffers((HANDLE)iosfhandle);
@@ -439,6 +439,8 @@ void pws_os::FClose(const StringX &filename, std::FILE *fd, const bool &bIsWrite
         }
       }
     }
+
+ close:
     // Now close file
     fclose(fd);
   }
