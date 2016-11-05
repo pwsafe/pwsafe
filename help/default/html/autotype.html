@@ -81,9 +81,10 @@ of the Notes field</li>
 <ul>
 <li><i>NNN</i> can be one to three digits (e.g., \o5 for 
 the 5<sup>th</sup> line, \o45 for the 45<sup>th</sup>, etc.</li>
-<li>End of line characters are <i>not </i> included.</li>
-<li>if <i>NNN </i>is larger than the number of lines in the notes field, then
-this has no effect.</li>
+<li>if <i>NNN</i> is larger than the number of lines in the notes field, then
+this has no effect and no lines from the Notes field are copied.</li>
+<li>if <i>NNN</i> is zero then all lines are copied i.e. \o0 is equivalent to \o.</li>
+<li>End of line characters are <i>not</i> included.</li>
 </ul>
 
 <hr> 
@@ -104,36 +105,39 @@ subsequent characters. For example, "fast\d500slow" will result in 'fast' being
 typed with the default delay, and the letters 's', 'l', 'o', and 'w' typed with a 
 half-second pause before each. if you want to put in a one-time delay 
 that does not affect the speed of the following characters, use '\w' or 
-'\W', as described below.</li>
+'\W', as described below.<br><br>
+Note that <em>NNN</em> is limited to a maximum of three digits.</li>
 <li><b>\w<i>NNN</i> or <i>\WNNN</i></b> introduces a delay of <i>NNN</i> milliseconds
 for \w, or seconds if \W is used. For example, "how\w500now" will cause 'how' to
 be typed (at the default rate or that specified by the last \d), followed by a 
 half-second pause, followed by 'now' typed at the same rate as 'how'). 
 Likewise, "how\W2now" will introduce a two second pause between the two 
-words. This is useful for fine-tuning the timing with certain web pages.</li>
-<li>Note that <em>NNN</em> in the above is limited to three 
+words. This is useful for fine-tuning the timing with certain web pages.<br><br>
+Note that <em>NNN</em> in the above is limited to a maximum of three 
 digits, so that, for example, \w5000 will create a half-second delay and 
 then emit the letter '0', which is probably not what you intended (\W5 
 would do the trick, though).</li>
-<a name="z"></a><li><b>\z</b> (Windows only) invokes the old AutoType mechanism. This mechanism
-may handle non-Latin characters incorrectly, but can make AutoType work on certain 
-problematical web sites. <i><u>If you find that AutoType does not work 
-properly on a particular web site, try this code at the beginning of the 
+<a name="z"></a><li><b>\z</b> (Windows only) invokes the old AutoType mechanism. 
+This mechanism may handle non-Latin characters incorrectly, but can make AutoType 
+work on certain problematical web sites. <i><u>If you find that AutoType does not 
+work properly on a particular web site, try this code at the beginning of the 
 AutoType command field. However, if this field is specified 
 <b>anywhere</b> in the AutoType string, it applies to the whole string.</u></i></li> 
 <li><b>\&#35;</b> (Windows only) is exactly the same as \z above except that
 it toggles using the old AutoType mechanism on/off for the part of the AutoType
-string between these codes. The use of \# instead of \z <i>may</i> prevent issues with
-sending non-Latin characters in other parts of the AutoType string as can happen when
-using the \z field.  <i><u>However, \&#35; will be ignored if the \z field has been
-specified <b>anywhere</b> in the AutoType string.</u></i>. For example, the following
-will switch to the old mechanism to just send a tab and a space:
+string between these codes. The use of \# instead of \z <i>may</i> prevent issues 
+with sending non-Latin characters in other parts of the AutoType string as can 
+happen when using the \z field.  <i><u>However, \&#35; will be ignored if the \z 
+field has been specified <b>anywhere</b> in the AutoType string.</u></i>. For 
+example, the following will switch to the old mechanism to just send a tab and a 
+space:
 <pre>
 \&#35;\t \&#35;
 </pre></li>
 <li><b>\c</b> (Linux only) generates the key events that cause a platform-specific
 Select-All command. It is useful when autotype conflicts with browser's autofill,
-where the two texts combine instead of autotype'd text replacing the auto-filled text. 
+where the two texts combine instead of autotype'd text replacing the auto-filled 
+text. 
 Generating a <b>\c</b> at the start of autotyping inside a field (at the 
 very beginning of autotype string, or just after a <b>\t</b>) ensures 
 that the autofill'ed text gets replaced by the autotype'd text. For some 
@@ -180,10 +184,24 @@ style="margin-left:20px; border-spacing:10px">
 <tr><td><b>^</b></td><td>Control key</td></tr> 
 <tr><td><b>+</b></td><td>Shift key</td></tr> </table> 
 
-<p>For example:<br> "\{+Tab}" is equivalent to "Shift+Tab"<br> "\{+^Tab}"
-is equivalent to "Ctrl+Shift+Tab"<br> "\{^Home}" is equivalent to "Control+Home".</p> 
+<p>For example:<br> "\{+Tab}" is equivalent to "Shift+Tab"<br> "\{+^Tab}" is
+equivalent to "Ctrl+Shift+Tab"<br> "\{^Home}" is equivalent to "Control+Home".</p> 
 
-<h3>Default AutoType</h3> 
+<h4>Aliases and Shortcuts</h4>
+
+<h5>Shortcuts</h5>
+
+<p>The AutoType string and all entry variables, e.g. \p for password, come for
+the shortcut's base entry. <i>No entry variables come from the shortcut entry
+itself.</i></p>
+
+<h5>Aliases</h>
+
+<p>The AutoType string and all entry variables <u>except</u> the current password 
+(\p) and previous password (\q) come from the alias entry.  The two password
+exceptions come from the alias's base entry.</p>
+
+<h3>Default AutoType</h3>
 
 <p>The default autotype sequence in Password Safe is \u\t\p\n. This 
 default can be changed via the Manage/Options menu (Misc. tab).</p> 

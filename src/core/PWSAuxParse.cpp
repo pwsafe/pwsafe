@@ -446,7 +446,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             sxtmp += sx_notes;
           } else
           if (line_number <= vsxnotes_lines.size()) {
-            // User specifies a too big a line number - ignore the lot
+            // Only copy if user has specified a valid Notes line number
             sxtmp += vsxnotes_lines[line_number - 1];
           }
 
