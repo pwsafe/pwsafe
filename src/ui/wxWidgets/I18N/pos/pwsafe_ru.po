@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-05 17:26+0300\n"
-"PO-Revision-Date: 2015-11-05 17:10+0300\n"
+"POT-Creation-Date: 2016-11-05 18:08+0300\n"
+"PO-Revision-Date: 2015-11-05 18:06+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -62,6 +62,7 @@ msgstr "&Отмена"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
 #: ../../../ui/wxWidgets/editshortcut.cpp:228
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
 #: ../../../ui/wxWidgets/yubicfg.cpp:209
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:219
@@ -70,7 +71,7 @@ msgstr "&Отмена"
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:246
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
-msgstr "&Помощь"
+msgstr "П&омощь"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:273
 msgid "Three strikes - yer out!"
@@ -302,7 +303,7 @@ msgstr "Сравнить..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:436
 msgid "S&ynchronize..."
-msgstr "С&инхронизировать..."
+msgstr "Синх&ронизировать..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:438
 msgid "&Properties"
@@ -376,11 +377,10 @@ msgstr "&Автонабор\tCtrl+T"
 msgid "Go to Base entry"
 msgstr "Перейти к исходному элементу"
 
-# 32050 - id пункта меню
+# главное меню, диалог управления фильтрами/политиками
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:463
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:184
-msgid "Edit"
-msgstr "Изменить"
+msgid "&Edit"
+msgstr "&Правка"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:465
 msgid "Flattened &List"
@@ -392,7 +392,7 @@ msgstr "&Древовидный список"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:468
 msgid "Toolbar &visible"
-msgstr "Отобразить панель &инструментов"
+msgstr "Панель инстру&ментов"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:469
 msgid "&New Toolbar"
@@ -404,7 +404,7 @@ msgstr "&Классическая панель инструментов"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:471
 msgid "&Dragbar visible"
-msgstr "О&тобразить панель Dragbar"
+msgstr "Пане&ль Dragbar"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:473
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
@@ -418,11 +418,11 @@ msgstr "Свернуть все"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:475
 msgid "Show &Unsaved Changes"
-msgstr "Отобразить &несохранённые изменения"
+msgstr "Показать несо&хранённые изменения"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:476
 msgid "Show entries with E&xpiry dates"
-msgstr "Показать элементы с заданными датами &истечения пароля"
+msgstr "Показать элементы с заданными датами исте&чения пароля"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:478
 msgid "&New/Edit Filter..."
@@ -492,12 +492,9 @@ msgstr "Про&верка"
 msgid "Reports"
 msgstr "Отчёты"
 
-# 5624 - кнопка, 32101 - menu id (т.к. id, то не важно и переводим как надпись
-# на кнопке, а не "вид")
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:496
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:266
-msgid "View"
-msgstr "Просмотреть"
+msgid "&View"
+msgstr "&Вид"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:498
 msgid "&Change Safe Combination..."
@@ -527,10 +524,9 @@ msgstr "YubiKey..."
 msgid "Configure and backup YubiKeys"
 msgstr "Настройка и резервные копии YubiKey"
 
-# 32150 - id пункта меню
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:511
-msgid "Manage"
-msgstr "Управление"
+msgid "&Manage"
+msgstr "&Управление"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:513
 msgid "Get &Help"
@@ -544,11 +540,6 @@ msgstr "Посетить &сайт Password Safe..."
 #: ../../../ui/wxWidgets/SystemTray.cpp:171
 msgid "&About Password Safe..."
 msgstr "&О Password Safe..."
-
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
-msgid "Help"
-msgstr "Помощь"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:615
 msgid "Select Language"
@@ -1366,7 +1357,7 @@ msgstr "Показать"
 
 #: ../../../ui/wxWidgets/properties.cpp:120
 msgid " empty)"
-msgstr " пусто)"
+msgstr " пустых)"
 
 # Ex.: "Saved by: qq on MAIN"
 #: ../../../ui/wxWidgets/properties.cpp:140 ../../../core/core_st.cpp:299
@@ -1700,28 +1691,28 @@ msgstr "Резервные копии"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:302
 msgid "Always keep Password Safe on top"
-msgstr "Отображать Password Safe поверх всех окон"
+msgstr "Располагать Password Safe поверх всех окон"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:306
 msgid "Show Username in Tree View"
-msgstr "Отображать имя пользователя в дереве"
+msgstr "Показывать имя пользователя в дереве"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:310
 msgid "Show Password in Tree View"
-msgstr "Отображать пароль в дереве"
+msgstr "Показывать пароль в дереве"
 
 # урезано
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:314
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Отображать заметки во всплывающей подсказке"
+msgstr "Показывать заметки во всплывающей подсказке"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:318
 msgid "Show Password in Add && Edit"
-msgstr "Отображать пароль при добавлении и редактировании"
+msgstr "Показывать пароль при добавлении и редактировании"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:322
 msgid "Show Notes in Edit"
-msgstr "Отображать заметки при редактировании"
+msgstr "Показывать заметки при редактировании"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:326
 msgid "Word Wrap Notes in Add && Edit"
@@ -1729,7 +1720,7 @@ msgstr "При редактировании переносить заметки 
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:330
 msgid "Put Groups first in Tree View"
-msgstr "Отображать группы вверху дерева"
+msgstr "Размещать группы вверху дерева"
 
 # Предупреждать за n дней до истечения пароля
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:336
@@ -1760,7 +1751,7 @@ msgstr "Вид дерева при старте"
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:354
 #: ../../../ui/wxWidgets/helpmap.h:36
 msgid "Display"
-msgstr "Отображение"
+msgstr "Вид"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:360
 msgid "Confirm deletion of items"
@@ -2479,11 +2470,11 @@ msgstr "Не удалось найти панель поиска."
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:397
 msgid "Could not display searchbar"
-msgstr "Невозможно отобразить панель поиска"
+msgstr "Невозможно показать панель поиска"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:453
 msgid "Could not re-display searchbar at "
-msgstr "Невозможно отобразить панель поиска "
+msgstr "Невозможно показать панель поиска "
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:453
 msgid " of size "
@@ -2797,7 +2788,7 @@ msgstr "по умолчанию"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:912
 msgid "[Notes hidden - click here to display]"
-msgstr "[Заметки скрыты — кликните для отображения]"
+msgstr "[Заметки скрыты. Кликните здесь, чтобы показать.]"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:978
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1002
@@ -3300,6 +3291,11 @@ msgstr "Доступные политики создания паролей:"
 msgid "&New"
 msgstr "&Создать"
 
+# 32050 - id пункта меню
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:184
+msgid "Edit"
+msgstr "Правка"
+
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:187
 msgid "&Delete"
 msgstr "&Удалить"
@@ -3333,6 +3329,12 @@ msgstr "Информация о выбранной политике:"
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
 msgid "Close"
 msgstr "Закрыть"
+
+# 5624 - кнопка, 32101 - menu id (т.к. id, то не важно и переводим как надпись
+# на кнопке, а не "вид")
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:266
+msgid "View"
+msgstr "Просмотреть"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:276
 msgid "Policy Name"
@@ -3611,6 +3613,10 @@ msgstr "Редактировать элемент"
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:206
 msgid "Delete an Entry"
 msgstr "Удалить элемент"
+
+#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+msgid "Help"
+msgstr "Помощь"
 
 #: ../../../ui/wxWidgets/safecombinationchange.h:55
 msgid "Change Safe Combination"
@@ -5076,9 +5082,9 @@ msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
-"Следующие элементы содержат одно или несколько текстовых полей, слишком "
-"больших для отображения или редактирования (больше %d символов).  Наибольший "
-"обнаруженный размер ~%d %ls."
+"Следующие элементы содержат одно или несколько текстовых полей, которые не "
+"могут быть отредактированы или показаны полностью (больше %d символов).  "
+"Размер наибольшего из этих элементов ~%d %ls."
 
 #: ../../../core/core_st.cpp:314
 msgid ""
@@ -5543,9 +5549,6 @@ msgstr "Да: не менее %d из %ls: %ls"
 #~ msgid "&E-mail:"
 #~ msgstr "&E-mail:"
 
-#~ msgid "&Edit"
-#~ msgstr "&Правка"
-
 #~ msgid "&Export"
 #~ msgstr "&Экспорт"
 
@@ -5569,9 +5572,6 @@ msgstr "Да: не менее %d из %ls: %ls"
 
 #~ msgid "&List"
 #~ msgstr "С&писок"
-
-#~ msgid "&Manage"
-#~ msgstr "&Сервис"
 
 #~ msgid "&New "
 #~ msgstr "&Создать "
@@ -5647,9 +5647,6 @@ msgstr "Да: не менее %d из %ls: %ls"
 
 #~ msgid "&Username:"
 #~ msgstr "&Имя пользователя:"
-
-#~ msgid "&View"
-#~ msgstr "&Вид"
 
 #~ msgid "&View Aliases"
 #~ msgstr "&Список псевдонимов"
@@ -7805,6 +7802,9 @@ msgstr "Да: не менее %d из %ls: %ls"
 
 #~ msgid "Make Backup"
 #~ msgstr "Создать резервную копию"
+
+#~ msgid "Manage"
+#~ msgstr "Сервис"
 
 #~ msgid "Manage Filters"
 #~ msgstr "Управление фильтрами"

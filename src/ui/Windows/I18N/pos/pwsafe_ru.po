@@ -755,7 +755,7 @@ msgstr "Перейти &к исходному элементу"
 
 #. Resource IDs: (32200 - PopupMenuEx, 57670, 9)
 msgid "&Help"
-msgstr "&Помощь"
+msgstr "П&омощь"
 
 #. Resource IDs: (5246, 61457)
 msgid "&Hide"

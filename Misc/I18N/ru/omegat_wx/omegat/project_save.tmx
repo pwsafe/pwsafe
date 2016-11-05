@@ -568,8 +568,8 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;Dragbar visible</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T115409Z">
-        <seg>О&amp;тобразить панель Dragbar</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T143413Z">
+        <seg>Пане&amp;ль Dragbar</seg>
       </tuv>
     </tu>
     <tu>
@@ -592,8 +592,8 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;Edit</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Изменить</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144215Z">
+        <seg>&amp;Правка</seg>
       </tuv>
     </tu>
     <tu>
@@ -712,8 +712,8 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;Help</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Помощь</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144432Z">
+        <seg>П&amp;омощь</seg>
       </tuv>
     </tu>
     <tu>
@@ -1024,8 +1024,8 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;View</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Просмотр</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144717Z">
+        <seg>&amp;Вид</seg>
       </tuv>
     </tu>
     <tu>
@@ -2237,8 +2237,8 @@ This version of PasswordSafe does not support more than %d entries in a database
       <tuv lang="EN-US">
         <seg>Always keep Password Safe on top</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать Password Safe поверх всех окон</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144754Z">
+        <seg>Располагать Password Safe поверх всех окон</seg>
       </tuv>
     </tu>
     <tu>
@@ -3200,8 +3200,8 @@ offset approximately at %d</seg>
       <tuv lang="EN-US">
         <seg>Could not display searchbar</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T143110Z">
-        <seg>Невозможно отобразить панель поиска</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145957Z">
+        <seg>Невозможно показать панель поиска</seg>
       </tuv>
     </tu>
     <tu>
@@ -3288,8 +3288,8 @@ offset approximately at %d</seg>
       <tuv lang="EN-US">
         <seg>Could not re-display searchbar at</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20130428T143121Z">
-        <seg>Невозможно отобразить панель поиска</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T150001Z">
+        <seg>Невозможно показать панель поиска</seg>
       </tuv>
     </tu>
     <tu>
@@ -3712,8 +3712,8 @@ offset approximately at %d</seg>
       <tuv lang="EN-US">
         <seg>Display</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображение</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144839Z">
+        <seg>Вид</seg>
       </tuv>
     </tu>
     <tu>
@@ -3945,8 +3945,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Edit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112911Z">
-        <seg>Изменить</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T143627Z">
+        <seg>Правка</seg>
       </tuv>
     </tu>
     <tu>
@@ -5668,8 +5668,8 @@ username field.</seg>
       <tuv lang="EN-US">
         <seg>Manage</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Управление</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T143753Z">
+        <seg>&amp;Сервис</seg>
       </tuv>
     </tu>
     <tu>
@@ -7656,6 +7656,58 @@ Content-Transfer-Encoding: 8bitr</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2016-11-05 17:40+0300
+PO-Revision-Date: 2016-10-31 22:22+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144446Z" creationid="pm_kan" creationdate="20161105T144446Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2015-11-05 17:45+0300
+PO-Revision-Date: 2015-11-05 17:45+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2016-11-05 18:01+0300
+PO-Revision-Date: 2016-10-31 22:22+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T150634Z" creationid="pm_kan" creationdate="20161105T150634Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2015-11-05 18:06+0300
+PO-Revision-Date: 2015-11-05 18:06+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7682,8 +7734,8 @@ Content-Transfer-Encoding: 8bitr</seg>
       <tuv lang="EN-US">
         <seg>Put Groups first in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать группы вверху дерева</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145104Z">
+        <seg>Размещать группы вверху дерева</seg>
       </tuv>
     </tu>
     <tu>
@@ -7858,8 +7910,8 @@ Content-Transfer-Encoding: 8bitr</seg>
       <tuv lang="EN-US">
         <seg>S&amp;ynchronize...</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>С&amp;инхронизировать...</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144421Z">
+        <seg>Синх&amp;ронизировать...</seg>
       </tuv>
     </tu>
     <tu>
@@ -8300,48 +8352,48 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Show &amp;Unsaved Changes</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отобразить &amp;несохранённые изменения</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145145Z">
+        <seg>Показать несо&amp;хранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Notes as ToolTips in Tree &amp;&amp; List views</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать заметки во всплывающей подсказке</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145208Z">
+        <seg>Показывать заметки во всплывающей подсказке</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Notes in Edit</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать заметки при редактировании</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145217Z">
+        <seg>Показывать заметки при редактировании</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Password in Add &amp;&amp; Edit</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать пароль при добавлении и редактировании</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145215Z">
+        <seg>Показывать пароль при добавлении и редактировании</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Password in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать пароль в дереве</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145252Z">
+        <seg>Показывать пароль в дереве</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Username in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отображать имя пользователя в дереве</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145247Z">
+        <seg>Показывать имя пользователя в дереве</seg>
       </tuv>
     </tu>
     <tu>
@@ -8356,8 +8408,8 @@ Action:</seg>
       <tuv lang="EN-US">
         <seg>Show entries with E&amp;xpiry dates</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Показать элементы с заданными датами &amp;истечения пароля</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145333Z">
+        <seg>Показать элементы с заданными датами исте&amp;чения пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -9021,8 +9073,8 @@ A new named policy has been created with the current date/time (%s) appended:%s<
       <tuv lang="EN-US">
         <seg>The following entries have one or more text fields too long to display or edit (over %d characters).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T140403Z">
-        <seg>Следующие элементы содержат одно или несколько текстовых полей, слишком больших для отображения или редактирования (больше %d символов).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145438Z">
+        <seg>Следующие элементы содержат одно или несколько текстовых полей, которые не могут быть отредактированы или показаны полностью (больше %d символов).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9117,8 +9169,8 @@ A new named policy has been created with the current date/time (%s) appended:%s<
       <tuv lang="EN-US">
         <seg>The largest entry size found was ~%d %ls.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20141226T152748Z" creationid="pm_kan" creationdate="20141226T152748Z">
-        <seg>Наибольший обнаруженный размер ~%d %ls.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145444Z" creationid="pm_kan" creationdate="20141226T152748Z">
+        <seg>Размер наибольшего из этих элементов ~%d %ls.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9521,8 +9573,8 @@ Note: Saving this database will result in the removal of unread entries!</seg>
       <tuv lang="EN-US">
         <seg>Toolbar &amp;visible</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Отобразить панель &amp;инструментов</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145752Z">
+        <seg>Панель инстру&amp;ментов</seg>
       </tuv>
     </tu>
     <tu>
@@ -10501,8 +10553,8 @@ able to abort it mid-way.</seg>
       <tuv lang="EN-US">
         <seg>[Notes hidden - click here to display]</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>[Заметки скрыты — кликните для отображения]</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T145859Z">
+        <seg>[Заметки скрыты. Кликните здесь, чтобы показать.]</seg>
       </tuv>
     </tu>
     <tu>
