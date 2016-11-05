@@ -460,7 +460,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu29->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
-  menuBar->Append(itemMenu29, _("Edit"));
+  menuBar->Append(itemMenu29, _("&Edit"));
   wxMenu* itemMenu48 = new wxMenu;
   itemMenu48->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
   itemMenu48->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
@@ -493,7 +493,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu67->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
   itemMenu67->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
   itemMenu48->Append(ID_REPORTSMENU, _("Reports"), itemMenu67);
-  menuBar->Append(itemMenu48, _("View"));
+  menuBar->Append(itemMenu48, _("&View"));
   wxMenu* itemMenu74 = new wxMenu;
   itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
@@ -508,12 +508,12 @@ void PasswordSafeFrame::CreateMenubar()
 #endif
   itemMenu74->AppendSeparator();
   AddLanguageMenu( itemMenu74 );
-  menuBar->Append(itemMenu74, _("Manage"));
+  menuBar->Append(itemMenu74, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), wxEmptyString, wxITEM_NORMAL);
-  menuBar->Append(itemMenu79, _("Help"));
+  menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
   m_statusBar = new CPWStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
