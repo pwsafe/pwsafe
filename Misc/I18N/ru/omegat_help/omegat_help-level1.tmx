@@ -1586,8 +1586,8 @@
       <tuv lang="EN-US">
         <seg>Display Tab</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150340Z">
-        <seg>«Отображение»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174431Z">
+        <seg>«Вид»</seg>
       </tuv>
     </tu>
     <tu>
@@ -1778,8 +1778,8 @@
       <tuv lang="EN-US">
         <seg>AutoType: If this field is not empty, then its content replaces the default value for the AutoType function (which is displayed above and comes from either the Password Safe default or this database's default as set via the "Manage → Options → Misc." tab).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174928Z" creationid="pm_kan" creationdate="20160617T174928Z">
-        <seg>Автонабор: если поле не пусто, его содержимое заменяет на параметры автонабора, установленные по умолчанию (значение по умолчанию указано сверху и берётся из настроек Password Safe для текущего контейнера, задаваемых на вкладке Управление→Настройки→Разное).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175149Z" creationid="pm_kan" creationdate="20160617T174928Z">
+        <seg>Автонабор: если поле не пусто, его содержимое заменяет на параметры автонабора, установленные по умолчанию (значение по умолчанию указано сверху и берётся из настроек Password Safe для текущего контейнера, задаваемых на вкладке Сервис→Настройки→Разное).</seg>
       </tuv>
     </tu>
     <tu>
@@ -2114,8 +2114,8 @@
       <tuv lang="EN-US">
         <seg>Note: User names and passwords can also be copied to clipboard through the choices located in the Edit menu, but let's be honest, that's far too much clicking.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T195855Z">
-        <seg>Примечание. Имя пользователя и пароль также могут быть скопированы в буфер обмена через меню Изменить.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174932Z">
+        <seg>Примечание. Имя пользователя и пароль также могут быть скопированы в буфер обмена через меню Правка.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2138,8 +2138,8 @@
       <tuv lang="EN-US">
         <seg>Note: You can also 'import' a subset of entries from another Password Safe database, by opening the other database with Password Safe (assuming you permit multiple instances via "Manage → Options → System" tab).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T173336Z">
-        <seg>Примечание. Чтобы импортировать элементы из другого контейнера Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке Управление→Настройки→Система) и откройте нужный контейнер.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175249Z">
+        <seg>Примечание. Чтобы импортировать элементы из другого контейнера Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке Сервис→Настройки→Система) и откройте нужный контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2427,16 +2427,16 @@
       <tuv lang="EN-US">
         <seg>PasswordSafe V3.28 and later provide the facility to create and manage Named Password Policies via the "Manage → Password Policies..." menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T212129Z">
-        <seg>Начиная с версии 3.28, PasswordSafe позволяет работать с именованными политиками. Создание и управление политиками производится через меню Управление→Политики создания паролей...</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175746Z">
+        <seg>Начиная с версии 3.28, PasswordSafe позволяет работать с именованными политиками. Создание и управление политиками производится через меню «Сервис→Политики создания паролей...»</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Run Cmd: This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu, right-click popup menu or Ctrl-R).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T135952Z">
-        <seg>Выполнить: данное поле используется для указания команды/программы, выполняемой при выборе пункта «Выполнить команду» (в меню «Изменить» или контекстном меню) или по горячей клавише Ctrl+R.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174819Z">
+        <seg>Выполнить: данное поле используется для указания команды/программы, выполняемой при выборе пункта «Выполнить команду» (в меню «Правка» или контекстном меню) или по горячей клавише Ctrl+R.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3387,8 +3387,8 @@
       <tuv lang="EN-US">
         <seg>A list of currently in use entry keyboard shortcuts will be displayed below the Password Safe program related menu shortcuts on the OptionsShortcuts tab via "Manage → Options → Shortcuts".</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T140129Z" creationid="pm_kan" creationdate="20140113T140129Z">
-        <seg>Список используемых в Password Safe комбинаций клавиш для элементов отображается под списком горячих клавиш для пунктов меню на вкладке Управление→Настройки→Комбинации клавиш.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175205Z" creationid="pm_kan" creationdate="20140113T140129Z">
+        <seg>Список используемых в Password Safe комбинаций клавиш для элементов отображается под списком горячих клавиш для пунктов меню на вкладке Сервис→Настройки→Комбинации клавиш.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3403,8 +3403,8 @@
       <tuv lang="EN-US">
         <seg>A new feature allows two entries to be selected and compared either via the Edit menu or by right-clicking on either.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T171858Z">
-        <seg>Новая функция: позволяет выделять и сравнивать два элемента через меню «Изменить» или контекстное меню элемента.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174617Z">
+        <seg>Новая функция: позволяет выделять и сравнивать два элемента через меню «Правка» или контекстное меню элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3851,8 +3851,8 @@
       <tuv lang="EN-US">
         <seg>All functions in the Edit menu can also be reached by clicking the right mouse button on the corresponding entry, alias or group.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212402Z">
-        <seg>Все функции меню Изменить доступны через контекстное меню (при нажатии правой кнопкой мыши) элемента, псевдонима или группы.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174633Z">
+        <seg>Все функции меню Правка доступны через контекстное меню (при нажатии правой кнопкой мыши) элемента, псевдонима или группы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4075,8 +4075,8 @@
       <tuv lang="EN-US">
         <seg>Always keep Password Safe on top</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T192658Z">
-        <seg>Отображать Password Safe поверх всех окон</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180406Z">
+        <seg>Располагать Password Safe поверх всех окон</seg>
       </tuv>
     </tu>
     <tu>
@@ -4203,8 +4203,8 @@
       <tuv lang="EN-US">
         <seg>Anything that you can do in Windows' "Start → Run" can be used here.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T122505Z" creationid="pm_kan" creationdate="20140113T122505Z">
-        <seg>Можно указать любую команду, которая может быть выполнена в ОС Windows через меню «Пуск»→«Выполнить».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175841Z" creationid="pm_kan" creationdate="20140113T122505Z">
+        <seg>Можно указать любую команду, которая может быть выполнена в ОС Windows через меню «Пуск→Выполнить».</seg>
       </tuv>
     </tu>
     <tu>
@@ -6100,8 +6100,8 @@
       <tuv lang="EN-US">
         <seg>Display</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100919T200234Z">
-        <seg>Отображение</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174214Z">
+        <seg>Вид</seg>
       </tuv>
     </tu>
     <tu>
@@ -6124,8 +6124,8 @@
       <tuv lang="EN-US">
         <seg>Display Tab</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T183949Z">
-        <seg>Вкладка «Отображение»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174303Z">
+        <seg>Вкладка «Вид»</seg>
       </tuv>
     </tu>
     <tu>
@@ -6156,8 +6156,8 @@
       <tuv lang="EN-US">
         <seg>Displays the Find bar.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T202448Z">
-        <seg>Отобразить панель поиска</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181006Z">
+        <seg>Показать панель поиска</seg>
       </tuv>
     </tu>
     <tu>
@@ -6236,8 +6236,8 @@
       <tuv lang="EN-US">
         <seg>Dragbar</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204954Z">
-        <seg>Отобразить панель Dragbar</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T173932Z">
+        <seg>Панель Dragbar</seg>
       </tuv>
     </tu>
     <tu>
@@ -6380,8 +6380,8 @@
       <tuv lang="EN-US">
         <seg>Edit Menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T201942Z">
-        <seg>Меню «Изменить»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174622Z">
+        <seg>Меню «Правка»</seg>
       </tuv>
     </tu>
     <tu>
@@ -7012,8 +7012,8 @@
       <tuv lang="EN-US">
         <seg>Filters can be accessed via the View menu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151311Z">
-        <seg>Работа с фильтрами производится через меню «Просмотр».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180110Z">
+        <seg>Работа с фильтрами производится через меню «Вид».</seg>
       </tuv>
     </tu>
     <tu>
@@ -7380,8 +7380,8 @@
       <tuv lang="EN-US">
         <seg>From the Edit menu, select Add Entry</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231350Z">
-        <seg>В меню Изменить выберите Добавить элемент.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174638Z">
+        <seg>В меню Правка выберите Добавить элемент.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7420,8 +7420,8 @@
       <tuv lang="EN-US">
         <seg>Functions within the Display Tab control how Password Safe and password items are displayed.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T123526Z">
-        <seg>Параметры на вкладке Отображение влияют на вид Password Safe и элементов контейнера.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174313Z">
+        <seg>Параметры на вкладке Вид влияют на вид Password Safe и элементов контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7492,8 +7492,8 @@
       <tuv lang="EN-US">
         <seg>Go the the View menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T152220Z">
-        <seg>Откройте меню Просмотр.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180139Z">
+        <seg>Откройте меню Вид.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7508,8 +7508,8 @@
       <tuv lang="EN-US">
         <seg>Go to the View menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T171852Z">
-        <seg>Откройте меню Просмотр</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180222Z">
+        <seg>Откройте меню Вид</seg>
       </tuv>
     </tu>
     <tu>
@@ -7628,8 +7628,8 @@
       <tuv lang="EN-US">
         <seg>Highlight changed entries</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110623T161228Z">
-        <seg>Выделить изменённые элементы</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180645Z">
+        <seg>Выделять изменённые элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -8196,8 +8196,8 @@
       <tuv lang="EN-US">
         <seg>If item Save database immediately after Edit or Add in menu Manage → Options → Backups is unchecked, changed item will not be saved, but they will be shown in a different colour.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T210948Z">
-        <seg>Если на вкладке Управление→Настройки→Резервные копии снят флажок Сохранять контейнер после вставки или редактирования, изменения не сохраняются автоматически, а выделяются цветом.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175516Z">
+        <seg>Если на вкладке Сервис→Настройки→Резервные копии снят флажок Сохранять контейнер после вставки или редактирования, изменения не сохраняются автоматически, а выделяются цветом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8324,8 +8324,8 @@
       <tuv lang="EN-US">
         <seg>If saved to disk, you can view it again via the "View → Reports" menu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T211203Z">
-        <seg>После сохранения на диск отчёт становится доступен через пункт меню Просмотр→Отчёты.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180318Z">
+        <seg>После сохранения на диск отчёт становится доступен через пункт меню Вид→Отчёты.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8452,8 +8452,8 @@
       <tuv lang="EN-US">
         <seg>If the entry is protected, you will not be able to change any fields until you unprotect the entry via the Edit menu or right-click context menu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T164211Z">
-        <seg>Поля в защищённых элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Изменить») «Снять защиту».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174812Z">
+        <seg>Поля в защищённых элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Правка») «Снять защиту».</seg>
       </tuv>
     </tu>
     <tu>
@@ -8612,8 +8612,8 @@
       <tuv lang="EN-US">
         <seg>If you are unable to choose, continue with the current database and use the database Compare function from the File menu to show the exact differences between the current and the Failsafe backup(s).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113628Z">
-        <seg>Если вы затрудняетесь в выборе, нажмите кнопку «Продолжить» и используйте пункт меню «Файл»→«Сравнить» для определения различий между текущим контейнером и аварийной резервной копией.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175641Z">
+        <seg>Если вы затрудняетесь в выборе, нажмите кнопку «Продолжить» и используйте пункт меню «Файл→Сравнить» для определения различий между текущим контейнером и аварийной резервной копией.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8724,8 +8724,8 @@
       <tuv lang="EN-US">
         <seg>If you do open a Failsafe Backup and have decided that it is the version you wish to keep, you should save it as a normal database.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113735Z">
-        <seg>Если Вы открыли аварийную резервную копию, и решили, что эту версию нужно оставить, сохраните данный файл как обычный контейнер, используя пункт меню «Файл»→«Сохранить как».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175657Z">
+        <seg>Если Вы открыли аварийную резервную копию, и решили, что эту версию нужно оставить, сохраните данный файл как обычный контейнер, используя пункт меню «Файл→Сохранить как».</seg>
       </tuv>
     </tu>
     <tu>
@@ -8932,8 +8932,8 @@
       <tuv lang="EN-US">
         <seg>If, however, you find that you have several filters that you wish to use repeatedly, then you can store them and manage them effectively via the "View → Filter → Manage..." dialog box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152023Z">
-        <seg>Если же у вас есть фильтры, которые хотелось бы использовать повторно, их можно сохранить воспользовавшись пунктом меню Просмотр→Фильтры→Управление.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180117Z">
+        <seg>Если же у вас есть фильтры, которые хотелось бы использовать повторно, их можно сохранить воспользовавшись пунктом меню Вид→Фильтры→Управление.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9124,8 +9124,8 @@
       <tuv lang="EN-US">
         <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start Password Safe (assuming you permit multiple instances via "Manage → Options → System" tab) and create a new database, whilst having your normal database open in another instance.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T142653Z">
-        <seg>Чтобы экспортировать элементы в другой контейнер Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке Управление→Настройки→Система) и создайте новый контейнер.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175217Z">
+        <seg>Чтобы экспортировать элементы в другой контейнер Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке Сервис→Настройки→Система) и создайте новый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9204,8 +9204,8 @@
       <tuv lang="EN-US">
         <seg>In particular, via the Backups tab in the Options dialog box, you may specify how many backups to keep (we recommend a minimum of 3 to 5) and whether to use an incremental number or date/time value in the backup file name.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T120100Z">
-        <seg>В частности, на вкладке «Резервные копии» диалога «Управление→Настройки» можно указать необходимое количество хранимых резервных копий (мы рекомендуем оставлять от 3 до 5 копий) и способ именования (по счётчику или дате/времени).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175131Z">
+        <seg>В частности, на вкладке «Резервные копии» диалога «Сервис→Настройки» можно указать необходимое количество хранимых резервных копий (мы рекомендуем оставлять от 3 до 5 копий) и способ именования (по счётчику или дате/времени).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9420,8 +9420,8 @@
       <tuv lang="EN-US">
         <seg>It is now possible to select the default symbol list that will be used in a database via the "Manage → Password Policies..." dialog.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T114627Z">
-        <seg>Свой набор символов для создания пароля можно задать через меню Управление→Политики создания паролей....</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175422Z">
+        <seg>Свой набор символов для создания пароля можно задать через меню Сервис→Политики создания паролей....</seg>
       </tuv>
     </tu>
     <tu>
@@ -9956,8 +9956,8 @@
       <tuv lang="EN-US">
         <seg>Main window always on top</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T173710Z">
-        <seg>Отображать Password Safe поверх всех окон</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181551Z">
+        <seg>Располагать Password Safe поверх всех окон</seg>
       </tuv>
     </tu>
     <tu>
@@ -9996,8 +9996,8 @@
       <tuv lang="EN-US">
         <seg>Make sure Manage → Options → System "Allow multiple instances" is checked for this to work</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T150545Z" creationid="pm_kan" creationdate="20140113T150545Z">
-        <seg>Чтобы данный пример заработал, убедитесь, что разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175453Z" creationid="pm_kan" creationdate="20140113T150545Z">
+        <seg>Чтобы данный пример заработал, убедитесь, что разрешён запуск нескольких экземпляров на вкладке «Сервис→Настройки→Система».</seg>
       </tuv>
     </tu>
     <tu>
@@ -10020,8 +10020,8 @@
       <tuv lang="EN-US">
         <seg>Manage Menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150109Z">
-        <seg>Меню «Управление»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175252Z">
+        <seg>Меню «Сервис»</seg>
       </tuv>
     </tu>
     <tu>
@@ -10268,8 +10268,8 @@
       <tuv lang="EN-US">
         <seg>Most of them are configurable via the "Manage → Options" dialog box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T172234Z">
-        <seg>Большинство из них задаются в диалоге, открываемом через пункт меню Управление→Настройки.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175444Z">
+        <seg>Большинство из них задаются в диалоге, открываемом через пункт меню Сервис→Настройки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10492,8 +10492,8 @@
       <tuv lang="EN-US">
         <seg>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right clicking on the entry), the option to restrict the export based on the contents of the Group, Title, User Name, URL or Notes fields is obviously not available.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T164733Z">
-        <seg>Ограничения по группе, заголовку, имени пользователя, ссылке или заметкам недоступны, если через контекстное меню или меню «Изменить» экспортируется один элемент.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175007Z">
+        <seg>Ограничения по группе, заголовку, имени пользователя, ссылке или заметкам недоступны, если через контекстное меню или меню «Правка» экспортируется один элемент.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10724,8 +10724,8 @@
       <tuv lang="EN-US">
         <seg>Note that you can also customize the default AutoType text via the Misc. tab in the Options dialog box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T161726Z">
-        <seg>Заметьте, что для автонабора последовательность по умолчанию может быть переопределена на вкладке Управление→Настройки→Разное.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175123Z">
+        <seg>Заметьте, что для автонабора последовательность по умолчанию может быть переопределена на вкладке Сервис→Настройки→Разное.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11052,8 +11052,8 @@
       <tuv lang="EN-US">
         <seg>Once opened, go to the Manage menu and select Change Safe Combination.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T183514Z">
-        <seg>После этого в меню Управление выберите пункт Изменить пароль для контейнера.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175135Z">
+        <seg>После этого в меню Сервис выберите пункт Изменить пароль для контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12029,8 +12029,8 @@
       <tuv lang="EN-US">
         <seg>Put Groups first in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T194417Z">
-        <seg>Отображать группы вверху дерева</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180854Z">
+        <seg>Размещать группы вверху дерева</seg>
       </tuv>
     </tu>
     <tu>
@@ -12805,8 +12805,8 @@
       <tuv lang="EN-US">
         <seg>Select Add Group from the Edit menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231733Z">
-        <seg>В меню Изменить выберите пункт Добавить группу.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174805Z">
+        <seg>В меню Правка выберите пункт Добавить группу.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12821,8 +12821,8 @@
       <tuv lang="EN-US">
         <seg>Select Edit/View Entry from the Edit menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231636Z">
-        <seg>В меню Изменить нажмите Редактирование/просмотр элемента.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174643Z">
+        <seg>В меню Правка нажмите Редактирование/просмотр элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12869,8 +12869,8 @@
       <tuv lang="EN-US">
         <seg>Select the Manage-&gt;Yubikey... menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T143212Z" creationid="pm_kan" creationdate="20140113T143212Z">
-        <seg>Выберите пункт меню «Управление→YubiKey...».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175309Z" creationid="pm_kan" creationdate="20140113T143212Z">
+        <seg>Выберите пункт меню «Сервис→YubiKey...».</seg>
       </tuv>
     </tu>
     <tu>
@@ -13149,24 +13149,24 @@
       <tuv lang="EN-US">
         <seg>Show Dragbar</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T182125Z">
-        <seg>Отображать «панель Dragbar»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181852Z">
+        <seg>Отображать панель Dragbar</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Grid Lines in List View</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T194246Z">
-        <seg>Отображать сетку списка</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181714Z">
+        <seg>Показать сетку списка</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Notes as ToolTips in Tree &amp; List Views</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T193516Z">
-        <seg>Отображать заметки во всплывающей подсказке</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181342Z">
+        <seg>Показывать заметки во всплывающей подсказке</seg>
       </tuv>
     </tu>
     <tu>
@@ -13182,16 +13182,16 @@
       <tuv lang="EN-US">
         <seg>Show Notes in Edit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T193930Z">
-        <seg>Отображать заметки при редактировании</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181352Z">
+        <seg>Показывать заметки при редактировании</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show Password in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T193137Z">
-        <seg>Отображать пароль в дереве</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181440Z">
+        <seg>Показывать пароль в дереве</seg>
       </tuv>
     </tu>
     <tu>
@@ -13206,16 +13206,16 @@
       <tuv lang="EN-US">
         <seg>Show Username in Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T192851Z">
-        <seg>Отображать имя пользователя в дереве</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181521Z">
+        <seg>Показывать имя пользователя в дереве</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show an entry's Notes as a tool tip in both Tree and List views (only the first 250 characters will be displayed)</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T174300Z">
-        <seg>Отображать заметки во всплывающей подсказке (только первые 250 символов)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181403Z">
+        <seg>Показывать заметки во всплывающей подсказке (только первые 250 символов)</seg>
       </tuv>
     </tu>
     <tu>
@@ -13230,7 +13230,7 @@
       <tuv lang="EN-US">
         <seg>Show grid lines in list view</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T203044Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181828Z">
         <seg>Отображать сетку списка</seg>
       </tuv>
     </tu>
@@ -13238,16 +13238,16 @@
       <tuv lang="EN-US">
         <seg>Show groups first in tree view</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T203035Z">
-        <seg>Отображать группы вверху дерева</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180905Z">
+        <seg>Размещать группы вверху дерева</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Show password in Add &amp; Edit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T193602Z">
-        <seg>Отображать пароль при добавлении и редактировании</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181444Z">
+        <seg>Показывать пароль при добавлении и редактировании</seg>
       </tuv>
     </tu>
     <tu>
@@ -13262,9 +13262,9 @@
       <tuv lang="EN-US">
         <seg>Show unsaved changes</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T214354Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181220Z">
         <seg>
-Отобразить несохранённые изменения</seg>
+Показать несохранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -13391,8 +13391,8 @@
       <tuv lang="EN-US">
         <seg>Size of the columns in the Manage → Options → Shortcuts tab</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T191455Z">
-        <seg>Размеры столбцов на вкладке Управление→Настройки→Комбинации клавиш</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175448Z">
+        <seg>Размеры столбцов на вкладке Сервис→Настройки→Комбинации клавиш</seg>
       </tuv>
     </tu>
     <tu>
@@ -13775,8 +13775,8 @@
       <tuv lang="EN-US">
         <seg>The "View → Reports" menu item may then be used to view the reports at a later date.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T152126Z">
-        <seg>Отчёт можно посмотреть позже с помощью меню «Просмотр»→«Отчёты».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180130Z">
+        <seg>Отчёт можно посмотреть позже с помощью меню «Вид→Отчёты».</seg>
       </tuv>
     </tu>
     <tu>
@@ -13807,16 +13807,16 @@
       <tuv lang="EN-US">
         <seg>The "View → Reports" menu item may then be used to view the reports at a later date.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T140752Z">
-        <seg>Отчёт можно посмотреть позже с помощью меню Просмотр→Отчёты.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180036Z">
+        <seg>Отчёт можно посмотреть позже с помощью меню Вид→Отчёты.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>The "View → Reports"menu item may then be used to view the reports at a later date.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151115Z">
-        <seg>Отчёт можно посмотреть позже с помощью меню Просмотр→Отчёты.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180056Z">
+        <seg>Отчёт можно посмотреть позже с помощью меню Вид→Отчёты.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13839,8 +13839,8 @@
       <tuv lang="EN-US">
         <seg>The Manage Menu is where all of Password Safe's options and settings are controlled.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T201439Z">
-        <seg>Через меню Управление производится настройка всех параметров Password Safe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175306Z">
+        <seg>Через меню Сервис производится настройка всех параметров Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13855,8 +13855,8 @@
       <tuv lang="EN-US">
         <seg>The View Menu controls the available display options.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T165850Z">
-        <seg>Через меню Просмотр можно управлять настройками отображения.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180216Z">
+        <seg>Через меню Вид можно управлять настройками отображения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13871,8 +13871,8 @@
       <tuv lang="EN-US">
         <seg>The Enter key is also reserved as it is used to set the value of a shortcut in the "Manage → Options → Shortcuts" tab.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202247Z">
-        <seg>Клавиша Enter также зарезервирована, так как она используется для задания горячих клавиш на вкладке Управление→Настройки→Комбинации клавиш.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175456Z">
+        <seg>Клавиша Enter также зарезервирована, так как она используется для задания горячих клавиш на вкладке Сервис→Настройки→Комбинации клавиш.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13887,8 +13887,8 @@
       <tuv lang="EN-US">
         <seg>The Add/Edit entry function and the "Manage → Generate Password" function have both been updated to allow an entry to use a named policy or to allow the generation of a random password using a Named policy.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T094255Z">
-        <seg>При редактировании элемента и создании пароля через пункт меню «Управление→Создать пароль» можно использовать именованные политики создании пароля.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175405Z">
+        <seg>При редактировании элемента и создании пароля через пункт меню «Сервис→Создать пароль» можно использовать именованные политики создании пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14247,8 +14247,8 @@
       <tuv lang="EN-US">
         <seg>The default actions are set in Manage → Options → Misc. tab, and marked with "(default)" in the drop-down lists.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132843Z" creationid="pm_kan" creationdate="20140113T132843Z">
-        <seg>В выпадающих списках значение по умолчанию помечено фразой «(по умолчанию)». Изменить значение по умолчанию можно на вкладке Управление→Настройки→Разное.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175157Z" creationid="pm_kan" creationdate="20140113T132843Z">
+        <seg>В выпадающих списках значение по умолчанию помечено фразой «(по умолчанию)». Изменить значение по умолчанию можно на вкладке Сервис→Настройки→Разное.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14391,8 +14391,8 @@
       <tuv lang="EN-US">
         <seg>The first row is the specified database followed by general information about it (the same as shown in the Properties dialog from the File menu).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113618Z">
-        <seg>В первом столбце указывается имя контейнера, в остальных — основная информация о контейнере (та же, что отображается при открытии пункта меню «Файл»→«Свойства»).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175631Z">
+        <seg>В первом столбце указывается имя контейнера, в остальных — основная информация о контейнере (та же, что отображается при открытии пункта меню «Файл→Свойства»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -14743,8 +14743,8 @@
       <tuv lang="EN-US">
         <seg>The length, letters, numbers, and special characters used to generate a password are easily controlled through the Password Policy dialog in the Option menu."</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110216T113916Z">
-        <seg>Длина, буквы, цифры и специальные символы, используемые для для создания паролей, настраиваются на вкладке «Управление»→«Настройки»→«Политика создания паролей»"</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175821Z">
+        <seg>Длина, буквы, цифры и специальные символы, используемые для для создания паролей, настраиваются на вкладке «Сервис→Настройки→Политика создания паролей»"</seg>
       </tuv>
     </tu>
     <tu>
@@ -14879,8 +14879,8 @@
       <tuv lang="EN-US">
         <seg>The number of recent files that Password Safe will keep may be configured via the "Manage → Options → System" tab, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152604Z">
-        <seg>Количество запоминаемых контейнеров настраивается на вкладке Управление→Настройки→Система. Также там можно настроить отображение списка недавно используемых контейнеров внутри меню «Файл», а не в его подменю.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175234Z">
+        <seg>Количество запоминаемых контейнеров настраивается на вкладке Сервис→Настройки→Система. Также там можно настроить размещение списка недавно используемых контейнеров внутри меню «Файл», а не в его подменю.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14959,8 +14959,8 @@
       <tuv lang="EN-US">
         <seg>The scope of the menu item shortcuts is for all databases opened by a given user on a particular PC and can be customised by that user (Manage → Options, Shortcuts tab) and may change according to the user selected application language e.g. English, German etc.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134055Z" creationid="pm_kan" creationdate="20140113T133820Z">
-        <seg>Область действия горячих клавиш для пунктов меню распространяется на все контейнеры, открываемые на данном ПК. Значения по умолчанию зависят от выбранного языка. Ручная настройка горячих клавиш для пунктов меню производится на вкладке Управление→Настройки→Комбинации клавиш.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175202Z" creationid="pm_kan" creationdate="20140113T133820Z">
+        <seg>Область действия горячих клавиш для пунктов меню распространяется на все контейнеры, открываемые на данном ПК. Значения по умолчанию зависят от выбранного языка. Ручная настройка горячих клавиш для пунктов меню производится на вкладке Сервис→Настройки→Комбинации клавиш.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15295,8 +15295,8 @@
       <tuv lang="EN-US">
         <seg>There is now a menu item ( "View → Show Entries with Expiry dates") that will invoke an internal filter to display all those entries with an expiry date set, whether it be not yet expired, soon to expire or already expired.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T131141Z">
-        <seg>Пункт меню Просмотр→Показать элементы с заданными датами истечения пароля применяет внутренний фильтр, отображающий только те элементы, у которых задана дата истечения пароля (независимо от того, наступила она или нет).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180006Z">
+        <seg>Пункт меню Вид→Показать элементы с заданными датами истечения пароля применяет внутренний фильтр, отображающий только те элементы, у которых задана дата истечения пароля (независимо от того, наступила она или нет).</seg>
       </tuv>
     </tu>
     <tu>
@@ -15639,8 +15639,8 @@
       <tuv lang="EN-US">
         <seg>This default can be changed via the Manage/Options menu (Misc. tab).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T160537Z" creationid="pm_kan" creationdate="20151004T160537Z">
-        <seg>Действие по умолчанию может быть изменено на вкладке «Управление→Настройки→Разное».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175127Z" creationid="pm_kan" creationdate="20151004T160537Z">
+        <seg>Действие по умолчанию может быть изменено на вкладке «Сервис→Настройки→Разное».</seg>
       </tuv>
     </tu>
     <tu>
@@ -15775,16 +15775,16 @@
       <tuv lang="EN-US">
         <seg>This is done via the Manage-&gt;Yubikey... dialog box as described in the Manage Menu Section.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111313Z" creationid="pm_kan" creationdate="20140113T110929Z">
-        <seg>Требуемые действия выполняются в пункте меню «Управление→YubiKey...» (описание доступно в разделе Управление).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175118Z" creationid="pm_kan" creationdate="20140113T110929Z">
+        <seg>Требуемые действия выполняются в пункте меню «Сервис→YubiKey...» (описание доступно в разделе Сервис).</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>This is equivalent to selecting the "View → Filter → New/Edit Filter" menu entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160906Z">
-        <seg>Это равносильно выбору пункта меню Просмотр→Фильтры→Создать/Редактировать фильтр.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180240Z">
+        <seg>Это равносильно выбору пункта меню Вид→Фильтры→Создать/Редактировать фильтр.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16024,8 +16024,8 @@
       <tuv lang="EN-US">
         <seg>This menu also replaces the setting of the database defaults via the "Manage → Options" menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T212415Z">
-        <seg>Данный пункт меню также заменяет настройки политики по умолчанию, которые раньше задавались через Управление→Настройки.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175754Z">
+        <seg>Данный пункт меню также заменяет настройки политики по умолчанию, которые раньше задавались через «Сервис→Настройки».</seg>
       </tuv>
     </tu>
     <tu>
@@ -16384,8 +16384,8 @@
       <tuv lang="EN-US">
         <seg>Through the Edit Menu you can add, edit, use and organize user names and passwords.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T200258Z">
-        <seg>Используя меню Изменить вы можете добавлять, редактировать, использовать и упорядочивать имена пользователей и пароли.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174628Z">
+        <seg>Используя меню Правка вы можете добавлять, редактировать, использовать и упорядочивать имена пользователей и пароли.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16496,8 +16496,8 @@
       <tuv lang="EN-US">
         <seg>To configure an alternate browser, use the "Manage → Options → Misc." dialog box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T133956Z">
-        <seg>Настройка параметров альтернативного браузера производится на вкладке Управление→Настройки→Разное.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175146Z">
+        <seg>Настройка параметров альтернативного браузера производится на вкладке Сервис→Настройки→Разное.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16536,24 +16536,24 @@
       <tuv lang="EN-US">
         <seg>To define a new filter, select the "View → Filter → New/Edit  Filter" menu entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160333Z">
-        <seg>Для создания нового фильтра выберите пункт меню Просмотр→Фильтры→Создать/Редактировать фильтр.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180114Z">
+        <seg>Для создания нового фильтра выберите пункт меню Вид→Фильтры→Создать/Редактировать фильтр.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>To display or hide the Dragbar, check or uncheck the Dragbar Visible menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T210909Z">
-        <seg>Для того, чтобы скрыть или отобразить панель «Dragbar» поставьте или снимите отметку на пункте меню Отобразить панель Dragbar.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174058Z">
+        <seg>Для того, чтобы скрыть или показать панель «Dragbar» поставьте или снимите отметку на пункте меню Панель Dragbar.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>To display or hide the toolbar, check or uncheck the Toolbar Visible menu item.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204703Z">
-        <seg>Для отображения или скрытия панели инструментов поставьте или снимите отметку с пункта меню Отобразить панель инструментов.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181134Z">
+        <seg>Для отображения или скрытия панели инструментов поставьте или снимите отметку с пункта меню Панель инструментов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16568,16 +16568,16 @@
       <tuv lang="EN-US">
         <seg>To edit an existing filter, select is and then click on Edit.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T111204Z">
-        <seg>Для редактирования существующего фильтра следует выбрать его в верхней таблице и нажать кнопку «Изменить».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174856Z">
+        <seg>Для редактирования существующего фильтра следует выбрать его в верхней таблице и нажать кнопку «Правка».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>To export password entries use the "File → Export To" menu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T193427Z">
-        <seg>Для экспорта элементов используйте пункт меню «Файл»→«Экспортировать в».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175618Z">
+        <seg>Для экспорта элементов используйте пункт меню «Файл→Экспортировать в».</seg>
       </tuv>
     </tu>
     <tu>
@@ -16672,8 +16672,8 @@
       <tuv lang="EN-US">
         <seg>To search an open Safe, press Ctrl-F (or "Edit → Find...").</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T140030Z">
-        <seg>Для поиска в открытом контейнере нажмите Ctrl+F (или «Изменить»→«Поиск»).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175854Z">
+        <seg>Для поиска в открытом контейнере нажмите Ctrl+F (или «Правка→Поиск»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -16848,8 +16848,8 @@
       <tuv lang="EN-US">
         <seg>Unless changed via the "Manage → Options → Security" tab, the entry's password will automatically be copied into the Clipboard.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T124605Z">
-        <seg>Если в диалоге Управление→Настройки→Безопасность не указано иное, пароль автоматически копируется в буфер обмена.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175139Z">
+        <seg>Если в диалоге Сервис→Настройки→Безопасность не указано иное, пароль автоматически копируется в буфер обмена.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17328,8 +17328,8 @@
       <tuv lang="EN-US">
         <seg>View Menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T213406Z">
-        <seg>Меню «Просмотр»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180156Z">
+        <seg>Меню «Вид»</seg>
       </tuv>
     </tu>
     <tu>
@@ -17465,8 +17465,8 @@
       <tuv lang="EN-US">
         <seg>When a Named Password Policy is selected, you may use the Edit button to change its values and the following dialog is shown.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T221134Z">
-        <seg>Для редактирования параметров выберите требуемую именованную политику и нажмите кнопку «Изменить». Будет отображён показанный ниже диалог.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174924Z">
+        <seg>Для редактирования параметров выберите требуемую именованную политику и нажмите кнопку «Правка». Будет отображён показанный ниже диалог.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17769,8 +17769,8 @@
       <tuv lang="EN-US">
         <seg>When the database's default policy is selected, you may use the Edit button to change its values.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T214101Z">
-        <seg>Чтобы отредактировать параметры политики по умолчанию, выберите ёё в списке и нажмите кнопку «Изменить».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174915Z">
+        <seg>Чтобы отредактировать параметры политики по умолчанию, выберите ёё в списке и нажмите кнопку «Правка».</seg>
       </tuv>
     </tu>
     <tu>
@@ -18081,8 +18081,8 @@
       <tuv lang="EN-US">
         <seg>You can choose whether or not to display a toolbar, and if so, if to use the 'Classic' or 'New Toolbar' icons.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204626Z">
-        <seg>Также здесь можно скрыть или отобразить панель инструментов и выбрать стиль значков для неё.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181020Z">
+        <seg>Также здесь можно скрыть или показать панель инструментов и выбрать стиль значков для неё.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18209,8 +18209,8 @@
       <tuv lang="EN-US">
         <seg>You may also set this list for the whole database via "Manage → Options → Password Policy" tab and override it for specific entries.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T131717Z">
-        <seg>Для того, чтобы ваш набор символов использовался по умолчанию, укажите его на вкладке Управление→Настройки→Политика создания паролей.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175213Z">
+        <seg>Для того, чтобы ваш набор символов использовался по умолчанию, укажите его на вкладке Сервис→Настройки→Политика создания паролей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18313,8 +18313,8 @@
       <tuv lang="EN-US">
         <seg>You may use the Undo and Redo buttons (or the shortcuts Ctrl+Z and Ctrl+Y [or the equivalent ones if you have changed them via the "Manage → Options" Shortcut property page]) to Undo any changes you have made on this dialog e.g. changed the policy values of the database default policy or a Named Password Policy, added a new or deleted an unused Named Password Policy.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T113803Z">
-        <seg>Для отмены/повтора изменений в политиках создания паролей вы можете использовать кнопки «Вернуть» и «Повторить» соответственно (или комбинации клавиш Ctrl+Z и Ctrl+Y [или их эквиваленты, определённые на вкладке Управление→Настройки→Комбинации клавиш]).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175811Z">
+        <seg>Для отмены/повтора изменений в политиках создания паролей вы можете использовать кнопки «Вернуть» и «Повторить» соответственно (или комбинации клавиш Ctrl+Z и Ctrl+Y [или их эквиваленты, определённые на вкладке «Сервис→Настройки→Комбинации клавиш»]).</seg>
       </tuv>
     </tu>
     <tu>
@@ -20937,8 +20937,8 @@
       <tuv lang="EN-US">
         <seg>manage menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150114Z">
-        <seg>Меню «Управление»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175257Z">
+        <seg>Меню «Сервис»</seg>
       </tuv>
     </tu>
     <tu>
