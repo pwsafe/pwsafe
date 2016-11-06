@@ -21,8 +21,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <limits>
-#include <stdio.h>  // for _fileno
-#include <io.h>     // for _get_osfhandle
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,

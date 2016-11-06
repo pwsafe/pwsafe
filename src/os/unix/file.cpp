@@ -28,8 +28,8 @@
 #include "../file.h"
 #include "../env.h"
 
-#include "../../core.h"
-#include "../../StringXStream.h"
+#include "../../core/core.h"
+#include "../../core/StringXStream.h"
 
 using namespace std;
 
