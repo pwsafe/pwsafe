@@ -794,8 +794,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       // else substitute
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
         if (M_autotype().IsEmpty()) {
-          sxData = PWSprefs::GetInstance()->
-            GetPref(PWSprefs::DefaultAutotypeString);
+          sxData = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
           // If still empty, take this default
           if (sxData.empty()) {
             sxData = DEFAULT_AUTOTYPE;
@@ -803,12 +802,20 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         } else
           sxData = (LPCWSTR)M_autotype();
       } else {
+        CSecString sPassword(M_realpassword()), sLastPassword(M_lastpassword());
+        if (m_AEMD.pci->IsAlias()) {
+          CItemData *pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
+          ASSERT(pciA != NULL);
+          sPassword = pciA->GetPassword();
+          sLastPassword = pciA->GetPreviousPassword();
+        }
+
         sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
                                                 M_group(),
                                                 M_title(),
                                                 M_username(),
-                                                M_realpassword(),
-                                                M_lastpassword(),
+                                                sPassword,
+                                                sLastPassword,
                                                 M_realnotes(),
                                                 M_URL(),
                                                 M_email(),
@@ -839,11 +846,11 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         }
 
         sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
-                                                 M_currentDB(),
-                                                 M_pci(), pbci,
-                                                 GetMainDlg()->m_bDoAutoType,
-                                                 GetMainDlg()->m_sxAutoType,
-                                                 errmsg, st_column, bURLSpecial);
+                                                M_currentDB(),
+                                                M_pci(), pbci,
+                                                GetMainDlg()->m_bDoAutoType,
+                                                GetMainDlg()->m_sxAutoType,
+                                                errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));

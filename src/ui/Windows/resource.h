@@ -319,7 +319,6 @@
 #define IDB_DRAGEMAIL_CLASSIC           476
 #define IDB_DRAGEMAILX_CLASSIC          477
 #define IDB_UNDO_CLASSIC                478
-#define IDD_ALIAS_PSWDCHANGE            479
 #define IDB_REDO_CLASSIC                480
 #define IDB_UNDO_NEW                    481
 #define IDB_REDO_NEW                    482
@@ -390,6 +389,7 @@
 #define IDB_QUESTIONMARK                547
 #define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
+#define IDB_REDEXCLAMATION              550
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -861,13 +861,14 @@
 #define IDC_PASSWORDHELP                1556
 #define IDC_NOTESHELP                   1557
 #define IDC_AUTOTYPEHELP                1558
-#define IDC_PWHHELP                     1559
+#define IDC_PASSWORDHELP2               1559
+#define IDC_PWHHELP                     1560
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        553
+#define _APS_NEXT_RESOURCE_VALUE        551
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1560
 #define _APS_NEXT_SYMED_VALUE           540

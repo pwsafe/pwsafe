@@ -43,6 +43,9 @@ do not leave duplicated empty groups in the database.
 
 Changes to Existing Features in 3.40.1
 ======================================
+[] You can no longer change an alias's base entry's password from the alias entry.
+Instead, you should edit the base entry directly by selecting the alias entry and 
+using the Edit or right-click context menu to select its base.
 [1371] The font used in the Find toolbar is now set to the user specified Add/Edit
 font instead of the Tree/List view font. However, if the user selected font is too
 large so that characters are truncated, its point size will be dynamically reduced

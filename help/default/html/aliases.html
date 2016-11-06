@@ -47,12 +47,13 @@ password field is enough to define the other entry as an alias of
 <p>In the general case, a "name" can contain all of the following fields,
 separated by colons: Group, Title and User name. Note that if the title
 is unique in the database, then the other fields are optional. Likewise,
-if the group and title together or title and user together specify a unique entry, then
-the corresponding user or group doesn't have to be specified.</p>
+if the group and title together or title and user together specify a unique
+entry, then the corresponding user or group doesn't have to be specified.</p>
 
-<p>In <b>Password Safe</b> entries, only the Title field is mandatory.  Group and User name
-fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
-is unique. As indicated above, the alias' "password" is in the form [g:t:u] but
+<p>In <b>Password Safe</b> entries, only the Title and Password fields are
+mandatory.  Group and User name fields are optional as long as the resulting 
+combination of "group/title/user&nbsp;name" is unique. As indicated above, the
+alias' "password" is in the form [g:t:u] but
 in fact you only have to specify enough information to uniquely identify
 the base entry.  So, if there is only one entry in the database with title 't',
 then [t] would be sufficient - since title is mandatory and only one item is given,
@@ -64,6 +65,21 @@ the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].  Specifying a
 colon without a value implies an empty field, e.g. [g:t:] says entry with
 title 't' in group 'g' and with no user name value and [:t:] says entry with
 title 't' in the root with no user name value etc.</p>
+
+<p>If you change the password of an Alias either via the Generate password button or
+by typing in the password field, the change to the password  field will only be 
+made when the Apply or OK button is next clicked. However, if you wish to change
+the base entry's password, then you you should edit the base entry directly via the 
+Edit or right-click context menu. If you change the Alias's password from [g:t:u] 
+to some other value not in this format, it will no longer be an alias and will have 
+no relation to the previous base entry. It will become a "normal" entry. Of course, 
+you can restore the connection at any later time by changing the password back or 
+even changing it to refer to a different entry e.g. [g1:t1:u1].</p>
+
+<p>Unlike shortcuts, which point to the base entry for <u>all</u> fields, aliases 
+have their own values for all fields <u>except</u> for its password, which is its
+base's.  For example: copying the aliases URL will use the alias's value but 
+copying the alias's password will copy its base's.</p>
 
 <p>The following examples should make this clear.</p>
 

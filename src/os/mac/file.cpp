@@ -21,8 +21,10 @@
 
 #include <dirent.h>
 #include <fnmatch.h>
+
 #include "../file.h"
 #include "../env.h"
+
 #include "../../core/core.h"
 #include "../../core/StringXStream.h"
 #include "../../core/PwsPlatform.h"
@@ -350,6 +352,19 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   delete[] cmode;
 #endif
   return retval;
+}
+
+void pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      fflush(fd);
+    }
+    // Now close file
+    return fclose(fd);
+  }
+  return 0;
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp)

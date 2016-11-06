@@ -48,6 +48,7 @@
 #define IDS_NOTESHELP                   5117
 #define IDS_AUTOTYPEHELP                5118
 #define IDS_PWHHELP                     5119
+#define IDS_PASSWORDHELP2               5120
 
 // Program strings
 #define IDS_FILEERROR1                  5210

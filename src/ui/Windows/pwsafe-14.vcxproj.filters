@@ -42,9 +42,6 @@
     <ClCompile Include="AdvancedDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeAliasPswd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClearQuestionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -447,9 +444,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AdvancedValues.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChangeAliasPswd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClearQuestionDlg.h">
@@ -1725,6 +1719,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\empty_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\red_exclamation.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

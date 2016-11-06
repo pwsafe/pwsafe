@@ -1003,7 +1003,7 @@ BOOL ThisMfcApp::InitInstance()
   AfxInitRichEdit2();
 
   // PWScore needs it to get into database header if/when saved
-  m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor);
+  m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor, m_dwBuildRevision);
 
   if (m_core.GetCurFile().empty()) {
     std::wstring path = prefs->GetPref(PWSprefs::CurrentFile).c_str();

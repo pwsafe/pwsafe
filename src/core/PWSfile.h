@@ -172,7 +172,6 @@ protected:
   Fish *m_fish;
   unsigned char *m_terminal;
   int m_status;
-
   // Following are only used by V3 and later
   PWSfileHeader m_hdr;
   // Save unknown header fields on read to put back on write unchanged
