@@ -27,8 +27,9 @@
 
 #include "../file.h"
 #include "../env.h"
-#include "core.h"
-#include "StringXStream.h"
+
+#include "../../core.h"
+#include "../../StringXStream.h"
 
 using namespace std;
 
@@ -289,6 +290,19 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   delete[] cfname;
   delete[] cmode;
   return retval;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      fflush(fd);
+    }
+    // Now close file
+    return fclose(fd);
+  }
+  return 0;
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp)
