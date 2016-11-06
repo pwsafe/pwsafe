@@ -427,11 +427,14 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
 
         case TCHAR('o'):
         {
+          StringX sxN;
+          bool bSendNotes(true);
           if (n == (N - 1)) {
             // This was the last character - send the lot!
-            sxtmp += sxNotes;
+            sxN = sxNotes;
             break;
           }
+
           size_t line_number(0);
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
@@ -441,13 +444,24 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             } else
               break; // for loop
           }
+
           if (line_number == 0) {
             // Send the lot
-            sxtmp += sx_notes;
+            sxN = sxNotes;
           } else
           if (line_number <= vsxnotes_lines.size()) {
             // Only copy if user has specified a valid Notes line number
-            sxtmp += vsxnotes_lines[line_number - 1];
+
+            sxN = vsxnotes_lines[line_number - 1];
+          } else {
+            bSendNotes = false;
+          }
+
+          if (bSendNotes) {
+            // As per help '\n' & '\r\n' replaced by '\r'
+            Replace(sxN, StringX(_T("\r\n")), StringX(_T("\r")));
+            Replace(sxN, _T('\n'), _T('\r'));
+            sxtmp += sxN;
           }
 
           // Backup the extra character that delimited the \oNNN string
