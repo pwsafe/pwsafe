@@ -1731,7 +1731,7 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
   return false;
 }
 
-bool CItemData::Matches(time_t time1, time_t time2, int iObject,
+bool CItemData::MatchesTime(time_t time1, time_t time2, int iObject,
                         int iFunction) const
 {
   //   Check time values are selected
