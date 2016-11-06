@@ -36,6 +36,7 @@ struct BaseEntryParms {
   CItemData::EntryType TargetType;
   int ibasedata;
   bool bMultipleEntriesFound;
+
   BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()) {}
 };
 

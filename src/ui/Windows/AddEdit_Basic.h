@@ -45,6 +45,7 @@ public:
   CRichEditExtn m_ex_notes;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_email;
+  CEditExtn m_ex_base;
 
   CSecEditExtn m_ex_password, m_ex_password2;
 
@@ -68,10 +69,11 @@ public:
 
   // Overrides
   // ClassWizard generate virtual function overrides
-  //{{AFX_VIRTUAL(CAddEdit_Basic)
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
+
+  //{{AFX_VIRTUAL(CAddEdit_Basic)
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
@@ -119,13 +121,15 @@ private:
   void HidePassword();
   void ShowNotes();
   void HideNotes();
+
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,
                         const bool bIsEdit, const CItemData::EntryType InputType, 
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
+  void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
 
-  CTBMStatic m_Help1, m_Help2, m_Help3;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;

@@ -3004,9 +3004,13 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
   //   0: password not in alias format
-  //  -n: password contains (n-1) colons but either no base entry found or no unique entry found (n = 1, 2 or 3)
+  //  -n: password contains (n-1) colons but either no base entry found or 
+  //      no unique entry found (n = 1, 2 or 3)
 
-  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
+  //  is only valid if n = -1 or -2.
+
+  // Returns true if in a valid alias format, false if not
 
   pl.bMultipleEntriesFound = false;
 

@@ -15,7 +15,6 @@
 
 #include "AddEdit_Basic.h"
 #include "AddEdit_PropertySheet.h"
-#include "ChangeAliasPswd.h"
 
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
@@ -55,8 +54,8 @@ IMPLEMENT_DYNAMIC(CAddEdit_Basic, CAddEdit_PropertyPage)
 
 CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
-                          CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
-                          pAEMD),
+    CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
+    pAEMD),
   m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false), m_NotesFirstVisibleLine(-1)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
@@ -135,6 +134,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
+  DDX_Control(pDX, IDC_MYBASE, m_ex_base);
   DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
 
   DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
@@ -147,7 +147,8 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_SMARTLABELHELP, m_Help1);
   DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
-  DDX_Control(pDX, IDC_NOTESHELP, m_Help3);
+  DDX_Control(pDX, IDC_PASSWORDHELP2, m_Help3);
+  DDX_Control(pDX, IDC_NOTESHELP, m_Help4);
   //}}AFX_DATA_MAP
 }
 
@@ -214,6 +215,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_ex_username.SetFont(pFont);
   m_ex_URL.SetFont(pFont);
   m_ex_email.SetFont(pFont);
+  m_ex_base.SetFont(pFont);
 
   // Need to get change notifications
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
@@ -233,11 +235,17 @@ BOOL CAddEdit_Basic::OnInitDialog()
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
-    m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_REDEXCLAMATION);
+    m_Help4.Init(IDB_QUESTIONMARK);
+
+    // Disable help for alias password for the moment
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
 
     // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
     AddTool(IDC_SMARTLABELHELP, IDS_SMARTLABELHELP);
     AddTool(IDC_PASSWORDHELP, IDS_PASSWORDHELP);
+    AddTool(IDC_PASSWORDHELP2, IDS_PASSWORDHELP2);
     AddTool(IDC_NOTESHELP, IDS_NOTESHELP);
 
     // Old style tooltips
@@ -257,6 +265,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
     m_Help3.EnableWindow(FALSE);
     m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
   }
 
   m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
@@ -266,7 +276,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_stc_notes.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-
 
   m_ex_group.ChangeColour();
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
@@ -341,21 +350,28 @@ BOOL CAddEdit_Basic::OnInitDialog()
                        IDS_ISANALIASBASE : IDS_ISASHORTCUTBASE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
+    m_ex_base.ShowWindow(SW_HIDE);
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
-    M_realpassword() = M_oldRealPassword() = m_password = m_password2 = M_base();
+    m_password = m_password2 = M_base();
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
 
-    GetDlgItem(IDC_MYBASE)->SetWindowText(M_base());
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_SHOW);
+    m_ex_base.SetWindowText(M_base());
+    m_ex_base.ShowWindow(SW_SHOW);
+
+    // Swap Help buttons
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+
+    m_Help3.EnableWindow(TRUE);
+    m_Help3.ShowWindow(SW_SHOW);
   } else if (M_original_entrytype() == CItemData::ET_NORMAL) {
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_MYBASE)->ShowWindow(SW_HIDE);
+    m_ex_base.ShowWindow(SW_HIDE);
   }
 
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
@@ -386,11 +402,13 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-  BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
-                                                 ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                                                 MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  BOOL brc = m_CopyPswdBitmap.Attach(
+                    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                    MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
   ASSERT(brc);
+  
   if (brc) {
     FixBitmapBackground(m_CopyPswdBitmap);
     CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
@@ -398,6 +416,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     if (pBtn != NULL)
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
+
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
@@ -443,6 +462,7 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         // Not one of ours - get out quick
         return hbr;
     }
+
     int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
     BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
     BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
@@ -489,9 +509,9 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_realnotes()    != M_originalrealnotesTRC() ||
               M_URL()          != M_pci()->GetURL()        ||
               M_email()        != M_pci()->GetEmail()      ||
-              (M_ipolicy() != NAMED_POLICY &&
+              (M_ipolicy()     != NAMED_POLICY &&
                M_symbols()     != M_pci()->GetSymbols())   ||
-              M_realpassword() != M_oldRealPassword()        )
+              M_realpassword() != M_oldRealPassword()      )
             return 1L;
           break;
         case IDS_ADDENTRY:
@@ -528,27 +548,27 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
   // Ctrl + 'key' in Notes
   if (pMsg->message == WM_KEYDOWN &&
-      (GetKeyState(VK_CONTROL) & 0x8000)  == 0x8000 &&
-      m_ex_notes.m_hWnd == ::GetFocus()) {
+    (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
+    m_ex_notes.m_hWnd == ::GetFocus()) {
     switch (pMsg->wParam) {
-      case 'A':
-        // Ctrl+A (Select All), then SelectAllNotes
-        SelectAllNotes();
-        return TRUE;
-      case 'V':
-        // Ctrl+V (Paste), then do PasteSpecial
-        m_ex_notes.PasteSpecial(CF_UNICODETEXT);
-        return TRUE;
-      case VK_ADD:
-      case VK_SUBTRACT:
-        // Zoom in/out
-        OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
-        return TRUE;
+    case 'A':
+      // Ctrl+A (Select All), then SelectAllNotes
+      SelectAllNotes();
+      return TRUE;
+    case 'V':
+      // Ctrl+V (Paste), then do PasteSpecial
+      m_ex_notes.PasteSpecial(CF_UNICODETEXT);
+      return TRUE;
+    case VK_ADD:
+    case VK_SUBTRACT:
+      // Zoom in/out
+      OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
+      return TRUE;
     }
   }
-  
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
-      GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+    GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
     CString cs_text(MAKEINTRESOURCE(m_bLaunchPlus ? IDS_LAUNCH : IDS_LAUNCHPLUS));
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
     m_bLaunchPlus = !m_bLaunchPlus;
@@ -566,7 +586,8 @@ BOOL CAddEdit_Basic::OnApply()
   CWnd *pFocus(NULL);
   CGeneralMsgBox gmb;
   ItemListIter listindex;
-  bool brc, b_msg_issued;
+  bool bPswdIsInAliasFormat, b_msg_issued;
+  CSecString csBase(L"");
 
   UpdateData(TRUE);
 
@@ -612,7 +633,7 @@ BOOL CAddEdit_Basic::OnApply()
     goto error;
   }
 
-  if (m_isPWHidden && (m_password.Compare(m_password2) != 0)) {
+  if (m_isPWHidden && m_password.Compare(m_password2) != 0) {
     gmb.AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
     pFocus = &m_ex_password;
@@ -654,11 +675,20 @@ BOOL CAddEdit_Basic::OnApply()
     }
   }
 
-  brc = CheckNewPassword(M_group(), M_title(), M_username(), M_realpassword(),
-                         M_uicaller() != IDS_ADDENTRY, CItemData::ET_ALIAS,
-                         M_base_uuid(), M_ibasedata(), b_msg_issued);
+  // Returns true if in alias format, false if not
 
-  if (!brc && M_ibasedata() != 0) {
+  // ibasedata:
+  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
+  //   0: password not in alias format
+  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+
+  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
+  // is only valid if n = -1 or -2.
+  bPswdIsInAliasFormat = CheckNewPassword(M_group(), M_title(), M_username(), M_realpassword(),
+                                          M_uicaller() != IDS_ADDENTRY, CItemData::ET_ALIAS,
+                                          M_base_uuid(), M_ibasedata(), b_msg_issued);
+
+  if (!bPswdIsInAliasFormat && M_ibasedata() != 0) {
     if (!b_msg_issued)
       gmb.AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
 
@@ -667,6 +697,56 @@ BOOL CAddEdit_Basic::OnApply()
     goto error;
   }
   //End check
+
+  if (!bPswdIsInAliasFormat && M_original_entrytype() == CItemData::ET_ALIAS) {
+    // User has made this a normal entry
+    ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
+  }
+
+  if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
+    if (M_original_base_uuid() != pws_os::CUUID::NullUUID() &&
+        M_original_base_uuid() != M_base_uuid()) {
+      // User has changed the alias to point to a different base entry
+      CItemData *pbci(NULL);
+      ItemListIter iter = M_pcore()->Find(M_base_uuid());
+      if (iter != M_pcore()->GetEntryEndIter())
+        pbci = &iter->second;
+
+      ASSERT(pbci != NULL);
+
+      if (pbci != NULL) {
+        csBase = L"[" +
+          pbci->GetGroup() + L":" +
+          pbci->GetTitle() + L":" +
+          pbci->GetUser() + L"]";
+      } else
+        csBase.Empty();
+
+      ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+    }
+
+    if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
+      if (M_original_base_uuid() == pws_os::CUUID::NullUUID() &&
+          M_original_base_uuid() != M_base_uuid()) {
+        // User has changed the normal entry into an alias
+        CItemData *pbci(NULL);
+        ItemListIter iter = M_pcore()->Find(M_base_uuid());
+        if (iter != M_pcore()->GetEntryEndIter())
+          pbci = &iter->second;
+
+        ASSERT(pbci != NULL);
+        if (pbci != NULL) {
+          csBase = L"[" +
+            pbci->GetGroup() + L":" +
+            pbci->GetTitle() + L":" +
+            pbci->GetUser() + L"]";
+        } else
+          csBase.Empty();
+
+        ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+      }
+    }
+  }
 
   return CAddEdit_PropertyPage::OnApply();
 
@@ -684,17 +764,47 @@ error:
   return FALSE;
 }
 
-void CAddEdit_Basic::OnShowPassword()
+void CAddEdit_Basic::ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase)
 {
-  UpdateData(TRUE);
+  switch (entrytype) {
+  case CItemData::ET_ALIAS:
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
 
-  if (m_isPWHidden) {
-    ShowPassword();
-  } else {
-    M_realpassword() = m_password; // save visible password
-    HidePassword();
+    m_ex_base.SetWindowText(csBase);
+    m_ex_base.ShowWindow(SW_SHOW);
+
+    // Swap help buttons/information
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(TRUE);
+    m_Help3.ShowWindow(SW_SHOW);
+    break;
+  case CItemData::ET_NORMAL:
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+
+    m_ex_base.SetWindowText(L"");
+    m_ex_base.ShowWindow(SW_HIDE);
+
+    // Swap help buttons/information
+    m_Help2.EnableWindow(TRUE);
+    m_Help2.ShowWindow(SW_SHOW);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+    break;
+  case CItemData::ET_ALIASBASE:
+  case CItemData::ET_SHORTCUTBASE:
+    break;
+  // ET_SHORTCUT are edited via a different process
+  // ET_LAST is just a placer
+  case CItemData::ET_SHORTCUT:
+  case CItemData::ET_LAST:
+    break;
+  case CItemData::ET_INVALID:
+    ASSERT(0);
+    break;
   }
-  UpdateData(FALSE);
 }
 
 void CAddEdit_Basic::OnENSetFocusPassword()
@@ -714,12 +824,28 @@ void CAddEdit_Basic::OnENChangePassword()
   M_realpassword() = m_password;
 }
 
+void CAddEdit_Basic::OnShowPassword()
+{
+  // Prevent special OnCommand processing
+  UpdateData(TRUE);
+
+  if (m_isPWHidden) {
+    ShowPassword();
+  } else {
+    M_realpassword() = m_password; // save visible password
+
+    HidePassword();
+  }
+  UpdateData(FALSE);
+}
+
 void CAddEdit_Basic::ShowPassword()
 {
   m_isPWHidden = false;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
 
   m_password = M_realpassword();
+ 
   m_ex_password.SetSecure(false);
 
   // Remove password character so that the password is displayed
@@ -748,6 +874,7 @@ void CAddEdit_Basic::HidePassword()
 
   // Need verification as the user can not see the password entered
   m_password2 = m_password;
+
   m_ex_password2.SetSecureText(m_password2);
   m_ex_password2.EnableWindow(TRUE);
   m_ex_password2.SetPasswordChar(PSSWDCHAR);
@@ -824,29 +951,7 @@ void CAddEdit_Basic::OnGeneratePassword()
     return;
   }
 
-  INT_PTR rc(CChangeAliasPswd::CHANGEALIAS);
-  if (M_original_entrytype() == CItemData::ET_ALIAS) {
-    CChangeAliasPswd dlgchngepswd;
-    CSecString cs_base = M_base();
-    cs_base.Replace(L"[", L"\xab");
-    cs_base.Replace(L":", L"\xbb \xab");
-    cs_base.Replace(L"]", L"\xbb");
-    dlgchngepswd.m_BaseEntry = (CString)cs_base;
-    rc = dlgchngepswd.DoModal();
-    switch (rc) {
-      case IDCANCEL:
-        return;
-      case CChangeAliasPswd::CHANGEBASE:
-        // Change Base
-        break;
-      case CChangeAliasPswd::CHANGEALIAS:
-        // Change Alias
-        break;
-      default:
-        ASSERT(0);
-    }
-  }
-
+  // Here we change the Alias's password
   StringX passwd;
   if (M_ipolicy() == NAMED_POLICY) {
     PWPolicy st_pp;
@@ -864,22 +969,12 @@ void CAddEdit_Basic::OnGeneratePassword()
     GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
 
-  if (rc == CChangeAliasPswd::CHANGEBASE) {
-    // Change Base
-    ItemListIter iter = GetMainDlg()->Find(M_base_uuid());
-    ASSERT(iter != M_pcore()->GetEntryEndIter());
-    CItemData *pci = &iter->second;
-    Command *pcmd = UpdatePasswordCommand::Create(M_pcore(), *pci,
-                                                  passwd);
-    GetMainDlg()->Execute(pcmd);
-  } else {
-    M_realpassword() = m_password = passwd.c_str();
-    if (m_isPWHidden) {
-      m_password2 = m_password;
-    }
-    m_ae_psh->SetChanged(true);
-    UpdateData(FALSE);
+  M_realpassword() = m_password = passwd.c_str();
+  if (m_isPWHidden) {
+    m_password2 = m_password;
   }
+  m_ae_psh->SetChanged(true);
+  UpdateData(FALSE);
 
   QuerySiblings(PP_UPDATE_PWPOLICY, 0L);
 }
@@ -1350,12 +1445,12 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
   BaseEntryParms pl;
   pl.InputType = InputType;
 
-  bool brc = M_pcore()->ParseBaseEntryPWD(password, pl);
+  bool bPswdIsInAliasFormat = M_pcore()->ParseBaseEntryPWD(password, pl);
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
   base_uuid = pl.base_uuid;
-  if (!brc)    
+  if (!bPswdIsInAliasFormat)
     return false;
 
   // if we ever return 'false', this routine will have issued a message to the user
@@ -1375,7 +1470,8 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
   //   0: password not in alias format
   //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
 
-  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
+  // is only valid if n = -1 or -2.
 
   if (pl.ibasedata < 0) {
     if (InputType == CItemData::ET_SHORTCUT) {
