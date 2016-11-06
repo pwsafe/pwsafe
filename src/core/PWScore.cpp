@@ -169,12 +169,19 @@ PWScore::~PWScore()
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
-                                           DWORD dwMajorMinor)
+                                           DWORD dwMajorMinor,
+                                           DWORD dwBuildRevision)
 {
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
-  Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
-         nMajor, nMinor);
+  int nRevison = HIWORD(dwBuildRevision);
+  if (nRevison == 0)
+    Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
+           nMajor, nMinor);
+  else
+    Format(m_AppNameAndVersion, L"%ls V%d.%02d.%d", appName.c_str(),
+           nMajor, nMinor, nRevison);
+
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]

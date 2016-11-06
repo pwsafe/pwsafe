@@ -253,7 +253,8 @@ public:
    m_LockCount = m_LockCount2; m_LockCount2 = 0;}
 
   // Set application data
-  void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
+  void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor,
+                                    DWORD dwBuildRevision = 0);
 
   // GetAllGroups - returns an array of all unique group prefix names in m_pwlist
   // e.g., "A", "A.B", "A.B.C"
