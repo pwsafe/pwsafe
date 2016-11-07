@@ -1582,19 +1582,18 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
       return false;
   }
 
-  if (pl.ibasedata > 0) {
+  if (pl.ibasedata > 0) { // base entry exists
     CGeneralMsgBox gmbx;
-    if (pl.TargetType == CItemData::ET_ALIAS) {
-      // If user tried to point to an alias -> change to point to the 'real' base
+    if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+      // An alias can only point to a normal entry or an alias base entry
       CString cs_msg;
       cs_msg.Format(IDS_BASEISALIAS, 
                     pl.csPwdGroup.c_str(),
                     pl.csPwdTitle.c_str(),
                     pl.csPwdUser.c_str());
-      if (gmbx.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
-        return false;
-      }
-    } else {
+      gmbx.AfxMessageBox(cs_msg, NULL, MB_OK);
+      return false;
+    } else { // <= 0, no base entry. What's TargetType in this case??
       if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
         // An alias can only point to a normal entry or an alias base entry
         CString cs_msg;
