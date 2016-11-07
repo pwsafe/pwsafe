@@ -2628,7 +2628,7 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
     }
   }
 
-  // Reset base entry to normal if it has no more aliases
+  // Reset base entry to normal if it has no more aliases/shortcuts
   if (pmmap->find(base_uuid) == pmmap->end()) {
     ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
@@ -2693,9 +2693,16 @@ bool PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
 
   lastfromElement = pmmap->upper_bound(from_baseuuid);
 
-  for ( ; from_itr != lastfromElement; from_itr++) {
+  // Get a list of entries to be moved as doing it in-place
+  // will cause a loop as modifying mmap while processing it!
+  UUIDVector tlist;
+  for (; from_itr != lastfromElement; from_itr++) {
+    tlist.push_back(from_itr->second);
+  }
+
+  for (size_t idep = 0 ; idep < tlist.size(); idep++) {
     // Add to new base in base -> entry multimap
-    pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
+    pmmap->insert(ItemMMap_Pair(to_baseuuid, tlist[idep]));
   }
 
   // Now delete all old base entries

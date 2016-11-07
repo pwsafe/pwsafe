@@ -241,20 +241,6 @@ BOOL CAddEdit_Additional::OnInitDialog()
     return TRUE;
   }
 
-  GetDlgItem(IDC_STATIC_PWH_ADD)->ShowWindow(SW_HIDE);
-
-  BOOL bpwh_count = M_pwhistlist().empty() ? FALSE : TRUE;
-  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
-  GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
-  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bpwh_count);
-
-  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
-    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
-    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
-  }
-
   // Initialise m_Help2 MUST be performed before calling UpdatePasswordHistory
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
@@ -275,22 +261,13 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
   }
 
-  m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-  m_PWHistListCtrl.UpdateRowHeight(false);
-  CString cs_text;
-  cs_text.LoadString(IDS_SETDATETIME);
-  m_PWHistListCtrl.InsertColumn(0, cs_text);
-  cs_text.LoadString(IDS_PASSWORD);
-  m_PWHistListCtrl.InsertColumn(1, cs_text);
-
   UpdatePasswordHistory();
 
-  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
     GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_OLDPW1)->EnableWindow(FALSE);
   }
 
   m_stc_warning.SetColour(RGB(255, 0, 0));
@@ -1006,11 +983,21 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CAddEdit_Additional::UpdatePasswordHistory()
 {
+  // Set up PWH CListCtrl
+  CString cs_text;
+
+  m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  m_PWHistListCtrl.UpdateRowHeight(false);
+
+  cs_text.LoadString(IDS_SETDATETIME);
+  m_PWHistListCtrl.InsertColumn(0, cs_text);
+  cs_text.LoadString(IDS_PASSWORD);
+  m_PWHistListCtrl.InsertColumn(1, cs_text);
+
   // Update Password History
   m_PWHistListCtrl.SetRedraw(FALSE);
   m_PWHistListCtrl.DeleteAllItems();
 
-  CString cs_text;
   PWHistList::iterator iter;
   DWORD nIdx;
   for (iter = M_pwhistlist().begin(), nIdx = 0;
@@ -1041,10 +1028,22 @@ void CAddEdit_Additional::UpdatePasswordHistory()
   m_PWHistListCtrl.SetRedraw(TRUE);
 
   // Update controls state
-  const bool bEntriesPresent = m_PWHistListCtrl.GetItemCount() != 0;
-  m_PWHistListCtrl.EnableWindow(bEntriesPresent ? TRUE : FALSE);
-  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
-  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  const BOOL bEntriesPresent = m_PWHistListCtrl.GetItemCount() != 0 ? TRUE : FALSE;
+
+  // Don't enable change of PWH if an alias as passwords are now the base's.
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_OLDPW1)->EnableWindow(FALSE);
+  } else {
+    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bEntriesPresent);
+  }
+
+  m_PWHistListCtrl.EnableWindow(bEntriesPresent);
+  GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bEntriesPresent);
+  GetDlgItem(IDC_STATIC_PWH_ADD)->ShowWindow(SW_HIDE);
 
   // Help no longer needed
   m_Help2.EnableWindow(bEntriesPresent ? TRUE : FALSE);

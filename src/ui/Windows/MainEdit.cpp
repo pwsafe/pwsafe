@@ -1368,7 +1368,11 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
         ci_new.SetAlias();
         ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
+        // Change password
         ci_new.SetPassword(newPassword);
+        // Restore PWH as it was before it became an alias
+        ci_new.SetPWHistory(pci_original->GetPWHistory());
+        // Now set as a normal entry
         ci_new.SetNormal();
       } // Password changed
     } // base uuids changed
@@ -1387,16 +1391,59 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       ci_new.SetPassword(L"[Alias]");
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
+
       // Move old aliases across
       pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
                                                         new_base_uuid,
                                                         CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
+      // Move aliases
+      const CUUID old_base_uuid = pci_original->GetUUID();
+      UUIDVector tlist;
+      m_core.GetAllDependentEntries(old_base_uuid, tlist, CItemData::ET_ALIAS);
+      for (size_t idep = 0; idep < tlist.size(); idep++) {
+        ItemListIter alias_iter = m_core.Find(tlist[idep]);
+        CItemData ci_oldalias(alias_iter->second);
+        CItemData ci_newalias(ci_oldalias);
+        ci_newalias.SetBaseUUID(new_base_uuid);
+        pcmd = EditEntryCommand::Create(pcore, ci_oldalias, ci_newalias);
+        pmulticmds->Add(pcmd);
+      }
     } else { // Still a base entry but with a new password
       ci_new.SetPassword(newPassword);
       ci_new.SetAliasBase();
     }
   } // AliasBase with password changed
+
+  if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_SHORTCUTBASE &&
+      pci_original->GetPassword() != newPassword) {
+    // Original was a shortcut base but might now be an alias of another entry!
+    if (pentry_psh->GetIBasedata() > 0) {
+      // Now an alias
+      // Make this one an alias
+      pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
+                                                     original_uuid,
+                                                     CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
+      ci_new.SetPassword(L"[Alias]");
+      ci_new.SetAlias();
+      ci_new.SetBaseUUID(new_base_uuid);
+
+      // Delete shortcuts
+      const CUUID old_base_uuid = pci_original->GetUUID();
+      UUIDVector tlist;
+      m_core.GetAllDependentEntries(old_base_uuid, tlist, CItemData::ET_SHORTCUT);
+      for (size_t idep = 0; idep < tlist.size(); idep++) {
+        ItemListIter shortcut_iter = m_core.Find(tlist[idep]);
+        pcmd = DeleteEntryCommand::Create(&m_core, shortcut_iter->second);
+        pmulticmds->Add(pcmd);
+      }
+    } else { // Still a base entry but with a new password
+      ci_new.SetPassword(newPassword);
+      ci_new.SetShortcutBase();
+    }
+  } // ShortcutBase with password changed
 
   // Update old base...
   iter = pcore->Find(original_base_uuid);
