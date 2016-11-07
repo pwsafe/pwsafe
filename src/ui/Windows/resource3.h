@@ -790,3 +790,7 @@
 #define IDS_CANT_EXPANDPATH             6036
 #define IDS_PWHISTORYCOPIED             6037
 #define IDS_OLDPSWDCOPIED               6038
+#define IDS_CHANGINGBASEENTRY           6039
+#define IDS_CHANGINGBASEENTRY1          6040
+#define IDS_CHANGINGBASEENTRY2          6041
+#define IDS_EXP_ALIAS                   6042

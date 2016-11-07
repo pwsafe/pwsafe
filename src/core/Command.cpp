@@ -971,6 +971,12 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
 int MoveDependentEntriesCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    if (m_type == CItemData::ET_ALIAS) {
+      m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
+    } else { // if !alias, assume shortcut
+      m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
+    }
+
     if (m_pcomInt->DoMoveDependentEntries(m_from_baseuuid, m_to_baseuuid, m_type))
       m_CommandDBChange = DB;
   }
@@ -979,8 +985,14 @@ int MoveDependentEntriesCommand::Execute()
 
 void MoveDependentEntriesCommand::Undo()
 {
+  // Can't move all back by calling DoMoveDependentEntries with reversed arguments
+  // as there may have been some originally linked that should not be moved.
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    m_pcomInt->DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
+    if (m_type == CItemData::ET_ALIAS) {
+      m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
+    } else { // if !alias, assume shortcut
+      m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
+    }
   }
 }
 

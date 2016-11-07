@@ -696,10 +696,36 @@ BOOL CAddEdit_Basic::OnApply()
     pFocus = &m_ex_password;
     goto error;
   }
+
+  if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
+    if (M_original_entrytype() == CItemData::ET_ALIASBASE ||
+        M_original_entrytype() == CItemData::ET_SHORTCUTBASE) {
+      // User is trying to change a base to an alias!
+      CString cs_errmsg, cs_title, cs_base, cs_alias;
+      cs_base.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ? IDS_EXP_ABASE : IDS_EXP_SBASE);
+      cs_alias.LoadString(IDS_EXP_ALIAS);
+      cs_title.Format(IDS_CHANGINGBASEENTRY, cs_base, cs_alias);
+      cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
+                              IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2, cs_alias);
+      int rc = gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+
+      if (rc == IDNO) {
+        UpdateData(FALSE);
+        pFocus = &m_ex_password;
+        goto error;
+      }
+
+      pws_os::CUUID entry_uuid = M_pci()->GetUUID();
+      M_pci()->SetAlias();
+      M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
+      ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+    }
+  }
   //End check
 
   if (!bPswdIsInAliasFormat && M_original_entrytype() == CItemData::ET_ALIAS) {
     // User has made this a normal entry
+    M_pci()->SetNormal();
     ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
   }
 
@@ -722,29 +748,31 @@ BOOL CAddEdit_Basic::OnApply()
       } else
         csBase.Empty();
 
+      M_pci()->SetAlias(); // Still an alias
       ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
     }
 
-    if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
-      if (M_original_base_uuid() == pws_os::CUUID::NullUUID() &&
-          M_original_base_uuid() != M_base_uuid()) {
-        // User has changed the normal entry into an alias
-        CItemData *pbci(NULL);
-        ItemListIter iter = M_pcore()->Find(M_base_uuid());
-        if (iter != M_pcore()->GetEntryEndIter())
-          pbci = &iter->second;
+    if (M_original_base_uuid() == pws_os::CUUID::NullUUID() &&
+        M_original_base_uuid() != M_base_uuid()) {
+      // User has changed the normal entry into an alias
+      CItemData *pbci(NULL);
+      ItemListIter iter = M_pcore()->Find(M_base_uuid());
+      if (iter != M_pcore()->GetEntryEndIter())
+        pbci = &iter->second;
 
-        ASSERT(pbci != NULL);
-        if (pbci != NULL) {
-          csBase = L"[" +
-            pbci->GetGroup() + L":" +
-            pbci->GetTitle() + L":" +
-            pbci->GetUser() + L"]";
-        } else
-          csBase.Empty();
+      ASSERT(pbci != NULL);
+      if (pbci != NULL) {
+        csBase = L"[" +
+          pbci->GetGroup() + L":" +
+          pbci->GetTitle() + L":" +
+          pbci->GetUser() + L"]";
+      } else
+        csBase.Empty();
 
-        ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
-      }
+      pws_os::CUUID entry_uuid = M_pci()->GetUUID();
+      M_pci()->SetAlias();
+      M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
+      ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
     }
   }
 

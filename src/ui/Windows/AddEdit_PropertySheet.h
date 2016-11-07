@@ -47,8 +47,6 @@ public:
   void SetDefUsername(StringX defusername) {m_AEMD.defusername = CSecString(defusername);}
 
   CItemData::EntryType &GetOriginalEntrytype() {return m_AEMD.original_entrytype;}
-  void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
-  {m_AEMD.original_entrytype = original_entrytype;}
 
   const CSecString &GetBase() const {return m_AEMD.base;}
 

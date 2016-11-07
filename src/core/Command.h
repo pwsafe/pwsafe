@@ -364,6 +364,7 @@ private:
   CReport *m_pRpt;
   CItemData::EntryType m_type;
   int m_iVia;
+
   // Alias/Shortcut structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base
   //  Key = base uuid; Value = multiple alias/shortcut uuids
@@ -413,6 +414,9 @@ private:
   pws_os::CUUID m_from_baseuuid;
   pws_os::CUUID m_to_baseuuid;
   CItemData::EntryType m_type;
+
+  ItemMMap m_saved_base2aliases_mmap;
+  ItemMMap m_saved_base2shortcuts_mmap;
 };
 
 class UpdatePasswordHistoryCommand : public Command
