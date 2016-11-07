@@ -1368,7 +1368,11 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
         ci_new.SetAlias();
         ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
+        // Change password
         ci_new.SetPassword(newPassword);
+        // Restore PWH as it was before it became an alias
+        ci_new.SetPWHistory(pci_original->GetPWHistory());
+        // Now set as a normal entry
         ci_new.SetNormal();
       } // Password changed
     } // base uuids changed
