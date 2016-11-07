@@ -47,6 +47,8 @@ private:
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
 
+  static bool m_bShowUUID;
+
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
