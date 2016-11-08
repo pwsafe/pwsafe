@@ -432,29 +432,31 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           if (n == (N - 1)) {
             // This was the last character - send the lot!
             sxN = sxNotes;
-            break;
-          }
-
-          size_t line_number(0);
-          gNumIts = 0;
-          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sx_autotype[n])) {
-              line_number *= 10;
-              line_number += (sx_autotype[n] - TCHAR('0'));
-            } else
-              break; // for loop
-          }
-
-          if (line_number == 0) {
-            // Send the lot
-            sxN = sxNotes;
-          } else
-          if (line_number <= vsxnotes_lines.size()) {
-            // Only copy if user has specified a valid Notes line number
-
-            sxN = vsxnotes_lines[line_number - 1];
           } else {
-            bSendNotes = false;
+            size_t line_number(0);
+            gNumIts = 0;
+            for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
+              if (_istdigit(sx_autotype[n])) {
+                line_number *= 10;
+                line_number += (sx_autotype[n] - TCHAR('0'));
+              } else
+                break; // for loop
+            }
+
+            if (line_number == 0) {
+              // Send the lot
+              sxN = sxNotes;
+            } else {
+              if (line_number <= vsxnotes_lines.size()) {
+                // Only copy if user has specified a valid Notes line number
+
+                sxN = vsxnotes_lines[line_number - 1];
+              } else {
+                bSendNotes = false;
+              }
+            }
+            // Backup the extra character that delimited the \oNNN string
+            n--;
           }
 
           if (bSendNotes) {
@@ -463,9 +465,6 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             Replace(sxN, _T('\n'), _T('\r'));
             sxtmp += sxN;
           }
-
-          // Backup the extra character that delimited the \oNNN string
-          n--;
           break; // case 'o'
         }
 
