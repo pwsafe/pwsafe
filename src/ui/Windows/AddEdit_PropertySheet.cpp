@@ -647,7 +647,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // PWHistory fields
   // If user changes the password of its base entry from the
   // alias, we do record them in the base entry if the user wants them.
-  // But we won't show anything if editing the Alias
+  // For an alias, we will show its pre-alias password history
   size_t num_err;
   m_AEMD.PWHistory = m_AEMD.pci->GetPWHistory();
   BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
@@ -659,12 +659,6 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
   if (m_AEMD.MaxPWHistory == 0)
     m_AEMD.MaxPWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::NumPWHistoryDefault);
-
-  if (m_AEMD.pci->IsAlias()) {
-    // Note if an Alias, we ignore password in the base's password history.
-    // but we do use the values of whether to keep and how many
-    m_AEMD.PWHistory.Empty();
-  }
   
   // PWPolicy fields
   // Note different pci depending on if Alias
