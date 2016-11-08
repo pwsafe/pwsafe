@@ -721,20 +721,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADD, tc_dummy);
       }
 
-      // Only have Find Next/Previous if find still active and entries were found
+      // Add Find Next/Previous if find still active and entries were found
       if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
-      } else { // otherwise just add "Find..."
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
-      }
+      } 
+
+      // Always add "Find..."
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                              ID_MENUITEM_FINDELLIPSIS, tc_dummy);
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_GROUPENTER, tc_dummy);
+      
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DELETEGROUP, tc_dummy);
@@ -814,6 +816,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              m_core.IsReadOnly() ? ID_MENUITEM_VIEW : ID_MENUITEM_EDIT,
                              tc_dummy);
@@ -826,16 +829,19 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                  ID_MENUITEM_RENAMEENTRY, tc_dummy);
         }
       }
+
       // Only have Find Next/Previous if find still active and entries were found
       if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
-      } else { // otherwise just add "Find..."
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
       }
+
+      // Always add "Find..."
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
@@ -845,7 +851,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
       }
+
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_UNDO, tc_dummy);
@@ -853,6 +861,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -885,6 +894,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYURL, tc_dummy);
       }
+
       if (bAddCopyEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYEMAIL, tc_dummy);
@@ -903,6 +913,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
       }
+
       if (bAddSendEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_SENDEMAIL, tc_dummy);
