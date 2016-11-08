@@ -19,6 +19,19 @@ include(CheckIncludeFile)
 # where VER_MAJOR and VER_MINOR are mandatory, and all except
 # VER_SPECIAL must be integers
 
+# Find out what linux distro we're on... currently only used for 
+# debian based distros
+find_program(LSB_RELEASE_EXECUTABLE lsb_release
+  DOC "Linux Standard Base and Distribution command line query client")
+mark_as_advanced(LSB_RELEASE_EXECUTABLE)
+
+if (LSB_RELEASE_EXECUTABLE)
+  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -is
+    OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+
 if (WIN32 AND NOT WX_WINDOWS)
    set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.mfc")
 else (WIN32 AND NOT WX_WINDOWS)
@@ -112,7 +125,7 @@ endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
     if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-      set( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
+      set ( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
     endif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   CHECK_INCLUDE_FILE("uuid/uuid.h" UUID_H)
   if (NOT UUID_H)
@@ -124,7 +137,7 @@ if (NOT WIN32)
   endif(NOT NO_YUBI)
 
   if(NOT HAVE_YKPERS_H)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
     message(STATUS "Yubikey support disabled")
   endif(NOT HAVE_YKPERS_H)
 endif (NOT WIN32)
@@ -184,8 +197,8 @@ execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
   ERROR_QUIET
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 if (res)
-  set(pwsafe_VERSTRING "local")
-endif()
+  set (pwsafe_VERSTRING "local")
+endif ()
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
@@ -196,17 +209,17 @@ set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(CMAKE_CXX_FLAGS
+set (CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
   /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /RTC1 /Gd /Oy-")
 
 if (NO_YUBI)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
 endif (NO_YUBI)
 
 
 if (WX_WINDOWS)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
 endif (WX_WINDOWS)
 
 set(CMAKE_CXX_FLAGS_DEBUG " /Od  /D _DEBUG /WX- /Gd /Oy- /Ob0 /Od /MTd")
@@ -324,7 +337,14 @@ install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
 if (NOT WIN32)
    install (DIRECTORY xml DESTINATION "share/pwsafe/")
-   install (FILES "docs/pwsafe.1" DESTINATION "share/man/man1") # gzip'ed in postinst
+   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
+                      COMMAND /bin/gzip ARGS -9 -n -k 
+                        "${PROJECT_SOURCE_DIR}/docs/pwsafe.1"
+                      COMMAND /bin/mv ARGS 
+                        "${PROJECT_SOURCE_DIR}/docs/pwsafe.1.gz" 
+                        ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
+   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
+   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1") 
    install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
    install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pixmaps")
    install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
@@ -334,10 +354,6 @@ if (NOT WIN32)
      DESTINATION "share/doc/passwordsafe/help"
      FILES_MATCHING PATTERN "*.zip")
 
-   # TODO - Install following only if on a Debian system (or if we're building a deb?)
-   install (FILES "install/deb/changelog.Debian" DESTINATION "share/doc/passwordsafe")
-   install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
-            RENAME "copyright")
 else ()
    install (FILES "xml/pwsafe.xsd" DESTINATION "bin")
    install (FILES "xml/pwsafe_filter.xsd" DESTINATION "bin")
@@ -362,15 +378,47 @@ set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/install/description.txt")
 set (CPACK_STRIP_FILES "TRUE")
 
-## Debian-specific:
+if (EXISTS "/etc/debian_version")
+## we are on a debian based distro, but we can't make assumptions about which
+## we will do general deb related setup and relegate deps to specific distros 
+
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/changelog.Debian.gz
+                   COMMAND /bin/gzip ARGS -9 -n -k 
+	             "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian"
+	           COMMAND /bin/mv ARGS 
+	             "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian.gz" 
+	             ${CMAKE_BINARY_DIR}/changelog.Debian.gz)
+
+ADD_CUSTOM_TARGET(changelog ALL DEPENDS ${CMAKE_BINARY_DIR}/changelog.Debian.gz)
+install (FILES ${CMAKE_BINARY_DIR}/changelog.Debian.gz 
+         DESTINATION "share/doc/passwordsafe")
+install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
+	RENAME "copyright")
+
 set (CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
 set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
-set (CPACK_DEBIAN_PACKAGE_DEPENDS
-  "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.3.2-1squeeze1)")
-set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
+	## Ubuntu-specific
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1)")
+endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
+
+if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
+	## Debian-specific:
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1)")
+endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
+
+if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+  ## Debian-specific:
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1)")
+endif (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+
+set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Password Safe is a password database utility. \n  Like many other such  products, commercial and otherwise, it stores your passwords in an\n  encrypted file, allowing you to remember only one password (the \"safe\n  combination\"), instead of all the username/password combinations that\n  you use.")
+
+set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA 
   "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
+endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
 set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers")
