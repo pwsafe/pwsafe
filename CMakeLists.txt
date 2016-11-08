@@ -125,7 +125,7 @@ endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
     if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-      set ( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
+      set( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
     endif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   CHECK_INCLUDE_FILE("uuid/uuid.h" UUID_H)
   if (NOT UUID_H)
@@ -137,7 +137,7 @@ if (NOT WIN32)
   endif(NOT NO_YUBI)
 
   if(NOT HAVE_YKPERS_H)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
     message(STATUS "Yubikey support disabled")
   endif(NOT HAVE_YKPERS_H)
 endif (NOT WIN32)
@@ -197,8 +197,8 @@ execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
   ERROR_QUIET
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 if (res)
-  set (pwsafe_VERSTRING "local")
-endif ()
+  set(pwsafe_VERSTRING "local")
+endif()
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
@@ -209,17 +209,17 @@ set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
-set (CMAKE_CXX_FLAGS
+set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
   /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0501 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /arch:IA32 /RTC1 /Gd /Oy-")
 
 if (NO_YUBI)
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
 endif (NO_YUBI)
 
 
 if (WX_WINDOWS)
-   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
 endif (WX_WINDOWS)
 
 set(CMAKE_CXX_FLAGS_DEBUG " /Od  /D _DEBUG /WX- /Gd /Oy- /Ob0 /Od /MTd")
