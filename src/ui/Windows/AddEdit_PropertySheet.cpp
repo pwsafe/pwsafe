@@ -647,9 +647,13 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // PWHistory fields
   // If user changes the password of its base entry from the
   // alias, we do record them in the base entry if the user wants them.
-  // For an alias, we will show its pre-alias password history
+  // For an alias, we will show its base entry's password history
   size_t num_err;
-  m_AEMD.PWHistory = m_AEMD.pci->GetPWHistory();
+  if (m_AEMD.pci->IsAlias())
+    m_AEMD.PWHistory = pciA->GetPWHistory();
+  else
+    m_AEMD.PWHistory = m_AEMD.pci->GetPWHistory();
+
   BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
                                         m_AEMD.MaxPWHistory,
                                         num_err,

@@ -1303,6 +1303,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   PWScore *pcore = pentry_psh->GetCore();
   const CItemData *pci_original = pentry_psh->GetOriginalCI();
   CItemData ci_new(*pentry_psh->GetNewCI());
+  bool bChangingAliasBackToNormal(false);
 
   // Most of the following code handles special cases of alias/shortcut/base
   // But the common case is simply to replace the original entry
@@ -1336,6 +1337,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
       ci_new.SetPassword(L"[Alias]");
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
@@ -1368,10 +1370,15 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
         ci_new.SetAlias();
         ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
+        bChangingAliasBackToNormal = true;
+        // If PWH of Alias is active, disable it when reseting passowrd
+        StringX sxPWH = ci_new.GetPWHistory();
+        if (sxPWH.substr(0, 1) == L"1") {
+          sxPWH[0] = L'0';
+        }
+        ci_new.SetPWHistory(sxPWH);
         // Change password
         ci_new.SetPassword(newPassword);
-        // Restore PWH as it was before it became an alias
-        ci_new.SetPWHistory(pci_original->GetPWHistory());
         // Now set as a normal entry
         ci_new.SetNormal();
       } // Password changed
@@ -1467,6 +1474,15 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Now actually do the edit!
   pcmd = EditEntryCommand::Create(pcore, *(pci_original), ci_new);
   pmulticmds->Add(pcmd);
+
+  // Restore PWH as it was before it became an alias
+  if (bChangingAliasBackToNormal) {
+    ci_new.SetPWHistory(pci_original->GetPWHistory());
+    pcmd = UpdateEntryCommand::Create(pcore, ci_new,
+                                      CItemData::PWHIST,
+                                      pci_original->GetPWHistory());
+    pmulticmds->Add(pcmd);
+  }
 
   const StringX &sxNewGroup = ci_new.GetGroup();
   if (m_core.IsEmptyGroup(sxNewGroup)) {
