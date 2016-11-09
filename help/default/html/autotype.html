@@ -55,7 +55,7 @@ click on the Toolbar button to initiate.</li> </ol>
 
 <p>For web sites or applications that do not have the username field 
 followed by the password field followed by the login button, you can 
-modify the behaviour by filling in the <a href="#N1">"AutoType" 
+modify the behavior by filling in the entry's <a href="#N1">"AutoType" 
 field</a> with text that specifies the desired behavior as follows:</p> 
 <ul>
 <li><b>\u</b> is replaced by the username associated with the entry.</li>
@@ -94,7 +94,7 @@ as part of the authentication process.</small>
 <hr>
 
 <li><b>\b</b> is replaced by the backspace key.</li>
-<li><b>\t</b> is replaced by the Tab key, in effect skipping a field.</li> 
+<li><b>\t</b> is replaced by the Tab key, in effect skipping a field on the website's form.</li> 
 <li><b>\s</b> is replaced by the "Shift+Tab", in effect back-tabbing to 
 the previous field.</li>
 <li><b>\n</b> is replaced by the enter key, in effect pressing a button.</li>
@@ -105,15 +105,15 @@ subsequent characters. For example, "fast\d500slow" will result in 'fast' being
 typed with the default delay, and the letters 's', 'l', 'o', and 'w' typed with a 
 half-second pause before each. if you want to put in a one-time delay 
 that does not affect the speed of the following characters, use '\w' or 
-'\W', as described below.<br><br>
+'\W', as described below.<br>
 Note that <em>NNN</em> is limited to a maximum of three digits.</li>
 <li><b>\w<i>NNN</i> or <i>\WNNN</i></b> introduces a delay of <i>NNN</i> milliseconds
 for \w, or seconds if \W is used. For example, "how\w500now" will cause 'how' to
 be typed (at the default rate or that specified by the last \d), followed by a 
 half-second pause, followed by 'now' typed at the same rate as 'how'). 
 Likewise, "how\W2now" will introduce a two second pause between the two 
-words. This is useful for fine-tuning the timing with certain web pages.<br><br>
-Note that <em>NNN</em> in the above is limited to a maximum of three 
+words. This is useful for fine-tuning the timing with certain web pages.<br>
+Note that <em>NNN</em> is limited to a maximum of three 
 digits, so that, for example, \w5000 will create a half-second delay and 
 then emit the letter '0', which is probably not what you intended (\W5 
 would do the trick, though).</li>
@@ -176,7 +176,7 @@ implemented:</p> <table style="margin-left:20px; border-spacing:5px">
 <p>The special control code between the curley brackets is not case 
 sensitive and is unaffected by the presence of the "\z" AutoType field.</p> 
 
-<p>In addition, the following modifiers are available to combine with 
+<p>In addition, the following modifiers can be combined with 
 the above special control codes. These <u>must</u> precede the code and 
 can be combined in any order. They are:</p> <table 
 style="margin-left:20px; border-spacing:10px"> 
@@ -187,7 +187,7 @@ style="margin-left:20px; border-spacing:10px">
 <p>For example:<br> "\{+Tab}" is equivalent to "Shift+Tab"<br> "\{+^Tab}" is
 equivalent to "Ctrl+Shift+Tab"<br> "\{^Home}" is equivalent to "Control+Home".</p> 
 
-<h4>Aliases and Shortcuts</h4>
+<h4>Shortcuts and Aliases</h4>
 
 <h5>Shortcuts</h5>
 
@@ -198,8 +198,8 @@ itself.</i></p>
 <h5>Aliases</h>
 
 <p>The AutoType string and all entry variables <u>except</u> the current password 
-(\p) and previous password (\q) come from the alias entry.  The two password
-exceptions come from the alias's base entry.</p>
+(\p) and previous password (\q) come from the alias entry.
+These come from the alias's base entry.</p>
 
 <h3>Default AutoType</h3>
 
@@ -216,20 +216,19 @@ number (12345) must be entered before the user and password:
 </pre> 
 </p>
 
-<p><b>Example 2:</b> The following sequence, sent in by a user, clears the username field before username and password
-autotype begins. Non-empty username fields occur all the time. Some 
+<p><b>Example 2:</b> The following, sent in by a user, clears the username field before username and password
+autotype begins. Non-empty username fields are very common. Some 
 sites remember the username even when the user does not want it to or 
 user forgets to clear the don't remember username and, because of 
 browser cookies, it is remembered anyway, or if login fails for whatever 
 reason on the first attempt the username would still remain. This 
-autotype sequence should ensure that the user doesn't have to clear a 
-non-empty username field first.
+autotype sequence is meant to ensure that the user doesn't have to clear the username field first.
 <pre>
 <i>\t\s\u\t\p\n</i>
 </pre>
 </p>
 
-<p><b>Example 3:</b> The following sequence, sent in by a user,
+<p><b>Example 3:</b> The following sequence, also sent in by a user,
  toggles a checkbox (e.g., disables keeping you logged in):
 <pre> 
 <i>\&#35;\t \&#35;</i>

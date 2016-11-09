@@ -48,7 +48,7 @@ and per user, so that the file may be shared between different users,
 and across different machines.</p>
 
 <p>By default, pwsafe.cfg is kept in the same directory as the pwsafe.exe
-executable program. If, however, the PWS_PREFSDIR environment variable
+executable program. If, however, the <code>PWS_PREFSDIR</code> environment variable
 is set, pwsafe will use the configuration file stored there. This is
 useful for cases where write permissions to the pwsafe.exe install
 directory is restricted (See also the description of the <b>-g</b>
@@ -58,25 +58,28 @@ directory is restricted (See also the description of the <b>-g</b>
 <a href="manage_menu.html">"Manage&nbsp;&rarr;&nbsp;Options"</a> dialog box.  As we use XML to
 save these values, field names are case sensitive. Preferences stored in the "pwsafe.cfg" file
 apply to all open databases.  Those stored in the database apply only to that database.
-In Windows Vista or Windows 7, the pwsafe.cfg file can be found in the following directory:
-"C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe" and in Windows XP, it can be found in:
-"C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe". Note both directories may
-be hidden and Folder Vew properties may need to be modified in order to be able to view it.
-Obsolete preferences are not listed.</p>
+In Windows Vista or Windows 7, the pwsafe.cfg file can be found in:
+"<code>C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe</code>" and in Windows XP, it can be found in:
+"<code>C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe</code>". Note both directories may
+be hidden and Folder Vew properties may need to be modified in order to be able to view it.</p>
 
-<p>Note that only non-default preference values are stored in the
-  configuration file or database.</p>
+Notes:
+<ul>
+<li>Obsolete preferences are not listed.</li>
+<li>Only non-default preference values are stored in the configuration file or database.</li>
+</ul> 
 
-<p><big><b>Note:</b> Do <b>NOT</b> modify any of the preferences in the pwsafe.cfg
+
+<p><big><b>Warning:</b> Do <b>NOT</b> modify any of the preferences in the pwsafe.cfg
 file manually, as this may cause unexpected or unpredictable results.  Whilst we have
 made every effort to verify any preference we read in, we cannot guarantee that
 manually edited values will not cause a problem.</big></p>
 
 <hr style="width: 100%; height: 2px;">
 
-<h3>Database specific preferences stored within it</h3>
+<h3>Database specific preferences</h3>
 
-<p>Note database preferences are only saved within the database if their value is different
+<p>Note database preferences are only saved within the database if their value differs
 from their default value.
 
 <h4>Boolean (true ('1')/false '(0')) preferences in alphabetical order</h4>
@@ -334,7 +337,7 @@ to inactivity</td>
 <h3>Application related preferences stored within the Configuration file (pwsafe.cfg)</h3>
 
 <p>Note preferences are only saved if their value is different from their default value.
-These preferences apply to all databases opened.</p>
+These preferences apply to all databases on a given machine by a given user.</p>
 
 <h4>Boolean (true ('1')/false '(0')) preferences in alphabetical order</h4>
 
