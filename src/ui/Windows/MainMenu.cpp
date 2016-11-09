@@ -591,15 +591,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
-    // Delete Show Find Toolbar menu item - don't know if there or previously deleted
-    pPopupMenu->RemoveMenu(ID_MENUITEM_SHOWFINDTOOLBAR, MF_BYCOMMAND);
-    if (!m_FindToolBar.IsVisible()) {
-      // Put it back if not visible - before the separator
-      int pos = app.FindMenuItem(pPopupMenu, ID_MENUITEM_SHOWHIDE_DRAGBAR);
-      pPopupMenu->InsertMenu(pos + 1,
-                             MF_BYPOSITION  | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_SHOWFINDTOOLBAR, tc_dummy);
-    }
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                                    bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW,
                                    MF_BYCOMMAND);
