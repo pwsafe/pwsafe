@@ -1342,9 +1342,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       // over the minimize/restore event.
       m_savedDBprefs = prefs->Store();
 
-      // Suspend notification of changes
-      m_core.SuspendOnDBNotification();
-
       // PWSprefs::DatabaseClear == Locked
       if (prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (!LockDataBase()) {
@@ -1415,9 +1412,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (prefs->GetPref(PWSprefs::UseSystemTray) && app.IsIconVisible() == FALSE) {      
           app.ShowIcon();
         }
-
-        // Resume notification of changes
-        m_core.ResumeOnDBNotification();
       } else { // m_bSizing == true: here if size changed
         WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
         GetWindowPlacement(&wp);
