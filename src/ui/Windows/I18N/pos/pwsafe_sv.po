@@ -332,8 +332,8 @@ msgstr "%d"
 
 #. Resource IDs: (5609)
 #, c-format
-msgid "%d (%d) items"
-msgstr "%d (%d) punkter"
+msgid "%d/%d items"
+msgstr "%d/%d punkter"
 
 #. Resource IDs: (5816)
 #, c-format
