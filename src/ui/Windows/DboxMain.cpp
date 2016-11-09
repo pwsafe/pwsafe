@@ -417,7 +417,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_DRAGBAR, OnShowHideDragbar)
   ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
   ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
-  ON_COMMAND(ID_MENUITEM_SHOWFINDTOOLBAR, OnShowFindToolbar)
   ON_COMMAND(ID_MENUITEM_FINDELLIPSIS, OnShowFindToolbar)
   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
@@ -639,7 +638,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_SHOWHIDE_DRAGBAR, true, true, true, true},
   {ID_MENUITEM_NEW_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_OLD_TOOLBAR, true, true, true, true},
-  {ID_MENUITEM_SHOWFINDTOOLBAR, true, true, false, false},
   {ID_MENUITEM_EXPANDALL, true, true, true, false},
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, true},

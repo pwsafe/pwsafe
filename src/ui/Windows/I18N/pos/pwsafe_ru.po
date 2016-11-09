@@ -398,8 +398,8 @@ msgstr "%d"
 
 #. Resource IDs: (5609)
 #, c-format
-msgid "%d (%d) items"
-msgstr "%d (%d) элементов"
+msgid "%d/%d items"
+msgstr "%d/%d элементов"
 
 #. Resource IDs: (5816)
 #, c-format

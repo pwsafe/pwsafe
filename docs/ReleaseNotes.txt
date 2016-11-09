@@ -46,6 +46,9 @@ Changes to Existing Features in 3.40.1
 [] You can no longer change an alias's base entry's password from the alias entry.
 Instead, you should edit the base entry directly by selecting the alias entry and 
 using the Edit or right-click context menu to select its base.
+[] The "Show Find Toolbar" has been removed from the View menu as it appears in
+the Edit menu. Ctrl+F still works as before to show the Find toolbar or transfer
+focus to it if already visible.
 [1371] The font used in the Find toolbar is now set to the user specified Add/Edit
 font instead of the Tree/List view font. However, if the user selected font is too
 large so that characters are truncated, its point size will be dynamically reduced
