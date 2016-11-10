@@ -1,5 +1,5 @@
-Password Safe 3.40.1 Release Notes September 2016
-=================================================
+Password Safe 3.41.0pre Release Notes November 2016
+====================================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,17 +13,15 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has hot links to the relevant tickets/issues.
 
-Bugs fixed in 3.40.1
-====================
+Bugs fixed in 3.41.0pre
+=======================
 [] Ensure shortcut is updated in GUI after editing.
 [] Text in the Find toolbar search edit control is now vertically centered to
 reduce character truncation.
-[] An entry in the Tree view is not updated if the visible text is unchanged
-during edit.  This is to reduce unnecessary Tree view refreshes.
-[] Allow user to use the Smart Labels to copy fields to the clipboard when adding
-a new entry.
-[] If an entry is saving password history and its password is changed via the Edit
-dialog Apply button, then the password history is now properly updated.
+[] Clicking on a field's name copies the value to the clipboard when adding
+a new entry (and not only when editing).
+[] Update password history when Appy is clicked, not only when Edit
+window's closed.
 [1378] Fix application crash if Add/Edit entry dialog open when the database is locked
 e.g. via idle timer, workstation lock etc.
 [1373] An invalid or non-existent backup directory path can no longer be saved
@@ -32,17 +30,17 @@ when exiting Options.
 Randomize button.
 [1368] The Status bar now shows the correct number of entries when a database
 is unlocked.
-[1367] Command line arguments -h and -u support reinstated.
+[1367] Fixed regression in command line arguments -h and -u support.
 [1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
 on Autotype label now works.
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
-[1364] The Tree view no longer refreshes if a non-display field is changed e.g. Notes.
+[1364] Unnecessary tree view refreshes fixed.
 [1363] Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.
 [G192] Saved changes no longer prevent logoff or system shutdown.
 
-Changes to Existing Features in 3.40.1
-======================================
+Changes to Existing Features in 3.41.0pre
+=========================================
 [] You can no longer change an alias's base entry's password from the alias entry.
 Instead, you should edit the base entry directly by selecting the alias entry and 
 using the Edit or right-click context menu to select its base.
@@ -50,13 +48,11 @@ using the Edit or right-click context menu to select its base.
 the Edit menu. Ctrl+F still works as before to show the Find toolbar or transfer
 focus to it if already visible.
 [1371] The font used in the Find toolbar is now set to the user specified Add/Edit
-font instead of the Tree/List view font. However, if the user selected font is too
-large so that characters are truncated, its point size will be dynamically reduced
-until they are not.
+font instead of the Tree/List view font.
 
-New Features for 3.40.1
-=======================
-[] Implement new AutoType field '\#' to toggle the use of the older mechanism to
+New Features for 3.41.0pre
+==========================
+[] New AutoType field '\#' toggles the use of the older mechanism to
 send keyboard input to other applications e.g. browsers.
 [] Add more Help to the Add/Edit Basic and Additional tabs.
 [815] The database backup location now supports environmental variables e.g. 

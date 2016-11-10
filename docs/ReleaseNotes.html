@@ -57,7 +57,7 @@ open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
 
 <body>
 
-<h1 align="center">Password Safe 3.40.1 Release Notes September 2016</h1>
+<h1 align="center">Password Safe 3.41.0pre Release Notes November 2016</h1>
 
 <p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -78,9 +78,9 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
-<h3><a name="V3.40.1"></a>Version V3.40.1</h3>
+<h3><a name="V3.41.0pre"></a>Version V3.41.0pre</h3>
 <hr>
-<h4><a name="V3.40.1BugsFixed"></a>Bugs fixed in V3.40.1</h4>
+<h4><a name="V3.41.0preBugsFixed"></a>Bugs fixed in V3.41.0pre</h4>
 <table>
 <tbody>
 <tr>
@@ -94,18 +94,13 @@ reduce character truncation.</td>
 </tr>
 <tr>
 <td align="center" width="100">[]</td>
-<td>An entry in the Tree view is not updated if the visible text is unchanged
-during edit.  This is to reduce unnecessary Tree view refreshes.</td>
+<td>Clicking on a field's name copies the value to the clipboard when adding
+a new entry (and not only when editing).</td>
 </tr>
 <tr>
 <td align="center" width="100">[]</td>
-<td>Allow user to use the Smart Labels to copy fields to the clipboard when adding
-a new entry.</td>
-</tr>
-<tr>
-<td align="center" width="100">[]</td>
-<td>If an entry is saving password history and its password is changed via the Edit
-dialog Apply button, then the password history is now properly updated.</td>
+<td>Update password history when Appy is clicked, not only when Edit
+window's closed.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1378);return false;">1378</a></td>
@@ -128,7 +123,7 @@ when exiting Options.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1367);return false;">1367</a></td>
-<td>Command line arguments -h and -u support reinstated.</td>
+<td> Fixed regression in command line arguments -h and -u support.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1366);return false;">1366</a></td>
@@ -141,7 +136,7 @@ on Autotype label now works.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1364);return false;">1364</a></td>
-<td>The Tree view no longer refreshes if a non-display field is changed e.g. Notes.</td>
+<td>Unnecessary tree view refreshes fixed.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1363);return false;">1363</a></td>
@@ -157,7 +152,7 @@ do not leave duplicated empty groups in the database.</td>
 
 <br>
 <hr>
-<h4><a name="V3.40.1Changes"></a>Changes to Existing Features in V3.40.1</h4>
+<h4><a name="V3.41.0preChanges"></a>Changes to Existing Features in V3.41.0pre</h4>
 <table>
 <tbody>
 <tr>
@@ -175,21 +170,19 @@ focus to it if already visible.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1371);return false;">1371</a></td>
 <td>The font used in the Find toolbar is now set to the user specified Add/Edit
-font instead of the Tree/List view font. However, if the user selected font is too
-large so that characters are truncated, its point size will be dynamically reduced
-until they are not.</td>
+font instead of the Tree/List view font.</td>
 </tr>
 </tbody>
 </table>
 
 <br>
 <hr>
-<h4><a name="V3.40.1New"></a>New Features for V3.40.1</h4>
+<h4><a name="V3.41.0preNew"></a>New Features for V3.41.0pre</h4>
 <table>
 <tbody>
 <tr>
 <td align="center" width="100">[]</td>
-<td>Implement new AutoType field '\#' to toggle the use of the older mechanism to
+<td>New AutoType field '\#' toggles the use of the older mechanism to
 send keyboard input to other applications e.g. browsers.</td>
 </tr>
 <tr>
