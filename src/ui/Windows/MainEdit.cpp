@@ -279,8 +279,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
   ci_temp.SetTitle(sx_title);
   ci_temp.SetUser(sx_user);
   ci_temp.SetPassword(L"[Shortcut]");
+
+  // call before setting to shortcut so that it can be moved to correct place
+  ci_temp.CreateUUID();
   ci_temp.SetShortcut();
-  ci_temp.CreateUUID(); // call after setting to shortcut!
 
   time_t t;
   time(&t);

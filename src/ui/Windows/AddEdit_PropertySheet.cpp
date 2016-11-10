@@ -682,8 +682,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldpwp = m_AEMD.pwp;
 
   // Set up dependents
-  pws_os::CUUID original_base_uuid(pws_os::CUUID::NullUUID());
+  m_AEMD.base_uuid = m_AEMD.original_base_uuid = pws_os::CUUID::NullUUID();
+
   m_AEMD.num_dependents = 0;
+  pws_os::CUUID original_base_uuid(pws_os::CUUID::NullUUID());
 
   pws_os::CUUID original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
   if (m_AEMD.pci->IsBase()) {

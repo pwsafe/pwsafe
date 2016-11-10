@@ -749,6 +749,7 @@ BOOL CAddEdit_Basic::OnApply()
         csBase.Empty();
 
       M_pci()->SetAlias(); // Still an alias
+      M_pci()->SetBaseUUID(M_base_uuid());
       ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
     }
 
@@ -771,6 +772,7 @@ BOOL CAddEdit_Basic::OnApply()
 
       pws_os::CUUID entry_uuid = M_pci()->GetUUID();
       M_pci()->SetAlias();
+      M_pci()->SetBaseUUID(M_base_uuid());
       M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
       ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
     }
