@@ -1323,6 +1323,9 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   CUUID new_base_uuid = pentry_psh->GetBaseUUID();
   CUUID original_uuid = pci_original->GetUUID();
 
+  StringX sxPWH = pci_original->GetPWHistory();
+  bool bTemporaryChangeOfPWH(false);
+
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
     ASSERT(pci_orig_base != NULL);
@@ -1338,6 +1341,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
+      // We can allow saving of the current password in the ALias PWH this time
       ci_new.SetPassword(L"[Alias]");
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
@@ -1352,7 +1357,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     // Only remove alias from multimap if base has changed (either to another
     // base or none [alias now a normal entry].
     if (new_base_uuid != original_base_uuid) {
-      // base changed or removed
+      // Its base has been changed or removed to become a normal entry again
       // RemoveDependentEntry also resets base to normal if no more dependents
       pcmd = RemoveDependentEntryCommand::Create(pcore, original_base_uuid,
                                                         original_uuid,
@@ -1366,15 +1371,20 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                        CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
 
-        ci_new.SetPassword(L"[Alias]");
         ci_new.SetAlias();
         ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
+        // Temporarily disable password history so it doesn't have the special
+        // password of [Alias] saved into it on reverting to normal
+        if (!sxPWH.empty() && sxPWH.substr(0, 1) == L"1") {
+          bTemporaryChangeOfPWH = true;
+          sxPWH[0] = L'0';
+          ci_new.SetPWHistory(sxPWH);
+        }
+
         // Change password
         ci_new.SetPassword(newPassword);
-        // Restore PWH as it was before it became an alias
-        ci_new.SetPWHistory(pci_original->GetPWHistory());
-        // Now set as a normal entry
+        // Now set as a normal entry - this will also clear old base_uuid
         ci_new.SetNormal();
       } // Password changed
     } // base uuids changed
@@ -1390,17 +1400,17 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
-      ci_new.SetPassword(L"[Alias]");
+
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
 
-      // Move old aliases across
+      // Move old aliases across in core multimap
       pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
                                                         new_base_uuid,
                                                         CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
 
-      // Move aliases
+      // Now actually move the aliases
       const CUUID old_base_uuid = pci_original->GetUUID();
       UUIDVector tlist;
       m_core.GetAllDependentEntries(old_base_uuid, tlist, CItemData::ET_ALIAS);
@@ -1414,13 +1424,12 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       }
     } else { // Still a base entry but with a new password
       ci_new.SetPassword(newPassword);
-      ci_new.SetAliasBase();
     }
   } // AliasBase with password changed
 
   if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_SHORTCUTBASE &&
       pci_original->GetPassword() != newPassword) {
-    // Original was a shortcut base but might now be an alias of another entry!
+    // Original was a shortcut base and can only become a normal entry
     if (pentry_psh->GetIBasedata() > 0) {
       // Now an alias
       // Make this one an alias
@@ -1428,6 +1437,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
       ci_new.SetPassword(L"[Alias]");
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
@@ -1469,6 +1479,15 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Now actually do the edit!
   pcmd = EditEntryCommand::Create(pcore, *(pci_original), ci_new);
   pmulticmds->Add(pcmd);
+
+  // Restore PWH as it was before it became an alias if we had changed it
+  if (bTemporaryChangeOfPWH) {
+    sxPWH[0] = L'1';
+    pcmd = UpdateEntryCommand::Create(pcore, ci_new,
+                                      CItemData::PWHIST,
+                                      sxPWH);
+    pmulticmds->Add(pcmd);
+  }
 
   const StringX &sxNewGroup = ci_new.GetGroup();
   if (m_core.IsEmptyGroup(sxNewGroup)) {
