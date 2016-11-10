@@ -261,7 +261,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
   }
 
-  UpdatePasswordHistory();
+  UpdatePasswordHistoryLC();
 
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
@@ -981,7 +981,7 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
   *pResult = 0;
 }
 
-void CAddEdit_Additional::UpdatePasswordHistory()
+void CAddEdit_Additional::UpdatePasswordHistoryLC()
 {
   // Set up PWH CListCtrl
   CString cs_text;

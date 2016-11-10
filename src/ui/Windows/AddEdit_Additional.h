@@ -41,7 +41,7 @@ public:
 
   void OnEntryHotKeyKillFocus();
   void OnEntryHotKeySetFocus();
-  void UpdatePasswordHistory();
+  void UpdatePasswordHistoryLC();
   bool HasBeenShown() const { return m_bInitdone; }
 
 protected:
