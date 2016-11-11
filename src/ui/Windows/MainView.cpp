@@ -1942,6 +1942,7 @@ void DboxMain::SortListView()
 
   if (!m_bIsRestoring && m_FindToolBar.IsVisible()) {
     // Redo find as list/entries may have changed
+    m_FindToolBar.InvalidateSearch();
     m_FindToolBar.Find();
   }
 }

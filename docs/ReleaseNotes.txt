@@ -15,6 +15,7 @@ The ReleaseNotes.html file has hot links to the relevant tickets/issues.
 
 Bugs fixed in 3.41.0pre
 =======================
+[] Fix crash if Find active when applying a filter e.g. show entries with expiry dates.
 [] Ensure shortcut is updated in GUI after editing.
 [] Text in the Find toolbar search edit control is now vertically centered to
 reduce character truncation.
