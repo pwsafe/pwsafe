@@ -354,13 +354,14 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
                                            const StringX &sxNewGroup,
                                            Function function)
   : Command(pcomInt), m_sxOldGroup(sxOldGroup), m_sxNewGroup(sxNewGroup),
-  m_function(function), m_bSingleGroup(function == EG_RENAME)
+  m_function(function)
 {
   // This function call is used to rename a single empty group (EG_RENAME) or
   // to rename all empty groups that are sub-groups of the current group
   // (EG_RENAMEPATH).
-}
 
+  m_bSingleGroup = (function == EG_ADD || function == EG_DELETE || function == EG_RENAME);
+}
 
 int DBEmptyGroupsCommand::Execute()
 {
