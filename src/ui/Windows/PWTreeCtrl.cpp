@@ -902,7 +902,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_undo = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
+                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_undo);
 
       // Update Group
@@ -911,7 +911,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_redo = UpdateGUICommand::Create(pcore,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_redo);
     }
   }
@@ -1551,7 +1551,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
-          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
+          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
         StringX sxDropGroup(L"");
         bool bEmptyGroup(false);
@@ -1620,7 +1620,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
         }
 
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
-          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
         // Do it
         app.GetMainDlg()->Execute(pmulticmds);

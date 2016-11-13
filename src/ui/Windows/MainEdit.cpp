@@ -144,7 +144,7 @@ void DboxMain::OnAdd()
 
         Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                                   UpdateGUICommand::WN_UNDO,
-                                                  UpdateGUICommand::GUI_REFRESH_TREE);
+                                                  UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
         pmulticmds->Add(pcmd_undo);
 
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
@@ -177,7 +177,7 @@ void DboxMain::OnAdd()
     if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,
                                                 UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
+                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd3);
     }
 
@@ -294,7 +294,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
   if (!sxNewDBPrefsString.empty()) {
     Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                               UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
     pmulticmds->Add(pcmd_undo);
 
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
@@ -313,7 +313,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
   if (!sxNewDBPrefsString.empty()) {
    Command *pcmd3 = UpdateGUICommand::Create(&m_core,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
     pmulticmds->Add(pcmd3);
   }
 
@@ -2166,6 +2166,7 @@ void DboxMain::OnRunCommand()
                        m_core.GetCurFile(), pci, pbci,
                        m_bDoAutoType, m_sxAutoType,
                        errmsg, st_column, bURLSpecial);
+
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
     CString cs_title, cs_errmsg;
@@ -2238,7 +2239,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
-     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
+     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -2449,7 +2450,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   }
 
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
-    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
   // Do it!
   Execute(pmulticmds);

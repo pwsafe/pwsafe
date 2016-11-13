@@ -185,8 +185,12 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
         RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
-      // Rebuild the entire tree view
-      RebuildGUI(TREEONLY);
+      // Rebuild only the tree view
+      RebuildGUI(BOTHVIEWS);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_BOTHVIEWS:
+      // Rebuild the entire tree & list views
+      RebuildGUI(BOTHVIEWS);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Refresh one entry ListView row and in the tree if the Title/Username/Password
