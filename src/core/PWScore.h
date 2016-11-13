@@ -259,7 +259,7 @@ public:
   // GetAllGroups - returns an array of all unique group prefix names in m_pwlist
   // e.g., "A", "A.B", "A.B.C"
   // "All" includes empty groups!
-  void GetAllGroups(std::vector<stringT> &vAllGroups) const;
+  void GetAllGroups(std::vector<stringT> &vAllGroups, const bool bIncludeEmptyGroups = true) const;
   // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);

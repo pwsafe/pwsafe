@@ -73,25 +73,25 @@ struct st_ValidateResults {
   int num_orphan_att;
 
   st_ValidateResults()
-  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
-  num_empty_titles(0), num_empty_passwords(0),
-  num_duplicate_GTU_fixed(0),
-  num_PWH_fixed(0), num_excessivetxt_found(0),
-  num_alias_warnings(0), num_shortcuts_warnings(0),
-  num_missing_att(0), num_orphan_att(0)
+    : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+    num_empty_titles(0), num_empty_passwords(0),
+    num_duplicate_GTU_fixed(0),
+    num_PWH_fixed(0), num_excessivetxt_found(0),
+    num_alias_warnings(0), num_shortcuts_warnings(0),
+    num_missing_att(0), num_orphan_att(0)
   {}
 
   st_ValidateResults(const st_ValidateResults &that)
-  : num_invalid_UUIDs(that.num_invalid_UUIDs),
-  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
-  num_empty_titles(that.num_empty_titles),
-  num_empty_passwords(that.num_empty_passwords),
-  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
-  num_PWH_fixed(that.num_PWH_fixed),
-  num_excessivetxt_found(that.num_excessivetxt_found),
-  num_alias_warnings(that.num_alias_warnings),
-  num_shortcuts_warnings(that.num_shortcuts_warnings),
-  num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
+    : num_invalid_UUIDs(that.num_invalid_UUIDs),
+    num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+    num_empty_titles(that.num_empty_titles),
+    num_empty_passwords(that.num_empty_passwords),
+    num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+    num_PWH_fixed(that.num_PWH_fixed),
+    num_excessivetxt_found(that.num_excessivetxt_found),
+    num_alias_warnings(that.num_alias_warnings),
+    num_shortcuts_warnings(that.num_shortcuts_warnings),
+    num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
   {}
 
   st_ValidateResults &operator=(const st_ValidateResults &that) {
@@ -112,13 +112,13 @@ struct st_ValidateResults {
   }
 
   int TotalIssues()
-  { 
+  {
     return (num_invalid_UUIDs + num_duplicate_UUIDs +
-            num_empty_titles + num_empty_passwords +
-            num_duplicate_GTU_fixed +
-            num_PWH_fixed + num_excessivetxt_found +
-            num_alias_warnings + num_shortcuts_warnings +
-            num_missing_att + num_orphan_att);
+      num_empty_titles + num_empty_passwords +
+      num_duplicate_GTU_fixed +
+      num_PWH_fixed + num_excessivetxt_found +
+      num_alias_warnings + num_shortcuts_warnings +
+      num_missing_att + num_orphan_att);
   }
 };
 
@@ -1800,7 +1800,7 @@ static void collectGroups(const StringX &sxg, std::set<stringT> &setGroups)
 
 // GetAllGroups - returns an array of all unique group prefix names
 // e.g., "A", "A.B", "A.B.C"
-void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
+void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups, const bool bIncludeEmptyGroups) const
 {
   // use the fact that set eliminates dups for us
   std::set<stringT> setGroups;
@@ -1814,10 +1814,12 @@ void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
     } // IsGroupSet()
   } // for m_pwlist
 
-  // Now add Empty groups in the same manner
-  for (auto iter2 = m_vEmptyGroups.begin(); iter2 != m_vEmptyGroups.end(); iter2++) {
-    ASSERT(!iter2->empty());
-    collectGroups(*iter2, setGroups);
+  if (bIncludeEmptyGroups) {
+    // Now add Empty groups in the same manner
+    for (auto iter2 = m_vEmptyGroups.begin(); iter2 != m_vEmptyGroups.end(); iter2++) {
+      ASSERT(!iter2->empty());
+      collectGroups(*iter2, setGroups);
+    }
   }
 
   vAllGroups.clear();
@@ -2039,9 +2041,10 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      3. Check group/title/user must be unique.
      4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
-     5. For attachments (V4):
-     5.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
-     5.2 Check that each ItemAtt has a corresponding "owner" ItemData
+     5. Validate Empty Groups
+     6. For attachments (V4):
+     6.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
+     6.2 Check that each ItemAtt has a corresponding "owner" ItemData
 
      Note:
      m_pwlist is implemented as a map keyed on UUIDs, each entry is
@@ -2169,7 +2172,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       }
     }
 
-    // Attachment Reference check (5.1)
+    // Attachment Reference check (6.1)
     if (ci.HasAttRef()) {
       sAtts.insert(ci.GetAttUUID());
       if (!HasAtt(ci.GetAttUUID())) {
@@ -2180,6 +2183,14 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         // Fix the problem:
         fixedItem.ClearAttUUID();
         bFixed = true;
+      }
+
+      // Validate entry not in an empty group
+      std::vector<StringX>::iterator itEG;
+      itEG = std::find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxgroup);
+      if (itEG != m_vEmptyGroups.end()) {
+        // Empty group can't have entries!  Remove
+        m_vEmptyGroups.erase(itEG);
       }
     }
 
@@ -2192,7 +2203,28 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
   } // iteration over m_pwlist
 
-  // Check for orphan attachments (5.2)
+  // Validate Empty Groups don't have empty sub-groups
+  if (!m_vEmptyGroups.empty()) {
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+    std::vector<size_t> viDelete;
+    for (size_t ieg = 0; ieg < m_vEmptyGroups.size() - 1; ieg++) {
+      StringX sxEG = m_vEmptyGroups[ieg] + L".";
+      if (sxEG == m_vEmptyGroups[ieg + 1].substr(0, sxEG.length())) {
+        // Can't be empty as has empty sub-group. Save to delete later
+        viDelete.push_back(ieg);
+      }
+    }
+
+    if (!viDelete.empty()) {
+      // Remove non-empty groups
+      std::vector<size_t>::reverse_iterator rit;
+      for (rit = viDelete.rbegin(); rit != viDelete.rend(); rit++) {
+        m_vEmptyGroups.erase(m_vEmptyGroups.begin() + *rit);
+      }
+    }
+  }
+
+  // Check for orphan attachments (6.2)
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
     if (sAtts.find(att_iter->first) == sAtts.end()) {
       st_AttTitle_Filename stATFN;
@@ -2238,7 +2270,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 #endif
 
   if (st_vr.TotalIssues() != 0 && pRpt != NULL) {
-
+    // Only report problems if a. There are some and b. We have a report file
     if ((st_vr.num_invalid_UUIDs == 0 && st_vr.num_duplicate_UUIDs == 0)) {
       // As both zero, we didn't put error header in report - so do it now
       pRpt->WriteLine();
@@ -3820,6 +3852,18 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
   if (sxEmptyGroup.empty())
     return false;
 
+  std::vector<stringT> vAllNonEmptyGroups;
+  GetAllGroups(vAllNonEmptyGroups, false);
+
+  std::sort(vAllNonEmptyGroups.begin(), vAllNonEmptyGroups.end());
+  stringT sEG = sxEmptyGroup.c_str();
+
+  // Don't add if an entry with this group alreadly exists
+  if (find(vAllNonEmptyGroups.begin(), vAllNonEmptyGroups.end(), sEG) !=
+           vAllNonEmptyGroups.end())
+    return false;
+
+  // Only add if not already present
   if (find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) ==
            m_vEmptyGroups.end()) {
     // Add it
