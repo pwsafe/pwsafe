@@ -172,12 +172,6 @@ void DboxMain::ApplyFilters()
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                               bFilters ? TRUE : FALSE);
 
-  // Clear Find as old entries might not now be in the List View (which is how
-  // Find works).  Also, hide it if visible.
-  m_FindToolBar.ClearFind();
-  if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
-
   if (m_bFilterActive)
     m_ctlItemTree.OnExpandAll();
 

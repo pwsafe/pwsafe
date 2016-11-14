@@ -144,7 +144,7 @@ void DboxMain::OnAdd()
 
         Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                                   UpdateGUICommand::WN_UNDO,
-                                                  UpdateGUICommand::GUI_REFRESH_TREE);
+                                                  UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
         pmulticmds->Add(pcmd_undo);
 
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
@@ -177,7 +177,7 @@ void DboxMain::OnAdd()
     if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,
                                                 UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
+                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd3);
     }
 
@@ -294,7 +294,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
   if (!sxNewDBPrefsString.empty()) {
     Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
                                               UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
     pmulticmds->Add(pcmd_undo);
 
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
@@ -313,7 +313,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
   if (!sxNewDBPrefsString.empty()) {
    Command *pcmd3 = UpdateGUICommand::Create(&m_core,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
     pmulticmds->Add(pcmd3);
   }
 
@@ -1324,7 +1324,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   CUUID original_uuid = pci_original->GetUUID();
 
   StringX sxPWH = pci_original->GetPWHistory();
-  bool bTemporaryChangeOfPWH(false);
+  bool bTemporaryChangeOfPWH(false), bAliasBecomingNormal(false);
 
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
@@ -1376,6 +1376,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       } else { // No longer an alias
         // Temporarily disable password history so it doesn't have the special
         // password of [Alias] saved into it on reverting to normal
+        bAliasBecomingNormal = true;
         if (!sxPWH.empty() && sxPWH.substr(0, 1) == L"1") {
           bTemporaryChangeOfPWH = true;
           sxPWH[0] = L'0';
@@ -1481,8 +1482,10 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   pmulticmds->Add(pcmd);
 
   // Restore PWH as it was before it became an alias if we had changed it
+  if (bAliasBecomingNormal) {
   if (bTemporaryChangeOfPWH) {
     sxPWH[0] = L'1';
+    }
     pcmd = UpdateEntryCommand::Create(pcore, ci_new,
                                       CItemData::PWHIST,
                                       sxPWH);
@@ -2145,6 +2148,14 @@ void DboxMain::OnRunCommand()
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
     sx_lastpswd = pbci->GetPreviousPassword();
+
+    // Shortcut everything is from base!
+    // This contradicts BR1124 fix in 3.32, which changed autotype 
+    // to use group/title/user from shortcut but not RunCmd.
+    // I believe that BR1124 should not have been implemented.  If user wants
+    // to use the group/title/user of a dependent entry, then they should use
+    // duplicate the base entry and make into an alias.
+    // In fact, it shouldn't have been a BR but a FR!
     if (pci->IsShortcut()) {
       pci = pbci;
       pbci = NULL;
@@ -2166,6 +2177,7 @@ void DboxMain::OnRunCommand()
                        m_core.GetCurFile(), pci, pbci,
                        m_bDoAutoType, m_sxAutoType,
                        errmsg, st_column, bURLSpecial);
+
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
     CString cs_title, cs_errmsg;
@@ -2238,7 +2250,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
-     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
+     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -2449,7 +2461,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   }
 
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
-    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
   // Do it!
   Execute(pmulticmds);

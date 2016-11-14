@@ -99,6 +99,12 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
     return;
 
+  // This contradicts BR1124 fix in 3.32, which changed autotype 
+  // to use group/title/user from shortcut but not RunCmd.
+  // I believe that BR1124 should not have been implemented.  If user wants
+  // to use the group/title/user of a dependent entry, then they should use
+  // duplicate the base entry and make into an alias.
+  // In fact, it shouldn't have been a BR but a FR!
   if (ci.IsShortcut()) {
     if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
@@ -174,9 +180,30 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
+  // If shortcut base OK, just replace ci by its base
+  // As per just standard DoBrowse
+  // Shortcut everything is from base!
+
+  // This contradicts BR1124 fix in 3.32, which changed autotype 
+  // to use group/title/user from shortcut but not RunCmd.
+  // I believe that BR1124 should not have been implemented.  If user wants
+  // to use the group/title/user of a dependent entry, then they should use
+  // duplicate the base entry and make into an alias.
+  // In fact, it shouldn't have been a BR but a FR!
   if (ci.IsShortcut()) {
     if (!SafeGetBaseEntry(ci, ci))
       return;
+  }
+
+  StringX sxPassword, sxLastPassword;
+  if (ci.IsAlias()) {
+    CItemData *pbci = GetBaseEntry(&ci);
+    ASSERT(pbci != NULL);
+    sxPassword = pbci->GetPassword();
+    sxLastPassword = pbci->GetPreviousPassword();
+  } else {
+    sxPassword = ci.GetPassword();
+    sxLastPassword = ci.GetPreviousPassword();
   }
 
   if (!ci.IsURLEmpty()) {
@@ -184,7 +211,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
                                   ci.GetGroup(), ci.GetTitle(), 
                                   ci.GetUser(),
-                                  ci.GetPassword(), ci.GetPreviousPassword(),
+                                  sxPassword, sxLastPassword,
                                   ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
                                   vactionverboffsets);
 
@@ -393,6 +420,13 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
+  // Shortcut everything is from base!
+  // This contradicts BR1124 fix in 3.32, which changed autotype 
+  // to use group/title/user from shortcut but not RunCmd.
+  // I believe that BR1124 should not have been implemented.  If user wants
+  // to use the group/title/user of a dependent entry, then they should use
+  // duplicate the base entry and make into an alias.
+  // In fact, it shouldn't have been a BR but a FR!
   if (ci.IsShortcut()) {
     if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release

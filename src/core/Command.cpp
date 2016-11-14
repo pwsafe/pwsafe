@@ -354,13 +354,14 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
                                            const StringX &sxNewGroup,
                                            Function function)
   : Command(pcomInt), m_sxOldGroup(sxOldGroup), m_sxNewGroup(sxNewGroup),
-  m_function(function), m_bSingleGroup(function == EG_RENAME)
+  m_function(function)
 {
   // This function call is used to rename a single empty group (EG_RENAME) or
   // to rename all empty groups that are sub-groups of the current group
   // (EG_RENAMEPATH).
-}
 
+  m_bSingleGroup = (function == EG_ADD || function == EG_DELETE || function == EG_RENAME);
+}
 
 int DBEmptyGroupsCommand::Execute()
 {
@@ -521,13 +522,12 @@ int AddEntryCommand::Execute()
 void AddEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    DeleteEntryCommand dec(m_pcomInt, m_ci, this);
-    dec.Execute();
-
     if (m_ci.IsDependent()) {
       m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
         m_ci.GetEntryType());
     }
+
+    m_pcomInt->DoDeleteEntry(m_ci);
   }
 }
 
@@ -619,19 +619,14 @@ void DeleteEntryCommand::Undo()
       // Check if dep entry hasn't already been added - can happen if
       // base and dep in group that's being undeleted.
       if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
-        pcmd->Execute();
-        delete pcmd;
+        m_pcomInt->DoAddEntry(m_ci, &m_att);
       }
     } else {
-      AddEntryCommand undo(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this);
-      undo.Execute();
+      m_pcomInt->DoAddEntry(m_ci, &m_att);
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_dependents.begin();
           iter != m_dependents.end(); iter++) {
-          Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL);
-          pcmd->Execute();
-          delete pcmd;
+          m_pcomInt->DoAddEntry(*iter, NULL);
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
@@ -643,11 +638,12 @@ void DeleteEntryCommand::Undo()
           // being undone, in which case it will be added separately
           if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
             continue;
-          DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
-          delExAlias.Execute(); // out with the old...
-          Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this);
-          pcmd->Execute(); // in with the new!
-          delete pcmd;
+
+          // out with the old...
+          m_pcomInt->DoDeleteEntry(*iter);
+
+          // in with the new!
+          m_pcomInt->DoAddEntry(*iter, NULL);
         }
       } // IsAliasBase
     } // !IsDependent
