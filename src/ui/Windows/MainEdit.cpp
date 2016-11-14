@@ -2148,14 +2148,6 @@ void DboxMain::OnRunCommand()
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
     sx_lastpswd = pbci->GetPreviousPassword();
-
-    // Shortcut everything is from base!
-    // This contradicts BR1124 fix in 3.32, which changed autotype 
-    // to use group/title/user from shortcut but not RunCmd.
-    // I believe that BR1124 should not have been implemented.  If user wants
-    // to use the group/title/user of a dependent entry, then they should use
-    // duplicate the base entry and make into an alias.
-    // In fact, it shouldn't have been a BR but a FR!
     if (pci->IsShortcut()) {
       pci = pbci;
       pbci = NULL;
