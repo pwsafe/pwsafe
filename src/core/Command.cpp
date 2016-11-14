@@ -522,6 +522,11 @@ int AddEntryCommand::Execute()
 void AddEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
+        m_ci.GetUUID());
+    }
+
     if (m_ci.IsDependent()) {
       m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
         m_ci.GetEntryType());
