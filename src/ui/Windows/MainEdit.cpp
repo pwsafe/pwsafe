@@ -1324,7 +1324,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   CUUID original_uuid = pci_original->GetUUID();
 
   StringX sxPWH = pci_original->GetPWHistory();
-  bool bTemporaryChangeOfPWH(false);
+  bool bTemporaryChangeOfPWH(false), bAliasBecomingNormal(false);
 
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
@@ -1376,6 +1376,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       } else { // No longer an alias
         // Temporarily disable password history so it doesn't have the special
         // password of [Alias] saved into it on reverting to normal
+        bAliasBecomingNormal = true;
         if (!sxPWH.empty() && sxPWH.substr(0, 1) == L"1") {
           bTemporaryChangeOfPWH = true;
           sxPWH[0] = L'0';
@@ -1481,8 +1482,10 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   pmulticmds->Add(pcmd);
 
   // Restore PWH as it was before it became an alias if we had changed it
+  if (bAliasBecomingNormal) {
   if (bTemporaryChangeOfPWH) {
     sxPWH[0] = L'1';
+    }
     pcmd = UpdateEntryCommand::Create(pcore, ci_new,
                                       CItemData::PWHIST,
                                       sxPWH);

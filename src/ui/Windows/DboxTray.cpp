@@ -179,12 +179,23 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
+  StringX sxPassword, sxLastPassword;
+  if (ci.IsAlias()) {
+    CItemData *pbci = GetBaseEntry(&ci);
+    ASSERT(pbci != NULL);
+    sxPassword = pbci->GetPassword();
+    sxLastPassword = pbci->GetPreviousPassword();
+  } else {
+    sxPassword = ci.GetPassword();
+    sxLastPassword = ci.GetPreviousPassword();
+  }
+
   if (!ci.IsURLEmpty()) {
     std::vector<size_t> vactionverboffsets;
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
                                   ci.GetGroup(), ci.GetTitle(), 
                                   ci.GetUser(),
-                                  ci.GetPassword(), ci.GetPreviousPassword(),
+                                  sxPassword, sxLastPassword,
                                   ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
                                   vactionverboffsets);
 

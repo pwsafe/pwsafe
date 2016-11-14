@@ -1515,6 +1515,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     PWSprefs *prefs = PWSprefs::GetInstance();
     StringX sx_pswd;
     if (pci->IsDependent()) {
+      // Password always from base
       CItemData *pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
       sx_pswd = pbci->GetPassword();

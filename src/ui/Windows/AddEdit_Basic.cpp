@@ -1162,12 +1162,21 @@ void CAddEdit_Basic::OnLaunch()
 {
   UpdateData(TRUE);
   std::vector<size_t> vactionverboffsets;
+
+  CSecString sPassword(M_realpassword()), sLastPassword(M_lastpassword());
+  if (m_AEMD.pci->IsAlias()) {
+    CItemData *pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
+    ASSERT(pciA != NULL);
+    sPassword = pciA->GetPassword();
+    sLastPassword = pciA->GetPreviousPassword();
+  }
+
   StringX sx_autotype = PWSAuxParse::GetAutoTypeString(M_autotype(),
                                                        M_group(),
                                                        M_title(),
                                                        M_username(),
-                                                       M_realpassword(),
-                                                       M_lastpassword(),
+                                                       sPassword,
+                                                       sLastPassword,
                                                        M_realnotes(),
                                                        M_URL(),
                                                        M_email(),
