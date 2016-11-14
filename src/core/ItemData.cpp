@@ -725,7 +725,7 @@ StringX CItemData::GetPreviousPassword() const
     // Get all history entries
     size_t num_err, MaxPWHistory;
     PWHistList pwhistlist;
-    bool status = CreatePWHistoryList(sxPWH, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+    CreatePWHistoryList(sxPWH, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
     // If none yet saved, then don't return anything
     if (pwhistlist.empty())
