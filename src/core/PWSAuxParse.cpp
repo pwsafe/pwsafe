@@ -563,15 +563,18 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
     const CItemData *pbci = core.GetBaseEntry(&ci);
     if (pbci != NULL) {
       sxpwd = pbci->GetPassword();
+      sxlastpwd = pbci->GetPreviousPassword();
     } else { // Problem - alias entry without a base!
       ASSERT(0);
     }
-  } else if (ci.IsShortcut()) {
+  } // ci.IsAlias()
+  else if (ci.IsShortcut()) {
     const CItemData *pbci = core.GetBaseEntry(&ci);
     if (pbci != NULL) {
       // Use shortcut's group, title and username [BR1124],
       // pick up the rest from base
       sxpwd = pbci->GetPassword();
+      sxlastpwd = pbci->GetPreviousPassword();
       sxnotes = pbci->GetNotes();
       sxurl = pbci->GetURL();
       sxemail = pbci->GetEmail();
