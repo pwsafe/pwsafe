@@ -3273,7 +3273,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_SHOWHIDE_UNSAVED:
       // Filter sub-menu mutually exclusive with use of internal filters for
       // display of unsaved or expired entries
-      if (!m_core.HasDBChanged() ||
+      if ((!m_core.HasDBChanged() && !m_core.HaveEmptyGroupsChanged()) ||
           (m_bFilterActive && !m_bUnsavedDisplayed))
         iEnable = FALSE;
       break;

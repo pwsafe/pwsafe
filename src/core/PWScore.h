@@ -428,6 +428,7 @@ public:
 
   // Empty Groups
   const std::vector<StringX> & GetEmptyGroups() const {return m_vEmptyGroups;}
+  const std::vector<StringX> & GetSavedEmptyGroups() const { return m_InitialvEmptyGroups; }
   bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
   size_t GetNumberEmptyGroups() const {return m_vEmptyGroups.size();}
 

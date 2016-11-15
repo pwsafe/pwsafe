@@ -1107,6 +1107,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
         bAlreadyExists = false;
       } else
         ti = si;
+
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
       app.GetMainDlg()->m_mapTreeItemToGroup[ti] = sxPath2Root;
     } while (!sxPath.empty());

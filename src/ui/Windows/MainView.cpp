@@ -1182,9 +1182,40 @@ void DboxMain::RefreshViews(const ViewType iView)
   }
 
   // Need to add any empty groups into the view
-  for (auto &emptyGrp : m_core.GetEmptyGroups()) {
+  // Note: "Expired" status is valid for "Entries" and not empty groups
+  // and so they will not be displayed
+  if (m_bUnsavedDisplayed && m_core.HaveEmptyGroupsChanged()) {
+    // We have some unsaved empty groups
+    // Only add empty groups not yet saved
     bool bAlreadyExists;
-    m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+    std::vector<StringX> vSavedEmptyGroups = m_core.GetSavedEmptyGroups();
+    for (auto emptyGrp : m_core.GetEmptyGroups())     {
+      auto it = std::find(vSavedEmptyGroups.begin(), vSavedEmptyGroups.end(), emptyGrp);
+      if (it == vSavedEmptyGroups.end()) {
+        m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+        m_bNumPassedFiltering++;
+      }
+    }
+  } else
+  if (m_bFilterActive && !m_bExpireDisplayed) {
+    // If filter active and included a test on the group value
+    // should an empty group be in the GUI
+    // Show all empty groups as passing a filter, which can only include
+    // the group value
+    bool bAlreadyExists;
+    for (auto &emptyGrp : m_core.GetEmptyGroups()) {
+      if (m_FilterManager.PassesEmptyGroupFiltering(emptyGrp)) {
+        m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+        m_bNumPassedFiltering++;
+      }
+    }
+  } else
+  if (!m_bExpireDisplayed) {
+    // Show all empty groups as no special filter
+    bool bAlreadyExists;
+    for (auto &emptyGrp : m_core.GetEmptyGroups()) {
+      m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+    }
   }
 
   m_ctlItemTree.SortTree(TVI_ROOT);

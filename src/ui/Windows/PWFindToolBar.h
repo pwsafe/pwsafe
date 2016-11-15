@@ -59,7 +59,8 @@ public:
                      CItemData::FieldBits &bsFields, CItemAtt::AttFieldBits &bsAttFields,
                      std::wstring &subgroup_name, 
                      bool &subgroup_bset, int &subgroup_object, int &subgroup_function)
-  {bAdvanced = m_bAdvanced;
+  {
+    bAdvanced = m_bAdvanced;
     bsFields = m_pst_SADV->bsFields; bsAttFields = m_pst_SADV->bsAttFields;
     subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
     subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
