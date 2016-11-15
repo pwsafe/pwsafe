@@ -1263,6 +1263,58 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
   return false;
 }
 
+bool PWSFilterManager::PassesEmptyGroupFiltering(const StringX &sxGroup)
+{
+  bool thistest_rc;
+
+  if (!m_currentfilter.IsActive())
+    return true;
+
+  for (auto groups_iter = m_vMflgroups.begin();
+       groups_iter != m_vMflgroups.end(); groups_iter++) {
+    const vfiltergroup &group = *groups_iter;
+
+    int tests(0);
+    bool thisgroup_rc = false;
+    for (auto iter = group.begin();
+         iter != group.end(); iter++) {
+      const int &num = *iter;
+      if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
+        continue;
+
+      const st_FilterRow &st_fldata = m_currentfilter.vMfldata.at(num);
+      thistest_rc = false;
+
+      const FieldType ft = m_currentfilter.vMfldata[num].ftype;
+      const int ifunction = (int)st_fldata.rule;
+
+      // We are only testing the group value and, as an empty group, it must be present
+      if (ft != FT_GROUP || ifunction == PWSMatch::MR_PRESENT || ifunction == PWSMatch::MR_NOTPRESENT) {
+        continue;
+      }
+
+      thistest_rc = PWSMatch::Match(st_fldata.fstring, sxGroup,
+                                    st_fldata.fcase ? -ifunction : ifunction);
+      tests++;   
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+
+    // This group of tests completed -
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
 bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
 {
   bool thistest_rc, bPresent;

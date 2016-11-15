@@ -196,7 +196,6 @@ struct st_FilterRow {
     return *this;
   }
 
-
   bool operator==(const st_FilterRow &that) const
   {
     if (this != &that) {
@@ -393,6 +392,7 @@ class PWSFilterManager {
   PWSFilterManager();
   void CreateGroups();
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
+  bool PassesEmptyGroupFiltering(const StringX &sxGroup);
 
   // predefined filters accessors, use by assigning to m_currentfilter
   const st_filters &GetExpireFilter() const {return m_expirefilter;}
@@ -401,14 +401,14 @@ class PWSFilterManager {
   st_filters m_currentfilter;
   
  private:
- bool PassesPWHFiltering(const CItemData *pci) const;
- bool PassesPWPFiltering(const CItemData *pci) const;
- bool PassesAttFiltering(const CItemData *pci, const PWScore &core) const;
+   bool PassesPWHFiltering(const CItemData *pci) const;
+   bool PassesPWPFiltering(const CItemData *pci) const;
+   bool PassesAttFiltering(const CItemData *pci, const PWScore &core) const;
 
- vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
+   vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
 
-  // predefined filters, set up at c'tor
- st_filters m_expirefilter, m_unsavedfilter;
+   // predefined filters, set up at c'tor
+   st_filters m_expirefilter, m_unsavedfilter;
 };
 
 #endif  /* __PWSFILTERS_H */

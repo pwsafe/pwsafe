@@ -23,6 +23,8 @@ reduce character truncation.
 a new entry (and not only when editing).
 [] Update password history when Appy is clicked, not only when Edit
 window's closed.
+[] All empty groups are no longer shown when the user filters for only entries 
+with expired passwords.
 [1378] Fix application crash if Add/Edit entry dialog open when the database is locked
 e.g. via idle timer, workstation lock etc.
 [1373] An invalid or non-existent backup directory path can no longer be saved
@@ -56,6 +58,10 @@ New Features for 3.41.0pre
 [] New AutoType field '\#' toggles the use of the older mechanism to
 send keyboard input to other applications e.g. browsers.
 [] Add more Help to the Add/Edit Basic and Additional tabs.
+[] Empty groups added but not yet saved are now included when the user filters
+on unsaved changes.
+[] Empty groups, whose names satisfy a filter that include tests on group name
+values, are now included in the display when the filter is active.
 [815] The database backup location now supports environmental variables e.g. 
 %homedrive% and %homepath%.  If used, the resulting path at that time is
 also shown.
