@@ -522,17 +522,13 @@ int AddEntryCommand::Execute()
 void AddEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    if (m_bNotifyGUI) {
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
-        m_ci.GetUUID());
-    }
+    DeleteEntryCommand delete_entry_cmd(m_pcomInt, m_ci, this);
+    delete_entry_cmd.Execute();
 
     if (m_ci.IsDependent()) {
       m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
         m_ci.GetEntryType());
     }
-
-    m_pcomInt->DoDeleteEntry(m_ci);
   }
 }
 
@@ -620,38 +616,47 @@ int DeleteEntryCommand::Execute()
 void DeleteEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    MultiCommands *pmulticmds = MultiCommands::Create(m_pcomInt);
+
     if (m_ci.IsDependent()) {
       // Check if dep entry hasn't already been added - can happen if
       // base and dep in group that's being undeleted.
       if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-        m_pcomInt->DoAddEntry(m_ci, &m_att);
+        pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
       }
     } else {
-      m_pcomInt->DoAddEntry(m_ci, &m_att);
+      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
+
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-          iter != m_dependents.end(); iter++) {
-          m_pcomInt->DoAddEntry(*iter, NULL);
+             iter != m_dependents.end(); iter++) {
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL));
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
         // again. Perhaps the easiest approach is to delete the existing entries
         // and create new aliases.
         for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-          iter != m_dependents.end(); iter++) {
+             iter != m_dependents.end(); iter++) {
           // Need to check that alias still exists - could have been deleted in group along with item
           // being undone, in which case it will be added separately
           if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
             continue;
 
           // out with the old...
-          m_pcomInt->DoDeleteEntry(*iter);
-
+          pmulticmds->Add(DeleteEntryCommand::Create(m_pcomInt, *iter, this));
           // in with the new!
-          m_pcomInt->DoAddEntry(*iter, NULL);
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this));
         }
       } // IsAliasBase
     } // !IsDependent
+
+    // Now do everything, if there is anything to do.
+    if (pmulticmds->GetSize() > 0)
+      pmulticmds->Execute();
+
+    // Since not needed for Undo/Redo again - delete it
+    delete pmulticmds;
   } // R/W & change to undo
 }
 
