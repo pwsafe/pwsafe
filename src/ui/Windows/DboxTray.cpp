@@ -400,29 +400,43 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYRUNCMD1) && (nID <= ID_MENUITEM_TRAYRUNCMDMAX));
 
-  CItemData ci;
+  CItemData ci, ci_base, *pbci(NULL);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
   if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
+    if (!SafeGetBaseEntry(ci, ci_base))
       return; // fail safely in release
+
+    pbci = &ci_base;
   }
 
-  StringX cs_URL = ci.GetURL();
-  StringX::size_type ipos;
-  ipos = cs_URL.find(L"[alt]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"[ssh]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"{alt}");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
+  std::wstring errmsg;
+  size_t st_column;
+  bool bURLSpecial;
 
-  SetClipboardData(cs_URL);
-  UpdateLastClipboardAction(CItemData::URL);
+  if (ci.IsAlias()) {
+    pbci = m_core.GetBaseEntry(&ci);
+  }
+
+  StringX sx_RunCommand = ci.GetRunCommand();
+  StringX sxData = PWSAuxParse::GetExpandedString(sx_RunCommand,
+                                                  GetCurFile(),
+                                                  &ci, pbci,
+                                                  m_bDoAutoType,
+                                                  m_sxAutoType,
+                                                  errmsg, st_column, bURLSpecial);
+
+  if (errmsg.length() > 0) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
+    CString cs_errmsg;
+    cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
+    gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
+  }
+
+  SetClipboardData(sxData);
+  UpdateLastClipboardAction(CItemData::RUNCMD);
   UpdateAccessTime(ci.GetUUID());
 }
 
