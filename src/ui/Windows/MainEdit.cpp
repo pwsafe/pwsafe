@@ -1886,7 +1886,6 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
         size_t st_column;
         bool bURLSpecial;
 
-        CItemData *pbci = NULL;
         if (pci->IsAlias()) {
           pbci = GetBaseEntry(pci);
         }
