@@ -93,19 +93,26 @@ void DboxMain::OnTrayClearRecentEntries()
 void DboxMain::OnTrayCopyUsername(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) &&
-    (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
+         (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
   CItemData ci;
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
     return;
 
+  StringX sx_user;
+#ifdef BR1124
+  // For ALL entries, including shortcut, username taken from entry
+#else
+  // For a shortcut everything is taken from its base entry
   if (ci.IsShortcut()) {
+    // If successful, SafeGetBaseEntry replaces ci with its base
     if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
+#endif
+  sx_user = ci.GetUser();
 
-  const StringX cs_username = ci.GetUser();
-  SetClipboardData(cs_username);
+  SetClipboardData(sx_user);
   UpdateLastClipboardAction(CItemData::USER);
   UpdateAccessTime(ci.GetUUID());
 }
@@ -174,35 +181,25 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+
+  // Get values needed
+  if (!m_core.GetValues(&ci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd)) {
+    return;
   }
 
-  StringX sxPassword, sxLastPassword;
-  if (ci.IsAlias()) {
-    CItemData *pbci = GetBaseEntry(&ci);
-    ASSERT(pbci != NULL);
-    sxPassword = pbci->GetPassword();
-    sxLastPassword = pbci->GetPreviousPassword();
-  } else {
-    sxPassword = ci.GetPassword();
-    sxLastPassword = ci.GetPreviousPassword();
-  }
-
-  if (!ci.IsURLEmpty()) {
+  if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
-                                  ci.GetGroup(), ci.GetTitle(), 
-                                  ci.GetUser(),
-                                  sxPassword, sxLastPassword,
-                                  ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
+    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(sx_autotype,
+                                  sx_group, sx_title, sx_user,
+                                  sx_pswd, sx_lastpswd,
+                                  sx_notes, sx_url, sx_email,
                                   vactionverboffsets);
 
-    LaunchBrowser(ci.GetURL().c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
+    LaunchBrowser(sx_url.c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-      SetClipboardData(ci.GetPassword());
+      SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
     }
   }
@@ -257,7 +254,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 void DboxMain::OnTrayCopyEmail(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYEMAIL1) &&
-    (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
+         (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
 
   CItemData ci;
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYEMAIL1, ci))
@@ -375,19 +372,21 @@ void DboxMain::OnTrayCopyURL(UINT nID)
       return; // fail safely in release
   }
 
-  StringX cs_URL = ci.GetURL();
-  StringX::size_type ipos;
-  ipos = cs_URL.find(L"[alt]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"[ssh]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"{alt}");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
+  StringX sx_URL = ci.GetURL();
+  if (!sx_URL.empty()) {
+    StringX::size_type ipos;
+    ipos = sx_URL.find(L"[alt]");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
+    ipos = sx_URL.find(L"[ssh]");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
+    ipos = sx_URL.find(L"{alt}");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
+  }
 
-  SetClipboardData(cs_URL);
+  SetClipboardData(sx_URL);
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(ci.GetUUID());
 }

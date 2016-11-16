@@ -86,7 +86,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
 {
   std::vector<st_RunCommandTokens> v_rctokens;
   std::vector<st_RunCommandTokens>::iterator rc_iter;
-  StringX sxretval(_T("")), sxurl;
+  StringX sxretval(_T(""));
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
   bURLSpecial = false;
@@ -105,6 +105,67 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   spath = sxCurrentDB.c_str();
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
+
+  // No access to core, so include code here that is in PWScore::GetValues
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  const CItemData::EntryType et = pci->GetEntryType();
+
+  switch (et) {
+  case CItemData::ET_NORMAL:
+  case CItemData::ET_ALIASBASE:
+  case CItemData::ET_SHORTCUTBASE:
+    // Everything from entry
+    sx_group = pci->GetGroup();
+    sx_title = pci->GetTitle();
+    sx_user = pci->GetUser();
+
+    sx_pswd = pci->GetPassword();
+    sx_lastpswd = pci->GetPreviousPassword();
+
+    sx_notes = pci->GetNotes();
+    sx_url = pci->GetURL();
+    sx_email = pci->GetEmail();
+    sx_autotype = pci->GetAutoType();
+    sx_runcmd = pci->GetRunCommand();
+    break;
+  case CItemData::ET_ALIAS:
+    // Only current and last password are taken from its base entry
+    // Everything else is from the actual entry
+    sx_group = pci->GetGroup();
+    sx_title = pci->GetTitle();
+    sx_user = pci->GetUser();
+
+    sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
+
+    sx_notes = pci->GetNotes();
+    sx_url = pci->GetURL();
+    sx_email = pci->GetEmail();
+    sx_autotype = pci->GetAutoType();
+    sx_runcmd = pci->GetRunCommand();
+    break;
+  case CItemData::ET_SHORTCUT:
+#ifdef BR1124
+    // For a shortcut username taken from entry, everything else is from its base
+    sx_user = pci->GetUser();
+#else
+    // For a shortcut everything is taken from its base entry
+    sx_user = pbci->GetUser();
+#endif
+    sx_group = pbci->GetGroup();
+    sx_title = pbci->GetTitle();
+    sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
+
+    sx_notes = pbci->GetNotes();
+    sx_url = pbci->GetURL();
+    sx_email = pbci->GetEmail();
+    sx_autotype = pbci->GetAutoType();
+    sx_runcmd = pbci->GetRunCommand();
+    break;
+  default:
+    ASSERT(0);
+  }
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
@@ -130,10 +191,10 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sextn.c_str();
     } else
     if (st_rctoken.sxname == _T("g") || st_rctoken.sxname == _T("group")) {
-      sxretval += pci->GetGroup();
+      sxretval += sx_group;
     } else
     if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
-      StringX sxg = pci->GetGroup();
+      StringX sxg = sx_group;
       StringX::size_type st_index;
       st_index = sxg.rfind(_T("."));
       if (st_index != StringX::npos) {
@@ -142,27 +203,22 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sxg;
     } else
     if (st_rctoken.sxname == _T("t") || st_rctoken.sxname == _T("title")) {
-      sxretval += pci->GetTitle();
+      sxretval += sx_title;
     } else
     if (st_rctoken.sxname == _T("u") || st_rctoken.sxname == _T("user")) {
-      sxretval += pci->GetUser();
+      sxretval += sx_user;
     } else
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
-      if (pci->IsAlias()) {
-        ASSERT(pbci != NULL);
-        sxretval += pbci->GetPassword();
-      } else {
-        sxretval += pci->GetPassword();
-      }
+      sxretval += sx_pswd;
     } else
       if (st_rctoken.sxname == _T("e") || st_rctoken.sxname == _T("email")) {
-      sxretval += pci->GetEmail();
+      sxretval += sx_email;
     } else
     if (st_rctoken.sxname == _T("a") || st_rctoken.sxname == _T("autotype")) {
       // Do nothing - autotype variable handled elsewhere
     } else
     if (st_rctoken.sxname == _T("url")) {
-      sxurl = pci->GetURL();
+      StringX sxurl = sx_url;
       if (sxurl.length() > 0) {
         // Remove 'Browse to' specifics
         StringX::size_type ipos;
@@ -193,8 +249,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       }
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
-      StringX sx_notes = pci->GetNotes();
-
       if (st_rctoken.index == 0) {
         sxretval += sx_notes;
       } else {
@@ -549,60 +603,32 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        std::vector<size_t> &vactionverboffsets)
 {
   // Set up all the data (a shortcut entry will change some of them!)
-  StringX sxgroup = ci.GetGroup();
-  StringX sxtitle = ci.GetTitle();
-  StringX sxuser = ci.GetUser();
-  StringX sxpwd = ci.GetPassword();
-  StringX sxlastpwd = ci.GetPreviousPassword();
-  StringX sxnotes = ci.GetNotes();
-  StringX sxurl = ci.GetURL();
-  StringX sxemail = ci.GetEmail();
-  StringX sxautotype = ci.GetAutoType();
+  // NOTE: ci MUST be the actual entry. This function will get the base
+  // entry if necessary
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  if (ci.IsAlias()) {
-    const CItemData *pbci = core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxpwd = pbci->GetPassword();
-      sxlastpwd = pbci->GetPreviousPassword();
-    } else { // Problem - alias entry without a base!
-      ASSERT(0);
-    }
-  } // ci.IsAlias()
-  else if (ci.IsShortcut()) {
-    const CItemData *pbci = core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      // Use shortcut's group, title and username [BR1124],
-      // pick up the rest from base
-      sxpwd = pbci->GetPassword();
-      sxlastpwd = pbci->GetPreviousPassword();
-      sxnotes = pbci->GetNotes();
-      sxurl = pbci->GetURL();
-      sxemail = pbci->GetEmail();
-      sxautotype = pbci->GetAutoType();
-    } else { // Problem - shortcut entry without a base!
-      ASSERT(0);
-    }
-  } // ci.IsShortcut()
+  // Get values needed
+  core.GetValues(&ci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
 
   // If empty, try the database default
-  if (sxautotype.empty()) {
-    sxautotype = PWSprefs::GetInstance()->
+  if (sx_autotype.empty()) {
+    sx_autotype = PWSprefs::GetInstance()->
               GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
-    if (sxautotype.empty()) {
+    if (sx_autotype.empty()) {
       // checking for user and password for default settings
-      if (!sxpwd.empty()){
-        if (!sxuser.empty())
-          sxautotype = DEFAULT_AUTOTYPE;
+      if (!sx_pswd.empty()){
+        if (!sx_user.empty())
+          sx_autotype = DEFAULT_AUTOTYPE;
         else
-          sxautotype = _T("\\p\\n");
+          sx_autotype = _T("\\p\\n");
       }
     }
   }
-  return PWSAuxParse::GetAutoTypeString(sxautotype, sxgroup,
-                                        sxtitle, sxuser, sxpwd, sxlastpwd,
-                                        sxnotes, sxurl, sxemail,
+  return PWSAuxParse::GetAutoTypeString(sx_autotype, sx_group,
+                                        sx_title, sx_user, sx_pswd, sx_lastpswd,
+                                        sx_notes, sx_url, sx_email,
                                         vactionverboffsets);
 }
 

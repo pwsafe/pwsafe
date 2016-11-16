@@ -1513,31 +1513,47 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
   CItemData *pci = getSelectedItem();
   if (pci != NULL) {
     PWSprefs *prefs = PWSprefs::GetInstance();
-    StringX sx_pswd;
+    StringX sx_pswd, sx_email, sx_url;
+
     if (pci->IsDependent()) {
       // Password always from base
       CItemData *pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
+      if (pbci == NULL)
+        return;
+
       sx_pswd = pbci->GetPassword();
-      if (pci->IsShortcut())
-        pci = pbci;
-    } else
+
+      if (pci->IsAlias()) {
+        // Alias - everyting but passwords from entry
+        sx_email = pci->GetEmail();
+        sx_url = pci->GetURL();
+      } else {
+        // Shortcut - everything from base
+        sx_email = pbci->GetEmail();
+        sx_url = pbci->GetURL();
+      }
+    } else {
+      // Normal or base entry
       sx_pswd = pci->GetPassword();
+      sx_email = pci->GetEmail();
+      sx_url = pci->GetURL();
+    }
 
     CString cs_command;
-    if (bSendEmail && !pci->IsEmailEmpty()) {
+    if (bSendEmail && !sx_email.empty()) {
       cs_command = L"mailto:";
-      cs_command += pci->GetEmail().c_str();
+      cs_command += sx_email.c_str();
     } else {
-      cs_command = pci->GetURL().c_str();
+      cs_command = sx_url.c_str();
     }
 
     if (!cs_command.IsEmpty()) {
       const pws_os::CUUID uuid = pci->GetUUID();
       std::vector<size_t> vactionverboffsets;
-      StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
-                                                          vactionverboffsets);
-      LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
+      StringX sx_autotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
+                                                           vactionverboffsets);
+      LaunchBrowser(cs_command, sx_autotype, vactionverboffsets, bDoAutotype);
 
       if (prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
         SetClipboardData(sx_pswd);
