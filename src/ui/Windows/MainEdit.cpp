@@ -115,7 +115,6 @@ void DboxMain::OnAdd()
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    bool bSetDefaultUser(false);
     CSecString &sxUsername = pAddEntryPSH->GetUsername();
 
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
@@ -130,8 +129,6 @@ void DboxMain::OnAdd()
       INT_PTR rc2 = defDlg.DoModal();
 
       if (rc2 == IDOK) {
-        bSetDefaultUser = true;
-
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
 
@@ -141,11 +138,6 @@ void DboxMain::OnAdd()
 
         // Set new DB preferences String value (from Copy)
         StringX sxNewDBPrefsString(prefs->Store(true));
-
-        Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                                  UpdateGUICommand::WN_UNDO,
-                                                  UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-        pmulticmds->Add(pcmd_undo);
 
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
@@ -173,13 +165,6 @@ void DboxMain::OnAdd()
 
     pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, baseUUID,
                                             pAddEntryPSH->GetAtt()));
-
-    if (bSetDefaultUser) {
-      Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-      pmulticmds->Add(pcmd3);
-    }
 
     // Do it
     Execute(pmulticmds);
@@ -242,7 +227,9 @@ void DboxMain::OnCreateShortcut()
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
+
       INT_PTR rc2 = defDlg.DoModal();
+
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
@@ -292,11 +279,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
   if (!sxNewDBPrefsString.empty()) {
-    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-    pmulticmds->Add(pcmd_undo);
-
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
     pmulticmds->Add(pcmd);
   }
@@ -309,13 +291,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
 
   Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
   pmulticmds->Add(pcmd);
-
-  if (!sxNewDBPrefsString.empty()) {
-   Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-    pmulticmds->Add(pcmd3);
-  }
 
   // Do it
   Execute(pmulticmds);

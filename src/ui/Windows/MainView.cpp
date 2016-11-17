@@ -1701,9 +1701,6 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
   }
 
   int nImage = GetEntryImage(ci);
-  StringX group = ci.GetGroup();
-  StringX title = ci.GetTitle();
-  StringX username = ci.GetUser();
   StringX sx_fielddata(L"");
 
   if (iView & LISTONLY) {
