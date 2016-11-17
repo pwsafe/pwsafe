@@ -522,13 +522,14 @@ int AddEntryCommand::Execute()
 void AddEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    DeleteEntryCommand delete_entry_cmd(m_pcomInt, m_ci, this);
-    delete_entry_cmd.Execute();
-
+    // Do actions in reverse order to Execute
     if (m_ci.IsDependent()) {
       m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
         m_ci.GetEntryType());
     }
+
+    DeleteEntryCommand delete_entry_cmd(m_pcomInt, m_ci, this);
+    delete_entry_cmd.Execute();
   }
 }
 

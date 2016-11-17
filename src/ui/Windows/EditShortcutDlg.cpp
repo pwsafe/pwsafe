@@ -84,6 +84,15 @@ BOOL CEditShortcutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+
+  // Change font size of the group, title & username fields and the base entry name
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  GetDlgItem(IDC_MYBASE)->SetFont(pFont);
+
   CString cs_text;
   CSecString cs_target(L"\xab");
   // Leave \xab \xbb between group/title/user even if group or user is empty

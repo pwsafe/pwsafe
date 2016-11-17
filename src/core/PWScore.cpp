@@ -3148,6 +3148,82 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return NULL;
 }
 
+bool PWScore::GetValues(const CItemData *pci, StringX &sx_group, StringX &sx_title, StringX &sx_user,
+                        StringX &sx_pswd, StringX &sx_lastpswd,
+                        StringX &sx_notes, StringX &sx_url, StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd) const
+{
+  // The one place to get the values needed for AutoType & RunCmd based on entry type
+  const CItemData *pbci(NULL);
+
+  const CItemData::EntryType et = pci->GetEntryType();
+
+  if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT) {
+    pbci = GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+   if (pbci == NULL)
+     return false;
+  }
+
+  switch (et) {
+  case CItemData::ET_NORMAL:
+  case CItemData::ET_ALIASBASE:
+  case CItemData::ET_SHORTCUTBASE:
+    // Everything from entry
+    sx_group = pci->GetGroup();
+    sx_title = pci->GetTitle();
+    sx_user = pci->GetUser();
+
+    sx_pswd = pci->GetPassword();
+    sx_lastpswd = pci->GetPreviousPassword();
+
+    sx_notes = pci->GetNotes();
+    sx_url = pci->GetURL();
+    sx_email = pci->GetEmail();
+    sx_autotype = pci->GetAutoType();
+    sx_runcmd = pci->GetRunCommand();
+    break;
+  case CItemData::ET_ALIAS:
+    // Only current and last password are taken from its base entry
+    // Everything else is from the actual entry
+    sx_group = pci->GetGroup();
+    sx_title = pci->GetTitle();
+    sx_user = pci->GetUser();
+
+    sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
+
+    sx_notes = pci->GetNotes();
+    sx_url = pci->GetURL();
+    sx_email = pci->GetEmail();
+    sx_autotype = pci->GetAutoType();
+    sx_runcmd = pci->GetRunCommand();
+    break;
+  case CItemData::ET_SHORTCUT:
+#ifdef BR1124
+    // For a shortcut username taken from entry, everything else is from its base
+    sx_user = pci->GetUser();
+#else
+    // For a shortcut everything is taken from its base entry
+    sx_user = pbci->GetUser();
+#endif
+    sx_group = pbci->GetGroup();
+    sx_title = pbci->GetTitle();
+    sx_pswd = pbci->GetPassword();
+    sx_lastpswd = pbci->GetPreviousPassword();
+
+    sx_notes = pbci->GetNotes();
+    sx_url = pbci->GetURL();
+    sx_email = pbci->GetEmail();
+    sx_autotype = pbci->GetAutoType();
+    sx_runcmd = pbci->GetRunCommand();
+    break;
+  default:
+    ASSERT(0);
+  }
+  
+  return true;
+}
+
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
                              std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
 {

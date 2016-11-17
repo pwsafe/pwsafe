@@ -115,7 +115,6 @@ void DboxMain::OnAdd()
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    bool bSetDefaultUser(false);
     CSecString &sxUsername = pAddEntryPSH->GetUsername();
 
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
@@ -130,8 +129,6 @@ void DboxMain::OnAdd()
       INT_PTR rc2 = defDlg.DoModal();
 
       if (rc2 == IDOK) {
-        bSetDefaultUser = true;
-
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
 
@@ -141,11 +138,6 @@ void DboxMain::OnAdd()
 
         // Set new DB preferences String value (from Copy)
         StringX sxNewDBPrefsString(prefs->Store(true));
-
-        Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                                  UpdateGUICommand::WN_UNDO,
-                                                  UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-        pmulticmds->Add(pcmd_undo);
 
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
@@ -173,13 +165,6 @@ void DboxMain::OnAdd()
 
     pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, baseUUID,
                                             pAddEntryPSH->GetAtt()));
-
-    if (bSetDefaultUser) {
-      Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-      pmulticmds->Add(pcmd3);
-    }
 
     // Do it
     Execute(pmulticmds);
@@ -242,7 +227,9 @@ void DboxMain::OnCreateShortcut()
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
+
       INT_PTR rc2 = defDlg.DoModal();
+
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
@@ -292,11 +279,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
   if (!sxNewDBPrefsString.empty()) {
-    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-    pmulticmds->Add(pcmd_undo);
-
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
     pmulticmds->Add(pcmd);
   }
@@ -309,13 +291,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
 
   Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
   pmulticmds->Add(pcmd);
-
-  if (!sxNewDBPrefsString.empty()) {
-   Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
-    pmulticmds->Add(pcmd3);
-  }
 
   // Do it
   Execute(pmulticmds);
@@ -1806,11 +1781,31 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
+  CItemData *pbci(NULL);
   const pws_os::CUUID uuid = pci->GetUUID();
 
-  if ((pci->IsShortcut() && ft != CItemData::USER) ||
-      (pci->IsAlias() && ft == CItemData::PASSWORD)) {
-    CItemData *pbci = GetBaseEntry(pci);
+  if (pci->IsShortcut()) {
+    pbci = GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+
+    if (ft == CItemData::USER) {
+#ifdef BR1124
+      // For shortcut username is taken from entry
+      // No need to change pci
+#else
+      // For a shortcut everything is taken from its base entry
+      pci = pbci;
+#endif
+    } else {
+      pci = pbci;
+    }
+  }
+
+  if (pci->IsAlias() && ft == CItemData::PASSWORD) {
+    // Only current and last password are taken from its base entry
+    // Everything else is from the actual entry
+    // Last password not implemented for copy to clipboard
+    pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     pci = pbci;
   }
@@ -1866,7 +1861,6 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
         size_t st_column;
         bool bURLSpecial;
 
-        CItemData *pbci = NULL;
         if (pci->IsAlias()) {
           pbci = GetBaseEntry(pci);
         }
@@ -2137,35 +2131,29 @@ void DboxMain::OnRunCommand()
 
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
+  if (pci == NULL)
+    return;
 
   CItemData *pbci = NULL;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  const pws_os::CUUID uuid = pci->GetUUID();
-  StringX sx_pswd, sx_lastpswd;
+  // Get values needed
+  if (!m_core.GetValues(pci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+    return;
 
   if (pci->IsDependent()) {
+    // No need to ASSERT or return quickly as already verified in PWScore::GetValues
     pbci = GetBaseEntry(pci);
-    ASSERT(pbci != NULL);
-    sx_pswd = pbci->GetPassword();
-    sx_lastpswd = pbci->GetPreviousPassword();
-    if (pci->IsShortcut()) {
-      pci = pbci;
-      pbci = NULL;
-    }
-  } else {
-    sx_pswd = pci->GetPassword();
-    sx_lastpswd = pci->GetPreviousPassword();
   }
 
-  StringX sx_RunCommand, sx_Expanded_ES;
-  sx_RunCommand = pci->GetRunCommand();
-  if (sx_RunCommand.empty())
+  StringX sx_Expanded_ES;
+  if (sx_runcmd.empty())
     return;
 
   std::wstring errmsg;
   StringX::size_type st_column;
   bool bURLSpecial;
-  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand,
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
                        m_core.GetCurFile(), pci, pbci,
                        m_bDoAutoType, m_sxAutoType,
                        errmsg, st_column, bURLSpecial);
@@ -2179,17 +2167,18 @@ void DboxMain::OnRunCommand()
     return;
   }
 
+  pws_os::CUUID uuid = pci->GetUUID();
+
   // if no autotype value in run command's $a(value), start with item's (bug #1078)
   if (m_sxAutoType.empty())
     m_sxAutoType = pci->GetAutoType();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
-                                 pci->GetTitle(), pci->GetUser(),
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+                                 sx_group, sx_title, sx_user,
                                  sx_pswd, sx_lastpswd,
-                                 pci->GetNotes(),
-                                 pci->GetURL(), pci->GetEmail(),
+                                 sx_notes, sx_url, sx_email,
                                  m_vactionverboffsets);
-  SetClipboardData(pci->GetPassword());
+  SetClipboardData(sx_pswd);
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
 
