@@ -151,6 +151,9 @@ public:
 
   StringX GetFieldValue(FieldType ft) const;
 
+  // Following encapsulates difference between Alias and Shortcut w.r.t. field 'ownership':
+  StringX GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) const;
+
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
   StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,

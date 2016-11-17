@@ -1515,31 +1515,17 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     PWSprefs *prefs = PWSprefs::GetInstance();
     StringX sx_pswd, sx_email, sx_url;
 
+    const CItemData *pbci(NULL);
     if (pci->IsDependent()) {
-      // Password always from base
-      CItemData *pbci = GetBaseEntry(pci);
+      pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
       if (pbci == NULL)
         return;
-
-      sx_pswd = pbci->GetPassword();
-
-      if (pci->IsAlias()) {
-        // Alias - everyting but passwords from entry
-        sx_email = pci->GetEmail();
-        sx_url = pci->GetURL();
-      } else {
-        // Shortcut - everything from base
-        sx_email = pbci->GetEmail();
-        sx_url = pbci->GetURL();
-      }
-    } else {
-      // Normal or base entry
-      sx_pswd = pci->GetPassword();
-      sx_email = pci->GetEmail();
-      sx_url = pci->GetURL();
     }
-
+    sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
+    sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
+    sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
+    
     CString cs_command;
     if (bSendEmail && !sx_email.empty()) {
       cs_command = L"mailto:";

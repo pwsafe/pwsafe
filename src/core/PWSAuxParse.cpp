@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "PWSAuxParse.h"
+#include "PWHistory.h"
 #include "PWSprefs.h"
 #include "core.h"
 #include "ItemData.h"
@@ -106,66 +107,19 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
 
-  // No access to core, so include code here that is in PWScore::GetValues
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
-  const CItemData::EntryType et = pci->GetEntryType();
 
-  switch (et) {
-  case CItemData::ET_NORMAL:
-  case CItemData::ET_ALIASBASE:
-  case CItemData::ET_SHORTCUTBASE:
-    // Everything from entry
-    sx_group = pci->GetGroup();
-    sx_title = pci->GetTitle();
-    sx_user = pci->GetUser();
-
-    sx_pswd = pci->GetPassword();
-    sx_lastpswd = pci->GetPreviousPassword();
-
-    sx_notes = pci->GetNotes();
-    sx_url = pci->GetURL();
-    sx_email = pci->GetEmail();
-    sx_autotype = pci->GetAutoType();
-    sx_runcmd = pci->GetRunCommand();
-    break;
-  case CItemData::ET_ALIAS:
-    // Only current and last password are taken from its base entry
-    // Everything else is from the actual entry
-    sx_group = pci->GetGroup();
-    sx_title = pci->GetTitle();
-    sx_user = pci->GetUser();
-
-    sx_pswd = pbci->GetPassword();
-    sx_lastpswd = pbci->GetPreviousPassword();
-
-    sx_notes = pci->GetNotes();
-    sx_url = pci->GetURL();
-    sx_email = pci->GetEmail();
-    sx_autotype = pci->GetAutoType();
-    sx_runcmd = pci->GetRunCommand();
-    break;
-  case CItemData::ET_SHORTCUT:
-#ifdef BR1124
-    // For a shortcut username taken from entry, everything else is from its base
-    sx_user = pci->GetUser();
-#else
-    // For a shortcut everything is taken from its base entry
-    sx_user = pbci->GetUser();
-#endif
-    sx_group = pbci->GetGroup();
-    sx_title = pbci->GetTitle();
-    sx_pswd = pbci->GetPassword();
-    sx_lastpswd = pbci->GetPreviousPassword();
-
-    sx_notes = pbci->GetNotes();
-    sx_url = pbci->GetURL();
-    sx_email = pbci->GetEmail();
-    sx_autotype = pbci->GetAutoType();
-    sx_runcmd = pbci->GetRunCommand();
-    break;
-  default:
-    ASSERT(0);
-  }
+  // GetEffectiveFieldValue() encapsulates what we take from where depending in the entry type (alias, shortcut, etc.)
+  sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
+  sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
+  sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
+  sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
+  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
+  sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
+  sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
+  sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
+  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;

@@ -1771,8 +1771,8 @@ void DboxMain::OnCopyRunCommand()
 
 void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial)
 {
-  // Boolean 'bSpecial' flag is CItemData::FieldType 'ft' dependent
-  // For example:
+  // bSpecial's meaning depends on ft:
+  //
   //   For "CItemData::PASSWORD": "bSpecial" == true means "Minimize after copy"
   //   For "CItemData::RUNCMD":   "bSpecial" == true means "Do NOT expand the Run command"
   if (SelItemOk() != TRUE)
@@ -1784,33 +1784,12 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
   CItemData *pbci(NULL);
   const pws_os::CUUID uuid = pci->GetUUID();
 
-  if (pci->IsShortcut()) {
+  if (pci->IsDependent()) {
     pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
-
-    if (ft == CItemData::USER) {
-#ifdef BR1124
-      // For shortcut username is taken from entry
-      // No need to change pci
-#else
-      // For a shortcut everything is taken from its base entry
-      pci = pbci;
-#endif
-    } else {
-      pci = pbci;
-    }
   }
 
-  if (pci->IsAlias() && ft == CItemData::PASSWORD) {
-    // Only current and last password are taken from its base entry
-    // Everything else is from the actual entry
-    // Last password not implemented for copy to clipboard
-    pbci = GetBaseEntry(pci);
-    ASSERT(pbci != NULL);
-    pci = pbci;
-  }
-
-  StringX sxData;
+  StringX sxData = pci->GetEffectiveFieldValue(ft, pbci);
 
   switch (ft) {
     case CItemData::PASSWORD:
@@ -1820,22 +1799,18 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       if (clearDlg.m_dontaskquestion == FALSE &&
           clearDlg.DoModal() == IDCANCEL)
         return;
-      sxData = pci->GetPassword();
       if (bSpecial) {
         ShowWindow(SW_MINIMIZE);
       }
       break;
     }
     case CItemData::USER:
-      sxData = pci->GetUser();
       break;
     case CItemData::NOTES:
-      sxData = pci->GetNotes();
       break;
     case CItemData::URL:
     {
       StringX::size_type ipos;
-      sxData = pci->GetURL();
       ipos = sxData.find(L"[alt]");
       if (ipos != StringX::npos)
         sxData.replace(ipos, 5, L"");
@@ -1854,16 +1829,11 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       break;
     }
     case CItemData::RUNCMD:
-      sxData = pci->GetRunCommand();
       if (!bSpecial) {
         // Expand Run Command
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
-
-        if (pci->IsAlias()) {
-          pbci = GetBaseEntry(pci);
-        }
 
         sxData = PWSAuxParse::GetExpandedString(sxData,
                                                  m_core.GetCurFile(),
@@ -1871,7 +1841,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
                                                  m_bDoAutoType,
                                                  m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
-        if (errmsg.length() > 0) {
+        if (!errmsg.empty()) {
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
           CString cs_errmsg;
@@ -1881,7 +1851,6 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       }
       break;
     case CItemData::EMAIL:
-      sxData = pci->GetEmail();
       break;
     default:
       ASSERT(0);

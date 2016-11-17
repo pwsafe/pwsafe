@@ -483,6 +483,36 @@ StringX CItemData::GetFieldValue(FieldType ft) const
   }
 }
 
+StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) const
+{
+  if (IsNormal() || IsBase())
+    return GetField(ft);
+
+  // Here if we're a dependent;
+  ASSERT(IsDependent());
+  ASSERT(pbci != NULL);
+
+  if (IsAlias()) {
+    // Only current and password history are taken from base entry
+    // Everything else is from the actual entry
+    if (ft == PASSWORD || ft == PWHIST)
+      return pbci->GetField(ft);
+    else
+      return GetField(ft);
+  } else if (IsShortcut()) {
+    // For a shortcut everything is taken from its base entry,
+    // except the group, title and user.
+    if (ft == GROUP || ft == TITLE || ft == USER)
+      return GetField(ft);
+    else
+      return pbci->GetField(ft);
+  } else {
+    ASSERT(0);
+    return _T("");
+  }
+}
+
+
 static void CleanNotes(StringX &s, TCHAR delimiter)
 {
   if (delimiter != 0) {
@@ -718,27 +748,7 @@ StringX CItemData::GetPWHistory() const
 
 StringX CItemData::GetPreviousPassword() const
 {
-  StringX sxPWH = GetField(PWHIST);
-  if (sxPWH == _T("0") || sxPWH == _T("00000")) {
-    return _T("");
-  } else {
-    // Get all history entries
-    size_t num_err, MaxPWHistory;
-    PWHistList pwhistlist;
-    CreatePWHistoryList(sxPWH, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
-
-    // If none yet saved, then don't return anything
-    if (pwhistlist.empty())
-      return _T("");
-
-    // Sort into date order and return last saved
-    std::sort(pwhistlist.begin(), pwhistlist.end(),
-              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
-              {
-                return pwhe1.changetttdate > pwhe2.changetttdate;
-              });
-    return pwhistlist[0].password;
-  }
+  return ::GetPreviousPassword(GetField(PWHIST));
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,

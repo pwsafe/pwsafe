@@ -100,16 +100,12 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     return;
 
   StringX sx_user;
-#ifdef BR1124
-  // For ALL entries, including shortcut, username taken from entry
-#else
   // For a shortcut everything is taken from its base entry
   if (ci.IsShortcut()) {
     // If successful, SafeGetBaseEntry replaces ci with its base
     if (!SafeGetBaseEntry(ci, ci))
       return; // fail safely in release
   }
-#endif
   sx_user = ci.GetUser();
 
   SetClipboardData(sx_user);

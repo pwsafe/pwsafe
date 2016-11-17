@@ -135,6 +135,30 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   return bStatus;
 }
 
+StringX GetPreviousPassword(const StringX &pwh_str)
+{
+  if (pwh_str == _T("0") || pwh_str == _T("00000")) {
+    return _T("");
+  } else {
+    // Get all history entries
+    size_t num_err, MaxPWHistory;
+    PWHistList pwhistlist;
+    CreatePWHistoryList(pwh_str, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+
+    // If none yet saved, then don't return anything
+    if (pwhistlist.empty())
+      return _T("");
+
+    // Sort in date order and return last saved
+    std::sort(pwhistlist.begin(), pwhistlist.end(),
+              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
+              {
+                return pwhe1.changetttdate > pwhe2.changetttdate;
+              });
+    return pwhistlist[0].password;
+  }
+}
+
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
 {
   const size_t MAX_PWHISTORY = 255;
