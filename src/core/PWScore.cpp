@@ -3149,10 +3149,13 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return NULL;
 }
 
-bool PWScore::GetValues(const CItemData *pci, const CItemData *pbci, StringX &sx_group, StringX &sx_title, StringX &sx_user,
+bool PWScore::GetValues(const CItemData *pci, const CItemData *&pbci,
+                        StringX &sx_group, StringX &sx_title, StringX &sx_user,
                         StringX &sx_pswd, StringX &sx_lastpswd,
                         StringX &sx_notes, StringX &sx_url, StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd) const
 {
+  // ALL parameters are output except the first (pci).
+
   // The one place to get the values needed for AutoType & RunCmd based on entry type
   // Since we need the base entry if a dependent, save caller going to find it again
   pbci = NULL;

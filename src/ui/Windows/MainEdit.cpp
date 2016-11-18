@@ -2103,7 +2103,7 @@ void DboxMain::OnRunCommand()
   if (pci == NULL)
     return;
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
   // Get all the data (a shortcut entry will change some of them!)

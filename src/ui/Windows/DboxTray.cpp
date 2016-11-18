@@ -177,7 +177,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
   // Get all the data (a shortcut entry will change some of them!)
@@ -404,7 +404,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
   // Get all the data (a shortcut entry will change some of them!)
