@@ -387,8 +387,13 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
     // Ensure directory ends in a '/'
     for (StringX::size_type id = 0; id < vpaths.size(); id++) {
       sx_dirs = vpaths[id];
+      if (sx_dirs.empty()) {
+        // Prevent out of bounds if string is empty
+        sx_dirs += _T("\\");
+      } else
       if (sx_dirs[sx_dirs.length() - 1] != _T('\\'))
         sx_dirs += _T("\\");
+
       if (bsearch_extns) {
         for (StringX::size_type ie = 0; ie < vextns.size(); ie++) {
           sx_extns = vextns[ie];
