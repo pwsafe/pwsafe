@@ -2103,17 +2103,16 @@ void DboxMain::OnRunCommand()
   if (pci == NULL)
     return;
 
-  CItemData *pbci = NULL;
+  CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get values needed
-  if (!m_core.GetValues(pci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+  // Get all the data (a shortcut entry will change some of them!)
+  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
+  // entry if required.
+  if (!m_core.GetValues(pci, pbci, sx_group, sx_title, sx_user,
+                                   sx_pswd, sx_lastpswd,
+                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
     return;
-
-  if (pci->IsDependent()) {
-    // No need to ASSERT or return quickly as already verified in PWScore::GetValues
-    pbci = GetBaseEntry(pci);
-  }
 
   StringX sx_Expanded_ES;
   if (sx_runcmd.empty())
@@ -2123,9 +2122,9 @@ void DboxMain::OnRunCommand()
   StringX::size_type st_column;
   bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
-                       m_core.GetCurFile(), pci, pbci,
-                       m_bDoAutoType, m_sxAutoType,
-                       errmsg, st_column, bURLSpecial);
+                                                   m_core.GetCurFile(), pci, pbci,
+                                                   m_bDoAutoType, m_sxAutoType,
+                                                   errmsg, st_column, bURLSpecial);
 
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
@@ -2143,10 +2142,10 @@ void DboxMain::OnRunCommand()
     m_sxAutoType = pci->GetAutoType();
 
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
-                                 sx_group, sx_title, sx_user,
-                                 sx_pswd, sx_lastpswd,
-                                 sx_notes, sx_url, sx_email,
-                                 m_vactionverboffsets);
+                                                sx_group, sx_title, sx_user,
+                                                sx_pswd, sx_lastpswd,
+                                                sx_notes, sx_url, sx_email,
+                                                m_vactionverboffsets);
   SetClipboardData(sx_pswd);
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
