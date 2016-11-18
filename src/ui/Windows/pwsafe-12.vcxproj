@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugM|Win32">
@@ -802,7 +802,6 @@
     <ClCompile Include="AddEdit_PropertyPage.cpp" />
     <ClCompile Include="AddEdit_PropertySheet.cpp" />
     <ClCompile Include="AdvancedDlg.cpp" />
-    <ClCompile Include="ChangeAliasPswd.cpp" />
     <ClCompile Include="ClearQuestionDlg.cpp" />
     <ClCompile Include="ColumnChooserDlg.cpp" />
     <ClCompile Include="ColumnChooserLC.cpp" />
