@@ -337,7 +337,8 @@ public:
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
 
   // Used whenever entry values are needed for copy, autotype or run command
-  bool GetValues(const CItemData *pci, StringX &sx_group, StringX &sx_title, StringX &sx_user,
+  bool GetValues(const CItemData *pci, const CItemData *&pbci,
+                 StringX &sx_group, StringX &sx_title, StringX &sx_user,
                  StringX &sx_pswd, StringX &sx_lastpswd,
                  StringX &sx_notes, StringX &sx_url, StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd) const;
 

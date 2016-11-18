@@ -556,13 +556,15 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  // Set up all the data (a shortcut entry will change some of them!)
-  // NOTE: ci MUST be the actual entry. This function will get the base
-  // entry if necessary
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get values needed
-  core.GetValues(&ci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
+  // Get all the data (a shortcut entry will change some of them!)
+  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
+  // entry if required.
+  core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
+                            sx_pswd, sx_lastpswd,
+                            sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
 
   // If empty, try the database default
   if (sx_autotype.empty()) {

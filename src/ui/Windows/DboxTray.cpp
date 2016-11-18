@@ -177,10 +177,15 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get values needed
-  if (!m_core.GetValues(&ci, sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd)) {
+  // Get all the data (a shortcut entry will change some of them!)
+  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
+  // entry if required.
+  if (!m_core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                   sx_pswd, sx_lastpswd,
+                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd)) {
     return;
   }
 
@@ -395,43 +400,83 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYRUNCMD1) && (nID <= ID_MENUITEM_TRAYRUNCMDMAX));
 
-  CItemData ci, ci_base, *pbci(NULL);
+  CItemData ci;
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci_base))
-      return; // fail safely in release
+  const CItemData *pbci(NULL);
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-    pbci = &ci_base;
-  }
+  // Get all the data (a shortcut entry will change some of them!)
+  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
+  // entry if required.
+  if (!m_core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                   sx_pswd, sx_lastpswd,
+                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+    return;
+
+  StringX sx_Expanded_ES;
+  if (sx_runcmd.empty())
+    return;
 
   std::wstring errmsg;
-  size_t st_column;
+  StringX::size_type st_column;
   bool bURLSpecial;
-
-  if (ci.IsAlias()) {
-    pbci = m_core.GetBaseEntry(&ci);
-  }
-
-  StringX sx_RunCommand = ci.GetRunCommand();
-  StringX sxData = PWSAuxParse::GetExpandedString(sx_RunCommand,
-                                                  GetCurFile(),
-                                                  &ci, pbci,
-                                                  m_bDoAutoType,
-                                                  m_sxAutoType,
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
+                                                  m_core.GetCurFile(), &ci, pbci,
+                                                  m_bDoAutoType, m_sxAutoType,
                                                   errmsg, st_column, bURLSpecial);
 
-  if (errmsg.length() > 0) {
+  if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
-    CString cs_errmsg;
+    CString cs_title, cs_errmsg;
+    cs_title.LoadString(IDS_RUNCOMMAND_ERROR);
     cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
-    gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONQUESTION);
+    return;
   }
 
-  SetClipboardData(sxData);
-  UpdateLastClipboardAction(CItemData::RUNCMD);
+  pws_os::CUUID uuid = ci.GetUUID();
+
+  // if no autotype value in run command's $a(value), start with item's (bug #1078)
+  if (m_sxAutoType.empty())
+    m_sxAutoType = ci.GetAutoType();
+
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+                                                sx_group, sx_title, sx_user,
+                                                sx_pswd, sx_lastpswd,
+                                                sx_notes, sx_url, sx_email,
+                                                m_vactionverboffsets);
+  SetClipboardData(sx_pswd);
+  UpdateLastClipboardAction(CItemData::PASSWORD);
+  UpdateAccessTime(uuid);
+
+  // Now honour presence of [alt], {alt} or [ssh] in the url if present
+  // in the RunCommand field.  Note: they are all treated the same (unlike
+  // in 'Browse to'.
+  StringX sxAltBrowser(PWSprefs::GetInstance()->
+    GetPref(PWSprefs::AltBrowser));
+
+  if (bURLSpecial && !sxAltBrowser.empty()) {
+    StringX sxCmdLineParms(PWSprefs::GetInstance()->
+      GetPref(PWSprefs::AltBrowserCmdLineParms));
+
+    if (sxAltBrowser[0] != L'\'' && sxAltBrowser[0] != L'"')
+      sxAltBrowser = L"\"" + sxAltBrowser + L"\"";
+    if (!sxCmdLineParms.empty())
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") +
+      sxCmdLineParms + StringX(L" ") + sx_Expanded_ES;
+    else
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
+  }
+
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
+  if (!rc) {
+    m_bDoAutoType = false;
+    m_sxAutoType = L"";
+    return;
+  }
+
   UpdateAccessTime(ci.GetUUID());
 }
 

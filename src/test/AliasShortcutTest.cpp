@@ -62,12 +62,14 @@ TEST_F(AliasShortcutTest, Alias)
 
   const CItemData al2 = core.GetEntry(core.Find(al.GetUUID()));
 
- StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
-
- bool status = core.GetValues(&al2,
-                              sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                              sx_url, sx_email, sx_autotype, sx_runcmd);
- EXPECT_TRUE(status);
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  const CItemData *pbci(NULL);
+  bool status = core.GetValues(&al2, pbci,
+                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
+                               sx_url, sx_email, sx_autotype, sx_runcmd);
+  EXPECT_TRUE(status);
+  // Returned pointer to alias's base entry should not be NULL
+  EXPECT_NE(pbci, nullptr);
   // Password should be from base:
   EXPECT_EQ(sx_pswd, base.GetPassword());
   // All the rest should be from alias:
@@ -102,12 +104,14 @@ TEST_F(AliasShortcutTest, Shortcut)
 
   const CItemData sc2 = core.GetEntry(core.Find(sc.GetUUID()));
 
- StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
-
- bool status = core.GetValues(&sc2,
-                              sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                              sx_url, sx_email, sx_autotype, sx_runcmd);
- EXPECT_TRUE(status);
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  const CItemData *pbci(NULL);
+  bool status = core.GetValues(&sc2, pbci,
+                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
+                               sx_url, sx_email, sx_autotype, sx_runcmd);
+  EXPECT_TRUE(status);
+  // Returned pointer to shortcut's base entry should not be NULL
+  EXPECT_NE(pbci, nullptr);
   // Group, title and user should all be from sc:
   EXPECT_EQ(sx_group, sc.GetGroup());
   EXPECT_EQ(sx_title, sc.GetTitle());
