@@ -3149,35 +3149,6 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return NULL;
 }
 
-bool PWScore::GetValues(const CItemData *pci, const CItemData *pbci, StringX &sx_group, StringX &sx_title, StringX &sx_user,
-                        StringX &sx_pswd, StringX &sx_lastpswd,
-                        StringX &sx_notes, StringX &sx_url, StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd) const
-{
-  // The one place to get the values needed for AutoType & RunCmd based on entry type
-  // Since we need the base entry if a dependent, save caller going to find it again
-  pbci = NULL;
-
-  if (pci->IsDependent()) {
-    pbci = GetBaseEntry(pci);
-    ASSERT(pbci != NULL);
-    if (pbci == NULL)
-      return false;
-  }
-
-  sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
-  sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
-  sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
-  sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
-  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
-  sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
-  sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
-  sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
-  sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
-  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
-
-  return true;
-}
-
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
                              std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
 {

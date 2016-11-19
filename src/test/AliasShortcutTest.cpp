@@ -12,6 +12,7 @@
 #endif
 
 #include "core/PWScore.h"
+#include "core/PWSAuxParse.h"
 #include "gtest/gtest.h"
 
 class AliasShortcutTest : public ::testing::Test
@@ -64,9 +65,9 @@ TEST_F(AliasShortcutTest, Alias)
 
  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
- bool status = core.GetValues(&al2,
-                              sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                              sx_url, sx_email, sx_autotype, sx_runcmd);
+ bool status = PWSAuxParse::GetEffectiveValues(&al2, &base,
+                                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
+                                               sx_url, sx_email, sx_autotype, sx_runcmd);
  EXPECT_TRUE(status);
   // Password should be from base:
   EXPECT_EQ(sx_pswd, base.GetPassword());
@@ -104,9 +105,9 @@ TEST_F(AliasShortcutTest, Shortcut)
 
  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
- bool status = core.GetValues(&sc2,
-                              sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                              sx_url, sx_email, sx_autotype, sx_runcmd);
+ bool status = PWSAuxParse::GetEffectiveValues(&sc2, &base,
+                                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
+                                               sx_url, sx_email, sx_autotype, sx_runcmd);
  EXPECT_TRUE(status);
   // Group, title and user should all be from sc:
   EXPECT_EQ(sx_group, sc.GetGroup());

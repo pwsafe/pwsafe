@@ -2098,20 +2098,17 @@ void DboxMain::OnRunCommand()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *pci = getSelectedItem();
+  const CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
   if (pci == NULL)
     return;
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci = pci->IsDependent() ? m_core.GetBaseEntry(pci) : nullptr;
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get all the data (a shortcut entry will change some of them!)
-  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
-  // entry if required.
-  if (!m_core.GetValues(pci, pbci, sx_group, sx_title, sx_user,
-                                   sx_pswd, sx_lastpswd,
-                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+  if (!PWSAuxParse::GetEffectiveValues(pci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
     return;
 
   StringX sx_Expanded_ES;

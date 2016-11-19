@@ -177,17 +177,13 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get all the data (a shortcut entry will change some of them!)
-  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
-  // entry if required.
-  if (!m_core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
-                                   sx_pswd, sx_lastpswd,
-                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd)) {
+  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
     return;
-  }
 
   if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
@@ -404,15 +400,12 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
-  CItemData *pbci(NULL);
+  const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get all the data (a shortcut entry will change some of them!)
-  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
-  // entry if required.
-  if (!m_core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
-                                   sx_pswd, sx_lastpswd,
-                                   sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
     return;
 
   StringX sx_Expanded_ES;

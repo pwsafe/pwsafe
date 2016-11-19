@@ -77,6 +77,36 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 // Externally visible functions
 //-----------------------------------------------------------------
+
+bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci,
+                                     StringX &sx_group, StringX &sx_title, StringX &sx_user,
+                                     StringX &sx_pswd, StringX &sx_lastpswd,
+                                     StringX &sx_notes, StringX &sx_url,
+                                     StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd)
+{
+  // The one place to get the values needed for AutoType & RunCmd based on entry type
+
+  if (pci->IsDependent()) {
+    ASSERT(pbci != NULL);
+    if (pbci == NULL)
+      return false;
+  }
+
+  sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
+  sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
+  sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
+  sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
+  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
+  sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
+  sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
+  sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
+  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
+
+  return true;
+}
+
+
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
                                        const CItemData *pci, const CItemData *pbci,
@@ -556,15 +586,16 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  CItemData *pbci(NULL);
+  const CItemData *pbci(NULL);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  // Get all the data (a shortcut entry will change some of them!)
-  // NOTE: ci MUST be the actual entry. PWScore::GetValues will get the base
-  // entry if required.
-  core.GetValues(&ci, pbci, sx_group, sx_title, sx_user,
-                            sx_pswd, sx_lastpswd,
-                            sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
+  if (ci.IsDependent()) {
+    pbci = core.GetBaseEntry(&ci);
+  }
+
+  GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                     sx_pswd, sx_lastpswd,
+                     sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
 
   // If empty, try the database default
   if (sx_autotype.empty()) {
