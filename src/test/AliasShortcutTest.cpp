@@ -22,7 +22,14 @@ protected:
   PWScore core;
   CItemData base;
   void SetUp();
+  void TearDown();
 };
+
+void AliasShortcutTest::TearDown()
+{
+  // Get core to delete any existing commands
+  core.ClearCommands();
+}
 
 void AliasShortcutTest::SetUp()
 {
@@ -63,12 +70,12 @@ TEST_F(AliasShortcutTest, Alias)
 
   const CItemData al2 = core.GetEntry(core.Find(al.GetUUID()));
 
- StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
- bool status = PWSAuxParse::GetEffectiveValues(&al2, &base,
+  bool status = PWSAuxParse::GetEffectiveValues(&al2, &base,
                                                sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
                                                sx_url, sx_email, sx_autotype, sx_runcmd);
- EXPECT_TRUE(status);
+  EXPECT_TRUE(status);
   // Password should be from base:
   EXPECT_EQ(sx_pswd, base.GetPassword());
   // All the rest should be from alias:
@@ -103,12 +110,12 @@ TEST_F(AliasShortcutTest, Shortcut)
 
   const CItemData sc2 = core.GetEntry(core.Find(sc.GetUUID()));
 
- StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
- bool status = PWSAuxParse::GetEffectiveValues(&sc2, &base,
+  bool status = PWSAuxParse::GetEffectiveValues(&sc2, &base,
                                                sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
                                                sx_url, sx_email, sx_autotype, sx_runcmd);
- EXPECT_TRUE(status);
+  EXPECT_TRUE(status);
   // Group, title and user should all be from sc:
   EXPECT_EQ(sx_group, sc.GetGroup());
   EXPECT_EQ(sx_title, sc.GetTitle());
