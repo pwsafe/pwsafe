@@ -59,14 +59,6 @@ struct st_DBProperties {
 
 struct st_ValidateResults;
 
-enum DBState { CLEAN, DIRTY };
-
-// DB clean/dirty states - before and after command execution.
-struct DBStates {
-  DBState before;
-  DBState after;
-};
-
 class PWScore : public CommandInterface
 {
 public:
@@ -453,6 +445,7 @@ protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
 
 private:
+
   // Database update routines
 
   // NOTE: Member functions starting with 'Do' or 'Undo' are meant to
@@ -623,6 +616,13 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
+  
+  // DB clean/dirty states - before and after command execution.
+  enum DBState { CLEAN, DIRTY };
+  struct DBStates {
+    DBState before;
+    DBState after;
+  };
 
   std::vector<DBStates> m_vDBState;
   std::vector<DBStates>::iterator m_undo_DBState_iter;
