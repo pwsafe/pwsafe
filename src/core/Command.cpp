@@ -109,12 +109,12 @@ void MultiCommands::Add(Command *pcmd)
   m_vpcmds.push_back(pcmd);
 }
 
-void MultiCommands::Insert(Command *pcmd)
+void MultiCommands::Insert(Command *pcmd, size_t ioffset)
 {
-  // VERY INEFFICIENT - use sparingly to add commands at the front of the
+  // VERY INEFFICIENT - use sparingly to insert commands into the
   // multi-command vector
   ASSERT(pcmd != NULL);
-  m_vpcmds.insert(m_vpcmds.begin(), pcmd);
+  m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
 }
 
 bool MultiCommands::Remove(Command *pcmd)
