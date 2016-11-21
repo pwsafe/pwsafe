@@ -1556,6 +1556,14 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
           UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
+        // Make sure that the folder to which drag is performed will 
+        // be removed from the vector of empty groups
+        StringX sxGroup(GetGroup(hitemDrop));
+        if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+
         StringX sxDropGroup(L"");
         bool bEmptyGroup(false);
 
@@ -1612,14 +1620,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
           CopyItem(pmulticmds, m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
           SortTree(hitemDrop);
           break;
-        }
-
-        // Make sure that the folder to which drag is performed will 
-        // be removed from the vector of empty groups
-        StringX sxGroup(GetGroup(hitemDrop));
-        if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
-          pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
-            DBEmptyGroupsCommand::EG_DELETE));
         }
 
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
