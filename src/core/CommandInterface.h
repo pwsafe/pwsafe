@@ -24,16 +24,6 @@ class CommandInterface {
   // Methods used both by PWScore and Commands:
   virtual bool IsReadOnly() const = 0;
 
-  virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
-
-  virtual bool HasDBChanged() const = 0;
-  virtual bool HaveDBPrefsChanged() const = 0;
-  virtual bool HaveEmptyGroupsChanged() const = 0;
-  virtual bool HavePasswordPolicyNamesChanged() const = 0;
-  virtual bool HaveHeaderPreferencesChanged(const StringX &prefString) = 0;
-  virtual bool HasAnythingChanged() const = 0;
-
- /* virtual void SetUniqueGTUValidated(bool bState) = 0;*/
   virtual bool GetUniqueGTUValidated() const = 0;
 
   virtual ItemListIter Find(const pws_os::CUUID &entry_uuid) = 0;

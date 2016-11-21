@@ -12,7 +12,6 @@
 #include <vector>
 #include <set>
 #include <list>
-#include <algorithm>  // For std::sort & std::unique used by st_DBChangeStatus
 
 #include "os/UUID.h"
 #include "ItemData.h"
@@ -74,95 +73,6 @@ struct st_GroupTitleUser {
 struct st_PWH_status {
   StringX pwh;
   CItemData::EntryStatus es;
-};
-
-struct st_DBChangeStatus {
-  bool bDBChanged; // One or more entries added, removed or modified
-  bool bDBPrefsChanged; // One or more DB preferences changed
-  bool bDBHeaderChanged; // Other header info (DB Name, Desctription and maybe Recently Used Entries)
-  bool bEmptyGroupsChanged; // Set of empty groups has changed
-  bool bPolicyNamesChanged; // One or more Policy names add, deleted or modified
-  bool bDBFiltersChanged;  // One of the DB filers add, deleted or modified
-
-  std::vector<StringX> vNodes_Modified;
-
-  st_DBChangeStatus() :
-    bDBChanged(false), bDBPrefsChanged(false), bDBHeaderChanged(false), bEmptyGroupsChanged(false),
-    bPolicyNamesChanged(false), bDBFiltersChanged(false)
-  {}
-
-  st_DBChangeStatus(const st_DBChangeStatus &that)
-    : bDBChanged(that.bDBChanged), bDBPrefsChanged(that.bDBPrefsChanged), 
-    bDBHeaderChanged(that.bDBHeaderChanged), bEmptyGroupsChanged(that.bEmptyGroupsChanged),
-    bPolicyNamesChanged(that.bPolicyNamesChanged), bDBFiltersChanged(that.bDBFiltersChanged),
-    vNodes_Modified(that.vNodes_Modified)
-  {}
-
-  st_DBChangeStatus &operator=(const st_DBChangeStatus &that)
-  {
-    if (this != &that) {
-      bDBChanged = that.bDBChanged;
-      bDBPrefsChanged = that.bDBPrefsChanged;
-      bDBHeaderChanged = that.bDBHeaderChanged;
-      bEmptyGroupsChanged = that.bEmptyGroupsChanged;
-      bPolicyNamesChanged = that.bPolicyNamesChanged;
-      bDBFiltersChanged = that.bDBFiltersChanged;
-      vNodes_Modified = that.vNodes_Modified;
-    }
-    return *this;
-  }
-
-  void Clear() {
-    bDBChanged = bDBPrefsChanged = bDBHeaderChanged = bEmptyGroupsChanged = bPolicyNamesChanged =
-      bDBFiltersChanged = false;
-    vNodes_Modified.clear();
-  }
-
-  bool HasAnythingChanged() const
-  {
-    // Doesn't test if Group Display or RUEList changed
-    // as dependent on preference
-    return (bDBChanged || bDBPrefsChanged || bDBHeaderChanged ||
-            bEmptyGroupsChanged || bPolicyNamesChanged ||
-            bDBFiltersChanged);
-  }
-  
-  bool operator==(const st_DBChangeStatus& that) const
-  {
-    // Doesn't test bGroupDisplayChanged as dependent on preference
-    if (this != &that) {
-      return (bDBChanged == that.bDBChanged &&
-              bDBPrefsChanged == that.bDBPrefsChanged &&
-              bDBHeaderChanged == that.bDBHeaderChanged &&
-              bEmptyGroupsChanged == that.bEmptyGroupsChanged &&
-              bPolicyNamesChanged == that.bPolicyNamesChanged &&
-              bDBFiltersChanged == that.bDBFiltersChanged &&
-              vNodes_Modified == that.vNodes_Modified);
-    }
-    return true;
-  }
-
-  bool operator!=(const st_DBChangeStatus& that) const
-  { return !(*this == that); }
-
-  st_DBChangeStatus operator+(const st_DBChangeStatus& other) const {
-    st_DBChangeStatus res;
-    res.bDBChanged = bDBChanged || other.bDBChanged;
-    res.bDBPrefsChanged = bDBPrefsChanged || other.bDBPrefsChanged;
-    res.bDBHeaderChanged = bDBHeaderChanged || other.bDBHeaderChanged;
-    res.bEmptyGroupsChanged = bEmptyGroupsChanged || other.bEmptyGroupsChanged;
-    res.bPolicyNamesChanged = bPolicyNamesChanged || other.bPolicyNamesChanged;
-    res.bDBFiltersChanged = bDBFiltersChanged || other.bDBFiltersChanged;
-
-    // Add the StringX vectors, sort and remove duplicates
-    res.vNodes_Modified = vNodes_Modified;
-    res.vNodes_Modified.insert(res.vNodes_Modified.end(), other.vNodes_Modified.begin(),
-      other.vNodes_Modified.end());
-    std::sort(res.vNodes_Modified.begin(), res.vNodes_Modified.end());
-    res.vNodes_Modified.erase(std::unique(res.vNodes_Modified.begin(), res.vNodes_Modified.end()),
-      res.vNodes_Modified.end());
-    return res;
-  }
 };
 
 typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;

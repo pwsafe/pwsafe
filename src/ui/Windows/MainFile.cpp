@@ -275,7 +275,7 @@ int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
-  if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasAnythingChanged()) {
+  if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasDBChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -489,9 +489,6 @@ int DboxMain::Close(const bool bTrySave)
     m_core.SetCurFile(L"");
   }
 
-  // Clear all associated data
-  ClearData();
-
   // Zero entry UUID selected and first visible at minimize and group text
   m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
   m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
@@ -502,7 +499,7 @@ int DboxMain::Close(const bool bTrySave)
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
-  // Reset core
+  // Reset core and clear all associated data
   m_core.ReInit();
 
   // Tidy up filters
@@ -1265,7 +1262,7 @@ int DboxMain::SaveIfChanged()
    */
 
   // Deal with unsaved but changed restored DB
-  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+  if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
     CGeneralMsgBox gmb;
 
     gmb.SetTitle(IDS_UNSAVEDRESTOREDDB);
@@ -1312,7 +1309,7 @@ int DboxMain::SaveIfChanged()
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-  if (m_core.HasAnythingChanged()) {
+  if (m_core.HasDBChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
@@ -2919,12 +2916,12 @@ void DboxMain::ChangeMode(bool promptUser)
        }
 
       // User said No to the save - so we must back-out all changes since last save
-      while (m_core.HasAnythingChanged()) {
+      while (m_core.HasDBChanged()) {
         OnUndo();
       }
     }
 
-    // Clear the Commands
+    // Clear the Commands & DB pre-command states
     m_core.ClearCommands();
   } else if (promptUser) {
     // Taken from GetAndCheckPassword.
@@ -4007,7 +4004,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   INT_PTR rc;
 
-  if (saveType == ST_FAILSAFESAVE && m_core.HasAnythingChanged()) {
+  if (saveType == ST_FAILSAFESAVE && m_core.HasDBChanged()) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
@@ -4036,7 +4033,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
   if (saveType == ST_NORMALEXIT) {
     bool bAutoSave = true; // false if user saved or decided not to
-    if (m_core.HasAnythingChanged()) {
+    if (m_core.HasDBChanged()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
       rc = gmb.MessageBox(cs_msg, AfxGetAppName(),

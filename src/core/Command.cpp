@@ -46,40 +46,15 @@ using pws_os::CUUID;
 Command::Command(CommandInterface *pcomInt)
 :  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE)
 {
-  m_PreCommand.Clear();
-  m_PostCommand.Clear();
-  m_Command.Clear();
 }
 
 Command::~Command()
 {
 }
 
-// The following should only be called from PWScore Execute/Undo/Redo
-void Command::SaveChangedState(StateType st, st_DBChangeStatus &stDBCS)
+bool Command::WasDBChanged() const
 {
-  switch (st) {
-    case COMMANDACTION:
-      // Set what the command changes
-      m_Command = stDBCS;
-      break;
-    case PREEXECUTE:
-      // Save current pre-command execute state
-      m_PreCommand = stDBCS;
-      break;
-    case POSTEXECUTE:
-      // Here we generate new state from pre-execute state and command action states
-      // Effectively post-execute state = pre-execute state + command action state
-      // and, unlike the other calls, return the result
-      stDBCS = m_PostCommand = (m_PreCommand + m_Command);
-      break;
-  }
-}
-
-// The following should only be called from PWScore Execute/Undo/Redo
-void Command::RestoreChangedState(st_DBChangeStatus &stDBCS)
-{
-  stDBCS = m_PreCommand;
+  return m_CommandDBChange != CommandDBChange::NONE;
 }
 
 // ------------------------------------------------
@@ -89,7 +64,6 @@ void Command::RestoreChangedState(st_DBChangeStatus &stDBCS)
 MultiCommands::MultiCommands(CommandInterface *pcomInt)
   : Command(pcomInt)
 {
-  m_CommandDBChange = MULTICOMMAND;
 }
 
 MultiCommands::~MultiCommands()
@@ -109,6 +83,9 @@ int MultiCommands::Execute()
     int rc(-1);
     if (*cmd_Iter != NULL) {
       rc = (*cmd_Iter)->Execute();
+
+      if ((*cmd_Iter)->WasDBChanged())
+        m_CommandDBChange = CommandDBChange::MULTICOMMAND;
     }
     m_vRCs.push_back(rc);
   }
@@ -228,15 +205,14 @@ DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
 
 int DBPrefsCommand::Execute()
 {
-  PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
-  if (!m_pcomInt->IsReadOnly())
-    m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs)); //?????
-
-  if (m_bNotifyGUI) {
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
-                                      CUUID::NullUUID());
+  if (!m_pcomInt->IsReadOnly()) {
+    PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
+        CUUID::NullUUID());
+    }
+    m_CommandDBChange = DBPREFS;
   }
-  m_CommandDBChange = DBPREFS;
   return 0;
 }
 
@@ -247,7 +223,7 @@ void DBPrefsCommand::Undo()
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
-        CUUID::NullUUID());
+                                        CUUID::NullUUID());
     }
   }
 }
@@ -416,7 +392,7 @@ int DBEmptyGroupsCommand::Execute()
     if (bChanged) {
       if (m_bNotifyGUI) {
         m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
-          CUUID::NullUUID());
+                                          CUUID::NullUUID());
 
         m_CommandDBChange = DBEMPTYGROUP;
       }
@@ -501,12 +477,12 @@ int AddEntryCommand::Execute()
 
     if (m_ci.IsDependent()) {
       m_pcomInt->DoAddDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
-        m_ci.GetEntryType());
+                                     m_ci.GetEntryType());
     }
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
-        m_ci.GetUUID());
+                                        m_ci.GetUUID());
     }
 
     time_t tttXTime;
@@ -525,7 +501,7 @@ void AddEntryCommand::Undo()
     // Do actions in reverse order to Execute
     if (m_ci.IsDependent()) {
       m_pcomInt->DoRemoveDependentEntry(m_ci.GetBaseUUID(), m_ci.GetUUID(),
-        m_ci.GetEntryType());
+                                        m_ci.GetEntryType());
     }
 
     DeleteEntryCommand delete_entry_cmd(m_pcomInt, m_ci, this);
@@ -711,7 +687,7 @@ void EditEntryCommand::Undo()
       // If the entry's group has changed, refresh the entire tree, otherwise, just the entry
       // in the tree and list views
       UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
-        UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
+                UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
       m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
     }
   }
@@ -769,7 +745,7 @@ int UpdateEntryCommand::Execute()
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-        m_entry_uuid, m_ftype);
+                                        m_entry_uuid, m_ftype);
 
     if (m_ftype == CItemData::XTIME)
       m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
@@ -786,7 +762,7 @@ void UpdateEntryCommand::Undo()
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-        m_entry_uuid, m_ftype);
+                                        m_entry_uuid, m_ftype);
   }
 }
 
@@ -826,7 +802,6 @@ int UpdatePasswordCommand::Execute()
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
         m_entry_uuid);
-
   }
   return 0;
 }
@@ -911,8 +886,8 @@ int AddDependentEntriesCommand::Execute()
     }
 
     rc = m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
-      m_type, m_iVia,
-      m_pmapDeletedItems, m_pmapSaveStatus);
+                                          m_type, m_iVia,
+                                          m_pmapDeletedItems, m_pmapSaveStatus);
 
     m_CommandDBChange = DB;
   }
@@ -1018,7 +993,7 @@ int UpdatePasswordHistoryCommand::Execute()
   int rc(0);
   if (!m_pcomInt->IsReadOnly()) {
     rc = m_pcomInt->DoUpdatePasswordHistory(m_iAction, m_new_default_max,
-                               m_mapSavedHistory);
+                                            m_mapSavedHistory);
 
     m_CommandDBChange = DB;
   }
@@ -1110,7 +1085,7 @@ int DBFiltersCommand::Execute()
 
       if (m_bNotifyGUI) {
         m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
-          CUUID::NullUUID());
+                                          CUUID::NullUUID());
       }
     }
   }
@@ -1124,7 +1099,7 @@ void DBFiltersCommand::Undo()
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
-        CUUID::NullUUID());
+                                        CUUID::NullUUID());
     }
   }
 }

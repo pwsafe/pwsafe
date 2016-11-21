@@ -106,7 +106,6 @@ bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci
   return true;
 }
 
-
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
                                        const CItemData *pci, const CItemData *pbci,

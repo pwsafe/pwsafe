@@ -40,8 +40,6 @@ public:
   enum CommandDBChange { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
     DBFILTERS };
 
-  enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
-
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() {return Execute();} // common case
@@ -50,16 +48,7 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
-  void RestoreChangedState(st_DBChangeStatus &stDBCS);
-
-  CommandDBChange GetCommandChange() const { return m_CommandDBChange; }
-
-  const st_DBChangeStatus &GetPostCommandStatus() const
-  { return m_PostCommand; }
-
-  const st_DBChangeStatus &GetCommandStatus() const
-  { return m_Command; }
+  virtual bool WasDBChanged() const;
   
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
@@ -67,11 +56,9 @@ protected:
   CommandInterface *m_pcomInt;
   bool m_bNotifyGUI;
 
-  st_DBChangeStatus m_PreCommand;
-  st_DBChangeStatus m_PostCommand;
-  st_DBChangeStatus m_Command;
-
   int m_RC;
+
+  // The command change value is ONLY set during Execute
   CommandDBChange m_CommandDBChange;
 };
 

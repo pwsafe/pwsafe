@@ -422,7 +422,7 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = bIsRO ? FALSE : TRUE;
-    BOOL SaveState = (!bIsRO && (m_core.HasAnythingChanged())) ? TRUE : FALSE;
+    BOOL SaveState = (!bIsRO && m_core.HasDBChanged()) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
@@ -2325,7 +2325,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Now try and save changes
-  if (m_core.HasAnythingChanged() || m_bEntryTimestampsChanged) {
+  if (m_core.HasDBChanged() || m_bEntryTimestampsChanged) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;

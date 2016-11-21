@@ -1591,10 +1591,10 @@ void DboxMain::ChangeOkUpdate()
 
   // Don't need to worry about R-O, as IsDBChanged can't be true in this case
   pmenu->EnableMenuItem(ID_MENUITEM_SAVE,
-            m_core.HasAnythingChanged() ? MF_ENABLED : MF_GRAYED);
+            m_core.HasDBChanged() ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
-           m_core.HasAnythingChanged() ? TRUE : FALSE);
+           m_core.HasDBChanged() ? TRUE : FALSE);
   }
 }
 
@@ -2096,7 +2096,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       if (m_core.IsReadOnly())
         flags |= GCP_READONLY;
       if (CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
-          m_core.HasAnythingChanged())
+                m_core.HasDBChanged())
         flags |= GCP_HIDEREADONLY;
 
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
@@ -2654,7 +2654,7 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
     }
   }
 
-  if (m_core.HasAnythingChanged()) {
+  if (m_core.HasDBChanged()) {
     // Windows XP or earlier - we ask user, Vista and later - we don't as we have
     // already set ShutdownBlockReasonCreate
     if (!pws_os::IsWindowsVistaOrGreater()) {
@@ -2746,7 +2746,7 @@ void DboxMain::UpdateStatusBar()
     m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
     m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
-    s = m_core.HasAnythingChanged() ? L"*" : L" ";
+    s = m_core.HasDBChanged() ? L"*" : L" ";
     s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
     dc.DrawText(s, &rectPane, DT_CALCRECT);
     m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
@@ -3212,7 +3212,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
-      if ((!m_core.HasAnythingChanged()) ||
+      if ((!m_core.HasDBChanged()) ||
             m_core.GetReadFileVersion() < PWSfile::VCURRENT)
         iEnable = FALSE;
       break;
