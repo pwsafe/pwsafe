@@ -3789,7 +3789,7 @@ bool PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
   if (m_vEmptyGroups != vEmptyGroups) {
     m_vEmptyGroups = vEmptyGroups;
 
-    // Now sort it for when we campare.
+    // Now sort it for when we compare.
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     brc = true;
   }
@@ -3826,7 +3826,7 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
     // Add it
     m_vEmptyGroups.push_back(sxEmptyGroup);
 
-    // Then sort it for when we campare.
+    // Then sort it for when we compare.
     // Could use std::set but unnecessary complication/overhead
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     return true;
@@ -3856,7 +3856,7 @@ bool PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGr
     m_vEmptyGroups.erase(iter);
     // Add new name
     m_vEmptyGroups.push_back(sxNewGroup);
-    // Sort it for when we campare.
+    // Sort it for when we compare.
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     bChanged = true;
   } else {
@@ -3881,7 +3881,7 @@ bool PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxN
       }
     }
 
-    // Now sort it for when we campare.
+    // Now sort it for when we compare.
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
   }
   return bChanged;

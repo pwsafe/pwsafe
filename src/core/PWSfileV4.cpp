@@ -1259,10 +1259,8 @@ int PWSfileV4::ReadHeader()
     delete[] utf8; utf8 = NULL; utf8Len = 0;
   } while (fieldType != HDR_END);
 
-  if (!m_vEmptyGroups.empty()) {
-    // Now sort it for when we campare.
-    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
-  }
+  // Now sort it for when we compare.
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 
   return SUCCESS;
 }
