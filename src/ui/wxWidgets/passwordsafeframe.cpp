@@ -1005,7 +1005,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 int PasswordSafeFrame::SaveIfChanged()
 {
   // Deal with unsaved but changed restored DB
-  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+  if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
     wxMessageDialog dlg(this,
                         _("Do you wish to save the this restored database as new database?"),
                         _("Unsaved restored database"),
@@ -1038,7 +1038,7 @@ int PasswordSafeFrame::SaveIfChanged()
   //
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.HasAnythingChanged()) &&
+  if ((m_bTSUpdated || m_core.HasDBChanged()) &&
       m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {

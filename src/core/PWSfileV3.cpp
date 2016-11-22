@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <iomanip>
 #include <type_traits> // for static_assert
+#include <algorithm> // for sort
 
 using namespace std;
 using pws_os::CUUID;

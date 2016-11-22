@@ -8,9 +8,11 @@
 /// \file PWHistory.cpp
 //-----------------------------------------------------------------------------
 #include "PWHistory.h"
+#include "StringXStream.h"
+
 #include <sstream>
 #include <iomanip>
-#include "StringXStream.h"
+#include <algorithm> // for sort
 
 using namespace std;
 

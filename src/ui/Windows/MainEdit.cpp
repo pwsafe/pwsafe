@@ -2198,8 +2198,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
      UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
-  int numadded(0);
-
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
 
@@ -2321,7 +2319,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
                                                          ci_temp.GetUUID(),
                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-        numadded++;
 
         ci_temp.SetPassword(L"[Alias]");
         ci_temp.SetAlias();
@@ -2341,7 +2338,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
                                                          ci_temp.GetUUID(),
                                                          CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
-        numadded++;
 
         ci_temp.SetPassword(L"[Shortcut]");
         ci_temp.SetShortcut();
@@ -2388,7 +2384,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     }
 
     pmulticmds->Add(pcmd);
-    numadded++;
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
@@ -2417,13 +2412,18 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
     UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
-  if (numadded != 0 || !Possible_Aliases.empty() || !Possible_Shortcuts.empty()) {
-    // Check if original drop group was empty - if so, it won't be now
+  if (pmulticmds->GetSize() > 2) {
+    // Since we added some commands apart from the first & last WM_UNDO/WM_REDO,
+    // check if original drop group was empty - if so, it won't be now
     // We need to insert it after the first command (WN_UNDO, GUI_REFRESH_BOTHVIEWS)
     if (IsEmptyGroup(DropGroup)) {
       pmulticmds->Insert(DBEmptyGroupsCommand::Create(&m_core, DropGroup,
         DBEmptyGroupsCommand::EG_DELETE), 1);
     }
+  } else {
+    // We didn't add any "useful" commands - so why continue?
+    delete pmulticmds;
+    return;
   }
 
   // Do it!
