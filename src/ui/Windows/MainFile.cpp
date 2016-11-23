@@ -504,7 +504,7 @@ int DboxMain::Close(const bool bTrySave)
 
   // Tidy up filters
   CurrentFilter().Empty();
-  m_bFilterActive = false;
+  m_bFilterActive = m_bUnsavedDisplayed = m_bExpireDisplayed = false;
   ApplyFilters();
 
   // Set Dragbar images correctly
