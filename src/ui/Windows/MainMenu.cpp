@@ -1410,8 +1410,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
     }
 
-    // NOTE: after here, if an entry is a Shortcut, pci points to its base entry!
-    if (pci->IsShortcut()) {
+    if (pci->IsDependent()) {
       pbci = m_core.GetBaseEntry(pci);
     }
 

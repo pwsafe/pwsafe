@@ -410,12 +410,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
   if (brc == 0) goto exit;
   ipos++;
 
-  CItemData *pbci(NULL);
-  if (pci->IsShortcut()) {
-    // Shortcut has Group, Title & User, otherwise
-    // use base entry's fields
-    pbci = app.GetMainDlg()->GetBaseEntry(pci);
-  }
+  const CItemData *pbci = pci->IsDependent() ? app.GetMainDlg()->GetBaseEntry(pci) : NULL;
 
   if (!pci->IsFieldValueEmpty(CItemData::USER, pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
