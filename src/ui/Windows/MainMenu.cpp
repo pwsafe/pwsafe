@@ -942,7 +942,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           ASSERT(0);
       }
 
-      if (pci->IsFieldValueEmpty(CItemData::ATTREF, pbci)) {
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
       }
@@ -962,7 +962,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
-      if (pci->IsFieldValueEmpty(CItemData::ATTREF, pbci)) {
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
           ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
       }
