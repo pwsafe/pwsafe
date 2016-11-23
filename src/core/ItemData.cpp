@@ -512,7 +512,6 @@ StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) c
   }
 }
 
-
 static void CleanNotes(StringX &s, TCHAR delimiter)
 {
   if (delimiter != 0) {

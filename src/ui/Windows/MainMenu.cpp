@@ -787,6 +787,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     //   List View - <Entry Items>, Sep, Add Entry, Sep, Clear Clipboard, Sep,
     //               Entry functions (copy to clipboard, browse, run etc)
     if (pci != NULL) {
+      CItemData *pbci(NULL);
+      if (pci->IsDependent()) {
+        pbci = GetBaseEntry(pci);
+      }
       // Entry is selected
 
       // Deal with multi-selection
@@ -861,11 +865,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
 
-      if (!pci->IsUserEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYUSERNAME, tc_dummy);
 
-      if (!pci->IsNotesEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYNOTESFLD, tc_dummy);
 
@@ -876,9 +880,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       *    3. If URL is not empty and is an email address, add email menuitem
       *       (if not already added)
       */
-      bool bAddCopyEmail = !pci->IsEmailEmpty();
-      bool bAddSendEmail = bAddCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
-      bool bAddURL = !pci->IsURLEmpty();
+      bool bAddCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+      bool bAddSendEmail = bAddCopyEmail || 
+               (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+      bool bAddURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci);
 
       // Add copies in order
       if (bAddURL) {
@@ -891,14 +896,14 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_COPYEMAIL, tc_dummy);
       }
 
-      if (!pci->IsRunCommandEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
 
       // Add actions in order
-      if (bAddURL && !pci->IsURLEmail()) {
+      if (bAddURL && !pci->IsURLEmail(pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURL, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -910,7 +915,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_SENDEMAIL, tc_dummy);
       }
 
-      if (!pci->IsRunCommandEmpty()) {
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_RUNCOMMAND, tc_dummy);
       }
@@ -1174,7 +1179,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
   BOOL brc;
   CPoint client;
   int item = -1;
-  const CItemData *pci = NULL;
+  const CItemData *pci(NULL), *pbci(NULL);
   CMenu menu;
 
   MENUINFO minfo ={0};
@@ -1226,7 +1231,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       brc = menu.SetMenuInfo(&minfo);
       ASSERT(brc != 0);
 
-      CMenu* pPopup = menu.GetSubMenu(0);
+      CMenu *pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
       // Use this DboxMain for commands
@@ -1407,17 +1412,18 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     // NOTE: after here, if an entry is a Shortcut, pci points to its base entry!
     if (pci->IsShortcut()) {
-      pci = m_core.GetBaseEntry(pci);
+      pbci = m_core.GetBaseEntry(pci);
     }
 
-    bool bCopyEmail = !pci->IsEmailEmpty();
-    bool bSendEmail = bCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
-    bool bUseURL = !pci->IsURLEmpty() && !pci->IsURLEmail();
+    bool bCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+    bool bSendEmail = bCopyEmail ||
+               (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+    bool bUseURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci) && !pci->IsURLEmail(pbci);
 
-    if (pci->IsUserEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::USER, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
 
-    if (pci->IsNotesEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
 
     if (!bCopyEmail)
@@ -1426,7 +1432,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (!bSendEmail)
       pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
 
-    if (pci->IsURLEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::URL, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
 
     if (!bUseURL) {
@@ -1434,7 +1440,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
     }
 
-    if (pci->IsRunCommandEmpty()) {
+    if (pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     }

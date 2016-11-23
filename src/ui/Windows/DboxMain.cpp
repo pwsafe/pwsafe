@@ -3051,8 +3051,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // The previous lookup table is the only mechanism to ENABLE an item
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
-  bool bGroupSelected = false, bFileIsReadOnly(false);
-  const CItemData *pci(NULL);
+  bool bGroupSelected(false), bFileIsReadOnly(false);
+  const CItemData *pci(NULL), *pbci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
 
   if (bTreeView) {
@@ -3068,8 +3068,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (pci != NULL) {
     etype = pci->GetEntryType(); // Save entry type before changing pci
-    if (pci->IsShortcut()) {
-      pci = GetBaseEntry(pci);
+    if (pci->IsDependent()) {
+      pbci = GetBaseEntry(pci);
     }
   }
 
@@ -3097,17 +3097,12 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        const CItemData *pcix = getSelectedItem();
-        if (pcix == NULL) {
+        if (pci == NULL) {
           iEnable = FALSE;
         } else {
-          if (pcix->IsShortcut()) {
-            pcix = GetBaseEntry(pcix);
-          }
-
-          if (pcix->IsEmailEmpty() &&
-              (pcix->IsURLEmpty() ||
-              (!pcix->IsURLEmpty() && !pcix->IsURLEmail()))) {
+          if (pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) &&
+              (pci->IsFieldValueEmpty(CItemData::URL, pbci) ||
+              (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && !pci->IsURLEmail(pbci)))) {
             iEnable = FALSE;
           }
         }
@@ -3125,40 +3120,36 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        const CItemData *pcix = getSelectedItem();
-        if (pcix == NULL) {
+        if (pci == NULL) {
           iEnable = FALSE;
         } else {
-          if (pcix->IsShortcut()) {
-            pcix = GetBaseEntry(pcix);
-          }
-
           switch (nID) {
             case ID_MENUITEM_COPYUSERNAME:
-              if (pcix->IsUserEmpty()) {
+              if (pci->IsFieldValueEmpty(CItemData::USER, pbci)) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_COPYNOTESFLD:
-              if (pcix->IsNotesEmpty()) {
+              if (pci->IsFieldValueEmpty(CItemData::NOTES, pbci)) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_COPYEMAIL:
-              if (pcix->IsEmailEmpty() ||
-                  (!pcix->IsURLEmpty() && pcix->IsURLEmail())) {
+              if (pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
+                  (!pci->IsFieldValueEmpty(CItemData::URL, pbci) &&
+                    pci->IsURLEmail(pbci))) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_BROWSEURL:
             case ID_MENUITEM_BROWSEURLPLUS:
             case ID_MENUITEM_COPYURL:
-              if (pcix->IsURLEmpty()) {
+              if (pci->IsFieldValueEmpty(CItemData::URL, pbci)) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_VIEWATTACHMENT:
-              if (!pcix->HasAttRef()) {
+              if (!pci->HasAttRef()) {
                 iEnable = FALSE;
               }
               break;
@@ -3168,7 +3159,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     case ID_MENUITEM_RUNCOMMAND:
     case ID_MENUITEM_COPYRUNCOMMAND:
-      if (pci == NULL || pci->IsRunCommandEmpty()) {
+      if (pci == NULL || pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
         iEnable = FALSE;
       }
       break;
@@ -3178,13 +3169,12 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *pcix = getSelectedItem();
-        if (pcix == NULL) {
+        if (pci == NULL) {
           iEnable = FALSE;
         } else {
           // Can only define a shortcut on a normal entry or
           // one that is already a shortcut base
-          if (!pcix->IsNormal() && !pcix->IsShortcutBase()) {
+          if (!pci->IsNormal() && !pci->IsShortcutBase()) {
             iEnable = FALSE;
           }
         }
@@ -3241,7 +3231,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_OLD_TOOLBAR:
     case ID_MENUITEM_NEW_TOOLBAR:
     {
-      CDC* pDC = this->GetDC();
+      CDC *pDC = this->GetDC();
       int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
       if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
         // Less that 16 color bits available, no choice, disable menu items

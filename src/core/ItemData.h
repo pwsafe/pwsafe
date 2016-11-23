@@ -269,6 +269,9 @@ public:
   bool IsEmailEmpty() const                { return !IsEmailSet();         }
   bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
 
+  bool IsFieldValueEmpty(FieldType ft, const CItemData *pbci) const
+  { return GetEffectiveFieldValue(ft, pbci).empty(); }
+
   bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
 
   void SerializePlainText(std::vector<char> &v,
@@ -298,6 +301,9 @@ public:
 
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
+
+  bool IsURLEmail(const CItemData *pbci) const
+  { return GetEffectiveFieldValue(URL, pbci).find(_T("mailto:")) != StringX::npos; }
 
 private:
   EntryType m_entrytype;

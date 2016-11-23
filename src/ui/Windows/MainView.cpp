@@ -435,7 +435,7 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
   // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
   if (m_core.GetNumEntries() != 0) {
-    const CItemData *pci_entry(pci);
+    const CItemData *pci_entry(pci), *pbci(NULL);
     BOOL State = (pci_entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
@@ -450,36 +450,37 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
     mainTBCtrl.EnableButton(ID_MENUITEM_UNDO, m_core.AnyToUndo() ? TRUE : FALSE);
     mainTBCtrl.EnableButton(ID_MENUITEM_REDO, m_core.AnyToRedo() ? TRUE : FALSE);
 
-    if (pci_entry != NULL && pci_entry->IsShortcut()) {
-      pci_entry = GetBaseEntry(pci_entry);
+    if (pci_entry != NULL && pci_entry->IsDependent()) {
+      pbci = GetBaseEntry(pci_entry);
     }
 
-    if (pci_entry == NULL || pci_entry->IsUserEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::USER, pbci)) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsNotesEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::NOTES, pbci)) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsRunCommandEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
       mainTBCtrl.EnableButton(ID_MENUITEM_RUNCOMMAND, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_RUNCOMMAND, TRUE);
     }
 
     if (pci_entry == NULL || 
-        (pci_entry->IsEmailEmpty() && !pci_entry->IsURLEmail())) {
+        (pci_entry->IsFieldValueEmpty(CItemData::EMAIL, pbci) && !pci_entry->IsURLEmail(pbci))) {
       mainTBCtrl.EnableButton(ID_MENUITEM_SENDEMAIL, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_SENDEMAIL, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsURLEmpty() || pci_entry->IsURLEmail()) {
+    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::URL, pbci) ||
+        pci_entry->IsURLEmail(pbci)) {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
     } else {
@@ -500,13 +501,13 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         m_DDemail.SetStaticState(false);
         m_DDAutotype.SetStaticState(false);
       } else {
-        m_DDGroup.SetStaticState(!pci_entry->IsGroupEmpty());
+        m_DDGroup.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::GROUP, pbci));
         m_DDTitle.SetStaticState(true);
         m_DDPassword.SetStaticState(true);
-        m_DDUser.SetStaticState(!pci_entry->IsUserEmpty());
-        m_DDNotes.SetStaticState(!pci_entry->IsNotesEmpty());
-        m_DDURL.SetStaticState(!pci_entry->IsURLEmpty());
-        m_DDemail.SetStaticState(!pci_entry->IsEmailEmpty());
+        m_DDUser.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::USER, pbci));
+        m_DDNotes.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::NOTES, pbci));
+        m_DDURL.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::URL, pbci));
+        m_DDemail.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::EMAIL, pbci));
         m_DDAutotype.SetStaticState(true);
       }
     }
@@ -3599,8 +3600,9 @@ void DboxMain::SetToolBarPositions()
   if (bDragBarState) {
     // Get the image states just incase another entry selected
     // since last shown
-    CItemData *entry = GetLastSelected();
-    if (entry == NULL) {
+    CItemData *pci_entry = GetLastSelected(), *pbci(NULL);
+
+    if (pci_entry == NULL) {
       m_DDGroup.SetStaticState(m_core.GetNumEntries() != 0);
       m_DDTitle.SetStaticState(false);
       m_DDPassword.SetStaticState(false);
@@ -3610,13 +3612,16 @@ void DboxMain::SetToolBarPositions()
       m_DDemail.SetStaticState(false);
       m_DDAutotype.SetStaticState(false);
     } else {
-      m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
+      if (pci_entry->IsDependent()) {
+        pbci = GetBaseEntry(pci_entry);
+      }
+      m_DDGroup.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::GROUP, pbci));
       m_DDTitle.SetStaticState(true);
       m_DDPassword.SetStaticState(true);
-      m_DDUser.SetStaticState(!entry->IsUserEmpty());
-      m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
-      m_DDURL.SetStaticState(!entry->IsURLEmpty());
-      m_DDemail.SetStaticState(!entry->IsEmailEmpty());
+      m_DDUser.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::USER, pbci));
+      m_DDNotes.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::NOTES, pbci));
+      m_DDURL.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::URL, pbci));
+      m_DDemail.SetStaticState(!pci_entry->IsFieldValueEmpty(CItemData::EMAIL, pbci));
       m_DDAutotype.SetStaticState(true);
     }
 

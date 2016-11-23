@@ -238,11 +238,13 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
     iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
   else if (bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
     iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
+
     ASSERT(iter != m_MapMenuShortcuts.end());
     CString cs_text = iter->second.name.c_str();
     int nPos = cs_text.Find(L"\t");
     if (nPos > 0)
       cs_text = cs_text.Left(nPos);
+
     pCmdUI->SetText(cs_text);
   }
 }
