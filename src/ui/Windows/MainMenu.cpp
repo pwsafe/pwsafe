@@ -513,7 +513,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   const bool bItemSelected = (SelItemOk() == TRUE);
   const bool bReadOnly = m_core.IsReadOnly();
-  const CItemData *pci(NULL);
+  const CItemData *pci(NULL), *pbci(NULL);
   const wchar_t *tc_dummy = L" ";
 
   ASSERT_VALID(pPopupMenu);
@@ -632,14 +632,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (bItemSelected) {
     pci = getSelectedItem();
     ASSERT(pci != NULL);
+    if (pci->IsDependent())
+      pbci = m_core.GetBaseEntry(pci);
   }
 
   // Save original entry type before possibly changing pci
   const CItemData::EntryType etype_original = 
           pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
-
-  if (bItemSelected && pci->IsShortcut())
-    pci = m_core.GetBaseEntry(pci);
 
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
@@ -787,10 +786,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     //   List View - <Entry Items>, Sep, Add Entry, Sep, Clear Clipboard, Sep,
     //               Entry functions (copy to clipboard, browse, run etc)
     if (pci != NULL) {
-      CItemData *pbci(NULL);
-      if (pci->IsDependent()) {
-        pbci = GetBaseEntry(pci);
-      }
       // Entry is selected
 
       // Deal with multi-selection
@@ -947,7 +942,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           ASSERT(0);
       }
 
-      if (pci->HasAttRef()) {
+      if (pci->IsFieldValueEmpty(CItemData::ATTREF, pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
       }
@@ -967,7 +962,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
-      if (pci->HasAttRef()) {
+      if (pci->IsFieldValueEmpty(CItemData::ATTREF, pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
           ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
       }
