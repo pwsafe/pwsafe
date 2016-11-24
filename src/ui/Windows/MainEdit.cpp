@@ -1971,7 +1971,7 @@ void DboxMain::OnAutoType()
   UpdateAccessTime(pci->GetUUID());
 
   // All code using ci must be before this AutoType since the
-  // latter may trash *pci if lock-on-minimize
+  // *pci may be trashed if lock-on-minimize
   AutoType(*pci);
 }
 
