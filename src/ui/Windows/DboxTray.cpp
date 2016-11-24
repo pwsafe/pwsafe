@@ -93,7 +93,9 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
   const StringX sx_user = ci.GetEffectiveFieldValue(CItemData::USER, pbci);
   SetClipboardData(sx_user);
   UpdateLastClipboardAction(CItemData::USER);
-  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // Username always comes from the entry irrespective of type
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
@@ -114,6 +116,8 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
   const StringX sx_password = ci.GetEffectiveFieldValue(CItemData::PASSWORD, pbci);
   SetClipboardData(sx_password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
+
+  // Password always comes from a normal or alias/shortcut base entry
   UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
 }
 
@@ -135,7 +139,9 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
   const StringX sx_notes = ci.GetEffectiveFieldValue(CItemData::NOTES, pbci);
   SetClipboardData(sx_notes);
   UpdateLastClipboardAction(CItemData::NOTES);
-  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // Notes for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
@@ -181,7 +187,9 @@ void DboxMain::OnTrayBrowse(UINT nID)
       UpdateLastClipboardAction(CItemData::PASSWORD);
     }
   }
-  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // URL for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
@@ -243,7 +251,9 @@ void DboxMain::OnTrayCopyEmail(UINT nID)
   const StringX sx_email = ci.GetEffectiveFieldValue(CItemData::EMAIL, pbci);
   SetClipboardData(sx_email);
   UpdateLastClipboardAction(CItemData::EMAIL);
-  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // Email for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyEmail(CCmdUI *)
@@ -274,7 +284,9 @@ void DboxMain::OnTraySendEmail(UINT nID)
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
     LaunchBrowser(cs_command, L"", vactionverboffsets, false);
-    UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+    // Email/URL for a shortcut comes from base, otherwise from the entry
+    UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
   }
 }
 
@@ -325,10 +337,11 @@ void DboxMain::OnTrayAutoType(UINT nID)
     return;
 
   m_bInAT = true;
-  UpdateAccessTime(ci.GetUUID());
-  // All code using ci must be before this AutoType since the
-  // ci may be trashed if lock-on-minimize
   AutoType(ci);
+
+  // Unclear what AutoType is going to reference from entry, if a shortcut,
+  // and what from the base so just update the entry access time
+  UpdateAccessTime(ci.GetUUID());
   m_bInAT = false;
 }
 
@@ -364,7 +377,9 @@ void DboxMain::OnTrayCopyURL(UINT nID)
 
   SetClipboardData(sx_URL);
   UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // URL for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
@@ -419,6 +434,8 @@ void DboxMain::OnTrayRunCommand(UINT nID)
                                                 m_vactionverboffsets);
   SetClipboardData(sx_pswd);
   UpdateLastClipboardAction(CItemData::PASSWORD);
+
+  // Password always comes from a normal or base entry
   UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
