@@ -248,7 +248,6 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
         MYERROR;
     }
 
-
     if (!m_bQuiet)
         _ftprintf(stdout, L"Translating StringTable...");
     bRes = EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, (LONG_PTR)this);
@@ -1184,7 +1183,6 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
             m_bDefaultAcceleratorStrings++;
     }
 
-
     // Create the new accelerator table
     hglAccTableNew = LocalAlloc(LPTR, cAccelerators * 4 * sizeof(WORD));
     if (hglAccTableNew == NULL)
@@ -1983,7 +1981,6 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
     MultiByteToWideChar(CP_UTF8, 0, ss.c_str(), -1, bufw.get(), (int)len*4);
     std::wstring ssw = bufw.get();
 
-
     const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
     const std::sregex_iterator end;
     for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
@@ -2044,7 +2041,6 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
     auto buf = std::make_unique<char[]>(ssw.size() * 4 + 1);
     int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, ssw.c_str(), -1, buf.get(), (int)len*4, NULL, NULL);
 
-
     if (!UpdateResource(m_hUpdateRes, RT_RIBBON, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), buf.get(), lengthIncTerminator-1))
     {
         goto DONE_ERROR;
@@ -2054,7 +2050,6 @@ BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
     {
         goto DONE_ERROR;
     }
-
 
     UnlockResource(hglRibbonTemplate);
     FreeResource(hglRibbonTemplate);
@@ -2204,7 +2199,6 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
     auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
     GetFullPathName(filepath.c_str(), reqLen, wcfullPath.get(), NULL);
     std::wstring fullpath = wcfullPath.get();
-
 
     // first treat the file as ASCII and try to get the defines
     {

@@ -24,4 +24,3 @@ CExtThread * CExtThread::BeginThread(AFX_THREADPROC proc, LPVOID p)
   }
   return thread;
 }
-

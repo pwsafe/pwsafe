@@ -167,8 +167,6 @@ void CompareDlg::CreateControls()
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);
-
-
 }
 
 struct CompareDlgType {
@@ -551,7 +549,6 @@ bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool re
   return ae.ShowModal() == wxID_OK && !readOnly;
 }
 
-
 void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 {
   m_dbSelectionPane->Collapse();
@@ -630,7 +627,6 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
       Layout();
   }
 }
-
 
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {

@@ -34,24 +34,24 @@ public:
   CSecString m_cryptkey2;
   //}}AFX_DATA
 
-
+protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CCryptKeyEntry)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
-  virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CCryptKeyEntry)
   virtual void OnCancel();
   virtual void OnOK();
   afx_msg void OnHelp();
   //}}AFX_MSG
+  
   DECLARE_MESSAGE_MAP()
+  
 private:
   bool m_encrypt; // from c'tor. False == decrypt, don't confirm password
   

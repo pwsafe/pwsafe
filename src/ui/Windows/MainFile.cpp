@@ -1221,7 +1221,6 @@ int DboxMain::Save(const SaveType savetype)
 
   BlockLogoffShutdown(false);
 
-
   // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
 

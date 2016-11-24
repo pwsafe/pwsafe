@@ -39,7 +39,6 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   if (m_status != NULL) m_status->Show(yubiExists());
 }
 
-
 bool CYubiMixin::yubiExists() const
 {
   return PWYubi::YubiExists();
@@ -169,7 +168,6 @@ bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
   return retval;
 }
 
-
 StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
 {
   std::wostringstream os;
@@ -180,4 +178,3 @@ StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
   }
   return StringX(os.str().c_str());
 }
-

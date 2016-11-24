@@ -12,7 +12,6 @@
 #ifndef _SAFECOMBINATIONPROMPT_H_
 #define _SAFECOMBINATIONPROMPT_H_
 
-
 /*!
  * Includes
  */
@@ -54,7 +53,6 @@ class wxTimer;
 #define SYMBOL_CSAFECOMBINATIONPROMPT_SIZE wxSize(400, 300)
 #define SYMBOL_CSAFECOMBINATIONPROMPT_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CSafeCombinationPrompt class declaration

@@ -54,7 +54,6 @@
 
 IMPLEMENT_DYNAMIC_CLASS( COptions, wxPropertySheetDialog )
 
-
 /*!
  * COptions event table definition
  */
@@ -125,7 +124,6 @@ COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, co
   Create(parent, id, caption, pos, size, style);
 }
 
-
 /*!
  * COptions creator
  */
@@ -152,7 +150,6 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   return true;
 }
 
-
 /*!
  * COptions destructor
  */
@@ -162,7 +159,6 @@ COptions::~COptions()
 ////@begin COptions destruction
 ////@end COptions destruction
 }
-
 
 /*!
  * Member initialisation
@@ -199,7 +195,6 @@ void COptions::Init()
   m_systrayWarning = NULL;
 ////@end COptions member initialisation
 }
-
 
 /*!
  * Control creation for COptions
@@ -688,7 +683,6 @@ void COptions::CreateControls()
 ////@end COptions content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -957,7 +951,6 @@ void COptions::OnOk(wxCommandEvent& /* evt */)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
  */
@@ -973,7 +966,6 @@ void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
  */
@@ -982,7 +974,6 @@ void COptions::OnBuPrefix( wxCommandEvent& evt )
 {
   evt.Skip();
 }
-
 
 /*!
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
@@ -993,7 +984,6 @@ void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
   m_dfltbuprefixRB->SetValue(false);
   m_usrbuprefixRB->SetValue(true);
 }
-
 
 /*!
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
@@ -1036,7 +1026,6 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   m_suffixExample->SetLabel(example);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
  */
@@ -1049,7 +1038,6 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
     m_usrbudirTxt->SetValue(dirdlg.GetPath());
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
  */
@@ -1060,8 +1048,6 @@ void COptions::OnBuDirRB( wxCommandEvent& /* evt */ )
     m_usrbudirTxt->Enable(enable);
     m_buDirBN->Enable(enable);
 }
-
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
@@ -1076,7 +1062,6 @@ void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
  */
@@ -1087,7 +1072,6 @@ void COptions::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
     m_preexpirywarndaysSB->Enable(m_preexpirywarn);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
@@ -1100,7 +1084,6 @@ void COptions::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
     m_defusernameLBL->Enable(m_usedefuser);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
@@ -1127,7 +1110,6 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
   m_pwhistnumdfltSB->Enable(m_pwhistsaveCB->GetValue());
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
  */
@@ -1139,7 +1121,6 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
   evt.Skip();
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
  */
@@ -1150,7 +1131,6 @@ void COptions::OnPWHistRB( wxCommandEvent& evt )
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
  */
@@ -1159,7 +1139,6 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 {
   m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
@@ -1183,4 +1162,3 @@ void COptions::OnPageChanging(wxBookCtrlEvent& evt)
       evt.Veto();
   }
 }
-

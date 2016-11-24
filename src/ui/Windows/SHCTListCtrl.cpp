@@ -255,5 +255,3 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       break;
   }
 }
-
-

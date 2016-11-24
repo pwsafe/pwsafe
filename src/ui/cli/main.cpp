@@ -40,7 +40,6 @@ static void usage(char *pname)
        << "\t safe --exp[=file] --text|--xml" << endl;
 }
 
-
 struct UserArgs {
   UserArgs() : ImpExp(Unset), Format(Unknown) {}
   StringX safe, fname;

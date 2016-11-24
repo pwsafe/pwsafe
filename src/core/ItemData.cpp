@@ -401,8 +401,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
   return PWSfile::SUCCESS;
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Accessors
 
@@ -2048,7 +2046,6 @@ static void push(vector<char> &v, char type,
   }
 }
 
-
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
 {
@@ -2203,4 +2200,3 @@ stringT CItemData::EngFieldName(FieldType ft)
     return _T("");
   };
 }
-

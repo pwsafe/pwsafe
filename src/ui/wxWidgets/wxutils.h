@@ -10,7 +10,6 @@
 // wxutils.h - file for various wxWidgets related utility functions,
 // macros, classes, etc
 
-
 #ifndef __WXUTILS_H__
 #define __WXUTILS_H__
 
@@ -326,4 +325,3 @@ typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
 
 #endif // __WXUTILS_H__
-

@@ -456,7 +456,6 @@ void CWZSelectDB::OnVerify2keySetfocus()
   m_LastFocus = IDC_VERIFY2;
 }
 
-
 void CWZSelectDB::OnAdvanced()
 {
   //m_bAdvanced = ((CButton*)GetDlgItem(IDC_ADVANCED))->GetCheck();

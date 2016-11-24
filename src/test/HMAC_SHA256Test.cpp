@@ -183,5 +183,3 @@ TEST(HMAC_SHA256Test, hmac_sha256_test)
     EXPECT_TRUE(memcmp(tmp, tests[i].hash, 32) == 0) << "Test vector " << i;
   }
 }
-
-

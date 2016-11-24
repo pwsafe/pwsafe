@@ -43,4 +43,3 @@ TEST(SHA256Test, sha256_test)
     EXPECT_TRUE(memcmp(tmp, tests[i].hash, 32) == 0) << "test vector " << i;
   }
 }
-

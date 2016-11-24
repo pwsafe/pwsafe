@@ -13,7 +13,6 @@
 #ifndef _ADDEDITPROPSHEET_H_
 #define _ADDEDITPROPSHEET_H_
 
-
 /*!
  * Includes
  */
@@ -112,8 +111,6 @@ class UIInterFace;
 #define SYMBOL_EDITPROPSHEET_TITLE _("Edit Entry")
 #define SYMBOL_VIEWPROPSHEET_TITLE _("View Entry")
 #define SYMBOL_AUTOPROPSHEET_TITLE _("Add, Edit or View Entry")
-
-
 
 /*!
  * AddEditPropSheet class declaration

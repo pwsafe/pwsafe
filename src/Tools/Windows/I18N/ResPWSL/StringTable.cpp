@@ -140,7 +140,6 @@ CVersionInfoString* CStringTable::GetNextString(POSITION &pos)
   return (CVersionInfoString*)m_lstStrings.GetNext(pos);
 }
 
-
 void CStringTable::GetStringNames(CStringList &slNames, BOOL bMerge) const
 {
   if (!bMerge)

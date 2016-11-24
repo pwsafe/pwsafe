@@ -123,7 +123,6 @@ public:
   bool Matches(time_t time1, time_t time2, int iObject,
     int iFunction) const;  // time values
 
-
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
   bool IsTitleSet() const                  { return IsFieldSet(ATTTITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(ATTCTIME);     }

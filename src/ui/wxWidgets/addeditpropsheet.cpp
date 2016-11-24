@@ -51,7 +51,6 @@
 
 IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
-
 /*!
  * AddEditPropSheet event table definition
  */
@@ -156,7 +155,6 @@ AddEditPropSheet::~AddEditPropSheet()
 ////@begin AddEditPropSheet destruction
 ////@end AddEditPropSheet destruction
 }
-
 
 /*!
  * Member initialisation
@@ -1017,7 +1015,6 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
     ::wxLaunchDefaultBrowser(m_url, wxBROWSER_NEW_WINDOW);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
  */
@@ -1041,7 +1038,6 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
     }
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
@@ -1360,7 +1356,6 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
  */
@@ -1372,7 +1367,6 @@ void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
      m_MaxPWHistCtrl->Enable(m_keepPWHist);
    }
 }
-
 
 #if 0 // XXX Remove, as we did away with this checkbox!
 void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
@@ -1452,7 +1446,6 @@ void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
   m_RecurringCtrl->Enable(!On && !Never);
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
  */
@@ -1508,7 +1501,6 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
    EnableNonHexCBs(!useHex);
  }
 }
-
 
 /*!
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
@@ -1620,7 +1612,6 @@ void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
     m_PWHistory.Empty();
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -1647,7 +1638,6 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
   m_symbols = st_symbols.c_str();
   m_ownsymbols->SetValue(m_symbols);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
@@ -1719,7 +1709,6 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
  */
@@ -1741,7 +1730,6 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   EnablePWPolicyControls(false);
 }
 
-
 /*!
  * wxEVT_DATE_CHANGED event handler for ID_DATECTRL
  */
@@ -1751,7 +1739,6 @@ void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
   SetXTime(event.GetEventObject());
 }
 
-
 /*!
  * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
  */
@@ -1760,7 +1747,6 @@ void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
 {
   SetXTime(event.GetEventObject());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
@@ -1774,7 +1760,6 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
   FindWindow(ID_RESET_SYMBOLS)->Enable(checked);
 }
 
-
 /*!
  * wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
  */
@@ -1786,7 +1771,6 @@ void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
   event.Skip();
 ////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
@@ -1805,7 +1789,6 @@ void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
   m_ownsymbols->SetValue(m_symbols);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
@@ -1814,7 +1797,6 @@ void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
 {
   m_pwpDigSpin->Enable(event.IsChecked());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
@@ -1825,7 +1807,6 @@ void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
   m_pwpUCSpin->Enable(event.IsChecked());
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
@@ -1834,4 +1815,3 @@ void AddEditPropSheet::OnLowercaseCB( wxCommandEvent& event )
 {
   m_pwpLCSpin->Enable(event.IsChecked());
 }
-

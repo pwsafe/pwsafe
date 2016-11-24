@@ -46,7 +46,6 @@ BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-
 void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);

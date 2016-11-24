@@ -39,7 +39,6 @@ protected:
   COLORREF m_textcolor, m_backgroundcolour;
   bool m_bMemoryAllocOK;
 
-
   afx_msg void Save();
   afx_msg void Finish();
   afx_msg void SendToClipboard();

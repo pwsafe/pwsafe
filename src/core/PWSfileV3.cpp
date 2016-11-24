@@ -56,7 +56,6 @@ using pws_os::CUUID;
  *         V3.30           0x030D
 */
 
-
 const short VersionNum = 0x030D;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {

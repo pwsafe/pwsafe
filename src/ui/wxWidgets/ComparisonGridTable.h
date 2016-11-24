@@ -20,7 +20,6 @@
 #define CurrentBackgroundColor    *wxWHITE
 #define ComparisonBackgroundColor *wxWHITE
 
-
 struct SelectionCriteria;
 class PWScore;
 
@@ -38,7 +37,6 @@ public:
 
   DECLARE_EVENT_TABLE()
 };
-
 
 class ComparisonGridTable: public wxGridTableBase
 {

@@ -13,7 +13,6 @@
 #ifndef _SAFECOMBINATIONCHANGE_H_
 #define _SAFECOMBINATIONCHANGE_H_
 
-
 /*!
  * Includes
  */
@@ -57,7 +56,6 @@ class wxTimer;
 #define SYMBOL_CSAFECOMBINATIONCHANGE_SIZE wxSize(400, 300)
 #define SYMBOL_CSAFECOMBINATIONCHANGE_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CSafeCombinationChange class declaration

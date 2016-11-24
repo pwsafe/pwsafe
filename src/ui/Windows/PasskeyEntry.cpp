@@ -450,7 +450,6 @@ void CPasskeyEntry::OnComboEditChange()
   UpdateRO();
 }
 
-
 void CPasskeyEntry::OnBnClickedReadonly()
 {
   m_PKE_ReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;

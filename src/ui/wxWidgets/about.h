@@ -9,10 +9,8 @@
 *
 */
 
-
 #ifndef _ABOUT_H_
 #define _ABOUT_H_
-
 
 /*!
  * Includes
@@ -33,7 +31,6 @@
  * Control identifiers
  */
 
-
 ////@begin control identifiers
 #define ID_CABOUT 10078
 #define wxID_VERSIONSTR 10079
@@ -46,7 +43,6 @@
 #define SYMBOL_CABOUT_SIZE wxSize(400, 300)
 #define SYMBOL_CABOUT_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CAbout class declaration
@@ -108,4 +104,3 @@ public:
 };
 
 #endif /* _ABOUT_H_ */
-

@@ -41,7 +41,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
@@ -150,7 +149,6 @@ void CPasskeySetup::OnHelp()
 {
   ShowHelp(L"::/html/create_new_db.html");
 }
-
 
 void CPasskeySetup::OnPasskeySetfocus()
 {

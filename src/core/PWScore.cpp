@@ -1089,7 +1089,6 @@ void PWScore::ProcessReadEntry(CItemData &ci_temp,
   m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
 }
 
-
 static void ReportReadErrors(CReport *pRpt,
                              std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                              std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID)
@@ -1333,7 +1332,6 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     maxnumincbackups = 998;
   }
 
-
   using std::vector;
 
   stringT cs_filenamemask(cs_filenamebase);
@@ -1354,7 +1352,6 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     is >> n;
     file_nums.push_back(n);
   }
-
 
   if (file_nums.empty()) {
     cs_newname = cs_filenamebase + _T("_001");
@@ -1723,7 +1720,6 @@ bool PWScore::HasRUEListChanged() const
   return m_ReadFileVersion >= PWSfile::V30 &&
          (m_hdr.m_RUEList != m_InitialRUEList);
 }
-
 
 static void collectGroups(const StringX &sxg, std::set<stringT> &setGroups)
 {
@@ -2190,7 +2186,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       // NOT removing attachment for now. Add support for exporting orphans later.
     }
   }
-
 
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias

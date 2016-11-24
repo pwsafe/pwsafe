@@ -1713,7 +1713,6 @@ void DboxMain::OnDisplayPswdSubset()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
     ASSERT(pci != NULL);

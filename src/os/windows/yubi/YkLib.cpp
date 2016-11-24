@@ -155,7 +155,6 @@ YKLIB_RC CYkLib::rawWrite(BYTE cmd, BYTE *dt, size_t bcnt)
 	}
 }
 
-
 /*************************************************************************
 **  function getCrc                                                     **
 **  Calculate ISO13239 checksum of buffer                               **

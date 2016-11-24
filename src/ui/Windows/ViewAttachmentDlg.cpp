@@ -424,4 +424,3 @@ void CViewAttachmentDlg::SetZoomEditValue(int nPos)
 
   UpdateData(FALSE);
 }
-

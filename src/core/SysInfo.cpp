@@ -13,7 +13,6 @@
 // such as hostname, username, pid
 //-----------------------------------------------------------------
 
-
 SysInfo *SysInfo::self = NULL;
 
 SysInfo *SysInfo::GetInstance()

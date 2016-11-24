@@ -39,13 +39,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * PWSGridTable type definition
  */
 
 IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
-
 
 typedef StringX (CItemData::*ItemDataFuncT)() const;
 
@@ -98,7 +96,6 @@ PWSGridTable::~PWSGridTable()
 {
 }
 
-
 /*!
  * wxGridTableBase override implementations
  */
@@ -109,7 +106,6 @@ int PWSGridTable::GetNumberRows()
   assert(N <= size_t(std::numeric_limits<int>::max()));
   return int(N);
 }
-
 
 int PWSGridTable::GetNumberCols()
 {    
@@ -128,7 +124,6 @@ wxString PWSGridTable::GetColLabelValue(int col)
   return (size_t(col) < NumberOf(PWSGridCellData)) ?
     towxstring(CItemData::FieldName(PWSGridCellData[col].ft)) : wxString();
 }
-
 
 wxString PWSGridTable::GetValue(int row, int col)
 {
@@ -202,7 +197,6 @@ void PWSGridTable::SetView(wxGrid* newGrid)
     }
   }
 }
-
 
 bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 {
@@ -336,4 +330,3 @@ int PWSGridTable::GetNumHeaderCols()
   // as selected by user
   return NumberOf(PWSGridCellData);
 }
-

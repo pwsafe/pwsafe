@@ -12,7 +12,6 @@
 #ifndef _PWSGRIDTABLE_H_
 #define _PWSGRIDTABLE_H_
 
-
 /*!
  * Includes
  */

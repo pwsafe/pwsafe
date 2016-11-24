@@ -10,7 +10,6 @@
 *
 */
 
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -118,7 +117,6 @@ public:
   virtual void SaveData(SyncData* data);
 };
 
-
 //helper class used by field selection page to construct the UI
 struct SyncFieldSelection {
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
@@ -213,7 +211,6 @@ public:
   virtual void OnPageEnter(PageDirection dir);
 };
 
-
 ///////////////////////////////////////////////////
 // PwsSyncWizard Implementation
 //
@@ -293,7 +290,6 @@ CReport* PwsSyncWizard::GetReport() const {
   return &m_syncData->syncReport;
 }
 
-
 ////////////////////////////////////////////
 //SyncWizardPage implementation
 //
@@ -347,7 +343,6 @@ void SyncWizardPage::SetChildWindowText(unsigned id, const wxString& str)
 {
   FindWindow(id)->SetLabel(str);
 }
-
 
 ////////////////////////////////////////////
 //SyncStartPage implementation
@@ -427,7 +422,6 @@ void SyncFieldSelectionPage::SaveData(SyncData* data)
 {
   data->selCriteria = *m_panel->m_criteria;
 }
-
 
 //////////////////////////////////////////////////////
 // SyncOptionsSummaryPage implementation

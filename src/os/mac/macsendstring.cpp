@@ -121,7 +121,6 @@ bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
                               {VK_CMD, false, false}
                             };
 
-
   return EmulateKeyStrokes(KeySequence, NumberOf(KeySequence), delayMS);
 }
 

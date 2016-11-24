@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _MANAGEPWDPOLICIES_H_
 #define _MANAGEPWDPOLICIES_H_
-
 
 /*!
  * Includes
@@ -61,7 +59,6 @@ class wxGrid;
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE wxSize(400, 300)
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CManagePasswordPolicies class declaration

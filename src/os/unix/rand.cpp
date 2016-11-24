@@ -50,7 +50,6 @@ static void get_failsafe_rnd(char * &p, unsigned &slen)
   memcpy(p, &tv.tv_usec, slen);
 }
 
-
 void pws_os::GetRandomSeed(void *p, unsigned &slen)
 {
   /**

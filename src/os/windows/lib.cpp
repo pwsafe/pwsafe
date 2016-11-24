@@ -9,6 +9,7 @@
 /**
  * \file Windows-specific implementation of lib.h
  */
+
 #include "../lib.h"
 #include "../debug.h"
 #include <windows.h>
@@ -61,4 +62,3 @@ void *pws_os::GetFunction(void *handle, const char *name)
   ASSERT(handle != NULL && name != NULL);
   return ::GetProcAddress(HMODULE(handle), name);
 }
-

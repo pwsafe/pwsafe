@@ -22,4 +22,3 @@
 #include <tchar.h>
 
 typedef std::basic_string<TCHAR> tstring;
-

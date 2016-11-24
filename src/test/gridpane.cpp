@@ -100,8 +100,6 @@ class TestDialog: public wxDialog, IGridSizer
 
 };
 
-
-
 enum { MAX_ROWS = 10000, MAX_COLS = 500, NUM_ROWS = 200, NUM_COLS = 50 };
 enum { ID_GRID = 100, ID_SPIN_ROW, ID_SPIN_COL, ID_COLLPANE, ID_POPULATE, ID_LOGSIZES };
 
@@ -349,4 +347,3 @@ void TestDialog::OnPopulate(wxCommandEvent& evt)
   log << wxT("Client size: ") << GetClientSize() << wxT(", window size: ") << GetSize() << wxT("\n");
   wxLogDebug( log );
 }
-

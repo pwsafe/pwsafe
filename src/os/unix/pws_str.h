@@ -9,7 +9,6 @@
 #define __PWS_STR_H
 #include "../typedefs.h"
 
-
 namespace pws_os {
   /**
    * Workaround the lack of a wchar_t version of silly conversion functions

@@ -81,7 +81,6 @@ using pws_os::CUUID;
 using std::get;
 using std::make_tuple;
 
-
 /*!
  * PasswordSafeFrame type definition
  */
@@ -266,7 +265,6 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
 }
-
 
 /*!
  * PasswordSafeFrame creator
@@ -1114,7 +1112,6 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
     m_core.ResumeOnDBNotification();
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
  */
@@ -1275,13 +1272,11 @@ int PasswordSafeFrame::Open(const wxString &fname)
 #endif
 }
 
-
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
   CProperties props(this, m_core);
   props.ShowModal();
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
@@ -1297,7 +1292,6 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
   window->Destroy();
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
@@ -1306,7 +1300,6 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 {
   Save();
 }
-
 
 void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 {
@@ -1620,7 +1613,6 @@ void PasswordSafeFrame::SaveSettings(void) const
   m_grid->SaveSettings();
 }
 
-
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
 {
   const int cmd = int(evt.GetExtraLong());
@@ -1631,7 +1623,6 @@ long PasswordSafeFrame::GetEventRUEIndex(const wxCommandEvent& evt) const
 {
   return GetRUEIndex(int(evt.GetExtraLong()));
 }
-
 
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
@@ -2288,7 +2279,6 @@ int PasswordSafeFrame::New()
   return PWScore::SUCCESS;
 }
 
-
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
   wxString cs_text(_("Please choose a name for the new database"));
@@ -2487,7 +2477,6 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 #endif
   }
 }
-
 
 void PasswordSafeFrame::TryIconize(int attempts)
 {
@@ -2987,7 +2976,6 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
     if (dir.empty())
       dir = towxstring(PWSdirs::GetSafeDir());
 
-
     wxFileDialog fd(this, cs_text, dir, filename.GetFullName(), cs_fmt,
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
@@ -3264,7 +3252,6 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   }
 }
 
-
 void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
 {
   // disable in read-only mode or empty
@@ -3345,5 +3332,3 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
-

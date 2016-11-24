@@ -175,4 +175,3 @@ inline bool operator!=(LPCWSTR s1, const CSecString& s2)
 // Local variables:
 // mode: c++
 // End:
-

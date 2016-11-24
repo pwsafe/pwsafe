@@ -12,7 +12,6 @@
 #ifndef _PROPERTIES_H_
 #define _PROPERTIES_H_
 
-
 /*!
  * Includes
  */
@@ -54,7 +53,6 @@
 #define SYMBOL_CPROPERTIES_SIZE wxSize(400, 300)
 #define SYMBOL_CPROPERTIES_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CProperties class declaration

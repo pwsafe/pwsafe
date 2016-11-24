@@ -15,7 +15,6 @@
 #ifndef _PASSWORDSAFEFRAME_H_
 #define _PASSWORDSAFEFRAME_H_
 
-
 /*!
  * Includes
  */

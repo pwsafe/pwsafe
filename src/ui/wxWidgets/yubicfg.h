@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _YUBICFG_H_
 #define _YUBICFG_H_
-
 
 /*!
  * Includes
@@ -54,7 +52,6 @@ class PWScore;
 #define SYMBOL_YUBICFGDLG_SIZE wxSize(400, 300)
 #define SYMBOL_YUBICFGDLG_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * YubiCfgDlg class declaration

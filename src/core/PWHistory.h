@@ -89,4 +89,3 @@ StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 // Local variables:
 // mode: c++
 // End:
-

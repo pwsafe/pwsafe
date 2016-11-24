@@ -46,7 +46,6 @@ using pws_os::CUUID;
 
 IMPLEMENT_CLASS( PWSGrid, wxGrid )
 
-
 /*!
  * PWSGrid event table definition
  */
@@ -81,7 +80,6 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
   Create(parent, id, pos, size, style);
 }
 
-
 /*!
  * PWSGrid creator
  */
@@ -102,7 +100,6 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
   return true;
 }
 
-
 /*!
  * PWSGrid destructor
  */
@@ -113,7 +110,6 @@ PWSGrid::~PWSGrid()
 ////@end PWSGrid destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -123,7 +119,6 @@ void PWSGrid::Init()
 ////@begin PWSGrid member initialisation
 ////@end PWSGrid member initialisation
 }
-
 
 /*!
  * Control creation for PWSGrid
@@ -405,7 +400,6 @@ CItemData *PWSGrid::GetItem(int row) const
   return NULL;
 }
 
-
 /*!
  * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
  */
@@ -449,7 +443,6 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
   evt.Skip();
 }
 
-
 void PWSGrid::SaveSettings(void) const
 {
   PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
@@ -472,7 +465,6 @@ void PWSGrid::Clear()
   }
   DeleteAllItems();
 }
-
 
 /*!
  * wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX

@@ -58,7 +58,6 @@
 
 IMPLEMENT_CLASS( CSafeCombinationEntry, wxDialog )
 
-
 /*!
  * CSafeCombinationEntry event table definition
  */
@@ -80,7 +79,6 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
                 ////@end CSafeCombinationEntry event table entries
 END_EVENT_TABLE()
 
-
 /*!
  * CSafeCombinationEntry constructors
  */
@@ -101,7 +99,6 @@ CSafeCombinationEntry::CSafeCombinationEntry(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CSafeCombinationEntry creator
@@ -128,7 +125,6 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   return true;
 }
 
-
 /*!
  * CSafeCombinationEntry destructor
  */
@@ -141,7 +137,6 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
   delete m_pollingTimer;
 #endif
 }
-
 
 /*!
  * Member initialisation
@@ -162,7 +157,6 @@ void CSafeCombinationEntry::Init()
   m_postInitDone = false;
 ////@end CSafeCombinationEntry member initialisation
 }
-
 
 /*!
  * Control creation for CSafeCombinationEntry
@@ -334,7 +328,6 @@ wxIcon CSafeCombinationEntry::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end CSafeCombinationEntry icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -408,7 +401,6 @@ void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
  */
@@ -427,7 +419,6 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
     UpdateReadOnlyCheckbox();
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
@@ -492,7 +483,6 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 #ifndef NO_YUBI
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
@@ -552,7 +542,6 @@ void CSafeCombinationEntry::UpdateNew(bool isRO)
 {
   FindWindow(ID_NEWDB)->Enable(!isRO);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY

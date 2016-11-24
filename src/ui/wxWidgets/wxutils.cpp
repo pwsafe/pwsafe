@@ -73,7 +73,6 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   return rc;
 }
 
-
 void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
 {
   if (!win)

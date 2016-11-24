@@ -113,7 +113,6 @@ bool pws_os::CUUID::operator<(const pws_os::CUUID &that) const
   return uuid_compare(m_uuid, that.m_uuid) < 0;
 }
 
-
 std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 {
   uuid_array_t uuid_a;
@@ -147,7 +146,6 @@ pws_os::CUUID::operator StringX() const
   m_canonic = sc;
   return os.str();
 }
-
 
 #ifdef TEST
 #include <stdio.h>

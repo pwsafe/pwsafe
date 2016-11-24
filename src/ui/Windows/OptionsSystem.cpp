@@ -100,7 +100,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem message handlers
 
-
 BOOL COptionsSystem::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();

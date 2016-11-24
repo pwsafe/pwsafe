@@ -33,7 +33,6 @@ BEGIN_EVENT_TABLE( MergeDlg, wxDialog )
   EVT_BUTTON( ID_ADVANCED,  MergeDlg::OnAdvancedSelection )
 END_EVENT_TABLE()
 
-
 MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)

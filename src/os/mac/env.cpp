@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <limits.h>
 
-
 #include "../env.h"
 #include "../utf8conv.h" // for pws_os::towc
 

@@ -55,4 +55,3 @@ class SystemTray : protected wxTaskBarIcon
 };
 
 #endif /* _SYSTEMTRAY_H_ */
-

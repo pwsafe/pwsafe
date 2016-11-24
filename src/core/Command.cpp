@@ -324,7 +324,6 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
   m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
 }
 
-
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
                                            const StringX &sxOldGroup,
                                            const StringX &sxNewGroup,
@@ -1103,4 +1102,3 @@ void DBFiltersCommand::Undo()
     }
   }
 }
-

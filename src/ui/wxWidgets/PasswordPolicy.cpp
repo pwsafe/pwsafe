@@ -30,8 +30,6 @@
 ////@begin XPM images
 ////@end XPM images
 
-
-
 /*!
  * CPasswordPolicy event table definition
  */
@@ -53,7 +51,6 @@ BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CPasswordPolicy constructor
  */
@@ -67,7 +64,6 @@ CPasswordPolicy::CPasswordPolicy( wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CPasswordPolicy creator
@@ -115,7 +111,6 @@ CPasswordPolicy::~CPasswordPolicy()
 ////@end CPasswordPolicy destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -142,7 +137,6 @@ void CPasswordPolicy::Init()
   m_pwpHexCtrl = NULL;
 ////@end CPasswordPolicy member initialisation
 }
-
 
 /*!
  * Control creation for CPasswordPolicy
@@ -302,7 +296,6 @@ void CPasswordPolicy::CreateControls()
 ////@end CPasswordPolicy content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -441,8 +434,6 @@ void CPasswordPolicy::OnOkClick( wxCommandEvent& )
   EndModal(wxID_OK);
 }
 
-
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -454,7 +445,6 @@ void CPasswordPolicy::OnCancelClick( wxCommandEvent& event )
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
@@ -526,7 +516,6 @@ void CPasswordPolicy::OnPwPolUseLowerCase( wxCommandEvent& )
   CBox2Spin(m_pwpUseLowerCtrl, m_pwpLCSpin);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
  */
@@ -536,7 +525,6 @@ void CPasswordPolicy::OnPwPolUseUpperCase( wxCommandEvent& )
   CBox2Spin(m_pwpUseUpperCtrl, m_pwpUCSpin);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
@@ -545,7 +533,6 @@ void CPasswordPolicy::OnPwPolUseDigits( wxCommandEvent& )
 {
   CBox2Spin(m_pwpUseDigitsCtrl, m_pwpDigSpin);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
@@ -568,7 +555,6 @@ void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
   SetDefaultSymbolDisplay(true);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -588,7 +574,6 @@ void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
     SetDefaultSymbolDisplay(false);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -607,4 +592,3 @@ void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
   if (Validate() && TransferDataFromWindow())
     SetDefaultSymbolDisplay(false);
 }
-

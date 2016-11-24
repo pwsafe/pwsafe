@@ -81,4 +81,3 @@ wxTextCtrl* CImportXMLDlg::TextCtrl(wxString* validatorTarget)
   return new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 
                                   wxTextValidator(wxFILTER_NONE, validatorTarget));
 }
-

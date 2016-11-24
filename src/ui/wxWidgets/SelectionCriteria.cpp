@@ -139,4 +139,3 @@ bool SelectionCriteria::GetFieldSelection(wxArrayString& selectedFields, wxArray
   }
   return m_bsFields.count() == NumberOf(selectableFields);
 }
-

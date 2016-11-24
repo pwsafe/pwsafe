@@ -226,4 +226,3 @@ TCHAR CImportTextDlg::FieldSeparator() const
   wxFAIL_MSG(wxT("No delimiter selected"));
   return  wxT(',');
 }
-

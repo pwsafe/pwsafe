@@ -20,7 +20,6 @@
 #include <wx/wx.h>
 #endif
 
-
 #include "./fieldselectiondlg.h"
 #include "./fieldselectionpanel.h"
 #include "./wxutils.h"
@@ -50,7 +49,6 @@ BEGIN_EVENT_TABLE( FieldSelectionDlg, wxDialog )
   EVT_INIT_DIALOG(FieldSelectionDlg::OnInitDialog)
   EVT_COMMAND(wxID_ANY, EVT_RELAYOUT_DLG, FieldSelectionDlg::OnRelayoutDlg)
 END_EVENT_TABLE()
-
 
 FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
                                      const CItemData::FieldType* available, size_t navail,

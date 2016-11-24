@@ -147,7 +147,6 @@ PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, PWScore &core,
   Create(parent, id, pos, size, style);
 }
 
-
 /*!
  * PWSTreeCtrl creator
  */
@@ -161,7 +160,6 @@ bool PWSTreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
   return true;
 }
 
-
 /*!
  * PWSTreeCtrl destructor
  */
@@ -172,7 +170,6 @@ PWSTreeCtrl::~PWSTreeCtrl()
 ////@end PWSTreeCtrl destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -182,7 +179,6 @@ void PWSTreeCtrl::Init()
 ////@begin PWSTreeCtrl member initialisation
 ////@end PWSTreeCtrl member initialisation
 }
-
 
 /*!
  * Control creation for PWSTreeCtrl
@@ -293,7 +289,6 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
   }
   return ti;
 }
-
 
 wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
@@ -513,7 +508,6 @@ bool PWSTreeCtrl::Remove(const CUUID &uuid)
   }
 }
 
-
 void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
                                const CItemData &item)
 {
@@ -557,7 +551,6 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   }
 }
 
-
 /*!
  * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
  */
@@ -587,7 +580,6 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
     }
   }
 }
-
 
 /*!
  * wxEVT_CHAR event handler for ID_TREECTRL
@@ -769,7 +761,6 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
     wxTreeCtrl::SelectItem(newItem);
 }
 
-
 /*!
  * wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
  */
@@ -802,4 +793,3 @@ void PWSTreeCtrl::SetFilterState(bool state)
   if (root)
     ColourChildren(this, root, *colour);
 }
-
