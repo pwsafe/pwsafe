@@ -234,6 +234,8 @@ private:
 
 static void setupDCAStrings(wxArrayString &as)
 {
+  // semi-duplicated in SetupDCAComboBoxes(),
+  // but leaving these empty now causes an assert
   as.Add(_("Auto Type"));
   as.Add(_("Browse"));
   as.Add(_("Browse + Auto Type"));
@@ -1103,16 +1105,16 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+static short GetSelectedDCA(const wxComboBox *pcbox,
                            short lastval, short defval)
 {
   int sel = pcbox->GetSelection();
   intptr_t ival = -1;
   if (sel == wxNOT_FOUND) { // no selection
-    val = (lastval == defval) ? -1 : lastval;
+    return -1;
   } else {
     ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
-    val = (ival == defval) ? -1 : ival;
+    return (ival == defval) ? -1 : ival;
   }
 }
 
@@ -1152,12 +1154,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       short lastDCA, lastShiftDCA;
       const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
-                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+      m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
+                             short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
       m_item.GetShiftDCA(lastShiftDCA);
-      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
-                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
+                                  short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
