@@ -1,5 +1,5 @@
-Password Safe 3.41.0pre Release Notes November 2016
-====================================================
+Password Safe 3.41.0 Release Notes November 2016
+================================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -11,11 +11,11 @@ releases may be found in the file ChangeLog.txt.
 Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
-The ReleaseNotes.html file has hot links to the relevant tickets/issues.
+The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs fixed in 3.41.0pre
-=======================
-[] Fix crash if Find active when applying a filter e.g. show entries with expiry dates.
+Bugs fixed in 3.41.0
+====================
+[] Fix crash if Find active when applying a filter, e.g., show entries with expiry dates.
 [] Ensure shortcut is updated in GUI after editing.
 [] Text in the Find toolbar search edit control is now vertically centered to
 reduce character truncation.
@@ -23,7 +23,7 @@ reduce character truncation.
 a new entry (and not only when editing).
 [] Update password history when Apply is clicked, not only when Edit
 window's closed.
-[] All empty groups are no longer shown when the user filters for only entries 
+[] No longer show empty groups when the user filters for entries 
 with expired passwords.
 [1378] Fix application crash if Add/Edit entry dialog open when the database is locked
 e.g. via idle timer, workstation lock etc.
@@ -42,8 +42,8 @@ on Autotype label now works.
 do not leave duplicated empty groups in the database.
 [G192] Saved changes no longer prevent logoff or system shutdown.
 
-Changes to Existing Features in 3.41.0pre
-=========================================
+Changes to Existing Features in 3.41.0
+======================================
 [] You can no longer change an alias's base entry's password from the alias entry.
 Instead, you should edit the base entry directly by selecting the alias entry and 
 using the Edit or right-click context menu to select its base.
@@ -53,8 +53,8 @@ focus to it if already visible.
 [1371] The font used in the Find toolbar is now set to the user specified Add/Edit
 font instead of the Tree/List view font.
 
-New Features for 3.41.0pre
-==========================
+New Features for 3.41.0
+=======================
 [] New AutoType field '\#' toggles the use of the older mechanism to
 send keyboard input to other applications e.g. browsers.
 [] Add more Help to the Add/Edit Basic and Additional tabs.
@@ -63,8 +63,7 @@ on unsaved changes.
 [] Empty groups, whose names satisfy a filter that include tests on group name
 values, are now included in the display when the filter is active.
 [815] The database backup location now supports environmental variables e.g. 
-%homedrive% and %homepath%.  If used, the resulting path at that time is
-also shown.
+%homedrive% and %homepath%.  If used, the resulting path is shown.
 [814] Clearing the recent database list now requires confirmation.
 [813] When exporting a group to a new database, there is now an option to also
 export all filters stored in the database to the new database.
