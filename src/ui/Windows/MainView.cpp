@@ -3761,7 +3761,7 @@ void DboxMain::OnToolBarFindReport()
       uistring = PWSMatch::GetRule(PWSMatch::MatchRule(abs(Fsubgroup_function)));
 
       cs_text.LoadString(uistring);
-      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, Fsubgroup_name,
+      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, Fsubgroup_name.c_str(),
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);

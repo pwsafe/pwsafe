@@ -123,7 +123,7 @@ int DboxMain::BackupSafe()
   rc = m_core.WriteFile(tempname, m_core.GetReadFileVersion(), false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, tempname);
+    cs_temp.Format(IDS_CANTOPENWRITING, tempname.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -142,8 +142,8 @@ void DboxMain::OnRestoreSafe()
 int DboxMain::RestoreSafe()
 {
   int rc;
-  StringX backup, passkey, temp;
-  StringX currbackup =
+  StringX sx_backup, sx_passkey;
+  StringX sx_currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   if (m_bOpen) {
@@ -172,7 +172,7 @@ int DboxMain::RestoreSafe()
   while (1) {
     CPWFileDialog fd(TRUE,
                      L"bak",
-                     currbackup.c_str(),
+                     sx_currbackup.c_str(),
                      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                      CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                      this);
@@ -192,20 +192,20 @@ int DboxMain::RestoreSafe()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      backup = fd.GetPathName();
+      sx_backup = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(sx_backup, sx_passkey, GCP_NORMAL);  // OK, CANCEL, HELP
 
   CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, backup);
+      cs_temp.Format(IDS_CANTOPEN, sx_backup.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
@@ -233,9 +233,9 @@ int DboxMain::RestoreSafe()
 
   // Validate it unless user says NO
   CReport Rpt;
-  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
+  rc = m_core.ReadFile(sx_backup, sx_passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, backup);
+    cs_temp.Format(IDS_CANTOPENREADING, sx_backup.c_str());
     cs_title.LoadString(IDS_FILEREADERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
