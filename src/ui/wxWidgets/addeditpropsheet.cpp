@@ -232,6 +232,21 @@ private:
   int m_rbID;
 };
 
+static void setupDCAStrings(wxArrayString &as)
+{
+  // semi-duplicated in SetupDCAComboBoxes(),
+  // but leaving these empty now causes an assert
+  as.Add(_("Auto Type"));
+  as.Add(_("Browse"));
+  as.Add(_("Browse + Auto Type"));
+  as.Add(_("Copy Notes"));
+  as.Add(_("Copy Password"));
+  as.Add(_("Copy Password + Minimize"));
+  as.Add(_("Copy Username"));
+  as.Add(_("Edit/View Entry"));
+  as.Add(_("Execute Run command"));
+}
+
 /*!
  * Control creation for AddEditPropSheet
  */
@@ -359,15 +374,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_DCAcomboBoxStrings;
-  m_DCAcomboBoxStrings.Add(_("Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Browse"));
-  m_DCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_DCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_DCAcomboBoxStrings);
   m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -375,15 +382,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_SDCAcomboBoxStrings;
-  m_SDCAcomboBoxStrings.Add(_("Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Browse"));
-  m_SDCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Username"));
-  m_SDCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_SDCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_SDCAcomboBoxStrings);
   m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -1106,16 +1105,16 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+static short GetSelectedDCA(const wxComboBox *pcbox,
                            short lastval, short defval)
 {
   int sel = pcbox->GetSelection();
   intptr_t ival = -1;
   if (sel == wxNOT_FOUND) { // no selection
-    val = (lastval == defval) ? -1 : lastval;
+    return -1;
   } else {
     ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
-    val = (ival == defval) ? -1 : ival;
+    return (ival == defval) ? -1 : ival;
   }
 }
 
@@ -1155,12 +1154,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       short lastDCA, lastShiftDCA;
       const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
-                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+      m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
+                             short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
       m_item.GetShiftDCA(lastShiftDCA);
-      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
-                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
+                                  short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
